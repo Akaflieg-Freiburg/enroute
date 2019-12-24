@@ -1,6 +1,5 @@
-{% include navigation.html}
 
-## Welcome to GitHub Pages
+## A prject of Akaflieg Freiburg
 
 Test
 

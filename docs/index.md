@@ -1,5 +1,5 @@
 
-## A prject of Akaflieg Freiburg
+## A project of Akaflieg Freiburg
 
 Test
 

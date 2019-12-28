@@ -1,0 +1,8 @@
+
+main:
+  - title: "Download"
+    url: /download
+  - title: "Screenshots"
+    url: /screenshots
+  - title: "Participate"
+    url: /participate

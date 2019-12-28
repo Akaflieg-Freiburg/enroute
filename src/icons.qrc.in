@@ -1,0 +1,63 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <!-- Central application icons -->
+        <file alias="icons/appIcon.svg">${CMAKE_BINARY_DIR}/metadata/${APP_ID}.svg</file>
+        <file alias="icons/appIcon.png">${CMAKE_BINARY_DIR}/metadata/${APP_ID}.png</file>	
+
+	<!-- Google Material Icons -->
+        <file alias="icons/material/ic_speed.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_speed.svg</file>
+	
+        <file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
+        <file alias="icons/material/ic_bug_report.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_bug_report_24px.svg</file>
+	<file alias="icons/material/ic_cancel.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_cancel_24px.svg</file>
+        <file alias="icons/material/ic_delete.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_delete_24px.svg</file>
+        <file alias="icons/material/ic_directions.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_directions_24px.svg</file>
+        <file alias="icons/material/ic_exit_to_app.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_exit_to_app_24px.svg</file>
+        <file alias="icons/material/ic_file_download.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_file_download_24px.svg</file>
+	<file alias="icons/material/ic_info.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_info_24px.svg</file>	
+	<file alias="icons/material/ic_keyboard_arrow_down.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_down_24px.svg</file>
+	<file alias="icons/material/ic_keyboard_arrow_up.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_up_24px.svg</file>	
+	<file alias="icons/material/ic_map.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_map_24px.svg</file>
+	<file alias="icons/material/ic_menu.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_menu_24px.svg</file>
+	<file alias="icons/material/ic_more_horiz.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_horiz_24px.svg</file>
+        <file alias="icons/material/ic_more_vert.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_vert_24px.svg</file>	
+	<file alias="icons/material/ic_my_location.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_my_location_24px.svg</file>
+	<file alias="icons/material/ic_new_releases.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_new_releases_24px.svg</file>
+        <file alias="icons/material/ic_refresh.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_refresh_24px.svg</file>
+        <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
+	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
+	
+	<!-- GUI icons: General -->
+        <file alias="icons/gpl-v3-logo.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/gpl-v3-logo.svg</file>
+        <file alias="icons/icon_airfield.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/icon_airfield.svg</file>
+        <file alias="icons/kebekus.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/kebekus.jpg</file>
+        <file alias="icons/nav_participate.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/nav_participate.svg</file>
+        <file alias="icons/NorthArrow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/NorthArrow.svg</file>
+        <file alias="icons/self-noDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noDirection.svg</file>
+        <file alias="icons/self-noSatNav.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noSatNav.svg</file>
+        <file alias="icons/self-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-withDirection.svg</file>
+	<file alias="icons/vertLine.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/vertLine.svg</file>
+
+	<!-- GUI icons: Waypoint -->
+	<file alias="icons/waypoints/AD.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD.svg</file>
+	<file alias="icons/waypoints/AD-GLD.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-GLD.svg</file>
+	<file alias="icons/waypoints/AD-GRASS.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-GRASS.svg</file>
+	<file alias="icons/waypoints/AD-INOP.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-INOP.svg</file>
+	<file alias="icons/waypoints/AD-MIL.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-MIL.svg</file>
+	<file alias="icons/waypoints/AD-MIL-GRASS.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-MIL-GRASS.svg</file>
+	<file alias="icons/waypoints/AD-MIL-PAVED.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-MIL-PAVED.svg</file>
+	<file alias="icons/waypoints/AD-PAVED.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-PAVED.svg</file>
+	<file alias="icons/waypoints/AD-UL.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-UL.svg</file>
+	<file alias="icons/waypoints/AD-WATER.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-WATER.svg</file>
+	<file alias="icons/waypoints/WP.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/WP.svg</file>	
+	<file alias="icons/waypoints/MRP.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/MRP.svg</file>
+	<file alias="icons/waypoints/NDB.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/NDB.svg</file>
+	<file alias="icons/waypoints/RP.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/RP.svg</file>
+	<file alias="icons/waypoints/VOR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VOR.svg</file>
+	<file alias="icons/waypoints/VOR-DME.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORDME.svg</file>
+	<file alias="icons/waypoints/VORTAC.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORTAC.svg</file>
+	<file alias="icons/waypoints/DVOR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VOR.svg</file>
+	<file alias="icons/waypoints/DVOR-DME.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORDME.svg</file>
+	<file alias="icons/waypoints/DVORTAC.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORTAC.svg</file>
+    </qresource>
+</RCC>

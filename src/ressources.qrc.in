@@ -1,0 +1,16 @@
+<RCC>
+    <!-- Global QML configuration files -->
+    <qresource prefix="/">
+        <file alias="qtquickcontrols2.conf">${CMAKE_CURRENT_SOURCE_DIR}/qtquickcontrols2.conf</file>
+    </qresource>
+
+    <!-- Texts -->
+    <qresource prefix="/">
+        <file>text/firstStart.html</file>
+        <file>text/info_author.html</file>
+        <file>text/info_enroute.html</file>
+        <file>text/info_license.html</file>
+        <file>text/participate.html</file>
+        <file>text/whatsnew.html</file>
+    </qresource>
+</RCC>

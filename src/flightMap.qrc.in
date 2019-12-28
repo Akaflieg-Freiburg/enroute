@@ -1,0 +1,42 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <!-- MapBox style files -->
+        <file alias="flightMap/empty.json">${CMAKE_CURRENT_SOURCE_DIR}/flightMap/empty.json</file>
+        <file alias="flightMap/osm-liberty.json">${CMAKE_CURRENT_SOURCE_DIR}/flightMap/osm-liberty.json</file>
+
+	<!-- Sprites -->
+	<file>flightMap/sprites/AD.png</file>
+	<file>flightMap/sprites/AD@2x.png</file>
+	<file>flightMap/sprites/AD-GLD.png</file>
+	<file>flightMap/sprites/AD-GLD@2x.png</file>
+	<file>flightMap/sprites/AD-GRASS.png</file>
+	<file>flightMap/sprites/AD-GRASS@2x.png</file>
+	<file>flightMap/sprites/AD-INOP.png</file>
+	<file>flightMap/sprites/AD-INOP@2x.png</file>
+	<file>flightMap/sprites/AD-MIL.png</file>
+	<file>flightMap/sprites/AD-MIL@2x.png</file>
+	<file>flightMap/sprites/AD-MIL-GRASS.png</file>
+	<file>flightMap/sprites/AD-MIL-GRASS@2x.png</file>
+	<file>flightMap/sprites/AD-MIL-PAVED.png</file>
+	<file>flightMap/sprites/AD-MIL-PAVED@2x.png</file>
+	<file>flightMap/sprites/AD-PAVED.png</file>
+	<file>flightMap/sprites/AD-PAVED@2x.png</file>
+	<file>flightMap/sprites/AD-UL.png</file>
+	<file>flightMap/sprites/AD-UL@2x.png</file>
+	<file>flightMap/sprites/AD-WATER.png</file>
+	<file>flightMap/sprites/AD-WATER@2x.png</file>
+        <file>flightMap/sprites/MRP.png</file>
+        <file>flightMap/sprites/MRP@2x.png</file>
+        <file>flightMap/sprites/NDB.png</file>
+        <file>flightMap/sprites/NDB@2x.png</file>
+        <file>flightMap/sprites/RP.png</file>
+        <file>flightMap/sprites/RP@2x.png</file>
+        <file>flightMap/sprites/VOR.png</file>
+        <file>flightMap/sprites/VOR@2x.png</file>
+        <file>flightMap/sprites/VORDME.png</file>
+        <file>flightMap/sprites/VORDME@2x.png</file>
+        <file>flightMap/sprites/VORTAC.png</file>
+        <file>flightMap/sprites/VORTAC@2x.png</file>
+        <file alias="flightMap/sprites/WhiteBox.png">${CMAKE_CURRENT_SOURCE_DIR}/icons/WhiteBox.png</file>
+    </qresource>
+</RCC>

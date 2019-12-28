@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   width="50mm"
+   height="50mm"
+   viewBox="0 0 50 50">
+
+  <circle
+      id="circle symbol"
+      style="fill:none;stroke:black;stroke-width:7"
+      cx="25"
+      cy="25"
+      r="16" />
+  <rect
+      id="runway"
+      style="fill:black;fill-opacity:1"
+      width="48"
+      height="8"
+      x="1"
+      y="21" />
+</svg>

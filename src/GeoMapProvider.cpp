@@ -1,0 +1,263 @@
+/***************************************************************************
+ *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   stefan.kebekus@gmail.com                                              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include <QGeoCoordinate>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QRandomGenerator>
+
+#include "GeoMapProvider.h"
+#include "Waypoint.h"
+
+
+GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QObject *parent)
+    : QObject(parent), _manager(manager), _settings(settings), _tileServer(QUrl()), _styleFile(nullptr)
+{
+    connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::geoMapsChanged);
+    connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::geoMapsChanged);
+
+    _tileServer.listen(QHostAddress("127.0.0.1"));
+    geoMapsChanged();
+}
+
+
+QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
+{
+    position.setAltitude(qQNaN());
+
+    auto wps = waypoints();
+    if (wps.isEmpty())
+        return nullptr;
+
+    auto result = wps[0];
+    foreach(auto wp, wps) {
+        if (position.distanceTo(wp->coordinate()) < position.distanceTo(result->coordinate()))
+            result = wp;
+    }
+
+    if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition))
+        return new Waypoint(position, this);
+
+    return result;
+}
+
+
+
+QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position) const
+{
+    QList<Airspace*> result;
+    foreach(auto airspace, _airspaces) {
+        if (airspace->polygon().contains(position))
+            result.append(airspace);
+    }
+
+    // Sort airspaces according to lower boundary
+    std::sort(result.begin(), result.end(), [](Airspace* a, Airspace* b) {return (a->estimatedLowerBoundInFtMSL() > b->estimatedLowerBoundInFtMSL()); });
+
+    QList<QObject*> final;
+    foreach(auto airspace, result)
+        final.append(airspace);
+
+    return final;
+}
+
+
+QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
+{
+    auto wps = waypoints();
+
+    QStringList filterWords;
+    foreach(auto word, filter.simplified().split(' ', QString::SkipEmptyParts)) {
+        QString simplifiedWord = simplifySpecialChars(word);
+        if (simplifiedWord.isEmpty())
+            continue;
+        filterWords.append(simplifiedWord);
+    }
+
+    QList<QObject*> result;
+    foreach(auto wp, wps) {
+        bool allWordsFound = true;
+        foreach(auto word, filterWords) {
+            QString fullName = simplifySpecialChars(wp->get("NAM").toString());
+            QString codeName = simplifySpecialChars(wp->get("COD").toString());
+            QString wordx = simplifySpecialChars(word);
+
+            if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
+                allWordsFound = false;
+                break;
+            }
+        }
+        if (allWordsFound)
+            result.append(wp);
+    }
+
+    return result;
+}
+
+
+QByteArray GeoMapProvider::geoJSON() const
+{
+    QJsonObject resultObject;
+    resultObject.insert("type", "FeatureCollection");
+    resultObject.insert("features", _features);
+    QJsonDocument geoDoc(resultObject);
+    return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
+}
+
+
+QList<QObject*> GeoMapProvider::nearbyAirfields(const QGeoCoordinate& position)
+{
+    auto wps = waypoints();
+
+    QList<Waypoint*> ADs;
+    foreach(auto wp, wps) {
+        if (!wp->get("CAT").toString().startsWith("AD"))
+            continue;
+        ADs.append(wp);
+    }
+
+    std::sort(ADs.begin(), ADs.end(), [position](Waypoint* a, Waypoint* b) {return position.distanceTo(a->coordinate()) < position.distanceTo(b->coordinate()); });
+
+    QList<QObject*> result;
+    int sz = 0;
+    foreach(auto ad, ADs) {
+        result.append(ad);
+        sz++;
+        if (sz == 20)
+            break;
+    }
+
+    return result;
+}
+
+
+QString GeoMapProvider::styleFileURL() const
+{
+    if (_styleFile.isNull())
+        return ":/flightMap/empty.json";
+    return "file://"+_styleFile->fileName();
+}
+
+
+QString GeoMapProvider::simplifySpecialChars(const QString &string)
+{
+    QString cacheString = simplifySpecialChars_cache[string];
+    if (!cacheString.isEmpty())
+        return cacheString;
+
+    QString normalizedString = string.normalized(QString::NormalizationForm_KD);
+    return normalizedString.remove(specialChars);
+}
+
+
+void GeoMapProvider::geoMapsChanged()
+{
+    // Paranoid safety checks
+    if (_manager.isNull())
+        return;
+
+    // Delete old style file, stop serving tiles
+    delete _styleFile;
+    _tileServer.removeMbtilesFileSet(_currentPath);
+
+    // Serve new tile set under new name
+    if (!_manager->mbtileFiles().isEmpty()) {
+        _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
+        _tileServer.addMbtilesFileSet(_manager->mbtileFiles(), _currentPath);
+
+        // Generate new mapbox style file
+        _styleFile = new QTemporaryFile(this);
+        QFile file(":/flightMap/osm-liberty.json");
+        file.open(QIODevice::ReadOnly);
+        QByteArray data = file.readAll();
+        data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
+        data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+        _styleFile->open();
+        _styleFile->write(data);
+        _styleFile->close();
+    }
+
+    //
+    // Generate new GeoJSON array and new list of waypoints
+    //
+
+    // First, create a set of JSON objects, in order to avoid duplicated entries
+    QSet<QJsonObject> objectSet;
+    bool hideUpperAirspaces = _settings->hideUpperAirspaces();
+    foreach(auto geoMapPtr, _manager->aviationMaps()) {
+        // Ignore everything but geojson files
+        if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
+            continue;
+        if (!geoMapPtr->hasLocalFile())
+            continue;
+
+        QByteArray content = geoMapPtr->localFileContent();
+        auto document = QJsonDocument::fromJson(content);
+        foreach(auto value, document.object()["features"].toArray()) {
+            auto object = value.toObject();
+
+            // If 'hideUpperAirspaces' is set, ignore all objects that are airspaces
+            // and that begin at FL100 or above.
+            if (hideUpperAirspaces) {
+                Airspace airspaceTest(object);
+                if (airspaceTest.isUpper())
+                    continue;
+            }
+            objectSet += object;
+        }
+    }
+
+
+    // Then, create a new JSONArray of features and a new list of waypoints
+    QJsonArray newFeatures;
+    QList<Airspace*> newAirspaces;
+    QList<Waypoint*> newWaypoints;
+    foreach(auto object, objectSet) {
+        newFeatures += object;
+
+        // Check if the current object is a waypoint. If so, add it to the list of waypoints.
+        // Comment: the list waypoints is used as a model in QML. I am unsure what happens if they get deleted while QML is still using them. I have therefore chosen to not delete them at all. This introduced a minor memory inefficiency when GeoJSON files get upated.
+        auto wp = new Waypoint(object, this);
+        if (wp->isValid()) {
+            newWaypoints.append(wp);
+            continue;
+        }
+        delete wp;
+
+        // Check if the current object is an airspace. If so, add it to the list of airspaces.
+        auto as = new Airspace(object);
+        if (as->isValid()) {
+            newAirspaces.append(as);
+            continue;
+        }
+        delete as;
+    }
+
+    // Sort waypoints by name
+    std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->get("NAM").toString() < b->get("NAM").toString(); });
+
+    _airspaces = newAirspaces;
+    _waypoints = newWaypoints;
+    _features = newFeatures;
+
+    emit styleFileURLChanged();
+    emit geoJSONChanged();
+}

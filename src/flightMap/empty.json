@@ -1,0 +1,15 @@
+{
+  "version": 8,
+  "name": "empty",
+  "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+  "sources": {},
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "rgb(239,239,239)"
+      }
+    }
+  ]
+}

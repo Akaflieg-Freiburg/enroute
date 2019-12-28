@@ -1,0 +1,12 @@
+<p>Thank you for testing this flight navigation app!  The following features are
+new in version ${PROJECT_VERSION}.</p>
+
+<ul>
+  <li>Enroute now has a proper icon.</li>
+
+  <li>Technical improvements, mostly invisible to the user.</li>
+</ul>
+
+<p>Fly safely and enjoy many happy landings!</p>
+
+<p>-- Stefan Kebekus.</p>

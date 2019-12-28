@@ -1,0 +1,25 @@
+<RCC>
+    <!-- QML sources -->
+    <qresource prefix="/qml">
+        <file alias="main.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/main.qml</file>
+        <file alias="dialogs/AltitudeCorrectionDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/AltitudeCorrectionDialog.qml</file>
+        <file alias="dialogs/ErrorDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/ErrorDialog.qml</file>	
+        <file alias="dialogs/FirstRunDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FirstRunDialog.qml</file>
+        <file alias="dialogs/LongTextDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialog.qml</file>
+        <file alias="dialogs/SatNavStatusDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/SatNavStatusDialog.qml</file>
+        <file alias="dialogs/UpdateMapDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/UpdateMapDialog.qml</file>
+        <file alias="dialogs/WaypointDescription.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointDescription.qml</file>
+        <file alias="items/AutoSizingMenu.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/AutoSizingMenu.qml</file>
+        <file alias="items/FlightMap.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/FlightMap.qml</file>
+        <file alias="items/MFM.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/MFM.qml</file>
+        <file alias="items/NavBar.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/NavBar.qml</file>
+        <file alias="pages/FlightRoutePage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRoutePage.qml</file>
+        <file alias="pages/FlightRouteAddWPPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteAddWPPage.qml</file>
+        <file alias="pages/InfoPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/InfoPage.qml</file>
+        <file alias="pages/MapManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapManager.qml</file>
+        <file alias="pages/MapPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapPage.qml</file>
+        <file alias="pages/NearbyAirfields.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/NearbyAirfields.qml</file>
+        <file alias="pages/ParticipatePage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/ParticipatePage.qml</file>
+        <file alias="pages/SettingsPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/SettingsPage.qml</file>
+    </qresource>
+</RCC>

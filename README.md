@@ -1,8 +1,8 @@
 ## enroute flight navigation
 
-**enroute** is a mobile flight navigation app for Android and other devices. The app is written as a project of [Akaflieg Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg, Germany.
+**enroute** is a mobile flight navigation app for Android and other devices. The app is free, open source and 100% non-commercial. We do not collect user data.
 
-
+**enroute** is a project of [Akaflieg Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg, Germany.
 
 
 

@@ -26,7 +26,7 @@ email: Stefan Kebekus
 #search: true
 
 baseurl: "enroute" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://akaflieg-freiburg.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 
 
 # Build settings
@@ -65,9 +65,9 @@ plugins:
 footer:
   links:
     - label: "Privacy Policies"
-      url: /privacy
+      url: privacy
     - label: "Contact"
-      url: /contact
+      url: contact
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/Akaflieg-Freiburg/enroute"

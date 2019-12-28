@@ -7,7 +7,7 @@ layout: splash
 
 #excerpt: "Navigation for VFR pilots"
 header:
-  overlay_image: /assets/teaser.jpg
+  overlay_image: /assets/images/teaser.jpg
   overlay_filter: rgba(0, 0, 0, 0.5)
 #  overlay_text: "xx"
   caption: "Photo by Shaun Darwood on Unsplash"
@@ -16,15 +16,15 @@ header:
       url: "https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute"
       
 feature_row:
-  - image_path: /assets/maps.jpg
+  - image_path: /assets/images/maps.jpg
     alt: "Free maps"
     title: "Maps Included"
     excerpt: "Our free maps receive near-weekly updates and cover large parts of the world. [More …](/maps/)"
-  - image_path: /assets/simple.jpg
+  - image_path: /assets/images/simple.jpg
     alt: "placeholder image 2"
     title: "Simple by Design"
     excerpt: "**enroute**  is meant to be simple, functional, reliable and easy to learn."
-  - image_path: /assets/free.jpg
+  - image_path: /assets/images/free.jpg
     title: "100% Free"
     excerpt: "**enroute** is 100% open source, and fully non-commercial. [We do not collect your data.](/privacy/)"
 ---
@@ -36,7 +36,7 @@ feature_row:
 # Main Features
 
 <figure style="width: 150px" class="align-right">
-  <img src="{{ site.url }}{{ site.baseurl }}/assets/map.png" alt="">
+  <img src="{{ site.url }}{{ site.baseurl }}/assets/images/map.png" alt="">
   <figcaption>Moving Map Display.</figcaption>
 </figure>
 **enroute** features a moving map, similar in style to the official ICAO maps.  Your current position and your flight path for the next five minutes are marked, and so is your intended flight route. A simple tap on the display gives you all the information about airspaces, airfields and navaids -- complete with frequencies, codes, elevations and runway information.

@@ -4,9 +4,8 @@ title: Contact
 permalink: /contact
 ---
 
-
 <figure style="width: 150px" class="align-right">
-  <img src="{{ site.url }}{{ site.baseurl }}/assets/kebekus.jpg" alt="">
+  <img src="{{ site.url }}{{ site.baseurl }}/assets/images/kebekus.jpg" alt="">
 </figure>
 **enroute** was written by Stefan Kebekus as a project of of the [Akaflieg Freiburg](https://akaflieg-freiburg.de) flight flub.
 

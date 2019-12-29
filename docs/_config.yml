@@ -65,9 +65,9 @@ plugins:
 footer:
   links:
     - label: "Privacy Policies"
-      url: privacy
+      url: /privacy
     - label: "Contact"
-      url: contact
+      url: /contact
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/Akaflieg-Freiburg/enroute"

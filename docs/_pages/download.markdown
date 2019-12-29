@@ -10,12 +10,8 @@ permalink: /download/
 
 ### Mobile App for Android devices
 
-**enroute** is available for free download on the Google Play Store.
+**enroute** is available for free download at Google Play.
 
-
-### Desktop App for Linux Computers
-
-Linux users who want to use **enroute** on their desktop machines find a ready-to-use package on [flathub.org](https://flathub.org/home).  **enroute** might also be available through your distribution's software management tool.
 
 ### Source code
 
@@ -26,5 +22,5 @@ Developers who are interested in compiling **enroute** themselves find all relev
 
 **enroute** can be ported without much difficulty to Apple iOS devices, such as iPhones and iPads.  We are currently looking for volunteers who help with the port and maintain **enroute**'s presence in the Apple App Store. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
 
-**enroute** cab be ported without much difficulty to Windows and MacOS desktop machines. We are currently looking for volunteers. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
+**enroute** cab be ported without much difficulty to Linux, Windows and MacOS desktop machines. We are currently looking for volunteers. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
 

@@ -7,12 +7,12 @@ toc: true
 
 ## Report bugs and errors
 
-We aim to provide very high-quality software. Fixing errors is therefore always our first priority. We are grateful for every report that we get. Please **report errors** by <a href="mailto:stefan.kebekus@gmail.com">contacting the author</a> directly.
+We aim to provide very high-quality software. Fixing errors is therefore always our first priority. We are grateful for every report that we get. Please **report errors** through the [GitHub issue tracker](https://github.com/Akaflieg-Freiburg/enroute/issues) (this might require opening an account with GitHub).  If you find this difficult, then please <a href="mailto:stefan.kebekus@gmail.com">contacting the author</a> directly.
 
 
 ## Suggest features and improvements
 
-Suggest improvements by <a href="mailto:stefan.kebekus@gmail.com">contacting the author directly.  We ask for your understanding that not all suggestions can be implemented immediately.
+We have great plans for **enroute**. Please check our [project list at GitHub](https://github.com/Akaflieg-Freiburg/enroute/projects).  Please **make further suggestions** through the [GitHub issue tracker](https://github.com/Akaflieg-Freiburg/enroute/issues) (this might require opening an account with GitHub).  If you find this difficult, then please <a href="mailto:stefan.kebekus@gmail.com">contacting the author</a> directly.  We ask for your understanding that not all your suggestions can be implemented immediately.
 
 
 ## Join the project

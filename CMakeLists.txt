@@ -11,9 +11,9 @@ include(GNUInstallDirs)
 # Project data
 #
 
-project(enroute VERSION 0.2.1)
+project(enroute VERSION 1.0.3)
 set(APP_ID de.akaflieg_freiburg.enroute)
-set(PROJECT_DATE 2019-12-22)
+set(PROJECT_DATE 2019-12-30)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 

@@ -94,7 +94,7 @@ defaults:
 
 category_archive:
   type: liquid
-  path: /categories/
+  path: /enroute/categories/
 tag_archive:
   type: liquid
-  path: /tags/
+  path: /enroute/tags/

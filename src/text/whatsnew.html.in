@@ -1,10 +1,7 @@
-<p>Thank you for testing this flight navigation app!  The following features are
-new in version ${PROJECT_VERSION}.</p>
+<p>The following features are new in version ${PROJECT_VERSION}.</p>
 
 <ul>
-  <li>Enroute now has a proper icon.</li>
-
-  <li>Technical improvements, mostly invisible to the user.</li>
+  <li>Version ${PROJECT_VERSION} is the first public release.</li>
 </ul>
 
 <p>Fly safely and enjoy many happy landings!</p>

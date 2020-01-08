@@ -26,7 +26,7 @@ feature_row:
     excerpt: "**enroute**  is meant to be simple, functional, reliable and easy to learn."
   - image_path: /assets/images/free.jpg
     title: "100% Free"
-    excerpt: "**enroute** is 100% open source, and fully non-commercial. [We do not collect your data.](/enroute/privacy/)"
+    excerpt: "**enroute** is 100% open source, and fully non-commercial. [We do not collect your data.](/enroute/privacy)"
 ---
 
 **enroute** is a free flight navigation app for Android and other devices. Designed to be simple, functional and elegant, it takes the stress out of your next flight. The program has been written by flight enthusiasts, as a project of [Akaflieg Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg, Germany.

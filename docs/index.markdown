@@ -19,14 +19,14 @@ feature_row:
   - image_path: /assets/images/maps.jpg
     alt: "Free maps"
     title: "Maps Included"
-    excerpt: "Our free maps receive near-weekly updates and cover large parts of the world. [More …](/maps/)"
+    excerpt: "Our free maps receive near-weekly updates and cover large parts of the world. [More …](/enroute/maps/)"
   - image_path: /assets/images/simple.jpg
     alt: "placeholder image 2"
     title: "Simple by Design"
     excerpt: "**enroute**  is meant to be simple, functional, reliable and easy to learn."
   - image_path: /assets/images/free.jpg
     title: "100% Free"
-    excerpt: "**enroute** is 100% open source, and fully non-commercial. [We do not collect your data.](/privacy/)"
+    excerpt: "**enroute** is 100% open source, and fully non-commercial. [We do not collect your data.](/enroute/privacy/)"
 ---
 
 **enroute** is a free flight navigation app for Android and other devices. Designed to be simple, functional and elegant, it takes the stress out of your next flight. The program has been written by flight enthusiasts, as a project of [Akaflieg Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg, Germany.
@@ -41,7 +41,7 @@ feature_row:
 </figure>
 **enroute** features a moving map, similar in style to the official ICAO maps.  Your current position and your flight path for the next five minutes are marked, and so is your intended flight route. A simple tap on the display gives you all the information about airspaces, airfields and navaids -- complete with frequencies, codes, elevations and runway information.
 
-Our free aeronautical maps can be downloaded for offline use.  In addition to airspaces, airfields and navaids, selected maps also show traffic circuits as well as flight procedures for control zones.  [The maps receive near-weekly updates and cover large parts of the world.](/maps/)
+Our free aeronautical maps can be downloaded for offline use.  In addition to airspaces, airfields and navaids, selected maps also show traffic circuits as well as flight procedures for control zones.  [The maps receive near-weekly updates and cover large parts of the world.](/enroute/maps/)
 
 While **enroute** is no substitute for full-featured flight planning software, it allows you to quickly and easily compute distances, courses and headings, and gives you an estimate for flight time and fuel consumption. If the weather turns bad, the app will show you the closest airfields for landing, complete with distances, directions, runway information and frequencies.
 

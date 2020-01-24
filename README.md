@@ -35,6 +35,20 @@ make -j5
 ./src/enroute
 ```
 
+We include a script, **buildscript-linux-debug.sh** that will build a debug binary of **enroute** with LLVM's address-sanitizer and undefined-sanitizer included. The CLANG compiler set must be available.
+
+```shell
+# Go to the main 'enroute' directory
+cd <wherever you git cloned the directory>/enroute
+
+# Build. This will cread a directory 'build-debug' and create the binary there
+./buildscript-linux-debug.sh
+
+# Run the binary, with memory leak detection disabled
+export ASAN_OPTIONS=detect_leaks=0
+./build-debug/src/enroute
+```
+
 ### 1.2 Building an Android app
 
 The author uses Qt Creator to build Android apps.

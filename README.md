@@ -47,4 +47,18 @@ The author uses Qt Creator to build Android apps.
 
 * Command line utilities: **curl**, **git**, **tar** (used to download data at configuration stage), **Doxygen**, **dot** (to build documentation,) **inkscape** (used to generate PNG versions of icons from SVG sources) and **python3** (used to compile lists of files during the configuration stage)
 
+# 2. Other cmake targets
+
+To aid development, the **cmake** scripts include a number of non-obvious targets.
+
+## 2.1 Target: DistributeQtSource
+
+To comply with legal regulations, we need to make a copy of the Qt sources available on the internet. This target does that automatically. Run the following command on one of Stefan Kebekus' machines:
+
+```bash
+make DistributeQtSource
+```
+
+This will download the sources for the precise Qt version used for building this binary and will make them available at [https://cplx.vm.uni-freiburg.de/storage/QtSources](https://cplx.vm.uni-freiburg.de/storage/QtSources).
+
 

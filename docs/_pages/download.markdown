@@ -15,7 +15,7 @@ permalink: /download/
 
 ### Source code
 
-Developers who are interested in compiling **enroute** themselves find all relevant sources on [GitHub](https://github.com/Akaflieg-Freiburg/enroute).
+Developers who are interested in compiling **enroute** themselves find all relevant sources on [GitHub](https://github.com/Akaflieg-Freiburg/enroute).  This program builds on the Qt library. The source code for Qt can be found at [this URL](https://cplx.vm.uni-freiburg.de/storage/QtSources).
 
 
 # Other systems

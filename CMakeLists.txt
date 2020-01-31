@@ -40,11 +40,11 @@ if( ANDROID )
   find_package(Qt5 5.14 COMPONENTS AndroidExtras REQUIRED)
 endif()
 
-
 # Create target collecting all documentation
 add_custom_target(doc)
 
 # Subdirectories
 add_subdirectory(3rdParty)
 add_subdirectory(metadata)
+add_subdirectory(packaging)
 add_subdirectory(src)

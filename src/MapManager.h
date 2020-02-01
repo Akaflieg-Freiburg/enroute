@@ -113,9 +113,9 @@ public:
 
   /*! \brief List of available base maps
 
-    This method returns a QMap that contains pointers to all known aviation maps
+    This method returns a QMap that contains pointers to all known base maps
     as values, and map names as keys. The aviation maps are owned by this map
-    manager and must not be deleted. The lifetime of the aviation maps is not
+    manager and must not be deleted. The lifetime of the maps is not
     guaranteed, so if you must store them, then store them in a QPointer and
     check validity of the pointer before every use.
    */

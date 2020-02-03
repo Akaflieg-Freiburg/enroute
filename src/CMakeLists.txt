@@ -22,8 +22,8 @@ configure_file(text/whatsnew.html.in text/whatsnew.html)
 add_custom_command(
   OUTPUT ${CMAKE_BINARY_DIR}/metadata/${APP_ID}_angular.png ${CMAKE_BINARY_DIR}/metadata/${APP_ID}.png 
   DEPENDS ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}_angular.svg
-  COMMAND inkscape -z -f ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}_angular.svg -e ${CMAKE_BINARY_DIR}/metadata/${APP_ID}_angular.png -h 512 -w 512
-  COMMAND inkscape -z -f ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -e ${CMAKE_BINARY_DIR}/metadata/${APP_ID}.png -h 512 -w 512
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}_angular.svg -o ${CMAKE_BINARY_DIR}/metadata/${APP_ID}_angular.png -h 512 -w 512
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -o ${CMAKE_BINARY_DIR}/metadata/${APP_ID}.png -h 512 -w 512
   COMMENT "Generate main program icons"
   )
 
@@ -69,38 +69,38 @@ set(AVIATION_ICONS
 add_custom_command(
     OUTPUT ${AVIATION_ICONS}
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GLD.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GLD.png -h 20 -w 20
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GLD.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GLD@2x.png -h 40 -w 40
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GRASS.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GRASS.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GRASS.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GRASS@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-INOP.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-INOP.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-INOP.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-INOP@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-GRASS.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-GRASS.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-GRASS.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-GRASS@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-PAVED.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-PAVED.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-PAVED.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-PAVED@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-PAVED.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-PAVED.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-PAVED.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-PAVED@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-UL.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-UL.png -h 20 -w 20
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-UL.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-UL@2x.png -h 40 -w 40
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-WATER.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-WATER.png -h 30 -w 30
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-WATER.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-WATER@2x.png -h 60 -w 60
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/MRP.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/MRP.png -h 25 -w 25
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/MRP.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/MRP@2x.png -h 50 -w 50
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/NDB.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/NDB.png -h 25 -w 25
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/NDB.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/NDB@2x.png -h 50 -w 50
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/RP.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/RP.png -h 25 -w 25
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/RP.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/RP@2x.png -h 50 -w 50
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VOR.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VOR.png -w 22
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VOR.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VOR@2x.png -w 44
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORDME.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORDME.png -w 22
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORDME.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORDME@2x.png -w 44
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORTAC.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORTAC.png -w 26
-    COMMAND inkscape -z -f ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORTAC.svg -e ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORTAC@2x.png -w 52
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GLD.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GLD.png -h 20 -w 20
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GLD.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GLD@2x.png -h 40 -w 40
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GRASS.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GRASS.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GRASS.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-GRASS@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-INOP.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-INOP.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-INOP.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-INOP@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-GRASS.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-GRASS.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-GRASS.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-GRASS@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-PAVED.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-PAVED.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-PAVED.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-MIL-PAVED@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-PAVED.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-PAVED.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-PAVED.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-PAVED@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-UL.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-UL.png -h 20 -w 20
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-UL.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-UL@2x.png -h 40 -w 40
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-WATER.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-WATER.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-WATER.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/AD-WATER@2x.png -h 60 -w 60
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/MRP.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/MRP.png -h 25 -w 25
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/MRP.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/MRP@2x.png -h 50 -w 50
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/NDB.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/NDB.png -h 25 -w 25
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/NDB.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/NDB@2x.png -h 50 -w 50
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/RP.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/RP.png -h 25 -w 25
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/RP.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/RP@2x.png -h 50 -w 50
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VOR.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VOR.png -w 22
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VOR.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VOR@2x.png -w 44
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORDME.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORDME.png -w 22
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORDME.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORDME@2x.png -w 44
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORTAC.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORTAC.png -w 26
+    COMMAND rsvg-convert ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORTAC.svg -o ${CMAKE_CURRENT_BINARY_DIR}/flightMap/sprites/VORTAC@2x.png -w 52
     COMMENT Generating Icons
     )
 
@@ -166,15 +166,15 @@ if( ANDROID )
         DEPENDS ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/android android
         COMMAND ${CMAKE_COMMAND} -E make_directory android/res/drawable-xxxhdpi
-        COMMAND inkscape -z -f ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -e ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-xxxhdpi/icon.png -h 384 -w 384
+        COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -o ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-xxxhdpi/icon.png -h 384 -w 384
         COMMAND ${CMAKE_COMMAND} -E make_directory android/res/drawable-xxhdpi
-        COMMAND inkscape -z -f ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -e ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-xxhdpi/icon.png -h 288 -w 288
+        COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -o ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-xxhdpi/icon.png -h 288 -w 288
         COMMAND ${CMAKE_COMMAND} -E make_directory android/res/drawable-xhdpi
-        COMMAND inkscape -z -f ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -e ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-xhdpi/icon.png -h 192 -w 192
+        COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -o ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-xhdpi/icon.png -h 192 -w 192
         COMMAND ${CMAKE_COMMAND} -E make_directory android/res/drawable-hdpi
-        COMMAND inkscape -z -f ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -e ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-hdpi/icon.png -h 144 -w 144
+        COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -o ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-hdpi/icon.png -h 144 -w 144
         COMMAND ${CMAKE_COMMAND} -E make_directory android/res/drawable-mdpi
-        COMMAND inkscape -z -f ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -e ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-mdpi/icon.png -h 96 -w 96
+        COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -o ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-mdpi/icon.png -h 96 -w 96
         COMMENT "Generate android icons"
         )
 

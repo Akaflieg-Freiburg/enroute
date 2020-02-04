@@ -179,21 +179,19 @@ void GeoMapProvider::geoMapsChanged()
     _tileServer.removeMbtilesFileSet(_currentPath);
 
     // Serve new tile set under new name
-    if (!_manager->mbtileFiles().isEmpty()) {
-        _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-        _tileServer.addMbtilesFileSet(_manager->mbtileFiles(), _currentPath);
+    _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
+    _tileServer.addMbtilesFileSet(_manager->mbtileFiles(), _currentPath);
 
-        // Generate new mapbox style file
-        _styleFile = new QTemporaryFile(this);
-        QFile file(":/flightMap/osm-liberty.json");
-        file.open(QIODevice::ReadOnly);
-        QByteArray data = file.readAll();
-        data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
-        data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
-        _styleFile->open();
-        _styleFile->write(data);
-        _styleFile->close();
-    }
+    // Generate new mapbox style file
+    _styleFile = new QTemporaryFile(this);
+    QFile file(":/flightMap/osm-liberty.json");
+    file.open(QIODevice::ReadOnly);
+    QByteArray data = file.readAll();
+    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
+    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+    _styleFile->open();
+    _styleFile->write(data);
+    _styleFile->close();
 
     //
     // Generate new GeoJSON array and new list of waypoints

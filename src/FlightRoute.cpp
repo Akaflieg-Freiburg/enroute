@@ -201,7 +201,7 @@ void FlightRoute::load()
 
 void FlightRoute::updateLegs()
 {
-    for(auto _leg : _legs)
+    foreach(auto _leg, _legs)
         _leg->deleteLater();
     _legs.clear();
 

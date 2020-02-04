@@ -36,6 +36,7 @@ Dialog {
 
     modal: true
     standardButtons: Dialog.Cancel
+    focus: true
 
     Component {
         id: waypointPropertyDelegate
@@ -317,6 +318,11 @@ Dialog {
     Connections {
         target: sensorGesture
         onDetected: close()
+    }
+
+    Keys.onBackPressed: {
+        event.accepted = true;
+        close()
     }
 
 } // Dialog

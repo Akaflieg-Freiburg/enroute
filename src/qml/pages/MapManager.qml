@@ -120,7 +120,7 @@ Page {
                         Action {
                             id: updateAction
 
-                            text: qsTr("Remove map from device")
+                            text: qsTr("Remove from device")
                             icon.source: "/icons/material/ic_delete.svg"
 
                             onTriggered: {
@@ -285,7 +285,7 @@ Page {
         id: downloadUpdatesAction
 
         text: qsTr("Download all updates…")
-        icon.source: "/icons/material/ic_refresh.svg"
+        icon.source: "/icons/material/ic_file_download.svg"
         enabled: mapManager.geoMapUpdatesAvailable
         onTriggered: {
             MobileAdaptor.vibrateBrief()

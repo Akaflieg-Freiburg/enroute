@@ -132,8 +132,8 @@ ApplicationWindow {
                 enabled: satNav.hasAltitude
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
+                    drawer.close()
                     dialogLoader.active = false
-                    dialogLoader.source = "dialogs/AltitudeCorrectionDialog.qml"
                     dialogLoader.source = "dialogs/AltitudeCorrectionDialog.qml"
                     dialogLoader.active = true
                 }

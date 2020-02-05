@@ -343,7 +343,6 @@ bool MapManager::readMapListFromDownloadedJSONFile()
     }
 
     // Set the new maps and inform our users
-    emit geoMapsChanged();
     if (old_aviationMapUpdatesAvailable != geoMapUpdatesAvailable())
         emit geoMapUpdatesAvailableChanged();
 

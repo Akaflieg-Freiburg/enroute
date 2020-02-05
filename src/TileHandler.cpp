@@ -34,6 +34,17 @@
 TileHandler::TileHandler(const QSet<QString>& mbtileFileNames, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
+    // Initialize with default values
+    _name        = "empty";
+    _format      = "pbf";
+    _description = "empty tile set";
+    _version     = "3.6.1";
+    _attribution = "none";
+    _maxzoom     = 10;
+    _minzoom     = 0;
+    _tiles       = baseURL+"/{z}/{x}/{y}."+_format;
+
+    // Go through mbtile files and find real values
     foreach (auto mbtileFileName, mbtileFileNames) {
         // Check that file really exists
         if (!QFile::exists(mbtileFileName)) {

@@ -406,3 +406,5 @@ QList<QString> MapManager::unattachedFiles() const
 
     return result;
 }
+
+

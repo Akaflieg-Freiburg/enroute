@@ -15,13 +15,27 @@ Check <a href="https://akaflieg-freiburg.github.io/enroute/">the <strong>enroute
 
 <h3>Acknowledgements</h3>
 
-<p>This program builds on a number of open source libraries,
-including <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a>
-and <a href="https://www.openssl.org">OpenSSL</a>.</p>
+<p>
+<table>
+  <tr>
+    <td>
+      <p>The author gratefully acknowledges support by our academic sponsor, the
+      <a href="https://www.uni-freiburg.de">University of Freiburg</a>, for
+      providing the infrastructure and bandwidth required to provide maps and
+      map updates.</p>
 
-<p>Aeronautical data is kindly provided by
-the <a href=\"https://www.openaip.net\">openAIP</a>
-and <a href=\"https://www.openflightmaps.org\">open flightmaps</a>
-projects. Base maps are kindly provided
-by <a href=\"https://openmaptiles.org\">OpenMapTiles</a>. Please refer to the
-documentation for more details.</p>
+      <p>Aeronautical data is kindly provided by
+	the <a href=\"https://www.openaip.net\">openAIP</a>
+	and <a href=\"https://www.openflightmaps.org\">open flightmaps</a>
+	projects. Base maps are kindly provided
+	by <a href=\"https://openmaptiles.org\">OpenMapTiles</a>. Please refer
+	to the documentation for more details.</p>
+
+      <p>This program builds on a number of open source libraries,
+	including <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a>
+	and <a href="https://www.openssl.org">OpenSSL</a>.</p>
+    </td>
+    <td><img src="/icons/uni.png" alt="Freiburg University Kebekus" height="140"></td>
+  </tr>
+</table>
+</p>

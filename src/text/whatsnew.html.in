@@ -1,7 +1,8 @@
 <p>The following features are new in version ${PROJECT_VERSION}.</p>
 
 <ul>
-  <li>Version ${PROJECT_VERSION} is the first public release.</li>
+  <li>Version ${PROJECT_VERSION} fixes several minor issues in the user
+  interface.  The main functionality remains unchanged.</li>
 </ul>
 
 <p>Fly safely and enjoy many happy landings!</p>

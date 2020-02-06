@@ -28,7 +28,6 @@
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
 	
 	<!-- GUI icons: General -->
-        <file alias="icons/gpl-v3-logo.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/gpl-v3-logo.svg</file>
         <file alias="icons/icon_airfield.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/icon_airfield.svg</file>
         <file alias="icons/kebekus.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/kebekus.jpg</file>
         <file alias="icons/nav_participate.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/nav_participate.svg</file>
@@ -37,7 +36,6 @@
         <file alias="icons/self-noSatNav.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noSatNav.svg</file>
         <file alias="icons/self-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-withDirection.svg</file>
 	<file alias="icons/vertLine.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/vertLine.svg</file>
-        <file alias="icons/uni.png">${CMAKE_CURRENT_SOURCE_DIR}/icons/uni.png</file>
 
 	<!-- GUI icons: Waypoint -->
 	<file alias="icons/waypoints/AD.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD.svg</file>

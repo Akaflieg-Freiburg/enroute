@@ -1,19 +1,9 @@
 <h3>License</h3>
 
-<table>
-  <tr>
-    <td>
-      <p>This program is licensed under
-      the <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU
-      General Public License V3</a> or, at your choice, any later version of
-      this license.</p>
-    </td>
-    <td>
-      <p align="right">&nbsp;<img src="/icons/gpl-v3-logo.svg" alt="GNU Public
-      License v3" height="40"></p>
-    </td>
-  </tr>
-</table>
+<p>This program is licensed under
+  the <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU General
+  Public License V3</a> or, at your choice, any later version of this
+  license.</p>
 
 
 <h4>Third-Party software and data included in this program</h4>

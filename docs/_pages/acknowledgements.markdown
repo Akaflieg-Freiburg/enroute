@@ -4,7 +4,7 @@ title: Acknowledgements
 permalink: /acknowledgements
 ---
 
-# Acknowledgements
+# 
 
 ## Academic Sponsor
 
@@ -13,3 +13,5 @@ The **enroute** project author gratefully acknowledges support by its academic s
 ## Other software
 
 **enroute flight navigation** uses a large number of open source libraries. This includes the <a href="https://www.qt.io">Qt</a> framework, the <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> web server, and the <a href="https://www.openssl.org">OpenSSL</a> encryption libraries.
+
+

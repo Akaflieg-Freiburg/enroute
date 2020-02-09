@@ -164,9 +164,11 @@ Page {
 
         }
 
-        Item {
+        ScrollView {
+            contentWidth: sv.width
 
             GridLayout {
+
                 id: windAndAircraftTab
 
                 anchors.left: parent.left

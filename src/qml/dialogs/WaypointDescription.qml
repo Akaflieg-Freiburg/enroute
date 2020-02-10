@@ -50,7 +50,7 @@ Dialog {
             property var text: ({});
 
             Label {
-                text: rowLYO.text.substring(0,3)
+                text: rowLYO.text.substring(0,4)
                 Layout.preferredWidth: Qt.application.font.pixelSize*3
                 Layout.alignment: Qt.AlignTop
                 font.bold: true
@@ -58,7 +58,7 @@ Dialog {
             }
             Label {
                 Layout.fillWidth: true
-                text: rowLYO.text.substring(3)
+                text: rowLYO.text.substring(4)
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
             }

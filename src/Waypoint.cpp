@@ -107,34 +107,34 @@ QList<QString> Waypoint::tabularDescription() const
     QList<QString> result;
 
     if (_properties.value("TYP").toString() == "NAV") {
-        result.append("ID " + _properties.value("COD").toString() + " " + _properties.value("MOR").toString());
-        result.append("NAV" + _properties.value("NAV").toString());
+        result.append("ID  " + _properties.value("COD").toString() + " " + _properties.value("MOR").toString());
+        result.append("NAV " + _properties.value("NAV").toString());
         if (_properties.contains("ELE"))
-            result.append(QString("ELE %1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
+            result.append(QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
     }
 
     if (_properties.value("TYP").toString() == "AD") {
         if (_properties.contains("COD"))
-            result.append("ID " + _properties.value("COD").toString());
+            result.append("ID  " + _properties.value("COD").toString());
         if (_properties.contains("INF"))
-            result.append("INF" + _properties.value("INF").toString().replace("\n", "<br>"));
+            result.append("INF " + _properties.value("INF").toString().replace("\n", "<br>"));
         if (_properties.contains("COM"))
-            result.append("COM" + _properties.value("COM").toString().replace("\n", "<br>"));
+            result.append("COM " + _properties.value("COM").toString().replace("\n", "<br>"));
         if (_properties.contains("NAV"))
-            result.append("NAV" + _properties.value("NAV").toString().replace("\n", "<br>"));
+            result.append("NAV " + _properties.value("NAV").toString().replace("\n", "<br>"));
         if (_properties.contains("OTH"))
-            result.append("OTH" + _properties.value("OTH").toString().replace("\n", "<br>"));
+            result.append("OTH " + _properties.value("OTH").toString().replace("\n", "<br>"));
         if (_properties.contains("RWY"))
-            result.append("RWY" + _properties.value("RWY").toString().replace("\n", "<br>"));
+            result.append("RWY " + _properties.value("RWY").toString().replace("\n", "<br>"));
 
-        result.append( QString("ELE %1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
+        result.append( QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
     }
 
     if (_properties.value("TYP").toString() == "WP") {
         if (_properties.contains("ICA"))
-            result.append("ID " + _properties.value("COD").toString());
+            result.append("ID  " + _properties.value("COD").toString());
         if (_properties.contains("COM"))
-            result.append("COM" + _properties.value("COM").toString());
+            result.append("COM " + _properties.value("COM").toString());
     }
 
     return result;

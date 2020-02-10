@@ -200,6 +200,9 @@ Item {
         // Mouse Area, in order to receive mouse clicks
         MouseArea {
             anchors.fill: parent
+
+            onPressAndHold: onDoubleClicked(mouse)
+
             onDoubleClicked: {
                 MobileAdaptor.vibrateBrief()
                 dialogLoader.active = false

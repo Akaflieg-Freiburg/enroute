@@ -39,7 +39,7 @@ feature_row:
   <img src="{{ site.url }}{{ site.baseurl }}/assets/images/map.png" alt="">
   <figcaption>Moving Map Display.</figcaption>
 </figure>
-**enroute** features a moving map, similar in style to the official ICAO maps.  Your current position and your flight path for the next five minutes are marked, and so is your intended flight route. A simple tap on the display gives you all the information about airspaces, airfields and navaids -- complete with frequencies, codes, elevations and runway information.
+**enroute** features a moving map, similar in style to the official ICAO maps.  Your current position and your flight path for the next five minutes are marked, and so is your intended flight route. A double tap on the display gives you all the information about airspaces, airfields and navaids -- complete with frequencies, codes, elevations and runway information.
 
 Our free aeronautical maps can be downloaded for offline use.  In addition to airspaces, airfields and navaids, selected maps also show traffic circuits as well as flight procedures for control zones.  [The maps receive near-weekly updates and cover large parts of the world.](/enroute/maps/)
 

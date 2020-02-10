@@ -80,14 +80,32 @@ ApplicationWindow {
     
     Drawer {
         id: drawer
-        width: col.implicitWidth+20
+        width: col.implicitWidth //+2*Qt.application.font.pixelSize
         height: view.height
-        dragMargin: 0.0
+        dragMargin: Qt.application.font.pixelSize
 
-        ColumnLayout {
+        ScrollView {
+            anchors.fill: parent
+
+            ColumnLayout {
             id: col
             anchors.fill: parent
             spacing: 0
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("enroute flight navigation")
+                color: "white"
+                font.bold: true
+                font.pixelSize: 1.2*Qt.application.font.pixelSize
+                horizontalAlignment: Text.AlignHCenter
+                padding: Qt.application.font.pixelSize
+
+                background: Rectangle {
+                    color: "teal"
+                }
+            }
 
             ItemDelegate {
                 id: menuItemRoute
@@ -215,6 +233,7 @@ ApplicationWindow {
                 id: spacer
                 Layout.fillHeight: true
             }
+        }
         }
 
         Connections {

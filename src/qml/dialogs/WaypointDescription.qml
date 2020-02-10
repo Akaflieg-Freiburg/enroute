@@ -281,6 +281,11 @@ Dialog {
             } // ColumnLayout
 
         } // ScrollView
+
+        Keys.onBackPressed: {
+            event.accepted = true;
+            dlg.close()
+        }
     }
 
     footer: DialogButtonBox {
@@ -320,9 +325,6 @@ Dialog {
         onDetected: close()
     }
 
-    Keys.onBackPressed: {
-        event.accepted = true;
-        close()
-    }
+
 
 } // Dialog

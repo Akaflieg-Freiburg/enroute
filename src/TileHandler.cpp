@@ -39,7 +39,7 @@ TileHandler::TileHandler(const QSet<QString>& mbtileFileNames, const QString& ba
     _format      = "pbf";
     _description = "empty tile set";
     _version     = "3.6.1";
-    _attribution = "none";
+    _attribution = "";
     _maxzoom     = 10;
     _minzoom     = 0;
     _tiles       = baseURL+"/{z}/{x}/{y}."+_format;

@@ -80,9 +80,8 @@ ApplicationWindow {
     
     Drawer {
         id: drawer
-        width: col.implicitWidth //+2*Qt.application.font.pixelSize
+        width: col.implicitWidth
         height: view.height
-        dragMargin: Qt.application.font.pixelSize
 
         ScrollView {
             anchors.fill: parent

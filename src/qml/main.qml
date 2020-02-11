@@ -116,6 +116,7 @@ ApplicationWindow {
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
+                    stackView.pop()
                     stackView.push("pages/FlightRoutePage.qml")
                     drawer.close()
                 }
@@ -131,6 +132,7 @@ ApplicationWindow {
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
+                    stackView.pop()
                     stackView.push("pages/NearbyAirfields.qml")
                     drawer.close()
                 }
@@ -167,6 +169,7 @@ ApplicationWindow {
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
+                    stackView.pop()
                     stackView.push("pages/SettingsPage.qml")
                     drawer.close()
                 }
@@ -187,6 +190,7 @@ ApplicationWindow {
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
+                    stackView.pop()
                     stackView.push("pages/InfoPage.qml")
                     drawer.close()
                 }
@@ -201,6 +205,7 @@ ApplicationWindow {
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
+                    stackView.pop()
                     stackView.push("pages/ParticipatePage.qml")
                     drawer.close()
                 }

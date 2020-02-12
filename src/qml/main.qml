@@ -38,11 +38,15 @@ ApplicationWindow {
     height: 800
 
     header: ToolBar {
+        id: tbar
         visible: stackView.depth > 1
 
         RowLayout{
             anchors.fill: parent
-        
+
+            // This spacer ensures that the ToolButton is not covered by the drawer's dragMargin
+            Item { width: drawer.dragMargin }
+
             ToolButton {
                 icon.source: "/icons/material/ic_arrow_back.svg"
                 onClicked: {
@@ -87,157 +91,157 @@ ApplicationWindow {
             anchors.fill: parent
 
             ColumnLayout {
-            id: col
-            anchors.fill: parent
-            spacing: 0
+                id: col
+                anchors.fill: parent
+                spacing: 0
 
-            Label {
-                Layout.fillWidth: true
+                Label {
+                    Layout.fillWidth: true
 
-                text: qsTr("enroute flight navigation")
-                color: "white"
-                font.bold: true
-                font.pixelSize: 1.2*Qt.application.font.pixelSize
-                horizontalAlignment: Text.AlignHCenter
-                padding: Qt.application.font.pixelSize
+                    text: qsTr("enroute flight navigation")
+                    color: "white"
+                    font.bold: true
+                    font.pixelSize: 1.2*Qt.application.font.pixelSize
+                    horizontalAlignment: Text.AlignHCenter
+                    padding: Qt.application.font.pixelSize
 
-                background: Rectangle {
-                    color: "teal"
+                    background: Rectangle {
+                        color: "teal"
+                    }
+                }
+
+                ItemDelegate {
+                    id: menuItemRoute
+                    text: qsTr("Route")
+                    icon.source: "/icons/material/ic_directions.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/FlightRoutePage.qml")
+                        drawer.close()
+                    }
+                }
+
+                ItemDelegate {
+                    id: menuItemNearbyAirfields
+
+                    text: qsTr("Nearby Airfields")
+                    icon.source: "/icons/icon_airfield.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/NearbyAirfields.qml")
+                        drawer.close()
+                    }
+                }
+
+                Rectangle {
+                    height: 1
+                    Layout.fillWidth: true
+                    color: Material.primary
+                }
+
+                ItemDelegate {
+                    text: qsTr("Set Altimeter") + (satNav.hasAltitude ? `<br><font color="#606060" size="2">${satNav.altitudeInFeetAsString} AMSL</font>` : `<br><font color="#606060" size="2">` + qsTr(`Insufficient reception`)+`</font>`)
+                    icon.source: "/icons/material/ic_speed.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+                    enabled: satNav.hasAltitude
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        drawer.close()
+                        dialogLoader.active = false
+                        dialogLoader.source = "dialogs/AltitudeCorrectionDialog.qml"
+                        dialogLoader.active = true
+                    }
+                }
+
+                ItemDelegate {
+                    id: menuItemSettings
+
+                    text: qsTr("Settings")
+                    icon.source: "/icons/material/ic_settings.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/SettingsPage.qml")
+                        drawer.close()
+                    }
+                }
+
+                Rectangle {
+                    height: 1
+                    Layout.fillWidth: true
+                    color: Material.primary
+                }
+
+                ItemDelegate {
+                    text: qsTr("About Enroute")
+                    icon.source: "/icons/material/ic_info.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+                    visible: !satNav.isInFlight
+
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/InfoPage.qml")
+                        drawer.close()
+                    }
+                }
+
+                ItemDelegate {
+                    text: qsTr("Participate")
+                    icon.source: "/icons/nav_participate.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+                    visible: !satNav.isInFlight
+
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/ParticipatePage.qml")
+                        drawer.close()
+                    }
+                }
+
+                Rectangle {
+                    height: 1
+                    Layout.fillWidth: true
+                    color: Material.primary
+                    visible: !satNav.isInFlight
+                }
+
+                ItemDelegate {
+                    text: qsTr("Exit")
+                    icon.source: "/icons/material/ic_exit_to_app.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        drawer.close()
+                        if (satNav.isInFlight)
+                            exitDialog.open()
+                        else
+                            Qt.quit()
+                    }
+                }
+
+                Item {
+                    id: spacer
+                    Layout.fillHeight: true
                 }
             }
-
-            ItemDelegate {
-                id: menuItemRoute
-                text: qsTr("Route")
-                icon.source: "/icons/material/ic_directions.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    stackView.pop()
-                    stackView.push("pages/FlightRoutePage.qml")
-                    drawer.close()
-                }
-            }
-
-            ItemDelegate {
-                id: menuItemNearbyAirfields
-
-                text: qsTr("Nearby Airfields")
-                icon.source: "/icons/icon_airfield.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    stackView.pop()
-                    stackView.push("pages/NearbyAirfields.qml")
-                    drawer.close()
-                }
-            }
-
-            Rectangle {
-                height: 1
-                Layout.fillWidth: true
-                color: Material.primary
-            }
-
-            ItemDelegate {
-                text: qsTr("Set Altimeter") + (satNav.hasAltitude ? `<br><font color="#606060" size="2">${satNav.altitudeInFeetAsString} AMSL</font>` : `<br><font color="#606060" size="2">` + qsTr(`Insufficient reception`)+`</font>`)
-                icon.source: "/icons/material/ic_speed.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-                enabled: satNav.hasAltitude
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    drawer.close()
-                    dialogLoader.active = false
-                    dialogLoader.source = "dialogs/AltitudeCorrectionDialog.qml"
-                    dialogLoader.active = true
-                }
-            }
-
-            ItemDelegate {
-                id: menuItemSettings
-
-                text: qsTr("Settings")
-                icon.source: "/icons/material/ic_settings.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    stackView.pop()
-                    stackView.push("pages/SettingsPage.qml")
-                    drawer.close()
-                }
-            }
-
-            Rectangle {
-                height: 1
-                Layout.fillWidth: true
-                color: Material.primary
-            }
-
-            ItemDelegate {
-                text: qsTr("About Enroute")
-                icon.source: "/icons/material/ic_info.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-                visible: !satNav.isInFlight
-
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    stackView.pop()
-                    stackView.push("pages/InfoPage.qml")
-                    drawer.close()
-                }
-            }
-
-            ItemDelegate {
-                text: qsTr("Participate")
-                icon.source: "/icons/nav_participate.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-                visible: !satNav.isInFlight
-
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    stackView.pop()
-                    stackView.push("pages/ParticipatePage.qml")
-                    drawer.close()
-                }
-            }
-
-            Rectangle {
-                height: 1
-                Layout.fillWidth: true
-                color: Material.primary
-                visible: !satNav.isInFlight
-            }
-
-            ItemDelegate {
-                text: qsTr("Exit")
-                icon.source: "/icons/material/ic_exit_to_app.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    drawer.close()
-                    if (satNav.isInFlight)
-                        exitDialog.open()
-                    else
-                        Qt.quit()
-                }
-            }
-
-            Item {
-                id: spacer
-                Layout.fillHeight: true
-            }
-        }
         }
 
         Connections {

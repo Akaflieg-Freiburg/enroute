@@ -41,8 +41,11 @@ Page {
         focus: true
 
         onAccepted: {
-            flightRoute.append(wpList.model[0])
-            stackView.pop()
+            if (wpList.model.length > 0) {
+                MobileAdaptor.vibrateBrief()
+                flightRoute.append(wpList.model[0])
+                stackView.pop()
+            }
         }
     }
 

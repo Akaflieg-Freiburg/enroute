@@ -41,7 +41,8 @@ Page {
         focus: true
 
         onAccepted: {
-            if (wpList.model.length !== 0) {
+            if (wpList.model.length > 0) {
+                MobileAdaptor.vibrateBrief()
                 flightRoute.append(wpList.model[0])
                 stackView.pop()
             }

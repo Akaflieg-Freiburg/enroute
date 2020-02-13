@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -41,8 +41,10 @@ Page {
         focus: true
 
         onAccepted: {
-            flightRoute.append(wpList.model[0])
-            stackView.pop()
+            if (wpList.model.length !== 0) {
+                flightRoute.append(wpList.model[0])
+                stackView.pop()
+            }
         }
     }
 

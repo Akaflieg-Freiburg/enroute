@@ -157,6 +157,14 @@ void FlightRoute::removeWaypoint(QObject *waypoint)
 }
 
 
+void FlightRoute::reverse()
+{
+    std::reverse(_waypoints.begin(), _waypoints.end());
+    updateLegs();
+    emit waypointsChanged();
+}
+
+
 void FlightRoute::save()
 {
     QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flightPlan.dat");

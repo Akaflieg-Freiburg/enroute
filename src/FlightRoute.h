@@ -184,6 +184,10 @@ public slots:
      */
     void removeWaypoint(QObject *waypoint);
 
+    /*! \brief Reverse the route
+     */
+    void reverse();
+
 signals:
     /*! \brief Notification signal for the property with the same name */
     void waypointsChanged();

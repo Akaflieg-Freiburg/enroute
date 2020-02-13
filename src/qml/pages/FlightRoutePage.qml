@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -369,11 +369,26 @@ Page {
     // Add ToolButton to central application header when this page is shown
     Component.onCompleted: {
         headerMenuToolButton.visible = true
-        headerMenu.insertAction(0, clearAction)
+        headerMenu.insertAction(0, revertAction)
+        headerMenu.insertAction(1, clearAction)
     }
     Component.onDestruction: {
         headerMenuToolButton.visible = false
+        headerMenu.removeAction(revertAction)
         headerMenu.removeAction(clearAction)
+    }
+
+    Action {
+        id: revertAction
+
+        text: qsTr("Revert Route")
+        icon.source: "/icons/material/ic_swap_vert.svg"
+        enabled: flightRoute.routeObjects.length > 1
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            flightRoute.reverse()
+        }
     }
 
     Action {
@@ -381,6 +396,7 @@ Page {
 
         text: qsTr("Clear Route")
         icon.source: "/icons/material/ic_delete.svg"
+        enabled: flightRoute.routeObjects.length > 0
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()

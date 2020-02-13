@@ -106,7 +106,7 @@ ApplicationWindow {
                     padding: Qt.application.font.pixelSize
 
                     background: Rectangle {
-                        color: "teal"
+                        color: Material.primary
                     }
                 }
 

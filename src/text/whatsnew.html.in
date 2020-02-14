@@ -1,10 +1,6 @@
-<p>The following features are new in version ${PROJECT_VERSION}.</p>
-
-<ul>
-  <li>Version ${PROJECT_VERSION} fixes several minor issues in the user
-  interface, in particular for devices with small screens.  The main
-  functionality remains unchanged.</li>
-</ul>
+<p>Version ${PROJECT_VERSION} adds an option to reverse the flight route - very
+  useful for flying home! One minor issues in the user interface is fixed.  The
+  main functionality remains unchanged.</p>
 
 <p>Fly safely and enjoy many happy landings!</p>
 

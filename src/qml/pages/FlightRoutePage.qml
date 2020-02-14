@@ -369,19 +369,19 @@ Page {
     // Add ToolButton to central application header when this page is shown
     Component.onCompleted: {
         headerMenuToolButton.visible = true
-        headerMenu.insertAction(0, revertAction)
+        headerMenu.insertAction(0, reverseAction)
         headerMenu.insertAction(1, clearAction)
     }
     Component.onDestruction: {
         headerMenuToolButton.visible = false
-        headerMenu.removeAction(revertAction)
+        headerMenu.removeAction(reverseAction)
         headerMenu.removeAction(clearAction)
     }
 
     Action {
-        id: revertAction
+        id: reverseAction
 
-        text: qsTr("Revert Route")
+        text: qsTr("Reverse Route")
         icon.source: "/icons/material/ic_swap_vert.svg"
         enabled: flightRoute.routeObjects.length > 1
 

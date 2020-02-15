@@ -85,6 +85,12 @@ public:
   /*! \brief Getter function for the property with the same name */
   bool geoMapUpdatesAvailable() const;
 
+  /*! \brief Gives an estimate for the download size, as a localized string */
+  Q_PROPERTY(QString geoMapUpdateSize READ geoMapUpdateSize NOTIFY geoMapUpdatesAvailableChanged)
+
+  /*! \brief Getter function for the property with the same name */
+  QString geoMapUpdateSize() const;
+
   /*! \brief List of available aviation maps
 
     This method return a QMap that contains pointers to all known aviation maps

@@ -95,6 +95,17 @@ bool MapManager::geoMapUpdatesAvailable() const
 }
 
 
+QString MapManager::geoMapUpdateSize() const
+{
+    qint64 downloadSize = 0;
+    foreach(auto geoMapPtr, _geoMaps)
+        if (geoMapPtr->updatable())
+            downloadSize += geoMapPtr->remoteFileSize();
+
+    return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
+}
+
+
 QMap<QString, Downloadable*> MapManager::aviationMaps() const
 {
     QMap<QString, Downloadable *> result;

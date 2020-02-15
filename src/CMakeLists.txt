@@ -207,17 +207,18 @@ endif()
 # Generate unix executable
 #
 if (NOT ANDROID)
-    # Configure Doxyfile
-    configure_file(Doxyfile.in Doxyfile)
-
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg qhttpengine)
 
     # Install
-    install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-
-    # Generate documentation
-    add_custom_target(enroute_doc COMMAND doxygen)
-    add_dependencies(doc enroute_doc)
+    install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})    
 endif()
+
+
+#
+# Generate documentation
+#
+configure_file(Doxyfile.in Doxyfile)
+add_custom_target(enroute_doc COMMAND doxygen)
+add_dependencies(fulldoc enroute_doc)

@@ -383,7 +383,7 @@ Page {
 
         text: qsTr("Reverse Route")
         icon.source: "/icons/material/ic_swap_vert.svg"
-        enabled: flightRoute.routeObjects.length > 1
+        enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()
@@ -396,7 +396,7 @@ Page {
 
         text: qsTr("Clear Route")
         icon.source: "/icons/material/ic_delete.svg"
-        enabled: flightRoute.routeObjects.length > 0
+        enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()

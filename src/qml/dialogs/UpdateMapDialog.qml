@@ -25,7 +25,7 @@ LongTextDialog {
     id: mud
 
     title: qsTr("Map updates available")
-    text: qsTr("<p>One or several of your installed maps can be updated. You might wish to update now if you have a fast and inexpensive internet connection.</p>")
+    text: qsTr(`<p>One or several of your installed maps can be updated. The estimated download size is ${mapManager.geoMapUpdateSize}.</p>`)
 
     footer: DialogButtonBox {
         ToolButton {

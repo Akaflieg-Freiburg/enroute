@@ -5,6 +5,7 @@
 cmake_minimum_required(VERSION 3.13)
 include(ExternalProject)
 include(GNUInstallDirs)
+option(BUILD_DOC "Build documentation" OFF)
 
 
 #
@@ -41,7 +42,11 @@ if( ANDROID )
 endif()
 
 # Create target collecting all documentation
-add_custom_target(doc)
+if ( BUILD_DOC )
+    add_custom_target(fulldoc ALL)
+else()
+    add_custom_target(fulldoc)
+endif()
 
 # Subdirectories
 add_subdirectory(3rdParty)

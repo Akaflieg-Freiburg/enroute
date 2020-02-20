@@ -181,6 +181,18 @@ Page {
 
                 section.property: "modelData.section"
                 section.delegate: sectionHeading
+
+                // Refresh list of maps on overscroll
+                property int refreshFlik: 0
+                onFlickStarted: {
+                    refreshFlik = atYBeginning
+                }
+                onFlickEnded: {
+                    if ( atYBeginning && refreshFlik ) {
+                        MobileAdaptor.vibrateBrief()
+                        mapManager.startUpdate()
+                    }
+                }
             } // ListView
 
             ListView {
@@ -193,6 +205,18 @@ Page {
 
                 section.property: "modelData.section"
                 section.delegate: sectionHeading
+
+                // Refresh list of maps on overscroll
+                property int refreshFlik: 0
+                onFlickStarted: {
+                    refreshFlik = atYBeginning
+                }
+                onFlickEnded: {
+                    if ( atYBeginning && refreshFlik ) {
+                        MobileAdaptor.vibrateBrief()
+                        mapManager.startUpdate()
+                    }
+                }
             } // ListView
 
         } // SwipeView

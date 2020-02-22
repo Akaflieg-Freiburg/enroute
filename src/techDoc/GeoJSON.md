@@ -240,7 +240,7 @@ One of the following strings that describes the category of the waypoint.
 
 #### Property: COD - required for CAT == MRP and CAT == RP
 
- A code name of the waypoint, such as "EDDE-S1".
+A code name of the waypoint, such as "EDDE-S1".  The **enroute** app uses this property for the ID field on the waypoint description dialog.
 
 #### Property: COM - optional
 
@@ -256,11 +256,11 @@ Internal ID of the waypoint in the AIXM database. This is a string such as "7295
 
 #### Property: NAM - required
 
-Name of the waypoint, such as "ERFURT-WEIMAR (SIERRA1)",
+Name of the waypoint, such as "ERFURT-WEIMAR (SIERRA1)".  The **enroute** app uses this property for the title of the waypoint description dialog.
 
 #### Property: SCO - required for CAT == MRP and CAT == RP
 
-Short description of the waypoint, such as "S1".
+Short description of the waypoint, such as "S1".  The **enroute** app uses this property for the display name of the point on the moving map.
 
 #### Property: TYP - required
 

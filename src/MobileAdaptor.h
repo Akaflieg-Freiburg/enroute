@@ -32,23 +32,26 @@
 
 class MobileAdaptor : public QObject
 {
-  Q_OBJECT
-  
-public:
-  explicit MobileAdaptor(QObject *parent = nullptr);
-					     
-public slots:
-  /*! \brief On Android, hides the android splash screen. On other platforms, this does nothing.
-   *
-   * The implementation ensures that QtAndroid::hideSplashScreen is called (only once, regardless of how often this slot is used).
-   */
-  void hideSplashScreen();
+    Q_OBJECT
 
-  /*! \brief On Android, make the device briefly vibrate. On other platforms, this does nothing. */
-  void vibrateBrief();
+public:
+    explicit MobileAdaptor(QObject *parent = nullptr);
+
+public slots:
+    /*! \brief On Android, hides the android splash screen. On other platforms, this does nothing.
+     *
+     * The implementation ensures that QtAndroid::hideSplashScreen is called (only once, regardless of how often this slot is used).
+     */
+    void hideSplashScreen();
+
+    /*! \brief On Android, make the device briefly vibrate. On other platforms, this does nothing. */
+    void vibrateBrief();
+
+    /*! \brief On Android, disables the screen lock: if set to 'on', the screen will never switch off while the app is shown to the user. On other platforms, this does nothing. */
+    void disableScreenLock(bool on);
 
 private:
-  bool splashScreenHidden {false};
+    bool splashScreenHidden {false};
 };
 
 #endif // ANDROIDADAPTOR_H

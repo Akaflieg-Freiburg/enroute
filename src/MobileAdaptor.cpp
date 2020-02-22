@@ -29,7 +29,7 @@
 
 
 MobileAdaptor::MobileAdaptor(QObject *parent)
-  : QObject(parent)
+    : QObject(parent)
 {
 }
 
@@ -47,6 +47,34 @@ void MobileAdaptor::hideSplashScreen()
 void MobileAdaptor::vibrateBrief()
 {
 #if defined(Q_OS_ANDROID)
-  QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 #endif
+}
+
+void MobileAdaptor::disableScreenLock(bool on)
+{
+#if defined(Q_OS_ANDROID)
+    // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
+    QtAndroid::runOnAndroidThread([on]{
+        QAndroidJniObject activity = QtAndroid::androidActivity();
+        if (activity.isValid()) {
+            QAndroidJniObject window =
+                    activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
+
+            if (window.isValid()) {
+                const int FLAG_KEEP_SCREEN_ON = 128;
+                if (on) {
+                    window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
+                } else {
+                    window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
+                }
+            }
+        }
+        QAndroidJniEnvironment env;
+        if (env->ExceptionCheck()) {
+            env->ExceptionClear();
+        }
+    });
+#endif
+
 }

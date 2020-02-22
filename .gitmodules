@@ -1,0 +1,3 @@
+[submodule "3rdParty/qhttpengine"]
+	path = 3rdParty/qhttpengine
+	url = https://github.com/nitroshare/qhttpengine.git

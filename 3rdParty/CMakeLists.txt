@@ -17,15 +17,7 @@ set(material-design-icons_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/material-design
 # Nitroshare's QHTTPEngine
 #
 
-if (NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/qhttpengine-1.0.1)
-  message(STATUS "Downloading Nitroshare's QHTTPEngine")
-  execute_process(
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND curl -s https://codeload.github.com/nitroshare/qhttpengine/tar.gz/1.0.1
-    COMMAND tar -xz 
-    )
-endif()
-set(qhttpengine_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/qhttpengine-1.0.1 CACHE INTERNAL "" FORCE)
+set(qhttpengine_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/qhttpengine CACHE INTERNAL "" FORCE)
 add_subdirectory(${qhttpengine_SOURCE_DIR} ${qhttpengine_SOURCE_DIR}-build)
 
 

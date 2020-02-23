@@ -76,5 +76,4 @@ void MobileAdaptor::disableScreenLock(bool on)
         }
     });
 #endif
-
 }

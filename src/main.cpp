@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     // Make MobileAdaptor available to QML engine
     auto *adaptor = new MobileAdaptor(&engine);
 #warning temporary hack
-    adaptor->keep_screen_on(true);
+    adaptor->disableScreenLock(true);
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
     engine.rootContext()->setContextProperty("MobileAdaptor", adaptor);
 

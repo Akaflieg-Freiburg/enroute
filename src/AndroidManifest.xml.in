@@ -30,7 +30,8 @@
 		android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
                 android:label="Enroute"
                 android:screenOrientation="unspecified"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+		android:showWhenLocked="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

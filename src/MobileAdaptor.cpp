@@ -51,7 +51,7 @@ void MobileAdaptor::vibrateBrief()
 #endif
 }
 
-void MobileAdaptor::disableScreenLock(bool on)
+void MobileAdaptor::keepScreenOn(bool on)
 {
 #if defined(Q_OS_ANDROID)
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android

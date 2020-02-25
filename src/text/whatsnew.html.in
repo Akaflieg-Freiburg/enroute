@@ -1,6 +1,11 @@
-<p>Version ${PROJECT_VERSION} adds an option to reverse the flight route - very
-  useful for flying home! One minor issues in the user interface is fixed.  The
-  main functionality remains unchanged.</p>
+<p>In response to user feedback, version ${PROJECT_VERSION} adds an option to
+  disable the screensaver while the enroute app is running in the
+  foreground. This option is enabled by default.</p>
+
+<p>As a second new feature, the app will run in front of the screen lock.  It
+  show immediately once you press the 'power on' button of your device, without
+  the need to unlock the device with a code, pattern, password or
+  fingerprint.</p>
 
 <p>Fly safely and enjoy many happy landings!</p>
 

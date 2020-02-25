@@ -87,10 +87,19 @@ public:
     /*! \brief Setter function for property of the same name */
     void setHideUpperAirspaces(bool);
 
+    /*! \brief Hide airspaces with lower bound FL100 or above */
+    Q_PROPERTY(bool keepScreenOn READ keepScreenOn WRITE setKeepScreenOn NOTIFY keepScreenOnChanged)
+
+    /*! \brief Getter function for property of the same name */
+    bool keepScreenOn();
+
+    /*! \brief Setter function for property of the same name */
+    void setKeepScreenOn(bool);
+
 signals:
     void acceptedTermsChanged();
-
     void hideUpperAirspacesChanged();
+    void keepScreenOnChanged();
 
 private:
     QSettings *settings;

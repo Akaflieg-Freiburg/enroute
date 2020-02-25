@@ -74,10 +74,24 @@ Page {
 
                 Label {
                     Layout.leftMargin: Qt.application.font.pixelSize
-                    text: qsTr("Other")
+                    text: qsTr("System")
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
                     color: Material.primary
+                }
+
+                SwitchDelegate {
+                    id: keepScreenOn
+                    text: qsTr("Keep Screen On")
+                    icon.source: "/icons/material/ic_screen_lock_portrait.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+                    Component.onCompleted: keepScreenOn.checked = globalSettings.keepScreenOn
+                    onCheckedChanged: {
+                        MobileAdaptor.vibrateBrief()
+                        globalSettings.keepScreenOn = keepScreenOn.checked
+                        MobileAdaptor.keepScreenOn(keepScreenOn.checked)
+                    }
                 }
 
                 ItemDelegate {

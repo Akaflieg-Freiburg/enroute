@@ -65,6 +65,21 @@ void GlobalSettings::setHideUpperAirspaces(bool hide)
 }
 
 
+bool GlobalSettings::keepScreenOn()
+{
+    return settings->value("System/keepScreenOn", true).toBool();
+}
+
+
+void GlobalSettings::setKeepScreenOn(bool kso)
+{
+    if (kso == keepScreenOn())
+        return;
+    settings->setValue("System/keepScreenOn", kso);
+    emit keepScreenOnChanged();
+}
+
+
 bool GlobalSettings::showWhatsNew()
 {
     auto lastVersion = settings->value("lastVersion", "0.0.0").toString();

@@ -66,16 +66,15 @@ int main(int argc, char *argv[])
     auto navEngine = new SatNav(&engine);
     engine.rootContext()->setContextProperty("satNav", navEngine);
 
-    // Make MobileAdaptor available to QML engine
-    auto *adaptor = new MobileAdaptor(&engine);
-#warning temporary hack
-    adaptor->disableScreenLock(true);
-    QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
-    engine.rootContext()->setContextProperty("MobileAdaptor", adaptor);
-
     // Attach global settings object
     auto globalSettings = new GlobalSettings(&engine);
     engine.rootContext()->setContextProperty("globalSettings", globalSettings);
+
+    // Make MobileAdaptor available to QML engine
+    auto *adaptor = new MobileAdaptor(&engine);
+    adaptor->keepScreenOn(globalSettings->keepScreenOn());
+    QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
+    engine.rootContext()->setContextProperty("MobileAdaptor", adaptor);
 
     // Attach aircraft info
     auto aircraft = new Aircraft(&engine);

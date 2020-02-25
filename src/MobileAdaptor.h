@@ -48,7 +48,7 @@ public slots:
     void vibrateBrief();
 
     /*! \brief On Android, disables the screen lock: if set to 'on', the screen will never switch off while the app is shown to the user. On other platforms, this does nothing. */
-    void disableScreenLock(bool on);
+    void keepScreenOn(bool on);
 
 private:
     bool splashScreenHidden {false};

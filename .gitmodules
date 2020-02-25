@@ -1,3 +1,6 @@
 [submodule "3rdParty/qhttpengine"]
 	path = 3rdParty/qhttpengine
 	url = https://github.com/nitroshare/qhttpengine.git
+[submodule "3rdParty/material-design-icons"]
+	path = 3rdParty/material-design-icons
+	url = https://github.com/google/material-design-icons.git

@@ -287,7 +287,11 @@ bool MapManager::readMapListFromDownloadedJSONFile()
     // To begin, we handle the maps described in the maps.json file. If these maps
     // were already present in the old list, we re-use them. Otherwise, we create
     // new Downloadable objects.
-    auto doc = QJsonDocument::fromJson(_availableMapsDescription->localFileContent());
+    QJsonParseError parseError;
+    auto doc = QJsonDocument::fromJson(_availableMapsDescription->localFileContent(), &parseError);
+    if (parseError.error != QJsonParseError::NoError)
+        return false;
+
     auto top = doc.object();
     auto baseURL = top.value("url").toString();
 

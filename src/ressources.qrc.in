@@ -6,6 +6,7 @@
 
     <!-- Texts -->
     <qresource prefix="/">
+        <file>text/bugReport.html</file>
         <file>text/firstStart.html</file>
         <file>text/info_author.html</file>
         <file>text/info_enroute.html</file>

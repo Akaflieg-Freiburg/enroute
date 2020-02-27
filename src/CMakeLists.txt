@@ -7,6 +7,7 @@ configure_file(icons.qrc.in icons.qrc)
 configure_file(qml.qrc.in qml.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
 
+configure_file(text/bugReport.html.in text/bugReport.html)
 configure_file(text/firstStart.html.in text/firstStart.html)
 configure_file(text/info_author.html.in text/info_author.html)
 configure_file(text/info_enroute.html.in text/info_enroute.html)

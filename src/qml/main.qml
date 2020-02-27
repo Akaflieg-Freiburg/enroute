@@ -200,6 +200,22 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    text: qsTr("Bug report")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+                    visible: !satNav.isInFlight
+
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/BugReportPage.qml")
+                        drawer.close()
+                    }
+                }
+
+
+                ItemDelegate {
                     text: qsTr("Participate")
                     icon.source: "/icons/nav_participate.svg"
                     icon.color: Material.primary
@@ -213,6 +229,7 @@ ApplicationWindow {
                         drawer.close()
                     }
                 }
+
 
                 Rectangle {
                     height: 1

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -100,6 +100,11 @@ int main(int argc, char *argv[])
     /*
      * Load large strings from files, in order to make them available to QML
      */
+    {
+        QFile file(":text/bugReport.html");
+        file.open(QIODevice::ReadOnly);
+        engine.rootContext()->setContextProperty("bugReportText", file.readAll());
+    }
     {
         QFile file(":text/firstStart.html");
         file.open(QIODevice::ReadOnly);

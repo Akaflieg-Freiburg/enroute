@@ -1,13 +1,14 @@
 #!/bin/python3
 
 import glob
+import sys
 
 file = open('flightMap-fonts.qrc', 'w')
 file.write('<!DOCTYPE RCC><RCC version="1.0">\n')
 file.write('  <qresource>\n')
 file.write('  <!-- MapBox font files -->\n')
 
-for fileName in glob.glob('**/*.pbf', recursive=True):
+for fileName in glob.glob(sys.path[0]+'/**/*.pbf', recursive=True):
     fontName = fileName.split('/')[-2]+'/'+fileName.split('/')[-1]
     file.write('    <file alias="flightMap/fonts/{}">{}</file>\n'.format(fontName, fileName))
     if fileName.split('/')[-2] == 'Roboto Regular':

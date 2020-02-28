@@ -21,6 +21,10 @@ The CMake scripts download substantial amounts of data during the build process.
 On a standard Linux system, the following commands will build a desktop version of the app. The commands produce a single binary at **./src/enroute** that links to Qt dynamically, but contains all the data required to run.
 
 ```shell
+# In source directory
+git submodule init
+git submodule update
+
 # Create build directory
 mkdir build
 cd build

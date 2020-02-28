@@ -1,0 +1,13 @@
+[submodule "3rdParty/material-design-icons"]
+	path = 3rdParty/material-design-icons
+	url = https://github.com/google/material-design-icons.git
+	branch = 3.0.1
+[submodule "3rdParty/openseamap-gl"]
+	path = 3rdParty/openseamap-gl
+	url = https://github.com/aAXEe/openseamap-gl.git
+[submodule "3rdParty/android_openssl"]
+	path = 3rdParty/android_openssl
+	url = https://github.com/KDAB/android_openssl.git
+[submodule "3rdParty/qhttpengine"]
+	path = 3rdParty/qhttpengine
+	url = git@github.com:Akaflieg-Freiburg/qhttpengine.git

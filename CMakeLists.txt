@@ -50,6 +50,7 @@ endif()
 
 # Subdirectories
 add_subdirectory(3rdParty)
+add_subdirectory(generatedSources)
 add_subdirectory(metadata)
 add_subdirectory(packaging)
 add_subdirectory(src)

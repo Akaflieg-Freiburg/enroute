@@ -26,8 +26,4 @@ endif()
 # MapBox fonts
 #
 
-execute_process(
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/generateFontQRC.py
-    )
-set(flightMapFontsQRC ${CMAKE_CURRENT_BINARY_DIR}/flightMap-fonts.qrc CACHE INTERNAL "" FORCE)
+set(mapBoxFont_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/openseamap-gl CACHE INTERNAL "" FORCE)

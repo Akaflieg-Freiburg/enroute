@@ -33,6 +33,10 @@ of the app. The commands produce a single binary at **./src/enroute** that links
 to Qt dynamically, but contains all the data required to run.
 
 ```shell
+# In source directory
+git submodule init
+git submodule update
+
 # Create build directory
 mkdir build
 cd build

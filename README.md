@@ -79,10 +79,7 @@ The author uses Qt Creator to build Android apps.
 * **CMake**, version ≥ 3.13 for the desktop app and version ≥ 3.15 for the
     Android app.
 
-* Command line utilities: **curl**, **git**, **tar** (used to download data at
-  configuration stage), **Doxygen**, **dot** (to build documentation,)
-  **inkscape** (used to generate PNG versions of icons from SVG sources) and
-  **python3** (used to compile lists of files during the configuration stage)
+* Command line utilities: **Doxygen** and **dot** (to build documentation)
 
 # 2. Other cmake targets
 

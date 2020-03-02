@@ -18,8 +18,8 @@ for more information.
       
 <p>The author gratefully acknowledges support by our academic sponsor, the
   <a href="https://www.uni-freiburg.de">University of Freiburg</a>.  The
-  university kindly provides the infrastructure used to generate our maps,
-  and the bandwidth required to serve them.</p>
+  university kindly provides the infrastructure used to generate our maps, and
+  the bandwidth required to serve them.</p>
 
 <h3>Acknowledgements</h3>
 
@@ -28,8 +28,8 @@ for more information.
   and <a href="https://www.openssl.org">OpenSSL</a>.</p>
 
 <p>Aeronautical data is kindly provided by
-  the <a href=\"https://www.openaip.net\">openAIP</a>
-  and <a href=\"https://www.openflightmaps.org\">open flightmaps</a>
+  the <a href="https://www.openaip.net">openAIP</a>
+  and <a href="https://www.openflightmaps.org">open flightmaps</a>
   projects. Base maps are kindly provided
-  by <a href=\"https://openmaptiles.org\">OpenMapTiles</a>. Please refer to the
+  by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the
   documentation for more details.</p>

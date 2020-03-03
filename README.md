@@ -1,21 +1,12 @@
 # enroute flight navigation
 
-**enroute flight navigation** is a mobile flight navigation app for Android and
-  other devices. The app is free, open source and 100% non-commercial. We do not
-  collect user data. **enroute flight navigation** is a project of [Akaflieg
-  Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg,
-  Germany. You can find more information on the
-  [homepage](https://akaflieg-freiburg.github.io/enroute).
+<img align="right" src="generatedSources/metadata/de.akaflieg_freiburg.enroute.png" width="100">**enroute flight navigation** is a mobile flight navigation app for Android and other devices. The app is free, open source and 100% non-commercial. We do not collect user data. **enroute flight navigation** is a project of [Akaflieg Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg, Germany. You can find more information on the [homepage](https://akaflieg-freiburg.github.io/enroute).
 
 ## 1. Compilation
 
-**enroute flight navigation** is a fairly large, but fairly standard Qt
-application that can be build on a standard Linux system. The build relies on
-**cmake**. The author uses Fedora Linux. Builds on Windows or MacOS hosts has
-never been attempted.
+**enroute flight navigation** is a fairly large, but fairly standard Qt application that can be build on a standard Linux system. The build relies on **cmake**. The author uses Fedora Linux. Builds on Windows or MacOS hosts has never been attempted.
 
-The GIT repository includes the following submodules, which are all tied in in
-3rdParty.
+The GIT repository includes the following submodules, which are all tied into the directory **3rdParty**.
 
 * Google's Material Design Icon set
 
@@ -23,8 +14,7 @@ The GIT repository includes the following submodules, which are all tied in in
 
 * Nitroshare's QHTTPEngine
 
-* For Android only: precompiled version of the openSSL libraries for various
-  architectures.
+* Precompiled version of the openSSL libraries for various Android architectures.
 
 ### 1.1 Building a desktop app
 
@@ -42,7 +32,7 @@ mkdir build
 cd build
 
 # Configure
-cmake <path to source directory>
+cmake ..
 
 # Build
 make -j5

@@ -493,6 +493,3 @@ void Downloadable::downloadHeaderFinished()
     if (oldUpdatable != updatable())
         emit updatableChanged();
 }
-
-
-

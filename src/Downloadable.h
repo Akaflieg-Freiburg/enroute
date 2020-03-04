@@ -21,9 +21,10 @@
 #ifndef DOWNLOADABLE_H
 #define DOWNLOADABLE_H
 
+#include <QFile>
 #include <QNetworkReply>
 #include <QPointer>
-#include <QTemporaryFile>
+#include <QSaveFile>
 
 
 /*! \brief Base class for all downloadable objects
@@ -385,7 +386,7 @@ private:
 
     // Temporary file for storing partiall data when downloading the remote
     // file. Set to nullptr when no download is in progress.
-    QPointer<QTemporaryFile> _tmpFile;
+    QPointer<QSaveFile> _saveFile;
 
     // URL of the remote file, as set in the constructor
     QUrl _url;

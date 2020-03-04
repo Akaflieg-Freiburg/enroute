@@ -42,7 +42,7 @@ Downloadable::~Downloadable() {
     // Free all ressources
     delete _networkReplyDownloadFile;
     delete _networkReplyDownloadHeader;
-    delete _tmpFile;
+    delete _saveFile;
 }
 
 
@@ -178,10 +178,19 @@ void Downloadable::startFileDownload()
     // Save old value to see if anything changed
     bool oldUpdatable = updatable();
 
-    // Clear temporary files
-    delete _tmpFile;
-    _tmpFile = new QTemporaryFile(this);
-    _tmpFile->open();
+    // Clear temporary file
+    delete _saveFile;
+
+    // Create directory that will hold the local file, if it does not yet exist
+    QDir dir(QFileInfo(_fileName).dir());
+    if (!dir.exists())
+        dir.mkpath(".");
+
+    // Copy the temporary file to the local file
+
+
+    _saveFile = new QSaveFile(_fileName, this);
+    _saveFile->open(QIODevice::WriteOnly);
 
     // Start download
     QNetworkRequest request(_url);
@@ -234,7 +243,7 @@ void Downloadable::stopFileDownload()
     // Stop the download
     _networkReplyDownloadFile->deleteLater();
     _networkReplyDownloadFile = nullptr;
-    delete _tmpFile;
+    delete _saveFile;
 
     // Emit signals as appropriate
     if (oldUpdatable != updatable())
@@ -401,7 +410,7 @@ void Downloadable::downloadFileFinished()
 {
     // Paranoid safety checks
     //  Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_tmpFile.isNull());
-    if (_networkReplyDownloadFile.isNull() || _tmpFile.isNull()) {
+    if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
         stopFileDownload();
         return;
     }
@@ -412,7 +421,6 @@ void Downloadable::downloadFileFinished()
 
     // Read the last remaining bits of data, then close the temporary file
     downloadFilePartialDataReceiver();
-    _tmpFile->close();
 
     // Download is now finished to 100%
     _downloadProgress = 100;
@@ -421,22 +429,13 @@ void Downloadable::downloadFileFinished()
     // Save old value to see if anything changed
     bool oldUpdatable = updatable();
 
-    // Create directory that will hold the local file, if it does not yet exist
-    QDir dir(QFileInfo(_fileName).dir());
-    if (!dir.exists())
-        dir.mkpath(".");
-
     // Copy the temporary file to the local file
     emit aboutToChangeLocalFile();
-    QFile::remove(_fileName);
-    _tmpFile->copy(_fileName);
-    QFile file(_fileName);
-    file.open(QIODevice::ReadWrite);
-    file.close();
+    _saveFile->commit();
     emit localFileChanged();
 
     // Delete the data structures for the download
-    delete _tmpFile;
+    delete _saveFile;
     _networkReplyDownloadFile->deleteLater();
     _networkReplyDownloadFile = nullptr;
 
@@ -457,8 +456,8 @@ void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 byt
 void Downloadable::downloadFilePartialDataReceiver()
 {
     // Paranoid safety checks
-    Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_tmpFile.isNull());
-    if (_networkReplyDownloadFile.isNull() || _tmpFile.isNull()) {
+    Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_saveFile.isNull());
+    if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
         stopFileDownload();
         return;
     }
@@ -466,7 +465,7 @@ void Downloadable::downloadFilePartialDataReceiver()
         return;
 
     // Write all available data to the temporary file
-    _tmpFile->write(_networkReplyDownloadFile->readAll());
+    _saveFile->write(_networkReplyDownloadFile->readAll());
 }
 
 

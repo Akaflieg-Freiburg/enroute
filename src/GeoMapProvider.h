@@ -25,6 +25,7 @@
 #include <QJsonArray>
 #include <QPointer>
 #include <QRegularExpression>
+#include <QTemporaryFile>
 
 #include "Airspace.h"
 #include "GlobalSettings.h"

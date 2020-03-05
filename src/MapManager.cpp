@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+/***************************************************************************
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -316,6 +317,7 @@ bool MapManager::readMapListFromDownloadedJSONFile()
 
         // Construct a new downloadable object.
         auto downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);
+        qWarning() << "Inserted " << downloadable->fileInfo().filePath() << localFileName;
         downloadable->setObjectName(mapName.section("/", -1 , -1));
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);
@@ -411,7 +413,7 @@ QList<QString> MapManager::unattachedFiles() const
         // Now check if this file exists as the local file of some aviation map
         bool isAttachedToAviationMap = false;
         foreach(auto geoMapPtr, _geoMaps) {
-            if (geoMapPtr->fileName() == fileIterator.filePath()) {
+            if (geoMapPtr->fileInfo() == QFileInfo(fileIterator.filePath()) ) {
                 isAttachedToAviationMap = true;
                 break;
             }

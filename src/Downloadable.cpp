@@ -31,6 +31,8 @@ Downloadable::Downloadable(QUrl url, QString fileName, QNetworkAccessManager *ne
     Q_ASSERT(networkAccessManager != nullptr);
     Q_ASSERT(!fileName.isEmpty());
 
+    qWarning() << "x" << _localFileInfo;
+
     connect(this, &Downloadable::remoteFileInfoChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::localFileChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::downloadingChanged, this, &Downloadable::infoTextChanged);
@@ -76,9 +78,9 @@ QString Downloadable::infoText() const
 QByteArray Downloadable::localFileContent() const
 {
     // Paranoid safety checks
-    Q_ASSERT(!_localFileInfo.canonicalFilePath().isEmpty());
+    Q_ASSERT(!_localFileInfo.absoluteFilePath().isEmpty());
 
-    QFile file(_localFileInfo.canonicalFilePath());
+    QFile file(_localFileInfo.absoluteFilePath());
     if (!file.exists())
         return QByteArray();
 
@@ -154,7 +156,7 @@ void Downloadable::deleteLocalFile()
     bool oldUpdatable = updatable();
 
     emit aboutToChangeLocalFile(_localFileInfo);
-    QFile::remove(_localFileInfo.canonicalFilePath());
+    QFile::remove(_localFileInfo.absoluteFilePath());
     emit localFileChanged(_localFileInfo);
 
     // Emit signals as appropriate
@@ -186,7 +188,7 @@ void Downloadable::startFileDownload()
         dir.mkpath(".");
 
     // Copy the temporary file to the local file
-    _saveFile = new QSaveFile(_localFileInfo.canonicalFilePath(), this);
+    _saveFile = new QSaveFile(_localFileInfo.absoluteFilePath(), this);
     _saveFile->open(QIODevice::WriteOnly);
 
     // Start download

@@ -118,7 +118,13 @@ public:
     Q_PROPERTY(QString fileName READ fileName CONSTANT)
 
     /*! \brief Getter function for the property with the same name */
-    QString fileName() const { return _localFileInfo.canonicalFilePath(); }
+    QString fileName() const { return _localFileInfo.absoluteFilePath(); }
+
+    /*! \brief QFileInfo for the file that was set in the constructor */
+    Q_PROPERTY(QFileInfo fileInfo READ fileName CONSTANT)
+
+    /*! \brief Getter function for the property with the same name */
+    QFileInfo fileInfo() const { return _localFileInfo; }
 
     /*! \brief Convenience property, returns 'true' if a local file exists
 

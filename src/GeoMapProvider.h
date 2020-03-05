@@ -167,9 +167,13 @@ private:
     QRegularExpression specialChars {"[^a-zA-Z0-9]"};
     QHash<QString, QString> simplifySpecialChars_cache;
 
+    // This slot is called every time the the set of GeoJSON files changes. It
+    // sets up the tile server to and generates a new style file.
+    void aviationMapsChanged();
+
     // This slot is called every time the the set of MBTile files changes. It
     // sets up the tile server to and generates a new style file.
-    void geoMapsChanged();
+    void baseMapsChanged();
 
     // This is the path under which is tiles are available on the
     // _tileServer. This is set to a random number that changes every time the

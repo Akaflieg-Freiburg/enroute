@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,7 @@
 #define DOWNLOADABLE_H
 
 #include <QFile>
+#include <QFileInfo>
 #include <QNetworkReply>
 #include <QPointer>
 #include <QSaveFile>
@@ -117,7 +118,7 @@ public:
     Q_PROPERTY(QString fileName READ fileName CONSTANT)
 
     /*! \brief Getter function for the property with the same name */
-    QString fileName() const { return _fileName; }
+    QString fileName() const { return _localFileInfo.canonicalFilePath(); }
 
     /*! \brief Convenience property, returns 'true' if a local file exists
 
@@ -127,7 +128,7 @@ public:
     Q_PROPERTY(bool hasLocalFile READ hasLocalFile NOTIFY localFileChanged)
 
     /*! \brief Getter function for the property with the same name */
-    bool hasLocalFile() const { return QFile::exists(_fileName); }
+    bool hasLocalFile() const { return _localFileInfo.exists(); }
 
     /*! \brief Short info text describing the state of the downloadable
 
@@ -252,7 +253,7 @@ public slots:
 
     -# The local file is overwritten by the newly downloaded data.
 
-    -# The signal downloadFinished() is emitted to indicate that the file is
+    -# The signal localFileChanged() is emitted to indicate that the file is
        again ready to be used.
   */
     void startFileDownload();
@@ -392,7 +393,7 @@ private:
     QUrl _url;
 
     // Name of the local file, as set in the constructor
-    QString _fileName;
+    QFileInfo _localFileInfo;
 
     // Modification date of the remote file, set directly via a setter method or
     // by calling downloadRemoteFileInfo().

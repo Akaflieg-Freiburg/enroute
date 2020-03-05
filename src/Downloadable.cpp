@@ -25,11 +25,11 @@
 #include "Downloadable.h"
 
 Downloadable::Downloadable(QUrl url, QString fileName, QNetworkAccessManager *networkAccessManager, QObject *parent) :
-    QObject(parent), _networkAccessManager(networkAccessManager), _url(std::move(url)), _fileName(std::move(fileName))
+    QObject(parent), _networkAccessManager(networkAccessManager), _url(std::move(url)), _localFileInfo(fileName)
 {
     // Paranoid safety checks
     Q_ASSERT(networkAccessManager != nullptr);
-    Q_ASSERT(!_fileName.isEmpty());
+    Q_ASSERT(!fileName.isEmpty());
 
     connect(this, &Downloadable::remoteFileInfoChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::localFileChanged, this, &Downloadable::infoTextChanged);
@@ -76,9 +76,9 @@ QString Downloadable::infoText() const
 QByteArray Downloadable::localFileContent() const
 {
     // Paranoid safety checks
-    Q_ASSERT(!_fileName.isEmpty());
+    Q_ASSERT(!_localFileInfo.canonicalFilePath().isEmpty());
 
-    QFile file(_fileName);
+    QFile file(_localFileInfo.canonicalFilePath());
     if (!file.exists())
         return QByteArray();
 
@@ -132,13 +132,12 @@ bool Downloadable::updatable() const
 {
     if (downloading())
         return false;
-    if (!QFile::exists(_fileName))
+    if (!_localFileInfo.exists())
         return false;
 
-    QFileInfo info(_fileName);
-    if (_remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate))
+    if (_remoteFileDate.isValid() && (_localFileInfo.lastModified() < _remoteFileDate))
         return true;
-    if ((_remoteFileSize >= 0) && (info.size() != _remoteFileSize))
+    if ((_remoteFileSize >= 0) && (_localFileInfo.size() != _remoteFileSize))
         return true;
 
     return false;
@@ -148,14 +147,14 @@ bool Downloadable::updatable() const
 void Downloadable::deleteLocalFile()
 {
     // If the local file does not exist, there is nothing to do
-    if (!QFile::exists(_fileName))
+    if (!_localFileInfo.exists())
         return;
 
     // Save old value to see if anything changed
     bool oldUpdatable = updatable();
 
     emit aboutToChangeLocalFile();
-    QFile::remove(_fileName);
+    QFile::remove(_localFileInfo.canonicalFilePath());
     emit localFileChanged();
 
     // Emit signals as appropriate
@@ -182,14 +181,12 @@ void Downloadable::startFileDownload()
     delete _saveFile;
 
     // Create directory that will hold the local file, if it does not yet exist
-    QDir dir(QFileInfo(_fileName).dir());
+    QDir dir = _localFileInfo.dir();
     if (!dir.exists())
         dir.mkpath(".");
 
     // Copy the temporary file to the local file
-
-
-    _saveFile = new QSaveFile(_fileName, this);
+    _saveFile = new QSaveFile(_localFileInfo.canonicalFilePath(), this);
     _saveFile->open(QIODevice::WriteOnly);
 
     // Start download

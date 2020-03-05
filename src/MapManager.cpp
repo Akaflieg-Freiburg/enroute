@@ -320,8 +320,6 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-#warning A
-//        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         newMaps.insert(mapFileName, downloadable);
     }
 
@@ -337,8 +335,6 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         auto downloadable = new Downloadable(QUrl(), geoMapPtr->fileName(), _networkAccessManager, this);
         downloadable->setObjectName(geoMapPtr->objectName());
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-#warning B
-        //        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         newMaps.insert(geoMapPtr->objectName(), downloadable);
     }
     // Delete the unused aviation maps, and set to new
@@ -356,8 +352,6 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         auto downloadable = new Downloadable(QUrl(), path, _networkAccessManager, this);
         downloadable->setObjectName(objectName);
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-#warning C
-        //        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         _geoMaps.insert(objectName, downloadable);
     }
 
@@ -414,7 +408,7 @@ QList<QString> MapManager::unattachedFiles() const
         // Now check if this file exists as the local file of some aviation map
         bool isAttachedToAviationMap = false;
         foreach(auto geoMapPtr, _geoMaps) {
-            if (geoMapPtr->fileInfo() == QFileInfo(fileIterator.filePath()) ) {
+            if (geoMapPtr->fileName() == QFileInfo(fileIterator.filePath()).absoluteFilePath()) {
                 isAttachedToAviationMap = true;
                 break;
             }

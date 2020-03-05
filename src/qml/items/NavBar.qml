@@ -51,7 +51,7 @@ Rectangle {
 
                 MobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
-                dialogLoader.source = "dialogs/AltitudeCorrectionDialog.qml"
+                dialogLoader.source = "../dialogs/AltitudeCorrectionDialog.qml"
                 dialogLoader.active = true
             }
 

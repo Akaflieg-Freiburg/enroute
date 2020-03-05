@@ -118,13 +118,7 @@ public:
     Q_PROPERTY(QString fileName READ fileName CONSTANT)
 
     /*! \brief Getter function for the property with the same name */
-    QString fileName() const { return _localFileInfo.absoluteFilePath(); }
-
-    /*! \brief QFileInfo for the file that was set in the constructor */
-    Q_PROPERTY(QFileInfo fileInfo READ fileName CONSTANT)
-
-    /*! \brief Getter function for the property with the same name */
-    QFileInfo fileInfo() const { return _localFileInfo; }
+    QString fileName() const { return _localFileName; }
 
     /*! \brief Convenience property, returns 'true' if a local file exists
 
@@ -134,7 +128,7 @@ public:
     Q_PROPERTY(bool hasLocalFile READ hasLocalFile NOTIFY localFileChanged)
 
     /*! \brief Getter function for the property with the same name */
-    bool hasLocalFile() const { return QFile::exists(_localFileInfo.absoluteFilePath()); }
+    bool hasLocalFile() const { return QFile::exists(_localFileName); }
 
     /*! \brief Short info text describing the state of the downloadable
 
@@ -293,11 +287,11 @@ signals:
     using the file immediately. This signal is always followed by the signal
     localFileChanged(), which indicates that the local file can be used again.
 
-    @param localFile QFileInfo for the local file that has changed
+    @param localFileName Name of the local file that has will change
 
     @see localFileChanged()
    */
-    void aboutToChangeLocalFile(QFileInfo localFile);
+    void aboutToChangeLocalFile(QString localFileName);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged();
@@ -401,7 +395,7 @@ private:
     QUrl _url;
 
     // Name of the local file, as set in the constructor
-    QFileInfo _localFileInfo;
+    QString _localFileName {};
 
     // Modification date of the remote file, set directly via a setter method or
     // by calling downloadRemoteFileInfo().

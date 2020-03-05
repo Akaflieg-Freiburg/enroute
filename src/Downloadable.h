@@ -287,9 +287,11 @@ signals:
     using the file immediately. This signal is always followed by the signal
     localFileChanged(), which indicates that the local file can be used again.
 
-    @see localFileChanged()
+    @param localFile QFileInfo for the local file that has changed
+
+    @see localFileChanged(QFileInfo)
    */
-    void aboutToChangeLocalFile();
+    void aboutToChangeLocalFile(QFileInfo localFile);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged();
@@ -325,9 +327,11 @@ signals:
     This signal indicates that the local file has changed, and is ready to be
     used by clients if it exists.
 
-    @see aboutToChangeLocalFile()
+    @param localFile QFileInfo for the local file that has changed
+
+    @see aboutToChangeLocalFile(QFileInfo)
    */
-    void localFileChanged();
+    void localFileChanged(QFileInfo localFile);
 
     /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
 

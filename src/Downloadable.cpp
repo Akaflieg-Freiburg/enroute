@@ -153,9 +153,9 @@ void Downloadable::deleteLocalFile()
     // Save old value to see if anything changed
     bool oldUpdatable = updatable();
 
-    emit aboutToChangeLocalFile();
+    emit aboutToChangeLocalFile(_localFileInfo);
     QFile::remove(_localFileInfo.canonicalFilePath());
-    emit localFileChanged();
+    emit localFileChanged(_localFileInfo);
 
     // Emit signals as appropriate
     if (oldUpdatable != updatable())
@@ -427,9 +427,9 @@ void Downloadable::downloadFileFinished()
     bool oldUpdatable = updatable();
 
     // Copy the temporary file to the local file
-    emit aboutToChangeLocalFile();
+    emit aboutToChangeLocalFile(_localFileInfo);
     _saveFile->commit();
-    emit localFileChanged();
+    emit localFileChanged(_localFileInfo);
 
     // Delete the data structures for the download
     delete _saveFile;

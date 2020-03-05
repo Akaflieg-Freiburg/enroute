@@ -36,6 +36,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
     _availableMapsDescription->setObjectName(tr("list of aviation maps"));
     connect(_availableMapsDescription, &Downloadable::downloadingChanged, this, &MapManager::downloadingChanged);
     connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
+    connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
     connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::setTimeOfLastUpdateToNow);
     connect(_availableMapsDescription, &Downloadable::error, this, &MapManager::errorReceiver);
 

@@ -1,5 +1,4 @@
 /***************************************************************************
-/***************************************************************************
  *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
@@ -317,12 +316,12 @@ bool MapManager::readMapListFromDownloadedJSONFile()
 
         // Construct a new downloadable object.
         auto downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);
-        qWarning() << "Inserted " << downloadable->fileInfo().filePath() << localFileName;
         downloadable->setObjectName(mapName.section("/", -1 , -1));
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
+#warning A
+//        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         newMaps.insert(mapFileName, downloadable);
     }
 
@@ -338,7 +337,8 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         auto downloadable = new Downloadable(QUrl(), geoMapPtr->fileName(), _networkAccessManager, this);
         downloadable->setObjectName(geoMapPtr->objectName());
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
+#warning B
+        //        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         newMaps.insert(geoMapPtr->objectName(), downloadable);
     }
     // Delete the unused aviation maps, and set to new
@@ -356,7 +356,8 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         auto downloadable = new Downloadable(QUrl(), path, _networkAccessManager, this);
         downloadable->setObjectName(objectName);
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
+#warning C
+        //        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         _geoMaps.insert(objectName, downloadable);
     }
 

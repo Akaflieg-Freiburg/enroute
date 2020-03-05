@@ -31,8 +31,6 @@ Downloadable::Downloadable(QUrl url, QString fileName, QNetworkAccessManager *ne
     Q_ASSERT(networkAccessManager != nullptr);
     Q_ASSERT(!fileName.isEmpty());
 
-    qWarning() << "x" << _localFileInfo;
-
     connect(this, &Downloadable::remoteFileInfoChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::localFileChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::downloadingChanged, this, &Downloadable::infoTextChanged);
@@ -56,9 +54,7 @@ QString Downloadable::infoText() const
     QString displayText;
     if (hasLocalFile()) {
         displayText += tr("installed");
-
-        QFileInfo info(fileName());
-        displayText += QString(" • %2").arg(QLocale::system().formattedDataSize(info.size(), 1, QLocale::DataSizeSIFormat));
+        displayText += QString(" • %2").arg(QLocale::system().formattedDataSize(_localFileInfo.size(), 1, QLocale::DataSizeSIFormat));
 
         if (updatable())
             displayText += " • " + tr("update available");
@@ -157,7 +153,7 @@ void Downloadable::deleteLocalFile()
 
     emit aboutToChangeLocalFile(_localFileInfo);
     QFile::remove(_localFileInfo.absoluteFilePath());
-    emit localFileChanged(_localFileInfo);
+    emit localFileChanged();
 
     // Emit signals as appropriate
     if (oldUpdatable != updatable())
@@ -431,7 +427,7 @@ void Downloadable::downloadFileFinished()
     // Copy the temporary file to the local file
     emit aboutToChangeLocalFile(_localFileInfo);
     _saveFile->commit();
-    emit localFileChanged(_localFileInfo);
+    emit localFileChanged();
 
     // Delete the data structures for the download
     delete _saveFile;

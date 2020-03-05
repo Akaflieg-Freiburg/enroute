@@ -134,7 +134,7 @@ public:
     Q_PROPERTY(bool hasLocalFile READ hasLocalFile NOTIFY localFileChanged)
 
     /*! \brief Getter function for the property with the same name */
-    bool hasLocalFile() const { return _localFileInfo.exists(); }
+    bool hasLocalFile() const { return QFile::exists(_localFileInfo.absoluteFilePath()); }
 
     /*! \brief Short info text describing the state of the downloadable
 
@@ -295,7 +295,7 @@ signals:
 
     @param localFile QFileInfo for the local file that has changed
 
-    @see localFileChanged(QFileInfo)
+    @see localFileChanged()
    */
     void aboutToChangeLocalFile(QFileInfo localFile);
 
@@ -333,11 +333,9 @@ signals:
     This signal indicates that the local file has changed, and is ready to be
     used by clients if it exists.
 
-    @param localFile QFileInfo for the local file that has changed
-
     @see aboutToChangeLocalFile(QFileInfo)
    */
-    void localFileChanged(QFileInfo localFile);
+    void localFileChanged();
 
     /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
 

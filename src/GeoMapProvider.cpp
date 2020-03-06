@@ -203,7 +203,7 @@ void GeoMapProvider::aviationMapsChanged()
 }
 
 
-void GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, bool hideUpperAirspaces)
+void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces)
 {
     //
     // Generate new GeoJSON array and new list of waypoints

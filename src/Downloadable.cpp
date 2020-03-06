@@ -24,7 +24,7 @@
 
 #include "Downloadable.h"
 
-Downloadable::Downloadable(QUrl url, QString fileName, QNetworkAccessManager *networkAccessManager, QObject *parent) :
+Downloadable::Downloadable(QUrl url, const QString& fileName, QNetworkAccessManager *networkAccessManager, QObject *parent) :
     QObject(parent), _networkAccessManager(networkAccessManager), _url(std::move(url))
 {
     // Paranoid safety checks

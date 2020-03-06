@@ -178,7 +178,7 @@ private:
     void aviationMapsChanged();
 #warning docu
     QTimer _aviationDataCacheTimer;
-    void fillAviationDataCache(QStringList geoJSONFiles, bool hideUpperAirspaces);
+    void fillAviationDataCache(const QStringList& geoJSONFiles, bool hideUpperAirspaces);
     QFuture<void> _aviationDataCacheFuture;
 
     // This slot is called every time the the set of MBTile files changes. It

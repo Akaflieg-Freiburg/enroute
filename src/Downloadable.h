@@ -74,7 +74,7 @@ public:
 
     Use the method startFileDownload() to initiate the download process.
   */
-    explicit Downloadable(QUrl url, QString localFileName, QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
+    explicit Downloadable(QUrl url, const QString& localFileName, QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
 
     // No copy constructor
     Downloadable(Downloadable const&) = delete;

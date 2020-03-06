@@ -122,7 +122,10 @@ public:
     Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
 
     /*! \brief Getter function for the property with the same name */
-    QByteArray geoJSON();
+    QByteArray geoJSON() {
+        QMutexLocker lock(&_aviationDataMutex);
+        return _combinedGeoJSON_;
+    }
 
     /*! List of nearby airfields
      *
@@ -174,12 +177,13 @@ private:
     QHash<QString, QString> simplifySpecialChars_cache;
 
     // This slot is called every time the the set of GeoJSON files changes. It
-    // sets up the tile server to and generates a new style file.
+    // fills the aviation data cache.
     void aviationMapsChanged();
-#warning docu
-    QTimer _aviationDataCacheTimer;
+
+    // Interal function that does most of the work for aviationMapsChanged() emits
+    // geoJSONChanged() when done. This function is meant to be run in a separate
+    // thread.
     void fillAviationDataCache(const QStringList& geoJSONFiles, bool hideUpperAirspaces);
-    QFuture<void> _aviationDataCacheFuture;
 
     // This slot is called every time the the set of MBTile files changes. It
     // sets up the tile server to and generates a new style file.
@@ -202,7 +206,14 @@ private:
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> _styleFile;
 
+    //
     // Aviation Data Cache
+    //
+    QFuture<void>    _aviationDataCacheFuture; // Future; indicates if fillAviationDataCache() is currently running
+    QTimer           _aviationDataCacheTimer;  // Timer used to start another run of fillAviationDataCache()
+    // The data in this group is accessed by several threads. The following classes
+    // (whose names ends in an underscore)are therefore
+    // protected by this mutex.
     QMutex           _aviationDataMutex;
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
     QList<Waypoint*> _waypoints_;       // Cache: Waypoints

@@ -123,13 +123,6 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
     return result;
 }
 
-#warning can move this to the header file
-QByteArray GeoMapProvider::geoJSON()
-{
-    QMutexLocker lock(&_aviationDataMutex);
-    return _combinedGeoJSON_;
-}
-
 
 QList<QObject*> GeoMapProvider::nearbyAirfields(const QGeoCoordinate& position)
 {
@@ -212,10 +205,15 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
     // First, create a set of JSON objects, in order to avoid duplicated entries
     QSet<QJsonObject> objectSet;
     foreach(auto JSONFileName, JSONFileNames) {
-#warning need support for file locking
+        // Read the lock file
+        QLockFile lockFile(JSONFileName+".lock");
+        lockFile.lock();
         QFile file(JSONFileName);
         file.open(QIODevice::ReadOnly);
         auto document = QJsonDocument::fromJson(file.readAll());
+        file.close();
+        lockFile.unlock();
+
         foreach(auto value, document.object()["features"].toArray()) {
             auto object = value.toObject();
 

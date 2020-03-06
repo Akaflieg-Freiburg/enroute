@@ -225,7 +225,8 @@ public slots:
     /*! \brief The convenience method deletes the local file.
 
     This convenience method deletes the local file. The singals
-    aboutToChangeLocalFile() and localFileChanged() are emitted appropriately.
+    aboutToChangeLocalFile() and localFileChanged() are emitted appropriately, and
+    a QLockFile is used at fileName()+".lock".
    */
     void deleteLocalFile();
 
@@ -251,7 +252,11 @@ public slots:
        this indicates that the local file is about to change and that it should
        not be used anymore.
 
+    -# A QLockFile is created at fileName()+".lock"
+
     -# The local file is overwritten by the newly downloaded data.
+
+    -# The QLockFile is removed
 
     -# The signal localFileChanged() is emitted to indicate that the file is
        again ready to be used.

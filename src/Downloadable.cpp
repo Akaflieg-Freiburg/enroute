@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QLockFile>
 #include <utility>
 
 #include "Downloadable.h"
@@ -156,7 +157,10 @@ void Downloadable::deleteLocalFile()
     bool oldUpdatable = updatable();
 
     emit aboutToChangeLocalFile(_localFileName);
+    QLockFile lockFile(_localFileName);
+    lockFile.lock();
     QFile::remove(_localFileName);
+    lockFile.unlock();
     emit localFileChanged();
 
     // Emit signals as appropriate
@@ -430,7 +434,10 @@ void Downloadable::downloadFileFinished()
 
     // Copy the temporary file to the local file
     emit aboutToChangeLocalFile(_localFileName);
+    QLockFile lockFile(_localFileName+".lock");
+    lockFile.lock();
     _saveFile->commit();
+    lockFile.unlock();
     emit localFileChanged();
 
     // Delete the data structures for the download

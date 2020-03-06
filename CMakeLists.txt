@@ -36,7 +36,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #
 
 find_package(Doxygen)
-find_package(Qt5 5.12 COMPONENTS Core Gui Positioning Quick QuickWidgets Sql Svg REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Concurrent Core Gui Positioning Quick QuickWidgets Sql Svg REQUIRED)
 if( ANDROID )
   find_package(Qt5 5.14 COMPONENTS AndroidExtras REQUIRED)
 endif()

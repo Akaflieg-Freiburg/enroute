@@ -21,8 +21,11 @@
 #ifndef GEOMAPPROVIDER_H
 #define GEOMAPPROVIDER_H
 
+#include <QFuture>
 #include <QGeoCoordinate>
 #include <QJsonArray>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QPointer>
 #include <QRegularExpression>
 #include <QTemporaryFile>
@@ -91,7 +94,7 @@ public:
      * better cooperation with QML the list returns contains elements of type
      * QObject*, and not Airspace*.
      */
-    Q_INVOKABLE QList<QObject*> airspaces(const QGeoCoordinate& position) const;
+    Q_INVOKABLE QList<QObject*> airspaces(const QGeoCoordinate& position);
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -119,7 +122,7 @@ public:
     Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
 
     /*! \brief Getter function for the property with the same name */
-    QByteArray geoJSON() const;
+    QByteArray geoJSON();
 
     /*! List of nearby airfields
      *
@@ -148,7 +151,10 @@ public:
      *
      * This method returns a list of all waypoints known to this GeoMapProvider (that is, the union of all waypoints in any of the installed maps)
      */
-    QList<Waypoint*> waypoints() { return _waypoints; }
+    QList<Waypoint*> waypoints() {
+        QMutexLocker locker(&_aviationDataMutex);
+        return _waypoints_;
+    }
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -170,6 +176,10 @@ private:
     // This slot is called every time the the set of GeoJSON files changes. It
     // sets up the tile server to and generates a new style file.
     void aviationMapsChanged();
+#warning docu
+    QTimer _aviationDataCacheTimer;
+    void fillAviationDataCache(QStringList geoJSONFiles, bool hideUpperAirspaces);
+    QFuture<void> _aviationDataCacheFuture;
 
     // This slot is called every time the the set of MBTile files changes. It
     // sets up the tile server to and generates a new style file.
@@ -192,14 +202,12 @@ private:
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> _styleFile;
 
-    // Cache: JSON array that holds the combined features of all GeoJSON maps
-    QJsonArray _features;
+    // Aviation Data Cache
+    QMutex           _aviationDataMutex;
+    QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
+    QList<Waypoint*> _waypoints_;       // Cache: Waypoints
+    QList<Airspace*> _airspaces_;       // Cache: Airspaces
 
-    // Cache: Waypoints
-    QList<Waypoint*> _waypoints;
-
-    // Cache: Airspaces
-    QList<Airspace*> _airspaces;
 };
 
 #endif

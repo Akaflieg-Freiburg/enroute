@@ -33,6 +33,7 @@ set(SOURCES
     Airspace.cpp
     AviationUnits.cpp
     Downloadable.cpp
+    DownloadableGroup.cpp
     FlightRoute.cpp
     FlightRoute_Leg.cpp
     GeoMapProvider.cpp

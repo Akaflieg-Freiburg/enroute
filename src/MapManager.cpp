@@ -111,7 +111,7 @@ QMap<QString, Downloadable*> MapManager::aviationMaps() const
 {
     QMap<QString, Downloadable *> result;
 
-    QMapIterator<QString, Downloadable *> i(_geoMaps);
+    QMapIterator<QString, QPointer<Downloadable>> i(_geoMaps);
     while (i.hasNext()) {
         i.next();
         if (!i.value()->fileName().endsWith(".geojson", Qt::CaseInsensitive))
@@ -127,7 +127,7 @@ QMap<QString, Downloadable*> MapManager::baseMaps() const
 {
     QMap<QString, Downloadable *> result;
 
-    QMapIterator<QString, Downloadable *> i(_geoMaps);
+    QMapIterator<QString, QPointer<Downloadable>> i(_geoMaps);
     while (i.hasNext()) {
         i.next();
         if (!i.value()->fileName().endsWith(".mbtiles", Qt::CaseInsensitive))
@@ -279,7 +279,7 @@ bool MapManager::readMapListFromDownloadedJSONFile()
     bool old_aviationMapUpdatesAvailable = geoMapUpdatesAvailable();
 
     // This is the central object that will replace _aviationMaps at the end.
-    QMap<QString, Downloadable *> newMaps;
+    QMap<QString, QPointer<Downloadable>> newMaps;
 
     // Alert all users that the list of maps is in an intermediate stage and that
     // it should not be used for the moment

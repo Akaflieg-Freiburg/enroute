@@ -63,9 +63,6 @@ public:
     // No move assignment operator
     DownloadableGroup& operator=(DownloadableGroup&&) = delete;
 
-    /*! \brief Standard destructor */
-    ~DownloadableGroup();
-
     /*! \brief Adds a downloadable to the group
 
       This method adds a Downloadable to the group. The signals 'downloadingChanged' and 'updatableChanged' will be emitted if required.
@@ -109,12 +106,15 @@ signals:
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
 
+private slots:
+    void elementChanged();
+
 private:
     bool _cachedDownloading; // Cached value for the 'downloading' property
     bool _cachedUpdatable;   // Cached value for the 'updatable' property
 
-    // List of pointers to QPointers to the Downloadable objects in this group
-    QList<QPointer<Downloadable>*> downloadables;
+    // List of QPointers to the Downloadable objects in this group
+    QList<QPointer<Downloadable>> _downloadables;
 };
 
 #endif // DOWNLOADABLEGROUP_H

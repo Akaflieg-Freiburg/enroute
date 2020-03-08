@@ -258,7 +258,7 @@ private:
   
   // This is a map that has "map names" as keys, and pointers to the actual
   // aviation maps as values
-  QMap<QString, Downloadable *> _geoMaps;
+  QMap<QString, QPointer<Downloadable>> _geoMaps;
 
   // Pointer the QNetworkAccessManager that will be used for all Downloadable
   // objects constructed by this class

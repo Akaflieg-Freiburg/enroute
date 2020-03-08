@@ -24,42 +24,77 @@
 DownloadableGroup::DownloadableGroup(QObject *parent)
     : QObject(parent), _cachedDownloading(false), _cachedUpdatable(false)
 {
-#warning not implemented
-    ;
-}
-
-
-DownloadableGroup::~DownloadableGroup()
-{
-#warning not implemented
     ;
 }
 
 
 void DownloadableGroup::addToGroup(Downloadable *downloadable)
 {
-#warning not implemented
-    ;
+    // Avoid double entries
+    if (_downloadables.contains(downloadable))
+        return;
+
+    // Add element to group
+    _downloadables.append(downloadable);
+
+    connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::elementChanged);
+    connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::elementChanged);
+    elementChanged();
 }
 
 
 void DownloadableGroup::removeFromGroup(Downloadable *downloadable)
 {
-#warning not implemented
-    ;
+    auto index = _downloadables.indexOf(downloadable);
+
+    // Avoid double entries
+    if (index < 0)
+        return;
+
+    _downloadables.takeAt(index);
+    disconnect(downloadable, nullptr, this, nullptr);
+    elementChanged();
 }
 
 
 bool DownloadableGroup::downloading() const
 {
-#warning not implemented
-    return false;
+    foreach(auto _downloadable, _downloadables) {
+        if (_downloadable.isNull())
+            continue;
+        if (_downloadable->downloading())
+            return true;
+    }
 
+    return false;
 }
 
 
 bool DownloadableGroup::updatable() const
 {
-#warning not implemented
+    foreach(auto _downloadable, _downloadables) {
+        if (_downloadable.isNull())
+            continue;
+        if (_downloadable->updatable())
+            return true;
+    }
+
     return false;
+}
+
+
+void DownloadableGroup::elementChanged()
+{
+    bool newDownloading = downloading();
+    bool newUpdatable   = updatable();
+
+    if (newDownloading != _cachedDownloading) {
+        _cachedDownloading = newDownloading;
+        emit downloadingChanged();
+    }
+
+    if (newUpdatable != _cachedUpdatable) {
+        _cachedUpdatable = newUpdatable;
+        emit updatableChanged();
+    }
 }

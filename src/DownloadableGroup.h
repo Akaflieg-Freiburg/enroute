@@ -90,6 +90,12 @@ public:
     /*! \brief Getter function for the property with the same name */
     bool downloading() const;
 
+    /*! \brief Names of local files of the Downloadbles in this group */
+    Q_PROPERTY(QStringList localFiles READ localFiles NOTIFY localFileChanged)
+
+    /*! \brief Getter function for the property with the same name */
+    QStringList localFiles() const;
+
     /*! \brief Indicates any one of Downloadable objects is known to be updatable
 
     By definition, an empty group is not updatable
@@ -105,6 +111,9 @@ signals:
 
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
+
+    /*! \brief Emitted if one of the local files in this group changes content or existence */
+    void localFileChanged();
 
 private slots:
     void elementChanged();

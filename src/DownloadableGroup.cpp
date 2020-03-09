@@ -39,6 +39,7 @@ void DownloadableGroup::addToGroup(Downloadable *downloadable)
 
     connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::elementChanged);
     connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::elementChanged);
+    connect(downloadable, &Downloadable::localFileChanged, this, &DownloadableGroup::localFileChanged);
     elementChanged();
 }
 
@@ -67,6 +68,22 @@ bool DownloadableGroup::downloading() const
     }
 
     return false;
+}
+
+
+QStringList DownloadableGroup::localFiles() const
+{
+    QStringList result;
+
+    foreach(auto _downloadable, _downloadables) {
+        if (_downloadable.isNull())
+            continue;
+        if (!_downloadable->hasLocalFile())
+            continue;
+        result += _downloadable->fileName();
+    }
+
+    return result;
 }
 
 

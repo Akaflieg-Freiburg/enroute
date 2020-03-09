@@ -23,7 +23,7 @@
 
 #include <QTimer> 
 
-#include "Downloadable.h"
+#include "DownloadableGroup.h"
 
 /*! \brief Manages the list of available aviation maps
   
@@ -259,6 +259,9 @@ private:
   // This is a map that has "map names" as keys, and pointers to the actual
   // aviation maps as values
   QMap<QString, QPointer<Downloadable>> _geoMaps;
+
+  // Aviation maps (currently, these are GeoJSON files)
+  DownloadableGroup _aviationMaps;
 
   // Pointer the QNetworkAccessManager that will be used for all Downloadable
   // objects constructed by this class

@@ -12,9 +12,9 @@ option(BUILD_DOC "Build documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 1.3.0)
+project(enroute VERSION 1.4.0)
 set(APP_ID de.akaflieg_freiburg.enroute)
-set(PROJECT_DATE 2020-02-14)
+set(PROJECT_DATE 2020-03-03)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 
@@ -36,7 +36,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #
 
 find_package(Doxygen)
-find_package(Qt5 5.12 COMPONENTS Core Gui Positioning Quick QuickWidgets Sql Svg REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Concurrent Core Gui Positioning Quick QuickWidgets Sql Svg REQUIRED)
 if( ANDROID )
   find_package(Qt5 5.14 COMPONENTS AndroidExtras REQUIRED)
 endif()

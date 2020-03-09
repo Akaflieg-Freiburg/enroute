@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
     _availableMapsDescription = new Downloadable(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv001/maps.json"), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json", networkAccessManager, this);
     _availableMapsDescription->setObjectName(tr("list of aviation maps"));
     connect(_availableMapsDescription, &Downloadable::downloadingChanged, this, &MapManager::downloadingChanged);
+    connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
     connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
     connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::setTimeOfLastUpdateToNow);
     connect(_availableMapsDescription, &Downloadable::error, this, &MapManager::errorReceiver);
@@ -110,7 +111,7 @@ QMap<QString, Downloadable*> MapManager::aviationMaps() const
 {
     QMap<QString, Downloadable *> result;
 
-    QMapIterator<QString, Downloadable *> i(_geoMaps);
+    QMapIterator<QString, QPointer<Downloadable>> i(_geoMaps);
     while (i.hasNext()) {
         i.next();
         if (!i.value()->fileName().endsWith(".geojson", Qt::CaseInsensitive))
@@ -126,7 +127,7 @@ QMap<QString, Downloadable*> MapManager::baseMaps() const
 {
     QMap<QString, Downloadable *> result;
 
-    QMapIterator<QString, Downloadable *> i(_geoMaps);
+    QMapIterator<QString, QPointer<Downloadable>> i(_geoMaps);
     while (i.hasNext()) {
         i.next();
         if (!i.value()->fileName().endsWith(".mbtiles", Qt::CaseInsensitive))
@@ -278,7 +279,7 @@ bool MapManager::readMapListFromDownloadedJSONFile()
     bool old_aviationMapUpdatesAvailable = geoMapUpdatesAvailable();
 
     // This is the central object that will replace _aviationMaps at the end.
-    QMap<QString, Downloadable *> newMaps;
+    QMap<QString, QPointer<Downloadable>> newMaps;
 
     // Alert all users that the list of maps is in an intermediate stage and that
     // it should not be used for the moment
@@ -319,7 +320,6 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         newMaps.insert(mapFileName, downloadable);
     }
 
@@ -335,7 +335,6 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         auto downloadable = new Downloadable(QUrl(), geoMapPtr->fileName(), _networkAccessManager, this);
         downloadable->setObjectName(geoMapPtr->objectName());
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         newMaps.insert(geoMapPtr->objectName(), downloadable);
     }
     // Delete the unused aviation maps, and set to new
@@ -353,7 +352,6 @@ bool MapManager::readMapListFromDownloadedJSONFile()
         auto downloadable = new Downloadable(QUrl(), path, _networkAccessManager, this);
         downloadable->setObjectName(objectName);
         connect(downloadable, &Downloadable::localFileChanged, this, &MapManager::localFileOfGeoMapChanged);
-        connect(downloadable, &Downloadable::downloadingChanged, this, &MapManager::localFileOfGeoMapChanged);
         _geoMaps.insert(objectName, downloadable);
     }
 
@@ -410,7 +408,7 @@ QList<QString> MapManager::unattachedFiles() const
         // Now check if this file exists as the local file of some aviation map
         bool isAttachedToAviationMap = false;
         foreach(auto geoMapPtr, _geoMaps) {
-            if (geoMapPtr->fileName() == fileIterator.filePath()) {
+            if (geoMapPtr->fileName() == QFileInfo(fileIterator.filePath()).absoluteFilePath()) {
                 isAttachedToAviationMap = true;
                 break;
             }

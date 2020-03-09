@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -71,7 +71,7 @@ Map {
     MapParameter {
         type: "source"
         
-        property var name: "procedures"
+        property var name: "aviationData"
         property var sourceType: "geojson"
         property var data: flightMap.geoJSON
     }
@@ -79,14 +79,6 @@ Map {
     /*************************************
      * Airspaces
      *************************************/
-    
-    MapParameter {
-        type: "source"
-        
-        property var name: "airspace"
-        property var sourceType: "geojson"
-        property var data: flightMap.geoJSON
-    }
     
     MapParameter {
         type: "image"
@@ -105,7 +97,7 @@ Map {
         
         property var name: "RMZ"
         property var layerType: "fill"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "RMZ"]
     }
     
@@ -121,7 +113,7 @@ Map {
         
         property var name: "RMZoutline"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "RMZ"]
     }
     
@@ -138,7 +130,7 @@ Map {
         
         property var name: "RMZLabels"
         property var layerType: "symbol"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "RMZ"]
         property var minzoom: 10
     }
@@ -164,7 +156,7 @@ Map {
         
         property var name: "TMZ"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "TMZ"]
     }
     
@@ -186,7 +178,7 @@ Map {
         
         property var name: "PJE"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "PJE"]
     }
     
@@ -208,7 +200,7 @@ Map {
         
         property var name: "ABCDOutlines"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
     }
     
@@ -224,7 +216,7 @@ Map {
         
         property var name: "ABCDs"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
     }
     
@@ -247,7 +239,7 @@ Map {
         
         property var name: "controlZones"
         property var layerType: "fill"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
     
@@ -263,7 +255,7 @@ Map {
         
         property var name: "controlZoneOutlines"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
     
@@ -280,7 +272,7 @@ Map {
         
         property var name: "controlZoneLabels"
         property var layerType: "symbol"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
         property var minzoom: 10
     }
@@ -306,7 +298,7 @@ Map {
         
         property var name: "dangerZones"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
     }
     
@@ -324,7 +316,7 @@ Map {
         
         property var name: "dangerZoneOutlines"
         property var layerType: "line"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
     }
     
@@ -341,7 +333,7 @@ Map {
         
         property var name: "dangerZoneLabels"
         property var layerType: "symbol"
-        property var source: "airspace"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
         property var minzoom: 10
     }
@@ -375,7 +367,7 @@ Map {
         
         property var name: "TFC"
         property var layerType: "line"
-        property var source: "procedures"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "PRC"]
         property var minzoom: 10
     }
@@ -391,7 +383,7 @@ Map {
         
         property var name: "TFCLabels"
         property var layerType: "symbol"
-        property var source: "procedures"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "PRC"]
         property var minzoom: 10
     }
@@ -413,14 +405,6 @@ Map {
     /*************************************
      * Waypoints
      *************************************/
-    
-    MapParameter {
-        type: "source"
-        
-        property var name: "waypoints"
-        property var sourceType: "geojson"
-        property var data: flightMap.geoJSON
-    }
 
     // Define the necessary images
     
@@ -547,7 +531,7 @@ Map {
         
         property var name: "optionalText"
         property var layerType: "symbol"
-        property var source: "waypoints"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "TYP"], "NAV"]
     }
     
@@ -577,7 +561,7 @@ Map {
         
         property var name: "WPs"
         property var layerType: "symbol"
-        property var source: "waypoints"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
     }
 
@@ -609,7 +593,7 @@ Map {
         
         property var name: "RPs"
         property var layerType: "symbol"
-        property var source: "waypoints"
+        property var source: "aviationData"
         property var minzoom: 8
         property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
     }
@@ -641,7 +625,7 @@ Map {
         
         property var name: "AD-GRASS"
         property var layerType: "symbol"
-        property var source: "waypoints"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]]
     }
     
@@ -674,7 +658,7 @@ Map {
         
         property var name: "NavAidIcons"
         property var layerType: "symbol"
-        property var source: "waypoints"
+        property var source: "aviationData"
         property var filter: ["==", ["get", "TYP"], "NAV"]
     }
     
@@ -695,7 +679,7 @@ Map {
         
         property var name: "AD-PAVED"
         property var layerType: "symbol"
-        property var source: "waypoints"
+        property var source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
     }
     

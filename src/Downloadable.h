@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +21,11 @@
 #ifndef DOWNLOADABLE_H
 #define DOWNLOADABLE_H
 
+#include <QFile>
+#include <QFileInfo>
 #include <QNetworkReply>
 #include <QPointer>
-#include <QTemporaryFile>
+#include <QSaveFile>
 
 
 /*! \brief Base class for all downloadable objects
@@ -72,7 +74,7 @@ public:
 
     Use the method startFileDownload() to initiate the download process.
   */
-    explicit Downloadable(QUrl url, QString localFileName, QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
+    explicit Downloadable(QUrl url, const QString& localFileName, QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
 
     // No copy constructor
     Downloadable(Downloadable const&) = delete;
@@ -116,7 +118,7 @@ public:
     Q_PROPERTY(QString fileName READ fileName CONSTANT)
 
     /*! \brief Getter function for the property with the same name */
-    QString fileName() const { return _fileName; }
+    QString fileName() const { return _localFileName; }
 
     /*! \brief Convenience property, returns 'true' if a local file exists
 
@@ -126,7 +128,7 @@ public:
     Q_PROPERTY(bool hasLocalFile READ hasLocalFile NOTIFY localFileChanged)
 
     /*! \brief Getter function for the property with the same name */
-    bool hasLocalFile() const { return QFile::exists(_fileName); }
+    bool hasLocalFile() const { return QFile::exists(_localFileName); }
 
     /*! \brief Short info text describing the state of the downloadable
 
@@ -223,7 +225,8 @@ public slots:
     /*! \brief The convenience method deletes the local file.
 
     This convenience method deletes the local file. The singals
-    aboutToChangeLocalFile() and localFileChanged() are emitted appropriately.
+    aboutToChangeLocalFile() and localFileChanged() are emitted appropriately, and
+    a QLockFile is used at fileName()+".lock".
    */
     void deleteLocalFile();
 
@@ -249,9 +252,13 @@ public slots:
        this indicates that the local file is about to change and that it should
        not be used anymore.
 
+    -# A QLockFile is created at fileName()+".lock"
+
     -# The local file is overwritten by the newly downloaded data.
 
-    -# The signal downloadFinished() is emitted to indicate that the file is
+    -# The QLockFile is removed
+
+    -# The signal localFileChanged() is emitted to indicate that the file is
        again ready to be used.
   */
     void startFileDownload();
@@ -285,9 +292,11 @@ signals:
     using the file immediately. This signal is always followed by the signal
     localFileChanged(), which indicates that the local file can be used again.
 
+    @param localFileName Name of the local file that has will change
+
     @see localFileChanged()
    */
-    void aboutToChangeLocalFile();
+    void aboutToChangeLocalFile(QString localFileName);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged();
@@ -323,7 +332,7 @@ signals:
     This signal indicates that the local file has changed, and is ready to be
     used by clients if it exists.
 
-    @see aboutToChangeLocalFile()
+    @see aboutToChangeLocalFile(QFileInfo)
    */
     void localFileChanged();
 
@@ -385,13 +394,13 @@ private:
 
     // Temporary file for storing partiall data when downloading the remote
     // file. Set to nullptr when no download is in progress.
-    QPointer<QTemporaryFile> _tmpFile;
+    QPointer<QSaveFile> _saveFile {};
 
     // URL of the remote file, as set in the constructor
     QUrl _url;
 
     // Name of the local file, as set in the constructor
-    QString _fileName;
+    QString _localFileName {};
 
     // Modification date of the remote file, set directly via a setter method or
     // by calling downloadRemoteFileInfo().

@@ -21,10 +21,14 @@
 #ifndef GEOMAPPROVIDER_H
 #define GEOMAPPROVIDER_H
 
+#include <QFuture>
 #include <QGeoCoordinate>
 #include <QJsonArray>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QPointer>
 #include <QRegularExpression>
+#include <QTemporaryFile>
 
 #include "Airspace.h"
 #include "GlobalSettings.h"
@@ -90,7 +94,7 @@ public:
      * better cooperation with QML the list returns contains elements of type
      * QObject*, and not Airspace*.
      */
-    Q_INVOKABLE QList<QObject*> airspaces(const QGeoCoordinate& position) const;
+    Q_INVOKABLE QList<QObject*> airspaces(const QGeoCoordinate& position);
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -118,7 +122,10 @@ public:
     Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
 
     /*! \brief Getter function for the property with the same name */
-    QByteArray geoJSON() const;
+    QByteArray geoJSON() {
+        QMutexLocker lock(&_aviationDataMutex);
+        return _combinedGeoJSON_;
+    }
 
     /*! List of nearby airfields
      *
@@ -147,7 +154,10 @@ public:
      *
      * This method returns a list of all waypoints known to this GeoMapProvider (that is, the union of all waypoints in any of the installed maps)
      */
-    QList<Waypoint*> waypoints() { return _waypoints; }
+    QList<Waypoint*> waypoints() {
+        QMutexLocker locker(&_aviationDataMutex);
+        return _waypoints_;
+    }
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -166,9 +176,18 @@ private:
     QRegularExpression specialChars {"[^a-zA-Z0-9]"};
     QHash<QString, QString> simplifySpecialChars_cache;
 
+    // This slot is called every time the the set of GeoJSON files changes. It
+    // fills the aviation data cache.
+    void aviationMapsChanged();
+
+    // Interal function that does most of the work for aviationMapsChanged() emits
+    // geoJSONChanged() when done. This function is meant to be run in a separate
+    // thread.
+    void fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces);
+
     // This slot is called every time the the set of MBTile files changes. It
     // sets up the tile server to and generates a new style file.
-    void geoMapsChanged();
+    void baseMapsChanged();
 
     // This is the path under which is tiles are available on the
     // _tileServer. This is set to a random number that changes every time the
@@ -187,14 +206,19 @@ private:
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> _styleFile;
 
-    // Cache: JSON array that holds the combined features of all GeoJSON maps
-    QJsonArray _features;
+    //
+    // Aviation Data Cache
+    //
+    QFuture<void>    _aviationDataCacheFuture; // Future; indicates if fillAviationDataCache() is currently running
+    QTimer           _aviationDataCacheTimer;  // Timer used to start another run of fillAviationDataCache()
+    // The data in this group is accessed by several threads. The following classes
+    // (whose names ends in an underscore)are therefore
+    // protected by this mutex.
+    QMutex           _aviationDataMutex;
+    QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
+    QList<Waypoint*> _waypoints_;       // Cache: Waypoints
+    QList<Airspace*> _airspaces_;       // Cache: Airspaces
 
-    // Cache: Waypoints
-    QList<Waypoint*> _waypoints;
-
-    // Cache: Airspaces
-    QList<Airspace*> _airspaces;
 };
 
 #endif

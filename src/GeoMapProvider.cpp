@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QtConcurrent/QtConcurrent>
 #include <QGeoCoordinate>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -31,11 +32,18 @@
 GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QObject *parent)
     : QObject(parent), _manager(manager), _settings(settings), _tileServer(QUrl()), _styleFile(nullptr)
 {
-    connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::geoMapsChanged);
-    connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::geoMapsChanged);
+#warning This should be improved to distinguish between base and aviation maps
+    connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::aviationMapsChanged);
+    connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::baseMapsChanged);
+    connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
+
+    _aviationDataCacheTimer.setSingleShot(true);
+    _aviationDataCacheTimer.setInterval(3*1000);
+    connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMapProvider::aviationMapsChanged);
 
     _tileServer.listen(QHostAddress("127.0.0.1"));
-    geoMapsChanged();
+    aviationMapsChanged();
+    baseMapsChanged();
 }
 
 
@@ -61,10 +69,13 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 
 
 
-QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position) const
+QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
 {
+    // Lock data
+    QMutexLocker lock(&_aviationDataMutex);
+
     QList<Airspace*> result;
-    foreach(auto airspace, _airspaces) {
+    foreach(auto airspace, _airspaces_) {
         if (airspace->polygon().contains(position))
             result.append(airspace);
     }
@@ -113,16 +124,6 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 }
 
 
-QByteArray GeoMapProvider::geoJSON() const
-{
-    QJsonObject resultObject;
-    resultObject.insert("type", "FeatureCollection");
-    resultObject.insert("features", _features);
-    QJsonDocument geoDoc(resultObject);
-    return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
-}
-
-
 QList<QObject*> GeoMapProvider::nearbyAirfields(const QGeoCoordinate& position)
 {
     auto wps = waypoints();
@@ -168,47 +169,51 @@ QString GeoMapProvider::simplifySpecialChars(const QString &string)
 }
 
 
-void GeoMapProvider::geoMapsChanged()
+void GeoMapProvider::aviationMapsChanged()
 {
     // Paranoid safety checks
     if (_manager.isNull())
         return;
-
-    // Delete old style file, stop serving tiles
-    delete _styleFile;
-    _tileServer.removeMbtilesFileSet(_currentPath);
-
-    // Serve new tile set under new name
-    _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(_manager->mbtileFiles(), _currentPath);
-
-    // Generate new mapbox style file
-    _styleFile = new QTemporaryFile(this);
-    QFile file(":/flightMap/osm-liberty.json");
-    file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll();
-    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
-    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
-    _styleFile->open();
-    _styleFile->write(data);
-    _styleFile->close();
+    if (_aviationDataCacheFuture.isRunning()) {
+        _aviationDataCacheTimer.start();
+        return;
+    }
 
     //
     // Generate new GeoJSON array and new list of waypoints
     //
-
-    // First, create a set of JSON objects, in order to avoid duplicated entries
-    QSet<QJsonObject> objectSet;
-    bool hideUpperAirspaces = _settings->hideUpperAirspaces();
+    QStringList JSONFileNames;
     foreach(auto geoMapPtr, _manager->aviationMaps()) {
         // Ignore everything but geojson files
         if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
             continue;
         if (!geoMapPtr->hasLocalFile())
             continue;
+        JSONFileNames += geoMapPtr->fileName();
+    }
 
-        QByteArray content = geoMapPtr->localFileContent();
-        auto document = QJsonDocument::fromJson(content);
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, _settings->hideUpperAirspaces());
+}
+
+
+void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces)
+{
+    //
+    // Generate new GeoJSON array and new list of waypoints
+    //
+
+    // First, create a set of JSON objects, in order to avoid duplicated entries
+    QSet<QJsonObject> objectSet;
+    foreach(auto JSONFileName, JSONFileNames) {
+        // Read the lock file
+        QLockFile lockFile(JSONFileName+".lock");
+        lockFile.lock();
+        QFile file(JSONFileName);
+        file.open(QIODevice::ReadOnly);
+        auto document = QJsonDocument::fromJson(file.readAll());
+        file.close();
+        lockFile.unlock();
+
         foreach(auto value, document.object()["features"].toArray()) {
             auto object = value.toObject();
 
@@ -248,14 +253,48 @@ void GeoMapProvider::geoMapsChanged()
         }
         delete as;
     }
+    QJsonObject resultObject;
+    resultObject.insert("type", "FeatureCollection");
+    resultObject.insert("features", newFeatures);
+    QJsonDocument geoDoc(resultObject);
 
     // Sort waypoints by name
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->get("NAM").toString() < b->get("NAM").toString(); });
 
-    _airspaces = newAirspaces;
-    _waypoints = newWaypoints;
-    _features = newFeatures;
+    _aviationDataMutex.lock();
+    _airspaces_ = newAirspaces;
+    _waypoints_ = newWaypoints;
+    _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
+    _aviationDataMutex.unlock();
+
+    emit geoJSONChanged();
+}
+
+
+void GeoMapProvider::baseMapsChanged()
+{
+    // Paranoid safety checks
+    if (_manager.isNull())
+        return;
+
+    // Delete old style file, stop serving tiles
+    delete _styleFile;
+    _tileServer.removeMbtilesFileSet(_currentPath);
+
+    // Serve new tile set under new name
+    _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
+    _tileServer.addMbtilesFileSet(_manager->mbtileFiles(), _currentPath);
+
+    // Generate new mapbox style file
+    _styleFile = new QTemporaryFile(this);
+    QFile file(":/flightMap/osm-liberty.json");
+    file.open(QIODevice::ReadOnly);
+    QByteArray data = file.readAll();
+    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
+    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+    _styleFile->open();
+    _styleFile->write(data);
+    _styleFile->close();
 
     emit styleFileURLChanged();
-    emit geoJSONChanged();
 }

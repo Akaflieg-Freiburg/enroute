@@ -20,7 +20,6 @@ configure_file(text/whatsnew.html.in text/whatsnew.html)
 #
 # Set up sources
 #
-
 set(SOURCES
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
@@ -34,6 +33,7 @@ set(SOURCES
     Airspace.cpp
     AviationUnits.cpp
     Downloadable.cpp
+    DownloadableGroup.cpp
     FlightRoute.cpp
     FlightRoute_Leg.cpp
     GeoMapProvider.cpp
@@ -95,7 +95,8 @@ if( ANDROID )
         ${openssl_SOURCE_DIR}/arm64/libcrypto_1_1.so
         ${openssl_SOURCE_DIR}/arm64/libssl_1_1.so
         ${openssl_SOURCE_DIR}/x86/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/x86/libssl_1_1.so;${openssl_SOURCE_DIR}/x86_64/libcrypto_1_1.so
+        ${openssl_SOURCE_DIR}/x86/libssl_1_1.so
+        ${openssl_SOURCE_DIR}/x86_64/libcrypto_1_1.so
         ${openssl_SOURCE_DIR}/x86_64/libssl_1_1.so
         CACHE INTERNAL ""
         )

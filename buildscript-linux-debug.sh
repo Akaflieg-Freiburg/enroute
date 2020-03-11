@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright © 2016,2018 Stefan Kebekus <stefan.kebekus@math.uni-freiburg.de>
+# Copyright © 2016-2020 Stefan Kebekus <stefan.kebekus@math.uni-freiburg.de>
 #
 #
 # This script builds the scantools library and executables in "Debug" mode.
@@ -29,7 +29,7 @@ export CXX=/usr/bin/clang++
 cmake \
     -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_C_FLAGS="-fsanitize=address -fsanitize=undefined" \
-    -DCMAKE_CXX_FLAGS="-fsanitize=address -fsanitize=undefined" \
+    -DCMAKE_CXX_FLAGS="-fsanitize=address -fsanitize=undefined -Werror -Wall -Wextra" \
     -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address -fsanitize=undefined" \
     -DCMAKE_INSTALL_PREFIX=/ \
     -DCMAKE_MODULE_LINKER_FLAGS="-fsanitize=address -fsanitize=undefined" \

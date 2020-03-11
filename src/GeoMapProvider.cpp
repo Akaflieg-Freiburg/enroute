@@ -32,6 +32,13 @@
 GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QObject *parent)
     : QObject(parent), _manager(manager), _settings(settings), _tileServer(QUrl()), _styleFile(nullptr)
 {
+    // Initialize _combinedGeoJSON_ with an empty document
+    QJsonObject resultObject;
+    resultObject.insert("type", "FeatureCollection");
+    resultObject.insert("features", QJsonArray());
+    QJsonDocument geoDoc(resultObject);
+    _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
+
 #warning This should be improved to distinguish between base and aviation maps
     connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::aviationMapsChanged);
     connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::baseMapsChanged);

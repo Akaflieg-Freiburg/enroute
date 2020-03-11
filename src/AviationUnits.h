@@ -271,7 +271,7 @@ public:
 
 
 /*! \brief Division of distance and speed gives time */
-static AviationUnits::Time operator/ (const AviationUnits::Distance& dist, const AviationUnits::Speed &speed) {
+[[maybe_unused]] static AviationUnits::Time operator/ (const AviationUnits::Distance& dist, const AviationUnits::Speed &speed) {
     if ( (!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())) )
         return {};
     return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());

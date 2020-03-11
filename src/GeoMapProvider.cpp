@@ -238,7 +238,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         // Comment: the list waypoints is used as a model in QML. I am unsure what happens if they get deleted while QML is still using them. I have therefore chosen to not delete them at all. This introduced a minor memory inefficiency when GeoJSON files get upated.
-        auto wp = new Waypoint(object, this);
+        auto wp = new Waypoint(object);
         if (wp->isValid()) {
             newWaypoints.append(wp);
             continue;

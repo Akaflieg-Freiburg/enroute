@@ -1,11 +1,9 @@
-<p>In response to user feedback, version ${PROJECT_VERSION} adds an option to
-  disable the screensaver while the enroute app is running in the
-  foreground. This option is enabled by default.</p>
+<p>Compared to earlier versions of the app, version ${PROJECT_VERSION} is more
+  responsive when downloading or updating maps on low-end devices.</p>
 
-<p>As a second new feature, the app will run in front of the screen lock.  It
-  will show immediately once you press the 'power on' button of your device,
-  without the need to unlock the device with a code, pattern, password or
-  fingerprint.</p>
+<p>In response to user feedback, the moving map display has been changed a
+  little.  Flight routes will now always be shown, and are no longer hidden at
+  high zoom values.</p>
 
 <p>Fly safely and enjoy many happy landings!</p>
 

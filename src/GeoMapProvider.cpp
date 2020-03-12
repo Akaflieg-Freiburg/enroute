@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,7 +39,6 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QO
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-#warning This should be improved to distinguish between base and aviation maps
     connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::aviationMapsChanged);
     connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::baseMapsChanged);
     connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);

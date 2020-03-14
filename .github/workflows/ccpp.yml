@@ -13,14 +13,16 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: Funny valentine
-      run: echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - name: Checkout submodules
-      uses: textbook/git-checkout-submodule-action@master
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init --recursive
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
     - name: Install Software
-      run: apt install doxygen dot
+      run: |
+        apt install doxygen dot
+	
     - name: configure
       run: ./buildscript-linux-debug.sh 
     - name: make

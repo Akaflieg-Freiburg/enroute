@@ -20,7 +20,7 @@ jobs:
     - name: configure
       run: |
       	 apt install doxygen dot
-	 ./buildscript-linux-debug.sh 
+         ./buildscript-linux-debug.sh 
     - name: make
       run: make
     - name: make check

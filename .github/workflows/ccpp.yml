@@ -13,6 +13,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
+    - run: echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - name: Checkout submodules
       uses: textbook/git-checkout-submodule-action@master
     - name: Install Qt

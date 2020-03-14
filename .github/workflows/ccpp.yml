@@ -17,10 +17,10 @@ jobs:
       uses: textbook/git-checkout-submodule-action@master
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
+    - name: Install Software
+      run: apt install doxygen dot
     - name: configure
-      run: |
-      	 apt install doxygen dot
-         ./buildscript-linux-debug.sh 
+      run: ./buildscript-linux-debug.sh 
     - name: make
       run: make
     - name: make check

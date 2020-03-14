@@ -22,7 +22,6 @@ jobs:
     - name: Install Software
       run: |
         apt install doxygen dot
-	
     - name: configure
       run: ./buildscript-linux-debug.sh 
     - name: make

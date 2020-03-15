@@ -20,7 +20,9 @@ configure_file(text/whatsnew.html.in text/whatsnew.html)
 #
 # Set up sources
 #
-set(SOURCES
+
+list(APPEND SOURCES
+
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
@@ -43,17 +45,31 @@ set(SOURCES
     MobileAdaptor.cpp
     SatNav.cpp
     ScaleQuickItem.cpp
+    Share.cpp
     TileHandler.cpp
     TileServer.cpp
     Waypoint.cpp
     Wind.cpp
-    )
+
+    shareutils/shareutils.hpp
+)
 
 
 #
 # Generate android executable
 #
 if( ANDROID )
+
+    list(APPEND SOURCES
+
+        shareutils/androidshareutils.cpp
+
+        android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+        android/src/org/shareluma/activity/QShareActivity.java
+        android/src/org/shareluma/utils/QSharePathResolver.java
+        android/src/org/shareluma/utils/QShareUtils.java
+    )
+
     # Configure AndroidManifest.xml
     configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
 
@@ -67,6 +83,10 @@ if( ANDROID )
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/splash.xml
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/values/apptheme.xml
         ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+	${CMAKE_CURRENT_BINARY_DIR}/android/src/org/shareluma/activity/QShareActivity.java
+        ${CMAKE_CURRENT_BINARY_DIR}/android/src/org/shareluma/utils/QSharePathResolver.java
+        ${CMAKE_CURRENT_BINARY_DIR}/android/src/org/shareluma/utils/QShareUtils.java
+        ${CMAKE_CURRENT_BINARY_DIR}/android/res/xml/filepaths.xml
         )
     add_custom_command(
         OUTPUT ${ANDROID_EXTRA_SOURCES}

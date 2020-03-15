@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Compile and Generate Documentation
 
 on:
   push:
@@ -19,14 +19,19 @@ jobs:
         args: git submodule update --init --recursive
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
-    - name: Install Software
+    - name: Install Additional Software
       run: |
         sudo apt install doxygen graphviz
-    - name: configure
-      run: ./buildscript-linux-debug.sh 
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - name: Configure
+      run: |
+        mkdir build
+	cd build
+	ccmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Werror -Wall -Wextra"
+    - name: Compile
+      run: |
+        cd build
+	make
+    - name: Generate Documentation
+      run: |
+        cd build
+	make enroute_doc

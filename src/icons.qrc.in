@@ -7,6 +7,8 @@
 	<!-- Google Material Icons -->
         <file alias="icons/material/ic_speed.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_speed.svg</file>
 	
+	<file alias="icons/material/ic_add.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_add_24px.svg</file>
+	<file alias="icons/material/ic_add_box.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_add_box_24px.svg</file>
         <file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
         <file alias="icons/material/ic_bug_report.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_bug_report_24px.svg</file>
 	<file alias="icons/material/ic_cancel.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_cancel_24px.svg</file>

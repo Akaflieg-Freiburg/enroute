@@ -201,7 +201,7 @@ public:
 
   /*! \brief Replace name of waypoint
     
-    @param nam new waytpoint name
+    @param nam new waypoint name
   */
   void setName(const QString& nam) { _properties.replace("NAM", QString(nam)); }
   

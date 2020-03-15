@@ -295,7 +295,6 @@ ApplicationWindow {
                 dialogLoader.active = true
                 return
             }
-
         } // Component.onCompleted
 
         Keys.onReleased: {

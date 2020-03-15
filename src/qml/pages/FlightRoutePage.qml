@@ -415,7 +415,7 @@ Page {
         defaultSuffix: "gpx"
         folder: folderSettings.openFolder
         onAccepted: {
-            flightRoute.fromGpxUrl(importFileDialog.file)
+            flightRoute.fromGpx(String(importFileDialog.file))
             folderSettings.openFolder = importFileDialog.folder
         }
         onRejected: {
@@ -488,7 +488,7 @@ Page {
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()
-            share.importFile("application/octet-stream")
+            share.importFile("*/*")
         }
     }
 

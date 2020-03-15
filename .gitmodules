@@ -10,4 +10,4 @@
 	url = https://github.com/KDAB/android_openssl.git
 [submodule "3rdParty/qhttpengine"]
 	path = 3rdParty/qhttpengine
-	url = git@github.com:Akaflieg-Freiburg/qhttpengine.git
+	url = https://github.com/Akaflieg-Freiburg/qhttpengine.git

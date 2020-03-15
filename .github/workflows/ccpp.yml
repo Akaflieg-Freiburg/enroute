@@ -21,7 +21,7 @@ jobs:
       uses: jurplel/install-qt-action@v2
     - name: Install Software
       run: |
-        apt install doxygen dot
+        sudo apt install doxygen dot
     - name: configure
       run: ./buildscript-linux-debug.sh 
     - name: make

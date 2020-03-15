@@ -381,4 +381,12 @@ ApplicationWindow {
         onDetected: MobileAdaptor.vibrateBrief()
     }
 
+    Connections {
+        target: view
+        onActiveChanged: {
+            if (view.active) {
+                share.checkPendingIntents()
+            }
+        }
+    }
 }

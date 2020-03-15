@@ -23,6 +23,9 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
+import QtQuick.Dialogs 1.2
+import Qt.labs.platform 1.0
+
 import enroute 1.0
 
 
@@ -371,11 +374,36 @@ Page {
         headerMenuToolButton.visible = true
         headerMenu.insertAction(0, reverseAction)
         headerMenu.insertAction(1, clearAction)
+        headerMenu.insertAction(2, openWithAction)
+        headerMenu.insertAction(3, shareAction)
+        Qt.platform.os == "android" ? true : headerMenu.insertAction(4, importAction)
     }
     Component.onDestruction: {
         headerMenuToolButton.visible = false
         headerMenu.removeAction(reverseAction)
         headerMenu.removeAction(clearAction)
+        headerMenu.removeAction(openWithAction)
+        headerMenu.removeAction(shareAction)
+        Qt.platform.os == "android" ? true : headerMenu.removeAction(importAction)
+    }
+
+    FileDialog {
+
+        // will _not_ been shown on android
+        // will be used in desktop builds only
+        //
+
+        id: importFileDialog
+        title: "Please choose a gpx file"
+        fileMode: FileDialog.OpenFile
+        nameFilters: ["gpx files (*.gpx)"]
+        defaultSuffix: "gpx"
+        onAccepted: {
+            flightRoute.fromGpx(importFileDialog.file)
+        }
+        onRejected: {
+            // do nothing
+        }
     }
 
     Action {
@@ -401,6 +429,47 @@ Page {
         onTriggered: {
             MobileAdaptor.vibrateBrief()
             flightRoute.clear()
+        }
+    }
+
+    Action {
+        id: openWithAction
+
+        text: qsTr("Open With...")
+        icon.source: "/icons/material/ic_open_in_new.svg"
+        enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            share.openWith(flightRoute.toGpx())
+        }
+    }
+
+    Action {
+        id: shareAction
+
+        text: qsTr("Share Route")
+        icon.source: "/icons/material/ic_share.svg"
+        enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            share.share(flightRoute.toGpx())
+        }
+    }
+
+    // will _not_ been shown on android
+    // will be used in desktop builds only
+    //
+    Action {
+        id: importAction
+
+        text: qsTr("Import Route")
+        icon.source: "/icons/material/ic_input.svg"
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            importFileDialog.open()
         }
     }
 

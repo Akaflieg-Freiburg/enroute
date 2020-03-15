@@ -36,6 +36,7 @@
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
 #include "Wind.h"
+#include "Share.h"
 
 int main(int argc, char *argv[])
 {
@@ -94,8 +95,12 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach flight route
-    auto flightroute = new FlightRoute(aircraft, wind, &engine);
+    auto flightroute = new FlightRoute(aircraft, wind, geoMapProvider, &engine);
     engine.rootContext()->setContextProperty("flightRoute", flightroute);
+
+    // make share available to QML
+    Share share(flightroute, &engine);
+    engine.rootContext()->setContextProperty("share", &share);
 
     /*
      * Load large strings from files, in order to make them available to QML

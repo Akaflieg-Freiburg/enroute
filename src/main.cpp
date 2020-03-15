@@ -41,7 +41,6 @@
 #endif
 #include "ScaleQuickItem.h"
 #include "Wind.h"
-#include "Share.h"
 
 int main(int argc, char *argv[])
 {
@@ -104,16 +103,11 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("flightRoute", flightroute);
 
     // make share available to QML
-<<<<<<< HEAD
 #if defined(Q_OS_ANDROID)
     auto share = new Share(&engine);
     share->connect(share, SIGNAL(fileReceived(const QString&)), flightroute, SLOT(fromGpx(const QString&)));
     engine.rootContext()->setContextProperty("share", share);
 #endif
-=======
-    Share share(flightroute, &engine);
-    engine.rootContext()->setContextProperty("share", &share);
->>>>>>> 6df9a5d... implemented "share route" and "open with" route in both directions, i.e.
 
     /*
      * Load large strings from files, in order to make them available to QML

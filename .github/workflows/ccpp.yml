@@ -25,13 +25,13 @@ jobs:
     - name: Configure
       run: |
         mkdir build
-	cd build
-	ccmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
+        cd build
+        ccmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
     - name: Compile
       run: |
         cd build
-	make
+        make
     - name: Generate Documentation
       run: |
         cd build
-	make enroute_doc
+        make enroute_doc

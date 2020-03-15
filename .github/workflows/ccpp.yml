@@ -24,6 +24,8 @@ jobs:
         sudo apt install doxygen graphviz
     - name: Configure
       run: |
+        export CC=/usr/bin/clang
+        export CXX=/usr/bin/clang++
         cmake -E make_directory build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'

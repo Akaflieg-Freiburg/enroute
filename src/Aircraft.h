@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +24,8 @@
 #include <QSettings>
 
 
-/*! \brief This extremely simple class holds a few numbers that describe an aircraft */
+/*! \brief This extremely simple class holds a few numbers that describe an
+    aircraft */
 
 class Aircraft : public QObject
 {
@@ -33,7 +34,11 @@ class Aircraft : public QObject
 public:
     /*! \brief Default constructor
      *
-     * This constructor reads the values of the properties listed below via QSettings. The values are set to NaN if no valid numbers can be found in the settings object.
+     * This constructor reads the values of the properties listed below via
+     * QSettings. The values are set to NaN if no valid numbers can be found in
+     * the settings object.
+     *
+     * @param parent The standard QObject parent pointer
      */
     explicit Aircraft(QObject *parent = nullptr);
 
@@ -54,46 +59,73 @@ public:
 
     /*! \brief Cruise Speed
      *
-     * This property holds the cruise speed of the aircraft. This is a number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if the cruise speed has not been set.
+     * This property holds the cruise speed of the aircraft. This is a double
+     * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or
+     * NaN if the cruise speed has not been set.
      */
     Q_PROPERTY(double cruiseSpeedInKT READ cruiseSpeedInKT WRITE setCruiseSpeedInKT NOTIFY valChanged)
 
-    /*! \brief Getter function for property of the same name */
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property cruise speed
+     */
     double cruiseSpeedInKT() const { return _cruiseSpeedInKT; }
 
     /*! \brief Setter function for property of the same name
      *
-     * This method saves the new value in a QSetting object. If speedInKT is outside of the interval [minAircraftSpeed, maxAircraftSpeed], the property will be set to NaN.
+     * This method saves the new value in a QSetting object. If speedInKT is
+     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
+     * property will be set to NaN.
+     *
+     * @param speedInKT Property cruise speed
      */
     void setCruiseSpeedInKT(double speedInKT);
 
     /*! \brief Decent Speed
      *
-     * This property holds the descent speed of the aircraft. This is a number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if the cruise speed has not been set.
+     * This property holds the descent speed of the aircraft. This is a number
+     * that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if
+     * the cruise speed has not been set.
      */
     Q_PROPERTY(double descentSpeedInKT READ descentSpeedInKT WRITE setDescentSpeedInKT NOTIFY valChanged)
 
-    /*! \brief Getter function for property of the same name */
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property descentSpeedInKT
+     */
     double descentSpeedInKT() const { return _descentSpeedInKT; }
 
     /*! \brief Setter function for property of the same name
      *
-     * This method saves the new value in a QSetting object. If speedInKT is outside of the interval [minAircraftSpeed, maxAircraftSpeed], the property will be set to NaN.
+     * This method saves the new value in a QSetting object. If speedInKT is
+     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
+     * property will be set to NaN.
+     *
+     * @param speedInKT Descent speed in knots
      */
     void setDescentSpeedInKT(double speedInKT);
 
     /*! \brief Fuel Consumption
      *
-     * This property holds the fuel consumption of the aircraft. This is a number that lies in the interval [minFuelConsumption, maxFuelConsumption] or NaN if no value has been set.
+     * This property holds the fuel consumption of the aircraft. This is a
+     * number that lies in the interval [minFuelConsumption, maxFuelConsumption]
+     * or NaN if no value has been set.
      */
     Q_PROPERTY(double fuelConsumptionInLPH READ fuelConsumptionInLPH WRITE setFuelConsumptionInLPH NOTIFY valChanged)
 
-    /*! \brief Getter function for property of the same name */
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property fuelConsumptionInLPH
+     */
     double fuelConsumptionInLPH() const { return _fuelConsumptionInLPH; }
 
     /*! \brief Setter function for property of the same name
      *
-     * This method saves the new value in a QSetting object. If speedInKT is outside of the interval [minFuelConsumption, maxFuelConsumption], the property will be set to NaN.
+     * This method saves the new value in a QSetting object. If speedInKT is
+     * outside of the interval [minFuelConsumption, maxFuelConsumption], the
+     * property will be set to NaN.
+     *
+     * @param fuelConsumptionInLPH Fuel consumption in liters per hour
      */
     void setFuelConsumptionInLPH(double fuelConsumptionInLPH);
 

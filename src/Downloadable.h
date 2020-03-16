@@ -45,77 +45,86 @@
 
 class Downloadable : public QObject
 {
-    Q_OBJECT
-
+  Q_OBJECT
+  
 public:
-    /*! \brief Standard constructor
+  /*! \brief Standard constructor
+   *
+   * @param url The address in the internet where the newest version of the item
+   * can always be found. This URL should be http or https because data about
+   * the remote file (such as modification time) can be retrieved with this
+   * protocol.
+   *
+   * @param localFileName Name of a local file where the download will be
+   * stored. If the file already exists, the constructor assumes that the file
+   * contains a previously downloaded version of the item, and that the
+   * modification time of the file is the download time.
+   *
+   * @param networkAccessManager Pointer to a QNetworkAccessManager that will be
+   * used for network access. The QNetworkAccessManager needs to survive the
+   * lifetime of this object.
+   *
+   * @param parent The standard QObject parent pointer.
+   *
+   * After construction, size and modification time of the file on the server
+   * are not known and set to -1 and an invalid QDateTime, respectively.  To
+   * obtain these pieces of data from the server, use the method
+   * checkForUpdate(). Alternatively, you can write to the properties
+   * remoteFileDate and remoteFileSize directly, e.g. to restore cached data
+   * when no internet connection is available.
+   *
+   * Use the method startFileDownload() to initiate the download process.
+   */
+  explicit Downloadable(QUrl url, const QString& localFileName, QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
 
-    @param url The address in the internet where the newest version of the item
-    can always be found. This URL should be http or https because data about the
-    remote file (such as modification time) can be retrieved with this protocol.
-    
-    @param localFileName Name of a local file where the download will be
-    stored. If the file already exists, the constructor assumes that the file
-    contains a previously downloaded version of the item, and that the
-    modification time of the file is the download time.
-    
-    @param networkAccessManager Pointer to a QNetworkAccessManager that will be
-    used for network access. The QNetworkAccessManager needs to survive the
-    lifetime of this object.
-    
-    @param parent The standard QObject parent pointer.
+  // No copy constructor
+  Downloadable(Downloadable const&) = delete;
+  
+  // No assign operator
+  Downloadable& operator =(Downloadable const&) = delete;
+  
+  // No move constructor
+  Downloadable(Downloadable&&) = delete;
+  
+  // No move assignment operator
+  Downloadable& operator=(Downloadable&&) = delete;
+  
+  /*! \brief Standard destructor
+   *
+   * This destructor will stop all running downloads and delete all temporary
+   * files.  It will not delete the local file.
+   */
+  ~Downloadable() override;
+  
+  /*! \brief Indicates whether a download process is currently running
+   *
+   * This property indicates whether a download process is currently running
+   *
+   * @see startFileDownload(), stopFileDownload()
+   */
+  Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
-    After construction, size and modification time of the file on the server are
-    not known and set to -1 and an invalid QDateTime, respectively.  To obtain
-    these pieces of data from the server, use the method
-    checkForUpdate(). Alternatively, you can write to the properties
-    remoteFileDate and remoteFileSize directly, e.g. to restore cached data when
-    no internet connection is available.
-
-    Use the method startFileDownload() to initiate the download process.
-  */
-    explicit Downloadable(QUrl url, const QString& localFileName, QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
-
-    // No copy constructor
-    Downloadable(Downloadable const&) = delete;
-
-    // No assign operator
-    Downloadable& operator =(Downloadable const&) = delete;
-
-    // No move constructor
-    Downloadable(Downloadable&&) = delete;
-
-    // No move assignment operator
-    Downloadable& operator=(Downloadable&&) = delete;
-
-    /*! \brief Standard destructor
-
-    This destructor will stop all running downloads and delete all temporary
-    files.  It will not delete the local file.
-  */
-    ~Downloadable() override;
-
-    /*! \brief Indicates whether a download process is currently running
-
-    @see startFileDownload(), stopFileDownload()
-  */
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-
-    /*! \brief Getter function for the property with the same name */
-    bool downloading() const { return !_networkReplyDownloadFile.isNull(); }
-
-    /*! \brief Download progress
-
-    This property holds the download progress, if a download is ongoing. If no
-    download is taking place, this property is undefined.
-  */
-    Q_PROPERTY(int downloadProgress READ downloadProgress NOTIFY downloadProgressChanged)
-
-    /*! \brief Getter function for the property with the same name */
-    int downloadProgress() const { return _downloadProgress; }
-
-    /*! \brief File name, as set in the constructor */
-    Q_PROPERTY(QString fileName READ fileName CONSTANT)
+  /*! \brief Getter function for the property with the same name
+   *
+   * @returns Property downloading
+   */
+  bool downloading() const { return !_networkReplyDownloadFile.isNull(); }
+  
+  /*! \brief Download progress
+   *
+   * This property holds the download progress in percent, if a download is
+   * ongoing. If no download is taking place, this property is undefined.
+   */
+  Q_PROPERTY(int downloadProgress READ downloadProgress NOTIFY downloadProgressChanged)
+  
+  /*! \brief Getter function for the property with the same name
+   *
+   * @returns Property downloadProgress
+   */
+  int downloadProgress() const { return _downloadProgress; }
+  
+  /*! \brief File name, as set in the constructor */
+  Q_PROPERTY(QString fileName READ fileName CONSTANT)
 
     /*! \brief Getter function for the property with the same name */
     QString fileName() const { return _localFileName; }

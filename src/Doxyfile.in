@@ -291,7 +291,7 @@ OPTIMIZE_OUTPUT_VHDL   = NO
 # Note that for custom extensions you also need to set FILE_PATTERNS otherwise
 # the files are not read by doxygen.
 
-EXTENSION_MAPPING      = qml=C++
+EXTENSION_MAPPING      = 
 
 # If the MARKDOWN_SUPPORT tag is enabled then doxygen pre-processes all comments
 # according to the Markdown format, which allows for more readable
@@ -753,7 +753,7 @@ WARN_NO_PARAMDOC       = YES
 # a warning is encountered.
 # The default value is: NO.
 
-WARN_AS_ERROR          = NO
+WARN_AS_ERROR          = YES
 
 # The WARN_FORMAT tag determines the format of the warning messages that doxygen
 # can produce. The string should contain the $file, $line, and $text tags, which
@@ -806,7 +806,7 @@ INPUT_ENCODING         = UTF-8
 # *.m, *.markdown, *.md, *.mm, *.dox, *.py, *.pyw, *.f90, *.f, *.for, *.tcl,
 # *.vhd, *.vhdl, *.ucf, *.qsf, *.as and *.js.
 
-FILE_PATTERNS          = *.h *.md *.qml
+FILE_PATTERNS          = *.h *.md
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.

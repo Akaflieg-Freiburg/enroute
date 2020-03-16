@@ -25,9 +25,9 @@
 
 #include "Downloadable.h"
 
-Downloadable::Downloadable(QUrl url, const QString& fileName, QNetworkAccessManager *networkAccessManager, QObject *parent) :
-    QObject(parent), _networkAccessManager(networkAccessManager), _url(std::move(url))
-{
+Downloadable::Downloadable(QUrl url, const QString &fileName,
+                           QNetworkAccessManager *networkAccessManager, QObject *parent)
+    : QObject(parent), _networkAccessManager(networkAccessManager), _url(std::move(url)) {
     // Paranoid safety checks
     Q_ASSERT(networkAccessManager != nullptr);
     Q_ASSERT(!fileName.isEmpty());
@@ -41,7 +41,6 @@ Downloadable::Downloadable(QUrl url, const QString& fileName, QNetworkAccessMana
     connect(this, &Downloadable::downloadProgressChanged, this, &Downloadable::infoTextChanged);
 }
 
-
 Downloadable::~Downloadable() {
     // Free all ressources
     delete _networkReplyDownloadFile;
@@ -49,16 +48,16 @@ Downloadable::~Downloadable() {
     delete _saveFile;
 }
 
-
-QString Downloadable::infoText() const
-{
+QString Downloadable::infoText() const {
     if (downloading())
         return tr("downloading … %1% complete").arg(_downloadProgress);
 
     QString displayText;
     if (hasLocalFile()) {
         QFileInfo info(_localFileName);
-        displayText = tr("installed • %1").arg(QLocale::system().formattedDataSize(info.size(), 1, QLocale::DataSizeSIFormat));
+        displayText = tr("installed • %1")
+                .arg(QLocale::system().formattedDataSize(info.size(), 1,
+                                                         QLocale::DataSizeSIFormat));
 
         if (updatable())
             displayText += " • " + tr("update available");
@@ -67,16 +66,15 @@ QString Downloadable::infoText() const
     } else {
         displayText += tr("not installed") + " • ";
         if (remoteFileSize() >= 0)
-            displayText += QString("%1").arg(QLocale::system().formattedDataSize(remoteFileSize(), 1, QLocale::DataSizeSIFormat));
+            displayText += QString("%1").arg(QLocale::system().formattedDataSize(
+                                                 remoteFileSize(), 1, QLocale::DataSizeSIFormat));
         else
             displayText += tr("file size unknown");
     }
     return displayText;
 }
 
-
-QByteArray Downloadable::localFileContent() const
-{
+QByteArray Downloadable::localFileContent() const {
     // Paranoid safety checks
     Q_ASSERT(!_localFileName.isEmpty());
 
@@ -88,9 +86,7 @@ QByteArray Downloadable::localFileContent() const
     return file.readAll();
 }
 
-
-void Downloadable::setRemoteFileDate(const QDateTime& dt)
-{
+void Downloadable::setRemoteFileDate(const QDateTime &dt) {
     // Do nothing if old and new data agrees
     if (dt == _remoteFileDate)
         return;
@@ -106,9 +102,7 @@ void Downloadable::setRemoteFileDate(const QDateTime& dt)
     emit remoteFileInfoChanged();
 }
 
-
-void Downloadable::setRemoteFileSize(qint64 size)
-{
+void Downloadable::setRemoteFileSize(qint64 size) {
     // Paranoid safety checks
     Q_ASSERT(size >= -1);
     if (size < -1)
@@ -129,9 +123,7 @@ void Downloadable::setRemoteFileSize(qint64 size)
     emit remoteFileInfoChanged();
 }
 
-
-bool Downloadable::updatable() const
-{
+bool Downloadable::updatable() const {
     if (downloading())
         return false;
     if (!QFile::exists(_localFileName))
@@ -146,9 +138,7 @@ bool Downloadable::updatable() const
     return false;
 }
 
-
-void Downloadable::deleteLocalFile()
-{
+void Downloadable::deleteLocalFile() {
     // If the local file does not exist, there is nothing to do
     if (!QFile::exists(_localFileName))
         return;
@@ -168,9 +158,7 @@ void Downloadable::deleteLocalFile()
         emit updatableChanged();
 }
 
-
-void Downloadable::startFileDownload()
-{
+void Downloadable::startFileDownload() {
     // Paranoid safety checks
     Q_ASSERT(!_networkAccessManager.isNull());
     if (_networkAccessManager.isNull())
@@ -198,10 +186,16 @@ void Downloadable::startFileDownload()
     // Start download
     QNetworkRequest request(_url);
     _networkReplyDownloadFile = _networkAccessManager->get(request);
-    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable::downloadFileFinished);
-    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable::downloadFilePartialDataReceiver);
-    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable::downloadFileProgressReceiver);
-    connect(_networkReplyDownloadFile, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &Downloadable::downloadFileErrorReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this,
+            &Downloadable::downloadFileFinished);
+    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this,
+            &Downloadable::downloadFilePartialDataReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this,
+            &Downloadable::downloadFileProgressReceiver);
+    connect(
+                _networkReplyDownloadFile,
+                static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error),
+                this, &Downloadable::downloadFileErrorReceiver);
 
     // Emit signals as appropriate
     if (oldUpdatable != updatable())
@@ -211,9 +205,7 @@ void Downloadable::startFileDownload()
     emit downloadingChanged();
 }
 
-
-void Downloadable::startRemoteFileInfoDownload()
-{
+void Downloadable::startRemoteFileInfoDownload() {
     // Paranoid safety checks
     Q_ASSERT(!_networkAccessManager.isNull());
     if (_networkAccessManager.isNull())
@@ -225,12 +217,11 @@ void Downloadable::startRemoteFileInfoDownload()
 
     // Start the download process for the remote file info
     _networkReplyDownloadHeader = _networkAccessManager->head(QNetworkRequest(_url));
-    connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this, &Downloadable::downloadHeaderFinished);
+    connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
+            &Downloadable::downloadHeaderFinished);
 }
 
-
-void Downloadable::stopFileDownload()
-{
+void Downloadable::stopFileDownload() {
     // Paranoid safety checks
     Q_ASSERT(!_networkAccessManager.isNull());
     if (_networkAccessManager.isNull())
@@ -254,9 +245,7 @@ void Downloadable::stopFileDownload()
     emit downloadingChanged();
 }
 
-
-void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
-{
+void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
     // Do nothing if there is no error
     if (code == QNetworkReply::NoError)
         return;
@@ -266,13 +255,15 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
 
     // Come up with a message…
     QString message;
-    switch(code) {
+    switch (code) {
     case QNetworkReply::ConnectionRefusedError:
-        message += tr("the remote server refused the connection (the server is not accepting requests)");
+        message +=
+                tr("the remote server refused the connection (the server is not accepting requests)");
         break;
 
     case QNetworkReply::RemoteHostClosedError:
-        message += tr("the remote server closed the connection prematurely, before the entire reply was received and processed");
+        message += tr("the remote server closed the connection prematurely, before the entire "
+                      "reply was received and processed");
         break;
 
     case QNetworkReply::HostNotFoundError:
@@ -284,11 +275,13 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::OperationCanceledError:
-        message += tr("the operation was canceled via calls to abort() or close() before it was finished");
+        message +=
+                tr("the operation was canceled via calls to abort() or close() before it was finished");
         break;
 
     case QNetworkReply::SslHandshakeFailedError:
-        message += tr("the SSL/TLS handshake failed and the encrypted channel could not be established. The sslErrors() signal should have been emitted");
+        message += tr("the SSL/TLS handshake failed and the encrypted channel could not be "
+                      "established. The sslErrors() signal should have been emitted");
         break;
 
     case QNetworkReply::TemporaryNetworkFailureError:
@@ -296,7 +289,8 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::NetworkSessionFailedError:
-        message += tr("the connection was broken due to disconnection from the network or failure to start the network");
+        message += tr("the connection was broken due to disconnection from the network or failure "
+                      "to start the network");
         break;
 
     case QNetworkReply::BackgroundRequestNotAllowedError:
@@ -308,15 +302,18 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::InsecureRedirectError:
-        message += tr("while following redirects, the network access API detected a redirect from a encrypted protocol (https) to an unencrypted one (http)");
+        message += tr("while following redirects, the network access API detected a redirect from "
+                      "a encrypted protocol (https) to an unencrypted one (http)");
         break;
 
     case QNetworkReply::ProxyConnectionRefusedError:
-        message += tr("the connection to the proxy server was refused (the proxy server is not accepting requests)");
+        message += tr("the connection to the proxy server was refused (the proxy server is not "
+                      "accepting requests)");
         break;
 
     case QNetworkReply::ProxyConnectionClosedError:
-        message += tr("the proxy server closed the connection prematurely, before the entire reply was received and processed");
+        message += tr("the proxy server closed the connection prematurely, before the entire reply "
+                      "was received and processed");
         break;
 
     case QNetworkReply::ProxyNotFoundError:
@@ -324,11 +321,13 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::ProxyTimeoutError:
-        message += tr("the connection to the proxy timed out or the proxy did not reply in time to the request sent");
+        message += tr("the connection to the proxy timed out or the proxy did not reply in time to "
+                      "the request sent");
         break;
 
     case QNetworkReply::ProxyAuthenticationRequiredError:
-        message += tr("the proxy requires authentication in order to honour the request but did not accept any credentials offered (if any)");
+        message += tr("the proxy requires authentication in order to honour the request but did "
+                      "not accept any credentials offered (if any)");
         break;
 
     case QNetworkReply::ContentAccessDenied:
@@ -344,15 +343,18 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::AuthenticationRequiredError:
-        message += tr("the remote server requires authentication to serve the content but the credentials provided were not accepted (if any)");
+        message += tr("the remote server requires authentication to serve the content but the "
+                      "credentials provided were not accepted (if any)");
         break;
 
     case QNetworkReply::ContentReSendError:
-        message += tr("the request needed to be sent again, but this failed for example because the upload data could not be read a second time");
+        message += tr("the request needed to be sent again, but this failed for example because "
+                      "the upload data could not be read a second time");
         break;
 
     case QNetworkReply::ContentConflictError:
-        message += tr("the request could not be completed due to a conflict with the current state of the resource");
+        message += tr("the request could not be completed due to a conflict with the current state "
+                      "of the resource");
         break;
 
     case QNetworkReply::ContentGoneError:
@@ -360,11 +362,13 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::InternalServerError:
-        message += tr("the server encountered an unexpected condition which prevented it from fulfilling the request");
+        message += tr("the server encountered an unexpected condition which prevented it from "
+                      "fulfilling the request");
         break;
 
     case QNetworkReply::OperationNotImplementedError:
-        message += tr("the server does not support the functionality required to fulfill the request");
+        message +=
+                tr("the server does not support the functionality required to fulfill the request");
         break;
 
     case QNetworkReply::ServiceUnavailableError:
@@ -372,7 +376,8 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::ProtocolUnknownError:
-        message += tr("the Network Access API cannot honor the request because the protocol is not known");
+        message +=
+                tr("the Network Access API cannot honor the request because the protocol is not known");
         break;
 
     case QNetworkReply::ProtocolInvalidOperationError:
@@ -392,7 +397,8 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
         break;
 
     case QNetworkReply::ProtocolFailure:
-        message += tr("a breakdown in protocol was detected (parsing error, invalid or unexpected responses, etc.)");
+        message += tr("a breakdown in protocol was detected (parsing error, invalid or unexpected "
+                      "responses, etc.)");
         break;
 
     case QNetworkReply::UnknownServerError:
@@ -408,9 +414,7 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
     emit error(objectName(), message);
 }
 
-
-void Downloadable::downloadFileFinished()
-{
+void Downloadable::downloadFileFinished() {
     // Paranoid safety checks
     //  Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_tmpFile.isNull());
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
@@ -434,7 +438,7 @@ void Downloadable::downloadFileFinished()
 
     // Copy the temporary file to the local file
     emit aboutToChangeLocalFile(_localFileName);
-    QLockFile lockFile(_localFileName+".lock");
+    QLockFile lockFile(_localFileName + ".lock");
     lockFile.lock();
     _saveFile->commit();
     lockFile.unlock();
@@ -451,16 +455,13 @@ void Downloadable::downloadFileFinished()
     emit downloadingChanged();
 }
 
-
-void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal)
-{
-    _downloadProgress = (bytesTotal == 0) ? 0 : static_cast<int>((100.0*bytesReceived)/bytesTotal);
+void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
+    _downloadProgress =
+            (bytesTotal == 0) ? 0 : static_cast<int>((100.0 * bytesReceived) / bytesTotal);
     emit downloadProgressChanged(_downloadProgress);
 }
 
-
-void Downloadable::downloadFilePartialDataReceiver()
-{
+void Downloadable::downloadFilePartialDataReceiver() {
     // Paranoid safety checks
     Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_saveFile.isNull());
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
@@ -474,9 +475,7 @@ void Downloadable::downloadFilePartialDataReceiver()
     _saveFile->write(_networkReplyDownloadFile->readAll());
 }
 
-
-void Downloadable::downloadHeaderFinished()
-{
+void Downloadable::downloadHeaderFinished() {
     // Paranoid safety checks
     Q_ASSERT(!_networkReplyDownloadHeader.isNull());
     if (_networkReplyDownloadHeader.isNull())
@@ -490,11 +489,13 @@ void Downloadable::downloadHeaderFinished()
     // Update remote file information
     auto old_remoteFileDate = _remoteFileDate;
     auto old_remoteFileSize = _remoteFileSize;
-    _remoteFileDate = _networkReplyDownloadHeader->header(QNetworkRequest::LastModifiedHeader).toDateTime();
-    _remoteFileSize = _networkReplyDownloadHeader->header(QNetworkRequest::ContentLengthHeader).toLongLong();
+    _remoteFileDate =
+            _networkReplyDownloadHeader->header(QNetworkRequest::LastModifiedHeader).toDateTime();
+    _remoteFileSize =
+            _networkReplyDownloadHeader->header(QNetworkRequest::ContentLengthHeader).toLongLong();
 
     // Emit signals as appropriate
-    if ( (_remoteFileDate != old_remoteFileDate) || (_remoteFileSize != old_remoteFileSize) )
+    if ((_remoteFileDate != old_remoteFileDate) || (_remoteFileSize != old_remoteFileSize))
         emit remoteFileInfoChanged();
     if (oldUpdatable != updatable())
         emit updatableChanged();

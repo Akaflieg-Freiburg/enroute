@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include <QGeoCoordinate>
-#include <QtMath>
 #include <QString>
+#include <QtMath>
 
 #ifndef AVIATIONUNITS_H
 #define AVIATIONUNITS_H
@@ -74,7 +74,7 @@ public:
          */
         static Angle fromDEG(double angleInDEG) {
             Angle result;
-            result._angleInRAD = angleInDEG*RAD_per_DEG;
+            result._angleInRAD = angleInDEG * RAD_per_DEG;
             return result;
         }
 
@@ -114,7 +114,7 @@ public:
          *
          * @returns Cosine of the angle
          */
-        static double cos(const Angle &arg) { return std::cos( arg._angleInRAD ); }
+        static double cos(const Angle &arg) { return std::cos(arg._angleInRAD); }
 
         /*! \brief Sine of an angle, as a dimension-less number
          *
@@ -122,7 +122,7 @@ public:
          *
          * @returns Sine of the angle
          */
-        static double sin(const Angle &arg) { return std::sin( arg._angleInRAD ); }
+        static double sin(const Angle &arg) { return std::sin(arg._angleInRAD); }
 
         /*! \brief Arcsine of a dimension-less number as an angle
          *
@@ -146,7 +146,7 @@ public:
          *
          * @returns Angle, as a number in degrees
          */
-        double toDEG() const { return _angleInRAD/RAD_per_DEG; }
+        double toDEG() const { return _angleInRAD / RAD_per_DEG; }
 
         /*! \brief Returns angle in degrees, normalized to lie in the interval
          * [0.0, 360.0]
@@ -163,12 +163,11 @@ public:
         QString toString() const;
 
     private:
-        static constexpr double RAD_per_DEG = M_PI/180.0;
+        static constexpr double RAD_per_DEG = M_PI / 180.0;
 
         // Speed in meters per second
-        double _angleInRAD {qQNaN()};
+        double _angleInRAD{qQNaN()};
     };
-
 
     /*! \brief Convenience class for distance computations
      *
@@ -177,7 +176,6 @@ public:
      */
     class Distance {
     public:
-
         /*! \brief Constructs a distance
          *
          * @param distanceInM distance in meters
@@ -198,7 +196,7 @@ public:
          */
         static Distance fromFT(double distanceInFT) {
             Distance result;
-            result._distanceInM = distanceInFT*MetersPerFeet;
+            result._distanceInM = distanceInFT * MetersPerFeet;
             return result;
         }
 
@@ -208,7 +206,7 @@ public:
          *
          * @returns reference to this distance
          */
-        Distance& operator+=(const Distance &other) {
+        Distance &operator+=(const Distance &other) {
             _distanceInM += other._distanceInM;
             return *this;
         }
@@ -229,7 +227,7 @@ public:
          *
          * @returns distance in nautical miles
          */
-        double toNM() const { return _distanceInM/MetersPerNauticalMile; }
+        double toNM() const { return _distanceInM / MetersPerNauticalMile; }
 
         /*! \brief Convert to meters
          *
@@ -241,14 +239,14 @@ public:
          *
          * @returns distance in feet
          */
-        double toFeet() const { return _distanceInM/MetersPerFeet; }
+        double toFeet() const { return _distanceInM / MetersPerFeet; }
 
     private:
-        static constexpr double MetersPerFeet         = 0.3048;
+        static constexpr double MetersPerFeet = 0.3048;
         static constexpr double MetersPerNauticalMile = 1852;
 
         // Speed in meters per second
-        double _distanceInM {qQNaN()};
+        double _distanceInM{qQNaN()};
     };
 
     /*! \brief Convenience class for speed computations
@@ -258,7 +256,6 @@ public:
      */
     class Speed {
     public:
-
         /*! \brief Constructs a speed
          *
          * @param speedInMPS speed in meters per second
@@ -267,7 +264,7 @@ public:
          */
         static Speed fromMPS(double speedInMPS) {
             Speed result;
-            result._speedInMPS=speedInMPS;
+            result._speedInMPS = speedInMPS;
             return result;
         }
 
@@ -279,7 +276,7 @@ public:
          */
         static Speed fromKT(double speedInKT) {
             Speed result;
-            result._speedInMPS = speedInKT/KT_per_MPS;
+            result._speedInMPS = speedInKT / KT_per_MPS;
             return result;
         }
 
@@ -304,7 +301,7 @@ public:
         double operator/(const Speed &rhs) {
             if (qFuzzyIsNull(rhs._speedInMPS))
                 return qQNaN();
-            return _speedInMPS/rhs._speedInMPS;
+            return _speedInMPS / rhs._speedInMPS;
         }
 
         /*! \brief Convert to meters per second
@@ -317,15 +314,14 @@ public:
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        double toKT() const { return _speedInMPS*KT_per_MPS; }
+        double toKT() const { return _speedInMPS * KT_per_MPS; }
 
     private:
         static constexpr double KT_per_MPS = 1.943844;
 
         // Speed in meters per second
-        double _speedInMPS {qQNaN()};
+        double _speedInMPS{qQNaN()};
     };
-
 
     /*! \brief Convenience class for time computations
      *
@@ -334,7 +330,6 @@ public:
      */
     class Time {
     public:
-
         /*! \brief Constructs a time
          *
          * @param timeInS  time in seconds
@@ -365,7 +360,7 @@ public:
          *
          * @returns reference to this time
          */
-        Time& operator+=(const Time &other) {
+        Time &operator+=(const Time &other) {
             _timeInS += other._timeInS;
             return *this;
         }
@@ -380,13 +375,13 @@ public:
          *
          * @return time in minutes
          */
-        double toM() const { return _timeInS/Seconds_per_Minute; }
+        double toM() const { return _timeInS / Seconds_per_Minute; }
 
         /*! \brief Convert time to hours
          *
          * @return time in hours
          */
-        double toH() const { return _timeInS/Seconds_per_Hour; }
+        double toH() const { return _timeInS / Seconds_per_Hour; }
 
         /*! \brief Convert time to string
          *
@@ -396,13 +391,12 @@ public:
 
     private:
         static constexpr double Seconds_per_Minute = 60.0;
-        static constexpr double Seconds_per_Hour   = 60.0*60.0;
+        static constexpr double Seconds_per_Hour = 60.0 * 60.0;
 
         // Speed in meters per second
-        double _timeInS {qQNaN()};
+        double _timeInS{qQNaN()};
     };
 };
-
 
 /*! \brief Divide distance and speed
  *
@@ -412,8 +406,9 @@ public:
  *
  * @returns quotient of numerator and denominator as time
  */
-[[maybe_unused]] static AviationUnits::Time operator/ (const AviationUnits::Distance& dist, const AviationUnits::Speed &speed) {
-    if ( (!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())) )
+[[maybe_unused]] static AviationUnits::Time operator/(const AviationUnits::Distance &dist,
+                                                      const AviationUnits::Speed &speed) {
+    if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
         return {};
     return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());
 }

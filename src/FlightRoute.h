@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -59,6 +59,8 @@ public:
      *
      * @param wind Pointer to wind info that is used in route computations. The
      * wind object to supposed to exist throughout the liftime of this object.
+     *
+     * @param parent The standard QObject parent pointer.
      */
     explicit FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent = nullptr);
 
@@ -109,7 +111,10 @@ public:
      */
     Q_PROPERTY(QObject* firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property firstWaypointObject
+     */
     QObject* firstWaypointObject() const;
 
     /*! \brief List of coordinates for the waypoints
@@ -121,13 +126,19 @@ public:
      */
     Q_PROPERTY(QVariantList geoPath READ geoPath NOTIFY waypointsChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property geoPath
+     */
     QVariantList geoPath() const;
 
-    /*! \brief Set to true is the list of waypoints is empty*/
+    /*! \brief True if the list of waypoints is empty*/
     Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY waypointsChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property isEmpty
+     */
     bool isEmpty() const {return _waypoints.isEmpty();}
 
     /*! \brief Last waypoint in the route
@@ -141,7 +152,10 @@ public:
      */
     Q_PROPERTY(QObject* lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property lastWaypointObject
+     */
     QObject* lastWaypointObject() const;
 
     /*! \brief List of waypoints and legs
@@ -153,39 +167,50 @@ public:
      */
     Q_PROPERTY(QList<QObject*> routeObjects READ routeObjects NOTIFY waypointsChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property routeObjects
+     */
     QList<QObject*> routeObjects() const;
 
     /*! \brief Human-readable summary of the flight route*/
     Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property summary
+     */
     QString summary() const;
 
 public slots:
     /*! \brief Deletes all waypoints in the current route */
     void clear();
 
-    /*! \brief Move waypoint one position down
+    /*! \brief Move waypoint one position down in the list of waypoints
      *
      * If the waypoint is contained in the route, the method returns immediately
+     *
+     * @param waypoint Pointer to the waypoint
      */
     void moveDown(QObject *waypoint);
 
-    /*! \brief Move waypoint one position up
+    /*! \brief Move waypoint one position up in the list of waypoints
      *
      * If the waypoint is contained in the route, the method returns immediately
+     *
+     * @param waypoint Pointer to the waypoint
      */
     void moveUp(QObject *waypoint);
 
     /*! \brief Remove waypoint from the current route
      *
      * If the waypoint is contained in the route, the method returns immediately
+     *
+     * @param waypoint Pointer to the waypoint
      */
     void removeWaypoint(QObject *waypoint);
 
-    /*! \brief Reverse the route
-     */
+    /*! \brief Reverse the route */
     void reverse();
 
 signals:

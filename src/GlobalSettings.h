@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,14 +26,14 @@
 
 
 /*! \brief Global Settings Manager
-  
-  This class holds a few data items and exposes them via QObject properties, so
-  that they can be used in QML.  All data stored in this class is saved via
-  QSettings on destruction.  Only one instance of this class should exist at any
-  given time.
-
-  The methods in this class are reentrant, but not thread safe.
-*/
+ *
+ * This class holds a few data items and exposes them via QObject properties, so
+ * that they can be used in QML.  All data stored in this class is saved via
+ * QSettings on destruction.  Only one instance of this class should exist at
+ * any given time.
+ *
+ * The methods in this class are reentrant, but not thread safe.
+ */
 
 class GlobalSettings : public QObject
 {
@@ -49,56 +49,86 @@ public:
     // Delete the copy assignment constructor
     GlobalSettings(GlobalSettings&&) = delete;
 
-    /*! \brief Standard constructor */
+    /*! \brief Standard constructor
+     *
+     * @param parent The standard QObject parent pointer
+     */
     explicit GlobalSettings(QObject *parent = nullptr);
 
     /*! \brief Standard deconstructor */
     ~GlobalSettings() override;
 
     /*! \brief Find out if Terms & Conditions have been accepted
-
-    This property says which version of our "terms and conditions" have been
-    accepted by the user; this is used to determine whether the first-use-dialog
-    should be shown.  If nothing has been accepted yet, 0 is returned.
-  */
+     *
+     * This property says which version of our "terms and conditions" have been
+     * accepted by the user; this is used to determine whether the
+     * first-use-dialog should be shown.  If nothing has been accepted yet, 0 is
+     * returned.
+     */
     Q_PROPERTY(int acceptedTerms READ acceptedTerms WRITE setAcceptedTerms NOTIFY acceptedTermsChanged)
 
-    /*! \brief Getter function for property of the same name */
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property acceptedTerms
+     */
     int acceptedTerms();
 
-    /*! \brief Setter function for property of the same name */
-    void setAcceptedTerms(int);
+    /*! \brief Setter function for property of the same name
+     *
+     * @param accepted Property acceptedTerms
+     */
+    void setAcceptedTerms(int accepted);
 
     /*! \brief Find out if "What's new" should be shown
-
-    This property says if the dialog "What's new" should be shown on startup.
-  */
+     *
+     * This property says if the dialog "What's new" should be shown on startup.
+     */
     Q_PROPERTY(bool showWhatsNew READ showWhatsNew CONSTANT)
 
-    /*! \brief Getter function for property of the same name */
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property showWhatsNew
+     */
     bool showWhatsNew();
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
 
-    /*! \brief Getter function for property of the same name */
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property hideUpperAirspaces
+     */
     bool hideUpperAirspaces();
 
-    /*! \brief Setter function for property of the same name */
-    void setHideUpperAirspaces(bool);
+    /*! \brief Setter function for property of the same name
+     *
+     * @param hUA Property hideUpperAirspaces
+     */
+    void setHideUpperAirspaces(bool hUA);
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool keepScreenOn READ keepScreenOn WRITE setKeepScreenOn NOTIFY keepScreenOnChanged)
 
-    /*! \brief Getter function for property of the same name */
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property keepScreenOn
+     */
     bool keepScreenOn();
 
-    /*! \brief Setter function for property of the same name */
-    void setKeepScreenOn(bool);
+    /*! \brief Setter function for property of the same name
+     *
+     * @param sKSO Property keepScreenOn
+     */
+    void setKeepScreenOn(bool sKSO);
 
 signals:
+    /*! Notifier signal */
     void acceptedTermsChanged();
+
+    /*! Notifier signal */
     void hideUpperAirspacesChanged();
+
+    /*! Notifier signal */
     void keepScreenOnChanged();
 
 private:

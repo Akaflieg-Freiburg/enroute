@@ -18,14 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGlobal>
-
 #include "Aircraft.h"
 
+#include <QtGlobal>
 
-Aircraft::Aircraft(QObject *parent)
-    : QObject(parent)
-{
+Aircraft::Aircraft(QObject *parent) : QObject(parent) {
     _cruiseSpeedInKT = settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble();
     if ((_cruiseSpeedInKT < minAircraftSpeed) || (_cruiseSpeedInKT > maxAircraftSpeed))
         _cruiseSpeedInKT = qQNaN();
@@ -39,9 +36,7 @@ Aircraft::Aircraft(QObject *parent)
         _fuelConsumptionInLPH = qQNaN();
 }
 
-
-void Aircraft::setCruiseSpeedInKT(double speedInKTS)
-{
+void Aircraft::setCruiseSpeedInKT(double speedInKTS) {
     if ((speedInKTS < minAircraftSpeed) || (speedInKTS > maxAircraftSpeed))
         speedInKTS = qQNaN();
 
@@ -52,9 +47,7 @@ void Aircraft::setCruiseSpeedInKT(double speedInKTS)
     }
 }
 
-
-void Aircraft::setDescentSpeedInKT(double speedInKTS)
-{
+void Aircraft::setDescentSpeedInKT(double speedInKTS) {
     if ((speedInKTS < minAircraftSpeed) || (speedInKTS > maxAircraftSpeed))
         speedInKTS = qQNaN();
 
@@ -65,9 +58,7 @@ void Aircraft::setDescentSpeedInKT(double speedInKTS)
     }
 }
 
-
-void Aircraft::setFuelConsumptionInLPH(double fuelConsumptionInLPH)
-{
+void Aircraft::setFuelConsumptionInLPH(double fuelConsumptionInLPH) {
     if ((fuelConsumptionInLPH < minFuelConsuption) || (fuelConsumptionInLPH > maxFuelConsuption))
         fuelConsumptionInLPH = qQNaN();
 

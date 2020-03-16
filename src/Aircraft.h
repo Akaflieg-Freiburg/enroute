@@ -23,47 +23,46 @@
 
 #include <QSettings>
 
-
 /*! \brief This extremely simple class holds a few numbers that describe an
     aircraft */
 
-class Aircraft : public QObject
-{
+class Aircraft : public QObject {
     Q_OBJECT
 
 public:
     /*! \brief Default constructor
      *
      * This constructor reads the values of the properties listed below via
-     * QSettings. The values are set to NaN if no valid numbers can be found in
-     * the settings object.
+     * QSettings. The values are set to NaN if no valid numbers can be found
+     * in the settings object.
      *
      * @param parent The standard QObject parent pointer
      */
     explicit Aircraft(QObject *parent = nullptr);
 
     // No copy constructor
-    Aircraft(Aircraft const&) = delete;
+    Aircraft(Aircraft const &) = delete;
 
     // No assign operator
-    Aircraft& operator =(Aircraft const&) = delete;
+    Aircraft &operator=(Aircraft const &) = delete;
 
     // No move constructor
-    Aircraft(Aircraft&&) = delete;
+    Aircraft(Aircraft &&) = delete;
 
     // No move assignment operator
-    Aircraft& operator=(Aircraft&&) = delete;
+    Aircraft &operator=(Aircraft &&) = delete;
 
     // Standard destructor
     ~Aircraft() override = default;
 
     /*! \brief Cruise Speed
      *
-     * This property holds the cruise speed of the aircraft. This is a double
-     * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or
-     * NaN if the cruise speed has not been set.
+     * This property holds the cruise speed of the aircraft. This is a
+     * double number that lies in the interval [minAircraftSpeed,
+     * maxAircraftSpeed] or NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(double cruiseSpeedInKT READ cruiseSpeedInKT WRITE setCruiseSpeedInKT NOTIFY valChanged)
+    Q_PROPERTY(
+            double cruiseSpeedInKT READ cruiseSpeedInKT WRITE setCruiseSpeedInKT NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
@@ -83,11 +82,12 @@ public:
 
     /*! \brief Decent Speed
      *
-     * This property holds the descent speed of the aircraft. This is a number
-     * that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if
-     * the cruise speed has not been set.
+     * This property holds the descent speed of the aircraft. This is a
+     * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed]
+     * or NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(double descentSpeedInKT READ descentSpeedInKT WRITE setDescentSpeedInKT NOTIFY valChanged)
+    Q_PROPERTY(
+            double descentSpeedInKT READ descentSpeedInKT WRITE setDescentSpeedInKT NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
@@ -108,10 +108,11 @@ public:
     /*! \brief Fuel Consumption
      *
      * This property holds the fuel consumption of the aircraft. This is a
-     * number that lies in the interval [minFuelConsumption, maxFuelConsumption]
-     * or NaN if no value has been set.
+     * number that lies in the interval [minFuelConsumption,
+     * maxFuelConsumption] or NaN if no value has been set.
      */
-    Q_PROPERTY(double fuelConsumptionInLPH READ fuelConsumptionInLPH WRITE setFuelConsumptionInLPH NOTIFY valChanged)
+    Q_PROPERTY(double fuelConsumptionInLPH READ fuelConsumptionInLPH WRITE setFuelConsumptionInLPH
+               NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
@@ -146,14 +147,14 @@ signals:
     void valChanged();
 
 private:
-    static constexpr double minAircraftSpeed  =  40.0;
-    static constexpr double maxAircraftSpeed  = 400.0;
-    static constexpr double minFuelConsuption =   5.0;
+    static constexpr double minAircraftSpeed = 40.0;
+    static constexpr double maxAircraftSpeed = 400.0;
+    static constexpr double minFuelConsuption = 5.0;
     static constexpr double maxFuelConsuption = 100.0;
 
-    double _cruiseSpeedInKT {qQNaN()};
-    double _descentSpeedInKT {qQNaN()};
-    double _fuelConsumptionInLPH {qQNaN()};
+    double _cruiseSpeedInKT{qQNaN()};
+    double _descentSpeedInKT{qQNaN()};
+    double _fuelConsumptionInLPH{qQNaN()};
 
     QSettings settings;
 };

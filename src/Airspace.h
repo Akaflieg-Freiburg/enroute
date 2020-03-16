@@ -26,8 +26,7 @@
 
 /*! \brief A very simple class that describes an airspace */
 
-class Airspace : public QObject
-{
+class Airspace : public QObject {
     Q_OBJECT
 
 public:
@@ -50,16 +49,16 @@ public:
     explicit Airspace(const QJsonObject &geoJSONObject, QObject *parent = nullptr);
 
     // No copy constructor
-    Airspace(Airspace const&) = delete;
+    Airspace(Airspace const &) = delete;
 
     // No assign operator
-    Airspace& operator =(Airspace const&) = delete;
+    Airspace &operator=(Airspace const &) = delete;
 
     // No move constructor
-    Airspace(Airspace&&) = delete;
+    Airspace(Airspace &&) = delete;
 
     // No move assignment operator
-    Airspace& operator=(Airspace&&) = delete;
+    Airspace &operator=(Airspace &&) = delete;
 
     // Standard destructor
     ~Airspace() override = default;
@@ -158,11 +157,11 @@ public:
     QString upperBound() const { return _upperBound; }
 
 private:
-    QString _name {};
-    QString _CAT {};
-    QString _upperBound {};
-    QString _lowerBound {};
-    QGeoPolygon _polygon {};
+    QString _name{};
+    QString _CAT{};
+    QString _upperBound{};
+    QString _lowerBound{};
+    QGeoPolygon _polygon{};
 };
 
 #endif

@@ -24,7 +24,6 @@
 DownloadableGroup::DownloadableGroup(QObject *parent)
     : QObject(parent), _cachedDownloading(false), _cachedUpdatable(false)
 {
-    ;
 }
 
 

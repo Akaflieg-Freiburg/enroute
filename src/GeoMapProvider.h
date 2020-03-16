@@ -37,8 +37,7 @@
 #include "Waypoint.h"
 
 
-/*! \brief Serves GeoMaps, as MBTiles via an embedded HTTP server, and as
-    GeoJSON
+/*! \brief Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON
  *
  * This class works closely with MapManager.  It reads the files managed by
  * MapManager and provides them for use in MapBoxGL powered maps. The data is
@@ -90,38 +89,48 @@ public:
 
     /*! \brief List of airspaces at a given location
      *
-     * This method returns all airspaces that exist over a given position. For
-     * better cooperation with QML the list returns contains elements of type
-     * QObject*, and not Airspace*.
+     * @param position Position over which airspaces are searched for
+     *
+     * @returns all airspaces that exist over a given position. For better
+     * cooperation with QML the list returns contains elements of type QObject*,
+     * and not Airspace*.
      */
     Q_INVOKABLE QList<QObject*> airspaces(const QGeoCoordinate& position);
 
     /*! \brief Find closest waypoint to a given position
      *
-     * This method returns the Waypoint that is closest to the given
-     * position, provided that the distance is not bigger than that to
-     * distPosition. If no sufficiently close waypoint is found a nullptr is
-     * returned.
+     * @param position Position near which waypoints are searched for
+     *
+     * @param distPosition Reference position
+     *
+     * @returns the Waypoint that is closest to the given position, provided
+     * that the distance is not bigger than that to distPosition. If no
+     * sufficiently close waypoint is found a nullptr is returned.
      */
     Q_INVOKABLE QObject* closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
 
     /*! \brief Waypoints containing a given substring
      *
-     * This method returns all those waypoints whose fullName or codeName
-     * contains each of the words in filter.  In order to make the result
-     * accessible to QML, the list is returned as QList<QObject*>. It can thus
-     * be used as a data model in QML.
+     * @param filter List of words
+     *
+     * @returns all those waypoints whose fullName or codeName contains each of
+     * the words in filter.  In order to make the result accessible to QML, the
+     * list is returned as QList<QObject*>. It can thus be used as a data model
+     * in QML.
      */
     Q_INVOKABLE QList<QObject*> filteredWaypointObjects(const QString &filter);
 
     /*! \brief Union of all aviation maps in GeoJSON format
      *
      * This property holds all installed aviation maps in GeoJSON format,
-     *  combined into one bis GeoJSON document
+     * combined into one GeoJSON document.
      */
     Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property geoJSON
+     */
     QByteArray geoJSON() {
         QMutexLocker lock(&_aviationDataMutex);
         return _combinedGeoJSON_;
@@ -129,8 +138,10 @@ public:
 
     /*! List of nearby airfields
      *
-     * This method returns a list of the 20 airfields that are closest to the
-     * given position; the list may however be empty or contain fewer than 20
+     * @param position Position near which airfields are searched for
+     *
+     * @returns a list of the 20 airfields that are closest to the given
+     * position; the list may however be empty or contain fewer than 20
      * items. For better cooperation with QML the list does not contain elements
      * of type Waypoint*, but elements of type QObject*
      */
@@ -147,12 +158,16 @@ public:
      */
     Q_PROPERTY(QString styleFileURL READ styleFileURL NOTIFY styleFileURLChanged)
 
-    /*! \brief Getter function for the property with the same name */
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property styleFileURL
+     */
     QString styleFileURL() const;
 
     /*! \brief Waypoints
      *
-     * This method returns a list of all waypoints known to this GeoMapProvider (that is, the union of all waypoints in any of the installed maps)
+     * @returns a list of all waypoints known to this GeoMapProvider (that is,
+     * the union of all waypoints in any of the installed maps)
      */
     QList<Waypoint*> waypoints() {
         QMutexLocker locker(&_aviationDataMutex);

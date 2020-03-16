@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,16 +24,9 @@
 
 #include "Airspace.h"
 
+Airspace::Airspace(QObject *parent) : QObject(parent) {}
 
-Airspace::Airspace(QObject *parent)
-    : QObject(parent)
-{
-}
-
-
-Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent)
-    : QObject(parent)
-{
+Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(parent) {
     // Paranoid safety checks
     if (geoJSONObject["type"] != "Feature")
         return;
@@ -50,12 +43,12 @@ Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent)
     if (polygonArray.size() != 1)
         return;
     auto polygonCoordinates = polygonArray[0].toArray();
-    foreach(auto coordinate, polygonCoordinates) {
+    foreach (auto coordinate, polygonCoordinates) {
         auto coordinateArray = coordinate.toArray();
-        auto geoCoordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble() );
+        auto geoCoordinate =
+                QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble());
         _polygon.addCoordinate(geoCoordinate);
     }
-
 
     // Get properties
     if (!geoJSONObject.contains("properties"))
@@ -78,18 +71,16 @@ Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent)
     _lowerBound = properties["BOT"].toString();
 }
 
-
-double Airspace::estimatedLowerBoundInFtMSL() const
-{
+double Airspace::estimatedLowerBoundInFtMSL() const {
     double result = 0.0;
     bool ok;
 
     QString AL = _lowerBound.simplified();
 
     if (AL.startsWith("FL", Qt::CaseInsensitive)) {
-        result = AL.remove(0,2).toDouble(&ok);
+        result = AL.remove(0, 2).toDouble(&ok);
         if (ok)
-            return 100*result;
+            return 100 * result;
         return 0.0;
     }
 
@@ -112,16 +103,14 @@ double Airspace::estimatedLowerBoundInFtMSL() const
     return 0.0;
 }
 
-
-bool Airspace::isUpper() const
-{
+bool Airspace::isUpper() const {
     QString AL = _lowerBound.simplified();
 
     if (!AL.startsWith("FL", Qt::CaseInsensitive))
         return false;
 
     bool ok;
-    double fl = AL.remove(0,2).toDouble(&ok);
+    double fl = AL.remove(0, 2).toDouble(&ok);
     if (!ok)
         return false;
 

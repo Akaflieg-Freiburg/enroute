@@ -22,34 +22,28 @@
 
 #include "AviationUnits.h"
 
-
-QString AviationUnits::Angle::toString() const
-{
+QString AviationUnits::Angle::toString() const {
     double angleInDegrees = toDEG();
 
     angleInDegrees = qAbs(angleInDegrees);
     int deg = static_cast<int>(qFloor(angleInDegrees));
-    angleInDegrees = (angleInDegrees-qFloor(angleInDegrees))*60.0;
+    angleInDegrees = (angleInDegrees - qFloor(angleInDegrees)) * 60.0;
     int min = static_cast<int>(qFloor(angleInDegrees));
-    angleInDegrees = (angleInDegrees-qFloor(angleInDegrees))*60.0;
+    angleInDegrees = (angleInDegrees - qFloor(angleInDegrees)) * 60.0;
 
     return QString("%1° %2' %3\"").arg(deg).arg(min).arg(angleInDegrees, 0, 'f', 2);
 }
 
-
-double AviationUnits::Angle::toNormalizedDEG() const
-{
+double AviationUnits::Angle::toNormalizedDEG() const {
     double angle = toDEG();
     if (!std::isfinite(angle))
         return qQNaN();
 
-    double a = angle/360.0;
-    return 360.0*(a-qFloor(a));
+    double a = angle / 360.0;
+    return 360.0 * (a - qFloor(a));
 }
 
-
-QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geoLong)
-{
+QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geoLong) {
     // Interpret coordinates.
     auto lat = geoLat.chopped(1).toDouble();
     if (geoLat.right(1) == "S")
@@ -62,20 +56,19 @@ QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QS
     return QGeoCoordinate(lat, lon);
 }
 
-
-QString AviationUnits::Time::toHoursAndMinutes() const
-{
+QString AviationUnits::Time::toHoursAndMinutes() const {
     // Paranoid safety checks
     if (!isFinite())
         return "-:--";
 
     auto minutes = qRound(qAbs(toM()));
-    auto hours = minutes/60;
+    auto hours = minutes / 60;
     minutes = minutes % 60;
 
     QString result;
     if (isNegative())
         result += "-";
-    result += QString("%1:%2").arg(hours,1,10,QLatin1Char('0')).arg(minutes,2,10,QLatin1Char('0'));
+    result +=
+        QString("%1:%2").arg(hours, 1, 10, QLatin1Char('0')).arg(minutes, 2, 10, QLatin1Char('0'));
     return result;
 }

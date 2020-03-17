@@ -234,7 +234,6 @@ signals:
 
     @param path Constant string "osm"
   */
-#warning Since the path is constant, this might be a little useless
   void mbtileFilesChanged(QSet<QString> newSet, QString path);
 							     
 private slots:

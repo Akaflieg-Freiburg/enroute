@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,20 +39,32 @@ class ScaleQuickItem : public QQuickPaintedItem
 {
   Q_OBJECT
 
+public:
+  /*! \brief Standard constructor 
+
+    @param parent The standard QObject parent pointer
+  */
+  explicit ScaleQuickItem(QQuickItem *parent = nullptr);
+
   /*! \brief Number of pixel that represent a distance of 10km on the map */
   Q_PROPERTY(qreal pixelPer10km READ pixelPer10km WRITE setPixelPer10km NOTIFY pixelPer10kmChanged)
 
-public:
-  /*! \brief Standard constructor */
-  explicit ScaleQuickItem(QQuickItem *parent = nullptr);
-
-  /*! \brief Getter function for the property with the same name */
+  /*! \brief Getter function for the property with the same name
+    
+    @returns Property pixelPer10km
+   */
   qreal pixelPer10km() const {return _pixelPer10km;}
 
-  /*! \brief Setter function for the property with the same name */
+  /*! \brief Setter function for the property with the same name
+
+    @param _pxp10k  Property pixelPer10km
+  */
   void setPixelPer10km(qreal _pxp10k);
 
-  /*! \brief Re-implemented from QQuickPaintedItem to implement painting */
+  /*! \brief Re-implemented from QQuickPaintedItem to implement painting
+
+    @param painter Pointer to the QPainter used for painting
+  */
   void paint(QPainter *painter) override;
 
 signals:

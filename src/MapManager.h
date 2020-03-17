@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -82,116 +82,141 @@ public:
   /*! \brief Determines whether some of the installed geo maps can be updated */
   Q_PROPERTY(bool geoMapUpdatesAvailable READ geoMapUpdatesAvailable NOTIFY geoMapUpdatesAvailableChanged)
   
-  /*! \brief Getter function for the property with the same name */
-  bool geoMapUpdatesAvailable() const;
+  /*! \brief Getter function for the property with the same name
 
+    @returns Property geoMapUpdatesAvailable
+  */
+  bool geoMapUpdatesAvailable() const;
+  
   /*! \brief Gives an estimate for the download size, as a localized string */
   Q_PROPERTY(QString geoMapUpdateSize READ geoMapUpdateSize NOTIFY geoMapUpdatesAvailableChanged)
+  
+  /*! \brief Getter function for the property with the same name
 
-  /*! \brief Getter function for the property with the same name */
+    @returns Property geoMapUpdateSize
+  */
   QString geoMapUpdateSize() const;
 
   /*! \brief List of available aviation maps
-
-    This method return a QMap that contains pointers to all known aviation maps
-    as values, and map names as keys. The aviation maps are owned by this map
-    manager and must not be deleted. The lifetime of the aviation maps is not
-    guaranteed, so if you must store them, then store them in a QPointer and
-    check validity of the pointer before every use.
-   */
+    
+    @returns a QMap that contains pointers to all known aviation maps as values,
+    and map names as keys. The aviation maps are owned by this map manager and
+    must not be deleted. The lifetime of the aviation maps is not guaranteed, so
+    if you must store them, then store them in a QPointer and check validity of
+    the pointer before every use.
+  */
   QMap<QString, Downloadable*> aviationMaps() const;
-
+  
   /*! \brief List of available aviation maps, as a list of QObjects
-
+    
     This property is identical to aviationMaps, but returns the pointers to the
     actual maps in the form of a QObjectList instead of a QMap
-   */
+  */
   Q_PROPERTY(QList<QObject*> aviationMapsAsObjectList READ aviationMapsAsObjectList NOTIFY geoMapsChanged)
 
-  /*! \brief Getter function for the property with the same name */
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property aviationMapsAsObjectList
+  */
   QList<QObject*> aviationMapsAsObjectList() const;
 
   /*! \brief True if at least one aviation map is installed */
   Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapsChanged)
+  
+  /*! \brief Getter function for the property with the same name
 
-  /*! \brief Getter function for the property with the same name */
+    @returns hasAviationMap
+   */
   bool hasAviationMap() const;
-
+  
   /*! \brief List of available base maps
 
-    This method returns a QMap that contains pointers to all known base maps
-    as values, and map names as keys. The aviation maps are owned by this map
-    manager and must not be deleted. The lifetime of the maps is not
-    guaranteed, so if you must store them, then store them in a QPointer and
-    check validity of the pointer before every use.
-   */
+    @returns a QMap that contains pointers to all known base maps as values, and
+    map names as keys. The aviation maps are owned by this map manager and must
+    not be deleted. The lifetime of the maps is not guaranteed, so if you must
+    store them, then store them in a QPointer and check validity of the pointer
+    before every use.
+  */
   QMap<QString, Downloadable *> baseMaps() const;
-
+  
   /*! \brief List of available aviation maps, as a list of QObjects
-
+    
     This property is identical to aviationMaps, but returns the pointers to the
     actual maps in the form of a QObjectList instead of a QMap
-   */
+  */
   Q_PROPERTY(QList<QObject*> baseMapsAsObjectList READ baseMapsAsObjectList NOTIFY geoMapsChanged)
 
-  /*! \brief Getter function for the property with the same name */
-  QList<QObject*> baseMapsAsObjectList() const;
+  /*! \brief Getter function for the property with the same name
 
+    @returns baseMapsAsObjectList
+  */
+  QList<QObject*> baseMapsAsObjectList() const;
+  
   /*! \brief True if at least one aviation map is installed */
   Q_PROPERTY(bool hasBaseMap READ hasBaseMap NOTIFY geoMapsChanged)
+  
+  /*! \brief Getter function for the property with the same name
 
-  /*! \brief Getter function for the property with the same name */
+    @returns hasBaseMap
+  */
   bool hasBaseMap() const;
-
+  
   /*! \brief True if list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapsChanged)
-
-  /*! \brief Getter function for the property with the same name */
+  
+  /*! \brief Getter function for the property with the same name
+    
+    @returns hasGeoMapList
+   */
   bool hasGeoMapList() const { return !_geoMaps.isEmpty(); }
 
-  /*! \brief Indicates whether the file "maps.json" is currently being
-      downloaded */
+  /*! \brief Indicates whether the file "maps.json" is currently being downloaded */
   Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
   
-  /*! \brief Getter function for the property with the same name */
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property downloading
+   */
   bool downloading() const;
 
   /*! \brief Set of all mbtiles files that have been downloaded and are ready-to-use */
   Q_PROPERTY(QSet<QString> mbtileFiles READ mbtileFiles NOTIFY mbtileFilesChanged)
 
-  /*! \brief Getter function for the property with the same name */
-  QSet<QString> mbtileFiles() const;
+  /*! \brief Getter function for the property with the same name
 
+    @returns Property mbtileFiles
+   */
+  QSet<QString> mbtileFiles() const;
 
 public slots:
   /*! \brief Triggers manual download of list of available maps */
   void startUpdate();
-
+  
   /*! \brief Triggers an update for every updatable map */
   void startMapUpdates();
   
 signals:
   /*! \brief Warning that the list of available aviation maps is about to change
-
+    
     This signal is emitted once the download of the text file describing list of
     available aviation maps finished, just before the list is overwritten with
     new data. It indicates that all users should stop using the list
     immediately. This signal is always followed by the signal
     aviationMapsChanged(), which indicates that the list can be used again.
-
+    
     @see aviationMapsChanged()
-   */
+  */
   void aboutToChangeAviationMapList();
-
+  
   /*! \brief Notification signal for the property with the same name */
   void geoMapsChanged();
   
   /*! \brief Notification signal for the property with the same name */
   void geoMapUpdatesAvailableChanged();
-
+  
   /*! \brief Notification signal for the property with the same name */
   void downloadingChanged();
-
+  
   /*! \brief Download error
     
     This signal is emitted if the download process for the list of available
@@ -204,11 +229,14 @@ signals:
   void error(QString message);
 
   /*! \brief Notification signal for the property with the same name
-   *
-   * @param newSet The current set of mbtile files
-   */
-  void mbtileFilesChanged(QSet<QString> newSet, QString path);
+    
+    @param newSet The current set of mbtile files
 
+    @param path Constant string "osm"
+  */
+#warning Since the path is constant, this might be a little useless
+  void mbtileFilesChanged(QSet<QString> newSet, QString path);
+							     
 private slots:
   // Trivial method that re-sends the signal, but without the parameter
   // 'objectName'

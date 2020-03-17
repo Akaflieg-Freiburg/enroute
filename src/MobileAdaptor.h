@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,33 +25,46 @@
 #include <QObject>
 
 /*! \brief Interface to platform-specific capabilities of mobile devices
- *
- * This class is an interface to capabilities of mobile devices (e.g. vibration) that need platform-specific code to operate. On desktop platforms, the methods of this class generally do nothing.
- *
- */
+  
+  This class is an interface to capabilities of mobile devices (e.g. vibration)
+  that need platform-specific code to operate. On desktop platforms, the methods
+  of this class generally do nothing.
+*/
 
 class MobileAdaptor : public QObject
 {
-    Q_OBJECT
-
+  Q_OBJECT
+  
 public:
-    explicit MobileAdaptor(QObject *parent = nullptr);
-
+  explicit MobileAdaptor(QObject *parent = nullptr);
+						   
 public slots:
-    /*! \brief On Android, hides the android splash screen. On other platforms, this does nothing.
-     *
-     * The implementation ensures that QtAndroid::hideSplashScreen is called (only once, regardless of how often this slot is used).
-     */
-    void hideSplashScreen();
+  /*! \brief Hides the android splash screen.
 
-    /*! \brief On Android, make the device briefly vibrate. On other platforms, this does nothing. */
-    void vibrateBrief();
+    On Android, hides the android splash screen. On other platforms, this does
+    nothing. The implementation ensures that QtAndroid::hideSplashScreen is
+    called (only once, regardless of how often this slot is used).
+  */
+  void hideSplashScreen();
 
-    /*! \brief On Android, disables the screen lock: if set to 'on', the screen will never switch off while the app is shown to the user. On other platforms, this does nothing. */
-    void keepScreenOn(bool on);
+  /*! \brief Make the device briefly vibrate
 
+    On Android, make the device briefly vibrate. On other platforms, this does
+    nothing.
+  */
+  void vibrateBrief();
+  
+  /*! \brief On Android, disables the screen lock
+
+    On Android, disables the screen lock. On other platforms, this does nothing.
+
+    @param on If set to 'true', the screen will never switch off while the app
+        is shown to the user. 
+  */
+  void keepScreenOn(bool on);
+  
 private:
-    bool splashScreenHidden {false};
+  bool splashScreenHidden {false};
 };
 
 #endif // ANDROIDADAPTOR_H

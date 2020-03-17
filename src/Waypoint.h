@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,107 +28,168 @@
 
 
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
- *
- * This class represents a waypoint feature of a GeoJSON file, as described in the technical documentation of the Enroute App.
- * In essence, it contains two bits of data:
- *
- * - The coordinate of the waypoint.
- *
- * - A QMap<QString, QVariant> that represents the waypoint properties found in the GeoJSON file.
- */
+  
+  This class represents a waypoint feature of a GeoJSON file, as described in
+  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+  In essence, it contains two bits of data:
+  
+  - The coordinate of the waypoint.
+  
+  - A QMap<QString, QVariant> that represents the waypoint properties found in the GeoJSON file.
+*/
 
 class Waypoint : public QObject
 {
-    Q_OBJECT
-
+  Q_OBJECT
+  
 public:
-    /*! \brief Constructs an invalid way point */
-    explicit Waypoint(QObject *parent = nullptr);
+  /*! \brief Constructs an invalid way point
+    
+    @param parent The standard QObject parent pointer
+  */
+  explicit Waypoint(QObject *parent = nullptr);
+  
+  /*! \brief Constructs a waypoint by copying data from another waypoint
 
-    /*! \brief Constructs a waypoint by copying data from another waypoint */
-    explicit Waypoint(const Waypoint &other, QObject *parent = nullptr);
+    @param other Waypoint whose data is copied
+    
+    @param parent The standard QObject parent pointer
+  */
+  explicit Waypoint(const Waypoint &other, QObject *parent = nullptr);
+  
+  /*! \brief Constructs a way point from a coordinate
+    
+    The waypoint constructed is generic. It will have property TYP="WP" and
+    property CAT="WP".
 
-    /*! \brief Constructs a way point from a coordinate
-     *
-     * The waypoint constructed is generic. It will have property TYP="WP" and property CAT="WP".
-     */
-    explicit Waypoint(const QGeoCoordinate& coordinate, QObject *parent = nullptr);
+    @param coordinate Geographical position of the waypoint
+    
+    @param parent The standard QObject parent pointer
+  */
+  explicit Waypoint(const QGeoCoordinate& coordinate, QObject *parent = nullptr);
+  
+  /*! \brief Constructs a waypoint from a GeoJSON object
 
-    /*! \brief Constructs a waypoint from a GeoJSON object */
-    explicit Waypoint(const QJsonObject &geoJSONObject, QObject *parent = nullptr);
+    This method constructs a Waypoint from a GeoJSON description. The GeoJSON
+    file specification is found
+    [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+    
+    @param geoJSONObject GeoJSON Object that describes the waypoint
+    
+    @param parent The standard QObject parent pointer
+  */
+  explicit Waypoint(const QJsonObject &geoJSONObject, QObject *parent = nullptr);
+  
+  /*! \brief Constructs a waypoint by reading in data from a QDataStream
 
-    /*! \brief Constructs a waypoint by reading in data from a QDataStream */
-    explicit Waypoint(QDataStream &stream, QObject *parent = nullptr);
+    @param stream QDatastream
+    
+    @param parent The standard QObject parent pointer
+  */
+  explicit Waypoint(QDataStream &stream, QObject *parent = nullptr);
+  
+  // No copy constructor
+  Waypoint(Waypoint const&) = delete;
+  
+  // No assign operator
+  Waypoint& operator =(Waypoint const&) = delete;
+  
+  // No move constructor
+  Waypoint(Waypoint&&) = delete;
+  
+  // No move assignment operator
+  Waypoint& operator=(Waypoint&&) = delete;
+  
+  // Standard destructor
+  ~Waypoint() = default;
+  
+  /*! \brief Coordinate of the waypoint
+    
+    If the coordinate is invalid, this waypoint should not be used
+  */
+  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+  
+  /*! \brief Getter function for property with the same name
 
-    // No copy constructor
-    Waypoint(Waypoint const&) = delete;
+    @returns Property coordinate
+  */
+  QGeoCoordinate coordinate() const { return _coordinate; }
+  
+  /*! \brief Extended name of the Waypoints
+    
+    This method returns a string of the form "Karlsruhe (DVOR-DME)"
+  */
+  Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+  
+  /*! \brief Getter function for property with the same name
 
-    // No assign operator
-    Waypoint& operator =(Waypoint const&) = delete;
+    @returns Property extendedName
+  */
+  Q_INVOKABLE QString extendedName() const;
+  
+  /*! \brief Retrieve member by name
+    
+    Recall that this class represents a waypoint feature of a GeoJSON file, as
+    described in
+    [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+    This method allows to retrieve the individual members described in this
+    file.
+    
+    @param name The name of the member. This is a string such as "CAT", "TYP",
+    "NAM", etc
 
-    // No move constructor
-    Waypoint(Waypoint&&) = delete;
+    @returns Value of the member
+   */
+  Q_INVOKABLE QVariant get(const QString& name) const { return _properties.value(name); }
+  
+  /* \brief Validity
+   
+    This is a simple shortcut for coordinate().isValid
+  */
+  bool isValid() const { return _coordinate.isValid(); }
 
-    // No move assignment operator
-    Waypoint& operator=(Waypoint&&) = delete;
+  /* \brief Name of the waypoint as rich text */
+  Q_PROPERTY(QString richTextName READ richTextName CONSTANT)
 
-    // Standard destructor
-    ~Waypoint() = default;
+  /*! \brief Getter function for property with the same name
 
-    /*! \brief Coordinate of the waypoint
-     *
-     * If the coordinate is invalid, this waypoint should not be used
-     */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+    @returns Property richTextName
+  */
+  QString richTextName() const;
+  
+  /* \brief Description of waypoint details as an HTML table */
+  Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
+  
+  /*! \brief Getter function for property with the same name
 
-    /*! \brief Getter function for property with the same name */
-    QGeoCoordinate coordinate() const { return _coordinate; }
+    @returns Property tabularDescription
+  */
+  QList<QString> tabularDescription() const;
+  
+  /*! \brief Serializes a Waypoint
 
-    /*! \brief Extended name of the Waypoints
-     *
-     * This method returns a string of the form "Karlsruhe (DVOR-DME)"
-     */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+    @param stream QDataStream that is written into
+    
+    @param wp Waypoint that will be written
 
-    /*! \brief Getter function for property with the same name */
-    Q_INVOKABLE QString extendedName() const;
+    @returns Reference to the stream
+  */
+  friend QDataStream& operator<< (QDataStream& stream, const Waypoint& wp);
+  
+  /*! \brief Description of the way from a given position to the waypoint
+    
+    @param position Position
 
-    /*! \brief Retrieve property by name */
-    Q_INVOKABLE QVariant get(const QString& name) const { return _properties.value(name); }
-
-    /* \brief Validity
-     *
-     * This is a simple shortcut for coordinate().isValid
-     */
-    bool isValid() const { return _coordinate.isValid(); }
-
-    /* \brief Name of the waypoint as rich text */
-    Q_PROPERTY(QString richTextName READ richTextName CONSTANT)
-
-    /*! \brief Getter function for property with the same name */
-    QString richTextName() const;
-
-    /* \brief Description of waypoint details as an HTML table */
-    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
-
-    /*! \brief Getter function for property with the same name */
-    QList<QString> tabularDescription() const;
-
-    /*! \brief Serializes a Waypoint */
-    friend QDataStream& operator<< (QDataStream& stream, const Waypoint& wp);
-
-    /*! \brief Description of the way from position to the waypoint
-     *
-     * This is a string of the form "65.2 NM • TC 276°"
-     */
-    Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position) const;
-
+    @returns a string of the form "65.2 NM • TC 276°"
+  */
+  Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position) const;
+  
 private:
-    // Used to check compatibility when loading/saving
-    static const quint16 streamVersion = 5;
-
-    QGeoCoordinate _coordinate;
-    QMultiMap<QString, QVariant> _properties;
+  // Used to check compatibility when loading/saving
+  static const quint16 streamVersion = 5;
+  
+  QGeoCoordinate _coordinate;
+  QMultiMap<QString, QVariant> _properties;
 };
 
 #endif

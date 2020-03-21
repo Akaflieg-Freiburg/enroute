@@ -39,10 +39,9 @@ jobs:
         make enroute_doc
         mv src/APIdoc/html ../APIdoc
     - name: Publish Documentation
-      run: |
-        uses: crazy-max/ghaction-github-pages@v1
-        with:
-          target_branch: gh-pages
-          build_dir: APIdoc
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: APIdoc
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

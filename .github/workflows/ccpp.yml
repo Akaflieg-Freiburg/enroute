@@ -37,7 +37,7 @@ jobs:
       run: |
         cd build
         make enroute_doc
-        mv build/src/APIdoc/html APIdoc
+        mv src/APIdoc/html ../APIdoc
     - name: Publish Documentation
       run: |
         uses: crazy-max/ghaction-github-pages@v1

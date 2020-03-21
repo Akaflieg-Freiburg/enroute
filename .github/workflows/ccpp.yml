@@ -46,4 +46,3 @@ jobs:
           build_dir: APIdoc
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-	  

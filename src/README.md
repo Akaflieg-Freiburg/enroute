@@ -1,6 +1,6 @@
 ## Architecture
 
-**enroute flight navigation** is a fairly standard Qt application. The user interface is written in QML, the hard functionality is written in C++. 
+**enroute flight navigation** is a fairly standard Qt application. The user interface is written in QML, the hard functionality is written in C++.  This document describes the C++ part of the program.
 
 ### A. Moving map
 

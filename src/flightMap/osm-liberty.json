@@ -11,7 +11,7 @@
     "url": "%URL%"
     }
   },
-  "sprite": "https://maputnik.github.io/osm-liberty/sprites/osm-liberty",
+  "sprite": "%URL2%/flightMap/sprites/sprite",
   "glyphs": "%URL2%/flightMap/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {

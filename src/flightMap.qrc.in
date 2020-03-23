@@ -5,6 +5,11 @@
         <file alias="flightMap/osm-liberty.json">${CMAKE_CURRENT_SOURCE_DIR}/flightMap/osm-liberty.json</file>
 
 	<!-- Sprites -->
+	<file alias="flightMap/sprites/sprite.json">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty.json</file>
+	<file alias="flightMap/sprites/sprite@2x.json">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty@2x.json</file>
+	<file alias="flightMap/sprites/sprite.png">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty.png</file>
+	<file alias="flightMap/sprites/sprite@2x.png">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty@2x.png</file>
+	
 	<file alias="flightMap/sprites/AD.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD.png</file>
 	<file alias="flightMap/sprites/AD@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD@2x.png</file>
 	<file alias="flightMap/sprites/AD-GLD.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-GLD.png</file>

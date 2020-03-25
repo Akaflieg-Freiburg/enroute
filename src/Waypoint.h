@@ -201,9 +201,7 @@ public:
 
   /*! \brief Replace name of waypoint
     
-    @param nam new position
-
-    @returns a string of the form "65.2 NM • TC 276°"
+    @param nam new waytpoint name
   */
   void setName(const QString& nam) { _properties.replace("NAM", QString(nam)); }
   

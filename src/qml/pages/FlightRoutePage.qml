@@ -25,6 +25,7 @@ import QtQuick.Layouts 1.12
 
 import QtQuick.Dialogs 1.2
 import Qt.labs.platform 1.0
+import Qt.labs.settings 1.0
 
 import enroute 1.0
 
@@ -371,35 +372,80 @@ Page {
 
     // Add ToolButton to central application header when this page is shown
     Component.onCompleted: {
-        headerMenuToolButton.visible = true
-        headerMenu.insertAction(0, reverseAction)
-        headerMenu.insertAction(1, clearAction)
-        headerMenu.insertAction(2, openWithAction)
-        headerMenu.insertAction(3, shareAction)
-        Qt.platform.os == "android" ? true : headerMenu.insertAction(4, importAction)
+        if (Qt.platform.os === "android") {
+            headerMenuToolButton.visible = true
+            headerMenu.insertAction(0, reverseAction)
+            headerMenu.insertAction(1, clearAction)
+            headerMenu.insertAction(2, importAction)
+            headerMenu.insertAction(3, saveAction)
+            headerMenu.insertAction(4, openWithAction)
+            headerMenu.insertAction(5, shareAction)
+        } else {
+            headerMenuToolButton.visible = true
+            headerMenu.insertAction(0, reverseAction)
+            headerMenu.insertAction(1, clearAction)
+            headerMenu.insertAction(2, desktopImportAction)
+            headerMenu.insertAction(3, desktopSaveAction)
+        }
     }
     Component.onDestruction: {
-        headerMenuToolButton.visible = false
-        headerMenu.removeAction(reverseAction)
-        headerMenu.removeAction(clearAction)
-        headerMenu.removeAction(openWithAction)
-        headerMenu.removeAction(shareAction)
-        Qt.platform.os == "android" ? true : headerMenu.removeAction(importAction)
+        if (Qt.platform.os === "android") {
+            headerMenuToolButton.visible = false
+            headerMenu.removeAction(reverseAction)
+            headerMenu.removeAction(clearAction)
+            headerMenu.removeAction(importAction)
+            headerMenu.removeAction(saveAction)
+            headerMenu.removeAction(openWithAction)
+            headerMenu.removeAction(shareAction)
+        } else {
+            headerMenuToolButton.visible = false
+            headerMenu.removeAction(reverseAction)
+            headerMenu.removeAction(clearAction)
+            headerMenu.removeAction(desktopImportAction)
+            headerMenu.removeAction(desktopSaveAction)
+        }
     }
 
     FileDialog {
-
-        // will _not_ been shown on android
-        // will be used in desktop builds only
-        //
 
         id: importFileDialog
         title: "Please choose a gpx file"
         fileMode: FileDialog.OpenFile
         nameFilters: ["gpx files (*.gpx)"]
         defaultSuffix: "gpx"
+        folder: folderSettings.openFolder
         onAccepted: {
-            flightRoute.fromGpx(importFileDialog.file)
+            flightRoute.fromGpxUrl(importFileDialog.file)
+            folderSettings.openFolder = importFileDialog.folder
+        }
+        onRejected: {
+            // do nothing
+        }
+    }
+
+    // on desktop used only
+    //
+    function saveFile(fileUrl, text) {
+        var request = new XMLHttpRequest();
+        request.open("PUT", fileUrl, false);
+        request.send(text);
+        return request.status;
+    }
+
+    // on desktop used only
+    //
+    FileDialog {
+
+        id: saveFileDialog
+        title: "Please choose a gpx file"
+        fileMode: FileDialog.SaveFile
+        nameFilters: ["gpx files (*.gpx)"]
+        defaultSuffix: "gpx"
+        folder: folderSettings.saveFolder
+        onAccepted: {
+            // console.log("saveFileDialog path = " + saveFileDialog.file)
+            folderSettings.saveFolder = saveFileDialog.folder
+            saveFile(saveFileDialog.file, flightRoute.toGpx())
         }
         onRejected: {
             // do nothing
@@ -432,6 +478,36 @@ Page {
         }
     }
 
+    // used on android only
+    //
+    Action {
+        id: importAction
+
+        text: qsTr("Load")
+        icon.source: "/icons/material/ic_input.svg"
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            share.importFile("application/octet-stream")
+        }
+    }
+
+    // used on android only
+    //
+    Action {
+        id: saveAction
+
+        text: qsTr("Save")
+        icon.source: "/icons/material/ic_save.svg"
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            share.saveContent(flightRoute.toGpx(), "application/gpx+xml", "gpx")
+        }
+    }
+
+    // used on android only
+    //
     Action {
         id: openWithAction
 
@@ -441,30 +517,31 @@ Page {
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()
-            share.openWith(flightRoute.toGpx())
+            share.viewContent(flightRoute.toGpx(), "application/gpx+xml", "gpx")
         }
     }
 
+    // used on android
+    //
     Action {
         id: shareAction
 
-        text: qsTr("Share Route")
+        text: qsTr("Share")
         icon.source: "/icons/material/ic_share.svg"
         enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()
-            share.share(flightRoute.toGpx())
+            share.sendContent(flightRoute.toGpx(), "application/gpx+xml", "gpx")
         }
     }
 
-    // will _not_ been shown on android
-    // will be used in desktop builds only
+    // used on desktop only
     //
     Action {
-        id: importAction
+        id: desktopImportAction
 
-        text: qsTr("Import Route")
+        text: qsTr("Load")
         icon.source: "/icons/material/ic_input.svg"
 
         onTriggered: {
@@ -473,9 +550,32 @@ Page {
         }
     }
 
+    // used on desktop only
+    //
+    Action {
+        id: desktopSaveAction
+
+        text: qsTr("Save")
+        icon.source: "/icons/material/ic_save.svg"
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            saveFileDialog.open()
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+a"
         onActivated: stackView.push("FlightRouteAddWPPage.qml")
+    }
+
+    // make open and save folders persistent
+    // used on desktop only
+    //
+    Settings {
+        id: folderSettings
+        property string openFolder;
+        property string saveFolder;
     }
 
 } // Page

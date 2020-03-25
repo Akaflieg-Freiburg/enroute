@@ -45,13 +45,10 @@ list(APPEND SOURCES
     MobileAdaptor.cpp
     SatNav.cpp
     ScaleQuickItem.cpp
-    Share.cpp
     TileHandler.cpp
     TileServer.cpp
     Waypoint.cpp
     Wind.cpp
-
-    shareutils/shareutils.hpp
 )
 
 
@@ -62,12 +59,12 @@ if( ANDROID )
 
     list(APPEND SOURCES
 
-        shareutils/androidshareutils.cpp
+	Share.cpp
 
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
-        android/src/org/shareluma/activity/QShareActivity.java
-        android/src/org/shareluma/utils/QSharePathResolver.java
-        android/src/org/shareluma/utils/QShareUtils.java
+	android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
+	android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
+	android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
     )
 
     # Configure AndroidManifest.xml
@@ -83,9 +80,9 @@ if( ANDROID )
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/splash.xml
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/values/apptheme.xml
         ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
-	${CMAKE_CURRENT_BINARY_DIR}/android/src/org/shareluma/activity/QShareActivity.java
-        ${CMAKE_CURRENT_BINARY_DIR}/android/src/org/shareluma/utils/QSharePathResolver.java
-        ${CMAKE_CURRENT_BINARY_DIR}/android/src/org/shareluma/utils/QShareUtils.java
+	${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
+	${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
+	${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/xml/filepaths.xml
         )
     add_custom_command(

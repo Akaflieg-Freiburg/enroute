@@ -23,7 +23,6 @@
 #include <QStandardPaths>
 #include <QDateTime>
 #include <QDebug>
-#include <QXmlStreamReader>
 
 #include "AviationUnits.h"
 #include "FlightRoute.h"
@@ -242,7 +241,6 @@ bool FlightRoute::routeBounds(double &minlat, double &minlon, double &maxlat, do
     return valid;
 }
 
-
 // export to gpx waypoints (wpt) and route (rte).
 // We currently don't export as track, but see below.
 //
@@ -321,23 +319,37 @@ QString FlightRoute::toGpx()
     return gpx;
 }
 
-QString FlightRoute::fromGpx(QString fileUrl)
+void FlightRoute::fromGpx(QString fileUrl)
 {
-    // QFile file(QUrl(fileUrl).toLocalFile());
+    if (fileUrl.startsWith("file://"))
+    {
+        fileUrl = QUrl(fileUrl).toLocalFile();
+    }
+
     QFile file(fileUrl);
     if (!file.open(QIODevice::ReadOnly)) {
-        QString err = tr(QString("File open error:" + file.errorString()).toUtf8());
-        qDebug() << err;
-        return err;
+        qDebug() << tr(QString("File open error:" + file.errorString()).toUtf8());
+        return;
     }
+
+    QXmlStreamReader xml(&file);
+    fromGpx(xml);
+}
+
+void FlightRoute::fromGpx(const QByteArray& data)
+{
+    QXmlStreamReader xml(data);
+    fromGpx(xml);
+}
+
+void FlightRoute::fromGpx(QXmlStreamReader& xml)
+{
 
     // collect all route points and track points and waypoints
     //
     QList<Waypoint*> rtept;
     QList<Waypoint*> trkpt;
     QList<Waypoint*> wpt;
-
-    QXmlStreamReader xml(&file);
 
     // lambda function to read a single gpx rtept, trkpt or wpt
     //
@@ -408,7 +420,11 @@ QString FlightRoute::fromGpx(QString fileUrl)
             }
         }
 
-        QGeoCoordinate distant_pos(lat + 0.01 /* about 1 km */, lon);
+        // check if there's a known waypoint like for example an airfield nearby.
+        // If we find a waypoint within the distance of 1/100° we use it instead
+        // of the coordinate which was just imported from gpx.
+        //
+        QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
         QObject* nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
 
         if (nearest != nullptr) {
@@ -456,7 +472,7 @@ QString FlightRoute::fromGpx(QString fileUrl)
         // don't have to delete lists rtept, trkpt, wpt as they're empty
         QString err = tr(QString("no valid route found").toUtf8());
         qDebug() << err;
-        return err;
+        return;
     }
 
     _waypoints.clear();
@@ -473,9 +489,8 @@ QString FlightRoute::fromGpx(QString fileUrl)
 
     updateLegs();
     emit waypointsChanged();
-
-    return QString(""); // empty string for success
 }
+
 
 void FlightRoute::save()
 {

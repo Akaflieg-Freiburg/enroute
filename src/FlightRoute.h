@@ -23,6 +23,7 @@
 
 #include <QLocale>
 #include <QPointer>
+#include <QXmlStreamReader>
 
 #include "Aircraft.h"
 #include "Waypoint.h"
@@ -60,6 +61,9 @@ public:
      *
      * @param wind Pointer to wind info that is used in route computations. The
      * wind object to supposed to exist throughout the liftime of this object.
+     *
+     * @param geoMapProvider global GeoMapProvider instance which is used to
+     * get closest known waypoints when importing gpx data.
      *
      * @param parent The standard QObject parent pointer.
      */
@@ -219,9 +223,16 @@ public slots:
     QString toGpx();
 
     /*! \brief import route from gpx file
-     * returns error string (empty string for no error)
+     *
+     * @param fileUrl url of the gpx file
      */
-    QString fromGpx(QString fileUrl);
+    void fromGpx(QString fileUrl);
+
+    /*! \brief import route from gpx content supplied as QByteArray
+     *
+     * @param data gpx (xml) route data
+     */
+    void fromGpx(const QByteArray& data);
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -246,7 +257,10 @@ private slots:
     void updateLegs();
 
     QString gpxElements(QString indent, QString tag);
+
     bool routeBounds(double &minlat, double &minlon, double &maxlat, double &maxlon) const;
+
+    void fromGpx(QXmlStreamReader& data);
 
 private:
     // Used to check compatibility when loading/saving

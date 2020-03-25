@@ -24,7 +24,7 @@ package de.akaflieg_freiburg.enroute;
 import android.content.Context;
 import android.os.Vibrator;
 
-public class MobileAdaptor extends org.shareluma.activity.QShareActivity
+public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 {
     private static MobileAdaptor m_instance;
     private static Vibrator m_vibrator;

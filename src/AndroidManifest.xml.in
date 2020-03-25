@@ -45,7 +45,7 @@
             see https://en.wikipedia.org/wiki/GPS_Exchange_Format
 
             android.intent.action.VIEW used for receiving files for viewing (or "open with...")
-            android.intent.action.SEND *not* implemented, would enable enroute as "share with" target
+            android.intent.action.SEND enables enroute as "share with" target
 
             (Zellner, 2020-03-03)
             -->
@@ -174,10 +174,10 @@
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
 
-      <!-- NOTE: android:authorities must match AUTHORITY in org/shareluma/utils/QShareUtils.java -->
+      <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
       <provider
         android:name="android.support.v4.content.FileProvider"
-        android:authorities="org.shareluma.shareutils.enroutefp"
+        android:authorities="de.akaflieg_freiburg.enroute"
         android:exported="false"
         android:grantUriPermissions="true">
         <meta-data

@@ -1,130 +1,208 @@
 /*!
- * MIT License
+ * Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org
  *
- * Copyright (c) 2019 Tim Seemann
- * modified for enroute 2020 by Johannes Zellner
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+// #include <jni.h>
+
+#include <QDateTime>
+#include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QStandardPaths>
+#include <QtAndroid>
+#include <QtAndroidExtras/QAndroidJniObject>
 
 #include "Share.h"
 
-#include <QFile>
-#include <QTextStream>
-#include <QDateTime>
+namespace {
 
-#ifndef ANDROID
-// on the desktop we share to a file dialog
-// which provides saving the gpx route to disk.
-#   include <QFileDialog>
-#endif
+// must match cache-path in res/xml/filepaths.xml
+const QString kFileProviderPath = "/shared_routes";
 
-Share::Share(FlightRoute* flightRoute_in, QObject *parent) : QObject(parent), flightRoute(flightRoute_in)
+} // namespace
+
+Share* Share::mInstance = nullptr;
+
+Share::Share(QObject* parent) : QObject(parent)
 {
-    mShareUtils = new ShareUtils(this);
-    connect(mShareUtils, SIGNAL(fileUrlReceived(QString)), this, SLOT(receivedURL(QString)));
+    // create a save directory, if it doesn't already exist
+    mSavePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + kFileProviderPath + "/";
+    QDir tempDir(mSavePath);
+    if (!tempDir.exists()) {
+        QDir("").mkpath(mSavePath);
+    }
+
+    // we need the instance for the JNI Call
+    mInstance = this;
 
     // android requires you to use a subdirectory within the AppDataLocation for
     // sending and receiving files. Because of this, when necessary we do a deep
-    // copy of the gpx content.
+    // copy of the file content.
     //
     // We clear this directory on creation of the Share object -- even if the
     // app didn't exit gracefully, the directory is still cleared when starting
     // the app next time.
     //
-#if defined(Q_OS_ANDROID)
-    mShareUtils->clearTempDir();
-#endif
+    clearTempDir();
 }
 
-Share::~Share()
+void Share::sendContent(const QString& content, const QString& mimeType, const QString& suffix)
 {
-    // NOTE: temporary files are removed when creating Share...
+    QString tmpPath = contentToTempFile(content, suffix);
+    outgoingIntent("sendFile", tmpPath, mimeType);
 }
 
-void Share::share__(QString gpx_content, bool do_share)
+void Share::viewContent(const QString& content, const QString& mimeType, const QString& suffix)
 {
+    QString tmpPath = contentToTempFile(content, suffix);
+    outgoingIntent("viewFile", tmpPath, mimeType);
+}
 
+void Share::saveContent(const QString& content, const QString& mimeType, const QString& suffix)
+{
+    QString tmpPath = contentToTempFile(content, suffix);
+    outgoingIntent("saveFile", tmpPath, mimeType);
+}
+
+void Share::importFile(const QString& mimeType)
+{
+    QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
+
+    jboolean ok = QAndroidJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/IntentLauncher",
+        "openFile",
+        "(Ljava/lang/String;)Z",
+        jsMimeType.object<jstring>());
+    if (!ok) {
+        qWarning() << "Unable to resolve activity from Java";
+        emit shareNoAppAvailable();
+    }
+}
+
+void Share::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
+{
+    if (filePath == nullptr)
+        return;
+
+    QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
+    QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
+    jboolean ok = QAndroidJniObject::callStaticMethod<jboolean>(
+        "de/akaflieg_freiburg/enroute/IntentLauncher",
+        methodName.toStdString().c_str(),
+        "(Ljava/lang/String;Ljava/lang/String;)Z",
+        jsPath.object<jstring>(),
+        jsMimeType.object<jstring>());
+    if (!ok) {
+        qWarning() << "Unable to resolve activity from Java";
+        emit shareNoAppAvailable();
+    }
+}
+
+// helper method which saves content to temporary file in the app's private cache dir
+//
+QString Share::contentToTempFile(const QString& content, const QString& suffix)
+{
     QDateTime now = QDateTime::currentDateTimeUtc();
-    QString fname = now.toString("yyyy-MM-dd_hh.mm.ss") + ".gpx";
+    QString fname = now.toString("yyyy-MM-dd_hh.mm.ss") + "." + suffix;
 
-#ifdef ANDROID
     // in Qt, resources are not stored absolute file paths, so in order to
     // share the content we save it to disk. We save these temporary files
     // when creating new Share objects.
     //
-    auto filePath = mShareUtils->tempDir() + fname;
-#else
-    auto filePath = QFileDialog::getSaveFileName(nullptr, tr("Save"), fname, tr(""));
-    if (filePath.isEmpty()) {
-        qDebug() << "WARNING: save file name empty";
-        return;
-    }
-#endif
+    auto filePath = tempDir() + fname;
 
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         QMessageLogger(QT_MESSAGELOG_FILE, QT_MESSAGELOG_LINE, QT_MESSAGELOG_FUNC).debug() << "Share::share " << filePath;
-        return;
+        return nullptr;
     }
 
     QTextStream out(&file);
-    out << gpx_content;
+    out << content;
     out.flush();
     file.close();
 
-#ifdef ANDROID
-    QString mimeType = "application/gpx+xml";
-
-    // a requestID tracks an intent with an identifier, useful if you have
-    // multiple intents being sent at once. We use requestID = 0 here to have
-    // a non-blocking call in QShareUtils.createCustomChooserAndStartActivity()
-    //
-    int requestID = 0;
-    if (do_share == false) {
-        mShareUtils->viewFile(filePath, tr("Open with"), mimeType, requestID);
-    } else {
-        mShareUtils->sendFile(filePath, tr("Send") /* title not used for send */, mimeType, requestID);
-    }
-#endif
-}
-
-void Share::share(QString gpx_content)
-{
-    share__(gpx_content, true);
-}
-
-void Share::openWith(QString gpx_content)
-{
-    share__(gpx_content, false);
-}
-
-void Share::receivedURL(QString url)
-{
-#if defined(Q_OS_ANDROID)
-    flightRoute->fromGpx(url);
-#endif // Q_OS_ANDROID
+    return filePath;
 }
 
 void Share::checkPendingIntents()
 {
-#if defined(Q_OS_ANDROID)
-    mShareUtils->checkPendingIntents();
-#endif // Q_OS_ANDROID
+    QAndroidJniObject activity = QtAndroid::androidActivity();
+
+    if (activity.isValid()) {
+
+        QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(tempDir());
+        if (!jniTempDir.isValid()) {
+            return;
+        }
+
+        activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
+    }
 }
+
+// remove temporary files which are older than 1 week from cache directory
+//
+void Share::clearTempDir()
+{
+    const QDate today = QDate::currentDate();
+    QDir cachePath(mSavePath);
+
+    for (const auto &fileInfo : cachePath.entryInfoList(QDir::Files | QDir::NoDotAndDotDot)) {
+        if (fileInfo.lastModified().date().daysTo(today) > 7) {
+            QString filepath = fileInfo.absoluteFilePath();
+            cachePath.remove(filepath);
+        }
+    }
+}
+
+QString Share::tempDir()
+{
+    return mSavePath;
+}
+
+void Share::setFileReceived(const QString& fname)
+{
+    // emit signal to connected slots like fromGpx()
+    //
+    emit fileReceived(fname);
+}
+
+Share* Share::getInstance()
+{
+    if (!mInstance) {
+        mInstance = new Share;
+    }
+
+    return mInstance;
+}
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+JNIEXPORT void JNICALL
+Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject, jstring jfname)
+{
+    const char* fname = env->GetStringUTFChars(jfname, nullptr);
+    Share::getInstance()->setFileReceived(fname);
+    env->ReleaseStringUTFChars(jfname, fname);
+}
+
+#ifdef __cplusplus
+}
+#endif

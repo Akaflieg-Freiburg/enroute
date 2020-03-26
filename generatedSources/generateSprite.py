@@ -49,7 +49,7 @@ def generateSpritePane(imageFileNames, factor):
         spritePane.paste(images[i], (x,y))
         x = x+images[i].width
     
-        imageDescriptions[imageFileNames[i].split('/')[-1]] = imageDescription
+        imageDescriptions[imageFileNames[i].split('/')[-1].split('.')[0]] = imageDescription
     
         if i%numCols == (numCols-1):
             y = y+ rowHeight[rowIndex]

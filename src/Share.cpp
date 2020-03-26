@@ -163,7 +163,7 @@ void Share::clearTempDir()
     QDir cachePath(mSavePath);
 
     for (const auto &fileInfo : cachePath.entryInfoList(QDir::Files | QDir::NoDotAndDotDot)) {
-        if (fileInfo.lastModified().date().daysTo(today) > 7) {
+        if (fileInfo.lastModified().date().daysTo(today) > 1) {
             QString filepath = fileInfo.absoluteFilePath();
             cachePath.remove(filepath);
         }

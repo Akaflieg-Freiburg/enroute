@@ -26,6 +26,8 @@
 #include <QLocale>
 #include <QTimer>
 
+#include "Geoid.h"
+
 /*! \brief Satellite Navigator
   
   This class is a thin wrapper around QGeoPositionInfoSource.  The main
@@ -486,6 +488,8 @@ private:
   // altitude = raw altitude + altitudeCorrection
   int altitudeCorrectionInM {0};
   
+  Geoid geoid;
+
   // Constant: timeout occurs after one minute without receiving new data
   const int timeoutThreshold = 60*1000;
   

@@ -21,7 +21,6 @@
 
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniObject>
-#include <QDebug>
 
 Geoid* Geoid::mInstance = nullptr;
 #endif
@@ -54,7 +53,6 @@ Geoid* Geoid::getInstance()
 
 void Geoid::set(float newSeparation)
 {
-    qDebug() << "Geoid::set " << newSeparation;
     geoidalSeparation = newSeparation;
     isValid = true;
 }

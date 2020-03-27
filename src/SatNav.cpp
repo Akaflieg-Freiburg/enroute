@@ -78,7 +78,7 @@ int SatNav::altitudeInFeet() const
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return 0;
 
-    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude() + altitudeCorrectionInM);
+    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude() + altitudeCorrectionInM - geoid());
     return qRound(alt.toFeet());
 }
 

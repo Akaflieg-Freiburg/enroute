@@ -36,6 +36,7 @@ set(SOURCES
     DownloadableGroup.cpp
     FlightRoute.cpp
     FlightRoute_Leg.cpp
+    Geoid.cpp
     GeoMapProvider.cpp
     GlobalSettings.cpp
     main.cpp

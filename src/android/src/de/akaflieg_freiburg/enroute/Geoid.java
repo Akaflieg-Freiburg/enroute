@@ -34,6 +34,13 @@ public class Geoid implements OnNmeaMessageListener
     private static final int GGA_ALTITUDE = 9;
     private static final int GGA_GEOID = 11;
 
+    /**
+     * Geoid constructor.
+     *
+     * we add ourselves as to the location manager to listen on NMEA messages.
+     *
+     * @param context the context which is used to get the location manager.
+     */
     public Geoid(Context context)
     {
         LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);

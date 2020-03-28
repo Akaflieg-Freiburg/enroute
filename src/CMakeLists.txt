@@ -60,8 +60,9 @@ if( ANDROID )
 
         Share.cpp
 
-        android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+        android/src/de/akaflieg_freiburg/enroute/Geoid.java
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
+        android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
     )
@@ -78,8 +79,9 @@ if( ANDROID )
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-mdpi/icon.png
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/splash.xml
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/values/apptheme.xml
-        ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+        ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/Geoid.java
         ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
+        ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/xml/filepaths.xml

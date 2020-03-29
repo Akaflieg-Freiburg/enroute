@@ -59,17 +59,4 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
             m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
         m_vibrator.vibrate(20);
     }
-
-    /**
-     * Called from c++ to get geoid correction.
-     *
-     * @returns the geoid correction
-     */
-    public static float geoid() {
-        if (geoid_ == null) {
-            return 0f;
-        } else {
-            return geoid_.geoid();
-        }
-    }
 }

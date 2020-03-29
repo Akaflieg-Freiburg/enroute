@@ -78,8 +78,8 @@ int SatNav::altitudeInFeet() const
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return 0;
 
-    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude() + altitudeCorrectionInM - geoid());
-    return qRound(alt.toFeet());
+    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude() + altitudeCorrectionInM);
+    return qRound(alt.toFeet() - geoidalSeparation());
 }
 
 
@@ -122,6 +122,22 @@ QString SatNav::rawAltitudeInFeetAsString() const
         return "-";
 
     return myLocale.toString(rawAltitudeInFeet()) + " ft";
+}
+
+
+int SatNav::geoidalSeparation() const
+{
+    auto separation = AviationUnits::Distance::fromM(geoid());
+    return qRound(separation.toFeet());
+}
+
+
+QString SatNav::geoidalSeparationAsString() const
+{
+    if (!geoid.valid())
+        return "-";
+
+    return myLocale.toString(geoidalSeparation()) + " ft";
 }
 
 

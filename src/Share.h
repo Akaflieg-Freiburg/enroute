@@ -70,7 +70,7 @@
  * ->Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived()
  * ->setFileReceived()
  * ->emit fileReceived()
- * ->to connected slots like FlightRoute::fromGpxUrl()
+ * ->to connected slots like FlightRoute::fromGpx()
  */
 class Share : public QObject
 {

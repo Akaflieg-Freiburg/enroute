@@ -1,0 +1,35 @@
+name: Compile and Generate Documentation
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init --recursive
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        arch: 'android_armv7'
+        target: 'android'
+	version: '5.14.1'
+    - name: Install Additional Software
+      run: |
+        sudo apt install doxygen graphviz
+    - name: Configure
+      run: |
+        ls $Qt5_DIR
+    - name: Compile
+      run: |
+        cd build
+        make

@@ -27,10 +27,6 @@ jobs:
         sudo apt install doxygen graphviz
     - name: Configure
       run: |
-        export ANDROID_NDK=/usr/local/lib/android/ndk
-        export ANDROID_SDK=/usr/local/lib/android/sdk
-        ls $ANDROID_SDK_ROOT
-        ls /usr/local/lib/android/sdk
         mkdir -p build
         cd build
         cmake .. \
@@ -40,15 +36,15 @@ jobs:
           -DANDROID_BUILD_ABI_x86:BOOL=ON \
           -DANDROID_BUILD_ABI_x86_64:BOOL=ON \
           -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-          -DANDROID_NDK:PATH=$ANDROID_NDK \
-          -DANDROID_SDK:PATH=$ANDROID_SDK \
+          -DANDROID_NDK:PATH=$ANDROID_SDK_ROOT/ndk-bundle \
+          -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
           -DANDROID_STL:STRING=c++_shared \
           -DCMAKE_BUILD_TYPE:STRING=Debug \
-          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-          -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
+          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
+          -DCMAKE_C_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
           -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_TDIR \
           -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR \
-          -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
+          -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_SDK_ROOT/ndk-bundle/build/cmake/android.toolchain.cmake \
           -DQT_QMAKE_EXECUTABLE:STRING=$Qt5_DIR/bin/qmake
         cmake ..
     - name: Compile

@@ -381,4 +381,35 @@ ApplicationWindow {
         onDetected: MobileAdaptor.vibrateBrief()
     }
 
+    Connections {
+        target: view
+        onActiveChanged: {
+            if (Qt.platform.os === "android" && view.active) {
+                share.checkPendingIntents()
+            }
+        }
+    }
+
+    // enroute closed unexpectedly if...
+    // * the "route" page is open
+    // * the route menu is opened
+    // * then the menu is closed again with the back button w/o selecting a route menu item
+    // * then the back button is pressed again (while the route page is still open)
+    //
+    // apparently for this scenario the stackView doesn't have focus but rather
+    // the main application window. Therefore we've to handle the back event
+    // here and decide on the stackView.depth if we close the application
+    // or rather use stackView.pop().
+    //
+    // solution from
+    // see https://stackoverflow.com/questions/25968661/android-back-button-press-doesnt-trigger-keys-onreleased-qml
+    //
+    onClosing: {
+        if(stackView.depth > 1) {
+            close.accepted = false // prevent closing of the app
+            stackView.pop(); // will close the stackView page
+        } else {
+            return; // will exit the application
+        }
+    }
 }

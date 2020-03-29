@@ -27,6 +27,10 @@ jobs:
         sudo apt install doxygen graphviz
     - name: Configure
       run: |
+        export ANDROID_NDK=/usr/local/lib/android/ndk
+        export ANDROID_SDK=/usr/local/lib/android/sdk
+        ls /usr/local/lib/android/ndk
+        ls /usr/local/lib/android/sdk
         mkdir -p build
         cd build
         cmake .. \

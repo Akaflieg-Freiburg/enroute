@@ -39,6 +39,7 @@ jobs:
         make enroute_doc
         mv src/APIdoc/html ../APIdoc
     - name: Publish Documentation
+      if: github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         BRANCH: gh-pages

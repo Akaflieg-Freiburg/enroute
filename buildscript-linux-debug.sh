@@ -13,14 +13,14 @@
 # Clean
 #
 
-rm -rf build-debug
+rm -rf build-linux-debug
 
 #
 # Build the executable
 #
 
-mkdir build-debug
-cd build-debug
+mkdir build-linux-debug
+cd build-linux-debug
 
 export ASAN_OPTIONS=detect_leaks=0
 export CC=/usr/bin/clang

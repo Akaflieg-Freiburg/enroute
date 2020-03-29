@@ -19,14 +19,62 @@
 
 #include "Geoid.h"
 
-#include <QtAndroidExtras/QAndroidJniObject>
+#if defined(Q_OS_ANDROID)
+#include <QAndroidJniObject>
+#include <QDebug>
+
+Geoid* Geoid::mInstance = nullptr;
+#endif
+
+Geoid::Geoid() : geoidalSeparation(0), isValid(false)
+{
+#if defined(Q_OS_ANDROID)
+    // we need the instance for the JNI Call
+    //
+    mInstance = this;
+#endif
+}
 
 float Geoid::operator()() const
 {
-#if defined(Q_OS_ANDROID)
-    jfloat geoid = QAndroidJniObject::callStaticMethod<jfloat>("de/akaflieg_freiburg/enroute/MobileAdaptor", "geoid", "()F");
-    return geoid;
-#else
-    return 0.0; // no correction for desktop
-#endif
+    return geoidalSeparation;
 }
+
+bool Geoid::valid() const
+{
+    return isValid;
+}
+
+#if defined(Q_OS_ANDROID)
+
+Geoid* Geoid::getInstance()
+{
+    return mInstance;
+}
+
+void Geoid::set(float newSeparation)
+{
+    qDebug() << "Geoid::set " << newSeparation;
+    geoidalSeparation = newSeparation;
+    isValid = true;
+}
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+JNIEXPORT void JNICALL
+Java_de_akaflieg_1freiburg_enroute_Geoid_set(JNIEnv* env, jobject, jfloat geoidalSeparation)
+{
+    Geoid* geoid = Geoid::getInstance();
+    if (geoid != nullptr)
+    {
+        geoid->set(geoidalSeparation);
+    }
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // Q_OS_ANDROID

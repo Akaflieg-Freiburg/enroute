@@ -104,6 +104,9 @@ Dialog {
             Text { text: qsTr("Altitude (corrected)") }
             Text { text: satNav.altitudeInFeetAsString }
 
+            Text { text: qsTr("Geoidal separation") }
+            Text { text: satNav.geoidalSeparationAsString }
+
         } // GridLayout
 
     } // Scrollview

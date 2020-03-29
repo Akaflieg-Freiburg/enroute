@@ -27,8 +27,12 @@ import android.location.OnNmeaMessageListener;
 
 public class Geoid implements OnNmeaMessageListener
 {
-    private float geoid_cached = 0;
-    private long timestamp_for_cached_value = 0;
+    /**
+     * native method to send file data to Qt - implemented in Cpp via JNI.
+     */
+    public static native void set(float newSeparation);
+
+    private long last_valid_timestamp = 0;
 
     private static final int GGA_PRECISION = 8;
     private static final int GGA_ALTITUDE = 9;
@@ -51,12 +55,12 @@ public class Geoid implements OnNmeaMessageListener
      * Called whenever NMEA messages arrive.
      *
      * Implements the OnNmeaMessageListener.onNmeaMessage().
-     * Get geoid correction from GGA messages, see...
+     * Get geoid separation from GGA messages, see...
      *
      * - https://www.gpsinformation.org/dale/nmea.htm#GGA
      * - https://de.wikipedia.org/wiki/NMEA_0183
      *
-     * Updates the object's geoid_cached variable.
+     * sends the geoidal separation to c++ via the native method set().
      *
      * @param message the NMEA message
      * @param timestamp of the location fix, as reported by the GNSS chipset in milliseconds
@@ -64,12 +68,12 @@ public class Geoid implements OnNmeaMessageListener
     public void onNmeaMessage(String message, long timestamp /* milliseconds */)
     {
         // onNmeaMessage may get a few NMEA messages per second.
-        // As the geoid correction varies quite slowly with distance
+        // As the geoid separation varies quite slowly with distance
         // (or with time -- unless we fly a rocket with warp drive)
         // it is sufficient to parse the messages only every 10 seconds
         // or longer.
         //
-        if (timestamp - timestamp_for_cached_value < 10000 || message == null)
+        if (timestamp - last_valid_timestamp < 10000 || message == null)
         {
             return;
         }
@@ -100,11 +104,11 @@ public class Geoid implements OnNmeaMessageListener
                 }
 
                 float geoid = Float.valueOf(tokens[GGA_GEOID]);
-                timestamp_for_cached_value = timestamp;
-                geoid_cached = geoid;
+                last_valid_timestamp = timestamp;
+                set(geoid); // set geoidal separation in c++ class via jni native call
 
                 /*
-                Log.d("Geoid", "geoid = " + Float.toString(geoid_cached) +
+                Log.d("Geoid", "geoid = " + Float.toString(geoid) +
                                ", alt = " + tokens[GGA_ALTITUDE] + " m" +
                                ", " + Float.toString(Float.valueOf(tokens[GGA_ALTITUDE]) * 3.28084f) + " ft");
                  */
@@ -114,14 +118,5 @@ public class Geoid implements OnNmeaMessageListener
                 return;
             }
         }
-    }
-
-    /**
-     * get cached geoid correction.
-     *
-     * @returns the geoid correction
-     */
-    public float geoid() {
-        return geoid_cached;
     }
 }

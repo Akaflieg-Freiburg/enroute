@@ -42,7 +42,7 @@ jobs:
           -DCMAKE_BUILD_TYPE:STRING=Debug \
           -DCMAKE_CXX_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
           -DCMAKE_C_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_TDIR \
+          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR \
           -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR \
           -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_SDK_ROOT/ndk-bundle/build/cmake/android.toolchain.cmake \
           -DQT_QMAKE_EXECUTABLE:STRING=$Qt5_DIR/bin/qmake

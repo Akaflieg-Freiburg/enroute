@@ -24,7 +24,7 @@ jobs:
         version: '5.14.1'
     - name: Install Additional Software
       run: |
-        sudo apt install doxygen graphviz
+        sudo apt install doxygen graphviz librsvg2-bin
     - name: Configure
       run: |
         mkdir -p build

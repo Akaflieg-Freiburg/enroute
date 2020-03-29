@@ -1,4 +1,4 @@
-name: Compile and Generate Documentation
+name: Compile on Android
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       with:
         arch: 'android_armv7'
         target: 'android'
-	version: '5.14.1'
+        version: '5.14.1'
     - name: Install Additional Software
       run: |
         sudo apt install doxygen graphviz

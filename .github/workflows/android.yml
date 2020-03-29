@@ -52,3 +52,7 @@ jobs:
         cd build
         make
         make apk
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Debug-APK
+        path: build/android-build/build/outputs/apk/debug/android-build-debug.apk

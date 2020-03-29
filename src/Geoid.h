@@ -23,7 +23,7 @@
 #include <QObject>
 
 /*!
- * \brief provide geoid correction 
+ * \brief provide geoidal separation.
  *
  * according to https://en.wikipedia.org/wiki/Geoid
  *
@@ -32,20 +32,47 @@
  * while the ellipsoidal height results from the GPS system and similar GNSS.
  *
  * The deviation between the ellipsoidal height and the orthometric height
- * is returned here.
+ * is provided here.
  */
 class Geoid
 {
 public:
-    /*! \brief return geoid correction -- the difference between AMSL and ellipsoidal height.
+    Geoid();
+
+    /*! \brief return geoidal separation -- the difference between AMSL and ellipsoidal height.
      *
-     * this operator will basically get the geoid correction by calling
-     * de.akaflieg_freiburg.enroute.MobileAdapter.geoid().
-     * Getting the geoid correction by parsing NMEA Messages is done there.
-     *
-     * @returns geoid correction
+     * @returns geoidal separation
      */
     float operator()() const;
+
+    /*! \brief returns true if geoidal separation is available or false otherwise
+     *
+     * @returns true or false
+     */
+    bool valid() const;
+
+#if defined(Q_OS_ANDROID)
+    /*! \brief get single instance of the Geoid.
+     * used from the JNI "callback" set()
+     *
+     * @returns the single instance of the Geoid class.
+     */
+    static Geoid* getInstance();
+
+    /*! \brief called from the JNI "callback" set()
+     * to receive the geoidal separation.
+     *
+     * @param geoidalSeparation the separation between the ellipsoidal height and the orthometric height
+     */
+    void set(float geoidalSeparation);
+#endif
+
+private:
+    float geoidalSeparation;
+    bool isValid;
+#if defined(Q_OS_ANDROID)
+    static Geoid* mInstance;
+#endif
 };
 
 #endif // GEOID_H

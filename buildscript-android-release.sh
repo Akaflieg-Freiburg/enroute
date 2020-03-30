@@ -1,29 +1,41 @@
 #!/bin/bash
 
 #
-# Copyright © 2016-2020 Stefan Kebekus <stefan.kebekus@math.uni-freiburg.de>
+# This script builds "enroute flight navigation" for Android in release mode.
 #
-#
-# This script builds the scantools library and executables in "Debug" mode.
-# Several sanitizers are switched on.
-#
-# Run this script in the main directory tree.
-
-#
-# Clean
+# See https://github.com/Akaflieg-Freiburg/enroute/wiki/Build-scripts
 #
 
-rm -rf build-android-debug
-mkdir -p build-android-debug
-cd build-android-debug
+#
+# Copyright © 2020 Stefan Kebekus <stefan.kebekus@math.uni-freiburg.de>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+
+#
+# Clean up
+#
+
+rm -rf build-android-release
+mkdir -p build-android-release
+cd build-android-release
 
 #
 # Configure
 #
-
-export ANDROID_SDK=/home/kebekus/Software/buildsystems/Android-SDK
-export ANDROID_NDK=$ANDROID_SDK/ndk-bundle
-export QTDIR=/home/kebekus/Software/buildsystems/Qt/5.14.1/android
 
 cmake /home/kebekus/Software/projects/enroute \
       -DANDROID_ABI:STRING=armeabi-v7a \
@@ -32,16 +44,17 @@ cmake /home/kebekus/Software/projects/enroute \
       -DANDROID_BUILD_ABI_x86:BOOL=OFF \
       -DANDROID_BUILD_ABI_x86_64:BOOL=OFF \
       -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-      -DANDROID_NDK:PATH=$ANDROID_NDK \
-      -DANDROID_SDK:PATH=$ANDROID_SDK \
+      -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
+      -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
       -DANDROID_STL:STRING=c++_shared \
       -DCMAKE_BUILD_TYPE:STRING=Release \
-      -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-      -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-      -DCMAKE_FIND_ROOT_PATH:STRING=$QTDIR \
-      -DCMAKE_PREFIX_PATH:STRING=$QTDIR \
-      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
-      -DQT_QMAKE_EXECUTABLE:STRING=$QTDIR/bin/qmake
+      -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
+      -DCMAKE_CXX_FLAGS="-Werror -Wall -Wextra" \
+      -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
+      -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_ANDROID \
+      -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR_ANDROID \
+      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
+      -DQT_QMAKE_EXECUTABLE:STRING=$Qt5_DIR_ANDROID/bin/qmake
 
 # This is bizarrely necessary, or else 'android_deployment_settings.json'
 # will lack our custom AndroidManifest and the SSL libraries
@@ -53,4 +66,4 @@ cmake ..
 #
 
 make -j8
-make apk
+$Qt5_DIR_ANDROID/bin/androiddeployqt --input android_deployment_settings.json --output android-build --release --apk enroute-release-unsigned.ap

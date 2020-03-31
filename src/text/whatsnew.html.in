@@ -1,9 +1,5 @@
-<p>Compared to earlier versions of the app, version ${PROJECT_VERSION} is more
-  responsive when downloading or updating maps on low-end devices.</p>
-
-<p>In response to user feedback, the moving map display has been changed a
-  little.  Flight routes will now always be shown, and are no longer hidden at
-  high zoom values.</p>
+<p>Version ${PROJECT_VERSION} fixes two bugs.  Thanks for reporting those
+  issues!<p>
 
 <p>Fly safely and enjoy many happy landings!</p>
 

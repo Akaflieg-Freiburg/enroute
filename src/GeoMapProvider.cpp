@@ -23,6 +23,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QQmlEngine>
 #include <QRandomGenerator>
 
 #include "GeoMapProvider.h"
@@ -63,6 +64,8 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 
     auto result = wps[0];
     foreach(auto wp, wps) {
+        if (wp.isNull())
+            continue;
         if (position.distanceTo(wp->coordinate()) < position.distanceTo(result->coordinate()))
             result = wp;
     }
@@ -237,8 +240,8 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
-    QList<Airspace*> newAirspaces;
-    QList<Waypoint*> newWaypoints;
+    QList<QPointer<Airspace>> newAirspaces;
+    QList<QPointer<Waypoint>> newWaypoints;
     foreach(auto object, objectSet) {
         newFeatures += object;
 
@@ -246,6 +249,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         // Comment: the list waypoints is used as a model in QML. I am unsure what happens if they get deleted while QML is still using them. I have therefore chosen to not delete them at all. This introduced a minor memory inefficiency when GeoJSON files get upated.
         auto wp = new Waypoint(object);
         if (wp->isValid()) {
+            QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
             newWaypoints.append(wp);
             continue;
         }
@@ -254,6 +258,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
         auto as = new Airspace(object);
         if (as->isValid()) {
+            QQmlEngine::setObjectOwnership(as, QQmlEngine::CppOwnership);
             newAirspaces.append(as);
             continue;
         }

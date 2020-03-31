@@ -66,4 +66,18 @@ cmake ..
 #
 
 make -j8
-$Qt5_DIR_ANDROID/bin/androiddeployqt --input android_deployment_settings.json --output android-build --release --apk enroute-release-unsigned.ap
+$Qt5_DIR_ANDROID/bin/androiddeployqt --input android_deployment_settings.json --output android-build --release --apk enroute-release-unsigned.apk
+echo "Unsigned APK file is available at $PWD/enroute-release-unsigned.apk"
+
+if [ -z "$ANDROID_KEYSTORE_FILE" -o -z "$ANDROID_KEYSTORE_PASS" ]
+then
+    echo "Not signing APK because \$ANDROID_KEYSTORE_FILE or \$ANDROID_KEYSTORE_PASS not set"
+else
+    echo "Signing APK"
+    $ANDROID_SDK_ROOT/build-tools/28.0.3/apksigner sign \
+						   --ks $ANDROID_KEYSTORE_FILE \
+						   --ks-pass pass:$ANDROID_KEYSTORE_PASS \
+						   --in enroute-release-unsigned.apk \
+						   --out enroute-release-signed.apk
+    echo "Signed APK file is available at $PWD/enroute-release-signed.apk"
+fi

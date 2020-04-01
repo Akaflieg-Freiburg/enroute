@@ -1,4 +1,4 @@
-name: Compile and Generate Documentation
+name: API Documentation
 
 on:
   push:
@@ -29,16 +29,13 @@ jobs:
         cmake -E make_directory build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
-    - name: Compile
-      run: |
-        cd build
-        make
     - name: Generate Documentation
       run: |
         cd build
         make enroute_doc
         mv src/APIdoc/html ../APIdoc
     - name: Publish Documentation
+      if: github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         BRANCH: gh-pages

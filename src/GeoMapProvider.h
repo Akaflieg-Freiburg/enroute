@@ -169,7 +169,7 @@ public:
      * @returns a list of all waypoints known to this GeoMapProvider (that is,
      * the union of all waypoints in any of the installed maps)
      */
-    QList<Waypoint*> waypoints() {
+    QList<QPointer<Waypoint>> waypoints() {
         QMutexLocker locker(&_aviationDataMutex);
         return _waypoints_;
     }
@@ -231,8 +231,8 @@ private:
     // protected by this mutex.
     QMutex           _aviationDataMutex;
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
-    QList<Waypoint*> _waypoints_;       // Cache: Waypoints
-    QList<Airspace*> _airspaces_;       // Cache: Airspaces
+    QList<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
+    QList<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
 
 };
 

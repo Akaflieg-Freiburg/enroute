@@ -42,6 +42,7 @@
         <file alias="icons/self-noSatNav.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noSatNav.svg</file>
         <file alias="icons/self-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-withDirection.svg</file>
 	<file alias="icons/vertLine.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/vertLine.svg</file>
+        <file alias="icons/zellner.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/zellner.jpg</file>
 
 	<!-- GUI icons: Waypoint -->
 	<file alias="icons/waypoints/AD.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD.svg</file>

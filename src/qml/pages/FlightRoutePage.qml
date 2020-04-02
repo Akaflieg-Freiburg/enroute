@@ -415,7 +415,7 @@ Page {
         defaultSuffix: "gpx"
         folder: folderSettings.openFolder
         onAccepted: {
-            flightRoute.fromGpxUrl(importFileDialog.file)
+            flightRoute.fromGpx(String(importFileDialog.file))
             folderSettings.openFolder = importFileDialog.folder
         }
         onRejected: {

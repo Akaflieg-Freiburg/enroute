@@ -75,7 +75,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param accepted Property acceptedTerms
+     * @param terms Property acceptedTerms
      */
     void setAcceptedTerms(int terms);
 
@@ -104,7 +104,7 @@ public:
      *
      * @param hUA Property hideUpperAirspaces
      */
-    void setHideUpperAirspaces(bool hide);
+    void setHideUpperAirspaces(bool hUA);
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool keepScreenOn READ keepScreenOn WRITE setKeepScreenOn NOTIFY keepScreenOnChanged)

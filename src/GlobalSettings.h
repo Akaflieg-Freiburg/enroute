@@ -77,7 +77,7 @@ public:
      *
      * @param accepted Property acceptedTerms
      */
-    void setAcceptedTerms(int accepted);
+    void setAcceptedTerms(int terms);
 
     /*! \brief Find out if "What's new" should be shown
      *
@@ -104,7 +104,7 @@ public:
      *
      * @param hUA Property hideUpperAirspaces
      */
-    void setHideUpperAirspaces(bool hUA);
+    void setHideUpperAirspaces(bool hide);
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool keepScreenOn READ keepScreenOn WRITE setKeepScreenOn NOTIFY keepScreenOnChanged)

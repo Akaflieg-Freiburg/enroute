@@ -488,7 +488,7 @@ Page {
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()
-            share.importFile("application/octet-stream")
+            share.importFile("*/*")
         }
     }
 

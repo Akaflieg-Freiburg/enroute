@@ -121,10 +121,17 @@ public class IntentLauncher {
      */
     public static boolean saveFile(String filePath, String mimeType) {
 
+        Uri uri = fileToUri(filePath);
+
+        if (uri == null) {
+            return false;
+        }
+
         // we save the source filePath so that it can be later retrieved by
         // ShareActivity.onActivityResult().
         //
-        ShareUtils.setSharePath(filePath);
+        ShareUtils.setShareUri(uri);
+
         return openOrSave(new File(filePath).getName(), mimeType, Intent.ACTION_CREATE_DOCUMENT, ShareUtils.getSaveRequestCode());
     }
 
@@ -157,15 +164,9 @@ public class IntentLauncher {
         Intent intent = ShareCompat.IntentBuilder.from(QtNative.activity()).getIntent();
         intent.setAction(action);
 
-        File fileToShare = new File(filePath);
+        Uri uri = fileToUri(filePath);
 
-        // Using FileProvider you must get the URI from FileProvider using your AUTHORITY
-        // Uri uri = Uri.fromFile(imageFileToShare);
-        Uri uri;
-        try {
-            uri = FileProvider.getUriForFile(QtNative.activity(), AUTHORITY, fileToShare);
-        } catch (IllegalArgumentException e) {
-            Log.d(TAG, "error" + e.getMessage());
+        if (uri == null) {
             return false;
         }
 
@@ -183,6 +184,32 @@ public class IntentLauncher {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         return customStartActivity(intent);
+    }
+
+    /**
+     * create uri from file path.
+     *
+     * android content provoiders operate with Uri's which represent the
+     * content scheme (e.g. file:// or content://). This methods converts
+     * the absolute file path in the sharing directory into a valid Uri.
+     *
+     * @param filePath the absolut path of the file in the cache directory.
+     *
+     * @return Uri the corresponding uri
+     */
+    private static Uri fileToUri(String filePath) {
+
+        File fileToShare = new File(filePath);
+
+        // Using FileProvider you must get the URI from FileProvider using your AUTHORITY
+        // Uri uri = Uri.fromFile(imageFileToShare);
+        Uri uri;
+        try {
+            return FileProvider.getUriForFile(QtNative.activity(), AUTHORITY, fileToShare);
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "error" + e.getMessage());
+            return null;
+        }
     }
 
     /**
@@ -302,6 +329,7 @@ public class IntentLauncher {
         // Optionally, specify a URI for the directory that should be opened in
         // the system file picker when your app creates the document.
         // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
+        // Log.d(TAG, "getExternalCacheDir() = " + context.getExternalCacheDir());
 
         if (intent.resolveActivity(QtNative.activity().getPackageManager()) != null) {
             QtNative.activity().startActivityForResult(intent, requestCode);

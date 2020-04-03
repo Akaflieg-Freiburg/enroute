@@ -153,7 +153,7 @@ public class ShareActivity extends QtActivity {
 
             } else if (requestCode == ShareUtils.getSaveRequestCode()) {
 
-                copyContent(Uri.parse(ShareUtils.getSharePath()), intent.getData());
+                copyContent(ShareUtils.getShareUri(), intent.getData());
             }
         }
     }
@@ -225,6 +225,8 @@ public class ShareActivity extends QtActivity {
      */
     private void copyContent(Uri src, Uri dst) {
 
+        // Log.d(TAG, "ShareActivity.copyContent " + src + " --> " + dst);
+
         try {
             InputStream istream = getContentResolver().openInputStream(src);
             OutputStream ostream = getContentResolver().openOutputStream(dst);
@@ -234,6 +236,9 @@ public class ShareActivity extends QtActivity {
             while ((nRead = istream.read(data, 0, data.length)) != -1) {
                 ostream.write(data, 0, nRead);
             }
+
+            ostream.close();
+            istream.close();
 
         } catch (FileNotFoundException exception) {
             Log.d(TAG, exception.getMessage());

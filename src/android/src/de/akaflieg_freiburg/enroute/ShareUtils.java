@@ -19,19 +19,21 @@
 
 package de.akaflieg_freiburg.enroute;
 
+import android.net.Uri;
+
 /**
  * here goes stuff which is shared between ShareActivity and the IntentLauncher classes.
  *
  * Both classes need to use the same OPEN_REQUEST_CODE.
  * Both classes need to use the same SAVE_REQUEST_CODE.
- * IntenLauncher stores the share path by setSharePath() which
- * later be retreived by ShareActivity unsing getSharePath.
+ * IntenLauncher stores the share URI by setShareUri() which
+ * later be retreived by ShareActivity unsing getShareUri.
  */
 public class ShareUtils {
 
     private static int OPEN_REQUEST_CODE = 2604;
     private static int SAVE_REQUEST_CODE = 1013;
-    private static String SHARE_PATH = null;
+    private static Uri SHARE_URI = null;
 
     public static int getOpenRequestCode() {
         return OPEN_REQUEST_CODE;
@@ -44,16 +46,16 @@ public class ShareUtils {
     /**
      * should be set by IntentLauncher.saveFile just before the intent is launched.
      */
-    public static void setSharePath(String sharePath) {
-        SHARE_PATH = sharePath;
+    public static void setShareUri(Uri shareUri) {
+        SHARE_URI = shareUri;
     }
 
     /**
-     * used bye ShareActivity.onActivityResult to get source path for saving file.
+     * used bye ShareActivity.onActivityResult to get source URI for saving file.
      */
-    public static String getSharePath() {
-        String sharePath = SHARE_PATH;
-        SHARE_PATH = null;
-        return sharePath;
+    public static Uri getShareUri() {
+        Uri shareUri = SHARE_URI;
+        SHARE_URI = null;
+        return shareUri;
     }
 }

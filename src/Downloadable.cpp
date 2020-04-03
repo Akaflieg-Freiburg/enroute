@@ -192,10 +192,9 @@ void Downloadable::startFileDownload() {
             &Downloadable::downloadFilePartialDataReceiver);
     connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this,
             &Downloadable::downloadFileProgressReceiver);
-    connect(
-                _networkReplyDownloadFile,
-                static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error),
-                this, &Downloadable::downloadFileErrorReceiver);
+    connect(_networkReplyDownloadFile,
+            static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error),
+            this, &Downloadable::downloadFileErrorReceiver);
 
     // Emit signals as appropriate
     if (oldUpdatable != updatable())

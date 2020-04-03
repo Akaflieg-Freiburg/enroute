@@ -32,31 +32,24 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
 {
     // Construct the Dowloadable object "_availableMapsDescription". Let it
     // point to the remote file "maps.json" and wire it up.
-    _availableMapsDescription = new Downloadable(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv001/maps.json"), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json", networkAccessManager, this);
-    _availableMapsDescription->setObjectName(tr("list of aviation maps"));
-    connect(_availableMapsDescription, &Downloadable::downloadingChanged, this, &MapManager::downloadingChanged);
-    connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
-    connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
-    connect(_availableMapsDescription, &Downloadable::localFileChanged, this, &MapManager::setTimeOfLastUpdateToNow);
-    connect(_availableMapsDescription, &Downloadable::error, this, &MapManager::errorReceiver);
+    _maps_json = new Downloadable(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv001/maps.json"),
+                                  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
+                                  networkAccessManager,
+                                  this);
+    _maps_json->setObjectName(tr("list of aviation maps"));
+    connect(_maps_json, &Downloadable::localFileChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
+    connect(_maps_json, &Downloadable::localFileChanged, this, &MapManager::setTimeOfLastUpdateToNow);
+    connect(_maps_json, &Downloadable::error, this, &MapManager::errorReceiver);
 
-    // Set up the automatic update timer, and check if automatic updates are due
-    connect(&_autoUpdateTimer, &QTimer::timeout, this, &MapManager::startUpdateIfAutoUpdateIsDue);
-    startUpdateIfAutoUpdateIsDue();
+    // Wire up the automatic update timer and check if automatic updates are due. The method "autoUpdateGeoMapList" will also set a reasonable timeout value for the timer and start it.
+    connect(&_autoUpdateTimer, &QTimer::timeout, this, &MapManager::autoUpdateGeoMapList);
+    autoUpdateGeoMapList();
 
-    // Now that this map manager exists, try to obtain a list of maps. We try a
-    // few things. First, we try to rebuild our list from the downloaded txt
-    // file.
-
-    // If there is no downloaded txt file, then we start a download, in
-    // order to obtain one.
-    if (!_availableMapsDescription->hasLocalFile()) {
-        _availableMapsDescription->startFileDownload();
-        return;
-    }
-
-    // If there is a downloaded txt file, interpret that.
-    readMapListFromDownloadedJSONFile();
+    // If there is a downloaded maps.json file, we read it. Otherwise, we start a download.
+    if (_maps_json->hasLocalFile())
+        readMapListFromDownloadedJSONFile();
+    else
+        _maps_json->startFileDownload();
 }
 
 
@@ -166,11 +159,11 @@ QList<QObject*> MapManager::baseMapsAsObjectList() const
 bool MapManager::downloading() const
 {
     // Paranoid safety checks
-    Q_ASSERT(!_availableMapsDescription.isNull());
-    if (_availableMapsDescription.isNull())
+    Q_ASSERT(!_maps_json.isNull());
+    if (_maps_json.isNull())
         return false;
 
-    return _availableMapsDescription->downloading();
+    return _maps_json->downloading();
 }
 
 
@@ -218,14 +211,14 @@ QSet<QString> MapManager::mbtileFiles() const
 }
 
 
-void MapManager::startUpdate()
+void MapManager::updateGeoMapList()
 {
     // Paranoid safety checks
-    Q_ASSERT(!_availableMapsDescription.isNull());
-    if (_availableMapsDescription.isNull())
+    Q_ASSERT(!_maps_json.isNull());
+    if (_maps_json.isNull())
         return;
 
-    _availableMapsDescription->startFileDownload();
+    _maps_json->startFileDownload();
 }
 
 
@@ -269,11 +262,11 @@ void MapManager::localFileOfGeoMapChanged()
 bool MapManager::readMapListFromDownloadedJSONFile()
 {
     // Paranoid safety checks
-    Q_ASSERT(!_availableMapsDescription.isNull());
-    if (_availableMapsDescription.isNull())
+    Q_ASSERT(!_maps_json.isNull());
+    if (_maps_json.isNull())
         return false;
 
-    if (!_availableMapsDescription->hasLocalFile())
+    if (!_maps_json->hasLocalFile())
         return false;
 
     bool old_aviationMapUpdatesAvailable = geoMapUpdatesAvailable();
@@ -289,7 +282,7 @@ bool MapManager::readMapListFromDownloadedJSONFile()
     // were already present in the old list, we re-use them. Otherwise, we create
     // new Downloadable objects.
     QJsonParseError parseError{};
-    auto doc = QJsonDocument::fromJson(_availableMapsDescription->localFileContent(), &parseError);
+    auto doc = QJsonDocument::fromJson(_maps_json->localFileContent(), &parseError);
     if (parseError.error != QJsonParseError::NoError)
         return false;
 
@@ -375,17 +368,17 @@ void MapManager::setTimeOfLastUpdateToNow()
 }
 
 
-void MapManager::startUpdateIfAutoUpdateIsDue()
+void MapManager::autoUpdateGeoMapList()
 {
     // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     QSettings settings;
     QDateTime lastUpdate = settings.value("MapManager/MapListTimeStamp", QDateTime()).toDateTime();
 
-    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 0)) ) {
-        // Updates are due. Check once per hour for updates until update succeeds.
+    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)) ) {
+        // Updates are due. Check again in one hour if the update went well or if we need to try again.
         _autoUpdateTimer.start(1000*60*60*1);
-        startUpdate();
+        updateGeoMapList();
         return;
     }
 
@@ -405,7 +398,7 @@ QList<QString> MapManager::unattachedFiles() const
     while (fileIterator.hasNext()) {
         fileIterator.next();
 
-        // Now check if this file exists as the local file of some aviation map
+        // Now check if this file exists as the local file of some geographic map
         bool isAttachedToAviationMap = false;
         foreach(auto geoMapPtr, _geoMaps) {
             if (geoMapPtr->fileName() == QFileInfo(fileIterator.filePath()).absoluteFilePath()) {

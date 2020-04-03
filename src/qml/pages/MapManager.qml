@@ -190,7 +190,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlik ) {
                         MobileAdaptor.vibrateBrief()
-                        mapManager.startUpdate()
+                        mapManager.updateGeoMapList()
                     }
                 }
             } // ListView
@@ -301,7 +301,7 @@ Page {
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()
-            mapManager.startUpdate()
+            mapManager.updateGeoMapList()
         }
     }
 

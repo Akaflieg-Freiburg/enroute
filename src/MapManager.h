@@ -25,19 +25,21 @@
 
 #include "DownloadableGroup.h"
 
-/*! \brief Manages the list of available aviation maps
+/*! \brief Manages the list of geographic maps
   
-  This class manages a list of available and installed aviation maps.  It
-  retrieves a list of maps from a remote server on a regular basis, updates the
+  This class manages a list of available and installed geographic maps.  It
+  retrieves the list of geographic maps from a remote server on a regular basis, updates the
   list automatically once a week, and maintains a list of Downloadable objectes
-  that correspond to these maps.  It informs the user if updates are available
-  for one or several of these maps.
+  that correspond to these geographic maps.  It informs the user if updates are available
+  for one or several of these geographic maps.
   
-  The list of available maps is downloaded to a file "maps.json" in
-  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The
-  aviation maps are installed in a directory "aviation_maps" in
-  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).  The class
-  assumes that no other program interferes with this file and this directory.
+  The list of available maps is downloaded from a remote server whose address is hardcoded into the binary. The list is downloaded to a file "maps.json" in
+  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The format of the file is described at this URL: https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/The-file-maps.json
+
+  Those geographic maps that are downloaded will be installed into the directory "aviation_maps" in
+  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a suitable subdirectory of this.
+
+  This class assumes that no other program interferes with the file "maps.json" and with the directory "aviation_maps".
 */
 
 class MapManager : public QObject
@@ -53,8 +55,7 @@ public:
     "maps.json".
     
     @param networkAccessManager Pointer to a QNetworkAccessManager that will be
-    used for network access. The QNetworkAccessManager needs to survive the
-    lifetime of this object.
+    used for network access. The QNetworkAccessManager must not be deleted while this object exists.
     
     @param parent The standard QObject parent pointer.
   */
@@ -79,7 +80,7 @@ public:
   */
   ~MapManager();
   
-  /*! \brief Determines whether some of the installed geo maps can be updated */
+  /*! \brief Determines whether some of the installed geographic maps can be updated */
   Q_PROPERTY(bool geoMapUpdatesAvailable READ geoMapUpdatesAvailable NOTIFY geoMapUpdatesAvailableChanged)
   
   /*! \brief Getter function for the property with the same name
@@ -189,10 +190,13 @@ public:
   QSet<QString> mbtileFiles() const;
 
 public slots:
-  /*! \brief Triggers manual download of list of available maps */
-  void startUpdate();
+  /*! \brief Triggers an update of the list of available maps
+
+    This will trigger a download the file maps.json from the remote server.
+  */
+  void updateGeoMapList();
   
-  /*! \brief Triggers an update for every updatable map */
+  /*! \brief Triggers an update of every updatable map */
   void startMapUpdates();
   
 signals:
@@ -262,26 +266,22 @@ private slots:
   // changes in the file system.
   void setTimeOfLastUpdateToNow();
 
-  // The name says it all: this method calls 'startUpdate()' if an automatic
-  // update is due
-  void startUpdateIfAutoUpdateIsDue();
+  // This method calls 'updateGeoMapList()' if an automatic update is due. It also sets a reasonable timeout value the timer _autoUpdateTime to fire up when the next autmatic update is due. It will then start the timer.
+  void autoUpdateGeoMapList();
   
 private:
   // This method returns a list of files in the download directory that have no
   // corresponding entry in _aviationMaps.
   QList<QString> unattachedFiles() const;
 
-  // This times is used to trigger automatic updates. Its signal QTimer::timeout
-  // is connected to the slot Downloadable::startFileDownload of
-  // _availableMapsDescription.  The timer is set in the constructor to emit a
-  // signal once an hour (if updates are due) or otherwise once a day. Whenever
-  // "maps.json" has been read, the timer is set to emit a signal once a day.
+  // This timer is used to trigger automatic updates. Its signal QTimer::timeout
+  // is connected to the slot autoUpdateGeoMapList.
   QTimer _autoUpdateTimer;
 
   // This Downloadable object manages the central text file that describes the
   // remotely available aviation maps. It is set in the constructor to point to
   // the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
-  QPointer<Downloadable> _availableMapsDescription;
+  QPointer<Downloadable> _maps_json;
   
   // This is a map that has "map names" as keys, and pointers to the actual
   // aviation maps as values

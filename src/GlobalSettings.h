@@ -75,9 +75,9 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param accepted Property acceptedTerms
+     * @param terms Property acceptedTerms
      */
-    void setAcceptedTerms(int accepted);
+    void setAcceptedTerms(int terms);
 
     /*! \brief Find out if "What's new" should be shown
      *

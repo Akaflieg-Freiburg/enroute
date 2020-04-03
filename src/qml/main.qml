@@ -381,15 +381,6 @@ ApplicationWindow {
         onDetected: MobileAdaptor.vibrateBrief()
     }
 
-    Connections {
-        target: view
-        onActiveChanged: {
-            if (Qt.platform.os === "android" && view.active) {
-                share.checkPendingIntents()
-            }
-        }
-    }
-
     // enroute closed unexpectedly if...
     // * the "route" page is open
     // * the route menu is opened

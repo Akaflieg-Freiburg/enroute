@@ -36,9 +36,9 @@ void DownloadableGroup::addToGroup(Downloadable *downloadable)
     // Add element to group
     _downloadables.append(downloadable);
 
-    connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::elementChanged);
-    connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::elementChanged);
-    connect(downloadable, &Downloadable::localFileChanged, this, &DownloadableGroup::localFileChanged);
+    connect(downloadable, &Downloadable::isDownloadingChanged, this, &DownloadableGroup::elementChanged);
+    connect(downloadable, &Downloadable::isUpdatableChanged, this, &DownloadableGroup::elementChanged);
+    connect(downloadable, &Downloadable::hasLocalFileChanged, this, &DownloadableGroup::localFilesChanged);
     elementChanged();
 }
 
@@ -57,12 +57,12 @@ void DownloadableGroup::removeFromGroup(Downloadable *downloadable)
 }
 
 
-bool DownloadableGroup::downloading() const
+bool DownloadableGroup::isDownloading() const
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
             continue;
-        if (_downloadable->downloading())
+        if (_downloadable->isDownloading())
             return true;
     }
 
@@ -86,12 +86,12 @@ QStringList DownloadableGroup::localFiles() const
 }
 
 
-bool DownloadableGroup::updatable() const
+bool DownloadableGroup::isUpdatable() const
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
             continue;
-        if (_downloadable->updatable())
+        if (_downloadable->isUpdatable())
             return true;
     }
 
@@ -101,16 +101,28 @@ bool DownloadableGroup::updatable() const
 
 void DownloadableGroup::elementChanged()
 {
-    bool newDownloading = downloading();
-    bool newUpdatable   = updatable();
+    bool newDownloading = isDownloading();
+    bool newUpdatable   = isUpdatable();
 
     if (newDownloading != _cachedDownloading) {
         _cachedDownloading = newDownloading;
-        emit downloadingChanged();
+        emit isDownloadingChanged();
     }
 
     if (newUpdatable != _cachedUpdatable) {
         _cachedUpdatable = newUpdatable;
-        emit updatableChanged();
+        emit isUpdatableChanged();
     }
+}
+
+
+QList<Downloadable *> DownloadableGroup::downloadables() const
+{
+    QList<Downloadable *> result;
+    foreach(auto _downloadable, _downloadables) {
+        if (_downloadable.isNull())
+            continue;
+        result += _downloadable;
+    }
+    return result;
 }

@@ -101,13 +101,13 @@ public:
      *
      * @see startFileDownload(), stopFileDownload()
      */
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+    Q_PROPERTY(bool isDownloading READ isDownloading NOTIFY isDownloadingChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property downloading
      */
-    bool downloading() const { return !_networkReplyDownloadFile.isNull(); }
+    bool isDownloading() const { return !_networkReplyDownloadFile.isNull(); }
 
     /*! \brief Download progress
      *
@@ -137,7 +137,7 @@ public:
      * the local file. The signal is not emitted when another process touches
      * the file.
      */
-    Q_PROPERTY(bool hasLocalFile READ hasLocalFile NOTIFY localFileChanged)
+    Q_PROPERTY(bool hasLocalFile READ hasLocalFile NOTIFY hasLocalFileChanged)
 
     /*! \brief Getter function for the property with the same name
      *
@@ -168,7 +168,7 @@ public:
      * This convenience property holds the content of the local file, or a null
      * QByteArray, if no local file exists
      */
-    Q_PROPERTY(QByteArray localFileContent READ localFileContent NOTIFY localFileChanged)
+    Q_PROPERTY(QByteArray localFileContent READ localFileContent NOTIFY localFileContentChanged)
 
     /*! \brief Getter function for the property with the same name
      *
@@ -182,14 +182,13 @@ public:
      * holds an invalid QDateTime. The property can be set with the method
      * checkForUpdate(), or directly written to.
      */
-    Q_PROPERTY(QDateTime remoteFileDate READ remoteFileDate WRITE setRemoteFileDate NOTIFY
-               remoteFileInfoChanged)
+    Q_PROPERTY(QDateTime remoteFileDate READ remoteFileDate WRITE setRemoteFileDate NOTIFY remoteFileDateChanged)
 
     /*! \brief Setter function for the property with the same name
      *
-     * @param dt Property remoteFileDate
+     * @param date Property remoteFileDate
      */
-    void setRemoteFileDate(const QDateTime &dt);
+    void setRemoteFileDate(const QDateTime &date);
 
     /*! \brief Getter function for the property with the same name
      *
@@ -203,8 +202,7 @@ public:
      * remote file is not known, the property holds an -1. The property can be
      * set with the method checkForUpdate(), or directly written to.
      */
-    Q_PROPERTY(qint64 remoteFileSize READ remoteFileSize WRITE setRemoteFileSize NOTIFY
-               remoteFileInfoChanged)
+    Q_PROPERTY(qint64 remoteFileSize READ remoteFileSize WRITE setRemoteFileSize NOTIFY remoteFileSizeChanged)
 
     /*! \brief Getter function for the property with the same name
      *
@@ -249,13 +247,13 @@ public:
      * @warning The notification signal is not emitted when another process
      * touches the local file.
      */
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
+    Q_PROPERTY(bool isUpdatable READ isUpdatable NOTIFY isUpdatableChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property updatable
      */
-    bool updatable() const;
+    bool isUpdatable() const;
 
     /*! \brief URL, as set in the constructor */
     Q_PROPERTY(QUrl url READ url CONSTANT)
@@ -345,7 +343,7 @@ signals:
     void aboutToChangeLocalFile(QString localFileName);
 
     /*! \brief Notifier signal for property downloading */
-    void downloadingChanged();
+    void isDownloadingChanged();
 
     /*! \brief Download progress
      *
@@ -373,26 +371,33 @@ signals:
     /*! \brief Notifier signal for the property infoText */
     void infoTextChanged();
 
-    /*! \brief Notifier signal for the properties hasLocalFile and localFileContent
-     *
-     * This signal indicates that the local file has changed, and is ready to be
-     * used by clients if it exists.
-     *
-     * @see aboutToChangeLocalFile(QFileInfo)
+    /*! \brief Notifier signal for the property hasLocalFile
      */
-    void localFileChanged();
+    void hasLocalFileChanged();
+
+    /*! \brief Notifier signal for the properties localFileContent
+     */
+    void localFileContentChanged();
 
     /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
      *
-     * This signal is emitted once one of the properties remoteFileDate and
+     * This signal is emitted once one of the property remoteFileDate changes, either in response to a use of the setter
+     * methods, or because downloadRemoteFileData() has been called and data has
+     * been retrieved from the server.
+     */
+    void remoteFileDateChanged();
+
+    /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
+     *
+     * This signal is emitted once one of the property
      * remoteFileSize changes, either in response to a use of the setter
      * methods, or because downloadRemoteFileData() has been called and data has
      * been retrieved from the server.
      */
-    void remoteFileInfoChanged();
+    void remoteFileSizeChanged();
 
     /*! \brief Notifier signal for the property updatable */
-    void updatableChanged();
+    void isUpdatableChanged();
 
 private slots:
     // Called when an error occurs during the download of the remote file, this

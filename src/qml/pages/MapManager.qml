@@ -171,7 +171,7 @@ Page {
             currentIndex: bar.currentIndex
             Layout.fillWidth: true
             Layout.fillHeight: true
-            visible: !mapManager.downloading && mapManager.hasGeoMapList
+            visible: !mapManager.downloadingGeoMapList && mapManager.hasGeoMapList
 
             ListView {
                 clip: true
@@ -183,12 +183,12 @@ Page {
                 section.delegate: sectionHeading
 
                 // Refresh list of maps on overscroll
-                property int refreshFlik: 0
+                property int refreshFlick: 0
                 onFlickStarted: {
-                    refreshFlik = atYBeginning
+                    refreshFlick = atYBeginning
                 }
                 onFlickEnded: {
-                    if ( atYBeginning && refreshFlik ) {
+                    if ( atYBeginning && refreshFlick ) {
                         MobileAdaptor.vibrateBrief()
                         mapManager.updateGeoMapList()
                     }
@@ -207,14 +207,14 @@ Page {
                 section.delegate: sectionHeading
 
                 // Refresh list of maps on overscroll
-                property int refreshFlik: 0
+                property int refreshFlick: 0
                 onFlickStarted: {
-                    refreshFlik = atYBeginning
+                    refreshFlick = atYBeginning
                 }
                 onFlickEnded: {
-                    if ( atYBeginning && refreshFlik ) {
+                    if ( atYBeginning && refreshFlick ) {
                         MobileAdaptor.vibrateBrief()
-                        mapManager.startUpdate()
+                        mapManager.updateGeoMapList()
                     }
                 }
             } // ListView
@@ -229,7 +229,7 @@ Page {
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
             onLinkActivated: Qt.openUrlExternally(link)
-            visible: mapManager.downloading
+            visible: mapManager.downloadingGeoMapList
         }
 
         Item {
@@ -239,7 +239,7 @@ Page {
                 id: busy
                 anchors.centerIn: parent
             }
-            visible: mapManager.downloading
+            visible: mapManager.downloadingGeoMapList
         }
 
         Label {
@@ -250,7 +250,7 @@ Page {
             wrapMode: Text.Wrap
             text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the menu.</p>")
             onLinkActivated: Qt.openUrlExternally(link)
-            visible: !mapManager.downloading && !mapManager.hasGeoMapList
+            visible: !mapManager.downloadingGeoMapList && !mapManager.hasGeoMapList
         }
     } // ColumnLayout
 
@@ -313,7 +313,7 @@ Page {
         enabled: mapManager.geoMapUpdatesAvailable
         onTriggered: {
             MobileAdaptor.vibrateBrief()
-            mapManager.startMapUpdates()
+            mapManager.updateGeoMaps()
         }
     }
 

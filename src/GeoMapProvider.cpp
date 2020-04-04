@@ -40,8 +40,8 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QO
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-    connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::aviationMapsChanged);
-    connect(_manager, &MapManager::geoMapsChanged, this, &GeoMapProvider::baseMapsChanged);
+    connect(_manager, &MapManager::geoMapListChanged, this, &GeoMapProvider::aviationMapsChanged);
+    connect(_manager, &MapManager::geoMapListChanged, this, &GeoMapProvider::baseMapsChanged);
     connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);

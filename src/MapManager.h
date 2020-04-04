@@ -87,7 +87,7 @@ public:
 
     @returns Property geoMapUpdatesAvailable
   */
-  bool geoMapUpdatesAvailable() const;
+  bool geoMapUpdatesAvailable() const { return _geoMaps.isUpdatable(); }
   
   /*! \brief Gives an estimate for the download size, as a localized string */
   Q_PROPERTY(QString geoMapUpdateSize READ geoMapUpdateSize NOTIFY geoMapUpdatesAvailableChanged)
@@ -100,20 +100,19 @@ public:
 
   /*! \brief List of available aviation maps
     
-    @returns a QMap that contains pointers to all known aviation maps as values,
-    and map names as keys. The aviation maps are owned by this map manager and
+    @returns a QList that contains pointers to all known aviation maps as values. The aviation maps are owned by this map manager and
     must not be deleted. The lifetime of the aviation maps is not guaranteed, so
     if you must store them, then store them in a QPointer and check validity of
     the pointer before every use.
   */
-  QMap<QString, Downloadable*> aviationMaps() const;
+  QList<Downloadable*> aviationMaps() const;
   
   /*! \brief List of available aviation maps, as a list of QObjects
     
     This property is identical to aviationMaps, but returns the pointers to the
     actual maps in the form of a QObjectList instead of a QMap
   */
-  Q_PROPERTY(QList<QObject*> aviationMapsAsObjectList READ aviationMapsAsObjectList NOTIFY geoMapsChanged)
+  Q_PROPERTY(QList<QObject*> aviationMapsAsObjectList READ aviationMapsAsObjectList NOTIFY geoMapListChanged)
 
   /*! \brief Getter function for the property with the same name
 
@@ -122,7 +121,7 @@ public:
   QList<QObject*> aviationMapsAsObjectList() const;
 
   /*! \brief True if at least one aviation map is installed */
-  Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapsChanged)
+  Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapListChanged)
   
   /*! \brief Getter function for the property with the same name
 
@@ -138,14 +137,14 @@ public:
     store them, then store them in a QPointer and check validity of the pointer
     before every use.
   */
-  QMap<QString, Downloadable *> baseMaps() const;
+  QList<Downloadable *> baseMaps() const;
   
   /*! \brief List of available aviation maps, as a list of QObjects
     
     This property is identical to aviationMaps, but returns the pointers to the
     actual maps in the form of a QObjectList instead of a QMap
   */
-  Q_PROPERTY(QList<QObject*> baseMapsAsObjectList READ baseMapsAsObjectList NOTIFY geoMapsChanged)
+  Q_PROPERTY(QList<QObject*> baseMapsAsObjectList READ baseMapsAsObjectList NOTIFY geoMapListChanged)
 
   /*! \brief Getter function for the property with the same name
 
@@ -154,7 +153,7 @@ public:
   QList<QObject*> baseMapsAsObjectList() const;
   
   /*! \brief True if at least one aviation map is installed */
-  Q_PROPERTY(bool hasBaseMap READ hasBaseMap NOTIFY geoMapsChanged)
+  Q_PROPERTY(bool hasBaseMap READ hasBaseMap NOTIFY geoMapListChanged)
   
   /*! \brief Getter function for the property with the same name
 
@@ -163,22 +162,22 @@ public:
   bool hasBaseMap() const;
   
   /*! \brief True if list of available geo maps has already been downloaded */
-  Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapsChanged)
+  Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
   
   /*! \brief Getter function for the property with the same name
     
     @returns hasGeoMapList
    */
-  bool hasGeoMapList() const { return !_geoMaps.isEmpty(); }
+  bool hasGeoMapList() const { return !_geoMaps.downloadables().isEmpty(); }
 
   /*! \brief Indicates whether the file "maps.json" is currently being downloaded */
-  Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+  Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
   
   /*! \brief Getter function for the property with the same name
 
-    @returns Property downloading
+    @returns Property downloadingGeoMapList
    */
-  bool downloading() const;
+  bool downloadingGeoMapList() const;
 
   /*! \brief Set of all mbtiles files that have been downloaded and are ready-to-use */
   Q_PROPERTY(QSet<QString> mbtileFiles READ mbtileFiles NOTIFY mbtileFilesChanged)
@@ -197,7 +196,7 @@ public slots:
   void updateGeoMapList();
   
   /*! \brief Triggers an update of every updatable map */
-  void startMapUpdates();
+  void updateGeoMaps();
   
 signals:
   /*! \brief Warning that the list of available aviation maps is about to change
@@ -213,13 +212,13 @@ signals:
   void aboutToChangeAviationMapList();
   
   /*! \brief Notification signal for the property with the same name */
-  void geoMapsChanged();
+  void geoMapListChanged();
   
   /*! \brief Notification signal for the property with the same name */
   void geoMapUpdatesAvailableChanged();
   
   /*! \brief Notification signal for the property with the same name */
-  void downloadingChanged();
+  void downloadingGeoMapListChanged();
   
   /*! \brief Download error
     
@@ -245,11 +244,8 @@ private slots:
   // 'objectName'
   void errorReceiver(const QString& objectName, QString message);
 
-  // This slot is called when a local file of one of the geo maps
-  // changes. If the geo map in question is unsupported, it is then
-  // removed. The signals aviationMapListChanged() and
-  // aviationMapUpdatesAvailableChanged() are emitted as
-  // appropriate.
+  // This slot is called when a local file of one of the geo maps changes content or existence. If the geo map in question is unsupported, it is then removed. The signals aviationMapListChanged() and
+  // aviationMapUpdatesAvailableChanged() are emitted as appropriate.
   void localFileOfGeoMapChanged();
 
   // This slot is called when the file "maps.json" is meant to be read.  It is
@@ -283,9 +279,8 @@ private:
   // the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
   QPointer<Downloadable> _maps_json;
   
-  // This is a map that has "map names" as keys, and pointers to the actual
-  // aviation maps as values
-  QMap<QString, QPointer<Downloadable>> _geoMaps;
+  // List of geographic maps
+  DownloadableGroup _geoMaps;
 
   // Aviation maps (currently, these are GeoJSON files)
   DownloadableGroup _aviationMaps;

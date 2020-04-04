@@ -81,16 +81,16 @@ public:
      *
      * By definition, an empty group is not downloading
      */
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+    Q_PROPERTY(bool isDownloading READ isDownloading NOTIFY isDownloadingChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property downloading
      */
-    bool downloading() const;
+    bool isDownloading() const;
 
     /*! \brief Names of all local files of the Downloadbles in this group */
-    Q_PROPERTY(QStringList localFiles READ localFiles NOTIFY localFileChanged)
+    Q_PROPERTY(QStringList localFiles READ localFiles NOTIFY localFilesChanged)
 
     /*! \brief Getter function for the property with the same name
      *
@@ -102,24 +102,26 @@ public:
      *
      * By definition, an empty group is not updatable
      */
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
+    Q_PROPERTY(bool isUpdatable READ isUpdatable NOTIFY isUpdatableChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property localFiles
      */
-    bool updatable() const;
+    bool isUpdatable() const;
+
+#warning documentation This never returns a zero pointer
+    QList<Downloadable *> downloadables() const;
 
 signals:
     /*! \brief Notifier signal for property downloading */
-    void downloadingChanged();
+    void isDownloadingChanged();
 
     /*! \brief Notifier signal for the property updatable */
-    void updatableChanged();
+    void isUpdatableChanged();
 
-    /*! \brief Emitted if one of the local files in this group changes content or
-     * existence */
-    void localFileChanged();
+    /*! \brief Notifier signal for the property localFiles */
+    void localFilesChanged();
 
 private slots:
     void elementChanged();

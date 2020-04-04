@@ -471,7 +471,7 @@ private slots:
   
 private:
   // Aircraft is considered flying is speed is at least this high
-  static constexpr double minFlightSpeedInKT = 40.0;
+  static constexpr double minFlightSpeedInKT = 30.0;
   // Coordinates of EDTF airfield
   static constexpr double EDTF_lat = 48.022653;
   static constexpr double EDTF_lon = 7.832583;

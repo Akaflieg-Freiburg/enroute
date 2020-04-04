@@ -101,13 +101,13 @@ public:
      *
      * @see startFileDownload(), stopFileDownload()
      */
-    Q_PROPERTY(bool isDownloading READ isDownloading NOTIFY isDownloadingChanged)
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property downloading
      */
-    bool isDownloading() const { return !_networkReplyDownloadFile.isNull(); }
+    bool downloading() const { return !_networkReplyDownloadFile.isNull(); }
 
     /*! \brief Download progress
      *
@@ -247,13 +247,13 @@ public:
      * @warning The notification signal is not emitted when another process
      * touches the local file.
      */
-    Q_PROPERTY(bool isUpdatable READ isUpdatable NOTIFY isUpdatableChanged)
+    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property updatable
      */
-    bool isUpdatable() const;
+    bool updatable() const;
 
     /*! \brief URL, as set in the constructor */
     Q_PROPERTY(QUrl url READ url CONSTANT)
@@ -343,7 +343,7 @@ signals:
     void aboutToChangeLocalFile(QString localFileName);
 
     /*! \brief Notifier signal for property downloading */
-    void isDownloadingChanged();
+    void downloadingChanged();
 
     /*! \brief Download progress
      *
@@ -397,7 +397,7 @@ signals:
     void remoteFileSizeChanged();
 
     /*! \brief Notifier signal for the property updatable */
-    void isUpdatableChanged();
+    void updatableChanged();
 
 private slots:
     // Called when an error occurs during the download of the remote file, this

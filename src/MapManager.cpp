@@ -41,9 +41,13 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
                                   networkAccessManager,
                                   this);
     _maps_json->setObjectName(tr("list of aviation maps"));
-    connect(_maps_json, &Downloadable::localFileContentChanged, this, &MapManager::readMapListFromDownloadedJSONFile);
+    connect(_maps_json, &Downloadable::localFileContentChanged, this, &MapManager::readGeoMapListFromJSONFile);
     connect(_maps_json, &Downloadable::localFileContentChanged, this, &MapManager::setTimeOfLastUpdateToNow);
     connect(_maps_json, &Downloadable::error, this, &MapManager::errorReceiver);
+
+    // Wire up the DownloadableGroup _geoMaps
+    connect(&_geoMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::geoMapListChanged);
+
 
     // Wire up the automatic update timer and check if automatic updates are due. The method "autoUpdateGeoMapList" will also set a reasonable timeout value for the timer and start it.
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &MapManager::autoUpdateGeoMapList);
@@ -51,7 +55,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
 
     // If there is a downloaded maps.json file, we read it. Otherwise, we start a download.
     if (_maps_json->hasLocalFile())
-        readMapListFromDownloadedJSONFile();
+        readGeoMapListFromJSONFile();
     else
         _maps_json->startFileDownload();
 }
@@ -93,7 +97,7 @@ QString MapManager::geoMapUpdateSize() const
 {
     qint64 downloadSize = 0;
     foreach(auto geoMapPtr, _geoMaps.downloadables())
-        if (geoMapPtr->isUpdatable())
+        if (geoMapPtr->updatable())
             downloadSize += geoMapPtr->remoteFileSize();
 
     return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
@@ -159,7 +163,7 @@ bool MapManager::downloadingGeoMapList() const
     if (_maps_json.isNull())
         return false;
 
-    return _maps_json->isDownloading();
+    return _maps_json->downloading();
 }
 
 
@@ -221,7 +225,7 @@ void MapManager::updateGeoMapList()
 void MapManager::updateGeoMaps()
 {
     foreach(auto geoMapPtr, _geoMaps.downloadables())
-        if (geoMapPtr->isUpdatable())
+        if (geoMapPtr->updatable())
             geoMapPtr->startFileDownload();
 }
 
@@ -230,16 +234,19 @@ void MapManager::errorReceiver(const QString&, QString message)
 {
     emit error(std::move(message));
 }
-#warning WATER TABLE
 
 
 void MapManager::localFileOfGeoMapChanged()
 {
+    auto oldGeoMapUpdatesAvailable = geoMapUpdatesAvailable();
+    auto oldMbtileFiles = mbtileFiles();
+
     // Ok, a local file changed. First, we check if this means that the local file
     // of an unsupported map (=map with invalid URL) is gone. These maps are then
     // no longer wanted. We go through the list and see if we can find any
     // candidates.
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
+    auto geoMaps = _geoMaps.downloadables();
+    foreach(auto geoMapPtr, geoMaps) {
         if (geoMapPtr->url().isValid())
             continue;
         if (geoMapPtr->hasLocalFile())
@@ -247,24 +254,26 @@ void MapManager::localFileOfGeoMapChanged()
 
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
+        _geoMaps.removeFromGroup(geoMapPtr);
         geoMapPtr->deleteLater();
     }
 
-#warning not acceptable. We should not emit these signals unnecessarily.
-    emit geoMapsChanged();
-    emit geoMapUpdatesAvailableChanged();
-    emit mbtileFilesChanged(mbtileFiles(), "osm");
+    if (oldGeoMapUpdatesAvailable != geoMapUpdatesAvailable())
+        emit geoMapUpdatesAvailableChanged();
+    if (oldMbtileFiles != mbtileFiles())
+        emit mbtileFilesChanged(mbtileFiles(), "osm");
 }
 
 
-bool MapManager::readMapListFromDownloadedJSONFile()
+
+void MapManager::readGeoMapListFromJSONFile()
 {
     // Paranoid safety checks
     Q_ASSERT(!_maps_json.isNull());
     if (_maps_json.isNull())
-        return false;
+        return;
     if (!_maps_json->hasLocalFile())
-        return false;
+        return;
 
     bool old_aviationMapUpdatesAvailable = geoMapUpdatesAvailable();
 
@@ -281,7 +290,7 @@ bool MapManager::readMapListFromDownloadedJSONFile()
     QJsonParseError parseError{};
     auto doc = QJsonDocument::fromJson(_maps_json->localFileContent(), &parseError);
     if (parseError.error != QJsonParseError::NoError)
-        return false;
+        return;
 
     auto top = doc.object();
     auto baseURL = top.value("url").toString();
@@ -351,7 +360,7 @@ bool MapManager::readMapListFromDownloadedJSONFile()
     if (old_aviationMapUpdatesAvailable != geoMapUpdatesAvailable())
         emit geoMapUpdatesAvailableChanged();
 
-    return true;
+    return;
 }
 
 
@@ -411,5 +420,3 @@ QList<QString> MapManager::unattachedFiles() const
 
     return result;
 }
-
-

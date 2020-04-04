@@ -253,7 +253,7 @@ private slots:
   // connected to the signal &Downloadable::localFileChanged of
   // _availableMapsDescription, which is emitted whenever the file "maps.json"
   // changes in the file system.
-  bool readMapListFromDownloadedJSONFile();
+  void readGeoMapListFromJSONFile();
 
   // This method records the current time as the time when the last update
   // succeeded, and sets the autoUpdateTimer to check again in one day. This

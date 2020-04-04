@@ -39,7 +39,7 @@ Downloadable::Downloadable(QUrl url, const QString &fileName,
     connect(this, &Downloadable::remoteFileSizeChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::hasLocalFileChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::localFileContentChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::isDownloadingChanged, this, &Downloadable::infoTextChanged);
+    connect(this, &Downloadable::downloadingChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::downloadProgressChanged, this, &Downloadable::infoTextChanged);
 }
 
@@ -51,7 +51,7 @@ Downloadable::~Downloadable() {
 }
 
 QString Downloadable::infoText() const {
-    if (isDownloading())
+    if (downloading())
         return tr("downloading … %1% complete").arg(_downloadProgress);
 
     QString displayText;
@@ -61,7 +61,7 @@ QString Downloadable::infoText() const {
                 .arg(QLocale::system().formattedDataSize(info.size(), 1,
                                                          QLocale::DataSizeSIFormat));
 
-        if (isUpdatable())
+        if (updatable())
             displayText += " • " + tr("update available");
         if (!url().isValid())
             displayText += " • " + tr("no longer supported");
@@ -94,13 +94,13 @@ void Downloadable::setRemoteFileDate(const QDateTime &date) {
         return;
 
     // Save old value to see if anything changed
-    bool oldUpdatable = isUpdatable();
+    bool oldUpdatable = updatable();
 
     _remoteFileDate = date;
 
     // Emit signals as appropriate
-    if (oldUpdatable != isUpdatable())
-        emit isUpdatableChanged();
+    if (oldUpdatable != updatable())
+        emit updatableChanged();
     emit remoteFileDateChanged();
 }
 
@@ -115,18 +115,18 @@ void Downloadable::setRemoteFileSize(qint64 size) {
         return;
 
     // Save old value to see if anything changed
-    bool oldUpdatable = isUpdatable();
+    bool oldUpdatable = updatable();
 
     _remoteFileSize = size;
 
     // Emit signals as appropriate
-    if (oldUpdatable != isUpdatable())
-        emit isUpdatableChanged();
+    if (oldUpdatable != updatable())
+        emit updatableChanged();
     emit remoteFileSizeChanged();
 }
 
-bool Downloadable::isUpdatable() const {
-    if (isDownloading())
+bool Downloadable::updatable() const {
+    if (downloading())
         return false;
     if (!QFile::exists(_localFileName))
         return false;
@@ -146,18 +146,18 @@ void Downloadable::deleteLocalFile() {
         return;
 
     // Save old value to see if anything changed
-    bool oldUpdatable = isUpdatable();
+    bool oldUpdatable = updatable();
 
     emit aboutToChangeLocalFile(_localFileName);
-    QLockFile lockFile(_localFileName);
+    QLockFile lockFile(_localFileName+".lock");
     lockFile.lock();
     QFile::remove(_localFileName);
     lockFile.unlock();
     emit hasLocalFileChanged();
 
     // Emit signals as appropriate
-    if (oldUpdatable != isUpdatable())
-        emit isUpdatableChanged();
+    if (oldUpdatable != updatable())
+        emit updatableChanged();
 }
 
 void Downloadable::startFileDownload() {
@@ -167,13 +167,13 @@ void Downloadable::startFileDownload() {
         return;
 
     // Do not begin a new download if one is already running
-    if (isDownloading())
+    if (downloading())
         return;
 
     // Save old value to see if anything changed
-    auto oldUpdatable = isUpdatable();
+    auto oldUpdatable = updatable();
     auto oldDownloadProgress =_downloadProgress;
-    auto oldIsDownloading = isDownloading();
+    auto oldIsDownloading = downloading();
 
     // Clear temporary file
     delete _saveFile;
@@ -202,12 +202,12 @@ void Downloadable::startFileDownload() {
     _downloadProgress = 0;
 
     // Emit signals as appropriate
-    if (oldUpdatable != isUpdatable())
-        emit isUpdatableChanged();
+    if (oldUpdatable != updatable())
+        emit updatableChanged();
     if (_downloadProgress != oldDownloadProgress)
         emit downloadProgressChanged(_downloadProgress);
-    if (isDownloading() != oldIsDownloading)
-        emit isDownloadingChanged();
+    if (downloading() != oldIsDownloading)
+        emit downloadingChanged();
 }
 
 void Downloadable::startRemoteFileInfoDownload() {
@@ -233,11 +233,11 @@ void Downloadable::stopFileDownload() {
         return;
 
     // Do stop a new download if none is already running
-    if (!isDownloading())
+    if (!downloading())
         return;
 
     // Save old value to see if anything changed
-    bool oldUpdatable = isUpdatable();
+    bool oldUpdatable = updatable();
 
     // Stop the download
     _networkReplyDownloadFile->deleteLater();
@@ -245,9 +245,9 @@ void Downloadable::stopFileDownload() {
     delete _saveFile;
 
     // Emit signals as appropriate
-    if (oldUpdatable != isUpdatable())
-        emit isUpdatableChanged();
-    emit isDownloadingChanged();
+    if (oldUpdatable != updatable())
+        emit updatableChanged();
+    emit downloadingChanged();
 }
 
 void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
@@ -441,7 +441,7 @@ void Downloadable::downloadFileFinished() {
     }
 
     // Save old value to see if anything changed
-    bool oldIsUpdatable = isUpdatable();
+    bool oldIsUpdatable = updatable();
     bool oldHasLocalFile = hasLocalFile();
 
     // Copy the temporary file to the local file
@@ -458,11 +458,11 @@ void Downloadable::downloadFileFinished() {
     _networkReplyDownloadFile = nullptr;
 
     // Emit signals as appropriate
-    if (oldIsUpdatable != isUpdatable())
-        emit isUpdatableChanged();
+    if (oldIsUpdatable != updatable())
+        emit updatableChanged();
     if (oldHasLocalFile != hasLocalFile())
         emit hasLocalFileChanged();
-    emit isDownloadingChanged();
+    emit downloadingChanged();
 }
 
 void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
@@ -496,7 +496,7 @@ void Downloadable::downloadHeaderFinished() {
         return;
 
     // Save old value to see if anything changed
-    bool oldUpdatable = isUpdatable();
+    bool oldUpdatable = updatable();
 
     // Update remote file information
     auto old_remoteFileDate = _remoteFileDate;
@@ -511,6 +511,6 @@ void Downloadable::downloadHeaderFinished() {
         emit remoteFileDateChanged();
     if (_remoteFileSize != old_remoteFileSize)
         emit remoteFileSizeChanged();
-    if (oldUpdatable != isUpdatable())
-        emit isUpdatableChanged();
+    if (oldUpdatable != updatable())
+        emit updatableChanged();
 }

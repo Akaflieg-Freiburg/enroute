@@ -36,10 +36,14 @@ void DownloadableGroup::addToGroup(Downloadable *downloadable)
     // Add element to group
     _downloadables.append(downloadable);
 
-    connect(downloadable, &Downloadable::isDownloadingChanged, this, &DownloadableGroup::elementChanged);
-    connect(downloadable, &Downloadable::isUpdatableChanged, this, &DownloadableGroup::elementChanged);
+    connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::elementChanged);
+    connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::elementChanged);
     connect(downloadable, &Downloadable::hasLocalFileChanged, this, &DownloadableGroup::localFilesChanged);
+    connect(downloadable, &Downloadable::destroyed, this, &DownloadableGroup::removeObjectFromGroup);
     elementChanged();
+#warning need to handle deletion
+
+    emit downloadablesChanged();
 }
 
 
@@ -54,6 +58,7 @@ void DownloadableGroup::removeFromGroup(Downloadable *downloadable)
     _downloadables.takeAt(index);
     disconnect(downloadable, nullptr, this, nullptr);
     elementChanged();
+    emit downloadablesChanged();
 }
 
 
@@ -62,7 +67,7 @@ bool DownloadableGroup::isDownloading() const
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
             continue;
-        if (_downloadable->isDownloading())
+        if (_downloadable->downloading())
             return true;
     }
 
@@ -91,7 +96,7 @@ bool DownloadableGroup::isUpdatable() const
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
             continue;
-        if (_downloadable->isUpdatable())
+        if (_downloadable->updatable())
             return true;
     }
 

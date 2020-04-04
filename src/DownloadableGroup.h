@@ -111,6 +111,7 @@ public:
     bool isUpdatable() const;
 
 #warning documentation This never returns a zero pointer
+    Q_PROPERTY(QList<Downloadable *> downloadables READ downloadables NOTIFY downloadablesChanged)
     QList<Downloadable *> downloadables() const;
 
 signals:
@@ -123,10 +124,15 @@ signals:
     /*! \brief Notifier signal for the property localFiles */
     void localFilesChanged();
 
+#warning documentation
+    void downloadablesChanged();
+
 private slots:
     void elementChanged();
 
 private:
+    void removeObjectFromGroup(QObject *downloadable) { removeFromGroup((Downloadable *)downloadable); }
+
     bool _cachedDownloading; // Cached value for the 'downloading' property
     bool _cachedUpdatable;   // Cached value for the 'updatable' property
 

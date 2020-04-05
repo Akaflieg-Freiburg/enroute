@@ -499,6 +499,7 @@ Page {
 
         text: qsTr("Save")
         icon.source: "/icons/material/ic_save.svg"
+        enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
         onTriggered: {
             MobileAdaptor.vibrateBrief()

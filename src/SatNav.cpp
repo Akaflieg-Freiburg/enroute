@@ -97,7 +97,7 @@ void SatNav::setAltitudeInFeet(int altitudeInFeet)
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return;
 
-    auto altCorrection = AviationUnits::Distance::fromFT(altitudeInFeet-rawAltitudeInFeet());
+    auto altCorrection = AviationUnits::Distance::fromFT(altitudeInFeet-rawAltitudeInFeet() + geoidalSeparation());
 
     altitudeCorrectionInM = qRound(altCorrection.toM());
     QSettings settings;

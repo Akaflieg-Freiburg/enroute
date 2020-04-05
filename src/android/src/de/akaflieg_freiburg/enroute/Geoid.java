@@ -20,10 +20,11 @@
 
 package de.akaflieg_freiburg.enroute;
 
-import android.content.Context;
+import de.akaflieg_freiburg.enroute.GeoidOnNmeaMessageListener;
+import de.akaflieg_freiburg.enroute.GeoidNmeaListener;
 
+import android.content.Context;
 import android.location.LocationManager;
-import android.location.OnNmeaMessageListener;
 
 import android.Manifest;
 import android.support.v4.content.ContextCompat;
@@ -32,22 +33,43 @@ import android.util.Log;
 
 import org.qtproject.qt5.android.QtNative;
 
-public class Geoid implements OnNmeaMessageListener
+public abstract class Geoid
 {
     /**
      * native method to send file data to Qt - implemented in Cpp via JNI.
      */
     public static native void set(float newSeparation);
 
-    private long last_valid_timestamp = 0;
-    private boolean registered = false;
-
     private static final int GGA_PRECISION = 8;
     private static final int GGA_ALTITUDE = 9;
     private static final int GGA_GEOID = 11;
 
+    private long last_valid_timestamp = 0;
+    private boolean registered = false;
+
     /**
-     * Geoid constructor.
+     * get an implementation for either OnNmeaMessageListener or the deprecated
+     * NmeaListener interface depending on the API version we're running on.
+     *
+     * @return GeoidOnNmeaMessageListener for API >= 24 (Nougat) else GeoidNmeaListener for older devices.
+     */
+    public static Geoid getInstance() {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+        {
+            // we return an object for the newer OnNmeaMessageListener interface
+            //
+            return new GeoidOnNmeaMessageListener();
+        } else {
+
+            // we return an object for the old (deprecated) NmeaListener interface
+            //
+            return new GeoidNmeaListener();
+        }
+    }
+
+    /**
+     * constructor.
      *
      * we add ourselves to the location manager to listen on NMEA messages.
      */
@@ -55,6 +77,13 @@ public class Geoid implements OnNmeaMessageListener
     {
         maybeAddAsNmeaListener();
     }
+
+    /**
+     * to be implemented by the inheriting classes.
+     *
+     * addes the inheriting class to the LocationManager.
+     */
+    public abstract void addToLocationManager(LocationManager locationManager);
 
     /**
      * try to add ourselves to the location manager as NMEA listener.
@@ -75,7 +104,7 @@ public class Geoid implements OnNmeaMessageListener
 
             try {
                 LocationManager locationManager = (LocationManager)QtNative.activity().getSystemService(Context.LOCATION_SERVICE);
-                locationManager.addNmeaListener(this);
+                addToLocationManager(locationManager);
             } catch (Exception e) {
                 Log.d("Geoid", e.getMessage());
             }
@@ -84,10 +113,10 @@ public class Geoid implements OnNmeaMessageListener
         }
     }
 
+
     /**
      * Called whenever NMEA messages arrive.
      *
-     * Implements the OnNmeaMessageListener.onNmeaMessage().
      * Get geoid separation from GGA messages, see...
      *
      * - https://www.gpsinformation.org/dale/nmea.htm#GGA
@@ -98,7 +127,7 @@ public class Geoid implements OnNmeaMessageListener
      * @param message the NMEA message
      * @param timestamp of the location fix, as reported by the GNSS chipset in milliseconds
      */
-    public void onNmeaMessage(String message, long timestamp /* milliseconds */)
+    public void processNmeaMessage(String message, long timestamp /* milliseconds */)
     {
         // onNmeaMessage may get a few NMEA messages per second.
         // As the geoid separation varies quite slowly with distance
@@ -140,13 +169,13 @@ public class Geoid implements OnNmeaMessageListener
                 last_valid_timestamp = timestamp;
                 set(geoid); // set geoidal separation in c++ class via jni native call
 
-                /*
+                /* leave this in here for debugging
                 Log.d("Geoid", "geoid = " + Float.toString(geoid) +
                                ", alt = " + tokens[GGA_ALTITUDE] + " m" +
                                ", " + Float.toString(Float.valueOf(tokens[GGA_ALTITUDE]) * 3.28084f) + " ft");
                  */
 
-        } catch (NumberFormatException e)
+            } catch (NumberFormatException e)
             {
                 return;
             }

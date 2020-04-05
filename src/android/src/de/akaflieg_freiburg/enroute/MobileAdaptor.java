@@ -56,13 +56,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
-        {
-            // OnNmeaMessageListener was introduced in android.os.Build.VERSION_CODES.N == 24
-            //
-            m_geoid = new Geoid();
-        }
+        m_geoid = Geoid.getInstance();
     }
 
     /**
@@ -83,10 +77,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     public void onResume()
     {
         super.onResume();
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
-        {
-            m_geoid.maybeAddAsNmeaListener();
-        }
+        m_geoid.maybeAddAsNmeaListener();
     }
 }

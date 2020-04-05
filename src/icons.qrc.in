@@ -15,6 +15,7 @@
         <file alias="icons/material/ic_exit_to_app.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_exit_to_app_24px.svg</file>
         <file alias="icons/material/ic_file_download.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_file_download_24px.svg</file>
 	<file alias="icons/material/ic_info.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_info_24px.svg</file>	
+	<file alias="icons/material/ic_input.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_input_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_arrow_down.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_down_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_arrow_up.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_up_24px.svg</file>	
 	<file alias="icons/material/ic_map.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_map_24px.svg</file>
@@ -23,10 +24,13 @@
         <file alias="icons/material/ic_more_vert.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_vert_24px.svg</file>	
 	<file alias="icons/material/ic_my_location.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_my_location_24px.svg</file>
 	<file alias="icons/material/ic_new_releases.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_new_releases_24px.svg</file>
+	<file alias="icons/material/ic_open_in_new.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_open_in_new_24px.svg</file>
         <file alias="icons/material/ic_refresh.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_refresh_24px.svg</file>
         <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
+	<file alias="icons/material/ic_save.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_save_24px.svg</file>
 	<file alias="icons/material/ic_screen_lock_portrait.svg">${material-design-icons_SOURCE_DIR}/device/svg/production/ic_screen_lock_portrait_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
+	<file alias="icons/material/ic_share.svg">${material-design-icons_SOURCE_DIR}/social/svg/production/ic_share_24px.svg</file>
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>
 	
 	<!-- GUI icons: General -->

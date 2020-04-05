@@ -17,8 +17,13 @@ which is licensed under
 the <a href="https://github.com/nitroshare/qhttpengine/blob/master/LICENSE.txt">MIT
 license</a>. This program includes the
 library <a href="https://openssl.org">OpenSSL</a>, licensed under the
-<a href="https://www.openssl.org/source/license.html"Apache License 2.0</a>
-license.</p>
+<a href="https://www.openssl.org/source/license.html">Apache License 2.0</a>
+license.
+This program includes code from
+<a href="https://github.com/timsee/QtMobileShareUtils">QtMobileShareUtils</a>,
+which is licensed under
+the <a href="https://github.com/timsee/QtMobileShareUtils/blob/master/LICENSE">MIT
+license</a>.</p>
 
 <p>This program includes versions of
 the <a href="https://github.com/google/roboto">Google Roboto Fonts</a>, which

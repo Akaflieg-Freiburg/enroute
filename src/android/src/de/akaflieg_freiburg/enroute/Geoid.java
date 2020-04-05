@@ -25,6 +25,13 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.location.OnNmeaMessageListener;
 
+import android.Manifest;
+import android.support.v4.content.ContextCompat;
+import android.content.pm.PackageManager;
+import android.util.Log;
+
+import org.qtproject.qt5.android.QtNative;
+
 public class Geoid implements OnNmeaMessageListener
 {
     /**
@@ -33,6 +40,7 @@ public class Geoid implements OnNmeaMessageListener
     public static native void set(float newSeparation);
 
     private long last_valid_timestamp = 0;
+    private boolean registered = false;
 
     private static final int GGA_PRECISION = 8;
     private static final int GGA_ALTITUDE = 9;
@@ -41,14 +49,39 @@ public class Geoid implements OnNmeaMessageListener
     /**
      * Geoid constructor.
      *
-     * we add ourselves as to the location manager to listen on NMEA messages.
-     *
-     * @param context the context which is used to get the location manager.
+     * we add ourselves to the location manager to listen on NMEA messages.
      */
-    public Geoid(Context context)
+    public Geoid()
     {
-        LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.addNmeaListener(this);
+        maybeAddAsNmeaListener();
+    }
+
+    /**
+     * try to add ourselves to the location manager as NMEA listener.
+     *
+     * We add ourselves as NMEA listener only if permission to
+     * ACCESS_FINE_LOCATION has been granted.
+     */
+    public void maybeAddAsNmeaListener() {
+
+        if (registered) {
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(QtNative.activity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            Log.d("Geoid", "ACCESS_FINE_LOCATION not granted.");
+        } else {
+
+            try {
+                LocationManager locationManager = (LocationManager)QtNative.activity().getSystemService(Context.LOCATION_SERVICE);
+                locationManager.addNmeaListener(this);
+            } catch (Exception e) {
+                Log.d("Geoid", e.getMessage());
+            }
+
+            registered = true;
+        }
     }
 
     /**

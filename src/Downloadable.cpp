@@ -149,7 +149,7 @@ void Downloadable::deleteLocalFile() {
     bool oldUpdatable = updatable();
 
     emit aboutToChangeLocalFile(_localFileName);
-    QLockFile lockFile(_localFileName+".lock");
+    QLockFile lockFile(_localFileName + ".lock");
     lockFile.lock();
     QFile::remove(_localFileName);
     lockFile.unlock();

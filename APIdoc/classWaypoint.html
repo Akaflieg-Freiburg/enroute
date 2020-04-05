@@ -82,6 +82,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad848b6abe3cc708e1a99aae8a34e1189"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVariant&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ad848b6abe3cc708e1a99aae8a34e1189">get</a> (const QString &amp;name) const</td></tr>
 <tr class="memdesc:ad848b6abe3cc708e1a99aae8a34e1189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve member by name.  <a href="#ad848b6abe3cc708e1a99aae8a34e1189">More...</a><br /></td></tr>
 <tr class="separator:ad848b6abe3cc708e1a99aae8a34e1189"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a5e2a50c6fdc60ca142b525f3195177"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a9a5e2a50c6fdc60ca142b525f3195177">hasElevation</a> () const</td></tr>
+<tr class="memdesc:a9a5e2a50c6fdc60ca142b525f3195177"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if waypoint contains property ELE  <a href="#a9a5e2a50c6fdc60ca142b525f3195177">More...</a><br /></td></tr>
+<tr class="separator:a9a5e2a50c6fdc60ca142b525f3195177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21895895ded405877ec658ce45ea9deb"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a21895895ded405877ec658ce45ea9deb">codeName</a> () const</td></tr>
+<tr class="memdesc:a21895895ded405877ec658ce45ea9deb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a21895895ded405877ec658ce45ea9deb">More...</a><br /></td></tr>
+<tr class="separator:a21895895ded405877ec658ce45ea9deb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74797f90efc5fd5d17b5bde5922fcfd3"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a74797f90efc5fd5d17b5bde5922fcfd3">richTextName</a> () const</td></tr>
 <tr class="memdesc:a74797f90efc5fd5d17b5bde5922fcfd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a74797f90efc5fd5d17b5bde5922fcfd3">More...</a><br /></td></tr>
 <tr class="separator:a74797f90efc5fd5d17b5bde5922fcfd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -91,6 +97,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#adcfeccd1696b81ca5140a54c06e7a6bb">wayFrom</a> (const QGeoCoordinate &amp;position) const</td></tr>
 <tr class="memdesc:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given position to the waypoint.  <a href="#adcfeccd1696b81ca5140a54c06e7a6bb">More...</a><br /></td></tr>
 <tr class="separator:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75b513aa6785ce11693d2f28c613cc23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a75b513aa6785ce11693d2f28c613cc23">setName</a> (const QString &amp;nam)</td></tr>
+<tr class="memdesc:a75b513aa6785ce11693d2f28c613cc23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace name of waypoint.  <a href="#a75b513aa6785ce11693d2f28c613cc23">More...</a><br /></td></tr>
+<tr class="separator:a75b513aa6785ce11693d2f28c613cc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -334,6 +343,26 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a21895895ded405877ec658ce45ea9deb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21895895ded405877ec658ce45ea9deb">&#9670;&nbsp;</a></span>codeName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Waypoint::codeName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property codeName </dd></dl>
+
+</div>
+</div>
 <a id="a2342fac6ccc6e29f719feca861de1b15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2342fac6ccc6e29f719feca861de1b15">&#9670;&nbsp;</a></span>coordinate()</h2>
 
@@ -422,6 +451,36 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a9a5e2a50c6fdc60ca142b525f3195177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a5e2a50c6fdc60ca142b525f3195177">&#9670;&nbsp;</a></span>hasElevation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Waypoint::hasElevation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>check if waypoint contains property ELE </p>
+<dl class="section return"><dt>Returns</dt><dd>true or false </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00155">155</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
 <a id="a74797f90efc5fd5d17b5bde5922fcfd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74797f90efc5fd5d17b5bde5922fcfd3">&#9670;&nbsp;</a></span>richTextName()</h2>
 
@@ -439,6 +498,42 @@ Friends</h2></td></tr>
 
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property richTextName </dd></dl>
+
+</div>
+</div>
+<a id="a75b513aa6785ce11693d2f28c613cc23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75b513aa6785ce11693d2f28c613cc23">&#9670;&nbsp;</a></span>setName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Waypoint::setName </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>nam</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replace name of waypoint. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nam</td><td>new waypoint name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00206">206</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

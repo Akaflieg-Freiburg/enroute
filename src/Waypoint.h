@@ -148,21 +148,6 @@ public:
   */
   bool isValid() const { return _coordinate.isValid(); }
 
-  /*! \brief check if waypoint contains property ELE
-
-    @returns true or false
-  */
-  bool hasElevation() const { return _properties.contains("ELE"); }
-
-  /* \brief Name of the waypoint code name */
-  Q_PROPERTY(QString codeName READ codeName CONSTANT)
-
-  /*! \brief Getter function for property with the same name
-
-    @returns Property codeName
-  */
-  QString codeName() const;
-
   /* \brief Name of the waypoint as rich text */
   Q_PROPERTY(QString richTextName READ richTextName CONSTANT)
 
@@ -198,12 +183,6 @@ public:
     @returns a string of the form "65.2 NM • TC 276°"
   */
   Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position) const;
-
-  /*! \brief Replace name of waypoint
-    
-    @param nam new waypoint name
-  */
-  void setName(const QString& nam) { _properties.replace("NAM", QString(nam)); }
   
 private:
   // Used to check compatibility when loading/saving

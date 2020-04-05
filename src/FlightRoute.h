@@ -23,12 +23,10 @@
 
 #include <QLocale>
 #include <QPointer>
-#include <QXmlStreamReader>
 
 #include "Aircraft.h"
 #include "Waypoint.h"
 #include "Wind.h"
-#include "GeoMapProvider.h"
 
 
 /*! \brief Intended flight route
@@ -62,12 +60,9 @@ public:
      * @param wind Pointer to wind info that is used in route computations. The
      * wind object to supposed to exist throughout the liftime of this object.
      *
-     * @param geoMapProvider global GeoMapProvider instance which is used to
-     * get closest known waypoints when importing gpx data.
-     *
      * @param parent The standard QObject parent pointer.
      */
-    explicit FlightRoute(Aircraft *aircraft, Wind *wind, GeoMapProvider *geoMapProvider, QObject *parent = nullptr);
+    explicit FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent = nullptr);
 
     // No copy constructor
     FlightRoute(FlightRoute const&) = delete;
@@ -218,22 +213,6 @@ public slots:
     /*! \brief Reverse the route */
     void reverse();
 
-    /*! \brief get the route as gpx for sharing
-     */
-    QString toGpx();
-
-    /*! \brief import route from gpx file
-     *
-     * @param fileUrl url of the gpx file
-     */
-    void fromGpx(QString fileUrl);
-
-    /*! \brief import route from gpx content supplied as QByteArray
-     *
-     * @param data gpx (xml) route data
-     */
-    void fromGpx(const QByteArray& data);
-
 signals:
     /*! \brief Notification signal for the property with the same name */
     void waypointsChanged();
@@ -256,12 +235,6 @@ private slots:
 
     void updateLegs();
 
-    QString gpxElements(QString indent, QString tag);
-
-    bool routeBounds(double &minlat, double &minlon, double &maxlat, double &maxlon) const;
-
-    void fromGpx(QXmlStreamReader& data);
-
 private:
     // Used to check compatibility when loading/saving
     static const quint16 streamVersion = 1;
@@ -272,7 +245,6 @@ private:
 
     QPointer<Aircraft> _aircraft {nullptr};
     QPointer<Wind> _wind {nullptr};
-    GeoMapProvider *geoMapProvider;
 
     QLocale myLocale;
 };

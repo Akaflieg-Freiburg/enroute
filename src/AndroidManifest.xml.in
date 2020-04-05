@@ -10,7 +10,6 @@
          Remove the comment if you do not require these default permissions. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -31,79 +30,12 @@
 		android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
                 android:label="Enroute"
                 android:screenOrientation="unspecified"
-                android:launchMode="singleInstance"
+                android:launchMode="singleTop"
 		android:showWhenLocked="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
-            <!--
-            Beginning of Intent Filters for Sending and Viewing Files.
-            Apparently is important to include "application/octet-stream"
-            as other apps seem to send gpx files as application/octet-stream
-            see https://en.wikipedia.org/wiki/GPS_Exchange_Format
-
-            android.intent.action.VIEW used for receiving files for viewing (or "open with...")
-            android.intent.action.SEND enables enroute as "share with" target
-
-            (Zellner, 2020-03-03)
-            -->
-
-            <!-- receive content from other app as "share with" -->
-            <intent-filter>
-              <action android:name="android.intent.action.SEND"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="application/gpx+xml"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.SEND"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="application/gpx"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.SEND"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="application/octet-stream"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.SEND"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="text/gpx"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.SEND"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="text/xml"/>
-            </intent-filter>
-
-            <!-- receive content from other app as "open with" -->
-            <intent-filter>
-              <action android:name="android.intent.action.VIEW"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="application/gpx+xml"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.VIEW"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="application/gpx"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.VIEW"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="application/octet-stream"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.VIEW"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="text/gpx"/>
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.VIEW"/>
-              <category android:name="android.intent.category.DEFAULT"/>
-              <data android:mimeType="text/xml"/>
-            </intent-filter>
-            <!-- End of Intent Filters for Sending and Viewing Files -->
 
             <!-- Application arguments -->
             <!-- meta-data android:name="android.app.arguments" android:value="arg1 arg2 arg3"/ -->
@@ -173,17 +105,6 @@
     </activity>
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
-
-      <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
-      <provider
-        android:name="android.support.v4.content.FileProvider"
-        android:authorities="de.akaflieg_freiburg.enroute"
-        android:exported="false"
-        android:grantUriPermissions="true">
-        <meta-data
-          android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/filepaths"/>
-      </provider>
 
     </application>
 

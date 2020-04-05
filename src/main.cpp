@@ -22,12 +22,10 @@
 #include <QGuiApplication>
 #include <QIcon>
 #include <QQuickItem>
-#include <QQuickWindow>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QSettings>
-#include <QDebug>
 
 #include "Aircraft.h"
 #include "FlightRoute.h"
@@ -36,9 +34,6 @@
 #include "MapManager.h"
 #include "MobileAdaptor.h"
 #include "SatNav.h"
-#if defined(Q_OS_ANDROID)
-#   include "Share.h"
-#endif
 #include "ScaleQuickItem.h"
 #include "Wind.h"
 
@@ -99,15 +94,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach flight route
-    auto flightroute = new FlightRoute(aircraft, wind, geoMapProvider, &engine);
+    auto flightroute = new FlightRoute(aircraft, wind, &engine);
     engine.rootContext()->setContextProperty("flightRoute", flightroute);
-
-    // make share available to QML
-#if defined(Q_OS_ANDROID)
-    auto share = new Share(&engine);
-    share->connect(share, SIGNAL(fileReceived(const QString&)), flightroute, SLOT(fromGpx(const QString&)));
-    engine.rootContext()->setContextProperty("share", share);
-#endif
 
     /*
      * Load large strings from files, in order to make them available to QML

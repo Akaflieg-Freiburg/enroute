@@ -87,23 +87,16 @@ QString Waypoint::extendedName() const
 }
 
 
-QString Waypoint::codeName() const
+QString Waypoint::richTextName() const
 {
     QString codeName;
     if (_properties.contains("COD"))
         codeName += _properties.value("COD").toString();
     if (_properties.contains("MOR"))
         codeName += " " + _properties.value("MOR").toString();
-    return codeName;
-}
 
-
-QString Waypoint::richTextName() const
-{
-    QString code = codeName();
-
-    if (!code.isEmpty())
-        return QString("<strong>%1</strong><br><font size='2'>%2</font>").arg(code, extendedName());
+    if (!codeName.isEmpty())
+        return QString("<strong>%1</strong><br><font size='2'>%2</font>").arg(codeName, extendedName());
 
     return extendedName();
 }

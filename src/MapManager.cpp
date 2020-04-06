@@ -27,8 +27,6 @@
 #include <utility> 
 #include "MapManager.h"
 
-#warning Calling MapManager::updateGeoMapList() from MapManager.qml / Flick causes infrequent crashes. Need to investigate before release
-
 
 MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
     QObject(parent), _networkAccessManager(networkAccessManager)
@@ -125,7 +123,6 @@ QList<QObject*> MapManager::aviationMapsAsObjectList() const
             continue;
         result.append(geoMapPtr);
     }
-    qWarning() << "MapManager::aviationMapsAsObjectList()" << result;
     return result;
 }
 
@@ -213,8 +210,6 @@ QSet<QString> MapManager::mbtileFiles() const
 
 void MapManager::updateGeoMapList()
 {
-    qWarning() << "MapManager::updateGeoMapList()";
-
     // Paranoid safety checks
     Q_ASSERT(!_maps_json.isNull());
     if (_maps_json.isNull())
@@ -270,8 +265,6 @@ void MapManager::localFileOfGeoMapChanged()
 
 void MapManager::readGeoMapListFromJSONFile()
 {
-    qWarning() << "MapManager::readGeoMapListFromJSONFile()";
-
     // Paranoid safety checks
     Q_ASSERT(!_maps_json.isNull());
     if (_maps_json.isNull())
@@ -281,8 +274,8 @@ void MapManager::readGeoMapListFromJSONFile()
 
     bool old_aviationMapUpdatesAvailable = geoMapUpdatesAvailable();
 
-    // This is the central object that will replace _aviationMaps at the end.
-    QList<QPointer<Downloadable>> newMaps;
+    // List of maps as we have them now
+    QList<Downloadable *> oldMaps = _geoMaps.downloadables();
 
     // Alert all users that the list of maps is in an intermediate stage and that
     // it should not be used for the moment
@@ -299,8 +292,6 @@ void MapManager::readGeoMapListFromJSONFile()
     auto top = doc.object();
     auto baseURL = top.value("url").toString();
 
-    qWarning() << "A";
-
     foreach(auto map, top.value("maps").toArray()) {
         auto obj = map.toObject();
         auto mapFileName = obj.value("path").toString();
@@ -309,54 +300,48 @@ void MapManager::readGeoMapListFromJSONFile()
         auto fileModificationDateTime = QDateTime::fromString(obj.value("time").toString(), "yyyyMMdd");
         auto fileSize = obj.value("size").toInt();
 
-        // If a map with the given name already exists in _geoMaps, delete it.
-        foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-            if (geoMapPtr->objectName() == mapFileName)
-                delete geoMapPtr;
+        // If a map with the given name already exists, update that element, delete its entry in oldMaps
+        Downloadable *mapPtr = nullptr;
+        foreach(auto geoMapPtr, oldMaps) {
+            if (geoMapPtr->objectName() == mapName.section("/", -1 , -1)) {
+                mapPtr = geoMapPtr;
+                break;
+            }
         }
 
-        // Construct local file name
-        auto ending = mapUrlName.section(".", -1);
-        auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps/"+mapFileName;
-        if (!ending.isEmpty())
-            localFileName += "."+ending;
+        if (mapPtr) {
+            // Map exists
+            oldMaps.removeAll(mapPtr);
+            mapPtr->setRemoteFileDate(fileModificationDateTime);
+            mapPtr->setRemoteFileSize(fileSize);
+        } else {
+            // Construct local file name
+            auto ending = mapUrlName.section(".", -1);
+            auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps/"+mapFileName;
+            if (!ending.isEmpty())
+                localFileName += "."+ending;
 
-        // Construct a new downloadable object.
-        auto downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);
-        downloadable->setObjectName(mapName.section("/", -1 , -1));
-        downloadable->setRemoteFileDate(fileModificationDateTime);
-        downloadable->setRemoteFileSize(fileSize);
-        connect(downloadable, &Downloadable::localFileContentChanged, this, &MapManager::localFileOfGeoMapChanged);
-        newMaps += downloadable;
+            // Construct a new downloadable object.
+            auto downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);
+            downloadable->setObjectName(mapName.section("/", -1 , -1));
+            downloadable->setRemoteFileDate(fileModificationDateTime);
+            downloadable->setRemoteFileSize(fileSize);
+            connect(downloadable, &Downloadable::localFileContentChanged, this, &MapManager::localFileOfGeoMapChanged);
+            _geoMaps.addToGroup(downloadable);
+        }
+
     }
-
-    qWarning() << "B";
 
     // Now go through all the leftover objects in the old list of aviation
     // maps. These are now aviation maps that are no longer supported. If they
     // have no local file to them, we simply delete them.  If they have a local
     // file, we keep them, but set their QUrl to invalid; this will mark them as
     // unsupported in the GUI.
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        if (!geoMapPtr->hasLocalFile())
+    foreach(auto geoMapPtr, oldMaps) {
+        if (geoMapPtr->hasLocalFile())
             continue;
-
-        auto downloadable = new Downloadable(QUrl(), geoMapPtr->fileName(), _networkAccessManager, this);
-        downloadable->setObjectName(geoMapPtr->objectName());
-        connect(downloadable, &Downloadable::localFileContentChanged, this, &MapManager::localFileOfGeoMapChanged);
-        newMaps += downloadable;
+        delete geoMapPtr;
     }
-    qWarning() << "B1";
-
-    // Delete the unused aviation maps, and set to new
-    qDeleteAll(_geoMaps.downloadables());
-    qWarning() << "B2";
-    foreach(auto _geoMapPtr, newMaps) {
-        qWarning() << "B2a";
-        _geoMaps.addToGroup(_geoMapPtr);
-    }
-
-    qWarning() << "C";
 
     // Now it is still possible that the download directory contains files beloning
     // to unsupported maps. Add those to newMaps.
@@ -370,8 +355,6 @@ void MapManager::readGeoMapListFromJSONFile()
         connect(downloadable, &Downloadable::localFileContentChanged, this, &MapManager::localFileOfGeoMapChanged);
         _geoMaps.addToGroup(downloadable);
     }
-
-    qWarning() << "D";
 
     // Set the new maps and inform our users
     if (old_aviationMapUpdatesAvailable != geoMapUpdatesAvailable())

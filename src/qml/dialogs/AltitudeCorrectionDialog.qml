@@ -126,7 +126,7 @@ Dialog {
             return
         }
 
-        satNav.altitudeInFeet = satNav.rawAltitudeInFeet - satNav.geoidalSeparation
+        satNav.altitudeInFeet = satNav.rawAltitudeInFeet
         close()
     }
 

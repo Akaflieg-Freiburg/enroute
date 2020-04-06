@@ -78,8 +78,8 @@ int SatNav::altitudeInFeet() const
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return 0;
 
-    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude() + altitudeCorrectionInM);
-    return qRound(alt.toFeet() - geoidalSeparation());
+    auto correction = AviationUnits::Distance::fromM(altitudeCorrectionInM);
+    return qRound(rawAltitudeInFeet() + correction.toFeet());
 }
 
 
@@ -97,7 +97,7 @@ void SatNav::setAltitudeInFeet(int altitudeInFeet)
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return;
 
-    auto altCorrection = AviationUnits::Distance::fromFT(altitudeInFeet-rawAltitudeInFeet() + geoidalSeparation());
+    auto altCorrection = AviationUnits::Distance::fromFT(altitudeInFeet-rawAltitudeInFeet());
 
     altitudeCorrectionInM = qRound(altCorrection.toM());
     QSettings settings;
@@ -112,7 +112,7 @@ int SatNav::rawAltitudeInFeet() const
         return 0;
 
     auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude());
-    return qRound(alt.toFeet());
+    return qRound(alt.toFeet() - geoidalSeparation());
 }
 
 

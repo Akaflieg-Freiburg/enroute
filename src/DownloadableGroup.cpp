@@ -39,7 +39,6 @@ void DownloadableGroup::addToGroup(Downloadable *downloadable)
     connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::elementChanged);
     connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::elementChanged);
     connect(downloadable, &Downloadable::hasLocalFileChanged, this, &DownloadableGroup::localFilesChanged);
-    connect(downloadable, &Downloadable::destroyed, this, &DownloadableGroup::removeObjectFromGroup);
     elementChanged();
 #warning need to handle deletion
 

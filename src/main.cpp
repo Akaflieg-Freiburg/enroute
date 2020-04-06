@@ -60,42 +60,42 @@ int main(int argc, char *argv[])
     /*
      * Set up ApplicationEngine for QML
      */
-    QQmlApplicationEngine engine;
+    auto engine = new QQmlApplicationEngine();
 
     // Make GPS available to QML engine
-    auto navEngine = new SatNav(&engine);
-    engine.rootContext()->setContextProperty("satNav", navEngine);
+    auto navEngine = new SatNav(engine);
+    engine->rootContext()->setContextProperty("satNav", navEngine);
 
     // Attach global settings object
-    auto globalSettings = new GlobalSettings(&engine);
-    engine.rootContext()->setContextProperty("globalSettings", globalSettings);
+    auto globalSettings = new GlobalSettings(engine);
+    engine->rootContext()->setContextProperty("globalSettings", globalSettings);
 
     // Make MobileAdaptor available to QML engine
-    auto *adaptor = new MobileAdaptor(&engine);
+    auto *adaptor = new MobileAdaptor(engine);
     adaptor->keepScreenOn(globalSettings->keepScreenOn());
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
-    engine.rootContext()->setContextProperty("MobileAdaptor", adaptor);
+    engine->rootContext()->setContextProperty("MobileAdaptor", adaptor);
 
     // Attach aircraft info
-    auto aircraft = new Aircraft(&engine);
-    engine.rootContext()->setContextProperty("aircraft", aircraft);
+    auto aircraft = new Aircraft(engine);
+    engine->rootContext()->setContextProperty("aircraft", aircraft);
 
     // Attach wind info
-    auto wind = new Wind(&engine);
-    engine.rootContext()->setContextProperty("wind", wind);
+    auto wind = new Wind(engine);
+    engine->rootContext()->setContextProperty("wind", wind);
 
     // Attach map manager
-    auto networkAccessManager = new QNetworkAccessManager(&engine);
-    auto mapManager = new MapManager(networkAccessManager, &engine);
-    engine.rootContext()->setContextProperty("mapManager", mapManager);
+    auto networkAccessManager = new QNetworkAccessManager();
+    auto mapManager = new MapManager(networkAccessManager);
+    engine->rootContext()->setContextProperty("mapManager", mapManager);
 
     // Attach geo map provider
     auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, mapManager);
-    engine.rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
+    engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach flight route
-    auto flightroute = new FlightRoute(aircraft, wind, &engine);
-    engine.rootContext()->setContextProperty("flightRoute", flightroute);
+    auto flightroute = new FlightRoute(aircraft, wind, engine);
+    engine->rootContext()->setContextProperty("flightRoute", flightroute);
 
     /*
      * Load large strings from files, in order to make them available to QML
@@ -103,46 +103,46 @@ int main(int argc, char *argv[])
     {
         QFile file(":text/bugReport.html");
         file.open(QIODevice::ReadOnly);
-        engine.rootContext()->setContextProperty("bugReportText", file.readAll());
+        engine->rootContext()->setContextProperty("bugReportText", file.readAll());
     }
     {
         QFile file(":text/firstStart.html");
         file.open(QIODevice::ReadOnly);
-        engine.rootContext()->setContextProperty("firstStartText", file.readAll());
+        engine->rootContext()->setContextProperty("firstStartText", file.readAll());
     }
     {
         QFile file(":text/info_author.html");
         file.open(QIODevice::ReadOnly);
-        engine.rootContext()->setContextProperty("infoText_author", file.readAll());
+        engine->rootContext()->setContextProperty("infoText_author", file.readAll());
     }
     {
         QFile file(":text/info_enroute.html");
         file.open(QIODevice::ReadOnly);
-        engine.rootContext()->setContextProperty("infoText_enroute", file.readAll());
+        engine->rootContext()->setContextProperty("infoText_enroute", file.readAll());
     }
     {
         QFile file(":text/info_license.html");
         file.open(QIODevice::ReadOnly);
-        engine.rootContext()->setContextProperty("infoText_license", file.readAll());
+        engine->rootContext()->setContextProperty("infoText_license", file.readAll());
     }
     {
         QFile file(":text/participate.html");
         file.open(QIODevice::ReadOnly);
-        engine.rootContext()->setContextProperty("participateText", file.readAll());
+        engine->rootContext()->setContextProperty("participateText", file.readAll());
     }
     {
         QFile file(":text/whatsnew.html");
         file.open(QIODevice::ReadOnly);
-        engine.rootContext()->setContextProperty("whatsnew", file.readAll());
+        engine->rootContext()->setContextProperty("whatsnew", file.readAll());
     }
 
     // Restore saved settings and make them available to QML
-    engine.rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));
-    engine.rootContext()->setContextProperty("savedZoomLevel", settings.value("Map/zoomLevel", 9));
+    engine->rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));
+    engine->rootContext()->setContextProperty("savedZoomLevel", settings.value("Map/zoomLevel", 9));
 
     // Load GUI
-    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    if (engine.rootObjects().isEmpty())
+    engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    if (engine->rootObjects().isEmpty())
         return -1;
 
     // Enter event loop
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
     // Save settings
     // Obtain a pointer to the flightMap
     QQuickItem *flightMap = nullptr;
-    foreach (auto rootItem, engine.rootObjects()) {
+    foreach (auto rootItem, engine->rootObjects()) {
         flightMap = rootItem->findChild<QQuickItem*>("flightMap");
         if (flightMap != nullptr)
             break;
@@ -160,6 +160,11 @@ int main(int argc, char *argv[])
         settings.setValue("Map/bearing", QQmlProperty::read(flightMap, "bearing"));
         settings.setValue("Map/zoomLevel", QQmlProperty::read(flightMap, "zoomLevel"));
     }
+
+    // Ensure that things get deleted in the right order
+    delete engine;
+    delete mapManager; // This will also delete geoMapProvider
+    delete networkAccessManager;
 
     return 0;
 }

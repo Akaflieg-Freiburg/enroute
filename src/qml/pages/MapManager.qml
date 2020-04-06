@@ -171,7 +171,7 @@ Page {
             currentIndex: bar.currentIndex
             Layout.fillWidth: true
             Layout.fillHeight: true
-            visible: !mapManager.downloadingGeoMapList && mapManager.hasGeoMapList
+//            visible: !mapManager.downloadingGeoMapList && mapManager.hasGeoMapList
 
             ListView {
                 clip: true

@@ -131,8 +131,6 @@ private slots:
     void elementChanged();
 
 private:
-    void removeObjectFromGroup(QObject *downloadable) { removeFromGroup((Downloadable *)downloadable); }
-
     bool _cachedDownloading; // Cached value for the 'downloading' property
     bool _cachedUpdatable;   // Cached value for the 'updatable' property
 

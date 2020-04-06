@@ -385,11 +385,14 @@ Page {
             headerMenuToolButton.visible = false
             headerMenu.removeAction(reverseAction)
             headerMenu.removeAction(clearAction)
+/*
             headerMenu.removeAction(desktopImportAction)
             headerMenu.removeAction(desktopSaveAction)
+            */
         }
     }
 
+   /*
     FileDialog {
 
         id: importFileDialog
@@ -406,6 +409,7 @@ Page {
             // do nothing
         }
     }
+*/
 
     // on desktop used only
     //
@@ -418,6 +422,7 @@ Page {
 
     // on desktop used only
     //
+  /*
     FileDialog {
 
         id: saveFileDialog
@@ -435,7 +440,7 @@ Page {
             // do nothing
         }
     }
-
+*/
     Action {
         id: reverseAction
 

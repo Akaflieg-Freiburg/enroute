@@ -27,8 +27,6 @@
 #include <utility> 
 #include "MapManager.h"
 
-#warning REMOVE FROM DEVICE DOES NOT WORK.
-
 #warning Calling MapManager::updateGeoMapList() from MapManager.qml / Flick causes infrequent crashes. Need to investigate before release
 
 
@@ -41,6 +39,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
                                   networkAccessManager,
                                   this);
     _maps_json->setObjectName(tr("list of aviation maps"));
+    connect(_maps_json, &Downloadable::downloadingChanged, this, &MapManager::downloadingGeoMapListChanged);
     connect(_maps_json, &Downloadable::localFileContentChanged, this, &MapManager::readGeoMapListFromJSONFile);
     connect(_maps_json, &Downloadable::localFileContentChanged, this, &MapManager::setTimeOfLastUpdateToNow);
     connect(_maps_json, &Downloadable::error, this, &MapManager::errorReceiver);
@@ -126,6 +125,7 @@ QList<QObject*> MapManager::aviationMapsAsObjectList() const
             continue;
         result.append(geoMapPtr);
     }
+    qWarning() << "MapManager::aviationMapsAsObjectList()" << result;
     return result;
 }
 
@@ -213,12 +213,14 @@ QSet<QString> MapManager::mbtileFiles() const
 
 void MapManager::updateGeoMapList()
 {
+    qWarning() << "MapManager::updateGeoMapList()";
+
     // Paranoid safety checks
     Q_ASSERT(!_maps_json.isNull());
     if (_maps_json.isNull())
         return;
 
-    _maps_json->startFileDownload();
+    QTimer::singleShot(0, _maps_json, SLOT(startFileDownload()));
 }
 
 
@@ -268,6 +270,8 @@ void MapManager::localFileOfGeoMapChanged()
 
 void MapManager::readGeoMapListFromJSONFile()
 {
+    qWarning() << "MapManager::readGeoMapListFromJSONFile()";
+
     // Paranoid safety checks
     Q_ASSERT(!_maps_json.isNull());
     if (_maps_json.isNull())
@@ -294,6 +298,8 @@ void MapManager::readGeoMapListFromJSONFile()
 
     auto top = doc.object();
     auto baseURL = top.value("url").toString();
+
+    qWarning() << "A";
 
     foreach(auto map, top.value("maps").toArray()) {
         auto obj = map.toObject();
@@ -324,6 +330,8 @@ void MapManager::readGeoMapListFromJSONFile()
         newMaps += downloadable;
     }
 
+    qWarning() << "B";
+
     // Now go through all the leftover objects in the old list of aviation
     // maps. These are now aviation maps that are no longer supported. If they
     // have no local file to them, we simply delete them.  If they have a local
@@ -338,10 +346,17 @@ void MapManager::readGeoMapListFromJSONFile()
         connect(downloadable, &Downloadable::localFileContentChanged, this, &MapManager::localFileOfGeoMapChanged);
         newMaps += downloadable;
     }
+    qWarning() << "B1";
+
     // Delete the unused aviation maps, and set to new
     qDeleteAll(_geoMaps.downloadables());
-    foreach(auto _geoMapPtr, newMaps)
+    qWarning() << "B2";
+    foreach(auto _geoMapPtr, newMaps) {
+        qWarning() << "B2a";
         _geoMaps.addToGroup(_geoMapPtr);
+    }
+
+    qWarning() << "C";
 
     // Now it is still possible that the download directory contains files beloning
     // to unsupported maps. Add those to newMaps.
@@ -355,6 +370,8 @@ void MapManager::readGeoMapListFromJSONFile()
         connect(downloadable, &Downloadable::localFileContentChanged, this, &MapManager::localFileOfGeoMapChanged);
         _geoMaps.addToGroup(downloadable);
     }
+
+    qWarning() << "D";
 
     // Set the new maps and inform our users
     if (old_aviationMapUpdatesAvailable != geoMapUpdatesAvailable())

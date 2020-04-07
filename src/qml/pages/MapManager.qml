@@ -221,27 +221,6 @@ Page {
 
         } // SwipeView
 
-
-        Label {
-            Layout.fillWidth: true
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
-            visible: mapManager.downloadingGeoMapList
-        }
-
-        Item {
-            Layout.fillWidth: true
-            height: busy.height
-            BusyIndicator {
-                id: busy
-                anchors.centerIn: parent
-            }
-            visible: mapManager.downloadingGeoMapList
-        }
-
         Label {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -253,6 +232,62 @@ Page {
             visible: !mapManager.downloadingGeoMapList && !mapManager.hasGeoMapList
         }
     } // ColumnLayout
+
+    Rectangle {
+        id: downloadIndicator
+
+        anchors.fill: parent
+        color: "white"
+        visible: mapManager.downloadingGeoMapList
+
+        Label {
+            id: downloadIndicatorLabel
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: 10
+
+            horizontalAlignment: Text.AlignHCenter
+            textFormat: Text.RichText
+            wrapMode: Text.Wrap
+            text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
+            onLinkActivated: Qt.openUrlExternally(link)
+
+            Connections {                        // Mittels Connections verbinden wir das Signal mit dem Qml "Slot"
+                target: mapManager   // myclassdata wurde als ContextProperty in main.cpp definiert
+                onDownloadingGeoMapListChanged: {     // ganz wichtig !!! hier muss ein Großbuchstabe stehen sonst funktionierts nicht
+                    if (mapManager.downloadingGeoMapList) {
+                        downloadIndicator.visible = true
+                        downloadIndicator.opacity = 1.0
+                    } else
+                        fadeOut.start() // das Label wo Hallo World stand enthält nun den Text von C++
+                }
+            }
+
+            SequentialAnimation{
+                id: fadeOut
+                NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
+                NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
+                NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
+            }
+        }
+
+        Item {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: downloadIndicatorLabel.bottom
+            anchors.topMargin: 10
+
+            Layout.fillWidth: true
+            height: busy.height
+            BusyIndicator {
+                id: busy
+                anchors.centerIn: parent
+            }
+
+        }
+
+    }
 
     footer: Pane {
         width: parent.width

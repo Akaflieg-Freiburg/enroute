@@ -38,12 +38,13 @@ class Geoid
 {
 public:
     Geoid();
+    ~Geoid();
 
     /*! \brief return geoidal separation -- the difference between AMSL and ellipsoidal height.
      *
      * @returns geoidal separation
      */
-    float operator()() const;
+    qreal operator()(qreal latitude, qreal longitude);
 
     /*! \brief returns true if geoidal separation is available or false otherwise
      *
@@ -51,28 +52,14 @@ public:
      */
     bool valid() const;
 
-#if defined(Q_OS_ANDROID)
-    /*! \brief get single instance of the Geoid.
-     * used from the JNI "callback" set()
-     *
-     * @returns the single instance of the Geoid class.
-     */
-    static Geoid* getInstance();
-
-    /*! \brief called from the JNI "callback" set()
-     * to receive the geoidal separation.
-     *
-     * @param geoidalSeparation the separation between the ellipsoidal height and the orthometric height
-     */
-    void set(float geoidalSeparation);
-#endif
-
 private:
-    float geoidalSeparation;
-    bool isValid;
-#if defined(Q_OS_ANDROID)
-    static Geoid* mInstance;
-#endif
+    qint16* egm;
+
+    // https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/readme.txt
+    //
+    const static qint32 egm96_rows = 721;
+    const static qint32 egm96_cols = 1440;
+    const static qint32 egm96_size = egm96_rows * egm96_cols;
 };
 
 #endif // GEOID_H

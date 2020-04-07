@@ -28,7 +28,8 @@
 
 SatNav::SatNav(QObject *parent)
     : QObject(parent),
-      _lastValidCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)
+      _lastValidCoordinate(EDTF_lat, EDTF_lon, EDTF_ele),
+      _lastValidGeoidCorrection(0.)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
 
@@ -127,8 +128,8 @@ QString SatNav::rawAltitudeInFeetAsString() const
 
 int SatNav::geoidalSeparation() const
 {
-    auto separation = AviationUnits::Distance::fromM(geoid());
-    return qRound(separation.toFeet());
+    auto corr = AviationUnits::Distance::fromM(_lastValidGeoidCorrection);
+    return qRound(corr.toFeet());
 }
 
 
@@ -337,6 +338,8 @@ void SatNav::statusUpdate(const QGeoPositionInfo &info)
         emit statusChanged();
 
     _lastValidCoordinate = info.coordinate();
+    _lastValidGeoidCorrection =  geoid((qreal)lastInfo.coordinate().latitude(), (qreal)lastInfo.coordinate().longitude());
+
     emit update();
 
     // emit iconChanged() if appropriate

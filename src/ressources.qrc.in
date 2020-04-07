@@ -14,4 +14,8 @@
         <file>text/participate.html</file>
         <file>text/whatsnew.html</file>
     </qresource>
+
+    <qresource prefix="/">
+        <file alias="WW15MGH.DAC">${CMAKE_CURRENT_SOURCE_DIR}/res/WW15MGH.DAC</file>
+    </qresource>
 </RCC>

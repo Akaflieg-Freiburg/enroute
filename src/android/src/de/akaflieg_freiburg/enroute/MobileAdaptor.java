@@ -22,16 +22,12 @@
 package de.akaflieg_freiburg.enroute;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Vibrator;
-
-import de.akaflieg_freiburg.enroute.Geoid;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 {
     private static MobileAdaptor m_instance;
     private static Vibrator m_vibrator;
-    private static Geoid m_geoid = null;
 
     public MobileAdaptor()
     {
@@ -39,44 +35,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     }
 
     /* Vibrate once, very briefly */
+    
     public static void vibrateBrief()
     {
         if (m_vibrator == null)
             m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
         m_vibrator.vibrate(20);
-    }
-
-    /**
-     * Called when the activity is starting.
-     *
-     * We have to initialize Geoid here (and not in the constructor above)
-     * as system services are not available to Activities before onCreate().
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        m_geoid = Geoid.getInstance();
-    }
-
-    /**
-     * Called when the activity is resumed.
-     *
-     * In the case where permission for fine location wasn't allowed, m_geoid
-     * as created in onCreate() couldn't register itself as NMEA listener.
-     * If during startup of enroute the user then grants permission to fine
-     * location, we can use onResume() to let the m_geoid instance register
-     * itself as NMEA listener.
-     *
-     * This is useful and required for the first usage of enroute only.
-     * In all later startups the user should have granted permission to
-     * fine location already and m_geoid will register itself as NMEA listener
-     * during creation in onCreate() already.
-     */
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        m_geoid.maybeAddAsNmeaListener();
     }
 }

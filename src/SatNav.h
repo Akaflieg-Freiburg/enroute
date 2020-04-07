@@ -516,11 +516,12 @@ private:
   QGeoPositionInfo lastInfo;
   QGeoCoordinate _lastValidCoordinate;
   int _lastValidTrack {0};
-  
+
   // altitude = raw altitude + altitudeCorrection
   int altitudeCorrectionInM {0};
   
   Geoid geoid;
+  qreal _lastValidGeoidCorrection;
 
   // Constant: timeout occurs after one minute without receiving new data
   const int timeoutThreshold = 60*1000;

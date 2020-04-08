@@ -110,8 +110,16 @@ public:
      */
     bool isUpdatable() const;
 
-#warning documentation This never returns a zero pointer
+    /*! \brief List of downloadables in this group
+     *
+     * This property holds the list of downloadables in the group. The downloadables are sorted by file name in ascending order. The nullptr is never contained in the list.
+     */
     Q_PROPERTY(QList<Downloadable *> downloadables READ downloadables NOTIFY downloadablesChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property downloadables
+     */
     QList<Downloadable *> downloadables() const;
 
 signals:
@@ -124,11 +132,20 @@ signals:
     /*! \brief Notifier signal for the property localFiles */
     void localFilesChanged();
 
-#warning documentation
+    /*! \brief Emitted if the content of one of the local files changes.
+     *
+     * This signal is emitted if one of the downloadables in this group emits the signal localFileContentChanged().
+     */
+    void localFileContentChanged();
+
+    /*! \brief Notifier signal for the property downloadables */
     void downloadablesChanged();
 
 private slots:
     void elementChanged();
+
+    // Remove all instances of nullptr from _downloadables
+    void cleanUp();
 
 private:
     bool _cachedDownloading; // Cached value for the 'downloading' property

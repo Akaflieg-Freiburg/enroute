@@ -50,7 +50,7 @@ public:
   /*! \brief Standard constructor
     
     This constructor reads the file "maps.json" and initiates a download of the
-    file no file is available.  If the last download is more than one week old,
+    file if no file is available.  If the last download is more than one week old,
     the class will try once per hour to download the latest version of
     "maps.json".
     
@@ -121,7 +121,7 @@ public:
   QList<QObject*> aviationMapsAsObjectList() const;
 
   /*! \brief True if at least one aviation map is installed */
-  Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapListChanged)
+  Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapFilesChanged)
   
   /*! \brief Getter function for the property with the same name
 
@@ -153,7 +153,7 @@ public:
   QList<QObject*> baseMapsAsObjectList() const;
   
   /*! \brief True if at least one aviation map is installed */
-  Q_PROPERTY(bool hasBaseMap READ hasBaseMap NOTIFY geoMapListChanged)
+  Q_PROPERTY(bool hasBaseMap READ hasBaseMap NOTIFY geoMapFilesChanged)
   
   /*! \brief Getter function for the property with the same name
 
@@ -238,7 +238,21 @@ signals:
     @param path Constant string "osm"
   */
   void mbtileFilesChanged(QSet<QString> newSet, QString path);
-							     
+
+  /*! \brief Emitted if the content of the local file of one of the geoMaps changes content
+
+    This signal is also emitted if one of the local file of one of the geoMaps changes existence
+
+    @see Downloadable::localFileContentChanged()
+   */
+  void geoMapFileContentChanged();
+
+  /*! \brief Emitted if one of the local file of one of the geoMaps changes existence
+
+    @see Downloadable::hasLocalFileChanged()
+   */
+  void geoMapFilesChanged();
+
 private slots:
   // Trivial method that re-sends the signal, but without the parameter
   // 'objectName'

@@ -39,8 +39,9 @@ void DownloadableGroup::addToGroup(Downloadable *downloadable)
     connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::elementChanged);
     connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::elementChanged);
     connect(downloadable, &Downloadable::hasLocalFileChanged, this, &DownloadableGroup::localFilesChanged);
+    connect(downloadable, &Downloadable::localFileContentChanged, this, &DownloadableGroup::localFileContentChanged);
+    connect(downloadable, &QObject::destroyed, this, &DownloadableGroup::cleanUp);
     elementChanged();
-#warning need to handle deletion
 
     emit downloadablesChanged();
 }
@@ -103,6 +104,13 @@ bool DownloadableGroup::isUpdatable() const
 }
 
 
+void DownloadableGroup::cleanUp()
+{
+    qWarning() << "Destroyed";
+    _downloadables.removeAll(nullptr);
+}
+
+
 void DownloadableGroup::elementChanged()
 {
     bool newDownloading = isDownloading();
@@ -128,5 +136,9 @@ QList<Downloadable *> DownloadableGroup::downloadables() const
             continue;
         result += _downloadable;
     }
+
+    // Sort Downloadables according to lower boundary
+    std::sort(result.begin(), result.end(), [](Downloadable* a, Downloadable* b) {return (a->fileName() < b->fileName()); });
+
     return result;
 }

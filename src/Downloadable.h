@@ -376,6 +376,8 @@ signals:
     void hasLocalFileChanged();
 
     /*! \brief Notifier signal for the properties localFileContent
+     *
+     * This signal is also emitted when the local file get deleted by the method Downloadable::deleteLocalFile(), and when a file is first downloaded.
      */
     void localFileContentChanged();
 

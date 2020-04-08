@@ -45,6 +45,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
     // Wire up the DownloadableGroup _geoMaps
     connect(&_geoMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::geoMapListChanged);
     connect(&_geoMaps, &DownloadableGroup::localFilesChanged, this, &MapManager::localFileOfGeoMapChanged);
+    connect(&_geoMaps, &DownloadableGroup::localFileContentChanged, this, &MapManager::geoMapFileContentChanged);
 
     // Wire up the automatic update timer and check if automatic updates are due. The method "autoUpdateGeoMapList" will also set a reasonable timeout value for the timer and start it.
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &MapManager::autoUpdateGeoMapList);
@@ -259,6 +260,7 @@ void MapManager::localFileOfGeoMapChanged()
         emit geoMapUpdatesAvailableChanged();
     if (oldMbtileFiles != mbtileFiles())
         emit mbtileFilesChanged(mbtileFiles(), "osm");
+    emit geoMapFilesChanged();
 }
 
 

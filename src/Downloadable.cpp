@@ -134,8 +134,6 @@ bool Downloadable::updatable() const {
     QFileInfo info(_localFileName);
     if (_remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate))
         return true;
-    if ((_remoteFileSize >= 0) && (info.size() != _remoteFileSize))
-        return true;
 
     return false;
 }
@@ -154,6 +152,7 @@ void Downloadable::deleteLocalFile() {
     QFile::remove(_localFileName);
     lockFile.unlock();
     emit hasLocalFileChanged();
+    emit localFileContentChanged();
 
     // Emit signals as appropriate
     if (oldUpdatable != updatable())

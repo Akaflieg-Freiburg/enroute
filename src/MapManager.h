@@ -188,6 +188,9 @@ public:
    */
   QSet<QString> mbtileFiles() const;
 
+#warning This method does crazy stuff to check the robustness of the interface
+  Q_INVOKABLE void stressTest();
+
 public slots:
   /*! \brief Triggers an update of the list of available maps
 

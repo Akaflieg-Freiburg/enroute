@@ -91,6 +91,15 @@ MapManager::~MapManager()
 }
 
 
+void MapManager::stressTest()
+{
+#warning This needs to go out before next release
+    qWarning() << "stressTest";
+    auto dl = _geoMaps.downloadables();
+    qDeleteAll(dl);
+}
+
+
 QString MapManager::geoMapUpdateSize() const
 {
     qint64 downloadSize = 0;

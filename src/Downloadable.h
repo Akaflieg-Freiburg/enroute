@@ -224,6 +224,7 @@ public:
      * name of the associated geographic continent.  The GUI uses this to
      * generate section headings in the list of downloadable aviation maps.
      */
+#warning Need to make this settable
     Q_PROPERTY(QString section READ section CONSTANT)
 
     /*! \brief Getter function for the property with the same name

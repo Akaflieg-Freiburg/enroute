@@ -171,7 +171,7 @@ Page {
             currentIndex: bar.currentIndex
             Layout.fillWidth: true
             Layout.fillHeight: true
-            visible: !mapManager.downloadingGeoMapList && mapManager.hasGeoMapList
+            //            visible: !mapManager.downloadingGeoMapList && mapManager.hasGeoMapList
 
             ListView {
                 clip: true
@@ -221,17 +221,29 @@ Page {
 
         } // SwipeView
 
+    } // ColumnLayout
+
+
+    Rectangle {
+        id: noMapListWarning
+
+        anchors.fill: parent
+        color: "white"
+        visible: !mapManager.downloadingGeoMapList && !mapManager.hasGeoMapList
+
         Label {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: Qt.application.font.pixelSize*2
+
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.RichText
             wrapMode: Text.Wrap
-            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the menu.</p>")
+            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the item 'Update' from the menu.  To find the menu, look for the symbol '&#8942;' at the top right corner of the screen.</p>")
             onLinkActivated: Qt.openUrlExternally(link)
-            visible: !mapManager.downloadingGeoMapList && !mapManager.hasGeoMapList
         }
-    } // ColumnLayout
+    }
 
     Rectangle {
         id: downloadIndicator
@@ -246,48 +258,41 @@ Page {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.topMargin: 10
+            anchors.topMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.RichText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
             onLinkActivated: Qt.openUrlExternally(link)
+        } // downloadIndicatorLabel
 
-            Connections {                        // Mittels Connections verbinden wir das Signal mit dem Qml "Slot"
-                target: mapManager   // myclassdata wurde als ContextProperty in main.cpp definiert
-                onDownloadingGeoMapListChanged: {     // ganz wichtig !!! hier muss ein Großbuchstabe stehen sonst funktionierts nicht
-                    if (mapManager.downloadingGeoMapList) {
-                        downloadIndicator.visible = true
-                        downloadIndicator.opacity = 1.0
-                    } else
-                        fadeOut.start() // das Label wo Hallo World stand enthält nun den Text von C++
-                }
-            }
-
-            SequentialAnimation{
-                id: fadeOut
-                NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
-                NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
-                NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
-            }
-        }
-
-        Item {
+        BusyIndicator {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: downloadIndicatorLabel.bottom
             anchors.topMargin: 10
-
-            Layout.fillWidth: true
-            height: busy.height
-            BusyIndicator {
-                id: busy
-                anchors.centerIn: parent
-            }
-
         }
 
-    }
+        // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.
+        // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
+        // without any feedback if the download did actually take place.
+        Connections {
+            target: mapManager
+            onDownloadingGeoMapListChanged: {
+                if (mapManager.downloadingGeoMapList) {
+                    downloadIndicator.visible = true
+                    downloadIndicator.opacity = 1.0
+                } else
+                    fadeOut.start()
+            }
+        }
+        SequentialAnimation{
+            id: fadeOut
+            NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
+            NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
+            NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
+        }
+    } // downloadIndicator - Rectangle
 
     footer: Pane {
         width: parent.width
@@ -309,11 +314,13 @@ Page {
         headerMenuToolButton.visible = true
         headerMenu.insertAction(0, downloadUpdatesAction)
         headerMenu.insertAction(0, updateAction)
+        headerMenu.insertAction(0, stressTestAction)
     }
     Component.onDestruction: {
         headerMenuToolButton.visible = false
         headerMenu.removeAction(downloadUpdatesAction)
         headerMenu.removeAction(updateAction)
+        headerMenu.removeAction(stressTestAction)
     }
 
     // Show error when list of maps cannot be downloaded
@@ -337,6 +344,18 @@ Page {
         onTriggered: {
             MobileAdaptor.vibrateBrief()
             mapManager.updateGeoMapList()
+        }
+    }
+
+    Action {
+        id: stressTestAction
+
+        text: qsTr("Stress test")
+        icon.source: "/icons/material/ic_refresh.svg"
+
+        onTriggered: {
+            MobileAdaptor.vibrateBrief()
+            mapManager.stressTest()
         }
     }
 

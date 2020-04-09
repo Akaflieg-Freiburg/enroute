@@ -106,7 +106,6 @@ bool DownloadableGroup::isUpdatable() const
 
 void DownloadableGroup::cleanUp()
 {
-    qWarning() << "Destroyed";
     auto idx = _downloadables.indexOf(nullptr);
     _downloadables.removeAll(nullptr);
     if (idx >= 0)

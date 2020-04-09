@@ -25,10 +25,13 @@
 #include "AviationUnits.h"
 #include "SatNav.h"
 
+#include <QStringList>
+#include <QDebug>
 
 SatNav::SatNav(QObject *parent)
     : QObject(parent),
       _lastValidCoordinate(EDTF_lat, EDTF_lon, EDTF_ele),
+      _geoid(nullptr),
       _lastValidGeoidCorrection(0.)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
@@ -54,6 +57,10 @@ SatNav::SatNav(QObject *parent)
         source->startUpdates();
     }
 
+    if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods)
+            == QGeoPositionInfoSource::SatellitePositioningMethods) {
+        _geoid = new Geoid;
+    }
 
     // Adjust and connect timeoutCounter
     timeoutCounter.setSingleShot(true);
@@ -71,6 +78,9 @@ SatNav::~SatNav()
     settings.setValue("SatNav/lastValidTrack", _lastValidTrack);
     settings.setValue("SatNav/altitudeCorrection", altitudeCorrectionInM);
     delete source;
+    if (_geoid != nullptr) {
+        delete _geoid;
+    }
 }
 
 
@@ -135,8 +145,9 @@ int SatNav::geoidalSeparation() const
 
 QString SatNav::geoidalSeparationAsString() const
 {
-    if (!geoid.valid())
+    if (_geoid == nullptr || !_geoid->valid()) {
         return "-";
+    }
 
     return myLocale.toString(geoidalSeparation()) + " ft";
 }
@@ -338,7 +349,9 @@ void SatNav::statusUpdate(const QGeoPositionInfo &info)
         emit statusChanged();
 
     _lastValidCoordinate = info.coordinate();
-    _lastValidGeoidCorrection =  geoid((qreal)lastInfo.coordinate().latitude(), (qreal)lastInfo.coordinate().longitude());
+    if (_geoid != nullptr) {
+        _lastValidGeoidCorrection = _geoid->operator()((qreal)lastInfo.coordinate().latitude(), (qreal)lastInfo.coordinate().longitude());
+    }
 
     emit update();
 

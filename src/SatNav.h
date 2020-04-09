@@ -520,7 +520,7 @@ private:
   // altitude = raw altitude + altitudeCorrection
   int altitudeCorrectionInM {0};
   
-  Geoid geoid;
+  Geoid* _geoid;
   qreal _lastValidGeoidCorrection;
 
   // Constant: timeout occurs after one minute without receiving new data

@@ -24,7 +24,6 @@
 #include <QFile>
 
 #include <QtMath>
-#include <cmath>
 
 Geoid::Geoid() : egm(nullptr)
 {
@@ -54,40 +53,54 @@ Geoid::~Geoid()
 }
 
 // 90 >= latitude >= -90
-// 0 <= longitude < 360
 //
 // we do a simple bilinear interpolation between the four surrounding data points
-// according to Numerical Recipies in C++ 3.6 "Interpolation in Tow or More Dimensions".
+// according to Numerical Recipies in C++ 3.6 "Interpolation in Two or More Dimensions".
 //
 qreal Geoid::operator()(qreal latitude, qreal longitude)
 {
     if (!valid())
         return 0;
 
-    auto real_row = []  (qreal lat) -> qreal { return (90 - lat) * 4; };        // [0; 720] from north to south
-    auto real_col = []  (qreal lon) -> qreal { return fmod(lon, 360) * 4; };    // [0; 1440[
-    auto row      = [&] (qreal lat) -> int   { return qFloor(real_row(lat)); }; // [0; 720]
-    auto col      = [&] (qreal lon) -> int   { return qFloor(real_col(lon)); }; // [0; 1440[
+    while (longitude < 0)
+        longitude += 360.;
 
-    auto geoid = [&] (qreal lat, qreal lon) -> qreal
+    // coordinate transformation from lat/lon to the data file coordinate system.
+    // The returning row and col are still reals (_not_ data index integers).
+    // We do not care about cyclic overflows yet, col might be < 0 or > 1400.
+    //
+    auto row = []  (qreal lat) -> qreal { return (90 - lat) * 4; }; // [0; 720] from north to south
+    auto col = []  (qreal lon) -> qreal { return    lon     * 4; }; // [0; 1440[
+
+    // integer row north and south of latitude
+    //
+    int north = qFloor(row(latitude));
+    int south = (north + 1) < egm96_rows? (north + 1) : north;
+
+    // integer column west and east of latitude
+    //
+    int west = qFloor(col(longitude)) % egm96_cols;
+    int east = (west + 1) % egm96_cols;
+
+    auto geoid = [&] (int row, int col) -> qreal
     {
-        qint32 idx = row(lat) * egm96_cols + col(lon);
+        qint32 idx = row * egm96_cols + col;
         return idx >=0 && idx < egm96_size ? egm[idx] * 0.01 : 0.0;
     };
 
     qreal interpolated = 0;
-    for (qint16 ilat : {0, 1})
+    qreal row_dist = row(latitude) - north;
+    qreal col_dist = col(longitude) - qFloor(col(longitude));
+    for (qint16 irow : {north, south})
     {
-        qreal lat_dist = qAbs(1 - ilat - (real_row(latitude) - row(latitude))); // 1 - (distance to row)
-        for (qint16 ilon : {0, 1})
+        for (qint16 icol : {west, east})
         {
-            qreal lon_dist = qAbs(1 - ilon - (real_col(longitude) - col(longitude))); // 1 - (distance to coloumn)
-            interpolated += geoid(latitude + ilat * 0.25, longitude + ilon * 0.25) * lat_dist * lon_dist;
-            // qDebug() << latitude << ", " << longitude << ", " << lat_dist << ", " << lon_dist;
+            interpolated += geoid(irow, icol) * (1 - row_dist) * (1 - col_dist);
+            col_dist = 1 - col_dist;
         }
+        row_dist = 1 - row_dist;
     }
 
-    // qDebug() << "Geoid (" << latitude << ", " << longitude << ") = " << interpolated;
     return interpolated;
 }
 

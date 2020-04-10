@@ -145,7 +145,7 @@ int SatNav::geoidalSeparation() const
 
 QString SatNav::geoidalSeparationAsString() const
 {
-    if (_geoid == nullptr || !_geoid->valid()) {
+    if (_geoid == nullptr || !_geoid->valid() || !lastInfo.isValid()) {
         return "-";
     }
 

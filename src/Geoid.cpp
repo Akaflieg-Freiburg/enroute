@@ -50,7 +50,7 @@ Geoid::Geoid() : egm(nullptr)
     file.close();
 
     if (nread != (egm96_size_2)) {
-        qDebug() << "Geoid::Geoid failed to open WW15MGH.DAC";
+        qDebug() << "Geoid::Geoid expected to read " << egm96_size_2 << " bytes from WW15MGH.DAC but got " << nread;
         delete[] egm;
         egm = nullptr;
         return;

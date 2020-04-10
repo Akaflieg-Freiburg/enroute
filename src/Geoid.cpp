@@ -24,32 +24,48 @@
 #include <QFile>
 
 #include <QtMath>
+#include <QSysInfo>
+#include <QtEndian>
 
+// reading binary geoid data was carefully optimized for speed. We read
+// the binary content at once and do the byte order conversion afterwards.
+// This turned out to be up to 60x faster compared to using QDataStream
+// with setByteOrder(QDataStream::BigEndian) and reading the shorts one
+// after the other with the QDataStream >> operator.
+//
 Geoid::Geoid() : egm(nullptr)
 {
     QFile file(":/WW15MGH.DAC");
 
-    if (!file.open(QIODevice::ReadOnly) || file.size() != (egm96_size * 2)) {
+    int egm96_size_2 = egm96_size * 2;
+
+    if (!file.open(QIODevice::ReadOnly) || file.size() != (egm96_size_2)) {
         qDebug() << "Geoid::Geoid failed to open WW15MGH.DAC";
         return;
     }
 
-    QDataStream data(&file);
-    data.setByteOrder(QDataStream::BigEndian);
-
     egm = new qint16[egm96_size];
 
-    for (int nread = 0; !data.atEnd() && nread < egm96_size; nread++) {
-        data >> egm[nread];
+    int nread = file.read(reinterpret_cast<char*>(egm), egm96_size_2);
+    file.close();
+
+    if (nread != (egm96_size_2)) {
+        qDebug() << "Geoid::Geoid failed to open WW15MGH.DAC";
+        delete[] egm;
+        egm = nullptr;
+        return;
     }
 
-    file.close();
+    if (QSysInfo::ByteOrder == QSysInfo::LittleEndian)
+    {
+        qFromBigEndian<qint16>(egm, egm96_size, egm);
+    }
 }
 
 Geoid::~Geoid()
 {
     if (valid())
-        delete egm;
+        delete[] egm;
 }
 
 // 90 >= latitude >= -90
@@ -67,7 +83,7 @@ qreal Geoid::operator()(qreal latitude, qreal longitude)
 
     // coordinate transformation from lat/lon to the data file coordinate system.
     // The returning row and col are still reals (_not_ data index integers).
-    // We do not care about cyclic overflows yet, col might be < 0 or > 1400.
+    // We do not care about cyclic overflows yet, col might > 1400.
     //
     auto row = []  (qreal lat) -> qreal { return (90 - lat) * 4; }; // [0; 720] from north to south
     auto col = []  (qreal lon) -> qreal { return    lon     * 4; }; // [0; 1440[
@@ -84,16 +100,19 @@ qreal Geoid::operator()(qreal latitude, qreal longitude)
 
     auto geoid = [&] (int row, int col) -> qreal
     {
-        qint32 idx = row * egm96_cols + col;
+        int idx = row * egm96_cols + col;
         return idx >=0 && idx < egm96_size ? egm[idx] * 0.01 : 0.0;
     };
 
+    // here we do a bilinear interpolation between the 4 neighbouring
+    // data points of the requested location.
+    //
     qreal interpolated = 0;
     qreal row_dist = row(latitude) - north;
     qreal col_dist = col(longitude) - qFloor(col(longitude));
-    for (qint16 irow : {north, south})
+    for (int irow : {north, south})
     {
-        for (qint16 icol : {west, east})
+        for (int icol : {west, east})
         {
             interpolated += geoid(irow, icol) * (1 - row_dist) * (1 - col_dist);
             col_dist = 1 - col_dist;

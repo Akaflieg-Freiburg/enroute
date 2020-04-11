@@ -36,6 +36,7 @@ set(SOURCES
     DownloadableGroup.cpp
     FlightRoute.cpp
     FlightRoute_Leg.cpp
+    Geoid.cpp
     GeoMapProvider.cpp
     GlobalSettings.cpp
     main.cpp
@@ -54,6 +55,10 @@ set(SOURCES
 # Generate android executable
 #
 if( ANDROID )
+    list(APPEND SOURCES
+        android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+        )
+
     # Configure AndroidManifest.xml
     configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
 

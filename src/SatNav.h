@@ -26,6 +26,8 @@
 #include <QLocale>
 #include <QTimer>
 
+#include "Geoid.h"
+
 /*! \brief Satellite Navigator
   
   This class is a thin wrapper around QGeoPositionInfoSource.  The main
@@ -175,7 +177,39 @@ public:
     \sa altitudeInFeet
   */
   Q_PROPERTY(bool hasAltitude READ hasAltitude NOTIFY update)
-  
+
+  /*! \brief Geoidal separation
+
+    This property holds the geoidal separation between the ellipsoidal height as
+    reported by the GPS receiver and the orthometric height (AMSL, commonly used in maps).
+    above sea level.
+    In case no valid SatNav fix exists, or in case where no altitude information is reported,
+    the property is set to the value "0".
+  */
+  Q_PROPERTY(int geoidalSeparation READ geoidalSeparation NOTIFY update)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns geoidalSeparation
+  */
+  int geoidalSeparation() const;
+
+  /*! \brief geoidal separation as string
+
+    This property holds the geoidal separation, a string of the form "143 ft".
+    In case no valid satnav fix exists, or in case where no geoidal separation
+    information is reported, the property is set to the value "-".
+
+    \sa geoidalSeparation
+  */
+  Q_PROPERTY(QString geoidalSeparationAsString READ geoidalSeparationAsString NOTIFY update)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns geoidalSeparationAsString
+  */
+  QString geoidalSeparationAsString() const;
+
   /*! \brief Getter function for the property with the same name
 
     @returns Property hasAltitude
@@ -482,10 +516,13 @@ private:
   QGeoPositionInfo lastInfo;
   QGeoCoordinate _lastValidCoordinate;
   int _lastValidTrack {0};
-  
+
   // altitude = raw altitude + altitudeCorrection
   int altitudeCorrectionInM {0};
   
+  Geoid* _geoid;
+  qreal _lastValidGeoidCorrection;
+
   // Constant: timeout occurs after one minute without receiving new data
   const int timeoutThreshold = 60*1000;
   

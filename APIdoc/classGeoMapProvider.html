@@ -104,7 +104,7 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. </p>
-<p>This class works closely with <a class="el" href="classMapManager.html" title="Manages the list of available aviation maps. ">MapManager</a>. It reads the files managed by <a class="el" href="classMapManager.html" title="Manages the list of available aviation maps. ">MapManager</a> and provides them for use in MapBoxGL powered maps. The data is served via two channels.</p>
+<p>This class works closely with <a class="el" href="classMapManager.html" title="Manages the list of geographic maps. ">MapManager</a>. It reads the files managed by <a class="el" href="classMapManager.html" title="Manages the list of geographic maps. ">MapManager</a> and provides them for use in MapBoxGL powered maps. The data is served via two channels.</p>
 <ul>
 <li>All files in GeoJSON format are concatenated, and the resulting compound GeoJSON is served via the geoJSON property of this class.</li>
 <li>A list of waypoints is generated and available via the waypoints property</li>
@@ -156,7 +156,7 @@ Properties</h2></td></tr>
 <p>Create a new GeoMap provider. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">manager</td><td>Pointer to a <a class="el" href="classMapManager.html" title="Manages the list of available aviation maps. ">MapManager</a> whose files will be served. The manager shall exist for the lifetime of this object.</td></tr>
+    <tr><td class="paramname">manager</td><td>Pointer to a <a class="el" href="classMapManager.html" title="Manages the list of geographic maps. ">MapManager</a> whose files will be served. The manager shall exist for the lifetime of this object.</td></tr>
     <tr><td class="paramname">settings</td><td><a class="el" href="classGlobalSettings.html" title="Global Settings Manager. ">GlobalSettings</a> object where settings are stored. The settings shall exist for the lifetime of this object.</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent </td></tr>
   </table>

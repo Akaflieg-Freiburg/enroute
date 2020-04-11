@@ -1,5 +1,6 @@
-<p>Version ${PROJECT_VERSION} is a bug-fixing release.<p>
-
-<p>Fly safely, <strong>stay healthy</strong> and enjoy many happy landings!</p>
+<p>Johannes Zellner has implemented geoid altitude correction, which corrects
+for the different definitions of 'sea level' used in aviation and in satellite
+navigation.  The corrections will be applied automatically and will give more
+precise altitude readings.</p>
 
 <p>-- Stefan Kebekus.</p>

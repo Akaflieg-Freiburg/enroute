@@ -77,42 +77,12 @@ public:
      */
     void removeFromGroup(Downloadable *downloadable);
 
-    /*! \brief Indicates whether a download process is currently running
-     *
-     * By definition, an empty group is not downloading
-     */
-    Q_PROPERTY(bool isDownloading READ isDownloading NOTIFY isDownloadingChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloading
-     */
-    bool isDownloading() const;
-
-    /*! \brief Names of all local files of the Downloadbles in this group */
-    Q_PROPERTY(QStringList localFiles READ localFiles NOTIFY localFilesChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property localFiles
-     */
-    QStringList localFiles() const;
-
-    /*! \brief Indicates any one of Downloadable objects is known to be updatable
-     *
-     * By definition, an empty group is not updatable
-     */
-    Q_PROPERTY(bool isUpdatable READ isUpdatable NOTIFY isUpdatableChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property localFiles
-     */
-    bool isUpdatable() const;
-
     /*! \brief List of downloadables in this group
      *
-     * This property holds the list of downloadables in the group. The downloadables are sorted by file name in ascending order. The nullptr is never contained in the list.
+     * This property holds the list of downloadables in the group. The
+     * downloadables are sorted alphabetically in ascending order, first be
+     * section() and then secondly by file name. The nullptr is never contained
+     * in the list.
      */
     Q_PROPERTY(QList<Downloadable *> downloadables READ downloadables NOTIFY downloadablesChanged)
 
@@ -122,19 +92,55 @@ public:
      */
     QList<Downloadable *> downloadables() const;
 
+    /*! \brief Indicates whether a download process is currently running
+     *
+     * By definition, an empty group is not downloading
+     */
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property downloading
+     */
+    bool downloading() const;
+
+    /*! \brief Names of all files that have been downloaded by any of the
+     *  Downloadbles in this group
+     */
+    Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property localFiles
+     */
+    QStringList files() const;
+
+    /*! \brief Indicates any one of Downloadable objects is known to be updatable
+     *
+     * By definition, an empty group is not updatable
+     */
+    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property updatable
+     */
+    bool updatable() const;
+
 signals:
     /*! \brief Notifier signal for property downloading */
-    void isDownloadingChanged();
+    void downloadingChanged();
 
     /*! \brief Notifier signal for the property updatable */
-    void isUpdatableChanged();
+    void updatableChanged();
 
     /*! \brief Notifier signal for the property localFiles */
-    void localFilesChanged();
+    void filesChanged();
 
     /*! \brief Emitted if the content of one of the local files changes.
      *
-     * This signal is emitted if one of the downloadables in this group emits the signal localFileContentChanged().
+     * This signal is emitted if one of the downloadables in this group emits
+     * the signal localFileContentChanged().
      */
     void localFileContentChanged();
 

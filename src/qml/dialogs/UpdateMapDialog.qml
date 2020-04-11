@@ -37,6 +37,6 @@ LongTextDialog {
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
         }
 
-        onAccepted: mapManager.startMapUpdates()
+        onAccepted: mapManager.updateGeoMaps()
     } // DialogButtonBox
 }

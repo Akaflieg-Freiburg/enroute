@@ -48,19 +48,19 @@ class Downloadable : public QObject {
 public:
     /*! \brief Standard constructor
      *
-     * @param url The address in the internet where the newest version of the item
-     * can always be found. This URL should be http or https because data about
-     * the remote file (such as modification time) can be retrieved with this
-     * protocol.
+     * @param url The address in the internet where the newest version of the
+     * item can always be found. This URL should be http or https because data
+     * about the remote file (such as modification time) can be retrieved with
+     * this protocol.
      *
      * @param localFileName Name of a local file where the download will be
      * stored. If the file already exists, the constructor assumes that the file
      * contains a previously downloaded version of the item, and that the
      * modification time of the file is the download time.
      *
-     * @param networkAccessManager Pointer to a QNetworkAccessManager that will be
-     * used for network access. The QNetworkAccessManager needs to survive the
-     * lifetime of this object.
+     * @param networkAccessManager Pointer to a QNetworkAccessManager that will
+     * be used for network access. The QNetworkAccessManager needs to survive
+     * the lifetime of this object.
      *
      * @param parent The standard QObject parent pointer.
      *
@@ -129,21 +129,21 @@ public:
      *
      * @returns Property fileName
      */
-    QString fileName() const { return _localFileName; }
+    QString fileName() const { return _fileName; }
 
-    /*! \brief Convenience property, returns 'true' if a local file exists
+    /*! \brief Convenience property, returns 'true' if the file has been downloaded
      *
      * @warning The notification signal is emitted whenever this class changes
-     * the local file. The signal is not emitted when another process touches
+     * the downloaded file. The signal is not emitted when another process touches
      * the file.
      */
-    Q_PROPERTY(bool hasLocalFile READ hasLocalFile NOTIFY hasLocalFileChanged)
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property hasLocalFile
+     * @returns Property hasFile
      */
-    bool hasLocalFile() const { return QFile::exists(_localFileName); }
+    bool hasFile() const { return QFile::exists(_fileName); }
 
     /*! \brief Short info text describing the state of the downloadable
      *
@@ -163,18 +163,18 @@ public:
      */
     QString infoText() const;
 
-    /*! \brief Content of the local file
+    /*! \brief Content of the downloaded file
      *
-     * This convenience property holds the content of the local file, or a null
-     * QByteArray, if no local file exists
+     * This convenience property holds the content of the downloaded file, or a null
+     * QByteArray, if nothing has been downloaded
      */
-    Q_PROPERTY(QByteArray localFileContent READ localFileContent NOTIFY localFileContentChanged)
+    Q_PROPERTY(QByteArray fileContent READ fileContent NOTIFY fileContentChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property localFileContent
+     * @returns Property fileContent
      */
-    QByteArray localFileContent() const;
+    QByteArray fileContent() const;
 
     /*! \brief Modification date of the remote file
      *
@@ -216,33 +216,36 @@ public:
      */
     void setRemoteFileSize(qint64 size);
 
-    /*! \brief Name of the directory containing the file on the server
+    /*! \brief Headline name for the Downloadable
      *
-     * This property is a convenience for accessing the part of the URL that
-     * contains the directory name of the downloadable file. This is used
-     * e.g. for files containing aviation maps, where the directory name is the
-     * name of the associated geographic continent.  The GUI uses this to
-     * generate section headings in the list of downloadable aviation maps.
+     * This property is a convenience storing one string along with the
+     * Downloadable. The enroute app uses this to store the continent name for a
+     * Dowloadable that represents a geographic map.  The GUI then generate
+     * section headings in the list of downloadable aviation maps.
      */
-#warning Need to make this settable
-    Q_PROPERTY(QString section READ section CONSTANT)
+    Q_PROPERTY(QString section READ section NOTIFY sectionChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property section
      */
-    QString section() const { return _url.path().section("/", -2, -2); }
+    QString section() const { return _section; }
 
-    /*! \brief Indicates if the local file is known to be updatable
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param sectionName Property section
+     */
+    void setSection(QString sectionName);
+
+    /*! \brief Indicates if the file the has been downloaded is known to be updatable
      *
      * This property is true if all of the following conditions are met.
      *
      * - No download is in progress
      *
-     * - The local file exists
+     * - The file has been downloaded
      *
-     * - The file on the remote server is known to differ from the local file in
-     *   file size, or if the modification date of the file on the remote server
+     * - The modification date of the file on the remote server
      *   is newer than the modification date of the local file.
      *
      * @warning The notification signal is not emitted when another process
@@ -272,7 +275,7 @@ public slots:
      * aboutToChangeLocalFile() and localFileChanged() are emitted
      * appropriately, and a QLockFile is used at fileName()+".lock".
      */
-    void deleteLocalFile();
+    void deleteFile();
 
     /*! \brief Initiate a download
      *
@@ -302,12 +305,13 @@ public slots:
      *
      * -# The QLockFile is removed
      *
-     * -# The signal localFileChanged() is emitted to indicate that the file is
+     * -# The signal fileChanged() is emitted to indicate that the file is
      *    again ready to be used.
      */
     void startFileDownload();
 
-    /*! \brief Contacts the server and downloads information about the remote file
+    /*! \brief Contacts the server and downloads information about the remote
+     *  file
      *
      * This method contacts the remote server, retrieves information about the
      * remote file and updates the properties remoteFileDate and remoteFileSize
@@ -318,7 +322,7 @@ public slots:
      * @warning This method fails silently if the server cannot be contacted or
      * if the server is unable to provide the requested data.
      */
-    void startRemoteFileInfoDownload();
+    void startInfoDownload();
 
     /*! \brief Stops download process
      *
@@ -341,7 +345,7 @@ signals:
      *
      * @see localFileChanged()
      */
-    void aboutToChangeLocalFile(QString localFileName);
+    void aboutToChangeFile(QString localFileName);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged();
@@ -372,32 +376,38 @@ signals:
     /*! \brief Notifier signal for the property infoText */
     void infoTextChanged();
 
-    /*! \brief Notifier signal for the property hasLocalFile
+    /*! \brief Notifier signal for the property hasFile
      */
-    void hasLocalFileChanged();
+    void hasFileChanged();
 
-    /*! \brief Notifier signal for the properties localFileContent
+    /*! \brief Notifier signal for the properties fileContent
      *
-     * This signal is also emitted when the local file get deleted by the method Downloadable::deleteLocalFile(), and when a file is first downloaded.
+     * This signal is also emitted when the local file get deleted by the method
+     * Downloadable::deleteFile(), and when a file is first downloaded.
      */
-    void localFileContentChanged();
+    void fileContentChanged();
 
     /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
      *
-     * This signal is emitted once one of the property remoteFileDate changes, either in response to a use of the setter
-     * methods, or because downloadRemoteFileData() has been called and data has
-     * been retrieved from the server.
+     * This signal is emitted once one of the property remoteFileDate changes,
+     * either in response to a use of the setter methods, or because
+     * downloadRemoteFileData() has been called and data has been retrieved from
+     * the server.
      */
     void remoteFileDateChanged();
 
-    /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
+    /*! \brief Notifier signal for the properties remoteFileDate and
+     *  remoteFileSize
      *
-     * This signal is emitted once one of the property
-     * remoteFileSize changes, either in response to a use of the setter
-     * methods, or because downloadRemoteFileData() has been called and data has
-     * been retrieved from the server.
+     * This signal is emitted once one of the property remoteFileSize changes,
+     * either in response to a use of the setter methods, or because
+     * downloadRemoteFileData() has been called and data has been retrieved from
+     * the server.
      */
     void remoteFileSizeChanged();
+
+    /*! \brief Notifier signal for the property section */
+    void sectionChanged();
 
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
@@ -456,7 +466,7 @@ private:
     QUrl _url;
 
     // Name of the local file, as set in the constructor
-    QString _localFileName{};
+    QString _fileName{};
 
     // Modification date of the remote file, set directly via a setter method or
     // by calling downloadRemoteFileInfo().
@@ -465,6 +475,9 @@ private:
     // Size of the remote file, set directly via a setter method or by calling
     // downloadRemoteFileInfo().
     qint64 _remoteFileSize{-1};
+
+    // Section name
+    QString _section {};
 };
 
 #endif // DOWNLOADABLE_H

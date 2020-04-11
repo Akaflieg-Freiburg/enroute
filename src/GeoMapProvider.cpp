@@ -196,7 +196,7 @@ void GeoMapProvider::aviationMapsChanged()
         // Ignore everything but geojson files
         if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
             continue;
-        if (!geoMapPtr->hasLocalFile())
+        if (!geoMapPtr->hasFile())
             continue;
         JSONFileNames += geoMapPtr->fileName();
     }

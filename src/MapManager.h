@@ -28,18 +28,24 @@
 /*! \brief Manages the list of geographic maps
   
   This class manages a list of available and installed geographic maps.  It
-  retrieves the list of geographic maps from a remote server on a regular basis, updates the
-  list automatically once a week, and maintains a list of Downloadable objectes
-  that correspond to these geographic maps.  It informs the user if updates are available
-  for one or several of these geographic maps.
+  retrieves the list of geographic maps from a remote server on a regular basis,
+  updates the list automatically once a week, and maintains a list of
+  Downloadable objectes that correspond to these geographic maps.  It informs
+  the user if updates are available for one or several of these geographic maps.
   
-  The list of available maps is downloaded from a remote server whose address is hardcoded into the binary. The list is downloaded to a file "maps.json" in
-  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The format of the file is described at this URL: https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/The-file-maps.json
+  The list of available maps is downloaded from a remote server whose address is
+  hardcoded into the binary. The list is downloaded to a file "maps.json" in
+  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The format
+  of the file is described at this URL:
+  https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/The-file-maps.json
 
-  Those geographic maps that are downloaded will be installed into the directory "aviation_maps" in
-  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a suitable subdirectory of this.
+  Those geographic maps that are downloaded will be installed into the directory
+  "aviation_maps" in
+  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a
+  suitable subdirectory of this.
 
-  This class assumes that no other program interferes with the file "maps.json" and with the directory "aviation_maps".
+  This class assumes that no other program interferes with the file "maps.json"
+  and with the directory "aviation_maps".
 */
 
 class MapManager : public QObject
@@ -50,12 +56,13 @@ public:
   /*! \brief Standard constructor
     
     This constructor reads the file "maps.json" and initiates a download of the
-    file if no file is available.  If the last download is more than one week old,
-    the class will try once per hour to download the latest version of
+    file if no file is available.  If the last download is more than one week
+    old, the class will try once per hour to download the latest version of
     "maps.json".
     
     @param networkAccessManager Pointer to a QNetworkAccessManager that will be
-    used for network access. The QNetworkAccessManager must not be deleted while this object exists.
+    used for network access. The QNetworkAccessManager must not be deleted while
+    this object exists.
     
     @param parent The standard QObject parent pointer.
   */
@@ -80,30 +87,13 @@ public:
   */
   ~MapManager();
   
-  /*! \brief Determines whether some of the installed geographic maps can be updated */
-  Q_PROPERTY(bool geoMapUpdatesAvailable READ geoMapUpdatesAvailable NOTIFY geoMapUpdatesAvailableChanged)
-  
-  /*! \brief Getter function for the property with the same name
-
-    @returns Property geoMapUpdatesAvailable
-  */
-  bool geoMapUpdatesAvailable() const { return _geoMaps.isUpdatable(); }
-  
-  /*! \brief Gives an estimate for the download size, as a localized string */
-  Q_PROPERTY(QString geoMapUpdateSize READ geoMapUpdateSize NOTIFY geoMapUpdatesAvailableChanged)
-  
-  /*! \brief Getter function for the property with the same name
-
-    @returns Property geoMapUpdateSize
-  */
-  QString geoMapUpdateSize() const;
-
   /*! \brief List of available aviation maps
     
-    @returns a QList that contains pointers to all known aviation maps as values. The aviation maps are owned by this map manager and
-    must not be deleted. The lifetime of the aviation maps is not guaranteed, so
-    if you must store them, then store them in a QPointer and check validity of
-    the pointer before every use.
+    @returns a QList that contains pointers to all known aviation maps as
+    values. The aviation maps are owned by this map manager and must not be
+    deleted. The lifetime of the aviation maps is not guaranteed, so if you must
+    store them, then store them in a QPointer and check validity of the pointer
+    before every use.
   */
   QList<Downloadable*> aviationMaps() const;
   
@@ -122,13 +112,7 @@ public:
 
   /*! \brief True if at least one aviation map is installed */
   Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapFilesChanged)
-  
-  /*! \brief Getter function for the property with the same name
 
-    @returns hasAviationMap
-   */
-  bool hasAviationMap() const;
-  
   /*! \brief List of available base maps
 
     @returns a QMap that contains pointers to all known base maps as values, and
@@ -138,9 +122,9 @@ public:
     before every use.
   */
   QList<Downloadable *> baseMaps() const;
-  
+
   /*! \brief List of available aviation maps, as a list of QObjects
-    
+
     This property is identical to aviationMaps, but returns the pointers to the
     actual maps in the form of a QObjectList instead of a QMap
   */
@@ -151,17 +135,52 @@ public:
     @returns baseMapsAsObjectList
   */
   QList<QObject*> baseMapsAsObjectList() const;
-  
+
+  /*! \brief Indicates whether the file "maps.json" is currently being
+      downloaded */
+  Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property downloadingGeoMapList
+   */
+  bool downloadingGeoMapList() const;
+
+  /*! \brief Determines whether some of the installed geographic maps can be
+      updated */
+  Q_PROPERTY(bool geoMapUpdatesAvailable READ geoMapUpdatesAvailable NOTIFY geoMapUpdatesAvailableChanged)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property geoMapUpdatesAvailable
+  */
+  bool geoMapUpdatesAvailable() const { return _geoMaps.updatable(); }
+
+  /*! \brief Gives an estimate for the download size, as a localized string */
+  Q_PROPERTY(QString geoMapUpdateSize READ geoMapUpdateSize NOTIFY geoMapUpdatesAvailableChanged)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property geoMapUpdateSize
+  */
+  QString geoMapUpdateSize() const;
+
   /*! \brief True if at least one aviation map is installed */
   Q_PROPERTY(bool hasBaseMap READ hasBaseMap NOTIFY geoMapFilesChanged)
-  
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns hasAviationMap
+   */
+  bool hasAviationMap() const;
+
   /*! \brief Getter function for the property with the same name
 
     @returns hasBaseMap
   */
   bool hasBaseMap() const;
   
-  /*! \brief True if list of available geo maps has already been downloaded */
+  /*! \brief True if the list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
   
   /*! \brief Getter function for the property with the same name
@@ -169,15 +188,6 @@ public:
     @returns hasGeoMapList
    */
   bool hasGeoMapList() const { return !_geoMaps.downloadables().isEmpty(); }
-
-  /*! \brief Indicates whether the file "maps.json" is currently being downloaded */
-  Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
-  
-  /*! \brief Getter function for the property with the same name
-
-    @returns Property downloadingGeoMapList
-   */
-  bool downloadingGeoMapList() const;
 
   /*! \brief Set of all mbtiles files that have been downloaded and are ready-to-use */
   Q_PROPERTY(QSet<QString> mbtileFiles READ mbtileFiles NOTIFY mbtileFilesChanged)
@@ -187,9 +197,6 @@ public:
     @returns Property mbtileFiles
    */
   QSet<QString> mbtileFiles() const;
-
-#warning This method does crazy stuff to check the robustness of the interface
-  Q_INVOKABLE void stressTest();
 
 public slots:
   /*! \brief Triggers an update of the list of available maps
@@ -242,17 +249,20 @@ signals:
   */
   void mbtileFilesChanged(QSet<QString> newSet, QString path);
 
-  /*! \brief Emitted if the content of the local file of one of the geoMaps changes content
+  /*! \brief Emitted if the content of the local file of one of the geoMaps
+      changes content
 
-    This signal is also emitted if one of the local file of one of the geoMaps changes existence
+    This signal is also emitted if one of the local file of one of the geoMaps
+    changes existence
 
     @see Downloadable::localFileContentChanged()
    */
   void geoMapFileContentChanged();
 
-  /*! \brief Emitted if one of the local file of one of the geoMaps changes existence
+  /*! \brief Emitted if one of the local file of one of the geoMaps changes
+      existence
 
-    @see Downloadable::hasLocalFileChanged()
+    @see Downloadable::hasFileChanged()
    */
   void geoMapFilesChanged();
 
@@ -261,7 +271,9 @@ private slots:
   // 'objectName'
   void errorReceiver(const QString& objectName, QString message);
 
-  // This slot is called when a local file of one of the geo maps changes content or existence. If the geo map in question is unsupported, it is then removed. The signals aviationMapListChanged() and
+  // This slot is called when a local file of one of the geo maps changes
+  // content or existence. If the geo map in question is unsupported, it is then
+  // removed. The signals aviationMapListChanged() and
   // aviationMapUpdatesAvailableChanged() are emitted as appropriate.
   void localFileOfGeoMapChanged();
 
@@ -279,7 +291,9 @@ private slots:
   // changes in the file system.
   void setTimeOfLastUpdateToNow();
 
-  // This method calls 'updateGeoMapList()' if an automatic update is due. It also sets a reasonable timeout value the timer _autoUpdateTime to fire up when the next autmatic update is due. It will then start the timer.
+  // This method calls 'updateGeoMapList()' if an automatic update is due. It
+  // also sets a reasonable timeout value the timer _autoUpdateTime to fire up
+  // when the next autmatic update is due. It will then start the timer.
   void autoUpdateGeoMapList();
   
 private:

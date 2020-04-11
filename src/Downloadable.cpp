@@ -33,15 +33,16 @@ Downloadable::Downloadable(QUrl url, const QString &fileName,
     Q_ASSERT(!fileName.isEmpty());
 
     QFileInfo info(fileName);
-    _localFileName = info.absoluteFilePath();
+    _fileName = info.absoluteFilePath();
 
     connect(this, &Downloadable::remoteFileDateChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::remoteFileSizeChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::hasLocalFileChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::localFileContentChanged, this, &Downloadable::infoTextChanged);
+    connect(this, &Downloadable::hasFileChanged, this, &Downloadable::infoTextChanged);
+    connect(this, &Downloadable::fileContentChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::downloadingChanged, this, &Downloadable::infoTextChanged);
     connect(this, &Downloadable::downloadProgressChanged, this, &Downloadable::infoTextChanged);
 }
+
 
 Downloadable::~Downloadable() {
     // Free all ressources
@@ -50,13 +51,14 @@ Downloadable::~Downloadable() {
     delete _saveFile;
 }
 
+
 QString Downloadable::infoText() const {
     if (downloading())
         return tr("downloading … %1% complete").arg(_downloadProgress);
 
     QString displayText;
-    if (hasLocalFile()) {
-        QFileInfo info(_localFileName);
+    if (hasFile()) {
+        QFileInfo info(_fileName);
         displayText = tr("installed • %1")
                 .arg(QLocale::system().formattedDataSize(info.size(), 1,
                                                          QLocale::DataSizeSIFormat));
@@ -76,17 +78,19 @@ QString Downloadable::infoText() const {
     return displayText;
 }
 
-QByteArray Downloadable::localFileContent() const {
-    // Paranoid safety checks
-    Q_ASSERT(!_localFileName.isEmpty());
 
-    QFile file(_localFileName);
+QByteArray Downloadable::fileContent() const {
+    // Paranoid safety checks
+    Q_ASSERT(!_fileName.isEmpty());
+
+    QFile file(_fileName);
     if (!file.exists())
         return QByteArray();
 
     file.open(QIODevice::ReadOnly);
     return file.readAll();
 }
+
 
 void Downloadable::setRemoteFileDate(const QDateTime &date) {
     // Do nothing if old and new data agrees
@@ -103,6 +107,7 @@ void Downloadable::setRemoteFileDate(const QDateTime &date) {
         emit updatableChanged();
     emit remoteFileDateChanged();
 }
+
 
 void Downloadable::setRemoteFileSize(qint64 size) {
     // Paranoid safety checks
@@ -125,39 +130,68 @@ void Downloadable::setRemoteFileSize(qint64 size) {
     emit remoteFileSizeChanged();
 }
 
+
+void Downloadable::setSection(QString sectionName)
+{
+    if (sectionName == _section)
+        return;
+    _section = sectionName;
+    emit sectionChanged();
+}
+
+
 bool Downloadable::updatable() const {
     if (downloading())
         return false;
-    if (!QFile::exists(_localFileName))
+    if (!QFile::exists(_fileName))
         return false;
 
-    QFileInfo info(_localFileName);
+    QFileInfo info(_fileName);
     if (_remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate))
         return true;
 
     return false;
 }
 
-void Downloadable::deleteLocalFile() {
+
+void Downloadable::deleteFile() {
     // If the local file does not exist, there is nothing to do
-    if (!QFile::exists(_localFileName))
+    if (!QFile::exists(_fileName))
         return;
 
     // Save old value to see if anything changed
     bool oldUpdatable = updatable();
 
-    emit aboutToChangeLocalFile(_localFileName);
-    QLockFile lockFile(_localFileName + ".lock");
+    emit aboutToChangeFile(_fileName);
+    QLockFile lockFile(_fileName + ".lock");
     lockFile.lock();
-    QFile::remove(_localFileName);
+    QFile::remove(_fileName);
     lockFile.unlock();
-    emit hasLocalFileChanged();
-    emit localFileContentChanged();
+    emit hasFileChanged();
+    emit fileContentChanged();
 
     // Emit signals as appropriate
     if (oldUpdatable != updatable())
         emit updatableChanged();
 }
+
+
+void Downloadable::startInfoDownload() {
+    // Paranoid safety checks
+    Q_ASSERT(!_networkAccessManager.isNull());
+    if (_networkAccessManager.isNull())
+        return;
+
+    // Do not start a new check if an old one is still running
+    if (!_networkReplyDownloadHeader.isNull())
+        return;
+
+    // Start the download process for the remote file info
+    _networkReplyDownloadHeader = _networkAccessManager->head(QNetworkRequest(_url));
+    connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
+            &Downloadable::downloadHeaderFinished);
+}
+
 
 void Downloadable::startFileDownload() {
     // Paranoid safety checks
@@ -178,12 +212,12 @@ void Downloadable::startFileDownload() {
     delete _saveFile;
 
     // Create directory that will hold the local file, if it does not yet exist
-    QDir dir(QFileInfo(_localFileName).dir());
+    QDir dir(QFileInfo(_fileName).dir());
     if (!dir.exists())
         dir.mkpath(".");
 
     // Copy the temporary file to the local file
-    _saveFile = new QSaveFile(_localFileName, this);
+    _saveFile = new QSaveFile(_fileName, this);
     _saveFile->open(QIODevice::WriteOnly);
 
     // Start download
@@ -209,21 +243,6 @@ void Downloadable::startFileDownload() {
         emit downloadingChanged();
 }
 
-void Downloadable::startRemoteFileInfoDownload() {
-    // Paranoid safety checks
-    Q_ASSERT(!_networkAccessManager.isNull());
-    if (_networkAccessManager.isNull())
-        return;
-
-    // Do not start a new check if an old one is still running
-    if (!_networkReplyDownloadHeader.isNull())
-        return;
-
-    // Start the download process for the remote file info
-    _networkReplyDownloadHeader = _networkAccessManager->head(QNetworkRequest(_url));
-    connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
-            &Downloadable::downloadHeaderFinished);
-}
 
 void Downloadable::stopFileDownload() {
     // Paranoid safety checks
@@ -248,6 +267,7 @@ void Downloadable::stopFileDownload() {
         emit updatableChanged();
     emit downloadingChanged();
 }
+
 
 void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
     // Do nothing if there is no error
@@ -418,6 +438,7 @@ void Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
     emit error(objectName(), message);
 }
 
+
 void Downloadable::downloadFileFinished() {
     // Paranoid safety checks
     //  Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_tmpFile.isNull());
@@ -441,15 +462,15 @@ void Downloadable::downloadFileFinished() {
 
     // Save old value to see if anything changed
     bool oldIsUpdatable = updatable();
-    bool oldHasLocalFile = hasLocalFile();
+    bool oldHasLocalFile = hasFile();
 
     // Copy the temporary file to the local file
-    emit aboutToChangeLocalFile(_localFileName);
-    QLockFile lockFile(_localFileName + ".lock");
+    emit aboutToChangeFile(_fileName);
+    QLockFile lockFile(_fileName + ".lock");
     lockFile.lock();
     _saveFile->commit();
     lockFile.unlock();
-    emit localFileContentChanged();
+    emit fileContentChanged();
 
     // Delete the data structures for the download
     delete _saveFile;
@@ -459,10 +480,11 @@ void Downloadable::downloadFileFinished() {
     // Emit signals as appropriate
     if (oldIsUpdatable != updatable())
         emit updatableChanged();
-    if (oldHasLocalFile != hasLocalFile())
-        emit hasLocalFileChanged();
+    if (oldHasLocalFile != hasFile())
+        emit hasFileChanged();
     emit downloadingChanged();
 }
+
 
 void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
     auto oldDownloadProgress = _downloadProgress ;
@@ -471,6 +493,7 @@ void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 byt
     if (_downloadProgress != oldDownloadProgress)
         emit downloadProgressChanged(_downloadProgress);
 }
+
 
 void Downloadable::downloadFilePartialDataReceiver() {
     // Paranoid safety checks
@@ -485,6 +508,7 @@ void Downloadable::downloadFilePartialDataReceiver() {
     // Write all available data to the temporary file
     _saveFile->write(_networkReplyDownloadFile->readAll());
 }
+
 
 void Downloadable::downloadHeaderFinished() {
     // Paranoid safety checks

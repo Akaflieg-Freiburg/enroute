@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -64,10 +64,10 @@ Page {
                 ItemDelegate {
                     text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
                     icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_map.svg"
-                    icon.color: model.modelData.hasLocalFile ? Material.primary : "#9E9E9E"
+                    icon.color: model.modelData.hasFile ? Material.primary : "#9E9E9E"
                     Layout.fillWidth: true
                     onClicked: {
-                        if (!model.modelData.downloading && (!model.modelData.hasLocalFile || model.modelData.updatable)) {
+                        if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
                             MobileAdaptor.vibrateBrief()
                             model.modelData.startFileDownload()
                         }
@@ -77,7 +77,7 @@ Page {
                 ToolButton {
                     id: downloadButton
                     icon.source: "/icons/material/ic_file_download.svg"
-                    visible: !model.modelData.hasLocalFile && !model.modelData.downloading
+                    visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
                         MobileAdaptor.vibrateBrief()
                         model.modelData.startFileDownload()
@@ -108,7 +108,7 @@ Page {
                     id: removeButton
                     icon.source: "/icons/material/ic_more_horiz.svg"
 
-                    visible: model.modelData.hasLocalFile & !model.modelData.downloading
+                    visible: model.modelData.hasFile & !model.modelData.downloading
                     onClicked: {
                         MobileAdaptor.vibrateBrief()
                         removeMenu.popup()
@@ -125,7 +125,7 @@ Page {
 
                             onTriggered: {
                                 MobileAdaptor.vibrateBrief()
-                                model.modelData.deleteLocalFile()
+                                model.modelData.deleteFile()
                             }
                         }
                     }
@@ -171,7 +171,6 @@ Page {
             currentIndex: bar.currentIndex
             Layout.fillWidth: true
             Layout.fillHeight: true
-            //            visible: !mapManager.downloadingGeoMapList && mapManager.hasGeoMapList
 
             ListView {
                 clip: true
@@ -314,13 +313,11 @@ Page {
         headerMenuToolButton.visible = true
         headerMenu.insertAction(0, downloadUpdatesAction)
         headerMenu.insertAction(0, updateAction)
-        headerMenu.insertAction(0, stressTestAction)
     }
     Component.onDestruction: {
         headerMenuToolButton.visible = false
         headerMenu.removeAction(downloadUpdatesAction)
         headerMenu.removeAction(updateAction)
-        headerMenu.removeAction(stressTestAction)
     }
 
     // Show error when list of maps cannot be downloaded
@@ -344,18 +341,6 @@ Page {
         onTriggered: {
             MobileAdaptor.vibrateBrief()
             mapManager.updateGeoMapList()
-        }
-    }
-
-    Action {
-        id: stressTestAction
-
-        text: qsTr("Stress test")
-        icon.source: "/icons/material/ic_refresh.svg"
-
-        onTriggered: {
-            MobileAdaptor.vibrateBrief()
-            mapManager.stressTest()
         }
     }
 

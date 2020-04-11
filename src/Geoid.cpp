@@ -39,8 +39,9 @@ Geoid::Geoid() : egm(nullptr)
 
     int egm96_size_2 = egm96_size * 2;
 
-    if (!file.open(QIODevice::ReadOnly) || file.size() != (egm96_size_2)) {
-        qDebug() << "Geoid::Geoid failed to open WW15MGH.DAC";
+    if (!file.open(QIODevice::ReadOnly) || file.size() != (egm96_size_2))
+    {
+        qDebug() << "Geoid::Geoid failed to open " << file.fileName();
         return;
     }
 
@@ -49,8 +50,10 @@ Geoid::Geoid() : egm(nullptr)
     int nread = file.read(reinterpret_cast<char*>(egm), egm96_size_2);
     file.close();
 
-    if (nread != (egm96_size_2)) {
-        qDebug() << "Geoid::Geoid expected to read " << egm96_size_2 << " bytes from WW15MGH.DAC but got " << nread;
+    if (nread != egm96_size_2)
+    {
+        qDebug() << "Geoid::Geoid expected " << egm96_size_2
+                 << " bytes from " << file.fileName() << " but got " << nread;
         delete[] egm;
         egm = nullptr;
         return;

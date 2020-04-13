@@ -60,6 +60,7 @@ Europe | Norway | Class 2
 Europe | Poland | Class 1
 Europe | Portugal | Class 2
 Europe | Romania | Class 1
+Europe | Serbia | Class 2
 Europe | Slovakia | Class 1
 Europe | Slowenia | Class 1
 Europe | Spain | Class 2

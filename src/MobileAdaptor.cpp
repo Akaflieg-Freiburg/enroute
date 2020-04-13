@@ -27,6 +27,7 @@
 #include <QAndroidJniEnvironment>
 #endif
 
+#include <QDebug>
 
 MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
@@ -50,6 +51,7 @@ void MobileAdaptor::vibrateBrief()
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 #endif
 }
+
 
 void MobileAdaptor::keepScreenOn(bool on)
 {
@@ -77,5 +79,15 @@ void MobileAdaptor::keepScreenOn(bool on)
             env->ExceptionClear();
         }
     });
+#endif
+}
+
+
+void MobileAdaptor::showDownloadNotification(bool show)
+{
+    qWarning() << "MobileAdaptor::showDownloadNotification()" << show;
+
+#if defined(Q_OS_ANDROID)
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload");
 #endif
 }

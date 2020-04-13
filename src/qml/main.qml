@@ -381,6 +381,7 @@ ApplicationWindow {
         onDetected: MobileAdaptor.vibrateBrief()
     }
 
+    /*
     Connections {
         target: view
         onActiveChanged: {
@@ -389,6 +390,7 @@ ApplicationWindow {
             }
         }
     }
+*/
 
     // enroute closed unexpectedly if...
     // * the "route" page is open

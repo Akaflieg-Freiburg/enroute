@@ -44,6 +44,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
 
     // Wire up the DownloadableGroup _geoMaps
     connect(&_geoMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::geoMapListChanged);
+    connect(&_geoMaps, &DownloadableGroup::downloadingChanged, this, &MapManager::downloadingGeoMapsChanged);
     connect(&_geoMaps, &DownloadableGroup::filesChanged, this, &MapManager::localFileOfGeoMapChanged);
     connect(&_geoMaps, &DownloadableGroup::localFileContentChanged, this, &MapManager::geoMapFileContentChanged);
 

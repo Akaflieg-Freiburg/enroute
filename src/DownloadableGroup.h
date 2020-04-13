@@ -129,7 +129,7 @@ public:
 
 signals:
     /*! \brief Notifier signal for property downloading */
-    void downloadingChanged();
+    void downloadingChanged(bool);
 
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();

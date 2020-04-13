@@ -62,7 +62,13 @@ public slots:
         is shown to the user. 
   */
   void keepScreenOn(bool on);
-  
+
+  /*! \brief Shows a notifaction, indicating that a download is in progress
+
+    @param show If set to 'true', a notification will be shown. If set to 'false', any existing notification will be withdrawn
+  */
+  void showDownloadNotification(bool show);
+
 private:
   bool splashScreenHidden {false};
 };

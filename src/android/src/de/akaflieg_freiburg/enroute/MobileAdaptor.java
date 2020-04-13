@@ -21,12 +21,16 @@
 
 package de.akaflieg_freiburg.enroute;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Vibrator;
 
 public class MobileAdaptor extends org.qtproject.qt5.android.bindings.QtActivity
 {
     private static MobileAdaptor m_instance;
+    private static NotificationManager m_notificationManager;
+    private static Notification.Builder m_builder;
     private static Vibrator m_vibrator;
 
     public MobileAdaptor()
@@ -35,11 +39,29 @@ public class MobileAdaptor extends org.qtproject.qt5.android.bindings.QtActivity
     }
 
     /* Vibrate once, very briefly */
-    
     public static void vibrateBrief()
     {
         if (m_vibrator == null)
             m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
         m_vibrator.vibrate(20);
     }
+
+    /* Show dowmload notification */
+    public static void notifyDownload()
+    {
+        if (m_vibrator == null)
+            m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
+        m_vibrator.vibrate(200);
+
+        if (m_notificationManager == null) {
+            m_notificationManager = (NotificationManager)m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
+            m_builder = new Notification.Builder(m_instance);
+            m_builder.setSmallIcon(R.drawable.icon);
+            m_builder.setContentTitle("A message from Qt!");
+        }
+
+        m_builder.setContentText("Hi there");
+        m_notificationManager.notify(1, m_builder.build());
+    }
+
 }

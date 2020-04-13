@@ -59,8 +59,16 @@ if( ANDROID )
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         )
 
-    # Configure AndroidManifest.xml
+    # Configure files
     configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
+    configure_file(android/build.gradle android/build.gradle COPYONLY)
+    configure_file(android/gradle/wrapper/gradle-wrapper.properties android/gradle/wrapper/gradle-wrapper.properties COPYONLY)
+    configure_file(android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.jar COPYONLY)
+    configure_file(android/gradlew android/gradlew COPYONLY)
+    configure_file(android/gradlew.bat android/gradlew.bat COPYONLY)
+    configure_file(android/res/drawable/splash.xml android/res/drawable/splash.xml COPYONLY)
+    configure_file(android/res/values/apptheme.xml android/res/values/apptheme.xml COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java COPYONLY)
 
     # Generate android extra sources. This includes icons, but also a few other files
     set(ANDROID_EXTRA_SOURCES
@@ -71,7 +79,6 @@ if( ANDROID )
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-mdpi/icon.png
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/splash.xml
         ${CMAKE_CURRENT_BINARY_DIR}/android/res/values/apptheme.xml
-        ${CMAKE_CURRENT_BINARY_DIR}/android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         )
     add_custom_command(
         OUTPUT ${ANDROID_EXTRA_SOURCES}

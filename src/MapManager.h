@@ -146,6 +146,15 @@ public:
    */
   bool downloadingGeoMapList() const;
 
+  /*! \brief Indicates whether any of the geographic maps is currently being downloaded */
+  Q_PROPERTY(bool downloadingGeoMaps READ downloadingGeoMaps NOTIFY downloadingGeoMapsChanged)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property downloadingGeoMapList
+   */
+  bool downloadingGeoMaps() const { return _geoMaps.downloading(); };
+
   /*! \brief Determines whether some of the installed geographic maps can be
       updated */
   Q_PROPERTY(bool geoMapUpdatesAvailable READ geoMapUpdatesAvailable NOTIFY geoMapUpdatesAvailableChanged)
@@ -229,7 +238,10 @@ signals:
   
   /*! \brief Notification signal for the property with the same name */
   void downloadingGeoMapListChanged();
-  
+
+  /*! \brief Notification signal for the property with the same name */
+  void downloadingGeoMapsChanged(bool);
+
   /*! \brief Download error
     
     This signal is emitted if the download process for the list of available

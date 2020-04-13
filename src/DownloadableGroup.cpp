@@ -120,7 +120,7 @@ void DownloadableGroup::elementChanged()
 
     if (newDownloading != _cachedDownloading) {
         _cachedDownloading = newDownloading;
-        emit downloadingChanged();
+        emit downloadingChanged(newDownloading);
     }
 
     if (newUpdatable != _cachedUpdatable) {

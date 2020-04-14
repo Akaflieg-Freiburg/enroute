@@ -65,6 +65,9 @@ Public Slots</h2></td></tr>
 <tr class="memitem:a2d1af16c7a6ba6d7efc2d89aa34e9789"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a2d1af16c7a6ba6d7efc2d89aa34e9789">keepScreenOn</a> (bool on)</td></tr>
 <tr class="memdesc:a2d1af16c7a6ba6d7efc2d89aa34e9789"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Android, disables the screen lock.  <a href="#a2d1af16c7a6ba6d7efc2d89aa34e9789">More...</a><br /></td></tr>
 <tr class="separator:a2d1af16c7a6ba6d7efc2d89aa34e9789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a4496e52193c1509258b3742989a64b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a0a4496e52193c1509258b3742989a64b">showDownloadNotification</a> (bool show)</td></tr>
+<tr class="memdesc:a0a4496e52193c1509258b3742989a64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notifaction, indicating that a download is in progress.  <a href="#a0a4496e52193c1509258b3742989a64b">More...</a><br /></td></tr>
+<tr class="separator:a0a4496e52193c1509258b3742989a64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to platform-specific capabilities of mobile devices. </p>
@@ -129,6 +132,40 @@ Public Slots</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">on</td><td>If set to 'true', the screen will never switch off while the app is shown to the user. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0a4496e52193c1509258b3742989a64b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a4496e52193c1509258b3742989a64b">&#9670;&nbsp;</a></span>showDownloadNotification</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MobileAdaptor::showDownloadNotification </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>show</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Shows a notifaction, indicating that a download is in progress. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">show</td><td>If set to 'true', a notification will be shown. If set to 'false', any existing notification will be withdrawn </td></tr>
   </table>
   </dd>
 </dl>

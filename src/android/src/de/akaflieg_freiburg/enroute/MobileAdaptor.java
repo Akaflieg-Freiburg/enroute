@@ -21,6 +21,12 @@
 
 package de.akaflieg_freiburg.enroute;
 
+// Qt
+import org.qtproject.qt5.android.QtNative;
+
+import android.content.Intent;
+import android.app.PendingIntent;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -69,10 +75,18 @@ public class MobileAdaptor extends org.qtproject.qt5.android.bindings.QtActivity
 	} else {
 	    m_builder = new Notification.Builder(m_instance);
 	}
+
+	Context context = QtNative.activity();
+	String packageName = context.getApplicationContext().getPackageName();
+        Intent resultIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        m_builder.setContentIntent(resultPendingIntent);
 	
 	m_builder.setSmallIcon(R.drawable.ic_file_download)
 	    .setContentTitle("Downloading map data…")
-	    .setAutoCancel(true);
+	    .setOngoing(true)
+	    .setAutoCancel(false);
 	
 	m_notificationManager.notify(0, m_builder.build());
     }

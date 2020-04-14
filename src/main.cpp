@@ -88,7 +88,6 @@ int main(int argc, char *argv[])
     auto networkAccessManager = new QNetworkAccessManager();
     auto mapManager = new MapManager(networkAccessManager);
     engine->rootContext()->setContextProperty("mapManager", mapManager);
-    adaptor->showDownloadNotification(true);
     QObject::connect(mapManager, &MapManager::downloadingGeoMapsChanged, adaptor, &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider

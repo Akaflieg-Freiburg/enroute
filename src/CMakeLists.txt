@@ -69,6 +69,7 @@ if( ANDROID )
     configure_file(android/res/drawable/splash.xml android/res/drawable/splash.xml COPYONLY)
     configure_file(android/res/values/apptheme.xml android/res/values/apptheme.xml COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java COPYONLY)
+    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/file/drawable-hdpi/ic_file_download_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_file_download.png COPYONLY)
 
     # Generate android extra sources. This includes icons, but also a few other files
     set(ANDROID_EXTRA_SOURCES

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,16 +22,20 @@
 package de.akaflieg_freiburg.enroute;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Vibrator;
 
+
 public class MobileAdaptor extends org.qtproject.qt5.android.bindings.QtActivity
 {
-    private static MobileAdaptor m_instance;
-    private static NotificationManager m_notificationManager;
+    private static MobileAdaptor        m_instance;
+
+    private static NotificationManager  m_notificationManager;
     private static Notification.Builder m_builder;
-    private static Vibrator m_vibrator;
+
+    private static Vibrator             m_vibrator;
 
     public MobileAdaptor()
     {
@@ -45,23 +49,32 @@ public class MobileAdaptor extends org.qtproject.qt5.android.bindings.QtActivity
             m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
         m_vibrator.vibrate(20);
     }
-
-    /* Show dowmload notification */
-    public static void notifyDownload()
+    
+    /* Show download notification */
+    public static void notifyDownload(boolean show)
     {
-        if (m_vibrator == null)
-            m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
-        m_vibrator.vibrate(200);
+        m_notificationManager = (NotificationManager)m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (m_notificationManager == null) {
-            m_notificationManager = (NotificationManager)m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
-            m_builder = new Notification.Builder(m_instance);
-            m_builder.setSmallIcon(R.drawable.icon);
-            m_builder.setContentTitle("A message from Qt!");
-        }
+	// Cancel notification
+	if (!show) {
+	    m_notificationManager.cancel(0);
+	    return;
+	}
 
-        m_builder.setContentText("Hi there");
-        m_notificationManager.notify(1, m_builder.build());
+	// Build and show notification
+	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+	    NotificationChannel notificationChannel = new NotificationChannel("appStatus", "App Status", NotificationManager.IMPORTANCE_LOW);
+	    m_notificationManager.createNotificationChannel(notificationChannel);
+	    m_builder = new Notification.Builder(m_instance, notificationChannel.getId());
+	} else {
+	    m_builder = new Notification.Builder(m_instance);
+	}
+	
+	m_builder.setSmallIcon(R.drawable.ic_file_download)
+	    .setContentTitle("Downloading map data…")
+	    .setAutoCancel(true);
+	
+	m_notificationManager.notify(0, m_builder.build());
     }
-
+    
 }

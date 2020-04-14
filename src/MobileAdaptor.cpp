@@ -35,6 +35,15 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 }
 
 
+MobileAdaptor::~MobileAdaptor()
+{
+    // Close all pending notifications
+#if defined(Q_OS_ANDROID)
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Z)V", false);
+#endif
+}
+
+
 void MobileAdaptor::hideSplashScreen()
 {
     if (splashScreenHidden)
@@ -88,6 +97,6 @@ void MobileAdaptor::showDownloadNotification(bool show)
     qWarning() << "MobileAdaptor::showDownloadNotification()" << show;
 
 #if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload");
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Z)V", show);
 #endif
 }

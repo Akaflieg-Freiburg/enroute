@@ -31,6 +31,18 @@
 MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
     QObject(parent), _networkAccessManager(networkAccessManager)
 {
+    QStringList offendingFiles;
+    QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps",
+                              QDir::Files, QDirIterator::Subdirectories);
+    while (fileIterator.hasNext()) {
+        fileIterator.next();
+        if (fileIterator.filePath().endsWith(".geojson.geojson") || fileIterator.filePath().endsWith(".mbtiles.mbtiles"))
+            offendingFiles += fileIterator.filePath();
+    }
+    foreach(auto offendingFile, offendingFiles)
+        QFile::rename(offendingFile, offendingFile.section('.', 0, -2));
+
+
     // Construct the Dowloadable object "_maps_json". Let it point to the remote file "maps.json" and wire it up.
     _maps_json = new Downloadable(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv001/maps.json"),
                                   QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
@@ -321,11 +333,7 @@ void MapManager::readGeoMapListFromJSONFile()
             mapPtr->setRemoteFileSize(fileSize);
         } else {
             // Construct local file name
-            auto ending = mapUrlName.section(".", -1);
-            auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-	      "/aviation_maps/"+mapFileName;
-            if (!ending.isEmpty())
-                localFileName += "."+ending;
+            auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps/"+mapFileName;
 
             // Construct a new downloadable object.
             auto downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);

@@ -295,18 +295,17 @@ Page {
 
     footer: Pane {
         width: parent.width
-        Label{
-            id: lbl
-            width: parent.width
-            height: implicitHeight
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<p>Aeronautical data is kindly provided by the <a href=\"https://www.openaip.net\">openAIP</a> and <a href=\"https://www.openflightmaps.org\">open flightmaps</a> projects. Base maps are kindly provided by <a href=\"https://openmaptiles.org\">OpenMapTiles</a>.</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
-        }
+
         Material.elevation: 3
-    } // Label
+        visible: !mapManager.downloadingGeoMaps && mapManager.geoMapUpdatesAvailable
+
+        Button {
+            id: downloadUpdatesActionButton
+            anchors.centerIn: parent
+            action: downloadUpdatesAction
+        }
+    } // Pane (footer)
+
 
     // Add ToolButton to central application header when this page is shown
     Component.onCompleted: {

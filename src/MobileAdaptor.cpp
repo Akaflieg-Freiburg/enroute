@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,7 +27,6 @@
 #include <QAndroidJniEnvironment>
 #endif
 
-#include <QDebug>
 
 MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
@@ -37,10 +36,8 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 
 MobileAdaptor::~MobileAdaptor()
 {
-    // Close all pending notifications
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Z)V", false);
-#endif
+  // Close all pending notifications
+  showDownloadNotification(false);
 }
 
 
@@ -94,9 +91,13 @@ void MobileAdaptor::keepScreenOn(bool on)
 
 void MobileAdaptor::showDownloadNotification(bool show)
 {
-    qWarning() << "MobileAdaptor::showDownloadNotification()" << show;
-
+  Q_UNUSED(show)
+    
 #if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Z)V", show);
+    QString text;
+  if (show)
+    text = tr("Downloading map data…");
+  QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
+  QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
 #endif
 }

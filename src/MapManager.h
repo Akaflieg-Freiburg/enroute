@@ -115,24 +115,30 @@ public:
 
   /*! \brief List of available base maps
 
-    @returns a QMap that contains pointers to all known base maps as values, and
-    map names as keys. The aviation maps are owned by this map manager and must
+    @returns a QList that contains pointers to all known base maps. The objects are owned by this map manager and must
     not be deleted. The lifetime of the maps is not guaranteed, so if you must
     store them, then store them in a QPointer and check validity of the pointer
     before every use.
   */
+#warning want specialised notification signal
+  Q_PROPERTY(QList<Downloadable*> baseMaps READ baseMaps NOTIFY geoMapListChanged)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property baseMaps
+  */
   QList<Downloadable *> baseMaps() const;
 
-  /*! \brief List of available aviation maps, as a list of QObjects
+  /*! \brief List of available base maps, as a list of QObjects
 
-    This property is identical to aviationMaps, but returns the pointers to the
-    actual maps in the form of a QObjectList instead of a QMap
+    This property is identical to baseMaps, but returns the pointers to the
+    actual maps in the form of a QList<QObject*>, useful for QML.
   */
   Q_PROPERTY(QList<QObject*> baseMapsAsObjectList READ baseMapsAsObjectList NOTIFY geoMapListChanged)
 
   /*! \brief Getter function for the property with the same name
 
-    @returns baseMapsAsObjectList
+    @returns Property baseMapsAsObjectList
   */
   QList<QObject*> baseMapsAsObjectList() const;
 
@@ -175,7 +181,7 @@ public:
   QString geoMapUpdateSize() const;
 
   /*! \brief True if at least one aviation map is installed */
-  Q_PROPERTY(bool hasBaseMap READ hasBaseMap NOTIFY geoMapFilesChanged)
+  Q_PROPERTY(bool hasBaseMapWithFile READ hasBaseMapWithFile NOTIFY geoMapFilesChanged)
 
   /*! \brief Getter function for the property with the same name
 
@@ -185,9 +191,9 @@ public:
 
   /*! \brief Getter function for the property with the same name
 
-    @returns hasBaseMap
+    @returns hasBaseMapWithFile
   */
-  bool hasBaseMap() const;
+  bool hasBaseMapWithFile() const;
   
   /*! \brief True if the list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
@@ -199,13 +205,13 @@ public:
   bool hasGeoMapList() const { return !_geoMaps.downloadables().isEmpty(); }
 
   /*! \brief Set of all mbtiles files that have been downloaded and are ready-to-use */
-  Q_PROPERTY(QSet<QString> mbtileFiles READ mbtileFiles NOTIFY mbtileFilesChanged)
+  Q_PROPERTY(QList<QPointer<Downloadable>> baseMapsWithFiles READ baseMapsWithFiles NOTIFY baseMapsWithFilesChanged)
 
   /*! \brief Getter function for the property with the same name
 
-    @returns Property mbtileFiles
+    @returns Property baseMapsWithFiles
    */
-  QSet<QString> mbtileFiles() const;
+  QList<QPointer<Downloadable>> baseMapsWithFiles() const;
 
 public slots:
   /*! \brief Triggers an update of the list of available maps
@@ -253,13 +259,8 @@ signals:
   */
   void error(QString message);
 
-  /*! \brief Notification signal for the property with the same name
-    
-    @param newSet The current set of mbtile files
-
-    @param path Constant string "osm"
-  */
-  void mbtileFilesChanged(QSet<QString> newSet, QString path);
+  /*! \brief Notification signal for the property with the same name */
+  void baseMapsWithFilesChanged();
 
   /*! \brief Emitted if the content of the local file of one of the geoMaps
       changes content

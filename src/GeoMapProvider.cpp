@@ -294,7 +294,7 @@ void GeoMapProvider::baseMapsChanged()
 
     // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(_manager->mbtileFiles(), _currentPath);
+    _tileServer.addMbtilesFileSet(_manager->baseMapsWithFiles(), _currentPath);
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);

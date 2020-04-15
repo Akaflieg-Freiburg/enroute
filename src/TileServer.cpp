@@ -21,6 +21,7 @@
 #include <QUrl>
 #include <utility>
 
+#include "Downloadable.h"
 #include "TileHandler.h"
 #include "TileServer.h"
 
@@ -40,9 +41,9 @@ QString TileServer::serverUrl() const
 }
 
 
-void TileServer::addMbtilesFileSet(const QSet<QString>& fileNames, const QString& path)
+void TileServer::addMbtilesFileSet(const QList<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName)
 {
-    mbtileFileNameSets[path] = fileNames;
+    mbtileFileNameSets[baseName] = baseMapsWithFiles;
     setUpTileHandlers();
 }
 
@@ -64,7 +65,7 @@ void TileServer::setUpTileHandlers()
     currentFileSystemHandler = newFileSystemHandler;
 
     // Now add subhandlers for each tile
-    QMapIterator<QString, QSet<QString>> iterator(mbtileFileNameSets);
+    QMapIterator<QString, QList<QPointer<Downloadable>>> iterator(mbtileFileNameSets);
     while (iterator.hasNext()) {
         iterator.next();
 

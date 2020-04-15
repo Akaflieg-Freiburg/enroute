@@ -194,7 +194,7 @@ bool MapManager::hasAviationMap() const
 }
 
 
-bool MapManager::hasBaseMap() const
+bool MapManager::hasBaseMapWithFile() const
 {
     foreach(auto geoMapPtr, _geoMaps.downloadables()) {
         // Ignore everything but geojson files
@@ -207,9 +207,9 @@ bool MapManager::hasBaseMap() const
 }
 
 
-QSet<QString> MapManager::mbtileFiles() const
+QList<QPointer<Downloadable>> MapManager::baseMapsWithFiles() const
 {
-    QSet<QString> result;
+    QList<QPointer<Downloadable>> result;
 
     foreach(auto geoMapPtr, _geoMaps.downloadables()) {
         // Ignore everything but geojson files
@@ -218,7 +218,7 @@ QSet<QString> MapManager::mbtileFiles() const
         if (!geoMapPtr->hasFile())
             continue;
 
-        result += geoMapPtr->fileName();
+        result += geoMapPtr;
     }
 
     return result;
@@ -253,7 +253,7 @@ void MapManager::errorReceiver(const QString&, QString message)
 void MapManager::localFileOfGeoMapChanged()
 {
     auto oldGeoMapUpdatesAvailable = geoMapUpdatesAvailable();
-    auto oldMbtileFiles = mbtileFiles();
+    auto oldMbtileFiles = baseMapsWithFiles();
 
     // Ok, a local file changed. First, we check if this means that the local file
     // of an unsupported map (=map with invalid URL) is gone. These maps are then
@@ -274,8 +274,9 @@ void MapManager::localFileOfGeoMapChanged()
 
     if (oldGeoMapUpdatesAvailable != geoMapUpdatesAvailable())
         emit geoMapUpdatesAvailableChanged();
-    if (oldMbtileFiles != mbtileFiles())
-        emit mbtileFilesChanged(mbtileFiles(), "osm");
+#warning leave this to specialised DownloadableGroup
+    if (oldMbtileFiles != baseMapsWithFiles())
+        emit baseMapsWithFilesChanged();
     emit geoMapFilesChanged();
 }
 

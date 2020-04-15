@@ -101,7 +101,7 @@ public slots:
   /*! \brief Add a new set of tile files
     
     This method adds a new set of tile files, that will be available under
-    "URL/baseName" (typically, this is a URL of the form
+    serverUrl()+"/baseName" (typically, this is a URL of the form
     'http://localhost:8080/basename').
    
     @param mbtilesFileNames The name of one or more mbtile files on the disk,
@@ -115,9 +115,9 @@ public slots:
     than one of the files, the data is expected to be identical in each of the
     files.
      
-    @param path The path under which the tiles willconst be available.
+    @param baseName The path under which the tiles willconst be available.
   */
-  void addMbtilesFileSet(const QSet<QString>& mbtilesFileNames, const QString& path);
+  void addMbtilesFileSet(const QList<QPointer<Downloadable>>& mbtilesFileNames, const QString& baseName);
 
   /*! \brief Removes a set of tile files
    
@@ -130,7 +130,7 @@ private:
   
   QPointer<QHttpEngine::FilesystemHandler> currentFileSystemHandler;
   
-  QMap<QString,QSet<QString>> mbtileFileNameSets;
+  QMap<QString,QList<QPointer<Downloadable>>> mbtileFileNameSets;
   
   QUrl _baseUrl;
 };

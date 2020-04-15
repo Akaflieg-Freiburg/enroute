@@ -81,14 +81,20 @@ QString Downloadable::infoText() const {
 
 QByteArray Downloadable::fileContent() const {
     // Paranoid safety checks
-    Q_ASSERT(!_fileName.isEmpty());
+    Q_ASSERT(!_fileName.isEmpty());  
 
     QFile file(_fileName);
     if (!file.exists())
         return QByteArray();
 
+    QLockFile lockFile(_fileName + ".lock");
+    lockFile.lock();
     file.open(QIODevice::ReadOnly);
-    return file.readAll();
+    QByteArray result = file.readAll();
+    file.close();
+    lockFile.unlock();
+
+    return result;
 }
 
 

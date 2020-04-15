@@ -62,7 +62,7 @@ public:
     
     @param parent The standard QObject parent
   */
-  explicit TileHandler(const QSet<QString>& mbtileFileNames, const QString& baseURLName, QObject *parent = nullptr);
+  explicit TileHandler(const QList<QPointer<Downloadable>>& mbtileFileNames, const QString& baseURLName, QObject *parent = nullptr);
   
   // No copy constructor
   TileHandler(TileHandler const&) = delete;
@@ -192,6 +192,10 @@ protected:
    */
   void process(QHttpEngine::Socket *socket, const QString &path) override;
   
+private slots:
+  // This slot is connected to aboutToChangeLocalFile of the Downloadables, in order to make sure that databases are closed before the file changes.
+  void removeFile(QString localFileName);
+
 private:
   QSet<QString> databaseConnections;
   

@@ -28,10 +28,11 @@
 
 #include <qhttpengine/socket.h>
 
+#include "Downloadable.h"
 #include "TileHandler.h"
 
 
-TileHandler::TileHandler(const QSet<QString>& mbtileFileNames, const QString& baseURL, QObject *parent)
+TileHandler::TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
     // Initialize with default values
@@ -45,17 +46,18 @@ TileHandler::TileHandler(const QSet<QString>& mbtileFileNames, const QString& ba
     _tiles       = baseURL+"/{z}/{x}/{y}."+_format;
 
     // Go through mbtile files and find real values
-    foreach (auto mbtileFileName, mbtileFileNames) {
+    foreach (auto mbtileFile, mbtileFiles) {
         // Check that file really exists
-        if (!QFile::exists(mbtileFileName)) {
+        if (!QFile::exists(mbtileFile->fileName())) {
             hasDBError = true;
             return;
         }
+        connect(mbtileFile, &Downloadable::aboutToChangeFile, this, &TileHandler::removeFile);
 
         // Open database
-        auto databaseConnectionName = baseURL+"-"+mbtileFileName;
+        auto databaseConnectionName = baseURL+"-"+mbtileFile->fileName();
         auto db = QSqlDatabase::addDatabase("QSQLITE", databaseConnectionName);
-        db.setDatabaseName(mbtileFileName);
+        db.setDatabaseName(mbtileFile->fileName());
         db.open();
         if (db.isOpenError()) {
             hasDBError = true;
@@ -101,6 +103,21 @@ TileHandler::~TileHandler()
 {
     foreach(auto databaseConnectionName, databaseConnections)
         QSqlDatabase::removeDatabase(databaseConnectionName);
+}
+
+
+void TileHandler::removeFile(QString localFileName)
+{
+    QString connectionToRemove;
+    foreach(auto databaseConnectionName, databaseConnections) {
+        if (!databaseConnectionName.endsWith(localFileName))
+            continue;
+        connectionToRemove = databaseConnectionName;
+        break;
+    }
+
+    QSqlDatabase::removeDatabase(connectionToRemove);
+    databaseConnections.remove(connectionToRemove);
 }
 
 

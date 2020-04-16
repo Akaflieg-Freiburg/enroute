@@ -46,15 +46,17 @@ public:
    
     This constructor sets up a new tile handler.
     
-    @param mbtileFileNames The name of one or more mbtile files on the disk,
-    which are expected to conform to the MBTiles Specification 1.3
-    (https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md). These
-    files must exist during the lifetime of tthis handler, or else replies to
-    tile requests will yield undefined results. The tile files are expected to
-    agree in their metadata, and the metadata (attribution, description, format,
-    name, minzoom, maxzoom) is read only from one of the files (a random one, in
-    fact). If a tile is contained in more than one of the files, the data is
-    expected to be identical in each of the files.
+    @param mbtileFileNames A list of Downloadable whose files are expected to
+    conform to the MBTiles Specification 1.3
+    (https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md).  Whenever
+    the Downloadble emits the signal aboutToChange to indicate that the file
+    will change on the dist, the TileHandler drops to files from its list. There
+    are not re-added if the file is restored or overwritten later.  The tile
+    files are expected to agree in their metadata, and the metadata
+    (attribution, description, format, name, minzoom, maxzoom) is read only from
+    one of the files (a random one, in fact). If a tile is contained in more
+    than one of the files, the data is expected to be identical in each of the
+    files.
     
     @param baseURLName The name of the URL under which the tile server allows
     access to this tile. Typically a string of the form
@@ -92,9 +94,9 @@ public:
   QString attribution() const {return _attribution;}
   
   /*! \brief Description property, as found in the metadata table of the mbtile file
-   *
-   * This property is empty if no description is found.
-   */
+    
+    This property is empty if no description is found.
+  */
   Q_PROPERTY(QString description READ description CONSTANT)
   
   /*! \brief Getter function for property with the same name
@@ -193,7 +195,8 @@ protected:
   void process(QHttpEngine::Socket *socket, const QString &path) override;
   
 private slots:
-  // This slot is connected to aboutToChangeLocalFile of the Downloadables, in order to make sure that databases are closed before the file changes.
+  // This slot is connected to aboutToChangeLocalFile of the Downloadables, in
+  // order to make sure that databases are closed before the file changes.
   void removeFile(QString localFileName);
 
 private:

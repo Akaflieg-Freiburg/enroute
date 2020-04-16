@@ -95,20 +95,20 @@ public:
     store them, then store them in a QPointer and check validity of the pointer
     before every use.
   */
-  QList<Downloadable*> aviationMaps() const;
+  QList<QPointer<Downloadable>> aviationMaps() const { return _aviationMaps.downloadables(); };
   
   /*! \brief List of available aviation maps, as a list of QObjects
     
     This property is identical to aviationMaps, but returns the pointers to the
     actual maps in the form of a QObjectList instead of a QMap
   */
-  Q_PROPERTY(QList<QObject*> aviationMapsAsObjectList READ aviationMapsAsObjectList NOTIFY geoMapListChanged)
+  Q_PROPERTY(QList<QObject*> aviationMapsAsObjectList READ aviationMapsAsObjectList NOTIFY aviationMapsChanged)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property aviationMapsAsObjectList
   */
-  QList<QObject*> aviationMapsAsObjectList() const;
+  QList<QObject*> aviationMapsAsObjectList() const { return _aviationMaps.downloadablesAsObjectList(); };
 
   /*! \brief True if at least one aviation map is installed */
   Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapFilesChanged)
@@ -120,27 +120,26 @@ public:
     store them, then store them in a QPointer and check validity of the pointer
     before every use.
   */
-#warning want specialised notification signal
-  Q_PROPERTY(QList<Downloadable*> baseMaps READ baseMaps NOTIFY geoMapListChanged)
+  Q_PROPERTY(QList<QPointer<Downloadable>> baseMaps READ baseMaps NOTIFY baseMapsChanged)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property baseMaps
   */
-  QList<Downloadable *> baseMaps() const;
+  QList<QPointer<Downloadable>> baseMaps() const { return _baseMaps.downloadables(); };
 
   /*! \brief List of available base maps, as a list of QObjects
 
     This property is identical to baseMaps, but returns the pointers to the
     actual maps in the form of a QList<QObject*>, useful for QML.
   */
-  Q_PROPERTY(QList<QObject*> baseMapsAsObjectList READ baseMapsAsObjectList NOTIFY geoMapListChanged)
+  Q_PROPERTY(QList<QObject*> baseMapsAsObjectList READ baseMapsAsObjectList NOTIFY baseMapsChanged)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property baseMapsAsObjectList
   */
-  QList<QObject*> baseMapsAsObjectList() const;
+  QList<QObject*> baseMapsAsObjectList() const { return _baseMaps.downloadablesAsObjectList(); };
 
   /*! \brief Indicates whether the file "maps.json" is currently being
       downloaded */
@@ -150,7 +149,7 @@ public:
 
     @returns Property downloadingGeoMapList
    */
-  bool downloadingGeoMapList() const;
+  bool downloadingGeoMapList() const { return _maps_json.downloading(); };
 
   /*! \brief Indicates whether any of the geographic maps is currently being downloaded */
   Q_PROPERTY(bool downloadingGeoMaps READ downloadingGeoMaps NOTIFY downloadingGeoMapsChanged)
@@ -161,8 +160,13 @@ public:
    */
   bool downloadingGeoMaps() const { return _geoMaps.downloading(); };
 
-  /*! \brief Determines whether some of the installed geographic maps can be
-      updated */
+  /*! \brief Pointer to group of all geographic maps */
+  Q_PROPERTY(DownloadableGroup const *geoMaps READ geoMaps CONSTANT)
+
+  /*! \brief Getter function for the property with the same name */
+  DownloadableGroup const *geoMaps() const { return &_geoMaps; }
+
+  /*! \brief Determines whether some of the installed geographic maps can be updated */
   Q_PROPERTY(bool geoMapUpdatesAvailable READ geoMapUpdatesAvailable NOTIFY geoMapUpdatesAvailableChanged)
 
   /*! \brief Getter function for the property with the same name
@@ -178,7 +182,7 @@ public:
 
     @returns Property geoMapUpdateSize
   */
-  QString geoMapUpdateSize() const;
+  QString geoMapUpdateSize() const { return _geoMaps.updateSize(); };
 
   /*! \brief True if at least one aviation map is installed */
   Q_PROPERTY(bool hasBaseMapWithFile READ hasBaseMapWithFile NOTIFY geoMapFilesChanged)
@@ -187,13 +191,13 @@ public:
 
     @returns hasAviationMap
    */
-  bool hasAviationMap() const;
+  bool hasAviationMap() const { return _aviationMaps.hasFile(); };
 
   /*! \brief Getter function for the property with the same name
 
     @returns hasBaseMapWithFile
   */
-  bool hasBaseMapWithFile() const;
+  bool hasBaseMapWithFile() const { return _baseMaps.hasFile(); };
   
   /*! \brief True if the list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
@@ -211,7 +215,7 @@ public:
 
     @returns Property baseMapsWithFiles
    */
-  QList<QPointer<Downloadable>> baseMapsWithFiles() const;
+  QList<QPointer<Downloadable>> baseMapsWithFiles() const { return _baseMaps.downloadablesWithFile(); };
 
 public slots:
   /*! \brief Triggers an update of the list of available maps
@@ -221,24 +225,18 @@ public slots:
   void updateGeoMapList();
   
   /*! \brief Triggers an update of every updatable map */
-  void updateGeoMaps();
+  void updateGeoMaps() { _geoMaps.updateAll(); };
   
 signals:
-  /*! \brief Warning that the list of available aviation maps is about to change
-    
-    This signal is emitted once the download of the text file describing list of
-    available aviation maps finished, just before the list is overwritten with
-    new data. It indicates that all users should stop using the list
-    immediately. This signal is always followed by the signal
-    aviationMapsChanged(), which indicates that the list can be used again.
-    
-    @see aviationMapsChanged()
-  */
-  void aboutToChangeAviationMapList();
-  
+  /*! \brief Notification signal for the property with the same name */
+  void aviationMapsChanged();
+
+  /*! \brief Notification signal for the property with the same name */
+  void baseMapsChanged();
+
   /*! \brief Notification signal for the property with the same name */
   void geoMapListChanged();
-  
+
   /*! \brief Notification signal for the property with the same name */
   void geoMapUpdatesAvailableChanged();
   
@@ -321,12 +319,11 @@ private:
   // This Downloadable object manages the central text file that describes the
   // remotely available aviation maps. It is set in the constructor to point to
   // the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
-  QPointer<Downloadable> _maps_json;
+  Downloadable _maps_json;
   
   // List of geographic maps
   DownloadableGroup _geoMaps;
-
-  // Aviation maps (currently, these are GeoJSON files)
+  DownloadableGroup _baseMaps;
   DownloadableGroup _aviationMaps;
 
   // Pointer the QNetworkAccessManager that will be used for all Downloadable

@@ -36,14 +36,26 @@ void DownloadableGroup::addToGroup(Downloadable *downloadable)
     // Add element to group
     _downloadables.append(downloadable);
 
-    connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::elementChanged);
-    connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::elementChanged);
-    connect(downloadable, &Downloadable::hasFileChanged, this, &DownloadableGroup::filesChanged);
+    connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable::hasFileChanged, this, &DownloadableGroup::checkAndEmitSignals);
     connect(downloadable, &Downloadable::fileContentChanged, this, &DownloadableGroup::localFileContentChanged);
     connect(downloadable, &QObject::destroyed, this, &DownloadableGroup::cleanUp);
-    elementChanged();
+    checkAndEmitSignals();
 
     emit downloadablesChanged();
+}
+
+
+bool DownloadableGroup::hasFile() const
+{
+    foreach(auto _downloadable, _downloadables) {
+        if (_downloadable.isNull())
+            continue;
+        if (_downloadable->hasFile())
+            return true;
+    }
+    return false;
 }
 
 
@@ -57,7 +69,7 @@ void DownloadableGroup::removeFromGroup(Downloadable *downloadable)
 
     _downloadables.takeAt(index);
     disconnect(downloadable, nullptr, this, nullptr);
-    elementChanged();
+    checkAndEmitSignals();
     emit downloadablesChanged();
 }
 
@@ -70,7 +82,6 @@ bool DownloadableGroup::downloading() const
         if (_downloadable->downloading())
             return true;
     }
-
     return false;
 }
 
@@ -113,26 +124,55 @@ void DownloadableGroup::cleanUp()
 }
 
 
-void DownloadableGroup::elementChanged()
+void DownloadableGroup::checkAndEmitSignals()
 {
-    bool newDownloading = downloading();
-    bool newUpdatable   = updatable();
+    bool                          newDownloading           = downloading();
+    QList<QPointer<Downloadable>> newDownloadablesWithFile = downloadablesWithFile();
+    QStringList                   newFiles                 = files();
+    bool                          newHasFile               = hasFile();
+    bool                          newUpdatable             = updatable();
+    QString                       newUpdateSize            = updateSize();
+
+    if (newDownloadablesWithFile != _cachedDownloadablesWithFile) {
+        _cachedDownloadablesWithFile = newDownloadablesWithFile;
+        emit downloadablesWithFileChanged(newDownloadablesWithFile);
+    }
 
     if (newDownloading != _cachedDownloading) {
         _cachedDownloading = newDownloading;
         emit downloadingChanged(newDownloading);
     }
 
+    if (newDownloading != _cachedDownloading) {
+        _cachedDownloading = newDownloading;
+        emit downloadingChanged(newDownloading);
+    }
+
+    if (newFiles != _cachedFiles) {
+        _cachedFiles = newFiles;
+        emit filesChanged(newFiles);
+    }
+
+    if (newHasFile != _cachedHasFile) {
+        _cachedHasFile = newHasFile;
+        emit hasFileChanged(newHasFile);
+    }
+
     if (newUpdatable != _cachedUpdatable) {
         _cachedUpdatable = newUpdatable;
-        emit updatableChanged();
+        emit updatableChanged(newUpdatable);
+    }
+
+    if (newUpdateSize != _cachedUpdateSize) {
+        _cachedUpdateSize = newUpdateSize;
+        emit updateSizeChanged(newUpdateSize);
     }
 }
 
 
-QList<Downloadable *> DownloadableGroup::downloadables() const
+QList<QPointer<Downloadable>> DownloadableGroup::downloadables() const
 {
-    QList<Downloadable *> result;
+    QList<QPointer<Downloadable>> result;
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
             continue;
@@ -149,4 +189,55 @@ QList<Downloadable *> DownloadableGroup::downloadables() const
     );
 
     return result;
+}
+
+
+QList<QPointer<Downloadable>> DownloadableGroup::downloadablesWithFile() const
+{
+    QList<QPointer<Downloadable>> result;
+    foreach(auto _downloadable, _downloadables) {
+        if (_downloadable.isNull())
+            continue;
+        if (!_downloadable->hasFile())
+            continue;
+        result += _downloadable;
+    }
+
+    // Sort Downloadables according to lower boundary
+    std::sort(result.begin(), result.end(), [](Downloadable* a, Downloadable* b)
+    {
+        if (a->section() != b->section())
+            return (a->section() < b->section());
+        return (a->fileName() < b->fileName());
+    }
+    );
+
+    return result;
+}
+
+
+QList<QObject*> DownloadableGroup::downloadablesAsObjectList() const
+{
+    QList<QObject*> result;
+    foreach(auto downloadablePtr, downloadables())
+        result.append(downloadablePtr);
+    return result;
+}
+
+
+void DownloadableGroup::updateAll()
+{
+    foreach(auto downloadablePtr, _downloadables) {
+        if (downloadablePtr.isNull())
+            continue;
+        if (downloadablePtr->updatable())
+            downloadablePtr->startFileDownload();
+    }
+}
+
+
+QString DownloadableGroup::updateSize() const
+{
+#warning need to implement
+    return "";
 }

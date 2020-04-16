@@ -77,20 +77,48 @@ public:
      */
     void removeFromGroup(Downloadable *downloadable);
 
-    /*! \brief List of downloadables in this group
+    /*! \brief List of Downloadables in this group
      *
      * This property holds the list of downloadables in the group. The
      * downloadables are sorted alphabetically in ascending order, first be
      * section() and then secondly by file name. The nullptr is never contained
      * in the list.
      */
-    Q_PROPERTY(QList<Downloadable *> downloadables READ downloadables NOTIFY downloadablesChanged)
+    Q_PROPERTY(QList<QPointer<Downloadable>> downloadables READ downloadables NOTIFY downloadablesChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property downloadables
      */
-    QList<Downloadable *> downloadables() const;
+    QList<QPointer<Downloadable>> downloadables() const;
+
+    /*! \brief List of Downloadables in this group, as a list of QObjects
+
+      This property is identical to downloadables, but returns the pointers to the
+      Downloadables in the form of a QObjectList
+    */
+    Q_PROPERTY(QList<QObject*> downloadablesAsObjectList READ downloadablesAsObjectList NOTIFY downloadablesChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property downloadables
+     */
+    QList<QObject*> downloadablesAsObjectList() const;
+
+    /*! \brief List of Downloadable objects in this group that have local files
+     *
+     * This property holds the list of Downloadable objects in the group that have local files. The
+     * Downloadable objects are sorted alphabetically in ascending order, first be
+     * section() and then secondly by file name. The nullptr is never contained
+     * in the list.
+     */
+    Q_PROPERTY(QList<QPointer<Downloadable>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property downloadablesWithFiles
+     */
+    QList<QPointer<Downloadable>> downloadablesWithFile() const;
 
     /*! \brief Indicates whether a download process is currently running
      *
@@ -111,9 +139,18 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property localFiles
+     * @returns Property files
      */
     QStringList files() const;
+
+    /*! \brief True is one of the Downloadable objects has a local file */
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property hasFile
+     */
+    bool hasFile() const;
 
     /*! \brief Indicates any one of Downloadable objects is known to be updatable
      *
@@ -127,15 +164,40 @@ public:
      */
     bool updatable() const;
 
+    /*! \brief \brief Gives an estimate for the download size for all updates in this group, as a localized string
+     *
+     * The string returned is typically of the form "23.7 MB"
+     */
+    Q_PROPERTY(QString updateSize READ updateSize NOTIFY updateSizeChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property updateSize
+     */
+    QString updateSize() const;
+
+public slots:
+    /*! Update all updatable Downloadable objects */
+    void updateAll();
+
 signals:
+    /*! \brief Notifier signal for property downloading */
+    void downloadablesWithFileChanged(QList<QPointer<Downloadable>>);
+
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged(bool);
 
-    /*! \brief Notifier signal for the property updatable */
-    void updatableChanged();
+    /*! \brief Notifier signal for the property localFiles */
+    void filesChanged(QStringList);
 
     /*! \brief Notifier signal for the property localFiles */
-    void filesChanged();
+    void hasFileChanged(bool);
+
+    /*! \brief Notifier signal for the property updatable */
+    void updatableChanged(bool);
+
+    /*! \brief Notifier signal for the property updatable */
+    void updateSizeChanged(QString);
 
     /*! \brief Emitted if the content of one of the local files changes.
      *
@@ -148,14 +210,21 @@ signals:
     void downloadablesChanged();
 
 private slots:
-    void elementChanged();
+    // This slot is called whenever a Downloadable in this group changes.
+    // It compares if one of the _cached… values has changed and emits
+    // the appropriate notification signals.
+    void checkAndEmitSignals();
 
     // Remove all instances of nullptr from _downloadables
     void cleanUp();
 
 private:
-    bool _cachedDownloading; // Cached value for the 'downloading' property
-    bool _cachedUpdatable;   // Cached value for the 'updatable' property
+    bool                          _cachedDownloading {false};        // Cached value for the 'downloading' property
+    QList<QPointer<Downloadable>> _cachedDownloadablesWithFile {};   // Cached value for the 'downloadablesWithFiles' property
+    QStringList                   _cachedFiles {};                   // Cached value for the 'files' property
+    bool                          _cachedHasFile {false};            // Cached value for the 'hasLocalFile' property
+    bool                          _cachedUpdatable {false};          // Cached value for the 'updatable' property
+    QString                       _cachedUpdateSize {};              // Cached value for the 'updateSize' property
 
     // List of QPointers to the Downloadable objects in this group
     QList<QPointer<Downloadable>> _downloadables;

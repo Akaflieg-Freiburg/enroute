@@ -24,12 +24,18 @@
 #include <QJsonObject>
 #include <QSettings>
 #include <QStandardPaths>
+
 #include <utility> 
+
 #include "MapManager.h"
 
 
 MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
-    QObject(parent), _networkAccessManager(networkAccessManager)
+    QObject(parent),
+    _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv001/maps.json"),
+                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
+                networkAccessManager),
+    _networkAccessManager(networkAccessManager)
 {
     QStringList offendingFiles;
     QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps",
@@ -44,21 +50,22 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
 
 
     // Construct the Dowloadable object "_maps_json". Let it point to the remote file "maps.json" and wire it up.
-    _maps_json = new Downloadable(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv001/maps.json"),
-                                  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
-                                  networkAccessManager,
-                                  this);
-    _maps_json->setObjectName(tr("list of aviation maps"));
-    connect(_maps_json, &Downloadable::downloadingChanged, this, &MapManager::downloadingGeoMapListChanged);
-    connect(_maps_json, &Downloadable::fileContentChanged, this, &MapManager::readGeoMapListFromJSONFile);
-    connect(_maps_json, &Downloadable::fileContentChanged, this, &MapManager::setTimeOfLastUpdateToNow);
-    connect(_maps_json, &Downloadable::error, this, &MapManager::errorReceiver);
+    connect(&_maps_json, &Downloadable::downloadingChanged, this, &MapManager::downloadingGeoMapListChanged);
+    connect(&_maps_json, &Downloadable::fileContentChanged, this, &MapManager::readGeoMapListFromJSONFile);
+    connect(&_maps_json, &Downloadable::fileContentChanged, this, &MapManager::setTimeOfLastUpdateToNow);
+    connect(&_maps_json, &Downloadable::error, this, &MapManager::errorReceiver);
 
     // Wire up the DownloadableGroup _geoMaps
     connect(&_geoMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::geoMapListChanged);
     connect(&_geoMaps, &DownloadableGroup::downloadingChanged, this, &MapManager::downloadingGeoMapsChanged);
     connect(&_geoMaps, &DownloadableGroup::filesChanged, this, &MapManager::localFileOfGeoMapChanged);
     connect(&_geoMaps, &DownloadableGroup::localFileContentChanged, this, &MapManager::geoMapFileContentChanged);
+
+    // Wire up the DownloadableGroup _aviationMaps
+    connect(&_aviationMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::aviationMapsChanged);
+
+    // Wire up the DownloadableGroup _baseMaps
+    connect(&_baseMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::baseMapsChanged);
 
     // Wire up the automatic update timer and check if automatic updates are
     // due. The method "autoUpdateGeoMapList" will also set a reasonable timeout
@@ -67,10 +74,10 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
     autoUpdateGeoMapList();
 
     // If there is a downloaded maps.json file, we read it. Otherwise, we start a download.
-    if (_maps_json->hasFile())
+    if (_maps_json.hasFile())
         readGeoMapListFromJSONFile();
     else
-        _maps_json->startFileDownload();
+        _maps_json.startFileDownload();
 }
 
 
@@ -103,144 +110,12 @@ MapManager::~MapManager()
     // Clear and delete everything
     foreach(auto geoMapPtr, _geoMaps.downloadables())
         delete geoMapPtr;
-    delete _maps_json;
-}
-
-
-QList<Downloadable*> MapManager::aviationMaps() const
-{
-    QList<Downloadable *> result;
-
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
-            continue;
-        result += geoMapPtr;
-    }
-
-    return result;
-}
-
-
-QList<QObject*> MapManager::aviationMapsAsObjectList() const
-{
-    QList<QObject*> result;
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
-            continue;
-        result.append(geoMapPtr);
-    }
-    return result;
-}
-
-
-QList<Downloadable*> MapManager::baseMaps() const
-{
-    QList<Downloadable *> result;
-
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        if (!geoMapPtr->fileName().endsWith(".mbtiles", Qt::CaseInsensitive))
-            continue;
-        result += geoMapPtr;
-    }
-
-    return result;
-}
-
-
-QList<QObject*> MapManager::baseMapsAsObjectList() const
-{
-    QList<QObject*> result;
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        if (!geoMapPtr->fileName().endsWith(".mbtiles", Qt::CaseInsensitive))
-            continue;
-        result.append(geoMapPtr);
-    }
-    return result;
-}
-
-
-bool MapManager::downloadingGeoMapList() const
-{
-    // Paranoid safety checks
-    Q_ASSERT(!_maps_json.isNull());
-    if (_maps_json.isNull())
-        return false;
-
-    return _maps_json->downloading();
-}
-
-
-QString MapManager::geoMapUpdateSize() const
-{
-    qint64 downloadSize = 0;
-    foreach(auto geoMapPtr, _geoMaps.downloadables())
-        if (geoMapPtr->updatable())
-            downloadSize += geoMapPtr->remoteFileSize();
-
-    return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
-}
-
-
-bool MapManager::hasAviationMap() const
-{
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        // Ignore everything but geojson files
-        if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
-            continue;
-        if (geoMapPtr->hasFile())
-            return true;
-    }
-    return false;
-}
-
-
-bool MapManager::hasBaseMapWithFile() const
-{
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        // Ignore everything but geojson files
-        if (!geoMapPtr->fileName().endsWith(".mbtiles", Qt::CaseInsensitive))
-            continue;
-        if (geoMapPtr->hasFile())
-            return true;
-    }
-    return false;
-}
-
-
-QList<QPointer<Downloadable>> MapManager::baseMapsWithFiles() const
-{
-    QList<QPointer<Downloadable>> result;
-
-    foreach(auto geoMapPtr, _geoMaps.downloadables()) {
-        // Ignore everything but geojson files
-        if (!geoMapPtr->fileName().endsWith(".mbtiles", Qt::CaseInsensitive))
-            continue;
-        if (!geoMapPtr->hasFile())
-            continue;
-
-        result += geoMapPtr;
-    }
-
-    return result;
 }
 
 
 void MapManager::updateGeoMapList()
 {
-    // Paranoid safety checks
-    Q_ASSERT(!_maps_json.isNull());
-    if (_maps_json.isNull())
-        return;
-
-    QTimer::singleShot(0, _maps_json, SLOT(startFileDownload()));
-}
-
-
-void MapManager::updateGeoMaps()
-{
-    foreach(auto geoMapPtr, _geoMaps.downloadables())
-        if (geoMapPtr->updatable())
-            geoMapPtr->startFileDownload();
+    QTimer::singleShot(0, &_maps_json, SLOT(startFileDownload()));
 }
 
 
@@ -283,27 +158,19 @@ void MapManager::localFileOfGeoMapChanged()
 
 void MapManager::readGeoMapListFromJSONFile()
 {
-    // Paranoid safety checks
-    Q_ASSERT(!_maps_json.isNull());
-    if (_maps_json.isNull())
-        return;
-    if (!_maps_json->hasFile())
+    if (!_maps_json.hasFile())
         return;
 
     bool old_aviationMapUpdatesAvailable = geoMapUpdatesAvailable();
 
     // List of maps as we have them now
-    QList<Downloadable *> oldMaps = _geoMaps.downloadables();
-
-    // Alert all users that the list of maps is in an intermediate stage and that
-    // it should not be used for the moment
-    emit aboutToChangeAviationMapList();
+    QList<QPointer<Downloadable>> oldMaps = _geoMaps.downloadables();
 
     // To begin, we handle the maps described in the maps.json file. If these maps
     // were already present in the old list, we re-use them. Otherwise, we create
     // new Downloadable objects.
     QJsonParseError parseError{};
-    auto doc = QJsonDocument::fromJson(_maps_json->fileContent(), &parseError);
+    auto doc = QJsonDocument::fromJson(_maps_json.fileContent(), &parseError);
     if (parseError.error != QJsonParseError::NoError)
         return;
 
@@ -343,6 +210,10 @@ void MapManager::readGeoMapListFromJSONFile()
             downloadable->setRemoteFileDate(fileModificationDateTime);
             downloadable->setRemoteFileSize(fileSize);
             _geoMaps.addToGroup(downloadable);
+            if (localFileName.endsWith("geojson"))
+                _aviationMaps.addToGroup(downloadable);
+            if (localFileName.endsWith("mbtiles"))
+                _baseMaps.addToGroup(downloadable);
         }
 
     }

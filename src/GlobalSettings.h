@@ -102,9 +102,9 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param hUA Property hideUpperAirspaces
+     * @param hide Property hideUpperAirspaces
      */
-    void setHideUpperAirspaces(bool hUA);
+    void setHideUpperAirspaces(bool hide);
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool keepScreenOn READ keepScreenOn WRITE setKeepScreenOn NOTIFY keepScreenOnChanged)

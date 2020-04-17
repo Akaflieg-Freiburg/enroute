@@ -235,7 +235,7 @@ public:
      *
      * @param sectionName Property section
      */
-    void setSection(QString sectionName);
+    void setSection(const QString& sectionName);
 
     /*! \brief Indicates if the file the has been downloaded is known to be updatable
      *

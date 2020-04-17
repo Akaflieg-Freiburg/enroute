@@ -106,7 +106,7 @@ TileHandler::~TileHandler()
 }
 
 
-void TileHandler::removeFile(QString localFileName)
+void TileHandler::removeFile(const QString& localFileName)
 {
     QString connectionToRemove;
     foreach(auto databaseConnectionName, databaseConnections) {

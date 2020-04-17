@@ -41,6 +41,8 @@ int main(int argc, char *argv[])
 {
     // Register QML types
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
+    qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
+    qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
@@ -88,7 +90,7 @@ int main(int argc, char *argv[])
     auto networkAccessManager = new QNetworkAccessManager();
     auto mapManager = new MapManager(networkAccessManager);
     engine->rootContext()->setContextProperty("mapManager", mapManager);
-    QObject::connect(mapManager, &MapManager::downloadingGeoMapsChanged, adaptor, &MobileAdaptor::showDownloadNotification);
+    QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
     auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, mapManager);

@@ -46,7 +46,7 @@ public:
    
     This constructor sets up a new tile handler.
     
-    @param mbtileFileNames A list of Downloadable whose files are expected to
+    @param mbtileFiles A list of Downloadable whose files are expected to
     conform to the MBTiles Specification 1.3
     (https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md).  Whenever
     the Downloadble emits the signal aboutToChange to indicate that the file
@@ -64,7 +64,7 @@ public:
     
     @param parent The standard QObject parent
   */
-  explicit TileHandler(const QList<QPointer<Downloadable>>& mbtileFileNames, const QString& baseURLName, QObject *parent = nullptr);
+  explicit TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
   // No copy constructor
   TileHandler(TileHandler const&) = delete;
@@ -197,7 +197,7 @@ protected:
 private slots:
   // This slot is connected to aboutToChangeLocalFile of the Downloadables, in
   // order to make sure that databases are closed before the file changes.
-  void removeFile(QString localFileName);
+  void removeFile(const QString& localFileName);
 
 private:
   QSet<QString> databaseConnections;

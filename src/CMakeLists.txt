@@ -34,6 +34,7 @@ set(SOURCES
     AviationUnits.cpp
     Downloadable.cpp
     DownloadableGroup.cpp
+    DownloadableGroupWatcher.cpp
     FlightRoute.cpp
     FlightRoute_Leg.cpp
     Geoid.cpp

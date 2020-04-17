@@ -222,7 +222,7 @@ Item {
         width: parent.width*0.6
         height: noMapWarning.height+20
         border.color: "black"
-        visible: !mapManager.hasAviationMap
+        visible: !mapManager.aviationMaps.hasFile
         Label {
             id: noMapWarning
             anchors.centerIn: parent

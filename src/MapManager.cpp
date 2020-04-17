@@ -57,15 +57,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
 
     // Wire up the DownloadableGroup _geoMaps
     connect(&_geoMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::geoMapListChanged);
-    connect(&_geoMaps, &DownloadableGroup::downloadingChanged, this, &MapManager::downloadingGeoMapsChanged);
     connect(&_geoMaps, &DownloadableGroup::filesChanged, this, &MapManager::localFileOfGeoMapChanged);
-    connect(&_geoMaps, &DownloadableGroup::localFileContentChanged, this, &MapManager::geoMapFileContentChanged);
-
-    // Wire up the DownloadableGroup _aviationMaps
-    connect(&_aviationMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::aviationMapsChanged);
-
-    // Wire up the DownloadableGroup _baseMaps
-    connect(&_baseMaps, &DownloadableGroup::downloadablesChanged, this, &MapManager::baseMapsChanged);
 
     // Wire up the automatic update timer and check if automatic updates are
     // due. The method "autoUpdateGeoMapList" will also set a reasonable timeout
@@ -127,9 +119,6 @@ void MapManager::errorReceiver(const QString&, QString message)
 
 void MapManager::localFileOfGeoMapChanged()
 {
-    auto oldGeoMapUpdatesAvailable = geoMapUpdatesAvailable();
-    auto oldMbtileFiles = baseMapsWithFiles();
-
     // Ok, a local file changed. First, we check if this means that the local file
     // of an unsupported map (=map with invalid URL) is gone. These maps are then
     // no longer wanted. We go through the list and see if we can find any
@@ -146,13 +135,6 @@ void MapManager::localFileOfGeoMapChanged()
         _geoMaps.removeFromGroup(geoMapPtr);
         geoMapPtr->deleteLater();
     }
-
-    if (oldGeoMapUpdatesAvailable != geoMapUpdatesAvailable())
-        emit geoMapUpdatesAvailableChanged();
-#warning leave this to specialised DownloadableGroup
-    if (oldMbtileFiles != baseMapsWithFiles())
-        emit baseMapsWithFilesChanged();
-    emit geoMapFilesChanged();
 }
 
 
@@ -160,8 +142,6 @@ void MapManager::readGeoMapListFromJSONFile()
 {
     if (!_maps_json.hasFile())
         return;
-
-    bool old_aviationMapUpdatesAvailable = geoMapUpdatesAvailable();
 
     // List of maps as we have them now
     QList<QPointer<Downloadable>> oldMaps = _geoMaps.downloadables();
@@ -242,12 +222,6 @@ void MapManager::readGeoMapListFromJSONFile()
         downloadable->setObjectName(objectName);
         _geoMaps.addToGroup(downloadable);
     }
-
-    // Set the new maps and inform our users
-    if (old_aviationMapUpdatesAvailable != geoMapUpdatesAvailable())
-        emit geoMapUpdatesAvailableChanged();
-
-    return;
 }
 
 

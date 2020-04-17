@@ -137,7 +137,7 @@ void Downloadable::setRemoteFileSize(qint64 size) {
 }
 
 
-void Downloadable::setSection(QString sectionName)
+void Downloadable::setSection(const QString& sectionName)
 {
     if (sectionName == _section)
         return;
@@ -153,10 +153,7 @@ bool Downloadable::updatable() const {
         return false;
 
     QFileInfo info(_fileName);
-    if (_remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate))
-        return true;
-
-    return false;
+    return _remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate);
 }
 
 

@@ -174,7 +174,7 @@ Page {
 
             ListView {
                 clip: true
-                model: mapManager.aviationMapsAsObjectList
+                model: mapManager.aviationMaps.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -198,7 +198,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: mapManager.baseMapsAsObjectList
+                model: mapManager.baseMaps.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -297,7 +297,7 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: !mapManager.downloadingGeoMaps && mapManager.geoMapUpdatesAvailable
+        visible: !mapManager.geoMaps.downloading && mapManager.geoMaps.updatable
 
         Button {
             id: downloadUpdatesActionButton

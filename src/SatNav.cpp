@@ -78,9 +78,7 @@ SatNav::~SatNav()
     settings.setValue("SatNav/lastValidTrack", _lastValidTrack);
     settings.setValue("SatNav/altitudeCorrection", altitudeCorrectionInM);
     delete source;
-    if (_geoid != nullptr) {
-        delete _geoid;
-    }
+    delete _geoid;
 }
 
 

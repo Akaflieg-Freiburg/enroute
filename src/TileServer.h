@@ -104,7 +104,7 @@ public slots:
     serverUrl()+"/baseName" (typically, this is a URL of the form
     'http://localhost:8080/basename').
    
-    @param mbtilesFileNames The name of one or more mbtile files on the disk,
+    @param baseMapsWithFiles The name of one or more mbtile files on the disk,
     which are expected to conform to the MBTiles Specification 1.3
     (https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md). These
     files must exist until the file set is removed or the sever is destructed,
@@ -117,7 +117,7 @@ public slots:
      
     @param baseName The path under which the tiles willconst be available.
   */
-  void addMbtilesFileSet(const QList<QPointer<Downloadable>>& mbtilesFileNames, const QString& baseName);
+  void addMbtilesFileSet(const QList<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName);
 
   /*! \brief Removes a set of tile files
    

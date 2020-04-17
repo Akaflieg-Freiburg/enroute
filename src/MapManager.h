@@ -87,59 +87,33 @@ public:
   */
   ~MapManager();
   
-  /*! \brief List of available aviation maps
-    
-    @returns a QList that contains pointers to all known aviation maps as
-    values. The aviation maps are owned by this map manager and must not be
-    deleted. The lifetime of the aviation maps is not guaranteed, so if you must
-    store them, then store them in a QPointer and check validity of the pointer
-    before every use.
+  /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
+
+    The is a DownloadableGroup that holds all aviation maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps.
+
+    @warning It is fine to read values of the returned object and to connect to its signal, but you must not do change the object in any way.  The type of this property should really be "const DownloadableGroup *", but it seems that QML does not support this.
   */
-  QList<QPointer<Downloadable>> aviationMaps() const { return _aviationMaps.downloadables(); };
-  
-  /*! \brief List of available aviation maps, as a list of QObjects
-    
-    This property is identical to aviationMaps, but returns the pointers to the
-    actual maps in the form of a QObjectList instead of a QMap
-  */
-  Q_PROPERTY(QList<QObject*> aviationMapsAsObjectList READ aviationMapsAsObjectList NOTIFY aviationMapsChanged)
+  Q_PROPERTY(DownloadableGroupWatcher *aviationMaps READ aviationMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
 
-    @returns Property aviationMapsAsObjectList
+    @returns Property aviationMaps
   */
-  QList<QObject*> aviationMapsAsObjectList() const { return _aviationMaps.downloadablesAsObjectList(); };
+  DownloadableGroupWatcher *aviationMaps() { return &_aviationMaps; }
+  
+  /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
 
-  /*! \brief True if at least one aviation map is installed */
-  Q_PROPERTY(bool hasAviationMap READ hasAviationMap NOTIFY geoMapFilesChanged)
+    The is a DownloadableGroup that holds all aviation maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps.
 
-  /*! \brief List of available base maps
-
-    @returns a QList that contains pointers to all known base maps. The objects are owned by this map manager and must
-    not be deleted. The lifetime of the maps is not guaranteed, so if you must
-    store them, then store them in a QPointer and check validity of the pointer
-    before every use.
+    @warning It is fine to read values of the returned object and to connect to its signal, but you must not do change the object in any way.  The type of this property should really be "const DownloadableGroup *", but it seems that QML does not support this.
   */
-  Q_PROPERTY(QList<QPointer<Downloadable>> baseMaps READ baseMaps NOTIFY baseMapsChanged)
+  Q_PROPERTY(DownloadableGroupWatcher *baseMaps READ baseMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property baseMaps
   */
-  QList<QPointer<Downloadable>> baseMaps() const { return _baseMaps.downloadables(); };
-
-  /*! \brief List of available base maps, as a list of QObjects
-
-    This property is identical to baseMaps, but returns the pointers to the
-    actual maps in the form of a QList<QObject*>, useful for QML.
-  */
-  Q_PROPERTY(QList<QObject*> baseMapsAsObjectList READ baseMapsAsObjectList NOTIFY baseMapsChanged)
-
-  /*! \brief Getter function for the property with the same name
-
-    @returns Property baseMapsAsObjectList
-  */
-  QList<QObject*> baseMapsAsObjectList() const { return _baseMaps.downloadablesAsObjectList(); };
+  DownloadableGroupWatcher *baseMaps() { return &_baseMaps; };
 
   /*! \brief Indicates whether the file "maps.json" is currently being
       downloaded */
@@ -151,54 +125,20 @@ public:
    */
   bool downloadingGeoMapList() const { return _maps_json.downloading(); };
 
-  /*! \brief Indicates whether any of the geographic maps is currently being downloaded */
-  Q_PROPERTY(bool downloadingGeoMaps READ downloadingGeoMaps NOTIFY downloadingGeoMapsChanged)
+  /*! \brief Pointer to group of all geographic maps
 
-  /*! \brief Getter function for the property with the same name
+    The is a DownloadableGroup that holds all aviation maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps.
 
-    @returns Property downloadingGeoMapList
-   */
-  bool downloadingGeoMaps() const { return _geoMaps.downloading(); };
-
-  /*! \brief Pointer to group of all geographic maps */
-  Q_PROPERTY(DownloadableGroup const *geoMaps READ geoMaps CONSTANT)
-
-  /*! \brief Getter function for the property with the same name */
-  DownloadableGroup const *geoMaps() const { return &_geoMaps; }
-
-  /*! \brief Determines whether some of the installed geographic maps can be updated */
-  Q_PROPERTY(bool geoMapUpdatesAvailable READ geoMapUpdatesAvailable NOTIFY geoMapUpdatesAvailableChanged)
-
-  /*! \brief Getter function for the property with the same name
-
-    @returns Property geoMapUpdatesAvailable
+    @warning It is fine to read values of the returned object and to connect to its signal, but you must not do change the object in any way.  The type of this property should really be "const DownloadableGroup *", but it seems that QML does not support this.
   */
-  bool geoMapUpdatesAvailable() const { return _geoMaps.updatable(); }
-
-  /*! \brief Gives an estimate for the download size, as a localized string */
-  Q_PROPERTY(QString geoMapUpdateSize READ geoMapUpdateSize NOTIFY geoMapUpdatesAvailableChanged)
+  Q_PROPERTY(DownloadableGroupWatcher *geoMaps READ geoMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
 
-    @returns Property geoMapUpdateSize
-  */
-  QString geoMapUpdateSize() const { return _geoMaps.updateSize(); };
+    @returns Property geoMaps
+*/
+  DownloadableGroupWatcher *geoMaps() { return &_geoMaps; }
 
-  /*! \brief True if at least one aviation map is installed */
-  Q_PROPERTY(bool hasBaseMapWithFile READ hasBaseMapWithFile NOTIFY geoMapFilesChanged)
-
-  /*! \brief Getter function for the property with the same name
-
-    @returns hasAviationMap
-   */
-  bool hasAviationMap() const { return _aviationMaps.hasFile(); };
-
-  /*! \brief Getter function for the property with the same name
-
-    @returns hasBaseMapWithFile
-  */
-  bool hasBaseMapWithFile() const { return _baseMaps.hasFile(); };
-  
   /*! \brief True if the list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
   
@@ -207,15 +147,6 @@ public:
     @returns hasGeoMapList
    */
   bool hasGeoMapList() const { return !_geoMaps.downloadables().isEmpty(); }
-
-  /*! \brief Set of all mbtiles files that have been downloaded and are ready-to-use */
-  Q_PROPERTY(QList<QPointer<Downloadable>> baseMapsWithFiles READ baseMapsWithFiles NOTIFY baseMapsWithFilesChanged)
-
-  /*! \brief Getter function for the property with the same name
-
-    @returns Property baseMapsWithFiles
-   */
-  QList<QPointer<Downloadable>> baseMapsWithFiles() const { return _baseMaps.downloadablesWithFile(); };
 
 public slots:
   /*! \brief Triggers an update of the list of available maps
@@ -229,22 +160,10 @@ public slots:
   
 signals:
   /*! \brief Notification signal for the property with the same name */
-  void aviationMapsChanged();
-
-  /*! \brief Notification signal for the property with the same name */
-  void baseMapsChanged();
-
-  /*! \brief Notification signal for the property with the same name */
   void geoMapListChanged();
-
-  /*! \brief Notification signal for the property with the same name */
-  void geoMapUpdatesAvailableChanged();
   
   /*! \brief Notification signal for the property with the same name */
   void downloadingGeoMapListChanged();
-
-  /*! \brief Notification signal for the property with the same name */
-  void downloadingGeoMapsChanged(bool);
 
   /*! \brief Download error
     
@@ -256,26 +175,6 @@ signals:
     no longer available at the server", possibly translated.
   */
   void error(QString message);
-
-  /*! \brief Notification signal for the property with the same name */
-  void baseMapsWithFilesChanged();
-
-  /*! \brief Emitted if the content of the local file of one of the geoMaps
-      changes content
-
-    This signal is also emitted if one of the local file of one of the geoMaps
-    changes existence
-
-    @see Downloadable::localFileContentChanged()
-   */
-  void geoMapFileContentChanged();
-
-  /*! \brief Emitted if one of the local file of one of the geoMaps changes
-      existence
-
-    @see Downloadable::hasFileChanged()
-   */
-  void geoMapFilesChanged();
 
 private slots:
   // Trivial method that re-sends the signal, but without the parameter

@@ -40,8 +40,8 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QO
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-    connect(_manager, &MapManager::geoMapFileContentChanged, this, &GeoMapProvider::aviationMapsChanged);
-    connect(_manager, &MapManager::geoMapFileContentChanged, this, &GeoMapProvider::baseMapsChanged);
+    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged, this, &GeoMapProvider::aviationMapsChanged);
+    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged, this, &GeoMapProvider::baseMapsChanged);
     connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
@@ -192,7 +192,7 @@ void GeoMapProvider::aviationMapsChanged()
     // Generate new GeoJSON array and new list of waypoints
     //
     QStringList JSONFileNames;
-    foreach(auto geoMapPtr, _manager->aviationMaps()) {
+    foreach(auto geoMapPtr, _manager->aviationMaps()->downloadables()) {
         // Ignore everything but geojson files
         if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
             continue;
@@ -294,7 +294,7 @@ void GeoMapProvider::baseMapsChanged()
 
     // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(_manager->baseMapsWithFiles(), _currentPath);
+    _tileServer.addMbtilesFileSet(_manager->baseMaps()->downloadablesWithFile(), _currentPath);
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);

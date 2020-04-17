@@ -40,7 +40,7 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QO
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged, this, &GeoMapProvider::aviationMapsChanged);
+    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::aviationMapsChanged);
     connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::baseMapsChanged);
     connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
 

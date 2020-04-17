@@ -26,9 +26,10 @@
 
 
 /*! \brief Manages a set of downloadable objects
- *
- * This convenience class collects signals and properties from a set of
- * Downloadable objects, and forwards summarized information.
+
+  This class inherits from DownloadableGroupWatcher, but has a public
+  constructor and two methode (addToGroup, removeFromGroup) that allow to
+  manipulate the group.
  */
 
 class DownloadableGroup : public DownloadableGroupWatcher
@@ -37,9 +38,9 @@ class DownloadableGroup : public DownloadableGroupWatcher
 
 public:
     /*! \brief Constructs an empty group
-     *
-     * @param parent The standard QObject parent pointer.
-     */
+      
+      @param parent The standard QObject parent pointer.
+    */
     explicit DownloadableGroup(QObject *parent=nullptr);
 
     // No copy constructor
@@ -55,25 +56,23 @@ public:
     DownloadableGroup& operator=(DownloadableGroup&&) = delete;
 
     /*! \brief Adds a Downloadable to the group
-     *
-     * This method adds a Downloadable object to the group. The signals
-     * 'downloadingChanged' and 'updatableChanged' will be emitted if required.
-     *
-     * The DownloadableGroup does not take ownership of the Downloadable, and it
-     * is safe to delete the Downloadable after it has been added, without
-     * removing it first. It is perfectly fine for Downloadable objects to be
-     * members of several groups.
-     *
-     * @param downloadable Pointer to the Downloadable to be added.
-     */
+
+      This method adds a Downloadable object to the group.
+
+      The DownloadableGroup does not take ownership of the Downloadable, and it
+      is safe to delete the Downloadable after it has been added, without
+      removing it first. It is perfectly fine for Downloadable objects to be
+      members of several groups.
+
+      @param downloadable Pointer to the Downloadable to be added.
+    */
     void addToGroup(Downloadable *downloadable);
 
     /*! \brief Remove a downloadable from the group
-     *
-     * This method removes a Downloadable from the group. The signals
-     * 'downloadingChanged' and 'updatableChanged' will be emitted if required.
-     *
-     * @param downloadable Pointer to the Downloadable to be removed.
+
+      This method removes a Downloadable from the group.
+
+      @param downloadable Pointer to the Downloadable to be removed.
      */
     void removeFromGroup(Downloadable *downloadable);
 };

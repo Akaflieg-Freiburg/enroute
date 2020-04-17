@@ -25,23 +25,17 @@
 #include "Downloadable.h"
 
 
-/*! \brief Manages a set of downloadable objects
- *
- * This convenience class collects signals and properties from a set of
- * Downloadable objects, and forwards summarized information.
- */
+/*! \brief Watches a group of Downloadable objects
+  
+  This convenience class collects signals and properties from a set of
+  Downloadable objects, and forwards summarized information.
+*/
 
 class DownloadableGroupWatcher : public QObject
 {
     Q_OBJECT
 
 public:
-    /*! \brief Constructs an empty group
-     *
-     * @param parent The standard QObject parent pointer.
-     */
-    explicit DownloadableGroupWatcher(QObject *parent=nullptr);
-
     // No copy constructor
     DownloadableGroupWatcher(DownloadableGroupWatcher const&) = delete;
 
@@ -55,102 +49,101 @@ public:
     DownloadableGroupWatcher& operator=(DownloadableGroupWatcher&&) = delete;
 
     /*! \brief List of Downloadables in this group
-     *
-     * This property holds the list of downloadables in the group. The
-     * downloadables are sorted alphabetically in ascending order, first be
-     * section() and then secondly by file name. The nullptr is never contained
-     * in the list.
-     */
+      
+      This property holds the list of Downloadable objects in the group. The
+      Downloadable objects are sorted alphabetically in ascending order, first
+      by section() and then secondly by file name. The nullptr is never
+      contained in the list.
+    */
     Q_PROPERTY(QList<QPointer<Downloadable>> downloadables READ downloadables NOTIFY downloadablesChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloadables
-     */
+      
+      @returns Property downloadables
+    */
     QList<QPointer<Downloadable>> downloadables() const;
 
     /*! \brief List of Downloadables in this group, as a list of QObjects
 
-      This property is identical to downloadables, but returns the pointers to the
-      Downloadables in the form of a QObjectList
-    */
+    This property is identical to downloadables, but returns the pointers to
+    the Downloadable objects in the form of a QObjectList
+  */
     Q_PROPERTY(QList<QObject*> downloadablesAsObjectList READ downloadablesAsObjectList NOTIFY downloadablesChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloadables
-     */
+
+    @returns Property downloadables
+  */
     QList<QObject*> downloadablesAsObjectList() const;
 
     /*! \brief List of Downloadable objects in this group that have local files
-     *
-     * This property holds the list of Downloadable objects in the group that have local files. The
-     * Downloadable objects are sorted alphabetically in ascending order, first be
-     * section() and then secondly by file name. The nullptr is never contained
-     * in the list.
-     */
+      
+      This property holds the list of Downloadable objects in the group that
+      have local files. The Downloadable objects are sorted alphabetically in
+      ascending order, first by section() and then secondly by file name. The
+      nullptr is never contained in the list.
+    */
     Q_PROPERTY(QList<QPointer<Downloadable>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloadablesWithFiles
-     */
+
+    @returns Property downloadablesWithFiles
+  */
     QList<QPointer<Downloadable>> downloadablesWithFile() const;
 
     /*! \brief Indicates whether a download process is currently running
-     *
-     * By definition, an empty group is not downloading
-     */
+
+    This is true if there exists an object in the group that is currently
+    downloading.  By definition, an empty group is not downloading
+  */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloading
-     */
+
+      @returns Property downloading
+    */
     bool downloading() const;
 
-    /*! \brief Names of all files that have been downloaded by any of the
-     *  Downloadbles in this group
-     */
+    /*! \brief Names of all files that have been downloaded by any of the Downloadble objects in this group */
     Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property files
-     */
+
+    @returns Property files
+  */
     QStringList files() const;
 
     /*! \brief True is one of the Downloadable objects has a local file */
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property hasFile
-     */
+
+    @returns Property hasFile
+  */
     bool hasFile() const;
 
-    /*! \brief Indicates any one of Downloadable objects is known to be updatable
-     *
-     * By definition, an empty group is not updatable
-     */
+    /*! \brief Indicates any one of Downloadable objects is updatable
+
+      By definition, an empty group is not updatable
+    */
     Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property updatable
-     */
+      
+      @returns Property updatable
+    */
     bool updatable() const;
 
-    /*! \brief \brief Gives an estimate for the download size for all updates in this group, as a localized string
-     *
-     * The string returned is typically of the form "23.7 MB"
-     */
+    /*! \brief Gives an estimate for the download size for all updates in this group, as a localized string
+
+    The string returned is typically of the form "23.7 MB"
+  */
     Q_PROPERTY(QString updateSize READ updateSize NOTIFY updateSizeChanged)
 
     /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property updateSize
-     */
+
+    @returns Property updateSize
+  */
     QString updateSize() const;
 
 public slots:
@@ -177,9 +170,9 @@ signals:
     void updateSizeChanged(QString);
 
     /*! \brief Emitted if the content of one of the local files changes.
-     *
-     * This signal is emitted if one of the downloadables in this group emits
-     * the signal localFileContentChanged().
+
+      This signal is emitted if one of the downloadables in this group emits
+      the signal localFileContentChanged().
      */
     void localFileContentChanged();
 
@@ -196,6 +189,13 @@ protected slots:
     void cleanUp();
 
 protected:
+    /*! \brief Constructs an empty group
+
+      @param parent The standard QObject parent pointer.
+    */
+    explicit DownloadableGroupWatcher(QObject *parent=nullptr);
+
+
     bool                          _cachedDownloading {false};        // Cached value for the 'downloading' property
     QList<QPointer<Downloadable>> _cachedDownloadablesWithFile {};   // Cached value for the 'downloadablesWithFiles' property
     QStringList                   _cachedFiles {};                   // Cached value for the 'files' property

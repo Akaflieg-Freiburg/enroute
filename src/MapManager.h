@@ -56,9 +56,8 @@ public:
   /*! \brief Standard constructor
     
     This constructor reads the file "maps.json" and initiates a download of the
-    file if no file is available.  If the last download is more than one week
-    old, the class will try once per hour to download the latest version of
-    "maps.json".
+    file if no file is available or if the last download is more than one week
+    old.
     
     @param networkAccessManager Pointer to a QNetworkAccessManager that will be
     used for network access. The QNetworkAccessManager must not be deleted while
@@ -89,23 +88,21 @@ public:
   
   /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
 
-    The is a DownloadableGroup that holds all aviation maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps.
-
-    @warning It is fine to read values of the returned object and to connect to its signal, but you must not do change the object in any way.  The type of this property should really be "const DownloadableGroup *", but it seems that QML does not support this.
+    The is a DownloadableGroupWatcher that holds all aviation maps. The maps
+    also appear in geoMaps, which is the union of aviation maps and base maps.
   */
   Q_PROPERTY(DownloadableGroupWatcher *aviationMaps READ aviationMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
-
+    
     @returns Property aviationMaps
   */
   DownloadableGroupWatcher *aviationMaps() { return &_aviationMaps; }
   
   /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
 
-    The is a DownloadableGroup that holds all aviation maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps.
-
-    @warning It is fine to read values of the returned object and to connect to its signal, but you must not do change the object in any way.  The type of this property should really be "const DownloadableGroup *", but it seems that QML does not support this.
+    The is a DownloadableGroup that holds all base maps. The maps also appear in
+    geoMaps, which is the union of aviation maps and base maps.
   */
   Q_PROPERTY(DownloadableGroupWatcher *baseMaps READ baseMaps CONSTANT)
 
@@ -115,8 +112,7 @@ public:
   */
   DownloadableGroupWatcher *baseMaps() { return &_baseMaps; };
 
-  /*! \brief Indicates whether the file "maps.json" is currently being
-      downloaded */
+  /*! \brief Indicates whether the file "maps.json" is currently being downloaded */
   Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
 
   /*! \brief Getter function for the property with the same name
@@ -127,16 +123,15 @@ public:
 
   /*! \brief Pointer to group of all geographic maps
 
-    The is a DownloadableGroup that holds all aviation maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps.
-
-    @warning It is fine to read values of the returned object and to connect to its signal, but you must not do change the object in any way.  The type of this property should really be "const DownloadableGroup *", but it seems that QML does not support this.
+    The is a DownloadableGroup that holds all maps.  This is the union of
+    aviation maps and base maps.
   */
   Q_PROPERTY(DownloadableGroupWatcher *geoMaps READ geoMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property geoMaps
-*/
+  */
   DownloadableGroupWatcher *geoMaps() { return &_geoMaps; }
 
   /*! \brief True if the list of available geo maps has already been downloaded */
@@ -155,9 +150,6 @@ public slots:
   */
   void updateGeoMapList();
   
-  /*! \brief Triggers an update of every updatable map */
-  void updateGeoMaps() { _geoMaps.updateAll(); };
-  
 signals:
   /*! \brief Notification signal for the property with the same name */
   void geoMapListChanged();
@@ -167,9 +159,9 @@ signals:
 
   /*! \brief Download error
     
-    This signal is emitted if the download process for the list of available
-    maps fails for whatever reason.  Since the MapManager updates the list
-    regularly, this signal can be emitted anytime.
+    This signal is emitted if the download process for the file "maps.json"
+    fails for whatever reason.  Since the MapManager updates the list regularly,
+    this signal can be emitted anytime.
     
     @param message A brief error message of the form "the requested resource is
     no longer available at the server", possibly translated.

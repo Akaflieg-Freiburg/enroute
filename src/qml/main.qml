@@ -289,7 +289,7 @@ ApplicationWindow {
                 whatsNewDialog.open()
                 return
             }
-            if (mapManager.geoMapUpdatesAvailable && !satNav.isInFlight) {
+            if (mapManager.geoMaps.updatable && !satNav.isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
                 dialogLoader.active = true

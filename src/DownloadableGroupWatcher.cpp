@@ -22,7 +22,7 @@
 
 
 DownloadableGroupWatcher::DownloadableGroupWatcher(QObject *parent)
-    : QObject(parent), 
+    : QObject(parent)
 {
 }
 
@@ -203,6 +203,10 @@ void DownloadableGroupWatcher::updateAll()
 
 QString DownloadableGroupWatcher::updateSize() const
 {
-#warning need to implement
-    return "";
+    qint64 downloadSize = 0;
+      foreach(auto downloadable, _downloadables)
+          if (downloadable->updatable())
+              downloadSize += downloadable->remoteFileSize();
+
+      return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
 }

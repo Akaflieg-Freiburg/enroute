@@ -299,7 +299,7 @@ Page {
         Material.elevation: 3
         visible: !mapManager.geoMaps.downloading && mapManager.geoMaps.updatable
 
-        Button {
+        ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
             action: downloadUpdatesAction

@@ -21,6 +21,7 @@
 #ifndef DownloadableGroupWatcher_H
 #define DownloadableGroupWatcher_H
 
+#include <QTimer>
 
 #include "Downloadable.h"
 
@@ -67,13 +68,13 @@ public:
 
     This property is identical to downloadables, but returns the pointers to
     the Downloadable objects in the form of a QObjectList
-  */
+    */
     Q_PROPERTY(QList<QObject*> downloadablesAsObjectList READ downloadablesAsObjectList NOTIFY downloadablesChanged)
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property downloadables
-  */
+    */
     QList<QObject*> downloadablesAsObjectList() const;
 
     /*! \brief List of Downloadable objects in this group that have local files
@@ -88,14 +89,14 @@ public:
     /*! \brief Getter function for the property with the same name
 
     @returns Property downloadablesWithFiles
-  */
+    */
     QList<QPointer<Downloadable>> downloadablesWithFile() const;
 
     /*! \brief Indicates whether a download process is currently running
 
     This is true if there exists an object in the group that is currently
     downloading.  By definition, an empty group is not downloading
-  */
+    */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
     /*! \brief Getter function for the property with the same name
@@ -110,7 +111,7 @@ public:
     /*! \brief Getter function for the property with the same name
 
     @returns Property files
-  */
+    */
     QStringList files() const;
 
     /*! \brief True is one of the Downloadable objects has a local file */
@@ -119,7 +120,7 @@ public:
     /*! \brief Getter function for the property with the same name
 
     @returns Property hasFile
-  */
+    */
     bool hasFile() const;
 
     /*! \brief Indicates any one of Downloadable objects is updatable
@@ -137,13 +138,13 @@ public:
     /*! \brief Gives an estimate for the download size for all updates in this group, as a localized string
 
     The string returned is typically of the form "23.7 MB"
-  */
+    */
     Q_PROPERTY(QString updateSize READ updateSize NOTIFY updateSizeChanged)
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property updateSize
-  */
+    */
     QString updateSize() const;
 
 public slots:
@@ -176,6 +177,15 @@ signals:
      */
     void localFileContentChanged();
 
+    /*! \brief Emitted some time after the content of one of the local files changes.
+
+      This signal is in principle identical to localFileContentChanged(), but is
+      emitted with a delay.  The DownloadableGroupWatch waits with the emission
+      of this signal for two seconds. In addition it waits until there are no
+      running download processes anymore.
+     */
+    void localFileContentChanged_delayed();
+
     /*! \brief Notifier signal for the property downloadables */
     void downloadablesChanged();
 
@@ -195,6 +205,13 @@ protected:
     */
     explicit DownloadableGroupWatcher(QObject *parent=nullptr);
 
+    // List of QPointers to the Downloadable objects in this group
+    QList<QPointer<Downloadable>> _downloadables;
+
+private:
+    // Provisions to provide the signal localFileContentChanged_delayed
+    void emitLocalFileContentChanged_delayed();
+    QTimer emitLocalFileContentChanged_delayedTimer;
 
     bool                          _cachedDownloading {false};        // Cached value for the 'downloading' property
     QList<QPointer<Downloadable>> _cachedDownloadablesWithFile {};   // Cached value for the 'downloadablesWithFiles' property
@@ -202,9 +219,6 @@ protected:
     bool                          _cachedHasFile {false};            // Cached value for the 'hasLocalFile' property
     bool                          _cachedUpdatable {false};          // Cached value for the 'updatable' property
     QString                       _cachedUpdateSize {};              // Cached value for the 'updateSize' property
-
-    // List of QPointers to the Downloadable objects in this group
-    QList<QPointer<Downloadable>> _downloadables;
 };
 
 #endif // DownloadableGroupWatcher_H

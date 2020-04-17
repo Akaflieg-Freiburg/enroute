@@ -24,6 +24,18 @@
 DownloadableGroupWatcher::DownloadableGroupWatcher(QObject *parent)
     : QObject(parent)
 {
+    emitLocalFileContentChanged_delayedTimer.setInterval(2000);
+    connect(this, &DownloadableGroupWatcher::localFileContentChanged, &emitLocalFileContentChanged_delayedTimer, qOverload<>(&QTimer::start));
+    connect(&emitLocalFileContentChanged_delayedTimer, &QTimer::timeout, this, &DownloadableGroupWatcher::emitLocalFileContentChanged_delayed);
+}
+
+
+void DownloadableGroupWatcher::emitLocalFileContentChanged_delayed()
+{
+    if (downloading())
+        return;
+    emitLocalFileContentChanged_delayedTimer.stop();
+    emit localFileContentChanged_delayed();
 }
 
 

@@ -26,6 +26,12 @@
 
 
 #
+# Fail on first error
+#
+
+set -e
+
+#
 # Clean up
 #
 

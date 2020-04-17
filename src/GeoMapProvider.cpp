@@ -41,7 +41,7 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QO
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
     connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged, this, &GeoMapProvider::aviationMapsChanged);
-    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged, this, &GeoMapProvider::baseMapsChanged);
+    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::baseMapsChanged);
     connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);

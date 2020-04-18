@@ -18,9 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#ifndef SatNav_H
-#define SatNav_H
+#pragma once
 
 #include <QGeoPositionInfoSource>
 #include <QLocale>
@@ -59,16 +57,7 @@ class SatNav : public QObject
 {
   Q_OBJECT
   
-private:
-  Q_DISABLE_COPY(SatNav)
-  
 public:
-  // Delete the move constructor
-  SatNav& operator=(SatNav&&) = delete;
-
-  // Delete the copy assignment constructor
-  SatNav(SatNav&&) = delete;
-
   /*! \brief Standard constructor
 
     @param parent The standard QObject parent pointer
@@ -504,6 +493,8 @@ private slots:
   void timeout();
   
 private:
+  Q_DISABLE_COPY_MOVE(SatNav)
+
   // Aircraft is considered flying is speed is at least this high
   static constexpr double minFlightSpeedInKT = 30.0;
   // Coordinates of EDTF airfield
@@ -537,5 +528,3 @@ private:
   // to call timeout() after timeoutThreshold milliseconds of no data.
   QTimer timeoutCounter;
 };
-
-#endif // satNav_H

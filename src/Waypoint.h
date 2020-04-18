@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef WAYPOINT_H
-#define WAYPOINT_H
+#pragma once
 
 #include <QGeoCoordinate>
 #include <QMap>
@@ -87,19 +86,7 @@ public:
     @param parent The standard QObject parent pointer
   */
   explicit Waypoint(QDataStream &stream, QObject *parent = nullptr);
-  
-  // No copy constructor
-  Waypoint(Waypoint const&) = delete;
-  
-  // No assign operator
-  Waypoint& operator =(Waypoint const&) = delete;
-  
-  // No move constructor
-  Waypoint(Waypoint&&) = delete;
-  
-  // No move assignment operator
-  Waypoint& operator=(Waypoint&&) = delete;
-  
+    
   // Standard destructor
   ~Waypoint() = default;
   
@@ -185,11 +172,11 @@ public:
   Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position) const;
   
 private:
+  Q_DISABLE_COPY_MOVE(Waypoint)
+
   // Used to check compatibility when loading/saving
   static const quint16 streamVersion = 5;
   
   QGeoCoordinate _coordinate;
   QMultiMap<QString, QVariant> _properties;
 };
-
-#endif

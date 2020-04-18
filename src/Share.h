@@ -17,8 +17,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#ifndef SHARE_H
-#define SHARE_H
+#pragma once
 
 #include <QObject>
 
@@ -165,6 +164,8 @@ signals:
     void fileReceived(const QString& fname);
 
 private:
+    Q_DISABLE_COPY_MOVE(Share)
+
     static Share* mInstance;
     QString mSavePath;
 
@@ -173,5 +174,3 @@ private:
     QString tempDir();
     void outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 };
-
-#endif // SHARE_H

@@ -18,12 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#pragma once
+
 #include <QGeoCoordinate>
 #include <QString>
 #include <QtMath>
-
-#ifndef AVIATIONUNITS_H
-#define AVIATIONUNITS_H
 
 /*! \brief Conversion between units used in aviation
  *
@@ -412,5 +411,3 @@ public:
         return {};
     return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());
 }
-
-#endif

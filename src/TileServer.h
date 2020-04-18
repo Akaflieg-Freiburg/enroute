@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TILESERVER_H
-#define TILESERVER_H
+#pragma once
 
 #include <qhttpengine/filesystemhandler.h>
 #include <qhttpengine/server.h>
@@ -71,18 +70,6 @@ public:
   */
   explicit TileServer(QUrl baseUrl=QUrl(), QObject *parent = nullptr);
   
-  // No copy constructor
-  TileServer(TileServer const&) = delete;
-  
-  // No assign operator
-  TileServer& operator =(TileServer const&) = delete;
-  
-  // No move constructor
-  TileServer(TileServer&&) = delete;
-  
-  // No move assignment operator
-  TileServer& operator=(TileServer&&) = delete;
-  
   // Standard destructor
   ~TileServer() override = default;
   
@@ -126,6 +113,8 @@ public slots:
   void removeMbtilesFileSet(const QString& path);
   
 private:
+  Q_DISABLE_COPY_MOVE(TileServer)
+
   void setUpTileHandlers();
   
   QPointer<QHttpEngine::FilesystemHandler> currentFileSystemHandler;
@@ -134,6 +123,3 @@ private:
   
   QUrl _baseUrl;
 };
-
-
-#endif

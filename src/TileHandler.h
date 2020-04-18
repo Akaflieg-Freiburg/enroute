@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TILEHANDLER_H
-#define TILEHANDLER_H
+#pragma once
 
 #include <QSet>
 #include <QSqlDatabase>
@@ -65,18 +64,6 @@ public:
     @param parent The standard QObject parent
   */
   explicit TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
-  
-  // No copy constructor
-  TileHandler(TileHandler const&) = delete;
-  
-  // No assign operator
-  TileHandler& operator =(TileHandler const&) = delete;
-  
-  // No move constructor
-  TileHandler(TileHandler&&) = delete;
-  
-  // No move assignment operator
-  TileHandler& operator=(TileHandler&&) = delete;
   
   // Destructor
   ~TileHandler() override;
@@ -200,6 +187,8 @@ private slots:
   void removeFile(const QString& localFileName);
 
 private:
+  Q_DISABLE_COPY_MOVE(TileHandler)
+
   QSet<QString> databaseConnections;
   
   QString _name;
@@ -216,5 +205,3 @@ private:
   
   bool hasDBError {false};
 };
-
-#endif // TILEHANDLER

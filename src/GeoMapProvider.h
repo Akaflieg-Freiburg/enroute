@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GEOMAPPROVIDER_H
-#define GEOMAPPROVIDER_H
+#pragma once
 
 #include <QFuture>
 #include <QGeoCoordinate>
@@ -71,18 +70,6 @@ public:
      * @param parent The standard QObject parent
      */
     explicit GeoMapProvider(MapManager *manager, GlobalSettings* settings, QObject *parent = nullptr);
-
-    // No copy constructor
-    GeoMapProvider(GeoMapProvider const&) = delete;
-
-    // No assign operator
-    GeoMapProvider& operator =(GeoMapProvider const&) = delete;
-
-    // No move constructor
-    GeoMapProvider(GeoMapProvider&&) = delete;
-
-    // No move assignment operator
-    GeoMapProvider& operator=(GeoMapProvider&&) = delete;
 
     // Standard destructor
     ~GeoMapProvider() override = default;
@@ -182,6 +169,8 @@ signals:
     void styleFileURLChanged();
 
 private:
+    Q_DISABLE_COPY_MOVE(GeoMapProvider)
+
     // This method simplifies strings by replacing all special characters with
     // analogues. So, "Neuchâtel" become "Neuchatel", "Épinal" becomes "Epinal"
     // and "Allgäu" becomes "Allgau"
@@ -235,5 +224,3 @@ private:
     QList<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
 
 };
-
-#endif

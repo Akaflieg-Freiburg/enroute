@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DownloadableGroupWatcher_H
-#define DownloadableGroupWatcher_H
+#pragma once
 
 #include <QTimer>
 
@@ -37,18 +36,6 @@ class DownloadableGroupWatcher : public QObject
     Q_OBJECT
 
 public:
-    // No copy constructor
-    DownloadableGroupWatcher(DownloadableGroupWatcher const&) = delete;
-
-    // No assign operator
-    DownloadableGroupWatcher& operator =(DownloadableGroupWatcher const&) = delete;
-
-    // No move constructor
-    DownloadableGroupWatcher(DownloadableGroupWatcher&&) = delete;
-
-    // No move assignment operator
-    DownloadableGroupWatcher& operator=(DownloadableGroupWatcher&&) = delete;
-
     /*! \brief List of Downloadables in this group
       
       This property holds the list of Downloadable objects in the group. The
@@ -209,6 +196,8 @@ protected:
     QList<QPointer<Downloadable>> _downloadables;
 
 private:
+     Q_DISABLE_COPY_MOVE(DownloadableGroupWatcher)
+
     // Provisions to provide the signal localFileContentChanged_delayed
     void emitLocalFileContentChanged_delayed();
     QTimer emitLocalFileContentChanged_delayedTimer;
@@ -220,5 +209,3 @@ private:
     bool                          _cachedUpdatable {false};          // Cached value for the 'updatable' property
     QString                       _cachedUpdateSize {};              // Cached value for the 'updateSize' property
 };
-
-#endif // DownloadableGroupWatcher_H

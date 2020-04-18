@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef AIRSPACE_H
-#define AIRSPACE_H
+#pragma once
 
 #include <QGeoPolygon>
 #include <QJsonObject>
@@ -47,18 +46,6 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit Airspace(const QJsonObject &geoJSONObject, QObject *parent = nullptr);
-
-    // No copy constructor
-    Airspace(Airspace const &) = delete;
-
-    // No assign operator
-    Airspace &operator=(Airspace const &) = delete;
-
-    // No move constructor
-    Airspace(Airspace &&) = delete;
-
-    // No move assignment operator
-    Airspace &operator=(Airspace &&) = delete;
 
     // Standard destructor
     ~Airspace() override = default;
@@ -157,11 +144,11 @@ public:
     QString upperBound() const { return _upperBound; }
 
 private:
+    Q_DISABLE_COPY_MOVE(Airspace)
+
     QString _name{};
     QString _CAT{};
     QString _upperBound{};
     QString _lowerBound{};
     QGeoPolygon _polygon{};
 };
-
-#endif

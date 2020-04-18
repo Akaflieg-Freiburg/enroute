@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FLIGHTROUTE_H
-#define FLIGHTROUTE_H
+#pragma once
 
 #include <QLocale>
 #include <QPointer>
@@ -63,18 +62,6 @@ public:
      * @param parent The standard QObject parent pointer.
      */
     explicit FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent = nullptr);
-
-    // No copy constructor
-    FlightRoute(FlightRoute const&) = delete;
-
-    // No assign operator
-    FlightRoute& operator =(FlightRoute const&) = delete;
-
-    // No move constructor
-    FlightRoute(FlightRoute&&) = delete;
-
-    // No move assignment operator
-    FlightRoute& operator=(FlightRoute&&) = delete;
 
     // Standard destructor
     ~FlightRoute() override = default;
@@ -236,6 +223,8 @@ private slots:
     void updateLegs();
 
 private:
+     Q_DISABLE_COPY_MOVE(FlightRoute)
+
     // Used to check compatibility when loading/saving
     static const quint16 streamVersion = 1;
 
@@ -250,5 +239,3 @@ private:
 };
 
 #include "FlightRoute_Leg.h"
-
-#endif

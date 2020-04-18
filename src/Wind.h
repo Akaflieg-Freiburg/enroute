@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef WIND_H
-#define WIND_H
+#pragma once
 
 #include <QSettings>
 
@@ -40,19 +39,7 @@ public:
     @param parent The standard QObject parent pointer
   */
   explicit Wind(QObject *parent = nullptr);
-  
-  // No copy constructor
-  Wind(Wind const&) = delete;
-  
-  // No assign operator
-  Wind& operator =(Wind const&) = delete;
-  
-  // No move constructor
-  Wind(Wind&&) = delete;
-  
-  // No move assignment operator
-  Wind& operator=(Wind&&) = delete;
-
+    
   // Standard destructor
   ~Wind() override = default;
   
@@ -121,6 +108,8 @@ signals:
   void valChanged();
   
 private:
+  Q_DISABLE_COPY_MOVE(Wind)
+
   static constexpr double minWindSpeed     =   0.0;
   static constexpr double maxWindSpeed     = 100.0;
   static constexpr double minWindDirection =   0.0;
@@ -131,5 +120,3 @@ private:
   
   QSettings settings;
 };
-
-#endif

@@ -59,8 +59,7 @@ cmake /home/kebekus/Software/projects/enroute \
       -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
       -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_ANDROID \
       -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR_ANDROID \
-      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-      -DQT_QMAKE_EXECUTABLE:STRING=$Qt5_DIR_ANDROID/bin/qmake
+      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake
 
 # This is bizarrely necessary, or else 'android_deployment_settings.json'
 # will lack our custom AndroidManifest and the SSL libraries

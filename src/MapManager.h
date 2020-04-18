@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAPMANAGER_H
-#define MAPMANAGER_H
+#pragma once
 
 #include <QTimer> 
 
@@ -66,18 +65,6 @@ public:
     @param parent The standard QObject parent pointer.
   */
   explicit MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
-
-  // No copy constructor
-  MapManager(MapManager const&) = delete;
-  
-  // No assign operator
-  MapManager& operator =(MapManager const&) = delete;
-  
-  // No move constructor
-  MapManager(MapManager&&) = delete;
-  
-  // No move assignment operator
-  MapManager& operator=(MapManager&&) = delete;
   
   /*! \brief Destructor
     
@@ -199,6 +186,8 @@ private slots:
   void autoUpdateGeoMapList();
   
 private:
+  Q_DISABLE_COPY_MOVE(MapManager)
+  
   // This method returns a list of files in the download directory that have no
   // corresponding entry in _aviationMaps.
   QList<QString> unattachedFiles() const;
@@ -221,5 +210,3 @@ private:
   // objects constructed by this class
   QPointer<QNetworkAccessManager> _networkAccessManager;
 };
-
-#endif // MAPMANAGER_H

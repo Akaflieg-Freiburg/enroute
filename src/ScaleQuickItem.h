@@ -18,9 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#ifndef SCALEQUICKITEM_H
-#define SCALEQUICKITEM_H
+#pragma once
 
 #include <QtQuick/QQuickPaintedItem>
 
@@ -52,17 +50,17 @@ public:
   /*! \brief Getter function for the property with the same name
     
     @returns Property pixelPer10km
-   */
+  */
   qreal pixelPer10km() const {return _pixelPer10km;}
 
   /*! \brief Setter function for the property with the same name
-
+    
     @param _pxp10k  Property pixelPer10km
   */
   void setPixelPer10km(qreal _pxp10k);
-
+  
   /*! \brief Re-implemented from QQuickPaintedItem to implement painting
-
+    
     @param painter Pointer to the QPainter used for painting
   */
   void paint(QPainter *painter) override;
@@ -72,7 +70,7 @@ signals:
   void pixelPer10kmChanged();
 
 private:
+  Q_DISABLE_COPY_MOVE(ScaleQuickItem)
+
   qreal _pixelPer10km {0.0};
 };
-
-#endif // SCALE_H

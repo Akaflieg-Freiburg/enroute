@@ -18,9 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DOWNLOADABLEGROUP_H
-#define DOWNLOADABLEGROUP_H
-
+#pragma once
 
 #include "DownloadableGroupWatcher.h"
 
@@ -43,18 +41,6 @@ public:
     */
     explicit DownloadableGroup(QObject *parent=nullptr);
 
-    // No copy constructor
-    DownloadableGroup(DownloadableGroup const&) = delete;
-
-    // No assign operator
-    DownloadableGroup& operator =(DownloadableGroup const&) = delete;
-
-    // No move constructor
-    DownloadableGroup(DownloadableGroup&&) = delete;
-
-    // No move assignment operator
-    DownloadableGroup& operator=(DownloadableGroup&&) = delete;
-
     /*! \brief Adds a Downloadable to the group
 
       This method adds a Downloadable object to the group.
@@ -75,6 +61,7 @@ public:
       @param downloadable Pointer to the Downloadable to be removed.
      */
     void removeFromGroup(Downloadable *downloadable);
-};
 
-#endif // DOWNLOADABLEGROUP_H
+private:
+    Q_DISABLE_COPY_MOVE(DownloadableGroup)
+};

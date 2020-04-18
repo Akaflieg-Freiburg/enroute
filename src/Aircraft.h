@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef AIRCRAFT_H
-#define AIRCRAFT_H
+#pragma once
 
 #include <QSettings>
 
@@ -39,18 +38,6 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit Aircraft(QObject *parent = nullptr);
-
-    // No copy constructor
-    Aircraft(Aircraft const &) = delete;
-
-    // No assign operator
-    Aircraft &operator=(Aircraft const &) = delete;
-
-    // No move constructor
-    Aircraft(Aircraft &&) = delete;
-
-    // No move assignment operator
-    Aircraft &operator=(Aircraft &&) = delete;
 
     // Standard destructor
     ~Aircraft() override = default;
@@ -86,8 +73,7 @@ public:
      * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed]
      * or NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(
-            double descentSpeedInKT READ descentSpeedInKT WRITE setDescentSpeedInKT NOTIFY valChanged)
+    Q_PROPERTY(double descentSpeedInKT READ descentSpeedInKT WRITE setDescentSpeedInKT NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
@@ -111,8 +97,7 @@ public:
      * number that lies in the interval [minFuelConsumption,
      * maxFuelConsumption] or NaN if no value has been set.
      */
-    Q_PROPERTY(double fuelConsumptionInLPH READ fuelConsumptionInLPH WRITE setFuelConsumptionInLPH
-               NOTIFY valChanged)
+    Q_PROPERTY(double fuelConsumptionInLPH READ fuelConsumptionInLPH WRITE setFuelConsumptionInLPH NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
@@ -147,6 +132,8 @@ signals:
     void valChanged();
 
 private:
+    Q_DISABLE_COPY_MOVE(Aircraft)
+
     static constexpr double minAircraftSpeed = 40.0;
     static constexpr double maxAircraftSpeed = 400.0;
     static constexpr double minFuelConsuption = 5.0;
@@ -158,5 +145,3 @@ private:
 
     QSettings settings;
 };
-
-#endif

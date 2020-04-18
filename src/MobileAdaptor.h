@@ -19,8 +19,7 @@
  ***************************************************************************/
 
 
-#ifndef MOBILEADAPTOR_H
-#define MOBILEADAPTOR_H
+#pragma once
 
 #include <QObject>
 
@@ -46,14 +45,14 @@ public slots:
     On Android, hides the android splash screen. On other platforms, this does
     nothing. The implementation ensures that QtAndroid::hideSplashScreen is
     called (only once, regardless of how often this slot is used).
-  */
+    */
     void hideSplashScreen();
 
     /*! \brief Make the device briefly vibrate
 
     On Android, make the device briefly vibrate. On other platforms, this does
     nothing.
-  */
+    */
     void vibrateBrief();
 
     /*! \brief On Android, disables the screen lock
@@ -62,17 +61,18 @@ public slots:
 
     @param on If set to 'true', the screen will never switch off while the app
         is shown to the user.
-  */
+    */
     void keepScreenOn(bool on);
 
     /*! \brief Shows a notifaction, indicating that a download is in progress
 
-    @param show If set to 'true', a notification will be shown. If set to 'false', any existing notification will be withdrawn
-  */
+    @param show If set to 'true', a notification will be shown. If set to
+    'false', any existing notification will be withdrawn
+    */
     void showDownloadNotification(bool show);
 
 private:
+    Q_DISABLE_COPY_MOVE(MobileAdaptor)
+  
     bool splashScreenHidden {false};
 };
-
-#endif // ANDROIDADAPTOR_H

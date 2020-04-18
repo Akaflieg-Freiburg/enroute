@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GlobalSettings_H
-#define GlobalSettings_H
+#pragma once
 
 #include <QObject>
 #include <QSettings>
@@ -39,16 +38,7 @@ class GlobalSettings : public QObject
 {
     Q_OBJECT
 
-private:
-    Q_DISABLE_COPY(GlobalSettings)
-
 public:
-    // Delete the move constructor
-    GlobalSettings& operator=(GlobalSettings&&) = delete;
-
-    // Delete the copy assignment constructor
-    GlobalSettings(GlobalSettings&&) = delete;
-
     /*! \brief Standard constructor
      *
      * @param parent The standard QObject parent pointer
@@ -132,7 +122,7 @@ signals:
     void keepScreenOnChanged();
 
 private:
+    Q_DISABLE_COPY_MOVE(GlobalSettings)
+    
     QSettings *settings;
 };
-
-#endif // satNav_H

@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FLIGHTROUTE_LEG_H
-#define FLIGHTROUTE_LEG_H
+#pragma once
 
 #include <QPointer>
 
@@ -53,18 +52,6 @@ public:
    * @param parent The standard QObject parent pointer.
    */
   explicit Leg(const Waypoint* start, const Waypoint *end, Aircraft *aircraft, Wind *wind, QObject *parent = nullptr);
-  
-  // No copy constructor
-  Leg(Leg const&) = delete;
-  
-  // No assign operator
-  Leg& operator =(Leg const&) = delete;
-  
-  // No move constructor
-  Leg(Leg&&) = delete;
-  
-  // No move assignment operator
-  Leg& operator=(Leg&&) = delete;
   
   // Standard destructor
   ~Leg() override = default;
@@ -169,6 +156,8 @@ signals:
   void valChanged();
   
 private:
+  Q_DISABLE_COPY_MOVE(Leg)
+
   // Necessary data for computation of wind triangle?
   bool hasDataForWindTriangle() const;
   
@@ -180,5 +169,3 @@ private:
   QPointer<Aircraft> _aircraft {nullptr};
   QPointer<Wind> _wind {nullptr};
 };
-
-#endif

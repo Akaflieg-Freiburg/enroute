@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DOWNLOADABLE_H
-#define DOWNLOADABLE_H
+#pragma once
 
 #include <QFile>
 #include <QFileInfo>
@@ -75,18 +74,6 @@ public:
      */
     explicit Downloadable(QUrl url, const QString &localFileName,
                           QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-
-    // No copy constructor
-    Downloadable(Downloadable const &) = delete;
-
-    // No assign operator
-    Downloadable &operator=(Downloadable const &) = delete;
-
-    // No move constructor
-    Downloadable(Downloadable &&) = delete;
-
-    // No move assignment operator
-    Downloadable &operator=(Downloadable &&) = delete;
 
     /*! \brief Standard destructor
      *
@@ -443,6 +430,8 @@ private slots:
     void downloadHeaderFinished();
 
 private:
+     Q_DISABLE_COPY_MOVE(Downloadable)
+
     // Pointer the QNetworkAccessManager that will be used for all the
     // downloading
     QPointer<QNetworkAccessManager> _networkAccessManager;
@@ -479,5 +468,3 @@ private:
     // Section name
     QString _section {};
 };
-
-#endif // DOWNLOADABLE_H

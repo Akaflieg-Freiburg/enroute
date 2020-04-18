@@ -17,8 +17,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#ifndef GEOID_H
-#define GEOID_H
+#pragma once
 
 #include <QObject>
 
@@ -78,5 +77,3 @@ private:
     const static qint32 egm96_cols = 1440;
     const static qint32 egm96_size = egm96_rows * egm96_cols;
 };
-
-#endif // GEOID_H

@@ -19,6 +19,8 @@ jobs:
         args: git submodule update --init --recursive
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
+      with:
+        version: '5.14.2'
     - name: Install Additional Software
       run: |
         sudo apt install doxygen graphviz

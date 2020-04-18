@@ -21,7 +21,7 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with:
         target: 'android'
-        version: '5.14.1'
+        version: '5.14.2'
     - name: Install Additional Software
       run: |
         sudo apt install doxygen graphviz librsvg2-bin

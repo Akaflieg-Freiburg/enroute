@@ -73,7 +73,7 @@ Public Member Functions</h2></td></tr>
 <p>The implementation uses the data from <a href="https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html">https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html</a> and does a bilinear interpolation between the four neighboring data points of the requested location.</p>
 <p>The implementation was <em>very</em> carefully tested and compared with both a bilinear and a bicubic spline interpolation in python. The comparison of the method here with the python bilinear interpolation verified that both implementations yield the same numbers (within numerical precision). The comparison of the bilinear implementation here with the python's bicubic interpolation showed a worldwide max deviation of about 1 m. </p>
 
-<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00050">50</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00049">49</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a57228f90905fffe19e0fa2ca9a7b511e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57228f90905fffe19e0fa2ca9a7b511e">&#9670;&nbsp;</a></span>operator()()</h2>

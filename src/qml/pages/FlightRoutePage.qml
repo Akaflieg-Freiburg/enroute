@@ -365,7 +365,6 @@ Page {
         }
     }
 
-
     // Add ToolButton to central application header when this page is shown
     Component.onCompleted: {
         headerMenuToolButton.visible = true
@@ -373,74 +372,11 @@ Page {
         headerMenu.insertAction(1, clearAction)
     }
     Component.onDestruction: {
-        if (Qt.platform.os === "android") {
-            headerMenuToolButton.visible = false
-            headerMenu.removeAction(reverseAction)
-            headerMenu.removeAction(clearAction)
-            headerMenu.removeAction(importAction)
-            headerMenu.removeAction(saveAction)
-            headerMenu.removeAction(openWithAction)
-            headerMenu.removeAction(shareAction)
-        } else {
-            headerMenuToolButton.visible = false
-            headerMenu.removeAction(reverseAction)
-            headerMenu.removeAction(clearAction)
-/*
-            headerMenu.removeAction(desktopImportAction)
-            headerMenu.removeAction(desktopSaveAction)
-            */
-        }
+        headerMenuToolButton.visible = false
+        headerMenu.removeAction(reverseAction)
+        headerMenu.removeAction(clearAction)
     }
 
-   /*
-    FileDialog {
-
-        id: importFileDialog
-        title: "Please choose a gpx file"
-        fileMode: FileDialog.OpenFile
-        nameFilters: ["gpx files (*.gpx)"]
-        defaultSuffix: "gpx"
-        folder: folderSettings.openFolder
-        onAccepted: {
-            flightRoute.fromGpx(String(importFileDialog.file))
-            folderSettings.openFolder = importFileDialog.folder
-        }
-        onRejected: {
-            // do nothing
-        }
-    }
-*/
-
-    // on desktop used only
-    //
-    function saveFile(fileUrl, text) {
-        var request = new XMLHttpRequest();
-        request.open("PUT", fileUrl, false);
-        request.send(text);
-        return request.status;
-    }
-
-    // on desktop used only
-    //
-  /*
-    FileDialog {
-
-        id: saveFileDialog
-        title: "Please choose a gpx file"
-        fileMode: FileDialog.SaveFile
-        nameFilters: ["gpx files (*.gpx)"]
-        defaultSuffix: "gpx"
-        folder: folderSettings.saveFolder
-        onAccepted: {
-            // console.log("saveFileDialog path = " + saveFileDialog.file)
-            folderSettings.saveFolder = saveFileDialog.folder
-            saveFile(saveFileDialog.file, flightRoute.toGpx())
-        }
-        onRejected: {
-            // do nothing
-        }
-    }
-*/
     Action {
         id: reverseAction
 

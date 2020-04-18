@@ -68,4 +68,24 @@ Page {
         Component.onCompleted: wpList.model = geoMapProvider.nearbyAirfields(satNav.lastValidCoordinate)
     }
 
+    Rectangle {
+        anchors.fill: parent
+
+        color: "white"
+        visible: wpList.count === 0
+
+        Label {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: Qt.application.font.pixelSize*2
+
+            horizontalAlignment: Text.AlignHCenter
+            textFormat: Text.RichText
+            wrapMode: Text.Wrap
+            text: qsTr("<h3>Sorry!</h3><p>No airfields available. Please make sure that an aviation map is installed.</p>")
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+    }
+
 } // Page

@@ -85,6 +85,8 @@ QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
 
     QList<Airspace*> result;
     foreach(auto airspace, _airspaces_) {
+        if (airspace.isNull()) // Paranoid safety
+            continue;
         if (airspace->polygon().contains(position))
             result.append(airspace);
     }
@@ -114,6 +116,8 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 
     QList<QObject*> result;
     foreach(auto wp, wps) {
+        if (wp.isNull())
+            continue;
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
             QString fullName = simplifySpecialChars(wp->get("NAM").toString());
@@ -139,6 +143,8 @@ QList<QObject*> GeoMapProvider::nearbyAirfields(const QGeoCoordinate& position)
 
     QList<Waypoint*> ADs;
     foreach(auto wp, wps) {
+        if (wp.isNull())
+            continue;
         if (!wp->get("CAT").toString().startsWith("AD"))
             continue;
         ADs.append(wp);
@@ -246,7 +252,6 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         newFeatures += object;
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
-        // Comment: the list waypoints is used as a model in QML. I am unsure what happens if they get deleted while QML is still using them. I have therefore chosen to not delete them at all. This introduced a minor memory inefficiency when GeoJSON files get upated.
         auto wp = new Waypoint(object);
         if (wp->isValid()) {
             QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
@@ -273,6 +278,16 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->get("NAM").toString() < b->get("NAM").toString(); });
 
     _aviationDataMutex.lock();
+    foreach(auto airspace, _airspaces_) {
+        if (airspace.isNull())
+            continue;
+        airspace->deleteLater();
+    }
+    foreach(auto waypoint, _waypoints_) {
+        if (waypoint.isNull())
+            continue;
+        waypoint->deleteLater();
+    }
     _airspaces_ = newAirspaces;
     _waypoints_ = newWaypoints;
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);

@@ -407,11 +407,13 @@ ApplicationWindow {
     // see https://stackoverflow.com/questions/25968661/android-back-button-press-doesnt-trigger-keys-onreleased-qml
     //
     onClosing: {
+        // Use this hack only on the Android platform
+        if (Qt.platform.os !== "android")
+            return
+
         if(stackView.depth > 1) {
             close.accepted = false // prevent closing of the app
             stackView.pop(); // will close the stackView page
-        } else {
-            return; // will exit the application
         }
-    }
+    } // onClosing
 }

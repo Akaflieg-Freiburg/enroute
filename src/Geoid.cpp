@@ -33,11 +33,11 @@
 // with setByteOrder(QDataStream::BigEndian) and reading the shorts one
 // after the other with the QDataStream >> operator.
 //
-Geoid::Geoid() : egm(nullptr)
+Geoid::Geoid()
 {
     QFile file(":/WW15MGH.DAC");
 
-    int egm96_size_2 = egm96_size * 2;
+    qint64 egm96_size_2 = egm96_size * 2;
 
     if (!file.open(QIODevice::ReadOnly) || file.size() != (egm96_size_2))
     {
@@ -45,31 +45,23 @@ Geoid::Geoid() : egm(nullptr)
         return;
     }
 
-    egm = new qint16[egm96_size];
+    egm.resize(egm96_size);
 
-    int nread = file.read(reinterpret_cast<char*>(egm), egm96_size_2);
+    qint64 nread = file.read(reinterpret_cast<char*>(egm.data()), egm96_size_2);
     file.close();
 
     if (nread != egm96_size_2)
     {
         qDebug() << "Geoid::Geoid expected " << egm96_size_2
                  << " bytes from " << file.fileName() << " but got " << nread;
-        delete[] egm;
-        egm = nullptr;
+        egm.clear();
         return;
     }
 
     if (QSysInfo::ByteOrder == QSysInfo::LittleEndian)
-    {
-        qFromBigEndian<qint16>(egm, egm96_size, egm);
-    }
+        qFromBigEndian<qint16>(egm.data(), egm96_size, egm.data());
 }
 
-Geoid::~Geoid()
-{
-    if (valid())
-        delete[] egm;
-}
 
 // 90 >= latitude >= -90
 //
@@ -78,8 +70,8 @@ Geoid::~Geoid()
 //
 qreal Geoid::operator()(qreal latitude, qreal longitude)
 {
-    if (!valid())
-        return 0;
+    if (egm.size() == 0)
+        return 0.0;
 
     while (longitude < 0)
         longitude += 360.;
@@ -124,9 +116,4 @@ qreal Geoid::operator()(qreal latitude, qreal longitude)
     }
 
     return interpolated;
-}
-
-bool Geoid::valid() const
-{
-    return (egm != nullptr);
 }

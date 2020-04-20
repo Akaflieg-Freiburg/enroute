@@ -50,7 +50,6 @@ class Geoid
 {
 public:
     Geoid();
-    ~Geoid();
 
     /*! \brief return geoidal separation -- the difference between AMSL and ellipsoidal height.
      *
@@ -61,14 +60,14 @@ public:
      */
     qreal operator()(qreal latitude, qreal longitude);
 
-    /*! \brief returns true if geoidal separation is available or false otherwise.
+    /*! \brief True if geoidal separation is available or false otherwise.
      *
      * @returns true or false
      */
-    bool valid() const;
+    bool valid() const { return (egm.size() != 0); }
 
 private:
-    qint16* egm; // holds the data read from the binaray data file WW15MGH.DAC
+    QVector<qint16> egm; // holds the data read from the binaray data file WW15MGH.DAC
 
     // https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/readme.txt
     // https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html

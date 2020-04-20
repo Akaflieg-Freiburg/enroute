@@ -23,10 +23,14 @@ import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
 
+import "../items"
+
 Page {
     id: page
     title: qsTr("Add Waypoint to Route")
     focus: true
+
+    header: StandardHeader {}
 
     TextField {
         id: textInput

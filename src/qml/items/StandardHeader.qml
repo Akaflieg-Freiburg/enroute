@@ -20,38 +20,34 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 2.14
-import QtQuick.Layouts 1.14
+import QtQuick.Controls.Material 2.14
 
-import "../items"
+ToolBar {
 
-Page {
-    id: pg
-    title: qsTr("Help to make Enroute better")
+    ToolButton {
+        id: backButton
 
-    header: StandardHeader {}
+        anchors.left: parent.left
+        anchors.leftMargin: drawer.dragMargin
 
-    ScrollView {
-        clip: true
-        anchors.fill: parent
-        
-        // The Label that we really want to show is wrapped into an Item. This allows
-        // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-        // without binding loops
-        Item {
-            implicitHeight: lbl1.implicitHeight
-            width: pg.width
-            
-            Label {
-                id: lbl1
-                text: participateText
-                textFormat: Text.RichText
-                width: pg.width
-                wrapMode: Text.Wrap
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
-                onLinkActivated: Qt.openUrlExternally(link)
-            } // Label
-        } // Item
-    } // ScrollView
-} // Page
+        icon.source: "/icons/material/ic_arrow_back.svg"
+        onClicked: {
+            MobileAdaptor.vibrateBrief()
+            stackView.pop()
+        }
+    } // ToolButton
+
+    Label {
+        anchors.left: backButton.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+
+        text: stackView.currentItem.title
+        elide: Label.ElideRight
+        font.bold: true
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+    } // Label
+
+} // ToolBar

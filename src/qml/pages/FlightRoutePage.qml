@@ -24,24 +24,11 @@ import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
 
 import enroute 1.0
-
+import "../items"
 
 Page {
     id: flightRoutePage
     title: qsTr("Flight Route")
-
-    header:  TabBar {
-        id: bar
-        width: parent.width
-        currentIndex: sv.currentIndex
-        TabButton {
-            text: qsTr("Route")
-        }
-        TabButton {
-            text: qsTr("Aircraft and Wind")
-        }
-        Material.elevation: 3
-    } // TabBar
 
     Component {
         id: aiX
@@ -131,10 +118,100 @@ Page {
         } // GridLayout
     } // Component
 
+    header: ToolBar {
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.leftMargin: drawer.dragMargin
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                if (stackView.depth > 1) {
+                    stackView.pop()
+                } else {
+                    drawer.open()
+                }
+            }
+        } // ToolButton
+
+        Label {
+            anchors.left: backButton.right
+            anchors.right: headerMenuToolButton.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.bold: true
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            anchors.right: parent.right
+
+            id: headerMenuToolButton
+            icon.source: "/icons/material/ic_more_vert.svg"
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                headerMenuX.popup()
+            }
+
+            AutoSizingMenu {
+                id: headerMenuX
+
+                MenuItem {
+                    id: reverseItem
+
+                    text: qsTr("Reverse Route")
+                    icon.source: "/icons/material/ic_swap_vert.svg"
+                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
+                        flightRoute.reverse()
+                    }
+                }
+
+                MenuItem {
+                    id: clearItem
+
+                    text: qsTr("Clear Route")
+                    icon.source: "/icons/material/ic_delete.svg"
+                    enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
+                        flightRoute.clear()
+                    }
+                }
+            }
+        } // ToolButton
+
+    } // ToolBar
+
+    TabBar {
+        id: bar
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        currentIndex: sv.currentIndex
+        TabButton { text: qsTr("Route") }
+        TabButton { text: qsTr("Aircraft and Wind") }
+        Material.elevation: 3
+    } // TabBar
+
     SwipeView{
         id: sv
 
-        anchors.fill: parent
+        anchors.top: bar.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         currentIndex: bar.currentIndex
 
@@ -362,44 +439,6 @@ Page {
                     stackView.push("FlightRouteAddWPPage.qml")
                 }
             }
-        }
-    }
-
-    // Add ToolButton to central application header when this page is shown
-    Component.onCompleted: {
-        headerMenuToolButton.visible = true
-        headerMenu.insertAction(0, reverseAction)
-        headerMenu.insertAction(1, clearAction)
-    }
-    Component.onDestruction: {
-        headerMenuToolButton.visible = false
-        headerMenu.removeAction(reverseAction)
-        headerMenu.removeAction(clearAction)
-    }
-
-    Action {
-        id: reverseAction
-
-        text: qsTr("Reverse Route")
-        icon.source: "/icons/material/ic_swap_vert.svg"
-        enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
-
-        onTriggered: {
-            MobileAdaptor.vibrateBrief()
-            flightRoute.reverse()
-        }
-    }
-
-    Action {
-        id: clearAction
-
-        text: qsTr("Clear Route")
-        icon.source: "/icons/material/ic_delete.svg"
-        enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
-
-        onTriggered: {
-            MobileAdaptor.vibrateBrief()
-            flightRoute.clear()
         }
     }
 

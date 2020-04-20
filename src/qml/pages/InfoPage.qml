@@ -23,14 +23,23 @@ import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
 
+import "../items"
+
 Page {
     id: pg
     title: qsTr("About Enroute")
 
-    header:  TabBar {
+
+    header: StandardHeader {}
+
+    TabBar {
         id: bar
-        width: parent.width
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+
         currentIndex: sv.currentIndex
+
         TabButton {
             text: "Enroute"
         }
@@ -46,7 +55,11 @@ Page {
     SwipeView {
         id: sv
 
-        anchors.fill: parent
+        anchors.top: bar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+
         currentIndex: bar.currentIndex
         
         ScrollView {

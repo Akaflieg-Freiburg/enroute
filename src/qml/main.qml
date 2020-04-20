@@ -36,7 +36,7 @@ ApplicationWindow {
     title: qsTr("Akaflieg Freiburg - Enroute")
     width: 1000
     height: 800
-
+/*
     header: ToolBar {
         id: tbar
         visible: stackView.depth > 1
@@ -81,7 +81,7 @@ ApplicationWindow {
 
         } // RowLayout
     } // ToolBar
-    
+  */
     Drawer {
         id: drawer
         width: col.implicitWidth

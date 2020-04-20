@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
@@ -148,9 +149,86 @@ Page {
 
     }
 
-    header:  TabBar {
+
+    header: ToolBar {
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.leftMargin: drawer.dragMargin
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                stackView.pop()
+            }
+        } // ToolButton
+
+        Label {
+            anchors.left: backButton.right
+            anchors.right: headerMenuToolButton.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.bold: true
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            anchors.right: parent.right
+
+            id: headerMenuToolButton
+            icon.source: "/icons/material/ic_more_vert.svg"
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                headerMenuX.popup()
+            }
+
+            AutoSizingMenu {
+                id: headerMenuX
+
+                MenuItem {
+                    id: updateMenu
+
+                    text: qsTr("Update list of maps")
+                    icon.source: "/icons/material/ic_refresh.svg"
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
+                        mapManager.updateGeoMapList()
+                    }
+                }
+
+                MenuItem {
+                    id: downloadUpdatesMenu
+
+                    text: qsTr("Download all updates…")
+                    icon.source: "/icons/material/ic_file_download.svg"
+                    enabled: mapManager.geoMaps.updatable
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
+                        mapManager.updateGeoMaps()
+                    }
+                }
+
+            } // AutoSizingMenu
+        } // ToolButton
+
+    } // ToolBar
+
+
+    TabBar {
         id: bar
-        width: parent.width
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+
         currentIndex: sv.currentIndex
         TabButton {
             text: qsTr("Aviation Maps")
@@ -162,7 +240,11 @@ Page {
     } // TabBar
 
     ColumnLayout {
-        anchors.fill: parent
+        anchors.top: bar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+
         anchors.topMargin: Qt.application.font.pixelSize*0.2
 
         SwipeView{
@@ -226,7 +308,11 @@ Page {
     Rectangle {
         id: noMapListWarning
 
-        anchors.fill: parent
+        anchors.top: bar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+
         color: "white"
         visible: !mapManager.downloadingGeoMapList && !mapManager.hasGeoMapList
 
@@ -247,7 +333,11 @@ Page {
     Rectangle {
         id: downloadIndicator
 
-        anchors.fill: parent
+        anchors.top: bar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+
         color: "white"
         visible: mapManager.downloadingGeoMapList
 
@@ -302,22 +392,12 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            action: downloadUpdatesAction
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                mapManager.geoMaps.updateAll()
+            }
         }
     } // Pane (footer)
-
-
-    // Add ToolButton to central application header when this page is shown
-    Component.onCompleted: {
-        headerMenuToolButton.visible = true
-        headerMenu.insertAction(0, downloadUpdatesAction)
-        headerMenu.insertAction(0, updateAction)
-    }
-    Component.onDestruction: {
-        headerMenuToolButton.visible = false
-        headerMenu.removeAction(downloadUpdatesAction)
-        headerMenu.removeAction(updateAction)
-    }
 
     // Show error when list of maps cannot be downloaded
     Connections {
@@ -328,30 +408,6 @@ Page {
             dialogLoader.text = qsTr(`<p>Failed to download the list of aviation maps.</p><p>Reason: ${message}.</p>`)
             dialogLoader.source = "../dialogs/ErrorDialog.qml"
             dialogLoader.active = true
-        }
-    }
-
-    Action {
-        id: updateAction
-
-        text: qsTr("Update list of maps")
-        icon.source: "/icons/material/ic_refresh.svg"
-
-        onTriggered: {
-            MobileAdaptor.vibrateBrief()
-            mapManager.updateGeoMapList()
-        }
-    }
-
-    Action {
-        id: downloadUpdatesAction
-
-        text: qsTr("Download all updates…")
-        icon.source: "/icons/material/ic_file_download.svg"
-        enabled: mapManager.geoMapUpdatesAvailable
-        onTriggered: {
-            MobileAdaptor.vibrateBrief()
-            mapManager.updateGeoMaps()
         }
     }
 

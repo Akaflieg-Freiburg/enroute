@@ -24,11 +24,14 @@ import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
 
 import enroute 1.0
+import "../items"
 
 Page {
     id: page
     title: qsTr("Nearby Airfields")
     focus: true
+
+    header: StandardHeader {}
 
     Component {
         id: waypointDelegate

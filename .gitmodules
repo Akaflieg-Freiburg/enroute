@@ -16,4 +16,4 @@
 	url = https://github.com/maputnik/osm-liberty.git
 [submodule "3rdParty/enrouteText"]
 	path = 3rdParty/enrouteText
-	url = git@github.com:Akaflieg-Freiburg/enrouteText.git
+	url = https://github.com/Akaflieg-Freiburg/enrouteText.git

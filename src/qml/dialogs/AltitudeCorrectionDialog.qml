@@ -49,7 +49,7 @@ Dialog {
 
             Label {
                 id: lbl1
-                text: qsTr(`If you have good satellite reception and if know your altitude precisely, you can set the satellite altimeter here.`)
+                text: qsTr("If you have good satellite reception and if know your altitude precisely, you can set the satellite altimeter here.")
                 textFormat: Text.RichText
                 horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.Wrap
@@ -81,7 +81,9 @@ Dialog {
 
             Label {
                 id: lbl2
-                text: satNav.hasAltitude ? qsTr(`The current raw altimeter reading as reported by the satellite navigation system is ${satNav.rawAltitudeInFeetAsString} AMSL. The corrected altitude is ${satNav.altitudeInFeetAsString} AMSL.`) : qsTr("Insufficient satellite reception. Altimeter cannot be set.")
+                text: satNav.hasAltitude ? qsTr("The current raw altimeter reading as reported by the satellite navigation system is %1 AMSL. "+
+                                                "The corrected altitude is %2 AMSL.").arg(satNav.rawAltitudeInFeetAsString).arg(satNav.altitudeInFeetAsString)
+                                         : qsTr("Insufficient satellite reception. Altimeter cannot be set.")
                 textFormat: Text.RichText
                 horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.Wrap
@@ -178,10 +180,10 @@ Dialog {
 
         modal: true
         standardButtons: Dialog.Yes|Dialog.No
-        title: qsTr(`Really set ${parseInt(textField.text)} ft?`)
+        title: qsTr("Really set %1 ft?").arg(parseInt(textField.text))
 
         Label {
-            text: qsTr(`The altitude reported by the satellite navigation system is ${satNav.rawAltitudeInFeet} AMSL. That is a big difference.`)
+            text: qsTr("The altitude reported by the satellite navigation system is %1 AMSL. That is a big difference.").arg(satNav.rawAltitudeInFeet)
             width: largeDifference.availableWidth
             wrapMode: Text.Wrap
         }

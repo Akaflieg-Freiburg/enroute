@@ -139,7 +139,7 @@ Page {
                 onError: {
                     dialogLoader.active = false
                     dialogLoader.title = qsTr("Download Error")
-                    dialogLoader.text = qsTr(`<p>Failed to download <strong>${objectName}</strong>.</p><p>Reason: ${message}.</p>`)
+                    dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
                     dialogLoader.source = "../dialogs/ErrorDialog.qml"
                     dialogLoader.active = true
                 }
@@ -405,7 +405,7 @@ Page {
         onError: {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")
-            dialogLoader.text = qsTr(`<p>Failed to download the list of aviation maps.</p><p>Reason: ${message}.</p>`)
+            dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
             dialogLoader.source = "../dialogs/ErrorDialog.qml"
             dialogLoader.active = true
         }

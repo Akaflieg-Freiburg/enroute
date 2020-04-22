@@ -51,7 +51,13 @@ Page {
 
                 SwitchDelegate {
                     id: hideUpperAsp
-                    text: qsTr("Hide Airspaces above FL100") + (globalSettings.hideUpperAirspaces ? `<br><font color="#606060" size="2">`+qsTr(`Upper airspaces currently hidden`)+`</font>` : `<br><font color="#606060" size="2">`+qsTr(`All airspaces currently shown`)+`</font>`)
+                    text: qsTr("Hide Airspaces above FL100") + (globalSettings.hideUpperAirspaces ? `<br><font color="#606060" size="2">`
+                                                                                                    + qsTr("Upper airspaces currently hidden")
+                                                                                                    +"</font>"
+                                                                                                  : `<br><font color="#606060" size="2">`
+                                                                                                    + qsTr("All airspaces currently shown")
+                                                                                                    + `</font>`
+                                                                )
                     icon.source: "/icons/material/ic_map.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
@@ -99,7 +105,7 @@ Page {
                 }
 
                 ItemDelegate {
-                    text: qsTr(`SatNav Status`)+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
+                    text: qsTr("SatNav Status")+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
                     icon.source: "/icons/material/ic_satellite.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true

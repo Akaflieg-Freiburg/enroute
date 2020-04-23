@@ -2,19 +2,39 @@
 # Configure files
 #
 
+qt5_add_translation(TRANSLATIONS
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+     )
+message(${TRANSLATIONS})
+
 configure_file(flightMap.qrc.in flightMap.qrc)
 configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qrc.in flightMapFonts.qrc)
 configure_file(icons.qrc.in icons.qrc)
 configure_file(qml.qrc.in qml.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
 
-configure_file(text/bugReport.html.in text/bugReport.html)
-configure_file(text/firstStart.html.in text/firstStart.html)
-configure_file(text/info_author.html.in text/info_author.html)
-configure_file(text/info_enroute.html.in text/info_enroute.html)
-configure_file(text/info_license.html.in text/info_license.html)
-configure_file(text/participate.html.in text/participate.html)
-configure_file(text/whatsnew.html.in text/whatsnew.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/bugReport.html.in text/bugReport.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/bugReport_cz.html.in text/bugReport_cz.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/bugReport_de.html.in text/bugReport_de.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/firstStart.html.in text/firstStart.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/firstStart_cz.html.in text/firstStart_cz.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/firstStart_de.html.in text/firstStart_de.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_author.html.in text/info_author.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_author_cz.html.in text/info_author_cz.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_author_de.html.in text/info_author_de.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_enroute.html.in text/info_enroute.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_enroute_cz.html.in text/info_enroute_cz.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_enroute_de.html.in text/info_enroute_de.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_license.html.in text/info_license.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_license_cz.html.in text/info_license_cz.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_license_de.html.in text/info_license_de.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/participate.html.in text/participate.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/participate_cz.html.in text/participate_cz.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/participate_de.html.in text/participate_de.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/whatsnew.html.in text/whatsnew.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/whatsnew_cz.html.in text/whatsnew_cz.html)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/whatsnew_de.html.in text/whatsnew_de.html)
 
 
 #
@@ -27,7 +47,8 @@ set(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
-    
+    ${TRANSLATIONS}
+
     # C++ files
     Aircraft.cpp
     Airspace.cpp

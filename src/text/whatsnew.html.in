@@ -1,6 +1,0 @@
-<p>Johannes Zellner has implemented geoid altitude correction, which corrects
-for the different definitions of 'sea level' used in aviation and in satellite
-navigation.  The corrections will be applied automatically and will give more
-precise altitude readings.</p>
-
-<p>-- Stefan Kebekus.</p>

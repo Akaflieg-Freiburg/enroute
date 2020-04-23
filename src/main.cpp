@@ -21,11 +21,13 @@
 #include <QFile>
 #include <QGuiApplication>
 #include <QIcon>
+#include <QLibraryInfo>
 #include <QQuickItem>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QSettings>
+#include <QTranslator>
 
 #include "Aircraft.h"
 #include "FlightRoute.h"
@@ -57,7 +59,16 @@ int main(int argc, char *argv[])
 #if defined(Q_OS_LINUX)
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
-    QSettings settings;
+
+    // Install translators
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    translator.load(QString(":enroute_") + locale.left(2));
+    app.installTranslator(&translator);
+    QTranslator Qt_translator;
+    Qt_translator.load("qt_" + locale.left(2), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&Qt_translator);
+
 
     /*
      * Set up ApplicationEngine for QML
@@ -140,6 +151,7 @@ int main(int argc, char *argv[])
     }
 
     // Restore saved settings and make them available to QML
+    QSettings settings;
     engine->rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));
     engine->rootContext()->setContextProperty("savedZoomLevel", settings.value("Map/zoomLevel", 9));
 

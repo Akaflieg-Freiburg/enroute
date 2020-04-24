@@ -35,6 +35,12 @@ class MobileAdaptor : public QObject
     Q_OBJECT
 
 public:
+    /*! \brief Standard constructor
+
+    On Android, this constructor disables the screen lock.
+
+    @param parent Standard QObject parent pointer
+    */
     explicit MobileAdaptor(QObject *parent = nullptr);
 
     ~MobileAdaptor();
@@ -54,15 +60,6 @@ public slots:
     nothing.
     */
     void vibrateBrief();
-
-    /*! \brief On Android, disables the screen lock
-
-    On Android, disables the screen lock. On other platforms, this does nothing.
-
-    @param on If set to 'true', the screen will never switch off while the app
-        is shown to the user.
-    */
-    void keepScreenOn(bool on);
 
     /*! \brief Shows a notifaction, indicating that a download is in progress
 

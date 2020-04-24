@@ -70,7 +70,7 @@ Geoid::Geoid()
 //
 qreal Geoid::operator()(qreal latitude, qreal longitude)
 {
-    if (egm.size() == 0)
+    if (egm.empty())
         return 0.0;
 
     while (longitude < 0)

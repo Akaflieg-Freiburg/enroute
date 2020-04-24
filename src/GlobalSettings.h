@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QFile>
 #include <QObject>
 #include <QPointer>
 #include <QSettings>
@@ -63,7 +64,7 @@ public:
      *
      * @returns Property acceptedTerms
      */
-    int acceptedTerms();
+    int acceptedTerms() const { return settings.value("acceptedTerms", 0).toInt(); }
 
     /*! \brief Setter function for property of the same name
      *
@@ -75,7 +76,7 @@ public:
     Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
 
     /*! \brief Getter function for property with the same name */
-    bool hasTranslation() const { return _hasTranslation; }
+    bool hasTranslation() const { return QFile::exists(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
 
     /*! \brief Find out if "What's new" should be shown
      *
@@ -96,7 +97,7 @@ public:
      *
      * @returns Property hideUpperAirspaces
      */
-    bool hideUpperAirspaces();
+    bool hideUpperAirspaces() const { return settings.value("Map/hideUpperAirspaces", false).toBool(); }
 
     /*! \brief Setter function for property of the same name
      *
@@ -104,35 +105,22 @@ public:
      */
     void setHideUpperAirspaces(bool hide);
 
-    /*! \brief Hide airspaces with lower bound FL100 or above */
-    Q_PROPERTY(bool keepScreenOn READ keepScreenOn WRITE setKeepScreenOn NOTIFY keepScreenOnChanged)
+    /*! \brief Set to true is app should be shown in English rather than the system language */
+    Q_PROPERTY(bool preferEnglish READ preferEnglish WRITE setPreferEnglish NOTIFY preferEnglishChanged)
 
     /*! \brief Getter function for property of the same name
      *
-     * @returns Property keepScreenOn
+     * @returns Property preferEnglish
      */
-    bool keepScreenOn() const;
+    bool preferEnglish() const { return settings.value("System/preferEnglish", false).toBool(); }
 
     /*! \brief Setter function for property of the same name
      *
-     * @param sKSO Property keepScreenOn
-     */
-    void setKeepScreenOn(bool sKSO);
-
-    /*! \brief Translate app to system language */
-    Q_PROPERTY(bool translate READ translate WRITE setTranslate NOTIFY translateChanged)
-
-    /*! \brief Getter function for property of the same name
+     * Setting this property will install/remove system-wide translators.
      *
-     * @returns Property translate
+     * @param preferEng Property preferEng
      */
-    bool translate() const;
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param trans Property translate
-     */
-    void setTranslate(bool trans);
+    void setPreferEnglish(bool preferEng);
 
 signals:
     /*! Notifier signal */
@@ -142,18 +130,15 @@ signals:
     void hideUpperAirspacesChanged();
 
     /*! Notifier signal */
-    void keepScreenOnChanged();
-
-    /*! Notifier signal */
-    void translateChanged();
+    void preferEnglishChanged();
 private:
     Q_DISABLE_COPY_MOVE(GlobalSettings)
     
-    // Set in the constructor to indicate if translation files for the system language exist
-    bool _hasTranslation;
+    // Removes/Installs global application translators, according to the settings value "System/preferEnglish"
+    void installTranslators();
 
     QPointer<QTranslator> enrouteTranslator {nullptr};
     QPointer<QTranslator> qtTranslator {nullptr};
 
-    QSettings *settings;
+    QSettings settings;
 };

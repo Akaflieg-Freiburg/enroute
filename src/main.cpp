@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
      * Set up ApplicationEngine for QML
      */
     auto engine = new QQmlApplicationEngine();
-    QObject::connect(globalSettings, &GlobalSettings::translateChanged, engine, &QQmlApplicationEngine::retranslate);
+    QObject::connect(globalSettings, &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
     auto navEngine = new SatNav(engine);
@@ -78,7 +78,6 @@ int main(int argc, char *argv[])
 
     // Make MobileAdaptor available to QML engine
     auto *adaptor = new MobileAdaptor(engine);
-    adaptor->keepScreenOn(globalSettings->keepScreenOn());
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
     engine->rootContext()->setContextProperty("MobileAdaptor", adaptor);
 

@@ -91,30 +91,16 @@ Page {
                 }
 
                 SwitchDelegate {
-                    id: keepScreenOn
-                    text: qsTr("Keep Screen On")
-                    icon.source: "/icons/material/ic_screen_lock_portrait.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
-                    Component.onCompleted: keepScreenOn.checked = globalSettings.keepScreenOn
-                    onCheckedChanged: {
-                        MobileAdaptor.vibrateBrief()
-                        globalSettings.keepScreenOn = keepScreenOn.checked
-                        MobileAdaptor.keepScreenOn(keepScreenOn.checked)
-                    }
-                }
-
-                SwitchDelegate {
-                    id: useSystemLanguage
-                    text: qsTr("Prefer English language")
+                    id: preferEnglish
+                    text: qsTr("Prefer English")
                     icon.source: "/icons/material/ic_translate.svg"
                     icon.color: Material.primary
                     visible: globalSettings.hasTranslation
                     Layout.fillWidth: true
-                    Component.onCompleted: useSystemLanguage.checked = !globalSettings.translate
+                    Component.onCompleted: preferEnglish.checked = globalSettings.preferEnglish
                     onCheckedChanged: {
                         MobileAdaptor.vibrateBrief()
-                        globalSettings.translate = !useSystemLanguage.checked
+                        globalSettings.preferEnglish = preferEnglish.checked
                     }
                 }
 

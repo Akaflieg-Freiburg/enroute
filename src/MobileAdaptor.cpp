@@ -31,39 +31,9 @@
 MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
 {
-}
-
-
-MobileAdaptor::~MobileAdaptor()
-{
-  // Close all pending notifications
-  showDownloadNotification(false);
-}
-
-
-void MobileAdaptor::hideSplashScreen()
-{
-    if (splashScreenHidden)
-        return;
-    splashScreenHidden = true;
+    // Disable the screen saver so that the screen does not switsch off automatically
 #if defined(Q_OS_ANDROID)
-    QtAndroid::hideSplashScreen(200);
-#endif
-}
-
-void MobileAdaptor::vibrateBrief()
-{
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
-#endif
-}
-
-
-void MobileAdaptor::keepScreenOn(bool on)
-{
-    Q_UNUSED(on)
-
-#if defined(Q_OS_ANDROID)
+    bool on=true;
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
     QtAndroid::runOnAndroidThread([on]{
         QAndroidJniObject activity = QtAndroid::androidActivity();
@@ -85,6 +55,32 @@ void MobileAdaptor::keepScreenOn(bool on)
             env->ExceptionClear();
         }
     });
+#endif
+}
+
+
+MobileAdaptor::~MobileAdaptor()
+{
+  // Close all pending notifications
+  showDownloadNotification(false);
+}
+
+
+void MobileAdaptor::hideSplashScreen()
+{
+    if (splashScreenHidden)
+        return;
+    splashScreenHidden = true;
+#if defined(Q_OS_ANDROID)
+    QtAndroid::hideSplashScreen(200);
+#endif
+}
+
+
+void MobileAdaptor::vibrateBrief()
+{
+#if defined(Q_OS_ANDROID)
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 #endif
 }
 

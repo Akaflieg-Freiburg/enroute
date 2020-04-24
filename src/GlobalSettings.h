@@ -21,7 +21,9 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
 #include <QSettings>
+#include <QTranslator>
 
 
 /*! \brief Global Settings Manager
@@ -69,6 +71,12 @@ public:
      */
     void setAcceptedTerms(int terms);
 
+    /*! \brief True if translation files exist for the system language */
+    Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
+
+    /*! \brief Getter function for property with the same name */
+    bool hasTranslation() const { return _hasTranslation; }
+
     /*! \brief Find out if "What's new" should be shown
      *
      * This property says if the dialog "What's new" should be shown on startup.
@@ -103,13 +111,28 @@ public:
      *
      * @returns Property keepScreenOn
      */
-    bool keepScreenOn();
+    bool keepScreenOn() const;
 
     /*! \brief Setter function for property of the same name
      *
      * @param sKSO Property keepScreenOn
      */
     void setKeepScreenOn(bool sKSO);
+
+    /*! \brief Translate app to system language */
+    Q_PROPERTY(bool translate READ translate WRITE setTranslate NOTIFY translateChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property translate
+     */
+    bool translate() const;
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param trans Property translate
+     */
+    void setTranslate(bool trans);
 
 signals:
     /*! Notifier signal */
@@ -121,8 +144,16 @@ signals:
     /*! Notifier signal */
     void keepScreenOnChanged();
 
+    /*! Notifier signal */
+    void translateChanged();
 private:
     Q_DISABLE_COPY_MOVE(GlobalSettings)
     
+    // Set in the constructor to indicate if translation files for the system language exist
+    bool _hasTranslation;
+
+    QPointer<QTranslator> enrouteTranslator {nullptr};
+    QPointer<QTranslator> qtTranslator {nullptr};
+
     QSettings *settings;
 };

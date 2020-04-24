@@ -104,6 +104,20 @@ Page {
                     }
                 }
 
+                SwitchDelegate {
+                    id: useSystemLanguage
+                    text: qsTr("Prefer English language")
+                    icon.source: "/icons/material/ic_translate.svg"
+                    icon.color: Material.primary
+                    visible: globalSettings.hasTranslation
+                    Layout.fillWidth: true
+                    Component.onCompleted: useSystemLanguage.checked = !globalSettings.translate
+                    onCheckedChanged: {
+                        MobileAdaptor.vibrateBrief()
+                        globalSettings.translate = !useSystemLanguage.checked
+                    }
+                }
+
                 ItemDelegate {
                     text: qsTr("SatNav Status")+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
                     icon.source: "/icons/material/ic_satellite.svg"

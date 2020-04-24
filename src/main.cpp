@@ -60,27 +60,20 @@ int main(int argc, char *argv[])
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
 
-    // Install translators
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    translator.load(QString(":enroute_") + locale.left(2));
-    app.installTranslator(&translator);
-    QTranslator Qt_translator;
-    Qt_translator.load("qt_" + locale.left(2), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    app.installTranslator(&Qt_translator);
-
+    // Create global settings object. We do this before creating the application engine becuase this also installs translators.
+    auto globalSettings = new GlobalSettings();
 
     /*
      * Set up ApplicationEngine for QML
      */
     auto engine = new QQmlApplicationEngine();
+    QObject::connect(globalSettings, &GlobalSettings::translateChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
     auto navEngine = new SatNav(engine);
     engine->rootContext()->setContextProperty("satNav", navEngine);
 
     // Attach global settings object
-    auto globalSettings = new GlobalSettings(engine);
     engine->rootContext()->setContextProperty("globalSettings", globalSettings);
 
     // Make MobileAdaptor available to QML engine

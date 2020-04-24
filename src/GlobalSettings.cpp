@@ -18,6 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
+#include <QDebug>
+#include <QFile>
+#include <QLibraryInfo>
+#include <QLocale>
 #include <QSettings>
 
 #include "GlobalSettings.h"
@@ -27,12 +32,23 @@ GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
     settings = new QSettings(this);
+
+    _hasTranslation = QFile::exists(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
+    qWarning() << "hasTranslation" << _hasTranslation;
+#warning need to install translators
 }
 
 
 GlobalSettings::~GlobalSettings()
 {
+    // Remove translators
+    setTranslate(false);
+    delete enrouteTranslator;
+    delete qtTranslator;
+
+    // Save some values
     settings->setValue("lastVersion", PROJECT_VERSION);
+
     delete settings;
 }
 
@@ -65,7 +81,7 @@ void GlobalSettings::setHideUpperAirspaces(bool hide)
 }
 
 
-bool GlobalSettings::keepScreenOn()
+bool GlobalSettings::keepScreenOn() const
 {
     return settings->value("System/keepScreenOn", true).toBool();
 }
@@ -86,4 +102,40 @@ bool GlobalSettings::showWhatsNew()
     if (lastVersion == "0.0.0")
         return false;
     return lastVersion != PROJECT_VERSION;
+}
+
+bool GlobalSettings::translate() const
+{
+    return settings->value("System/translate", true).toBool();
+}
+
+void GlobalSettings::setTranslate(bool trans)
+{
+    if (trans == translate())
+        return;
+
+    // Remove existing translators
+    if (enrouteTranslator) {
+        QCoreApplication::removeTranslator(enrouteTranslator);
+        delete enrouteTranslator;
+    }
+    if (qtTranslator) {
+        QCoreApplication::removeTranslator(qtTranslator);
+        delete qtTranslator;
+    }
+
+    // If desired, install new translators
+    if (trans) {
+        enrouteTranslator = new QTranslator(this);
+        auto a = enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
+        QCoreApplication::installTranslator(enrouteTranslator);
+
+        qtTranslator = new QTranslator(this);
+        auto b = qtTranslator->load(QString("qt_%1.qm").arg(QLocale::system().name().left(2)), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        QCoreApplication::installTranslator(qtTranslator);
+        qWarning() << "install " << a << b;
+    }
+
+    settings->setValue("System/translate", trans);
+    emit translateChanged();
 }

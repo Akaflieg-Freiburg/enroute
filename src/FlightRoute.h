@@ -160,6 +160,14 @@ public:
      */
     QList<QObject*> routeObjects() const;
 
+    /*! \brief Suggests a name for saving this route
+     *
+     * This method suggests a name for saving the present route (without path and file extension).
+     *
+     * @returns Suggested name for saving the file. If no useful suggestion can be made, the returned string is empty
+     */
+    Q_INVOKABLE QString suggestedFilename() const;
+
     /*! \brief Human-readable summary of the flight route*/
     Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
 

@@ -24,6 +24,7 @@ import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
 
 import enroute 1.0
+import "../dialogs"
 import "../items"
 
 Page {
@@ -181,11 +182,11 @@ Page {
 
                     text: qsTr("Save to Library…")
                     icon.source: "/icons/material/ic_save.svg"
-                    enabled: false
-//                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        flightRouteSaveDialog.open()
                     }
                 }
 
@@ -493,6 +494,11 @@ Page {
         }
     }
 
+    FlightRouteSaveDialog {
+        id: flightRouteSaveDialog
+
+        anchors.centerIn: parent
+    }
 
     Shortcut {
         sequence: "Ctrl+a"

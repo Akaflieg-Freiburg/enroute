@@ -235,6 +235,22 @@ QList<QObject*> FlightRoute::routeObjects() const
 }
 
 
+QString FlightRoute::suggestedFilename() const
+{
+    if (_waypoints.size() < 2)
+        return QString();
+
+    QString start = _waypoints.constFirst()->get("COD").toString();
+    if (start.isEmpty())
+        return QString();
+    QString end = _waypoints.constLast()->get("COD").toString();
+    if (end.isEmpty())
+        return QString();
+
+    return start+" → "+end;
+}
+
+
 QString FlightRoute::summary() const
 {
     if (_legs.empty())

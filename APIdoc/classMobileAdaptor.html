@@ -41,6 +41,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classMobileAdaptor-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">MobileAdaptor Class Reference</div>  </div>
@@ -62,19 +63,58 @@ Public Slots</h2></td></tr>
 <tr class="memitem:aa1a2ef9dbb21953a2554840c578c308d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#aa1a2ef9dbb21953a2554840c578c308d">vibrateBrief</a> ()</td></tr>
 <tr class="memdesc:aa1a2ef9dbb21953a2554840c578c308d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the device briefly vibrate.  <a href="#aa1a2ef9dbb21953a2554840c578c308d">More...</a><br /></td></tr>
 <tr class="separator:aa1a2ef9dbb21953a2554840c578c308d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d1af16c7a6ba6d7efc2d89aa34e9789"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a2d1af16c7a6ba6d7efc2d89aa34e9789">keepScreenOn</a> (bool on)</td></tr>
-<tr class="memdesc:a2d1af16c7a6ba6d7efc2d89aa34e9789"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Android, disables the screen lock.  <a href="#a2d1af16c7a6ba6d7efc2d89aa34e9789">More...</a><br /></td></tr>
-<tr class="separator:a2d1af16c7a6ba6d7efc2d89aa34e9789"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a4496e52193c1509258b3742989a64b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a0a4496e52193c1509258b3742989a64b">showDownloadNotification</a> (bool show)</td></tr>
 <tr class="memdesc:a0a4496e52193c1509258b3742989a64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notifaction, indicating that a download is in progress.  <a href="#a0a4496e52193c1509258b3742989a64b">More...</a><br /></td></tr>
 <tr class="separator:a0a4496e52193c1509258b3742989a64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a302e1db70ef90d5e0881a4117adb2b51"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a302e1db70ef90d5e0881a4117adb2b51">MobileAdaptor</a> (QObject *parent=nullptr)</td></tr>
+<tr class="memdesc:a302e1db70ef90d5e0881a4117adb2b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="#a302e1db70ef90d5e0881a4117adb2b51">More...</a><br /></td></tr>
+<tr class="separator:a302e1db70ef90d5e0881a4117adb2b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to platform-specific capabilities of mobile devices. </p>
 <p>This class is an interface to capabilities of mobile devices (e.g. vibration) that need platform-specific code to operate. On desktop platforms, the methods of this class generally do nothing. </p>
 
 <p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00033">33</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a302e1db70ef90d5e0881a4117adb2b51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a302e1db70ef90d5e0881a4117adb2b51">&#9670;&nbsp;</a></span>MobileAdaptor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MobileAdaptor::MobileAdaptor </td>
+          <td>(</td>
+          <td class="paramtype">QObject *&#160;</td>
+          <td class="paramname"><em>parent</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Standard constructor. </p>
+<p>On Android, this constructor disables the screen lock.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parent</td><td>Standard QObject parent pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5edd413a1c2346b59ac7fb532cc9ff1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5edd413a1c2346b59ac7fb532cc9ff1a">&#9670;&nbsp;</a></span>hideSplashScreen</h2>
 
@@ -100,41 +140,6 @@ Public Slots</h2></td></tr>
 
 <p>Hides the android splash screen. </p>
 <p>On Android, hides the android splash screen. On other platforms, this does nothing. The implementation ensures that QtAndroid::hideSplashScreen is called (only once, regardless of how often this slot is used). </p>
-
-</div>
-</div>
-<a id="a2d1af16c7a6ba6d7efc2d89aa34e9789"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d1af16c7a6ba6d7efc2d89aa34e9789">&#9670;&nbsp;</a></span>keepScreenOn</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MobileAdaptor::keepScreenOn </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>on</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>On Android, disables the screen lock. </p>
-<p>On Android, disables the screen lock. On other platforms, this does nothing.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">on</td><td>If set to 'true', the screen will never switch off while the app is shown to the user. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

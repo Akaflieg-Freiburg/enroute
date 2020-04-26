@@ -75,7 +75,10 @@ public:
     /*! \brief True if translation files exist for the system language */
     Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
 
-    /*! \brief Getter function for property with the same name */
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property hasTranslation
+     */
     bool hasTranslation() const { return QFile::exists(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
 
     /*! \brief Hash of the last "what's new message that was shown to the user

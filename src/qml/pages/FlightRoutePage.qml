@@ -164,15 +164,28 @@ Page {
                 id: headerMenuX
 
                 MenuItem {
-                    id: reverseItem
+                    id: loadItem
 
-                    text: qsTr("Reverse Route")
-                    icon.source: "/icons/material/ic_swap_vert.svg"
-                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    text: qsTr("Load from Library…")
+                    icon.source: "/icons/material/ic_open_in_new.svg"
+                    enabled: false
+//                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
-                        flightRoute.reverse()
+                    }
+                }
+
+                MenuItem {
+                    id: saveItem
+
+                    text: qsTr("Save to Library…")
+                    icon.source: "/icons/material/ic_save.svg"
+                    enabled: false
+//                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
                     }
                 }
 
@@ -185,9 +198,29 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
-                        flightRoute.clear()
+                        clearDialog.open()
+                    }
+
+                }
+
+                Rectangle {
+                    height: 1
+                    color: Material.primary
+                }
+
+                MenuItem {
+                    id: reverseItem
+
+                    text: qsTr("Reverse Route")
+                    icon.source: "/icons/material/ic_swap_vert.svg"
+                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
+                        flightRoute.reverse()
                     }
                 }
+
             }
         } // ToolButton
 
@@ -441,6 +474,25 @@ Page {
             }
         }
     }
+
+    Dialog {
+        id: clearDialog
+        anchors.centerIn: parent
+
+        title: qsTr("Clear route?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        onAccepted: {
+            MobileAdaptor.vibrateBrief()
+            flightRoute.clear()
+        }
+        onRejected: {
+            MobileAdaptor.vibrateBrief()
+            close()
+        }
+    }
+
 
     Shortcut {
         sequence: "Ctrl+a"

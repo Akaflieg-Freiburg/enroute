@@ -23,8 +23,10 @@
         <file alias="icons/material/ic_more_vert.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_vert_24px.svg</file>	
 	<file alias="icons/material/ic_my_location.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_my_location_24px.svg</file>
 	<file alias="icons/material/ic_new_releases.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_new_releases_24px.svg</file>
+	<file alias="icons/material/ic_open_in_new.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_open_in_new_24px.svg</file>
         <file alias="icons/material/ic_refresh.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_refresh_24px.svg</file>
         <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
+	<file alias="icons/material/ic_save.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_save_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
 	<file alias="icons/material/ic_translate.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_translate_24px.svg</file>
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>

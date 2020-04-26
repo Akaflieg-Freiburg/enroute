@@ -139,7 +139,10 @@ int main(int argc, char *argv[])
     {
         QFile file(":text/whatsnew.html");
         file.open(QIODevice::ReadOnly);
-        engine->rootContext()->setContextProperty("whatsnew", file.readAll());
+        auto whatsNew = file.readAll();
+        auto whatsNewHash = qHash(whatsNew, 0);
+        engine->rootContext()->setContextProperty("whatsnew", whatsNew);
+        engine->rootContext()->setContextProperty("whatsNewHash", whatsNewHash);
     }
 
     // Restore saved settings and make them available to QML

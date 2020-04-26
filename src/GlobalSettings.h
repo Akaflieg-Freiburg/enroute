@@ -78,17 +78,23 @@ public:
     /*! \brief Getter function for property with the same name */
     bool hasTranslation() const { return QFile::exists(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
 
-    /*! \brief Find out if "What's new" should be shown
+    /*! \brief Hash of the last "what's new message that was shown to the user
      *
-     * This property says if the dialog "What's new" should be shown on startup.
+     * This property is used in the app to determine if the message has been shown or not.
      */
-    Q_PROPERTY(bool showWhatsNew READ showWhatsNew CONSTANT)
+    Q_PROPERTY(uint lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
 
     /*! \brief Getter function for property of the same name
      *
-     * @returns Property showWhatsNew
+     * @returns Property lastWhatsNewHash
      */
-    bool showWhatsNew();
+    uint lastWhatsNewHash() const { return settings.value("lastWhatsNewHash", 0).toUInt(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @param lwnh Property lastWhatsNewHash
+     */
+    void setLastWhatsNewHash(uint lwnh);
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
@@ -128,6 +134,9 @@ signals:
 
     /*! Notifier signal */
     void hideUpperAirspacesChanged();
+
+    /*! Notifier signal */
+    void lastWhatsNewHashChanged();
 
     /*! Notifier signal */
     void preferEnglishChanged();

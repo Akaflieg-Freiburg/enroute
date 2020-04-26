@@ -36,52 +36,7 @@ ApplicationWindow {
     title: qsTr("Akaflieg Freiburg - Enroute")
     width: 1000
     height: 800
-/*
-    header: ToolBar {
-        id: tbar
-        visible: stackView.depth > 1
 
-        RowLayout{
-            anchors.fill: parent
-
-            // This spacer ensures that the ToolButton is not covered by the drawer's dragMargin
-            Item { width: drawer.dragMargin }
-
-            ToolButton {
-                icon.source: "/icons/material/ic_arrow_back.svg"
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    if (stackView.depth > 1) {
-                        stackView.pop()
-                    } else {
-                        drawer.open()
-                    }
-                }
-            } // ToolButton
-
-            Label {
-                text: stackView.currentItem.title
-                elide: Label.ElideRight
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-            }
-
-            ToolButton {
-                id: headerMenuToolButton
-                icon.source: "/icons/material/ic_more_vert.svg"
-                onClicked: {
-                    MobileAdaptor.vibrateBrief()
-                    headerMenu.popup()
-                }
-                visible: false
-
-                AutoSizingMenu { id: headerMenu }
-            } // ToolButton
-
-        } // RowLayout
-    } // ToolBar
-  */
     Drawer {
         id: drawer
         width: col.implicitWidth
@@ -215,7 +170,6 @@ ApplicationWindow {
                     }
                 }
 
-
                 ItemDelegate {
                     text: qsTr("Participate")
                     icon.source: "/icons/nav_participate.svg"
@@ -286,7 +240,7 @@ ApplicationWindow {
                 dialogLoader.active = true
                 return
             }
-            if (globalSettings.showWhatsNew && !satNav.isInFlight) {
+            if ((globalSettings.lastWhatsNewHash !== whatsNewHash) && !satNav.isInFlight) {
                 whatsNewDialog.open()
                 return
             }
@@ -363,6 +317,7 @@ ApplicationWindow {
         
         title: qsTr("What's new …?")
         text: whatsnew
+        onAccepted: globalSettings.lastWhatsNewHash = whatsNewHash
     }
     
     Shortcut {

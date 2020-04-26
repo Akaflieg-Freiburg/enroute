@@ -67,12 +67,12 @@ void GlobalSettings::setHideUpperAirspaces(bool hide)
 }
 
 
-bool GlobalSettings::showWhatsNew()
+void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 {
-    auto lastVersion = settings.value("lastVersion", "0.0.0").toString();
-    if (lastVersion == "0.0.0")
-        return false;
-    return lastVersion != PROJECT_VERSION;
+    if (lwnh == lastWhatsNewHash())
+        return;
+    settings.setValue("lastWhatsNewHash", lwnh);
+    emit lastWhatsNewHashChanged();
 }
 
 

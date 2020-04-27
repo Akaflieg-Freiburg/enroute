@@ -87,6 +87,14 @@ public:
      */
     Q_INVOKABLE void append(const QGeoCoordinate& position) { append(new Waypoint(position, this)); }
 
+    /*! \brief Check if a file exists in the flight route library
+     *
+     * @param fileName File name, without extension and path
+     *
+     * @returns True if file exists, false otherwise
+     */
+    Q_INVOKABLE bool fileExists(const QString& fileName) const;
+
     /*! \brief First waypoint in the route
      *
      * This property holds a pointer to the first waypoint in the route, or a
@@ -160,6 +168,9 @@ public:
      */
     QList<QObject*> routeObjects() const;
 
+#warning
+    Q_INVOKABLE QString saveToLibrary(const QString &fileName) const;
+
     /*! \brief Suggests a name for saving this route
      *
      * This method suggests a name for saving the present route (without path and file extension).
@@ -231,7 +242,13 @@ private slots:
     void updateLegs();
 
 private:
-     Q_DISABLE_COPY_MOVE(FlightRoute)
+    Q_DISABLE_COPY_MOVE(FlightRoute)
+
+    // Directory of the flight route library, without trailing "/"
+    QString libraryDir() const;
+
+    // Full file name of file in library. File extension will be added
+    QString libraryPath(const QString &fileName) const;
 
     // Used to check compatibility when loading/saving
     static const quint16 streamVersion = 1;

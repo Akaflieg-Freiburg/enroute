@@ -28,7 +28,6 @@ import enroute 1.0
 Dialog {
     id: dlg
     title: qsTr("Save Flight Route…")
-    focus: true
     modal: true
 
     // Size is chosen so that the dialog does not cover the parent in full
@@ -49,6 +48,11 @@ Dialog {
 
         onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
 
+        onAccepted: {
+            if (fileName.text !== "")
+                dlg.accept()
+        }
+
         Component.onCompleted: fileName.text = flightRoute.suggestedFilename()
     }
 
@@ -61,24 +65,37 @@ Dialog {
 
     onAccepted: {
         MobileAdaptor.vibrateBrief()
-        overwriteDialog.open()
+        if (flightRoute.fileExists(fileName.text))
+            overwriteDialog.open()
+        else
+            saveToLibrary()
+    }
+
+    function saveToLibrary() {
+        console.log("STL")
+        var errorString = flightRoute.saveToLibrary(fileName.text)
+        if (errorString !== "") {
+            console.log("Error")
+        }
     }
 
     Dialog {
         id: overwriteDialog
         anchors.centerIn: parent
+        parent: Overlay.overlay
 
-        title: qsTr("Overwrite file %1?").arg(fileName.text)
+        title: qsTr("Overwrite file '%1'?").arg(fileName.text)
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
         onAccepted: {
             MobileAdaptor.vibrateBrief()
-            flightRoute.clear()
+            dlg.saveToLibrary()
         }
         onRejected: {
             MobileAdaptor.vibrateBrief()
             close()
+            dlg.open()
         }
 
     }

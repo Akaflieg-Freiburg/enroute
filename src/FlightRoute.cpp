@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include <QDataStream>
+#include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QStandardPaths>
 
@@ -52,6 +54,12 @@ void FlightRoute::append(QObject *waypoint)
 
     updateLegs();
     emit waypointsChanged();
+}
+
+
+bool FlightRoute::fileExists(const QString& fileName) const
+{
+    return QFile::exists( libraryPath(fileName) );
 }
 
 
@@ -177,6 +185,24 @@ void FlightRoute::save()
 }
 
 
+QString FlightRoute::saveToLibrary(const QString &fileName) const
+{
+    qWarning() << "FlightRoute::saveToLibrary" << fileName;
+    QDir dir;
+    auto success = dir.mkpath(FlightRoute::libraryDir());
+    if (!success)
+        return tr("Unable to create directory '%1' for library.").arg(libraryDir());
+
+    QString fullName = libraryPath(fileName);
+
+    QFile file(fullName);
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+    out << "Hi there";
+    return QString();
+}
+
+
 void FlightRoute::load()
 {
     QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flightPlan.dat");
@@ -297,4 +323,16 @@ QString FlightRoute::summary() const
         result += QString("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(" "));
 
     return result;
+}
+
+
+QString FlightRoute::libraryDir() const
+{
+    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
+}
+
+
+QString FlightRoute::libraryPath(const QString &fileName) const
+{
+    return libraryDir()+"/"+fileName+".geojson";
 }

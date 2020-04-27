@@ -19,9 +19,10 @@
  ***************************************************************************/
 
 #include <QDataStream>
-#include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QStandardPaths>
 
 #include "AviationUnits.h"
@@ -187,7 +188,15 @@ void FlightRoute::save()
 
 QString FlightRoute::saveToLibrary(const QString &fileName) const
 {
-    qWarning() << "FlightRoute::saveToLibrary" << fileName;
+    QJsonArray waypointArray;
+    foreach(auto waypoint, _waypoints)
+        waypointArray.append(waypoint->toJSON());
+    QJsonObject jsonObj;
+    jsonObj.insert("type", "FeatureCollection");
+    jsonObj.insert("features", waypointArray);
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+
     QDir dir;
     auto success = dir.mkpath(FlightRoute::libraryDir());
     if (!success)
@@ -197,8 +206,8 @@ QString FlightRoute::saveToLibrary(const QString &fileName) const
 
     QFile file(fullName);
     file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
-    out << "Hi there";
+    file.write(doc.toJson());
+    file.close();
     return QString();
 }
 

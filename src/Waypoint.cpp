@@ -143,8 +143,18 @@ QList<QString> Waypoint::tabularDescription() const
 
 QJsonObject Waypoint::toJSON() const
 {
-#warning Needs to be implemented
-    return QJsonObject();
+    QJsonArray coords;
+    coords.insert(0, _coordinate.longitude());
+    coords.insert(1, _coordinate.latitude());
+    QJsonObject geometry;
+    geometry.insert("type", "Point");
+    geometry.insert("coordinates", coords);
+    QJsonObject feature;
+    feature.insert("type", "Feature");
+    feature.insert("properties", QJsonObject::fromVariantMap(_properties));
+    feature.insert("geometry", geometry);
+
+    return feature;
 }
 
 

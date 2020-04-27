@@ -141,6 +141,13 @@ QList<QString> Waypoint::tabularDescription() const
 }
 
 
+QJsonObject Waypoint::toJSON() const
+{
+#warning Needs to be implemented
+    return QJsonObject();
+}
+
+
 Waypoint::Waypoint(QDataStream &stream, QObject *parent)
     : QObject(parent)
 {

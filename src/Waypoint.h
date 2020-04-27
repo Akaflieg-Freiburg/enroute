@@ -153,6 +153,9 @@ public:
   */
   QList<QString> tabularDescription() const;
   
+  /*! \brief Serialization to GeoJSON object */
+  QJsonObject toJSON() const;
+
   /*! \brief Serializes a Waypoint
 
     @param stream QDataStream that is written into

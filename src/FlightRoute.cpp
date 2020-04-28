@@ -22,6 +22,7 @@
 #include <QDir>
 #include <QFile>
 #include <QJsonArray>
+#include <QQmlEngine>
 #include <QStandardPaths>
 
 #include "AviationUnits.h"
@@ -355,4 +356,40 @@ QJsonDocument FlightRoute::toGeoJSON() const
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc;
+}
+
+
+QString FlightRoute::loadFromLibrary(const QString &fileName)
+{
+    QString fullName = libraryPath(fileName);
+    QFile file(fullName);
+    auto success = file.open(QIODevice::ReadOnly);
+    if (!success)
+        return tr("Cannot open file '%1' for reading.").arg(fullName);
+    auto fileContent = file.readAll();
+    if (fileContent.isEmpty())
+        return tr("Cannot read data from file '%1'.").arg(fullName);
+    QJsonParseError parseError;
+    auto document = QJsonDocument::fromJson(file.readAll(), &parseError);
+    file.close();
+    if (parseError.error != QJsonParseError::NoError)
+        return tr("Cannot parse file '%1'. Reason: %2.").arg(fullName, parseError.errorString());
+
+    QList<Waypoint*> newWaypoints;
+    foreach(auto value, document.object()["features"].toArray()) {
+        auto wp = new Waypoint(value.toObject());
+        if (!wp->isValid()) {
+            qDeleteAll(newWaypoints);
+            return tr("Cannot parse content of file '%1'.").arg(libraryPath(fileName));
+        }
+        QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
+        newWaypoints.append(wp);
+    }
+
+    qDeleteAll(_waypoints);
+    _waypoints = newWaypoints;
+    updateLegs();
+    emit waypointsChanged();
+
+    return QString();
 }

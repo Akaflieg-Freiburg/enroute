@@ -56,7 +56,7 @@ Dialog {
         Component.onCompleted: fileName.text = flightRoute.suggestedFilename()
     }
 
-    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
+    Component.onCompleted: dlg.standardButton(DialogButtonBox.Open).enabled = (fileName.text !== "")
 
     onRejected: {
         MobileAdaptor.vibrateBrief()
@@ -77,7 +77,7 @@ Dialog {
     }
 
     function openFromLibrary() {
-        var errorString = "XXX"
+        var errorString = flightRoute.loadFromLibrary(fileName.text)
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

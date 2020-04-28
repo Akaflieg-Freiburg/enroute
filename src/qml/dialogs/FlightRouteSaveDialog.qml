@@ -53,10 +53,12 @@ Dialog {
                 dlg.accept()
         }
 
-        Component.onCompleted: fileName.text = flightRoute.suggestedFilename()
     }
 
-    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
+    onOpened: {
+        dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
+        fileName.text = flightRoute.suggestedFilename()
+    }
 
     onRejected: {
         MobileAdaptor.vibrateBrief()

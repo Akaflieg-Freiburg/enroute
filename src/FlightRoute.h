@@ -230,6 +230,9 @@ public slots:
      */
     void moveUp(QObject *waypoint);
 
+#warning
+    QString loadFromLibrary(const QString &fileName);
+
     /*! \brief Remove waypoint from the current route
      *
      * If the waypoint is contained in the route, the method returns immediately

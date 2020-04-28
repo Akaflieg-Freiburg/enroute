@@ -27,14 +27,14 @@ import enroute 1.0
 
 Dialog {
     id: dlg
-    title: qsTr("Save Flight Route…")
+    title: qsTr("Load Flight Route…")
     modal: true
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
     height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
-    standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
+    standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Open
 
     TextField {
         id: fileName
@@ -46,7 +46,7 @@ Dialog {
         focus: true
         placeholderText: "File Name"
 
-        onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+        onTextChanged: dlg.standardButton(DialogButtonBox.Open).enabled = (text !== "")
 
         onAccepted: {
             if (fileName.text !== "")
@@ -65,10 +65,10 @@ Dialog {
 
     onAccepted: {
         MobileAdaptor.vibrateBrief()
-        if (flightRoute.fileExists(fileName.text))
+        if (!flightRoute.isEmpty)
             overwriteDialog.open()
         else
-            saveToLibrary()
+            openFromLibrary()
     }
 
     Connections {
@@ -76,8 +76,8 @@ Dialog {
         onDetected: close()
     }
 
-    function saveToLibrary() {
-        var errorString = flightRoute.saveToLibrary(fileName.text)
+    function openFromLibrary() {
+        var errorString = "XXX"
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
@@ -140,13 +140,13 @@ Dialog {
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Overwrite file '%1'?").arg(fileName.text)
+        title: qsTr("Overwrite current flight route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
         onAccepted: {
             MobileAdaptor.vibrateBrief()
-            dlg.saveToLibrary()
+            dlg.openFromLibrary()
         }
         onRejected: {
             MobileAdaptor.vibrateBrief()

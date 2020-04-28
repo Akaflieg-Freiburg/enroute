@@ -5,6 +5,7 @@
         <file alias="dialogs/AltitudeCorrectionDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/AltitudeCorrectionDialog.qml</file>
         <file alias="dialogs/ErrorDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/ErrorDialog.qml</file>	
         <file alias="dialogs/FirstRunDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FirstRunDialog.qml</file>
+        <file alias="dialogs/FlightRouteOpenDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteOpenDialog.qml</file>
         <file alias="dialogs/FlightRouteSaveDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteSaveDialog.qml</file>
         <file alias="dialogs/LongTextDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialog.qml</file>
         <file alias="dialogs/SatNavStatusDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/SatNavStatusDialog.qml</file>

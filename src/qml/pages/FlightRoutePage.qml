@@ -169,11 +169,11 @@ Page {
 
                     text: qsTr("Load from Library…")
                     icon.source: "/icons/material/ic_open_in_new.svg"
-                    enabled: false
-//                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    enabled: true
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        flightRouteOpenDialog.open()
                     }
                 }
 
@@ -492,6 +492,12 @@ Page {
             MobileAdaptor.vibrateBrief()
             close()
         }
+    }
+
+    FlightRouteOpenDialog {
+        id: flightRouteOpenDialog
+
+        anchors.centerIn: parent
     }
 
     FlightRouteSaveDialog {

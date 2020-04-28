@@ -34,7 +34,8 @@
   
   - The coordinate of the waypoint.
   
-  - A QMap<QString, QVariant> that represents the waypoint properties found in the GeoJSON file.
+  - A QMap<QString, QVariant> that represents the waypoint properties found in
+    the GeoJSON file.
 */
 
 class Waypoint : public QObject
@@ -153,9 +154,17 @@ public:
   */
   QList<QString> tabularDescription() const;
   
-  /*! \brief Serialization to GeoJSON object */
-  QJsonObject toJSON() const;
+  /*! \brief Serialization to GeoJSON object
 
+    This method serialises the waypoint route as a GeoJSON object. The object
+    conforms to the specification outlined
+    [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+    The waypoint can be restored with the obvious constructor
+    
+    @returns QJsonObject describing the waypoint
+  */
+  QJsonObject toJSON() const;
+  
   /*! \brief Serializes a Waypoint
 
     @param stream QDataStream that is written into

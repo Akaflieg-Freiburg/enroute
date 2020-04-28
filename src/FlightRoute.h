@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QJsonDocument>
 #include <QLocale>
 #include <QPointer>
 
@@ -168,14 +169,25 @@ public:
      */
     QList<QObject*> routeObjects() const;
 
-#warning
+    /*! \brief Saves flight route to library
+     *
+     * This method saves the flight route as a GeoJSON file in the library
+     * directory.
+     *
+     * @param fileName File name, without path and extension
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
     Q_INVOKABLE QString saveToLibrary(const QString &fileName) const;
 
     /*! \brief Suggests a name for saving this route
      *
-     * This method suggests a name for saving the present route (without path and file extension).
+     * This method suggests a name for saving the present route (without path
+     * and file extension).
      *
-     * @returns Suggested name for saving the file. If no useful suggestion can be made, the returned string is empty
+     * @returns Suggested name for saving the file. If no useful suggestion can
+     * be made, the returned string is empty
      */
     Q_INVOKABLE QString suggestedFilename() const;
 
@@ -187,6 +199,16 @@ public:
      * @returns Property summary
      */
     QString summary() const;
+
+    /*! \brief Exports to route to document GeoJSON
+     *
+     * This method serialises the current flight route as a GeoJSON
+     * document. The document conforms to the specification outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *
+     * @returns QJsonDocument describing the flight route
+     */
+    QJsonDocument toGeoJSON() const;
 
 public slots:
     /*! \brief Deletes all waypoints in the current route */

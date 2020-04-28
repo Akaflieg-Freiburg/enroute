@@ -22,7 +22,6 @@
 #include <QDir>
 #include <QFile>
 #include <QJsonArray>
-#include <QJsonDocument>
 #include <QStandardPaths>
 
 #include "AviationUnits.h"
@@ -188,15 +187,6 @@ void FlightRoute::save()
 
 QString FlightRoute::saveToLibrary(const QString &fileName) const
 {
-    QJsonArray waypointArray;
-    foreach(auto waypoint, _waypoints)
-        waypointArray.append(waypoint->toJSON());
-    QJsonObject jsonObj;
-    jsonObj.insert("type", "FeatureCollection");
-    jsonObj.insert("features", waypointArray);
-    QJsonDocument doc;
-    doc.setObject(jsonObj);
-
     QDir dir;
     auto success = dir.mkpath(FlightRoute::libraryDir());
     if (!success)
@@ -205,8 +195,15 @@ QString FlightRoute::saveToLibrary(const QString &fileName) const
     QString fullName = libraryPath(fileName);
 
     QFile file(fullName);
-    file.open(QIODevice::WriteOnly);
-    file.write(doc.toJson());
+    success = file.open(QIODevice::WriteOnly);
+    if (!success)
+        return tr("Unable to open the file '%1' for writing.").arg(fullName);
+    auto numBytesWritten = file.write(toGeoJSON().toJson());
+    if (numBytesWritten == -1) {
+        file.close();
+        QFile::remove(fullName);
+        return tr("Unable to write to file '%1' for writing.").arg(fullName);
+    }
     file.close();
     return QString();
 }
@@ -344,4 +341,18 @@ QString FlightRoute::libraryDir() const
 QString FlightRoute::libraryPath(const QString &fileName) const
 {
     return libraryDir()+"/"+fileName+".geojson";
+}
+
+
+QJsonDocument FlightRoute::toGeoJSON() const
+{
+    QJsonArray waypointArray;
+    foreach(auto waypoint, _waypoints)
+        waypointArray.append(waypoint->toJSON());
+    QJsonObject jsonObj;
+    jsonObj.insert("type", "FeatureCollection");
+    jsonObj.insert("features", waypointArray);
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    return doc;
 }

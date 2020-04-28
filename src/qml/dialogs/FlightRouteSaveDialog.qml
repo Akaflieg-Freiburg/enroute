@@ -75,7 +75,59 @@ Dialog {
         console.log("STL")
         var errorString = flightRoute.saveToLibrary(fileName.text)
         if (errorString !== "") {
-            console.log("Error")
+            lbl.text = errorString
+            fileError.open()
+        }
+    }
+
+    Dialog {
+        id: fileError
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        modal: true
+        title: qsTr("An error occurred…")
+        standardButtons: Dialog.Ok
+
+        ScrollView{
+            id: sv
+            anchors.fill: parent
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            // The visibility behavior of the vertical scroll bar is a little complex.
+            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+            ScrollBar.vertical.policy: (height < lbl.implicitHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+            ScrollBar.vertical.interactive: false
+
+            clip: true
+
+            // The Label that we really want to show is wrapped into an Item. This allows
+            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
+            // without binding loops
+            Item {
+                implicitHeight: lbl.implicitHeight
+                width: dlg.availableWidth
+
+                Label {
+                    id: lbl
+                    width: dlg.availableWidth
+                    textFormat: Text.RichText
+                    horizontalAlignment: Text.AlignJustify
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
+                } // Label
+            } // Item
+        } // ScrollView
+
+        Connections {
+            target: sensorGesture
+            onDetected: close()
         }
     }
 

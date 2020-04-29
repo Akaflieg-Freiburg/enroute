@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -349,7 +349,7 @@ QString FlightRoute::load(QString fileName)
     if (parseError.error != QJsonParseError::NoError)
         return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
 
-    QList<Waypoint*> newWaypoints;
+    QList<QPointer<Waypoint>> newWaypoints;
     foreach(auto value, document.object()["features"].toArray()) {
         auto wp = new Waypoint(value.toObject());
         if (!wp->isValid()) {

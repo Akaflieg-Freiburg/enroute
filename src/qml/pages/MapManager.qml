@@ -392,6 +392,9 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
+            text: qsTr("Download all updates…")
+            icon.source: "/icons/material/ic_file_download.svg"
+
             onClicked: {
                 MobileAdaptor.vibrateBrief()
                 mapManager.geoMaps.updateAll()

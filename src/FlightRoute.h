@@ -52,6 +52,8 @@ public:
     /*! \brief Construct a flight route
      *
      * This default constructor calls load(), restoring the last saved route.
+     * The route is saved to a standard location whenever it changes, so that
+     * the route survives when the app is closed unexpectantly.
      *
      * @param aircraft Pointer to aircraft info that is used in route
      * computations. The aircraft object to supposed to exist throughout the
@@ -70,9 +72,9 @@ public:
     /*! \brief Adds a waypoint to the end of the route
      *
      * @warning This method accepts a pointer to a QObject and not a pointer to
-     * a Waypoint to make it more easily accessible from QML. The
-     * behaviour of this method is undefined if pointers to other objects are
-     * passed as a parameter.
+     * a Waypoint to make it more easily accessible from QML. The behaviour of
+     * this method is undefined if pointers to other objects are passed as a
+     * parameter.
      *
      * @param waypoint Pointer to a waypoint, which must be of type
      * Waypoint. This method makes a private copy of the argument, so no
@@ -154,6 +156,30 @@ public:
      */
     QObject* lastWaypointObject() const;
 
+    /*! \brief Loads the route from a GeoJSON document
+     *
+     * This method loads the flight route from a GeoJSON
+     * document that has been created with the method save()
+     *
+     * @param fileName, needs to include path and extension
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
+    QString load(QString fileName);
+
+    /*! \brief Loads the route from a GeoJSON document in the library
+     *
+     * This method loads the flight route from a GeoJSON
+     * document in the library that has been created with the method save()
+     *
+     * @param fileName, without path or extension
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
+    Q_INVOKABLE QString loadFromLibrary(const QString &fileName);
+
     /*! \brief List of waypoints and legs
      *
      * This property lists all the waypoints and legs contained in the route. It
@@ -169,10 +195,24 @@ public:
      */
     QList<QObject*> routeObjects() const;
 
+    /*! \brief Saves flight route to a file
+     *
+     * This method saves the flight route as a GeoJSON file.  The file conforms
+     * to the specification outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *
+     * @param fileName File name, needs to include path and extension
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
+    Q_INVOKABLE QString save(QString fileName=QString()) const;
+
     /*! \brief Saves flight route to library
      *
      * This method saves the flight route as a GeoJSON file in the library
-     * directory.
+     * directory. The file conforms to the specification outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
      *
      * @param fileName File name, without path and extension
      *
@@ -180,8 +220,6 @@ public:
      * error message otherwise.
      */
     Q_INVOKABLE QString saveToLibrary(const QString &fileName) const;
-#warning
-    Q_INVOKABLE QString save(QString fileName=QString()) const;
 
     /*! \brief Suggests a name for saving this route
      *
@@ -211,15 +249,6 @@ public:
      * @returns QJsonDocument describing the flight route
      */
     QJsonDocument toGeoJSON() const;
-
-#warning
-
-    // Loads the route from "flightRoute.dat" contained in
-    // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). This
-    // method is called on construction, so that the last saved flightpath is
-    // restored automatically
-    QString load(QString fileName=QString());
-    Q_INVOKABLE QString loadFromLibrary(const QString &fileName);
 
 public slots:
     /*! \brief Deletes all waypoints in the current route */
@@ -260,11 +289,9 @@ signals:
     void summaryChanged();
 
 private slots:
-#warning
-    // Saves the route in "flightRoute.dat" contained in
-    // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). This
-    // slot is called whenever the route changes, so that the file will always
-    // contain the current route.
+    // Saves the route into the file stdFileName. This slot is called whenever
+    // the route changes, so that the file will always contain the current
+    // route.
     void saveToStdLocation() { save(stdFileName); };
 
     void updateLegs();
@@ -278,11 +305,13 @@ private:
     // Full file name of file in library. File extension will be added
     QString libraryPath(const QString &fileName) const;
 
-    // File name where the flight route is loaded upon startup are stored.
-    // This member is filled in in the constructor
+    // File name where the flight route is loaded upon startup are stored.  This
+    // member is filled in in the constructor to
+    // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+    // "/flight route.geojson"
     QString stdFileName;
 
-    QList<Waypoint*> _waypoints;
+    QList<QPointer<Waypoint>> _waypoints;
 
     QList<Leg*> _legs;
 

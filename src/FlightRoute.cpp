@@ -33,8 +33,10 @@
 FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
     : QObject(parent), _aircraft(aircraft), _wind(wind)
 {
-    load();
-    connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::save);
+    stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
+
+    load(stdFileName);
+    connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
     if (!_aircraft.isNull())
         connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::summaryChanged);
@@ -174,18 +176,6 @@ void FlightRoute::reverse()
 }
 
 
-void FlightRoute::save()
-{
-    QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flightPlan.dat");
-    file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
-
-    out << streamVersion; // Stream version
-    for(auto & _waypoint : _waypoints)
-        out << *_waypoint;
-}
-
-
 QString FlightRoute::saveToLibrary(const QString &fileName) const
 {
     QDir dir;
@@ -194,49 +184,24 @@ QString FlightRoute::saveToLibrary(const QString &fileName) const
         return tr("Unable to create directory '%1' for library.").arg(libraryDir());
 
     QString fullName = libraryPath(fileName);
-
-    QFile file(fullName);
-    success = file.open(QIODevice::WriteOnly);
-    if (!success)
-        return tr("Unable to open the file '%1' for writing.").arg(fullName);
-    auto numBytesWritten = file.write(toGeoJSON().toJson());
-    if (numBytesWritten == -1) {
-        file.close();
-        QFile::remove(fullName);
-        return tr("Unable to write to file '%1' for writing.").arg(fullName);
-    }
-    file.close();
-    return QString();
+    return save(fullName);
 }
 
 
-void FlightRoute::load()
+QString FlightRoute::save(QString fileName) const
 {
-    QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flightPlan.dat");
-    if (!file.exists())
-        return;
-
-    file.open(QIODevice::ReadOnly);
-    QDataStream in(&file);
-
-    quint16 version;
-    in >> version;
-    if (version != streamVersion)
-        return;
-
-    _waypoints.clear();
-    while(!in.atEnd()) {
-        auto wp = new Waypoint(in, this);
-        if (!wp->isValid()) {
-            delete wp;
-            _waypoints.clear();
-            return;
-        }
-        _waypoints.append(wp);
+    QFile file(fileName);
+    auto success = file.open(QIODevice::WriteOnly);
+    if (!success)
+        return tr("Unable to open the file '%1' for writing.").arg(fileName);
+    auto numBytesWritten = file.write(toGeoJSON().toJson());
+    if (numBytesWritten == -1) {
+        file.close();
+        QFile::remove(fileName);
+        return tr("Unable to write to file '%1' for writing.").arg(fileName);
     }
-
-    updateLegs();
-    emit waypointsChanged();
+    file.close();
+    return QString();
 }
 
 
@@ -361,19 +326,28 @@ QJsonDocument FlightRoute::toGeoJSON() const
 
 QString FlightRoute::loadFromLibrary(const QString &fileName)
 {
-    QString fullName = libraryPath(fileName);
-    QFile file(fullName);
+    return load(libraryPath(fileName));
+}
+
+
+QString FlightRoute::load(QString fileName)
+{
+    if (fileName.isEmpty())
+        fileName = stdFileName;
+
+    QFile file(fileName);
     auto success = file.open(QIODevice::ReadOnly);
     if (!success)
-        return tr("Cannot open file '%1' for reading.").arg(fullName);
+        return tr("Cannot open file '%1' for reading.").arg(fileName);
     auto fileContent = file.readAll();
     if (fileContent.isEmpty())
-        return tr("Cannot read data from file '%1'.").arg(fullName);
-    QJsonParseError parseError;
-    auto document = QJsonDocument::fromJson(file.readAll(), &parseError);
+        return tr("Cannot read data from file '%1'.").arg(fileName);
     file.close();
+
+    QJsonParseError parseError;
+    auto document = QJsonDocument::fromJson(fileContent, &parseError);
     if (parseError.error != QJsonParseError::NoError)
-        return tr("Cannot parse file '%1'. Reason: %2.").arg(fullName, parseError.errorString());
+        return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
 
     QList<Waypoint*> newWaypoints;
     foreach(auto value, document.object()["features"].toArray()) {

@@ -158,37 +158,10 @@ QJsonObject Waypoint::toJSON() const
 }
 
 
-Waypoint::Waypoint(QDataStream &stream, QObject *parent)
-    : QObject(parent)
-{
-    quint16 version;
-    stream >> version;
-    if (version != streamVersion)
-        return;
-
-    stream >> _coordinate;
-    stream >> _properties;
-
-    if (stream.status() != QDataStream::Ok)
-        _coordinate.setLongitude( qQNaN() );
-}
-
-
 QString Waypoint::wayFrom(const QGeoCoordinate& position) const
 {
     auto dist = AviationUnits::Distance::fromM(position.distanceTo(_coordinate));
     auto TC = qRound(position.azimuthTo(_coordinate));
 
     return QString("%1 NM • TC %2°").arg(dist.toNM(), 0, 'f', 1).arg(TC);
-}
-
-
-QDataStream &operator<< (QDataStream &stream, const Waypoint &wp)
-{
-    stream << Waypoint::streamVersion; // Stream version
-
-    stream << wp._coordinate;
-    stream << wp._properties;
-
-    return stream;
 }

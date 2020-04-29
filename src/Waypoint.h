@@ -79,15 +79,7 @@ public:
     @param parent The standard QObject parent pointer
   */
   explicit Waypoint(const QJsonObject &geoJSONObject, QObject *parent = nullptr);
-  
-  /*! \brief Constructs a waypoint by reading in data from a QDataStream
 
-    @param stream QDatastream
-    
-    @param parent The standard QObject parent pointer
-  */
-  explicit Waypoint(QDataStream &stream, QObject *parent = nullptr);
-    
   // Standard destructor
   ~Waypoint() = default;
   
@@ -164,17 +156,7 @@ public:
     @returns QJsonObject describing the waypoint
   */
   QJsonObject toJSON() const;
-  
-  /*! \brief Serializes a Waypoint
 
-    @param stream QDataStream that is written into
-    
-    @param wp Waypoint that will be written
-
-    @returns Reference to the stream
-  */
-  friend QDataStream& operator<< (QDataStream& stream, const Waypoint& wp);
-  
   /*! \brief Description of the way from a given position to the waypoint
     
     @param position Position
@@ -186,9 +168,6 @@ public:
 private:
   Q_DISABLE_COPY_MOVE(Waypoint)
 
-  // Used to check compatibility when loading/saving
-  static const quint16 streamVersion = 5;
-  
   QGeoCoordinate _coordinate;
   QMultiMap<QString, QVariant> _properties;
 };

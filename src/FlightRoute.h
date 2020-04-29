@@ -180,6 +180,8 @@ public:
      * error message otherwise.
      */
     Q_INVOKABLE QString saveToLibrary(const QString &fileName) const;
+#warning
+    Q_INVOKABLE QString save(QString fileName=QString()) const;
 
     /*! \brief Suggests a name for saving this route
      *
@@ -210,6 +212,15 @@ public:
      */
     QJsonDocument toGeoJSON() const;
 
+#warning
+
+    // Loads the route from "flightRoute.dat" contained in
+    // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). This
+    // method is called on construction, so that the last saved flightpath is
+    // restored automatically
+    QString load(QString fileName=QString());
+    Q_INVOKABLE QString loadFromLibrary(const QString &fileName);
+
 public slots:
     /*! \brief Deletes all waypoints in the current route */
     void clear();
@@ -230,9 +241,6 @@ public slots:
      */
     void moveUp(QObject *waypoint);
 
-#warning
-    QString loadFromLibrary(const QString &fileName);
-
     /*! \brief Remove waypoint from the current route
      *
      * If the waypoint is contained in the route, the method returns immediately
@@ -252,17 +260,12 @@ signals:
     void summaryChanged();
 
 private slots:
+#warning
     // Saves the route in "flightRoute.dat" contained in
     // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). This
     // slot is called whenever the route changes, so that the file will always
     // contain the current route.
-    void save();
-
-    // Loads the route from "flightRoute.dat" contained in
-    // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). This
-    // method is called on construction, so that the last saved flightpath is
-    // restored automatically
-    void load();
+    void saveToStdLocation() { save(stdFileName); };
 
     void updateLegs();
 
@@ -275,8 +278,9 @@ private:
     // Full file name of file in library. File extension will be added
     QString libraryPath(const QString &fileName) const;
 
-    // Used to check compatibility when loading/saving
-    static const quint16 streamVersion = 1;
+    // File name where the flight route is loaded upon startup are stored.
+    // This member is filled in in the constructor
+    QString stdFileName;
 
     QList<Waypoint*> _waypoints;
 

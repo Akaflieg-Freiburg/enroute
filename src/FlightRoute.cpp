@@ -103,6 +103,7 @@ void FlightRoute::clear()
 {
     qDeleteAll(_waypoints);
     _waypoints.clear();
+    _suggestedFileName = QString();
 
     updateLegs();
     emit waypointsChanged();
@@ -176,15 +177,18 @@ void FlightRoute::reverse()
 }
 
 
-QString FlightRoute::saveToLibrary(const QString &fileName) const
+QString FlightRoute::saveToLibrary(const QString &fileName)
 {
     QDir dir;
     auto success = dir.mkpath(FlightRoute::libraryDir());
     if (!success)
         return tr("Unable to create directory '%1' for library.").arg(libraryDir());
 
-    QString fullName = libraryPath(fileName);
-    return save(fullName);
+    auto fullName = libraryPath(fileName);
+    auto error = save(fullName);
+    if (error.isEmpty())
+        _suggestedFileName = fileName;
+    return error;
 }
 
 
@@ -237,6 +241,9 @@ QString FlightRoute::suggestedFilename() const
 {
     if (_waypoints.size() < 2)
         return QString();
+
+    if (!_suggestedFileName.isEmpty())
+        return _suggestedFileName;
 
     QString start = _waypoints.constFirst()->get("COD").toString();
     if (start.isEmpty())
@@ -326,7 +333,10 @@ QJsonDocument FlightRoute::toGeoJSON() const
 
 QString FlightRoute::loadFromLibrary(const QString &fileName)
 {
-    return load(libraryPath(fileName));
+    auto error = load(libraryPath(fileName));
+    if (error.isEmpty())
+        _suggestedFileName = fileName;
+    return error;
 }
 
 

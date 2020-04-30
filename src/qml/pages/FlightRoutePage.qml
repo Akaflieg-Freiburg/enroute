@@ -186,7 +186,14 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        dialogLoader.active = false
+                        dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
+                        dialogLoader.active = true
+
+/*
+                        flightRouteSaveDialog.focus = true
                         flightRouteSaveDialog.open()
+                        */
                     }
                 }
 
@@ -494,18 +501,40 @@ Page {
         }
     }
 
+
+    Loader {
+        id: dlgLoader
+        anchors.fill: parent
+
+        property string title
+        property string text
+        property Waypoint waypoint
+
+        onLoaded: {
+            item.anchors.centerIn = dialogLoader
+            item.modal = true
+            item.open()
+        }
+
+        Connections {
+            target: sensorGesture
+            onDetected: dialogLoader.active = false
+        }
+    }
+
+
     FlightRouteOpenDialog {
         id: flightRouteOpenDialog
 
         anchors.centerIn: parent
     }
-
+/*
     FlightRouteSaveDialog {
         id: flightRouteSaveDialog
 
         anchors.centerIn: parent
     }
-
+*/
     Shortcut {
         sequence: "Ctrl+a"
         onActivated: stackView.push("FlightRouteAddWPPage.qml")

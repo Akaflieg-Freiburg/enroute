@@ -219,7 +219,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString saveToLibrary(const QString &fileName) const;
+    Q_INVOKABLE QString saveToLibrary(const QString &fileName);
 
     /*! \brief Suggests a name for saving this route
      *
@@ -319,6 +319,9 @@ private:
     QPointer<Wind> _wind {nullptr};
 
     QLocale myLocale;
+
+    // This string is used to remember the file name for saving and loading.
+    QString _suggestedFileName {};
 };
 
 #include "FlightRoute_Leg.h"

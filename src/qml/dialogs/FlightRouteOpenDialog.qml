@@ -90,7 +90,6 @@ Dialog {
         delegate: fileDelegate
     }
 
-
     Component.onCompleted: dlg.standardButton(DialogButtonBox.Open).enabled = (fileName.text !== "")
 
     onRejected: {

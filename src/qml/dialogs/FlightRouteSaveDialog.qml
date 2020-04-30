@@ -151,14 +151,16 @@ Dialog {
         parent: Overlay.overlay
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
         title: qsTr("Overwrite file?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
         Label {
-            anchors.fill: parent
+            width: overwriteDialog.availableWidth
 
             text: qsTr("The file <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(fileName.text)
             wrapMode: Text.Wrap

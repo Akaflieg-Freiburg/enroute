@@ -24,6 +24,8 @@ The main() function constructs a number of C++ objects and exposes them to QML.
 
 - An instance of the class GlobalSettings, under the name "globalSettings". This simple wrapper around QSetting allows QML retrieve and store settings.
 
+- An instance of the class Library, under the name "library". This class helps to maintain a library of flight routes.
+
 - Instances of the classes Aircraft, FlightRoute and Wind, under the name "aircraft", "flightRoute" and "wind". These classes are used for route and wind computation.
 
 

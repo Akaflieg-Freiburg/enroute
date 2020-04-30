@@ -61,6 +61,7 @@ set(SOURCES
     Geoid.cpp
     GeoMapProvider.cpp
     GlobalSettings.cpp
+    Library.cpp
     main.cpp
     MapManager.cpp
     MobileAdaptor.cpp

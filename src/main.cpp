@@ -33,6 +33,7 @@
 #include "FlightRoute.h"
 #include "GeoMapProvider.h"
 #include "GlobalSettings.h"
+#include "Library.h"
 #include "MapManager.h"
 #include "MobileAdaptor.h"
 #include "SatNav.h"
@@ -80,6 +81,10 @@ int main(int argc, char *argv[])
     auto *adaptor = new MobileAdaptor(engine);
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
     engine->rootContext()->setContextProperty("MobileAdaptor", adaptor);
+
+    // Attach library info
+    auto library = new Library(engine);
+    engine->rootContext()->setContextProperty("library", library);
 
     // Attach aircraft info
     auto aircraft = new Aircraft(engine);

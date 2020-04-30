@@ -36,6 +36,27 @@ Dialog {
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Open
 
+    Component {
+        id: fileDelegate
+
+        ItemDelegate {
+            id: idel
+            text: modelData
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+            Layout.fillWidth: true
+
+            Component.onCompleted: console.log(modelData)
+
+
+            onClicked: {
+                fileName.text = modelData
+            }
+        }
+
+    }
+
     TextField {
         id: fileName
 
@@ -55,6 +76,20 @@ Dialog {
 
         Component.onCompleted: fileName.text = flightRoute.suggestedFilename()
     }
+
+    ListView {
+        anchors.top: fileName.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+
+        model: library.flightRoutes()
+        ScrollIndicator.vertical: ScrollIndicator {}
+
+        Component.onCompleted: console.log(library.flightRoutes())
+        delegate: fileDelegate
+    }
+
 
     Component.onCompleted: dlg.standardButton(DialogButtonBox.Open).enabled = (fileName.text !== "")
 

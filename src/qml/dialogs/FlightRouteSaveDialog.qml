@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2020 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,31 +28,39 @@ import enroute 1.0
 Dialog {
     id: dlg
     title: qsTr("Save Flight Route…")
-    modal: true
 
-    // Size is chosen so that the dialog does not cover the parent in full
+    modal: true
+    focus: true
+
+    // Width is chosen so that the dialog does not cover the parent in full, height is automatic
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
 
-    TextField {
-        id: fileName
-
-        anchors.top: parent.top
+    ColumnLayout {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        focus: true
-        placeholderText: "File Name"
-
-        onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
-
-        onAccepted: {
-            if (fileName.text !== "")
-                dlg.accept()
+        Label {
+            text: qsTr("Please enter file name here")
+            color: Material.primary
         }
 
+        TextField {
+            id: fileName
+
+            Layout.fillWidth: true
+            focus: true
+            placeholderText: "File Name"
+
+            onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+
+            onAccepted: {
+                if (fileName.text !== "")
+                    dlg.accept()
+            }
+
+        }
     }
 
     onOpened: {
@@ -135,21 +143,33 @@ Dialog {
             target: sensorGesture
             onDetected: close()
         }
-    }
+    }  // Dialog: fileError
 
     Dialog {
         id: overwriteDialog
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Overwrite file '%1'?").arg(fileName.text)
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+
+        title: qsTr("Overwrite file?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
+
+        Label {
+            anchors.fill: parent
+
+            text: qsTr("The file <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(fileName.text)
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
 
         onAccepted: {
             MobileAdaptor.vibrateBrief()
             dlg.saveToLibrary()
         }
+
         onRejected: {
             MobileAdaptor.vibrateBrief()
             close()
@@ -160,6 +180,6 @@ Dialog {
             target: sensorGesture
             onDetected: close()
         }
-    }
+    } // Dialog: overwriteDialog
 
 } // Dialog

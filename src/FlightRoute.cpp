@@ -35,7 +35,11 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
 {
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
-    load(stdFileName);
+    // Load last flightRoute, restore suggested name
+    auto error = load(stdFileName);
+    if (error.isEmpty())
+        _suggestedFileName = settings.value("flightRouteSuggestedName", QString()).toString();
+
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
     if (!_aircraft.isNull())
@@ -186,8 +190,11 @@ QString FlightRoute::saveToLibrary(const QString &fileName)
 
     auto fullName = libraryPath(fileName);
     auto error = save(fullName);
-    if (error.isEmpty())
+    if (error.isEmpty()) {
         _suggestedFileName = fileName;
+        settings.setValue("flightRouteSuggestedName", _suggestedFileName);
+    } else
+        settings.setValue("flightRouteSuggestedName", QString());
     return error;
 }
 

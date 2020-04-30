@@ -181,7 +181,7 @@ Page {
                     id: saveItem
 
                     text: qsTr("Save to Library…")
-                    icon.source: "/icons/material/ic_save.svg"
+                    icon.source: "/icons/material/ic_library_add.svg"
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
@@ -470,10 +470,13 @@ Page {
                 textFormat: Text.StyledText
                 visible: flightRoute.summary !== ""
             }
-            Button {
+
+            ToolButton {
                 id: addWPButton
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Add Waypoint")
+                icon.source: "/icons/material/ic_add_circle.svg"
+
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
@@ -528,13 +531,7 @@ Page {
 
         anchors.centerIn: parent
     }
-/*
-    FlightRouteSaveDialog {
-        id: flightRouteSaveDialog
 
-        anchors.centerIn: parent
-    }
-*/
     Shortcut {
         sequence: "Ctrl+a"
         onActivated: stackView.push("FlightRouteAddWPPage.qml")

@@ -7,7 +7,8 @@
 	<!-- Google Material Icons -->
         <file alias="icons/material/ic_speed.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_speed.svg</file>
 	
-        <file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
+        <file alias="icons/material/ic_add_circle.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_add_circle_24px.svg</file>
+	<file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
         <file alias="icons/material/ic_bug_report.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_bug_report_24px.svg</file>
 	<file alias="icons/material/ic_cancel.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_cancel_24px.svg</file>
         <file alias="icons/material/ic_delete.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_delete_24px.svg</file>
@@ -17,6 +18,7 @@
 	<file alias="icons/material/ic_info.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_info_24px.svg</file>	
 	<file alias="icons/material/ic_keyboard_arrow_down.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_down_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_arrow_up.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_up_24px.svg</file>	
+	<file alias="icons/material/ic_library_add.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_add_24px.svg</file>
 	<file alias="icons/material/ic_map.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_map_24px.svg</file>
 	<file alias="icons/material/ic_menu.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_menu_24px.svg</file>
 	<file alias="icons/material/ic_more_horiz.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_horiz_24px.svg</file>
@@ -26,7 +28,6 @@
 	<file alias="icons/material/ic_open_in_new.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_open_in_new_24px.svg</file>
         <file alias="icons/material/ic_refresh.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_refresh_24px.svg</file>
         <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
-	<file alias="icons/material/ic_save.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_save_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
 	<file alias="icons/material/ic_translate.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_translate_24px.svg</file>
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>

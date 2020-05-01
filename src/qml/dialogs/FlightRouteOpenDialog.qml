@@ -27,14 +27,14 @@ import enroute 1.0
 
 Dialog {
     id: dlg
-    title: qsTr("Load Flight Route…")
+    title: qsTr("Load Flight Route from Library…")
     modal: true
     focus: true
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
 
-    standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Open
+    standardButtons: DialogButtonBox.Cancel
 
     Component {
         id: fileDelegate
@@ -47,11 +47,14 @@ Dialog {
             anchors.right: parent.right
             Layout.fillWidth: true
 
-            Component.onCompleted: console.log(modelData)
-
-
             onClicked: {
-                fileName.text = modelData
+                MobileAdaptor.vibrateBrief()
+                finalFileName = modelData
+                dlg.close()
+                if (flightRoute.routeObjects.length > 0)
+                    overwriteDialog.open()
+                else
+                    openFromLibrary()
             }
         }
 
@@ -69,6 +72,20 @@ Dialog {
 
             onTextChanged: lView.model = library.flightRoutes(text)
 
+            onAccepted: {
+                if (text.length === 0)
+                    return
+                if (lView.model.length === 0)
+                    return
+
+                MobileAdaptor.vibrateBrief()
+                finalFileName = lView.model[0]
+                dlg.close()
+                if (flightRoute.routeObjects.length > 0)
+                    overwriteDialog.open()
+                else
+                    openFromLibrary()
+            }
         }
 
         ListView {
@@ -92,21 +109,16 @@ Dialog {
         close()
     }
 
-    onAccepted: {
-        MobileAdaptor.vibrateBrief()
-        if (!flightRoute.isEmpty)
-            overwriteDialog.open()
-        else
-            openFromLibrary()
-    }
-
     Connections {
         target: sensorGesture
         onDetected: close()
     }
 
+    // This is the name of the file that openFromLibrary will open
+    property string finalFileName;
+
     function openFromLibrary() {
-        var errorString = flightRoute.loadFromLibrary(fileName.text)
+        var errorString = flightRoute.loadFromLibrary(finalFileName)
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
@@ -170,6 +182,20 @@ Dialog {
         parent: Overlay.overlay
 
         title: qsTr("Overwrite current flight route?")
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        Label {
+            width: overwriteDialog.availableWidth
+
+            text: qsTr("Once overwritten, the current flight route cannot be restored.")
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
+
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 

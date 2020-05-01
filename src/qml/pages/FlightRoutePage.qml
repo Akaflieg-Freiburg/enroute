@@ -486,10 +486,24 @@ Page {
     Dialog {
         id: clearDialog
         anchors.centerIn: parent
+        parent: Overlay.overlay
 
         title: qsTr("Clear route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        Label {
+            width: clearDialog.availableWidth
+
+            text: qsTr("Once erased, the current flight route cannot be restored.")
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
 
         onAccepted: {
             MobileAdaptor.vibrateBrief()

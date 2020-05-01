@@ -33,6 +33,7 @@ Dialog {
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    height: parent.height-Qt.application.font.pixelSize // Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
     standardButtons: DialogButtonBox.Cancel
 
@@ -214,7 +215,5 @@ Dialog {
             onDetected: close()
         }
     }
-
-    Component.onCompleted: height = Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
 } // Dialog

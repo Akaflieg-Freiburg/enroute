@@ -20,6 +20,8 @@
 
 #include "Library.h"
 
+#include <QDir>
+#include <QStandardPaths>
 #include <QtGlobal>
 
 Library::Library(QObject *parent) : QObject(parent)
@@ -27,29 +29,43 @@ Library::Library(QObject *parent) : QObject(parent)
 }
 
 
-QStringList Library::flightRoutes(void) const
+QStringList Library::flightRoutes(const QString &filter)
 {
+    auto flightRouteLibraryDir = QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes");
+
+    QStringList filterList;
+    filterList << "*.geojson";
+
+    auto fileNames = flightRouteLibraryDir.entryList(filterList);
+
+    QStringList fileBaseNames;
+    foreach(auto fileName, fileNames)
+        fileBaseNames << fileName.section('.', 0, 0);
+
+    return permissiveFilter(fileBaseNames, filter);
+}
+
+
+QStringList Library::permissiveFilter(const QStringList &inputStrings, const QString &filter)
+{
+    QString simplifiedFilter = simplifySpecialChars(filter);
+
     QStringList result;
-    result.append("Freiburg");
-    result.append("Ax");
-    result.append("Afdsg");
-    result.append("Freiburg");
-    result.append("Ax");
-    result.append("Afdsg");
-    result.append("Freiburg");
-    result.append("Ax");
-    result.append("Afdsg");
-    result.append("Freiburg");
-    result.append("Ax");
-    result.append("Afdsg");
-    result.append("Freiburg");
-    result.append("Ax");
-    result.append("Afdsg");
-    result.append("Freiburg");
-    result.append("Ax");
-    result.append("Afdsg");
-    result.append("Freiburg");
-    result.append("Ax");
-    result.append("Afdsg");
+    foreach(auto inputString, inputStrings)
+        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive))
+            result << inputString;
+
     return result;
+
+}
+
+
+QString Library::simplifySpecialChars(const QString &string)
+{
+    QString cacheString = simplifySpecialChars_cache[string];
+    if (!cacheString.isEmpty())
+        return cacheString;
+
+    QString normalizedString = string.normalized(QString::NormalizationForm_KD);
+    return normalizedString.remove(specialChars);
 }

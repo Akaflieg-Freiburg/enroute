@@ -173,7 +173,9 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
-                        flightRouteOpenDialog.open()
+                        dialogLoader.active = false
+                        dialogLoader.source = "../dialogs/FlightRouteOpenDialog.qml"
+                        dialogLoader.active = true
                     }
                 }
 
@@ -189,11 +191,6 @@ Page {
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
                         dialogLoader.active = true
-
-/*
-                        flightRouteSaveDialog.focus = true
-                        flightRouteSaveDialog.open()
-                        */
                     }
                 }
 
@@ -504,7 +501,6 @@ Page {
         }
     }
 
-
     Loader {
         id: dlgLoader
         anchors.fill: parent
@@ -523,13 +519,6 @@ Page {
             target: sensorGesture
             onDetected: dialogLoader.active = false
         }
-    }
-
-
-    FlightRouteOpenDialog {
-        id: flightRouteOpenDialog
-
-        anchors.centerIn: parent
     }
 
     Shortcut {

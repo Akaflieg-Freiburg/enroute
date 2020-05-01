@@ -29,10 +29,10 @@ Dialog {
     id: dlg
     title: qsTr("Load Flight Route…")
     modal: true
+    focus: true
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Open
 
@@ -57,40 +57,35 @@ Dialog {
 
     }
 
-    TextField {
-        id: fileName
+    ColumnLayout {
+        anchors.fill: parent
 
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
+        TextField {
+            id: filterName
 
-        focus: true
-        placeholderText: "File Name"
+            Layout.fillWidth: true
+            focus: true
+            placeholderText: "Filter"
 
-        onTextChanged: dlg.standardButton(DialogButtonBox.Open).enabled = (text !== "")
+            onTextChanged: lView.model = library.flightRoutes(text)
 
-        onAccepted: {
-            if (fileName.text !== "")
-                dlg.accept()
         }
 
-        Component.onCompleted: fileName.text = flightRoute.suggestedFilename()
+        ListView {
+            id: lView
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            implicitHeight: contentHeight
+
+            clip: true
+            model: library.flightRoutes(filterName.displayText)
+            ScrollIndicator.vertical: ScrollIndicator {}
+
+            delegate: fileDelegate
+        }
     }
-
-    ListView {
-        anchors.top: fileName.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-
-        model: library.flightRoutes()
-        ScrollIndicator.vertical: ScrollIndicator {}
-
-        Component.onCompleted: console.log(library.flightRoutes())
-        delegate: fileDelegate
-    }
-
-    Component.onCompleted: dlg.standardButton(DialogButtonBox.Open).enabled = (fileName.text !== "")
 
     onRejected: {
         MobileAdaptor.vibrateBrief()
@@ -193,5 +188,7 @@ Dialog {
             onDetected: close()
         }
     }
+
+    Component.onCompleted: height = Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
 } // Dialog

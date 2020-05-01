@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QRegularExpression>
 #include <QSettings>
 
 /*! \brief This simple class helps to manage a library of flight routes */
@@ -37,8 +38,17 @@ public:
     // Standard destructor
     ~Library() override = default;
 
-    Q_INVOKABLE QStringList flightRoutes(void) const;
+    Q_INVOKABLE QStringList flightRoutes(const QString &filter=QString());
+
+    QStringList permissiveFilter(const QStringList &in, const QString &filter);
+
+    QString simplifySpecialChars(const QString &string);
 
 private:
     Q_DISABLE_COPY_MOVE(Library)
+
+    // Caches used to speed up the method simplifySpecialChars
+    QRegularExpression specialChars {"[^a-zA-Z0-9]"};
+    QHash<QString, QString> simplifySpecialChars_cache;
+
 };

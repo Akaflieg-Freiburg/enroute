@@ -25,12 +25,32 @@
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QAndroidJniEnvironment>
+
+const QVector<QString> permissions({"android.permission.ACCESS_COARSE_LOCATION",
+                                    "android.permission.ACCESS_FINE_LOCATION",
+                                    "android.permission.WRITE_EXTERNAL_STORAGE",
+                                    "android.permission.READ_EXTERNAL_STORAGE"});
+
 #endif
 
 
 MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
 {
+    // Ask for permissions
+#if defined (Q_OS_ANDROID)
+    //Request requiered permissions at runtime
+    for(const QString &permission : permissions){
+        auto result = QtAndroid::checkPermission(permission);
+        if(result == QtAndroid::PermissionResult::Denied){
+            auto resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
+            if(resultHash[permission] == QtAndroid::PermissionResult::Denied)
+                return;
+#warning Need consequences!
+        }
+    }
+#endif
+
     // Disable the screen saver so that the screen does not switsch off automatically
 #if defined(Q_OS_ANDROID)
     bool on=true;

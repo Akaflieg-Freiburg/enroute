@@ -32,18 +32,42 @@ Dialog {
     modal: true
     focus: true
 
-    // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+    // Width and height are chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    height: parent.height-2*Qt.application.font.pixelSize
+    implicitHeight: height
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
 
+    Component {
+        id: fileDelegate
+
+        ItemDelegate {
+            id: idel
+            text: modelData
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                finalFileName = modelData
+                dlg.close()
+                overwriteDialog.open()
+            }
+        }
+
+    } // fileDelegate
+
+
     ColumnLayout {
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.fill: parent
 
         Label {
-            text: qsTr("Please enter file name here")
+            text: qsTr("Enter a file name or choose an existing name from the list below.")
             color: Material.primary
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
         }
 
         TextField {
@@ -56,12 +80,26 @@ Dialog {
             onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
 
             onAccepted: {
-                if (fileName.text !== "")
-                    dlg.accept()
+                if (fileName.text === "")
+                    return
+                dlg.accept()
             }
-
         }
-    }
+
+        ListView {
+            id: lView
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            clip: true
+            model: library.flightRoutes("")
+            ScrollIndicator.vertical: ScrollIndicator {}
+
+            delegate: fileDelegate
+        }
+
+    } // ColumnLayout
 
     onOpened: {
         dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
@@ -75,7 +113,10 @@ Dialog {
 
     onAccepted: {
         MobileAdaptor.vibrateBrief()
-        if (flightRoute.fileExists(fileName.text))
+        if (fileName.text === "")
+            return
+        finalFileName = fileName.text
+        if (library.flightRouteExists(finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -86,8 +127,11 @@ Dialog {
         onDetected: close()
     }
 
+    // This is the name of the file that openFromLibrary will open
+    property string finalFileName;
+
     function saveToLibrary() {
-        var errorString = flightRoute.saveToLibrary(fileName.text)
+        var errorString = flightRoute.saveToLibrary(finalFileName)
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

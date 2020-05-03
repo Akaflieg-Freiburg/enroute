@@ -167,7 +167,7 @@ Page {
                 MenuItem {
                     id: loadItem
 
-                    text: qsTr("Load from Library…")
+                    text: qsTr("Load Route…")
                     icon.source: "/icons/material/ic_open_in_new.svg"
                     enabled: true
 
@@ -182,7 +182,7 @@ Page {
                 MenuItem {
                     id: saveItem
 
-                    text: qsTr("Save to Library…")
+                    text: qsTr("Save Route…")
                     icon.source: "/icons/material/ic_library_add.svg"
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 

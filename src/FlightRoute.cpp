@@ -35,10 +35,8 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
 {
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
-    // Load last flightRoute, restore suggested name
+    // Load last flightRoute
     auto error = load(stdFileName);
-    if (error.isEmpty())
-        _suggestedFileName = settings.value("flightRouteSuggestedName", QString()).toString();
 
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
@@ -107,7 +105,6 @@ void FlightRoute::clear()
 {
     qDeleteAll(_waypoints);
     _waypoints.clear();
-    _suggestedFileName = QString();
 
     updateLegs();
     emit waypointsChanged();
@@ -190,11 +187,6 @@ QString FlightRoute::saveToLibrary(const QString &fileName)
 
     auto fullName = libraryPath(fileName);
     auto error = save(fullName);
-    if (error.isEmpty()) {
-        _suggestedFileName = fileName;
-        settings.setValue("flightRouteSuggestedName", _suggestedFileName);
-    } else
-        settings.setValue("flightRouteSuggestedName", QString());
     return error;
 }
 
@@ -249,9 +241,6 @@ QString FlightRoute::suggestedFilename() const
     if (_waypoints.size() < 2)
         return QString();
 
-    if (!_suggestedFileName.isEmpty())
-        return _suggestedFileName;
-
     QString start = _waypoints.constFirst()->get("COD").toString();
     if (start.isEmpty())
         return QString();
@@ -259,7 +248,7 @@ QString FlightRoute::suggestedFilename() const
     if (end.isEmpty())
         return QString();
 
-    return start+" → "+end;
+    return start+" - "+end;
 }
 
 
@@ -341,8 +330,6 @@ QJsonDocument FlightRoute::toGeoJSON() const
 QString FlightRoute::loadFromLibrary(const QString &fileName)
 {
     auto error = load(libraryPath(fileName));
-    if (error.isEmpty())
-        _suggestedFileName = fileName;
     return error;
 }
 

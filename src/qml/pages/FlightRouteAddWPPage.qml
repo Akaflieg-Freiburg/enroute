@@ -40,7 +40,7 @@ Page {
         anchors.left: parent.left
         anchors.leftMargin: Qt.application.font.pixelSize*2.0
 
-        placeholderText: qsTr("Waypoint Name")
+        placeholderText: qsTr("Filter Waypoint Names")
         font.pixelSize: Qt.application.font.pixelSize*1.5
         focus: true
 

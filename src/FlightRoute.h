@@ -23,7 +23,6 @@
 #include <QJsonDocument>
 #include <QLocale>
 #include <QPointer>
-#include <QSettings>
 
 #include "Aircraft.h"
 #include "Waypoint.h"
@@ -320,10 +319,6 @@ private:
     QPointer<Wind> _wind {nullptr};
 
     QLocale myLocale;
-    QSettings settings;
-
-    // This string is used to remember the file name for saving and loading.
-    QString _suggestedFileName {};
 };
 
 #include "FlightRoute_Leg.h"

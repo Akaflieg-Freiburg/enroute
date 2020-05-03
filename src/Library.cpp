@@ -46,6 +46,15 @@ QStringList Library::flightRoutes(const QString &filter)
 }
 
 
+bool Library::flightRouteExists(const QString &baseName)
+{
+#warning duplicated info
+    auto flightRouteLibraryDir = QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes");
+
+    return QFile::exists(flightRouteLibraryDir.path()+"/"+baseName+".geojson");
+}
+
+
 QStringList Library::permissiveFilter(const QStringList &inputStrings, const QString &filter)
 {
     QString simplifiedFilter = simplifySpecialChars(filter);

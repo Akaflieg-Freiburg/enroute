@@ -33,7 +33,8 @@ Dialog {
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: parent.height-Qt.application.font.pixelSize // Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+    height: parent.height-2*Qt.application.font.pixelSize
+    implicitHeight: height
 
     standardButtons: DialogButtonBox.Cancel
 
@@ -46,7 +47,6 @@ Dialog {
 
             anchors.left: parent.left
             anchors.right: parent.right
-            Layout.fillWidth: true
 
             onClicked: {
                 MobileAdaptor.vibrateBrief()
@@ -59,17 +59,25 @@ Dialog {
             }
         }
 
-    }
+    } // fileDelegate
 
     ColumnLayout {
         anchors.fill: parent
+
+        Label {
+            width: overwriteDialog.availableWidth
+
+            text: qsTr("Choose a flight route from the list below.")
+            color: Material.primary
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
 
         TextField {
             id: filterName
 
             Layout.fillWidth: true
-            focus: true
-            placeholderText: "Filter"
+            placeholderText: "Filter Flight Route Names"
 
             onTextChanged: lView.model = library.flightRoutes(text)
 
@@ -95,15 +103,14 @@ Dialog {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            implicitHeight: contentHeight
-
             clip: true
             model: library.flightRoutes(filterName.displayText)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
         }
-    }
+
+    } // ColumnLayout
 
     onRejected: {
         MobileAdaptor.vibrateBrief()

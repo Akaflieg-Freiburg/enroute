@@ -38,7 +38,10 @@ public:
     // Standard destructor
     ~Library() override = default;
 
+#warning docu
     Q_INVOKABLE QStringList flightRoutes(const QString &filter=QString());
+
+    Q_INVOKABLE bool flightRouteExists(const QString &baseName);
 
     QStringList permissiveFilter(const QStringList &in, const QString &filter);
 

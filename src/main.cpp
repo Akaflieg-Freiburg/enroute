@@ -61,8 +61,11 @@ int main(int argc, char *argv[])
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
 
-    // Create global settings object. We do this before creating the application engine becuase this also installs translators.
+    // Create global settings object. We do this before creating the application engine because this also installs translators.
     auto globalSettings = new GlobalSettings();
+
+    // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
+    auto *adaptor = new MobileAdaptor();
 
     /*
      * Set up ApplicationEngine for QML
@@ -78,7 +81,6 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("globalSettings", globalSettings);
 
     // Make MobileAdaptor available to QML engine
-    auto *adaptor = new MobileAdaptor(engine);
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
     engine->rootContext()->setContextProperty("MobileAdaptor", adaptor);
 
@@ -180,6 +182,7 @@ int main(int argc, char *argv[])
     delete engine;
     delete mapManager; // This will also delete geoMapProvider
     delete networkAccessManager;
+    delete adaptor;
 
     return 0;
 }

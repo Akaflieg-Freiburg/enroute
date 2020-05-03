@@ -172,7 +172,7 @@ QString GeoMapProvider::styleFileURL() const
     return "file://"+_styleFile->fileName();
 }
 
-
+#warning duplicatedCode
 QString GeoMapProvider::simplifySpecialChars(const QString &string)
 {
     QString cacheString = simplifySpecialChars_cache[string];

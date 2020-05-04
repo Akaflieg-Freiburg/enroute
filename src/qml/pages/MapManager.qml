@@ -28,7 +28,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("Download Maps")
+    title: qsTr("Map Library")
 
     Component {
         id: sectionHeading
@@ -131,7 +131,7 @@ Page {
                         }
                     }
 
-                }
+                } // ToolButton
             }
 
             Connections {

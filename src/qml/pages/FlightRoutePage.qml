@@ -195,6 +195,23 @@ Page {
                 }
 
                 MenuItem {
+                    id: manageItem
+
+                    text: qsTr("Manage Flight Route Library…")
+                    icon.source: "/icons/material/ic_library_books.svg"
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.push("FlightRouteManageLibraryPage.qml")
+                    }
+                }
+
+                Rectangle {
+                    height: 1
+                    color: Material.primary
+                }
+
+                MenuItem {
                     id: clearItem
 
                     text: qsTr("Clear Route")
@@ -206,11 +223,6 @@ Page {
                         clearDialog.open()
                     }
 
-                }
-
-                Rectangle {
-                    height: 1
-                    color: Material.primary
                 }
 
                 MenuItem {

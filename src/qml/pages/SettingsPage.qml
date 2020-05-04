@@ -68,13 +68,34 @@ Page {
                     }
                 }
 
+                Label {
+                    Layout.leftMargin: Qt.application.font.pixelSize
+                    text: qsTr("Libraries")
+                    font.pixelSize: Qt.application.font.pixelSize*1.2
+                    font.bold: true
+                    color: Material.primary
+                }
+
                 ItemDelegate {
-                    text: qsTr("Download Maps") + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">`+qsTr("Updates available") + "</font>" : "")
-                    icon.source: "/icons/material/ic_file_download.svg"
+                    text: qsTr("Flight Routes")
+                    icon.source: "/icons/material/ic_library_books.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
 
-                    visible: !satNav.isInFlight
+                    onClicked: {
+                        MobileAdaptor.vibrateBrief()
+                        stackView.push("FlightRouteManageLibraryPage.qml")
+                        drawer.close()
+                    }
+                }
+
+                ItemDelegate {
+                    text: qsTr("Maps") + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">`+qsTr("Updates available") + "</font>" : "")
+                    icon.source: "/icons/material/ic_library_books.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+
+                    enabled: !satNav.isInFlight
                     onClicked: {
                         MobileAdaptor.vibrateBrief()
                         stackView.push("MapManager.qml")

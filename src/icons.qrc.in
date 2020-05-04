@@ -19,6 +19,7 @@
 	<file alias="icons/material/ic_keyboard_arrow_down.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_down_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_arrow_up.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_up_24px.svg</file>	
 	<file alias="icons/material/ic_library_add.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_add_24px.svg</file>
+	<file alias="icons/material/ic_library_books.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_books_24px.svg</file>
 	<file alias="icons/material/ic_map.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_map_24px.svg</file>
 	<file alias="icons/material/ic_menu.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_menu_24px.svg</file>
 	<file alias="icons/material/ic_more_horiz.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_horiz_24px.svg</file>

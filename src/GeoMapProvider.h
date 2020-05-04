@@ -31,6 +31,7 @@
 
 #include "Airspace.h"
 #include "GlobalSettings.h"
+#include "Librarian.h"
 #include "MapManager.h"
 #include "TileServer.h"
 #include "Waypoint.h"
@@ -69,7 +70,7 @@ public:
      *
      * @param parent The standard QObject parent
      */
-    explicit GeoMapProvider(MapManager *manager, GlobalSettings* settings, QObject *parent = nullptr);
+    explicit GeoMapProvider(MapManager *manager, GlobalSettings* settings, Librarian *librarian, QObject *parent = nullptr);
 
     // Standard destructor
     ~GeoMapProvider() override = default;
@@ -171,11 +172,6 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
 
-    // This method simplifies strings by replacing all special characters with
-    // analogues. So, "Neuchâtel" become "Neuchatel", "Épinal" becomes "Epinal"
-    // and "Allgäu" becomes "Allgau"
-    QString simplifySpecialChars(const QString &string);
-
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars {"[^a-zA-Z0-9]"};
     QHash<QString, QString> simplifySpecialChars_cache;
@@ -203,6 +199,9 @@ private:
 
     // Pointer to global settings
     QPointer<GlobalSettings> _settings;
+
+    // Pointer to library
+    QPointer<Librarian> _librarian;
 
     // Tile Server
     TileServer _tileServer;

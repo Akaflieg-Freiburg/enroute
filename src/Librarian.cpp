@@ -18,20 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Library.h"
+#include "Librarian.h"
 
-#include <QDir>
 #include <QStandardPaths>
 #include <QtGlobal>
 
-Library::Library(QObject *parent) : QObject(parent)
+Librarian::Librarian(QObject *parent) : QObject(parent)
 {
+    auto libraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
+    flightRouteLibraryDir.setPath(libraryPath);
+    flightRouteLibraryDir.mkpath(libraryPath);
 }
 
 
-QStringList Library::flightRoutes(const QString &filter)
+QString Librarian::flightRouteFullPath(const QString &baseName)
 {
-    auto flightRouteLibraryDir = QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes");
+    return flightRouteLibraryDir.path()+"/"+baseName+".geojson";
+}
+
+QStringList Librarian::flightRoutes(const QString &filter)
+{
 
     QStringList filterList;
     filterList << "*.geojson";
@@ -46,16 +52,13 @@ QStringList Library::flightRoutes(const QString &filter)
 }
 
 
-bool Library::flightRouteExists(const QString &baseName)
+bool Librarian::flightRouteExists(const QString &baseName)
 {
-#warning duplicated info
-    auto flightRouteLibraryDir = QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes");
-
     return QFile::exists(flightRouteLibraryDir.path()+"/"+baseName+".geojson");
 }
 
 
-QStringList Library::permissiveFilter(const QStringList &inputStrings, const QString &filter)
+QStringList Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter)
 {
     QString simplifiedFilter = simplifySpecialChars(filter);
 
@@ -69,7 +72,7 @@ QStringList Library::permissiveFilter(const QStringList &inputStrings, const QSt
 }
 
 
-QString Library::simplifySpecialChars(const QString &string)
+QString Librarian::simplifySpecialChars(const QString &string)
 {
     QString cacheString = simplifySpecialChars_cache[string];
     if (!cacheString.isEmpty())

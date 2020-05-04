@@ -33,7 +33,7 @@
 #include "FlightRoute.h"
 #include "GeoMapProvider.h"
 #include "GlobalSettings.h"
-#include "Library.h"
+#include "Librarian.h"
 #include "MapManager.h"
 #include "MobileAdaptor.h"
 #include "SatNav.h"
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("MobileAdaptor", adaptor);
 
     // Attach library info
-    auto library = new Library(engine);
-    engine->rootContext()->setContextProperty("library", library);
+    auto librarian = new Librarian(engine);
+    engine->rootContext()->setContextProperty("librarian", librarian);
 
     // Attach aircraft info
     auto aircraft = new Aircraft(engine);
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
-    auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, mapManager);
+    auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, librarian);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach flight route

@@ -20,35 +20,83 @@
 
 #pragma once
 
+#include <QDir>
 #include <QRegularExpression>
 #include <QSettings>
 
 /*! \brief This simple class helps to manage a library of flight routes */
 
-class Library : public QObject {
+class Librarian : public QObject {
     Q_OBJECT
 
 public:
     /*! \brief Default constructor
      *
+     * The constructor ensures that the relevant directory for storing the flight route library exists
+     *
      * @param parent The standard QObject parent pointer
      */
-    explicit Library(QObject *parent = nullptr);
+    explicit Librarian(QObject *parent = nullptr);
 
     // Standard destructor
-    ~Library() override = default;
+    ~Librarian() override = default;
 
-#warning docu
+    /*! \brief Lists all flight routes in the library whose name contains the string 'filter'
+     *
+     * The check for string containment is done in a fuzzy way.
+     *
+     * @param filter String used to filter the list
+     *
+     * @returns A filtered QStringList with the base names of flight routes
+     *
+     * @see permissiveFilter
+     */
     Q_INVOKABLE QStringList flightRoutes(const QString &filter=QString());
 
+    /*! \brief Full path of a flight route in the library
+     *
+     * @param baseName Name of the flight route, without path and without extension
+     *
+     * @returns Full path of the flight route, with extension
+     */
+    Q_INVOKABLE QString flightRouteFullPath(const QString &baseName);
+
+    /*! \brief Check if a flight route with the given name exists in the library
+     *
+     * @param baseName File name, without path and without extension
+     *
+     * @returns True if the file exists
+     */
     Q_INVOKABLE bool flightRouteExists(const QString &baseName);
 
+    /*! \brief Filters a QStringList in a fuzzy way
+     *
+     * This method filters a QStringList. It returns a sublist of those entries whose name approximately contain the filter string.
+     * For instance, "Zürich" is supposed to contain "u", "Ü" and "ù"
+     *
+     * @param in QStringList that is to be filtered
+     *
+     * @param filter Filter
+     *
+     * @returns Filteres QStringList
+     */
     QStringList permissiveFilter(const QStringList &in, const QString &filter);
 
+    /*! \brief Simplifies string by transforming and removing special characters
+     *
+     * This method simplifies a unicode string, by transforming it to QString::NormalizationForm_KD and then removing all 'special' character.
+     * The results are cached for better performance.
+     *
+     * @param string Input string
+     *
+     * @return Simplified string
+     */
     QString simplifySpecialChars(const QString &string);
 
 private:
-    Q_DISABLE_COPY_MOVE(Library)
+    Q_DISABLE_COPY_MOVE(Librarian)
+
+    QDir flightRouteLibraryDir;
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars {"[^a-zA-Z0-9]"};

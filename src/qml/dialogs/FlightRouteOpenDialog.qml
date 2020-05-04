@@ -104,7 +104,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: library.flightRoutes(filterName.displayText)
+            model: librarian.flightRoutes(filterName.displayText)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -126,7 +126,7 @@ Dialog {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = flightRoute.loadFromLibrary(finalFileName)
+        var errorString = flightRoute.load(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

@@ -36,7 +36,7 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
     // Load last flightRoute
-    auto error = load(stdFileName);
+    load(stdFileName);
 
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
@@ -62,12 +62,6 @@ void FlightRoute::append(QObject *waypoint)
 }
 
 
-bool FlightRoute::fileExists(const QString& fileName) const
-{
-    return QFile::exists( libraryPath(fileName) );
-}
-
-
 QObject* FlightRoute::firstWaypointObject() const
 {
     if (_waypoints.isEmpty())
@@ -83,7 +77,7 @@ QVariantList FlightRoute::geoPath() const
         return QVariantList();
 
     QVariantList result;
-    for(auto _waypoint : _waypoints) {
+    for(const auto& _waypoint : _waypoints) {
         if (!_waypoint->isValid())
             return QVariantList();
         result.append(QVariant::fromValue(_waypoint->coordinate()));
@@ -178,20 +172,7 @@ void FlightRoute::reverse()
 }
 
 
-QString FlightRoute::saveToLibrary(const QString &fileName)
-{
-    QDir dir;
-    auto success = dir.mkpath(FlightRoute::libraryDir());
-    if (!success)
-        return tr("Unable to create directory '%1' for library.").arg(libraryDir());
-
-    auto fullName = libraryPath(fileName);
-    auto error = save(fullName);
-    return error;
-}
-
-
-QString FlightRoute::save(QString fileName) const
+QString FlightRoute::save(const QString& fileName) const
 {
     QFile file(fileName);
     auto success = file.open(QIODevice::WriteOnly);
@@ -301,18 +282,6 @@ QString FlightRoute::summary() const
 }
 
 
-QString FlightRoute::libraryDir() const
-{
-    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
-}
-
-
-QString FlightRoute::libraryPath(const QString &fileName) const
-{
-    return libraryDir()+"/"+fileName+".geojson";
-}
-
-
 QJsonDocument FlightRoute::toGeoJSON() const
 {
     QJsonArray waypointArray;
@@ -324,13 +293,6 @@ QJsonDocument FlightRoute::toGeoJSON() const
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc;
-}
-
-
-QString FlightRoute::loadFromLibrary(const QString &fileName)
-{
-    auto error = load(libraryPath(fileName));
-    return error;
 }
 
 
@@ -348,7 +310,7 @@ QString FlightRoute::load(QString fileName)
         return tr("Cannot read data from file '%1'.").arg(fileName);
     file.close();
 
-    QJsonParseError parseError;
+    QJsonParseError parseError{};
     auto document = QJsonDocument::fromJson(fileContent, &parseError);
     if (parseError.error != QJsonParseError::NoError)
         return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
@@ -358,7 +320,7 @@ QString FlightRoute::load(QString fileName)
         auto wp = new Waypoint(value.toObject());
         if (!wp->isValid()) {
             qDeleteAll(newWaypoints);
-            return tr("Cannot parse content of file '%1'.").arg(libraryPath(fileName));
+            return tr("Cannot parse content of file '%1'.").arg(fileName);
         }
         QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
         newWaypoints.append(wp);

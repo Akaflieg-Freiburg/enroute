@@ -93,7 +93,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: library.flightRoutes("")
+            model: librarian.flightRoutes("")
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -116,7 +116,7 @@ Dialog {
         if (fileName.text === "")
             return
         finalFileName = fileName.text
-        if (library.flightRouteExists(finalFileName))
+        if (librarian.flightRouteExists(finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -131,7 +131,7 @@ Dialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = flightRoute.saveToLibrary(finalFileName)
+        var errorString = flightRoute.save(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
@@ -206,7 +206,7 @@ Dialog {
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("The file <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(fileName.text)
+            text: qsTr("The file <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.RichText
         }

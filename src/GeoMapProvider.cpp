@@ -30,8 +30,8 @@
 #include "Waypoint.h"
 
 
-GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, QObject *parent)
-    : QObject(parent), _manager(manager), _settings(settings), _tileServer(QUrl()), _styleFile(nullptr)
+GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, Librarian *librarian, QObject *parent)
+    : QObject(parent), _manager(manager), _settings(settings), _librarian(librarian), _tileServer(QUrl()), _styleFile(nullptr)
 {
     // Initialize _combinedGeoJSON_ with an empty document
     QJsonObject resultObject;
@@ -108,7 +108,7 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 
     QStringList filterWords;
     foreach(auto word, filter.simplified().split(' ', QString::SkipEmptyParts)) {
-        QString simplifiedWord = simplifySpecialChars(word);
+        QString simplifiedWord = _librarian->simplifySpecialChars(word);
         if (simplifiedWord.isEmpty())
             continue;
         filterWords.append(simplifiedWord);
@@ -120,9 +120,9 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
             continue;
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = simplifySpecialChars(wp->get("NAM").toString());
-            QString codeName = simplifySpecialChars(wp->get("COD").toString());
-            QString wordx = simplifySpecialChars(word);
+            QString fullName = _librarian->simplifySpecialChars(wp->get("NAM").toString());
+            QString codeName = _librarian->simplifySpecialChars(wp->get("COD").toString());
+            QString wordx = _librarian->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
                 allWordsFound = false;
@@ -170,17 +170,6 @@ QString GeoMapProvider::styleFileURL() const
     if (_styleFile.isNull())
         return ":/flightMap/empty.json";
     return "file://"+_styleFile->fileName();
-}
-
-#warning duplicatedCode
-QString GeoMapProvider::simplifySpecialChars(const QString &string)
-{
-    QString cacheString = simplifySpecialChars_cache[string];
-    if (!cacheString.isEmpty())
-        return cacheString;
-
-    QString normalizedString = string.normalized(QString::NormalizationForm_KD);
-    return normalizedString.remove(specialChars);
 }
 
 

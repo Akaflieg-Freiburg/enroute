@@ -90,14 +90,6 @@ public:
      */
     Q_INVOKABLE void append(const QGeoCoordinate& position) { append(new Waypoint(position, this)); }
 
-    /*! \brief Check if a file exists in the flight route library
-     *
-     * @param fileName File name, without extension and path
-     *
-     * @returns True if file exists, false otherwise
-     */
-    Q_INVOKABLE bool fileExists(const QString& fileName) const;
-
     /*! \brief First waypoint in the route
      *
      * This property holds a pointer to the first waypoint in the route, or a
@@ -166,19 +158,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    QString load(QString fileName);
-
-    /*! \brief Loads the route from a GeoJSON document in the library
-     *
-     * This method loads the flight route from a GeoJSON
-     * document in the library that has been created with the method save()
-     *
-     * @param fileName, without path or extension
-     *
-     * @returns Empty string in case of success, human-readable, translated
-     * error message otherwise.
-     */
-    Q_INVOKABLE QString loadFromLibrary(const QString &fileName);
+    Q_INVOKABLE QString load(QString fileName);
 
     /*! \brief List of waypoints and legs
      *
@@ -206,20 +186,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString save(QString fileName=QString()) const;
-
-    /*! \brief Saves flight route to library
-     *
-     * This method saves the flight route as a GeoJSON file in the library
-     * directory. The file conforms to the specification outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     *
-     * @param fileName File name, without path and extension
-     *
-     * @returns Empty string in case of success, human-readable, translated
-     * error message otherwise.
-     */
-    Q_INVOKABLE QString saveToLibrary(const QString &fileName);
+    Q_INVOKABLE QString save(const QString& fileName=QString()) const;
 
     /*! \brief Suggests a name for saving this route
      *

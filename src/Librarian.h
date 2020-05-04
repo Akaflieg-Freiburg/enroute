@@ -69,6 +69,12 @@ public:
      */
     Q_INVOKABLE bool flightRouteExists(const QString &baseName);
 
+    /*! \brief Removes a flight route from the library
+     *
+     * @param baseName File name, without path and without extension
+     */
+    Q_INVOKABLE void flightRouteRemove(const QString &baseName);
+
     /*! \brief Filters a QStringList in a fuzzy way
      *
      * This method filters a QStringList. It returns a sublist of those entries whose name approximately contain the filter string.

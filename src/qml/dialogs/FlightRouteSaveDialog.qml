@@ -45,6 +45,8 @@ Dialog {
         ItemDelegate {
             id: idel
             text: modelData
+            icon.source: "/icons/material/ic_directions.svg"
+            icon.color: "transparent"
 
             anchors.left: parent.left
             anchors.right: parent.right

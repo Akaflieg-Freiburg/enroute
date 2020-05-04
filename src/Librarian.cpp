@@ -58,6 +58,12 @@ bool Librarian::flightRouteExists(const QString &baseName)
 }
 
 
+void Librarian::flightRouteRemove(const QString &baseName)
+{
+    QFile::remove(flightRouteLibraryDir.path()+"/"+baseName+".geojson");
+}
+
+
 QStringList Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter)
 {
     QString simplifiedFilter = simplifySpecialChars(filter);

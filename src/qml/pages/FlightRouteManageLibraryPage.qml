@@ -76,6 +76,23 @@ Page {
                     id: cptMenu
 
                     Action {
+                        id: openAction
+
+                        text: qsTr("Open")
+                        icon.source: "/icons/material/ic_open_in_new.svg"
+
+                        onTriggered: {
+                                MobileAdaptor.vibrateBrief()
+                                finalFileName = modelData
+                                if (flightRoute.routeObjects.length > 0)
+                                    overwriteDialog.open()
+                                else
+                                    openFromLibrary()
+                        }
+
+                    } // openAction
+
+                    Action {
                         id: removeAction
 
                         text: qsTr("Remove from device")
@@ -83,8 +100,10 @@ Page {
 
                         onTriggered: {
                             MobileAdaptor.vibrateBrief()
+                            finalFileName = modelData
+                            removeDialog.open()
                         }
-                    }
+                    } // removeAction
                 }
 
             } // ToolButton
@@ -127,6 +146,150 @@ Page {
             wrapMode: Text.Wrap
             text: qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
             onLinkActivated: Qt.openUrlExternally(link)
+        }
+    }
+
+
+    // This is the name of the file that openFromLibrary will open
+    property string finalFileName;
+
+    function openFromLibrary() {
+        var errorString = flightRoute.load(librarian.flightRouteFullPath(finalFileName))
+        if (errorString !== "") {
+            lbl.text = errorString
+            fileError.open()
+            return
+        }
+        stackView.push("FlightRoutePage.qml")
+    }
+
+    Dialog {
+        id: fileError
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        modal: true
+        title: qsTr("An error occurred…")
+        standardButtons: Dialog.Ok
+
+        ScrollView{
+            id: sv
+            anchors.fill: parent
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            // The visibility behavior of the vertical scroll bar is a little complex.
+            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+            ScrollBar.vertical.policy: (height < lbl.implicitHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+            ScrollBar.vertical.interactive: false
+
+            clip: true
+
+            // The Label that we really want to show is wrapped into an Item. This allows
+            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
+            // without binding loops
+            Item {
+                implicitHeight: lbl.implicitHeight
+                width: fileError.availableWidth
+
+                Label {
+                    id: lbl
+                    width: fileError.availableWidth
+                    textFormat: Text.RichText
+                    horizontalAlignment: Text.AlignJustify
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
+                } // Label
+            } // Item
+        } // ScrollView
+
+        Connections {
+            target: sensorGesture
+            onDetected: close()
+        }
+    }
+
+    Dialog {
+        id: overwriteDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Overwrite current flight route?")
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        Label {
+            width: overwriteDialog.availableWidth
+
+            text: qsTr("Once overwritten, the current flight route cannot be restored.")
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
+
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        onAccepted: {
+            MobileAdaptor.vibrateBrief()
+            page.openFromLibrary()
+        }
+        onRejected: {
+            MobileAdaptor.vibrateBrief()
+            close()
+        }
+
+        Connections {
+            target: sensorGesture
+            onDetected: close()
+        }
+    }
+
+    Dialog {
+        id: removeDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Remove from device?")
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        Label {
+            width: overwriteDialog.availableWidth
+
+            text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
+
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        onAccepted: {
+            MobileAdaptor.vibrateBrief()
+            librarian.flightRouteRemove(page.finalFileName)
+            var cache = textInput.text
+            textInput.text = textInput.text+"XXXXX"
+            textInput.text = cache
+        }
+        onRejected: {
+            MobileAdaptor.vibrateBrief()
+            close()
+        }
+
+        Connections {
+            target: sensorGesture
+            onDetected: close()
         }
     }
 

@@ -82,20 +82,35 @@ Page {
                         icon.source: "/icons/material/ic_open_in_new.svg"
 
                         onTriggered: {
-                                MobileAdaptor.vibrateBrief()
-                                finalFileName = modelData
-                                if (flightRoute.routeObjects.length > 0)
-                                    overwriteDialog.open()
-                                else
-                                    openFromLibrary()
+                            MobileAdaptor.vibrateBrief()
+                            finalFileName = modelData
+                            if (flightRoute.routeObjects.length > 0)
+                                overwriteDialog.open()
+                            else
+                                openFromLibrary()
                         }
 
                     } // openAction
 
                     Action {
+                        id: renameAction
+
+                        text: qsTr("Rename…")
+                        icon.source: "/icons/material/ic_swap_horiz.svg"
+
+                        onTriggered: {
+                            MobileAdaptor.vibrateBrief()
+                            finalFileName = modelData
+                            renameName.text = ""
+                            renameDialog.open()
+                        }
+
+                    } // renameAction
+
+                    Action {
                         id: removeAction
 
-                        text: qsTr("Remove from device")
+                        text: qsTr("Remove…")
                         icon.source: "/icons/material/ic_delete.svg"
 
                         onTriggered: {
@@ -104,7 +119,7 @@ Page {
                             removeDialog.open()
                         }
                     } // removeAction
-                }
+                } // AutoSizingMenu
 
             } // ToolButton
 
@@ -126,27 +141,18 @@ Page {
         ScrollIndicator.vertical: ScrollIndicator {}
     }
 
-    Rectangle {
-        anchors.top: textInput.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+    Label {
+        anchors.fill: wpList
+        anchors.topMargin: Qt.application.font.pixelSize*2
 
-        color: "white"
-        visible: wpList.count === 0
-
-        Label {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: Qt.application.font.pixelSize*2
-
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
-        }
+        visible: (wpList.count === 0)
+        horizontalAlignment: Text.AlignHCenter
+        textFormat: Text.RichText
+        wrapMode: Text.Wrap
+        text: (textInput.text === "")
+              ? qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
+              : qsTr("<h3>Sorry!</h3><p>No flight routes match your filter criteria.</p>")
+        onLinkActivated: Qt.openUrlExternally(link)
     }
 
 
@@ -161,6 +167,12 @@ Page {
             return
         }
         stackView.push("FlightRoutePage.qml")
+    }
+
+    function reloadFlightRouteList() {
+        var cache = textInput.text
+        textInput.text = textInput.text+"XXXXX"
+        textInput.text = cache
     }
 
     Dialog {
@@ -229,7 +241,7 @@ Page {
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("Once overwritten, the current flight route cannot be restored.")
+            text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.RichText
         }
@@ -278,9 +290,7 @@ Page {
         onAccepted: {
             MobileAdaptor.vibrateBrief()
             librarian.flightRouteRemove(page.finalFileName)
-            var cache = textInput.text
-            textInput.text = textInput.text+"XXXXX"
-            textInput.text = cache
+            page.reloadFlightRouteList()
         }
         onRejected: {
             MobileAdaptor.vibrateBrief()
@@ -292,5 +302,76 @@ Page {
             onDetected: close()
         }
     }
+
+    Dialog {
+        id: renameDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Rename Flight Route")
+
+        standardButtons: Dialog.Cancel
+        modal: true
+        focus: true
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                width: overwriteDialog.availableWidth
+
+                text: qsTr("Enter new name for the route <strong>%1</strong>.").arg(finalFileName)
+                color: Material.primary
+                wrapMode: Text.Wrap
+                textFormat: Text.RichText
+            }
+
+            TextField {
+                id: renameName
+
+                Layout.fillWidth: true
+                focus: true
+
+                placeholderText: "New Flight Route Name"
+
+                onAccepted: renameDialog.onAccepted()
+            }
+
+        } // ColumnLayout
+
+        footer: DialogButtonBox {
+            ToolButton {
+                id: renameButton
+
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                enabled: (renameName.text !== "") && !librarian.flightRouteExists(renameName.text)
+                text: qsTr("Rename")
+            }
+        }
+
+        onAccepted: {
+            MobileAdaptor.vibrateBrief()
+            if ((renameName.text !== "") && !librarian.flightRouteExists(renameName.text)) {
+                librarian.flightRouteRename(finalFileName, renameName.text)
+                page.reloadFlightRouteList()
+                close()
+            }
+        }
+        onRejected: {
+            MobileAdaptor.vibrateBrief()
+            close()
+        }
+
+        Connections {
+            target: sensorGesture
+            onDetected: close()
+        }
+    } // renameDialog
 
 } // Page

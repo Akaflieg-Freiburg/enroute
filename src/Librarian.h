@@ -75,6 +75,14 @@ public:
      */
     Q_INVOKABLE void flightRouteRemove(const QString &baseName);
 
+    /*! \brief Renames a flight route in the library
+     *
+     * @param oldName Name of the file that is to be renamed, without path and without extension
+     *
+     * @param newName New file name, without path and without extension. A file with that name must not exist in the library
+     */
+    Q_INVOKABLE void flightRouteRename(const QString &oldName, const QString &newName);
+
     /*! \brief Filters a QStringList in a fuzzy way
      *
      * This method filters a QStringList. It returns a sublist of those entries whose name approximately contain the filter string.

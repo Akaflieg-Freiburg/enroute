@@ -64,6 +64,12 @@ void Librarian::flightRouteRemove(const QString &baseName)
 }
 
 
+void Librarian::flightRouteRename(const QString &oldName, const QString &newName)
+{
+    QFile::rename(flightRouteLibraryDir.path()+"/"+oldName+".geojson", flightRouteLibraryDir.path()+"/"+newName+".geojson");
+}
+
+
 QStringList Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter)
 {
     QString simplifiedFilter = simplifySpecialChars(filter);

@@ -201,7 +201,7 @@ Dialog {
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("Once overwritten, the current flight route cannot be restored.")
+            text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.RichText
         }

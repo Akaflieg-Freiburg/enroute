@@ -88,27 +88,18 @@ Page {
         ScrollIndicator.vertical: ScrollIndicator {}
     }
 
-    Rectangle {
-        anchors.top: textInput.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+    Label {
+        anchors.fill: wpList
+        anchors.topMargin: Qt.application.font.pixelSize*2
 
-        color: "white"
-        visible: wpList.count === 0
-
-        Label {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: Qt.application.font.pixelSize*2
-
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
-        }
+        visible: (wpList.count === 0)
+        horizontalAlignment: Text.AlignHCenter
+        textFormat: Text.RichText
+        wrapMode: Text.Wrap
+        text: (textInput.text === "")
+              ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
+              : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
+        onLinkActivated: Qt.openUrlExternally(link)
     }
 
 } // Page

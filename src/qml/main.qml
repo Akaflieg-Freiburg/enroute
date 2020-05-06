@@ -185,7 +185,6 @@ ApplicationWindow {
                     }
                 }
 
-
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
@@ -240,7 +239,7 @@ ApplicationWindow {
                 dialogLoader.active = true
                 return
             }
-            if ((globalSettings.lastWhatsNewHash !== whatsNewHash) && !satNav.isInFlight) {
+            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !satNav.isInFlight) {
                 whatsNewDialog.open()
                 return
             }
@@ -316,8 +315,8 @@ ApplicationWindow {
         anchors.centerIn: parent
         
         title: qsTr("What's new …?")
-        text: whatsnew
-        onAccepted: globalSettings.lastWhatsNewHash = whatsNewHash
+        text: librarian.getStringFromRessource(":text/whatsnew.html")
+        onOpened: globalSettings.lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
     
     Shortcut {

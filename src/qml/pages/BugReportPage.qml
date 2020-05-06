@@ -43,7 +43,7 @@ Page {
             
             Label {
                 id: lbl1
-                text: bugReportText
+                text: librarian.getStringFromRessource(":text/bugReport.html")
                 textFormat: Text.RichText
                 width: pg.width
                 wrapMode: Text.Wrap

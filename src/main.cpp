@@ -110,48 +110,6 @@ int main(int argc, char *argv[])
     auto flightroute = new FlightRoute(aircraft, wind, engine);
     engine->rootContext()->setContextProperty("flightRoute", flightroute);
 
-    /*
-     * Load large strings from files, in order to make them available to QML
-     */
-    {
-        QFile file(":text/bugReport.html");
-        file.open(QIODevice::ReadOnly);
-        engine->rootContext()->setContextProperty("bugReportText", file.readAll());
-    }
-    {
-        QFile file(":text/firstStart.html");
-        file.open(QIODevice::ReadOnly);
-        engine->rootContext()->setContextProperty("firstStartText", file.readAll());
-    }
-    {
-        QFile file(":text/info_author.html");
-        file.open(QIODevice::ReadOnly);
-        engine->rootContext()->setContextProperty("infoText_author", file.readAll());
-    }
-    {
-        QFile file(":text/info_enroute.html");
-        file.open(QIODevice::ReadOnly);
-        engine->rootContext()->setContextProperty("infoText_enroute", file.readAll());
-    }
-    {
-        QFile file(":text/info_license.html");
-        file.open(QIODevice::ReadOnly);
-        engine->rootContext()->setContextProperty("infoText_license", file.readAll());
-    }
-    {
-        QFile file(":text/participate.html");
-        file.open(QIODevice::ReadOnly);
-        engine->rootContext()->setContextProperty("participateText", file.readAll());
-    }
-    {
-        QFile file(":text/whatsnew.html");
-        file.open(QIODevice::ReadOnly);
-        auto whatsNew = file.readAll();
-        auto whatsNewHash = qHash(whatsNew, 0);
-        engine->rootContext()->setContextProperty("whatsnew", whatsNew);
-        engine->rootContext()->setContextProperty("whatsNewHash", whatsNewHash);
-    }
-
     // Restore saved settings and make them available to QML
     QSettings settings;
     engine->rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,14 +31,47 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 }
 
 
-QString Librarian::flightRouteFullPath(const QString &baseName)
+QString Librarian::getStringFromRessource(const QString &name) const
+{
+    QFile file(name);
+    file.open(QIODevice::ReadOnly);
+    auto content = file.readAll();
+    return QString::fromUtf8(content);
+}
+
+
+uint Librarian::getStringHashFromRessource(const QString &name) const
+{
+    return qHash(getStringFromRessource(name), 0);
+}
+
+
+bool Librarian::flightRouteExists(const QString &baseName) const
+{
+  return QFile::exists(flightRouteFullPath(baseName));
+}
+
+
+QString Librarian::flightRouteFullPath(const QString &baseName) const
 {
     return flightRouteLibraryDir.path()+"/"+baseName+".geojson";
 }
 
+
+void Librarian::flightRouteRemove(const QString &baseName) const
+{
+    QFile::remove(flightRouteFullPath(baseName));
+}
+
+
+void Librarian::flightRouteRename(const QString &oldName, const QString &newName) const
+{
+    QFile::rename(flightRouteFullPath(oldName), flightRouteFullPath(newName));
+}
+
+
 QStringList Librarian::flightRoutes(const QString &filter)
 {
-
     QStringList filterList;
     filterList << "*.geojson";
 
@@ -52,24 +85,6 @@ QStringList Librarian::flightRoutes(const QString &filter)
 }
 
 
-bool Librarian::flightRouteExists(const QString &baseName)
-{
-    return QFile::exists(flightRouteLibraryDir.path()+"/"+baseName+".geojson");
-}
-
-
-void Librarian::flightRouteRemove(const QString &baseName)
-{
-    QFile::remove(flightRouteLibraryDir.path()+"/"+baseName+".geojson");
-}
-
-
-void Librarian::flightRouteRename(const QString &oldName, const QString &newName)
-{
-    QFile::rename(flightRouteLibraryDir.path()+"/"+oldName+".geojson", flightRouteLibraryDir.path()+"/"+newName+".geojson");
-}
-
-
 QStringList Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter)
 {
     QString simplifiedFilter = simplifySpecialChars(filter);
@@ -80,7 +95,6 @@ QStringList Librarian::permissiveFilter(const QStringList &inputStrings, const Q
             result << inputString;
 
     return result;
-
 }
 
 

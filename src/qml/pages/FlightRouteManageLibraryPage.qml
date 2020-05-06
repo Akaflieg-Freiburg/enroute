@@ -136,7 +136,7 @@ Page {
 
         clip: true
 
-        model: librarian.flightRoutes(textInput.text)
+        model: librarian.flightRoutes(textInput.displayText)
         delegate: flightRouteDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
@@ -321,7 +321,6 @@ Page {
 
 
         ColumnLayout {
-            anchors.fill: parent
 
             Label {
                 width: overwriteDialog.availableWidth

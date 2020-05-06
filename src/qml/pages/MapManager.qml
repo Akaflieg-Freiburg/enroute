@@ -121,7 +121,7 @@ Page {
                         Action {
                             id: updateAction
 
-                            text: qsTr("Remove from device")
+                            text: qsTr("Remove")
                             icon.source: "/icons/material/ic_delete.svg"
 
                             onTriggered: {

@@ -46,7 +46,7 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
             auto resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
             if(resultHash[permission] == QtAndroid::PermissionResult::Denied)
                 return;
-#warning Need consequences!
+//#warning Need consequences!
         }
     }
 #endif

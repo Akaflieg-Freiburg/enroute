@@ -74,7 +74,7 @@ Page {
 
                 Label {
                     id: lbl1
-                    text: infoText_enroute
+                    text: librarian.getStringFromRessource(":text/info_enroute.html")
                     textFormat: Text.RichText
                     width: pg.width
                     wrapMode: Text.Wrap
@@ -98,7 +98,7 @@ Page {
 
                 Label {
                     id: lbl2
-                    text: infoText_author
+                    text: librarian.getStringFromRessource(":text/info_author.html")
                     textFormat: Text.RichText
                     width: pg.width
                     wrapMode: Text.Wrap
@@ -122,7 +122,7 @@ Page {
 
                 Label {
                     id: lbl3
-                    text: infoText_license
+                    text: librarian.getStringFromRessource(":text/info_license.html")
                     textFormat: Text.RichText
                     width: pg.width
                     wrapMode: Text.Wrap

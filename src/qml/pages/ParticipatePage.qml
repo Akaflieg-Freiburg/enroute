@@ -43,7 +43,7 @@ Page {
             
             Label {
                 id: lbl1
-                text: participateText
+                text: librarian.getStringFromRessource(":text/participate.html")
                 textFormat: Text.RichText
                 width: pg.width
                 wrapMode: Text.Wrap

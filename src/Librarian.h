@@ -24,7 +24,12 @@
 #include <QRegularExpression>
 #include <QSettings>
 
-/*! \brief This simple class helps to manage a library of flight routes */
+/*! \brief Manage libraries of flight routes and text assets
+
+  This simple class manage libraries of flight routes and text assets, and
+  exposes these objects to QML. 
+
+ */
 
 class Librarian : public QObject {
     Q_OBJECT
@@ -32,7 +37,8 @@ class Librarian : public QObject {
 public:
     /*! \brief Default constructor
      *
-     * The constructor ensures that the relevant directory for storing the flight route library exists
+     * The constructor ensures that the relevant directory for storing the
+     * flight route library exists
      *
      * @param parent The standard QObject parent pointer
      */
@@ -40,6 +46,64 @@ public:
 
     // Standard destructor
     ~Librarian() override = default;
+
+    /*! \brief Exposes string stored in QRessource to QML
+     *
+     * This method reads a string from a file stored in the QRessource
+     * system. The method expects that the file contains a string in UTF8
+     * encoding.
+     *
+     * @param name Name of the file in the QRessource, such as
+     * ":text/bugReport.html"
+     *
+     * @returns File content as a QString
+     */
+    Q_INVOKABLE QString getStringFromRessource(const QString &name) const;
+
+    /*! \brief Exposes the hash of string stored in QRessource to QML
+     *
+     * This method reads a string from a file stored in the QRessource
+     * system. The method expects that the file contains a string in UTF8
+     * encoding.
+     *
+     * @param name Name of the file in the QRessource, such as ":text/bugReport.html"
+     *
+     * @returns Hash of file content
+     */
+    Q_INVOKABLE uint getStringHashFromRessource(const QString &name) const;
+
+    /*! \brief Check if a flight route with the given name exists in the library
+     *
+     * @param baseName File name, without path and without extension
+     *
+     * @returns True if the file exists
+     */
+    Q_INVOKABLE bool flightRouteExists(const QString &baseName) const;
+
+    /*! \brief Full path of a flight route in the library
+     *
+     * @param baseName Name of the flight route, without path and without
+     * extension
+     *
+     * @returns Full path of the flight route, with extension
+     */
+    Q_INVOKABLE QString flightRouteFullPath(const QString &baseName) const;
+
+    /*! \brief Removes a flight route from the library
+     *
+     * @param baseName File name, without path and without extension
+     */
+    Q_INVOKABLE void flightRouteRemove(const QString &baseName) const;
+
+    /*! \brief Renames a flight route in the library
+     *
+     * @param oldName Name of the file that is to be renamed, without path and
+     * without extension
+     *
+     * @param newName New file name, without path and without extension. A file
+     * with that name must not exist in the library
+     */
+    Q_INVOKABLE void flightRouteRename(const QString &oldName, const QString &newName) const;
 
     /*! \brief Lists all flight routes in the library whose name contains the string 'filter'
      *
@@ -53,40 +117,11 @@ public:
      */
     Q_INVOKABLE QStringList flightRoutes(const QString &filter=QString());
 
-    /*! \brief Full path of a flight route in the library
-     *
-     * @param baseName Name of the flight route, without path and without extension
-     *
-     * @returns Full path of the flight route, with extension
-     */
-    Q_INVOKABLE QString flightRouteFullPath(const QString &baseName);
-
-    /*! \brief Check if a flight route with the given name exists in the library
-     *
-     * @param baseName File name, without path and without extension
-     *
-     * @returns True if the file exists
-     */
-    Q_INVOKABLE bool flightRouteExists(const QString &baseName);
-
-    /*! \brief Removes a flight route from the library
-     *
-     * @param baseName File name, without path and without extension
-     */
-    Q_INVOKABLE void flightRouteRemove(const QString &baseName);
-
-    /*! \brief Renames a flight route in the library
-     *
-     * @param oldName Name of the file that is to be renamed, without path and without extension
-     *
-     * @param newName New file name, without path and without extension. A file with that name must not exist in the library
-     */
-    Q_INVOKABLE void flightRouteRename(const QString &oldName, const QString &newName);
-
     /*! \brief Filters a QStringList in a fuzzy way
      *
-     * This method filters a QStringList. It returns a sublist of those entries whose name approximately contain the filter string.
-     * For instance, "Zürich" is supposed to contain "u", "Ü" and "ù"
+     * This helper method filters a QStringList. It returns a sublist of those
+     * entries whose name approximately contain the filter string.  For
+     * instance, "Zürich" is supposed to contain "u", "Ü" and "ù"
      *
      * @param in QStringList that is to be filtered
      *
@@ -98,7 +133,8 @@ public:
 
     /*! \brief Simplifies string by transforming and removing special characters
      *
-     * This method simplifies a unicode string, by transforming it to QString::NormalizationForm_KD and then removing all 'special' character.
+     * This helper method simplifies a unicode string, by transforming it to
+     * QString::NormalizationForm_KD and then removing all 'special' character.
      * The results are cached for better performance.
      *
      * @param string Input string

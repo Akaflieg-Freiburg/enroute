@@ -197,7 +197,7 @@ Page {
                 MenuItem {
                     id: manageItem
 
-                    text: qsTr("Manage Flight Route Library…")
+                    text: qsTr("Manage Library…")
                     icon.source: "/icons/material/ic_library_books.svg"
 
                     onTriggered: {

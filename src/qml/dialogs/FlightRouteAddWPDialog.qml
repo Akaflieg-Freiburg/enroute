@@ -25,33 +25,18 @@ import QtQuick.Layouts 1.14
 
 import "../items"
 
-Page {
-    id: page
+Dialog {
+    id: dlg
     title: qsTr("Add Waypoint to Route")
+    modal: true
     focus: true
 
-    header: StandardHeader {}
+    // Size is chosen so that the dialog does not cover the parent in full
+    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    height: parent.height-2*Qt.application.font.pixelSize
+    implicitHeight: height
 
-    TextField {
-        id: textInput
-
-        anchors.right: parent.right
-        anchors.rightMargin: Qt.application.font.pixelSize*2.0
-        anchors.left: parent.left
-        anchors.leftMargin: Qt.application.font.pixelSize*2.0
-
-        placeholderText: qsTr("Filter Waypoint Names")
-        font.pixelSize: Qt.application.font.pixelSize*1.5
-        focus: true
-
-        onAccepted: {
-            if (wpList.model.length > 0) {
-                MobileAdaptor.vibrateBrief()
-                flightRoute.append(wpList.model[0])
-                stackView.pop()
-            }
-        }
-    }
+    standardButtons: DialogButtonBox.Cancel
 
     Component {
         id: waypointDelegate
@@ -68,38 +53,67 @@ Page {
             onClicked: {
                 MobileAdaptor.vibrateBrief()
                 flightRoute.append(model.modelData)
-                stackView.pop()
+                close()
             }
         }
 
     }
 
-    ListView {
-        id: wpList
-        anchors.top: textInput.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+    ColumnLayout {
+        anchors.fill: parent
 
-        clip: true
+        Label {
+            text: qsTr("Choose a waypoint from the list below.")
+            color: Material.primary
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
 
-        model: geoMapProvider.filteredWaypointObjects(textInput.displayText)
-        delegate: waypointDelegate
-        ScrollIndicator.vertical: ScrollIndicator {}
+        TextField {
+            id: textInput
+
+            Layout.fillWidth: true
+
+            placeholderText: qsTr("Filter Waypoint Names")
+            font.pixelSize: Qt.application.font.pixelSize*1.5
+            focus: true
+
+            onAccepted: {
+                if (wpList.model.length > 0) {
+                    MobileAdaptor.vibrateBrief()
+                    flightRoute.append(wpList.model[0])
+                    close()
+                }
+            }
+        }
+
+        ListView {
+            id: wpList
+
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            clip: true
+
+            model: geoMapProvider.filteredWaypointObjects(textInput.displayText)
+            delegate: waypointDelegate
+            ScrollIndicator.vertical: ScrollIndicator {}
+
+            Label {
+                anchors.fill: wpList
+                anchors.topMargin: Qt.application.font.pixelSize*2
+
+                visible: (wpList.count === 0)
+                horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+                text: (textInput.text === "")
+                      ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
+                      : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+
+        }
+
     }
-
-    Label {
-        anchors.fill: wpList
-        anchors.topMargin: Qt.application.font.pixelSize*2
-
-        visible: (wpList.count === 0)
-        horizontalAlignment: Text.AlignHCenter
-        textFormat: Text.RichText
-        wrapMode: Text.Wrap
-        text: (textInput.text === "")
-              ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
-              : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
-        onLinkActivated: Qt.openUrlExternally(link)
-    }
-
 } // Page

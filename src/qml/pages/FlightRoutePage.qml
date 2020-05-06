@@ -489,7 +489,9 @@ Page {
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()
-                    stackView.push("FlightRouteAddWPPage.qml")
+                    dialogLoader.active = false
+                    dialogLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
+                    dialogLoader.active = true
                 }
             }
         }
@@ -549,7 +551,11 @@ Page {
 
     Shortcut {
         sequence: "Ctrl+a"
-        onActivated: stackView.push("FlightRouteAddWPPage.qml")
+        onActivated: {
+            dialogLoader.active = false
+            dialogLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
+            dialogLoader.active = true
+        }
     }
 
 } // Page

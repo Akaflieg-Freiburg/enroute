@@ -5,6 +5,7 @@
         <file alias="dialogs/AltitudeCorrectionDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/AltitudeCorrectionDialog.qml</file>
         <file alias="dialogs/ErrorDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/ErrorDialog.qml</file>	
         <file alias="dialogs/FirstRunDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FirstRunDialog.qml</file>
+        <file alias="dialogs/FlightRouteAddWPDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteAddWPDialog.qml</file>
         <file alias="dialogs/FlightRouteOpenDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteOpenDialog.qml</file>
         <file alias="dialogs/FlightRouteSaveDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteSaveDialog.qml</file>
         <file alias="dialogs/LongTextDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialog.qml</file>
@@ -18,7 +19,6 @@
         <file alias="items/StandardHeader.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/StandardHeader.qml</file>	
         <file alias="pages/BugReportPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/BugReportPage.qml</file>
         <file alias="pages/FlightRoutePage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRoutePage.qml</file>	
-        <file alias="pages/FlightRouteAddWPPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteAddWPPage.qml</file>
         <file alias="pages/FlightRouteManageLibraryPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteManageLibraryPage.qml</file>
         <file alias="pages/InfoPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/InfoPage.qml</file>
         <file alias="pages/MapManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapManager.qml</file>

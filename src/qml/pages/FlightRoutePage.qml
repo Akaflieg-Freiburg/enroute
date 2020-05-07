@@ -152,9 +152,10 @@ Page {
         }
 
         ToolButton {
-            anchors.right: parent.right
-
             id: headerMenuToolButton
+
+            anchors.right: parent.right
+            visible: (sv.currentIndex === 0)
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 MobileAdaptor.vibrateBrief()
@@ -482,10 +483,11 @@ Page {
 
             ToolButton {
                 id: addWPButton
+
+                visible: (sv.currentIndex === 0)
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Add Waypoint")
                 icon.source: "/icons/material/ic_add_circle.svg"
-
 
                 onClicked: {
                     MobileAdaptor.vibrateBrief()

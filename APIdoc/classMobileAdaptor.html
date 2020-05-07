@@ -72,6 +72,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a302e1db70ef90d5e0881a4117adb2b51"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a302e1db70ef90d5e0881a4117adb2b51">MobileAdaptor</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a302e1db70ef90d5e0881a4117adb2b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="#a302e1db70ef90d5e0881a4117adb2b51">More...</a><br /></td></tr>
 <tr class="separator:a302e1db70ef90d5e0881a4117adb2b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07ba3b9b2ec586b91b3075f57ba3d77a"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a07ba3b9b2ec586b91b3075f57ba3d77a">missingPermissionsExist</a> ()</td></tr>
+<tr class="memdesc:a07ba3b9b2ec586b91b3075f57ba3d77a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if all requred permissions have been granted.  <a href="#a07ba3b9b2ec586b91b3075f57ba3d77a">More...</a><br /></td></tr>
+<tr class="separator:a07ba3b9b2ec586b91b3075f57ba3d77a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to platform-specific capabilities of mobile devices. </p>
@@ -104,7 +107,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Standard constructor. </p>
-<p>On Android, this constructor disables the screen lock.</p>
+<p>On Android, this constructor disables the screen lock and asks for the permissions that are needed to run the app.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>Standard QObject parent pointer </td></tr>
@@ -140,6 +143,27 @@ Public Member Functions</h2></td></tr>
 
 <p>Hides the android splash screen. </p>
 <p>On Android, hides the android splash screen. On other platforms, this does nothing. The implementation ensures that QtAndroid::hideSplashScreen is called (only once, regardless of how often this slot is used). </p>
+
+</div>
+</div>
+<a id="a07ba3b9b2ec586b91b3075f57ba3d77a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07ba3b9b2ec586b91b3075f57ba3d77a">&#9670;&nbsp;</a></span>missingPermissionsExist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool MobileAdaptor::missingPermissionsExist </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if all requred permissions have been granted. </p>
+<p>On Android, the app requirs certain permissions to run. This method can be used to check if all permissions have been granted.</p>
+<dl class="section return"><dt>Returns</dt><dd>On Android, returns 'true' if not all required permissions have been granted. On other systems, always returns 'false' </dd></dl>
 
 </div>
 </div>

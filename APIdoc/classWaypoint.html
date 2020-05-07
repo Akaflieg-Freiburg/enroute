@@ -42,7 +42,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#friends">Friends</a> &#124;
 <a href="classWaypoint-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Waypoint Class Reference</div>  </div>
@@ -70,9 +69,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac44284009382c3814bec41e6e86434b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aac44284009382c3814bec41e6e86434b">Waypoint</a> (const QJsonObject &amp;geoJSONObject, QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:aac44284009382c3814bec41e6e86434b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a GeoJSON object.  <a href="#aac44284009382c3814bec41e6e86434b">More...</a><br /></td></tr>
 <tr class="separator:aac44284009382c3814bec41e6e86434b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05a42ca5dde5bfb8d7dd360dd5c27fc0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a05a42ca5dde5bfb8d7dd360dd5c27fc0">Waypoint</a> (QDataStream &amp;stream, QObject *parent=nullptr)</td></tr>
-<tr class="memdesc:a05a42ca5dde5bfb8d7dd360dd5c27fc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint by reading in data from a QDataStream.  <a href="#a05a42ca5dde5bfb8d7dd360dd5c27fc0">More...</a><br /></td></tr>
-<tr class="separator:a05a42ca5dde5bfb8d7dd360dd5c27fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2342fac6ccc6e29f719feca861de1b15"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a2342fac6ccc6e29f719feca861de1b15">coordinate</a> () const</td></tr>
 <tr class="memdesc:a2342fac6ccc6e29f719feca861de1b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a2342fac6ccc6e29f719feca861de1b15">More...</a><br /></td></tr>
 <tr class="separator:a2342fac6ccc6e29f719feca861de1b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -88,6 +84,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adad2cd9c0325755baa8fb8dae87ee790"><td class="memItemLeft" align="right" valign="top">QList&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#adad2cd9c0325755baa8fb8dae87ee790">tabularDescription</a> () const</td></tr>
 <tr class="memdesc:adad2cd9c0325755baa8fb8dae87ee790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#adad2cd9c0325755baa8fb8dae87ee790">More...</a><br /></td></tr>
 <tr class="separator:adad2cd9c0325755baa8fb8dae87ee790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a092b50386d2f6baf40f85224c195d777"><td class="memItemLeft" align="right" valign="top">QJsonObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a092b50386d2f6baf40f85224c195d777">toJSON</a> () const</td></tr>
+<tr class="memdesc:a092b50386d2f6baf40f85224c195d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization to GeoJSON object.  <a href="#a092b50386d2f6baf40f85224c195d777">More...</a><br /></td></tr>
+<tr class="separator:a092b50386d2f6baf40f85224c195d777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#adcfeccd1696b81ca5140a54c06e7a6bb">wayFrom</a> (const QGeoCoordinate &amp;position) const</td></tr>
 <tr class="memdesc:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given position to the waypoint.  <a href="#adcfeccd1696b81ca5140a54c06e7a6bb">More...</a><br /></td></tr>
 <tr class="separator:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,12 +99,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a55ac7febb3bfa9303600d265f4bda556"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a55ac7febb3bfa9303600d265f4bda556">extendedName</a></td></tr>
 <tr class="memdesc:a55ac7febb3bfa9303600d265f4bda556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extended name of the Waypoints.  <a href="#a55ac7febb3bfa9303600d265f4bda556">More...</a><br /></td></tr>
 <tr class="separator:a55ac7febb3bfa9303600d265f4bda556"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:af8a48f04ee5d5a3341afa283876b66f7"><td class="memItemLeft" align="right" valign="top">QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#af8a48f04ee5d5a3341afa283876b66f7">operator&lt;&lt;</a> (QDataStream &amp;stream, const <a class="el" href="classWaypoint.html">Waypoint</a> &amp;wp)</td></tr>
-<tr class="memdesc:af8a48f04ee5d5a3341afa283876b66f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes a <a class="el" href="classWaypoint.html" title="Waypoint, such as an airfield, a navaid station or a reporting point. ">Waypoint</a>.  <a href="#af8a48f04ee5d5a3341afa283876b66f7">More...</a><br /></td></tr>
-<tr class="separator:af8a48f04ee5d5a3341afa283876b66f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classWaypoint.html" title="Waypoint, such as an airfield, a navaid station or a reporting point. ">Waypoint</a>, such as an airfield, a navaid station or a reporting point. </p>
@@ -115,10 +108,10 @@ Friends</h2></td></tr>
 <li>A QMap&lt;QString, QVariant&gt; that represents the waypoint properties found in the GeoJSON file. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00040">40</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00041">41</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4de232dafbdebfad262279e70c22c509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4de232dafbdebfad262279e70c22c509">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4de232dafbdebfad262279e70c22c509">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,7 +145,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="aafecadf8591d382ff5a7fdccede21c91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafecadf8591d382ff5a7fdccede21c91">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aafecadf8591d382ff5a7fdccede21c91">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,7 +190,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="ab829b80019cc61062ffc721e77503204"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab829b80019cc61062ffc721e77503204">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab829b80019cc61062ffc721e77503204">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -243,7 +236,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="aac44284009382c3814bec41e6e86434b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac44284009382c3814bec41e6e86434b">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aac44284009382c3814bec41e6e86434b">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,51 +281,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a05a42ca5dde5bfb8d7dd360dd5c27fc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05a42ca5dde5bfb8d7dd360dd5c27fc0">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[5/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Waypoint::Waypoint </td>
-          <td>(</td>
-          <td class="paramtype">QDataStream &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">QObject *&#160;</td>
-          <td class="paramname"><em>parent</em> = <code>nullptr</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Constructs a waypoint by reading in data from a QDataStream. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stream</td><td>QDatastream</td></tr>
-    <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2342fac6ccc6e29f719feca861de1b15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2342fac6ccc6e29f719feca861de1b15">&#9670;&nbsp;</a></span>coordinate()</h2>
@@ -360,7 +308,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordinate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00103">103</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00096">96</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -418,7 +366,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of the member </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00130">130</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00123">123</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -462,6 +410,27 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a092b50386d2f6baf40f85224c195d777"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a092b50386d2f6baf40f85224c195d777">&#9670;&nbsp;</a></span>toJSON()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QJsonObject Waypoint::toJSON </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Serialization to GeoJSON object. </p>
+<p>This method serialises the waypoint route as a GeoJSON object. The object conforms to the specification outlined <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. The waypoint can be restored with the obvious constructor</p>
+<dl class="section return"><dt>Returns</dt><dd>QJsonObject describing the waypoint </dd></dl>
+
+</div>
+</div>
 <a id="adcfeccd1696b81ca5140a54c06e7a6bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adcfeccd1696b81ca5140a54c06e7a6bb">&#9670;&nbsp;</a></span>wayFrom()</h2>
 
@@ -489,53 +458,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="af8a48f04ee5d5a3341afa283876b66f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8a48f04ee5d5a3341afa283876b66f7">&#9670;&nbsp;</a></span>operator<<</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QDataStream&amp; operator&lt;&lt; </td>
-          <td>(</td>
-          <td class="paramtype">QDataStream &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classWaypoint.html">Waypoint</a> &amp;&#160;</td>
-          <td class="paramname"><em>wp</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Serializes a <a class="el" href="classWaypoint.html" title="Waypoint, such as an airfield, a navaid station or a reporting point. ">Waypoint</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stream</td><td>QDataStream that is written into</td></tr>
-    <tr><td class="paramname">wp</td><td><a class="el" href="classWaypoint.html" title="Waypoint, such as an airfield, a navaid station or a reporting point. ">Waypoint</a> that will be written</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to the stream </dd></dl>
-
-</div>
-</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a7b4b09e48657db8f50e25d2da776a04f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b4b09e48657db8f50e25d2da776a04f">&#9670;&nbsp;</a></span>coordinate</h2>
@@ -560,7 +482,7 @@ Friends</h2></td></tr>
 <p>Coordinate of the waypoint. </p>
 <p>If the coordinate is invalid, this waypoint should not be used </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00097">97</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00090">90</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -587,7 +509,7 @@ Friends</h2></td></tr>
 <p>Extended name of the Waypoints. </p>
 <p>This method returns a string of the form "Karlsruhe (DVOR-DME)" </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00109">109</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00102">102</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

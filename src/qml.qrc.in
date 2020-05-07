@@ -9,6 +9,7 @@
         <file alias="dialogs/FlightRouteOpenDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteOpenDialog.qml</file>
         <file alias="dialogs/FlightRouteSaveDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteSaveDialog.qml</file>
         <file alias="dialogs/LongTextDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialog.qml</file>
+        <file alias="dialogs/MissingPermissionsDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/MissingPermissionsDialog.qml</file>
         <file alias="dialogs/SatNavStatusDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/SatNavStatusDialog.qml</file>
         <file alias="dialogs/UpdateMapDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/UpdateMapDialog.qml</file>
         <file alias="dialogs/WaypointDescription.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointDescription.qml</file>

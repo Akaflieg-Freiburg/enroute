@@ -36,14 +36,25 @@ class MobileAdaptor : public QObject
 
 public:
     /*! \brief Standard constructor
-
-    On Android, this constructor disables the screen lock.
-
-    @param parent Standard QObject parent pointer
+     *
+     * On Android, this constructor disables the screen lock and asks for the
+     * permissions that are needed to run the app.
+     *
+     * @param parent Standard QObject parent pointer
     */
     explicit MobileAdaptor(QObject *parent = nullptr);
 
     ~MobileAdaptor();
+
+    /*! \brief Checks if all requred permissions have been granted
+     *
+     * On Android, the app requirs certain permissions to run. This method can
+     * be used to check if all permissions have been granted.
+     *
+     * @returns On Android, returns 'true' if not all required permissions have
+     * been granted. On other systems, always returns 'false'
+    */
+    Q_INVOKABLE bool missingPermissionsExist();
 
 public slots:
     /*! \brief Hides the android splash screen.

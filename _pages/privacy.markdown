@@ -27,9 +27,9 @@ GERMANY
 
 The Android app requires the following privileges.
 
-- WRITE_EXTERNAL_STORAGE -- Required to store map data, the current route and other settings.
+- WRITE_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE -- This priviege is required to store the flight map library in a globaly accessible directory. This ensures that the library persists when the app is uninstalled or reinstalled. It also ensures that other apps, such as file managers or file synchronisation software, can access the data.
 
-- ACCESS_NETWORK_STATE -- Required to update map data.
+- ACCESS_NETWORK_STATE -- This priviege is required to update map data.
 
 - ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION -- Accessing the device's location is clearly necessary for a navigation app.
 

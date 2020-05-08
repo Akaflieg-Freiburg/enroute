@@ -142,7 +142,7 @@ ApplicationWindow {
 
                 ItemDelegate {
                     text: qsTr("About Enroute")
-                    icon.source: "/icons/material/ic_info.svg"
+                    icon.source: "/icons/material/ic_info_outline.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
                     visible: !satNav.isInFlight

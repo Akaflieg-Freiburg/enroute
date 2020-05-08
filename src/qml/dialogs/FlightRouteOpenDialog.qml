@@ -67,7 +67,7 @@ Dialog {
         anchors.fill: parent
 
         Label {
-            width: overwriteDialog.availableWidth
+            Layout.fillWidth: true
 
             text: qsTr("Choose a flight route from the list below.")
             color: Material.primary

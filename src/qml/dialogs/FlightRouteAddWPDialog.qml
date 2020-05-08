@@ -63,6 +63,8 @@ Dialog {
         anchors.fill: parent
 
         Label {
+            Layout.fillWidth: true
+
             text: qsTr("Choose a waypoint from the list below.")
             color: Material.primary
             wrapMode: Text.Wrap

@@ -166,9 +166,14 @@ Page {
                 id: headerMenuX
 
                 MenuItem {
+                    text: qsTr("Flight Route Library")
+                    enabled: false
+                }
+
+                MenuItem {
                     id: loadItem
 
-                    text: qsTr("Load Route…")
+                    text: qsTr("Open Route …")
                     icon.source: "/icons/material/ic_open_in_new.svg"
                     enabled: true
 
@@ -183,7 +188,7 @@ Page {
                 MenuItem {
                     id: saveItem
 
-                    text: qsTr("Save Route…")
+                    text: qsTr("Save Route …")
                     icon.source: "/icons/material/ic_library_add.svg"
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
@@ -198,7 +203,7 @@ Page {
                 MenuItem {
                     id: manageItem
 
-                    text: qsTr("Manage Library…")
+                    text: qsTr("View Library …")
                     icon.source: "/icons/material/ic_library_books.svg"
 
                     onTriggered: {
@@ -213,9 +218,26 @@ Page {
                 }
 
                 MenuItem {
+                    text: qsTr("This Flight Route")
+                    enabled: false
+                }
+
+                MenuItem {
+                    id: sendItem
+
+                    text: qsTr("Send …")
+                    icon.source: "/icons/material/ic_send.svg"
+                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+
+                    onTriggered: {
+                        MobileAdaptor.vibrateBrief()
+                    }
+                }
+
+                MenuItem {
                     id: clearItem
 
-                    text: qsTr("Clear Route")
+                    text: qsTr("Clear")
                     icon.source: "/icons/material/ic_delete.svg"
                     enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
 
@@ -229,7 +251,7 @@ Page {
                 MenuItem {
                     id: reverseItem
 
-                    text: qsTr("Reverse Route")
+                    text: qsTr("Reverse")
                     icon.source: "/icons/material/ic_swap_vert.svg"
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 

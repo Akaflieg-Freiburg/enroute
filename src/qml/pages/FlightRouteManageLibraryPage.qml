@@ -23,6 +23,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
 
+import "../dialogs"
 import "../items"
 
 Page {
@@ -30,7 +31,51 @@ Page {
     title: qsTr("Flight Route Library")
     focus: true
 
-    header: StandardHeader {}
+    header: ToolBar {
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.leftMargin: drawer.dragMargin
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                if (stackView.depth > 1) {
+                    stackView.pop()
+                } else {
+                    drawer.open()
+                }
+            }
+        } // ToolButton
+
+        Label {
+            anchors.left: backButton.right
+            anchors.right: headerMenuToolButton.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.bold: true
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                MobileAdaptor.vibrateBrief()
+                infoDialog.open()
+            }
+
+        } // ToolButton
+
+    } // ToolBar
 
     TextField {
         id: textInput
@@ -224,6 +269,15 @@ Page {
             target: sensorGesture
             onDetected: close()
         }
+    }
+
+    LongTextDialog {
+        id: infoDialog
+        standardButtons: Dialog.Ok
+        anchors.centerIn: parent
+
+        title: qsTr("Flight Route Library")
+        text: librarian.getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(librarian.flightRouteDirectory())
     }
 
     Dialog {

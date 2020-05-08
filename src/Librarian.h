@@ -72,6 +72,12 @@ public:
      */
     Q_INVOKABLE uint getStringHashFromRessource(const QString &name) const;
 
+    /*! \brief Name of the directory containing the flight route library
+     *
+     * @returns Name of the directory, without trailing slash
+     */
+    Q_INVOKABLE QString flightRouteDirectory() const { return flightRouteLibraryDir.path(); }
+
     /*! \brief Check if a flight route with the given name exists in the library
      *
      * @param baseName File name, without path and without extension

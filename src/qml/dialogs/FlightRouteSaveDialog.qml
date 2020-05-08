@@ -66,6 +66,8 @@ Dialog {
         anchors.fill: parent
 
         Label {
+            Layout.fillWidth: true
+
             text: qsTr("Enter a file name or choose an existing name from the list below.")
             color: Material.primary
             wrapMode: Text.Wrap

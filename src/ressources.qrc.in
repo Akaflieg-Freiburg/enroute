@@ -13,7 +13,8 @@
     <!-- Texts -->
     <qresource prefix="/">
         <file>text/bugReport.html</file>
-        <file>text/firstStart.html</file>
+	<file>text/firstStart.html</file>
+	<file>text/flightRouteLibraryInfo.html</file>
         <file>text/missingPermissions.html</file>
         <file>text/info_author.html</file>
         <file>text/info_enroute.html</file>
@@ -24,6 +25,7 @@
     <qresource lang="cz" prefix="/">
         <file>text/bugReport_cz.html</file>
         <file>text/firstStart_cz.html</file>
+	<file>text/flightRouteLibraryInfo_cz.html</file>
         <file>text/missingPermissions_cz.html</file>
         <file>text/info_author_cz.html</file>
         <file>text/info_enroute_cz.html</file>
@@ -34,6 +36,7 @@
     <qresource lang="de" prefix="/">
         <file>text/bugReport_de.html</file>
         <file>text/firstStart_de.html</file>
+	<file>text/flightRouteLibraryInfo_de.html</file>
         <file>text/missingPermissions_de.html</file>
         <file>text/info_author_de.html</file>
         <file>text/info_enroute_de.html</file>

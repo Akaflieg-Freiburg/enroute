@@ -56,6 +56,22 @@ public:
     */
     Q_INVOKABLE bool missingPermissionsExist();
 
+    /*! \brief Send text content with other app.
+     *
+     * On Android systems, this method will do the following.
+     *
+     * - save content to temporary file in the app's private cache
+     * - call the corresponding java static method where a SEND intent is created and startActivity is called
+     *
+     * On other systems, this method does nothing yet.
+     *
+     * @param content content text
+     * @param mimeType the mimeType of the content
+     * @param suffix the suffix for a temporary file
+     */
+    Q_INVOKABLE
+    void sendContent(const QString& content, const QString& mimeType, const QString& suffix);
+
 public slots:
     /*! \brief Hides the android splash screen.
 
@@ -82,5 +98,14 @@ public slots:
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)
   
+#if defined (Q_OS_ANDROID)
+    // Name of a subdirectory within the AppDataLocation for
+    // sending and receiving files.
+    QString androidExchangeDirectoryName;
+
+    // Pointer to instance of this class, required for JNI calls
+    static MobileAdaptor* mInstance;
+#endif
+
     bool splashScreenHidden {false};
 };

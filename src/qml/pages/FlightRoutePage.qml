@@ -231,6 +231,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        MobileAdaptor.sendContent("Content string", "application/gpx+xml", "gpx")
                     }
                 }
 

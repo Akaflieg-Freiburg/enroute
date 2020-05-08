@@ -21,6 +21,9 @@
 
 #include "MobileAdaptor.h"
 
+#include <QDir>
+#include <QStandardPaths>
+
 #if defined(Q_OS_ANDROID)
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
@@ -30,19 +33,35 @@ const QStringList permissions({"android.permission.ACCESS_COARSE_LOCATION",
                                "android.permission.ACCESS_FINE_LOCATION",
                                "android.permission.WRITE_EXTERNAL_STORAGE",
                                "android.permission.READ_EXTERNAL_STORAGE"});
+
+MobileAdaptor* MobileAdaptor::mInstance = nullptr;
 #endif
 
 
 MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
 {
-
+    // Do all the set-up required for sharing files
 #if defined (Q_OS_ANDROID)
+    // Android requires you to use a subdirectory within the AppDataLocation for
+    // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
+    // app didn't exit gracefully, the directory is still cleared when starting
+    // the app next time.
+    androidExchangeDirectoryName = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "exchange/";
+    QDir exchangeDir(androidExchangeDirectoryName);
+    exchangeDir.removeRecursively();
+    exchangeDir.mkpath(androidExchangeDirectoryName);
+
+    // we need the instance for the JNI Call
+    mInstance = this;
+#endif
+
     // Ask for permissions
+#if defined (Q_OS_ANDROID)
     QtAndroid::requestPermissionsSync(permissions);
 #endif
 
-    // Disable the screen saver so that the screen does not switsch off automatically
+    // Disable the screen saver so that the screen does not switch off automatically
 #if defined(Q_OS_ANDROID)
     bool on=true;
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android

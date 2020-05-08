@@ -71,6 +71,7 @@ set(SOURCES
     main.cpp
     MapManager.cpp
     MobileAdaptor.cpp
+    MobileAdaptor_share.cpp
     SatNav.cpp
     ScaleQuickItem.cpp
     TileHandler.cpp

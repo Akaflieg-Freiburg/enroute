@@ -179,6 +179,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/FlightRouteOpenDialog.qml"
                         dialogLoader.active = true
@@ -194,6 +195,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
                         dialogLoader.active = true
@@ -208,9 +210,11 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         stackView.push("FlightRouteManageLibraryPage.qml")
                     }
                 }
+
 
                 Rectangle {
                     height: 1
@@ -231,6 +235,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         MobileAdaptor.sendContent("Content string", "application/gpx+xml", "gpx")
                     }
                 }
@@ -244,6 +249,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         clearDialog.open()
                     }
 
@@ -258,6 +264,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         flightRoute.reverse()
                     }
                 }

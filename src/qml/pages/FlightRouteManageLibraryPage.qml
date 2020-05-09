@@ -375,12 +375,14 @@ Page {
 
 
         ColumnLayout {
+            width: renameDialog.availableWidth
 
             Label {
                 width: overwriteDialog.availableWidth
 
                 text: qsTr("Enter new name for the route <strong>%1</strong>.").arg(finalFileName)
                 color: Material.primary
+                Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 textFormat: Text.RichText
             }
@@ -403,7 +405,7 @@ Page {
                 id: renameButton
 
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-                enabled: (renameName.text !== "") && !librarian.flightRouteExists(renameName.text)
+                enabled: (renameName.displayText !== "") && !librarian.flightRouteExists(renameName.displayText)
                 text: qsTr("Rename")
             }
         }

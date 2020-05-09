@@ -199,6 +199,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         mapManager.updateGeoMapList()
                     }
                 }
@@ -212,6 +213,7 @@ Page {
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
+                        highlighted = false
                         mapManager.updateGeoMaps()
                     }
                 }

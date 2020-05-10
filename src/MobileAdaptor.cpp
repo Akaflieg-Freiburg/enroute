@@ -47,7 +47,7 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
     // app didn't exit gracefully, the directory is still cleared when starting
     // the app next time.
-    androidExchangeDirectoryName = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "exchange/";
+    androidExchangeDirectoryName = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/exchange/";
     QDir exchangeDir(androidExchangeDirectoryName);
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(androidExchangeDirectoryName);

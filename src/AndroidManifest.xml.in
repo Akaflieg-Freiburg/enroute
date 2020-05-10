@@ -106,6 +106,18 @@
 
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
 
+      <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
+      <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="de.akaflieg_freiburg.enroute"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/filepaths"/>
+      </provider>
+
+
     </application>
 
 </manifest>

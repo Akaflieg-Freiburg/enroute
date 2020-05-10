@@ -99,6 +99,10 @@ private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)
   
 #if defined (Q_OS_ANDROID)
+#warning Documentation
+    QString contentToTempFile(const QString& content, const QString& suffix);
+    void outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
+
     // Name of a subdirectory within the AppDataLocation for
     // sending and receiving files.
     QString androidExchangeDirectoryName;

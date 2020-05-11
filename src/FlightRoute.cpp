@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDataStream>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QJsonArray>
@@ -178,7 +179,7 @@ QString FlightRoute::save(const QString& fileName) const
     auto success = file.open(QIODevice::WriteOnly);
     if (!success)
         return tr("Unable to open the file '%1' for writing.").arg(fileName);
-    auto numBytesWritten = file.write(toGeoJSON().toJson());
+    auto numBytesWritten = file.write(toGeoJSON());
     if (numBytesWritten == -1) {
         file.close();
         QFile::remove(fileName);
@@ -282,7 +283,7 @@ QString FlightRoute::summary() const
 }
 
 
-QJsonDocument FlightRoute::toGeoJSON() const
+QByteArray FlightRoute::toGeoJSON() const
 {
     QJsonArray waypointArray;
     foreach(auto waypoint, _waypoints)
@@ -292,7 +293,7 @@ QJsonDocument FlightRoute::toGeoJSON() const
     jsonObj.insert("features", waypointArray);
     QJsonDocument doc;
     doc.setObject(jsonObj);
-    return doc;
+    return doc.toJson();
 }
 
 
@@ -332,4 +333,158 @@ QString FlightRoute::load(QString fileName)
     emit waypointsChanged();
 
     return QString();
+}
+
+
+// export to gpx waypoints (wpt) and route (rte).
+// We currently don't export as track, but see below.
+//
+QByteArray FlightRoute::toGpx()
+{
+    // now in UTC, ISO 8601 alike
+    //
+    QString now = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd HH:mm:ssZ");
+
+    // gpx header
+    //
+    QString gpx = QString("<?xml version='1.0' encoding='UTF-8'?>\n"
+                          "<gpx version='1.1' creator='Enroute - https://akaflieg-freiburg.github.io/enroute'\n"
+                          "     xmlns='http://www.topografix.com/GPX/1/1'\n"
+                          "     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>\n"
+                          "  <metadata>\n"
+                          "    <name>Enroute " + now + "</name>\n"
+                          "    <time>" + now + "</time>\n");
+
+    double minlat, minlon, maxlat, maxlon;
+    if (routeBounds(minlat, minlon, maxlat, maxlon))
+    {
+        gpx += "    <bounds"
+                " minlat='" + QString::number(minlat, 'f', 8) + "'"
+                " minlon='" + QString::number(minlon, 'f', 8) + "'"
+                " maxlat='" + QString::number(maxlat, 'f', 8) + "'"
+                " maxlon='" + QString::number(maxlon, 'f', 8) + "'/>\n";
+    }
+
+    gpx += "  </metadata>\n";
+
+    // 2 spaces additional indent
+    //
+    gpx += gpxElements(QString("  "), "wpt");
+
+    // start gpx rte
+    // rte does _not_ contain segments
+    //
+    gpx += "  <rte>\n"
+           "    <name>Enroute " + now + "</name>\n";
+
+    // 4 spaces additional indent
+    //
+    gpx += gpxElements(QString("    "), "rtept");
+
+    // close gpx
+    //
+    gpx += "  </rte>\n";
+
+    // the next few lines export the route as gpx track.
+    // We leave this disabled right now. If we discover later
+    // that other apps depend on the route beeing exported
+    // as track rather than as route we can easily enable
+    // it again.
+    //
+#if 0
+    // start gpx trk
+    // trk does contains segments <trkseg>
+    //
+    gpx += "  <trk>\n"
+           "    <name>Enroute " + now + "</name>\n"
+                                        "    <trkseg>\n";
+
+    // 6 spaces additional indent
+    //
+    gpx += gpxElements(QString("      "), "trkpt");
+
+    // close gpx
+    //
+    gpx += "    </trkseg>\n"
+           "  </trk>\n";
+#endif
+
+    gpx += "</gpx>\n";
+
+    return gpx.toUtf8();
+}
+
+
+bool FlightRoute::routeBounds(double &minlat, double &minlon, double &maxlat, double &maxlon) const
+{
+    bool valid = false;
+
+    for(auto _waypoint : _waypoints) {
+
+        if (!_waypoint->isValid())
+            continue; // skip silently
+
+        QGeoCoordinate position = _waypoint->coordinate();
+        auto lat = position.latitude();
+        auto lon = position.longitude();
+
+        if (!valid)
+        {
+            valid = true;
+            minlat = maxlat = lat;
+            minlon = maxlon = lon;
+        } else {
+            if (lat < minlat)
+                minlat = lat;
+            if (lon < minlon)
+                minlon = lon;
+            if (lat > maxlat)
+                maxlat = lat;
+            if (lon > maxlon)
+                maxlon = lon;
+        }
+    }
+
+    return valid;
+}
+
+
+QString FlightRoute::gpxElements(QString indent, QString tag)
+{
+    QString gpx = "";
+
+    // waypoints
+    //
+    for(auto _waypoint : _waypoints) {
+
+        if (!_waypoint->isValid())
+            continue; // skip silently
+
+        QGeoCoordinate position = _waypoint->coordinate();
+        auto code = _waypoint->get("COD").toString();
+        auto name = _waypoint->extendedName();
+
+        if (code.isEmpty()) {
+            code = name;
+        }
+
+        auto lat = QString::number(position.latitude(), 'f', 8);
+        auto lon = QString::number(position.longitude(), 'f', 8);
+        gpx += indent + "<" + tag + " lat='" + lat + "' lon='" + lon + "'>\n";
+
+        if (_waypoint->contains("ELE")) {
+
+            // elevation in meters always for gpx
+            //
+            auto elevation = QString::number(_waypoint->get("ELE").toDouble(), 'f', 2);
+            gpx += indent + "  <ele>" + elevation + "</ele>\n";
+        }
+
+        gpx += indent + "  <name>" + code + "</name>\n" +
+               indent + "  <cmt>" + name + "</cmt>\n" +
+               indent + "  <desc>" + name + "</desc>\n" +
+               indent + "</" + tag + ">\n";
+    }
+
+    return gpx;
 }

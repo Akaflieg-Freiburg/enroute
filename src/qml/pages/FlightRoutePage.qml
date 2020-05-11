@@ -162,7 +162,7 @@ Page {
                 headerMenuX.popup()
             }
 
-            AutoSizingMenu {
+            Menu {
                 id: headerMenuX
 
                 MenuItem {
@@ -227,6 +227,60 @@ Page {
                 }
 
                 MenuItem {
+                    text: "xx"
+                    onTriggered: xx.open()
+
+                    Menu {
+                        id: xx
+                        title: "Find/Replace"
+
+                        MenuItem { text: "Find Next" }
+                        Action { text: "Find Previous" }
+                        Action { text: "Replace" }
+                    }
+                }
+
+                Menu {
+                    id: xx2
+                    title: "Find/Replace"
+
+                    MenuItem { text: "Find Next" }
+                    Action { text: "Find Previous" }
+                    Action { text: "Replace" }
+                }
+
+                /*
+                Menu {
+                    id: headerMenuX1
+                    title: "XX"
+
+                    MenuItem: {
+                        text: qsTr("Choose Format")
+                        enabled: false
+                    }
+
+                    MenuItem {
+                        text: "GeoJson"
+
+                        onTriggered: {
+                            MobileAdaptor.vibrateBrief()
+                            highlighted = false
+                            MobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                        }
+                    }
+                    MenuItem {
+                        text: "GPX"
+
+                        onTriggered: {
+                            MobileAdaptor.vibrateBrief()
+                            highlighted = false
+                            MobileAdaptor.sendContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                        }
+                    }
+                } // AutoSizingMenu: headerMenuX1
+*/
+
+                MenuItem {
                     id: sendItem
 
                     text: qsTr("Send …")
@@ -236,7 +290,8 @@ Page {
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
                         highlighted = false
-                        MobileAdaptor.sendContent("Content string", "application/gpx+xml", "gpx")
+                        MobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                        headerMenuX1.open()
                     }
                 }
 

@@ -67,10 +67,9 @@ public:
      *
      * @param content content text
      * @param mimeType the mimeType of the content
-     * @param suffix the suffix for a temporary file
+     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail
      */
-    Q_INVOKABLE
-    void sendContent(const QString& content, const QString& mimeType, const QString& suffix);
+    Q_INVOKABLE void sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
 public slots:
     /*! \brief Hides the android splash screen.
@@ -100,7 +99,7 @@ private:
   
 #if defined (Q_OS_ANDROID)
 #warning Documentation
-    QString contentToTempFile(const QString& content, const QString& suffix);
+    QString contentToTempFile(const QByteArray& content, const QString& fileNameTemplate);
     void outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     // Name of a subdirectory within the AppDataLocation for

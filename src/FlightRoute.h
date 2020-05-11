@@ -207,15 +207,24 @@ public:
      */
     QString summary() const;
 
-    /*! \brief Exports to route to document GeoJSON
+    /*! \brief Exports to route to GeoJSON
      *
      * This method serialises the current flight route as a GeoJSON
      * document. The document conforms to the specification outlined
      * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
      *
-     * @returns QJsonDocument describing the flight route
+     * @returns QByteArray describing the flight route
      */
-    QJsonDocument toGeoJSON() const;
+    Q_INVOKABLE QByteArray toGeoJSON() const;
+
+    /*! \brief Exports to route to GPX
+     *
+     * This method serialises the current flight route as a GPX
+     * document. The document conforms to the specification outlined [here](https://www.topografix.com/gpx.asp)
+     *
+     * @returns QByteArray describing the flight route
+     */
+    Q_INVOKABLE QByteArray toGpx();
 
 public slots:
     /*! \brief Deletes all waypoints in the current route */
@@ -265,6 +274,12 @@ private slots:
 
 private:
     Q_DISABLE_COPY_MOVE(FlightRoute)
+
+    // Computes bounds for the route
+#warning docu
+    bool routeBounds(double &minlat, double &minlon, double &maxlat, double &maxlon) const;
+#warning docu
+    QString gpxElements(QString indent, QString tag);
 
     // Directory of the flight route library, without trailing "/"
     QString libraryDir() const;

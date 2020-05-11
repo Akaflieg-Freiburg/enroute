@@ -32,20 +32,22 @@
 #endif
 
 
-void MobileAdaptor::sendContent(const QString& content, const QString& mimeType, const QString& suffix)
+void MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
-  qWarning() << "MobileAdaptor::sendContent(" << content << ", " << mimeType << ", " << suffix << ")";
-
-  QString tmpPath = contentToTempFile(content, suffix);
+#if defined(Q_OS_ANDROID)
+  QString tmpPath = contentToTempFile(content, fileNameTemplate);
   outgoingIntent("sendFile", tmpPath, mimeType);
+#endif
+#warning not defined for desktop
 }
 
+#if defined(Q_OS_ANDROID)
 // helper method which saves content to temporary file in the app's private cache dir
 //
-QString MobileAdaptor::contentToTempFile(const QString& content, const QString& suffix)
+QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate)
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
-    QString fname = now.toString("yyyy-MM-dd_hh.mm.ss") + "." + suffix;
+    QString fname = fileNameTemplate.arg(now.toString("yyyy-MM-dd_hh.mm.ss"));
 
     // in Qt, resources are not stored absolute file paths, so in order to
     // share the content we save it to disk. We save these temporary files
@@ -60,9 +62,7 @@ QString MobileAdaptor::contentToTempFile(const QString& content, const QString& 
         return nullptr;
     }
 
-    QTextStream out(&file);
-    out << content;
-    out.flush();
+    file.write(content);
     file.close();
 
     return filePath;
@@ -89,3 +89,4 @@ void MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
 //        emit shareNoAppAvailable();
     }
 }
+#endif

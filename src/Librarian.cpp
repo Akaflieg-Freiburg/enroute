@@ -52,6 +52,15 @@ bool Librarian::flightRouteExists(const QString &baseName) const
 }
 
 
+FlightRoute *Librarian::flightRouteGet(const QString &baseName) const
+{
+    auto route = new FlightRoute(nullptr, nullptr);
+    if (route)
+        route->load(flightRouteFullPath(baseName));
+    return route;
+}
+
+
 QString Librarian::flightRouteFullPath(const QString &baseName) const
 {
     return flightRouteLibraryDir.path()+"/"+baseName+".geojson";

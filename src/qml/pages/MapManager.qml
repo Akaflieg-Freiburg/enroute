@@ -121,8 +121,7 @@ Page {
                         Action {
                             id: updateAction
 
-                            text: qsTr("Remove")
-                            icon.source: "/icons/material/ic_delete.svg"
+                            text: qsTr("Uninstall")
 
                             onTriggered: {
                                 MobileAdaptor.vibrateBrief()
@@ -195,7 +194,6 @@ Page {
                     id: updateMenu
 
                     text: qsTr("Update list of maps")
-                    icon.source: "/icons/material/ic_refresh.svg"
 
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
@@ -208,7 +206,6 @@ Page {
                     id: downloadUpdatesMenu
 
                     text: qsTr("Download all updates…")
-                    icon.source: "/icons/material/ic_file_download.svg"
                     enabled: mapManager.geoMaps.updatable
 
                     onTriggered: {

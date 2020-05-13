@@ -104,7 +104,8 @@ Page {
 
                 text: modelData
                 icon.source: "/icons/material/ic_directions.svg"
-                icon.color: "transparent"
+                icon.color: Material.primary
+
             }
 
             ToolButton {
@@ -117,15 +118,12 @@ Page {
                     cptMenu.popup()
                 }
 
-                AutoSizingMenu {
+                Menu {
                     id: cptMenu
 
                     Action {
                         id: openAction
-
                         text: qsTr("Open")
-                        icon.source: "/icons/material/ic_open_in_new.svg"
-
                         onTriggered: {
                             MobileAdaptor.vibrateBrief()
                             finalFileName = modelData
@@ -137,12 +135,68 @@ Page {
 
                     } // openAction
 
+                    MenuSeparator { }
+
+                    Menu {
+                        title: qsTr("Send …")
+
+                        MenuItem {
+                            text: qsTr("… in GeoJson format")
+                            onTriggered: {
+                                MobileAdaptor.vibrateBrief()
+                                highlighted = false
+                                parent.highlighted = false
+                                if (!MobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                                    shareErrorDialog.open()
+                            }
+                        }
+
+                        MenuItem {
+                            text: qsTr("… in GPX format")
+                            onTriggered: {
+                                MobileAdaptor.vibrateBrief()
+                                highlighted = false
+                                parent.highlighted = false
+                                if (!MobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                                    shareErrorDialog.open()
+                            }
+                        }
+                    }
+
+                    Menu {
+                        title: qsTr("Open in other app …")
+
+                        MenuItem {
+                            text: qsTr("… in GeoJson format")
+
+                            onTriggered: {
+                                MobileAdaptor.vibrateBrief()
+                                highlighted = false
+                                parent.highlighted = false
+                                if (!MobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                                    shareErrorDialog.open()
+                            }
+                        }
+
+                        MenuItem {
+                            text: qsTr("… in GPX format")
+
+                            onTriggered: {
+                                MobileAdaptor.vibrateBrief()
+                                highlighted = false
+                                parent.highlighted = false
+                                if (!MobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                                    shareErrorDialog.open()
+                            }
+                        }
+
+                    }
+
+                    MenuSeparator { }
+
                     Action {
                         id: renameAction
-
-                        text: qsTr("Rename…")
-                        icon.source: "/icons/material/ic_swap_horiz.svg"
-
+                        text: qsTr("Rename …")
                         onTriggered: {
                             MobileAdaptor.vibrateBrief()
                             finalFileName = modelData
@@ -154,10 +208,7 @@ Page {
 
                     Action {
                         id: removeAction
-
-                        text: qsTr("Remove…")
-                        icon.source: "/icons/material/ic_delete.svg"
-
+                        text: qsTr("Remove …")
                         onTriggered: {
                             MobileAdaptor.vibrateBrief()
                             finalFileName = modelData
@@ -192,6 +243,10 @@ Page {
 
         visible: (wpList.count === 0)
         horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        leftPadding: Qt.application.font.pixelSize*2
+        rightPadding: Qt.application.font.pixelSize*2
+
         textFormat: Text.RichText
         wrapMode: Text.Wrap
         text: (textInput.text === "")

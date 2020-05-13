@@ -30,6 +30,7 @@
 #include "FlightRoute.h"
 #include "Waypoint.h"
 
+#warning need to go through code and make it safe for aircraft or wind to be nullptr
 
 FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
     : QObject(parent), _aircraft(aircraft), _wind(wind)

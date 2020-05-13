@@ -56,7 +56,7 @@ public:
     */
     Q_INVOKABLE bool missingPermissionsExist();
 
-    /*! \brief Send text content with other app.
+    /*! \brief Send content with other app
      *
      * On Android systems, this method will do the following.
      *
@@ -68,8 +68,28 @@ public:
      * @param content content text
      * @param mimeType the mimeType of the content
      * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail
+     *
+     * @returns True on success, false if no suitable app could be found
      */
-    Q_INVOKABLE void sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE bool sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+
+
+    /*! \brief View content in other app
+     *
+     * On Android systems, this method will do the following.
+     *
+     * - save content to temporary file in the app's private cache
+     * - call the corresponding java static method where a SEND intent is created and startActivity is called
+     *
+     * On other systems, this method does nothing yet.
+     *
+     * @param content content text
+     * @param mimeType the mimeType of the content
+     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail
+     *
+     * @returns True on success, false if no suitable app could be found
+     */
+    Q_INVOKABLE bool viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
 public slots:
     /*! \brief Hides the android splash screen.
@@ -100,7 +120,9 @@ private:
 #if defined (Q_OS_ANDROID)
 #warning Documentation
     QString contentToTempFile(const QByteArray& content, const QString& fileNameTemplate);
-    void outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
+
+    // @returns True if an app could be started, false if no app was found
+    bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     // Name of a subdirectory within the AppDataLocation for
     // sending and receiving files.

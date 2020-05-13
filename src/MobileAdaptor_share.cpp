@@ -32,18 +32,29 @@
 #endif
 
 
-void MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+bool MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
 #if defined(Q_OS_ANDROID)
   QString tmpPath = contentToTempFile(content, fileNameTemplate);
-  outgoingIntent("sendFile", tmpPath, mimeType);
+  return outgoingIntent("sendFile", tmpPath, mimeType);
 #endif
+  return false;
 #warning not defined for desktop
 }
 
+
+bool MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+{
 #if defined(Q_OS_ANDROID)
-// helper method which saves content to temporary file in the app's private cache dir
-//
+  QString tmpPath = contentToTempFile(content, fileNameTemplate);
+  return outgoingIntent("viewFile", tmpPath, mimeType);
+#endif
+#warning not defined for desktop
+  return false;
+}
+
+
+#if defined(Q_OS_ANDROID)
 QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate)
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
@@ -54,7 +65,6 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
     // when creating new Share objects.
     //
     auto filePath = androidExchangeDirectoryName + fname;
-    qWarning() << "filePath" << filePath;
 
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
@@ -69,11 +79,10 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
 }
 
 
-
-void MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
+bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
 {
     if (filePath == nullptr)
-        return;
+        return false;
 
     QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
     QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
@@ -83,10 +92,6 @@ void MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
         "(Ljava/lang/String;Ljava/lang/String;)Z",
         jsPath.object<jstring>(),
         jsMimeType.object<jstring>());
-    if (!ok) {
-        qWarning() << "Unable to resolve activity from Java";
-#warning XXX
-//        emit shareNoAppAvailable();
-    }
+    return ok;
 }
 #endif

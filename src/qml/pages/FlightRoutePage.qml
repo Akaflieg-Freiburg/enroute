@@ -84,7 +84,6 @@ Page {
 
                     Action {
                         text: qsTr("Move Up")
-                        icon.source: "/icons/material/ic_keyboard_arrow_up.svg"
 
                         enabled: model.modelData !== flightRoute.firstWaypointObject
                         onTriggered: {
@@ -95,7 +94,6 @@ Page {
 
                     Action {
                         text: qsTr("Move Down")
-                        icon.source: "/icons/material/ic_keyboard_arrow_down.svg"
 
                         enabled: model.modelData !== flightRoute.lastWaypointObject
                         onTriggered: {
@@ -106,7 +104,6 @@ Page {
 
                     Action {
                         text: qsTr("Remove")
-                        icon.source: "/icons/material/ic_delete.svg"
 
                         onTriggered: {
                             MobileAdaptor.vibrateBrief()
@@ -166,17 +163,7 @@ Page {
                 id: headerMenuX
 
                 MenuItem {
-                    text: qsTr("Flight Route Library")
-                    enabled: false
-                }
-
-                MenuItem {
-                    id: loadItem
-
-                    text: qsTr("Open Route …")
-                    icon.source: "/icons/material/ic_open_in_new.svg"
-                    enabled: true
-
+                    text: qsTr("Open from library …")
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
                         highlighted = false
@@ -187,12 +174,8 @@ Page {
                 }
 
                 MenuItem {
-                    id: saveItem
-
-                    text: qsTr("Save Route …")
-                    icon.source: "/icons/material/ic_library_add.svg"
+                    text: qsTr("Save to library …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
-
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
                         highlighted = false
@@ -203,11 +186,7 @@ Page {
                 }
 
                 MenuItem {
-                    id: manageItem
-
                     text: qsTr("View Library …")
-                    icon.source: "/icons/material/ic_library_books.svg"
-
                     onTriggered: {
                         MobileAdaptor.vibrateBrief()
                         highlighted = false
@@ -215,91 +194,69 @@ Page {
                     }
                 }
 
-
-                Rectangle {
-                    height: 1
-                    color: Material.primary
-                }
-
-                MenuItem {
-                    text: qsTr("This Flight Route")
-                    enabled: false
-                }
-
-                MenuItem {
-                    text: "xx"
-                    onTriggered: xx.open()
-
-                    Menu {
-                        id: xx
-                        title: "Find/Replace"
-
-                        MenuItem { text: "Find Next" }
-                        Action { text: "Find Previous" }
-                        Action { text: "Replace" }
-                    }
-                }
+                MenuSeparator { }
 
                 Menu {
-                    id: xx2
-                    title: "Find/Replace"
-
-                    MenuItem { text: "Find Next" }
-                    Action { text: "Find Previous" }
-                    Action { text: "Replace" }
-                }
-
-                /*
-                Menu {
-                    id: headerMenuX1
-                    title: "XX"
-
-                    MenuItem: {
-                        text: qsTr("Choose Format")
-                        enabled: false
-                    }
-
-                    MenuItem {
-                        text: "GeoJson"
-
-                        onTriggered: {
-                            MobileAdaptor.vibrateBrief()
-                            highlighted = false
-                            MobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
-                        }
-                    }
-                    MenuItem {
-                        text: "GPX"
-
-                        onTriggered: {
-                            MobileAdaptor.vibrateBrief()
-                            highlighted = false
-                            MobileAdaptor.sendContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
-                        }
-                    }
-                } // AutoSizingMenu: headerMenuX1
-*/
-
-                MenuItem {
-                    id: sendItem
-
-                    text: qsTr("Send …")
-                    icon.source: "/icons/material/ic_send.svg"
+                    title: qsTr("Send …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
-                    onTriggered: {
-                        MobileAdaptor.vibrateBrief()
-                        highlighted = false
-                        MobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
-                        headerMenuX1.open()
+                    MenuItem {
+                        text: qsTr("… in GeoJson format")
+                        onTriggered: {
+                            MobileAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            if (!MobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                                shareErrorDialog.open()
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… in GPX format")
+                        onTriggered: {
+                            MobileAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            if (!MobileAdaptor.sendContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                                shareErrorDialog.open()
+                        }
                     }
                 }
 
-                MenuItem {
-                    id: clearItem
+                Menu {
+                    title: qsTr("Open in other app …")
+                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
+                    MenuItem {
+                        text: qsTr("… in GeoJson format")
+
+                        onTriggered: {
+                            MobileAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            if (!MobileAdaptor.viewContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                                shareErrorDialog.open()
+                        }                        
+                    }
+
+                    MenuItem {
+                        text: qsTr("… in GPX format")
+
+                        onTriggered: {
+                            MobileAdaptor.vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            if (!MobileAdaptor.viewContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                                shareErrorDialog.open()
+                        }
+                    }
+
+                }
+
+                MenuSeparator { }
+
+                MenuItem {
                     text: qsTr("Clear")
-                    icon.source: "/icons/material/ic_delete.svg"
                     enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
@@ -311,10 +268,7 @@ Page {
                 }
 
                 MenuItem {
-                    id: reverseItem
-
                     text: qsTr("Reverse")
-                    icon.source: "/icons/material/ic_swap_vert.svg"
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
@@ -634,6 +588,26 @@ Page {
             target: sensorGesture
             onDetected: dialogLoader.active = false
         }
+    }
+
+    Dialog {
+        id: shareErrorDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Error sharing data…")
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+
+        Label {
+            text: qsTr("This usually happens if no suitable app could be found.")
+            width: shareErrorDialog.availableWidth
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
+
+        standardButtons: Dialog.Ok
+        modal: true
+
     }
 
     Shortcut {

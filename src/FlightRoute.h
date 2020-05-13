@@ -164,7 +164,7 @@ public:
      *
      * This property lists all the waypoints and legs contained in the route. It
      * can be empty, and it can contain a single waypoint. If there is more than
-     * one waypoints, then waypoints and legs alternate, following the pattern:
+     * one waypoint, then waypoints and legs alternate, following the pattern:
      * waypoint - leg - waypoint - … - leg - waypoint.
      */
     Q_PROPERTY(QList<QObject*> routeObjects READ routeObjects NOTIFY waypointsChanged)

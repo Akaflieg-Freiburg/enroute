@@ -24,6 +24,8 @@
 #include <QRegularExpression>
 #include <QSettings>
 
+#include "FlightRoute.h"
+
 /*! \brief Manage libraries of flight routes and text assets
 
   This simple class manage libraries of flight routes and text assets, and
@@ -85,6 +87,9 @@ public:
      * @returns True if the file exists
      */
     Q_INVOKABLE bool flightRouteExists(const QString &baseName) const;
+
+#warning docu -- ownership is QML
+    Q_INVOKABLE FlightRoute *flightRouteGet(const QString &baseName) const;
 
     /*! \brief Full path of a flight route in the library
      *

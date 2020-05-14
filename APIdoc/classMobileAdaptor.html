@@ -75,6 +75,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a07ba3b9b2ec586b91b3075f57ba3d77a"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a07ba3b9b2ec586b91b3075f57ba3d77a">missingPermissionsExist</a> ()</td></tr>
 <tr class="memdesc:a07ba3b9b2ec586b91b3075f57ba3d77a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if all requred permissions have been granted.  <a href="#a07ba3b9b2ec586b91b3075f57ba3d77a">More...</a><br /></td></tr>
 <tr class="separator:a07ba3b9b2ec586b91b3075f57ba3d77a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35392a19b51735af2cf69ac4cae211b3"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a35392a19b51735af2cf69ac4cae211b3">sendContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)</td></tr>
+<tr class="memdesc:a35392a19b51735af2cf69ac4cae211b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send content with other app.  <a href="#a35392a19b51735af2cf69ac4cae211b3">More...</a><br /></td></tr>
+<tr class="separator:a35392a19b51735af2cf69ac4cae211b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa46a1e3cf4423d5e3a1d3380b06a991a"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#aa46a1e3cf4423d5e3a1d3380b06a991a">viewContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)</td></tr>
+<tr class="memdesc:aa46a1e3cf4423d5e3a1d3380b06a991a"><td class="mdescLeft">&#160;</td><td class="mdescRight">View content in other app.  <a href="#aa46a1e3cf4423d5e3a1d3380b06a991a">More...</a><br /></td></tr>
+<tr class="separator:aa46a1e3cf4423d5e3a1d3380b06a991a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to platform-specific capabilities of mobile devices. </p>
@@ -167,6 +173,57 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a35392a19b51735af2cf69ac4cae211b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35392a19b51735af2cf69ac4cae211b3">&#9670;&nbsp;</a></span>sendContent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool MobileAdaptor::sendContent </td>
+          <td>(</td>
+          <td class="paramtype">const QByteArray &amp;&#160;</td>
+          <td class="paramname"><em>content</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>mimeType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>fileNameTemplate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send content with other app. </p>
+<p>On Android systems, this method will do the following.</p>
+<ul>
+<li>save content to temporary file in the app's private cache</li>
+<li>call the corresponding java static method where a SEND intent is created and startActivity is called</li>
+</ul>
+<p>On other systems, this method does nothing yet.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">content</td><td>content text </td></tr>
+    <tr><td class="paramname">mimeType</td><td>the mimeType of the content </td></tr>
+    <tr><td class="paramname">fileNameTemplate</td><td>A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True on success, false if no suitable app could be found </dd></dl>
+
+</div>
+</div>
 <a id="a0a4496e52193c1509258b3742989a64b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0a4496e52193c1509258b3742989a64b">&#9670;&nbsp;</a></span>showDownloadNotification</h2>
 
@@ -226,6 +283,57 @@ Public Member Functions</h2></td></tr>
 
 <p>Make the device briefly vibrate. </p>
 <p>On Android, make the device briefly vibrate. On other platforms, this does nothing. </p>
+
+</div>
+</div>
+<a id="aa46a1e3cf4423d5e3a1d3380b06a991a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa46a1e3cf4423d5e3a1d3380b06a991a">&#9670;&nbsp;</a></span>viewContent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool MobileAdaptor::viewContent </td>
+          <td>(</td>
+          <td class="paramtype">const QByteArray &amp;&#160;</td>
+          <td class="paramname"><em>content</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>mimeType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>fileNameTemplate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>View content in other app. </p>
+<p>On Android systems, this method will do the following.</p>
+<ul>
+<li>save content to temporary file in the app's private cache</li>
+<li>call the corresponding java static method where a SEND intent is created and startActivity is called</li>
+</ul>
+<p>On other systems, this method does nothing yet.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">content</td><td>content text </td></tr>
+    <tr><td class="paramname">mimeType</td><td>the mimeType of the content </td></tr>
+    <tr><td class="paramname">fileNameTemplate</td><td>A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True on success, false if no suitable app could be found </dd></dl>
 
 </div>
 </div>

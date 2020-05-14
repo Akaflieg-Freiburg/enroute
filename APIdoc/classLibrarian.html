@@ -71,6 +71,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7b288b545ff8bcdf05ba90cd1c5a8509"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a7b288b545ff8bcdf05ba90cd1c5a8509">flightRouteExists</a> (const QString &amp;baseName) const</td></tr>
 <tr class="memdesc:a7b288b545ff8bcdf05ba90cd1c5a8509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a flight route with the given name exists in the library.  <a href="#a7b288b545ff8bcdf05ba90cd1c5a8509">More...</a><br /></td></tr>
 <tr class="separator:a7b288b545ff8bcdf05ba90cd1c5a8509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34ddb5e6ed230b0b468367f231ed665e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a34ddb5e6ed230b0b468367f231ed665e">flightRouteGet</a> (const QString &amp;baseName) const</td></tr>
+<tr class="memdesc:a34ddb5e6ed230b0b468367f231ed665e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a flight route from library file.  <a href="#a34ddb5e6ed230b0b468367f231ed665e">More...</a><br /></td></tr>
+<tr class="separator:a34ddb5e6ed230b0b468367f231ed665e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a8bcfcb7aaf1d5d83362bfa35d63091"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a2a8bcfcb7aaf1d5d83362bfa35d63091">flightRouteFullPath</a> (const QString &amp;baseName) const</td></tr>
 <tr class="memdesc:a2a8bcfcb7aaf1d5d83362bfa35d63091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full path of a flight route in the library.  <a href="#a2a8bcfcb7aaf1d5d83362bfa35d63091">More...</a><br /></td></tr>
 <tr class="separator:a2a8bcfcb7aaf1d5d83362bfa35d63091"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,7 +97,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Manage libraries of flight routes and text assets. </p>
 <p>This simple class manage libraries of flight routes and text assets, and exposes these objects to QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00034">34</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00030">30</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7a8d33e313658242b6ac8f37c01fc75e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a8d33e313658242b6ac8f37c01fc75e">&#9670;&nbsp;</a></span>Librarian()</h2>
@@ -158,7 +161,7 @@ Public Member Functions</h2></td></tr>
 <p>Name of the directory containing the flight route library. </p>
 <dl class="section return"><dt>Returns</dt><dd>Name of the directory, without trailing slash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00079">79</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00075">75</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>
@@ -213,6 +216,29 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Full path of the flight route, with extension </dd></dl>
+
+</div>
+</div>
+<a id="a34ddb5e6ed230b0b468367f231ed665e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34ddb5e6ed230b0b468367f231ed665e">&#9670;&nbsp;</a></span>flightRouteGet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QObject* Librarian::flightRouteGet </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>baseName</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs a flight route from library file. </p>
+<p>This method constructs a flight route, by reading a flight route file from the library. The flight route is construted with aircraft and wind set to nullptr, so that no wind computations are possible. It is, however, possible to export the flight route (for instance to GeoJson or GPX format).</p>
+<p>Ownership is transferred to the caller, so it is up to the caller to delete the flight route once it is no longer used. Note that QML does that automatically.</p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the flight route as QObject*, or a nullptr in case of error. </dd></dl>
 
 </div>
 </div>

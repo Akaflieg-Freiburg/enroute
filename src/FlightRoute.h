@@ -286,7 +286,7 @@ private:
     Q_DISABLE_COPY_MOVE(FlightRoute)
 
     // Helper function for method toGPX
-    QString gpxElements(QString indent, QString tag) const;
+    QString gpxElements(const QString& indent, const QString& tag) const;
 
     // File name where the flight route is loaded upon startup are stored.  This
     // member is filled in in the constructor to

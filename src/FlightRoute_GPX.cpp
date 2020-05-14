@@ -97,13 +97,13 @@ QByteArray FlightRoute::toGpx() const
 }
 
 
-QString FlightRoute::gpxElements(QString indent, QString tag) const
+QString FlightRoute::gpxElements(const QString& indent, const QString& tag) const
 {
     QString gpx = "";
 
     // waypoints
     //
-    for(auto _waypoint : _waypoints) {
+    for(const auto& _waypoint : _waypoints) {
 
         if (!_waypoint->isValid())
             continue; // skip silently

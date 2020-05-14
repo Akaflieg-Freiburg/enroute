@@ -1,21 +1,15 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
- *   stefan.kebekus@gmail.com                                              *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 3 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   Copyright (C) 2020 by Stefan Kebekus * stefan.kebekus@gmail.com * * This
+ *   program is free software; you can redistribute it and/or modify * it under
+ *   the terms of the GNU General Public License as published by * the Free
+ *   Software Foundation; either version 3 of the License, or * (at your option)
+ *   any later version.  * * This program is distributed in the hope that it
+ *   will be useful, * but WITHOUT ANY WARRANTY; without even the implied
+ *   warranty of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   * GNU General Public License for more details.  * * You should have
+ *   received a copy of the GNU General Public License * along with this
+ *   program; if not, write to the * Free Software Foundation, Inc., * 59 Temple
+ *   Place - Suite 330, Boston, MA 02111-1307, USA.  *
  ***************************************************************************/
 
 #pragma once
@@ -29,7 +23,7 @@
 /*! \brief Manage libraries of flight routes and text assets
 
   This simple class manage libraries of flight routes and text assets, and
-  exposes these objects to QML. 
+  exposes these objects to QML.
 
  */
 
@@ -88,7 +82,21 @@ public:
      */
     Q_INVOKABLE bool flightRouteExists(const QString &baseName) const;
 
-#warning docu -- ownership is QML
+    /*! \brief Constructs a flight route from library file
+     *
+     * This method constructs a flight route, by reading a flight route file
+     * from the library.  The flight route is construted with aircraft and wind
+     * set to nullptr, so that no wind computations are possible. It is,
+     * however, possible to export the flight route (for instance to GeoJson or
+     * GPX format).
+     *
+     * Ownership is transferred to the caller, so it is up to the caller to
+     * delete the flight route once it is no longer used. Note that QML does
+     * that automatically.
+     *
+     * @returns Pointer to the flight route as QObject*, or a nullptr in case of
+     * error.
+     */
     Q_INVOKABLE QObject *flightRouteGet(const QString &baseName) const;
 
     /*! \brief Full path of a flight route in the library

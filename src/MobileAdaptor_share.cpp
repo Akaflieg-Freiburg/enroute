@@ -34,6 +34,10 @@
 
 bool MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
+    Q_UNUSED(content)
+    Q_UNUSED(mimeType)
+    Q_UNUSED(fileNameTemplate)
+
 #if defined(Q_OS_ANDROID)
   QString tmpPath = contentToTempFile(content, fileNameTemplate);
   return outgoingIntent("sendFile", tmpPath, mimeType);
@@ -45,6 +49,10 @@ bool MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeTy
 
 bool MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
+    Q_UNUSED(content)
+    Q_UNUSED(mimeType)
+    Q_UNUSED(fileNameTemplate)
+
 #if defined(Q_OS_ANDROID)
   QString tmpPath = contentToTempFile(content, fileNameTemplate);
   return outgoingIntent("viewFile", tmpPath, mimeType);
@@ -86,7 +94,7 @@ bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
 
     QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
     QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
-    jboolean ok = QAndroidJniObject::callStaticMethod<jboolean>(
+    auto ok = QAndroidJniObject::callStaticMethod<jboolean>(
         "de/akaflieg_freiburg/enroute/IntentLauncher",
         methodName.toStdString().c_str(),
         "(Ljava/lang/String;Ljava/lang/String;)Z",

@@ -55,9 +55,13 @@ bool Librarian::flightRouteExists(const QString &baseName) const
 QObject *Librarian::flightRouteGet(const QString &baseName) const
 {
     auto route = new FlightRoute(nullptr, nullptr);
-    if (route)
-        route->load(flightRouteFullPath(baseName));
-    return route;
+    if (!route)
+        return nullptr;
+    auto error = route->load(flightRouteFullPath(baseName));
+    if (error.isEmpty())
+        return route;
+    delete route;
+    return nullptr;
 }
 
 

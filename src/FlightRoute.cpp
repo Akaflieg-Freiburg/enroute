@@ -61,7 +61,7 @@ QGeoRectangle FlightRoute::boundingRectangle() const
 {
     QGeoRectangle bbox;
 
-    for(auto _waypoint : _waypoints) {
+    for(const auto &_waypoint : _waypoints) {
         if (_waypoint.isNull())
             continue;
         if (!_waypoint->isValid())

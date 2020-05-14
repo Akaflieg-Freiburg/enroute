@@ -18,6 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#warning
+#include <QDebug>
+
 #include <QDataStream>
 #include <QDateTime>
 #include <QDir>
@@ -61,6 +64,28 @@ void FlightRoute::append(QObject *waypoint)
 
     updateLegs();
     emit waypointsChanged();
+}
+
+
+QGeoRectangle FlightRoute::boundingRectangle() const
+{
+    QGeoRectangle bbox;
+
+    for(auto _waypoint : _waypoints) {
+        if (_waypoint.isNull())
+            continue;
+        if (!_waypoint->isValid())
+            continue;
+
+        QGeoCoordinate position = _waypoint->coordinate();
+        if (!bbox.isValid()) {
+            bbox.setTopLeft(position);
+            bbox.setBottomRight(position);
+        } else
+            bbox.extendRectangle(position);
+    }
+
+    return bbox;
 }
 
 
@@ -356,14 +381,13 @@ QByteArray FlightRoute::toGpx()
                           "    <name>Enroute " + now + "</name>\n"
                           "    <time>" + now + "</time>\n");
 
-    double minlat, minlon, maxlat, maxlon;
-    if (routeBounds(minlat, minlon, maxlat, maxlon))
-    {
+    auto bbox = boundingRectangle();
+    if (bbox.isValid()) {
         gpx += "    <bounds"
-                " minlat='" + QString::number(minlat, 'f', 8) + "'"
-                " minlon='" + QString::number(minlon, 'f', 8) + "'"
-                " maxlat='" + QString::number(maxlat, 'f', 8) + "'"
-                " maxlon='" + QString::number(maxlon, 'f', 8) + "'/>\n";
+                " minlat='" + QString::number(bbox.bottomLeft().latitude(), 'f', 8) + "'"
+                " minlon='" + QString::number(bbox.topLeft().longitude(), 'f', 8) + "'"
+                " maxlat='" + QString::number(bbox.topLeft().latitude(), 'f', 8) + "'"
+                " maxlon='" + QString::number(bbox.topRight().longitude(), 'f', 8) + "'/>\n";
     }
 
     gpx += "  </metadata>\n";
@@ -413,40 +437,6 @@ QByteArray FlightRoute::toGpx()
     gpx += "</gpx>\n";
 
     return gpx.toUtf8();
-}
-
-
-bool FlightRoute::routeBounds(double &minlat, double &minlon, double &maxlat, double &maxlon) const
-{
-    bool valid = false;
-
-    for(auto _waypoint : _waypoints) {
-
-        if (!_waypoint->isValid())
-            continue; // skip silently
-
-        QGeoCoordinate position = _waypoint->coordinate();
-        auto lat = position.latitude();
-        auto lon = position.longitude();
-
-        if (!valid)
-        {
-            valid = true;
-            minlat = maxlat = lat;
-            minlon = maxlon = lon;
-        } else {
-            if (lat < minlat)
-                minlat = lat;
-            if (lon < minlon)
-                minlon = lon;
-            if (lat > maxlat)
-                maxlat = lat;
-            if (lon > maxlon)
-                maxlon = lon;
-        }
-    }
-
-    return valid;
 }
 
 

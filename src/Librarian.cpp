@@ -52,7 +52,7 @@ bool Librarian::flightRouteExists(const QString &baseName) const
 }
 
 
-FlightRoute *Librarian::flightRouteGet(const QString &baseName) const
+QObject *Librarian::flightRouteGet(const QString &baseName) const
 {
     auto route = new FlightRoute(nullptr, nullptr);
     if (route)

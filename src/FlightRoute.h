@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoRectangle>
 #include <QJsonDocument>
 #include <QLocale>
 #include <QPointer>
@@ -89,6 +90,12 @@ public:
      * @param position Coordinates of the waypoint.
      */
     Q_INVOKABLE void append(const QGeoCoordinate& position) { append(new Waypoint(position, this)); }
+
+    /*! Computes a bounding rectangle
+     *
+     * @returns A QGeoRectangle that contains the route. The rectangle returned might be invalid, for instance if the route is empty
+     */
+    QGeoRectangle boundingRectangle() const;
 
     /*! \brief First waypoint in the route
      *
@@ -275,9 +282,6 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(FlightRoute)
 
-    // Computes bounds for the route
-#warning docu
-    bool routeBounds(double &minlat, double &minlon, double &maxlat, double &maxlon) const;
 #warning docu
     QString gpxElements(QString indent, QString tag);
 

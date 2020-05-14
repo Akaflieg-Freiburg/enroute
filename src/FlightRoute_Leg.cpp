@@ -48,6 +48,7 @@ AviationUnits::Distance FlightRoute::Leg::distance() const
 
 double FlightRoute::Leg::Fuel() const
 {
+    // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle())
         return qQNaN();
 
@@ -57,6 +58,7 @@ double FlightRoute::Leg::Fuel() const
 
 AviationUnits::Speed FlightRoute::Leg::GS() const
 {
+    // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle())
         return {};
 
@@ -85,6 +87,7 @@ AviationUnits::Angle FlightRoute::Leg::TC() const
 
 AviationUnits::Angle FlightRoute::Leg::WCA() const
 {
+    // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle())
         return {};
 

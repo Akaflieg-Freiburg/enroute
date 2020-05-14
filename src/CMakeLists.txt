@@ -63,6 +63,7 @@ set(SOURCES
     DownloadableGroup.cpp
     DownloadableGroupWatcher.cpp
     FlightRoute.cpp
+    FlightRoute_GPX.cpp
     FlightRoute_Leg.cpp
     Geoid.cpp
     GeoMapProvider.cpp

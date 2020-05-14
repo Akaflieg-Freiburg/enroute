@@ -43,11 +43,9 @@ public:
    * @param end Pointer to the end point
    * 
    * @param aircraft Pointer to aircraft info that is used in route
-   * computations. The aircraft object to supposed to exist throughout the
-   * liftime of this object.
+   * computations. It is possible to set a nullptr here or delete the object anytime, but then wind computations will no longer work.
    *
-   * @param wind Pointer to wind info that is used in route computations. The
-   * wind object to supposed to exist throughout the liftime of this object.
+   * @param wind Pointer to wind info that is used in route computations. It is possible to set a nullptr here or delete the object anytime, but then wind computations will no longer work.
    *
    * @param parent The standard QObject parent pointer.
    */

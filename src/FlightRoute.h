@@ -57,11 +57,12 @@ public:
      * the route survives when the app is closed unexpectantly.
      *
      * @param aircraft Pointer to aircraft info that is used in route
-     * computations. The aircraft object to supposed to exist throughout the
-     * liftime of this object.
+     * computations. You can set this to nullptr or delete the aircraft, but
+     * then wind computations will no longer work.
      *
-     * @param wind Pointer to wind info that is used in route computations. The
-     * wind object to supposed to exist throughout the liftime of this object.
+     * @param wind Pointer to wind info that is used in route computations.  You
+     * can set this to nullptr or delete the aircraft, but then wind
+     * computations will no longer work.
      *
      * @param parent The standard QObject parent pointer.
      */
@@ -93,7 +94,8 @@ public:
 
     /*! Computes a bounding rectangle
      *
-     * @returns A QGeoRectangle that contains the route. The rectangle returned might be invalid, for instance if the route is empty
+     * @returns A QGeoRectangle that contains the route. The rectangle returned
+     * might be invalid, for instance if the route is empty.
      */
     QGeoRectangle boundingRectangle() const;
 
@@ -157,8 +159,8 @@ public:
 
     /*! \brief Loads the route from a GeoJSON document
      *
-     * This method loads the flight route from a GeoJSON
-     * document that has been created with the method save()
+     * This method loads the flight route from a GeoJSON document that has been
+     * created with the method save()
      *
      * @param fileName, needs to include path and extension
      *
@@ -226,12 +228,13 @@ public:
 
     /*! \brief Exports to route to GPX
      *
-     * This method serialises the current flight route as a GPX
-     * document. The document conforms to the specification outlined [here](https://www.topografix.com/gpx.asp)
+     * This method serialises the current flight route as a GPX document. The
+     * document conforms to the specification outlined
+     * [here](https://www.topografix.com/gpx.asp)
      *
-     * @returns QByteArray describing the flight route
+     * @returns QByteArray containing GPX data describing the flight route
      */
-    Q_INVOKABLE QByteArray toGpx();
+    Q_INVOKABLE QByteArray toGpx() const;
 
 public slots:
     /*! \brief Deletes all waypoints in the current route */
@@ -282,14 +285,8 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(FlightRoute)
 
-#warning docu
-    QString gpxElements(QString indent, QString tag);
-
-    // Directory of the flight route library, without trailing "/"
-    QString libraryDir() const;
-
-    // Full file name of file in library. File extension will be added
-    QString libraryPath(const QString &fileName) const;
+    // Helper function for method toGPX
+    QString gpxElements(QString indent, QString tag) const;
 
     // File name where the flight route is loaded upon startup are stored.  This
     // member is filled in in the constructor to

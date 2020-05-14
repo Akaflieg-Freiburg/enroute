@@ -21,14 +21,19 @@
 
 #include "MobileAdaptor.h"
 
-#include <QDebug>
 #include <QDateTime>
+#include <QDesktopServices>
 #include <QFile>
+#include <QUrl>
 
 #if defined(Q_OS_ANDROID)
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QAndroidJniEnvironment>
+#endif
+
+#if defined(Q_OS_LINUX)
+#include <QProcess>
 #endif
 
 
@@ -38,12 +43,21 @@ bool MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeTy
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
 
+    QString tmpPath = contentToTempFile(content, fileNameTemplate);
 #if defined(Q_OS_ANDROID)
-  QString tmpPath = contentToTempFile(content, fileNameTemplate);
   return outgoingIntent("sendFile", tmpPath, mimeType);
 #endif
+
+#if defined(Q_OS_LINUX)
+  QProcess xdgEmail;
+  xdgEmail.start("xdg-email", QStringList() << "--attach" << tmpPath);
+  if (!xdgEmail.waitForStarted())
+      return false;
+  if (!xdgEmail.waitForFinished())
+      return false;
+  return true;
+#endif
   return false;
-#warning not defined for desktop
 }
 
 
@@ -53,16 +67,15 @@ bool MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeTy
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
 
+    QString tmpPath = contentToTempFile(content, fileNameTemplate);
 #if defined(Q_OS_ANDROID)
-  QString tmpPath = contentToTempFile(content, fileNameTemplate);
-  return outgoingIntent("viewFile", tmpPath, mimeType);
+    return outgoingIntent("viewFile", tmpPath, mimeType);
+#else
+    return QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
 #endif
-#warning not defined for desktop
-  return false;
 }
 
 
-#if defined(Q_OS_ANDROID)
 QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate)
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
@@ -76,8 +89,7 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
 
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        QMessageLogger(QT_MESSAGELOG_FILE, QT_MESSAGELOG_LINE, QT_MESSAGELOG_FUNC).debug() << "Share::share " << filePath;
-        return nullptr;
+        return QString();
     }
 
     file.write(content);
@@ -87,6 +99,7 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
 }
 
 
+#if defined(Q_OS_ANDROID)
 bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
 {
     if (filePath == nullptr)
@@ -95,11 +108,11 @@ bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
     QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
     QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
     auto ok = QAndroidJniObject::callStaticMethod<jboolean>(
-        "de/akaflieg_freiburg/enroute/IntentLauncher",
-        methodName.toStdString().c_str(),
-        "(Ljava/lang/String;Ljava/lang/String;)Z",
-        jsPath.object<jstring>(),
-        jsMimeType.object<jstring>());
+                "de/akaflieg_freiburg/enroute/IntentLauncher",
+                methodName.toStdString().c_str(),
+                "(Ljava/lang/String;Ljava/lang/String;)Z",
+                jsPath.object<jstring>(),
+                jsMimeType.object<jstring>());
     return ok;
 }
 #endif

@@ -117,16 +117,16 @@ public slots:
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)
   
-#if defined (Q_OS_ANDROID)
     // Helper function. Saves content to a file in a directory from where sharing to other android apps is possible
     QString contentToTempFile(const QByteArray& content, const QString& fileNameTemplate);
-
-    // @returns True if an app could be started, false if no app was found
-    bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     // Name of a subdirectory within the AppDataLocation for
     // sending and receiving files.
     QString androidExchangeDirectoryName;
+
+#if defined (Q_OS_ANDROID)
+    // @returns True if an app could be started, false if no app was found
+    bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     // Pointer to instance of this class, required for JNI calls
     static MobileAdaptor* mInstance;

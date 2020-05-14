@@ -42,7 +42,6 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
 {
     // Do all the set-up required for sharing files
-#if defined (Q_OS_ANDROID)
     // Android requires you to use a subdirectory within the AppDataLocation for
     // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
     // app didn't exit gracefully, the directory is still cleared when starting
@@ -52,12 +51,11 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(androidExchangeDirectoryName);
 
+#if defined (Q_OS_ANDROID)
     // we need the instance for the JNI Call
     mInstance = this;
-#endif
 
     // Ask for permissions
-#if defined (Q_OS_ANDROID)
     QtAndroid::requestPermissionsSync(permissions);
 #endif
 

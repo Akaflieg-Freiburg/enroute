@@ -78,7 +78,7 @@ Page {
 
                 ItemDelegate {
                     text: qsTr("Flight Routes")
-                    icon.source: "/icons/material/ic_library_books.svg"
+                    icon.source: "/icons/material/ic_directions.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
 
@@ -91,7 +91,7 @@ Page {
 
                 ItemDelegate {
                     text: qsTr("Maps") + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">`+qsTr("Updates available") + "</font>" : "")
-                    icon.source: "/icons/material/ic_library_books.svg"
+                    icon.source: "/icons/material/ic_map.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
 

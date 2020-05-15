@@ -343,16 +343,17 @@ ApplicationWindow {
         onDetected: MobileAdaptor.vibrateBrief()
     }
 
-    /*
+    // Regretfully, there is a bit of platform-dependent code here.
+    // This is necessary for accepting incoming file…
     Connections {
         target: view
         onActiveChanged: {
             if (Qt.platform.os === "android" && view.active) {
-                share.checkPendingIntents()
+                MobileAdaptor.checkPendingIntents()
             }
         }
     }
-*/
+
 
     // enroute closed unexpectedly if...
     // * the "route" page is open

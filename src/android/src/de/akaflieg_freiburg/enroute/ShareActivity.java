@@ -72,6 +72,7 @@ public class ShareActivity extends QtActivity {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+	Log.d(TAG, "onCreate");
 
         super.onCreate(savedInstanceState);
 
@@ -109,6 +110,7 @@ public class ShareActivity extends QtActivity {
     // if we are opened from other apps:
     @Override
     public void onNewIntent(Intent intent) {
+	Log.d(TAG, "onNewIntent");
 
         super.onNewIntent(intent);
         setIntent(intent);
@@ -142,6 +144,7 @@ public class ShareActivity extends QtActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	Log.d(TAG, "onActivityResult");
 
         super.onActivityResult(requestCode, resultCode, intent);
 
@@ -165,6 +168,7 @@ public class ShareActivity extends QtActivity {
       * Check if intents are pending and process them.
       */
     public void checkPendingIntents(String tmpDir) {
+	Log.d(TAG, "checkPendingIntents");
 
         isInitialized = true;
         this.tmpDir = new File(tmpDir);
@@ -181,6 +185,7 @@ public class ShareActivity extends QtActivity {
      * in setUriReceived().
      */
     private void processIntent() {
+	Log.d(TAG, "processIntent()");
 
         Intent intent = getIntent();
 
@@ -211,6 +216,7 @@ public class ShareActivity extends QtActivity {
      * in setUriReceived().
      */
     private void setUriReceived(Uri src) {
+	Log.d(TAG, "setUriReceived");
 
         try {
             File tmpFile = File.createTempFile("tmp", null, tmpDir);
@@ -224,6 +230,7 @@ public class ShareActivity extends QtActivity {
     /** copy src URI to dst URI.
      */
     private void copyContent(Uri src, Uri dst) {
+	Log.d(TAG, "copyContent");
 
         // Log.d(TAG, "ShareActivity.copyContent " + src + " --> " + dst);
 

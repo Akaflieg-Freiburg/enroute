@@ -21,6 +21,9 @@
 
 #include "MobileAdaptor.h"
 
+#warning
+#include <QDebug>
+
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QFile>
@@ -45,19 +48,19 @@ bool MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeTy
 
     QString tmpPath = contentToTempFile(content, fileNameTemplate);
 #if defined(Q_OS_ANDROID)
-  return outgoingIntent("sendFile", tmpPath, mimeType);
+    return outgoingIntent("sendFile", tmpPath, mimeType);
 #endif
 
 #if defined(Q_OS_LINUX)
-  QProcess xdgEmail;
-  xdgEmail.start("xdg-email", QStringList() << "--attach" << tmpPath);
-  if (!xdgEmail.waitForStarted())
-      return false;
-  if (!xdgEmail.waitForFinished())
-      return false;
-  return true;
+    QProcess xdgEmail;
+    xdgEmail.start("xdg-email", QStringList() << "--attach" << tmpPath);
+    if (!xdgEmail.waitForStarted())
+        return false;
+    if (!xdgEmail.waitForFinished())
+        return false;
+    return true;
 #endif
-  return false;
+    return false;
 }
 
 
@@ -85,7 +88,7 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
     // share the content we save it to disk. We save these temporary files
     // when creating new Share objects.
     //
-    auto filePath = androidExchangeDirectoryName + fname;
+    auto filePath = fileExchangeDirectoryName + fname;
 
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
@@ -100,6 +103,33 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
 
 
 #if defined(Q_OS_ANDROID)
+
+void MobileAdaptor::checkPendingIntents()
+{
+    QAndroidJniObject activity = QtAndroid::androidActivity();
+
+    if (activity.isValid()) {
+
+        QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
+        if (!jniTempDir.isValid()) {
+            return;
+        }
+
+        activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
+    }
+}
+
+
+MobileAdaptor* MobileAdaptor::getInstance()
+{
+    if (!mInstance) {
+        mInstance = new MobileAdaptor;
+    }
+
+    return mInstance;
+}
+
+
 bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
 {
     if (filePath == nullptr)
@@ -115,4 +145,22 @@ bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
                 jsMimeType.object<jstring>());
     return ok;
 }
+
+void MobileAdaptor::receiveFile(const QString &path)
+{
+    qWarning() << "MobileAdaptor::receiveFile" << path;
+}
+
+extern "C" {
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject, jstring jfname)
+{
+    const char* fname = env->GetStringUTFChars(jfname, nullptr);
+    MobileAdaptor::getInstance()->receiveFile(fname);
+    env->ReleaseStringUTFChars(jfname, fname);
+}
+
+
+}
 #endif
+

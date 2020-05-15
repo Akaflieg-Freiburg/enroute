@@ -91,6 +91,26 @@ public:
      */
     Q_INVOKABLE bool viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
+#if defined (Q_OS_ANDROID)
+    // Get single instance of the Share. This is used from the JNI "callback" setFileReceived(). It returns the single instance of the Share class.
+    static MobileAdaptor* getInstance();
+
+    // Helper function, called from platform-dependent code when enroute is asked
+    // to open a file
+    void receiveFile(const QString &path);
+
+    /*! \brief fired if the main window becomes active, triggered from main.qml.
+     *
+     * This method checks if there are pending intents which should be processed
+     * in the java activity de.akaflieg_freiburg.enroute.ShareActivity.
+     *
+     * This is usually necessary if the app has been launched by an incoming intent
+     * and the java ShareActivity postponed processing of the intent until enroute
+     * has been fully initialized.
+     */
+    Q_INVOKABLE void checkPendingIntents();
+#endif
+
 public slots:
     /*! \brief Hides the android splash screen.
 
@@ -122,7 +142,7 @@ private:
 
     // Name of a subdirectory within the AppDataLocation for
     // sending and receiving files.
-    QString androidExchangeDirectoryName;
+    QString fileExchangeDirectoryName;
 
 #if defined (Q_OS_ANDROID)
     // @returns True if an app could be started, false if no app was found

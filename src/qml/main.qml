@@ -73,7 +73,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/FlightRoutePage.qml")
                         drawer.close()
@@ -89,7 +89,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/NearbyAirfields.qml")
                         drawer.close()
@@ -110,7 +110,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     enabled: satNav.hasAltitude
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         drawer.close()
                         dialogLoader.active = false
                         dialogLoader.source = "dialogs/AltitudeCorrectionDialog.qml"
@@ -127,7 +127,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/SettingsPage.qml")
                         drawer.close()
@@ -148,7 +148,7 @@ ApplicationWindow {
                     visible: !satNav.isInFlight
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/InfoPage.qml")
                         drawer.close()
@@ -163,7 +163,7 @@ ApplicationWindow {
                     visible: !satNav.isInFlight
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/BugReportPage.qml")
                         drawer.close()
@@ -178,7 +178,7 @@ ApplicationWindow {
                     visible: !satNav.isInFlight
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/ParticipatePage.qml")
                         drawer.close()
@@ -199,7 +199,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         drawer.close()
                         if (satNav.isInFlight)
                             exitDialog.open()
@@ -233,7 +233,7 @@ ApplicationWindow {
             // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
             // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
             // Otherwise, if the maps need updating, show the "update map" dialog.
-            if (MobileAdaptor.missingPermissionsExist()) {
+            if (mobileAdaptor.missingPermissionsExist()) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/MissingPermissionsDialog.qml"
                 dialogLoader.active = true
@@ -301,6 +301,19 @@ ApplicationWindow {
     }
 
     Dialog {
+        id: importDialog
+
+        title: qsTr("Import Flight Route?")
+
+        Connections {
+            target: mobileAdaptor
+            onOpenFileRequest: {
+                importDialog.open()
+          }
+        }
+    }
+
+    Dialog {
         id: exitDialog
 
         x: Math.round((parent.width - width) / 2)
@@ -340,7 +353,7 @@ ApplicationWindow {
         id: sensorGesture
         enabled: Qt.application.state === Qt.ApplicationActive
         gestures: ["QtSensors.turnover"]
-        onDetected: MobileAdaptor.vibrateBrief()
+        onDetected: mobileAdaptor.vibrateBrief()
     }
 
     // Regretfully, there is a bit of platform-dependent code here.
@@ -349,7 +362,7 @@ ApplicationWindow {
         target: view
         onActiveChanged: {
             if (Qt.platform.os === "android" && view.active) {
-                MobileAdaptor.checkPendingIntents()
+                mobileAdaptor.startReceiveOpenFileRequests()
             }
         }
     }

@@ -118,7 +118,7 @@ Dialog {
 
     onAccepted: {
         // Give feedback
-        MobileAdaptor.vibrateBrief()
+        mobileAdaptor.vibrateBrief()
         close()
     }
 } // Dialog

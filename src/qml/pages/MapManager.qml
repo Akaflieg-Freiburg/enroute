@@ -69,7 +69,7 @@ Page {
                     Layout.fillWidth: true
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             model.modelData.startFileDownload()
                         }
                     }
@@ -80,7 +80,7 @@ Page {
                     icon.source: "/icons/material/ic_file_download.svg"
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         model.modelData.startFileDownload()
                     }
                 }
@@ -90,7 +90,7 @@ Page {
                     icon.source: "/icons/material/ic_refresh.svg"
                     visible: model.modelData.updatable
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         model.modelData.startFileDownload()
                     }
                 }
@@ -100,7 +100,7 @@ Page {
                     icon.source: "/icons/material/ic_cancel.svg"
                     visible: model.modelData.downloading
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         model.modelData.stopFileDownload()
                     }
                 }
@@ -111,7 +111,7 @@ Page {
 
                     visible: model.modelData.hasFile & !model.modelData.downloading
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         removeMenu.popup()
                     }
 
@@ -124,7 +124,7 @@ Page {
                             text: qsTr("Uninstall")
 
                             onTriggered: {
-                                MobileAdaptor.vibrateBrief()
+                                mobileAdaptor.vibrateBrief()
                                 model.modelData.deleteFile()
                             }
                         }
@@ -159,7 +159,7 @@ Page {
 
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 stackView.pop()
             }
         } // ToolButton
@@ -183,7 +183,7 @@ Page {
             id: headerMenuToolButton
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -196,7 +196,7 @@ Page {
                     text: qsTr("Update list of maps")
 
                     onTriggered: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         highlighted = false
                         mapManager.updateGeoMapList()
                     }
@@ -209,7 +209,7 @@ Page {
                     enabled: mapManager.geoMaps.updatable
 
                     onTriggered: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         highlighted = false
                         mapManager.updateGeoMaps()
                     }
@@ -269,7 +269,7 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         mapManager.updateGeoMapList()
                     }
                 }
@@ -293,7 +293,7 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         mapManager.updateGeoMapList()
                     }
                 }
@@ -395,7 +395,7 @@ Page {
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 mapManager.geoMaps.updateAll()
             }
         }

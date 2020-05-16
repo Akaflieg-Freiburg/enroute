@@ -51,7 +51,7 @@ Dialog {
             anchors.right: parent.right
 
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 finalFileName = modelData
                 dlg.close()
                 if (flightRoute.routeObjects.length > 0)
@@ -89,7 +89,7 @@ Dialog {
                 if (lView.model.length === 0)
                     return
 
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 finalFileName = lView.model[0]
                 dlg.close()
                 if (flightRoute.routeObjects.length > 0)
@@ -115,7 +115,7 @@ Dialog {
     } // ColumnLayout
 
     onRejected: {
-        MobileAdaptor.vibrateBrief()
+        mobileAdaptor.vibrateBrief()
         close()
     }
 
@@ -210,11 +210,11 @@ Dialog {
         modal: true
 
         onAccepted: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             dlg.openFromLibrary()
         }
         onRejected: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             close()
             dlg.open()
         }

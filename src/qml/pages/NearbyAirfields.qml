@@ -48,7 +48,7 @@ Page {
             Layout.fillWidth: true
 
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
                 dialogLoader.waypoint = model.modelData
                 dialogLoader.text = ""

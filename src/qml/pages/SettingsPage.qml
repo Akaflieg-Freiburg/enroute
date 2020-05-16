@@ -63,7 +63,7 @@ Page {
                     Layout.fillWidth: true
                     Component.onCompleted: hideUpperAsp.checked = globalSettings.hideUpperAirspaces
                     onToggled: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         globalSettings.hideUpperAirspaces = hideUpperAsp.checked
                     }
                 }
@@ -83,7 +83,7 @@ Page {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.push("FlightRouteManageLibraryPage.qml")
                         drawer.close()
                     }
@@ -97,7 +97,7 @@ Page {
 
                     enabled: !satNav.isInFlight
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         stackView.push("MapManager.qml")
                         drawer.close()
                     }
@@ -120,7 +120,7 @@ Page {
                     Layout.fillWidth: true
                     Component.onCompleted: preferEnglish.checked = globalSettings.preferEnglish
                     onCheckedChanged: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         globalSettings.preferEnglish = preferEnglish.checked
                     }
                 }
@@ -131,7 +131,7 @@ Page {
                     icon.color: Material.primary
                     Layout.fillWidth: true
                     onClicked: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/SatNavStatusDialog.qml"
                         dialogLoader.active = true

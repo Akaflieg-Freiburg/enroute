@@ -42,10 +42,12 @@
 
 int main(int argc, char *argv[])
 {
-    // Register QML types
+    // Register types
+    qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
@@ -82,7 +84,7 @@ int main(int argc, char *argv[])
 
     // Make MobileAdaptor available to QML engine
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
-    engine->rootContext()->setContextProperty("MobileAdaptor", adaptor);
+    engine->rootContext()->setContextProperty("mobileAdaptor", adaptor);
 
     // Attach library info
     auto librarian = new Librarian(engine);

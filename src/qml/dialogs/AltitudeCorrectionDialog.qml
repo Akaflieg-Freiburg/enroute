@@ -94,7 +94,7 @@ Dialog {
 
     onApplied: {
         // Give feedback
-        MobileAdaptor.vibrateBrief()
+        mobileAdaptor.vibrateBrief()
 
         // If we have no acceptable input, simply return
         if (!textField.acceptableInput)
@@ -120,7 +120,7 @@ Dialog {
 
     onReset: {
         // Give feedback
-        MobileAdaptor.vibrateBrief()
+        mobileAdaptor.vibrateBrief()
 
         // If we have no satellite altitude, complain and return
         if (!satNav.hasAltitude) {
@@ -134,7 +134,7 @@ Dialog {
 
     onRejected: {
         // Give feedback
-        MobileAdaptor.vibrateBrief()
+        mobileAdaptor.vibrateBrief()
         close()
     }
 
@@ -166,7 +166,7 @@ Dialog {
 
         onAccepted: {
             // Give feedback
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             close()
         }
     }
@@ -190,7 +190,7 @@ Dialog {
 
         onAccepted: {
             // Give feedback
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             satNav.altitudeInFeet = parseInt(textField.text)
             close()
             dlg.close()
@@ -198,7 +198,7 @@ Dialog {
 
         onRejected: {
             // Give feedback
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             close()
         }
     }

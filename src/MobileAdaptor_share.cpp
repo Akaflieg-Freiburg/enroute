@@ -21,12 +21,10 @@
 
 #include "MobileAdaptor.h"
 
-#warning
-#include <QDebug>
-
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QFile>
+#include <QMimeDatabase>
 #include <QUrl>
 
 #if defined(Q_OS_ANDROID)
@@ -102,24 +100,42 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
 }
 
 
-#if defined(Q_OS_ANDROID)
 
-void MobileAdaptor::checkPendingIntents()
+void MobileAdaptor::startReceiveOpenFileRequests()
 {
+#if defined(Q_OS_ANDROID)
     QAndroidJniObject activity = QtAndroid::androidActivity();
 
     if (activity.isValid()) {
-
         QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
-        if (!jniTempDir.isValid()) {
+        if (!jniTempDir.isValid())
             return;
-        }
-
         activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
     }
+#endif
 }
 
 
+void MobileAdaptor::processFileOpenRequest(const QString &path)
+{
+    QMimeDatabase db;
+    auto mimeType = db.mimeTypeForFile(path);
+
+    if (mimeType.name() == "application/xml") {
+        // We assume that the file contains a flight route in GPX format
+        emit openFileRequest(path, FlightRoute_GPX);
+        return;
+    }
+    if (mimeType.name() == "text/plain") {
+        // We assume that the file contains a flight route in GeoJson format
+        emit openFileRequest(path, FlightRoute_GeoJson);
+        return;
+    }
+    emit openFileRequest(path, UnknownFunction);
+}
+
+
+#if defined(Q_OS_ANDROID)
 MobileAdaptor* MobileAdaptor::getInstance()
 {
     if (!mInstance) {
@@ -146,17 +162,13 @@ bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
     return ok;
 }
 
-void MobileAdaptor::receiveFile(const QString &path)
-{
-    qWarning() << "MobileAdaptor::receiveFile" << path;
-}
 
 extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    MobileAdaptor::getInstance()->receiveFile(fname);
+    MobileAdaptor::getInstance()->processFileOpenRequest(fname);
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

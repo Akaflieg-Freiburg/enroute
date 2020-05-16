@@ -48,7 +48,7 @@ Page {
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
         onClicked: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             drawer.open()
         }
     }

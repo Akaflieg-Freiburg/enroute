@@ -32,7 +32,7 @@ ToolBar {
 
         icon.source: "/icons/material/ic_arrow_back.svg"
         onClicked: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             stackView.pop()
         }
     } // ToolButton

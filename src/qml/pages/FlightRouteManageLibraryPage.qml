@@ -41,7 +41,7 @@ Page {
 
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
@@ -69,7 +69,7 @@ Page {
             anchors.right: parent.right
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 infoDialog.open()
             }
 
@@ -114,7 +114,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    MobileAdaptor.vibrateBrief()
+                    mobileAdaptor.vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -125,7 +125,7 @@ Page {
                         id: openAction
                         text: qsTr("Open")
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             finalFileName = modelData
                             if (flightRoute.routeObjects.length > 0)
                                 overwriteDialog.open()
@@ -143,10 +143,10 @@ Page {
                         MenuItem {
                             text: qsTr("… in GeoJson format")
                             onTriggered: {
-                                MobileAdaptor.vibrateBrief()
+                                mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!MobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                                if (!mobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
                                     shareErrorDialog.open()
                             }
                         }
@@ -154,10 +154,10 @@ Page {
                         MenuItem {
                             text: qsTr("… in GPX format")
                             onTriggered: {
-                                MobileAdaptor.vibrateBrief()
+                                mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!MobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                                if (!mobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
                                     shareErrorDialog.open()
                             }
                         }
@@ -170,10 +170,10 @@ Page {
                             text: qsTr("… in GeoJson format")
 
                             onTriggered: {
-                                MobileAdaptor.vibrateBrief()
+                                mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!MobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                                if (!mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
                                     shareErrorDialog.open()
                             }
                         }
@@ -182,10 +182,10 @@ Page {
                             text: qsTr("… in GPX format")
 
                             onTriggered: {
-                                MobileAdaptor.vibrateBrief()
+                                mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!MobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                                if (!mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
                                     shareErrorDialog.open()
                             }
                         }
@@ -198,7 +198,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename …")
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             finalFileName = modelData
                             renameName.text = ""
                             renameDialog.open()
@@ -210,7 +210,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove …")
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -359,11 +359,11 @@ Page {
         modal: true
 
         onAccepted: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             close()
         }
 
@@ -397,12 +397,12 @@ Page {
         modal: true
 
         onAccepted: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             librarian.flightRouteRemove(page.finalFileName)
             page.reloadFlightRouteList()
         }
         onRejected: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             close()
         }
 
@@ -466,7 +466,7 @@ Page {
         }
 
         onAccepted: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !librarian.flightRouteExists(renameName.text)) {
                 librarian.flightRouteRename(finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -474,7 +474,7 @@ Page {
             }
         }
         onRejected: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             close()
         }
 

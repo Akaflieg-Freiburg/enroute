@@ -51,7 +51,7 @@ Page {
                 text: model.modelData.richTextName
 
                 onClicked: {
-                    MobileAdaptor.vibrateBrief()
+                    mobileAdaptor.vibrateBrief()
                     dialogLoader.active = false
                     dialogLoader.waypoint = model.modelData
                     dialogLoader.text = "noRouteButton"
@@ -75,7 +75,7 @@ Page {
                 visible: model.modelData instanceof Waypoint
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
-                    MobileAdaptor.vibrateBrief()
+                    mobileAdaptor.vibrateBrief()
                     wpMenu.popup()
                 }
 
@@ -87,7 +87,7 @@ Page {
 
                         enabled: model.modelData !== flightRoute.firstWaypointObject
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             flightRoute.moveUp(model.modelData)
                         }
                     } // Action
@@ -97,7 +97,7 @@ Page {
 
                         enabled: model.modelData !== flightRoute.lastWaypointObject
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             flightRoute.moveDown(model.modelData)
                         }
                     } // Action
@@ -106,7 +106,7 @@ Page {
                         text: qsTr("Remove")
 
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             flightRoute.removeWaypoint(model.modelData)
                         }
                     } // Action
@@ -126,7 +126,7 @@ Page {
 
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
@@ -155,7 +155,7 @@ Page {
             visible: (sv.currentIndex === 0)
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -165,7 +165,7 @@ Page {
                 MenuItem {
                     text: qsTr("Open from library …")
                     onTriggered: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         highlighted = false
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/FlightRouteOpenDialog.qml"
@@ -177,7 +177,7 @@ Page {
                     text: qsTr("Save to library …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
                     onTriggered: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         highlighted = false
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
@@ -188,7 +188,7 @@ Page {
                 MenuItem {
                     text: qsTr("View Library …")
                     onTriggered: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         highlighted = false
                         stackView.push("FlightRouteManageLibraryPage.qml")
                     }
@@ -203,10 +203,10 @@ Page {
                     MenuItem {
                         text: qsTr("… in GeoJson format")
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!MobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                            if (!mobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
                                 shareErrorDialog.open()
                         }
                     }
@@ -214,10 +214,10 @@ Page {
                     MenuItem {
                         text: qsTr("… in GPX format")
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!MobileAdaptor.sendContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                            if (!mobileAdaptor.sendContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
                                 shareErrorDialog.open()
                         }
                     }
@@ -231,10 +231,10 @@ Page {
                         text: qsTr("… in GeoJson format")
 
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!MobileAdaptor.viewContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                            if (!mobileAdaptor.viewContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
                                 shareErrorDialog.open()
                         }                        
                     }
@@ -243,10 +243,10 @@ Page {
                         text: qsTr("… in GPX format")
 
                         onTriggered: {
-                            MobileAdaptor.vibrateBrief()
+                            mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!MobileAdaptor.viewContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                            if (!mobileAdaptor.viewContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
                                 shareErrorDialog.open()
                         }
                     }
@@ -260,7 +260,7 @@ Page {
                     enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         highlighted = false
                         clearDialog.open()
                     }
@@ -272,7 +272,7 @@ Page {
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
-                        MobileAdaptor.vibrateBrief()
+                        mobileAdaptor.vibrateBrief()
                         highlighted = false
                         flightRoute.reverse()
                     }
@@ -529,7 +529,7 @@ Page {
                 icon.source: "/icons/material/ic_add_circle.svg"
 
                 onClicked: {
-                    MobileAdaptor.vibrateBrief()
+                    mobileAdaptor.vibrateBrief()
                     dialogLoader.active = false
                     dialogLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
                     dialogLoader.active = true
@@ -561,11 +561,11 @@ Page {
         }
 
         onAccepted: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             flightRoute.clear()
         }
         onRejected: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             close()
         }
     }

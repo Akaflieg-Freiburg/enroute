@@ -205,7 +205,7 @@ Item {
             onPressAndHold: onDoubleClicked(mouse)
 
             onDoubleClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
                 dialogLoader.waypoint = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)), flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
                 dialogLoader.text = ""
@@ -263,7 +263,7 @@ Item {
         anchors.bottomMargin: 1.5*Qt.application.font.pixelSize
 
         onClicked: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             resetBearing.running = true
             flightMap.followGPS = true
         }
@@ -289,7 +289,7 @@ Item {
         }
 
         onClicked: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             flightMap.zoomLevel += 1
         }
     }
@@ -314,7 +314,7 @@ Item {
         }
 
         onClicked: {
-            MobileAdaptor.vibrateBrief()
+            mobileAdaptor.vibrateBrief()
             flightMap.zoomLevel -= 1
         }
     }

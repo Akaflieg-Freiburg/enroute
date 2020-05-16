@@ -49,7 +49,7 @@ Rectangle {
                 if (!satNav.hasAltitude)
                     return
 
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
                 dialogLoader.source = "../dialogs/AltitudeCorrectionDialog.qml"
                 dialogLoader.active = true

@@ -233,7 +233,7 @@ Dialog {
                 icon.source: "/icons/material/ic_bug_report.svg"
 
                 onClicked: {
-                    MobileAdaptor.vibrateBrief()
+                    mobileAdaptor.vibrateBrief()
                     Qt.openUrlExternally(qsTr("mailto:stefan.kebekus@gmail.com?subject=Enroute, Error Report &body=Thank you for suggesting a correction in the map data. Please describe the issue here."))
                 }
             }
@@ -297,7 +297,7 @@ Dialog {
             enabled: (satNav.status === SatNav.OK) && (dialogLoader.text !== "noRouteButton")
 
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 flightRoute.clear()
                 flightRoute.append(satNav.lastValidCoordinate)
                 flightRoute.append(dialogLoader.waypoint)
@@ -311,7 +311,7 @@ Dialog {
             enabled: dialogLoader.text !== "noRouteButton"
 
             onClicked: {
-                MobileAdaptor.vibrateBrief()
+                mobileAdaptor.vibrateBrief()
                 flightRoute.append(dialogLoader.waypoint)
             }
 

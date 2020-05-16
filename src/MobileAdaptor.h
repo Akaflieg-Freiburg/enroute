@@ -24,11 +24,17 @@
 #include <QObject>
 
 /*! \brief Interface to platform-specific capabilities of mobile devices
-  
-  This class is an interface to capabilities of mobile devices (e.g. vibration)
-  that need platform-specific code to operate. On desktop platforms, the methods
-  of this class generally do nothing.
-*/
+ *
+ * This class is an interface to capabilities of mobile devices (e.g. vibration)
+ * that need platform-specific code to operate.
+ *
+ * This class also receives platform-specific requests to open files and exposes
+ * these requests to C++ and QML via the signal openFileRequest().  The signal
+ * openFileRequest() is however only emitted after the method
+ * startReceiveOpenFileRequests() has been called, requests that come in earlier
+ * will be put on hold.  This allows apps to set up their GUI before processing
+ * file open requests (that might need user interaction).
+ */
 
 class MobileAdaptor : public QObject
 {
@@ -46,6 +52,16 @@ public:
 
     ~MobileAdaptor();
 
+    /*! \brief Function and type of a file that we have been requested to
+     * open */
+    enum FileFunction
+      {
+        UnknownFunction,
+        FlightRoute_GPX, /*!< File contains a flight route, stored as GeoJSON. */
+        FlightRoute_GeoJson /*!< File contains a flight route, stored as GPX. */
+      };
+    Q_ENUM(FileFunction)
+
     /*! \brief Checks if all requred permissions have been granted
      *
      * On Android, the app requirs certain permissions to run. This method can
@@ -58,90 +74,131 @@ public:
 
     /*! \brief Send content with other app
      *
-     * On Android systems, this method will do the following.
+     * On Android systems, this method will save content to temporary file in
+     * the app's private cache and call the corresponding java static method
+     * where a SEND intent is created and startActivity is called
      *
-     * - save content to temporary file in the app's private cache
-     * - call the corresponding java static method where a SEND intent is created and startActivity is called
+     * On Linux desktop systems, this method uses the command-line utility
+     * 'xdg-email' to send open a mail composer with the file loaded as an
+     * attachment.
      *
-     * On other systems, this method does nothing yet.
+     * On other systems, this method does nothing.
      *
      * @param content content text
+     *
      * @param mimeType the mimeType of the content
-     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail
+     *
+     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the
+     * substring "%1" will later be replaced by the current time and date. This
+     * file name is visible to the user. It appears for instance as the name of
+     * the attachment when sending files by e-mail
      *
      * @returns True on success, false if no suitable app could be found
      */
     Q_INVOKABLE bool sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
-
     /*! \brief View content in other app
      *
-     * On Android systems, this method will do the following.
+     * On Android systems, this method will save content to temporary file in
+     * the app's private cache and call the corresponding java static method
+     * where a SEND intent is created and startActivity is called.
      *
-     * - save content to temporary file in the app's private cache
-     * - call the corresponding java static method where a SEND intent is created and startActivity is called
-     *
-     * On other systems, this method does nothing yet.
+     * On other systems, this method opens the file using QDesktopServices.
      *
      * @param content content text
+     *
      * @param mimeType the mimeType of the content
-     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail
+     *
+     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the
+     * substring "%1" will later be replaced by the current time and date. This
+     * file name is visible to the user. It appears for instance as the name of
+     * the attachment when sending files by e-mail
      *
      * @returns True on success, false if no suitable app could be found
      */
     Q_INVOKABLE bool viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
 #if defined (Q_OS_ANDROID)
-    // Get single instance of the Share. This is used from the JNI "callback" setFileReceived(). It returns the single instance of the Share class.
+    // Get single instance of the Share. This is used from the JNI "callback"
+    // setFileReceived(). It returns the single instance of the Share class.
     static MobileAdaptor* getInstance();
-
-    // Helper function, called from platform-dependent code when enroute is asked
-    // to open a file
-    void receiveFile(const QString &path);
-
-    /*! \brief fired if the main window becomes active, triggered from main.qml.
-     *
-     * This method checks if there are pending intents which should be processed
-     * in the java activity de.akaflieg_freiburg.enroute.ShareActivity.
-     *
-     * This is usually necessary if the app has been launched by an incoming intent
-     * and the java ShareActivity postponed processing of the intent until enroute
-     * has been fully initialized.
-     */
-    Q_INVOKABLE void checkPendingIntents();
 #endif
 
+    /*! \brief Start receiving "open file" requests from platform
+     *
+     * This method should be called to indicate that the GUI is set up and ready
+     * to receive platform-specific requests to open files.  The
+     * openFileRequest() might be emitted immediately
+     *
+     * On Android, this method checks if there are pending intents which should
+     * be processed in the java activity
+     * de.akaflieg_freiburg.enroute.ShareActivity.  This is usually necessary if
+     * the app has been launched by an incoming intent and the java
+     * ShareActivity postponed processing of the intent until enroute has been
+     * fully initialized.
+     */
+     Q_INVOKABLE void startReceiveOpenFileRequests();
+						 
 public slots:
     /*! \brief Hides the android splash screen.
-
-    On Android, hides the android splash screen. On other platforms, this does
-    nothing. The implementation ensures that QtAndroid::hideSplashScreen is
-    called (only once, regardless of how often this slot is used).
+     *
+     * On Android, hides the android splash screen.
+     *
+     * On other platforms, this does nothing. The implementation ensures that
+     * QtAndroid::hideSplashScreen is called (only once, regardless of how often
+     * this slot is used).
     */
     void hideSplashScreen();
 
     /*! \brief Make the device briefly vibrate
-
-    On Android, make the device briefly vibrate. On other platforms, this does
-    nothing.
+     *
+     * On Android, make the device briefly vibrate.
+     *
+     * On other platforms, this does nothing.
     */
     void vibrateBrief();
 
     /*! \brief Shows a notifaction, indicating that a download is in progress
-
-    @param show If set to 'true', a notification will be shown. If set to
-    'false', any existing notification will be withdrawn
-    */
+     *
+     * @param show If set to 'true', a notification will be shown. If set to
+     * 'false', any existing notification will be withdrawn
+     */
     void showDownloadNotification(bool show);
+
+    /*! \brief Helper function, not for public consumption
+     *
+     * This helper function is called by platform-dependent code whenever the
+     * app is asked to open a file.  It will look at the file, determine the
+     * file function and emit the signal openFileRequest() as appropriate.
+     *
+     * On Android, the slot is called from JAVA.
+     */
+    void processFileOpenRequest(const QString &path);
+
+signals:
+    /*! \brief Emitted when platform asks this app to open a file
+     *
+     * This signal is emitted whenever the platform-dependent code receives
+     * information that enroute is requested to open a file.
+     *
+     * @param fileName Path of the file on the local file system
+     *
+     * @param function Function and file type.
+     *
+     * On Android, other apps can request that enroute 'views' a file, via
+     * Android's INTENT system.
+     */
+    void openFileRequest(QString fileName, MobileAdaptor::FileFunction function);
 
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)
   
-    // Helper function. Saves content to a file in a directory from where sharing to other android apps is possible
+    // Helper function. Saves content to a file in a directory from where
+    // sharing to other android apps is possible
     QString contentToTempFile(const QByteArray& content, const QString& fileNameTemplate);
 
-    // Name of a subdirectory within the AppDataLocation for
-    // sending and receiving files.
+    // Name of a subdirectory within the AppDataLocation for sending and
+    // receiving files.
     QString fileExchangeDirectoryName;
 
 #if defined (Q_OS_ANDROID)

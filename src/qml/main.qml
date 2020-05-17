@@ -300,17 +300,8 @@ ApplicationWindow {
         }
     }
 
-    Dialog {
-        id: importDialog
-
-        title: qsTr("Import Flight Route?")
-
-        Connections {
-            target: mobileAdaptor
-            onOpenFileRequest: {
-                importDialog.open()
-          }
-        }
+    ImportManager {
+        id: importMgr
     }
 
     Dialog {

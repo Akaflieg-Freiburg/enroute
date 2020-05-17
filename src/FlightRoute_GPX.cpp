@@ -20,6 +20,7 @@
 #include <QDateTime>
 
 #include "FlightRoute.h"
+#include "GeoMapProvider.h"
 
 
 QByteArray FlightRoute::toGpx() const
@@ -135,4 +136,179 @@ QString FlightRoute::gpxElements(const QString& indent, const QString& tag) cons
     }
 
     return gpx;
+}
+
+
+void FlightRoute::fromGpx(QString fileUrl, GeoMapProvider *geoMapProvider)
+{
+    if (fileUrl.startsWith("file://"))
+    {
+        fileUrl = QUrl(fileUrl).toLocalFile();
+    }
+
+    QFile file(fileUrl);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << tr(QString("File open error:" + file.errorString()).toUtf8());
+        return;
+    }
+
+    QXmlStreamReader xml(&file);
+    fromGpx(xml, geoMapProvider);
+}
+
+void FlightRoute::fromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider)
+{
+    QXmlStreamReader xml(data);
+    fromGpx(xml, geoMapProvider);
+}
+
+void FlightRoute::fromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
+{
+
+    // collect all route points and track points and waypoints
+    //
+    QList<Waypoint*> rtept;
+    QList<Waypoint*> trkpt;
+    QList<Waypoint*> wpt;
+
+    // lambda function to read a single gpx rtept, trkpt or wpt
+    //
+    auto addPoint = [&] (const QString tag, QList<Waypoint*> &target) {
+
+        // capture rtept, trkpt or wpt
+
+        QXmlStreamAttributes attrs = xml.attributes();
+        if (!attrs.hasAttribute("lon") || !attrs.hasAttribute("lat")) {
+            qDebug() << "missing lat or lon attribute";
+            return;
+        }
+
+        bool ok;
+        double lon = xml.attributes().value("lon").toFloat(&ok);
+        if (!ok) {
+            qDebug() << "Unable to convert lon to float: " << xml.attributes().value("lon");
+            return;
+        }
+
+        double lat = xml.attributes().value("lat").toFloat(&ok);
+        if (!ok) {
+            qDebug() << "Unable to convert lat to float: " << xml.attributes().value("lat");
+            return;
+        }
+
+        QGeoCoordinate pos(lat, lon);
+
+        QString name;
+        QString desc;
+        QString cmt;
+        while (!xml.atEnd() && !xml.hasError())
+        {
+            if (!xml.readNext()) {
+                break;
+            }
+
+            QString xmlTag = xml.name().toString();
+
+            if (xml.isStartElement()) {
+
+                if (xmlTag == "ele") {
+                    QString alt_s = xml.readElementText(QXmlStreamReader::SkipChildElements);
+                    double alt = alt_s.toFloat(&ok);
+                    if (!ok) {
+                        qDebug() << "can't convert elevation to double: " << alt_s;
+                        return;
+                    }
+                    pos.setAltitude(alt);
+                } else if (xmlTag == "name") {
+                    name = xml.readElementText(QXmlStreamReader::SkipChildElements);
+                } else if (xmlTag == "desc") {
+                    desc = xml.readElementText(QXmlStreamReader::SkipChildElements);
+                } else if (xmlTag == "cmt") {
+                    cmt = xml.readElementText(QXmlStreamReader::SkipChildElements);
+                }
+
+            }  else if (xml.isEndElement() and xmlTag == tag) {
+                break;
+            }
+        }
+
+        if (name.length() == 0) {
+            if (desc.length() != 0) {
+                name = desc;
+            } else if (cmt.length() != 0) {
+                name = cmt;
+            }
+        }
+
+        // check if there's a known waypoint like for example an airfield nearby.
+        // If we find a waypoint within the distance of 1/100° we use it instead
+        // of the coordinate which was just imported from gpx.
+        //
+        QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
+#warning Deal with geoMapProvider == 0
+        QObject* nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
+
+        if (nearest != nullptr) {
+            Waypoint* wpt = dynamic_cast<Waypoint*>(nearest);
+
+            if (wpt->get("TYP") == "WP" && wpt->get("CAT") == "WP" && name.length() > 0) {
+#warning Unclear what that is
+//                wpt->setName(name);
+            }
+        }
+
+        target.append(nearest == nullptr ? new Waypoint(pos, this) : new Waypoint(*dynamic_cast<Waypoint*>(nearest), this));
+
+        return;
+    }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
+
+    while (!xml.atEnd() && !xml.hasError())
+    {
+        auto token = xml.readNext();
+        if (!token) {
+            qDebug() << "can't read next element";
+            break;
+        }
+
+        auto name = xml.name().toString();
+
+        if (xml.isStartElement()) {
+            if (name == "rtept") {
+                addPoint("rtept", rtept);
+            } else if (name == "trkpt") {
+                addPoint("trkpt", trkpt);
+            } else if (name == "wpt") {
+                addPoint("wpt", wpt);
+            }
+        }
+    }
+
+    // prefer rte over trk over wpt
+    // this is a bit arbitrary but seems reasonable to me.
+    // Could be made configurable.
+    //
+    QList<Waypoint*> &source = (rtept.length() > 0) ? rtept :
+                               (trkpt.length() > 0) ? trkpt :
+                                                      wpt;
+    if (source.length() == 0) {
+        // don't have to delete lists rtept, trkpt, wpt as they're empty
+        QString err = tr(QString("no valid route found").toUtf8());
+        qDebug() << err;
+        return;
+    }
+
+    _waypoints.clear();
+
+    // make a deep copy
+    //
+    for(auto & wp : source) {
+        _waypoints.append(new Waypoint(*wp, this));
+    }
+
+    qDeleteAll(rtept);
+    qDeleteAll(trkpt);
+    qDeleteAll(wpt);
+
+    updateLegs();
+    emit waypointsChanged();
 }

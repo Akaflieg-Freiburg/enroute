@@ -188,7 +188,7 @@ signals:
      * On Android, other apps can request that enroute 'views' a file, via
      * Android's INTENT system.
      */
-    void openFileRequest(QString fileName, MobileAdaptor::FileFunction function);
+    void openFileRequest(QString fileName, MobileAdaptor::FileFunction fileFunction);
 
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)

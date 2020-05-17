@@ -22,13 +22,20 @@
 
 #include <QGeoRectangle>
 #include <QJsonDocument>
+#include <QFile>
 #include <QLocale>
 #include <QPointer>
+#include <QXmlStreamReader>
+
+#warning Wird nicht gebraucht
+#include <QDebug>
+#include <QUrl>
 
 #include "Aircraft.h"
 #include "Waypoint.h"
 #include "Wind.h"
 
+class GeoMapProvider;
 
 /*! \brief Intended flight route
  *
@@ -115,6 +122,23 @@ public:
      * @returns Property firstWaypointObject
      */
     QObject* firstWaypointObject() const;
+
+    /*! \brief import route from gpx file
+     *
+     * @param fileUrl url of the gpx file
+     */
+#warning docu, error handling
+    void fromGpx(QString fileUrl, GeoMapProvider *geoMapProvider);
+
+    /*! \brief import route from gpx content supplied as QByteArray
+     *
+     * @param data gpx (xml) route data
+     */
+#warning docu, error handling
+    void fromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider);
+
+#warning docu, error handling
+    void fromGpx(QXmlStreamReader& data, GeoMapProvider *geoMapProvider);
 
     /*! \brief List of coordinates for the waypoints
      *

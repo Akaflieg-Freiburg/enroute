@@ -40,7 +40,9 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-slots">Public Slots</a> &#124;
+<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classMobileAdaptor-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -55,6 +57,14 @@ $(function() {
 
 <p>Inherits QObject.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:adb0ba1b9426a75fafc69e03e887b36c7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">FileFunction</a> { , <a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aeeb95fa5803e78f789502457d621e6a2">FlightRoute_GPX</a>, 
+<a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7abc2a946c7cb31815ea8099612fdd0a50">FlightRoute_GeoJson</a>
+ }<tr class="memdesc:adb0ba1b9426a75fafc69e03e887b36c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function and type of a file that we have been requested to open.  <a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:adb0ba1b9426a75fafc69e03e887b36c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
 <tr class="memitem:a5edd413a1c2346b59ac7fb532cc9ff1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a5edd413a1c2346b59ac7fb532cc9ff1a">hideSplashScreen</a> ()</td></tr>
@@ -66,6 +76,15 @@ Public Slots</h2></td></tr>
 <tr class="memitem:a0a4496e52193c1509258b3742989a64b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a0a4496e52193c1509258b3742989a64b">showDownloadNotification</a> (bool show)</td></tr>
 <tr class="memdesc:a0a4496e52193c1509258b3742989a64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notifaction, indicating that a download is in progress.  <a href="#a0a4496e52193c1509258b3742989a64b">More...</a><br /></td></tr>
 <tr class="separator:a0a4496e52193c1509258b3742989a64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec045b31cb9780f701c4c00886e7bcec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">processFileOpenRequest</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:aec045b31cb9780f701c4c00886e7bcec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function, not for public consumption.  <a href="#aec045b31cb9780f701c4c00886e7bcec">More...</a><br /></td></tr>
+<tr class="separator:aec045b31cb9780f701c4c00886e7bcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
+Signals</h2></td></tr>
+<tr class="memitem:abe1bf2a456b5e8a6b9f41d237401f89d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d">openFileRequest</a> (QString fileName, <a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a> fileFunction)</td></tr>
+<tr class="memdesc:abe1bf2a456b5e8a6b9f41d237401f89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a file.  <a href="#abe1bf2a456b5e8a6b9f41d237401f89d">More...</a><br /></td></tr>
+<tr class="separator:abe1bf2a456b5e8a6b9f41d237401f89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -81,13 +100,42 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa46a1e3cf4423d5e3a1d3380b06a991a"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#aa46a1e3cf4423d5e3a1d3380b06a991a">viewContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)</td></tr>
 <tr class="memdesc:aa46a1e3cf4423d5e3a1d3380b06a991a"><td class="mdescLeft">&#160;</td><td class="mdescRight">View content in other app.  <a href="#aa46a1e3cf4423d5e3a1d3380b06a991a">More...</a><br /></td></tr>
 <tr class="separator:aa46a1e3cf4423d5e3a1d3380b06a991a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c8a0a63217342abd1260f764af0535d"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d">startReceiveOpenFileRequests</a> ()</td></tr>
+<tr class="memdesc:a8c8a0a63217342abd1260f764af0535d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start receiving "open file" requests from platform.  <a href="#a8c8a0a63217342abd1260f764af0535d">More...</a><br /></td></tr>
+<tr class="separator:a8c8a0a63217342abd1260f764af0535d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to platform-specific capabilities of mobile devices. </p>
-<p>This class is an interface to capabilities of mobile devices (e.g. vibration) that need platform-specific code to operate. On desktop platforms, the methods of this class generally do nothing. </p>
+<p>This class is an interface to capabilities of mobile devices (e.g. vibration) that need platform-specific code to operate.</p>
+<p>This class also receives platform-specific requests to open files and exposes these requests to C++ and QML via the signal <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file. ">openFileRequest()</a>. The signal <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file. ">openFileRequest()</a> is however only emitted after the method <a class="el" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d" title="Start receiving &quot;open file&quot; requests from platform. ">startReceiveOpenFileRequests()</a> has been called, requests that come in earlier will be put on hold. This allows apps to set up their GUI before processing file open requests (that might need user interaction). </p>
 
-<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00033">33</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00039">39</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="adb0ba1b9426a75fafc69e03e887b36c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb0ba1b9426a75fafc69e03e887b36c7">&#9670;&nbsp;</a></span>FileFunction</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function and type of a file that we have been requested to open. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adb0ba1b9426a75fafc69e03e887b36c7aeeb95fa5803e78f789502457d621e6a2"></a>FlightRoute_GPX&#160;</td><td class="fielddoc"><p>File contains a flight route, stored as GeoJSON. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adb0ba1b9426a75fafc69e03e887b36c7abc2a946c7cb31815ea8099612fdd0a50"></a>FlightRoute_GeoJson&#160;</td><td class="fielddoc"><p>File contains a flight route, stored as GPX. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00057">57</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a302e1db70ef90d5e0881a4117adb2b51"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a302e1db70ef90d5e0881a4117adb2b51">&#9670;&nbsp;</a></span>MobileAdaptor()</h2>
 
@@ -148,7 +196,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Hides the android splash screen. </p>
-<p>On Android, hides the android splash screen. On other platforms, this does nothing. The implementation ensures that QtAndroid::hideSplashScreen is called (only once, regardless of how often this slot is used). </p>
+<p>On Android, hides the android splash screen.</p>
+<p>On other platforms, this does nothing. The implementation ensures that QtAndroid::hideSplashScreen is called (only once, regardless of how often this slot is used). </p>
 
 </div>
 </div>
@@ -170,6 +219,83 @@ Public Member Functions</h2></td></tr>
 <p>Checks if all requred permissions have been granted. </p>
 <p>On Android, the app requirs certain permissions to run. This method can be used to check if all permissions have been granted.</p>
 <dl class="section return"><dt>Returns</dt><dd>On Android, returns 'true' if not all required permissions have been granted. On other systems, always returns 'false' </dd></dl>
+
+</div>
+</div>
+<a id="abe1bf2a456b5e8a6b9f41d237401f89d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe1bf2a456b5e8a6b9f41d237401f89d">&#9670;&nbsp;</a></span>openFileRequest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MobileAdaptor::openFileRequest </td>
+          <td>(</td>
+          <td class="paramtype">QString&#160;</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a>&#160;</td>
+          <td class="paramname"><em>fileFunction</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when platform asks this app to open a file. </p>
+<p>This signal is emitted whenever the platform-dependent code receives information that enroute is requested to open a file.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileName</td><td>Path of the file on the local file system</td></tr>
+    <tr><td class="paramname">function</td><td>Function and file type.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>On Android, other apps can request that enroute 'views' a file, via Android's INTENT system. </p>
+
+</div>
+</div>
+<a id="aec045b31cb9780f701c4c00886e7bcec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec045b31cb9780f701c4c00886e7bcec">&#9670;&nbsp;</a></span>processFileOpenRequest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MobileAdaptor::processFileOpenRequest </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper function, not for public consumption. </p>
+<p>This helper function is called by platform-dependent code whenever the app is asked to open a file. It will look at the file, determine the file function and emit the signal <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file. ">openFileRequest()</a> as appropriate.</p>
+<p>On Android, the slot is called from JAVA. </p>
 
 </div>
 </div>
@@ -206,16 +332,13 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Send content with other app. </p>
-<p>On Android systems, this method will do the following.</p>
-<ul>
-<li>save content to temporary file in the app's private cache</li>
-<li>call the corresponding java static method where a SEND intent is created and startActivity is called</li>
-</ul>
-<p>On other systems, this method does nothing yet.</p>
+<p>On Android systems, this method will save content to temporary file in the app's private cache and call the corresponding java static method where a SEND intent is created and startActivity is called</p>
+<p>On Linux desktop systems, this method uses the command-line utility 'xdg-email' to send open a mail composer with the file loaded as an attachment.</p>
+<p>On other systems, this method does nothing.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">content</td><td>content text </td></tr>
-    <tr><td class="paramname">mimeType</td><td>the mimeType of the content </td></tr>
+    <tr><td class="paramname">content</td><td>content text</td></tr>
+    <tr><td class="paramname">mimeType</td><td>the mimeType of the content</td></tr>
     <tr><td class="paramname">fileNameTemplate</td><td>A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail</td></tr>
   </table>
   </dd>
@@ -258,6 +381,27 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8c8a0a63217342abd1260f764af0535d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c8a0a63217342abd1260f764af0535d">&#9670;&nbsp;</a></span>startReceiveOpenFileRequests()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE void MobileAdaptor::startReceiveOpenFileRequests </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start receiving "open file" requests from platform. </p>
+<p>This method should be called to indicate that the GUI is set up and ready to receive platform-specific requests to open files. The <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file. ">openFileRequest()</a> might be emitted immediately</p>
+<p>On Android, this method checks if there are pending intents which should be processed in the java activity de.akaflieg_freiburg.enroute.ShareActivity. This is usually necessary if the app has been launched by an incoming intent and the java ShareActivity postponed processing of the intent until enroute has been fully initialized. </p>
+
+</div>
+</div>
 <a id="aa1a2ef9dbb21953a2554840c578c308d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa1a2ef9dbb21953a2554840c578c308d">&#9670;&nbsp;</a></span>vibrateBrief</h2>
 
@@ -282,7 +426,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Make the device briefly vibrate. </p>
-<p>On Android, make the device briefly vibrate. On other platforms, this does nothing. </p>
+<p>On Android, make the device briefly vibrate.</p>
+<p>On other platforms, this does nothing. </p>
 
 </div>
 </div>
@@ -319,16 +464,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>View content in other app. </p>
-<p>On Android systems, this method will do the following.</p>
-<ul>
-<li>save content to temporary file in the app's private cache</li>
-<li>call the corresponding java static method where a SEND intent is created and startActivity is called</li>
-</ul>
-<p>On other systems, this method does nothing yet.</p>
+<p>On Android systems, this method will save content to temporary file in the app's private cache and call the corresponding java static method where a SEND intent is created and startActivity is called.</p>
+<p>On other systems, this method opens the file using QDesktopServices.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">content</td><td>content text </td></tr>
-    <tr><td class="paramname">mimeType</td><td>the mimeType of the content </td></tr>
+    <tr><td class="paramname">content</td><td>content text</td></tr>
+    <tr><td class="paramname">mimeType</td><td>the mimeType of the content</td></tr>
     <tr><td class="paramname">fileNameTemplate</td><td>A string of the form "FlightRoute-%1.geojson" the substring "%1" will later be replaced by the current time and date. This file name is visible to the user. It appears for instance as the name of the attachment when sending files by e-mail</td></tr>
   </table>
   </dd>

@@ -211,7 +211,7 @@ Page {
                     onTriggered: {
                         mobileAdaptor.vibrateBrief()
                         highlighted = false
-                        mapManager.updateGeoMaps()
+                        mapManager.geoMaps.updateAll()
                     }
                 }
 

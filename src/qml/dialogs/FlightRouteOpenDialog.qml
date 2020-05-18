@@ -128,7 +128,7 @@ Dialog {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = flightRoute.load(librarian.flightRouteFullPath(finalFileName))
+        var errorString = flightRoute.loadFromGeoJson(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

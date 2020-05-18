@@ -191,7 +191,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString load(QString fileName);
+    Q_INVOKABLE QString loadFromGeoJson(QString fileName);
 
     /*! \brief List of waypoints and legs
      *

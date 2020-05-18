@@ -22,6 +22,7 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 
 import enroute 1.0
+import "../pages"
 
 Item {
     id: importManager
@@ -41,7 +42,10 @@ Item {
 
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
-            importDialog.open()
+            if (flightRoute.routeObjects.length > 0)
+                importDialog.open()
+            else
+                importDialog.onAccepted()
       }
     } // Connections
 
@@ -69,6 +73,24 @@ Item {
 
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
+
+        onAccepted: {
+            var errorString = ""
+
+            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJson) {
+                flightRoute.loadFromGeoJson(importManager.filePath)
+            }
+
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            if (!(stackView.currentItem instanceof FlightRoutePage)) {
+                stackView.pop()
+                stackView.push("../pages/FlightRoutePage.qml")
+            }
+        }
 
     } // importDialog
 

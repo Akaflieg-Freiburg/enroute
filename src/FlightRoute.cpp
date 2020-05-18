@@ -31,7 +31,7 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
     // Load last flightRoute
-    load(stdFileName);
+    loadFromGeoJson(stdFileName);
 
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
@@ -313,7 +313,7 @@ QByteArray FlightRoute::toGeoJSON() const
 }
 
 
-QString FlightRoute::load(QString fileName)
+QString FlightRoute::loadFromGeoJson(QString fileName)
 {
     if (fileName.isEmpty())
         fileName = stdFileName;

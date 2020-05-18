@@ -57,7 +57,7 @@ QObject *Librarian::flightRouteGet(const QString &baseName) const
     auto route = new FlightRoute(nullptr, nullptr);
     if (!route)
         return nullptr;
-    auto error = route->load(flightRouteFullPath(baseName));
+    auto error = route->loadFromGeoJson(flightRouteFullPath(baseName));
     if (error.isEmpty())
         return route;
     delete route;

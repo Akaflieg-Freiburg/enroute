@@ -27,10 +27,6 @@
 #include <QPointer>
 #include <QXmlStreamReader>
 
-#warning Wird nicht gebraucht
-#include <QDebug>
-#include <QUrl>
-
 #include "Aircraft.h"
 #include "Waypoint.h"
 #include "Wind.h"
@@ -123,23 +119,6 @@ public:
      */
     QObject* firstWaypointObject() const;
 
-    /*! \brief import route from gpx file
-     *
-     * @param fileUrl url of the gpx file
-     */
-#warning docu, error handling
-    void fromGpx(QString fileUrl, GeoMapProvider *geoMapProvider);
-
-    /*! \brief import route from gpx content supplied as QByteArray
-     *
-     * @param data gpx (xml) route data
-     */
-#warning docu, error handling
-    void fromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider);
-
-#warning docu, error handling
-    void fromGpx(QXmlStreamReader& data, GeoMapProvider *geoMapProvider);
-
     /*! \brief List of coordinates for the waypoints
      *
      * This property holds a list of coordinates of the waypoints, suitable for
@@ -192,6 +171,39 @@ public:
      * error message otherwise.
      */
     Q_INVOKABLE QString loadFromGeoJson(QString fileName);
+
+    /*! \brief Loads the route from a GPX document
+     *
+     * This method loads the flight route from a GPX. This method can optionally use a GeoMapProvider to detect waypoints (such as airfields) by looking at the coordinates
+     *
+     * @param fileName, needs to include path and extension
+     *
+     * @param geoMapProvider Pointer to a geoMapProvider or nullptr
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
+    Q_INVOKABLE QString loadFromGpx(QString fileName, GeoMapProvider *geoMapProvider=nullptr);
+
+    /*! \brief Loads the route from a GPX document
+     *
+     * Overloaded for convenience
+     *
+     * @param data GPX route data
+     *
+     * @param geoMapProvider Pointer to a geoMapProvider or nullptr
+     */
+    Q_INVOKABLE QString loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider);
+
+    /*! \brief Loads the route from a GPX document
+     *
+     * Overloaded for convenience
+     *
+     * @param data XML Document with GPX data
+     *
+     * @param geoMapProvider Pointer to a geoMapProvider or nullptr
+     */
+    Q_INVOKABLE QString loadFromGpx(QXmlStreamReader& data, GeoMapProvider *geoMapProvider);
 
     /*! \brief List of waypoints and legs
      *

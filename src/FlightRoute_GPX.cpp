@@ -139,30 +139,25 @@ QString FlightRoute::gpxElements(const QString& indent, const QString& tag) cons
 }
 
 
-void FlightRoute::fromGpx(QString fileUrl, GeoMapProvider *geoMapProvider)
+QString FlightRoute::loadFromGpx(QString fileName, GeoMapProvider *geoMapProvider)
 {
-    if (fileUrl.startsWith("file://"))
-    {
-        fileUrl = QUrl(fileUrl).toLocalFile();
-    }
-
-    QFile file(fileUrl);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << tr(QString("File open error:" + file.errorString()).toUtf8());
-        return;
-    }
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+        return tr("Error opening file '%1'").arg(fileName);
 
     QXmlStreamReader xml(&file);
-    fromGpx(xml, geoMapProvider);
+    return loadFromGpx(xml, geoMapProvider);
 }
 
-void FlightRoute::fromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider)
+
+QString FlightRoute::loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider)
 {
     QXmlStreamReader xml(data);
-    fromGpx(xml, geoMapProvider);
+    return loadFromGpx(xml, geoMapProvider);
 }
 
-void FlightRoute::fromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
+
+QString FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
 {
 
     // collect all route points and track points and waypoints
@@ -203,9 +198,8 @@ void FlightRoute::fromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
         QString cmt;
         while (!xml.atEnd() && !xml.hasError())
         {
-            if (!xml.readNext()) {
+            if (!xml.readNext())
                 break;
-            }
 
             QString xmlTag = xml.name().toString();
 
@@ -240,23 +234,20 @@ void FlightRoute::fromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
             }
         }
 
-        // check if there's a known waypoint like for example an airfield nearby.
+        // If a GeoMapProvider is available, check if there's a known waypoint like for example an airfield nearby.
         // If we find a waypoint within the distance of 1/100° we use it instead
         // of the coordinate which was just imported from gpx.
-        //
-        QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
-#warning Deal with geoMapProvider == 0
-        QObject* nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
+        QObject* nearest = nullptr;
+        if (geoMapProvider != nullptr) {
+            QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
+            nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
 
-        if (nearest != nullptr) {
-            Waypoint* wpt = dynamic_cast<Waypoint*>(nearest);
-
-            if (wpt->get("TYP") == "WP" && wpt->get("CAT") == "WP" && name.length() > 0) {
-#warning Unclear what that is
-//                wpt->setName(name);
+            if (nearest != nullptr) {
+                Waypoint* wpt = dynamic_cast<Waypoint*>(nearest);
+                if (wpt->get("TYP") == "WP" && wpt->get("CAT") == "WP" && name.length() > 0)
+                    wpt->setProperty("NAM", name);
             }
         }
-
         target.append(nearest == nullptr ? new Waypoint(pos, this) : new Waypoint(*dynamic_cast<Waypoint*>(nearest), this));
 
         return;
@@ -265,10 +256,8 @@ void FlightRoute::fromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
     while (!xml.atEnd() && !xml.hasError())
     {
         auto token = xml.readNext();
-        if (!token) {
-            qDebug() << "can't read next element";
+        if (!token)
             break;
-        }
 
         auto name = xml.name().toString();
 
@@ -292,9 +281,7 @@ void FlightRoute::fromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
                                                       wpt;
     if (source.length() == 0) {
         // don't have to delete lists rtept, trkpt, wpt as they're empty
-        QString err = tr(QString("no valid route found").toUtf8());
-        qDebug() << err;
-        return;
+        return tr("Error interpreting GPX file: no valid route found.");
     }
 
     _waypoints.clear();
@@ -311,4 +298,5 @@ void FlightRoute::fromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
 
     updateLegs();
     emit waypointsChanged();
+    return QString();
 }

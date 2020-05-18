@@ -20,11 +20,12 @@
 
 import QtLocation 5.14
 import QtPositioning 5.14
-import QtQml 2.14
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 
 import enroute 1.0
+
+import QtQml 2.14
 
 import ".."
 
@@ -103,6 +104,7 @@ Item {
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         Binding on center {
+            restoreMode: Binding.RestoreBinding
             when: flightMap.followGPS === true
             value: satNav.lastValidCoordinate
         }

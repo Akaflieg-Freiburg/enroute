@@ -77,9 +77,10 @@ Item {
         onAccepted: {
             var errorString = ""
 
-            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJson) {
-                flightRoute.loadFromGeoJson(importManager.filePath)
-            }
+            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJson)
+                errorString = flightRoute.loadFromGeoJson(importManager.filePath)
+            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GPX)
+                errorString = flightRoute.loadFromGpx(importManager.filePath, geoMapProvider)
 
             if (errorString !== "") {
                 errLbl.text = errorString

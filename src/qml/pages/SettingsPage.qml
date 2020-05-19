@@ -26,6 +26,7 @@ import QtQuick.Layouts 1.14
 import "../items"
 
 Page {
+    id: settingsPage
     title: qsTr("Settings")
 
     header: StandardHeader {}
@@ -34,112 +35,111 @@ Page {
         id: view
         anchors.fill: parent
         anchors.topMargin: Qt.application.font.pixelSize
+        ScrollIndicator.vertical: ScrollIndicator {}
 
-        Item {
-            anchors.fill: parent
+        ColumnLayout {
+            width: settingsPage.width
+            implicitWidth: settingsPage.width
 
-            ColumnLayout {
-                width: parent.width
+            Label {
+                Layout.leftMargin: Qt.application.font.pixelSize
+                Layout.fillWidth: true
+                text: qsTr("Moving Map")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.primary
+            }
 
-                Label {
-                    Layout.leftMargin: Qt.application.font.pixelSize
-                    text: qsTr("Moving Map")
-                    font.pixelSize: Qt.application.font.pixelSize*1.2
-                    font.bold: true
-                    color: Material.primary
+            SwitchDelegate {
+                id: hideUpperAsp
+                text: qsTr("Hide Airspaces above FL100") + (globalSettings.hideUpperAirspaces ? `<br><font color="#606060" size="2">`
+                                                                                                + qsTr("Upper airspaces currently hidden")
+                                                                                                +"</font>"
+                                                                                              : `<br><font color="#606060" size="2">`
+                                                                                                + qsTr("All airspaces currently shown")
+                                                                                                + `</font>`
+                                                            )
+                icon.source: "/icons/material/ic_map.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+                Component.onCompleted: hideUpperAsp.checked = globalSettings.hideUpperAirspaces
+                onToggled: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.hideUpperAirspaces = hideUpperAsp.checked
                 }
+            }
 
-                SwitchDelegate {
-                    id: hideUpperAsp
-                    text: qsTr("Hide Airspaces above FL100") + (globalSettings.hideUpperAirspaces ? `<br><font color="#606060" size="2">`
-                                                                                                    + qsTr("Upper airspaces currently hidden")
-                                                                                                    +"</font>"
-                                                                                                  : `<br><font color="#606060" size="2">`
-                                                                                                    + qsTr("All airspaces currently shown")
-                                                                                                    + `</font>`
-                                                                )
-                    icon.source: "/icons/material/ic_map.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
-                    Component.onCompleted: hideUpperAsp.checked = globalSettings.hideUpperAirspaces
-                    onToggled: {
-                        mobileAdaptor.vibrateBrief()
-                        globalSettings.hideUpperAirspaces = hideUpperAsp.checked
-                    }
+            Label {
+                Layout.leftMargin: Qt.application.font.pixelSize
+                text: qsTr("Libraries")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.primary
+            }
+
+            ItemDelegate {
+                text: qsTr("Flight Routes")
+                icon.source: "/icons/material/ic_directions.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    stackView.push("FlightRouteManageLibraryPage.qml")
+                    drawer.close()
                 }
+            }
 
-                Label {
-                    Layout.leftMargin: Qt.application.font.pixelSize
-                    text: qsTr("Libraries")
-                    font.pixelSize: Qt.application.font.pixelSize*1.2
-                    font.bold: true
-                    color: Material.primary
+            ItemDelegate {
+                text: qsTr("Maps") + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">`+qsTr("Updates available") + "</font>" : "")
+                icon.source: "/icons/material/ic_map.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+
+                enabled: !satNav.isInFlight
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    stackView.push("MapManager.qml")
+                    drawer.close()
                 }
+            }
 
-                ItemDelegate {
-                    text: qsTr("Flight Routes")
-                    icon.source: "/icons/material/ic_directions.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
+            Label {
+                Layout.leftMargin: Qt.application.font.pixelSize
+                text: qsTr("System")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.primary
+            }
 
-                    onClicked: {
-                        mobileAdaptor.vibrateBrief()
-                        stackView.push("FlightRouteManageLibraryPage.qml")
-                        drawer.close()
-                    }
+            SwitchDelegate {
+                id: preferEnglish
+                text: qsTr("Prefer English")
+                icon.source: "/icons/material/ic_translate.svg"
+                icon.color: Material.primary
+                visible: globalSettings.hasTranslation
+                Layout.fillWidth: true
+                Component.onCompleted: preferEnglish.checked = globalSettings.preferEnglish
+                onCheckedChanged: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.preferEnglish = preferEnglish.checked
                 }
+            }
 
-                ItemDelegate {
-                    text: qsTr("Maps") + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">`+qsTr("Updates available") + "</font>" : "")
-                    icon.source: "/icons/material/ic_map.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
-
-                    enabled: !satNav.isInFlight
-                    onClicked: {
-                        mobileAdaptor.vibrateBrief()
-                        stackView.push("MapManager.qml")
-                        drawer.close()
-                    }
+            ItemDelegate {
+                text: qsTr("SatNav Status")+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
+                icon.source: "/icons/material/ic_satellite.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    dialogLoader.active = false
+                    dialogLoader.source = "../dialogs/SatNavStatusDialog.qml"
+                    dialogLoader.active = true
                 }
+            }
 
-                Label {
-                    Layout.leftMargin: Qt.application.font.pixelSize
-                    text: qsTr("System")
-                    font.pixelSize: Qt.application.font.pixelSize*1.2
-                    font.bold: true
-                    color: Material.primary
-                }
-
-                SwitchDelegate {
-                    id: preferEnglish
-                    text: qsTr("Prefer English")
-                    icon.source: "/icons/material/ic_translate.svg"
-                    icon.color: Material.primary
-                    visible: globalSettings.hasTranslation
-                    Layout.fillWidth: true
-                    Component.onCompleted: preferEnglish.checked = globalSettings.preferEnglish
-                    onCheckedChanged: {
-                        mobileAdaptor.vibrateBrief()
-                        globalSettings.preferEnglish = preferEnglish.checked
-                    }
-                }
-
-                ItemDelegate {
-                    text: qsTr("SatNav Status")+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
-                    icon.source: "/icons/material/ic_satellite.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
-                    onClicked: {
-                        mobileAdaptor.vibrateBrief()
-                        dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/SatNavStatusDialog.qml"
-                        dialogLoader.active = true
-                    }
-                }
-
-            } // ColumnLayout
-        } // Item
+        } // ColumnLayout
     } // Scrollview
 
 } // Page

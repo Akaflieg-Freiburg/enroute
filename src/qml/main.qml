@@ -246,10 +246,15 @@ ApplicationWindow {
                 dialogLoader.active = true
                 return
             }
+
+            // Start accepting files
+            mobileAdaptor.startReceiveOpenFileRequests()
+
             if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !satNav.isInFlight) {
                 whatsNewDialog.open()
                 return
             }
+
             if (mapManager.geoMaps.updatable && !satNav.isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
@@ -346,18 +351,6 @@ ApplicationWindow {
         gestures: ["QtSensors.turnover"]
         onDetected: mobileAdaptor.vibrateBrief()
     }
-
-    // Regretfully, there is a bit of platform-dependent code here.
-    // This is necessary for accepting incoming file…
-    Connections {
-        target: view
-        onActiveChanged: {
-            if (Qt.platform.os === "android" && view.active) {
-                mobileAdaptor.startReceiveOpenFileRequests()
-            }
-        }
-    }
-
 
     // enroute closed unexpectedly if...
     // * the "route" page is open

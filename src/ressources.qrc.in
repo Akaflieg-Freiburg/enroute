@@ -5,10 +5,6 @@
     </qresource>
 
     <!-- Translations -->
-    <qresource prefix="/">
-        <file>enroute_cz.qm</file>
-        <file>enroute_de.qm</file>
-    </qresource>
     
     <!-- Texts -->
     <qresource prefix="/">

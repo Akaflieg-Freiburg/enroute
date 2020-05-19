@@ -74,7 +74,14 @@ Item {
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
+        Connections {
+            target: sensorGesture
+            onDetected: close()
+        }
+
         onAccepted: {
+            mobileAdaptor.vibrateBrief()
+
             var errorString = ""
 
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJson)
@@ -118,6 +125,10 @@ Item {
             textFormat: Text.RichText
         }
 
+        Connections {
+            target: sensorGesture
+            onDetected: close()
+        }
     } // errorDialog
 
 }

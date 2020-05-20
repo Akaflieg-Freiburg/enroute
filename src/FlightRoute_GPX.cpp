@@ -139,7 +139,7 @@ QString FlightRoute::gpxElements(const QString& indent, const QString& tag) cons
 }
 
 
-QString FlightRoute::loadFromGpx(QString fileName, GeoMapProvider *geoMapProvider)
+QString FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
@@ -168,7 +168,7 @@ QString FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapPr
 
     // lambda function to read a single gpx rtept, trkpt or wpt
     //
-    auto addPoint = [&] (const QString tag, QList<Waypoint*> &target) {
+    auto addPoint = [&] (const QString& tag, QList<Waypoint*> &target) {
 
         // capture rtept, trkpt or wpt
 
@@ -243,15 +243,13 @@ QString FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapPr
             nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
 
             if (nearest != nullptr) {
-                Waypoint* wpt = dynamic_cast<Waypoint*>(nearest);
+                auto* wpt = dynamic_cast<Waypoint*>(nearest);
                 if (wpt->get("TYP") == "WP" && wpt->get("CAT") == "WP" && name.length() > 0)
                     wpt->setProperty("NAM", name);
             }
         }
         target.append(nearest == nullptr ? new Waypoint(pos, this) : new Waypoint(*dynamic_cast<Waypoint*>(nearest), this));
-
-        return;
-    }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
+   }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
 
     while (!xml.atEnd() && !xml.hasError())
     {

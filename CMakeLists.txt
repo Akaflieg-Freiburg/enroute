@@ -13,7 +13,7 @@ option(BUILD_DOC "Build documentation" OFF)
 
 project(enroute VERSION 1.7.0)
 set(APP_ID de.akaflieg_freiburg.enroute)
-set(PROJECT_DATE 2020-05-19)
+set(PROJECT_DATE 2020-05-20)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 

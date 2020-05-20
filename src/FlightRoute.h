@@ -183,7 +183,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGpx(QString fileName, GeoMapProvider *geoMapProvider=nullptr);
+    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider=nullptr);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -203,7 +203,7 @@ public:
      *
      * @param geoMapProvider Pointer to a geoMapProvider or nullptr
      */
-    Q_INVOKABLE QString loadFromGpx(QXmlStreamReader& data, GeoMapProvider *geoMapProvider);
+    Q_INVOKABLE QString loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider);
 
     /*! \brief List of waypoints and legs
      *

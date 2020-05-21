@@ -1,0 +1,27 @@
+{
+    "app-id": "de.akaflieg_freiburg.enroute",
+    "runtime": "org.kde.Platform",
+    "runtime-version": "5.14",
+    "sdk": "org.kde.Sdk",
+    "command": "enroute",
+    "finish-args": [
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland",
+        "--device=dri"
+    ],
+    "modules": [
+        {
+            "name": "enroute flight navigation",
+            "buildsystem": "cmake-ninja",
+            "config-opts": ["-DCMAKE_BUILD_TYPE=RelWithDebInfo"],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/Akaflieg-Freiburg/enroute.git",
+                    "commit": "8dfecd7ce8e60137f32acabc992e17c1acf00e30"
+                }
+            ]
+        }
+    ]
+}

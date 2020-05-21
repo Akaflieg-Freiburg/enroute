@@ -13,3 +13,9 @@ add_custom_target(DistributeQtSource
   COMMENT "Downloading Qt sources and making them available on the internet"
   )
 
+add_custom_target(packaging)
+
+if (UNIX AND NOT ANDROID)
+  add_subdirectory(flatpak)
+endif (UNIX AND NOT ANDROID)
+

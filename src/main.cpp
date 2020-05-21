@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     parser.setApplicationDescription(QCoreApplication::translate("main", "enroute flight navigation is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg."));
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("fileName", QCoreApplication::translate("main", "File to import."));
+    parser.addPositionalArgument("[fileName]", QCoreApplication::translate("main", "File to import."));
     parser.process(app);
     auto positionalArguments = parser.positionalArguments();
     if (positionalArguments.length() > 1)

@@ -1,12 +1,9 @@
 [Desktop Entry]
 Type=Application
-Version=${PROJECT_VERSION}
-Name=Enroute
-GenericName=Enroute
+Name=enroute flight navigation
 Comment=Navigation app for VFR pilots
 Icon=${APP_ID}
 TryExec=${PROJECT_NAME}
 Exec=${PROJECT_NAME}
 Terminal=false
-Categories=Utility;Calculator;
-StartupNotify=true
+Categories=Utility;Maps;

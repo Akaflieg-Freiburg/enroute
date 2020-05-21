@@ -115,13 +115,19 @@ void MobileAdaptor::startReceiveOpenFileRequests()
         activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
     }
 #endif
+
+    if (!pendingReceiveOpenFileRequest.isEmpty())
+        processFileOpenRequest(pendingReceiveOpenFileRequest);
+    pendingReceiveOpenFileRequest = QString();
 }
 
 
 void MobileAdaptor::processFileOpenRequest(const QString &path)
 {
-    if (!receiveOpenFileRequestsStarted)
+    if (!receiveOpenFileRequestsStarted) {
+        pendingReceiveOpenFileRequest = path;
         return;
+    }
 
     QString myPath;
     if (path.startsWith("file:")) {

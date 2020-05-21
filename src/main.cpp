@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCommandLineParser>
 #include <QFile>
 #include <QGuiApplication>
 #include <QIcon>
@@ -57,17 +58,31 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QCoreApplication::setOrganizationName("Akaflieg Freiburg");
     QCoreApplication::setOrganizationDomain("akaflieg_freiburg.de");
-    QCoreApplication::setApplicationName("Enroute");
+    QCoreApplication::setApplicationName("enroute flight navigation");
+    QCoreApplication::setApplicationVersion(PROJECT_VERSION);
     QGuiApplication::setWindowIcon(QIcon(":/icons/appIcon.png"));
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
+
+    // Command line parsing
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QCoreApplication::translate("main", "enroute flight navigation is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg."));
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("fileName", QCoreApplication::translate("main", "File to import."));
+    parser.process(app);
+    auto positionalArguments = parser.positionalArguments();
+    if (positionalArguments.length() > 1)
+        parser.showHelp();
 
     // Create global settings object. We do this before creating the application engine because this also installs translators.
     auto globalSettings = new GlobalSettings();
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     auto *adaptor = new MobileAdaptor();
+    if (positionalArguments.length() == 1)
+        adaptor->processFileOpenRequest(positionalArguments[0]);
 
     /*
      * Set up ApplicationEngine for QML

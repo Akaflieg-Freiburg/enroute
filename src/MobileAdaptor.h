@@ -210,5 +210,6 @@ private:
 #endif
 
     bool receiveOpenFileRequestsStarted {false};
+    QString pendingReceiveOpenFileRequest {};
     bool splashScreenHidden {false};
 };

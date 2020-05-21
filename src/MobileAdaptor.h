@@ -209,5 +209,6 @@ private:
     static MobileAdaptor* mInstance;
 #endif
 
+    bool receiveOpenFileRequestsStarted {false};
     bool splashScreenHidden {false};
 };

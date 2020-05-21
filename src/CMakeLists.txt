@@ -48,13 +48,14 @@ configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/whatsnew_de.
 #
 
 # We use this macro here to avoid creating extremely large C++ files with binary content
-qt5_add_big_resources(BIGRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc)
+qt5_add_big_resources(BIGRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc)
 
 set(SOURCES
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
+    ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
     ${TRANSLATIONS}
     ${BIGRESOURCES}
 

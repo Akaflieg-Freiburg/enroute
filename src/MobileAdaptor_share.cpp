@@ -103,6 +103,8 @@ QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QStrin
 
 void MobileAdaptor::startReceiveOpenFileRequests()
 {
+    receiveOpenFileRequestsStarted = true;
+
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject activity = QtAndroid::androidActivity();
 
@@ -118,11 +120,18 @@ void MobileAdaptor::startReceiveOpenFileRequests()
 
 void MobileAdaptor::processFileOpenRequest(const QString &path)
 {
-    QUrl url(path.trimmed());
-    auto myPath = url.toLocalFile();
+    if (!receiveOpenFileRequestsStarted)
+        return;
+
+    QString myPath;
+    if (path.startsWith("file:")) {
+        QUrl url(path.trimmed());
+        myPath = url.toLocalFile();
+    } else
+        myPath = path;
+
     QMimeDatabase db;
     auto mimeType = db.mimeTypeForFile(myPath);
-
     if ((mimeType.name() == "application/xml")
             || (mimeType.name() == "application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format

@@ -118,20 +118,24 @@ void MobileAdaptor::startReceiveOpenFileRequests()
 
 void MobileAdaptor::processFileOpenRequest(const QString &path)
 {
+    QUrl url(path.trimmed());
+    auto myPath = url.toLocalFile();
     QMimeDatabase db;
-    auto mimeType = db.mimeTypeForFile(path);
+    auto mimeType = db.mimeTypeForFile(myPath);
 
-    if (mimeType.name() == "application/xml") {
+    if ((mimeType.name() == "application/xml")
+            || (mimeType.name() == "application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format
-        emit openFileRequest(path, FlightRoute_GPX);
+        emit openFileRequest(myPath, FlightRoute_GPX);
         return;
     }
-    if (mimeType.name() == "text/plain") {
+    if ((mimeType.name() == "text/plain")
+            || (mimeType.name() == "application/geo+json")) {
         // We assume that the file contains a flight route in GeoJson format
-        emit openFileRequest(path, FlightRoute_GeoJson);
+        emit openFileRequest(myPath, FlightRoute_GeoJson);
         return;
     }
-    emit openFileRequest(path, UnknownFunction);
+    emit openFileRequest(myPath, UnknownFunction);
 }
 
 

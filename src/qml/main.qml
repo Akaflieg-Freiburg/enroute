@@ -285,6 +285,13 @@ ApplicationWindow {
 
     }
 
+    DropArea {
+        anchors.fill: stackView
+        onDropped: {
+            mobileAdaptor.processFileOpenRequest(drop.text)
+        }
+    }
+
     Loader {
         id: dialogLoader
         anchors.fill: parent

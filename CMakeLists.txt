@@ -53,6 +53,24 @@ else()
     add_custom_target(fulldoc)
 endif()
 
+# Find GIT commit, if git is available and if we are working in a git source
+# tree
+
+if(EXISTS ${CMAKE_SOURCE_DIR}/.git)
+  find_package(Git)
+  if(Git_FOUND)
+    message("Building inside a GIT directory, git found at ${GIT_EXECUTABLE}")
+    execute_process(COMMAND git --git-dir=${CMAKE_SOURCE_DIR}/.git log --pretty=format:'%H' -n1
+      OUTPUT_VARIABLE GIT_COMMIT
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
+    message("Currently working with git Commit ${GIT_COMMIT}")
+  else()
+    message("Git not found.")
+  endif()
+endif()
+
+
 # Subdirectories
 add_subdirectory(3rdParty)
 add_subdirectory(generatedSources)

@@ -50,6 +50,7 @@ bool MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeTy
 #endif
 
 #if defined(Q_OS_LINUX)
+    return QDesktopServices::openUrl(QUrl("mailto:kebekus@foobar.com?subject=Test20e-mail20subject&attachment=file:///home/kebekus/unison.log", QUrl::TolerantMode));
     QProcess xdgEmail;
     xdgEmail.start("xdg-email", QStringList() << "--attach" << tmpPath);
     if (!xdgEmail.waitForStarted())

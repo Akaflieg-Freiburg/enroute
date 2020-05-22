@@ -13,6 +13,18 @@
     ],
     "modules": [
         {
+            "name": "flatpak-xdg-utils",
+            "buildsystem": "meson",
+            "config-opts": ["-DCMAKE_BUILD_TYPE=RelWithDebInfo"],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/flatpak/flatpak-xdg-utils.git",
+                    "commit": "4fdd2e2bdbafdcc246e1570069df1da3c8c14742"
+                }
+            ]
+        },
+        {
             "name": "enroute flight navigation",
             "buildsystem": "cmake-ninja",
             "config-opts": ["-DCMAKE_BUILD_TYPE=RelWithDebInfo"],
@@ -20,7 +32,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/Akaflieg-Freiburg/enroute.git",
-                    "commit": "5035b39"
+                    "commit": "${GIT_COMMIT}"
                 }
             ]
         }

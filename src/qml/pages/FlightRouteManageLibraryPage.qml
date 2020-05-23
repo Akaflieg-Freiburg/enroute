@@ -118,7 +118,7 @@ Page {
                     cptMenu.popup()
                 }
 
-                Menu {
+                AutoSizingMenu {
                     id: cptMenu
 
                     Action {

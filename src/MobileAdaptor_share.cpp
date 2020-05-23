@@ -53,7 +53,7 @@ bool MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
 #else
     auto fileNameX = QFileDialog::getSaveFileName(nullptr,
                                                   tr("Export flight route"),
-                                                  QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(),
+                                                  fileNameTemplate+"."+mime.preferredSuffix(),
                                                   tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix())
                                                   );
     if (fileNameX.isEmpty())

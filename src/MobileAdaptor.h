@@ -72,17 +72,13 @@ public:
     */
     Q_INVOKABLE bool missingPermissionsExist();
 
-    /*! \brief Send content with other app
+    /*! \brief Export content with other app
      *
      * On Android systems, this method will save content to temporary file in
      * the app's private cache and call the corresponding java static method
      * where a SEND intent is created and startActivity is called
      *
-     * On Linux desktop systems, this method uses the command-line utility
-     * 'xdg-email' to send open a mail composer with the file loaded as an
-     * attachment.
-     *
-     * On other systems, this method does nothing.
+     * On other desktop systems, this method uses a file dialog to save the file.
      *
      * @param content content text
      *
@@ -95,7 +91,7 @@ public:
      *
      * @returns True on success, false if no suitable app could be found
      */
-    Q_INVOKABLE bool sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE bool exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
     /*! \brief View content in other app
      *

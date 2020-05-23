@@ -159,7 +159,7 @@ Page {
                 headerMenuX.popup()
             }
 
-            Menu {
+            AutoSizingMenu {
                 id: headerMenuX
 
                 MenuItem {
@@ -197,27 +197,29 @@ Page {
                 MenuSeparator { }
 
                 Menu {
-                    title: qsTr("Send …")
+                    title: qsTr("Export …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {
-                        text: qsTr("… in GeoJson format")
+                        text: qsTr("… to GeoJson file")
                         onTriggered: {
+                            headerMenuX.close()
                             mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!mobileAdaptor.sendContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                            if (!mobileAdaptor.exportContent(flightRoute.toGeoJSON(), "application/geo+json", flightRoute.suggestedFilename()))
                                 shareErrorDialog.open()
                         }
                     }
 
                     MenuItem {
-                        text: qsTr("… in GPX format")
+                        text: qsTr("… to GPX file")
                         onTriggered: {
+                            headerMenuX.close()
                             mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!mobileAdaptor.sendContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                            if (!mobileAdaptor.exportContent(flightRoute.toGpx(), "application/gpx+xml", flightRoute.suggestedFilename()))
                                 shareErrorDialog.open()
                         }
                     }
@@ -595,11 +597,11 @@ Page {
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Error sharing data…")
+        title: qsTr("Error exporint data…")
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
 
         Label {
-            text: qsTr("This usually happens if no suitable app could be found.")
+            text: qsTr("This happens if the file could not be written or if no suitable file sharing app could be found.")
             width: shareErrorDialog.availableWidth
             wrapMode: Text.Wrap
             textFormat: Text.RichText

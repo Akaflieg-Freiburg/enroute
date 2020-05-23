@@ -31,34 +31,42 @@
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QAndroidJniEnvironment>
-#endif
-
-#if defined(Q_OS_LINUX)
+#else
+#include <QFileDialog>
 #include <QProcess>
 #endif
 
 
-bool MobileAdaptor::sendContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+bool MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
 
-    QString tmpPath = contentToTempFile(content, fileNameTemplate);
-#if defined(Q_OS_ANDROID)
-    return outgoingIntent("sendFile", tmpPath, mimeType);
-#endif
+    QMimeDatabase db;
+    QMimeType mime = db.mimeTypeForName(mimeType);
 
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    QProcess xdgEmail;
-    xdgEmail.start("xdg-email", QStringList() << "--attach" << tmpPath);
-    if (!xdgEmail.waitForStarted())
+
+#if defined(Q_OS_ANDROID)
+    auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1"+mime.preferredSuffix());
+    return outgoingIntent("sendFile", tmpPath, mimeType);
+#else
+    auto fileNameX = QFileDialog::getSaveFileName(nullptr,
+                                                  tr("Export flight route"),
+                                                  QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(),
+                                                  tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix())
+                                                  );
+    if (fileNameX.isEmpty())
+        return true;
+    QFile file(fileNameX);
+    if (!file.open(QIODevice::WriteOnly))
         return false;
-    if (!xdgEmail.waitForFinished())
-        return false;
+
+    file.write(content);
+    file.close();
     return true;
 #endif
-    return false;
+;
 }
 
 

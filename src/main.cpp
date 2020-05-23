@@ -30,6 +30,10 @@
 #include <QSettings>
 #include <QTranslator>
 
+#if !defined(Q_OS_ANDROID)
+#include <QApplication>
+#endif
+
 #include "Aircraft.h"
 #include "FlightRoute.h"
 #include "GeoMapProvider.h"
@@ -55,7 +59,11 @@ int main(int argc, char *argv[])
 
     // Set up application
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#if defined(Q_OS_ANDROID)
     QGuiApplication app(argc, argv);
+#else
+    QApplication app(argc, argv);
+#endif
     QCoreApplication::setOrganizationName("Akaflieg Freiburg");
     QCoreApplication::setOrganizationDomain("akaflieg_freiburg.de");
     QCoreApplication::setApplicationName("enroute flight navigation");

@@ -138,26 +138,28 @@ Page {
                     MenuSeparator { }
 
                     Menu {
-                        title: qsTr("Send …")
+                        title: qsTr("Export …")
 
                         MenuItem {
-                            text: qsTr("… in GeoJson format")
+                            text: qsTr("… to GeoJson file")
                             onTriggered: {
+                                cptMenu.close()
                                 mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!mobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+                                if (!mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", librarian.flightRouteGet(modelData).suggestedFilename()))
                                     shareErrorDialog.open()
                             }
                         }
 
                         MenuItem {
-                            text: qsTr("… in GPX format")
+                            text: qsTr("… to GPX file")
                             onTriggered: {
+                                cptMenu.close()
                                 mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!mobileAdaptor.sendContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+                                if (!mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", librarian.flightRouteGet(modelData).suggestedFilename()))
                                     shareErrorDialog.open()
                             }
                         }

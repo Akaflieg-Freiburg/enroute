@@ -239,7 +239,7 @@ public:
      * and file extension).
      *
      * @returns Suggested name for saving the file. If no useful suggestion can
-     * be made, the returned string is empty
+     * be made, the returned string is a translation of "Flight Route"
      */
     Q_INVOKABLE QString suggestedFilename() const;
 

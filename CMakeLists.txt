@@ -43,7 +43,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Doxygen)
 find_package(Qt5 5.14 COMPONENTS Concurrent Core Gui LinguistTools Positioning Quick QuickWidgets Sql Svg REQUIRED)
 if( ANDROID )
-  find_package(Qt5 5.14 COMPONENTS AndroidExtras REQUIRED)
+    find_package(Qt5 5.14 COMPONENTS AndroidExtras REQUIRED)
+else()
+    find_package(Qt5 5.14 COMPONENTS Widgets REQUIRED)
 endif()
 
 # Create target collecting all documentation
@@ -57,17 +59,17 @@ endif()
 # tree
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/.git)
-  find_package(Git)
-  if(Git_FOUND)
-    message("Building inside a GIT directory, git found at ${GIT_EXECUTABLE}")
-    execute_process(COMMAND git --git-dir=${CMAKE_SOURCE_DIR}/.git log --pretty=format:'%H' -n1
-      OUTPUT_VARIABLE GIT_COMMIT
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-      )
-    message("Currently working with git Commit ${GIT_COMMIT}")
-  else()
-    message("Git not found.")
-  endif()
+    find_package(Git)
+    if(Git_FOUND)
+        message("Building inside a GIT directory, git found at ${GIT_EXECUTABLE}")
+        execute_process(COMMAND git --git-dir=${CMAKE_SOURCE_DIR}/.git log --pretty=format:'%H' -n1
+            OUTPUT_VARIABLE GIT_COMMIT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            )
+        message("Currently working with git Commit ${GIT_COMMIT}")
+    else()
+        message("Git not found.")
+    endif()
 endif()
 
 

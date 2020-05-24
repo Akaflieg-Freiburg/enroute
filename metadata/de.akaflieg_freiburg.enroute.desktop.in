@@ -1,9 +1,11 @@
 [Desktop Entry]
 Type=Application
 Name=enroute flight navigation
+GenericName=Flight Navigation
 Comment=Navigation app for VFR pilots
 Icon=${APP_ID}
 TryExec=${PROJECT_NAME}
 Exec=${PROJECT_NAME}
 Terminal=false
+MimeType=application/geo+json;application/x-gpx+xml;
 Categories=Utility;Maps;

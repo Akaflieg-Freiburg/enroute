@@ -5,10 +5,12 @@
     "sdk": "org.kde.Sdk",
     "command": "enroute",
     "finish-args": [
+	"--filesystem=home",
         "--share=ipc",
 	"--share=network",
         "--socket=x11",
         "--socket=wayland",
+	"--system-talk-name=org.freedesktop.GeoClue2",
         "--device=dri"
     ],
     "modules": [
@@ -32,7 +34,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/Akaflieg-Freiburg/enroute.git",
-                    "commit": "${GIT_COMMIT}"
+                    "commit": ${GIT_COMMIT}
                 }
             ]
         }

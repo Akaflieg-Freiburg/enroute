@@ -53,7 +53,7 @@ bool MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
 #else
     auto fileNameX = QFileDialog::getSaveFileName(nullptr,
                                                   tr("Export flight route"),
-                                                  fileNameTemplate+"."+mime.preferredSuffix(),
+                                                  QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(),
                                                   tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix())
                                                   );
     if (fileNameX.isEmpty())
@@ -66,7 +66,6 @@ bool MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
     file.close();
     return true;
 #endif
-;
 }
 
 
@@ -146,7 +145,7 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
 
     QMimeDatabase db;
     auto mimeType = db.mimeTypeForFile(myPath);
-    if ((mimeType.name() == "application/xml")
+    if ((mimeType.inherits("application/xml"))
             || (mimeType.name() == "application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format
         emit openFileRequest(myPath, FlightRoute_GPX);

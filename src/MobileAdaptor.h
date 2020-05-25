@@ -174,8 +174,19 @@ public slots:
      * file function and emit the signal openFileRequest() as appropriate.
      *
      * On Android, the slot is called from JAVA.
+     *
+     * @param path File name
+     *
      */
     void processFileOpenRequest(const QString &path);
+
+    /*! \brief Helper function, not for public consumption
+     *
+     * Overloaded function for convenience
+     *
+     * @param path UTF8-Encoded strong
+     */
+    void processFileOpenRequest(const QByteArray &path);
 
 signals:
     /*! \brief Emitted when platform asks this app to open a file

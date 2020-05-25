@@ -33,7 +33,10 @@ Item {
     Connections {
         target: mobileAdaptor
         onOpenFileRequest: {
-
+            view.raise()
+            view.requestActivate()
+            if (fileName === "")
+                return
             if (fileFunction === MobileAdaptor.UnknownFunction) {
                 errLbl.text = qsTr("The file type of the file <strong>%1</strong> could not be recognized.").arg(fileName)
                 errorDialog.open()

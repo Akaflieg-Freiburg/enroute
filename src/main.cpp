@@ -32,6 +32,7 @@
 
 #if !defined(Q_OS_ANDROID)
 #include <QApplication>
+#include <kdsingleapplication.h>
 #endif
 
 #include "Aircraft.h"
@@ -84,6 +85,18 @@ int main(int argc, char *argv[])
     if (positionalArguments.length() > 1)
         parser.showHelp();
 
+#if !defined(Q_OS_ANDROID)
+    // Single application on desktops
+    KDSingleApplication kdsingleapp;
+    if (!kdsingleapp.isPrimaryInstance()) {
+        if (positionalArguments.length() > 0)
+            kdsingleapp.sendMessage(positionalArguments[0].toUtf8());
+        else
+            kdsingleapp.sendMessage(QByteArray());
+        return 0;
+    }
+#endif
+
     // Create global settings object. We do this before creating the application engine because this also installs translators.
     auto globalSettings = new GlobalSettings();
 
@@ -91,6 +104,9 @@ int main(int argc, char *argv[])
     auto *adaptor = new MobileAdaptor();
     if (positionalArguments.length() == 1)
         adaptor->processFileOpenRequest(positionalArguments[0]);
+#if !defined(Q_OS_ANDROID)
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(const QByteArray &)), adaptor, SLOT(processFileOpenRequest(const QByteArray &)));
+#endif
 
     /*
      * Set up ApplicationEngine for QML

@@ -153,6 +153,12 @@ void MobileAdaptor::startReceiveOpenFileRequests()
 }
 
 
+void MobileAdaptor::processFileOpenRequest(const QByteArray &path)
+{
+    processFileOpenRequest(QString::fromUtf8(path));
+}
+
+
 void MobileAdaptor::processFileOpenRequest(const QString &path)
 {
     if (!receiveOpenFileRequestsStarted) {

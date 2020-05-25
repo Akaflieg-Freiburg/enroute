@@ -196,6 +196,17 @@ Page {
 
                 MenuSeparator { }
 
+                MenuItem {
+                    text: qsTr("Import …")
+
+                    onTriggered: {
+                        mobileAdaptor.vibrateBrief()
+                        highlighted = false
+
+                        mobileAdaptor.importContent()
+                    }
+                }
+
                 Menu {
                     title: qsTr("Export …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
@@ -207,8 +218,11 @@ Page {
                             mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!mobileAdaptor.exportContent(flightRoute.toGeoJSON(), "application/geo+json", flightRoute.suggestedFilename()))
+                            var errorString = mobileAdaptor.exportContent(flightRoute.toGeoJSON(), "applicatin/geo+json", flightRoute.suggestedFilename())
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
+                            }
                         }
                     }
 
@@ -219,8 +233,11 @@ Page {
                             mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!mobileAdaptor.exportContent(flightRoute.toGpx(), "application/gpx+xml", flightRoute.suggestedFilename()))
+                            var errorString = mobileAdaptor.exportContent(flightRoute.toGpx(), "application/gpx+xml", flightRoute.suggestedFilename())
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
+                            }
                         }
                     }
                 }
@@ -236,8 +253,13 @@ Page {
                             mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!mobileAdaptor.viewContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+
+                            var errorString = mobileAdaptor.viewContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
+                            }
+
                         }                        
                     }
 
@@ -248,8 +270,13 @@ Page {
                             mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            if (!mobileAdaptor.viewContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+
+                            var errorString = mobileAdaptor.viewContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
+                            }
+
                         }
                     }
 
@@ -597,11 +624,11 @@ Page {
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Error exporint data…")
+        title: qsTr("Error exporting data…")
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
 
         Label {
-            text: qsTr("This happens if the file could not be written or if no suitable file sharing app could be found.")
+            id: shareErrorDialogLabel
             width: shareErrorDialog.availableWidth
             wrapMode: Text.Wrap
             textFormat: Text.RichText

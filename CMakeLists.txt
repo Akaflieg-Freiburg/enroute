@@ -24,6 +24,7 @@ add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 
 include(GNUInstallDirs)
 
+
 #
 # Qt Setup
 #

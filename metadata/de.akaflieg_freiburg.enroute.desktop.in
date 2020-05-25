@@ -7,5 +7,5 @@ Icon=${APP_ID}
 TryExec=${PROJECT_NAME}
 Exec=${PROJECT_NAME}
 Terminal=false
-MimeType=application/geo+json;application/x-gpx+xml;
+MimeType=application/geo+json;application/gpx+xml;
 Categories=Utility;Maps;

@@ -72,7 +72,7 @@ public:
     */
     Q_INVOKABLE bool missingPermissionsExist();
 
-    /*! \brief Export content with other app
+    /*! \brief Export content to file or to file sending app
      *
      * On Android systems, this method will save content to temporary file in
      * the app's private cache and call the corresponding java static method
@@ -84,14 +84,21 @@ public:
      *
      * @param mimeType the mimeType of the content
      *
-     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the
-     * substring "%1" will later be replaced by the current time and date. This
+     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path. This
      * file name is visible to the user. It appears for instance as the name of
-     * the attachment when sending files by e-mail
+     * the attachment when sending files by e-mail.
      *
-     * @returns True on success, false if no suitable app could be found
+     * @returns Empty string on success, a translated error message otherwise
      */
-    Q_INVOKABLE bool exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+
+    /*! \brief Import content from file
+     *
+     * On Android systems, this method does nothing.
+     *
+     * On other desktop systems, this method uses a file dialog to import a file.
+     */
+    Q_INVOKABLE void importContent();
 
     /*! \brief View content in other app
      *
@@ -105,14 +112,13 @@ public:
      *
      * @param mimeType the mimeType of the content
      *
-     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson" the
-     * substring "%1" will later be replaced by the current time and date. This
+     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path. This
      * file name is visible to the user. It appears for instance as the name of
-     * the attachment when sending files by e-mail
+     * the attachment when sending files by e-mail.
      *
-     * @returns True on success, false if no suitable app could be found
+     * @returns Empty string on success, a translated error message otherwise
      */
-    Q_INVOKABLE bool viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
 #if defined (Q_OS_ANDROID)
     // Get single instance of the Share. This is used from the JNI "callback"

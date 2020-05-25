@@ -37,7 +37,23 @@
 #endif
 
 
-bool MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+void MobileAdaptor::importContent()
+{
+#if defined(Q_OS_ANDROID)
+    return
+#else
+    auto fileNameX = QFileDialog::getOpenFileName(nullptr,
+                                                  tr("Import data"),
+                                                  QDir::homePath(),
+                                                  tr("All files (*)")
+                                                  );
+    if (!fileNameX.isEmpty())
+        processFileOpenRequest(fileNameX);
+#endif
+}
+
+
+QString MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
@@ -46,10 +62,12 @@ bool MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForName(mimeType);
 
-
 #if defined(Q_OS_ANDROID)
     auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1"+mime.preferredSuffix());
-    return outgoingIntent("sendFile", tmpPath, mimeType);
+    bool success = outgoingIntent("sendFile", tmpPath, mimeType);
+    if (success)
+        return QString();
+    return tr("No suitable file sharing app could be found.")
 #else
     auto fileNameX = QFileDialog::getSaveFileName(nullptr,
                                                   tr("Export flight route"),
@@ -57,19 +75,19 @@ bool MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
                                                   tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix())
                                                   );
     if (fileNameX.isEmpty())
-        return true;
+        return QString();
     QFile file(fileNameX);
     if (!file.open(QIODevice::WriteOnly))
-        return false;
+        return tr("Unable to open file <strong>%1</strong>.").arg(fileNameX);
 
-    file.write(content);
+    if (file.write(content) != content.size())
+        return tr("Unable to write to file <strong>%1</strong>.").arg(fileNameX);
     file.close();
-    return true;
+    return QString();
 #endif
 }
 
-
-bool MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+QString MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
@@ -77,9 +95,15 @@ bool MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeTy
 
     QString tmpPath = contentToTempFile(content, fileNameTemplate);
 #if defined(Q_OS_ANDROID)
-    return outgoingIntent("viewFile", tmpPath, mimeType);
+    bool success = outgoingIntent("viewFile", tmpPath, mimeType);
+    if (success)
+        return QString();
+    return tr("No suitable app for viewing this data could be found.");
 #else
-    return QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
+    bool success = QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
+    if (success)
+        return QString();
+    return tr("Unable to open data in other app.");
 #endif
 }
 

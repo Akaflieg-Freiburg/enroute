@@ -67,10 +67,34 @@ Page {
             id: headerMenuToolButton
 
             anchors.right: parent.right
-            icon.source: "/icons/material/ic_info_outline.svg"
+           icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                infoDialog.open()
+                headerMenuX.popup()
+            }
+
+            AutoSizingMenu{
+                id: headerMenuX
+
+                MenuItem {
+                    text: qsTr("Info …")
+                    onTriggered: {
+                        mobileAdaptor.vibrateBrief()
+                        infoDialog.open()
+                    }
+
+                } // ToolButton
+
+                MenuItem {
+                    text: qsTr("Import …")
+
+                    onTriggered: {
+                        mobileAdaptor.vibrateBrief()
+                        highlighted = false
+                        mobileAdaptor.importContent()
+                    }
+                }
+
             }
 
         } // ToolButton
@@ -147,8 +171,13 @@ Page {
                                 mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", librarian.flightRouteGet(modelData).suggestedFilename()))
+
+                                var errorString = mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", librarian.flightRouteGet(modelData).suggestedFilename())
+                                if (errorString !== "") {
+                                    shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
+                                }
+
                             }
                         }
 
@@ -159,8 +188,12 @@ Page {
                                 mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", librarian.flightRouteGet(modelData).suggestedFilename()))
+
+                                var errorString = mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", librarian.flightRouteGet(modelData).suggestedFilename())
+                                if (errorString !== "") {
+                                    shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
+                                }
                             }
                         }
                     }
@@ -175,8 +208,13 @@ Page {
                                 mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson"))
+
+                                var errorString = mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                                if (errorString !== "") {
+                                    shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
+                                }
+
                             }
                         }
 
@@ -187,8 +225,13 @@ Page {
                                 mobileAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
-                                if (!mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx"))
+
+                                var errorString = mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                                if (errorString !== "") {
+                                    shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
+                                }
+
                             }
                         }
 
@@ -485,5 +528,25 @@ Page {
             onDetected: close()
         }
     } // renameDialog
+
+    Dialog {
+        id: shareErrorDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Error exporting data…")
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+
+        Label {
+            id: shareErrorDialogLabel
+            width: shareErrorDialog.availableWidth
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
+        }
+
+        standardButtons: Dialog.Ok
+        modal: true
+
+    }
 
 } // Page

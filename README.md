@@ -8,6 +8,8 @@
 
 * Please have a look at the [homepage](https://akaflieg-freiburg.github.io/enroute).
 
+* Download the app for Android on [Google Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute).
+
 ## Information for developers
 
 * Please have a look at the [wiki pages](https://github.com/Akaflieg-Freiburg/enroute/wiki).

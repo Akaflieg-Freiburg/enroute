@@ -39,9 +39,7 @@
 
 void MobileAdaptor::importContent()
 {
-#if defined(Q_OS_ANDROID)
-    return
-#else
+#if !defined(Q_OS_ANDROID)
     auto fileNameX = QFileDialog::getOpenFileName(nullptr,
                                                   tr("Import data"),
                                                   QDir::homePath(),
@@ -67,7 +65,7 @@ QString MobileAdaptor::exportContent(const QByteArray& content, const QString& m
     bool success = outgoingIntent("sendFile", tmpPath, mimeType);
     if (success)
         return QString();
-    return tr("No suitable file sharing app could be found.")
+    return tr("No suitable file sharing app could be found.");
 #else
     auto fileNameX = QFileDialog::getSaveFileName(nullptr,
                                                   tr("Export flight route"),
@@ -224,7 +222,7 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    MobileAdaptor::getInstance()->processFileOpenRequest(fname);
+    MobileAdaptor::getInstance()->processFileOpenRequest(QString::fromUtf8(fname));
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

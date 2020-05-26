@@ -226,15 +226,14 @@ void Downloadable::startFileDownload() {
     // Start download
     QNetworkRequest request(_url);
     _networkReplyDownloadFile = _networkAccessManager->get(request);
-    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this,
-            &Downloadable::downloadFileFinished);
-    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this,
-            &Downloadable::downloadFilePartialDataReceiver);
-    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this,
-            &Downloadable::downloadFileProgressReceiver);
-    connect(_networkReplyDownloadFile,
-            static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error),
-            this, &Downloadable::downloadFileErrorReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable::downloadFileFinished);
+    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable::downloadFilePartialDataReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable::downloadFileProgressReceiver);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    connect(_networkReplyDownloadFile, &QNetworkReply::errorOccurred, this, &Downloadable::downloadFileErrorReceiver);
+#else
+    connect(_networkReplyDownloadFile, static_cast<void (QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &Downloadable::downloadFileErrorReceiver);
+#endif
     _downloadProgress = 0;
 
     // Emit signals as appropriate

@@ -107,7 +107,7 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
     auto wps = waypoints();
 
     QStringList filterWords;
-    foreach(auto word, filter.simplified().split(' ', QString::SkipEmptyParts)) {
+    foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
         QString simplifiedWord = _librarian->simplifySpecialChars(word);
         if (simplifiedWord.isEmpty())
             continue;

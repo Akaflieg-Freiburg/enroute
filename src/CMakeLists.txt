@@ -59,6 +59,16 @@ set(SOURCES
     ${TRANSLATIONS}
     ${BIGRESOURCES}
 
+    # Other files
+    flightMap.qrc.in
+    icons.qrc.in
+    qml.qrc.in
+    ressources.qrc.in
+    AndroidManifest.xml.in
+
+    # Header files
+    Aircraft.h
+
     # C++ files
     Aircraft.cpp
     Airspace.cpp

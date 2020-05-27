@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtQml 2.12
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
@@ -190,7 +191,7 @@ Page {
                     onTriggered: {
                         mobileAdaptor.vibrateBrief()
                         highlighted = false
-                        stackView.push("FlightRouteManageLibraryPage.qml")
+                        stackView.push("FlightRouteLibrary.qml")
                     }
                 }
 
@@ -198,6 +199,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Import …")
+                    visible: Qt.platform.os !== "android"
 
                     onTriggered: {
                         mobileAdaptor.vibrateBrief()
@@ -615,7 +617,9 @@ Page {
 
         Connections {
             target: sensorGesture
-            onDetected: dialogLoader.active = false
+            function onDetected(gesture) {
+                dialogLoader.active = false
+            }
         }
     }
 

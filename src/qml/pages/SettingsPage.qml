@@ -85,7 +85,7 @@ Page {
 
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
-                    stackView.push("FlightRouteManageLibraryPage.qml")
+                    stackView.push("FlightRouteLibrary.qml")
                     drawer.close()
                 }
             }

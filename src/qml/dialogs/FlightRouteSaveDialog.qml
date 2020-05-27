@@ -189,7 +189,9 @@ Dialog {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     }  // Dialog: fileError
 

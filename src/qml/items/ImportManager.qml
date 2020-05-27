@@ -32,7 +32,7 @@ Item {
 
     Connections {
         target: mobileAdaptor
-        onOpenFileRequest: {
+        function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
             view.requestActivate()
             if (fileName === "")
@@ -79,7 +79,9 @@ Item {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
 
         onAccepted: {
@@ -97,9 +99,9 @@ Item {
                 errorDialog.open()
                 return
             }
-            if (!(stackView.currentItem instanceof FlightRoutePage)) {
+            if (!(stackView.currentItem instanceof FlightRouteEditor)) {
                 stackView.pop()
-                stackView.push("../pages/FlightRoutePage.qml")
+                stackView.push("../pages/FlightRouteEditor.qml")
             }
         }
 
@@ -130,7 +132,9 @@ Item {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     } // errorDialog
 

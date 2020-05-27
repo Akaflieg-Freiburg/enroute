@@ -73,13 +73,13 @@ Item {
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Connections {
             target: satNav
-            onTrackChanged: {
+            function onTrackChanged() {
                 if (flightMap.followGPS === true) {
                     flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
                 }
             }
 
-            onIsInFlightChanged: {
+            function onIsInFlightChanged() {
                 if (flightMap.followGPS === true) {
                     flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
                 }

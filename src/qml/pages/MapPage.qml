@@ -60,7 +60,7 @@ Page {
     Connections {
         target: geoMapProvider
 
-        onStyleFileURLChanged: {
+        function onStyleFileURLChanged() {
             mapLoader.active = false
             mapLoader.source = "../items/MFM.qml"
             mapLoader.active = true

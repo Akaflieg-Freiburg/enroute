@@ -75,7 +75,7 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/FlightRoutePage.qml")
+                        stackView.push("pages/FlightRouteEditor.qml")
                         drawer.close()
                     }
                 }
@@ -217,7 +217,9 @@ ApplicationWindow {
 
         Connections {
             target: sensorGesture
-            onDetected: drawer.close()
+            function onDetected(gesture) {
+                drawer.close()
+            }
         }
 
     } // Drawer
@@ -280,7 +282,9 @@ ApplicationWindow {
 
         Connections {
             target: sensorGesture
-            onDetected: stackView.pop(null)
+            function onDetected(gesture) {
+                stackView.pop(null)
+            }
         }
 
     }
@@ -308,7 +312,9 @@ ApplicationWindow {
 
         Connections {
             target: sensorGesture
-            onDetected: dialogLoader.active = false
+            function onDetected(gesture) {
+                dialogLoader.active = false
+            }
         }
     }
 

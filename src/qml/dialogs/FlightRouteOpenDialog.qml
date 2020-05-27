@@ -121,7 +121,9 @@ Dialog {
 
     Connections {
         target: sensorGesture
-        onDetected: close()
+        function onDetected(gesture) {
+            close()
+        }
     }
 
     // This is the name of the file that openFromLibrary will open
@@ -182,7 +184,9 @@ Dialog {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     }
 
@@ -221,7 +225,9 @@ Dialog {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     }
 

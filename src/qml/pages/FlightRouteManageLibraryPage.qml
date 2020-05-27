@@ -311,7 +311,7 @@ Page {
             fileError.open()
             return
         }
-        stackView.push("FlightRoutePage.qml")
+        stackView.push("FlightRouteEditor.qml")
     }
 
     function reloadFlightRouteList() {
@@ -367,7 +367,9 @@ Page {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     }
 
@@ -414,7 +416,9 @@ Page {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     }
 
@@ -453,7 +457,9 @@ Page {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     }
 
@@ -525,7 +531,9 @@ Page {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                close()
+            }
         }
     } // renameDialog
 

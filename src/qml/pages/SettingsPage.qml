@@ -35,7 +35,6 @@ Page {
         id: view
         anchors.fill: parent
         anchors.topMargin: Qt.application.font.pixelSize
-        ScrollIndicator.vertical: ScrollIndicator {}
 
         ColumnLayout {
             width: settingsPage.width

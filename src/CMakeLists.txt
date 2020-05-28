@@ -54,7 +54,6 @@ set(SOURCES
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
-    ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
     ${TRANSLATIONS}
     ${BIGRESOURCES}
@@ -100,9 +99,11 @@ set(SOURCES
 # Generate android executable
 #
 if( ANDROID )
-    list(APPEND SOURCES
-        android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
-        )
+  qtquick_compiler_add_resources(QTQUICKCOMPILEDRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
+  list(APPEND SOURCES
+    ${QTQUICKCOMPILEDRESOURCES}
+    android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+    )
 
     # Configure files
     configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
@@ -176,6 +177,9 @@ endif()
 # Generate unix executable
 #
 if (NOT ANDROID)
+  list(APPEND SOURCES
+    ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
+    )
 
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})

@@ -31,10 +31,15 @@ ToolBar {
         anchors.leftMargin: drawer.dragMargin
 
         icon.source: "/icons/material/ic_arrow_back.svg"
+
         onClicked: {
             mobileAdaptor.vibrateBrief()
             stackView.pop()
         }
+
+        // Oddly, this seems necessary, or else the color will change
+        // on language changes
+        Component.onCompleted: icon.color = Material.foreground
     } // ToolButton
 
     Label {
@@ -48,6 +53,10 @@ ToolBar {
         font.bold: true
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
+
+        // Oddly, this seems necessary, or else the color will change
+        // on language changes
+        Component.onCompleted: color = Material.foreground
     } // Label
 
 } // ToolBar

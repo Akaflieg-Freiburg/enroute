@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -100,7 +100,11 @@ void GlobalSettings::installTranslators()
     }
 
     // If desired, install new translators
-    if (!preferEnglish()) {
+    if (preferEnglish()) {
+        QLocale::setDefault(QLocale::English);
+    } else {
+        QLocale::setDefault(QLocale::system());
+
         enrouteTranslator = new QTranslator(this);
         enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
         QCoreApplication::installTranslator(enrouteTranslator);

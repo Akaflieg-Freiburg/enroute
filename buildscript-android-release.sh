@@ -44,11 +44,12 @@ cd build-android-release
 #
 
 cmake /home/kebekus/Software/projects/enroute \
+      -G Ninja\
       -DANDROID_ABI:STRING=armeabi-v7a \
       -DANDROID_BUILD_ABI_arm64-v8a:BOOL=ON \
       -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
-      -DANDROID_BUILD_ABI_x86:BOOL=OFF \
-      -DANDROID_BUILD_ABI_x86_64:BOOL=OFF \
+      -DANDROID_BUILD_ABI_x86:BOOL=ON \
+      -DANDROID_BUILD_ABI_x86_64:BOOL=ON \
       -DANDROID_NATIVE_API_LEVEL:STRING=21 \
       -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
       -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
@@ -70,7 +71,7 @@ cmake ..
 # Build the executable
 #
 
-make -j8
+ninja
 $Qt5_DIR_ANDROID/bin/androiddeployqt --input android_deployment_settings.json --output android-build --release --apk enroute-release-unsigned.apk
 echo "Unsigned APK file is available at $PWD/enroute-release-unsigned.apk"
 

@@ -48,7 +48,7 @@ Item {
         objectName: "flightMap"
 
         anchors.fill: parent
-        plugin: mapPlugin
+//        plugin: mapPlugin
         geoJSON: geoMapProvider.geoJSON
 
         property bool followGPS: true
@@ -215,6 +215,10 @@ Item {
                 dialogLoader.active = true
             }
         }
+
+        // Oddly, this is necessary, or else the system will try to reset
+        // the write-once property 'plugin' on language changes
+        Component.onCompleted: plugin = mapPlugin
     }
 
     Rectangle {
@@ -349,4 +353,5 @@ Item {
 
         transitions: Transition { AnchorAnimation { duration: 400 } }
     }
+
 }

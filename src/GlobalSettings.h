@@ -115,6 +115,23 @@ public:
     void setHideUpperAirspaces(bool hide);
 
     /*! \brief Set to true is app should be shown in English rather than the system language */
+    Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits NOTIFY useMetricUnitsChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property useMetricUnits
+     */
+    bool useMetricUnits() const { return settings.value("System/useMetricUnits", false).toBool(); }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * Setting this property will switch the horrizontal speed unit to km/h instead of kt.
+     *
+     * @param unitHorrizKmh Property unitHorrizKmh
+     */
+    void setUseMetricUnits(bool unitHorrizKmh);
+
+    /*! \brief Set to true is app should be shown in English rather than the system language */
     Q_PROPERTY(bool preferEnglish READ preferEnglish WRITE setPreferEnglish NOTIFY preferEnglishChanged)
 
     /*! \brief Getter function for property of the same name
@@ -143,9 +160,13 @@ signals:
 
     /*! Notifier signal */
     void preferEnglishChanged();
+
+    /*! Notifier signal */
+    void useMetricUnitsChanged();
+
 private:
     Q_DISABLE_COPY_MOVE(GlobalSettings)
-    
+
     // Removes/Installs global application translators, according to the settings value "System/preferEnglish"
     void installTranslators();
 

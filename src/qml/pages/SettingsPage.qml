@@ -113,6 +113,25 @@ Page {
             }
 
             SwitchDelegate {
+                id: useMetricUnits
+                text: qsTr("Use metric units for speed and distance")
+                      + `<br><font color="#606060" size="2">`
+                      + ( globalSettings.useMetricUnits ?
+                            qsTr("Showing horrizontal speed in km/h and distance in km") :
+                            qsTr("Showing horrizontal speed in kt and distance in nm")
+                        )
+                      + "</font>"
+                icon.source: "/icons/material/ic_speed.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+                Component.onCompleted: useMetricUnits.checked = globalSettings.useMetricUnits
+                onCheckedChanged: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.useMetricUnits = useMetricUnits.checked
+                }
+            }
+
+            SwitchDelegate {
                 id: preferEnglish
                 text: qsTr("Prefer English")
                 icon.source: "/icons/material/ic_translate.svg"

@@ -112,6 +112,25 @@ Page {
             }
 
             SwitchDelegate {
+                id: useMetricUnits
+                text: qsTr("Prefer metric units")
+                      + `<br><font color="#606060" size="2">`
+                      + ( globalSettings.useMetricUnits ?
+                            qsTr("Horizontal speed in km/h, distance in km") :
+                            qsTr("Horizontal speed in kt, distance in NM")
+                        )
+                      + "</font>"
+                icon.source: "/icons/material/ic_speed.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+                Component.onCompleted: useMetricUnits.checked = globalSettings.useMetricUnits
+                onCheckedChanged: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.useMetricUnits = useMetricUnits.checked
+                }
+            }
+
+            SwitchDelegate {
                 id: preferEnglish
                 text: qsTr("Prefer English")
                 icon.source: "/icons/material/ic_translate.svg"

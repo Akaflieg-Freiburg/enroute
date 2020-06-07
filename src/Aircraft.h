@@ -21,6 +21,8 @@
 #pragma once
 
 #include <QSettings>
+#include "AviationUnits.h"
+
 
 /*! \brief This extremely simple class holds a few numbers that describe an
     aircraft */
@@ -48,14 +50,13 @@ public:
      * double number that lies in the interval [minAircraftSpeed,
      * maxAircraftSpeed] or NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(
-            double cruiseSpeedInKT READ cruiseSpeedInKT WRITE setCruiseSpeedInKT NOTIFY valChanged)
+    Q_PROPERTY(double cruiseSpeedInKT READ cruiseSpeedInKT WRITE setCruiseSpeedInKT NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property cruise speed
      */
-    double cruiseSpeedInKT() const { return _cruiseSpeedInKT; }
+    double cruiseSpeedInKT() const;
 
     /*! \brief Setter function for property of the same name
      *
@@ -66,6 +67,30 @@ public:
      * @param speedInKT Property cruise speed
      */
     void setCruiseSpeedInKT(double speedInKT);
+
+    /*! \brief Cruise Speed
+     *
+     * This property holds the cruise speed of the aircraft. This is a
+     * double number that lies in the interval [minAircraftSpeed,
+     * maxAircraftSpeed] or NaN if the cruise speed has not been set.
+     */
+    Q_PROPERTY(double cruiseSpeedInKMH READ cruiseSpeedInKMH WRITE setCruiseSpeedInKMH NOTIFY valChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property cruise speed
+     */
+    double cruiseSpeedInKMH() const;
+
+    /*! \brief Setter function for property of the same name
+     *
+     * This method saves the new value in a QSetting object. If speedInKT is
+     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
+     * property will be set to NaN.
+     *
+     * @param speedInKT Property cruise speed
+     */
+    void setCruiseSpeedInKMH(double speedInKT);
 
     /*! \brief Decent Speed
      *
@@ -79,7 +104,7 @@ public:
      *
      * @returns Property descentSpeedInKT
      */
-    double descentSpeedInKT() const { return _descentSpeedInKT; }
+    double descentSpeedInKT() const;
 
     /*! \brief Setter function for property of the same name
      *
@@ -90,6 +115,30 @@ public:
      * @param speedInKT Descent speed in knots
      */
     void setDescentSpeedInKT(double speedInKT);
+
+    /*! \brief Decent Speed
+     *
+     * This property holds the descent speed of the aircraft. This is a
+     * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed]
+     * or NaN if the cruise speed has not been set.
+     */
+    Q_PROPERTY(double descentSpeedInKMH READ descentSpeedInKMH WRITE setDescentSpeedInKMH NOTIFY valChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property descentSpeedInKMH
+     */
+    double descentSpeedInKMH() const;
+
+    /*! \brief Setter function for property of the same name
+     *
+     * This method saves the new value in a QSetting object. If speedInKT is
+     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
+     * property will be set to NaN.
+     *
+     * @param speedInKT Descent speed in knots
+     */
+    void setDescentSpeedInKMH(double speedInKT);
 
     /*! \brief Fuel Consumption
      *
@@ -115,11 +164,17 @@ public:
      */
     void setFuelConsumptionInLPH(double fuelConsumptionInLPH);
 
-    /*! \brief Minimal speed of the aircraft that is considered valid */
-    Q_PROPERTY(double minAircraftSpeed MEMBER minAircraftSpeed CONSTANT)
+    /*! \brief Minimal speed of the aircraft that is considered valid in kt*/
+    Q_PROPERTY(double minAircraftSpeedInKT MEMBER minAircraftSpeedInKT CONSTANT)
 
-    /*! \brief Maximal speed of the aircraft that is considered valid */
-    Q_PROPERTY(double maxAircraftSpeed MEMBER maxAircraftSpeed CONSTANT)
+    /*! \brief Minimal speed of the aircraft that is considered valid in km/h*/
+    Q_PROPERTY(double minAircraftSpeedInKMH MEMBER minAircraftSpeedInKMH CONSTANT)
+
+    /*! \brief Maximal speed of the aircraft that is considered valid in kt*/
+    Q_PROPERTY(double maxAircraftSpeedInKT MEMBER maxAircraftSpeedInKT CONSTANT)
+
+    /*! \brief Maximal speed of the aircraft that is considered valid in km/h*/
+    Q_PROPERTY(double maxAircraftSpeedInKMH MEMBER maxAircraftSpeedInKMH CONSTANT)
 
     /*! \brief Minimal fuel consumption that is considered valid */
     Q_PROPERTY(double minFuelConsuption MEMBER minFuelConsuption CONSTANT)
@@ -134,8 +189,10 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(Aircraft)
 
-    static constexpr double minAircraftSpeed = 40.0;
-    static constexpr double maxAircraftSpeed = 400.0;
+    static constexpr double minAircraftSpeedInKT  = 40.0;
+    static constexpr double minAircraftSpeedInKMH = minAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
+    static constexpr double maxAircraftSpeedInKT  = 400.0;
+    static constexpr double maxAircraftSpeedInKMH = maxAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
     static constexpr double minFuelConsuption = 5.0;
     static constexpr double maxFuelConsuption = 100.0;
 

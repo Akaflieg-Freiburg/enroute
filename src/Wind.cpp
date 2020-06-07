@@ -27,7 +27,7 @@ Wind::Wind(QObject *parent)
     : QObject(parent)
 {
     _windSpeedInKT = settings.value("Wind/windSpeedInKT", -1.0).toDouble();
-    if ((_windSpeedInKT < minWindSpeed) || (_windSpeedInKT > maxWindSpeed))
+    if ((_windSpeedInKT < minWindSpeedInKT) || (_windSpeedInKT > maxWindSpeedInKT))
         _windSpeedInKT = qQNaN();
 
     _windDirectionInDEG = settings.value("Wind/windDirectionInDEG", -1.0).toDouble();
@@ -36,16 +36,37 @@ Wind::Wind(QObject *parent)
 }
 
 
-void Wind::setWindSpeedInKT(double speedInKTS)
+double Wind::windSpeedInKT() const
 {
-    if ((speedInKTS < minWindSpeed) || (speedInKTS > maxWindSpeed))
-        speedInKTS = qQNaN();
+    return _windSpeedInKT;
+}
 
-    if (!qFuzzyCompare(speedInKTS, _windSpeedInKT)) {
-        _windSpeedInKT = speedInKTS;
+
+void Wind::setWindSpeedInKT(double speedInKT)
+{
+    if ((speedInKT < minWindSpeedInKT) || (speedInKT > maxWindSpeedInKT))
+        speedInKT = qQNaN();
+
+    if (!qFuzzyCompare(speedInKT, _windSpeedInKT)) {
+        _windSpeedInKT = speedInKT;
         settings.setValue("Wind/windSpeedInKT", _windSpeedInKT);
         emit valChanged();
     }
+}
+
+
+double Wind::windSpeedInKMH() const
+{
+    auto speed = AviationUnits::Speed::fromKT(_windSpeedInKT);
+    return speed.toKMH();
+}
+
+
+void Wind::setWindSpeedInKMH(double speedInKMH)
+{
+    setWindSpeedInKT(
+        AviationUnits::Speed::fromKMH(speedInKMH).toKT()
+    );
 }
 
 

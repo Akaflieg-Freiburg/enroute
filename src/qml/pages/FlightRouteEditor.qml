@@ -390,19 +390,21 @@ Page {
                     id: cruiseSpeed
                     Layout.fillWidth: true
                     validator: DoubleValidator {
-                        bottom: aircraft.minAircraftSpeed
-                        top: aircraft.maxAircraftSpeed
+                        bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
+                        top: globalSettings.useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: aircraft.cruiseSpeedInKT = text
+                    onEditingFinished: globalSettings.useMetricUnits ? aircraft.cruiseSpeedInKMH = text : aircraft.cruiseSpeedInKT = text
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: descentSpeed
                     KeyNavigation.backtab: windSpeed
-                    text: isFinite(aircraft.cruiseSpeedInKT) ? aircraft.cruiseSpeedInKT.toString() : ""
+                    text: isFinite(aircraft.cruiseSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
+                                                                              aircraft.cruiseSpeedInKMH.toString() :
+                                                                              aircraft.cruiseSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: "kt TAS" }
+                Label { text: globalSettings.useMetricUnits ? "km/h TAS" : "kt TAS" }
                 ToolButton {
                     icon.source: "/icons/material/ic_delete.svg"
                     enabled: cruiseSpeed.text !== ""
@@ -417,19 +419,21 @@ Page {
                     id: descentSpeed
                     Layout.fillWidth: true
                     validator: DoubleValidator {
-                        bottom: aircraft.minAircraftSpeed
-                        top: aircraft.maxAircraftSpeed
+                        bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
+                        top: globalSettings.useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: aircraft.descentSpeedInKT = text
+                    onEditingFinished: globalSettings.useMetricUnits ? aircraft.descentSpeedInKMH = text : aircraft.descentSpeedInKT = text
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: fuelConsumption
                     KeyNavigation.backtab: cruiseSpeed
-                    text: isFinite(aircraft.descentSpeedInKT) ? aircraft.descentSpeedInKT.toString() : ""
+                    text: isFinite(aircraft.descentSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
+                                                                              aircraft.descentSpeedInKMH.toString() :
+                                                                              aircraft.descentSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: "kt TAS" }
+                Label { text: globalSettings.useMetricUnits ? "km/h TAS" : "kt TAS" }
                 ToolButton {
                     icon.source: "/icons/material/ic_delete.svg"
                     enabled: descentSpeed.text !== ""

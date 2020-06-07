@@ -279,6 +279,18 @@ public:
             return result;
         }
 
+        /*! \brief Constructs a speed
+         *
+         * @param speedInKMH  speed in km/h
+         *
+         * @returns speed
+         */
+        static Speed fromKMH(double speedInKMH) {
+            Speed result;
+            result._speedInMPS = speedInKMH / KMH_per_MPS;
+            return result;
+        }
+
         /*! \brief Checks if the speed is valid
          *
          * @returns True is the distance is a finite number
@@ -315,9 +327,25 @@ public:
          */
         double toKT() const { return _speedInMPS * KT_per_MPS; }
 
-    private:
+        /*! \brief Convert to knots
+         *
+         * @returns speed in knots (=Nautical miles per hour)
+         */
+        double toKMH() const { return _speedInMPS * KMH_per_MPS; }
+
+        /*! \brief Unitless constant: one knot / meters per second
+         */
         static constexpr double KT_per_MPS = 1.943844;
 
+        /*! \brief Unitless constant: one km/h / meters per second
+         */
+        static constexpr double KMH_per_MPS = 3.6;
+
+        /*! \brief Unitless constant: one km/h / knot
+         */
+        static constexpr double KMH_per_KT = KMH_per_MPS / KT_per_MPS;
+
+    private:
         // Speed in meters per second
         double _speedInMPS{qQNaN()};
     };

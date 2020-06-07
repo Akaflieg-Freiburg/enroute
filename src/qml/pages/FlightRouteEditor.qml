@@ -262,7 +262,7 @@ Page {
                                 shareErrorDialog.open()
                             }
 
-                        }                        
+                        }
                     }
 
                     MenuItem {
@@ -507,19 +507,19 @@ Page {
                     id: windSpeed
                     Layout.fillWidth: true
                     validator: DoubleValidator {
-                        bottom: wind.minWindSpeed
-                        top: wind.maxWindSpeed
+                        bottom: globalSettings.useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
+                        top: globalSettings.useMetricUnits ? wind.maxWindSpeedInKMH : wind.maxWindSpeedInKT
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: wind.windSpeedInKT = text
+                    onEditingFinished: globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: cruiseSpeed
                     KeyNavigation.backtab: windDirection
-                    text: isFinite(wind.windSpeedInKT) ? wind.windSpeedInKT : ""
+                    text: isFinite(wind.windSpeedInKT) ? Math.round(globalSettings.useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: "kt" }
+                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
                 ToolButton {
                     icon.source: "/icons/material/ic_delete.svg"
                     enabled: windSpeed.text !== ""

@@ -234,6 +234,12 @@ public:
          */
         double toM() const { return _distanceInM; }
 
+        /*! \brief Convert to meters
+         *
+         * @returns distance in meters
+         */
+        double toKM() const { return _distanceInM / 1000.; }
+
         /*! \brief Convert to feet
          *
          * @returns distance in feet

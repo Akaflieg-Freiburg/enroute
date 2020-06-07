@@ -548,7 +548,7 @@ Page {
                 id: summary
 
                 Layout.fillWidth: true
-                text: flightRoute.summary
+                text: globalSettings.useMetricUnits ? flightRoute.summaryMetric : flightRoute.summary
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText

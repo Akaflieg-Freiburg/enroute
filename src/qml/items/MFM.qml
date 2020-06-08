@@ -334,6 +334,7 @@ Item {
         anchors.rightMargin: 0.5*Qt.application.font.pixelSize
         anchors.verticalCenter: followGPSButton.verticalCenter
 
+        useMetricUnits: globalSettings.useMetricUnits
         pixelPer10km: flightMap.pixelPer10km
         height: 30
     }

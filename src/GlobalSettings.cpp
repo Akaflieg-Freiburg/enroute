@@ -76,6 +76,15 @@ void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 }
 
 
+void GlobalSettings::setUseMetricUnits(bool unitHorrizKmh)
+{
+    if (unitHorrizKmh == useMetricUnits())
+        return;
+
+    settings.setValue("System/useMetricUnits", unitHorrizKmh);
+    emit useMetricUnitsChanged();
+}
+
 void GlobalSettings::setPreferEnglish(bool preferEng)
 {
     if (preferEng == preferEnglish())

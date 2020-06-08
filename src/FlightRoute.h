@@ -252,6 +252,15 @@ public:
      */
     QString summary() const;
 
+    /*! \brief Human-readable summary of the flight route in metric values*/
+    Q_PROPERTY(QString summaryMetric READ summaryMetric NOTIFY summaryChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property summaryMetric
+     */
+    QString summaryMetric() const;
+
     /*! \brief Exports to route to GeoJSON
      *
      * This method serialises the current flight route as a GeoJSON
@@ -323,6 +332,9 @@ private:
 
     // Helper function for method toGPX
     QString gpxElements(const QString& indent, const QString& tag) const;
+
+    // Helper function for creating the flight route summary
+    QString makeSummary(bool inMetricUnits) const;
 
     // File name where the flight route is loaded upon startup are stored.  This
     // member is filled in in the constructor to

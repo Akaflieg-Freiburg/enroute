@@ -251,7 +251,17 @@ QString FlightRoute::suggestedFilename() const
 }
 
 
-QString FlightRoute::summary() const
+QString FlightRoute::summary() const {
+    return makeSummary(false);
+}
+
+
+QString FlightRoute::summaryMetric() const {
+    return makeSummary(true);
+}
+
+
+QString FlightRoute::makeSummary(bool inMetricUnits) const
 {
     if (_legs.empty())
         return {};
@@ -270,7 +280,11 @@ QString FlightRoute::summary() const
         }
     }
 
-    result += QString("Total: %1&nbsp;NM").arg(dist.toNM(), 0, 'f', 1);
+    if (inMetricUnits) {
+        result += QString("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
+    } else {
+        result += QString("Total: %1&nbsp;NM").arg(dist.toNM(), 0, 'f', 1);
+    }
     if (time.isFinite())
         result += QString(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
     if (qIsFinite(fuelInL))

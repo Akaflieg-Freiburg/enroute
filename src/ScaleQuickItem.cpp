@@ -38,12 +38,12 @@ void ScaleQuickItem::paint(QPainter *painter)
         return;
 
     // Pre-compute a few numbers that will be used when drawing
-    qreal pixelPerNM        = _pixelPer10km*0.1852;
-    qreal widthInNM         = (width()-10.0)/pixelPerNM;
-    qreal scaleUnitInNM     = pow(10.0, floor(log10(widthInNM)));
-    int   widthOfUnitInPix  = qRound(scaleUnitInNM*pixelPerNM);
-    qreal widthOfScaleInNM  = floor(widthInNM/scaleUnitInNM)*scaleUnitInNM;
-    int   widthOfScaleInPix = qRound(widthOfScaleInNM*pixelPerNM);
+    qreal pixelPerUnit        = _useMetricUnits ? _pixelPer10km * 0.1 : _pixelPer10km * 0.1852;
+    qreal widthInUnit         = (width()-10.0)/pixelPerUnit;
+    qreal scaleUnitInUnit     = pow(10.0, floor(log10(widthInUnit)));
+    int   widthOfUnitInPix    = qRound(scaleUnitInUnit*pixelPerUnit);
+    qreal widthOfScaleInUnit  = floor(widthInUnit/scaleUnitInUnit)*scaleUnitInUnit;
+    int   widthOfScaleInPix   = qRound(widthOfScaleInUnit*pixelPerUnit);
 
     // Compute size of text. Set font to somewhat smaller than standard size.
     QFont font = painter->font();
@@ -52,7 +52,7 @@ void ScaleQuickItem::paint(QPainter *painter)
     else
         font.setPixelSize(qRound(font.pixelSize()*0.8));
     painter->setFont(font);
-    QString text = QString("%1 nm").arg(widthOfScaleInNM);
+    QString text = QString(_useMetricUnits ? "%1 km" : "%1 NM").arg(widthOfScaleInUnit);
     int textWidth = painter->fontMetrics().horizontalAdvance(text);
 
     // Draw only if width() is large enough
@@ -71,14 +71,14 @@ void ScaleQuickItem::paint(QPainter *painter)
     painter->drawLine(baseX, baseY, baseX+widthOfScaleInPix, baseY);
     painter->drawLine(baseX, baseY+3, baseX, baseY-3);
     painter->drawLine(baseX+widthOfScaleInPix, baseY+3, baseX+widthOfScaleInPix, baseY-3);
-    for(int i=1; i*scaleUnitInNM<widthOfScaleInNM; i+= 1)
+    for(int i=1; i*scaleUnitInUnit<widthOfScaleInUnit; i+= 1)
         painter->drawLine(baseX + i*widthOfUnitInPix, baseY, baseX + i*widthOfUnitInPix, baseY+3);
 
     painter->setPen(QPen(Qt::black, 1));
     painter->drawLine(baseX, baseY, baseX+widthOfScaleInPix, baseY);
     painter->drawLine(baseX, baseY+3, baseX, baseY-3);
     painter->drawLine(baseX+widthOfScaleInPix, baseY+3, baseX+widthOfScaleInPix, baseY-3);
-    for(int i=1; i*scaleUnitInNM<widthOfScaleInNM; i+= 1)
+    for(int i=1; i*scaleUnitInUnit<widthOfScaleInUnit; i+= 1)
         painter->drawLine(baseX + i*widthOfUnitInPix, baseY, baseX + i*widthOfUnitInPix, baseY+3);
 
     // Draw text
@@ -94,4 +94,14 @@ void ScaleQuickItem::setPixelPer10km(qreal _pxp10k)
     _pixelPer10km = _pxp10k;
     update();
     emit pixelPer10kmChanged();
+}
+
+
+void ScaleQuickItem::setUseMetricUnits(bool useMetricUnits)
+{
+    if (_useMetricUnits == useMetricUnits)
+        return;
+
+    _useMetricUnits = useMetricUnits;
+    update();
 }

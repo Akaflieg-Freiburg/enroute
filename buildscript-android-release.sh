@@ -43,7 +43,7 @@ cd build-android-release
 # Configure
 #
 
-cmake /home/kebekus/Software/projects/enroute \
+cmake .. \
       -G Ninja\
       -DANDROID_ABI:STRING=armeabi-v7a \
       -DANDROID_BUILD_ABI_arm64-v8a:BOOL=ON \

@@ -67,7 +67,7 @@ Page {
                 icon.color: "transparent"
                 Layout.fillWidth: true
                 enabled: false
-                text: model.modelData.description
+                text: globalSettings.useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
             }
 
             ToolButton {

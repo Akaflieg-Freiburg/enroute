@@ -175,10 +175,11 @@ public:
     /*! \brief Description of the way from a given position to the waypoint
 
     @param position Position
+    @param useMetricUnits if true, render distance in km, else in NM
 
     @returns a string of the form "65.2 NM • TC 276°"
   */
-    Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position) const;
+    Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const;
 
 private:
     Q_DISABLE_COPY_MOVE(Waypoint)

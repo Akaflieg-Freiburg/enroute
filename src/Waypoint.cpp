@@ -158,10 +158,16 @@ QJsonObject Waypoint::toJSON() const
 }
 
 
-QString Waypoint::wayFrom(const QGeoCoordinate& position) const
+QString Waypoint::wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const
 {
     auto dist = AviationUnits::Distance::fromM(position.distanceTo(_coordinate));
     auto TC = qRound(position.azimuthTo(_coordinate));
 
-    return QString("%1 NM • TC %2°").arg(dist.toNM(), 0, 'f', 1).arg(TC);
+    QString result;
+    if (useMetricUnits) {
+        result += QString("%1 km • TC %2°").arg(dist.toKM(), 0, 'f', 1).arg(TC);
+    } else {
+        result += QString("%1 NM • TC %2°").arg(dist.toNM(), 0, 'f', 1).arg(TC);
+    }
+    return result;
 }

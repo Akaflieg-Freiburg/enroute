@@ -98,7 +98,7 @@ Page {
 
                 Label {
                     id: lbl2
-                    text: "
+                    text: qsTr("
 <h3>Authors</h3>
 
 <br>
@@ -154,7 +154,7 @@ Page {
 
 <p>German: Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>E-Mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
 <p></p>
-"
+")
                     textFormat: Text.RichText
                     width: pg.width
                     wrapMode: Text.Wrap

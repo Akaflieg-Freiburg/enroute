@@ -15,7 +15,6 @@
 	<file>text/firstStart.html</file>
 	<file>text/flightRouteLibraryInfo.html</file>
         <file>text/missingPermissions.html</file>
-        <file>text/info_author.html</file>
         <file>text/info_enroute.html</file>
         <file>text/info_license.html</file>
         <file>text/participate.html</file>
@@ -26,7 +25,6 @@
         <file alias="text/firstStart.html">text/firstStart_cz.html</file>
 	<file alias="text/flightRouteLibraryInfo.html">text/flightRouteLibraryInfo_cz.html</file>
         <file alias="text/missingPermissions.html">text/missingPermissions_cz.html</file>
-        <file alias="text/info_author.html">text/info_author_cz.html</file>
         <file alias="text/info_enroute.html">text/info_enroute_cz.html</file>
         <file alias="text/info_license.html">text/info_license_cz.html</file>
         <file alias="text/participate.html">text/participate_cz.html</file>
@@ -37,7 +35,6 @@
         <file alias="text/firstStart.html">text/firstStart_de.html</file>
 	<file alias="text/flightRouteLibraryInfo.html">text/flightRouteLibraryInfo_de.html</file>
         <file alias="text/missingPermissions.html">text/missingPermissions_de.html</file>
-        <file alias="text/info_author.html">text/info_author_de.html</file>
         <file alias="text/info_enroute.html">text/info_enroute_de.html</file>
         <file alias="text/info_license.html">text/info_license_de.html</file>
         <file alias="text/participate.html">text/participate_de.html</file>

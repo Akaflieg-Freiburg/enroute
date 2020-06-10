@@ -113,11 +113,11 @@ Page {
 
             SwitchDelegate {
                 id: useMetricUnits
-                text: qsTr("Use metric units for speed and distance")
+                text: qsTr("Prefer metric units")
                       + `<br><font color="#606060" size="2">`
                       + ( globalSettings.useMetricUnits ?
-                            qsTr("Showing horrizontal speed in km/h and distance in km") :
-                            qsTr("Showing horrizontal speed in kt and distance in nm")
+                            qsTr("Horizontal speed in km/h, distance in km") :
+                            qsTr("Horizontal speed in kt, distance in NM")
                         )
                       + "</font>"
                 icon.source: "/icons/material/ic_speed.svg"

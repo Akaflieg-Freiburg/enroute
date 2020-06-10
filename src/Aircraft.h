@@ -84,13 +84,13 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * This method saves the new value in a QSetting object. If speedInKT is
+     * This method saves the new value in a QSetting object. If speedInKMH is
      * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
      * property will be set to NaN.
      *
-     * @param speedInKT Property cruise speed
+     * @param speedInKMH Property cruise speed
      */
-    void setCruiseSpeedInKMH(double speedInKT);
+    void setCruiseSpeedInKMH(double speedInKMH);
 
     /*! \brief Decent Speed
      *
@@ -132,13 +132,13 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * This method saves the new value in a QSetting object. If speedInKT is
+     * This method saves the new value in a QSetting object. If speedInKMH is
      * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
      * property will be set to NaN.
      *
-     * @param speedInKT Descent speed in knots
+     * @param speedInKMH Descent speed in km/h
      */
-    void setDescentSpeedInKMH(double speedInKT);
+    void setDescentSpeedInKMH(double speedInKMH);
 
     /*! \brief Fuel Consumption
      *

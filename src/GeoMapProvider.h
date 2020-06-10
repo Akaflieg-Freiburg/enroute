@@ -68,6 +68,9 @@ public:
      * @param settings GlobalSettings object where settings are stored. The
      * settings shall exist for the lifetime of this object.
      *
+     * @param librarian Global Librarian object. The librarian shall exist for
+     * the lifetime of this object.
+     *
      * @param parent The standard QObject parent
      */
     explicit GeoMapProvider(MapManager *manager, GlobalSettings* settings, Librarian *librarian, QObject *parent = nullptr);

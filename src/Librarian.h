@@ -94,6 +94,8 @@ public:
      * delete the flight route once it is no longer used. Note that QML does
      * that automatically.
      *
+     * @param baseName File name, without path and without extension
+     *
      * @returns Pointer to the flight route as QObject*, or a nullptr in case of
      * error.
      */

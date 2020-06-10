@@ -60,11 +60,17 @@ public:
   void setPixelPer10km(qreal _pxp10k);
 
   /*! \brief Number of pixel that represent a distance of 10km on the map */
-  Q_PROPERTY(bool useMetricUnits WRITE setUseMetricUnits)
+  Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits)
+
+  /*! \brief Getter function for the property with the same name
+
+    @returns Property useMetricUnits
+  */
+  bool useMetricUnits() const {return _useMetricUnits;}
 
   /*! \brief Setter function for the property with the same name
 
-    @param _pxp10k  Property useMetricUnits
+    @param useMetricUnits Property useMetricUnits
   */
   void setUseMetricUnits(bool useMetricUnits);
 

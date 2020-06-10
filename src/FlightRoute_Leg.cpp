@@ -116,11 +116,27 @@ bool FlightRoute::Leg::isValid() const
 
 QString FlightRoute::Leg::description() const
 {
+    return makeDescription(false);
+}
+
+
+QString FlightRoute::Leg::descriptionMetric() const
+{
+    return makeDescription(true);
+}
+
+
+QString FlightRoute::Leg::makeDescription(bool useMetricUnits) const
+{
     if (!isValid())
         return QString();
 
     QString result;
-    result += QString("%1 NM").arg(distance().toNM(), 0, 'f', 1);
+    if (useMetricUnits) {
+        result += QString("%1 km").arg(distance().toKM(), 0, 'f', 1);
+    } else {
+        result += QString("%1 NM").arg(distance().toNM(), 0, 'f', 1);
+    }
     auto _time = Time();
     if (_time.isFinite())
         result += QString(" • %1 h").arg(_time.toHoursAndMinutes());

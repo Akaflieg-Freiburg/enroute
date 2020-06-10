@@ -52,7 +52,7 @@ void ScaleQuickItem::paint(QPainter *painter)
     else
         font.setPixelSize(qRound(font.pixelSize()*0.8));
     painter->setFont(font);
-    QString text = QString(_useMetricUnits ? "%1 km" : "%1 NM").arg(widthOfScaleInUnit);
+    QString text = QString(_useMetricUnits ? QString("%1 km") : QString("%1 NM")).arg(widthOfScaleInUnit);
     int textWidth = painter->fontMetrics().horizontalAdvance(text);
 
     // Draw only if width() is large enough

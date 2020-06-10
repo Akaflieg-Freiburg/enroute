@@ -67,6 +67,11 @@ set(SOURCES
 
     # Header files
     Aircraft.h
+    FlightRoute.h
+    GeoMapProvider.h
+    Librarian.h
+    MobileAdaptor.h
+    ScaleQuickItem.h
 
     # C++ files
     Aircraft.cpp

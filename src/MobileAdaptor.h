@@ -196,7 +196,7 @@ signals:
      *
      * @param fileName Path of the file on the local file system
      *
-     * @param function Function and file type.
+     * @param fileFunction Function and file type.
      *
      * On Android, other apps can request that enroute 'views' a file, via
      * Android's INTENT system.

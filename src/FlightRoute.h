@@ -165,7 +165,7 @@ public:
      * This method loads the flight route from a GeoJSON document that has been
      * created with the method save()
      *
-     * @param fileName, needs to include path and extension
+     * @param fileName File name, needs to include path and extension
      *
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
@@ -176,7 +176,7 @@ public:
      *
      * This method loads the flight route from a GPX. This method can optionally use a GeoMapProvider to detect waypoints (such as airfields) by looking at the coordinates
      *
-     * @param fileName, needs to include path and extension
+     * @param fileName File name, needs to include path and extension
      *
      * @param geoMapProvider Pointer to a geoMapProvider or nullptr
      *
@@ -199,7 +199,7 @@ public:
      *
      * Overloaded for convenience
      *
-     * @param data XML Document with GPX data
+     * @param xml XML Document with GPX data
      *
      * @param geoMapProvider Pointer to a geoMapProvider or nullptr
      */

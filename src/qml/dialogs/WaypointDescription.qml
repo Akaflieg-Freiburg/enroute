@@ -240,7 +240,7 @@ Dialog {
         }
 
         Label {
-            text: dialogLoader.waypoint.wayFrom(satNav.lastValidCoordinate)
+            text: dialogLoader.waypoint.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
             visible: satNav.status === SatNav.OK
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

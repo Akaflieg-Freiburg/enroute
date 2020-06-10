@@ -144,6 +144,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a54c00e981d11ed48714418cd633540cd"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute.html#a54c00e981d11ed48714418cd633540cd">summary</a> () const</td></tr>
 <tr class="memdesc:a54c00e981d11ed48714418cd633540cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="#a54c00e981d11ed48714418cd633540cd">More...</a><br /></td></tr>
 <tr class="separator:a54c00e981d11ed48714418cd633540cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6148c8c2694573dc2409e0d179d614a9"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute.html#a6148c8c2694573dc2409e0d179d614a9">summaryMetric</a> () const</td></tr>
+<tr class="memdesc:a6148c8c2694573dc2409e0d179d614a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="#a6148c8c2694573dc2409e0d179d614a9">More...</a><br /></td></tr>
+<tr class="separator:a6148c8c2694573dc2409e0d179d614a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb30c437232364e41707e25e0aa13f1c"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute.html#aeb30c437232364e41707e25e0aa13f1c">toGeoJSON</a> () const</td></tr>
 <tr class="memdesc:aeb30c437232364e41707e25e0aa13f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports to route to GeoJSON.  <a href="#aeb30c437232364e41707e25e0aa13f1c">More...</a><br /></td></tr>
 <tr class="separator:aeb30c437232364e41707e25e0aa13f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +176,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">summary</a></td></tr>
 <tr class="memdesc:a916a9b5b5aac80891bb04d85810c24f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Human-readable summary of the flight route. <br /></td></tr>
 <tr class="separator:a916a9b5b5aac80891bb04d85810c24f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca8ba682714c76bac9d3512ce0e8bb7d"><td class="memItemLeft" align="right" valign="top"><a id="aca8ba682714c76bac9d3512ce0e8bb7d"></a>
+QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">summaryMetric</a></td></tr>
+<tr class="memdesc:aca8ba682714c76bac9d3512ce0e8bb7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Human-readable summary of the flight route in metric values. <br /></td></tr>
+<tr class="separator:aca8ba682714c76bac9d3512ce0e8bb7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Intended flight route. </p>
@@ -431,7 +438,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>This method loads the flight route from a GeoJSON document that has been created with the method <a class="el" href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45" title="Saves flight route to a file. ">save()</a></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fileName,needs</td><td>to include path and extension</td></tr>
+    <tr><td class="paramname">fileName</td><td>File name, needs to include path and extension</td></tr>
   </table>
   </dd>
 </dl>
@@ -469,7 +476,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>This method loads the flight route from a GPX. This method can optionally use a <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> to detect waypoints (such as airfields) by looking at the coordinates</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fileName,needs</td><td>to include path and extension</td></tr>
+    <tr><td class="paramname">fileName</td><td>File name, needs to include path and extension</td></tr>
     <tr><td class="paramname">geoMapProvider</td><td>Pointer to a geoMapProvider or nullptr</td></tr>
   </table>
   </dd>
@@ -546,7 +553,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Overloaded for convenience</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>XML Document with GPX data</td></tr>
+    <tr><td class="paramname">xml</td><td>XML Document with GPX data</td></tr>
     <tr><td class="paramname">geoMapProvider</td><td>Pointer to a geoMapProvider or nullptr </td></tr>
   </table>
   </dd>
@@ -745,6 +752,26 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property summary </dd></dl>
+
+</div>
+</div>
+<a id="a6148c8c2694573dc2409e0d179d614a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6148c8c2694573dc2409e0d179d614a9">&#9670;&nbsp;</a></span>summaryMetric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString FlightRoute::summaryMetric </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property summaryMetric </dd></dl>
 
 </div>
 </div>

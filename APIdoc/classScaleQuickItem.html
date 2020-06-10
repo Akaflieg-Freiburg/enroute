@@ -74,6 +74,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afef42d2485633043988ad5da84faf469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScaleQuickItem.html#afef42d2485633043988ad5da84faf469">setPixelPer10km</a> (qreal _pxp10k)</td></tr>
 <tr class="memdesc:afef42d2485633043988ad5da84faf469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <a href="#afef42d2485633043988ad5da84faf469">More...</a><br /></td></tr>
 <tr class="separator:afef42d2485633043988ad5da84faf469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b7c5814259c1e4ce9d5f6f354a26f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScaleQuickItem.html#af4b7c5814259c1e4ce9d5f6f354a26f1">useMetricUnits</a> () const</td></tr>
+<tr class="memdesc:af4b7c5814259c1e4ce9d5f6f354a26f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="#af4b7c5814259c1e4ce9d5f6f354a26f1">More...</a><br /></td></tr>
+<tr class="separator:af4b7c5814259c1e4ce9d5f6f354a26f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae47a405d6743b5070d4ffd8f5726ac5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScaleQuickItem.html#ae47a405d6743b5070d4ffd8f5726ac5a">setUseMetricUnits</a> (bool <a class="el" href="classScaleQuickItem.html#a3a2d9fa272b1436912b77af69425eefd">useMetricUnits</a>)</td></tr>
+<tr class="memdesc:ae47a405d6743b5070d4ffd8f5726ac5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <a href="#ae47a405d6743b5070d4ffd8f5726ac5a">More...</a><br /></td></tr>
+<tr class="separator:ae47a405d6743b5070d4ffd8f5726ac5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a566c0c59ca3bc4e91a88ab02554c5541"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScaleQuickItem.html#a566c0c59ca3bc4e91a88ab02554c5541">paint</a> (QPainter *painter) override</td></tr>
 <tr class="memdesc:a566c0c59ca3bc4e91a88ab02554c5541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implemented from QQuickPaintedItem to implement painting.  <a href="#a566c0c59ca3bc4e91a88ab02554c5541">More...</a><br /></td></tr>
 <tr class="separator:a566c0c59ca3bc4e91a88ab02554c5541"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -84,6 +90,10 @@ Properties</h2></td></tr>
 qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScaleQuickItem.html#a9c18dd61e49378720c970cfd040ddc6c">pixelPer10km</a></td></tr>
 <tr class="memdesc:a9c18dd61e49378720c970cfd040ddc6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of pixel that represent a distance of 10km on the map. <br /></td></tr>
 <tr class="separator:a9c18dd61e49378720c970cfd040ddc6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2d9fa272b1436912b77af69425eefd"><td class="memItemLeft" align="right" valign="top"><a id="a3a2d9fa272b1436912b77af69425eefd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScaleQuickItem.html#a3a2d9fa272b1436912b77af69425eefd">useMetricUnits</a></td></tr>
+<tr class="memdesc:a3a2d9fa272b1436912b77af69425eefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of pixel that represent a distance of 10km on the map. <br /></td></tr>
+<tr class="separator:a3a2d9fa272b1436912b77af69425eefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>QML Class implementing a scale for a Map. </p>
@@ -214,6 +224,62 @@ qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae47a405d6743b5070d4ffd8f5726ac5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae47a405d6743b5070d4ffd8f5726ac5a">&#9670;&nbsp;</a></span>setUseMetricUnits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScaleQuickItem::setUseMetricUnits </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useMetricUnits</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter function for the property with the same name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">useMetricUnits</td><td>Property useMetricUnits </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af4b7c5814259c1e4ce9d5f6f354a26f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4b7c5814259c1e4ce9d5f6f354a26f1">&#9670;&nbsp;</a></span>useMetricUnits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ScaleQuickItem::useMetricUnits </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property useMetricUnits </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ScaleQuickItem_8h_source.html#l00069">69</a> of file <a class="el" href="ScaleQuickItem_8h_source.html">ScaleQuickItem.h</a>.</p>
 
 </div>
 </div>

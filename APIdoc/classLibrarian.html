@@ -238,6 +238,12 @@ Public Member Functions</h2></td></tr>
 <p>Constructs a flight route from library file. </p>
 <p>This method constructs a flight route, by reading a flight route file from the library. The flight route is construted with aircraft and wind set to nullptr, so that no wind computations are possible. It is, however, possible to export the flight route (for instance to GeoJson or GPX format).</p>
 <p>Ownership is transferred to the caller, so it is up to the caller to delete the flight route once it is no longer used. Note that QML does that automatically.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">baseName</td><td>File name, without path and without extension</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the flight route as QObject*, or a nullptr in case of error. </dd></dl>
 
 </div>

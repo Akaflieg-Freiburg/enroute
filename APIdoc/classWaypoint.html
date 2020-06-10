@@ -90,9 +90,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a092b50386d2f6baf40f85224c195d777"><td class="memItemLeft" align="right" valign="top">QJsonObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a092b50386d2f6baf40f85224c195d777">toJSON</a> () const</td></tr>
 <tr class="memdesc:a092b50386d2f6baf40f85224c195d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization to GeoJSON object.  <a href="#a092b50386d2f6baf40f85224c195d777">More...</a><br /></td></tr>
 <tr class="separator:a092b50386d2f6baf40f85224c195d777"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#adcfeccd1696b81ca5140a54c06e7a6bb">wayFrom</a> (const QGeoCoordinate &amp;position) const</td></tr>
-<tr class="memdesc:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given position to the waypoint.  <a href="#adcfeccd1696b81ca5140a54c06e7a6bb">More...</a><br /></td></tr>
-<tr class="separator:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a712c622729567c8d0adacc1aa3af169b"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a712c622729567c8d0adacc1aa3af169b">wayFrom</a> (const QGeoCoordinate &amp;position, bool useMetricUnits) const</td></tr>
+<tr class="memdesc:a712c622729567c8d0adacc1aa3af169b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given position to the waypoint.  <a href="#a712c622729567c8d0adacc1aa3af169b">More...</a><br /></td></tr>
+<tr class="separator:a712c622729567c8d0adacc1aa3af169b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -472,8 +472,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="adcfeccd1696b81ca5140a54c06e7a6bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcfeccd1696b81ca5140a54c06e7a6bb">&#9670;&nbsp;</a></span>wayFrom()</h2>
+<a id="a712c622729567c8d0adacc1aa3af169b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a712c622729567c8d0adacc1aa3af169b">&#9670;&nbsp;</a></span>wayFrom()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -482,8 +482,18 @@ Properties</h2></td></tr>
           <td class="memname">Q_INVOKABLE QString Waypoint::wayFrom </td>
           <td>(</td>
           <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
-          <td class="paramname"><em>position</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useMetricUnits</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -491,7 +501,8 @@ Properties</h2></td></tr>
 <p>Description of the way from a given position to the waypoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td>Position</td></tr>
+    <tr><td class="paramname">position</td><td>Position </td></tr>
+    <tr><td class="paramname">useMetricUnits</td><td>if true, render distance in km, else in NM</td></tr>
   </table>
   </dd>
 </dl>

@@ -53,7 +53,7 @@ Page {
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
-                dialogLoader.waypoint = model.modelData
+                dialogLoader.dialogArgs = {waypoint: model.modelData}
                 dialogLoader.text = ""
                 dialogLoader.source = "../dialogs/WaypointDescription.qml"
                 dialogLoader.active = true

@@ -28,7 +28,7 @@ import enroute 1.0
 Dialog {
     id: dlg
 
-    property var waypoint: ({})
+    property var dialogArgs: undefined
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
@@ -218,11 +218,11 @@ Dialog {
             Layout.fillWidth: true
 
             Image {
-                source: "/icons/waypoints/"+dialogLoader.waypoint.get("CAT")+".svg"
+                source: "/icons/waypoints/"+dialogArgs.waypoint.get("CAT")+".svg"
                 sourceSize.width: 25
             }
             Label {
-                text: dialogLoader.waypoint.extendedName
+                text: dialogArgs.waypoint.extendedName
                 font.bold: true
                 font.pixelSize: 1.2*Qt.application.font.pixelSize
                 Layout.fillWidth: true
@@ -240,7 +240,7 @@ Dialog {
         }
 
         Label {
-            text: dialogLoader.waypoint.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
+            text: dialogArgs.waypoint.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
             visible: satNav.status === SatNav.OK
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -270,11 +270,11 @@ Dialog {
 
 
                 Component.onCompleted: {
-                    var pro = dialogLoader.waypoint.tabularDescription
+                    var pro = dialogLoader.dialogArgs.waypoint.tabularDescription
                     for (var j in pro)
                         waypointPropertyDelegate.createObject(co, {text: pro[j]});
 
-                    var asl = geoMapProvider.airspaces(dialogLoader.waypoint.coordinate)
+                    var asl = geoMapProvider.airspaces(dialogLoader.dialogArgs.waypoint.coordinate)
                     for (var i in asl)
                         airspaceDelegate.createObject(co, {airspace: asl[i]});
                 }
@@ -300,7 +300,7 @@ Dialog {
                 mobileAdaptor.vibrateBrief()
                 flightRoute.clear()
                 flightRoute.append(satNav.lastValidCoordinate)
-                flightRoute.append(dialogLoader.waypoint)
+                flightRoute.append(dialogArgs.waypoint)
             }
         }
 
@@ -312,7 +312,7 @@ Dialog {
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                flightRoute.append(dialogLoader.waypoint)
+                flightRoute.append(dialogArgs.waypoint)
             }
 
         }

@@ -209,7 +209,9 @@ Item {
             onDoubleClicked: {
                 mobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
-                dialogLoader.waypoint = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)), flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                dialogLoader.dialogArgs = {waypoint: geoMapProvider.closestWaypoint(
+                                                         flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
+                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))}
                 dialogLoader.text = ""
                 dialogLoader.source = "../dialogs/WaypointDescription.qml"
                 dialogLoader.active = true

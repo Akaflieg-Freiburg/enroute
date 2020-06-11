@@ -302,11 +302,14 @@ ApplicationWindow {
 
         property string title
         property string text
-        property Waypoint waypoint
+        property var dialogArgs: undefined
 
         onLoaded: {
             item.anchors.centerIn = dialogLoader
             item.modal = true
+            if (dialogArgs && item.hasOwnProperty('dialogArgs')) {
+                item.dialogArgs = dialogArgs
+            }
             item.open()
         }
 

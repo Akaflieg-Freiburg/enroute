@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">enroute flight navigation
-   &#160;<span id="projectnumber">1.6.3</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -93,6 +93,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1783429a6124c8d07146fc3932f40904"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute_1_1Leg.html#a1783429a6124c8d07146fc3932f40904">description</a> () const</td></tr>
 <tr class="memdesc:a1783429a6124c8d07146fc3932f40904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="#a1783429a6124c8d07146fc3932f40904">More...</a><br /></td></tr>
 <tr class="separator:a1783429a6124c8d07146fc3932f40904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cfa3a6587fbabff27824486e297f580"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute_1_1Leg.html#a3cfa3a6587fbabff27824486e297f580">descriptionMetric</a> () const</td></tr>
+<tr class="memdesc:a3cfa3a6587fbabff27824486e297f580"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="#a3cfa3a6587fbabff27824486e297f580">More...</a><br /></td></tr>
+<tr class="separator:a3cfa3a6587fbabff27824486e297f580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a372aa9913f3262fe9a62e709efd6c620"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute_1_1Leg.html#a372aa9913f3262fe9a62e709efd6c620">isValid</a> () const</td></tr>
 <tr class="memdesc:a372aa9913f3262fe9a62e709efd6c620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validity.  <a href="#a372aa9913f3262fe9a62e709efd6c620">More...</a><br /></td></tr>
 <tr class="separator:a372aa9913f3262fe9a62e709efd6c620"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,6 +128,10 @@ Properties</h2></td></tr>
 QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute_1_1Leg.html#ab6ada640474199e9ab636ad82116d0aa">description</a></td></tr>
 <tr class="memdesc:ab6ada640474199e9ab636ad82116d0aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Human-readable description of the leg. <br /></td></tr>
 <tr class="separator:ab6ada640474199e9ab636ad82116d0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf59b2e7a2868f3296871a83a5f58f5a"><td class="memItemLeft" align="right" valign="top"><a id="aaf59b2e7a2868f3296871a83a5f58f5a"></a>
+QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFlightRoute_1_1Leg.html#aaf59b2e7a2868f3296871a83a5f58f5a">descriptionMetric</a></td></tr>
+<tr class="memdesc:aaf59b2e7a2868f3296871a83a5f58f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Human-readable description of the leg. <br /></td></tr>
+<tr class="separator:aaf59b2e7a2868f3296871a83a5f58f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classFlightRoute_1_1Leg.html" title="Leg in a flight route. ">Leg</a> in a flight route. </p>
@@ -189,8 +196,8 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">start</td><td>Pointer to the starting point</td></tr>
     <tr><td class="paramname">end</td><td>Pointer to the end point</td></tr>
-    <tr><td class="paramname">aircraft</td><td>Pointer to aircraft info that is used in route computations. The aircraft object to supposed to exist throughout the liftime of this object.</td></tr>
-    <tr><td class="paramname">wind</td><td>Pointer to wind info that is used in route computations. The wind object to supposed to exist throughout the liftime of this object.</td></tr>
+    <tr><td class="paramname">aircraft</td><td>Pointer to aircraft info that is used in route computations. It is possible to set a nullptr here or delete the object anytime, but then wind computations will no longer work.</td></tr>
+    <tr><td class="paramname">wind</td><td>Pointer to wind info that is used in route computations. It is possible to set a nullptr here or delete the object anytime, but then wind computations will no longer work.</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer. </td></tr>
   </table>
   </dd>
@@ -216,6 +223,26 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property description </dd></dl>
+
+</div>
+</div>
+<a id="a3cfa3a6587fbabff27824486e297f580"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cfa3a6587fbabff27824486e297f580">&#9670;&nbsp;</a></span>descriptionMetric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString FlightRoute::Leg::descriptionMetric </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property descriptionMetric </dd></dl>
 
 </div>
 </div>
@@ -346,7 +373,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property TH </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00129">129</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00127">127</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
 
 </div>
 </div>
@@ -376,7 +403,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property Time </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00117">117</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00115">115</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
 
 </div>
 </div>
@@ -424,7 +451,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Fuel. </p>
 <p>This property holds the fuel consumption for the leg, in liters. It holds NaN if the leg is invalid or if the fuel consumption cannot be computed. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00073">73</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00071">71</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
 
 </div>
 </div>
@@ -451,7 +478,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Ground speed. </p>
 <p>This property holds the ground speed for the leg, in meters per second. It holds NaN if the leg is invalid or if the ground speed cannot be computed. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00086">86</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00084">84</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
 
 </div>
 </div>
@@ -478,7 +505,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>True course. </p>
 <p>This property holds the true course for the leg. It holds NaN if the leg is invalid or shorter than 100m </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00099">99</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00097">97</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
 
 </div>
 </div>
@@ -505,7 +532,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>True heading. </p>
 <p>Set to NaN if a TH cannot be computed. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00123">123</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00121">121</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
 
 </div>
 </div>
@@ -532,7 +559,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Time required for this leg. </p>
 <p>Set to NaN if the time cannot be computed. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00111">111</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute__Leg_8h_source.html#l00109">109</a> of file <a class="el" href="FlightRoute__Leg_8h_source.html">FlightRoute_Leg.h</a>.</p>
 
 </div>
 </div>

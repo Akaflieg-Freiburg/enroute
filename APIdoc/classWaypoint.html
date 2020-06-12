@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">enroute flight navigation
-   &#160;<span id="projectnumber">1.6.3</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -69,6 +69,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac44284009382c3814bec41e6e86434b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aac44284009382c3814bec41e6e86434b">Waypoint</a> (const QJsonObject &amp;geoJSONObject, QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:aac44284009382c3814bec41e6e86434b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a GeoJSON object.  <a href="#aac44284009382c3814bec41e6e86434b">More...</a><br /></td></tr>
 <tr class="separator:aac44284009382c3814bec41e6e86434b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a05438fb0dd918f9918656fdc9d0277"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a5a05438fb0dd918f9918656fdc9d0277">contains</a> (const QString &amp;name) const</td></tr>
+<tr class="memdesc:a5a05438fb0dd918f9918656fdc9d0277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check property existence.  <a href="#a5a05438fb0dd918f9918656fdc9d0277">More...</a><br /></td></tr>
+<tr class="separator:a5a05438fb0dd918f9918656fdc9d0277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2342fac6ccc6e29f719feca861de1b15"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a2342fac6ccc6e29f719feca861de1b15">coordinate</a> () const</td></tr>
 <tr class="memdesc:a2342fac6ccc6e29f719feca861de1b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a2342fac6ccc6e29f719feca861de1b15">More...</a><br /></td></tr>
 <tr class="separator:a2342fac6ccc6e29f719feca861de1b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -87,9 +90,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a092b50386d2f6baf40f85224c195d777"><td class="memItemLeft" align="right" valign="top">QJsonObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a092b50386d2f6baf40f85224c195d777">toJSON</a> () const</td></tr>
 <tr class="memdesc:a092b50386d2f6baf40f85224c195d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization to GeoJSON object.  <a href="#a092b50386d2f6baf40f85224c195d777">More...</a><br /></td></tr>
 <tr class="separator:a092b50386d2f6baf40f85224c195d777"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#adcfeccd1696b81ca5140a54c06e7a6bb">wayFrom</a> (const QGeoCoordinate &amp;position) const</td></tr>
-<tr class="memdesc:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given position to the waypoint.  <a href="#adcfeccd1696b81ca5140a54c06e7a6bb">More...</a><br /></td></tr>
-<tr class="separator:adcfeccd1696b81ca5140a54c06e7a6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a712c622729567c8d0adacc1aa3af169b"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a712c622729567c8d0adacc1aa3af169b">wayFrom</a> (const QGeoCoordinate &amp;position, bool useMetricUnits) const</td></tr>
+<tr class="memdesc:a712c622729567c8d0adacc1aa3af169b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given position to the waypoint.  <a href="#a712c622729567c8d0adacc1aa3af169b">More...</a><br /></td></tr>
+<tr class="separator:a712c622729567c8d0adacc1aa3af169b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -282,6 +285,44 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5a05438fb0dd918f9918656fdc9d0277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a05438fb0dd918f9918656fdc9d0277">&#9670;&nbsp;</a></span>contains()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Waypoint::contains </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check property existence. </p>
+<p>Recall that this class represents a waypoint feature of a GeoJSON file, as described in <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. This method allows to check for the existence of individual members described in this file.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the member. This is a string such as "CAT", "TYP", "NAM", etc</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True is property exists </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00099">99</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
 <a id="a2342fac6ccc6e29f719feca861de1b15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2342fac6ccc6e29f719feca861de1b15">&#9670;&nbsp;</a></span>coordinate()</h2>
 
@@ -308,7 +349,7 @@ Properties</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordinate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00096">96</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00111">111</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -366,7 +407,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of the member </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00123">123</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00138">138</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -431,8 +472,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="adcfeccd1696b81ca5140a54c06e7a6bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcfeccd1696b81ca5140a54c06e7a6bb">&#9670;&nbsp;</a></span>wayFrom()</h2>
+<a id="a712c622729567c8d0adacc1aa3af169b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a712c622729567c8d0adacc1aa3af169b">&#9670;&nbsp;</a></span>wayFrom()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -441,8 +482,18 @@ Properties</h2></td></tr>
           <td class="memname">Q_INVOKABLE QString Waypoint::wayFrom </td>
           <td>(</td>
           <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
-          <td class="paramname"><em>position</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useMetricUnits</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -450,7 +501,8 @@ Properties</h2></td></tr>
 <p>Description of the way from a given position to the waypoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td>Position</td></tr>
+    <tr><td class="paramname">position</td><td>Position </td></tr>
+    <tr><td class="paramname">useMetricUnits</td><td>if true, render distance in km, else in NM</td></tr>
   </table>
   </dd>
 </dl>
@@ -482,7 +534,7 @@ Properties</h2></td></tr>
 <p>Coordinate of the waypoint. </p>
 <p>If the coordinate is invalid, this waypoint should not be used </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00090">90</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00105">105</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -509,7 +561,7 @@ Properties</h2></td></tr>
 <p>Extended name of the Waypoints. </p>
 <p>This method returns a string of the form "Karlsruhe (DVOR-DME)" </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00102">102</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00117">117</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

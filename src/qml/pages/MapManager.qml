@@ -161,7 +161,7 @@ Page {
 
             Connections {
                 target: model.modelData
-                onError: {
+                function onError () {
                     dialogLoader.active = false
                     dialogLoader.title = qsTr("Download Error")
                     dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
@@ -392,7 +392,7 @@ Page {
         // without any feedback if the download did actually take place.
         Connections {
             target: mapManager
-            onDownloadingGeoMapListChanged: {
+            function onDownloadingGeoMapListChanged () {
                 if (mapManager.downloadingGeoMapList) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
@@ -430,7 +430,7 @@ Page {
     // Show error when list of maps cannot be downloaded
     Connections {
         target: mapManager
-        onError: {
+        function onError () {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")
             dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)

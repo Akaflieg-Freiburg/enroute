@@ -113,7 +113,9 @@ Dialog {
 
     Connections {
         target: sensorGesture
-        onDetected: close()
+        function onDetected () {
+            close()
+        }
     }
 
     onAccepted: {

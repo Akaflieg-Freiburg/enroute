@@ -222,3 +222,18 @@ QString DownloadableGroupWatcher::updateSize() const
 
       return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
 }
+
+
+int DownloadableGroupWatcher::numberOfFilesTotal() const
+{
+    int nFilesTotal = 0;
+    foreach(auto _downloadable, _downloadables) {
+        if (_downloadable.isNull())
+            continue;
+        if (_downloadable->hasFile())
+            nFilesTotal += 1;
+        else if (_downloadable->downloading())
+            nFilesTotal += 1;
+    }
+    return nFilesTotal;
+}

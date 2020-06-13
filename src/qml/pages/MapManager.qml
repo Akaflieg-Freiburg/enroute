@@ -50,6 +50,32 @@ Page {
             width: parent.width
             height: gridLayout.height
 
+            function startFileDownload() {
+                // check how many files are already downloaded:
+                var nFilesTotal;
+                var mapTypeString;
+                if (sv.currentIndex == 0) {  // swipe view shows aviation maps
+                    nFilesTotal = mapManager.aviationMaps.numberOfFilesTotal();
+                    mapTypeString = qsTr("aviation maps")
+                } else {  // swipe view shows base maps
+                    nFilesTotal = mapManager.baseMaps.numberOfFilesTotal();
+                    mapTypeString = qsTr("base maps")
+                }
+
+                // if the user downloads more than 8 files, show them a dialog telling them that
+                // the bandwidth is sponsored and they shouldn't over-consume.
+                if (nFilesTotal > 7) {
+                    dialogLoader.active = false;
+                    dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startFileDownload,
+                                               nFilesTotal: nFilesTotal,
+                                               mapTypeString: mapTypeString};
+                    dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
+                    dialogLoader.active = true;
+                } else {
+                    model.modelData.startFileDownload();
+                }
+            }
+
             GridLayout {
                 id: gridLayout
 
@@ -70,7 +96,7 @@ Page {
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
                             mobileAdaptor.vibrateBrief()
-                            model.modelData.startFileDownload()
+                            startFileDownload()
                         }
                     }
                 }
@@ -81,7 +107,7 @@ Page {
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
-                        model.modelData.startFileDownload()
+                        startFileDownload()
                     }
                 }
 
@@ -91,7 +117,7 @@ Page {
                     visible: model.modelData.updatable
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
-                        model.modelData.startFileDownload()
+                        startFileDownload()
                     }
                 }
 

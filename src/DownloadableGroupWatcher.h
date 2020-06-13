@@ -134,6 +134,12 @@ public:
     */
     QString updateSize() const;
 
+    /*! \brief total number of files that are either downloaded or currently downloading.
+
+      @returns int nFilesTotal
+    */
+    Q_INVOKABLE int numberOfFilesTotal() const;
+
 public slots:
     /*! Update all updatable Downloadable objects */
     void updateAll();

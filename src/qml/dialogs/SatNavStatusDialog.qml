@@ -82,7 +82,7 @@ Dialog {
             Text { text: satNav.horizontalPrecisionInMetersAsString }
 
             Text { text: qsTr("Ground Speed") }
-            Text { text: satNav.groundSpeedInKnotsAsString }
+            Text { text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString }
 
             Text { text: qsTr("Track") }
             Text { text: satNav.trackAsString }

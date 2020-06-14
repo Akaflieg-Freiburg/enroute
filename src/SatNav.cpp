@@ -173,28 +173,35 @@ void SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
 
 int SatNav::groundSpeedInKnots() const
 {
-    if (!lastInfo.isValid())
-        return -1;
-    if (!lastInfo.hasAttribute(QGeoPositionInfo::GroundSpeed))
+    auto gsInMPS = groundSpeedInMetersPerSecond();
+
+    if (gsInMPS < 0.0)
         return -1;
 
-    AviationUnits::Speed groundSpeed = AviationUnits::Speed::fromMPS(lastInfo.attribute(QGeoPositionInfo::GroundSpeed));
-    if (!groundSpeed.isFinite())
-        return -1;
-    if (groundSpeed.isNegative())
-        return -1;
-
+    auto groundSpeed = AviationUnits::Speed::fromMPS(gsInMPS);
     return qRound(groundSpeed.toKT());
 }
 
 
 QString SatNav::groundSpeedInKnotsAsString() const
 {
-    auto _groundSpeedInKnots = groundSpeedInKnots();
+    auto gsInKnots = groundSpeedInKnots();
 
-    if (_groundSpeedInKnots < 0)
+    if (gsInKnots < 0)
         return "-";
-    return myLocale.toString(_groundSpeedInKnots) + " kt";
+    return myLocale.toString(gsInKnots) + " kt";
+}
+
+
+QString SatNav::groundSpeedInKMHAsString() const
+{
+    auto gsInMPS = groundSpeedInMetersPerSecond();
+
+    if (gsInMPS < 0.0)
+        return "-";
+
+    auto gsInKMH = AviationUnits::Speed::fromMPS(gsInMPS).toKMH();
+    return myLocale.toString(gsInKMH) + " km/h";
 }
 
 

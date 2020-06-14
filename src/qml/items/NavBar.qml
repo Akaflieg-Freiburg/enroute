@@ -64,7 +64,7 @@ Rectangle {
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
             width: parent.width/3
-            text: satNav.groundSpeedInKnotsAsString
+            text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
         } // Button
 
         Button {

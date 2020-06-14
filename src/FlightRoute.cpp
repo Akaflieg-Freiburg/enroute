@@ -57,6 +57,28 @@ void FlightRoute::append(QObject *waypoint)
 }
 
 
+bool FlightRoute::contains(QObject * waypoint) const
+{
+    if (waypoint == nullptr)
+        return false;
+    if (!waypoint->inherits("Waypoint"))
+        return false;
+
+    auto testWaypoint = dynamic_cast<Waypoint *>(waypoint);
+    // must loop over list in order to compare values (not pointers)
+    for (const auto &_waypoint : _waypoints) {
+        if (_waypoint.isNull())
+            continue;
+        if (!_waypoint->isValid())
+            continue;
+        if (*_waypoint == *testWaypoint) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 QGeoRectangle FlightRoute::boundingRectangle() const
 {
     QGeoRectangle bbox;
@@ -171,10 +193,25 @@ void FlightRoute::removeWaypoint(QObject *waypoint)
     if (!waypoint->inherits("Waypoint"))
         return;
 
-    auto swp = dynamic_cast<Waypoint*>(waypoint);
+    auto waypointPtr = dynamic_cast<Waypoint*>(waypoint);
 
-    _waypoints.removeOne(swp);
-    delete swp;
+    // if called from the waypoint dialog, the waypoint is not the
+    // same instance as the one in `_waypoints`
+    if (!_waypoints.contains(waypointPtr)) {
+        for (const auto &_waypoint : _waypoints) {
+            if (_waypoint.isNull())
+                continue;
+            if (!_waypoint->isValid())
+                continue;
+            if (*_waypoint == *waypointPtr) {
+                waypointPtr = _waypoint;
+                break;
+            }
+        }
+    }
+
+    _waypoints.removeOne(waypointPtr);
+    delete waypointPtr;
 
     updateLegs();
     emit waypointsChanged();

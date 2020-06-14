@@ -95,6 +95,13 @@ public:
      */
     Q_INVOKABLE void append(const QGeoCoordinate& position) { append(new Waypoint(position, this)); }
 
+    /*! \brief Returns true if waypoint is in this route
+     *
+     * @param waypoint Pointer to a waypoint
+     * @returns bool true if waypoint in route
+     */
+    Q_INVOKABLE bool contains(QObject * waypoint) const;
+
     /*! Computes a bounding rectangle
      *
      * @returns A QGeoRectangle that contains the route. The rectangle returned

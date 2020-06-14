@@ -306,15 +306,17 @@ Dialog {
 
         Button {
             flat: true
-            text: qsTr("Add to route")
+            text: flightRoute.contains(dialogArgs.waypoint) ? qsTr("Remove from route") : qsTr("Add to route")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: dialogLoader.text !== "noRouteButton"
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                flightRoute.append(dialogArgs.waypoint)
+                if (!flightRoute.contains(dialogArgs.waypoint)) {
+                    flightRoute.append(dialogArgs.waypoint)
+                } else {
+                    flightRoute.removeWaypoint(dialogArgs.waypoint)
+                }
             }
-
         }
 
         onRejected: close()

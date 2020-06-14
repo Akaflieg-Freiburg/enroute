@@ -181,6 +181,10 @@ public:
   */
     Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const;
 
+    bool operator==(const Waypoint &other) const {
+        return _coordinate == other._coordinate;
+    }
+
 private:
     Q_DISABLE_COPY_MOVE(Waypoint)
 

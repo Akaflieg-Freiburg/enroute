@@ -26,7 +26,7 @@
         <file alias="pages/InfoPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/InfoPage.qml</file>
         <file alias="pages/MapManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapManager.qml</file>
         <file alias="pages/MapPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapPage.qml</file>
-        <file alias="pages/NearbyAirfields.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/NearbyAirfields.qml</file>
+        <file alias="pages/Nearby.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/Nearby.qml</file>
         <file alias="pages/ParticipatePage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/ParticipatePage.qml</file>
         <file alias="pages/SettingsPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/SettingsPage.qml</file>
     </qresource>

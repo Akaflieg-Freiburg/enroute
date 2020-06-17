@@ -127,16 +127,18 @@ public:
         return _combinedGeoJSON_;
     }
 
-    /*! List of nearby airfields
+    /*! List of nearby waypoints
      *
-     * @param position Position near which airfields are searched for
+     * @param position Position near which waypoints are searched for
+     * @param type Type of waypoints (AD, NAV, WP)
      *
-     * @returns a list of the 20 airfields that are closest to the given
-     * position; the list may however be empty or contain fewer than 20
-     * items. For better cooperation with QML the list does not contain elements
+     * @returns a list of the 20 waypoints of requested type that are closest
+     * to the given position; the list may however be empty or contain fewer
+     * than 20 items.
+     * For better cooperation with QML the list does not contain elements
      * of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE QList<QObject*> nearbyAirfields(const QGeoCoordinate& position);
+    Q_INVOKABLE QList<QObject*> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
     /*! \brief URL where a style file for the base map can be retrieved
      *

@@ -137,24 +137,24 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 }
 
 
-QList<QObject*> GeoMapProvider::nearbyAirfields(const QGeoCoordinate& position)
+QList<QObject*> GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type)
 {
     auto wps = waypoints();
 
-    QList<Waypoint*> ADs;
+    QList<Waypoint*> tWps;
     foreach(auto wp, wps) {
         if (wp.isNull())
             continue;
-        if (!wp->get("CAT").toString().startsWith("AD"))
+        if (wp->get("TYP").toString() != type)
             continue;
-        ADs.append(wp);
+        tWps.append(wp);
     }
 
-    std::sort(ADs.begin(), ADs.end(), [position](Waypoint* a, Waypoint* b) {return position.distanceTo(a->coordinate()) < position.distanceTo(b->coordinate()); });
+    std::sort(tWps.begin(), tWps.end(), [position](Waypoint* a, Waypoint* b) {return position.distanceTo(a->coordinate()) < position.distanceTo(b->coordinate()); });
 
     QList<QObject*> result;
     int sz = 0;
-    foreach(auto ad, ADs) {
+    foreach(auto ad, tWps) {
         result.append(ad);
         sz++;
         if (sz == 20)

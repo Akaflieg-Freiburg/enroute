@@ -81,17 +81,17 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
-                    id: menuItemNearbyAirfields
+                    id: menuItemNearby
 
-                    text: qsTr("Nearby Airfields")
-                    icon.source: "/icons/icon_airfield.svg"
+                    text: qsTr("Nearby")
+                    icon.source: "/icons/material/ic_my_location.svg"//"/icons/icon_airfield.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/NearbyAirfields.qml")
+                        stackView.push("pages/Nearby.qml")
                         drawer.close()
                     }
                 }

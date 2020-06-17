@@ -84,7 +84,7 @@ ApplicationWindow {
                     id: menuItemNearby
 
                     text: qsTr("Nearby")
-                    icon.source: "/icons/material/ic_my_location.svg"//"/icons/icon_airfield.svg"
+                    icon.source: "/icons/material/ic_my_location.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
 

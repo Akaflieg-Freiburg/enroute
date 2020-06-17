@@ -1,1 +1,7 @@
 CMakeLists.txt.user
+
+# build dir
+build
+
+# IDE
+.vscode

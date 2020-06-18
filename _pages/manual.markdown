@@ -6,15 +6,11 @@ permalink: /manual/
 
 ### Manual
 
-**enroute** is designed to be simple, functional, reliable and easy to learn.
-Still there might be times when a manual can be useful.
+**enroute** is designed to be simple and easy to learn.  Still there might be
+times when a manual can be useful.
 
-<figure style="width: 150px" class="align-right">
-  <img src="{{ site.url }}{{ site.baseurl }}/assets/pdf/IntroducingEnroute.pdf" alt="">
-  <figcaption>Moving Map Display.</figcaption>
-</figure>
+![Document](/assets/images/PDF_file_icon.svg)
 
-
-Download [the latest version manual as a PDF here.](https://github.com/Akaflieg-Freiburg/enroute)
+Download [the latest version of the manual as a PDF here.](/assets/pdf/IntroducingEnroute.pdf)
 
 

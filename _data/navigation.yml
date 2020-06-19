@@ -4,6 +4,8 @@ main:
     url: /download
   - title: "Screenshots"
     url: /screenshots
+  - title: "Manual"
+    url: /manual
   - title: "Maps"
     url: /maps
   - title: "Acknowledgements"

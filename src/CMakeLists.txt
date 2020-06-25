@@ -5,6 +5,7 @@
 qt5_add_translation(TRANSLATIONS
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
      )
 message(${TRANSLATIONS})
 

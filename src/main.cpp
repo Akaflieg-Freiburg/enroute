@@ -41,6 +41,7 @@
 #include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MapManager.h"
+#include "Meteorologist.h"
 #include "MobileAdaptor.h"
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
@@ -124,6 +125,10 @@ int main(int argc, char *argv[])
     // Make MobileAdaptor available to QML engine
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
     engine->rootContext()->setContextProperty("mobileAdaptor", adaptor);
+
+    // Attach meteorologist
+    auto meteorologist = new Meteorologist(engine);
+    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
 
     // Attach library info
     auto librarian = new Librarian(engine);

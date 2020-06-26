@@ -71,6 +71,7 @@ set(SOURCES
     FlightRoute.h
     GeoMapProvider.h
     Librarian.h
+    Meteorologist.h
     MobileAdaptor.h
     ScaleQuickItem.h
 
@@ -90,6 +91,7 @@ set(SOURCES
     Librarian.cpp
     main.cpp
     MapManager.cpp
+    Meteorologist.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     SatNav.cpp

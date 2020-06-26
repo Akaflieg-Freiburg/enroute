@@ -156,6 +156,21 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    text: qsTr("Manual")
+                    icon.source: "/icons/material/ic_help_outline.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+                    visible: !satNav.isInFlight
+
+                    onClicked: {
+                        mobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enroute/manual");
+                        drawer.close()
+                    }
+                }
+
+                ItemDelegate {
                     text: qsTr("Bug report")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     icon.color: Material.primary

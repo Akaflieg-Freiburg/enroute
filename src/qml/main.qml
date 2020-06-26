@@ -141,7 +141,7 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
-                    text: qsTr("About Enroute")
+                    text: qsTr("About this app")
                     icon.source: "/icons/material/ic_info_outline.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
@@ -149,10 +149,56 @@ ApplicationWindow {
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
-                        stackView.pop()
-                        stackView.push("pages/InfoPage.qml")
-                        drawer.close()
+                        aboutMenu.popup()
                     }
+
+
+                    Menu {
+                        id: aboutMenu
+
+
+                        ItemDelegate {
+                            text: qsTr("App info")
+                            icon.source: "/icons/material/ic_info_outline.svg"
+                            icon.color: Material.primary
+
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/InfoPage.qml")
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                        ItemDelegate {
+                            text: qsTr("Bug report")
+                            icon.source: "/icons/material/ic_bug_report.svg"
+                            icon.color: Material.primary
+
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/BugReportPage.qml")
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                        ItemDelegate {
+                            text: qsTr("Participate")
+                            icon.source: "/icons/nav_participate.svg"
+                            icon.color: Material.primary
+
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/ParticipatePage.qml")
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+                    } // Menu
                 }
 
                 ItemDelegate {
@@ -166,36 +212,6 @@ ApplicationWindow {
                         mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enroute/manual");
-                        drawer.close()
-                    }
-                }
-
-                ItemDelegate {
-                    text: qsTr("Bug report")
-                    icon.source: "/icons/material/ic_bug_report.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
-                    visible: !satNav.isInFlight
-
-                    onClicked: {
-                        mobileAdaptor.vibrateBrief()
-                        stackView.pop()
-                        stackView.push("pages/BugReportPage.qml")
-                        drawer.close()
-                    }
-                }
-
-                ItemDelegate {
-                    text: qsTr("Participate")
-                    icon.source: "/icons/nav_participate.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
-                    visible: !satNav.isInFlight
-
-                    onClicked: {
-                        mobileAdaptor.vibrateBrief()
-                        stackView.pop()
-                        stackView.push("pages/ParticipatePage.qml")
                         drawer.close()
                     }
                 }

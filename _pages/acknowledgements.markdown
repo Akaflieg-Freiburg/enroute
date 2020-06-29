@@ -8,9 +8,17 @@ permalink: /acknowledgements
 
 **enroute flight navigation** was written by Stefan Kebekus as a project of of the [Akaflieg Freiburg](https://akaflieg-freiburg.de) flight club. However, several other people helped.
 
-* **Johannes Zellner** joined the development in 2020.  He contributes to the C++ and QML code base of the app and helps with bug fixing.
+* **Adrien Crovato** is a private pilot and aerospace engineer. He joined the development team in 2020, and contributes to the C++ and QML code base.
 
 * **Heiner Tholen** enjoys building things, analog and digital, airborne as well as ground-based. He uses enroute as a pilot of ultralight planes. Heiner joined the enroute team mid 2020 and contributes to the C++/QML codebase.
+
+* **Johannes Zellner** joined the development in 2020.  He contributes to the C++ and QML code base of the app and helps with bug fixing.
+
+
+## Manual
+
+The manual has kindly been provided by Michael Horbaschk.
+
 
 ## Translators
 

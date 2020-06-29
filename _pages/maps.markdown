@@ -69,5 +69,4 @@ Europe | Switzerland | Class 1
 Europe | United Kingdom | Class 2
 North America | Canada | Class 2
 North America | United States | Class 2
-
-
+South America | Argentina | Class 2

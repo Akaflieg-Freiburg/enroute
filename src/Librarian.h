@@ -47,7 +47,12 @@ public:
      *
      * This method reads a string from a file stored in the QRessource
      * system. The method expects that the file contains a string in UTF8
-     * encoding.
+     * encoding.  There are a few special strings that are not read from
+     * QRessource, but are stored internally and that will be translated. These
+     * are the following.
+     *
+     * - ":text/whatsnew.html" A text that describes new features in the current
+     *   program version
      *
      * @param name Name of the file in the QRessource, such as
      * ":text/bugReport.html"

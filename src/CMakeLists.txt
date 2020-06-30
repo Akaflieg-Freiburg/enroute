@@ -39,9 +39,6 @@ configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/participate_
 configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/tooManyDownloads.html.in text/tooManyDownloads.html)
 configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/tooManyDownloads_cz.html.in text/tooManyDownloads_cz.html)
 configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/tooManyDownloads_de.html.in text/tooManyDownloads_de.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/whatsnew.html.in text/whatsnew.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/whatsnew_cz.html.in text/whatsnew_cz.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/whatsnew_de.html.in text/whatsnew_de.html)
 
 
 #

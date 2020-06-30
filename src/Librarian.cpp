@@ -33,6 +33,89 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 
 QString Librarian::getStringFromRessource(const QString &name) const
 {
+    if (name == ":text/authors.html")
+        return tr(R"html(
+    <h3>Authors</h3>
+
+    <br>
+
+    <table>
+      <tr>
+        <td>
+          <p>The app <strong>enroute flight navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.</p>
+          <h4>Address</h4>
+          Stefan Kebekus<br>
+          Wintererstraße 77<br>
+          79104 Freiburg<br>
+          Germany<br>
+          <br>
+          <a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>
+        </td>
+        <td>
+          <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <br>
+          <h3>Contributing Authors</h3>
+          <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Adrien Crovato is a private pilot and aerospace engineer. He joined the development team in 2020, and contributes to the C++ and QML code base.</p>
+          <br>
+          <br>
+          <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>
+        </td>
+        <td>
+          <p align='center'>&nbsp;<img src='/icons/crovato.jpg' alt='Adrien Crovato' height='140'><br>Adrien Crovato</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Heiner Tholen enjoys building things, analog and digital, airborne as well as ground-based. He uses enroute as a pilot of ultralight planes. Heiner joined the enroute team mid 2020 and contributes to the C++/QML codebase.</p>
+          <br>
+          <br>
+          <a href='mailto:ul@heinertholen.com'>e-mail</a>
+        </td>
+        <td>
+          <p align='center'>&nbsp;<img src='/icons/tholen.jpg' alt='Heiner Tholen' height='140'><br>Heiner Tholen</p>
+         </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Johannes Zellner joined the development in 2020.  He contributes to the C++ and QML code base of the app and helps with bug fixing.</p>
+          <br>
+          <br>
+          <a href='mailto:johannes@zellner.org'>e-mail</a>
+        </td>
+        <td>
+          <p align='center'>&nbsp;<img src='/icons/zellner.jpg' alt='Johannes Zellner' height='140'><br>Johannes Zellner</p>
+        </td>
+      </tr>
+    </table>
+
+    <h3>Translations</h3>
+
+    <p><strong>French:</strong> Adrien Crovato, <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>.</p>
+
+    <p><strong>German:</strong> Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>e-mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
+    <p></p>
+)html");
+
+    if (name == ":text/whatsnew.html")
+        return tr(R"html(
+<p>Adrien Crovato and Heiner Tholen have joined the core development team. As a result of their efforts, there is now an option to use <strong>metric units</strong> for horizontal distances and speeds, and the <strong>Nearby</strong> page has been expanded.</p>
+
+<p>Maps has been added for <strong>Argentina</strong> and <strong>Brazil</strong>. As usual, we provide weekly updates.</p>
+
+<p>Markus Sachs has translated the app to <strong>German</strong>.  If you prefer English, go to the 'Settings' page where a language option has been added.</p>
+
+<p>Michael Horbaschk has kindly written a <strong>manual</strong> for the app.</p>
+)html");
+
     QFile file(name);
     file.open(QIODevice::ReadOnly);
     auto content = file.readAll();

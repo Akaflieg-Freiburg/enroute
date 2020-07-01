@@ -12,7 +12,6 @@
     
     <!-- Texts -->
     <qresource>
-	<file>text/firstStart.html</file>
 	<file>text/flightRouteLibraryInfo.html</file>
         <file>text/missingPermissions.html</file>
         <file>text/info_enroute.html</file>
@@ -21,7 +20,6 @@
         <file>text/tooManyDownloads.html</file>
     </qresource>
     <qresource lang="cz">
-        <file alias="text/firstStart.html">text/firstStart_cz.html</file>
 	<file alias="text/flightRouteLibraryInfo.html">text/flightRouteLibraryInfo_cz.html</file>
         <file alias="text/missingPermissions.html">text/missingPermissions_cz.html</file>
         <file alias="text/info_enroute.html">text/info_enroute_cz.html</file>
@@ -30,7 +28,6 @@
         <file alias="text/tooManyDownloads.html">text/tooManyDownloads_cz.html</file>
     </qresource>
     <qresource lang="de">
-        <file alias="text/firstStart.html">text/firstStart_de.html</file>
 	<file alias="text/flightRouteLibraryInfo.html">text/flightRouteLibraryInfo_de.html</file>
         <file alias="text/missingPermissions.html">text/missingPermissions_de.html</file>
         <file alias="text/info_enroute.html">text/info_enroute_de.html</file>

@@ -33,79 +33,108 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 
 QString Librarian::getStringFromRessource(const QString &name) const
 {
-    if (name == ":text/authors.html")
+    if (name == ":text/authors.html") {
         return tr(R"html(
-    <h3>Authors</h3>
+<h3>Authors</h3>
 
-    <br>
+<br>
 
-    <table>
-      <tr>
-        <td>
-          <p>The app <strong>enroute flight navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.</p>
-          <h4>Address</h4>
-          Stefan Kebekus<br>
-          Wintererstraße 77<br>
-          79104 Freiburg<br>
-          Germany<br>
-          <br>
-          <a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>
-        </td>
-        <td>
-          <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <br>
-          <h3>Contributing Authors</h3>
-          <br>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>Adrien Crovato is a private pilot and aerospace engineer. He joined the development team in 2020, and contributes to the C++ and QML code base.</p>
-          <br>
-          <br>
-          <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>
-        </td>
-        <td>
-          <p align='center'>&nbsp;<img src='/icons/crovato.jpg' alt='Adrien Crovato' height='140'><br>Adrien Crovato</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>Heiner Tholen enjoys building things, analog and digital, airborne as well as ground-based. He uses enroute as a pilot of ultralight planes. Heiner joined the enroute team mid 2020 and contributes to the C++/QML codebase.</p>
-          <br>
-          <br>
-          <a href='mailto:ul@heinertholen.com'>e-mail</a>
-        </td>
-        <td>
-          <p align='center'>&nbsp;<img src='/icons/tholen.jpg' alt='Heiner Tholen' height='140'><br>Heiner Tholen</p>
-         </td>
-      </tr>
-      <tr>
-        <td>
-          <p>Johannes Zellner joined the development in 2020.  He contributes to the C++ and QML code base of the app and helps with bug fixing.</p>
-          <br>
-          <br>
-          <a href='mailto:johannes@zellner.org'>e-mail</a>
-        </td>
-        <td>
-          <p align='center'>&nbsp;<img src='/icons/zellner.jpg' alt='Johannes Zellner' height='140'><br>Johannes Zellner</p>
-        </td>
-      </tr>
-    </table>
+<table>
+  <tr>
+    <td>
+      <p>The app <strong>enroute flight navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.</p>
+      <h4>Address</h4>
+      Stefan Kebekus<br>
+      Wintererstraße 77<br>
+      79104 Freiburg<br>
+      Germany<br>
+      <br>
+      <a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>
+    </td>
+    <td>
+      <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <br>
+      <h3>Contributing Authors</h3>
+      <br>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Adrien Crovato is a private pilot and aerospace engineer. He joined the development team in 2020, and contributes to the C++ and QML code base.</p>
+      <br>
+      <br>
+      <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>
+    </td>
+    <td>
+      <p align='center'>&nbsp;<img src='/icons/crovato.jpg' alt='Adrien Crovato' height='140'><br>Adrien Crovato</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Heiner Tholen enjoys building things, analog and digital, airborne as well as ground-based. He uses enroute as a pilot of ultralight planes. Heiner joined the enroute team mid 2020 and contributes to the C++/QML codebase.</p>
+      <br>
+      <br>
+      <a href='mailto:ul@heinertholen.com'>e-mail</a>
+    </td>
+    <td>
+      <p align='center'>&nbsp;<img src='/icons/tholen.jpg' alt='Heiner Tholen' height='140'><br>Heiner Tholen</p>
+     </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Johannes Zellner joined the development in 2020.  He contributes to the C++ and QML code base of the app and helps with bug fixing.</p>
+      <br>
+      <br>
+      <a href='mailto:johannes@zellner.org'>e-mail</a>
+    </td>
+    <td>
+      <p align='center'>&nbsp;<img src='/icons/zellner.jpg' alt='Johannes Zellner' height='140'><br>Johannes Zellner</p>
+    </td>
+  </tr>
+</table>
 
-    <h3>Translations</h3>
+<h3>Translations</h3>
 
-    <p><strong>French:</strong> Adrien Crovato, <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>.</p>
+<p><strong>French:</strong> Adrien Crovato, <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>.</p>
 
-    <p><strong>German:</strong> Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>e-mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
-    <p></p>
+<p><strong>German:</strong> Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>e-mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
+<p></p>
 )html");
+     }
+    
+    if (name == ":text/bugReport.html") {
+      return tr(R"html(
+<h3>Bug Report</h3>
 
-    if (name == ":text/whatsnew.html")
+<p>We aim to provide very high-quality software. Fixing errors is therefore always our first priority. We are grateful for every report that we get.</p>
+
+<p>Please report errors through the <a href="https://github.com/Akaflieg-Freiburg/enroute/issues">GitHub issue tracker</a> (this might require opening an account with GitHub).  If you find this difficult, then please <a href="mailto:stefan.kebekus@gmail.com">contact the author</a> directly.</p>
+)html");
+    }
+
+    if (name == ":text/firstStart.html") {
+        return tr(R"html(
+<h3>Welcome to enroute flight navigation - A project of Akaflieg Freiburg</h3>
+
+<p>Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.</p>
+
+<p>The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.</p>
+
+<p>The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.</p>
+
+<p><strong>This app is no substitute for proper flight preparation or good pilotage.</strong> We hope you enjoy the app and that you do find it useful.</p>
+
+<p>Fly safely and enjoy many happy landings!</p>
+
+<p>&#8212; Stefan Kebekus.</p>
+)html");
+    }
+
+    if (name == ":text/whatsnew.html") {
         return tr(R"html(
 <p>Adrien Crovato and Heiner Tholen have joined the core development team. As a result of their efforts, there is now an option to use <strong>metric units</strong> for horizontal distances and speeds, and the <strong>Nearby</strong> page has been expanded.</p>
 
@@ -115,6 +144,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p>Michael Horbaschk has kindly written a <strong>manual</strong> for the app.</p>
 )html");
+    }
 
     QFile file(name);
     file.open(QIODevice::ReadOnly);

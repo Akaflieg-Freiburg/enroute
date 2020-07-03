@@ -161,7 +161,7 @@ Public Member Functions</h2></td></tr>
 <p>Name of the directory containing the flight route library. </p>
 <dl class="section return"><dt>Returns</dt><dd>Name of the directory, without trailing slash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00075">75</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00080">80</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
 
 </div>
 </div>
@@ -357,7 +357,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Exposes string stored in QRessource to QML. </p>
-<p>This method reads a string from a file stored in the QRessource system. The method expects that the file contains a string in UTF8 encoding.</p>
+<p>This method reads a string from a file stored in the QRessource system. The method expects that the file contains a string in UTF8 encoding. There are a few special strings that are not read from QRessource, but are stored internally and that will be translated. These are the following.</p>
+<ul>
+<li>":text/whatsnew.html" A text that describes new features in the current program version</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name of the file in the QRessource, such as ":text/bugReport.html"</td></tr>

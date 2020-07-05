@@ -307,7 +307,7 @@ Dialog {
 
         Button {
             flat: true
-            text: qsTr("Route")
+            text: flightRoute.contains(dialogArgs.waypoint) ? qsTr("from Route") : qsTr("to Route")
             icon.source: flightRoute.contains(dialogArgs.waypoint) ? "/icons/material/ic_remove_circle.svg" : "/icons/material/ic_add_circle.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
 

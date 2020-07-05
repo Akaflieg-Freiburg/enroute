@@ -70,9 +70,7 @@ Page {
                 icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
                 icon.color: "transparent"
 
-                anchors.left: parent.left
-                anchors.right: parent.right
-                Layout.fillWidth: true
+                width: sv.width
 
                 onClicked: {
                     mobileAdaptor.vibrateBrief()

@@ -44,7 +44,7 @@ ToolBar {
 
     Label {
         anchors.left: backButton.right
-        anchors.right: parent.right
+        anchors.right: backButton2.left
         anchors.bottom: parent.bottom
         anchors.top: parent.top
 
@@ -58,5 +58,20 @@ ToolBar {
         // on language changes
         Component.onCompleted: color = Material.foreground
     } // Label
+
+    ToolButton {
+        // Invisible element for horizontal centering of the label
+        id: backButton2
+
+        anchors.right: parent.right
+        anchors.rightMargin: drawer.dragMargin
+
+        icon.source: "/icons/material/ic_arrow_back.svg"
+        visible: false
+
+        // Oddly, this seems necessary, or else the color will change
+        // on language changes
+        Component.onCompleted: icon.color = Material.foreground
+    } // ToolButton
 
 } // ToolBar

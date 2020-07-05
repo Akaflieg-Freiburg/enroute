@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -323,7 +323,7 @@ QString SatNav::statusAsString() const
         return tr("Access denied");
 
     if (sourceStatus == QGeoPositionInfoSource::ClosedError)
-        return tr("Connection to SatNav system lost");
+        return tr("Connection to satellite system lost");
 
     if (sourceStatus != QGeoPositionInfoSource::NoError)
         return tr("Unknown error");

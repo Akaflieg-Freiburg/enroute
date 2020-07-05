@@ -33,7 +33,7 @@ import "pages"
 ApplicationWindow {
     id: view
     visible: true
-    title: qsTr("Akaflieg Freiburg - Enroute")
+    title: qsTr("Enroute Flight Navigation")
     width: 1000
     height: 800
 
@@ -53,11 +53,8 @@ ApplicationWindow {
                 Label {
                     Layout.fillWidth: true
 
-                    text: qsTr("enroute flight navigation")
+                    text: "<strong>Enroute Flight Navigation</strong><br>Akaflieg Freiburg"
                     color: "white"
-                    font.bold: true
-                    font.pixelSize: 1.2*Qt.application.font.pixelSize
-                    horizontalAlignment: Text.AlignHCenter
                     padding: Qt.application.font.pixelSize
 
                     background: Rectangle {
@@ -83,7 +80,7 @@ ApplicationWindow {
                 ItemDelegate {
                     id: menuItemNearby
 
-                    text: qsTr("Nearby")
+                    text: qsTr("Nearby Waypoints")
                     icon.source: "/icons/material/ic_my_location.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
@@ -362,7 +359,7 @@ ApplicationWindow {
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
 
-        title: qsTr("Do you wish to exit Enroute?")
+        title: qsTr("Do you wish to exit Enroute Flight Navigation?")
 
         standardButtons: Dialog.No | Dialog.Yes
 
@@ -399,7 +396,7 @@ ApplicationWindow {
         onDetected: mobileAdaptor.vibrateBrief()
     }
 
-    // enroute closed unexpectedly if...
+    // Enroute closed unexpectedly if...
     // * the "route" page is open
     // * the route menu is opened
     // * then the menu is closed again with the back button w/o selecting a route menu item

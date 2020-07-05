@@ -27,8 +27,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("About Enroute")
-
+    title: qsTr("About Enroute Flight Navigation")
 
     header: StandardHeader {}
 

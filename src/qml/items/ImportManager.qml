@@ -89,8 +89,8 @@ Item {
 
             var errorString = ""
 
-            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJson)
-                errorString = flightRoute.loadFromGeoJson(importManager.filePath)
+            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJSON)
+                errorString = flightRoute.loadFromGeoJSON(importManager.filePath)
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GPX)
                 errorString = flightRoute.loadFromGpx(importManager.filePath, geoMapProvider)
 

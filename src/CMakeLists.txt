@@ -6,7 +6,7 @@ qt5_add_translation(TRANSLATIONS
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-     )
+    )
 message(${TRANSLATIONS})
 
 configure_file(flightMap.qrc.in flightMap.qrc)
@@ -14,25 +14,6 @@ configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qr
 configure_file(icons.qrc.in icons.qrc)
 configure_file(qml.qrc.in qml.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
-
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/flightRouteLibraryInfo.html.in text/flightRouteLibraryInfo.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/flightRouteLibraryInfo_cz.html.in text/flightRouteLibraryInfo_cz.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/flightRouteLibraryInfo_de.html.in text/flightRouteLibraryInfo_de.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/missingPermissions.html.in text/missingPermissions.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/missingPermissions_cz.html.in text/missingPermissions_cz.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/missingPermissions_de.html.in text/missingPermissions_de.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_enroute.html.in text/info_enroute.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_enroute_cz.html.in text/info_enroute_cz.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_enroute_de.html.in text/info_enroute_de.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_license.html.in text/info_license.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_license_cz.html.in text/info_license_cz.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/info_license_de.html.in text/info_license_de.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/participate.html.in text/participate.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/participate_cz.html.in text/participate_cz.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/participate_de.html.in text/participate_de.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/tooManyDownloads.html.in text/tooManyDownloads.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/tooManyDownloads_cz.html.in text/tooManyDownloads_cz.html)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/html/tooManyDownloads_de.html.in text/tooManyDownloads_de.html)
 
 
 #
@@ -96,11 +77,11 @@ set(SOURCES
 # Generate android executable
 #
 if( ANDROID )
-  qtquick_compiler_add_resources(QTQUICKCOMPILEDRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
-  list(APPEND SOURCES
-    ${QTQUICKCOMPILEDRESOURCES}
-    android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
-    )
+    qtquick_compiler_add_resources(QTQUICKCOMPILEDRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
+    list(APPEND SOURCES
+        ${QTQUICKCOMPILEDRESOURCES}
+        android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+        )
 
     # Configure files
     configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
@@ -173,10 +154,11 @@ endif()
 #
 # Generate unix executable
 #
+
 if (NOT ANDROID)
-  list(APPEND SOURCES
-    ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
-    )
+    list(APPEND SOURCES
+        ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
+        )
 
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})
@@ -190,6 +172,7 @@ endif()
 #
 # Generate documentation
 #
+
 configure_file(Doxyfile.in Doxyfile)
 add_custom_target(enroute_doc COMMAND doxygen)
 add_dependencies(fulldoc enroute_doc)

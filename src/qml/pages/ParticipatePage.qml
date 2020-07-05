@@ -26,7 +26,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("Help to make Enroute better")
+    title: qsTr("Improve this app")
 
     header: StandardHeader {}
 

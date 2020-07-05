@@ -10,32 +10,7 @@
         <file>enroute_fr.qm</file>
     </qresource>
     
-    <!-- Texts -->
-    <qresource>
-	<file>text/flightRouteLibraryInfo.html</file>
-        <file>text/missingPermissions.html</file>
-        <file>text/info_enroute.html</file>
-        <file>text/info_license.html</file>
-        <file>text/participate.html</file>
-        <file>text/tooManyDownloads.html</file>
-    </qresource>
-    <qresource lang="cz">
-	<file alias="text/flightRouteLibraryInfo.html">text/flightRouteLibraryInfo_cz.html</file>
-        <file alias="text/missingPermissions.html">text/missingPermissions_cz.html</file>
-        <file alias="text/info_enroute.html">text/info_enroute_cz.html</file>
-        <file alias="text/info_license.html">text/info_license_cz.html</file>
-        <file alias="text/participate.html">text/participate_cz.html</file>
-        <file alias="text/tooManyDownloads.html">text/tooManyDownloads_cz.html</file>
-    </qresource>
-    <qresource lang="de">
-	<file alias="text/flightRouteLibraryInfo.html">text/flightRouteLibraryInfo_de.html</file>
-        <file alias="text/missingPermissions.html">text/missingPermissions_de.html</file>
-        <file alias="text/info_enroute.html">text/info_enroute_de.html</file>
-        <file alias="text/info_license.html">text/info_license_de.html</file>
-        <file alias="text/participate.html">text/participate_de.html</file>
-        <file alias="text/tooManyDownloads.html">text/tooManyDownloads_de.html</file>
-    </qresource>
-
+    <!-- Geoid correction data -->
     <qresource>
         <file alias="WW15MGH.DAC">${CMAKE_CURRENT_SOURCE_DIR}/res/WW15MGH.DAC</file>
     </qresource>

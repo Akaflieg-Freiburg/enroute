@@ -92,7 +92,7 @@ public:
      * This method constructs a flight route, by reading a flight route file
      * from the library.  The flight route is construted with aircraft and wind
      * set to nullptr, so that no wind computations are possible. It is,
-     * however, possible to export the flight route (for instance to GeoJson or
+     * however, possible to export the flight route (for instance to GeoJSON or
      * GPX format).
      *
      * Ownership is transferred to the caller, so it is up to the caller to

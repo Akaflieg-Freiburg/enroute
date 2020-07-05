@@ -177,7 +177,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGeoJson(QString fileName);
+    Q_INVOKABLE QString loadFromGeoJSON(QString fileName);
 
     /*! \brief Loads the route from a GPX document
      *

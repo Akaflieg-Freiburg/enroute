@@ -28,7 +28,7 @@ import "../items"
 
 Page {
     id: page
-    title: qsTr("Nearby")
+    title: qsTr("Nearby Waypoints")
     focus: true
 
     header: StandardHeader {}
@@ -41,15 +41,9 @@ Page {
 
         currentIndex: sv.currentIndex
 
-        TabButton {
-            text: "Airfield"
-        }
-        TabButton {
-            text: "Navigational aids"
-        }
-        TabButton {
-            text: "Reporting points"
-        }
+        TabButton { text: qsTr("AD") }
+        TabButton { text: qsTr("NAV") }
+        TabButton { text: qsTr("REP") }
         Material.elevation: 3
     }
 

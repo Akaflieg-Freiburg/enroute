@@ -79,7 +79,7 @@ Dialog {
 
             Layout.fillWidth: true
             focus: true
-            placeholderText: "File Name"
+            placeholderText: qsTr("File Name")
 
             onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
 
@@ -128,7 +128,9 @@ Dialog {
 
     Connections {
         target: sensorGesture
-        onDetected: close()
+        function onDetected(gesture) {
+            drawer.close()
+        }
     }
 
     // This is the name of the file that openFromLibrary will open
@@ -230,7 +232,9 @@ Dialog {
 
         Connections {
             target: sensorGesture
-            onDetected: close()
+            function onDetected(gesture) {
+                drawer.close()
+            }
         }
     } // Dialog: overwriteDialog
 

@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     // Command line parsing
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "enroute flight navigation is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg."));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg."));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("[fileName]", QCoreApplication::translate("main", "File to import."));

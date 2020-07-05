@@ -181,8 +181,8 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     }
     if ((mimeType.name() == "text/plain")
             || (mimeType.name() == "application/geo+json")) {
-        // We assume that the file contains a flight route in GeoJson format
-        emit openFileRequest(myPath, FlightRoute_GeoJson);
+        // We assume that the file contains a flight route in GeoJSON format
+        emit openFileRequest(myPath, FlightRoute_GeoJSON);
         return;
     }
     emit openFileRequest(myPath, UnknownFunction);

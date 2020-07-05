@@ -165,7 +165,7 @@ Page {
                         title: qsTr("Export …")
 
                         MenuItem {
-                            text: qsTr("… to GeoJson file")
+                            text: qsTr("… to GeoJSON file")
                             onTriggered: {
                                 cptMenu.close()
                                 mobileAdaptor.vibrateBrief()
@@ -202,7 +202,7 @@ Page {
                         title: qsTr("Open in other app …")
 
                         MenuItem {
-                            text: qsTr("… in GeoJson format")
+                            text: qsTr("… in GeoJSON format")
 
                             onTriggered: {
                                 mobileAdaptor.vibrateBrief()
@@ -305,7 +305,7 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = flightRoute.loadFromGeoJson(librarian.flightRouteFullPath(finalFileName))
+        var errorString = flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

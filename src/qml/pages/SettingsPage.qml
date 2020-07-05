@@ -145,7 +145,7 @@ Page {
             }
 
             ItemDelegate {
-                text: qsTr("SatNav Status")+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
+                text: qsTr("Satellite Status")+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
                 icon.source: "/icons/material/ic_satellite.svg"
                 icon.color: Material.primary
                 Layout.fillWidth: true

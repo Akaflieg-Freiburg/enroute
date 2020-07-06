@@ -39,15 +39,19 @@ ApplicationWindow {
 
     Drawer {
         id: drawer
-        width: col.implicitWidth
+        width: Math.max(col.implicitWidth, modeButtons.implicitWidth)
         height: view.height
 
         ScrollView {
-            anchors.fill: parent
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: modeButtons.top
+            clip: true
 
             ColumnLayout {
                 id: col
-                anchors.fill: parent
+                width: Math.max(col.implicitWidth, modeButtons.implicitWidth)
                 spacing: 0
 
                 Label {
@@ -138,11 +142,12 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    id: itemAbout
                     text: qsTr("About this app")
                     icon.source: "/icons/material/ic_info_outline.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
-                    visible: !satNav.isInFlight
+                    visible: !globalSettings.isAppInFlightMode(satNav.isInFlight)
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
@@ -152,7 +157,6 @@ ApplicationWindow {
 
                     Menu {
                         id: aboutMenu
-
 
                         ItemDelegate {
                             text: qsTr("App info")
@@ -199,11 +203,12 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    id: itemManual
                     text: qsTr("Manual")
                     icon.source: "/icons/material/ic_help_outline.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
-                    visible: !satNav.isInFlight
+                    visible: !globalSettings.isAppInFlightMode(satNav.isInFlight)
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
@@ -214,10 +219,11 @@ ApplicationWindow {
                 }
 
                 Rectangle {
+                    id: itemSpacer
                     height: 1
                     Layout.fillWidth: true
                     color: Material.primary
-                    visible: !satNav.isInFlight
+                    visible: !globalSettings.isAppInFlightMode(satNav.isInFlight)
                 }
 
                 ItemDelegate {
@@ -229,16 +235,48 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         drawer.close()
-                        if (satNav.isInFlight)
+                        if (globalSettings.isAppInFlightMode(satNav.isInFlight))
                             exitDialog.open()
                         else
                             Qt.quit()
                     }
                 }
+            }
+        }
 
-                Item {
-                    id: spacer
-                    Layout.fillHeight: true
+        RowLayout {
+            id: modeButtons
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            spacing: 0
+            Layout.alignment: Qt.AlignHCenter
+
+            ToolButton {
+                text: qsTr("Ground")
+                checkable: true
+                checked: globalSettings.mode === GlobalSettings.Ground
+            }
+            ToolButton {
+                text: qsTr("Flight")
+                checkable: true
+                checked: globalSettings.mode === GlobalSettings.Flight
+            }
+            ToolButton {
+                text: qsTr("Auto.")
+                checkable: true
+                checked: globalSettings.mode === GlobalSettings.Auto
+            }
+        }
+        ButtonGroup {
+            buttons: modeButtons.children
+            onClicked: {
+                if (button.text === qsTr("Ground")) {
+                    globalSettings.mode = GlobalSettings.Ground
+                } else if (button.text === qsTr("Flight")) {
+                    globalSettings.mode = GlobalSettings.Flight
+                } else {
+                    globalSettings.mode = GlobalSettings.Auto
                 }
             }
         }
@@ -247,6 +285,17 @@ ApplicationWindow {
             target: sensorGesture
             function onDetected(gesture) {
                 drawer.close()
+            }
+        }
+
+        Connections {
+            target: globalSettings
+            function onModeChanged() {
+                mobileAdaptor.vibrateBrief()
+                const inFlightMode = globalSettings.isAppInFlightMode(satNav.isInFlight)
+                itemAbout.visible = !inFlightMode
+                itemManual.visible = !inFlightMode
+                itemSpacer.visible = !inFlightMode
             }
         }
 
@@ -280,12 +329,12 @@ ApplicationWindow {
             // Start accepting files
             mobileAdaptor.startReceiveOpenFileRequests()
 
-            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !satNav.isInFlight) {
+            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !globalSettings.isAppInFlightMode(satNav.isInFlight)) {
                 whatsNewDialog.open()
                 return
             }
 
-            if (mapManager.geoMaps.updatable && !satNav.isInFlight) {
+            if (mapManager.geoMaps.updatable && !globalSettings.isAppInFlightMode(satNav.isInFlight)) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
                 dialogLoader.active = true
@@ -298,7 +347,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (satNav.isInFlight)
+                    if (globalSettings.isAppInFlightMode(satNav.isInFlight))
                         exitDialog.open()
                     else
                         Qt.quit()
@@ -373,12 +422,12 @@ ApplicationWindow {
         id: whatsNewDialog
         standardButtons: Dialog.Ok
         anchors.centerIn: parent
-        
+
         title: qsTr("What's new …?")
         text: librarian.getStringFromRessource(":text/whatsnew.html")
         onOpened: globalSettings.lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
-    
+
     Shortcut {
         sequence: StandardKey.Quit
         onActivated: Qt.quit()

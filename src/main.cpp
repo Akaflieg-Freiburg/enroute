@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
+    qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
 
     // Set up application
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

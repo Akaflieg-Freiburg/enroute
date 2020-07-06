@@ -75,10 +75,11 @@ Item {
             target: satNav
             function onTrackChanged() {
                 if (flightMap.followGPS === true) {
-                    flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
+                    flightMap.bearing = globalSettings.isAppInFlightMode(satNav.isInFlight) ? satNav.track : 0.0
                 }
             }
 
+            // TODO is this function needed? (onTrackChanged should do it, since the track must have changed if isInFlight changed)
             function onIsInFlightChanged() {
                 if (flightMap.followGPS === true) {
                     flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
@@ -96,7 +97,7 @@ Item {
             property: "bearing"
             duration: 400
             direction: RotationAnimation.Shortest
-            to: satNav.isInFlight ? satNav.lastValidTrack : 0.0
+            to: globalSettings.isAppInFlightMode(satNav.isInFlight) ? satNav.lastValidTrack : 0.0
         }
 
 
@@ -129,13 +130,13 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: satNav.lastValidCoordinate
-            visible: satNav.isInFlight && (satNav.track >= 0)
+            visible: globalSettings.isAppInFlightMode(satNav.isInFlight) && (satNav.track >= 0)
 
             sourceItem: Item{
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: satNav.isInFlight ? satNav.groundSpeedInMetersPerSecond : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: globalSettings.isAppInFlightMode(satNav.isInFlight) ? satNav.groundSpeedInMetersPerSecond : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -350,11 +351,23 @@ Item {
 
         states: State {
             name: "up"
-            when: satNav.isInFlight > 0
+            when: globalSettings.isAppInFlightMode(satNav.isInFlight) > 0
             AnchorChanges { target: navBar; anchors.bottom: parent.bottom; anchors.top: undefined }
         }
 
         transitions: Transition { AnchorAnimation { duration: 400 } }
     }
 
+    Connections {
+        target: globalSettings
+        function onModeChanged() {
+            if (globalSettings.isAppInFlightMode(satNav.isInFlight)) {
+                navBar.state = "up"
+                fiveMinuteBar.visible = true
+            } else {
+                navBar.state = ""
+                fiveMinuteBar.visible = false
+            }
+        }
+    }
 }

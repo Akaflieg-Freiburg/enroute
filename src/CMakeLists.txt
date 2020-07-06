@@ -1,13 +1,36 @@
 #
+# Translations
+#
+
+find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
+  HINTS ${Qt5Core_DIR}/../../../translations
+  HINTS /usr/share/qt5/translations
+  REQUIRED
+  )
+message("Translation ${Qt5_TRANSLATION_DIR}")
+
+set(Qt5_LCONVERT_EXECUTABLE Qt5::lconvert)
+set(LANGS de fr)  
+foreach(_lang ${LANGS})
+  add_custom_command(
+    OUTPUT enroute_${_lang}.qm
+    DEPENDS ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts
+    COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
+    COMMAND ${Qt5_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${Qt5_TRANSLATION_DIR}/qtbase_${_lang}.qm ${Qt5_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm ${Qt5_TRANSLATION_DIR}/qtlocation_${_lang}.qm -o enroute_${_lang}.qm
+    COMMENT "Generating translations"
+    )
+endforeach()
+
+#
 # Configure files
 #
 
-qt5_add_translation(TRANSLATIONS
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-    )
-message(${TRANSLATIONS})
+#qt5_add_translation(TRANSLATIONS
+#    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
+#    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+#    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
+#    )
+#message(${TRANSLATIONS})
 
 configure_file(flightMap.qrc.in flightMap.qrc)
 configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qrc.in flightMapFonts.qrc)
@@ -28,9 +51,12 @@ set(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
-    ${TRANSLATIONS}
     ${BIGRESOURCES}
 
+    # Translations
+    enroute_de.qm
+    enroute_fr.qm
+    
     # Other files
     flightMap.qrc.in
     icons.qrc.in

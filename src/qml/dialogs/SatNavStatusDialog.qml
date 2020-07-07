@@ -26,7 +26,7 @@ import QtQuick.Layouts 1.14
 import enroute 1.0
 
 Dialog {
-    title: qsTr("SatNav Status")
+    title: qsTr("Satellite Status")
 
     // Size is chosen so that the dialog does not cover the parent in full
     contentWidth: gl.implicitWidth
@@ -48,7 +48,7 @@ Dialog {
             columnSpacing: 30
             columns: 2
 
-            Text { text: qsTr("SatNav Status") }
+            Text { text: qsTr("Satellite Status") }
             Text {
                 font.weight: Font.Bold
                 text: satNav.statusAsString
@@ -78,13 +78,13 @@ Dialog {
             Text { text: qsTr("Longitude") }
             Text { text: satNav.longitudeAsString }
 
-            Text { text: qsTr("Error Estimate") }
+            Text { text: qsTr("Error") }
             Text { text: satNav.horizontalPrecisionInMetersAsString }
 
-            Text { text: qsTr("Ground Speed") }
+            Text { text: qsTr("Ground Speed"); textFormat: Text.RichText }
             Text { text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString }
 
-            Text { text: qsTr("Track") }
+            Text { text: qsTr("TT") }
             Text { text: satNav.trackAsString }
 
             Text {
@@ -98,14 +98,8 @@ Dialog {
                 Layout.columnSpan: 2
             }
 
-            Text { text: qsTr("Altitude (raw)") }
-            Text { text: satNav.rawAltitudeInFeetAsString }
-
-            Text { text: qsTr("Altitude (corrected)") }
+            Text { text: qsTr("ALT") }
             Text { text: satNav.altitudeInFeetAsString }
-
-            Text { text: qsTr("Geoidal separation") }
-            Text { text: satNav.geoidalSeparationAsString }
 
         } // GridLayout
 

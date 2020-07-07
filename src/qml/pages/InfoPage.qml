@@ -27,8 +27,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("About Enroute")
-
+    title: qsTr("About Enroute Flight Navigation")
 
     header: StandardHeader {}
 
@@ -44,7 +43,7 @@ Page {
             text: "Enroute"
         }
         TabButton {
-            text: qsTr("Author")
+            text: qsTr("Authors")
         }
         TabButton {
             text: qsTr("License")
@@ -98,63 +97,7 @@ Page {
 
                 Label {
                     id: lbl2
-                    text: qsTr("
-<h3>Authors</h3>
-
-<br>
-
-<table>
-  <tr>
-    <td>
-      <p>The app <strong>enroute flight navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.</p>
-      <h4>Address</h4>
-      Stefan Kebekus<br>
-      Wintererstraße 77<br>
-      79104 Freiburg<br>
-      Germany<br>
-      <br>
-      <a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <br>
-      <h3>Contributing Authors</h3>
-      <br>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Heiner Tholen enjoys building things, analog and digital, airborne as well as ground-based. He uses enroute as a pilot of ultralight planes. Heiner joined the enroute team mid 2020 and contributes to the C++/QML codebase.</p>
-      <br>
-      <br>
-      <a href='mailto:ul@heinertholen.com'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/tholen.jpg' alt='Heiner Tholen' height='140'><br>Heiner Tholen</p>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Johannes Zellner joined the development in 2020.  He contributes to the C++ and QML code base of the app and helps with bug fixing.</p>
-      <br>
-      <br>
-      <a href='mailto:johannes@zellner.org'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/zellner.jpg' alt='Johannes Zellner' height='140'><br>Johannes Zellner</p>
-    </td>
-  </tr>
-</table>
-
-<h3>Translations</h3>
-
-<p>German: Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>E-Mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
-<p></p>
-")
+                    text: librarian.getStringFromRessource(":text/authors.html")
                     textFormat: Text.RichText
                     width: pg.width
                     wrapMode: Text.Wrap

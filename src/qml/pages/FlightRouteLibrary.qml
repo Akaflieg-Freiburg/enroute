@@ -67,7 +67,7 @@ Page {
             id: headerMenuToolButton
 
             anchors.right: parent.right
-           icon.source: "/icons/material/ic_more_vert.svg"
+            icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 headerMenuX.popup()
@@ -87,6 +87,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Import …")
+                    enabled: Qt.platform.os !== "android"
 
                     onTriggered: {
                         mobileAdaptor.vibrateBrief()
@@ -147,7 +148,7 @@ Page {
 
                     Action {
                         id: openAction
-                        text: qsTr("Open")
+                        text: qsTr("Open …")
                         onTriggered: {
                             mobileAdaptor.vibrateBrief()
                             finalFileName = modelData
@@ -161,11 +162,11 @@ Page {
 
                     MenuSeparator { }
 
-                    Menu {
-                        title: qsTr("Export …")
+                    AutoSizingMenu {
+                        title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
 
                         MenuItem {
-                            text: qsTr("… to GeoJson file")
+                            text: qsTr("… to GeoJSON file")
                             onTriggered: {
                                 cptMenu.close()
                                 mobileAdaptor.vibrateBrief()
@@ -198,11 +199,11 @@ Page {
                         }
                     }
 
-                    Menu {
+                    AutoSizingMenu {
                         title: qsTr("Open in other app …")
 
                         MenuItem {
-                            text: qsTr("… in GeoJson format")
+                            text: qsTr("… in GeoJSON format")
 
                             onTriggered: {
                                 mobileAdaptor.vibrateBrief()
@@ -305,7 +306,7 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = flightRoute.loadFromGeoJson(librarian.flightRouteFullPath(finalFileName))
+        var errorString = flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

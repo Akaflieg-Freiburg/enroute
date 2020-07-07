@@ -31,7 +31,7 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
     // Load last flightRoute
-    loadFromGeoJson(stdFileName);
+    loadFromGeoJSON(stdFileName);
 
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
@@ -236,7 +236,7 @@ QString FlightRoute::save(const QString& fileName) const
     if (numBytesWritten == -1) {
         file.close();
         QFile::remove(fileName);
-        return tr("Unable to write to file '%1' for writing.").arg(fileName);
+        return tr("Unable to write to file '%1'.").arg(fileName);
     }
     file.close();
     return QString();
@@ -341,11 +341,10 @@ QString FlightRoute::makeSummary(bool inMetricUnits) const
         if (!qIsFinite(_wind->windDirectionInDEG()))
             if (!qIsFinite(_wind->windDirectionInDEG()))
                 complaints += tr("Wind direction not specified.");
-
     }
 
     if (!complaints.isEmpty())
-        result += QString("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(" "));
+        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(" "));
 
     return result;
 }
@@ -365,7 +364,7 @@ QByteArray FlightRoute::toGeoJSON() const
 }
 
 
-QString FlightRoute::loadFromGeoJson(QString fileName)
+QString FlightRoute::loadFromGeoJSON(QString fileName)
 {
     if (fileName.isEmpty())
         fileName = stdFileName;

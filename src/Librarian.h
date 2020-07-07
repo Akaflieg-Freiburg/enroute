@@ -47,7 +47,12 @@ public:
      *
      * This method reads a string from a file stored in the QRessource
      * system. The method expects that the file contains a string in UTF8
-     * encoding.
+     * encoding.  There are a few special strings that are not read from
+     * QRessource, but are stored internally and that will be translated. These
+     * are the following.
+     *
+     * - ":text/whatsnew.html" A text that describes new features in the current
+     *   program version
      *
      * @param name Name of the file in the QRessource, such as
      * ":text/bugReport.html"
@@ -87,7 +92,7 @@ public:
      * This method constructs a flight route, by reading a flight route file
      * from the library.  The flight route is construted with aircraft and wind
      * set to nullptr, so that no wind computations are possible. It is,
-     * however, possible to export the flight route (for instance to GeoJson or
+     * however, possible to export the flight route (for instance to GeoJSON or
      * GPX format).
      *
      * Ownership is transferred to the caller, so it is up to the caller to

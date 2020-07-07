@@ -162,6 +162,7 @@ Page {
 
             AutoSizingMenu {
                 id: headerMenuX
+                cascade: true
 
                 MenuItem {
                     text: qsTr("Open from library …")
@@ -199,7 +200,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Import …")
-                    visible: Qt.platform.os !== "android"
+                    enabled: Qt.platform.os !== "android"
 
                     onTriggered: {
                         mobileAdaptor.vibrateBrief()
@@ -209,12 +210,12 @@ Page {
                     }
                 }
 
-                Menu {
-                    title: qsTr("Export …")
+                AutoSizingMenu {
+                    title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {
-                        text: qsTr("… to GeoJson file")
+                        text: qsTr("… to GeoJSON file")
                         onTriggered: {
                             headerMenuX.close()
                             mobileAdaptor.vibrateBrief()
@@ -244,12 +245,12 @@ Page {
                     }
                 }
 
-                Menu {
+                AutoSizingMenu {
                     title: qsTr("Open in other app …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {
-                        text: qsTr("… in GeoJson format")
+                        text: qsTr("… in GeoJSON format")
 
                         onTriggered: {
                             mobileAdaptor.vibrateBrief()
@@ -322,7 +323,7 @@ Page {
 
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
-        TabButton { text: qsTr("Aircraft and Wind") }
+        TabButton { text: qsTr("ACFT and Wind") }
         Material.elevation: 3
     } // TabBar
 
@@ -347,7 +348,7 @@ Page {
                 verticalAlignment : Text.AlignVCenter
                 textFormat: Text.RichText
 
-                text: qsTr("<h2>Empty Route</h2><p>Use the button 'Add Waypoint' below.</p>")
+                text: qsTr("<h2>Empty Route</h2><p>Use the button <strong>Add Waypoint</strong> below.</p>")
             }
 
             ListView {
@@ -378,17 +379,18 @@ Page {
 
                 Label { Layout.fillHeight: true }
                 Label {
-                    text: qsTr("Aircraft")
+                    text: qsTr("True Airspeed")
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
                     color: Material.primary
                 }
 
-                Label { text: qsTr("Cruise Speed") }
+                Label { text: qsTr("Cruise") }
                 TextField {
                     id: cruiseSpeed
                     Layout.fillWidth: true
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
                         top: globalSettings.useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
@@ -404,7 +406,7 @@ Page {
                                                                               aircraft.cruiseSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h TAS" : "kt TAS" }
+                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
                 ToolButton {
                     icon.source: "/icons/material/ic_delete.svg"
                     enabled: cruiseSpeed.text !== ""
@@ -414,10 +416,11 @@ Page {
                     }
                 }
 
-                Label { text: qsTr("Descent Speed") }
+                Label { text: qsTr("Descent") }
                 TextField {
                     id: descentSpeed
                     Layout.fillWidth: true
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
                         top: globalSettings.useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
@@ -433,7 +436,7 @@ Page {
                                                                               aircraft.descentSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h TAS" : "kt TAS" }
+                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
                 ToolButton {
                     icon.source: "/icons/material/ic_delete.svg"
                     enabled: descentSpeed.text !== ""
@@ -443,10 +446,20 @@ Page {
                     }
                 }
 
-                Label { text: qsTr("Fuel consumption") }
+                Label { Layout.fillHeight: true }
+                Label {
+                    text: qsTr("Fuel consumption")
+                    Layout.columnSpan: 4
+                    font.pixelSize: Qt.application.font.pixelSize*1.2
+                    font.bold: true
+                    color: Material.primary
+                }
+
+                Label { text: qsTr("Cruise") }
                 TextField {
                     id: fuelConsumption
                     Layout.fillWidth: true
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: aircraft.minFuelConsuption
                         top: aircraft.maxFuelConsuption
@@ -483,6 +496,7 @@ Page {
                 TextField {
                     id: windDirection
                     Layout.fillWidth: true
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: wind.minWindDirection
                         top: wind.maxWindDirection
@@ -510,6 +524,7 @@ Page {
                 TextField {
                     id: windSpeed
                     Layout.fillWidth: true
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
                         top: globalSettings.useMetricUnits ? wind.maxWindSpeedInKMH : wind.maxWindSpeedInKT

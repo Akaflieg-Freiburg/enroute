@@ -79,7 +79,7 @@ Dialog {
             id: filterName
 
             Layout.fillWidth: true
-            placeholderText: "Filter Flight Route Names"
+            placeholderText: qsTr("Filter Flight Route Names")
 
             onTextChanged: lView.model = library.flightRoutes(text)
 
@@ -130,7 +130,7 @@ Dialog {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = flightRoute.loadFromGeoJson(librarian.flightRouteFullPath(finalFileName))
+        var errorString = flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

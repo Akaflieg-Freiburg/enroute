@@ -81,7 +81,7 @@ Rectangle {
             color: "white"
             horizontalAlignment: Text.AlignHCenter
             width: parent.width/3
-            text: qsTr("Altitude")
+            text: qsTr("ALT")
         } // Label
 
         Label {
@@ -89,14 +89,14 @@ Rectangle {
             width: parent.width/3
 
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Ground Speed")
+            text: qsTr("GS")
         } // Label
 
         Label {
             color: "white"
             width: parent.width/3
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Track")
+            text: qsTr("TT")
         } // Label
     } // Grid
 } // Rectangle

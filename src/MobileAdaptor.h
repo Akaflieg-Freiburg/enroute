@@ -58,7 +58,7 @@ public:
       {
         UnknownFunction,
         FlightRoute_GPX, /*!< File contains a flight route, stored as GeoJSON. */
-        FlightRoute_GeoJson /*!< File contains a flight route, stored as GPX. */
+        FlightRoute_GeoJSON /*!< File contains a flight route, stored as GPX. */
       };
     Q_ENUM(FileFunction)
 

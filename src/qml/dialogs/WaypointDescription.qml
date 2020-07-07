@@ -292,7 +292,8 @@ Dialog {
 
         Button {
             flat: true
-            text: qsTr("Direct to")
+            text: qsTr("Direct")
+            icon.source: "/icons/material/ic_keyboard_tab.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             enabled: (satNav.status === SatNav.OK) && (dialogLoader.text !== "noRouteButton")
 
@@ -306,7 +307,8 @@ Dialog {
 
         Button {
             flat: true
-            text: flightRoute.contains(dialogArgs.waypoint) ? qsTr("Remove from route") : qsTr("Add to route")
+            text: flightRoute.contains(dialogArgs.waypoint) ? qsTr("from Route") : qsTr("to Route")
+            icon.source: flightRoute.contains(dialogArgs.waypoint) ? "/icons/material/ic_remove_circle.svg" : "/icons/material/ic_add_circle.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
 
             onClicked: {

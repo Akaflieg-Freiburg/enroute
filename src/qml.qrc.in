@@ -22,7 +22,7 @@
         <file alias="items/StandardHeader.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/StandardHeader.qml</file>	
         <file alias="pages/BugReportPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/BugReportPage.qml</file>
         <file alias="pages/FlightRouteEditor.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteEditor.qml</file>	
-        <file alias="pages/FlightRouteLibrary.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteManageLibraryPage.qml</file>
+        <file alias="pages/FlightRouteLibrary.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteLibrary.qml</file>
         <file alias="pages/InfoPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/InfoPage.qml</file>
         <file alias="pages/MapManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapManager.qml</file>
         <file alias="pages/MapPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapPage.qml</file>

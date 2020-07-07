@@ -171,7 +171,6 @@ private:
     void installTranslators();
 
     QPointer<QTranslator> enrouteTranslator {nullptr};
-    QPointer<QTranslator> qtTranslator {nullptr};
 
     QSettings settings;
 };

@@ -39,10 +39,7 @@ GlobalSettings::~GlobalSettings()
     // Remove translators
     if (enrouteTranslator)
         QCoreApplication::removeTranslator(enrouteTranslator);
-    if (qtTranslator)
-        QCoreApplication::removeTranslator(qtTranslator);
     delete enrouteTranslator;
-    delete qtTranslator;
 
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
@@ -103,10 +100,6 @@ void GlobalSettings::installTranslators()
         QCoreApplication::removeTranslator(enrouteTranslator);
         delete enrouteTranslator;
     }
-    if (qtTranslator) {
-        QCoreApplication::removeTranslator(qtTranslator);
-        delete qtTranslator;
-    }
 
     // If desired, install new translators
     if (preferEnglish()) {
@@ -117,10 +110,6 @@ void GlobalSettings::installTranslators()
         enrouteTranslator = new QTranslator(this);
         enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
         QCoreApplication::installTranslator(enrouteTranslator);
-
-        qtTranslator = new QTranslator(this);
-        qtTranslator->load(QString("qt_%1.qm").arg(QLocale::system().name().left(2)), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-        QCoreApplication::installTranslator(qtTranslator);
     }
 
 }

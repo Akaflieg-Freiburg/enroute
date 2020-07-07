@@ -72,8 +72,15 @@ cmake ..
 #
 
 ninja
-$Qt5_DIR_ANDROID/bin/androiddeployqt --input android_deployment_settings.json --output android-build --release --apk enroute-release-unsigned.apk
-echo "Unsigned APK file is available at $PWD/enroute-release-unsigned.apk"
+
+echo "Build APK"
+ninja apk
+
+echo "Build AAB"
+ninja aab
+
+#$Qt5_DIR_ANDROID/bin/androiddeployqt --input android_deployment_settings.json --output android-build --release --apk enroute-release-unsigned.apk
+#echo "Unsigned APK file is available at $PWD/enroute-release-unsigned.apk"
 
 if [ -z "$ANDROID_KEYSTORE_FILE" -o -z "$ANDROID_KEYSTORE_PASS" ]
 then
@@ -83,7 +90,15 @@ else
     $ANDROID_SDK_ROOT/build-tools/28.0.3/apksigner sign \
 						   --ks $ANDROID_KEYSTORE_FILE \
 						   --ks-pass pass:$ANDROID_KEYSTORE_PASS \
-						   --in enroute-release-unsigned.apk \
+						   --in android-build/enroute.apk \
 						   --out enroute-release-signed.apk
     echo "Signed APK file is available at $PWD/enroute-release-signed.apk"
+    echo
+    echo "Signing AAB"
+    jarsigner -keystore $ANDROID_KEYSTORE_FILE \
+	      -storepass $ANDROID_KEYSTORE_PASS \
+	      android-build/build/outputs/bundle/release/android-build-release.aab "Stefan Kebekus"
+    cp android-build/build/outputs/bundle/release/android-build-release.aab enroute-release-signed.aab
+    
+    echo "Signed AAB file is available at $PWD/enroute-release-signed.aab"
 fi

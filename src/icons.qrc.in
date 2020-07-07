@@ -16,9 +16,11 @@
         <file alias="icons/material/ic_directions.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_directions_24px.svg</file>
         <file alias="icons/material/ic_exit_to_app.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_exit_to_app_24px.svg</file>
         <file alias="icons/material/ic_file_download.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_file_download_24px.svg</file>
+	<file alias="icons/material/ic_help_outline.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_help_outline_24px.svg</file>
 	<file alias="icons/material/ic_info_outline.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_info_outline_24px.svg</file>	
 	<file alias="icons/material/ic_keyboard_arrow_down.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_down_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_arrow_up.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_up_24px.svg</file>	
+	<file alias="icons/material/ic_keyboard_tab.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_tab_24px.svg</file>	
 	<file alias="icons/material/ic_library_add.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_add_24px.svg</file>
 	<file alias="icons/material/ic_library_books.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_books_24px.svg</file>
 	<file alias="icons/material/ic_map.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_map_24px.svg</file>
@@ -29,6 +31,7 @@
 	<file alias="icons/material/ic_new_releases.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_new_releases_24px.svg</file>
 	<file alias="icons/material/ic_open_in_new.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_open_in_new_24px.svg</file>
         <file alias="icons/material/ic_refresh.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_refresh_24px.svg</file>
+        <file alias="icons/material/ic_remove_circle.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_remove_circle_24px.svg</file>
         <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
         <file alias="icons/material/ic_send.svg">${material-design-icons_SOURCE_DIR}/content/svg/design/ic_send_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
@@ -37,6 +40,7 @@
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>
 	
 	<!-- GUI icons: General -->
+        <file alias="icons/crovato.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/crovato.jpg</file>
         <file alias="icons/icon_airfield.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/icon_airfield.svg</file>
         <file alias="icons/kebekus.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/kebekus.jpg</file>
         <file alias="icons/nav_participate.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/nav_participate.svg</file>

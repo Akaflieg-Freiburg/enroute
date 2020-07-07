@@ -81,8 +81,7 @@ Dialog {
 
             Label {
                 id: lbl2
-                text: satNav.hasAltitude ? qsTr("The current raw altimeter reading as reported by the satellite navigation system is %1 AMSL. "+
-                                                "The corrected altitude is %2 AMSL.").arg(satNav.rawAltitudeInFeetAsString).arg(satNav.altitudeInFeetAsString)
+                text: satNav.hasAltitude ? qsTr("The current raw altimeter reading as reported by the satellite navigation system is %1 AMSL.").arg(satNav.altitudeInFeetAsString)
                                          : qsTr("Insufficient satellite reception. Altimeter cannot be set.")
                 textFormat: Text.RichText
                 horizontalAlignment: Text.AlignJustify

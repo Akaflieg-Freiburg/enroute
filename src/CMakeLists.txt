@@ -2,14 +2,20 @@
 # Translations
 #
 
+# The Qt library translations are a mess. We try to find the files at various
+# places in the file system, generate our own *.qm files with lrelease and then
+# use the lconvert tool to concatenate the *.qm file with the Qt library
+# translations. Resulting files are then called enroute_XX.qm where XX is the
+# language code. The variable LANGS contains all language codes that will be
+# considered.
+
 find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
   HINTS ${Qt5Core_DIR}/../../../translations
   HINTS /usr/share/qt5/translations
   REQUIRED
   )
-message("Translation ${Qt5_TRANSLATION_DIR}")
-
 set(Qt5_LCONVERT_EXECUTABLE Qt5::lconvert)
+
 set(LANGS de fr)  
 foreach(_lang ${LANGS})
   add_custom_command(
@@ -21,16 +27,10 @@ foreach(_lang ${LANGS})
     )
 endforeach()
 
+
 #
 # Configure files
 #
-
-#qt5_add_translation(TRANSLATIONS
-#    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
-#    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-#    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-#    )
-#message(${TRANSLATIONS})
 
 configure_file(flightMap.qrc.in flightMap.qrc)
 configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qrc.in flightMapFonts.qrc)

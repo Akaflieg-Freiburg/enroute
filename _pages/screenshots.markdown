@@ -57,7 +57,7 @@ gallery2:
 
 ---
 
-Below you can see **enroute** in action.
+Below you can see **Enroute Flight Navigation** in action.
 
 ## Screenshots from a mobile phone.
 

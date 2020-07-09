@@ -5,9 +5,9 @@ permalink: /privacy
 toc: true
 ---
 
-# Privacy Policies for the **enroute** App
+# Privacy Policies for the **Enroute Flight Navigation** App
 
-The **enroute** app has been designed to not send any data to us. We do not track our users. We do not collect data. However, note the following.
+The app **Enroute Flight Navigation** has been designed to not send any data to us. We do not track our users. We do not collect data. However, note the following.
 
 - The app contains third-party software components, including map rendering software from [MapBox, Inc.](https://www.mapbox.com/)  While we have checked that no data is collected by these components, there is a chance that we overlooked something.
 
@@ -38,7 +38,7 @@ The Android app requires the following privileges.
 
 # Privacy Policies for This Web Site
 
-The **enroute** website is a static site that does not track, collect, store any information, or set any cookies.  
+The website **Enroute Flight Navigation** is a static site that does not track, collect, store any information, or set any cookies.  
 
 The web site is, however, provided by [Github Inc.](https://github.com/), 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.  GitHub may collect User Personal Information from visitors, including logs of visitor IP addresses, to comply with legal obligations, and to maintain the security and integrity of the Website and the Service.  Please consult GitHub's [Privacy Statment](https://help.github.com/en/github/site-policy/github-privacy-statement#github-pages) and [Global Privacy Practices](https://help.github.com/en/github/site-policy/global-privacy-practices) for details.
 

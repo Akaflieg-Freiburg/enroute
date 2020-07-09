@@ -10,17 +10,17 @@ permalink: /download/
 
 ### Mobile App for Android devices
 
-**enroute** is available for free download at Google Play.
+**Enroute Flight Navigation** is available for free download at Google Play.
 
 
 ### Source code
 
-Developers who are interested in compiling **enroute** themselves find all relevant sources on [GitHub](https://github.com/Akaflieg-Freiburg/enroute).  This program builds on the Qt library. The source code for Qt can be found at [this URL](https://cplx.vm.uni-freiburg.de/storage/QtSources).
+Developers who are interested in compiling **Enroute Flight Navigation** themselves find all relevant sources on [GitHub](https://github.com/Akaflieg-Freiburg/enroute).  This program builds on the Qt library. The source code for Qt can be found at [this URL](https://cplx.vm.uni-freiburg.de/storage/QtSources).
 
 
 # Other systems
 
-**enroute** can be ported without much difficulty to Apple iOS devices, such as iPhones and iPads.  We are currently looking for volunteers who help with the port and maintain **enroute**'s presence in the Apple App Store. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
+**Enroute Flight Navigation** can be ported without much difficulty to Apple iOS devices, such as iPhones and iPads.  We are currently looking for volunteers who help with the port and maintain **Enroute Flight Navigation**'s presence in the Apple App Store. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
 
-**enroute** cab be ported without much difficulty to Linux, Windows and MacOS desktop machines. We are currently looking for volunteers. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
+**Enroute Flight Navigation** cab be ported without much difficulty to Linux, Windows and MacOS desktop machines. We are currently looking for volunteers. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
 

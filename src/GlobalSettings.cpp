@@ -46,22 +46,6 @@ GlobalSettings::~GlobalSettings()
 }
 
 
-void GlobalSettings::setMode(Mode mode_)
-{
-    int mode_int = mode_;
-    if (mode_int == mode())
-        return;
-    settings.setValue("mode", mode_int);
-    emit modeChanged();
-}
-
-
-bool GlobalSettings::isAppInFlightMode(bool satNavInFlight) {
-    auto mode_ = mode();
-    return (mode_ == Flight) || (mode_ == Auto && satNavInFlight);
-}
-
-
 void GlobalSettings::setAcceptedTerms(int terms)
 {
     if (terms == acceptedTerms())

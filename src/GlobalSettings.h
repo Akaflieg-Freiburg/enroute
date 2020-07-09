@@ -51,43 +51,6 @@ public:
     /*! \brief Standard deconstructor */
     ~GlobalSettings() override;
 
-    /*! \brief App-Modes Auto, Ground, Flight
-     *
-     * Mode Auto is 0, as it should be the default state when App is first opened.
-     */
-    enum Mode { Auto = 0, Ground = 1, Flight = 2 };
-    Q_ENUM(Mode)
-
-    /*! \brief App-Modes Auto, Ground, Flight
-     *
-     * This property saves the mode the app is in. Also see `isAppInFlightMode` method.
-     */
-    Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property mode
-     */
-    Mode mode() const { return Mode(settings.value("mode", 0).toInt()); }
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param mode_ Property mode
-     */
-    void setMode(Mode mode_);
-
-    /*! \brief Returns true if the app should be rendered in flight mode
-     *
-     * Uses the mode property and the satNavInFlight argument to determine how the app
-     * should be rendered:
-     * Mode Ground -> false
-     * Mode Flight -> true
-     * Mode Auto -> satNavInFlight
-     *
-     * @param satNavInFlight isInFlight property from satNav
-     */
-    Q_INVOKABLE bool isAppInFlightMode(bool satNavInFlight);
-
     /*! \brief Find out if Terms & Conditions have been accepted
      *
      * This property says which version of our "terms and conditions" have been
@@ -186,9 +149,6 @@ public:
     void setPreferEnglish(bool preferEng);
 
 signals:
-    /*! Notifier signal */
-    void modeChanged();
-
     /*! Notifier signal */
     void acceptedTermsChanged();
 

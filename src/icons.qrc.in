@@ -11,6 +11,7 @@
 	<file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
         <file alias="icons/material/ic_bug_report.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_bug_report_24px.svg</file>
 	<file alias="icons/material/ic_cancel.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_cancel_24px.svg</file>
+	<file alias="icons/material/ic_cloud_queue.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_cloud_queue_24px.svg</file>
         <file alias="icons/material/ic_delete.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_delete_24px.svg</file>
         <file alias="icons/material/ic_directions.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_directions_24px.svg</file>
         <file alias="icons/material/ic_exit_to_app.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_exit_to_app_24px.svg</file>

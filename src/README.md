@@ -28,6 +28,8 @@ The main() function constructs a number of C++ objects and exposes them to QML.
 
 - Instances of the classes Aircraft, FlightRoute and Wind, under the name "aircraft", "flightRoute" and "wind". These classes are used for route and wind computation.
 
+- An instance of the class Meteorologist, under the name "meteorologist".  This class provides weather info.
+
 
 
 

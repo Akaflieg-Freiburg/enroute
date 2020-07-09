@@ -93,6 +93,22 @@ ApplicationWindow {
                     }
                 }
 
+                ItemDelegate {
+                    id: weatherItem
+
+                    text: qsTr("Weather")
+                    icon.source: "/icons/material/ic_cloud_queue.svg"
+                    icon.color: Material.primary
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        mobileAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/WeatherPage.qml")
+                        drawer.close()
+                    }
+                }
+
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true

@@ -56,9 +56,14 @@ add_custom_target(flightMapSprites
 # MapBox font ressource
 #
 
-add_custom_target(mapBoxFontRessource
-  COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/flightMap
-  COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/generateFontQRC.py ${CMAKE_SOURCE_DIR}/3rdParty ${CMAKE_CURRENT_SOURCE_DIR}/flightMap
+add_custom_target(flightMapFonts
+  COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/fonts/Roboto\ Condensed\ Italic
+  COMMAND build-glyphs ${CMAKE_SOURCE_DIR}/3rdParty/Google-Fonts/RobotoCondensed-Italic.ttf ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/fonts/Roboto\ Condensed\ Italic  
+  COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/fonts/Roboto\ Medium
+  COMMAND build-glyphs ${CMAKE_SOURCE_DIR}/3rdParty/Google-Fonts/Roboto-Medium.ttf ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/fonts/Roboto\ Medium
+  COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/fonts/Roboto\ Regular
+  COMMAND build-glyphs ${CMAKE_SOURCE_DIR}/3rdParty/Google-Fonts/Roboto-Regular.ttf ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/fonts/Roboto\ Regular
+  COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/generateFontQRC.py ${CMAKE_SOURCE_DIR}/generatedSources ${CMAKE_CURRENT_SOURCE_DIR}/flightMap
   COMMENT "Generated sources: mapbox font ressource"
   )
 set(flightMapFontsQRC ${CMAKE_CURRENT_BINARY_DIR}/flightMap-fonts.qrc CACHE INTERNAL "" FORCE)
@@ -69,7 +74,7 @@ set(flightMapFontsQRC ${CMAKE_CURRENT_BINARY_DIR}/flightMap-fonts.qrc CACHE INTE
 #
 
 add_custom_target(generatedSources
+  DEPENDS flightMapFonts
   DEPENDS flightMapSprites
   DEPENDS mainIcons
-  DEPENDS mapBoxFontRessource
   )

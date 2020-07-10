@@ -95,7 +95,7 @@ Page {
                 icon.color: Material.primary
                 Layout.fillWidth: true
 
-                enabled: !globalSettings.isAppInFlightMode(satNav.isInFlight)
+                enabled: !satNav.isInFlight
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     stackView.push("MapManager.qml")

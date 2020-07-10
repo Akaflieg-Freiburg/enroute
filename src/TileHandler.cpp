@@ -31,8 +31,6 @@
 #include "Downloadable.h"
 #include "TileHandler.h"
 
-#include <QDebug>
-
 TileHandler::TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {

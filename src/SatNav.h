@@ -320,7 +320,7 @@ public:
 
     This property holds an estimate, as to whether the device is flying or on
     the ground.  The current implementation considers the device is flying if
-    the groundspeed can be read and is greater then 40 knots.
+    the groundspeed can be read and is greater then 30 knots.
   */
   Q_PROPERTY(bool isInFlight READ isInFlight NOTIFY update)
 

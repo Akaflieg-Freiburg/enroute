@@ -227,7 +227,7 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         drawer.close()
-                        if (satNav.isInFlight)
+                        if (!globalSettings.autoFlightDetection || satNav.isInFlight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -296,7 +296,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (satNav.isInFlight)
+                    if (!globalSettings.autoFlightDetection || satNav.isInFlight)
                         exitDialog.open()
                     else
                         Qt.quit()

@@ -73,15 +73,13 @@ Item {
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Connections {
             target: satNav
-            function onTrackChanged() {
+            function onLastValidTrackChanged() {
                 if (flightMap.followGPS === true) {
-                    flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
-                }
-            }
-
-            function onIsInFlightChanged() {
-                if (flightMap.followGPS === true) {
-                    flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
+                    if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
+                        flightMap.bearing = satNav.track
+                    } else {
+                        flightMap.bearing = 0.0
+                    }
                 }
             }
         }
@@ -96,7 +94,7 @@ Item {
             property: "bearing"
             duration: 400
             direction: RotationAnimation.Shortest
-            to: satNav.isInFlight ? satNav.lastValidTrack : 0.0
+            to: satNav.lastValidTrack
         }
 
 
@@ -129,13 +127,14 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: satNav.lastValidCoordinate
-            visible: satNav.isInFlight && (satNav.track >= 0)
+            visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.track >= 0)
 
             sourceItem: Item{
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: satNav.isInFlight ? satNav.groundSpeedInMetersPerSecond : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || satNav.isInFlight) ?
+                                                                            satNav.groundSpeedInMetersPerSecond : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -350,7 +349,7 @@ Item {
 
         states: State {
             name: "up"
-            when: satNav.isInFlight > 0
+            when: !globalSettings.autoFlightDetection || satNav.isInFlight
             AnchorChanges { target: navBar; anchors.bottom: parent.bottom; anchors.top: undefined }
         }
 

@@ -211,7 +211,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: qsTr("Export …")
+                    title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
                     enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {

@@ -98,14 +98,8 @@ Dialog {
                 Layout.columnSpan: 2
             }
 
-            Text { text: qsTr("Altitude (raw)") }
-            Text { text: satNav.rawAltitudeInFeetAsString }
-
-            Text { text: qsTr("Altitude (corrected)") }
+            Text { text: qsTr("ALT") }
             Text { text: satNav.altitudeInFeetAsString }
-
-            Text { text: qsTr("Geoidal separation") }
-            Text { text: satNav.geoidalSeparationAsString }
 
         } // GridLayout
 

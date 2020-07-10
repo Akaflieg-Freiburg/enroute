@@ -51,7 +51,7 @@ Page {
 
             SwitchDelegate {
                 id: hideUpperAsp
-                text: qsTr("Hide Airspaces above FL100") + (globalSettings.hideUpperAirspaces ? `<br><font color="#606060" size="2">`
+                text: qsTr("Hide Airspaces ≥ FL100") + (globalSettings.hideUpperAirspaces ? `<br><font color="#606060" size="2">`
                                                                                                 + qsTr("Upper airspaces currently hidden")
                                                                                                 +"</font>"
                                                                                               : `<br><font color="#606060" size="2">`
@@ -113,11 +113,11 @@ Page {
 
             SwitchDelegate {
                 id: useMetricUnits
-                text: qsTr("Prefer metric units")
+                text: qsTr("Use metric units")
                       + `<br><font color="#606060" size="2">`
                       + ( globalSettings.useMetricUnits ?
-                            qsTr("Horizontal speed in km/h, distance in km") :
-                            qsTr("Horizontal speed in kt, distance in NM")
+                            qsTr("Speed in km/h, distance in km") :
+                            qsTr("Speed in kt, distance in NM")
                         )
                       + "</font>"
                 icon.source: "/icons/material/ic_speed.svg"
@@ -132,7 +132,7 @@ Page {
 
             SwitchDelegate {
                 id: preferEnglish
-                text: qsTr("Prefer English")
+                text: qsTr("Use English")
                 icon.source: "/icons/material/ic_translate.svg"
                 icon.color: Material.primary
                 visible: globalSettings.hasTranslation

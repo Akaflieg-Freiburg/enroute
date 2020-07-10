@@ -138,7 +138,7 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
-                    text: qsTr("About this app")
+                    text: qsTr("Information")
                     icon.source: "/icons/material/ic_info_outline.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
@@ -149,13 +149,11 @@ ApplicationWindow {
                         aboutMenu.popup()
                     }
 
-
-                    Menu {
+                    AutoSizingMenu {
                         id: aboutMenu
 
-
                         ItemDelegate {
-                            text: qsTr("App info")
+                            text: qsTr("About Enroute Flight Navigation")
                             icon.source: "/icons/material/ic_info_outline.svg"
                             icon.color: Material.primary
 

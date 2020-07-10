@@ -34,7 +34,9 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 QString Librarian::getStringFromRessource(const QString &name) const
 {
     if (name == ":text/info_enroute.html") {
-        return tr(R"html(<h3>Enroute Flight Navigation ${PROJECT_VERSION}</h3>
+        return tr(R"html(<h3>Enroute Flight Navigation</h3>
+
+<p>Version %1</p>
 
 <p><strong>Enroute Flight Navigation</strong> is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg.</p>
 
@@ -56,7 +58,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p>This program builds on a number of open source libraries, including <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> and <a href="https://www.openssl.org">OpenSSL</a>.</p>
 
-<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html");
+<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(PROJECT_VERSION);
      }
 
     if (name == ":text/info_license.html") {

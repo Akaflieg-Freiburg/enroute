@@ -50,31 +50,6 @@ Page {
             }
 
             SwitchDelegate {
-                id: autoFlightDetection
-                text: qsTr("Automatic flight detection") + (
-                    globalSettings.autoFlightDetection ? (
-                        `<br><font color="#606060" size="2">`
-                        + qsTr("Switching to flight-mode at 30 kt")
-                        +"</font>"
-                    ) : (
-                        `<br><font color="#606060" size="2">`
-                        + qsTr("Always in flight-mode")
-                        + `</font>`
-                    )
-                )
-                icon.source: "/icons/material/ic_flight.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-                Component.onCompleted: {
-                    autoFlightDetection.checked = globalSettings.autoFlightDetection
-                }
-                onToggled: {
-                    mobileAdaptor.vibrateBrief()
-                    globalSettings.autoFlightDetection = autoFlightDetection.checked
-                }
-            }
-
-            SwitchDelegate {
                 id: hideUpperAsp
                 text: qsTr("Hide Airspaces ≥ FL100") + (
                     globalSettings.hideUpperAirspaces ? (
@@ -142,6 +117,31 @@ Page {
                 font.pixelSize: Qt.application.font.pixelSize*1.2
                 font.bold: true
                 color: Material.primary
+            }
+
+            SwitchDelegate {
+                id: autoFlightDetection
+                text: qsTr("Automatic flight detection") + (
+                    globalSettings.autoFlightDetection ? (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("Switching to flight-mode at 30 kt")
+                        +"</font>"
+                    ) : (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("Always in flight-mode")
+                        + `</font>`
+                    )
+                )
+                icon.source: "/icons/material/ic_flight.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    autoFlightDetection.checked = globalSettings.autoFlightDetection
+                }
+                onToggled: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.autoFlightDetection = autoFlightDetection.checked
+                }
             }
 
             SwitchDelegate {

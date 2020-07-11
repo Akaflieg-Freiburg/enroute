@@ -105,8 +105,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 <p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that. You already have <strong>%2 maps</strong>.</p>)html");
     }
 
-
-  if (name == ":text/authors.html") {
+    if (name == ":text/authors.html") {
         return tr(R"html(<h3>Authors</h3>
 
 <br>
@@ -222,11 +221,11 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
     
     if (name == ":text/whatsnew.html") {
-        return tr(R"html(<p>Adrien Crovato and Heiner Tholen have joined the core development team. As a result of their efforts, there is now an option to use <strong>metric units</strong> for horizontal distances and speeds, and the <strong>Nearby</strong> page has been expanded.</p>
+        return tr(R"html(<p>Adrien Crovato and Heiner Tholen have joined the core development team. As a result of their efforts, there is now an option to use <strong>metric units</strong> for horizontal distances and speeds, and the <strong>Nearby</strong> page has been expanded. For pilots of very slow-flying aircrafts (such as paramotors) there is now a switch to <strong>enable flight mode</strong> manually.</p>
 
 <p>Maps has been added for <strong>Argentina</strong> and <strong>Brazil</strong>. As usual, we provide weekly updates.</p>
 
-<p>Markus Sachs and Adrien Crovato have translated the app to <strong>French</strong> and <strong>German</strong>.  If you prefer English, go to the 'Settings' page where a language option has been added.</p>
+<p>Markus Sachs and Adrien Crovato have translated the app to <strong>French</strong> and <strong>German</strong>.  If you prefer English, go to the <strong>Settings</strong> page where a language option has been added.</p>
 
 <p>Michael Horbaschk has kindly written a <strong>manual</strong> for the app.</p>)html");
     }

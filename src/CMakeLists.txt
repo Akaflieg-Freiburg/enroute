@@ -52,7 +52,6 @@ set(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
-    #${BIGRESOURCES}
 
     # Translations
     enroute_de.qm

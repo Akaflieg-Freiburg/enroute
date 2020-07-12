@@ -47,7 +47,7 @@ ApplicationWindow {
 
             ColumnLayout {
                 id: col
-                anchors.fill: parent
+
                 spacing: 0
 
                 Label {
@@ -354,8 +354,7 @@ ApplicationWindow {
     Dialog {
         id: exitDialog
 
-        x: Math.round((parent.width - width) / 2)
-        y: Math.round((parent.height - height) / 2)
+        anchors.centerIn: parent
 
         title: qsTr("Do you wish to exit Enroute Flight Navigation?")
 

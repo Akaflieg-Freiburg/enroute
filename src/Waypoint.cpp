@@ -165,9 +165,9 @@ QString Waypoint::wayFrom(const QGeoCoordinate& position, bool useMetricUnits) c
 
     QString result;
     if (useMetricUnits) {
-        result += QString("%1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
+        result += QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     } else {
-        result += QString("%1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+        result += QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
     }
     return result;
 }

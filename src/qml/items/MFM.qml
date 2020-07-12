@@ -77,7 +77,6 @@ Item {
             target: satNav
             function onLastValidTrackChanged() {
                 if (flightMap.followGPS === true) {
-                    console.log("globalSettings.autoFlightDetection " + globalSettings.autoFlightDetection)
                     if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
                         flightMap.bearing = satNav.track
                     } else {
@@ -89,16 +88,6 @@ Item {
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
         Behavior on bearing { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
-
-        // This animation is started by the button "Center". It runs whenever the button is clicked (and then "followGPS" is also set to "true")
-        RotationAnimation {
-            id: resetBearing
-            target: flightMap
-            property: "bearing"
-            duration: 400
-            direction: RotationAnimation.Shortest
-            to: satNav.lastValidTrack
-        }
 
 
         // PROPERTY "center"
@@ -275,7 +264,6 @@ Item {
 
         onClicked: {
             mobileAdaptor.vibrateBrief()
-            resetBearing.running = true
             flightMap.followGPS = true
             trackChangedConnection.onLastValidTrackChanged()
         }

@@ -72,9 +72,12 @@ Item {
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Connections {
+            id: trackChangedConnection
+
             target: satNav
             function onLastValidTrackChanged() {
                 if (flightMap.followGPS === true) {
+                    console.log("globalSettings.autoFlightDetection " + globalSettings.autoFlightDetection)
                     if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
                         flightMap.bearing = satNav.track
                     } else {
@@ -102,6 +105,8 @@ Item {
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         Binding on center {
+            id: centerBinding
+
             restoreMode: Binding.RestoreBinding
             when: flightMap.followGPS === true
             value: satNav.lastValidCoordinate
@@ -109,7 +114,6 @@ Item {
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
         Behavior on center { CoordinateAnimation { duration: 1000 } }
-
 
         // PROPERTY "zoomLevel"
 
@@ -273,6 +277,7 @@ Item {
             mobileAdaptor.vibrateBrief()
             resetBearing.running = true
             flightMap.followGPS = true
+            trackChangedConnection.onLastValidTrackChanged()
         }
     }
 

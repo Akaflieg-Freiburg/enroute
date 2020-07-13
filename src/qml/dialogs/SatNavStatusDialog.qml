@@ -105,13 +105,6 @@ Dialog {
 
     } // Scrollview
 
-    Connections {
-        target: sensorGesture
-        function onDetected () {
-            close()
-        }
-    }
-
     onAccepted: {
         // Give feedback
         mobileAdaptor.vibrateBrief()

@@ -634,12 +634,6 @@ Page {
             item.open()
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                dialogLoader.active = false
-            }
-        }
     }
 
     Dialog {

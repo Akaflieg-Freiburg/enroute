@@ -22,7 +22,6 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
-import QtSensors 5.14
 
 import enroute 1.0
 
@@ -241,13 +240,6 @@ ApplicationWindow {
             }
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                drawer.close()
-            }
-        }
-
     } // Drawer
 
     StackView {
@@ -306,13 +298,6 @@ ApplicationWindow {
             }
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                stackView.pop(null)
-            }
-        }
-
     }
 
     DropArea {
@@ -339,12 +324,6 @@ ApplicationWindow {
             item.open()
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                dialogLoader.active = false
-            }
-        }
     }
 
     ImportManager {
@@ -384,13 +363,6 @@ ApplicationWindow {
     Shortcut {
         sequence: StandardKey.Close
         onActivated: Qt.quit()
-    }
-
-    SensorGesture {
-        id: sensorGesture
-        enabled: Qt.application.state === Qt.ApplicationActive
-        gestures: ["QtSensors.turnover"]
-        onDetected: mobileAdaptor.vibrateBrief()
     }
 
     // Enroute closed unexpectedly if...

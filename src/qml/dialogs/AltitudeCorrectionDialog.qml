@@ -141,11 +141,6 @@ Dialog {
         textField.text = satNav.altitudeInFeet
     }
 
-    Connections {
-        target: sensorGesture
-        onDetected: close()
-    }
-
     Dialog {
         id: noAltimeterReading
 

@@ -324,13 +324,4 @@ Dialog {
         onRejected: close()
     } // DialogButtonBox
 
-    Connections {
-        target: sensorGesture
-        function onDetected(gesture) {
-            close()
-        }
-    }
-
-
-
 } // Dialog

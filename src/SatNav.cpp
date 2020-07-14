@@ -200,7 +200,7 @@ QString SatNav::groundSpeedInKMHAsString() const
     if (gsInMPS < 0.0)
         return "-";
 
-    auto gsInKMH = AviationUnits::Speed::fromMPS(gsInMPS).toKMH();
+    auto gsInKMH = qRound(AviationUnits::Speed::fromMPS(gsInMPS).toKMH());
     return myLocale.toString(gsInKMH) + " km/h";
 }
 
@@ -220,6 +220,7 @@ qreal SatNav::groundSpeedInMetersPerSecond() const
 
     return groundSpeed;
 }
+
 
 int SatNav::horizontalPrecisionInMeters() const
 {

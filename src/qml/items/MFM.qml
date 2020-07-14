@@ -48,7 +48,6 @@ Item {
         objectName: "flightMap"
 
         anchors.fill: parent
-//        plugin: mapPlugin
         geoJSON: geoMapProvider.geoJSON
 
         property bool followGPS: true
@@ -336,17 +335,27 @@ Item {
     NavBar {
         id: navBar
 
-        anchors.top: parent.bottom
         anchors.right: parent.right
         anchors.left: parent.left
 
-        states: State {
-            name: "up"
-            when: !globalSettings.autoFlightDetection || satNav.isInFlight
-            AnchorChanges { target: navBar; anchors.bottom: parent.bottom; anchors.top: undefined }
-        }
+        anchors.top: parent.bottom
+        anchors.bottom: undefined
 
-        transitions: Transition { AnchorAnimation { duration: 400 } }
+        states: [
+            State {
+                id: upState
+                name: "up"
+                when: !globalSettings.autoFlightDetection || satNav.isInFlight
+                AnchorChanges { target: navBar; anchors.bottom: parent.bottom; anchors.top: undefined }
+            }
+        ]
+
+        transitions: Transition { AnchorAnimation {id: pAnim; duration: 0 } }
+
+        // This seems necessary. If we set the duration to a positive value right away, the NavBar
+        // will start on the top (!) of the screen, and then jump to the bottom after the specified
+        // time. This code avoids the problem.
+        Component.onCompleted: pAnim.duration = 250
     }
 
 }

@@ -81,7 +81,7 @@ Dialog {
             Text { text: qsTr("Error") }
             Text { text: satNav.horizontalPrecisionInMetersAsString }
 
-            Text { text: qsTr("Ground Speed"); textFormat: Text.RichText }
+            Text { text: qsTr("GS"); textFormat: Text.RichText }
             Text { text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString }
 
             Text { text: qsTr("TT") }

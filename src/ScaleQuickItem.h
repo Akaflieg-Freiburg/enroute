@@ -59,8 +59,8 @@ public:
   */
   void setPixelPer10km(qreal _pxp10k);
 
-  /*! \brief Number of pixel that represent a distance of 10km on the map */
-  Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits)
+  /*! \brief Determines whether the scale should use km or nm */
+  Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits NOTIFY useMetricUnitsChanged)
 
   /*! \brief Getter function for the property with the same name
 
@@ -83,6 +83,9 @@ public:
 signals:
   /*! \brief Notification signal for property with the same name */
   void pixelPer10kmChanged();
+
+  /*! \brief Notification signal for property with the same name */
+  void useMetricUnitsChanged();
 
 private:
   Q_DISABLE_COPY_MOVE(ScaleQuickItem)

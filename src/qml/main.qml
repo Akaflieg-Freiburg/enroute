@@ -330,16 +330,13 @@ ApplicationWindow {
         id: importMgr
     }
 
-    Dialog {
+    LongTextDialog {
         id: exitDialog
-
+        standardButtons: Dialog.No | Dialog.Yes
         anchors.centerIn: parent
 
-        title: qsTr("Do you wish to exit Enroute Flight Navigation?")
-
-        standardButtons: Dialog.No | Dialog.Yes
-
-        modal: true
+        title: qsTr("Exit…?")
+        text: qsTr("Do you wish to exit Enroute Flight Navigation?")
 
         onAccepted: Qt.quit()
         onRejected: close()

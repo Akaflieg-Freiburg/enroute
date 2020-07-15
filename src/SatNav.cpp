@@ -55,11 +55,9 @@ SatNav::SatNav(QObject *parent)
 
     if (source) {
         source->startUpdates();
-    }
-
-    if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods)
-            == QGeoPositionInfoSource::SatellitePositioningMethods) {
-        _geoid = new Geoid;
+        if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
+            _geoid = new Geoid;
+        }
     }
 
     // Adjust and connect timeoutCounter

@@ -22,7 +22,11 @@ The manual has kindly been provided by Michael Horbaschk.
 
 ## Translators
 
+* **French**: Adrien Crovato
+
 * **German**: Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.
+
+* **Polish**: Szymon Kocur
 
 
 ## Academic Sponsor

@@ -35,7 +35,7 @@ feature_row:
 
 # Main Features
 
-<figure style="width: 150px" class="align-right">
+<figure style="width: 250px" class="align-right">
   <img src="{{ site.url }}{{ site.baseurl }}/assets/images/map.png" alt="">
   <figcaption>Moving Map Display.</figcaption>
 </figure>

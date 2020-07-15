@@ -338,24 +338,8 @@ Item {
         anchors.right: parent.right
         anchors.left: parent.left
 
-        anchors.top: parent.bottom
-        anchors.bottom: undefined
+        y: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? view.height - height : view.height
 
-        states: [
-            State {
-                id: upState
-                name: "up"
-                when: !globalSettings.autoFlightDetection || satNav.isInFlight
-                AnchorChanges { target: navBar; anchors.bottom: parent.bottom; anchors.top: undefined }
-            }
-        ]
-
-        transitions: Transition { AnchorAnimation {id: pAnim; duration: 0 } }
-
-        // This seems necessary. If we set the duration to a positive value right away, the NavBar
-        // will start on the top (!) of the screen, and then jump to the bottom after the specified
-        // time. This code avoids the problem.
-        Component.onCompleted: pAnim.duration = 250
+        Behavior on y { PropertyAnimation {duration: 400 } }
     }
-
 }

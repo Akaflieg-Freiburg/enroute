@@ -16,7 +16,7 @@ find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
   )
 set(Qt5_LCONVERT_EXECUTABLE Qt5::lconvert)
 
-set(LANGS de fr)  
+set(LANGS de fr pl)
 foreach(_lang ${LANGS})
   add_custom_command(
     OUTPUT enroute_${_lang}.qm

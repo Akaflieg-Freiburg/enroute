@@ -83,6 +83,7 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 message("Currently working with git Commit ${GIT_COMMIT}")
+add_compile_definitions(GIT_COMMIT="${GIT_COMMIT}")
 
 # Get the latest commit date of the working branch
 execute_process(

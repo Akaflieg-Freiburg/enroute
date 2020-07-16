@@ -100,6 +100,21 @@ public:
     void setLastWhatsNewHash(uint lwnh);
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
+    Q_PROPERTY(bool autoFlightDetection READ autoFlightDetection WRITE setAutoFlightDetection NOTIFY autoFlightDetectionChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property autoFlightDetection
+     */
+    bool autoFlightDetection() const { return settings.value("Map/autoFlightDetection", true).toBool(); }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param autoDetect Property autoFlightDetection
+     */
+    void setAutoFlightDetection(bool autoDetect);
+
+    /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
 
     /*! \brief Getter function for property of the same name
@@ -151,6 +166,9 @@ public:
 signals:
     /*! Notifier signal */
     void acceptedTermsChanged();
+
+    /*! Notifier signal */
+    void autoFlightDetectionChanged();
 
     /*! Notifier signal */
     void hideUpperAirspacesChanged();

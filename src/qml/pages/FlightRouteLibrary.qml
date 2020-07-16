@@ -366,12 +366,6 @@ Page {
             } // Item
         } // ScrollView
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                close()
-            }
-        }
     }
 
     LongTextDialog {
@@ -415,12 +409,6 @@ Page {
             close()
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                close()
-            }
-        }
     }
 
     Dialog {
@@ -456,12 +444,6 @@ Page {
             close()
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                close()
-            }
-        }
     }
 
     Dialog {
@@ -530,12 +512,6 @@ Page {
             close()
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                close()
-            }
-        }
     } // renameDialog
 
     Dialog {

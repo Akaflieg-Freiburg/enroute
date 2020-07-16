@@ -36,6 +36,10 @@ Dialog {
 
     standardButtons: Dialog.Apply|Dialog.Cancel|Dialog.Reset
 
+    // Text that is initially shown once the component is completed. This property will be set
+    // in Component.onCompleted; it is a string such as "1383"
+    property string initialText;
+
     ColumnLayout {
         id: columnLayout
         anchors.fill: parent
@@ -59,7 +63,7 @@ Dialog {
 
         // Input Line
         RowLayout {
-            Label { text: qsTr("Altitude") }
+            Label { text: qsTr("ALT") }
 
             TextField {
                 id: textField
@@ -67,9 +71,10 @@ Dialog {
                 validator: IntValidator{bottom: -1000; top: 20000;}
                 Layout.fillWidth: true
                 onAccepted: dlg.onApplied()
+                onTextChanged: dlg.standardButton(DialogButtonBox.Apply).enabled = (textField.acceptableInput)&&(text !== dlg.initialText)
             }
 
-            Label { text: qsTr("ft AMSL") }
+            Label { text: qsTr("ft MSL") }
         } // RowLayout
 
         // The Label that we really want to show is wrapped into an Item. This allows
@@ -81,7 +86,7 @@ Dialog {
 
             Label {
                 id: lbl2
-                text: satNav.hasAltitude ? qsTr("The current raw altimeter reading as reported by the satellite navigation system is %1 AMSL.").arg(satNav.altitudeInFeetAsString)
+                text: satNav.hasAltitude ? qsTr("The current raw altimeter reading as reported by the satellite navigation system is %1 MSL.").arg(satNav.rawAltitudeInFeetAsString)
                                          : qsTr("Insufficient satellite reception. Altimeter cannot be set.")
                 textFormat: Text.RichText
                 horizontalAlignment: Text.AlignJustify
@@ -138,12 +143,9 @@ Dialog {
     }
 
     Component.onCompleted: {
-        textField.text = satNav.altitudeInFeet
-    }
-
-    Connections {
-        target: sensorGesture
-        onDetected: close()
+        dlg.initialText = satNav.altitudeInFeet
+        textField.text = dlg.initialText
+        dlg.standardButton(DialogButtonBox.Reset).text = qsTr("Use Sat")
     }
 
     Dialog {
@@ -169,7 +171,6 @@ Dialog {
             close()
         }
     }
-
 
     Dialog {
         id: largeDifference

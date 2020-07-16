@@ -22,7 +22,6 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
-import QtSensors 5.14
 
 import enroute 1.0
 
@@ -47,7 +46,7 @@ ApplicationWindow {
 
             ColumnLayout {
                 id: col
-                anchors.fill: parent
+
                 spacing: 0
 
                 Label {
@@ -243,7 +242,7 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         drawer.close()
-                        if (satNav.isInFlight)
+                        if (!globalSettings.autoFlightDetection || satNav.isInFlight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -254,13 +253,6 @@ ApplicationWindow {
                     id: spacer
                     Layout.fillHeight: true
                 }
-            }
-        }
-
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                drawer.close()
             }
         }
 
@@ -312,20 +304,13 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (satNav.isInFlight)
+                    if (!globalSettings.autoFlightDetection || satNav.isInFlight)
                         exitDialog.open()
                     else
                         Qt.quit()
                 }
 
                 event.accepted = true
-            }
-        }
-
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                stackView.pop(null)
             }
         }
 
@@ -355,29 +340,19 @@ ApplicationWindow {
             item.open()
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                dialogLoader.active = false
-            }
-        }
     }
 
     ImportManager {
         id: importMgr
     }
 
-    Dialog {
+    LongTextDialog {
         id: exitDialog
-
-        x: Math.round((parent.width - width) / 2)
-        y: Math.round((parent.height - height) / 2)
-
-        title: qsTr("Do you wish to exit Enroute Flight Navigation?")
-
         standardButtons: Dialog.No | Dialog.Yes
+        anchors.centerIn: parent
 
-        modal: true
+        title: qsTr("Exit…?")
+        text: qsTr("Do you wish to exit Enroute Flight Navigation?")
 
         onAccepted: Qt.quit()
         onRejected: close()
@@ -401,13 +376,6 @@ ApplicationWindow {
     Shortcut {
         sequence: StandardKey.Close
         onActivated: Qt.quit()
-    }
-
-    SensorGesture {
-        id: sensorGesture
-        enabled: Qt.application.state === Qt.ApplicationActive
-        gestures: ["QtSensors.turnover"]
-        onDetected: mobileAdaptor.vibrateBrief()
     }
 
     // Enroute closed unexpectedly if...

@@ -55,6 +55,15 @@ void GlobalSettings::setAcceptedTerms(int terms)
 }
 
 
+void GlobalSettings::setAutoFlightDetection(bool autoDetect)
+{
+    if (autoDetect == autoFlightDetection())
+        return;
+    settings.setValue("Map/autoFlightDetection", autoDetect);
+    emit autoFlightDetectionChanged();
+}
+
+
 void GlobalSettings::setHideUpperAirspaces(bool hide)
 {
     if (hide == hideUpperAirspaces())

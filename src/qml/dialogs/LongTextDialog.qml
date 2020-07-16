@@ -64,12 +64,5 @@ Dialog {
             } // Label
         } // Item
     } // ScrollView
-    
-    Connections {
-        target: sensorGesture
-        function onDetected(gesture) {
-            close()
-        }
-    }
 
 } // Dialog

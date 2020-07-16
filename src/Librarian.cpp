@@ -34,7 +34,9 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 QString Librarian::getStringFromRessource(const QString &name) const
 {
     if (name == ":text/info_enroute.html") {
-        return tr(R"html(<h3>Enroute Flight Navigation ${PROJECT_VERSION}</h3>
+        return tr(R"html(<h3>Enroute Flight Navigation</h3>
+
+<p>Version %1</p>
 
 <p><strong>Enroute Flight Navigation</strong> is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg.</p>
 
@@ -56,7 +58,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p>This program builds on a number of open source libraries, including <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> and <a href="https://www.openssl.org">OpenSSL</a>.</p>
 
-<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html");
+<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(QString(PROJECT_VERSION)+QString(" • GIT ")+QString(GIT_COMMIT));
      }
 
     if (name == ":text/info_license.html") {
@@ -103,8 +105,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 <p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that. You already have <strong>%2 maps</strong>.</p>)html");
     }
 
-
-  if (name == ":text/authors.html") {
+    if (name == ":text/authors.html") {
         return tr(R"html(<h3>Authors</h3>
 
 <br>
@@ -167,11 +168,18 @@ QString Librarian::getStringFromRessource(const QString &name) const
   </tr>
 </table>
 
+<h3>Manual</h3>
+
+<p>The manual has kindly been provided by Michael Horbaschk.</p>
+
 <h3>Translations</h3>
 
 <p><strong>French:</strong> Adrien Crovato, <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>.</p>
 
 <p><strong>German:</strong> Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>e-mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
+
+<p><strong>Polish:</strong> Szymon Kocur.</p>
+
 <p></p>)html");
      }
     
@@ -220,11 +228,11 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
     
     if (name == ":text/whatsnew.html") {
-        return tr(R"html(<p>Adrien Crovato and Heiner Tholen have joined the core development team. As a result of their efforts, there is now an option to use <strong>metric units</strong> for horizontal distances and speeds, and the <strong>Nearby</strong> page has been expanded.</p>
+        return tr(R"html(<p>Adrien Crovato and Heiner Tholen have joined the core development team. As a result of their efforts, there is now an option to use <strong>metric units</strong> for horizontal distances and speeds, and the <strong>Nearby</strong> page has been expanded. For pilots of very slow-flying aircrafts (such as paramotors) there is now a switch to <strong>set flight mode manually</strong>.</p>
 
 <p>Maps has been added for <strong>Argentina</strong> and <strong>Brazil</strong>. As usual, we provide weekly updates.</p>
 
-<p>Markus Sachs and Adrien Crovato have translated the app to <strong>French</strong> and <strong>German</strong>.  If you prefer English, go to the 'Settings' page where a language option has been added.</p>
+<p>Adrien Crovato, Markus Sachs and Szymon Kocur have translated the app to <strong>French</strong>, <strong>German</strong> and <strong>Polish</strong>.  If you prefer English, go to the <strong>Settings</strong> page where a language option has been added.</p>
 
 <p>Michael Horbaschk has kindly written a <strong>manual</strong> for the app.</p>)html");
     }

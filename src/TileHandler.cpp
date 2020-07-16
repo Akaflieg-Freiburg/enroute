@@ -31,7 +31,6 @@
 #include "Downloadable.h"
 #include "TileHandler.h"
 
-
 TileHandler::TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
@@ -123,7 +122,7 @@ void TileHandler::removeFile(const QString& localFileName)
 
 void TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
 {
-    // Serve tileJSON file, if requested
+// Serve tileJSON file, if requested
     if (path.isEmpty() || path.endsWith("json", Qt::CaseInsensitive)) {
         socket->setHeader("Content-Type", "application/json");
         QByteArray json = tileJSON();

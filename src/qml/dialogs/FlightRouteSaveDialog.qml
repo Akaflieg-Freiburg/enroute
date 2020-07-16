@@ -126,13 +126,6 @@ Dialog {
             saveToLibrary()
     }
 
-    Connections {
-        target: sensorGesture
-        function onDetected(gesture) {
-            drawer.close()
-        }
-    }
-
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;
 
@@ -189,12 +182,6 @@ Dialog {
             } // Item
         } // ScrollView
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                close()
-            }
-        }
     }  // Dialog: fileError
 
     Dialog {
@@ -230,12 +217,6 @@ Dialog {
             dlg.open()
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                drawer.close()
-            }
-        }
     } // Dialog: overwriteDialog
 
 } // Dialog

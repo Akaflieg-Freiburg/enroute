@@ -55,11 +55,9 @@ SatNav::SatNav(QObject *parent)
 
     if (source) {
         source->startUpdates();
-    }
-
-    if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods)
-            == QGeoPositionInfoSource::SatellitePositioningMethods) {
-        _geoid = new Geoid;
+        if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
+            _geoid = new Geoid;
+        }
     }
 
     // Adjust and connect timeoutCounter
@@ -200,7 +198,7 @@ QString SatNav::groundSpeedInKMHAsString() const
     if (gsInMPS < 0.0)
         return "-";
 
-    auto gsInKMH = AviationUnits::Speed::fromMPS(gsInMPS).toKMH();
+    auto gsInKMH = qRound(AviationUnits::Speed::fromMPS(gsInMPS).toKMH());
     return myLocale.toString(gsInKMH) + " km/h";
 }
 
@@ -220,6 +218,7 @@ qreal SatNav::groundSpeedInMetersPerSecond() const
 
     return groundSpeed;
 }
+
 
 int SatNav::horizontalPrecisionInMeters() const
 {

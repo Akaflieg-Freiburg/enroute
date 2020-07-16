@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,40 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#pragma once
-
-#include <QObject>
-#include <QGeoCoordinate>
-
 #include "WeatherReport.h"
 
-
-#warning Docu
-
-class Meteorologist : public QObject {
-    Q_OBJECT
-
-public:
-#warning Docu
-    explicit Meteorologist(QObject *parent = nullptr);
-
-    // Standard destructor
-    ~Meteorologist() override = default;
-
-    Q_PROPERTY(bool updated READ updated NOTIFY reportsChanged)
-    bool updated() const { return _updated; }
-
-    Q_PROPERTY(QList<QObject*> reports READ reports NOTIFY reportsChanged)
-    QList<QObject*> reports() const;
-
-    Q_INVOKABLE void update(const QGeoCoordinate& position);
-
-signals:
-    void reportsChanged();
-
-private:
-    Q_DISABLE_COPY_MOVE(Meteorologist)
-
-    QList<QPointer<WeatherReport>> _reports;
-    bool _updated;
-};
+WeatherReport::WeatherReport(const QString &id, QObject *parent) : _id(id) {
+    _metar.append("RAW " + QString("EBLG 000000Z 27005KT 9999 FEW040 20/10 Q1023 NOSIG"));
+    _taf.append("RAW " + QString("TAF EBLG 000000Z 0000/0000 27005KT 9999 FEW040"));
+}

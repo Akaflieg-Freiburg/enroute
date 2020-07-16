@@ -72,6 +72,7 @@ set(SOURCES
     Meteorologist.h
     MobileAdaptor.h
     ScaleQuickItem.h
+    WeatherReport.h
 
     # C++ files
     Aircraft.cpp
@@ -97,6 +98,7 @@ set(SOURCES
     TileHandler.cpp
     TileServer.cpp
     Waypoint.cpp
+    WeatherReport.cpp
     Wind.cpp
     )
 

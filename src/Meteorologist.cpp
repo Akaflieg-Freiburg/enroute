@@ -19,9 +19,27 @@
  ***************************************************************************/
 
 #include "Meteorologist.h"
+#include "WeatherReport.h"
 
 #include <QtGlobal>
+#include <QQmlEngine>
 
-Meteorologist::Meteorologist(QObject *parent) : QObject(parent) {
-#warning not implemented
+Meteorologist::Meteorologist(QObject *parent) : QObject(parent), _updated(false) {
+}
+
+QList<QObject *> Meteorologist::reports() const {
+    QList<QObject *> reports;
+    for (auto rep : _reports)
+        reports.append(rep);
+    return reports;
+}
+
+void Meteorologist::update(const QGeoCoordinate& position) {
+    for (auto rep : _reports)
+        delete rep;
+    _reports.clear();
+    _reports.append(new WeatherReport("EBLG"));
+
+    _updated = true;
+    emit reportsChanged();
 }

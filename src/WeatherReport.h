@@ -21,37 +21,32 @@
 #pragma once
 
 #include <QObject>
-#include <QGeoCoordinate>
-
-#include "WeatherReport.h"
-
 
 #warning Docu
 
-class Meteorologist : public QObject {
+class WeatherReport : public QObject {
     Q_OBJECT
 
 public:
 #warning Docu
-    explicit Meteorologist(QObject *parent = nullptr);
+    explicit WeatherReport(const QString &id, QObject *parent = nullptr);
 
     // Standard destructor
-    ~Meteorologist() override = default;
+    ~WeatherReport() = default;
 
-    Q_PROPERTY(bool updated READ updated NOTIFY reportsChanged)
-    bool updated() const { return _updated; }
+    Q_PROPERTY(QString id READ id CONSTANT)
+    QString id() const { return _id; }
 
-    Q_PROPERTY(QList<QObject*> reports READ reports NOTIFY reportsChanged)
-    QList<QObject*> reports() const;
+    Q_PROPERTY(QList<QString> metar READ metar CONSTANT)
+    QList<QString> metar() const { return _metar; }
 
-    Q_INVOKABLE void update(const QGeoCoordinate& position);
-
-signals:
-    void reportsChanged();
+    Q_PROPERTY(QList<QString> taf READ taf CONSTANT)
+    QList<QString> taf() const { return _taf; }
 
 private:
-    Q_DISABLE_COPY_MOVE(Meteorologist)
+    Q_DISABLE_COPY_MOVE(WeatherReport)
 
-    QList<QPointer<WeatherReport>> _reports;
-    bool _updated;
+    QString _id;
+    QList<QString> _metar;
+    QList<QString> _taf;
 };

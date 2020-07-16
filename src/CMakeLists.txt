@@ -16,7 +16,7 @@ find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
   )
 set(Qt5_LCONVERT_EXECUTABLE Qt5::lconvert)
 
-set(LANGS de fr)  
+set(LANGS de fr pl)
 foreach(_lang ${LANGS})
   add_custom_command(
     OUTPUT enroute_${_lang}.qm
@@ -44,14 +44,14 @@ configure_file(ressources.qrc.in ressources.qrc)
 #
 
 # We use this macro here to avoid creating extremely large C++ files with binary content
-qt5_add_big_resources(BIGRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc)
+#qt5_add_big_resources(BIGRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc)
 
 set(SOURCES
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
-    ${BIGRESOURCES}
+    ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
 
     # Translations
     enroute_de.qm

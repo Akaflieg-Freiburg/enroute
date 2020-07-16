@@ -104,4 +104,5 @@ void ScaleQuickItem::setUseMetricUnits(bool useMetricUnits)
 
     _useMetricUnits = useMetricUnits;
     update();
+    emit useMetricUnitsChanged();
 }

@@ -77,13 +77,6 @@ Item {
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                close()
-            }
-        }
-
         onAccepted: {
             mobileAdaptor.vibrateBrief()
 
@@ -130,12 +123,6 @@ Item {
             textFormat: Text.RichText
         }
 
-        Connections {
-            target: sensorGesture
-            function onDetected(gesture) {
-                close()
-            }
-        }
     } // errorDialog
 
 }

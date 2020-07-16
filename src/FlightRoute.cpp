@@ -198,7 +198,7 @@ void FlightRoute::removeWaypoint(QObject *waypoint)
     // if called from the waypoint dialog, the waypoint is not the
     // same instance as the one in `_waypoints`
     if (!_waypoints.contains(waypointPtr)) {
-        for (const auto &_waypoint : _waypoints) {
+        foreach(const auto &_waypoint, _waypoints) {
             if (_waypoint.isNull())
                 continue;
             if (!_waypoint->isValid())

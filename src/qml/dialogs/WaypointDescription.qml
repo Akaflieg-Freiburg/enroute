@@ -299,9 +299,13 @@ Dialog {
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                flightRoute.clear()
-                flightRoute.append(satNav.lastValidCoordinate)
-                flightRoute.append(dialogArgs.waypoint)
+                if (flightRoute.routeObjects.length > 0)
+                    overwriteDialog.open()
+                else {
+                    flightRoute.clear()
+                    flightRoute.append(satNav.lastValidCoordinate)
+                    flightRoute.append(dialogArgs.waypoint)
+                }
             }
         }
 
@@ -324,13 +328,41 @@ Dialog {
         onRejected: close()
     } // DialogButtonBox
 
-    Connections {
-        target: sensorGesture
-        function onDetected(gesture) {
-            close()
+    Dialog {
+        id: overwriteDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Overwrite current flight route?")
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        Label {
+            width: overwriteDialog.availableWidth
+
+            text: qsTr("Once overwritten, the current flight route cannot be restored.")
+            wrapMode: Text.Wrap
+            textFormat: Text.RichText
         }
-    }
 
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
+        onAccepted: {
+            mobileAdaptor.vibrateBrief()
+            flightRoute.clear()
+            flightRoute.append(satNav.lastValidCoordinate)
+            flightRoute.append(dlg.dialogArgs.waypoint)
+        }
+        onRejected: {
+            mobileAdaptor.vibrateBrief()
+            close()
+            dlg.open()
+        }
+
+    } // overWriteDialog
 
 } // Dialog

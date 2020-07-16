@@ -51,20 +51,51 @@ Page {
 
             SwitchDelegate {
                 id: hideUpperAsp
-                text: qsTr("Hide Airspaces ≥ FL100") + (globalSettings.hideUpperAirspaces ? `<br><font color="#606060" size="2">`
-                                                                                                + qsTr("Upper airspaces currently hidden")
-                                                                                                +"</font>"
-                                                                                              : `<br><font color="#606060" size="2">`
-                                                                                                + qsTr("All airspaces currently shown")
-                                                                                                + `</font>`
-                                                            )
+                text: qsTr("Hide Airspaces ≥ FL100") + (
+                    globalSettings.hideUpperAirspaces ? (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("Upper airspaces hidden")
+                        +"</font>"
+                    ) : (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("All airspaces shown")
+                        + `</font>`
+                    )
+                )
                 icon.source: "/icons/material/ic_map.svg"
                 icon.color: Material.primary
                 Layout.fillWidth: true
-                Component.onCompleted: hideUpperAsp.checked = globalSettings.hideUpperAirspaces
+                Component.onCompleted: {
+                    hideUpperAsp.checked = globalSettings.hideUpperAirspaces
+                }
                 onToggled: {
                     mobileAdaptor.vibrateBrief()
                     globalSettings.hideUpperAirspaces = hideUpperAsp.checked
+                }
+            }
+
+            SwitchDelegate {
+                id: autoFlightDetection
+                text: qsTr("Automatic flight detection") + (
+                    globalSettings.autoFlightDetection ? (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("Switching to flight-mode at 30 kt")
+                        +"</font>"
+                    ) : (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("Always in flight-mode")
+                        + `</font>`
+                    )
+                )
+                icon.source: "/icons/material/ic_flight.svg"
+                icon.color: Material.primary
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    autoFlightDetection.checked = globalSettings.autoFlightDetection
+                }
+                onToggled: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.autoFlightDetection = autoFlightDetection.checked
                 }
             }
 
@@ -90,7 +121,9 @@ Page {
             }
 
             ItemDelegate {
-                text: qsTr("Maps") + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">`+qsTr("Updates available") + "</font>" : "")
+                text: qsTr("Maps") + (MapManager.aviationMapUpdatesAvailable ?
+                                          `<br><font color="#606060" size="2">`
+                                          +qsTr("Updates available") + "</font>" : "")
                 icon.source: "/icons/material/ic_map.svg"
                 icon.color: Material.primary
                 Layout.fillWidth: true
@@ -145,7 +178,10 @@ Page {
             }
 
             ItemDelegate {
-                text: qsTr("Satellite Status")+`<br><font color="#606060" size="2">`+qsTr("Current Status") + `: ${satNav.statusAsString}</font>`
+                text: qsTr("Satellite Status")
+                      +`<br><font color="#606060" size="2">`
+                      + qsTr("Current Status")
+                      + `: ${satNav.statusAsString}</font>`
                 icon.source: "/icons/material/ic_satellite.svg"
                 icon.color: Material.primary
                 Layout.fillWidth: true

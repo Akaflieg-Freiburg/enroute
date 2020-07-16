@@ -48,7 +48,6 @@ Item {
         objectName: "flightMap"
 
         anchors.fill: parent
-//        plugin: mapPlugin
         geoJSON: geoMapProvider.geoJSON
 
         property bool followGPS: true
@@ -72,16 +71,16 @@ Item {
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Connections {
-            target: satNav
-            function onTrackChanged() {
-                if (flightMap.followGPS === true) {
-                    flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
-                }
-            }
+            id: trackChangedConnection
 
-            function onIsInFlightChanged() {
+            target: satNav
+            function onLastValidTrackChanged() {
                 if (flightMap.followGPS === true) {
-                    flightMap.bearing = satNav.isInFlight ? satNav.track : 0.0
+                    if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
+                        flightMap.bearing = satNav.track
+                    } else {
+                        flightMap.bearing = 0.0
+                    }
                 }
             }
         }
@@ -89,21 +88,13 @@ Item {
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
         Behavior on bearing { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
 
-        // This animation is started by the button "Center". It runs whenever the button is clicked (and then "followGPS" is also set to "true")
-        RotationAnimation {
-            id: resetBearing
-            target: flightMap
-            property: "bearing"
-            duration: 400
-            direction: RotationAnimation.Shortest
-            to: satNav.isInFlight ? satNav.lastValidTrack : 0.0
-        }
-
 
         // PROPERTY "center"
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         Binding on center {
+            id: centerBinding
+
             restoreMode: Binding.RestoreBinding
             when: flightMap.followGPS === true
             value: satNav.lastValidCoordinate
@@ -111,7 +102,6 @@ Item {
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
         Behavior on center { CoordinateAnimation { duration: 1000 } }
-
 
         // PROPERTY "zoomLevel"
 
@@ -129,13 +119,14 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: satNav.lastValidCoordinate
-            visible: satNav.isInFlight && (satNav.track >= 0)
+            visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.track >= 0)
 
             sourceItem: Item{
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: satNav.isInFlight ? satNav.groundSpeedInMetersPerSecond : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || satNav.isInFlight) ?
+                                                                            satNav.groundSpeedInMetersPerSecond : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -272,8 +263,8 @@ Item {
 
         onClicked: {
             mobileAdaptor.vibrateBrief()
-            resetBearing.running = true
             flightMap.followGPS = true
+            trackChangedConnection.onLastValidTrackChanged()
         }
     }
 
@@ -344,17 +335,11 @@ Item {
     NavBar {
         id: navBar
 
-        anchors.top: parent.bottom
         anchors.right: parent.right
         anchors.left: parent.left
 
-        states: State {
-            name: "up"
-            when: satNav.isInFlight > 0
-            AnchorChanges { target: navBar; anchors.bottom: parent.bottom; anchors.top: undefined }
-        }
+        y: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? view.height - height : view.height
 
-        transitions: Transition { AnchorAnimation { duration: 400 } }
+        Behavior on y { PropertyAnimation {duration: 400 } }
     }
-
 }

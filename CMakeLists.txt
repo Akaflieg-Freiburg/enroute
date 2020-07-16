@@ -11,7 +11,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 1.7.0)
+project(enroute VERSION 1.8.0)
 set(APP_ID de.akaflieg_freiburg.enroute)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
@@ -83,6 +83,7 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 message("Currently working with git Commit ${GIT_COMMIT}")
+add_compile_definitions(GIT_COMMIT="${GIT_COMMIT}")
 
 # Get the latest commit date of the working branch
 execute_process(

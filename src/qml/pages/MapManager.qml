@@ -47,7 +47,7 @@ Page {
 
         Item {
             id: element
-            width: parent.width
+            width: pg.width
             height: gridLayout.height
 
             function startFileDownload() {

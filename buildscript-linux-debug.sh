@@ -31,7 +31,7 @@
 # Clean
 #
 
-rm -rf build-linux-debug
+rm  -rf build-linux-debug
 
 #
 # Build the executable

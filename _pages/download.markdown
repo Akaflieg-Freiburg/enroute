@@ -12,6 +12,11 @@ permalink: /download/
 
 **Enroute Flight Navigation** is available for free download at Google Play.
 
+Users who wish to try the latest, experimental versions of the app are welcome
+to join our public beta-testing program.  Please have a look at Google's
+[Instructions for joining the beta-test
+program](https://support.google.com/googleplay/answer/7003180?hl=en).
+
 
 ### Source code
 

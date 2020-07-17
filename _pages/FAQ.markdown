@@ -10,8 +10,8 @@ permalink: /FAQ/
 
 Maybe.  Please understand that we program the app in our spare time, as a
 service to the community.  Sadly, I should point us that sending us impolite
-requests in hard-to-understand english or giving us one-star-ratings at Google
-Play is not likely to give the result that you desire.
+demands or giving us one-star-ratings at Google Play is not likely to give the
+result that you desire.
 
 We receive our aviation data from [openAIP](openaip.net).  This is a
 not-for-profit organisation where volunteers compile aviation data for many

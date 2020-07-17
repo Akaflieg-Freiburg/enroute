@@ -46,7 +46,7 @@ find_package(Qt5 5.14 COMPONENTS Concurrent Core Gui LinguistTools Positioning Q
 if( ANDROID )
     find_package(Qt5 5.14 COMPONENTS AndroidExtras REQUIRED)
     find_package(Qt5QuickCompiler)
-  else()
+else()
     find_package(Qt5 5.14 COMPONENTS Widgets REQUIRED)
 endif()
 
@@ -66,33 +66,40 @@ endif()
 # Find GIT repository data.
 #
 
-# Get the current working branch
-execute_process(
-    COMMAND git rev-parse --abbrev-ref HEAD
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_BRANCH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-message("Currently working with git branch ${GIT_BRANCH}")
+if (EXISTS ${CMAKE_SOURCE_DIR}/.git)
+    # Get the current working branch
+    execute_process(
+        COMMAND git rev-parse --abbrev-ref HEAD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_BRANCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    message("Currently working with git branch ${GIT_BRANCH}")
 
-# Get the latest abbreviated commit hash of the working branch
-execute_process(
-    COMMAND git log -1 --format=%h
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_COMMIT
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-message("Currently working with git Commit ${GIT_COMMIT}")
+    # Get the latest abbreviated commit hash of the working branch
+    execute_process(
+        COMMAND git log -1 --format=%h
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_COMMIT
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    message("Currently working with git Commit ${GIT_COMMIT}")
+
+    # Get the latest commit date of the working branch
+    execute_process(
+        COMMAND git log -1 --format=%as
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_DATE
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    message("Currently working with git commit from ${GIT_DATE}")
+else()
+    message("Not working from a GIT directory")
+    set(GIT_BRANCH "")
+    set(GIT_COMMIT "")
+    set(GIT_DATE "")
+endif()
 add_compile_definitions(GIT_COMMIT="${GIT_COMMIT}")
-
-# Get the latest commit date of the working branch
-execute_process(
-    COMMAND git log -1 --format=%as
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_DATE
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-message("Currently working with git commit from ${GIT_DATE}")
 
 
 #

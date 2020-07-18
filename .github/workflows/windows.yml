@@ -19,9 +19,6 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with:
         version: '5.15.0'
-    - name: Install Additional Software
-      run: |
-        sudo apt install doxygen graphviz
     - name: Configure
       run: |
         export CC=/usr/bin/clang

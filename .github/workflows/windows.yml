@@ -15,9 +15,16 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v2
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: '5.15.0'
     - name: Configure
       run: |
@@ -27,4 +34,4 @@ jobs:
     - name: Compile
       run: |
         cd build
-        make
+        cmake --build .

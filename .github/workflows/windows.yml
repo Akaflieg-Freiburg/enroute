@@ -23,7 +23,7 @@ jobs:
       run: |
         cmake -E make_directory build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
+        cmake .. -DCMAKE_BUILD_TYPE=Release
     - name: Compile
       run: |
         cd build

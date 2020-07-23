@@ -221,7 +221,7 @@ QString FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapPr
                     cmt = xml.readElementText(QXmlStreamReader::SkipChildElements);
                 }
 
-            }  else if (xml.isEndElement() and xmlTag == tag) {
+            }  else if (xml.isEndElement() && (xmlTag == tag)) {
                 break;
             }
         }

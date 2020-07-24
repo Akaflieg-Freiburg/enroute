@@ -20,4 +20,4 @@ parts:
     build-snaps:
       - cmake
       - kde-frameworks-5-qt-5-14-core18-sdk
-      - kde-frameworks-5-qt-5-14-core18-sdk
+      - kde-frameworks-5-qt-5-14-core18

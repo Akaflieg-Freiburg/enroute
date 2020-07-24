@@ -1,5 +1,5 @@
 name: enroute-flight-navigation # you probably want to 'snapcraft register <name>'
-base: core20 # the base snap is the execution environment for this snap
+base: core18 # the base snap is the execution environment for this snap
 version: '1.8' # just for humans, typically '1.2+git' or '1.3.2'
 summary: A flight navigation app for VFR pilots # 79 char long summary
 description: |
@@ -18,4 +18,6 @@ parts:
     plugin: cmake
     source: https://github.com/Akaflieg-Freiburg/enroute.git
     build-snaps:
-      - kde-frameworks-5-core18-sdk
+      - cmake
+      - kde-frameworks-5-qt-5-14-core18-sdk
+      - kde-frameworks-5-qt-5-14-core18-sdk

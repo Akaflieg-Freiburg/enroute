@@ -126,6 +126,8 @@ Dialog {
             saveToLibrary()
     }
 
+    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;
 

@@ -29,13 +29,16 @@ class WeatherReport : public QObject {
 
 public:
 #warning Docu
-    explicit WeatherReport(const QString &id, QObject *parent = nullptr);
+    explicit WeatherReport(const QMultiMap<QString, QVariant> &metar, const QMultiMap<QString, QVariant> &taf, QObject *parent = nullptr);
 
     // Standard destructor
     ~WeatherReport() = default;
 
     Q_PROPERTY(QString id READ id CONSTANT)
     QString id() const { return _id; }
+
+    Q_PROPERTY(QString cat READ cat CONSTANT)
+    QString cat() const { return _cat; }
 
     Q_PROPERTY(QList<QString> metar READ metar CONSTANT)
     QList<QString> metar() const { return _metar; }
@@ -47,6 +50,15 @@ private:
     Q_DISABLE_COPY_MOVE(WeatherReport)
 
     QString _id;
+    QString _cat;
     QList<QString> _metar;
     QList<QString> _taf;
+
+    QString decodeTime(const QVariant &time);
+    QString decodeWind(const QVariant &windd, const QVariant &winds);
+    QString decodeVis(const QVariant &vis);
+    QString decodeTemp(const QVariant &temp);
+    QString decodeQnh(const QVariant &altim);
+    QString decodeWx(const QVariant &wx);
+    QString decodeClouds(const QVariantList &clouds);
 };

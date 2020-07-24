@@ -33,7 +33,7 @@ class Meteorologist : public QObject {
 
 public:
 #warning Docu
-    explicit Meteorologist(QObject *parent = nullptr);
+    explicit Meteorologist(const QGeoCoordinate& position, QObject *parent = nullptr);
 
     // Standard destructor
     ~Meteorologist() override = default;
@@ -54,4 +54,7 @@ private:
 
     QList<QPointer<WeatherReport>> _reports;
     bool _updated;
+
+    QString dummyMetars();
+    QString dummyTafs();
 };

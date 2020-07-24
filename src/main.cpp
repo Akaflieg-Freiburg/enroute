@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("mobileAdaptor", adaptor);
 
     // Attach meteorologist
-    auto meteorologist = new Meteorologist(engine);
+    auto meteorologist = new Meteorologist(navEngine->lastValidCoordinate(), engine);
     engine->rootContext()->setContextProperty("meteorologist", meteorologist);
 
     // Attach library info

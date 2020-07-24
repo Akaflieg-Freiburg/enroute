@@ -37,7 +37,7 @@ Page {
 
         ItemDelegate {
             text: model.modelData.id
-            icon.source: "/icons/material/ic_cloud_queue.svg" // to be replaced by badge
+            icon.source: "/icons/weather/" + model.modelData.cat + ".svg"
             icon.color: "transparent"
 
             width: pg.width

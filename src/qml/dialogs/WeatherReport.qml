@@ -74,7 +74,7 @@ Dialog {
             Layout.fillWidth: true
 
             Image {
-                source: "/icons/material/ic_cloud_queue.svg" // to be replaced by badge
+                source: "/icons/weather/" + dialogArgs.station.cat + ".svg"
                 sourceSize.width: 25
             }
             Label {
@@ -113,18 +113,44 @@ Dialog {
 
             ColumnLayout {
                 id: co
-
                 width: parent.width
 
-                Component.onCompleted: {
-                    
-                    var metar = dialogLoader.dialogArgs.station.metar
-                    for (var j in metar)
-                        reportPropertyDelegate.createObject(co, {text: metar[j]});
-                    var taf = dialogLoader.dialogArgs.station.taf
-                    for (var j in taf)
-                        reportPropertyDelegate.createObject(co, {text: taf[j]});
+                Label {
+                    text: "METAR"
+                    font.bold: true
+                    font.pixelSize: 1.2*Qt.application.font.pixelSize
                 }
+
+                ColumnLayout {
+                    id: metarCO
+                    Layout.fillWidth: true;
+                    Layout.margins: Qt.application.font.pixelSize
+                    
+                    Component.onCompleted: {
+                        var metar = dialogLoader.dialogArgs.station.metar
+                        for (var j in metar)
+                            reportPropertyDelegate.createObject(metarCO, {text: metar[j]});
+                    }
+                }
+
+                Label {
+                    text: "TAF"
+                    font.bold: true
+                    font.pixelSize: 1.2*Qt.application.font.pixelSize
+                }
+
+                ColumnLayout {
+                    id: tafCO
+                    Layout.fillWidth: true;
+                    Layout.margins: Qt.application.font.pixelSize
+
+                    Component.onCompleted: {
+                        var taf = dialogLoader.dialogArgs.station.taf
+                        for (var j in taf)
+                            reportPropertyDelegate.createObject(tafCO, {text: taf[j]});
+                    }
+                }
+
             } // ColumnLayout
 
         } // ScrollView

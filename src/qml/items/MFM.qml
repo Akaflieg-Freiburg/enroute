@@ -98,11 +98,11 @@ Item {
             restoreMode: Binding.RestoreBinding
             when: flightMap.followGPS === true
             value: {
-                flightMap.zoomLevel;  // zoomLevel mentioned to trigger center re-calculation after zoom-in/-out
+                flightMap.zoomLevel;  // zoomLevel mentioned to trigger center re-calculation after zoom-in / -out
                 let coordForCenter = satNav.lastValidCoordinate;
                 if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
                     const center = flightMap.toCoordinate(Qt.point(width/2, height/2), false);
-                    const target = flightMap.toCoordinate(Qt.point(width/2, height*4/5), false);
+                    const target = flightMap.toCoordinate(Qt.point(width/2, height*3/4), false);
                     const centerTargetDistance = center.distanceTo(target);
                     let bearing = satNav.track;
                     bearing = bearing < 0 ? 0 : bearing;  // set to 0 if undefined (which is -1)
@@ -113,7 +113,22 @@ Item {
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
-        Behavior on center { CoordinateAnimation { duration: 1000 } }
+        Behavior on center {
+            id: centerBindingAnimation
+            CoordinateAnimation { duration: 1000 }
+            enabled: true
+
+            function omitAnimationforZoom() {
+                centerBindingAnimation.enabled = false
+                omitAnimationForZoomTimer.stop()  // stop in case it was already runnnig
+                omitAnimationForZoomTimer.start()
+            }
+        }
+        Timer {
+            id: omitAnimationForZoomTimer
+            interval: 410  // little more than time for animation
+            onTriggered: centerBindingAnimation.enabled = true
+        }
 
         // PROPERTY "zoomLevel"
 
@@ -300,6 +315,7 @@ Item {
         }
 
         onClicked: {
+            centerBindingAnimation.omitAnimationforZoom()
             mobileAdaptor.vibrateBrief()
             flightMap.zoomLevel += 1
         }
@@ -325,6 +341,7 @@ Item {
         }
 
         onClicked: {
+            centerBindingAnimation.omitAnimationforZoom()
             mobileAdaptor.vibrateBrief()
             flightMap.zoomLevel -= 1
         }

@@ -97,7 +97,19 @@ Item {
 
             restoreMode: Binding.RestoreBinding
             when: flightMap.followGPS === true
-            value: satNav.lastValidCoordinate
+            value: {
+                flightMap.zoomLevel;  // zoomLevel mentioned to trigger center re-calculation after zoom-in/-out
+                let coordForCenter = satNav.lastValidCoordinate;
+                if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
+                    const center = flightMap.toCoordinate(Qt.point(width/2, height/2), false);
+                    const target = flightMap.toCoordinate(Qt.point(width/2, height*4/5), false);
+                    const centerTargetDistance = center.distanceTo(target);
+                    let bearing = satNav.track;
+                    bearing = bearing < 0 ? 0 : bearing;  // set to 0 if undefined (which is -1)
+                    coordForCenter = coordForCenter.atDistanceAndAzimuth(centerTargetDistance, bearing);
+                }
+                return coordForCenter
+            }
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement

@@ -39,5 +39,5 @@ jobs:
         make
     - name: Deploy
       run: |
-        ${Qt5_Dir}/bin/macdeployqt --verbose 2 --qmldir src/qml build/src/enroute
+        ${Qt5_Dir}/bin/macdeployqt -verbose=2 -qmldir=src/qml build/src/enroute
         ls

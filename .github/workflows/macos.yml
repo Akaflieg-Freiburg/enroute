@@ -40,4 +40,4 @@ jobs:
     - name: Deploy
       run: |
         ../../Qt/bin/macdeployqt --verbose 2 --qmldir src/qml build/src/enroute
-	ls
+        ls

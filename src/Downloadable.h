@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QDateTime>
 #include <QFile>
 #include <QFileInfo>
 #include <QNetworkReply>

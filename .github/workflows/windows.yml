@@ -35,3 +35,7 @@ jobs:
       run: |
         cd build
         cmake --build .
+    - name: Deploy
+      run: |
+        ..\..\Qt\bin\windeployqt --verbose 2 --qmldir src/qml build/src/enroute
+	dir

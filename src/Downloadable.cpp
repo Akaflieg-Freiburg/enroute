@@ -20,6 +20,7 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QLocale>
 #include <QLockFile>
 #include <utility>
 

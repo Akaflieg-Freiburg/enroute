@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QVariant>
 
 #warning Docu
 
@@ -29,7 +30,7 @@ class WeatherReport : public QObject {
 
 public:
 #warning Docu
-    explicit WeatherReport(const QMultiMap<QString, QVariant> &metar, const QMultiMap<QString, QVariant> &taf, QObject *parent = nullptr);
+    explicit WeatherReport(const QString &id, const QMultiMap<QString, QVariant> &metar, const QMultiMap<QString, QVariant> &taf, QObject *parent = nullptr);
 
     // Standard destructor
     ~WeatherReport() = default;
@@ -55,7 +56,7 @@ private:
     QList<QString> _taf;
 
     QString decodeTime(const QVariant &time);
-    QString decodeWind(const QVariant &windd, const QVariant &winds);
+    QString decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg = QVariant("0"));
     QString decodeVis(const QVariant &vis);
     QString decodeTemp(const QVariant &temp);
     QString decodeQnh(const QVariant &altim);

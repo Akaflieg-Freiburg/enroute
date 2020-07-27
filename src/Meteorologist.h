@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QGeoCoordinate>
+#include <QXmlStreamReader>
 
 #include "WeatherReport.h"
 
@@ -54,6 +55,8 @@ private:
 
     QList<QPointer<WeatherReport>> _reports;
     bool _updated;
+
+    QMultiMap<QString, QVariant> _readReport(QXmlStreamReader &xml, const QString &type);
 
     QString dummyMetars();
     QString dummyTafs();

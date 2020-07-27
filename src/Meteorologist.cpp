@@ -51,10 +51,12 @@ void Meteorologist::update(const QGeoCoordinate& position) {
     responses.push_back(this->dummyMetars());
     responses.push_back(this->dummyTafs());
 
-    QList<QMultiMap<QString, QVariant>> metars;
-    QList<QMultiMap<QString, QVariant>> tafs;
+    QMap<QString, QMultiMap<QString, QVariant>> metars;
+    QMap<QString, QMultiMap<QString, QVariant>> tafs;
+    QList<QString> mStations;
+    QList<QString> tStations;
     
-    // Decode METAR and TAF
+    // Decode METAR and TAF and handle duplicates
     for (auto response : responses) {
         QXmlStreamReader xml(response);
         while (!xml.atEnd() && !xml.hasError())
@@ -62,81 +64,28 @@ void Meteorologist::update(const QGeoCoordinate& position) {
             auto token = xml.readNext();
             if (!token)
                 break;
-
-            // IF METAR and TAF contains duplicate => lambda read(QString METAR || TAF)
-            if (xml.isStartElement() && xml.name() == "METAR") {
-
-                QMultiMap<QString, QVariant> metar;
-                QList<QString> accepted = {"raw_text", "station_id", "observation_time",
-                                            "temp_c", "dewpoint_c", "wind_dir_degrees",
-                                            "wind_speed_kt", "visibility_statute_mi",
-                                            "altim_in_hg", "flight_category",
-                                            "wx_string"};
-                while (true) {
-                    xml.readNextStartElement();
-                    QString name = xml.name().toString();
-
-                    if (xml.isStartElement() && accepted.contains(name) )
-                        metar.insert(name, xml.readElementText());
-                    else if (xml.isStartElement() && name == "sky_condition") {
-                        auto atrs = xml.attributes();
-                        metar.insert("sky_condition", atrs.value("sky_cover").toString() + ", " + atrs.value("cloud_base_ft_agl").toString());
-                        xml.skipCurrentElement();
-                    }
-                    else if (xml.isEndElement() && name == "METAR")
-                        break;
-                    else
-                        xml.skipCurrentElement();   
-                }
-
-                metars.push_back(metar);
-            }
-            else if (xml.isStartElement() && xml.name() == "TAF") {
-
-                QMultiMap<QString, QVariant> taf;
-                QList<QString> accepted = {"raw_text", "station_id", "issue_time",
-                                            "valid_time_from", "valid_time_to"};
-
-                while (true) {
-                    xml.readNextStartElement();
-                    QString name = xml.name().toString();
-
-                    if (xml.isStartElement() && accepted.contains(name) )
-                        taf.insert(name, xml.readElementText());
-                    else if (xml.isStartElement() && name == "forecast") {
-                        
-                        QMultiMap<QString, QVariant> forecast;
-                        QList<QString> accepted2 = {"fcst_time_from", "fcst_time_to",
-                                                    "wind_dir_degrees", 
-                                                    "wind_speed_kt",
-                                                    "visibility_statute_mi",
-                                                    "wx_string", "probability",
-                                                    "change_indicator"};
-
-                        while (true) {
-                            xml.readNextStartElement();
-                            QString name2 = xml.name().toString();
-                            
-                            if (xml.isStartElement() && accepted2.contains(name2))
-                                forecast.insert(name2, xml.readElementText());
-                            else if (xml.isStartElement() && name2 == "sky_condition") {
-                                auto atrs = xml.attributes();
-                                forecast.insert("sky_condition", atrs.value("sky_cover").toString() + ", " + atrs.value("cloud_base_ft_agl").toString());
-                                xml.skipCurrentElement();
-                            }
-                            else if (xml.isEndElement() && name2 == "forecast")
-                                break;
-                            else
-                                xml.skipCurrentElement();
+            
+            if (xml.isStartElement()) {
+                if (xml.name() == "METAR") {
+                    auto metar = _readReport(xml, "METAR");
+                    if (metar.contains("station_id")) {
+                        QString station = metar.value("station_id").toString();
+                        if (!mStations.contains(station)) {
+                            mStations.push_back(station);
+                            metars.insert(station, metar);
                         }
-                        taf.insert("forecast", QVariant(forecast));
                     }
-                    else if (xml.isEndElement() && name == "TAF")
-                        break;
-                    else
-                        xml.skipCurrentElement();
                 }
-                tafs.push_back(taf);
+                else if (xml.name() == "TAF") {
+                    auto taf = _readReport(xml, "TAF");
+                    if (taf.contains("station_id")) {
+                        QString station = taf.value("station_id").toString();
+                        if (!tStations.contains(station)) {
+                            tStations.push_back(station);
+                            tafs.insert(station, taf);
+                        }
+                    }
+                }
             }
         }
     }
@@ -145,29 +94,96 @@ void Meteorologist::update(const QGeoCoordinate& position) {
         delete rep;
     _reports.clear();
 
-    // Add new reports and handle duplicates
-    /*todo associate METAR and TAF for all stations -> use QMultiMap instead of QList */
-    std::string errorm = "METAR and TAF not associated\n";
-    if (metars.size() == tafs.size()) {
-        QList<QString> stations;
-        for (size_t i = 0; i < metars.size(); ++i) {
-            if (metars[i].value("station_id") == tafs[i].value("station_id")) {
-                QString station = metars[i].value("station_id").toString();
-                if (!stations.contains(station)) {
-                    stations.push_back(station);
-                    _reports.append(new WeatherReport(metars[i], tafs[i]));
-                }
-            }
-            else
-                throw std::runtime_error(errorm);
+    // Add new reports and handle unpaired METAR/TAF
+    /* todo to be tested */
+    mStations.sort();
+    tStations.sort();
+    for (auto station : mStations) {
+        if (tafs.contains(station)) {
+            _reports.append(new WeatherReport(station, metars.value(station), tafs.value(station)));
+            int i = tStations.indexOf(station);
+            tStations.removeAt(i);
         }
+        else
+            _reports.append(new WeatherReport(station, metars.value(station), QMultiMap<QString, QVariant>())); // empty TAF
     }
-    else
-        throw std::runtime_error(errorm);
+    for (auto station : tStations)
+        _reports.append(new WeatherReport(station, QMultiMap<QString, QVariant>(), tafs.value(station))); // empty METAR
 
     // Update signals and flags
     _updated = true;
     emit reportsChanged();
+}
+
+QMultiMap<QString, QVariant> Meteorologist::_readReport(QXmlStreamReader &xml, const QString &type) {
+    // Lambda to read sky condition
+    auto readSky = [&] {
+        QXmlStreamAttributes atrs = xml.attributes();
+        QString sky;
+        sky += atrs.value("sky_cover").toString();
+        if (atrs.value("cloud_base_ft_agl").toString() != "")
+            sky += "," + atrs.value("cloud_base_ft_agl").toString();
+        if (atrs.value("cloud_type").toString() != "")
+            sky += "," + atrs.value("cloud_type").toString();
+        return sky;
+    };
+
+    // Read METAR/TAF
+    QMultiMap<QString, QVariant> report;
+    QList<QString> accepted; // fields to decode without special treatment
+    if (type == "METAR")
+        accepted = {"raw_text", "station_id", "observation_time", "temp_c",
+                    "dewpoint_c", "wind_dir_degrees", "wind_speed_kt",
+                    "wind_gust_kt", "visibility_statute_mi", "altim_in_hg",
+                    "flight_category", "wx_string"};
+    else if (type == "TAF")
+        accepted = {"raw_text", "station_id", "issue_time",
+                    "valid_time_from", "valid_time_to"};
+    else
+        throw std::runtime_error("Meteorologist::_readReport: type must be METAR or TAF!\n");
+
+    while (true) {
+        xml.readNextStartElement();
+        QString name = xml.name().toString();
+
+        if (xml.isStartElement() && accepted.contains(name) )
+            report.insert(name, xml.readElementText());
+        else if (xml.isStartElement() && name == "sky_condition" && type == "METAR") {
+            report.insert("sky_condition", readSky());
+            xml.skipCurrentElement();
+        }
+        else if (xml.isStartElement() && name == "forecast" && type == "TAF") {
+            QMultiMap<QString, QVariant> forecast;
+            QList<QString> accepted2 = {"fcst_time_from", "fcst_time_to",
+                                        "change_indicator", "probability",
+                                        "wind_dir_degrees", "wind_speed_kt",
+                                        "wind_gust_kt",
+                                        "visibility_statute_mi",
+                                        "wx_string"};
+
+            while (true) {
+                xml.readNextStartElement();
+                QString name2 = xml.name().toString();
+                
+                if (xml.isStartElement() && accepted2.contains(name2))
+                    forecast.insert(name2, xml.readElementText());
+                else if (xml.isStartElement() && name2 == "sky_condition") {
+                    forecast.insert("sky_condition", readSky());
+                    xml.skipCurrentElement();
+                }
+                else if (xml.isEndElement() && name2 == "forecast")
+                    break;
+                else
+                    xml.skipCurrentElement();
+            }
+            report.insert("forecast", QVariant(forecast));
+        }
+        else if (xml.isEndElement() && name == type)
+            break;
+        else
+            xml.skipCurrentElement();   
+    }
+    return report;
 }
 
 /* These methods are dummies that simulate the result of a sucessfull request to the aviation weather server */

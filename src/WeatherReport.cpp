@@ -24,21 +24,24 @@
 #include <QDateTime>
 #include <cmath>
 
-WeatherReport::WeatherReport(const QMultiMap<QString, QVariant> &metar, const QMultiMap<QString, QVariant> &taf, QObject *parent) {
+WeatherReport::WeatherReport(const QString &id,
+                             const QMultiMap<QString, QVariant> &metar,
+                             const QMultiMap<QString, QVariant> &taf,
+                             QObject *parent) : _id(id) {
 
-    // Get station ID and flight category
-    _id = metar.contains("station_id") ? metar.value("station_id").toString() : "UKN";
+    // Get flight category
     _cat = metar.contains("flight_category") ? metar.value("flight_category").toString() : "UKN";
     
     // Generate METAR
-    /*todo handle units through AviationUnits */
-    /*todo handle exceptions */
     if (metar.contains("raw_text"))
         _metar.push_back("RAW   " + metar.value("raw_text").toString());
     if (metar.contains("observation_time"))
         _metar.push_back("TIME  " + this->decodeTime(metar.value("observation_time")));
     if (metar.contains("wind_dir_degrees") && metar.contains("wind_speed_kt"))
-        _metar.push_back("WIND  From " + this->decodeWind(metar.value("wind_dir_degrees"), metar.value("wind_speed_kt")));
+        if (metar.contains("wind_gust_kt"))
+            _metar.push_back("WIND  " + this->decodeWind(metar.value("wind_dir_degrees"), metar.value("wind_speed_kt"), metar.value("wind_gust_kt")));
+        else
+            _metar.push_back("WIND  " + this->decodeWind(metar.value("wind_dir_degrees"), metar.value("wind_speed_kt")));
     if (metar.contains("visibility_statute_mi"))
         _metar.push_back("VIS   " + this->decodeVis(metar.value("visibility_statute_mi")));
     if (metar.contains("wx_string"))
@@ -53,8 +56,6 @@ WeatherReport::WeatherReport(const QMultiMap<QString, QVariant> &metar, const QM
         _metar.push_back("QNH   " + this->decodeQnh(metar.value("altim_in_hg")));
 
     // Generate TAF
-    /*todo handle units through AviationUnits */
-    /*todo handle exceptions */
     if (taf.contains("raw_text"))
         _taf.push_back("RAW   " + taf.value("raw_text").toString());
     if (taf.contains("issue_time"))
@@ -79,15 +80,15 @@ WeatherReport::WeatherReport(const QMultiMap<QString, QVariant> &metar, const QM
                 
             }
             if (forecast.contains("probability"))
-                fcst.push_back(forecast.value("probability").toString().remove("PROB") + "% probability<br>");
+                fcst.push_back(forecast.value("probability").toString() + "% probability<br>");
             if (forecast.contains("wind_dir_degrees") && forecast.contains("wind_speed_kt"))
-                fcst.push_back("Wind from " + this->decodeWind(forecast.value("wind_dir_degrees"), forecast.value("wind_speed_kt")) + "<br>");
+                fcst.push_back("Wind " + this->decodeWind(forecast.value("wind_dir_degrees"), forecast.value("wind_speed_kt")) + "<br>");
             if (forecast.contains("visibility_statute_mi"))
                 fcst.push_back("Visibility " + this->decodeVis(forecast.value("visibility_statute_mi")) + "<br>");
             if (forecast.contains("wx_string"))
-                fcst.push_back("Weather " + this->decodeWx(forecast.value("wx_string")) + "<br>");
+                fcst.push_back(this->decodeWx(forecast.value("wx_string")) + "<br>");
             if (forecast.contains("sky_condition"))
-                fcst.push_back("Clouds " + this->decodeClouds(forecast.values("sky_condition")) + "<br>");
+                fcst.push_back(this->decodeClouds(forecast.values("sky_condition")));
             _taf.push_back("FCST  " + fcst);
         }
     }
@@ -98,8 +99,19 @@ QString WeatherReport::decodeTime(const QVariant &time) {
     return tim.toString("ddd MMMM d yyyy hh:mm") + " UTC";
 }
 
-QString WeatherReport::decodeWind(const QVariant &windd, const QVariant &winds) {
-    return windd.toString() + "° at " + winds.toString() + " kt";
+QString WeatherReport::decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg) {
+    QString w;
+    if (windd.toString() == "0")
+        if (winds.toString() == "0")
+            return "calm";
+        else
+            w += "variable";
+    else
+        w += "from " + windd.toString() + "°";
+    w += " at " + winds.toString() + " kt";
+    if (windg.toString() != "0")
+        w+= ", gusty " + windg.toString() + " kt";
+    return w;
 }
 
 QString WeatherReport::decodeVis(const QVariant &vis) {
@@ -119,28 +131,71 @@ QString WeatherReport::decodeQnh(const QVariant &altim) {
 
 QString WeatherReport::decodeWx(const QVariant &wx) {
     QString w = wx.toString();
+    // intensity
     w.replace("-", "light ");
-    w.replace("+", "Heavy ");
-    w.replace("SHRA", "showers of rain");
-    w.replace("SHSN", "showers of snow");
-    w.replace("RA", "rain");
-    w.replace("RADZ", "rain-drizzle");
+    w.replace("+", "heavy ");
+    // qualifier
+    w.replace("BC", "patches of");
+    w.replace("BL", "blowing");
+    w.replace("FZ", "freezing");
+    w.replace("MI", "shallow");
+    w.replace("PR", "partial");
+    w.replace("RE", "recent");
+    w.replace("SH", "showers of");
+    // precipitation
     w.replace("DZ", "drizzle");
+    w.replace("IC", "ice crystal");
+    w.replace("GR", "hail");
+    w.replace("GS", "snow pellets");
+    w.replace("PL", "ice pellets");
+    w.replace("RA", "rain");
+    w.replace("SN", "snow");
+    w.replace("SG", "snow grains");
+    // obscuration
+    w.replace("BR", "mist");
+    w.replace("DU", "dust");
+    w.replace("FG", "fog");
+    w.replace("FU", "smoke");
+    w.replace("HZ", "haze");
+    w.replace("PY", "spray");
+    w.replace("SA", "sand");
+    w.replace("VA", "volcanic ashe");
+    // other
+    w.replace("DS", "duststorm");
+    w.replace("FC", "tornado");
     w.replace("TS", "thunderstorm");
+    w.replace("SQ", "squalls");
+    w.replace("SS", "sandstorm");
     return w;
 }
 
 QString WeatherReport::decodeClouds(const QVariantList &clouds) {
     QString clds;
     for (int i = clouds.size() - 1; i >= 0; --i) {
-        QString layer = clouds[i].toString();
-        clds += layer.left(layer.lastIndexOf(",")) + " at " + layer.right(layer.lastIndexOf(",") + 1) + " ft";
+        QList<QString> layer = clouds[i].toString().split(",");
+        clds += layer[0];
+        if (layer.size() >= 2) {
+            if (layer.size() == 3)
+                clds += " " + layer[2];
+            else
+                clds += " clouds";            
+            clds += " at " + layer[1] + " ft AGL";
+        }
         if (i > 0)
             clds += "<br>";
     }
+    clds.replace("NSC", "No significant clouds");
+    clds.replace("SKC", "Sky clear");
+    clds.replace("CLR", "Clear");
+    clds.replace("CAVOK", "Ceiling and visibility OK");
     clds.replace("FEW", "Few");
     clds.replace("SCT", "Scattered");
     clds.replace("BKN", "Broken");
     clds.replace("OVC", "Overcast");
+    clds.replace("OVX", "Obscured");
+    clds.replace("OVCX", "Obscured");
+    clds.replace("CB", "Cumulonimbus");
+    clds.replace("TCU", "Towering cumulus");
+    clds.replace("CU", "Cumulus");
     return clds;
 }

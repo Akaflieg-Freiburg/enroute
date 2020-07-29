@@ -1,28 +1,224 @@
 {
-    "app-id": "de.akaflieg_freiburg.enroute",
-    "runtime": "org.kde.Platform",
-    "runtime-version": "5.14",
-    "sdk": "org.kde.Sdk",
-    "command": "enroute",
+    "app-id": "${APP_ID}",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "19.08",
+    "sdk": "org.freedesktop.Sdk",
+    "command": "${PROJECT_NAME}",
     "finish-args": [
-	"--filesystem=host",
         "--share=ipc",
-	"--share=network",
+        "--share=network",
         "--socket=x11",
         "--socket=wayland",
-	"--system-talk-name=org.freedesktop.GeoClue2",
+        "--system-talk-name=org.freedesktop.GeoClue2",
         "--device=dri"
+    ],
+    "cleanup": [
+	"/bin/a*",
+	"/bin/d*",
+	"/bin/f*",
+	"/bin/l*",
+	"/bin/m*",
+	"/bin/p*",
+	"/bin/q*",
+	"/bin/q*",
+	"/bin/r*",
+	"/bin/s*",
+	"/bin/t*",
+	"/bin/u*",
+	"/lib/cmake",
+	"/lib/debug",
+	"/lib/pkgconfig",
+	"/lib/*.a",
+	"/lib/*.la",
+	"/lib/*.prl",
+	"/doc",
+	"/include",
+	"/mkspecs",
+	"/phrasebooks",
+	"/translations"
     ],
     "modules": [
         {
-            "name": "enroute flight navigation",
+            "name": "qt5-qtbase",
+	    "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "build-options" : {
+                "arch" : {
+                    "x86_64" : {
+                        "config-opts" : [
+                            "-reduce-relocations", "-force-debug-info"
+                        ]
+                    },
+                    "arm" : {
+                        "config-opts" : [
+                            "-no-reduce-relocations", "-optimize-size", "-opengl es2"
+                        ]
+                    },
+                    "aarch64" : {
+                        "config-opts" : [
+                            "-no-reduce-relocations", "-optimize-size", "-opengl es2"
+                        ]
+                    }
+                }
+            },
+            "config-opts": [ "-confirm-license", "-opensource",
+                             "-shared",
+			     "-release",
+                             "-platform", "linux-g++",
+                             "-optimize-size",
+                             "-nomake", "examples",
+                             "-nomake", "tests",
+                             "-system-harfbuzz",
+                             "-system-sqlite",
+                             "-accessibility",
+                             "-dbus-linked",
+                             "-fontconfig",
+                             "-glib",
+                             "-icu",
+                             "-openssl-linked",
+                             "-no-pch",
+                             "-no-rpath",
+                             "-no-directfb",
+                             "-no-linuxfb",
+                             "-no-kms",
+                             "-system-proxies",
+                             "-gtk",
+                             "-no-use-gold-linker"
+                           ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtbase.git",
+                    "tag": "${Qt5_VERSION}"
+                },
+                {
+                    "type": "shell",
+                    "commands": [ "mv configure configure.qt" ]
+                },
+                {
+                    "type": "script",
+                    "commands": [
+                        "processed=`sed -e 's/--/-/g ; s/=/ /g' <<< $@`",
+                        "./configure.qt $processed"
+                    ],
+                    "dest-filename": "configure"
+                }
+            ]
+        },
+        {
+            "name": "qt5-qtdeclarative",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs", "lib/plugins/qmltooling" ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://code.qt.io/qt/qtdeclarative.git",
+                    "tag": "${Qt5_VERSION}"
+                },
+		{
+                    "type": "patch",
+                    "path": "patch/qtdeclarative-use-python3.patch"
+                }
+
+            ]
+        },
+        {
+            "name": "qt5-qttools",
+            "buildsystem": "qmake",
+            "cleanup-platform": [
+                "/mkspecs",
+                "/bin/assistant", "/bin/qhelpgenerator", "/bin/qcollectiongenerator", "/bin/qhelpconverter", "/bin/pixeltool", "/bin/designer",
+                "/bin/lrelease", "/bin/lupdate", "/bin/lconvert", "/bin/linguist", "/bin/qdoc", "/bin/qtattributionsscanner",
+                "/bin/qtplugininfo", "/bin/qtdiag", "/bin/qdbusviewer"
+            ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qttools.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },
+        {
+            "name": "qt5-qtlocation",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtlocation.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },
+        {
+            "name": "qt5-qtquickcontrols2",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtquickcontrols2.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },
+        {
+            "name": "qt5-qtsvg",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtsvg.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },
+        {
+            "name": "qt5-qttranslations",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qttranslations.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },   
+        {
+            "name": "qt5-wayland",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtwayland.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },
+        {
+            "name": "qt5-qtx11extras",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://code.qt.io/qt/qtx11extras.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },
+        {
+            "name": "enroute",
             "buildsystem": "cmake-ninja",
             "config-opts": ["-DCMAKE_BUILD_TYPE=RelWithDebInfo"],
             "sources": [
                 {
-                    "type": "git",
+		    "type": "git",
                     "url": "https://github.com/Akaflieg-Freiburg/enroute.git",
-                    "commit": ${GIT_COMMIT}
+		    "commit": "${GIT_COMMIT}"
                 }
             ]
         }

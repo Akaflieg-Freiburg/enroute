@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQml 2.12
-import QtQuick 2.14
-import QtQuick.Controls 2.14
-import QtQuick.Controls.Material 2.14
-import QtQuick.Layouts 1.14
+import QtQml 2.15
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Layouts 1.15
 
 import enroute 1.0
 import "../dialogs"
@@ -379,6 +379,72 @@ Page {
 
                 Label { Layout.fillHeight: true }
                 Label {
+                    text: qsTr("Wind")
+                    Layout.columnSpan: 4
+                    font.pixelSize: Qt.application.font.pixelSize*1.2
+                    font.bold: true
+                    color: Material.primary
+                }
+
+                Label { text: qsTr("Direction") }
+                TextField {
+                    id: windDirection
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
+                    validator: DoubleValidator {
+                        bottom: wind.minWindDirection
+                        top: wind.maxWindDirection
+                        notation: DoubleValidator.StandardNotation
+                    }
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    onEditingFinished: wind.windDirectionInDEG = text
+                    color: (acceptableInput ? "black" : "red")
+                    KeyNavigation.tab: windSpeed
+                    KeyNavigation.backtab: fuelConsumption
+                    text: isFinite(wind.windDirectionInDEG) ? wind.windDirectionInDEG : ""
+                    placeholderText: qsTr("undefined")
+                }
+                Label { text: "°" }
+                ToolButton {
+                    icon.source: "/icons/material/ic_delete.svg"
+                    enabled: windDirection.text !== ""
+                    onClicked: {
+                        wind.windDirectionInDEG = -1
+                        windDirection.clear()
+                    }
+                }
+
+                Label { text: qsTr("Speed") }
+                TextField {
+                    id: windSpeed
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
+                    validator: DoubleValidator {
+                        bottom: globalSettings.useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
+                        top: globalSettings.useMetricUnits ? wind.maxWindSpeedInKMH : wind.maxWindSpeedInKT
+                        notation: DoubleValidator.StandardNotation
+                    }
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    onEditingFinished: globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
+                    color: (acceptableInput ? "black" : "red")
+                    KeyNavigation.tab: cruiseSpeed
+                    KeyNavigation.backtab: windDirection
+                    text: isFinite(wind.windSpeedInKT) ? Math.round(globalSettings.useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
+                    placeholderText: qsTr("undefined")
+                }
+                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
+                ToolButton {
+                    icon.source: "/icons/material/ic_delete.svg"
+                    enabled: windSpeed.text !== ""
+                    onClicked: {
+                        wind.windSpeedInKT = -1
+                        windSpeed.clear()
+                    }
+                }
+
+                Label { Layout.fillHeight: true }
+
+                Label {
                     text: qsTr("True Airspeed")
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
@@ -480,71 +546,6 @@ Page {
                     onClicked: {
                         aircraft.fuelConsumptionInLPH = -1
                         fuelConsumption.clear()
-                    }
-                }
-
-                Label { Layout.fillHeight: true }
-                Label {
-                    text: qsTr("Wind")
-                    Layout.columnSpan: 4
-                    font.pixelSize: Qt.application.font.pixelSize*1.2
-                    font.bold: true
-                    color: Material.primary
-                }
-
-                Label { text: qsTr("Direction") }
-                TextField {
-                    id: windDirection
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: Qt.application.font.pixelSize*5
-                    validator: DoubleValidator {
-                        bottom: wind.minWindDirection
-                        top: wind.maxWindDirection
-                        notation: DoubleValidator.StandardNotation
-                    }
-                    inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: wind.windDirectionInDEG = text
-                    color: (acceptableInput ? "black" : "red")
-                    KeyNavigation.tab: windSpeed
-                    KeyNavigation.backtab: fuelConsumption
-                    text: isFinite(wind.windDirectionInDEG) ? wind.windDirectionInDEG : ""
-                    placeholderText: qsTr("undefined")
-                }
-                Label { text: "°" }
-                ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
-                    enabled: windDirection.text !== ""
-                    onClicked: {
-                        wind.windDirectionInDEG = -1
-                        windDirection.clear()
-                    }
-                }
-
-                Label { text: qsTr("Speed") }
-                TextField {
-                    id: windSpeed
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: Qt.application.font.pixelSize*5
-                    validator: DoubleValidator {
-                        bottom: globalSettings.useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
-                        top: globalSettings.useMetricUnits ? wind.maxWindSpeedInKMH : wind.maxWindSpeedInKT
-                        notation: DoubleValidator.StandardNotation
-                    }
-                    inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
-                    color: (acceptableInput ? "black" : "red")
-                    KeyNavigation.tab: cruiseSpeed
-                    KeyNavigation.backtab: windDirection
-                    text: isFinite(wind.windSpeedInKT) ? Math.round(globalSettings.useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
-                    placeholderText: qsTr("undefined")
-                }
-                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
-                ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
-                    enabled: windSpeed.text !== ""
-                    onClicked: {
-                        wind.windSpeedInKT = -1
-                        windSpeed.clear()
                     }
                 }
 

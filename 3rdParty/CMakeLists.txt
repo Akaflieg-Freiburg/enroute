@@ -18,7 +18,7 @@ add_subdirectory(${qhttpengine_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/qhttpengi
 #
 
 if (ANDROID)
-  set(openssl_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android_openssl CACHE INTERNAL "" FORCE)
+  set(openssl_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android_openssl/latest CACHE INTERNAL "" FORCE)
 endif()
 
 

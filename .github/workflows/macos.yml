@@ -1,4 +1,4 @@
-name: Compile on Linux
+name: Compile on MacOS
 
 on:
   release:
@@ -7,19 +7,23 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v2
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: '5.15.0'
-    - name: Install Additional Software
-      run: |
-        sudo apt install doxygen graphviz
     - name: Configure
       run: |
         export CC=/usr/bin/clang
@@ -31,3 +35,7 @@ jobs:
       run: |
         cd build
         make
+    - name: Deploy
+      run: |
+        ${Qt5_Dir}/bin/macdeployqt -verbose=2 -qmldir=src/qml build/src/enroute
+        ls

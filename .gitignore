@@ -1,7 +1,8 @@
 CMakeLists.txt.user
 
-# build dir
+# build dirs
 build
+build-android-release
 
 # IDE
 .vscode

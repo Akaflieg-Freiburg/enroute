@@ -2,13 +2,13 @@
 # Prepare flatpack manifest
 #
 
-set(FLATPAK_RUNTIME_VERSION 5.14)
 
 #
 # Configure
 #
 
 configure_file(${APP_ID}.json.in ${APP_ID}.json)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/flatpak-kde-runtime/patch/qtdeclarative-use-python3.patch patch/qtdeclarative-use-python3.patch COPYONLY)
 
 
 #
@@ -18,7 +18,7 @@ configure_file(${APP_ID}.json.in ${APP_ID}.json)
 add_custom_target(flatpak-binary
   COMMAND rm -rf flatpakBuildDirectory .flatpak-builder
   COMMAND flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  COMMAND flatpak install --user --assumeyes org.kde.Sdk/x86_64/${FLATPAK_RUNTIME_VERSION} org.kde.Platform/x86_64/${FLATPAK_RUNTIME_VERSION}
+  COMMAND flatpak install --user --assumeyes org.freedesktop.Sdk/x86_64/19.08 org.freedesktop.Platform/x86_64/19.08
   COMMAND flatpak-builder flatpakBuildDirectory ${APP_ID}.json
   COMMAND echo ""
   COMMAND echo ""

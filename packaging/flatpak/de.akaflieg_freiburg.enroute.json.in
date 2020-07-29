@@ -12,6 +12,31 @@
         "--system-talk-name=org.freedesktop.GeoClue2",
         "--device=dri"
     ],
+    "cleanup": [
+	"/bin/a*",
+	"/bin/d*",
+	"/bin/f*",
+	"/bin/l*",
+	"/bin/m*",
+	"/bin/p*",
+	"/bin/q*",
+	"/bin/q*",
+	"/bin/r*",
+	"/bin/s*",
+	"/bin/t*",
+	"/bin/u*",
+	"/lib/cmake",
+	"/lib/debug",
+	"/lib/pkgconfig",
+	"/lib/*.a",
+	"/lib/*.la",
+	"/lib/*.prl",
+	"/doc",
+	"/include",
+	"/mkspecs",
+	"/phrasebooks",
+	"/translations"
+    ],
     "modules": [
         {
             "name": "qt5-qtbase",
@@ -37,8 +62,9 @@
             },
             "config-opts": [ "-confirm-license", "-opensource",
                              "-shared",
+			     "-release",
                              "-platform", "linux-g++",
-                             "-optimized-qmake",
+                             "-optimize-size",
                              "-nomake", "examples",
                              "-nomake", "tests",
                              "-system-harfbuzz",
@@ -60,9 +86,9 @@
                            ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qtbase-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "9e7af10aece15fa9500369efde69cb220eee8ec3a6818afe01ce1e7d484824c5"
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtbase.git",
+                    "tag": "${Qt5_VERSION}"
                 },
                 {
                     "type": "shell",
@@ -79,6 +105,23 @@
             ]
         },
         {
+            "name": "qt5-qtdeclarative",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs", "lib/plugins/qmltooling" ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://code.qt.io/qt/qtdeclarative.git",
+                    "tag": "${Qt5_VERSION}"
+                },
+		{
+                    "type": "patch",
+                    "path": "patch/qtdeclarative-use-python3.patch"
+                }
+
+            ]
+        },
+        {
             "name": "qt5-qttools",
             "buildsystem": "qmake",
             "cleanup-platform": [
@@ -89,9 +132,9 @@
             ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qttools-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "ddbcb49aab3a2e3672582c6e2e7bec0058feff790f67472343c79e2895e0e437"
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qttools.git",
+                    "tag": "${Qt5_VERSION}"
                 }
             ]
         },
@@ -101,33 +144,9 @@
             "cleanup-platform": [ "/bin", "/mkspecs" ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qtlocation-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "c68b0778a521e5522641c41b1778999dd408ebfda1e0de166a83743268be5f3f"
-                }
-            ]
-        },
-        {
-            "name": "qt5-qtdeclarative",
-            "buildsystem": "qmake",
-            "cleanup-platform": [ "/bin", "/mkspecs", "lib/plugins/qmltooling" ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qtdeclarative-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "9c3c93fb7d340b2f7d738d12408c047318c78973cb45bfc5ff6b3a57e1fef699"
-                }
-            ]
-        },
-        {
-            "name": "qt5-qtsvg",
-            "buildsystem": "qmake",
-            "cleanup-platform": [ "/bin", "/mkspecs" ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qtsvg-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "ee4d287e2e205ca8c08921b9cbe0fc58bf46be080b5359ad4d7fbdee44aeee0d"
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtlocation.git",
+                    "tag": "${Qt5_VERSION}"
                 }
             ]
         },
@@ -137,21 +156,45 @@
             "cleanup-platform": [ "/bin", "/mkspecs" ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qtquickcontrols2-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "839abda9b58cd8656b2e5f46afbb484e63df466481ace43318c4c2022684648f"
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtquickcontrols2.git",
+                    "tag": "${Qt5_VERSION}"
                 }
             ]
         },
+        {
+            "name": "qt5-qtsvg",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtsvg.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },
+        {
+            "name": "qt5-qttranslations",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin", "/mkspecs" ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qttranslations.git",
+                    "tag": "${Qt5_VERSION}"
+                }
+            ]
+        },   
         {
             "name": "qt5-wayland",
             "buildsystem": "qmake",
             "cleanup-platform": [ "/bin", "/mkspecs" ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qtwayland-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "084133e10bfbd32a28125639660c59975f23457bba6a79b30a25802cec76a9fb"
+		    "type": "git",
+                    "url": "git://code.qt.io/qt/qtwayland.git",
+                    "tag": "${Qt5_VERSION}"
                 }
             ]
         },
@@ -161,9 +204,9 @@
             "cleanup-platform": [ "/bin", "/mkspecs" ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "http://download.qt.io/archive/qt/5.15/5.15.0/submodules/qtx11extras-everywhere-src-5.15.0.tar.xz",
-                    "sha256": "c72b6c188284facddcf82835af048240e721dc8d6d9e8a7bd71d76fd876881a1"
+                    "type": "git",
+                    "url": "git://code.qt.io/qt/qtx11extras.git",
+                    "tag": "${Qt5_VERSION}"
                 }
             ]
         },

@@ -61,5 +61,5 @@ jobs:
         make apk
     - uses: actions/upload-artifact@v2
       with:
-        name: Debug-APK
+        name: enroute-debug.apk
         path: build/android-build/build/outputs/apk/debug/android-build-debug.apk

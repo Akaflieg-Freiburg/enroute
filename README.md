@@ -10,8 +10,12 @@
 
 * Download the app for Android on [Google Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute).
 
+* Download the app for Linux Desktop on [flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute).  It might also be listed in your software management app.
+
 ## Information for developers
 
 * Please have a look at the [wiki pages](https://github.com/Akaflieg-Freiburg/enroute/wiki).
 
 * There is extensive [API documentation](https://akaflieg-freiburg.github.io/enroute/APIdoc) for the C++ classes.
+
+* GitHub automatically generates unsigned android debug binaries on every push. Go to [this page](https://github.com/Akaflieg-Freiburg/enroute/actions?query=workflow%3A%22Compile+on+Android%22) and click on the relevant element in the list.

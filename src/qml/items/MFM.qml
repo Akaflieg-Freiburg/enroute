@@ -60,15 +60,8 @@ Item {
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
         gesture.enabled: true
         gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture|MapGestureArea.RotationGesture
-        gesture.onPanStarted: {
-            console.log('check!!!')
-            centerBindingAnimation.pauseAnimationfor410ms();
-            flightMap.followGPS = false;
-        }
-        gesture.onRotationStarted: {
-            centerBindingAnimation.pauseAnimationfor410ms();
-            flightMap.followGPS = false;
-        }
+        gesture.onPanStarted: {flightMap.followGPS = false}
+        gesture.onRotationStarted: {flightMap.followGPS = false}
 
 
         // PROPERTY "bearing"
@@ -129,7 +122,7 @@ Item {
             CoordinateAnimation { duration: 1000 }
             enabled: true
 
-            function pauseAnimationfor410ms() {
+            function omitAnimationforZoom() {
                 centerBindingAnimation.enabled = false
                 omitAnimationForZoomTimer.stop()  // stop in case it was already runnnig
                 omitAnimationForZoomTimer.start()
@@ -326,7 +319,7 @@ Item {
         }
 
         onClicked: {
-            centerBindingAnimation.pauseAnimationfor410ms()
+            centerBindingAnimation.omitAnimationforZoom()
             mobileAdaptor.vibrateBrief()
             flightMap.zoomLevel += 1
         }

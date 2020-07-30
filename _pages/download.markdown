@@ -18,6 +18,18 @@ to join our public beta-testing program.  Please have a look at Google's
 program](https://support.google.com/googleplay/answer/7003180?hl=en).
 
 
+<figure style="width: 150px" class="align-right">
+  <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='150px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+</figure>
+
+### Linux Desktop
+
+**Enroute Flight Navigation** is available for free download at
+[flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute),
+but you might also find the app in the software management application on your
+computer.
+
+
 ### Source code
 
 Developers who are interested in compiling **Enroute Flight Navigation** themselves find all relevant sources on [GitHub](https://github.com/Akaflieg-Freiburg/enroute).  This program builds on the Qt library. The source code for Qt can be found at [this URL](https://cplx.vm.uni-freiburg.de/storage/QtSources).

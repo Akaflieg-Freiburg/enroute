@@ -18,8 +18,8 @@ to join our public beta-testing program.  Please have a look at Google's
 program](https://support.google.com/googleplay/answer/7003180?hl=en).
 
 
-<figure style="width: 150px" class="align-right">
-  <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='150px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+<figure style="width: 130px" class="align-right">
+  <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 </figure>
 
 ### Linux Desktop
@@ -37,7 +37,4 @@ Developers who are interested in compiling **Enroute Flight Navigation** themsel
 
 # Other systems
 
-**Enroute Flight Navigation** can be ported without much difficulty to Apple iOS devices, such as iPhones and iPads.  We are currently looking for volunteers who help with the port and maintain **Enroute Flight Navigation**'s presence in the Apple App Store. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
-
-**Enroute Flight Navigation** cab be ported without much difficulty to Linux, Windows and MacOS desktop machines. We are currently looking for volunteers. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!
-
+**Enroute Flight Navigation** can be ported without much difficulty to Windows and MacOS desktop machines, and to Apple iOS devices such as iPhones and iPads.  We are currently looking for volunteers who help with the port and maintain **Enroute Flight Navigation**'s presence in the Apple App Store. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!

@@ -397,7 +397,10 @@ Page {
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: wind.windDirectionInDEG = text
+                    onEditingFinished: {
+                        wind.windDirectionInDEG = text
+                        windSpeed.focus = true
+                    }
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: windSpeed
                     KeyNavigation.backtab: fuelConsumption
@@ -425,7 +428,10 @@ Page {
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
+                    onEditingFinished: {
+                        globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
+                        cruiseSpeed.focus = true
+                    }
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: cruiseSpeed
                     KeyNavigation.backtab: windDirection
@@ -463,7 +469,10 @@ Page {
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: globalSettings.useMetricUnits ? aircraft.cruiseSpeedInKMH = text : aircraft.cruiseSpeedInKT = text
+                    onEditingFinished: {
+                        globalSettings.useMetricUnits ? aircraft.cruiseSpeedInKMH = text : aircraft.cruiseSpeedInKT = text
+                        descentSpeed.focus = true
+                    }
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: descentSpeed
                     KeyNavigation.backtab: windSpeed
@@ -493,7 +502,10 @@ Page {
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: globalSettings.useMetricUnits ? aircraft.descentSpeedInKMH = text : aircraft.descentSpeedInKT = text
+                    onEditingFinished: {
+                        globalSettings.useMetricUnits ? aircraft.descentSpeedInKMH = text : aircraft.descentSpeedInKT = text
+                        fuelConsumption.focus = true
+                    }
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: fuelConsumption
                     KeyNavigation.backtab: cruiseSpeed

@@ -365,6 +365,7 @@ Page {
 
         ScrollView {
             contentWidth: sv.width
+            clip: true
 
             GridLayout {
 

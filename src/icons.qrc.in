@@ -11,6 +11,7 @@
         <file alias="icons/material/ic_add_circle.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_add_circle_24px.svg</file>
 	<file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
         <file alias="icons/material/ic_bug_report.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_bug_report_24px.svg</file>
+	<file alias="icons/material/ic_cached.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_cached_24px.svg</file>
 	<file alias="icons/material/ic_cancel.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_cancel_24px.svg</file>
 	<file alias="icons/material/ic_cloud_queue.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_cloud_queue_24px.svg</file>
         <file alias="icons/material/ic_delete.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_delete_24px.svg</file>
@@ -80,6 +81,7 @@
 	<file alias="icons/weather/MVFR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/MVFR.svg</file>
 	<file alias="icons/weather/IFR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/IFR.svg</file>
 	<file alias="icons/weather/LIFR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/LIFR.svg</file>
+	<file alias="icons/weather/UKN.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/UKN.svg</file>
 
     </qresource>
 </RCC>

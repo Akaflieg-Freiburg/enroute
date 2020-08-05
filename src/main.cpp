@@ -126,10 +126,6 @@ int main(int argc, char *argv[])
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
     engine->rootContext()->setContextProperty("mobileAdaptor", adaptor);
 
-    // Attach meteorologist
-    auto meteorologist = new Meteorologist(navEngine->lastValidCoordinate(), engine);
-    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
-
     // Attach library info
     auto librarian = new Librarian(engine);
     engine->rootContext()->setContextProperty("librarian", librarian);
@@ -155,6 +151,10 @@ int main(int argc, char *argv[])
     // Attach flight route
     auto flightroute = new FlightRoute(aircraft, wind, engine);
     engine->rootContext()->setContextProperty("flightRoute", flightroute);
+
+    // Attach meteorologist
+    auto meteorologist = new Meteorologist(networkAccessManager, navEngine->lastValidCoordinate(), flightroute->geoPath(), engine);
+    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
 
     // Restore saved settings and make them available to QML
     QSettings settings;

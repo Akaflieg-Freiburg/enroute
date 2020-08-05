@@ -99,9 +99,7 @@ Page {
                     horizontalAlignment: Text.AlignHCenter
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    text: meteorologist.updated
-                            ? qsTr("No stations available in a radius of 75 nm from your position or your current route.")
-                            : qsTr("Weather has not been updated yet.<p>Please tap <strong>Update all stations</strong> below.</p>")
+                    text: qsTr("No stations available in a radius of 75 nm from your current position or route.<p>Please try to update the list by tapping <strong>Update all stations</strong> below.</p>")
                 }
             }
         }
@@ -116,14 +114,27 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            text: qsTr("Update all statons…")
-            icon.source: "/icons/material/ic_file_download.svg"
+            text: qsTr("Update all stations")
+            icon.source: meteorologist.processing ? "/icons/material/ic_cached.svg" : "/icons/material/ic_file_download.svg"
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                meteorologist.update(satNav.lastValidCoordinate)
+                if (!meteorologist.processing)
+                    meteorologist.update(satNav.lastValidCoordinate, flightRoute.geoPath)
             }
         }
     } // Pane (footer)
+
+    // Show error when weather cannot be updated
+    Connections {
+        target: meteorologist
+        function onError () {
+            dialogLoader.active = false
+            dialogLoader.title = qsTr("Update Error")
+            dialogLoader.text = qsTr("<p>Failed to update the weather.</p><p>Reason: %1.</p>").arg(message)
+            dialogLoader.source = "../dialogs/ErrorDialog.qml"
+            dialogLoader.active = true
+        }
+    }
     
 } // Page

@@ -22,6 +22,8 @@
 
 #include <QObject>
 #include <QGeoCoordinate>
+#include <QNetworkReply>
+#include <QPointer>
 #include <QXmlStreamReader>
 
 #include "WeatherReport.h"
@@ -34,30 +36,41 @@ class Meteorologist : public QObject {
 
 public:
 #warning Docu
-    explicit Meteorologist(const QGeoCoordinate& position, QObject *parent = nullptr);
+    explicit Meteorologist(QNetworkAccessManager *networkAccessManager,
+                           const QGeoCoordinate& position,
+                           const QVariantList& steerpts,
+                           QObject *parent = nullptr);
 
     // Standard destructor
-    ~Meteorologist() override = default;
-
-    Q_PROPERTY(bool updated READ updated NOTIFY reportsChanged)
-    bool updated() const { return _updated; }
+    ~Meteorologist() override;
 
     Q_PROPERTY(QList<QObject*> reports READ reports NOTIFY reportsChanged)
     QList<QObject*> reports() const;
 
-    Q_INVOKABLE void update(const QGeoCoordinate& position);
+    Q_PROPERTY(bool processing READ processing NOTIFY processingChanged)
+    bool processing() const { return _processing; }
+
+    Q_INVOKABLE void update(const QGeoCoordinate& position, const QVariantList& steerpts);
 
 signals:
     void reportsChanged();
+    void processingChanged();
+    void error(QString message);
 
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 
+    QPointer<QNetworkAccessManager> _networkAccessManager;
+    QList<QPointer<QNetworkReply>> _replies;
+    size_t _replyCount;
+    size_t _replyTotal;
+    bool _processing;
+
     QList<QPointer<WeatherReport>> _reports;
-    bool _updated;
 
-    QMultiMap<QString, QVariant> _readReport(QXmlStreamReader &xml, const QString &type);
+    QMultiMap<QString, QVariant> readReport(QXmlStreamReader &xml, const QString &type);
+    void decode();
 
-    QString dummyMetars();
-    QString dummyTafs();
+private slots:
+    void downloadFinished();
 };

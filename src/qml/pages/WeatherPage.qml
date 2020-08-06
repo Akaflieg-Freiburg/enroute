@@ -57,6 +57,7 @@ Page {
         anchors.fill: parent
 
         // disabled for now
+        // check that permission has been granted before enabling
         SwitchDelegate {
             id: autoUpdate
             text: qsTr("Enable automatic updates")
@@ -119,8 +120,15 @@ Page {
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                if (!meteorologist.processing)
-                    meteorologist.update(satNav.lastValidCoordinate, flightRoute.geoPath)
+                if (globalSettings.acceptedWeatherTerms) {
+                    if (!meteorologist.processing)
+                        meteorologist.update(satNav.lastValidCoordinate, flightRoute.geoPath)
+                }
+                else {
+                    dialogLoader.active = false
+                    dialogLoader.source = "../dialogs/WeatherPermissions.qml"
+                    dialogLoader.active = true
+                }
             }
         }
     } // Pane (footer)

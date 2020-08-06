@@ -237,6 +237,16 @@ QString Librarian::getStringFromRessource(const QString &name) const
 <p>Michael Horbaschk has kindly written a <strong>manual</strong> for the app.</p>)html");
     }
 
+    if (name == ":text/weatherPermissions.html") {
+      return tr(R"html(<h3>Weather Permissionss</h3>
+      
+<p>The weather feature implemented in <strong>Enroute Flight Navigation</strong> relies on data provided by the <a href https://www.aviationweather.gov/>Aviation Weather Center</a> U.S. service.</p>
+      
+<p>Using this feature will send your last-known location and your current route to a U.S. government website.</p>
+
+<p>Note that <strong>Enroute Flight Navigation</strong> is not responsible for any erroneous data that could be emitted by the Aviation Weather Center.</p>)html");
+    }
+
     QFile file(name);
     file.open(QIODevice::ReadOnly);
     auto content = file.readAll();

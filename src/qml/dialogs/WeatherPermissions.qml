@@ -18,57 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#pragma once
+import QtQuick 2.14
+import QtQuick.Controls 2.14
 
-#include <QObject>
-#include <QGeoCoordinate>
-#include <QNetworkReply>
-#include <QPointer>
-#include <QXmlStreamReader>
+LongTextDialog {
+    id: wxPrm
 
-#include "WeatherReport.h"
+    closePolicy: Popup.NoAutoClose
+    text:  librarian.getStringFromRessource(":text/weatherPermissions.html")
 
+    footer: DialogButtonBox {
+        ToolButton {
+            text: qsTr("Accept")
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+        }
+        ToolButton {
+            text: qsTr("Reject")
+            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+        }
 
-#warning Docu
-
-class Meteorologist : public QObject {
-    Q_OBJECT
-
-public:
-#warning Docu
-    explicit Meteorologist(QNetworkAccessManager *networkAccessManager,
-                           QObject *parent = nullptr);
-
-    // Standard destructor
-    ~Meteorologist() override;
-
-    Q_PROPERTY(QList<QObject*> reports READ reports NOTIFY reportsChanged)
-    QList<QObject*> reports() const;
-
-    Q_PROPERTY(bool processing READ processing NOTIFY processingChanged)
-    bool processing() const { return _processing; }
-
-    Q_INVOKABLE void update(const QGeoCoordinate& position, const QVariantList& steerpts);
-
-signals:
-    void reportsChanged();
-    void processingChanged();
-    void error(QString message);
-
-private:
-    Q_DISABLE_COPY_MOVE(Meteorologist)
-
-    QPointer<QNetworkAccessManager> _networkAccessManager;
-    QList<QPointer<QNetworkReply>> _replies;
-    size_t _replyCount;
-    size_t _replyTotal;
-    bool _processing;
-
-    QList<QPointer<WeatherReport>> _reports;
-
-    QMultiMap<QString, QVariant> readReport(QXmlStreamReader &xml, const QString &type);
-    void decode();
-
-private slots:
-    void downloadFinished();
-};
+        onAccepted: {
+            globalSettings.acceptedWeatherTerms = true
+            // Update weather
+            meteorologist.update(satNav.lastValidCoordinate, flightRoute.geoPath)
+        }
+    } // DialogButtonBox
+}

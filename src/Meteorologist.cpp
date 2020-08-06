@@ -26,12 +26,9 @@
 #include <QXmlStreamReader>
 
 Meteorologist::Meteorologist(QNetworkAccessManager *networkAccessManager,
-                             const QGeoCoordinate& position,
-                             const QVariantList& steerpts, QObject *parent) :
+                             QObject *parent) :
                              QObject(parent), _networkAccessManager(networkAccessManager),
                              _replyCount(0), _replyTotal(0), _processing(false) {
-    if (true) // to be replaced by privacy permission
-        this->update(position, steerpts);
 }
 
 Meteorologist::~Meteorologist()

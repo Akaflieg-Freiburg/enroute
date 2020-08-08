@@ -40,7 +40,7 @@ LongTextDialog {
         onAccepted: {
             globalSettings.acceptedWeatherTerms = true
             // Update weather
-            meteorologist.update(satNav.lastValidCoordinate, flightRoute.geoPath)
+            meteorologist.update()
         }
     } // DialogButtonBox
 }

@@ -25,10 +25,16 @@
 #include <QQmlEngine>
 #include <QXmlStreamReader>
 
-Meteorologist::Meteorologist(QNetworkAccessManager *networkAccessManager,
+Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
+                             QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
-                             QObject(parent), _networkAccessManager(networkAccessManager),
-                             _replyCount(0), _replyTotal(0), _processing(false) {
+                             QObject(parent), _sat(sat), _route(route),
+                             _networkAccessManager(networkAccessManager),
+                             _replyCount(0), _replyTotal(0), _processing(false),
+                             _autoUpdate(false) {
+    this->_timer = new QTimer(this);
+    _timer->setInterval(1800000); // 30 minutes
+    connect(_timer, &QTimer::timeout, this, &Meteorologist::update);
 }
 
 Meteorologist::~Meteorologist()
@@ -39,6 +45,7 @@ Meteorologist::~Meteorologist()
     for (auto rep : _replies)
         delete rep;
     _replies.clear();
+    delete _timer;
 }
 
 QList<QObject *> Meteorologist::reports() const {
@@ -48,7 +55,20 @@ QList<QObject *> Meteorologist::reports() const {
     return reports;
 }
 
-void Meteorologist::update(const QGeoCoordinate& position, const QVariantList& steerpts) {
+void Meteorologist::setAutoUpdate(bool autoUpdt) {
+    if (autoUpdt == autoUpdate())
+        return;
+    _autoUpdate = autoUpdt;
+    if (_autoUpdate) {
+        if (!_processing)
+            this->update();
+        _timer->start();
+    }
+    else
+        _timer->stop();
+}
+
+void Meteorologist::update() {
     // Update signals
     _processing = true;
     emit processingChanged();
@@ -58,6 +78,8 @@ void Meteorologist::update(const QGeoCoordinate& position, const QVariantList& s
     _replies.clear();
     _replyCount = 0;
     // Generate queries
+    const QGeoCoordinate& position = _sat->lastValidCoordinate();
+    const QVariantList& steerpts = _route->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
         queries.push_back(QString("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
@@ -81,6 +103,12 @@ void Meteorologist::update(const QGeoCoordinate& position, const QVariantList& s
         _replies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Meteorologist::downloadFinished);
     }
+}
+
+void Meteorologist::downloadFinished() {
+    _replyCount += 1;
+    if (_replyCount == _replyTotal)
+        this->decode();    
 }
 
 void Meteorologist::decode() {
@@ -226,10 +254,4 @@ QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, co
             xml.skipCurrentElement();   
     }
     return report;
-}
-
-void Meteorologist::downloadFinished() {
-    _replyCount += 1;
-    if (_replyCount == _replyTotal)
-        this->decode();    
 }

@@ -84,7 +84,7 @@ public:
      *
      * @returns Property acceptedWeatherTerms
      */
-    bool acceptedWeatherTerms() const { return settings.value("acceptedWeatherTerms", false).toInt(); }
+    bool acceptedWeatherTerms() const { return settings.value("acceptedWeatherTerms", false).toBool(); }
 
     /*! \brief Setter function for property of the same name
      *

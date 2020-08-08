@@ -238,7 +238,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
 
     if (name == ":text/weatherPermissions.html") {
-      return tr(R"html(<h3>Weather Permissionss</h3>
+      return tr(R"html(<h3>Weather Permissions</h3>
       
 <p>The weather feature implemented in <strong>Enroute Flight Navigation</strong> relies on data provided by the <a href https://www.aviationweather.gov/>Aviation Weather Center</a> U.S. service.</p>
       

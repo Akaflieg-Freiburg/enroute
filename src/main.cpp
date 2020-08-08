@@ -144,10 +144,6 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("mapManager", mapManager);
     QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);
 
-    // Attach meteorologist
-    auto meteorologist = new Meteorologist(networkAccessManager, engine);
-    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
-
     // Attach geo map provider
     auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, librarian);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
@@ -155,6 +151,10 @@ int main(int argc, char *argv[])
     // Attach flight route
     auto flightroute = new FlightRoute(aircraft, wind, engine);
     engine->rootContext()->setContextProperty("flightRoute", flightroute);
+
+    // Attach meteorologist
+    auto meteorologist = new Meteorologist(navEngine, flightroute, networkAccessManager, engine);
+    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
 
     // Restore saved settings and make them available to QML
     QSettings settings;

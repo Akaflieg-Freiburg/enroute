@@ -56,26 +56,32 @@ Page {
     ColumnLayout {
         anchors.fill: parent
 
-        // disabled for now
-        // check that permission has been granted before enabling
+        // Auto update button
         SwitchDelegate {
             id: autoUpdate
             text: qsTr("Enable automatic updates")
-                    + (false ? `<br><font color="#606060" size="2">`
-                            + qsTr("Automatic updates enabled")
-                            +"</font>"
-                            : `<br><font color="#606060" size="2">`
-                            + qsTr("Automatic updates disabled")
-                            + `</font>`
+                    + (autoUpdate.checked ? `<br><font color="#606060" size="2">`
+                    + qsTr("Stations will be updated every 30 minutes")
+                    +"</font>"
+                    : `<br><font color="#606060" size="2">`
+                    + qsTr("Automatic updates disabled")
+                    + `</font>`
                     )
             Layout.fillWidth: true
-            Component.onCompleted: autoUpdate.checked = false
+            Component.onCompleted: autoUpdate.checked = meteorologist.autoUpdate
             onToggled: {
+                if (!globalSettings.acceptedWeatherTerms) {
+                    autoUpdate.checked = false
+                    dialogLoader.active = false
+                    dialogLoader.source = "../dialogs/WeatherPermissions.qml"
+                    dialogLoader.active = true
+                }
                 mobileAdaptor.vibrateBrief()
-                autoUpdate.checked = false //globalSettings.weatherAutoUpdate = autoUpdate.checked
+                meteorologist.autoUpdate = autoUpdate.checked
             }
         }
 
+        // List of weather stations
         ListView {
             id: stationList
             Layout.fillHeight: true
@@ -100,12 +106,13 @@ Page {
                     horizontalAlignment: Text.AlignHCenter
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    text: qsTr("No stations available in a radius of 75 nm from your current position or route.<p>Please try to update the list by tapping <strong>Update all stations</strong> below.</p>")
+                    text: qsTr("No stations available in a radius of 75 nm from your current position or route.<p>Please try to update the list by tapping <strong>Update stations</strong> below.</p>")
                 }
             }
         }
     } // Column
 
+    // Manual update button in footer
     footer: Pane {
         width: parent.width
 
@@ -115,14 +122,14 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            text: qsTr("Update all stations")
+            text: qsTr("Update stations")
             icon.source: meteorologist.processing ? "/icons/material/ic_cached.svg" : "/icons/material/ic_file_download.svg"
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 if (globalSettings.acceptedWeatherTerms) {
                     if (!meteorologist.processing)
-                        meteorologist.update(satNav.lastValidCoordinate, flightRoute.geoPath)
+                        meteorologist.update()
                 }
                 else {
                     dialogLoader.active = false
@@ -136,10 +143,10 @@ Page {
     // Show error when weather cannot be updated
     Connections {
         target: meteorologist
-        function onError () {
+        function onError (message) {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Update Error")
-            dialogLoader.text = qsTr("<p>Failed to update the weather.</p><p>Reason: %1.</p>").arg(message)
+            dialogLoader.text = qsTr("<p>Failed to update the list of stations.</p><p>Reason: %1.</p>").arg(message)
             dialogLoader.source = "../dialogs/ErrorDialog.qml"
             dialogLoader.active = true
         }

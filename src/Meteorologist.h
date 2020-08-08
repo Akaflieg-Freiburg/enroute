@@ -21,11 +21,13 @@
 #pragma once
 
 #include <QObject>
-#include <QGeoCoordinate>
-#include <QNetworkReply>
 #include <QPointer>
+#include <QTimer>
+#include <QNetworkReply>
 #include <QXmlStreamReader>
 
+#include "SatNav.h"
+#include "FlightRoute.h"
 #include "WeatherReport.h"
 
 
@@ -36,7 +38,8 @@ class Meteorologist : public QObject {
 
 public:
 #warning Docu
-    explicit Meteorologist(QNetworkAccessManager *networkAccessManager,
+    explicit Meteorologist(SatNav *sat, FlightRoute *route,
+                           QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
 
     // Standard destructor
@@ -48,7 +51,11 @@ public:
     Q_PROPERTY(bool processing READ processing NOTIFY processingChanged)
     bool processing() const { return _processing; }
 
-    Q_INVOKABLE void update(const QGeoCoordinate& position, const QVariantList& steerpts);
+    Q_PROPERTY(bool autoUpdate READ autoUpdate WRITE setAutoUpdate)
+    bool autoUpdate() const { return _autoUpdate; }
+    void setAutoUpdate(bool autoUpdt);
+
+    Q_INVOKABLE void update();
 
 signals:
     void reportsChanged();
@@ -58,17 +65,21 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 
+    QPointer<SatNav> _sat;
+    QPointer<FlightRoute> _route;
+
     QPointer<QNetworkAccessManager> _networkAccessManager;
     QList<QPointer<QNetworkReply>> _replies;
     size_t _replyCount;
     size_t _replyTotal;
     bool _processing;
 
+    QPointer<QTimer> _timer;
+    bool _autoUpdate;
+
     QList<QPointer<WeatherReport>> _reports;
 
-    QMultiMap<QString, QVariant> readReport(QXmlStreamReader &xml, const QString &type);
-    void decode();
-
-private slots:
     void downloadFinished();
+    void decode();
+    QMultiMap<QString, QVariant> readReport(QXmlStreamReader &xml, const QString &type);
 };

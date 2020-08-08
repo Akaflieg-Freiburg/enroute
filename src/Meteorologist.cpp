@@ -30,10 +30,11 @@ Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
                              QObject *parent) :
                              QObject(parent), _sat(sat), _route(route),
                              _networkAccessManager(networkAccessManager),
-                             _replyCount(0), _replyTotal(0), _processing(false),
+                             _nReply(0), _nQuery(0), _processing(false),
                              _autoUpdate(false) {
+    // Create a 30 minutes timer and connect it to the update method
     this->_timer = new QTimer(this);
-    _timer->setInterval(1800000); // 30 minutes
+    _timer->setInterval(1800000);
     connect(_timer, &QTimer::timeout, this, &Meteorologist::update);
 }
 
@@ -56,8 +57,10 @@ QList<QObject *> Meteorologist::reports() const {
 }
 
 void Meteorologist::setAutoUpdate(bool autoUpdt) {
+    // Sanity check
     if (autoUpdt == autoUpdate())
         return;
+    // Set the property and start/stop the auto-update timer
     _autoUpdate = autoUpdt;
     if (_autoUpdate) {
         if (!_processing)
@@ -69,14 +72,14 @@ void Meteorologist::setAutoUpdate(bool autoUpdt) {
 }
 
 void Meteorologist::update() {
-    // Update signals
+    // Update flag
     _processing = true;
     emit processingChanged();
     // Clear old replies, if any
     for (auto rep : _replies)
         delete rep;
     _replies.clear();
-    _replyCount = 0;
+    _nReply = 0;
     // Generate queries
     const QGeoCoordinate& position = _sat->lastValidCoordinate();
     const QVariantList& steerpts = _route->geoPath();
@@ -94,8 +97,8 @@ void Meteorologist::update() {
         queries.push_back(QString("dataSource=metars&flightPath=85%1").arg(qpos));
         queries.push_back(QString("dataSource=tafs&flightPath=85%1").arg(qpos));
     }
-    _replyTotal = queries.size();
-    // Fetch
+    _nQuery = queries.size();
+    // Fetch data
     for (auto query : queries) {
         QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
         QNetworkRequest request(url);
@@ -106,23 +109,27 @@ void Meteorologist::update() {
 }
 
 void Meteorologist::downloadFinished() {
-    _replyCount += 1;
-    if (_replyCount == _replyTotal)
-        this->decode();    
+    // Start to process the data once ALL replies have been received
+    _nReply += 1;
+    if (_nReply == _nQuery)
+        this->process();    
 }
 
-void Meteorologist::decode() {
-    // Decode METAR and TAF and handle duplicates
+void Meteorologist::process() {
+    // These maps associate the weather station ID to its METAR/TAF replies
     QMap<QString, QMultiMap<QString, QVariant>> metars;
     QMap<QString, QMultiMap<QString, QVariant>> tafs;
+    // These lists contain the weather station ID and will be used to handle duplicate or unpaired stations
     QList<QString> mStations;
     QList<QString> tStations;
+    // Read all replies and store the data in respective maps
     for (auto rep : _replies) {
+        // Handle network error, if any
         if (rep->error() != QNetworkReply::NoError) {
-            emit error(rep->errorString()); // todo Reference error: message not defined in QML
+            emit error(rep->errorString());
             break;
         }
-        
+        // Decode XML
         QXmlStreamReader xml(rep);
         while (!xml.atEnd() && !xml.hasError())
         {
@@ -131,6 +138,7 @@ void Meteorologist::decode() {
                 break;
             
             if (xml.isStartElement()) {
+                // Read the METAR and get the data, if the station has not been encountered yet
                 if (xml.name() == "METAR") {
                     auto metar = this->readReport(xml, "METAR");
                     if (metar.contains("station_id")) {
@@ -141,6 +149,7 @@ void Meteorologist::decode() {
                         }
                     }
                 }
+                // Read the TAF and get the data, if the station has not been encountered yet
                 else if (xml.name() == "TAF") {
                     auto taf = this->readReport(xml, "TAF");
                     if (taf.contains("station_id")) {
@@ -163,14 +172,17 @@ void Meteorologist::decode() {
     mStations.sort();
     tStations.sort();
     for (auto station : mStations) {
+        // Station has both METAR and TAF
         if (tafs.contains(station)) {
             _reports.append(new WeatherReport(station, metars.value(station), tafs.value(station)));
             int i = tStations.indexOf(station);
             tStations.removeAt(i);
         }
+        // Station only has METAR
         else
             _reports.append(new WeatherReport(station, metars.value(station), QMultiMap<QString, QVariant>())); // empty TAF
     }
+    // Stations only have TAF
     for (auto station : tStations)
         _reports.append(new WeatherReport(station, QMultiMap<QString, QVariant>(), tafs.value(station))); // empty METAR
 
@@ -179,7 +191,7 @@ void Meteorologist::decode() {
         delete rep;
     _replies.clear();
 
-    // Update signals
+    // Update flag and signals
     _processing = false;
     emit processingChanged();
     emit reportsChanged();
@@ -198,7 +210,7 @@ QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, co
         return sky;
     };
 
-    // Read METAR/TAF
+    // Read METAR/TAF and store in map
     QMultiMap<QString, QVariant> report;
     QList<QString> accepted; // fields to decode without special treatment
     if (type == "METAR")

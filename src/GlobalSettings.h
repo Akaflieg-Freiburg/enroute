@@ -76,7 +76,7 @@ public:
      *
      * This property says if the user has agreed to share its location and route
      * with aviationweather.gov (US government website providing weather data).
-     * If nothing has been accepted yet, false is eturned.
+     * If nothing has been accepted yet, false is returned.
      */
     Q_PROPERTY(bool acceptedWeatherTerms READ acceptedWeatherTerms WRITE setAcceptedWeatherTerms NOTIFY acceptedWeatherTermsChanged)
 

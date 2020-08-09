@@ -429,7 +429,7 @@ Page {
     // Show error when list of maps cannot be downloaded
     Connections {
         target: mapManager
-        function onError () {
+        function onError (message) {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")
             dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)

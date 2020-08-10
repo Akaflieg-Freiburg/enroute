@@ -83,27 +83,6 @@ Page {
             }
         }
 
-        Component {
-            id: noData
-
-            Rectangle {
-                color: "white"
-
-                Label {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.topMargin: Qt.application.font.pixelSize*2
-
-                    horizontalAlignment: Text.AlignHCenter
-                    textFormat: Text.RichText
-                    wrapMode: Text.Wrap
-                    text: qsTr("<h3>Sorry!</h3><p>No data available. Please make sure that an aviation map is installed.</p>")
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
-            }
-        }
-
         ListView {
             id: adList
 
@@ -114,10 +93,15 @@ Page {
 
             Component.onCompleted: adList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "AD")
 
-            Loader {
+            Label {
                 anchors.fill: parent
-                active: parent.count == 0
-                sourceComponent : noData
+                anchors.topMargin: Qt.application.font.pixelSize*2
+                visible: parent.count == 0
+
+                horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+                text: qsTr("<h3>Sorry!</h3><p>No aerodrome data available. Please make sure that an aviation map is installed.</p>")
             }
         }
 
@@ -131,10 +115,15 @@ Page {
 
             Component.onCompleted: naList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "NAV")
 
-            Loader {
+            Label {
                 anchors.fill: parent
-                active: parent.count == 0
-                sourceComponent : noData
+                anchors.topMargin: Qt.application.font.pixelSize*2
+                visible: parent.count == 0
+
+                horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+                text: qsTr("<h3>Sorry!</h3><p>No navaid data available.</p>")
             }
         }
 
@@ -148,10 +137,15 @@ Page {
 
             Component.onCompleted: rpList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "WP")
             
-            Loader {
+            Label {
                 anchors.fill: parent
-                active: parent.count == 0
-                sourceComponent : noData
+                anchors.topMargin: Qt.application.font.pixelSize*2
+                visible: parent.count == 0
+
+                horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+                text: qsTr("<h3>Sorry!</h3><p>No reporting point data available.</p>")
             }
         }
 

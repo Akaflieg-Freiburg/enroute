@@ -12,6 +12,7 @@
 find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
   HINTS ${Qt5Core_DIR}/../../../translations
   HINTS /usr/share/qt5/translations
+  HINTS /usr/translations
   REQUIRED
   )
 set(Qt5_LCONVERT_EXECUTABLE Qt5::lconvert)
@@ -197,6 +198,10 @@ if (NOT ANDROID)
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
+
+# Enforde C++17 and no extensions  
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 
 #

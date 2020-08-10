@@ -34,6 +34,9 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 QString Librarian::getStringFromRessource(const QString &name) const
 {
     if (name == ":text/info_enroute.html") {
+        QString version(PROJECT_VERSION);
+        if (!QString(GIT_COMMIT).isEmpty())
+            version += QString(" • GIT #")+QString(GIT_COMMIT);
         return tr(R"html(<h3>Enroute Flight Navigation</h3>
 
 <p>Version %1</p>
@@ -58,7 +61,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p>This program builds on a number of open source libraries, including <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> and <a href="https://www.openssl.org">OpenSSL</a>.</p>
 
-<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(QString(PROJECT_VERSION)+QString(" • GIT ")+QString(GIT_COMMIT));
+<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
      }
 
     if (name == ":text/info_license.html") {

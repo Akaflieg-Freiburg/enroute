@@ -1,28 +1,27 @@
 {
-    "app-id": "de.akaflieg_freiburg.enroute",
+    "app-id": "${APP_ID}",
     "runtime": "org.kde.Platform",
-    "runtime-version": "5.14",
+    "runtime-version": "${FLATPAK_RUNTIME_VERSION}",
     "sdk": "org.kde.Sdk",
-    "command": "enroute",
+    "command": "${PROJECT_NAME}",
     "finish-args": [
-	"--filesystem=host",
         "--share=ipc",
-	"--share=network",
+        "--share=network",
         "--socket=x11",
         "--socket=wayland",
-	"--system-talk-name=org.freedesktop.GeoClue2",
+        "--system-talk-name=org.freedesktop.GeoClue2",
         "--device=dri"
     ],
     "modules": [
         {
-            "name": "enroute flight navigation",
+            "name": "enroute",
             "buildsystem": "cmake-ninja",
             "config-opts": ["-DCMAKE_BUILD_TYPE=RelWithDebInfo"],
             "sources": [
                 {
-                    "type": "git",
+		    "type": "git",
                     "url": "https://github.com/Akaflieg-Freiburg/enroute.git",
-                    "commit": ${GIT_COMMIT}
+		    "commit": "${GIT_COMMIT}"
                 }
             ]
         }

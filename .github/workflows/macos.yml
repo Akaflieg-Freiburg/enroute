@@ -1,4 +1,4 @@
-name: Compile on Linux
+name: Compile on MacOS
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     
     steps:
     - uses: actions/checkout@v2
@@ -18,10 +18,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.14.2'
-    - name: Install Additional Software
-      run: |
-        sudo apt install doxygen graphviz
+        version: '5.15.0'
     - name: Configure
       run: |
         export CC=/usr/bin/clang

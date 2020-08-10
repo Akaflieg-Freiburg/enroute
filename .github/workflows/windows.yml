@@ -1,4 +1,4 @@
-name: Compile on Linux
+name: Compile on Windows
 
 on:
   push:
@@ -9,27 +9,29 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v2
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.14.2'
-    - name: Install Additional Software
-      run: |
-        sudo apt install doxygen graphviz
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: '5.15.0'
     - name: Configure
       run: |
-        export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
         cmake -E make_directory build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
+        cmake .. -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019"
     - name: Compile
       run: |
         cd build
-        make
+        cmake --build .

@@ -339,7 +339,5 @@ Item {
         anchors.left: parent.left
 
         y: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? view.height - height : view.height
-
-        Behavior on y { PropertyAnimation {duration: 400 } }
     }
 }

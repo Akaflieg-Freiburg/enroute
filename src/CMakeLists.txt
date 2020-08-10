@@ -159,14 +159,14 @@ if( ANDROID )
 
     # The android target depends on our own copy of openssl
     set(ANDROID_EXTRA_LIBS
-        ${openssl_SOURCE_DIR}/arm/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/arm/libssl_1_1.so
-        ${openssl_SOURCE_DIR}/arm64/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/arm64/libssl_1_1.so
-        ${openssl_SOURCE_DIR}/x86/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/x86/libssl_1_1.so
-        ${openssl_SOURCE_DIR}/x86_64/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/x86_64/libssl_1_1.so
+        ${openssl_SOURCE_DIR}/latest/arm/libcrypto_1_1.so
+        ${openssl_SOURCE_DIR}/latest/arm/libssl_1_1.so
+        ${openssl_SOURCE_DIR}/latest/arm64/libcrypto_1_1.so
+        ${openssl_SOURCE_DIR}/latest/arm64/libssl_1_1.so
+        ${openssl_SOURCE_DIR}/latest/x86/libcrypto_1_1.so
+        ${openssl_SOURCE_DIR}/latest/x86/libssl_1_1.so
+        ${openssl_SOURCE_DIR}/latest/x86_64/libcrypto_1_1.so
+        ${openssl_SOURCE_DIR}/latest/x86_64/libssl_1_1.so
         CACHE INTERNAL ""
         )
 

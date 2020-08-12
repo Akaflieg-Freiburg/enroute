@@ -231,13 +231,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
     
     if (name == ":text/whatsnew.html") {
-        return tr(R"html(<p>Adrien Crovato and Heiner Tholen have joined the core development team. As a result of their efforts, there is now an option to use <strong>metric units</strong> for horizontal distances and speeds, and the <strong>Nearby</strong> page has been expanded. For pilots of very slow-flying aircrafts (such as paramotors) there is now a switch to <strong>set flight mode manually</strong>.</p>
-
-<p>Maps has been added for <strong>Argentina</strong> and <strong>Brazil</strong>. As usual, we provide weekly updates.</p>
-
-<p>Adrien Crovato, Markus Sachs and Szymon Kocur have translated the app to <strong>French</strong>, <strong>German</strong> and <strong>Polish</strong>.  If you prefer English, go to the <strong>Settings</strong> page where a language option has been added.</p>
-
-<p>Michael Horbaschk has kindly written a <strong>manual</strong> for the app.</p>)html");
+        return tr(R"html(<p>Heiner Tholen has improved the map display.</p>)html");
     }
 
     QFile file(name);

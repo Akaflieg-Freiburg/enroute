@@ -90,7 +90,7 @@ public:
      * Indicates if the Meteorologist's auto-update feature is currently active
      * (return true), or not (return false)
      */
-    Q_PROPERTY(bool autoUpdate READ autoUpdate WRITE setAutoUpdate)
+    Q_PROPERTY(bool autoUpdate READ autoUpdate WRITE setAutoUpdate NOTIFY autoUpdateChanged)
 
     /*! \brief Getter method for property of the same name
      *
@@ -112,6 +112,9 @@ public:
     Q_INVOKABLE void update();
 
 signals:
+    /*! \brief Signal emitted when the autoUpdate property changes */
+    void autoUpdateChanged();
+
     /*! \brief Signal emitted when the list of weather reports changes */
     void reportsChanged();
 

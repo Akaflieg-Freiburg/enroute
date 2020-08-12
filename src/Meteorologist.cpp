@@ -40,10 +40,10 @@ Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
 
 Meteorologist::~Meteorologist()
 {
-    for (auto rep : _reports)
+    foreach(auto rep, _reports)
         delete rep;
     _reports.clear();
-    for (auto rep : _replies)
+    foreach(auto rep, _replies)
         delete rep;
     _replies.clear();
     delete _timer;
@@ -51,7 +51,7 @@ Meteorologist::~Meteorologist()
 
 QList<QObject *> Meteorologist::reports() const {
     QList<QObject *> reports;
-    for (auto rep : _reports)
+    foreach(auto rep, _reports)
         reports.append(rep);
     return reports;
 }
@@ -69,6 +69,8 @@ void Meteorologist::setAutoUpdate(bool autoUpdt) {
     }
     else
         _timer->stop();
+
+    emit autoUpdateChanged();
 }
 
 void Meteorologist::update() {
@@ -76,7 +78,7 @@ void Meteorologist::update() {
     _processing = true;
     emit processingChanged();
     // Clear old replies, if any
-    for (auto rep : _replies)
+    foreach(auto rep, _replies)
         delete rep;
     _replies.clear();
     _nReply = 0;
@@ -90,7 +92,7 @@ void Meteorologist::update() {
     }
     if (!steerpts.empty()) {
         QString qpos;
-        for (auto var : steerpts) {
+        foreach(auto var, steerpts) {
             QGeoCoordinate posit = var.value<QGeoCoordinate>();
             qpos += ";" + QString::number(posit.longitude()) + "," + QString::number(posit.latitude());
         }
@@ -99,7 +101,7 @@ void Meteorologist::update() {
     }
     _nQuery = queries.size();
     // Fetch data
-    for (auto query : queries) {
+    foreach(auto query, queries) {
         QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
         QNetworkRequest request(url);
         QPointer<QNetworkReply> reply = _networkAccessManager->get(request);
@@ -123,7 +125,7 @@ void Meteorologist::process() {
     QList<QString> mStations;
     QList<QString> tStations;
     // Read all replies and store the data in respective maps
-    for (auto rep : _replies) {
+    foreach(auto rep, _replies) {
         // Handle network error, if any
         if (rep->error() != QNetworkReply::NoError) {
             emit error(rep->errorString());
@@ -164,14 +166,14 @@ void Meteorologist::process() {
         }
     }
     // Clear old reports, if any
-    for (auto rep : _reports)
+    foreach(auto rep, _reports)
         delete rep;
     _reports.clear();
 
     // Add new reports and handle unpaired METAR/TAF
     mStations.sort();
     tStations.sort();
-    for (auto station : mStations) {
+    foreach(auto station, mStations) {
         // Station has both METAR and TAF
         if (tafs.contains(station)) {
             _reports.append(new WeatherReport(station, metars.value(station), tafs.value(station)));
@@ -183,11 +185,11 @@ void Meteorologist::process() {
             _reports.append(new WeatherReport(station, metars.value(station), QMultiMap<QString, QVariant>())); // empty TAF
     }
     // Stations only have TAF
-    for (auto station : tStations)
+    foreach(auto station, tStations)
         _reports.append(new WeatherReport(station, QMultiMap<QString, QVariant>(), tafs.value(station))); // empty METAR
 
     // Clear replies container
-    for (auto rep: _replies)
+    foreach(auto rep, _replies)
         delete rep;
     _replies.clear();
 

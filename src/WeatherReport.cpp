@@ -40,15 +40,16 @@ WeatherReport::WeatherReport(const QString &id,
             _metar.push_back("RAW " + metar.value("raw_text").toString());
         if (metar.contains("observation_time"))
             _metar.push_back("TIME" + this->decodeTime(metar.value("observation_time")));
-        if (metar.contains("wind_dir_degrees") && metar.contains("wind_speed_kt"))
+        if (metar.contains("wind_dir_degrees") && metar.contains("wind_speed_kt")) {
             if (metar.contains("wind_gust_kt"))
                 _metar.push_back("WIND" + this->decodeWind(metar.value("wind_dir_degrees"), metar.value("wind_speed_kt"), metar.value("wind_gust_kt")));
             else
                 _metar.push_back("WIND" + this->decodeWind(metar.value("wind_dir_degrees"), metar.value("wind_speed_kt")));
+        }
         if (metar.contains("visibility_statute_mi"))
             _metar.push_back("VIS " + this->decodeVis(metar.value("visibility_statute_mi")));
         if (metar.contains("wx_string"))
-        _metar.push_back("WX  " + this->decodeWx(metar.value("wx_string")));
+            _metar.push_back("WX  " + this->decodeWx(metar.value("wx_string")));
         if (metar.contains("sky_condition"))
             _metar.push_back("CLDS" + this->decodeClouds(metar.values("sky_condition")));
         if (metar.contains("temp_c"))
@@ -57,7 +58,7 @@ WeatherReport::WeatherReport(const QString &id,
             _metar.push_back("DEWP" + this->decodeTemp(metar.value("dewpoint_c")));
         if (metar.contains("altim_in_hg"))
             _metar.push_back("QNH " + this->decodeQnh(metar.value("altim_in_hg")));
-    }    
+    }
 
     // Generate TAF
     if (taf.empty())
@@ -188,7 +189,7 @@ QString WeatherReport::decodeClouds(const QVariantList &clouds) {
             if (layer.size() == 3)
                 clds += " " + layer[2];
             else
-                clds += " clouds";            
+                clds += " clouds";
             clds += " at " + layer[1] + " ft AGL";
         }
         if (i > 0)

@@ -231,7 +231,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
     
     if (name == ":text/whatsnew.html") {
-        return tr(R"html(<p>Heiner Tholen has improved the map display.</p>)html");
+        return tr(R"html(<p>Adrien Crovato has implemented METRA/TAF access. Heiner Tholen has improved the map display.</p>)html");
     }
 
     if (name == ":text/weatherPermissions.html") {

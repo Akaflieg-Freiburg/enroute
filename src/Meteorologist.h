@@ -21,20 +21,145 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
+#include <QTimer>
+#include <QNetworkReply>
+#include <QXmlStreamReader>
+
+#include "SatNav.h"
+#include "FlightRoute.h"
+#include "WeatherReport.h"
 
 
-#warning Docu
-
+/*! \brief Meteorologist, weather service manager
+ *
+ * This class holds a list of weather reports, each associated to a station that
+ * is within 75nm from the last-known user position or current route.
+ * The reports are fetched from aviationweather.com, recovered in the XML
+ * format, and subsequently decoded.
+ */
 class Meteorologist : public QObject {
     Q_OBJECT
 
 public:
-#warning Docu
-    explicit Meteorologist(QObject *parent = nullptr);
+    /*! \brief Standard constructor
+     *
+     * @param sat The satellite navigation system
+     * 
+     * @param route The flight route
+     * 
+     * @param networkAccessManager The manager for network requests
+     * 
+     * @param parent The standard QObject parent pointer
+     */
+    explicit Meteorologist(SatNav *sat, FlightRoute *route,
+                           QNetworkAccessManager *networkAccessManager,
+                           QObject *parent = nullptr);
 
-    // Standard destructor
-    ~Meteorologist() override = default;
+    /*! \brief Destructor */
+    ~Meteorologist() override;
+
+    /*! \brief The list of weather reports
+     *
+     * Returns the weather reports as a list of QObject for better interraction
+     * with QML.
+     */
+    Q_PROPERTY(QList<QObject*> reports READ reports NOTIFY reportsChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property reports
+     */
+    QList<QObject*> reports() const;
+
+    /*! \brief Processing flag
+     *
+     * Indicates if the Meteorologist is currently processing a request (return
+     * true), or not (return false)
+     */
+    Q_PROPERTY(bool processing READ processing NOTIFY processingChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property processing
+     */
+    bool processing() const { return _processing; }
+
+    /*! \brief Auto-update flag
+     *
+     * Indicates if the Meteorologist's auto-update feature is currently active
+     * (return true), or not (return false)
+     */
+    Q_PROPERTY(bool autoUpdate READ autoUpdate WRITE setAutoUpdate)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property autoUpdate
+     */
+    bool autoUpdate() const { return _autoUpdate; }
+
+    /*! \brief Setter method for property of the same name
+     *
+     * @param autoUpdt Property autoUpdate
+     */
+    void setAutoUpdate(bool autoUpdt);
+
+    /*! \brief Update method
+     *
+     * Gets the last-known user location and the current route, generates the
+     * network queries and send them to aviationweather.com
+     */
+    Q_INVOKABLE void update();
+
+signals:
+    /*! \brief Signal emitted when the list of weather reports changes */
+    void reportsChanged();
+
+    /*! \brief Signal emitted when the processing flag changes */
+    void processingChanged();
+
+    /*! \brief Signal emitted when a network error occurs */
+    void error(QString message);
 
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
+
+    /*! \brief Pointer to satellite navigation system */
+    QPointer<SatNav> _sat;
+
+    /*! \brief Pointer to route */
+    QPointer<FlightRoute> _route;
+
+    /*! \brief Pointer to network manager */
+    QPointer<QNetworkAccessManager> _networkAccessManager;
+
+    /*! \brief List of replies that will be fetched from aviationweather.com */
+    QList<QPointer<QNetworkReply>> _replies;
+
+    /*! \brief Number of replies that have been downloaded and are ready to be processed */
+    size_t _nReply;
+
+    /*! \brief Number of queries that have been emitted to aviationweather.com */
+    size_t _nQuery;
+
+    /*! \brief Processing flag */
+    bool _processing;
+
+    /*! \brief A timer used for auto-updating the weather reports every 30 minutes */
+    QPointer<QTimer> _timer;
+
+    /*! \brief Auto-update flag */
+    bool _autoUpdate;
+
+    /*! \brief List of weather reports */
+    QList<QPointer<WeatherReport>> _reports;
+
+    /*! \brief Slot activated when a download is finished */
+    void downloadFinished();
+
+    /*! \brief Process the replies from aviationweather.com and generates the reports */
+    void process();
+
+    /*! \brief Reads an XML reply from aviationweather.com and create a map subsequently used to generate a report */
+    QMultiMap<QString, QVariant> readReport(QXmlStreamReader &xml, const QString &type);
 };

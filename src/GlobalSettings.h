@@ -72,6 +72,26 @@ public:
      */
     void setAcceptedTerms(int terms);
 
+    /*! \brief Find out if Weather Terms have been accepted
+     *
+     * This property says if the user has agreed to share its location and route
+     * with aviationweather.gov (US government website providing weather data).
+     * If nothing has been accepted yet, false is returned.
+     */
+    Q_PROPERTY(bool acceptedWeatherTerms READ acceptedWeatherTerms WRITE setAcceptedWeatherTerms NOTIFY acceptedWeatherTermsChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property acceptedWeatherTerms
+     */
+    bool acceptedWeatherTerms() const { return settings.value("acceptedWeatherTerms", false).toBool(); }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param terms Property acceptedWeatherTerms
+     */
+    void setAcceptedWeatherTerms(bool terms);
+
     /*! \brief True if translation files exist for the system language */
     Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
 
@@ -166,6 +186,9 @@ public:
 signals:
     /*! Notifier signal */
     void acceptedTermsChanged();
+
+    /*! Notifier signal */
+    void acceptedWeatherTermsChanged();
 
     /*! Notifier signal */
     void autoFlightDetectionChanged();

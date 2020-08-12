@@ -54,6 +54,14 @@ void GlobalSettings::setAcceptedTerms(int terms)
     emit acceptedTermsChanged();
 }
 
+void GlobalSettings::setAcceptedWeatherTerms(bool terms)
+{
+    if (terms == acceptedWeatherTerms())
+        return;
+    settings.setValue("acceptedWeatherTerms", terms);
+    emit acceptedWeatherTermsChanged();
+}
+
 
 void GlobalSettings::setAutoFlightDetection(bool autoDetect)
 {

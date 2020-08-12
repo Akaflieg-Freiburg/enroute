@@ -27,7 +27,7 @@
 WeatherReport::WeatherReport(const QString &id,
                              const QMultiMap<QString, QVariant> &metar,
                              const QMultiMap<QString, QVariant> &taf,
-                             QObject *parent) : _id(id) {
+                             QObject *parent) : QObject(parent), _id(id) {
 
     // Get flight category
     _cat = metar.contains("flight_category") ? metar.value("flight_category").toString() : "UKN";

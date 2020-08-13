@@ -55,15 +55,41 @@ gallery2:
     alt: "Nearby Airfields"
     title: "Nearby Airfields"
 
+gallery3:
+  - url: /assets/images/00-Desktop.png
+    image_path: /assets/images/00-Desktop.png
+    alt: "Airspace Map"
+    title: "Airspace Map"
+  - url: /assets/images/01-Desktop.png
+    image_path: /assets/images/01-Desktop.png
+    alt: "Entrance and Exit Procedures for Control Zone"
+    title: "Entrance and Exit Procedures for Control Zone"
+  - url: /assets/images/02-Desktop.png
+    image_path: /assets/images/02-Desktop.png
+    alt: "Airfield and Airspace Information"
+    title: "Airfield and Airspace Information"
+  - url: /assets/images/03-Desktop.png
+    image_path: /assets/images/03-Desktop.png
+    alt: "Navaid Information"
+    title: "Navaid Information"
+  - url: /assets/images/04-Desktop.png
+    image_path: /assets/images/04-Desktop.png
+    alt: "Elementary Flight Planning"
+    title: "Elementary Flight Planning"
+
 ---
 
 Below you can see **Enroute Flight Navigation** in action.
 
 ## Screenshots from a mobile phone.
 
-{% include gallery caption="Screenshots from mobile phone" %}
+{% include gallery caption="Screenshots from a mobile phone" %}
 
 ## Screenshots from a tablet device.
 
-{% include gallery layout="half" id="gallery2" caption="Screenshots from tablet device" %}
+{% include gallery layout="half" id="gallery2" caption="Screenshots from a tablet device" %}
+
+## Screenshots from the linux desktop.
+
+{% include gallery layout="half" id="gallery3" caption="Screenshots from the linux desktop" %}
 

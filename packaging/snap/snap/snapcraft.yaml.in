@@ -171,7 +171,6 @@ parts:
     source: https://github.com/Akaflieg-Freiburg/enroute.git
     source-type: git
     source-commit: @GIT_COMMIT@
-    source-depth: 1
     build-snaps:
       - cmake
     stage-packages:

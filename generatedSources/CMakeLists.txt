@@ -11,6 +11,20 @@ add_custom_target(mainIcons
 
 
 #
+# Generate feature graphic for the Google Play Store
+#
+
+add_custom_target(featureGraphic
+  COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/propaganda/GooglePlay
+  COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/propaganda/SnapStore
+  COMMAND convert -font Helvetica-bold -fill white -pointsize 60 -gravity center -draw "text 0,-100 'Enroute Flight Navigation'" ${CMAKE_SOURCE_DIR}/propaganda/GooglePlay/featureGraphic.png ${CMAKE_CURRENT_SOURCE_DIR}/propaganda/GooglePlay/featureGraphic.png
+  COMMAND convert -font Helvetica-bold -fill white -pointsize 120 -gravity center -draw "text 0,-100 'Enroute Flight Navigation'" ${CMAKE_SOURCE_DIR}/propaganda/Snap/featureGraphic.png ${CMAKE_CURRENT_SOURCE_DIR}/propaganda/SnapStore/featureGraphic.jpg
+  COMMENT "Generated sources: feature fraphic for Google Play and Snap Store"
+  VERBATIM
+  )
+
+
+#
 # Sprites for the flight map
 #
 

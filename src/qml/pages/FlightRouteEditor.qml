@@ -364,8 +364,17 @@ Page {
         }
 
         ScrollView {
+            id: scrvwv
+
             contentWidth: sv.width
             clip: true
+
+            onHeightChanged: {
+                console.log("Height changed")
+                if (fuelConsumption.activeFocus === true) {
+                    console.log("fuelConsumption has activeFocus")
+                }
+            }
 
             GridLayout {
 
@@ -551,6 +560,13 @@ Page {
                     KeyNavigation.backtab: descentSpeed
                     text: isFinite(aircraft.fuelConsumptionInLPH) ? aircraft.fuelConsumptionInLPH.toString() : ""
                     placeholderText: qsTr("undefined")
+
+                    onActiveFocusChanged: {
+                        console.log("fuelConsumption activeFocus changed")
+                        console.log(y)
+                        console.log(scrvwv.flickableItem.contentY)
+                    }
+
                 }
                 Label { text: qsTr("l/h") }
                 ToolButton {

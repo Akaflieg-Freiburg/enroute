@@ -20,7 +20,7 @@ add_custom_target(snap-binary
   COMMAND echo ""
   COMMAND echo "Install your snap with the following command"
   COMMAND echo ""
-  COMMAND echo " snap install"
+  COMMAND echo " snap install ${CMAKE_CURRENT_BINARY_DIR}/enroute-flight-navigation_1.8.2_amd64.snap --devmode"
   COMMAND echo ""
   COMMAND echo ""
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

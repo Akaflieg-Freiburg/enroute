@@ -89,7 +89,7 @@ Below you can see **Enroute Flight Navigation** in action.
 
 {% include gallery layout="half" id="gallery2" caption="Screenshots from a tablet device" %}
 
-## Screenshots from the linux desktop.
+## Screenshots from the Linux desktop.
 
-{% include gallery layout="half" id="gallery3" caption="Screenshots from the linux desktop" %}
+{% include gallery layout="half" id="gallery3" caption="Screenshots from the Linux desktop" %}
 

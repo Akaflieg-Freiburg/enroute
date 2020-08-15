@@ -525,6 +525,7 @@ Page {
         Label {
             id: shareErrorDialogLabel
             width: shareErrorDialog.availableWidth
+            onLinkActivated: Qt.openUrlExternally(link)
             wrapMode: Text.Wrap
             textFormat: Text.RichText
         }

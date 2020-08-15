@@ -213,7 +213,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
     if (name == ":text/flightRouteLibraryInfo.html") {
         return tr(R"html(<p>The flight routes are stored in standard <a href="https://geojson.org">GeoJSON format</a> in the following directory.<p>
 
-<p><strong><a href="file:%1">%1</a></strong></p>
+<p style="text-align:left;"><strong><a href="file:%1">%1</a></strong></p>
 
 <p>The flight routes can be accessed by other programs, such as backup software or file synchronization apps.  This can be useful to share a flight route library with other devices.</p>)html");
     }

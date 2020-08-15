@@ -323,7 +323,8 @@ Page {
 
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
-        TabButton { text: qsTr("ACFT and Wind") }
+        TabButton { text: qsTr("Wind") }
+        TabButton { text: qsTr("ACFT") }
         Material.elevation: 3
     } // TabBar
 
@@ -364,22 +365,12 @@ Page {
         }
 
         ScrollView {
-            id: scrvwv
+            id: windTab
 
-            contentWidth: sv.width
+            contentWidth: width
             clip: true
 
-            onHeightChanged: {
-                console.log("Height changed")
-                if (fuelConsumption.activeFocus === true) {
-                    console.log("fuelConsumption has activeFocus")
-                }
-            }
-
             GridLayout {
-
-                id: windAndAircraftTab
-
                 anchors.left: parent.left
                 anchors.leftMargin: Qt.application.font.pixelSize
                 anchors.right: parent.right
@@ -413,7 +404,6 @@ Page {
                     }
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: windSpeed
-                    KeyNavigation.backtab: fuelConsumption
                     text: isFinite(wind.windDirectionInDEG) ? wind.windDirectionInDEG : ""
                     placeholderText: qsTr("undefined")
                 }
@@ -440,11 +430,9 @@ Page {
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
                         globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
-                        cruiseSpeed.focus = true
+                        focus = false
                     }
                     color: (acceptableInput ? "black" : "red")
-                    KeyNavigation.tab: cruiseSpeed
-                    KeyNavigation.backtab: windDirection
                     text: isFinite(wind.windSpeedInKT) ? Math.round(globalSettings.useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
                     placeholderText: qsTr("undefined")
                 }
@@ -458,8 +446,26 @@ Page {
                     }
                 }
 
-                Label { Layout.fillHeight: true }
+            }
 
+        }
+
+        ScrollView {
+            id: acftTab
+
+            contentWidth: width
+            clip: true
+
+            GridLayout {
+                id: aircraftTab
+                anchors.left: parent.left
+                anchors.leftMargin: Qt.application.font.pixelSize
+                anchors.right: parent.right
+                anchors.rightMargin: Qt.application.font.pixelSize
+
+                columns: 4
+
+                Label { Layout.fillHeight: true }
                 Label {
                     text: qsTr("True Airspeed")
                     Layout.columnSpan: 4
@@ -520,8 +526,8 @@ Page {
                     KeyNavigation.tab: fuelConsumption
                     KeyNavigation.backtab: cruiseSpeed
                     text: isFinite(aircraft.descentSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
-                                                                              aircraft.descentSpeedInKMH.toString() :
-                                                                              aircraft.descentSpeedInKT.toString() ) : ""
+                                                                               aircraft.descentSpeedInKMH.toString() :
+                                                                               aircraft.descentSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
                 Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
@@ -554,18 +560,15 @@ Page {
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: aircraft.fuelConsumptionInLPH = text
+                    onEditingFinished: {
+                        focus = false
+                        aircraft.fuelConsumptionInLPH = text
+                    }
                     color: (acceptableInput ? "black" : "red")
                     KeyNavigation.tab: windDirection
                     KeyNavigation.backtab: descentSpeed
                     text: isFinite(aircraft.fuelConsumptionInLPH) ? aircraft.fuelConsumptionInLPH.toString() : ""
                     placeholderText: qsTr("undefined")
-
-                    onActiveFocusChanged: {
-                        console.log("fuelConsumption activeFocus changed")
-                        console.log(y)
-                        console.log(scrvwv.flickableItem.contentY)
-                    }
 
                 }
                 Label { text: qsTr("l/h") }
@@ -580,7 +583,9 @@ Page {
 
                 Label { Layout.fillHeight: true }
             }
+
         }
+
     }
 
     footer: Pane {

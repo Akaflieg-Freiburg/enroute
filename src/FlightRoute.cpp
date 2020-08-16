@@ -279,8 +279,12 @@ QString FlightRoute::suggestedFilename() const
 
     QString start = _waypoints.constFirst()->get("COD").toString();
     if (start.isEmpty())
+        start = _waypoints.constFirst()->get("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
+    if (start.isEmpty())
         return result;
     QString end = _waypoints.constLast()->get("COD").toString();
+    if (end.isEmpty())
+        end = _waypoints.constLast()->get("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
     if (end.isEmpty())
         return result;
 

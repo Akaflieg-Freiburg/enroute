@@ -61,6 +61,7 @@ Item {
         gesture.enabled: true
         gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture|MapGestureArea.RotationGesture
         gesture.onPanStarted: {flightMap.followGPS = false}
+        gesture.onPinchStarted: {flightMap.followGPS = false}
         gesture.onRotationStarted: {flightMap.followGPS = false}
 
 
@@ -225,6 +226,12 @@ Item {
         // Mouse Area, in order to receive mouse clicks
         MouseArea {
             anchors.fill: parent
+            propagateComposedEvents: true
+
+            onWheel: {
+                flightMap.followGPS = false
+                wheel.accepted = false
+            }
 
             onPressAndHold: onDoubleClicked(mouse)
 

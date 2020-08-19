@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.14
-import QtQuick.Controls 2.14
-import QtQuick.Layouts 1.14
-import QtQuick.Shapes 1.14
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Shapes 1.15
 
 import enroute 1.0
 
@@ -44,7 +44,10 @@ Dialog {
         RowLayout {
             id: repRow
 
-            Layout.preferredWidth: sv.width
+            width: dlg.availableWidth
+            implicitWidth: dlg.availableWidth
+//            Layout.preferredWidth: sv.width
+//            width: 200
 
             property var text: ({});
 
@@ -85,23 +88,17 @@ Dialog {
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_bug_report.svg"
-
-                onClicked: {
-                    mobileAdaptor.vibrateBrief()
-                    Qt.openUrlExternally(qsTr("mailto:stefan.kebekus@gmail.com?subject=Enroute, Error Report &body=Thank you for suggesting a correction in the map data. Please describe the issue here."))
-                }
-            }
         }
 
         ScrollView {
             id: sv
-            Layout.fillWidth: true
-            Layout.preferredWidth: parent.width
+
             Layout.fillHeight: true
+            Layout.fillWidth: true
 
             contentHeight: co.implicitHeight
+            contentWidth: dlg.availableWidth
+
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
             // The visibility behavior of the vertical scroll bar is a little complex.
@@ -113,7 +110,7 @@ Dialog {
 
             ColumnLayout {
                 id: co
-                width: parent.width
+                width: dlg.availableWidth
 
                 Label {
                     text: "METAR"
@@ -123,11 +120,12 @@ Dialog {
 
                 ColumnLayout {
                     id: metarCO
-                    Layout.fillWidth: true;
-                    Layout.margins: Qt.application.font.pixelSize
+
+                    width: parent.width
                     
                     Component.onCompleted: {
                         var metar = dialogLoader.dialogArgs.station.metar
+
                         for (var j in metar)
                             reportPropertyDelegate.createObject(metarCO, {text: metar[j]});
                     }
@@ -141,8 +139,8 @@ Dialog {
 
                 ColumnLayout {
                     id: tafCO
-                    Layout.fillWidth: true;
-                    Layout.margins: Qt.application.font.pixelSize
+
+                    width: parent.width
 
                     Component.onCompleted: {
                         var taf = dialogLoader.dialogArgs.station.taf

@@ -170,7 +170,7 @@ QString WeatherReport::decodeWx(const QVariant &wx) {
     w.replace("HZ", "haze");
     w.replace("PY", "spray");
     w.replace("SA", "sand");
-    w.replace("VA", "volcanic ashe");
+    w.replace("VA", "volcanic ash");
     // other
     w.replace("DS", "duststorm");
     w.replace("FC", "tornado");

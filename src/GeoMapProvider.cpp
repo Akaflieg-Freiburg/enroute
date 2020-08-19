@@ -77,6 +77,19 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 }
 
 
+QObject* GeoMapProvider::findByID(const QString &id)
+{
+    auto wps = waypoints();
+
+    foreach(auto wp, wps) {
+        if (wp.isNull())
+            continue;
+        if (wp->get("COD").toString() == id)
+            return wp;
+    }
+    return nullptr;
+}
+
 
 QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
 {

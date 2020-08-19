@@ -39,16 +39,16 @@ Page {
             width: pg.width
 
             text: {
-                var result = "<strong>"+model.modelData.id+"</strong>"
-                if (model.modelData.cat === "VFR") {
-                    result += "<span style='color:orange'>VFR</span>"
-                }
-
-                return  result
+                var wp = geoMapProvider.findByID(model.modelData.id)
+                if (wp === null)
+                    return model.modelData.id
+                return wp.richTextName
             }
 
-            icon.source: "/icons/waypoints/AD-PAVED.svg" // "/icons/weather/" + model.modelData.cat + ".svg"
+            icon.source: "/icons/weather/" + model.modelData.cat + ".svg"
             icon.color: "transparent"
+            icon.width: Qt.application.font.pixelSize*3
+            icon.height: Qt.application.font.pixelSize*3
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()

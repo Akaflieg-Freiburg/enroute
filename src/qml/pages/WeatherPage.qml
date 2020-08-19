@@ -39,8 +39,14 @@ Page {
             width: pg.width
 
             text: {
-                return  model.modelData.id + "<br>" + model.modelData.cat
+                var result = "<strong>"+model.modelData.id+"</strong>"
+                if (model.modelData.cat === "VFR") {
+                    result += "<span style='color:orange'>VFR</span>"
+                }
+
+                return  result
             }
+
             icon.source: "/icons/waypoints/AD-PAVED.svg" // "/icons/weather/" + model.modelData.cat + ".svg"
             icon.color: "transparent"
 

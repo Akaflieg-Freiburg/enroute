@@ -43,8 +43,8 @@ $(function() {
 <div class="title">Architecture </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><b>enroute flight navigation</b> is a fairly standard Qt application. The user interface is written in QML, the hard functionality is written in C++.</p>
-<p>This document describes the C++ part of the program. The documentation is continuously generated from the master branch of the enroute GIT repository.</p>
+<div class="textblock"><p><b>Enroute Flight Navigation</b> is a fairly standard Qt application. The user interface is written in QML, the hard functionality is written in C++.</p>
+<p>This document describes the C++ part of the program. The documentation is continuously generated from the master branch of the GIT repository.</p>
 <h3>A. Moving map</h3>
 <p>The moving map is a standard QML Map object that uses the <b>mapboxgl</b> plugin. As mapboxgl expects the map data to come over the internet, there is a <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> object that runs an internal http-server to provide the data.</p>
 <h3>B. C++ classes exposed to QML</h3>

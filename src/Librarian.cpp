@@ -181,7 +181,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p><strong>German:</strong> Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>e-mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
 
-<p><strong>Polish:</strong> Szymon Kocur.</p>
+<p><strong>Polish:</strong> Szymon Kocur, computer science and aviation enthusiast. Laureate of many nationwide competitions.</p>
 
 <p></p>)html");
      }

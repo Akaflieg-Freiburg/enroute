@@ -23,12 +23,24 @@ import QtQuick.Controls 2.14
 import QtQuick.Controls.Material 2.14
 import QtQuick.Layouts 1.14
 
+import enroute 1.0
 import "../items"
+
+/* TODO
+
+  - Sort entries by distance to current position
+
+  - Give one-line weather description, including time ("23 minutes ago")
+
+  - Perhaps give sunset information in top line
+
+  - Unify/coordinate behaviour with MapManager
+
+ */
 
 Page {
     id: pg
     title: qsTr("Weather")
-
 
     header: StandardHeader {}
 
@@ -42,7 +54,10 @@ Page {
                 var wp = geoMapProvider.findByID(model.modelData.id)
                 if (wp === null)
                     return model.modelData.id
-                return wp.richTextName
+                var result = wp.richTextName
+                if (satNav.status === SatNav.OK)
+                    result += "<br>" + wp.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
+                return result
             }
 
             icon.source: "/icons/weather/" + model.modelData.cat + ".svg"

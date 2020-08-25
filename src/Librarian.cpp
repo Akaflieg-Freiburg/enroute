@@ -235,13 +235,13 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
 
     if (name == ":text/weatherPermissions.html") {
-      return tr(R"html(<h3>Weather Permissions</h3>
+      return tr(R"html(<h3>Privacy Warning</h3>
       
-<p>The weather feature implemented in <strong>Enroute Flight Navigation</strong> relies on data provided by the <a href https://www.aviationweather.gov/>Aviation Weather Center</a> U.S. service.</p>
-      
-<p>Using this feature will send your last-known location and your current route to a U.S. government website.</p>
+<p>Like most other programs, this app uses weather data provided by the <a href='https://www.aviationweather.gov'/>Aviation Weather Center</a>, a website of the United States government.</p>
 
-<p>Note that <strong>Enroute Flight Navigation</strong> is not responsible for any erroneous data that could be emitted by the Aviation Weather Center.</p>)html");
+<p>In order to request up-to-date weather information, the app needs to <strong>send your location and your current route to the Aviation Weather Center</strong> at regular intervals. If you agree to this, you can enable the weather feature by clicking on the button below. You can disable the feature at any time using the three-dot menu at the top of this screen.</p>
+
+<p><strong>We have no control over data collected by the Aviation Weather Center. We do not guarantee correctness of the weather information in any way!</strong></p>)html");
     }
 
     QFile file(name);

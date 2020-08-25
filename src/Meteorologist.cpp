@@ -225,6 +225,7 @@ QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, co
                     "valid_time_from", "valid_time_to"};
     else
         throw std::runtime_error("Meteorologist::_readReport: type must be METAR or TAF!\n");
+#warning Unsure if throwing an exception is a good idea.
 
     while (true) {
         xml.readNextStartElement();

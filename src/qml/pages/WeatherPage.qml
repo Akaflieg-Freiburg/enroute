@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.14
-import QtQuick.Controls 2.14
-import QtQuick.Controls.Material 2.14
-import QtQuick.Layouts 1.14
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Layouts 1.15
 
 import enroute 1.0
 import "../items"
@@ -42,7 +42,75 @@ Page {
     id: pg
     title: qsTr("Weather")
 
-    header: StandardHeader {}
+    header: ToolBar {
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.leftMargin: drawer.dragMargin
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                if (stackView.depth > 1) {
+                    stackView.pop()
+                } else {
+                    drawer.open()
+                }
+            }
+        } // ToolButton
+
+        Label {
+            anchors.left: backButton.right
+            anchors.right: headerMenuToolButton.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.bold: true
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            icon.source: "/icons/material/ic_more_vert.svg"
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                headerMenuX.popup()
+            }
+
+            AutoSizingMenu{
+                id: headerMenuX
+
+                MenuItem {
+                    text: qsTr("Update METAR/TAF")
+                    enabled: (!meteorologist.processing) && (globalSettings.acceptedWeatherTerms)
+                    onTriggered: {
+                        mobileAdaptor.vibrateBrief()
+                        if (!meteorologist.processing)
+                            meteorologist.update()
+                    }
+                } // MenuItem
+
+                MenuItem {
+                    text: qsTr("Disallow internet connection")
+                    enabled: globalSettings.acceptedWeatherTerms
+                    onTriggered: {
+                        mobileAdaptor.vibrateBrief()
+                        globalSettings.acceptedWeatherTerms = false
+                    }
+                } // MenuItem
+
+            }
+
+        } // ToolButton
+
+    } // ToolBar
 
     Component {
         id: stationDelegate
@@ -78,6 +146,7 @@ Page {
 
     ColumnLayout {
         anchors.fill: parent
+        visible: globalSettings.acceptedWeatherTerms
 
         // Auto update button
         SwitchDelegate {
@@ -93,12 +162,6 @@ Page {
             Layout.fillWidth: true
             Component.onCompleted: autoUpdate.checked = meteorologist.autoUpdate
             onToggled: {
-                if (!globalSettings.acceptedWeatherTerms) {
-                    autoUpdate.checked = false
-                    dialogLoader.active = false
-                    dialogLoader.source = "../dialogs/WeatherPermissions.qml"
-                    dialogLoader.active = true
-                }
                 mobileAdaptor.vibrateBrief()
                 meteorologist.autoUpdate = autoUpdate.checked
             }
@@ -133,14 +196,52 @@ Page {
                 }
             }
         }
-    } // Column
+    } // ColumnLayout
+
+    ScrollView { // Privacy Warning
+        anchors.fill: parent
+        clip: true
+        visible: !globalSettings.acceptedWeatherTerms
+
+        Item {
+            width: parent.width
+            implicitHeight: t1.height+t2.height
+
+            Label {
+                id: t1
+                width: parent.width
+                text: librarian.getStringFromRessource(":text/weatherPermissions.html")
+                leftPadding: Qt.application.font.pixelSize
+                rightPadding: Qt.application.font.pixelSize
+                topPadding: 2*Qt.application.font.pixelSize
+                wrapMode: Text.Wrap
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+
+            Button {
+                id: t2
+                anchors.top: t1.bottom
+                anchors.horizontalCenter: t1.horizontalCenter
+
+                text: qsTr("Allow internet connection")
+                Layout.alignment: Qt.AlignHCenter
+
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.acceptedWeatherTerms = true
+                    meteorologist.update()
+                }
+            }
+
+        }
+    }
 
     // Manual update button in footer
     footer: Pane {
         width: parent.width
 
         Material.elevation: 3
-        visible: true
+        visible: globalSettings.acceptedWeatherTerms
 
         ToolButton {
             id: downloadUpdatesActionButton
@@ -150,15 +251,8 @@ Page {
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                if (globalSettings.acceptedWeatherTerms) {
-                    if (!meteorologist.processing)
-                        meteorologist.update()
-                }
-                else {
-                    dialogLoader.active = false
-                    dialogLoader.source = "../dialogs/WeatherPermissions.qml"
-                    dialogLoader.active = true
-                }
+                if (!meteorologist.processing)
+                    meteorologist.update()
             }
         }
     } // Pane (footer)

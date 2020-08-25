@@ -148,25 +148,6 @@ Page {
         anchors.fill: parent
         visible: globalSettings.acceptedWeatherTerms
 
-        // Auto update button
-        SwitchDelegate {
-            id: autoUpdate
-            text: qsTr("Enable automatic updates")
-                  + (autoUpdate.checked ? `<br><font color="#606060" size="2">`
-                                          + qsTr("Stations will be updated every 30 minutes")
-                                          +"</font>"
-                                        : `<br><font color="#606060" size="2">`
-                                          + qsTr("Automatic updates disabled")
-                                          + `</font>`
-                     )
-            Layout.fillWidth: true
-            Component.onCompleted: autoUpdate.checked = meteorologist.autoUpdate
-            onToggled: {
-                mobileAdaptor.vibrateBrief()
-                meteorologist.autoUpdate = autoUpdate.checked
-            }
-        }
-
         // List of weather stations
         ListView {
             id: stationList

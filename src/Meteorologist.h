@@ -85,25 +85,6 @@ public:
      */
     bool processing() const { return _processing; }
 
-    /*! \brief Auto-update flag
-     *
-     * Indicates if the Meteorologist's auto-update feature is currently active
-     * (return true), or not (return false)
-     */
-    Q_PROPERTY(bool autoUpdate READ autoUpdate WRITE setAutoUpdate NOTIFY autoUpdateChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property autoUpdate
-     */
-    bool autoUpdate() const { return _autoUpdate; }
-
-    /*! \brief Setter method for property of the same name
-     *
-     * @param autoUpdt Property autoUpdate
-     */
-    void setAutoUpdate(bool autoUpdt);
-
     /*! \brief Update method
      *
      * Gets the last-known user location and the current route, generates the
@@ -150,9 +131,6 @@ private:
 
     /*! \brief A timer used for auto-updating the weather reports every 30 minutes */
     QPointer<QTimer> _timer;
-
-    /*! \brief Auto-update flag */
-    bool _autoUpdate;
 
     /*! \brief List of weather reports */
     QList<QPointer<WeatherReport>> _reports;

@@ -28,15 +28,18 @@
 Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
-                             QObject(parent), _sat(sat), _route(route),
-                             _networkAccessManager(networkAccessManager),
-                             _nReply(0), _nQuery(0), _processing(false),
-                             _autoUpdate(false) {
+    QObject(parent), _sat(sat), _route(route),
+    _networkAccessManager(networkAccessManager),
+    _nReply(0), _nQuery(0), _processing(false)
+{
+#warning Probably want to fetch first report after 1 min or so, and then all 30 mins
+
     // Create a 30 minutes timer and connect it to the update method
     this->_timer = new QTimer(this);
     _timer->setInterval(1800000);
     connect(_timer, &QTimer::timeout, this, &Meteorologist::update);
 }
+
 
 Meteorologist::~Meteorologist()
 {
@@ -49,6 +52,7 @@ Meteorologist::~Meteorologist()
     delete _timer;
 }
 
+
 QList<QObject *> Meteorologist::reports() const {
     QList<QObject *> reports;
     foreach(auto rep, _reports)
@@ -56,22 +60,6 @@ QList<QObject *> Meteorologist::reports() const {
     return reports;
 }
 
-void Meteorologist::setAutoUpdate(bool autoUpdt) {
-    // Sanity check
-    if (autoUpdt == autoUpdate())
-        return;
-    // Set the property and start/stop the auto-update timer
-    _autoUpdate = autoUpdt;
-    if (_autoUpdate) {
-        if (!_processing)
-            this->update();
-        _timer->start();
-    }
-    else
-        _timer->stop();
-
-    emit autoUpdateChanged();
-}
 
 void Meteorologist::update() {
     // Update flag
@@ -110,12 +98,14 @@ void Meteorologist::update() {
     }
 }
 
+
 void Meteorologist::downloadFinished() {
     // Start to process the data once ALL replies have been received
     _nReply += 1;
     if (_nReply == _nQuery)
-        this->process();    
+        this->process();
 }
+
 
 void Meteorologist::process() {
     // These maps associate the weather station ID to its METAR/TAF replies
@@ -199,6 +189,7 @@ void Meteorologist::process() {
     emit reportsChanged();
 }
 
+
 QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, const QString &type) {
     // Lambda to read sky condition
     auto readSky = [&] {
@@ -266,7 +257,7 @@ QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, co
         else if (xml.isEndElement() && name == type)
             break;
         else
-            xml.skipCurrentElement();   
+            xml.skipCurrentElement();
     }
     return report;
 }

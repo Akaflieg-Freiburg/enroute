@@ -58,14 +58,18 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
+<tr class="memitem:a6b8d8a81b36fafd9bea84a8de06c7ad6"><td class="memItemLeft" align="right" valign="top"><a id="a6b8d8a81b36fafd9bea84a8de06c7ad6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a6b8d8a81b36fafd9bea84a8de06c7ad6">timeOfLastUpdateAsStringChanged</a> ()</td></tr>
+<tr class="memdesc:a6b8d8a81b36fafd9bea84a8de06c7ad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifyer signal. <br /></td></tr>
+<tr class="separator:a6b8d8a81b36fafd9bea84a8de06c7ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aa72c71b7ab765037ca30169d919353"><td class="memItemLeft" align="right" valign="top"><a id="a3aa72c71b7ab765037ca30169d919353"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a3aa72c71b7ab765037ca30169d919353">reportsChanged</a> ()</td></tr>
 <tr class="memdesc:a3aa72c71b7ab765037ca30169d919353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the list of weather reports changes. <br /></td></tr>
 <tr class="separator:a3aa72c71b7ab765037ca30169d919353"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d76bf51056a9be2341ca299062975fc"><td class="memItemLeft" align="right" valign="top"><a id="a9d76bf51056a9be2341ca299062975fc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a9d76bf51056a9be2341ca299062975fc">processingChanged</a> ()</td></tr>
-<tr class="memdesc:a9d76bf51056a9be2341ca299062975fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the processing flag changes. <br /></td></tr>
-<tr class="separator:a9d76bf51056a9be2341ca299062975fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b73232bc849ef9ce3cb3700625d4599"><td class="memItemLeft" align="right" valign="top"><a id="a6b73232bc849ef9ce3cb3700625d4599"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a6b73232bc849ef9ce3cb3700625d4599">downloadingChanged</a> ()</td></tr>
+<tr class="memdesc:a6b73232bc849ef9ce3cb3700625d4599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the processing flag changes. <br /></td></tr>
+<tr class="separator:a6b73232bc849ef9ce3cb3700625d4599"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a397959fb90cf7f02332026b5fc6d4d99"><td class="memItemLeft" align="right" valign="top"><a id="a397959fb90cf7f02332026b5fc6d4d99"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a397959fb90cf7f02332026b5fc6d4d99">error</a> (QString message)</td></tr>
 <tr class="memdesc:a397959fb90cf7f02332026b5fc6d4d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when a network error occurs. <br /></td></tr>
@@ -80,24 +84,30 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ae067a8ec96a2d458a36e084c54ff7beb">~Meteorologist</a> () override</td></tr>
 <tr class="memdesc:ae067a8ec96a2d458a36e084c54ff7beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:ae067a8ec96a2d458a36e084c54ff7beb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4b0491472fd75aaed4c802b8537de92"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ac4b0491472fd75aaed4c802b8537de92">timeOfLastUpdateAsString</a> () const</td></tr>
+<tr class="memdesc:ac4b0491472fd75aaed4c802b8537de92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#ac4b0491472fd75aaed4c802b8537de92">More...</a><br /></td></tr>
+<tr class="separator:ac4b0491472fd75aaed4c802b8537de92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1914f04ab37e267fc5463a449b32ecf4"><td class="memItemLeft" align="right" valign="top">QList&lt; QObject * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a1914f04ab37e267fc5463a449b32ecf4">reports</a> () const</td></tr>
 <tr class="memdesc:a1914f04ab37e267fc5463a449b32ecf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a1914f04ab37e267fc5463a449b32ecf4">More...</a><br /></td></tr>
 <tr class="separator:a1914f04ab37e267fc5463a449b32ecf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ac92b46bb0fea631e91ba5b19cc833b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a4ac92b46bb0fea631e91ba5b19cc833b">processing</a> () const</td></tr>
-<tr class="memdesc:a4ac92b46bb0fea631e91ba5b19cc833b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a4ac92b46bb0fea631e91ba5b19cc833b">More...</a><br /></td></tr>
-<tr class="separator:a4ac92b46bb0fea631e91ba5b19cc833b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b71bed055f7bf7e37f2676e1f35ed25"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a3b71bed055f7bf7e37f2676e1f35ed25">downloading</a> () const</td></tr>
+<tr class="memdesc:a3b71bed055f7bf7e37f2676e1f35ed25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a3b71bed055f7bf7e37f2676e1f35ed25">More...</a><br /></td></tr>
+<tr class="separator:a3b71bed055f7bf7e37f2676e1f35ed25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57ab556443e3b1afd6516087b5e59da"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#aa57ab556443e3b1afd6516087b5e59da">update</a> ()</td></tr>
 <tr class="memdesc:aa57ab556443e3b1afd6516087b5e59da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update method.  <a href="#aa57ab556443e3b1afd6516087b5e59da">More...</a><br /></td></tr>
 <tr class="separator:aa57ab556443e3b1afd6516087b5e59da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:ae1d491e8ecf72abd631681f4d251c801"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ae1d491e8ecf72abd631681f4d251c801">timeOfLastUpdateAsString</a></td></tr>
+<tr class="memdesc:ae1d491e8ecf72abd631681f4d251c801"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time of last succesful METAR/TAF update.  <a href="#ae1d491e8ecf72abd631681f4d251c801">More...</a><br /></td></tr>
+<tr class="separator:ae1d491e8ecf72abd631681f4d251c801"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab13f16b290b008b399e6dbf4a3e293fd"><td class="memItemLeft" align="right" valign="top">QList&lt; QObject * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ab13f16b290b008b399e6dbf4a3e293fd">reports</a></td></tr>
 <tr class="memdesc:ab13f16b290b008b399e6dbf4a3e293fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of weather reports.  <a href="#ab13f16b290b008b399e6dbf4a3e293fd">More...</a><br /></td></tr>
 <tr class="separator:ab13f16b290b008b399e6dbf4a3e293fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a779ed59565c20495f2f43fe2e1d39c94"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a779ed59565c20495f2f43fe2e1d39c94">processing</a></td></tr>
-<tr class="memdesc:a779ed59565c20495f2f43fe2e1d39c94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processing flag.  <a href="#a779ed59565c20495f2f43fe2e1d39c94">More...</a><br /></td></tr>
-<tr class="separator:a779ed59565c20495f2f43fe2e1d39c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a298a2ae373b7185b6dc5961a0a0eee4b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a298a2ae373b7185b6dc5961a0a0eee4b">downloading</a></td></tr>
+<tr class="memdesc:a298a2ae373b7185b6dc5961a0a0eee4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloading flag.  <a href="#a298a2ae373b7185b6dc5961a0a0eee4b">More...</a><br /></td></tr>
+<tr class="separator:a298a2ae373b7185b6dc5961a0a0eee4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a>, weather service manager. </p>
@@ -165,33 +175,23 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4ac92b46bb0fea631e91ba5b19cc833b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ac92b46bb0fea631e91ba5b19cc833b">&#9670;&nbsp;</a></span>processing()</h2>
+<a id="a3b71bed055f7bf7e37f2676e1f35ed25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b71bed055f7bf7e37f2676e1f35ed25">&#9670;&nbsp;</a></span>downloading()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Meteorologist::processing </td>
+          <td class="memname">bool Meteorologist::downloading </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property processing </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00085">85</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -212,6 +212,36 @@ Properties</h2></td></tr>
 
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property reports </dd></dl>
+
+</div>
+</div>
+<a id="ac4b0491472fd75aaed4c802b8537de92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4b0491472fd75aaed4c802b8537de92">&#9670;&nbsp;</a></span>timeOfLastUpdateAsString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Meteorologist::timeOfLastUpdateAsString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property reports </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00071">71</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -236,8 +266,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a779ed59565c20495f2f43fe2e1d39c94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a779ed59565c20495f2f43fe2e1d39c94">&#9670;&nbsp;</a></span>processing</h2>
+<a id="a298a2ae373b7185b6dc5961a0a0eee4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a298a2ae373b7185b6dc5961a0a0eee4b">&#9670;&nbsp;</a></span>downloading</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +276,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Meteorologist::processing</td>
+          <td class="memname">bool Meteorologist::downloading</td>
         </tr>
       </table>
   </td>
@@ -256,10 +286,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Processing flag. </p>
-<p>Indicates if the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> is currently processing a request (return true), or not (return false) </p>
+<p>Downloading flag. </p>
+<p>Indicates if the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> is currently downloading (return true), or not (return false) </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00079">79</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00095">95</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -286,7 +316,34 @@ Properties</h2></td></tr>
 <p>The list of weather reports. </p>
 <p>Returns the weather reports as a list of QObject for better interraction with QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00066">66</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00075">75</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+
+</div>
+</div>
+<a id="ae1d491e8ecf72abd631681f4d251c801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d491e8ecf72abd631681f4d251c801">&#9670;&nbsp;</a></span>timeOfLastUpdateAsString</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Meteorologist::timeOfLastUpdateAsString</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Time of last succesful METAR/TAF update. </p>
+<p>This property holds an empty string if there has not been any update yet </p>
+
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00065">65</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>

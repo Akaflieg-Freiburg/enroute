@@ -322,13 +322,13 @@ public:
     the ground.  The current implementation considers the device is flying if
     the groundspeed can be read and is greater then 30 knots.
   */
-  Q_PROPERTY(bool isInFlight READ isInFlight NOTIFY update)
+  Q_PROPERTY(bool isInFlight READ isInFlight NOTIFY isInFlightChanged)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property isInFlight
   */
-  bool isInFlight() const { return groundSpeedInKnots() > minFlightSpeedInKT; }
+  bool isInFlight() const { return _isInFlight; }
 
   /*! \brief Last valid coordinate reading from the last SatNav fix
 
@@ -487,6 +487,9 @@ signals:
   /*! \brief Emitted whenever the suggested icon changes */
   void iconChanged();
 
+  /*! \brief Emitted whenever the suggested icon changes */
+  void isInFlightChanged();
+
   /*! \brief Emitted whenever the SatNav status changes */
   void statusChanged();
 
@@ -511,6 +514,9 @@ private:
 
   // Aircraft is considered flying is speed is at least this high
   static constexpr double minFlightSpeedInKT = 30.0;
+  // Hysteresis for flight speed
+  static constexpr double flightSpeedHysteresis = 5.0;
+
   // Coordinates of EDTF airfield
   static constexpr double EDTF_lat = 48.022653;
   static constexpr double EDTF_lon = 7.832583;
@@ -521,6 +527,7 @@ private:
   QGeoPositionInfo lastInfo;
   QGeoCoordinate _lastValidCoordinate;
   int _lastValidTrack {0};
+  bool _isInFlight {false};
 
   // altitude = raw altitude + altitudeCorrection
   int altitudeCorrectionInM {0};

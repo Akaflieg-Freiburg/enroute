@@ -33,9 +33,8 @@
 
 /*! \brief Meteorologist, weather service manager
  *
- * This class holds a list of weather reports, each associated to a station that
- * is within 75nm from the last-known user position or current route.
- * The reports are fetched from aviationweather.com, recovered in the XML
+ * This class retrieves METAR/TAF weather reports from the "Aviation Weather Center" for all stations that
+ * are within 75nm from the last-known user position or current route.  The reports are fetched from aviationweather.com in XML
  * format, and subsequently decoded.
  */
 class Meteorologist : public QObject {
@@ -93,9 +92,6 @@ public:
     Q_INVOKABLE void update();
 
 signals:
-    /*! \brief Signal emitted when the autoUpdate property changes */
-    void autoUpdateChanged();
-
     /*! \brief Signal emitted when the list of weather reports changes */
     void reportsChanged();
 

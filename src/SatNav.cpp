@@ -359,6 +359,21 @@ void SatNav::statusUpdate(const QGeoPositionInfo &info)
 
     emit update();
 
+    // Change _isInFlight if appropriate.
+    if (_isInFlight) {
+        // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
+        if (groundSpeedInKnots() < minFlightSpeedInKT-flightSpeedHysteresis) {
+            _isInFlight = false;
+            emit isInFlightChanged();
+        }
+    } else {
+        // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
+        if (groundSpeedInKnots() > minFlightSpeedInKT) {
+            _isInFlight = true;
+            emit isInFlightChanged();
+        }
+    }
+
     // emit iconChanged() if appropriate
     if (oldIcon != icon())
         emit iconChanged();

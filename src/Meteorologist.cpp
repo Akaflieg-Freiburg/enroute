@@ -34,10 +34,14 @@ Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
 {
 #warning Probably want to fetch first report after 1 min or so, and then all 30 mins
 
+    // Receive the first report in minute after creation
+     QTimer::singleShot(60*1000, this, &Meteorologist::update);
+
     // Create a 30 minutes timer and connect it to the update method
-    this->_timer = new QTimer(this);
-    _timer->setInterval(1800000);
+    _timer = new QTimer(this);
     connect(_timer, &QTimer::timeout, this, &Meteorologist::update);
+    _timer->setInterval(30*60*1000);
+    _timer->start();
 }
 
 

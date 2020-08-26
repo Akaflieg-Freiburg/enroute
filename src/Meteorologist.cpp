@@ -29,31 +29,24 @@ Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
     QObject(parent), _sat(sat), _route(route),
-    _networkAccessManager(networkAccessManager),
-    _nReply(0), _nQuery(0), _processing(false)
+    _networkAccessManager(networkAccessManager)
 {
-#warning Probably want to fetch first report after 1 min or so, and then all 30 mins
+    // Connect the timer to the update method
+    connect(&_timer, &QTimer::timeout, this, &Meteorologist::update);
 
-    // Receive the first report in minute after creation
-     QTimer::singleShot(60*1000, this, &Meteorologist::update);
-
-    // Create a 30 minutes timer and connect it to the update method
-    _timer = new QTimer(this);
-    connect(_timer, &QTimer::timeout, this, &Meteorologist::update);
-    _timer->setInterval(30*60*1000);
-    _timer->start();
+    // Schedule the next update in 30 seconds from now
+    _timer.setInterval(30*1000);
+    _timer.start();
 }
 
 
 Meteorologist::~Meteorologist()
 {
-    foreach(auto rep, _reports)
-        delete rep;
+    qDeleteAll(_reports);
     _reports.clear();
-    foreach(auto rep, _replies)
-        delete rep;
+
+    qDeleteAll(_replies);
     _replies.clear();
-    delete _timer;
 }
 
 
@@ -66,14 +59,19 @@ QList<QObject *> Meteorologist::reports() const {
 
 
 void Meteorologist::update() {
-    // Update flag
-    _processing = true;
-    emit processingChanged();
+
+    // Schedule the next update in 30 minutes from now
+    _timer.setInterval(30*60*1000);
+    _timer.start();
+
+    // If a request is currently running, then do not update
+    if (downloading())
+        return;
+
     // Clear old replies, if any
-    foreach(auto rep, _replies)
-        delete rep;
+    qDeleteAll(_replies);
     _replies.clear();
-    _nReply = 0;
+
     // Generate queries
     const QGeoCoordinate& position = _sat->lastValidCoordinate();
     const QVariantList& steerpts = _route->geoPath();
@@ -91,7 +89,7 @@ void Meteorologist::update() {
         queries.push_back(QString("dataSource=metars&flightPath=85%1").arg(qpos));
         queries.push_back(QString("dataSource=tafs&flightPath=85%1").arg(qpos));
     }
-    _nQuery = queries.size();
+
     // Fetch data
     foreach(auto query, queries) {
         QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
@@ -100,14 +98,21 @@ void Meteorologist::update() {
         _replies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Meteorologist::downloadFinished);
     }
+
+    // Update flag
+    emit downloadingChanged();
 }
 
 
 void Meteorologist::downloadFinished() {
-    // Start to process the data once ALL replies have been received
-    _nReply += 1;
-    if (_nReply == _nQuery)
-        this->process();
+    // Update flag
+    emit downloadingChanged();
+
+    // Start to process the data only once ALL replies have been received. So, we check here if there are any running
+    // download processes and abort if indeed there are some.
+    if (downloading())
+        return;
+    process();
 }
 
 
@@ -188,9 +193,19 @@ void Meteorologist::process() {
     _replies.clear();
 
     // Update flag and signals
-    _processing = false;
-    emit processingChanged();
     emit reportsChanged();
+
+    _lastUpdate = QDateTime::currentDateTimeUtc();
+    emit timeOfLastUpdateAsStringChanged();
+}
+
+
+bool Meteorologist::downloading() const
+{
+    foreach(auto reply, _replies)
+        if (reply->isRunning())
+            return true;
+    return false;
 }
 
 

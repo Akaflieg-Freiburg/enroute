@@ -89,10 +89,10 @@ Page {
 
                 MenuItem {
                     text: qsTr("Update METAR/TAF")
-                    enabled: (!meteorologist.processing) && (globalSettings.acceptedWeatherTerms)
+                    enabled: (!meteorologist.downloading) && (globalSettings.acceptedWeatherTerms)
                     onTriggered: {
                         mobileAdaptor.vibrateBrief()
-                        if (!meteorologist.processing)
+                        if (!meteorologist.downloading)
                             meteorologist.update()
                     }
                 } // MenuItem
@@ -168,14 +168,30 @@ Page {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: Qt.application.font.pixelSize*2
+
+                    leftPadding: Qt.application.font.pixelSize
+                    rightPadding: Qt.application.font.pixelSize
+                    topPadding: 2*Qt.application.font.pixelSize
 
                     horizontalAlignment: Text.AlignHCenter
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    text: qsTr("No stations available in a radius of 75 nm from your current position or route.<p>Please try to update the list by tapping <strong>Update stations</strong> below.</p>")
+                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the menu.  To find the menu, look for the symbol '&#8942;' at the top right corner of the screen.</p>")
                 }
             }
+
+            // Refresh METAR/TAF data on overscroll
+            property int refreshFlick: 0
+            onFlickStarted: {
+                refreshFlick = atYBeginning
+            }
+            onFlickEnded: {
+                if ( atYBeginning && refreshFlick ) {
+                    mobileAdaptor.vibrateBrief()
+                    meteorologist.update()
+                }
+            }
+
         }
     } // ColumnLayout
 
@@ -224,16 +240,18 @@ Page {
         Material.elevation: 3
         visible: globalSettings.acceptedWeatherTerms
 
-        ToolButton {
-            id: downloadUpdatesActionButton
-            anchors.centerIn: parent
-            text: qsTr("Update stations")
-            icon.source: meteorologist.processing ? "/icons/material/ic_cached.svg" : "/icons/material/ic_file_download.svg"
+        Label {
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            textFormat: Text.RichText
+            wrapMode: Text.Wrap
 
-            onClicked: {
-                mobileAdaptor.vibrateBrief()
-                if (!meteorologist.processing)
-                    meteorologist.update()
+            text: {
+                if (meteorologist.downloading)
+                    return qsTr("Downloading METAR/TAF data…")
+                if (meteorologist.timeOfLastUpdateAsString === "")
+                    return ""
+                return qsTr("Last METAR/TAF update: %1").arg(meteorologist.timeOfLastUpdateAsString)
             }
         }
     } // Pane (footer)

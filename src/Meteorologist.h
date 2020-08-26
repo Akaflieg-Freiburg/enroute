@@ -58,6 +58,22 @@ public:
     /*! \brief Destructor */
     ~Meteorologist() override;
 
+    /*! \brief Time of last succesful METAR/TAF update
+     *
+     * This property holds an empty string if there has not been any update yet
+     */
+    Q_PROPERTY(QString timeOfLastUpdateAsString READ timeOfLastUpdateAsString NOTIFY timeOfLastUpdateAsStringChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property reports
+     */
+    QString timeOfLastUpdateAsString() const {
+        if (!_lastUpdate.isValid())
+            return QString();
+        return _lastUpdate.toString("HH:mm");
+    };
+
     /*! \brief The list of weather reports
      *
      * Returns the weather reports as a list of QObject for better interraction
@@ -71,18 +87,18 @@ public:
      */
     QList<QObject*> reports() const;
 
-    /*! \brief Processing flag
+    /*! \brief Downloading flag
      *
-     * Indicates if the Meteorologist is currently processing a request (return
+     * Indicates if the Meteorologist is currently downloading (return
      * true), or not (return false)
      */
-    Q_PROPERTY(bool processing READ processing NOTIFY processingChanged)
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property processing
      */
-    bool processing() const { return _processing; }
+    bool downloading() const;
 
     /*! \brief Update method
      *
@@ -92,11 +108,14 @@ public:
     Q_INVOKABLE void update();
 
 signals:
+    /*! \brief Notifyer signal */
+    void timeOfLastUpdateAsStringChanged();
+
     /*! \brief Signal emitted when the list of weather reports changes */
     void reportsChanged();
 
     /*! \brief Signal emitted when the processing flag changes */
-    void processingChanged();
+    void downloadingChanged();
 
     /*! \brief Signal emitted when a network error occurs */
     void error(QString message);
@@ -116,17 +135,10 @@ private:
     /*! \brief List of replies that will be fetched from aviationweather.com */
     QList<QPointer<QNetworkReply>> _replies;
 
-    /*! \brief Number of replies that have been downloaded and are ready to be processed */
-    size_t _nReply;
-
-    /*! \brief Number of queries that have been emitted to aviationweather.com */
-    size_t _nQuery;
-
-    /*! \brief Processing flag */
-    bool _processing;
-
     /*! \brief A timer used for auto-updating the weather reports every 30 minutes */
-    QPointer<QTimer> _timer;
+    QTimer _timer;
+
+    QDateTime _lastUpdate {};
 
     /*! \brief List of weather reports */
     QList<QPointer<WeatherReport>> _reports;

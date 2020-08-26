@@ -58,10 +58,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:ae78853a319d43038e42b97389832870d"><td class="memItemLeft" align="right" valign="top"><a id="ae78853a319d43038e42b97389832870d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ae78853a319d43038e42b97389832870d">autoUpdateChanged</a> ()</td></tr>
-<tr class="memdesc:ae78853a319d43038e42b97389832870d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the autoUpdate property changes. <br /></td></tr>
-<tr class="separator:ae78853a319d43038e42b97389832870d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aa72c71b7ab765037ca30169d919353"><td class="memItemLeft" align="right" valign="top"><a id="a3aa72c71b7ab765037ca30169d919353"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a3aa72c71b7ab765037ca30169d919353">reportsChanged</a> ()</td></tr>
 <tr class="memdesc:a3aa72c71b7ab765037ca30169d919353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the list of weather reports changes. <br /></td></tr>
@@ -105,9 +101,9 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a>, weather service manager. </p>
-<p>This class holds a list of weather reports, each associated to a station that is within 75nm from the last-known user position or current route. The reports are fetched from aviationweather.com, recovered in the XML format, and subsequently decoded. </p>
+<p>This class retrieves METAR/TAF weather reports from the "Aviation Weather Center" for all stations that are within 75nm from the last-known user position or current route. The reports are fetched from aviationweather.com in XML format, and subsequently decoded. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00041">41</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00040">40</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5fb54f4057fa0b36bb81e18f08b18791"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fb54f4057fa0b36bb81e18f08b18791">&#9670;&nbsp;</a></span>Meteorologist()</h2>
@@ -195,7 +191,7 @@ Properties</h2></td></tr>
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property processing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00086">86</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00085">85</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -263,7 +259,7 @@ Properties</h2></td></tr>
 <p>Processing flag. </p>
 <p>Indicates if the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> is currently processing a request (return true), or not (return false) </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00080">80</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00079">79</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -290,7 +286,7 @@ Properties</h2></td></tr>
 <p>The list of weather reports. </p>
 <p>Returns the weather reports as a list of QObject for better interraction with QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00067">67</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00066">66</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>

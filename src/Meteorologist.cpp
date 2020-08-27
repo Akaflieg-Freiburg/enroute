@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "Clock.h"
 #include "Meteorologist.h"
 #include "WeatherReport.h"
 
@@ -32,11 +33,18 @@ Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
     _networkAccessManager(networkAccessManager)
 {
     // Connect the timer to the update method
-    connect(&_timer, &QTimer::timeout, this, &Meteorologist::update);
+    connect(&_updateTimer, &QTimer::timeout, this, &Meteorologist::update);
 
     // Schedule the next update in 30 seconds from now
-    _timer.setInterval(30*1000);
-    _timer.start();
+    _updateTimer.setInterval(30*1000);
+    _updateTimer.start();
+
+    // We set up a time that fires once per minute, to indicate the the string
+    // lastUpdated get updated
+    auto timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &Meteorologist::timeOfLastUpdateAsStringChanged);
+    timer->setInterval(60*1000);
+    timer->start();
 }
 
 
@@ -61,8 +69,8 @@ QList<QObject *> Meteorologist::reports() const {
 void Meteorologist::update() {
 
     // Schedule the next update in 30 minutes from now
-    _timer.setInterval(30*60*1000);
-    _timer.start();
+    _updateTimer.setInterval(30*60*1000);
+    _updateTimer.start();
 
     // If a request is currently running, then do not update
     if (downloading())
@@ -280,3 +288,11 @@ QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, co
     }
     return report;
 }
+
+
+QString Meteorologist::timeOfLastUpdateAsString() const
+{
+    if (!_lastUpdate.isValid())
+        return QString();
+    return Clock::describeTimeDifference(_lastUpdate);
+};

@@ -67,6 +67,7 @@ set(SOURCES
 
     # Header files
     Aircraft.h
+    Clock.h
     FlightRoute.h
     GeoMapProvider.h
     Librarian.h
@@ -79,6 +80,7 @@ set(SOURCES
     Aircraft.cpp
     Airspace.cpp
     AviationUnits.cpp
+    Clock.cpp
     Downloadable.cpp
     DownloadableGroup.cpp
     DownloadableGroupWatcher.cpp

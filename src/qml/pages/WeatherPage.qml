@@ -256,6 +256,9 @@ Page {
         }
     } // Pane (footer)
 
+    // Try and update METAR/TAF as soon as someone opens this page
+    Component.onCompleted: meteorologist.update()
+
     // Show error when weather cannot be updated
     Connections {
         target: meteorologist

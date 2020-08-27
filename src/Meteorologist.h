@@ -68,11 +68,7 @@ public:
      *
      * @returns Property reports
      */
-    QString timeOfLastUpdateAsString() const {
-        if (!_lastUpdate.isValid())
-            return QString();
-        return _lastUpdate.toString("HH:mm");
-    };
+    QString timeOfLastUpdateAsString() const;
 
     /*! \brief The list of weather reports
      *
@@ -136,7 +132,7 @@ private:
     QList<QPointer<QNetworkReply>> _replies;
 
     /*! \brief A timer used for auto-updating the weather reports every 30 minutes */
-    QTimer _timer;
+    QTimer _updateTimer;
 
     QDateTime _lastUpdate {};
 

@@ -28,6 +28,7 @@
 
 #include "SatNav.h"
 #include "FlightRoute.h"
+#include "GlobalSettings.h"
 #include "WeatherReport.h"
 
 
@@ -51,7 +52,9 @@ public:
      * 
      * @param parent The standard QObject parent pointer
      */
-    explicit Meteorologist(SatNav *sat, FlightRoute *route,
+    explicit Meteorologist(SatNav *sat,
+                           FlightRoute *route,
+                           GlobalSettings *globalSettings,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
 
@@ -96,15 +99,34 @@ public:
      */
     bool downloading() const;
 
+    /*! \brief Background update flag
+     *
+     * Indicates if the last download process was started as a background update, or if it was explicitly started by the user
+     */
+    Q_PROPERTY(bool backgroundUpdate READ backgroundUpdate NOTIFY backgroundUpdateChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property processing
+     */
+    bool backgroundUpdate() const { return _backgroundUpdate; };
+
     /*! \brief Update method
      *
      * Gets the last-known user location and the current route, generates the
-     * network queries and send them to aviationweather.com
+     * network queries and send them to aviationweather.com.  If the global settings indicate
+     * that connection to aviationweather.com is not allowed, this method does nothing and returns immediately.
+     *
+     * @param isBackgroundUpdate This is a simple flag that can be set and later retrieved in the "backgroundUpdate" property. This is a little helper for the GUI that might want to wish
+     * to make a distinction between automatically triggered background updates (which should not be shown to the user) and those that are explicitly started by the user.
      */
-    Q_INVOKABLE void update();
+    Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
 signals:
-    /*! \brief Notifyer signal */
+    /*! \brief Notifier signal */
+    void backgroundUpdateChanged();
+
+    /*! \brief Notifier signal */
     void timeOfLastUpdateAsStringChanged();
 
     /*! \brief Signal emitted when the list of weather reports changes */
@@ -125,6 +147,9 @@ private:
     /*! \brief Pointer to route */
     QPointer<FlightRoute> _route;
 
+    /*! \brief Pointer to global settings */
+    QPointer<GlobalSettings> _globalSettings;
+
     /*! \brief Pointer to network manager */
     QPointer<QNetworkAccessManager> _networkAccessManager;
 
@@ -134,7 +159,11 @@ private:
     /*! \brief A timer used for auto-updating the weather reports every 30 minutes */
     QTimer _updateTimer;
 
+    /*! \brief Time of last update */
     QDateTime _lastUpdate {};
+
+    /*! \brief flag, as set by the update() method */
+    bool _backgroundUpdate {true};
 
     /*! \brief List of weather reports */
     QList<QPointer<WeatherReport>> _reports;

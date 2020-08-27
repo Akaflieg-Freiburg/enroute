@@ -36,6 +36,7 @@
 #endif
 
 #include "Aircraft.h"
+#include "Clock.h"
 #include "FlightRoute.h"
 #include "GeoMapProvider.h"
 #include "GlobalSettings.h"
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
     // Register types
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
+    qmlRegisterType<Airspace>("enroute", 1, 0, "Clock");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
@@ -138,6 +140,10 @@ int main(int argc, char *argv[])
     auto wind = new Wind(engine);
     engine->rootContext()->setContextProperty("wind", wind);
 
+    // Attach clock
+    auto clock = new Clock(engine);
+    engine->rootContext()->setContextProperty("clock", clock);
+
     // Attach map manager
     auto networkAccessManager = new QNetworkAccessManager();
     auto mapManager = new MapManager(networkAccessManager);
@@ -153,7 +159,7 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("flightRoute", flightroute);
 
     // Attach meteorologist
-    auto meteorologist = new Meteorologist(navEngine, flightroute, networkAccessManager, engine);
+    auto meteorologist = new Meteorologist(navEngine, flightroute, globalSettings, networkAccessManager, engine);
     engine->rootContext()->setContextProperty("meteorologist", meteorologist);
 
     // Restore saved settings and make them available to QML

@@ -70,6 +70,7 @@ set(SOURCES
     Clock.h
     FlightRoute.h
     GeoMapProvider.h
+    GlobalSettings.h
     Librarian.h
     Meteorologist.h
     MobileAdaptor.h

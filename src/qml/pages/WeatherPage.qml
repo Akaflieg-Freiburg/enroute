@@ -36,6 +36,9 @@ import "../items"
 
   - Unify/coordinate behaviour with MapManager
 
+  - Handle error messages
+
+  - Give feedback on downloading, for interactivlely triggered updates
  */
 
 Page {

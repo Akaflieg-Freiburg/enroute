@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,16 +26,19 @@
 #include <QQmlEngine>
 #include <QXmlStreamReader>
 
-Meteorologist::Meteorologist(SatNav *sat, FlightRoute *route,
+Meteorologist::Meteorologist(SatNav *sat,
+                             FlightRoute *route,
+                             GlobalSettings *globalSettings,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
-    QObject(parent), _sat(sat), _route(route),
+    QObject(parent), _sat(sat), _route(route), _globalSettings(globalSettings),
     _networkAccessManager(networkAccessManager)
 {
-    // Connect the timer to the update method
-    connect(&_updateTimer, &QTimer::timeout, this, &Meteorologist::update);
+    // Connect the timer to the update method. This will set backgroundUpdate to the default value,
+    // which is true. So these updates happen in the background.
+    connect(&_updateTimer, &QTimer::timeout, [=](){ this->update();});
 
-    // Schedule the next update in 30 seconds from now
+    // Schedule the first update in 30 seconds from now
     _updateTimer.setInterval(30*1000);
     _updateTimer.start();
 
@@ -66,15 +69,31 @@ QList<QObject *> Meteorologist::reports() const {
 }
 
 
-void Meteorologist::update() {
+void Meteorologist::update(bool isBackgroundUpdate) {
+    // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
+    if (_globalSettings.isNull())
+        return;
+    if (!_globalSettings->acceptedWeatherTerms())
+        return;
 
     // Schedule the next update in 30 minutes from now
     _updateTimer.setInterval(30*60*1000);
     _updateTimer.start();
 
     // If a request is currently running, then do not update
-    if (downloading())
+    if (downloading()) {
+        if (_backgroundUpdate && !isBackgroundUpdate) {
+            _backgroundUpdate = false;
+            emit backgroundUpdateChanged();
+        }
         return;
+    }
+
+    // Set _backgroundUpdate and emit signal if appropriate
+    if (_backgroundUpdate != isBackgroundUpdate) {
+        _backgroundUpdate = isBackgroundUpdate;
+        emit backgroundUpdateChanged();
+    }
 
     // Clear old replies, if any
     qDeleteAll(_replies);
@@ -243,7 +262,7 @@ QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, co
                     "valid_time_from", "valid_time_to"};
     else
         throw std::runtime_error("Meteorologist::_readReport: type must be METAR or TAF!\n");
-#warning Unsure if throwing an exception is a good idea.
+//#warning Unsure if throwing an exception is a good idea.
 
     while (true) {
         xml.readNextStartElement();
@@ -295,4 +314,4 @@ QString Meteorologist::timeOfLastUpdateAsString() const
     if (!_lastUpdate.isValid())
         return QString();
     return Clock::describeTimeDifference(_lastUpdate);
-};
+}

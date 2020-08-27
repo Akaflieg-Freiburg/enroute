@@ -34,7 +34,7 @@ Rectangle {
         
         anchors.fill: parent
         rows: 2
-        columns: 3
+        columns: 4
         
         Button {
             Material.foreground: "white"
@@ -42,7 +42,7 @@ Rectangle {
 
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
-            width: parent.width/3
+            width: parent.width/4
             text: satNav.altitudeInFeetAsString
 
             onClicked: {
@@ -63,7 +63,7 @@ Rectangle {
 
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
-            width: parent.width/3
+            width: parent.width/4
             text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
         } // Button
 
@@ -73,20 +73,30 @@ Rectangle {
 
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
-            width: parent.width/3
+            width: parent.width/4
             text: satNav.trackAsString
+        } // Button
+
+        Button {
+            Material.foreground: "white"
+            flat: true
+
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
+            width: parent.width/4
+            text: clock.time
         } // Button
 
         Label {
             color: "white"
             horizontalAlignment: Text.AlignHCenter
-            width: parent.width/3
+            width: parent.width/4
             text: qsTr("ALT")
         } // Label
 
         Label {
             color: "white"
-            width: parent.width/3
+            width: parent.width/4
 
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("GS")
@@ -94,9 +104,17 @@ Rectangle {
 
         Label {
             color: "white"
-            width: parent.width/3
+            width: parent.width/4
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("TT")
         } // Label
+
+        Label {
+            color: "white"
+            width: parent.width/4
+            horizontalAlignment: Text.AlignHCenter
+            text: qsTr("Time")
+        } // Label
+
     } // Grid
 } // Rectangle

@@ -179,9 +179,9 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p><strong>French:</strong> Adrien Crovato, <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>.</p>
 
-<p><strong>German:</strong> Markus Sachs, <a href='mailto:ms@squawk-vfr.de'>e-mail</a>. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
+<p><strong>German:</strong> Markus Sachs, flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
 
-<p><strong>Polish:</strong> Szymon Kocur, computer science and aviation enthusiast. Laureate of many nationwide competitions.</p>
+<p><strong>Polish:</strong> Szymon Kocur, computer Science and aviation enthusiast. Laureate of IT nationwide competitions, including 'HackYeah 2019', and 'Golden Wolf 2017' for the best technological project in Poland.</p>
 
 <p></p>)html");
      }

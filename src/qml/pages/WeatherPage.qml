@@ -91,12 +91,12 @@ Page {
                 id: headerMenuX
 
                 MenuItem {
-                    text: qsTr("Update METAR/TAF")
+                    text: qsTr("Update METAR/TAF data")
                     enabled: (!meteorologist.downloading) && (globalSettings.acceptedWeatherTerms)
                     onTriggered: {
                         mobileAdaptor.vibrateBrief()
                         if (!meteorologist.downloading)
-                            meteorologist.update()
+                            meteorologist.update(false)
                     }
                 } // MenuItem
 
@@ -179,7 +179,7 @@ Page {
                     horizontalAlignment: Text.AlignHCenter
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
-                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the menu.  To find the menu, look for the symbol '&#8942;' at the top right corner of the screen.</p>")
+                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
                 }
             }
 
@@ -191,12 +191,62 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     mobileAdaptor.vibrateBrief()
-                    meteorologist.update()
+                    meteorologist.update(false)
                 }
             }
 
         }
     } // ColumnLayout
+
+    Rectangle {
+        id: downloadIndicator
+
+        anchors.fill: parent
+
+        color: "white"
+        visible: meteorologist.downloading && !meteorologist.backgroundUpdate
+
+        Label {
+            id: downloadIndicatorLabel
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: Qt.application.font.pixelSize*2
+
+            horizontalAlignment: Text.AlignHCenter
+            textFormat: Text.RichText
+            wrapMode: Text.Wrap
+            text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAR data from the Aviation Weather Center…</p>")
+            onLinkActivated: Qt.openUrlExternally(link)
+        } // downloadIndicatorLabel
+
+        BusyIndicator {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: downloadIndicatorLabel.bottom
+            anchors.topMargin: 10
+        }
+
+        // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.
+        // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
+        // without any feedback if the download did actually take place.
+        Connections {
+            target: meteorologist
+            function onDownloadingChanged () {
+                if (meteorologist.downloading && !meteorologist.backgroundUpdate) {
+                    downloadIndicator.visible = true
+                    downloadIndicator.opacity = 1.0
+                } else
+                    fadeOut.start()
+            }
+        }
+        SequentialAnimation{
+            id: fadeOut
+            NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
+            NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
+            NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
+        }
+    } // downloadIndicator - Rectangle
 
     ScrollView { // Privacy Warning
         anchors.fill: parent
@@ -250,8 +300,6 @@ Page {
             wrapMode: Text.Wrap
 
             text: {
-                if (meteorologist.downloading)
-                    return qsTr("Downloading METAR/TAF data…")
                 if (meteorologist.timeOfLastUpdateAsString === "")
                     return ""
                 return qsTr("Last METAR/TAF update: %1").arg(meteorologist.timeOfLastUpdateAsString)
@@ -259,13 +307,21 @@ Page {
         }
     } // Pane (footer)
 
-    // Try and update METAR/TAF as soon as someone opens this page
-    Component.onCompleted: meteorologist.update()
+    // Try and update METAR/TAF as soon as someone opens this page if the current list of stations
+    // is empty. This is not a background update, we want user interaction.
+    Component.onCompleted: {
+        if (stationList.count == 0)
+            meteorologist.update(false)
+        else
+            meteorologist.update(true)
+    }
 
-    // Show error when weather cannot be updated
+    // Show error when weather cannot be updated -- but not if we are running a background upate
     Connections {
         target: meteorologist
         function onError (message) {
+            if (meteorologist.backgroundUpdate)
+                return
             dialogLoader.active = false
             dialogLoader.title = qsTr("Update Error")
             dialogLoader.text = qsTr("<p>Failed to update the list of stations.</p><p>Reason: %1.</p>").arg(message)

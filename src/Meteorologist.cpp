@@ -42,8 +42,9 @@ Meteorologist::Meteorologist(SatNav *sat,
     _updateTimer.setInterval(30*1000);
     _updateTimer.start();
 
-    // We set up a time that fires once per minute, to indicate the the string
-    // lastUpdated get updated
+    // We set up a time that fires once per minute, to indicate that the string
+    // lastUpdated should get updated
+#warning Maybe not a good idea. Need to think.
     auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Meteorologist::timeOfLastUpdateAsStringChanged);
     timer->setInterval(60*1000);
@@ -124,10 +125,12 @@ void Meteorologist::update(bool isBackgroundUpdate) {
         QPointer<QNetworkReply> reply = _networkAccessManager->get(request);
         _replies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Meteorologist::downloadFinished);
+        connect(reply, &QNetworkReply::errorOccurred, this, &Meteorologist::downloadFinished);
     }
 
-    // Update flag
-    emit downloadingChanged();
+    // Emit "downloading" and handle the case if none of the requests have started (e.g. because
+    // no internet is available at all)
+    downloadFinished();
 }
 
 
@@ -144,6 +147,21 @@ void Meteorologist::downloadFinished() {
 
 
 void Meteorologist::process() {
+    // Check if some network replies contain errors. If so, emit error, completely ignore everything contained in any of the replies and abort
+    bool hasError = false;
+    foreach(auto rep, _replies)
+        if (rep->error() != QNetworkReply::NoError) {
+            emit error(rep->errorString());
+            hasError = true;
+            break;
+        }
+    if (hasError) {
+        qDeleteAll(_replies);
+        _replies.clear();
+        return;
+    }
+
+
     // These maps associate the weather station ID to its METAR/TAF replies
     QMap<QString, QMultiMap<QString, QVariant>> metars;
     QMap<QString, QMultiMap<QString, QVariant>> tafs;
@@ -152,11 +170,7 @@ void Meteorologist::process() {
     QList<QString> tStations;
     // Read all replies and store the data in respective maps
     foreach(auto rep, _replies) {
-        // Handle network error, if any
-        if (rep->error() != QNetworkReply::NoError) {
-            emit error(rep->errorString());
-            break;
-        }
+
         // Decode XML
         QXmlStreamReader xml(rep);
         while (!xml.atEnd() && !xml.hasError())
@@ -191,9 +205,9 @@ void Meteorologist::process() {
             }
         }
     }
+
     // Clear old reports, if any
-    foreach(auto rep, _reports)
-        delete rep;
+    qDeleteAll(_reports);
     _reports.clear();
 
     // Add new reports and handle unpaired METAR/TAF
@@ -215,8 +229,7 @@ void Meteorologist::process() {
         _reports.append(new WeatherReport(station, QMultiMap<QString, QVariant>(), tafs.value(station))); // empty METAR
 
     // Clear replies container
-    foreach(auto rep, _replies)
-        delete rep;
+    qDeleteAll(_replies);
     _replies.clear();
 
     // Update flag and signals

@@ -146,6 +146,7 @@ int main(int argc, char *argv[])
 
     // Attach map manager
     auto networkAccessManager = new QNetworkAccessManager();
+    networkAccessManager->setTransferTimeout();
     auto mapManager = new MapManager(networkAccessManager);
     engine->rootContext()->setContextProperty("mapManager", mapManager);
     QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);

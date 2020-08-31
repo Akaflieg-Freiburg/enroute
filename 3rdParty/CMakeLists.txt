@@ -34,3 +34,10 @@ set(mapBoxFont_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/openseamap-gl CACHE INTERN
 #
 
 add_subdirectory(KDSingleApplication ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplication)
+
+
+#
+# Sunset/sunrise computation
+#
+
+add_subdirectory(sunset ${CMAKE_CURRENT_BINARY_DIR}/sunset)

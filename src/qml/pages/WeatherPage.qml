@@ -302,7 +302,7 @@ Page {
             text: {
                 if (meteorologist.timeOfLastUpdateAsString === "")
                     return ""
-                return qsTr("Last METAR/TAF update: %1").arg(meteorologist.timeOfLastUpdateAsString)
+                return meteorologist.timeOfNextSunEvent + "<br>" + qsTr("Last METAR/TAF update: %1").arg(meteorologist.timeOfLastUpdateAsString)
             }
         }
     } // Pane (footer)

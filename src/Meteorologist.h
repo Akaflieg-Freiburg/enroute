@@ -73,6 +73,18 @@ public:
      */
     QString timeOfLastUpdateAsString() const;
 
+    /*! \brief Time of next sunset or sunrise
+     *
+     * This property holds an empty string if sunset or sunrise cannot be computed (e.g. because you are north of the arctic circle in mid-summer)
+     */
+    Q_PROPERTY(QString timeOfNextSunEvent READ timeOfNextSunEvent NOTIFY timeOfNextSunEventChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property reports
+     */
+    QString timeOfNextSunEvent() const;
+
     /*! \brief The list of weather reports
      *
      * Returns the weather reports as a list of QObject for better interraction
@@ -128,6 +140,9 @@ signals:
 
     /*! \brief Notifier signal */
     void timeOfLastUpdateAsStringChanged();
+
+    /*! \brief Notifier signal */
+    void timeOfNextSunEventChanged();
 
     /*! \brief Signal emitted when the list of weather reports changes */
     void reportsChanged();

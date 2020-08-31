@@ -25,6 +25,7 @@
 #include <QtGlobal>
 #include <QQmlEngine>
 #include <QXmlStreamReader>
+#include "sunset.h"
 
 Meteorologist::Meteorologist(SatNav *sat,
                              FlightRoute *route,
@@ -44,9 +45,10 @@ Meteorologist::Meteorologist(SatNav *sat,
 
     // We set up a time that fires once per minute, to indicate that the string
     // lastUpdated should get updated
-#warning Maybe not a good idea. Need to think.
+//#warning Maybe not a good idea. Need to think.
     auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Meteorologist::timeOfLastUpdateAsStringChanged);
+    connect(timer, &QTimer::timeout, this, &Meteorologist::timeOfNextSunEventChanged);
     timer->setInterval(60*1000);
     timer->start();
 }
@@ -275,7 +277,7 @@ QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, co
                     "valid_time_from", "valid_time_to"};
     else
         throw std::runtime_error("Meteorologist::_readReport: type must be METAR or TAF!\n");
-//#warning Unsure if throwing an exception is a good idea.
+    //#warning Unsure if throwing an exception is a good idea.
 
     while (true) {
         xml.readNextStartElement();
@@ -327,4 +329,46 @@ QString Meteorologist::timeOfLastUpdateAsString() const
     if (!_lastUpdate.isValid())
         return QString();
     return Clock::describeTimeDifference(_lastUpdate);
+}
+
+
+QString Meteorologist::timeOfNextSunEvent() const
+{
+    SunSet sun;
+
+    if (_sat->status() != SatNav::Status::OK)
+        return QString();
+    auto coord = _sat->coordinate();
+
+    auto timeZone = qRound(coord.longitude()/15.0);
+
+    auto currentTime = QDateTime::currentDateTimeUtc();
+    auto localTime = currentTime.toOffsetFromUtc(timeZone*60*60);
+    auto localDate = localTime.date();
+
+    sun.setPosition(coord.latitude(), coord.longitude(), timeZone);
+    sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
+
+    auto sunrise = localTime;
+    sunrise.setTime(QTime::fromMSecsSinceStartOfDay(sun.calcSunrise()*60*1000));
+    sunrise = sunrise.toOffsetFromUtc(0);
+    sunrise.setTimeSpec(Qt::UTC);
+
+    auto sunset = localTime;
+    sunset.setTime(QTime::fromMSecsSinceStartOfDay(sun.calcSunset()*60*1000));
+    sunset = sunset.toOffsetFromUtc(0);
+
+    localTime = localTime.addDays(1);
+    localDate = localTime.date();
+    sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
+    auto sunriseTomorrow = localTime;
+    sunriseTomorrow.setTime(QTime::fromMSecsSinceStartOfDay(sun.calcSunrise()*60*1000));
+    sunriseTomorrow = sunriseTomorrow.toOffsetFromUtc(0);
+    sunriseTomorrow.setTimeSpec(Qt::UTC);
+
+    if (currentTime < sunrise)
+        return tr("Sunrise %1").arg(Clock::describeTimeDifference(sunrise));
+    if (currentTime < sunset.addSecs(40*60))
+        return tr("Sunset %1").arg(Clock::describeTimeDifference(sunset));
+    return tr("Sunrise %1").arg(Clock::describeTimeDifference(sunriseTomorrow));
 }

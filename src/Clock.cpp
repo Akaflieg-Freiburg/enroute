@@ -20,6 +20,7 @@
 
 #include "Clock.h"
 
+#include <QGuiApplication>
 #include <QTimer>
 
 
@@ -36,6 +37,9 @@ Clock::Clock(QObject *parent) : QObject(parent)
 
     // Start the single shot timer once manually
     setSingleShotTimer();
+
+    // There are a few other events where we want to update the clock
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, &Clock::timeChanged);
 }
 
 

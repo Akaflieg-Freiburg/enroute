@@ -291,7 +291,7 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: globalSettings.acceptedWeatherTerms
+        visible: (meteorologist.infoString !== "")
 
         Label {
             anchors.fill: parent
@@ -299,11 +299,7 @@ Page {
             textFormat: Text.RichText
             wrapMode: Text.Wrap
 
-            text: {
-                if (meteorologist.timeOfLastUpdateAsString === "")
-                    return ""
-                return meteorologist.timeOfNextSunEvent + "<br>" + qsTr("Last METAR/TAF update: %1").arg(meteorologist.timeOfLastUpdateAsString)
-            }
+            text: meteorologist.infoString
         }
     } // Pane (footer)
 

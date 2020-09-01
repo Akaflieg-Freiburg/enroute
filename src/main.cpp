@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("flightRoute", flightroute);
 
     // Attach meteorologist
-    auto meteorologist = new Meteorologist(navEngine, flightroute, globalSettings, networkAccessManager, engine);
+    auto meteorologist = new Meteorologist(clock, navEngine, flightroute, globalSettings, networkAccessManager, engine);
     engine->rootContext()->setContextProperty("meteorologist", meteorologist);
 
     // Restore saved settings and make them available to QML

@@ -26,9 +26,10 @@
 #include <QNetworkReply>
 #include <QXmlStreamReader>
 
-#include "SatNav.h"
+#include "Clock.h"
 #include "FlightRoute.h"
 #include "GlobalSettings.h"
+#include "SatNav.h"
 #include "WeatherReport.h"
 
 
@@ -44,15 +45,18 @@ class Meteorologist : public QObject {
 public:
     /*! \brief Standard constructor
      *
+     * @param clock A clock object
+     *
      * @param sat The satellite navigation system
-     * 
+     *
      * @param route The flight route
      * 
      * @param networkAccessManager The manager for network requests
      * 
      * @param parent The standard QObject parent pointer
      */
-    explicit Meteorologist(SatNav *sat,
+    explicit Meteorologist(Clock *clock,
+                           SatNav *sat,
                            FlightRoute *route,
                            GlobalSettings *globalSettings,
                            QNetworkAccessManager *networkAccessManager,
@@ -61,29 +65,18 @@ public:
     /*! \brief Destructor */
     ~Meteorologist() override;
 
-    /*! \brief Time of last succesful METAR/TAF update
+    /*! \brief infoString
      *
-     * This property holds an empty string if there has not been any update yet
+     * This property holds a richt-text string with global information. A typical result could be "Sunset at 17:01, in 32 minutes.<br>Last METAR/TAF update 21 minutes ago."
+     * Depending on availability of information, the string can also be shorter, or altogether empty.
      */
-    Q_PROPERTY(QString timeOfLastUpdateAsString READ timeOfLastUpdateAsString NOTIFY timeOfLastUpdateAsStringChanged)
+    Q_PROPERTY(QString infoString READ infoString NOTIFY infoStringChanged)
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property reports
+     * @returns Property infoString
      */
-    QString timeOfLastUpdateAsString() const;
-
-    /*! \brief Time of next sunset or sunrise
-     *
-     * This property holds an empty string if sunset or sunrise cannot be computed (e.g. because you are north of the arctic circle in mid-summer)
-     */
-    Q_PROPERTY(QString timeOfNextSunEvent READ timeOfNextSunEvent NOTIFY timeOfNextSunEventChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property reports
-     */
-    QString timeOfNextSunEvent() const;
+    QString infoString() const;
 
     /*! \brief The list of weather reports
      *
@@ -100,20 +93,19 @@ public:
 
     /*! \brief Downloading flag
      *
-     * Indicates if the Meteorologist is currently downloading (return
-     * true), or not (return false)
+     * Indicates if the Meteorologist is currently downloading METAR/TAF information from the internet
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property processing
+     * @returns Property downaloading
      */
     bool downloading() const;
 
     /*! \brief Background update flag
      *
-     * Indicates if the last download process was started as a background update, or if it was explicitly started by the user
+     * Indicates if the last download process was started as a background update, or if it was explicitly started by the user.
      */
     Q_PROPERTY(bool backgroundUpdate READ backgroundUpdate NOTIFY backgroundUpdateChanged)
 
@@ -138,20 +130,17 @@ signals:
     /*! \brief Notifier signal */
     void backgroundUpdateChanged();
 
-    /*! \brief Notifier signal */
-    void timeOfLastUpdateAsStringChanged();
-
-    /*! \brief Notifier signal */
-    void timeOfNextSunEventChanged();
-
-    /*! \brief Signal emitted when the list of weather reports changes */
-    void reportsChanged();
-
     /*! \brief Signal emitted when the processing flag changes */
     void downloadingChanged();
 
     /*! \brief Signal emitted when a network error occurs */
     void error(QString message);
+
+    /*! \brief Notifier signal */
+    void infoStringChanged();
+
+    /*! \brief Signal emitted when the list of weather reports changes */
+    void reportsChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)

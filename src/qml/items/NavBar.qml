@@ -21,100 +21,102 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
+import QtQuick.Layouts 1.15
+import QtQml 2.15
 
 Rectangle {
     id: grid
     
     color: "#AA000000"
-    
+
     height: gl.implicitHeight
     
-    Grid {
+    GridLayout {
         id: gl
         
         anchors.fill: parent
         rows: 2
         columns: 4
-        
-        Button {
-            Material.foreground: "white"
-            flat: true
+        rowSpacing: 0
 
-            font.weight: Font.Bold
-            font.pixelSize: Qt.application.font.pixelSize*1.3
-            width: parent.width/4
+        Label {
+            Layout.fillWidth: true
+
             text: satNav.altitudeInFeetAsString
-
-            onClicked: {
-                if (!satNav.hasAltitude)
-                    return
-
-                mobileAdaptor.vibrateBrief()
-                dialogLoader.active = false
-                dialogLoader.source = "../dialogs/AltitudeCorrectionDialog.qml"
-                dialogLoader.active = true
-            }
-
-        } // Button
+            horizontalAlignment: Text.AlignHCenter
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
+            color: "white"
+        } // Label
         
-        Button {
-            Material.foreground: "white"
-            flat: true
+        Label {
+            Layout.fillWidth: true
 
-            font.weight: Font.Bold
-            font.pixelSize: Qt.application.font.pixelSize*1.3
-            width: parent.width/4
             text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
-        } // Button
 
-        Button {
-            Material.foreground: "white"
-            flat: true
-
+            horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
-            width: parent.width/4
-            text: satNav.trackAsString
-        } // Button
-
-        Button {
-            Material.foreground: "white"
-            flat: true
-
-            font.weight: Font.Bold
-            font.pixelSize: Qt.application.font.pixelSize*1.3
-            width: parent.width/4
-            text: clock.time
+            color: "white"
         } // Button
 
         Label {
+            Layout.fillWidth: true
+
+            text: satNav.trackAsString
+
+            horizontalAlignment: Text.AlignHCenter
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
+            color: "white"
+        } // Label
+
+        Label {
+            Layout.fillWidth: true
+
+            text: clock.time
+
+            horizontalAlignment: Text.AlignHCenter
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
+            color: "white"
+        } // Label
+
+        Label {
+            Layout.fillWidth: true
+
             color: "white"
             horizontalAlignment: Text.AlignHCenter
-            width: parent.width/4
             text: qsTr("ALT")
         } // Label
 
         Label {
-            color: "white"
-            width: parent.width/4
+            Layout.fillWidth: true
 
+            color: "white"
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("GS")
         } // Label
 
         Label {
+            Layout.fillWidth: true
+
             color: "white"
-            width: parent.width/4
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("TT")
         } // Label
 
         Label {
+            Layout.fillWidth: true
+
             color: "white"
-            width: parent.width/4
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("Time")
         } // Label
+
+        Rectangle {
+            height: Qt.application.font.pixelSize*0.2
+        }
 
     } // Grid
 } // Rectangle

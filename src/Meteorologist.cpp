@@ -388,7 +388,7 @@ QString Meteorologist::infoString() const
 
     // Info about time of last METAR/TAF update
     if (_lastUpdate.isValid()) {
-        if (result.isEmpty())
+        if (!result.isEmpty())
             result += "<br>";
         result += tr("Last METAR/TAF update: %1").arg(Clock::describeTimeDifference(_lastUpdate));
     }

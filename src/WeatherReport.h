@@ -35,6 +35,9 @@ class WeatherReport : public QObject {
     Q_OBJECT
 
 public:
+    class METAR;
+    class TAF;
+
     /*! \brief Standard constructor
     *
     * @param id The station ID
@@ -164,3 +167,6 @@ private:
     /*! \brief Converts the clouds into a human readable string */
     QString decodeClouds(const QVariantList &clouds);
 };
+
+#include "WeatherReport_METAR.h"
+#include "WeatherReport_TAF.h"

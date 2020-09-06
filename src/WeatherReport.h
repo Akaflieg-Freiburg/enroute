@@ -50,7 +50,7 @@ public:
     */
     explicit WeatherReport(const QString &id,
                            WeatherReport::METAR *metar,
-                           const QMultiMap<QString, QVariant> &taf,
+                           WeatherReport::TAF *taf,
                            QObject *parent = nullptr);
 
     // Standard destructor

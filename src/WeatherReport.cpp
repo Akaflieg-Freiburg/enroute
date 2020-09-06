@@ -26,14 +26,17 @@
 
 WeatherReport::WeatherReport(const QString &id,
                              WeatherReport::METAR *metar,
-                             const QMultiMap<QString, QVariant> &taf,
+                             WeatherReport::TAF *taf,
                              QObject *parent) : QObject(parent), _id(id) {
 
     // Get flight category
-    _cat = metar->data.contains("flight_category") ? metar->data.value("flight_category").toString() : "UKN";
+    if (metar == nullptr)
+        _cat = "UKN";
+    else
+        _cat = metar->data.contains("flight_category") ? metar->data.value("flight_category").toString() : "UKN";
     
     // Generate METAR
-    if (metar->data.empty())
+    if (metar == nullptr)
         _metar.push_back("NONE");
     else {
         if (metar->data.contains("raw_text"))
@@ -61,20 +64,20 @@ WeatherReport::WeatherReport(const QString &id,
     }
 
     // Generate TAF
-    if (taf.empty())
+    if (taf == nullptr)
         _taf.push_back("NONE");
     else {
-        if (taf.contains("raw_text"))
-            _taf.push_back("RAW " + taf.value("raw_text").toString());
-        if (taf.contains("issue_time"))
-            _taf.push_back("TIME" + this->decodeTime(taf.value("issue_time")));
-        if (taf.contains("valid_time_from"))
-            _taf.push_back("FROM" + this->decodeTime(taf.value("valid_time_from")));
-        if (taf.contains("valid_time_to"))
-            _taf.push_back("TO  " + this->decodeTime(taf.value("valid_time_to")));
-        if (taf.contains("forecast")) {
-            for (int i = taf.values("forecast").size() - 1; i >= 0; --i) {
-                QMultiMap<QString, QVariant> forecast = taf.values("forecast")[i].toMap();
+        if (taf->data.contains("raw_text"))
+            _taf.push_back("RAW " + taf->data.value("raw_text").toString());
+        if (taf->data.contains("issue_time"))
+            _taf.push_back("TIME" + this->decodeTime(taf->data.value("issue_time")));
+        if (taf->data.contains("valid_time_from"))
+            _taf.push_back("FROM" + this->decodeTime(taf->data.value("valid_time_from")));
+        if (taf->data.contains("valid_time_to"))
+            _taf.push_back("TO  " + this->decodeTime(taf->data.value("valid_time_to")));
+        if (taf->data.contains("forecast")) {
+            for (int i = taf->data.values("forecast").size() - 1; i >= 0; --i) {
+                QMultiMap<QString, QVariant> forecast = taf->data.values("forecast")[i].toMap();
                 QString fcst;
                 if (forecast.contains("fcst_time_from") && forecast.contains("fcst_time_to")) {
                     if (!forecast.contains("change_indicator"))

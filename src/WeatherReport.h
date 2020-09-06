@@ -49,7 +49,7 @@ public:
     * @param parent The standard QObject parent pointer
     */
     explicit WeatherReport(const QString &id,
-                           const QMultiMap<QString, QVariant> &metar,
+                           WeatherReport::METAR *metar,
                            const QMultiMap<QString, QVariant> &taf,
                            QObject *parent = nullptr);
 

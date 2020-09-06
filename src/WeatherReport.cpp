@@ -25,39 +25,39 @@
 #include <cmath>
 
 WeatherReport::WeatherReport(const QString &id,
-                             const QMultiMap<QString, QVariant> &metar,
+                             WeatherReport::METAR *metar,
                              const QMultiMap<QString, QVariant> &taf,
                              QObject *parent) : QObject(parent), _id(id) {
 
     // Get flight category
-    _cat = metar.contains("flight_category") ? metar.value("flight_category").toString() : "UKN";
+    _cat = metar->data.contains("flight_category") ? metar->data.value("flight_category").toString() : "UKN";
     
     // Generate METAR
-    if (metar.empty())
+    if (metar->data.empty())
         _metar.push_back("NONE");
     else {
-        if (metar.contains("raw_text"))
-            _metar.push_back("RAW " + metar.value("raw_text").toString());
-        if (metar.contains("observation_time"))
-            _metar.push_back("TIME" + this->decodeTime(metar.value("observation_time")));
-        if (metar.contains("wind_dir_degrees") && metar.contains("wind_speed_kt")) {
-            if (metar.contains("wind_gust_kt"))
-                _metar.push_back("WIND" + this->decodeWind(metar.value("wind_dir_degrees"), metar.value("wind_speed_kt"), metar.value("wind_gust_kt")));
+        if (metar->data.contains("raw_text"))
+            _metar.push_back("RAW " + metar->data.value("raw_text").toString());
+        if (metar->data.contains("observation_time"))
+            _metar.push_back("TIME" + this->decodeTime(metar->data.value("observation_time")));
+        if (metar->data.contains("wind_dir_degrees") && metar->data.contains("wind_speed_kt")) {
+            if (metar->data.contains("wind_gust_kt"))
+                _metar.push_back("WIND" + this->decodeWind(metar->data.value("wind_dir_degrees"), metar->data.value("wind_speed_kt"), metar->data.value("wind_gust_kt")));
             else
-                _metar.push_back("WIND" + this->decodeWind(metar.value("wind_dir_degrees"), metar.value("wind_speed_kt")));
+                _metar.push_back("WIND" + this->decodeWind(metar->data.value("wind_dir_degrees"), metar->data.value("wind_speed_kt")));
         }
-        if (metar.contains("visibility_statute_mi"))
-            _metar.push_back("VIS " + this->decodeVis(metar.value("visibility_statute_mi")));
-        if (metar.contains("wx_string"))
-            _metar.push_back("WX  " + this->decodeWx(metar.value("wx_string")));
-        if (metar.contains("sky_condition"))
-            _metar.push_back("CLDS" + this->decodeClouds(metar.values("sky_condition")));
-        if (metar.contains("temp_c"))
-            _metar.push_back("TEMP" + this->decodeTemp(metar.value("temp_c")));
-        if (metar.contains("dewpoint_c"))
-            _metar.push_back("DEWP" + this->decodeTemp(metar.value("dewpoint_c")));
-        if (metar.contains("altim_in_hg"))
-            _metar.push_back("QNH " + this->decodeQnh(metar.value("altim_in_hg")));
+        if (metar->data.contains("visibility_statute_mi"))
+            _metar.push_back("VIS " + this->decodeVis(metar->data.value("visibility_statute_mi")));
+        if (metar->data.contains("wx_string"))
+            _metar.push_back("WX  " + this->decodeWx(metar->data.value("wx_string")));
+        if (metar->data.contains("sky_condition"))
+            _metar.push_back("CLDS" + this->decodeClouds(metar->data.values("sky_condition")));
+        if (metar->data.contains("temp_c"))
+            _metar.push_back("TEMP" + this->decodeTemp(metar->data.value("temp_c")));
+        if (metar->data.contains("dewpoint_c"))
+            _metar.push_back("DEWP" + this->decodeTemp(metar->data.value("dewpoint_c")));
+        if (metar->data.contains("altim_in_hg"))
+            _metar.push_back("QNH " + this->decodeQnh(metar->data.value("altim_in_hg")));
     }
 
     // Generate TAF

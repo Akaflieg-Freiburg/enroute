@@ -167,7 +167,7 @@ void Meteorologist::process() {
 
 
     // These maps associate the weather station ID to its METAR/TAF replies
-    QMap<QString, QMultiMap<QString, QVariant>> metars;
+    QMap<QString, QPointer<WeatherReport::METAR>> metars;
     QMap<QString, QMultiMap<QString, QVariant>> tafs;
     // These lists contain the weather station ID and will be used to handle duplicate or unpaired stations
     QList<QString> mStations;
@@ -186,23 +186,25 @@ void Meteorologist::process() {
             if (xml.isStartElement()) {
                 // Read the METAR and get the data, if the station has not been encountered yet
                 if (xml.name() == "METAR") {
-                    auto metar = this->readReport(xml, "METAR");
-                    if (metar.contains("station_id")) {
-                        QString station = metar.value("station_id").toString();
+                    auto metarData = this->readReport(xml, "METAR");
+                    if (metarData.contains("station_id")) {
+                        QString station = metarData.value("station_id").toString();
                         if (!mStations.contains(station)) {
                             mStations.push_back(station);
+                            auto metar = new WeatherReport::METAR(this);
+                            metar->data = metarData;
                             metars.insert(station, metar);
                         }
                     }
                 }
                 // Read the TAF and get the data, if the station has not been encountered yet
                 else if (xml.name() == "TAF") {
-                    auto taf = this->readReport(xml, "TAF");
-                    if (taf.contains("station_id")) {
-                        QString station = taf.value("station_id").toString();
+                    auto tafData = this->readReport(xml, "TAF");
+                    if (tafData.contains("station_id")) {
+                        QString station = tafData.value("station_id").toString();
                         if (!tStations.contains(station)) {
                             tStations.push_back(station);
-                            tafs.insert(station, taf);
+                            tafs.insert(station, tafData);
                         }
                     }
                 }
@@ -230,7 +232,7 @@ void Meteorologist::process() {
     }
     // Stations only have TAF
     foreach(auto station, tStations)
-        _reports.append(new WeatherReport(station, QMultiMap<QString, QVariant>(), tafs.value(station))); // empty METAR
+        _reports.append(new WeatherReport(station, nullptr, tafs.value(station))); // empty METAR
 
     // Clear replies container
     qDeleteAll(_replies);

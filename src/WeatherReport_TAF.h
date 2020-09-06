@@ -43,6 +43,8 @@ public:
     // Standard destructor
     ~TAF() override = default;
 
+    QMultiMap<QString, QVariant> data;
+
 private:
     Q_DISABLE_COPY_MOVE(TAF)
 };

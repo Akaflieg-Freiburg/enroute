@@ -23,5 +23,60 @@
 
 WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent)
 {
+    // Lambda to read sky condition
+    auto readSky = [&] {
+        QXmlStreamAttributes atrs = xml.attributes();
+        QString sky;
+        sky += atrs.value("sky_cover").toString();
+        if (atrs.value("cloud_base_ft_agl").toString() != "")
+            sky += "," + atrs.value("cloud_base_ft_agl").toString();
+        if (atrs.value("cloud_type").toString() != "")
+            sky += "," + atrs.value("cloud_type").toString();
+        return sky;
+    };
+
+    // Read METAR/TAF and store in map
+    QList<QString> accepted; // fields to decode without special treatment
+    accepted = {"raw_text", "station_id", "issue_time",
+                "valid_time_from", "valid_time_to"};
+
+    while (true) {
+        xml.readNextStartElement();
+        QString name = xml.name().toString();
+
+        if (xml.isStartElement() && accepted.contains(name) )
+            data.insert(name, xml.readElementText());
+        else if (xml.isStartElement() && name == "forecast") {
+            QMultiMap<QString, QVariant> forecast;
+            QList<QString> accepted2 = {"fcst_time_from", "fcst_time_to",
+                                        "change_indicator", "probability",
+                                        "wind_dir_degrees", "wind_speed_kt",
+                                        "wind_gust_kt",
+                                        "visibility_statute_mi",
+                                        "wx_string"};
+
+            while (true) {
+                xml.readNextStartElement();
+                QString name2 = xml.name().toString();
+
+                if (xml.isStartElement() && accepted2.contains(name2))
+                    forecast.insert(name2, xml.readElementText());
+                else if (xml.isStartElement() && name2 == "sky_condition") {
+                    forecast.insert("sky_condition", readSky());
+                    xml.skipCurrentElement();
+                }
+                else if (xml.isEndElement() && name2 == "forecast")
+                    break;
+                else
+                    xml.skipCurrentElement();
+            }
+            data.insert("forecast", QVariant(forecast));
+        }
+        else if (xml.isEndElement() && name == "TAF")
+            break;
+        else
+            xml.skipCurrentElement();
+    }
+
 }
 

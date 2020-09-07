@@ -177,7 +177,4 @@ private:
 
     /*! \brief Process the replies from aviationweather.com and generates the reports */
     void process();
-
-    /*! \brief Reads an XML reply from aviationweather.com and create a map subsequently used to generate a report */
-    QMultiMap<QString, QVariant> readReport(QXmlStreamReader &xml, const QString &type);
 };

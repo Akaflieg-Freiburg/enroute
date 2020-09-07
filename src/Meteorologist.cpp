@@ -188,7 +188,6 @@ void Meteorologist::process() {
                 if (xml.name() == "METAR") {
 
                     auto metar = new WeatherReport::METAR(xml, this);
-//                    metar->data = this->readReport(xml, "METAR");
                     if (metar->data.contains("station_id")) {
                         QString station = metar->data.value("station_id").toString();
                         if (!mStations.contains(station)) {
@@ -204,7 +203,6 @@ void Meteorologist::process() {
                 if (xml.name() == "TAF") {
 
                     auto taf = new WeatherReport::TAF(xml, this);
-                    taf->data = this->readReport(xml, "TAF");
                     if (taf->data.contains("station_id")) {
                         QString station = taf->data.value("station_id").toString();
                         if (!tStations.contains(station)) {
@@ -260,79 +258,6 @@ bool Meteorologist::downloading() const
         if (reply->isRunning())
             return true;
     return false;
-}
-
-
-QMultiMap<QString, QVariant> Meteorologist::readReport(QXmlStreamReader &xml, const QString &type) {
-    // Lambda to read sky condition
-    auto readSky = [&] {
-        QXmlStreamAttributes atrs = xml.attributes();
-        QString sky;
-        sky += atrs.value("sky_cover").toString();
-        if (atrs.value("cloud_base_ft_agl").toString() != "")
-            sky += "," + atrs.value("cloud_base_ft_agl").toString();
-        if (atrs.value("cloud_type").toString() != "")
-            sky += "," + atrs.value("cloud_type").toString();
-        return sky;
-    };
-
-    // Read METAR/TAF and store in map
-    QMultiMap<QString, QVariant> report;
-    QList<QString> accepted; // fields to decode without special treatment
-    if (type == "METAR")
-        accepted = {"raw_text", "station_id", "observation_time", "temp_c",
-                    "dewpoint_c", "wind_dir_degrees", "wind_speed_kt",
-                    "wind_gust_kt", "visibility_statute_mi", "altim_in_hg",
-                    "flight_category", "wx_string"};
-    else if (type == "TAF")
-        accepted = {"raw_text", "station_id", "issue_time",
-                    "valid_time_from", "valid_time_to"};
-    else
-        throw std::runtime_error("Meteorologist::_readReport: type must be METAR or TAF!\n");
-    //#warning Unsure if throwing an exception is a good idea.
-
-    while (true) {
-        xml.readNextStartElement();
-        QString name = xml.name().toString();
-
-        if (xml.isStartElement() && accepted.contains(name) )
-            report.insert(name, xml.readElementText());
-        else if (xml.isStartElement() && name == "sky_condition" && type == "METAR") {
-            report.insert("sky_condition", readSky());
-            xml.skipCurrentElement();
-        }
-        else if (xml.isStartElement() && name == "forecast" && type == "TAF") {
-            QMultiMap<QString, QVariant> forecast;
-            QList<QString> accepted2 = {"fcst_time_from", "fcst_time_to",
-                                        "change_indicator", "probability",
-                                        "wind_dir_degrees", "wind_speed_kt",
-                                        "wind_gust_kt",
-                                        "visibility_statute_mi",
-                                        "wx_string"};
-
-            while (true) {
-                xml.readNextStartElement();
-                QString name2 = xml.name().toString();
-                
-                if (xml.isStartElement() && accepted2.contains(name2))
-                    forecast.insert(name2, xml.readElementText());
-                else if (xml.isStartElement() && name2 == "sky_condition") {
-                    forecast.insert("sky_condition", readSky());
-                    xml.skipCurrentElement();
-                }
-                else if (xml.isEndElement() && name2 == "forecast")
-                    break;
-                else
-                    xml.skipCurrentElement();
-            }
-            report.insert("forecast", QVariant(forecast));
-        }
-        else if (xml.isEndElement() && name == type)
-            break;
-        else
-            xml.skipCurrentElement();
-    }
-    return report;
 }
 
 

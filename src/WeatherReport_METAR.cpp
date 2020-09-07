@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDebug>
+
 #include "WeatherReport_METAR.h"
 
 
@@ -53,6 +55,21 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
             continue;
         }
 
+        // Read location
+        if (xml.isStartElement() && name == "latitude") {
+            _location.setLatitude(xml.readElementText().toDouble());
+            continue;
+        }
+        if (xml.isStartElement() && name == "longitude") {
+            _location.setLongitude(xml.readElementText().toDouble());
+            continue;
+        }
+        if (xml.isStartElement() && name == "elevation_m") {
+            _location.setAltitude(xml.readElementText().toDouble());
+            continue;
+        }
+
+        // Other data fields
         if (xml.isStartElement() && accepted.contains(name) ) {
             data.insert(name, xml.readElementText());
             continue;

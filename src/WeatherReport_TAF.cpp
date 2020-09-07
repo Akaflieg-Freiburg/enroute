@@ -23,6 +23,7 @@
 
 WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent)
 {
+
     // Lambda to read sky condition
     auto readSky = [&] {
         QXmlStreamAttributes atrs = xml.attributes();
@@ -47,6 +48,20 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
         // Read Station_ID
         if (xml.isStartElement() && name == "station_id") {
             _station_id = xml.readElementText();
+            continue;
+        }
+
+        // Read location
+        if (xml.isStartElement() && name == "latitude") {
+            _location.setLatitude(xml.readElementText().toDouble());
+            continue;
+        }
+        if (xml.isStartElement() && name == "longitude") {
+            _location.setLongitude(xml.readElementText().toDouble());
+            continue;
+        }
+        if (xml.isStartElement() && name == "elevation_m") {
+            _location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 

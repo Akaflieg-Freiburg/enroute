@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoCoordinate>
 #include <QXmlStreamReader>
 
 #include "WeatherReport.h"
@@ -45,6 +46,7 @@ public:
     // Standard destructor
     ~METAR() override = default;
 
+    QGeoCoordinate _location;
     QString _station_id;
 
     QMultiMap<QString, QVariant> data;

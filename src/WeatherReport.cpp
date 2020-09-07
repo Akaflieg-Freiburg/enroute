@@ -106,6 +106,7 @@ WeatherReport::WeatherReport(const QString &id,
     }
 }
 
+
 QString WeatherReport::decodeTime(const QVariant &time) {
     QDateTime tim = QDateTime::fromString(time.toString().replace("T", " "), "yyyy-MM-dd hh:mm:ssZ");
     return tim.toString("ddd MMMM d yyyy hh:mm") + " UTC";

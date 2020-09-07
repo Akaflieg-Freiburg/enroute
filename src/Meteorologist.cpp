@@ -61,10 +61,25 @@ Meteorologist::~Meteorologist()
 
 
 QList<QObject *> Meteorologist::reports() const {
-    QList<QObject *> reports;
+
+    // Produce a list of reports, without nullpointers
+    QList<WeatherReport *> sortedReports;
     foreach(auto rep, _reports)
-        reports.append(rep);
-    return reports;
+        if (!rep.isNull())
+            sortedReports += rep;
+
+    // Sort list
+    auto compare = [&](WeatherReport *a, WeatherReport *b) {
+        auto here = _sat->lastValidCoordinate();
+        return here.distanceTo(a->location()) < here.distanceTo(b->location());
+    };
+    std::sort(sortedReports.begin(), sortedReports.end(), compare);
+
+    // Convert to QObjectList
+    QList<QObject *> result;
+    foreach(auto rep, sortedReports)
+        result += rep;
+    return result;
 }
 
 

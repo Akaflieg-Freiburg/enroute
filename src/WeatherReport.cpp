@@ -57,6 +57,14 @@ QList<QString> WeatherReport::metarStrings() const
     return _metar->dataStrings;
 }
 
+QGeoCoordinate WeatherReport::location() const
+{
+    if (!_metar.isNull())
+        return _metar->_location;
+    if (!_taf.isNull())
+        return _taf->_location;
+    return QGeoCoordinate();
+}
 
 QString WeatherReport::decodeTime(const QVariant &time) {
     QDateTime tim = QDateTime::fromString(time.toString().replace("T", " "), "yyyy-MM-dd hh:mm:ssZ");

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2020 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoCoordinate>
 #include <QObject>
 #include <QPointer>
 #include <QVariant>
@@ -155,7 +156,6 @@ public:
      */
     WeatherReport::TAF *taf() const { return _taf; }
 
-
     /*! \brief The TAF data
      *
      * A list of formated strings constituting the TAF data (forecast).
@@ -177,6 +177,8 @@ public:
      * @returns Property taf
      */
     QList<QString> tafStrings() const;
+
+    QGeoCoordinate location() const;
 
 private:
     Q_DISABLE_COPY_MOVE(WeatherReport)

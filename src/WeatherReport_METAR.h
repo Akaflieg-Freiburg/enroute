@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QXmlStreamReader>
+
 #include "WeatherReport.h"
 
 
@@ -38,7 +40,7 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit METAR(QObject *parent = nullptr);
+    explicit METAR(QXmlStreamReader &xml, QObject *parent = nullptr);
 
     // Standard destructor
     ~METAR() override = default;

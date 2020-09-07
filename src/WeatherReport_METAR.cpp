@@ -21,7 +21,7 @@
 #include "WeatherReport_METAR.h"
 
 
-WeatherReport::METAR::METAR(QObject *parent) : QObject(parent)
+WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(parent)
 {
 }
 

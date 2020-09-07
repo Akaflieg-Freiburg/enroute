@@ -186,30 +186,36 @@ void Meteorologist::process() {
             if (xml.isStartElement()) {
                 // Read the METAR and get the data, if the station has not been encountered yet
                 if (xml.name() == "METAR") {
-                    auto metarData = this->readReport(xml, "METAR");
-                    if (metarData.contains("station_id")) {
-                        QString station = metarData.value("station_id").toString();
+
+                    auto metar = new WeatherReport::METAR(xml, this);
+                    metar->data = this->readReport(xml, "METAR");
+                    if (metar->data.contains("station_id")) {
+                        QString station = metar->data.value("station_id").toString();
                         if (!mStations.contains(station)) {
                             mStations.push_back(station);
-                            auto metar = new WeatherReport::METAR(this);
-                            metar->data = metarData;
                             metars.insert(station, metar);
-                        }
-                    }
+                        } else
+                            delete metar;
+                    } else
+                        delete metar;
                 }
+
                 // Read the TAF and get the data, if the station has not been encountered yet
-                else if (xml.name() == "TAF") {
-                    auto tafData = this->readReport(xml, "TAF");
-                    if (tafData.contains("station_id")) {
-                        QString station = tafData.value("station_id").toString();
+                if (xml.name() == "TAF") {
+
+                    auto taf= new WeatherReport::TAF(xml, this);
+                    taf->data = this->readReport(xml, "TAF");
+                    if (taf->data.contains("station_id")) {
+                        QString station = taf->data.value("station_id").toString();
                         if (!tStations.contains(station)) {
                             tStations.push_back(station);
-                            auto taf= new WeatherReport::TAF(this);
-                            taf->data = tafData;
                             tafs.insert(station, taf);
-                        }
-                    }
+                        } else
+                            delete taf;
+                    } else
+                        delete taf;
                 }
+
             }
         }
     }

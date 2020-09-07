@@ -21,7 +21,7 @@
 #include "WeatherReport_TAF.h"
 
 
-WeatherReport::TAF::TAF(QObject *parent) : QObject(parent)
+WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent)
 {
 }
 

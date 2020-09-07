@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QXmlStreamReader>
+
 #include "WeatherReport.h"
 
 
@@ -38,7 +40,7 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit TAF(QObject *parent = nullptr);
+    explicit TAF(QXmlStreamReader &xml, QObject *parent = nullptr);
 
     // Standard destructor
     ~TAF() override = default;

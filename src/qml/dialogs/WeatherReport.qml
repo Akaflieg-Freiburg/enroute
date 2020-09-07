@@ -124,7 +124,8 @@ Dialog {
                     width: parent.width
                     
                     Component.onCompleted: {
-                        var metar = dialogLoader.dialogArgs.station.metar
+                        var metar = dialogLoader.dialogArgs.station.metarStrings
+                        console.log(metar)
 
                         for (var j in metar)
                             reportPropertyDelegate.createObject(metarCO, {text: metar[j]});
@@ -143,7 +144,7 @@ Dialog {
                     width: parent.width
 
                     Component.onCompleted: {
-                        var taf = dialogLoader.dialogArgs.station.taf
+                        var taf = dialogLoader.dialogArgs.station.tafStrings
                         for (var j in taf)
                             reportPropertyDelegate.createObject(tafCO, {text: taf[j]});
                     }

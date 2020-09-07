@@ -50,6 +50,7 @@ public:
     QString _station_id;
 
     QMultiMap<QString, QVariant> data;
+    QStringList dataStrings;
 
 private:
     Q_DISABLE_COPY_MOVE(METAR)

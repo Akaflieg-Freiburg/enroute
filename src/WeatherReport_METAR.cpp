@@ -87,5 +87,29 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
         xml.skipCurrentElement();
     }
 
+    // Generate DATA
+    if (data.contains("raw_text"))
+        dataStrings.push_back("RAW " + data.value("raw_text").toString());
+    if (data.contains("observation_time"))
+        dataStrings.push_back("TIME" + WeatherReport::decodeTime(data.value("observation_time")));
+    if (data.contains("wind_dir_degrees") && data.contains("wind_speed_kt")) {
+        if (data.contains("wind_gust_kt"))
+            dataStrings.push_back("WIND" + WeatherReport::decodeWind(data.value("wind_dir_degrees"), data.value("wind_speed_kt"), data.value("wind_gust_kt")));
+        else
+            dataStrings.push_back("WIND" + WeatherReport::decodeWind(data.value("wind_dir_degrees"), data.value("wind_speed_kt")));
+    }
+    if (data.contains("visibility_statute_mi"))
+        dataStrings.push_back("VIS " + WeatherReport::decodeVis(data.value("visibility_statute_mi")));
+    if (data.contains("wx_string"))
+        dataStrings.push_back("WX  " + WeatherReport::decodeWx(data.value("wx_string")));
+    if (data.contains("sky_condition"))
+        dataStrings.push_back("CLDS" + WeatherReport::decodeClouds(data.values("sky_condition")));
+    if (data.contains("temp_c"))
+        dataStrings.push_back("TEMP" + WeatherReport::decodeTemp(data.value("temp_c")));
+    if (data.contains("dewpoint_c"))
+        dataStrings.push_back("DEWP" + WeatherReport::decodeTemp(data.value("dewpoint_c")));
+    if (data.contains("altim_in_hg"))
+        dataStrings.push_back("QNH " + WeatherReport::decodeQnh(data.value("altim_in_hg")));
+
 }
 

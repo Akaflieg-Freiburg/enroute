@@ -99,5 +99,43 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
             xml.skipCurrentElement();
     }
 
+    // Generate DATA
+    if (data.contains("raw_text"))
+        dataStrings.push_back("RAW " + data.value("raw_text").toString());
+    if (data.contains("issue_time"))
+        dataStrings.push_back("TIME" + WeatherReport::decodeTime(data.value("issue_time")));
+    if (data.contains("valid_time_from"))
+        dataStrings.push_back("FROM" + WeatherReport::decodeTime(data.value("valid_time_from")));
+    if (data.contains("valid_time_to"))
+        dataStrings.push_back("TO  " + WeatherReport::decodeTime(data.value("valid_time_to")));
+    if (data.contains("forecast")) {
+        for (int i = data.values("forecast").size() - 1; i >= 0; --i) {
+            QMultiMap<QString, QVariant> forecast = data.values("forecast")[i].toMap();
+            QString fcst;
+            if (forecast.contains("fcst_time_from") && forecast.contains("fcst_time_to")) {
+                if (!forecast.contains("change_indicator"))
+                    fcst += "From " + WeatherReport::decodeTime(forecast.value("fcst_time_from")) + " to " + WeatherReport::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                else if (forecast.value("change_indicator").toString() == "TEMPO")
+                    fcst += "Temporary from " + WeatherReport::decodeTime(forecast.value("fcst_time_from")) + " to " + WeatherReport::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                else if (forecast.value("change_indicator").toString() == "BECMG")
+                    fcst += "Transition from " + WeatherReport::decodeTime(forecast.value("fcst_time_from")) + " to " + WeatherReport::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                else
+                    fcst += "From " + WeatherReport::decodeTime(forecast.value("fcst_time_from")) + " to " + WeatherReport::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+
+            }
+            if (forecast.contains("probability"))
+                fcst.push_back(forecast.value("probability").toString() + "% probability<br>");
+            if (forecast.contains("wind_dir_degrees") && forecast.contains("wind_speed_kt"))
+                fcst.push_back("Wind " + WeatherReport::decodeWind(forecast.value("wind_dir_degrees"), forecast.value("wind_speed_kt")) + "<br>");
+            if (forecast.contains("visibility_statute_mi"))
+                fcst.push_back("Visibility " + WeatherReport::decodeVis(forecast.value("visibility_statute_mi")) + "<br>");
+            if (forecast.contains("wx_string"))
+                fcst.push_back(WeatherReport::decodeWx(forecast.value("wx_string")) + "<br>");
+            if (forecast.contains("sky_condition"))
+                fcst.push_back(WeatherReport::decodeClouds(forecast.values("sky_condition")));
+            dataStrings.push_back("FCST" + fcst);
+        }
+    }
+
 }
 

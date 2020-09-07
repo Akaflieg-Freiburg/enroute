@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
 #include <QVariant>
 
 /*! \brief WeatherReport, a weather report containing a METAR and/or a TAF
@@ -101,13 +102,36 @@ public:
      * - DEWP: the dewpoint
      * - QNH: the pressure at sea-level
      */
-    Q_PROPERTY(QList<QString> metar READ metar CONSTANT)
+    Q_PROPERTY(WeatherReport::METAR *metar READ metar CONSTANT)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property metar
      */
-    QList<QString> metar() const { return _metar; }
+    WeatherReport::METAR *metar() const { return _metar; }
+
+    /*! \brief The METAR data
+     *
+     * A list of formated strings constituting the METAR data (observations).
+     * If the station has no METAR, the list only contains "NONE". The first 4
+     * letters of each string indicate which field the data belong to:
+     * - RAW: the raw metar report
+     * - TIME: the time of emission
+     * - WIND: the wind direction and speed
+     * - VIS: the horizontal visibility
+     * - WX: the significant weather
+     * - CLDS: the clouds
+     * - TEMP: the temperature
+     * - DEWP: the dewpoint
+     * - QNH: the pressure at sea-level
+     */
+    Q_PROPERTY(QList<QString> metarStrings READ metarStrings CONSTANT)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property metarStrings
+     */
+    QList<QString> metarStrings() const;
 
     /*! \brief The TAF data
      *
@@ -123,13 +147,36 @@ public:
      * speed and direction, the visibility, the significant weather and the
      * clouds.
      */
-    Q_PROPERTY(QList<QString> taf READ taf CONSTANT)
+    Q_PROPERTY(WeatherReport::TAF *taf READ taf CONSTANT)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    QList<QString> taf() const { return _taf; }
+    WeatherReport::TAF *taf() const { return _taf; }
+
+
+    /*! \brief The TAF data
+     *
+     * A list of formated strings constituting the TAF data (forecast).
+     * If the station has no TAF, the list only contains "NONE". The first 4
+     * letters of each string indicate which field the data belong to:
+     * - RAW: the raw metar report
+     * - TIME: the time of emission
+     * - FROM: the time at which the forecast starts
+     * - TO: the time at which the forecast ends
+     * - FCST: the forecast(s)
+     * Each forecast contains the start and end times, its probability, the wind
+     * speed and direction, the visibility, the significant weather and the
+     * clouds.
+     */
+    Q_PROPERTY(QList<QString> tafStrings READ tafStrings CONSTANT)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property taf
+     */
+    QList<QString> tafStrings() const;
 
 private:
     Q_DISABLE_COPY_MOVE(WeatherReport)
@@ -140,32 +187,32 @@ private:
     /*! \brief The FAA flight category */
     QString _cat;
 
-    /*! \brief The METAR data */
-    QList<QString> _metar;
+    /*! \brief METAR */
+    QPointer<WeatherReport::METAR> _metar;
 
-    /*! \brief The TAF data */
-    QList<QString> _taf;
+    /*! \brief TAF */
+    QPointer<WeatherReport::TAF> _taf;
 
     /*! \brief Converts the time into a human readable string */
-    QString decodeTime(const QVariant &time);
+    static QString decodeTime(const QVariant &time);
 
     /*! \brief Converts the wind data into a human readable string */
-    QString decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg = QVariant("0"));
+    static QString decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg = QVariant("0"));
 
     /*! \brief Converts the visibility into a human readable string */
-    QString decodeVis(const QVariant &vis);
+    static QString decodeVis(const QVariant &vis);
 
     /*! \brief Converts the temperature/dewpoint into a human readable string */
-    QString decodeTemp(const QVariant &temp);
+    static QString decodeTemp(const QVariant &temp);
 
     /*! \brief Converts the QNH (pressure) into a human readable string */
-    QString decodeQnh(const QVariant &altim);
+    static QString decodeQnh(const QVariant &altim);
 
     /*! \brief Converts the weather into a human readable string */
-    QString decodeWx(const QVariant &wx);
+    static QString decodeWx(const QVariant &wx);
 
     /*! \brief Converts the clouds into a human readable string */
-    QString decodeClouds(const QVariantList &clouds);
+    static QString decodeClouds(const QVariantList &clouds);
 };
 
 #include "WeatherReport_METAR.h"

@@ -188,7 +188,7 @@ void Meteorologist::process() {
                 if (xml.name() == "METAR") {
 
                     auto metar = new WeatherReport::METAR(xml, this);
-                    metar->data = this->readReport(xml, "METAR");
+//                    metar->data = this->readReport(xml, "METAR");
                     if (metar->data.contains("station_id")) {
                         QString station = metar->data.value("station_id").toString();
                         if (!mStations.contains(station)) {
@@ -203,7 +203,7 @@ void Meteorologist::process() {
                 // Read the TAF and get the data, if the station has not been encountered yet
                 if (xml.name() == "TAF") {
 
-                    auto taf= new WeatherReport::TAF(xml, this);
+                    auto taf = new WeatherReport::TAF(xml, this);
                     taf->data = this->readReport(xml, "TAF");
                     if (taf->data.contains("station_id")) {
                         QString station = taf->data.value("station_id").toString();

@@ -23,5 +23,41 @@
 
 WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(parent)
 {
+
+    // Lambda to read sky condition
+    auto readSky = [&] {
+        QXmlStreamAttributes atrs = xml.attributes();
+        QString sky;
+        sky += atrs.value("sky_cover").toString();
+        if (atrs.value("cloud_base_ft_agl").toString() != "")
+            sky += "," + atrs.value("cloud_base_ft_agl").toString();
+        if (atrs.value("cloud_type").toString() != "")
+            sky += "," + atrs.value("cloud_type").toString();
+        return sky;
+    };
+
+    // Read METAR/TAF and store in map
+    QList<QString> accepted; // fields to decode without special treatment
+    accepted = {"raw_text", "station_id", "observation_time", "temp_c",
+                "dewpoint_c", "wind_dir_degrees", "wind_speed_kt",
+                "wind_gust_kt", "visibility_statute_mi", "altim_in_hg",
+                "flight_category", "wx_string"};
+
+    while (true) {
+        xml.readNextStartElement();
+        QString name = xml.name().toString();
+
+        if (xml.isStartElement() && accepted.contains(name) )
+            data.insert(name, xml.readElementText());
+        else if (xml.isStartElement() && name == "sky_condition") {
+            data.insert("sky_condition", readSky());
+            xml.skipCurrentElement();
+        }
+        else if (xml.isEndElement() && name == "METAR")
+            break;
+        else
+            xml.skipCurrentElement();
+    }
+
 }
 

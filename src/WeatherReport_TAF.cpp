@@ -44,6 +44,12 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
         xml.readNextStartElement();
         QString name = xml.name().toString();
 
+        // Read Station_ID
+        if (xml.isStartElement() && name == "station_id") {
+            _station_id = xml.readElementText();
+            continue;
+        }
+
         if (xml.isStartElement() && accepted.contains(name) )
             data.insert(name, xml.readElementText());
         else if (xml.isStartElement() && name == "forecast") {

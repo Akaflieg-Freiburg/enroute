@@ -45,6 +45,8 @@ public:
     // Standard destructor
     ~METAR() override = default;
 
+    QString _station_id;
+
     QMultiMap<QString, QVariant> data;
 
 private:

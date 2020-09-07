@@ -47,16 +47,27 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
         xml.readNextStartElement();
         QString name = xml.name().toString();
 
-        if (xml.isStartElement() && accepted.contains(name) )
+        // Read Station_ID
+        if (xml.isStartElement() && name == "station_id") {
+            _station_id = xml.readElementText();
+            continue;
+        }
+
+        if (xml.isStartElement() && accepted.contains(name) ) {
             data.insert(name, xml.readElementText());
-        else if (xml.isStartElement() && name == "sky_condition") {
+            continue;
+        }
+
+        if (xml.isStartElement() && name == "sky_condition") {
             data.insert("sky_condition", readSky());
             xml.skipCurrentElement();
+            continue;
         }
-        else if (xml.isEndElement() && name == "METAR")
+
+        if (xml.isEndElement() && name == "METAR")
             break;
-        else
-            xml.skipCurrentElement();
+
+        xml.skipCurrentElement();
     }
 
 }

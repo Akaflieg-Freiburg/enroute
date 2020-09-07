@@ -188,13 +188,9 @@ void Meteorologist::process() {
                 if (xml.name() == "METAR") {
 
                     auto metar = new WeatherReport::METAR(xml, this);
-                    if (metar->data.contains("station_id")) {
-                        QString station = metar->data.value("station_id").toString();
-                        if (!mStations.contains(station)) {
-                            mStations.push_back(station);
-                            metars.insert(station, metar);
-                        } else
-                            delete metar;
+                    if (!mStations.contains(metar->_station_id)) {
+                        mStations.push_back(metar->_station_id);
+                        metars.insert(metar->_station_id, metar);
                     } else
                         delete metar;
                 }
@@ -203,13 +199,9 @@ void Meteorologist::process() {
                 if (xml.name() == "TAF") {
 
                     auto taf = new WeatherReport::TAF(xml, this);
-                    if (taf->data.contains("station_id")) {
-                        QString station = taf->data.value("station_id").toString();
-                        if (!tStations.contains(station)) {
-                            tStations.push_back(station);
-                            tafs.insert(station, taf);
-                        } else
-                            delete taf;
+                    if (!tStations.contains(taf->_station_id)) {
+                        tStations.push_back(taf->_station_id);
+                        tafs.insert(taf->_station_id, taf);
                     } else
                         delete taf;
                 }

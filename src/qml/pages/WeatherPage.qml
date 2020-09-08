@@ -122,12 +122,12 @@ Page {
             width: pg.width
 
             text: {
+                var result = model.modelData.id
                 var wp = geoMapProvider.findByID(model.modelData.id)
-                if (wp === null)
-                    return model.modelData.id
-                var result = wp.richTextName
+                if (wp !== null)
+                    result = wp.richTextName
                 if (satNav.status === SatNav.OK)
-                    result += "<br>" + wp.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
+                    result += "<br>" + satNav.wayTo(model.modelData.location, globalSettings.useMetricUnits)
                 return result
             }
 

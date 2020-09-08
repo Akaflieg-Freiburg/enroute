@@ -483,6 +483,15 @@ public:
   */
   QGeoPositionInfo lastFix() const { return lastInfo; }
 
+  /*! \brief Description of the way from the current position to the given position
+
+  @param position Position
+  @param useMetricUnits if true, render distance in km, else in NM
+
+  @returns a string of the form "DIST 65.2 NM • QUJ 276°"
+  */
+  Q_INVOKABLE QString wayTo(const QGeoCoordinate& position, bool useMetricUnits) const;
+
 signals:
   /*! \brief Emitted whenever the suggested icon changes */
   void iconChanged();

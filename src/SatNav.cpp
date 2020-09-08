@@ -437,3 +437,19 @@ QString SatNav::trackAsString() const
         return "-";
     return QString("%1°").arg(_track);
 }
+
+
+QString SatNav::wayTo(const QGeoCoordinate& position, bool useMetricUnits) const
+{
+
+    auto dist = AviationUnits::Distance::fromM(_lastValidCoordinate.distanceTo(position));
+    auto QUJ = qRound(_lastValidCoordinate.azimuthTo(position));
+
+    QString result;
+    if (useMetricUnits) {
+        result += QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
+    } else {
+        result += QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+    }
+    return result;
+}

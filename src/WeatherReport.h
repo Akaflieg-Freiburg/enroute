@@ -178,6 +178,7 @@ public:
      */
     QList<QString> tafStrings() const;
 
+    Q_PROPERTY(QGeoCoordinate location READ location CONSTANT);
     QGeoCoordinate location() const;
 
 private:

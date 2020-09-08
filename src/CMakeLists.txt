@@ -74,6 +74,7 @@ set(SOURCES
     Librarian.h
     Meteorologist.h
     MobileAdaptor.h
+    SatNav.h
     ScaleQuickItem.h
     WeatherReport.h
     WeatherReport_METAR.h

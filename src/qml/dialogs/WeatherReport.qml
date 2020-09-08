@@ -125,7 +125,6 @@ Dialog {
                     
                     Component.onCompleted: {
                         var metar = dialogLoader.dialogArgs.station.metarStrings
-                        console.log(metar)
 
                         for (var j in metar)
                             reportPropertyDelegate.createObject(metarCO, {text: metar[j]});

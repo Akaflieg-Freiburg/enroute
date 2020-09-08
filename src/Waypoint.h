@@ -178,7 +178,7 @@ public:
     @param useMetricUnits if true, render distance in km, else in NM
 
     @returns a string of the form "DIST 65.2 NM • QUJ 276°"
-  */
+    */
     Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const;
 
     bool operator==(const Waypoint &other) const {

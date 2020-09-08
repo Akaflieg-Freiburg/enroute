@@ -46,6 +46,7 @@ public:
     // Standard destructor
     ~METAR() override = default;
 
+    int _qnh {0};
     QGeoCoordinate _location;
     QString _station_id;
 

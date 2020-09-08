@@ -57,6 +57,7 @@ QList<QString> WeatherReport::metarStrings() const
     return _metar->dataStrings;
 }
 
+
 QGeoCoordinate WeatherReport::location() const
 {
     if (!_metar.isNull())
@@ -66,10 +67,20 @@ QGeoCoordinate WeatherReport::location() const
     return QGeoCoordinate();
 }
 
+
+int WeatherReport::qnh() const
+{
+    if (_metar.isNull())
+        return 0;
+    return _metar->_qnh;
+}
+
+
 QString WeatherReport::decodeTime(const QVariant &time) {
     QDateTime tim = QDateTime::fromString(time.toString().replace("T", " "), "yyyy-MM-dd hh:mm:ssZ");
     return tim.toString("ddd MMMM d yyyy hh:mm") + " UTC";
 }
+
 
 QString WeatherReport::decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg) {
     QString w;
@@ -86,20 +97,24 @@ QString WeatherReport::decodeWind(const QVariant &windd, const QVariant &winds, 
     return w;
 }
 
+
 QString WeatherReport::decodeVis(const QVariant &vis) {
     long v = std::lround(vis.toString().toDouble() * 1.61);
     return QString::number(v) + " km";
 }
+
 
 QString WeatherReport::decodeTemp(const QVariant &temp) {
     QString tmp = temp.toString();
     return tmp.left(tmp.lastIndexOf(".")) + " °C";
 }
 
+
 QString WeatherReport::decodeQnh(const QVariant &altim) {
     long qnh = std::lround(altim.toString().toDouble() * 33.86);
     return QString::number(qnh) + " hPa";
 }
+
 
 QString WeatherReport::decodeWx(const QVariant &wx) {
     QString w = wx.toString();
@@ -142,6 +157,7 @@ QString WeatherReport::decodeWx(const QVariant &wx) {
     w.replace("SS", "sandstorm");
     return w;
 }
+
 
 QString WeatherReport::decodeClouds(const QVariantList &clouds) {
     QString clds;

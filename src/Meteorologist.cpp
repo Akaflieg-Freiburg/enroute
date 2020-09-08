@@ -276,6 +276,28 @@ QString Meteorologist::infoString() const
 
     QString result;
 
+    // Find QNH of nearest airfield
+    WeatherReport *closestReportWithQNH = nullptr;
+    foreach(auto report, _reports) {
+        if (report.isNull())
+            continue;
+        if (report->qnh() == 0)
+            continue;
+        if (!report->location().isValid())
+            continue;
+        if (closestReportWithQNH == nullptr) {
+            closestReportWithQNH = report;
+            continue;
+        }
+
+        QGeoCoordinate here = _sat->lastValidCoordinate();
+        if (here.distanceTo(report->location()) < here.distanceTo(closestReportWithQNH->location()))
+            closestReportWithQNH = report;
+    }
+    if (closestReportWithQNH) {
+        result = tr("QNH: %1 hPa (%2)<br>").arg(closestReportWithQNH->qnh()).arg("XX");
+    }
+
     // Describe next sunset/sunrise
     if (_sat->status() == SatNav::Status::OK) {
         QDateTime sunrise, sunset, sunriseTomorrow;

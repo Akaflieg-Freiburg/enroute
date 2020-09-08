@@ -42,7 +42,7 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
     QList<QString> accepted; // fields to decode without special treatment
     accepted = {"raw_text", "station_id", "observation_time", "temp_c",
                 "dewpoint_c", "wind_dir_degrees", "wind_speed_kt",
-                "wind_gust_kt", "visibility_statute_mi", "altim_in_hg",
+                "wind_gust_kt", "visibility_statute_mi",
                 "flight_category", "wx_string"};
 
     while (true) {
@@ -69,6 +69,16 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
             continue;
         }
 
+        // QNH
+        if (xml.isStartElement() && name == "altim_in_hg") {
+            auto content = xml.readElementText();
+            data.insert("altim_in_hg", content);
+            _qnh = qRound(content.toDouble() * 33.86);
+            if ((_qnh < 800) || (_qnh > 1200))
+                _qnh = 0;
+            continue;
+        }
+
         // Other data fields
         if (xml.isStartElement() && accepted.contains(name) ) {
             data.insert(name, xml.readElementText());
@@ -87,7 +97,9 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
         xml.skipCurrentElement();
     }
 
+    //
     // Generate DATA
+    //
     if (data.contains("raw_text"))
         dataStrings.push_back("RAW " + data.value("raw_text").toString());
     if (data.contains("observation_time"))

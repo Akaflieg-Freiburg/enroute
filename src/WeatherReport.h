@@ -181,6 +181,8 @@ public:
     Q_PROPERTY(QGeoCoordinate location READ location CONSTANT);
     QGeoCoordinate location() const;
 
+    int qnh() const;
+
 private:
     Q_DISABLE_COPY_MOVE(WeatherReport)
 

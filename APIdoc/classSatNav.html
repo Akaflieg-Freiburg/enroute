@@ -182,6 +182,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6782467dea63ac559034167e127494b"><td class="memItemLeft" align="right" valign="top">QGeoPositionInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#ab6782467dea63ac559034167e127494b">lastFix</a> () const</td></tr>
 <tr class="memdesc:ab6782467dea63ac559034167e127494b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix received.  <a href="#ab6782467dea63ac559034167e127494b">More...</a><br /></td></tr>
 <tr class="separator:ab6782467dea63ac559034167e127494b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb03c3bf153b6513ab26f965ad6716c4"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#afb03c3bf153b6513ab26f965ad6716c4">wayTo</a> (const QGeoCoordinate &amp;position, bool useMetricUnits) const</td></tr>
+<tr class="memdesc:afb03c3bf153b6513ab26f965ad6716c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from the current position to the given position.  <a href="#afb03c3bf153b6513ab26f965ad6716c4">More...</a><br /></td></tr>
+<tr class="separator:afb03c3bf153b6513ab26f965ad6716c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -965,6 +968,44 @@ Properties</h2></td></tr>
 
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trackAsString </dd></dl>
+
+</div>
+</div>
+<a id="afb03c3bf153b6513ab26f965ad6716c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb03c3bf153b6513ab26f965ad6716c4">&#9670;&nbsp;</a></span>wayTo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString SatNav::wayTo </td>
+          <td>(</td>
+          <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useMetricUnits</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Description of the way from the current position to the given position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>Position </td></tr>
+    <tr><td class="paramname">useMetricUnits</td><td>if true, render distance in km, else in NM</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a string of the form "DIST 65.2 NM • QUJ 276°" </dd></dl>
 
 </div>
 </div>

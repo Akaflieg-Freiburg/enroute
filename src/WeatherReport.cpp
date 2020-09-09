@@ -68,6 +68,17 @@ QGeoCoordinate WeatherReport::location() const
 }
 
 
+QString WeatherReport::station_id() const
+{
+    if (!_metar.isNull())
+        return _metar->_station_id;
+    if (!_taf.isNull())
+        return _taf->_station_id;
+    return QString();
+
+}
+
+
 int WeatherReport::qnh() const
 {
     if (_metar.isNull())

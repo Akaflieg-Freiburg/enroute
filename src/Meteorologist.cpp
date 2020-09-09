@@ -295,7 +295,9 @@ QString Meteorologist::infoString() const
             closestReportWithQNH = report;
     }
     if (closestReportWithQNH) {
-        result = tr("QNH: %1 hPa (%2)<br>").arg(closestReportWithQNH->qnh()).arg("XX");
+        result = tr("QNH: %1 hPa (%2, %3)<br>").arg(closestReportWithQNH->qnh())
+                .arg(closestReportWithQNH->station_id())
+                .arg(Clock::describeTimeDifference(closestReportWithQNH->metar()->_observationTime));
     }
 
     // Describe next sunset/sunrise

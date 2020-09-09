@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QDateTime>
 #include <QGeoCoordinate>
 #include <QXmlStreamReader>
 
@@ -49,6 +50,7 @@ public:
     int _qnh {0};
     QGeoCoordinate _location;
     QString _station_id;
+    QDateTime _observationTime;
 
     QMultiMap<QString, QVariant> data;
     QStringList dataStrings;

@@ -180,7 +180,7 @@ public:
 
     Q_PROPERTY(QGeoCoordinate location READ location CONSTANT);
     QGeoCoordinate location() const;
-
+    QString station_id() const;
     int qnh() const;
 
 private:

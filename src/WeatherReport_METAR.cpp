@@ -79,6 +79,14 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
             continue;
         }
 
+        // Observation Time
+        if (xml.isStartElement() && name == "observation_time") {
+            auto content = xml.readElementText();
+            data.insert("observation_time", content);
+            _observationTime = QDateTime::fromString(content, Qt::ISODate);
+            continue;
+        }
+
         // Other data fields
         if (xml.isStartElement() && accepted.contains(name) ) {
             data.insert(name, xml.readElementText());

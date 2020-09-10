@@ -65,18 +65,31 @@ public:
     /*! \brief Destructor */
     ~Meteorologist() override;
 
-    /*! \brief infoString
+    /*! \brief QNHInfo
      *
      * This property holds a richt-text string with global information. A typical result could be "Sunset at 17:01, in 32 minutes.<br>Last METAR/TAF update 21 minutes ago."
      * Depending on availability of information, the string can also be shorter, or altogether empty.
      */
-    Q_PROPERTY(QString infoString READ infoString NOTIFY infoStringChanged)
+    Q_PROPERTY(QString QNHinfo READ QNHInfo NOTIFY QNHInfoChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property infoString
      */
-    QString infoString() const;
+    QString QNHInfo() const;
+
+    /*! \brief SunInfo
+     *
+     * This property holds a richt-text string with global information. A typical result could be "Sunset at 17:01, in 32 minutes.<br>Last METAR/TAF update 21 minutes ago."
+     * Depending on availability of information, the string can also be shorter, or altogether empty.
+     */
+    Q_PROPERTY(QString SunInfo READ SunInfo NOTIFY SunInfoChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property infoString
+     */
+    QString SunInfo() const;
 
     /*! \brief The list of weather reports
      *
@@ -137,7 +150,10 @@ signals:
     void error(QString message);
 
     /*! \brief Notifier signal */
-    void infoStringChanged();
+    void QNHInfoChanged();
+
+    /*! \brief Notifier signal */
+    void SunInfoChanged();
 
     /*! \brief Signal emitted when the list of weather reports changes */
     void reportsChanged();

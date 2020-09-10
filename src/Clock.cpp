@@ -57,16 +57,12 @@ QString Clock::describeTimeDifference(QDateTime pointInTime)
     minutes = minutes%60;
 
     QString result = "";
-    if (hours != 0)
-        result += tr("%n hour(s)", "", hours);
-
-    if ((hours != 0) && (minutes != 0))
-        result += tr(" and ");
+    if ((hours != 0) && (minutes == 0))
+        result = tr("%1h").arg(hours);
+    else if ((hours == 0) && (minutes != 0))
+        result = tr("%1min").arg(minutes);
     else
-        result += " ";
-
-    if (minutes != 0)
-        result += tr("%n minute(s)", "", minutes);
+        result = tr("%1h and %2min").arg(hours).arg(minutes);
 
     if (past)
         result = tr("%1 ago").arg(result);
@@ -74,6 +70,28 @@ QString Clock::describeTimeDifference(QDateTime pointInTime)
         result = tr("in %1").arg(result);
 
     return result.simplified();
+}
+
+
+QString Clock::describePointInTime(QDateTime pointInTime, QGeoCoordinate position)
+{
+    pointInTime = pointInTime.toUTC();
+
+    if (position.isValid()) {
+        auto lastMidnight = QDateTime::currentDateTimeUtc();
+        lastMidnight.setTime( QTime::fromMSecsSinceStartOfDay(4.0*position.longitude()*60.0*1000.0) );
+        if (lastMidnight > QDateTime::currentDateTime())
+            lastMidnight = lastMidnight.addDays(-1);
+
+        if ((pointInTime < lastMidnight) && (pointInTime > lastMidnight.addDays(-1)))
+            return tr("yesterday %1").arg(pointInTime.toString("H:mm"));
+        if ((pointInTime > lastMidnight) && (pointInTime < lastMidnight.addDays(1)))
+            return pointInTime.toString("H:mm");
+        if ((pointInTime > lastMidnight.addDays(1)) && (pointInTime < lastMidnight.addDays(2)))
+            return tr("tomorrow %1").arg(pointInTime.toString("H:mm"));
+    }
+
+    return pointInTime.toString("d. MMM, H:mm");
 }
 
 

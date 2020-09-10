@@ -45,8 +45,10 @@ Meteorologist::Meteorologist(Clock *clock,
     _updateTimer.start();
 
     // Update the description text when needed
-    connect(clock, &Clock::timeChanged, this, &Meteorologist::infoStringChanged);
-    connect(sat, &SatNav::statusChanged, this, &Meteorologist::infoStringChanged);
+    connect(clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
+    connect(sat, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
+    connect(clock, &Clock::timeChanged, this, &Meteorologist::SunInfoChanged);
+    connect(sat, &SatNav::statusChanged, this, &Meteorologist::SunInfoChanged);
 }
 
 
@@ -255,7 +257,7 @@ void Meteorologist::process() {
     emit reportsChanged();
 
     _lastUpdate = QDateTime::currentDateTimeUtc();
-    emit infoStringChanged();
+    emit QNHInfoChanged();
 }
 
 
@@ -268,13 +270,11 @@ bool Meteorologist::downloading() const
 }
 
 
-QString Meteorologist::infoString() const
+QString Meteorologist::QNHInfo() const
 {
     // Paranoid safety checks
     if (_sat.isNull())
         return QString();
-
-    QString result;
 
     // Find QNH of nearest airfield
     WeatherReport *closestReportWithQNH = nullptr;
@@ -295,69 +295,67 @@ QString Meteorologist::infoString() const
             closestReportWithQNH = report;
     }
     if (closestReportWithQNH) {
-        result = tr("QNH: %1 hPa (%2, %3)<br>").arg(closestReportWithQNH->qnh())
+        return tr("QNH: %1 in %2, %3").arg(closestReportWithQNH->qnh())
                 .arg(closestReportWithQNH->station_id())
                 .arg(Clock::describeTimeDifference(closestReportWithQNH->metar()->_observationTime));
     }
+    return QString();
+}
+
+
+QString Meteorologist::SunInfo() const
+{
+    // Paranoid safety checks
+    if (_sat.isNull())
+        return QString();
 
     // Describe next sunset/sunrise
-    if (_sat->status() == SatNav::Status::OK) {
-        QDateTime sunrise, sunset, sunriseTomorrow;
+    QDateTime sunrise, sunset, sunriseTomorrow;
 
-        SunSet sun;
-        auto coord = _sat->coordinate();
-        auto timeZone = qRound(coord.longitude()/15.0);
+    SunSet sun;
+    auto coord = _sat->coordinate();
+    auto timeZone = qRound(coord.longitude()/15.0);
 
-        auto currentTime = QDateTime::currentDateTimeUtc();
-        auto localTime = currentTime.toOffsetFromUtc(timeZone*60*60);
-        auto localDate = localTime.date();
+    auto currentTime = QDateTime::currentDateTimeUtc();
+    auto localTime = currentTime.toOffsetFromUtc(timeZone*60*60);
+    auto localDate = localTime.date();
 
-        sun.setPosition(coord.latitude(), coord.longitude(), timeZone);
-        sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
+    sun.setPosition(coord.latitude(), coord.longitude(), timeZone);
+    sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
 
-        auto sunriseTimeInMin = sun.calcSunrise();
-        if (qIsFinite(sunriseTimeInMin)) {
-            sunrise = localTime;
-            sunrise.setTime(QTime::fromMSecsSinceStartOfDay(sunriseTimeInMin*60*1000));
-            sunrise = sunrise.toOffsetFromUtc(0);
-            sunrise.setTimeSpec(Qt::UTC);
-        }
-
-        auto sunsetTimeInMin = sun.calcSunset();
-        if (qIsFinite(sunsetTimeInMin)) {
-            sunset = localTime;
-            sunset.setTime(QTime::fromMSecsSinceStartOfDay(sunsetTimeInMin*60*1000));
-            sunset = sunset.toOffsetFromUtc(0);
-            sunset.setTimeSpec(Qt::UTC);
-        }
-
-        localTime = localTime.addDays(1);
-        localDate = localTime.date();
-        sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
-        auto sunriseTomorrowTimeInMin = sun.calcSunrise();
-        if (qIsFinite(sunriseTomorrowTimeInMin)) {
-            sunriseTomorrow = localTime;
-            sunriseTomorrow.setTime(QTime::fromMSecsSinceStartOfDay(sunriseTomorrowTimeInMin*60*1000));
-            sunriseTomorrow = sunriseTomorrow.toOffsetFromUtc(0);
-            sunriseTomorrow.setTimeSpec(Qt::UTC);
-        }
-
-        if (sunrise.isValid() && sunset.isValid() && sunriseTomorrow.isValid()) {
-            if (currentTime < sunrise)
-                result += tr("SR at %1, %2").arg(sunrise.time().toString("H:mm"), Clock::describeTimeDifference(sunrise));
-            else if (currentTime < sunset.addSecs(40*60))
-                result += tr("Sunset at %1, %2").arg(sunset.time().toString("H:mm"), Clock::describeTimeDifference(sunset));
-            else
-                result += tr("Sunrise at %1, %2").arg(sunrise.time().toString("H:mm"), Clock::describeTimeDifference(sunriseTomorrow));
-        }
+    auto sunriseTimeInMin = sun.calcSunrise();
+    if (qIsFinite(sunriseTimeInMin)) {
+        sunrise = localTime;
+        sunrise.setTime(QTime::fromMSecsSinceStartOfDay(sunriseTimeInMin*60*1000));
+        sunrise = sunrise.toOffsetFromUtc(0);
+        sunrise.setTimeSpec(Qt::UTC);
     }
 
-    // Info about time of last METAR/TAF update
-    if (_lastUpdate.isValid()) {
-        if (!result.isEmpty())
-            result += "<br>";
-        result += tr("Last METAR/TAF update: %1").arg(Clock::describeTimeDifference(_lastUpdate));
+    auto sunsetTimeInMin = sun.calcSunset();
+    if (qIsFinite(sunsetTimeInMin)) {
+        sunset = localTime;
+        sunset.setTime(QTime::fromMSecsSinceStartOfDay(sunsetTimeInMin*60*1000));
+        sunset = sunset.toOffsetFromUtc(0);
+        sunset.setTimeSpec(Qt::UTC);
     }
 
-    return result;
+    localTime = localTime.addDays(1);
+    localDate = localTime.date();
+    sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
+    auto sunriseTomorrowTimeInMin = sun.calcSunrise();
+    if (qIsFinite(sunriseTomorrowTimeInMin)) {
+        sunriseTomorrow = localTime;
+        sunriseTomorrow.setTime(QTime::fromMSecsSinceStartOfDay(sunriseTomorrowTimeInMin*60*1000));
+        sunriseTomorrow = sunriseTomorrow.toOffsetFromUtc(0);
+        sunriseTomorrow.setTimeSpec(Qt::UTC);
+    }
+
+    if (sunrise.isValid() && sunset.isValid() && sunriseTomorrow.isValid()) {
+        if (currentTime < sunrise)
+            return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise, coord), Clock::describeTimeDifference(sunrise));
+        if (currentTime < sunset.addSecs(40*60))
+            return tr("SS %1, %2").arg(Clock::describePointInTime(sunset, coord), Clock::describeTimeDifference(sunset));
+        return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise, coord), Clock::describeTimeDifference(sunriseTomorrow));
+    }
+    return QString();
 }

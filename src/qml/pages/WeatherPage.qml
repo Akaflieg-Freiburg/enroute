@@ -291,16 +291,35 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: (meteorologist.infoString !== "")
+        visible: (sunLabel.text != "") || (qnhLabel.text != "")
 
-        Label {
+        GridLayout {
             anchors.fill: parent
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
+            columns: 2
 
-            text: meteorologist.infoString
+            Image {
+                visible: qnhLabel.text != ""
+                source: "/icons/material/ic_speed.svg"
+            }
+            Label {
+                id: qnhLabel
+                visible: qnhLabel.text != ""
+                Layout.fillWidth: true
+                text: meteorologist.QNHinfo
+            }
+            Image {
+                visible: sunLabel.text != ""
+                source: "/icons/material/ic_wb_sunny.svg"
+            }
+            Label {
+                id: sunLabel
+                visible: sunLabel.text != ""
+                Layout.fillWidth: true
+                text: meteorologist.SunInfo
+            }
+
         }
+
     } // Pane (footer)
 
     // Try and update METAR/TAF as soon as someone opens this page if the current list of stations

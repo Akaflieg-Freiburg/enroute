@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QDateTime>
+#include <QGeoCoordinate>
 #include <QObject>
 
 
@@ -52,6 +53,21 @@ public:
      * @returns A localized string such as "just now" (if the pointInTime is rougly equal to the current time), "3 minutes ago" (if the pointInTime is in the past), or "in 1 hour 5 minutes"  (if the pointInTime is in the future)
      */
     Q_INVOKABLE static QString describeTimeDifference(QDateTime pointInTime);
+
+    /*! Describe a point in time in human-readable form
+     *
+     * This method describes a point in time in human readable form. The method returns a localized string of the form
+     * "12. Sept., 17:51", "tomorrow 17:51", "yesterday 17:51" or "17:51". The words "tomorrow" and "yesterday" refer midnight
+     * at the current position, the numbers "17:51" refer to time in UTC.
+     *
+     * \param pointInTime The point in time that is to be described.
+     *
+     * \param position Position of the user. This is used to make sense of the notions "tomorrow" and "yesterday". If the
+     * position is invalid, a string of the form "12. Sept., 17:51" is returned.
+     *
+     * \return String with the description
+     */
+    Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime, QGeoCoordinate position=QGeoCoordinate());
 
     /*! \brief Current time
      *

@@ -38,8 +38,9 @@
         <file alias="icons/material/ic_send.svg">${material-design-icons_SOURCE_DIR}/content/svg/design/ic_send_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
 	<file alias="icons/material/ic_swap_horiz.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_horiz_24px.svg</file>
-	<file alias="icons/material/ic_translate.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_translate_24px.svg</file>
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>
+	<file alias="icons/material/ic_translate.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_translate_24px.svg</file>
+	<file alias="icons/material/ic_wb_sunny.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_wb_sunny_24px.svg</file>
 
 	<!-- GUI icons: General -->
         <file alias="icons/crovato.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/crovato.jpg</file>

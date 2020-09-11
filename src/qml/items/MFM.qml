@@ -101,10 +101,10 @@ Item {
             value: {
                 flightMap.zoomLevel;  // zoomLevel mentioned to trigger center re-calculation after zoom-in / -out
                 let coordForCenter = satNav.lastValidCoordinate;
-                if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
+                if (satNav.isInFlight) {
                     const targetHeight = Math.min(
-                        height-150,  // stay above the ruler scale a couple of pixels
-                        height*4/5  // otherwise 4/5 of the view is fine
+                        flightMap.height-150,  // stay above the ruler scale a couple of pixels
+                        flightMap.height*3/4    // otherwise 4/5 of the view is fine
                     );
                     const center = flightMap.toCoordinate(Qt.point(width/2, height/2), false);
                     const target = flightMap.toCoordinate(Qt.point(width/2, targetHeight), false);

@@ -181,6 +181,8 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p><strong>German:</strong> Markus Sachs, flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
 
+<p><strong>Italian:</strong> Luca Bertoncello.</p>
+
 <p><strong>Polish:</strong> Szymon Kocur, computer Science and aviation enthusiast. Laureate of IT nationwide competitions, including 'HackYeah 2019', and 'Golden Wolf 2017' for the best technological project in Poland.</p>
 
 <p></p>)html");
@@ -231,7 +233,11 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
     
     if (name == ":text/whatsnew.html") {
-        return tr(R"html(<p>Adrien Crovato has implemented METRA/TAF access. Heiner Tholen has improved the map display.</p>)html");
+        return tr(R"html(<p>Adrien Crovato and Stefan Kebekus have implemented <strong>METAR/TAF</strong> access. Look for the new <strong>Weather</strong> entry in the main menu to try it out!</p>
+
+<p>Heiner Tholen has improved the auto-panning feature of the moving map display.</p>
+
+<p>Luca Bertoncello has translated the app to Italian.</p>)html");
     }
 
     if (name == ":text/weatherPermissions.html") {

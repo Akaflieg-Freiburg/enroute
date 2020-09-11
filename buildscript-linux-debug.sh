@@ -47,11 +47,7 @@ export CXX=/usr/bin/clang++
 cmake \
     -G Ninja\
     -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_C_FLAGS="-fsanitize=address -fsanitize=undefined" \
-    -DCMAKE_CXX_FLAGS="-fsanitize=address -fsanitize=undefined -Werror -Wall -Wextra" \
-    -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address -fsanitize=undefined" \
     -DCMAKE_INSTALL_PREFIX=/ \
-    -DCMAKE_MODULE_LINKER_FLAGS="-fsanitize=address -fsanitize=undefined" \
     -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_LINUX \
     ..
 

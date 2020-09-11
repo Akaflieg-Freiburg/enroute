@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.14
-import QtQuick.Controls 2.14
-import QtQuick.Controls.Material 2.14
-import QtQuick.Layouts 1.14
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Layouts 1.15
 
 import enroute 1.0
 
@@ -352,7 +352,7 @@ ApplicationWindow {
         anchors.centerIn: parent
 
         title: qsTr("Exit…?")
-        text: qsTr("Do you wish to exit Enroute Flight Navigation?")
+        text: qsTr("Do you wish to exit <strong>Enroute Flight Navigation</strong>?")
 
         onAccepted: Qt.quit()
         onRejected: close()

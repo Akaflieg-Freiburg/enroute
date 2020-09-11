@@ -20,6 +20,7 @@
 
 #include "Clock.h"
 
+#include <QDebug>
 #include <QGuiApplication>
 #include <QTimer>
 

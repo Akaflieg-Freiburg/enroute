@@ -295,7 +295,7 @@ QString Meteorologist::QNHInfo() const
             closestReportWithQNH = report;
     }
     if (closestReportWithQNH) {
-        return tr("QNH: %1 in %2, %3").arg(closestReportWithQNH->qnh())
+        return tr("QNH: %1 hPa in %2, %3").arg(closestReportWithQNH->qnh())
                 .arg(closestReportWithQNH->station_id())
                 .arg(Clock::describeTimeDifference(closestReportWithQNH->metar()->_observationTime));
     }
@@ -308,6 +308,8 @@ QString Meteorologist::SunInfo() const
     // Paranoid safety checks
     if (_sat.isNull())
         return QString();
+    if (_sat->status() != SatNav::OK)
+        return tr("Waiting for precise position…");
 
     // Describe next sunset/sunrise
     QDateTime sunrise, sunset, sunriseTomorrow;
@@ -340,6 +342,7 @@ QString Meteorologist::SunInfo() const
     }
 
     localTime = localTime.addDays(1);
+    qWarning() << "A" << localTime;
     localDate = localTime.date();
     sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
     auto sunriseTomorrowTimeInMin = sun.calcSunrise();
@@ -355,7 +358,7 @@ QString Meteorologist::SunInfo() const
             return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise, coord), Clock::describeTimeDifference(sunrise));
         if (currentTime < sunset.addSecs(40*60))
             return tr("SS %1, %2").arg(Clock::describePointInTime(sunset, coord), Clock::describeTimeDifference(sunset));
-        return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise, coord), Clock::describeTimeDifference(sunriseTomorrow));
+        return tr("SR %1, %2").arg(Clock::describePointInTime(sunriseTomorrow, coord), Clock::describeTimeDifference(sunriseTomorrow));
     }
     return QString();
 }

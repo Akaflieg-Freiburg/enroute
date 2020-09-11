@@ -10,22 +10,29 @@
 # considered.
 
 find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
-  HINTS ${Qt5Core_DIR}/../../../translations
-  HINTS /usr/share/qt5/translations
-  HINTS /usr/translations
-  REQUIRED
-  )
+    HINTS ${Qt5Core_DIR}/../../../translations
+    HINTS /usr/share/qt5/translations
+    HINTS /usr/translations
+    REQUIRED
+    )
 set(Qt5_LCONVERT_EXECUTABLE Qt5::lconvert)
 
 set(LANGS de fr it pl)
 foreach(_lang ${LANGS})
-  add_custom_command(
-    OUTPUT enroute_${_lang}.qm
-    DEPENDS ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts
-    COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
-    COMMAND ${Qt5_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${Qt5_TRANSLATION_DIR}/qtbase_${_lang}.qm ${Qt5_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm ${Qt5_TRANSLATION_DIR}/qtlocation_${_lang}.qm -o enroute_${_lang}.qm
-    COMMENT "Generating translations"
-    )
+    set(QT_QM_FILES ${Qt5_TRANSLATION_DIR}/qtbase_${_lang}.qm)
+    if (EXISTS ${Qt5_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
+        list(APPEND QT_QM_FILES ${Qt5_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
+    endif()
+    if (EXISTS ${Qt5_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
+        list(APPEND QT_QM_FILES ${Qt5_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
+    endif()
+    add_custom_command(
+        OUTPUT enroute_${_lang}.qm
+        DEPENDS ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts
+        COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
+        COMMAND ${Qt5_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${QT_QM_FILES} -o enroute_${_lang}.qm
+        COMMENT "Generating translations for language ${_lang}"
+        )
 endforeach()
 
 

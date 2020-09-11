@@ -47,72 +47,68 @@ Page {
 
     header: ToolBar {
 
-        ToolButton {
-            id: backButton
+        RowLayout {
+            width: pg.width
 
-            anchors.left: parent.left
-            anchors.leftMargin: drawer.dragMargin
+            ToolButton {
+                id: backButton
 
-            icon.source: "/icons/material/ic_arrow_back.svg"
-            onClicked: {
-                mobileAdaptor.vibrateBrief()
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
+                icon.source: "/icons/material/ic_arrow_back.svg"
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    if (stackView.depth > 1) {
+                        stackView.pop()
+                    } else {
+                        drawer.open()
+                    }
                 }
             }
-        } // ToolButton
 
-        Label {
-            anchors.left: backButton.right
-            anchors.right: headerMenuToolButton.left
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
+            Label {
+                Layout.fillWidth: true
 
-            text: stackView.currentItem.title
-            elide: Label.ElideRight
-            font.bold: true
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
+                text: stackView.currentItem.title
+                elide: Label.ElideRight
+                font.bold: true
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+            }
+
+            ToolButton {
+                id: headerMenuToolButton
+
+                icon.source: "/icons/material/ic_more_vert.svg"
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    headerMenuX.popup()
+                }
+
+                AutoSizingMenu{
+                    id: headerMenuX
+
+                    MenuItem {
+                        text: qsTr("Update METAR/TAF data")
+                        enabled: (!meteorologist.downloading) && (globalSettings.acceptedWeatherTerms)
+                        onTriggered: {
+                            mobileAdaptor.vibrateBrief()
+                            if (!meteorologist.downloading)
+                                meteorologist.update(false)
+                        }
+                    } // MenuItem
+
+                    MenuItem {
+                        text: qsTr("Disallow internet connection")
+                        enabled: globalSettings.acceptedWeatherTerms
+                        onTriggered: {
+                            mobileAdaptor.vibrateBrief()
+                            globalSettings.acceptedWeatherTerms = false
+                        }
+                    } // MenuItem
+
+                }
+
+            }
         }
-
-        ToolButton {
-            id: headerMenuToolButton
-
-            anchors.right: parent.right
-            icon.source: "/icons/material/ic_more_vert.svg"
-            onClicked: {
-                mobileAdaptor.vibrateBrief()
-                headerMenuX.popup()
-            }
-
-            AutoSizingMenu{
-                id: headerMenuX
-
-                MenuItem {
-                    text: qsTr("Update METAR/TAF data")
-                    enabled: (!meteorologist.downloading) && (globalSettings.acceptedWeatherTerms)
-                    onTriggered: {
-                        mobileAdaptor.vibrateBrief()
-                        if (!meteorologist.downloading)
-                            meteorologist.update(false)
-                    }
-                } // MenuItem
-
-                MenuItem {
-                    text: qsTr("Disallow internet connection")
-                    enabled: globalSettings.acceptedWeatherTerms
-                    onTriggered: {
-                        mobileAdaptor.vibrateBrief()
-                        globalSettings.acceptedWeatherTerms = false
-                    }
-                } // MenuItem
-
-            }
-
-        } // ToolButton
-
     } // ToolBar
 
     Component {

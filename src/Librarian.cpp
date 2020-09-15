@@ -177,11 +177,11 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <h3>Translations</h3>
 
-<p><strong>French:</strong> Adrien Crovato, <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>.</p>
+<p><strong>French:</strong> Adrien Crovato. Adrien has been described above.</p>
 
-<p><strong>German:</strong> Markus Sachs, flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
+<p><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
 
-<p><strong>Italian:</strong> Luca Bertoncello.</p>
+<p><strong>Italian:</strong> Luca Bertoncello. Luca flies ultralight planes since 2014 and has become a flight instructor in 2019. He programs since 1988 and works as a systems administrator in Dresden, Germany.</p>
 
 <p><strong>Polish:</strong> Szymon Kocur, computer Science and aviation enthusiast. Laureate of IT nationwide competitions, including 'HackYeah 2019', and 'Golden Wolf 2017' for the best technological project in Poland.</p>
 

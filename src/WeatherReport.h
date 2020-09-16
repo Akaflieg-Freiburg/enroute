@@ -80,13 +80,13 @@ public:
      * - IFR (instrument flight rules): 1 < vis < 3, 500 < ceil < 1000
      * - LIFR (low instrument flight rules): vis < 1, ceil < 500
      */
-    Q_PROPERTY(QString cat READ cat CONSTANT)
+    Q_PROPERTY(QString cat READ cat NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property cat
      */
-    QString cat() const { return _cat; }
+    QString cat() const;
 
     /*! \brief The METAR data
      *
@@ -103,7 +103,7 @@ public:
      * - DEWP: the dewpoint
      * - QNH: the pressure at sea-level
      */
-    Q_PROPERTY(WeatherReport::METAR *metar READ metar CONSTANT)
+    Q_PROPERTY(WeatherReport::METAR *metar READ metar NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
@@ -126,7 +126,7 @@ public:
      * - DEWP: the dewpoint
      * - QNH: the pressure at sea-level
      */
-    Q_PROPERTY(QList<QString> metarStrings READ metarStrings CONSTANT)
+    Q_PROPERTY(QList<QString> metarStrings READ metarStrings NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
@@ -183,14 +183,18 @@ public:
     QString station_id() const;
     int qnh() const;
 
+signals:
+    /* \brief Notifier signal */
+    void metarChanged();
+
+private slots:
+    void autodestruct();
+
 private:
     Q_DISABLE_COPY_MOVE(WeatherReport)
 
     /*! \brief The station ID */
     QString _id;
-
-    /*! \brief The FAA flight category */
-    QString _cat;
 
     /*! \brief METAR */
     QPointer<WeatherReport::METAR> _metar;

@@ -42,15 +42,18 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
+#warning Need to explain auto-delete feature!!!
     explicit METAR(QXmlStreamReader &xml, QObject *parent = nullptr);
 
     // Standard destructor
     ~METAR() override = default;
 
+#warning Need to make this private!!!
     int _qnh {0};
     QGeoCoordinate _location;
     QString _station_id;
     QDateTime _observationTime;
+    QString _raw_text;
 
     QMultiMap<QString, QVariant> data;
     QStringList dataStrings;

@@ -45,6 +45,7 @@ Meteorologist::Meteorologist(Clock *clock,
     _updateTimer.start();
 
     // Update the description text when needed
+    connect(this, &Meteorologist::reportsChanged, this, &Meteorologist::QNHInfoChanged);
     connect(clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
     connect(sat, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
     connect(clock, &Clock::timeChanged, this, &Meteorologist::SunInfoChanged);
@@ -227,8 +228,13 @@ void Meteorologist::process() {
         }
     }
 
-    // Clear old reports, if any
-    qDeleteAll(_reports);
+    // Clear old reports, if any. We disconnect first, to avoid repeated emissions of the signal reportsChanged
+    foreach(auto report, _reports) {
+        if (report.isNull())
+            continue;
+        disconnect(report, &QObject::destroyed, this, &Meteorologist::reportsChanged);
+        report->deleteLater();
+    }
     _reports.clear();
 
     // Add new reports and handle unpaired METAR/TAF
@@ -248,6 +254,13 @@ void Meteorologist::process() {
     // Stations only have TAF
     foreach(auto station, tStations)
         _reports.append(new WeatherReport(station, nullptr, tafs.value(station))); // empty METAR
+
+    // Report change of reports when weather reports start to auto-delete themsleves
+    foreach(auto report, _reports) {
+        if (report.isNull())
+            continue;
+        connect(report, &QObject::destroyed, this, &Meteorologist::reportsChanged);
+    }
 
     // Clear replies container
     qDeleteAll(_replies);

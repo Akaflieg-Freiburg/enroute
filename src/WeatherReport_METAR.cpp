@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDebug>
+#include <QTimer>
 
 #include "WeatherReport_METAR.h"
 
@@ -40,7 +41,7 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
 
     // Read METAR/TAF and store in map
     QList<QString> accepted; // fields to decode without special treatment
-    accepted = {"raw_text", "station_id", "observation_time", "temp_c",
+    accepted = {"station_id", "observation_time", "temp_c",
                 "dewpoint_c", "wind_dir_degrees", "wind_speed_kt",
                 "wind_gust_kt", "visibility_statute_mi",
                 "flight_category", "wx_string"};
@@ -66,6 +67,13 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
         }
         if (xml.isStartElement() && name == "elevation_m") {
             _location.setAltitude(xml.readElementText().toDouble());
+            continue;
+        }
+
+        // Read raw text
+        if (xml.isStartElement() && name == "raw_text") {
+            _raw_text = xml.readElementText();
+            data.insert("raw_text", _raw_text);
             continue;
         }
 
@@ -131,5 +139,26 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
     if (data.contains("altim_in_hg"))
         dataStrings.push_back("QNH " + WeatherReport::decodeQnh(data.value("altim_in_hg")));
 
+    //
+    // Set up self-destruction timer
+    //
+
+    if (!_observationTime.isValid())
+        deleteLater();
+    else {
+        // Time out is 1.5 hours after observation time, unless raw text contains "NOSIG", then it is 3 hours
+        auto timeOut = QDateTime::currentDateTimeUtc().msecsTo(_observationTime.addSecs(1.5*60*60));
+        if (_raw_text.contains("NOSIG")) {
+            timeOut = QDateTime::currentDateTimeUtc().msecsTo(_observationTime.addSecs(3*60*60));
+            qWarning() << "NOSIG" << _station_id;
+        }
+        qWarning() << "time out" << timeOut/(1000*60);
+        if (timeOut < 1000)
+            deleteLater();
+        else
+//            QTimer::singleShot(timeOut, this, SLOT(deleteLater()));
+#warning Needs to be fixed
+            QTimer::singleShot(1000*20, this, SLOT(deleteLater()));
+    }
 }
 

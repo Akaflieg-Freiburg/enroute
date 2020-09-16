@@ -29,16 +29,25 @@ WeatherReport::WeatherReport(const QString &id,
                              WeatherReport::TAF *taf,
                              QObject *parent) : QObject(parent), _id(id)
 {
-
     _metar = metar;
-    _taf = taf;
+    if (!_metar.isNull()) {
+        connect(_metar, &QObject::destroyed, this, &WeatherReport::metarChanged);
+        connect(_metar, &QObject::destroyed, this, &WeatherReport::autodestruct);
+    }
 
+    _taf = taf;
+    if (!_taf.isNull()) {
+        connect(_taf, &QObject::destroyed, this, &WeatherReport::autodestruct);
+    }
+}
+
+
+QString WeatherReport::cat() const
+{
     // Get flight category
-    if (metar == nullptr)
-        _cat = "UKN";
-    else
-        _cat = metar->data.contains("flight_category") ? metar->data.value("flight_category").toString() : "UKN";
-    
+    if (_metar == nullptr)
+        return "UKN";
+    return _metar->data.contains("flight_category") ? _metar->data.value("flight_category").toString() : "UKN";
 }
 
 
@@ -84,6 +93,13 @@ int WeatherReport::qnh() const
     if (_metar.isNull())
         return 0;
     return _metar->_qnh;
+}
+
+
+void WeatherReport::autodestruct()
+{
+    if (_metar.isNull() && _taf.isNull())
+        deleteLater();
 }
 
 

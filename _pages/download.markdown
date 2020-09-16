@@ -36,6 +36,6 @@ Developers who are interested in compiling **Enroute Flight Navigation** themsel
 
 # Other systems
 
-Even though these systems are not officially supported, **Enroute Flight Navigation** seems to run on mobile devices with the Mobian operating system. See [this post](https://wiki.mobian-project.org/doku.php?id=enroute) for more information.
+**Enroute Flight Navigation** seems to run on mobile devices with the Mobian operating system, even though these systems are not officially supported. See [this post](https://wiki.mobian-project.org/doku.php?id=enroute) for more information.
 
 **Enroute Flight Navigation** can be ported without much difficulty to Windows and MacOS desktop machines, and to Apple iOS devices such as iPhones and iPads.  We are currently looking for volunteers who help with the port and maintain **Enroute Flight Navigation**'s presence in the Apple App Store. [Contact us](mailto:stefan.kebekus@gmail.com) if you would like to help!

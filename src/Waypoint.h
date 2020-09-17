@@ -25,6 +25,8 @@
 #include <QJsonObject>
 #include <QVariant>
 
+#include "SatNav.h"
+
 
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
   
@@ -143,14 +145,8 @@ public:
   */
     bool isValid() const { return _coordinate.isValid(); }
 
-    /* \brief Name of the waypoint as rich text */
-    Q_PROPERTY(QString richTextName READ richTextName CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-
-    @returns Property richTextName
-  */
-    QString richTextName() const;
+#warning documentation
+    Q_INVOKABLE QString richTextName(SatNav *sat=nullptr, bool useMetricUnits=false) const;
 
     /* \brief Description of waypoint details as an HTML table */
     Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)

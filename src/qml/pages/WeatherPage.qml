@@ -120,8 +120,13 @@ Page {
             text: {
                 var result = model.modelData.id
                 var wp = geoMapProvider.findByID(model.modelData.id)
-                if (wp !== null)
-                    result = wp.richTextName
+                if (wp !== null) {
+                    // Mention items that will lead to change of text
+                    satNav.status
+                    satNav.lastValidCoordinate
+
+                    return wp.richTextName(satNav, globalSettings.useMetricUnits)
+                }
                 if (satNav.status === SatNav.OK)
                     result += "<br>" + satNav.wayTo(model.modelData.location, globalSettings.useMetricUnits)
                 return result

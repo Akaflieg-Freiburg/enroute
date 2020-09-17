@@ -87,8 +87,28 @@ QString Waypoint::extendedName() const
 }
 
 
-QString Waypoint::richTextName() const
+QString Waypoint::richTextName(SatNav *sat, bool useMetricUnits) const
 {
+    if (_properties.value("TYP").toString() == "AD") {
+        QStringList lines;
+
+        // Line one: full text name, if available
+        if (_properties.contains("NAM"))
+            lines << _properties.value("NAM").toString();
+
+        // line two: code name, way to if available
+        QStringList items4Line2;
+        if (_properties.contains("COD"))
+            items4Line2 << "<strong>"+_properties.value("COD").toString()+"</strong>";
+        if (sat && (sat->status() == SatNav::OK) && _coordinate.isValid())
+            items4Line2 << sat->wayTo(_coordinate, useMetricUnits);
+        if (!items4Line2.isEmpty())
+            lines << items4Line2.join(" • ");
+
+        return lines.join("<br>");
+    }
+
+
     QString codeName;
     if (_properties.contains("COD"))
         codeName += _properties.value("COD").toString();

@@ -62,11 +62,13 @@ Page {
 
             ItemDelegate {
                 id: idel
-                text: model.modelData.richTextName +
-                    (satNav.status == SatNav.OK ?
-                        ("<br>" + model.modelData.wayFrom(satNav.lastValidCoordinate,
-                                                            globalSettings.useMetricUnits)) :
-                        "")
+                text: {
+                    // Mention items that will lead to change of text
+                    satNav.status
+                    satNav.lastValidCoordinate
+
+                    return model.modelData.richTextName(satNav, globalSettings.useMetricUnits)
+                }
                 icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
                 icon.color: "transparent"
 

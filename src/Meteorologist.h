@@ -139,6 +139,28 @@ public:
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
+    Q_INVOKABLE QString briefDescription(QString code) const
+    {
+        foreach(auto report, _reports) {
+            if (report.isNull())
+                continue;
+            if (report->id() == code)
+                return "METAR: VFR, wind at 12kt";
+        }
+        return QString();
+    }
+
+    Q_INVOKABLE WeatherReport *report(QString code) const
+    {
+        foreach(auto report, _reports) {
+            if (report.isNull())
+                continue;
+            if (report->id() == code)
+                return report;
+        }
+        return nullptr;
+    }
+
 signals:
     /*! \brief Notifier signal */
     void backgroundUpdateChanged();

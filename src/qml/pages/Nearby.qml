@@ -60,27 +60,56 @@ Page {
         Component {
             id: waypointDelegate
 
-            ItemDelegate {
-                id: idel
-                text: {
-                    // Mention items that will lead to change of text
-                    satNav.status
-                    satNav.lastValidCoordinate
-
-                    return model.modelData.richTextName(satNav, globalSettings.useMetricUnits)
-                }
-                icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
-                icon.color: "transparent"
-
+            Item {
                 width: sv.width
+                height: idel.height
 
-                onClicked: {
-                    mobileAdaptor.vibrateBrief()
-                    dialogLoader.active = false
-                    dialogLoader.dialogArgs = {waypoint: model.modelData}
-                    dialogLoader.text = ""
-                    dialogLoader.source = "../dialogs/WaypointDescription.qml"
-                    dialogLoader.active = true
+                // Background color according to METAR/FAA flight category
+                Rectangle {
+                    anchors.fill: parent
+                    color: {
+                        // Mention idel.tex, to ensure that this color gets updated whenever the text updates
+                        idel.text
+
+                        var rep = meteorologist.report(model.modelData.get("COD"))
+                        if (rep === null)
+                            return "transparent";
+                        if (rep.cat === "VFR")
+                            return "green"
+                        if (rep.cat === "MVFR")
+                            return "yellow"
+                        if (rep.cat === "IFR")
+                            return "red"
+                        if (rep.cat === "LIFR")
+                            return "red"
+                        return "transparent"
+                    }
+                    opacity: 0.2
+                }
+
+                ItemDelegate {
+                    id: idel
+                    text: {
+                        // Mention items that will lead to change of text
+                        clock.time
+                        satNav.status
+                        satNav.lastValidCoordinate
+                        meteorologist.reports
+                        return model.modelData.richTextName(satNav, meteorologist, globalSettings.useMetricUnits)
+                    }
+                    icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
+                    icon.color: "transparent"
+
+                    width: sv.width
+
+                    onClicked: {
+                        mobileAdaptor.vibrateBrief()
+                        dialogLoader.active = false
+                        dialogLoader.dialogArgs = {waypoint: model.modelData}
+                        dialogLoader.text = ""
+                        dialogLoader.source = "../dialogs/WaypointDescription.qml"
+                        dialogLoader.active = true
+                    }
                 }
             }
         }

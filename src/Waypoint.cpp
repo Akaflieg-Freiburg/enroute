@@ -23,6 +23,7 @@
 #include <QVariant>
 
 #include "AviationUnits.h"
+#include "Meteorologist.h"
 #include "Waypoint.h"
 
 
@@ -87,7 +88,7 @@ QString Waypoint::extendedName() const
 }
 
 
-QString Waypoint::richTextName(SatNav *sat, bool useMetricUnits) const
+QString Waypoint::richTextName(SatNav *sat, Meteorologist *met, bool useMetricUnits) const
 {
     if (_properties.value("TYP").toString() == "AD") {
         QStringList lines;
@@ -96,7 +97,7 @@ QString Waypoint::richTextName(SatNav *sat, bool useMetricUnits) const
         if (_properties.contains("NAM"))
             lines << _properties.value("NAM").toString();
 
-        // line two: code name, way to if available
+        // line two: code name, codename and "way to" if available
         QStringList items4Line2;
         if (_properties.contains("COD"))
             items4Line2 << "<strong>"+_properties.value("COD").toString()+"</strong>";
@@ -104,6 +105,13 @@ QString Waypoint::richTextName(SatNav *sat, bool useMetricUnits) const
             items4Line2 << sat->wayTo(_coordinate, useMetricUnits);
         if (!items4Line2.isEmpty())
             lines << items4Line2.join(" • ");
+
+        // line three: METAR information, if available
+        if (met && _properties.contains("COD")) {
+            auto descr = met->briefDescription(_properties.value("COD").toString());
+            if (!descr.isEmpty())
+                lines << descr;
+        }
 
         return lines.join("<br>");
     }

@@ -46,6 +46,7 @@
 #include "MobileAdaptor.h"
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
+#include "WeatherReport.h"
 #include "Wind.h"
 
 int main(int argc, char *argv[])
@@ -53,12 +54,14 @@ int main(int argc, char *argv[])
     // Register types
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
-    qmlRegisterType<Airspace>("enroute", 1, 0, "Clock");
+    qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
+    qmlRegisterUncreatableType<Meteorologist>("enroute", 1, 0, "Meteorologist", "Meteorologist objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
+    qmlRegisterType<WeatherReport>("enroute", 1, 0, "WeatherReport");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
 
     // Set up application

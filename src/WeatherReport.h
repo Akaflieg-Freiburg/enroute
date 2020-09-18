@@ -54,6 +54,7 @@ public:
                            WeatherReport::METAR *metar,
                            WeatherReport::TAF *taf,
                            QObject *parent = nullptr);
+explicit WeatherReport(QObject *parent = nullptr);
 
     // Standard destructor
     ~WeatherReport() = default;

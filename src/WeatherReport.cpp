@@ -24,6 +24,10 @@
 #include <QDateTime>
 #include <cmath>
 
+WeatherReport::WeatherReport(QObject *parent) : QObject(parent)
+{
+}
+
 WeatherReport::WeatherReport(const QString &id,
                              WeatherReport::METAR *metar,
                              WeatherReport::TAF *taf,

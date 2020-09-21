@@ -141,16 +141,13 @@ public:
 
     Q_INVOKABLE QString briefDescription(QString code) const
     {
-        foreach(auto report, _reports) {
-            if (report.isNull())
-                continue;
-            if (report->id() == code)
-                return "METAR: VFR, wind at 12kt";
-        }
+        auto rep = report(code);
+        if (rep)
+            return rep->oneLineDescription();
         return QString();
     }
 
-    Q_INVOKABLE WeatherReport *report(QString code) const
+    WeatherReport *report(QString code) const
     {
         foreach(auto report, _reports) {
             if (report.isNull())
@@ -159,6 +156,14 @@ public:
                 return report;
         }
         return nullptr;
+    }
+
+    Q_INVOKABLE QString cat(QString code) const
+    {
+        auto rep = report(code);
+        if (rep == nullptr)
+            return QString();
+        return rep->cat();
     }
 
 signals:

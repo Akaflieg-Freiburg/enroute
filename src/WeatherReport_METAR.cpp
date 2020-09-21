@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QTimer>
 
+#include "Clock.h"
 #include "WeatherReport_METAR.h"
 
 
@@ -148,17 +149,61 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
     else {
         // Time out is 1.5 hours after observation time, unless raw text contains "NOSIG", then it is 3 hours
         auto timeOut = QDateTime::currentDateTimeUtc().msecsTo(_observationTime.addSecs(1.5*60*60));
-        if (_raw_text.contains("NOSIG")) {
+        if (_raw_text.contains("NOSIG"))
             timeOut = QDateTime::currentDateTimeUtc().msecsTo(_observationTime.addSecs(3*60*60));
-            qWarning() << "NOSIG" << _station_id;
-        }
-        qWarning() << "time out" << timeOut/(1000*60);
         if (timeOut < 1000)
             deleteLater();
         else
-//            QTimer::singleShot(timeOut, this, SLOT(deleteLater()));
-#warning Needs to be fixed
-            QTimer::singleShot(1000*20, this, SLOT(deleteLater()));
+            QTimer::singleShot(timeOut, this, SLOT(deleteLater()));
+
     }
 }
 
+
+Q_INVOKABLE QString WeatherReport::METAR::oneLineDescription() const {
+
+    QStringList resultList;
+
+    // Get flight category
+    QString sky;
+    if (data.contains("sky_condition")) {
+        auto val = data.value("sky_condition").toString();
+        if (val.contains("CAVOK"))
+            sky = "CAVOK";
+    }
+
+    if (data.contains("flight_category")) {
+        auto val = data.value("flight_category").toString();
+        if (val == "VFR") {
+            resultList << "VMC";
+            if (!sky.isEmpty())
+                resultList << "CAVOK";
+        }
+        if (val == "MVFR")
+            resultList << "marginal VMC";
+        if (val == "IFR")
+            resultList << "IMC";
+        if (val == "LIFR")
+            resultList << "low IMC";
+    }
+
+    int windSpeed = 0;
+    int gustSpeed = 0;
+    if (data.contains("wind_speed_kt"))
+        windSpeed = data.value("wind_speed_kt").toString().toInt();
+    if (data.contains("wind_gust_kt"))
+        gustSpeed = data.value("wind_gust_kt").toString().toInt();
+
+    if (gustSpeed > 15)
+        resultList << tr("Gusts of %1 kt").arg(gustSpeed);
+    else if (windSpeed > 10)
+        resultList << tr("Wind at %1 kt").arg(windSpeed);
+
+    if (data.contains("wx_string"))
+        resultList << WeatherReport::decodeWx(data.value("wx_string"));
+
+    if (resultList.isEmpty())
+        return QString();
+
+    return tr("%1: %2").arg(Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
+}

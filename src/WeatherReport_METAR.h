@@ -48,6 +48,9 @@ public:
     // Standard destructor
     ~METAR() override = default;
 
+    Q_INVOKABLE QString oneLineDescription() const;
+
+
 #warning Need to make this private!!!
     int _qnh {0};
     QGeoCoordinate _location;

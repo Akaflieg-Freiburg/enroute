@@ -184,6 +184,9 @@ explicit WeatherReport(QObject *parent = nullptr);
     QString station_id() const;
     int qnh() const;
 
+    Q_INVOKABLE QString oneLineDescription() const;
+
+
 signals:
     /* \brief Notifier signal */
     void metarChanged();

@@ -71,16 +71,14 @@ Page {
                         // Mention idel.tex, to ensure that this color gets updated whenever the text updates
                         idel.text
 
-                        var rep = meteorologist.report(model.modelData.get("COD"))
-                        if (rep === null)
-                            return "transparent";
-                        if (rep.cat === "VFR")
+                        var cat = meteorologist.cat(model.modelData.get("COD"))
+                        if (cat === "VFR")
                             return "green"
-                        if (rep.cat === "MVFR")
+                        if (cat === "MVFR")
                             return "yellow"
-                        if (rep.cat === "IFR")
+                        if (cat === "IFR")
                             return "red"
-                        if (rep.cat === "LIFR")
+                        if (cat === "LIFR")
                             return "red"
                         return "transparent"
                     }

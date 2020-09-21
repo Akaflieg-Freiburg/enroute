@@ -102,6 +102,7 @@ int WeatherReport::qnh() const
 
 void WeatherReport::autodestruct()
 {
+    qWarning() << station_id() << "Autodestruct";
     if (_metar.isNull() && _taf.isNull())
         deleteLater();
 }
@@ -219,4 +220,13 @@ QString WeatherReport::decodeClouds(const QVariantList &clouds) {
     clds.replace("TCU", "Towering cumulus");
     clds.replace("CU", "Cumulus");
     return clds;
+}
+
+QString WeatherReport::oneLineDescription() const {
+
+    if (_metar)
+        return _metar->oneLineDescription();
+    else
+        qWarning() << station_id() << "No METAR";
+    return QString();
 }

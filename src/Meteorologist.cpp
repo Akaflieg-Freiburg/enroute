@@ -40,8 +40,8 @@ Meteorologist::Meteorologist(Clock *clock,
     // which is true. So these updates happen in the background.
     connect(&_updateTimer, &QTimer::timeout, [=](){ this->update();});
 
-    // Schedule the first update in 10 seconds from now
-    _updateTimer.setInterval(10*1000);
+    // Schedule the first update in 1 seconds from now
+    _updateTimer.setInterval(1*1000);
     _updateTimer.start();
 
     // Update the description text when needed

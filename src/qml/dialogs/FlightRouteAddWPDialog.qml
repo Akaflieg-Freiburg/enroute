@@ -42,7 +42,7 @@ Dialog {
         id: waypointDelegate
 
         ItemDelegate {
-            text: model.modelData.richTextName
+            text: model.modelData.richTextName()
             icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
             icon.color: "transparent"
 

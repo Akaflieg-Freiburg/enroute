@@ -23,7 +23,9 @@
 #include <QVariant>
 
 #include "AviationUnits.h"
-#include "Meteorologist.h"
+#include "Clock.h"
+#include "GlobalSettings.h"
+#include "SatNav.h"
 #include "Waypoint.h"
 
 
@@ -88,7 +90,7 @@ QString Waypoint::extendedName() const
 }
 
 
-QString Waypoint::richTextName(SatNav *sat, Meteorologist *met, bool useMetricUnits) const
+QString Waypoint::richTextName() const
 {
     if (_properties.value("TYP").toString() == "AD") {
         QStringList lines;
@@ -96,19 +98,24 @@ QString Waypoint::richTextName(SatNav *sat, Meteorologist *met, bool useMetricUn
         // Line one: full text name, if available
         if (_properties.contains("NAM"))
             lines << _properties.value("NAM").toString();
+#warning Need to find some other name if NAM does not exist!
 
         // line two: code name, codename and "way to" if available
         QStringList items4Line2;
         if (_properties.contains("COD"))
             items4Line2 << "<strong>"+_properties.value("COD").toString()+"</strong>";
-        if (sat && (sat->status() == SatNav::OK) && _coordinate.isValid())
-            items4Line2 << sat->wayTo(_coordinate, useMetricUnits);
+        if (!_satNav.isNull() && (_satNav->status() == SatNav::OK) && _coordinate.isValid()) {
+            bool useMetric = false;
+            if (!_globalSettings.isNull())
+                useMetric = _globalSettings->useMetricUnits();
+            items4Line2 << _satNav->wayTo(_coordinate, useMetric);
+        }
         if (!items4Line2.isEmpty())
             lines << items4Line2.join(" • ");
 
         // line three: METAR information, if available
-        if (met && _properties.contains("COD")) {
-            auto descr = met->briefDescription(_properties.value("COD").toString());
+        if (!_meteorologist.isNull() && _properties.contains("COD")) {
+            auto descr = _meteorologist->briefDescription(_properties.value("COD").toString());
             if (!descr.isEmpty())
                 lines << descr;
         }
@@ -185,7 +192,6 @@ QJsonObject Waypoint::toJSON() const
     return feature;
 }
 
-
 QString Waypoint::wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const
 {
     auto dist = AviationUnits::Distance::fromM(position.distanceTo(_coordinate));
@@ -198,4 +204,52 @@ QString Waypoint::wayFrom(const QGeoCoordinate& position, bool useMetricUnits) c
         result += QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
     }
     return result;
+}
+
+void Waypoint::setClock(Clock *clock)
+{
+    if (!_clock.isNull())
+        disconnect(_clock, &Clock::timeChanged, this, &Waypoint::richTextNameChanged);
+
+    _clock = clock;
+
+    if (!_clock.isNull())
+        connect(_clock, &Clock::timeChanged, this, &Waypoint::richTextNameChanged);
+}
+
+void Waypoint::setSatNav(SatNav *satNav)
+{
+    if (!_satNav.isNull()) {
+        disconnect(_satNav, &SatNav::statusChanged, this, &Waypoint::richTextNameChanged);
+        disconnect(_satNav, &SatNav::update, this, &Waypoint::richTextNameChanged);
+    }
+
+    _satNav = satNav;
+
+    if (!_satNav.isNull()) {
+        connect(_satNav, &SatNav::statusChanged, this, &Waypoint::richTextNameChanged);
+        connect(_satNav, &SatNav::update, this, &Waypoint::richTextNameChanged);
+    }
+}
+
+void Waypoint::setMeteorologist(Meteorologist *meteorologist)
+{
+    if (!_meteorologist.isNull())
+        disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
+
+    _meteorologist = meteorologist;
+
+    if (!_meteorologist.isNull())
+        connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
+}
+
+void Waypoint::setGlobalSettings(GlobalSettings *globalSettings)
+{
+    if (!_globalSettings.isNull())
+        disconnect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::richTextNameChanged);
+
+    _globalSettings = globalSettings;
+
+    if (!_globalSettings.isNull())
+        connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::richTextNameChanged);
 }

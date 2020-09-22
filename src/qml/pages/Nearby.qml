@@ -93,7 +93,7 @@ Page {
                         satNav.status
                         satNav.lastValidCoordinate
                         meteorologist.reports
-                        return model.modelData.richTextName(satNav, meteorologist, globalSettings.useMetricUnits)
+                        return model.modelData.richTextName
                     }
                     icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
                     icon.color: "transparent"

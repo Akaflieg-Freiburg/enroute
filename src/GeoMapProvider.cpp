@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
 #include <QtConcurrent/QtConcurrent>
 #include <QGeoCoordinate>
 #include <QJsonArray>
@@ -70,8 +71,14 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
             result = wp;
     }
 
-    if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition))
-        return new Waypoint(position, this);
+    if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition)) {
+        auto wp = new Waypoint(position, this);
+        wp->setClock(_clock);
+        wp->setGlobalSettings(_globalSettings);
+        wp->setMeteorologist(_meteorologist);
+        wp->setSatNav(_satNav);
+        return wp;
+    }
 
     return result;
 }
@@ -255,6 +262,11 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         auto wp = new Waypoint(object);
+        wp->setClock(_clock);
+        wp->setGlobalSettings(_globalSettings);
+        wp->setMeteorologist(_meteorologist);
+        wp->setSatNav(_satNav);
+        wp->moveToThread(QApplication::instance()->thread());
         if (wp->isValid()) {
             QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
             newWaypoints.append(wp);
@@ -264,6 +276,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
         auto as = new Airspace(object);
+        as->moveToThread(QApplication::instance()->thread());
         if (as->isValid()) {
             QQmlEngine::setObjectOwnership(as, QQmlEngine::CppOwnership);
             newAirspaces.append(as);
@@ -325,4 +338,25 @@ void GeoMapProvider::baseMapsChanged()
     _styleFile->close();
 
     emit styleFileURLChanged();
+}
+
+#warning docu
+void GeoMapProvider::setClock(Clock *clock)
+{
+    _clock = clock;
+}
+
+void GeoMapProvider::setSatNav(SatNav *satNav)
+{
+    _satNav = satNav;
+}
+
+void GeoMapProvider::setMeteorologist(Meteorologist *meteorologist)
+{
+    _meteorologist = meteorologist;
+}
+
+void GeoMapProvider::setGlobalSettings(GlobalSettings *globalSettings)
+{
+    _globalSettings = globalSettings;
 }

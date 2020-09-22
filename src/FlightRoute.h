@@ -28,10 +28,13 @@
 #include <QXmlStreamReader>
 
 #include "Aircraft.h"
+
 #include "Waypoint.h"
 #include "Wind.h"
 
 class GeoMapProvider;
+class GlobalSettings;
+class Waypoint;
 
 /*! \brief Intended flight route
  *
@@ -93,7 +96,7 @@ public:
      *
      * @param position Coordinates of the waypoint.
      */
-    Q_INVOKABLE void append(const QGeoCoordinate& position) { append(new Waypoint(position, this)); }
+    Q_INVOKABLE void append(const QGeoCoordinate& position);
 
     /*! \brief Returns true if waypoint is in this route
      *

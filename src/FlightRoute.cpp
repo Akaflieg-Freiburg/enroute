@@ -405,3 +405,9 @@ QString FlightRoute::loadFromGeoJSON(QString fileName)
 
     return QString();
 }
+
+#warning clean up
+void FlightRoute::append(const QGeoCoordinate& position)
+{
+    append(new Waypoint(position, this));
+}

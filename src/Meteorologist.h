@@ -32,6 +32,7 @@
 #include "SatNav.h"
 #include "WeatherReport.h"
 
+class FlightRoute;
 
 /*! \brief Meteorologist, weather service manager
  *

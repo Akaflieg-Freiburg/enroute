@@ -147,24 +147,30 @@ int main(int argc, char *argv[])
     auto clock = new Clock(engine);
     engine->rootContext()->setContextProperty("clock", clock);
 
-    // Attach map manager
+    // Attach flight route
+    auto flightroute = new FlightRoute(aircraft, wind, engine);
+    engine->rootContext()->setContextProperty("flightRoute", flightroute);
+
+    // Create NetwortAccessManager
     auto networkAccessManager = new QNetworkAccessManager();
     networkAccessManager->setTransferTimeout();
+
+    // Attach meteorologist
+    auto meteorologist = new Meteorologist(clock, navEngine, flightroute, globalSettings, networkAccessManager, engine);
+    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
+
+    // Attach map manager
     auto mapManager = new MapManager(networkAccessManager);
     engine->rootContext()->setContextProperty("mapManager", mapManager);
     QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
     auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, librarian);
+    geoMapProvider->setClock(clock);
+    geoMapProvider->setGlobalSettings(globalSettings);
+    geoMapProvider->setMeteorologist(meteorologist);
+    geoMapProvider->setSatNav(navEngine);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
-
-    // Attach flight route
-    auto flightroute = new FlightRoute(aircraft, wind, engine);
-    engine->rootContext()->setContextProperty("flightRoute", flightroute);
-
-    // Attach meteorologist
-    auto meteorologist = new Meteorologist(clock, navEngine, flightroute, globalSettings, networkAccessManager, engine);
-    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
 
     // Restore saved settings and make them available to QML
     QSettings settings;

@@ -25,9 +25,12 @@
 #include <QJsonObject>
 #include <QVariant>
 
-class SatNav;
-class Meteorologist;
+#include "Clock.h"
+#include "Meteorologist.h"
+#include "SatNav.h"
 
+class GlobalSettings;
+class Meteorologist;
 
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
   
@@ -85,6 +88,12 @@ public:
 
     // Standard destructor
     ~Waypoint() = default;
+
+#warning documentation
+    void setClock(Clock *clock=nullptr);
+    void setSatNav(SatNav *satNav=nullptr);
+    void setMeteorologist(Meteorologist *meteorologist=nullptr);
+    void setGlobalSettings(GlobalSettings *globalSettings=nullptr);
 
     /*! \brief Check property existence
 
@@ -147,7 +156,8 @@ public:
     bool isValid() const { return _coordinate.isValid(); }
 
 #warning documentation
-    Q_INVOKABLE QString richTextName(SatNav *sat=nullptr, Meteorologist *met=nullptr, bool useMetricUnits=false) const;
+    Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)
+    QString richTextName() const;
 
     /* \brief Description of waypoint details as an HTML table */
     Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
@@ -182,8 +192,17 @@ public:
         return _coordinate == other._coordinate;
     }
 
+signals:
+    void richTextNameChanged();
+
 private:
     Q_DISABLE_COPY_MOVE(Waypoint)
+
+    // Pointers to other classes that are used internally
+    QPointer<Clock> _clock {};
+    QPointer<Meteorologist> _meteorologist {};
+    QPointer<SatNav> _satNav {};
+    QPointer<GlobalSettings> _globalSettings {};
 
     QGeoCoordinate _coordinate;
     QMultiMap<QString, QVariant> _properties;

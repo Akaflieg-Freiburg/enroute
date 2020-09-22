@@ -178,6 +178,12 @@ public:
         return _waypoints_;
     }
 
+#warning documentation
+    void setClock(Clock *clock=nullptr);
+    void setSatNav(SatNav *satNav=nullptr);
+    void setMeteorologist(Meteorologist *meteorologist=nullptr);
+    void setGlobalSettings(GlobalSettings *globalSettings=nullptr);
+
 signals:
     /*! \brief Notification signal for the property with the same name */
     void geoJSONChanged();
@@ -187,6 +193,12 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
+
+    // Pointers to other classes that are used internally
+    QPointer<Clock> _clock;
+    QPointer<Meteorologist> _meteorologist;
+    QPointer<SatNav> _satNav;
+    QPointer<GlobalSettings> _globalSettings;
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars {"[^a-zA-Z0-9]"};

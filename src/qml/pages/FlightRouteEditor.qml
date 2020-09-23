@@ -49,7 +49,7 @@ Page {
                 icon.source: (model.modelData instanceof Waypoint) ? "/icons/waypoints/"+model.modelData.get("CAT")+".svg" : ""
                 icon.color: "transparent"
                 Layout.fillWidth: true
-                text: model.modelData.richTextName()
+                text: model.modelData.simpleDescription
 
                 onClicked: {
                     mobileAdaptor.vibrateBrief()

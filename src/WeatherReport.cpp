@@ -155,6 +155,8 @@ QString WeatherReport::decodeWx(const QVariant &wx) {
     // intensity
     w.replace("-", "light ");
     w.replace("+", "heavy ");
+    w.replace("VC", "in the vicinity ");
+    w.replace("RE", "recent ");
     // qualifier
     w.replace("BC", "patches of");
     w.replace("BL", "blowing");

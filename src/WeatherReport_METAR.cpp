@@ -205,5 +205,5 @@ Q_INVOKABLE QString WeatherReport::METAR::oneLineDescription() const {
     if (resultList.isEmpty())
         return QString();
 
-    return tr("%1: %2").arg(Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
+    return tr("METAR %1: %2").arg(Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
 }

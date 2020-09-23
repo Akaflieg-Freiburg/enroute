@@ -258,7 +258,7 @@ Dialog {
                 return meteorologist.briefDescription(dialogArgs.waypoint.get("COD"))
             }
 
-            text: rawText + " • <a href='xx'>" + qsTr("show METAR") + "</a>"
+            text: rawText + " • <a href='xx'>" + qsTr("full report") + "</a>"
             visible: rawText != ""
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
@@ -268,9 +268,12 @@ Dialog {
             rightPadding: 0.2*Qt.application.font.pixelSize
 
             onLinkActivated: {
+                console.log(dialogLoader.dialogArgs.waypoint)
+                console.log(dialogLoader.dialogArgs.waypoint.weatherReport)
+                var weatherRep = dialogLoader.dialogArgs.waypoint.weatherReport
                 mobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
-                dialogLoader.dialogArgs = {station: model.modelData}
+                dialogLoader.dialogArgs = {station: weatherRep}
                 dialogLoader.text = ""
                 dialogLoader.source = "../dialogs/WeatherReport.qml"
                 dialogLoader.active = true

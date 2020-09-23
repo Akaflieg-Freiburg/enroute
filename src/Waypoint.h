@@ -159,6 +159,14 @@ public:
     Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)
     QString richTextName() const;
 
+#warning documentation
+    Q_PROPERTY(QString simpleDescription READ simpleDescription CONSTANT)
+    QString simpleDescription() const;
+
+#warning documentation
+    Q_PROPERTY(QObject *weatherReport READ weatherReport NOTIFY weatherReportChanged)
+    QObject *weatherReport() const;
+
     /* \brief Description of waypoint details as an HTML table */
     Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
 
@@ -194,6 +202,7 @@ public:
 
 signals:
     void richTextNameChanged();
+    void weatherReportChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(Waypoint)

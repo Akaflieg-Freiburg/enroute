@@ -42,11 +42,11 @@ Dialog {
         id: waypointDelegate
 
         ItemDelegate {
-            text: model.modelData.richTextName()
+            text: model.modelData.simpleDescription
             icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
             icon.color: "transparent"
 
-            Layout.fillWidth: true
+            width: parent.width
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()

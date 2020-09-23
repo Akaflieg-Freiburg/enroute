@@ -92,38 +92,41 @@ QString Waypoint::extendedName() const
 
 QString Waypoint::richTextName() const
 {
-    if (_properties.value("TYP").toString() == "AD") {
-        QStringList lines;
+    QStringList lines;
 
-        // Line one: full text name, if available
-        if (_properties.contains("NAM"))
-            lines << _properties.value("NAM").toString();
-#warning Need to find some other name if NAM does not exist!
+    QString codeName;
+    if (_properties.contains("COD"))
+        codeName += _properties.value("COD").toString();
+    if (_properties.contains("MOR"))
+        codeName += " " + _properties.value("MOR").toString();
 
-        // line two: code name, codename and "way to" if available
-        QStringList items4Line2;
-        if (_properties.contains("COD"))
-            items4Line2 << "<strong>"+_properties.value("COD").toString()+"</strong>";
-        if (!_satNav.isNull() && (_satNav->status() == SatNav::OK) && _coordinate.isValid()) {
-            bool useMetric = false;
-            if (!_globalSettings.isNull())
-                useMetric = _globalSettings->useMetricUnits();
-            items4Line2 << _satNav->wayTo(_coordinate, useMetric);
-        }
-        if (!items4Line2.isEmpty())
-            lines << items4Line2.join(" • ");
-
-        // line three: METAR information, if available
-        if (!_meteorologist.isNull() && _properties.contains("COD")) {
-            auto descr = _meteorologist->briefDescription(_properties.value("COD").toString());
-            if (!descr.isEmpty())
-                lines << descr;
-        }
-
-        return lines.join("<br>");
+    if (codeName.isEmpty())
+        lines << extendedName();
+    else {
+        lines << QString("<strong>%1</strong>").arg(codeName);
+        lines << QString("<font size='2'>%1</font>").arg(extendedName());
     }
 
+    // line two: code name, codename and "way to" if available
+    if (!_satNav.isNull() && (_satNav->status() == SatNav::OK) && _coordinate.isValid()) {
+        bool useMetric = false;
+        if (!_globalSettings.isNull())
+            useMetric = _globalSettings->useMetricUnits();
+        lines << QString("<font size='2'>%1</font>").arg(_satNav->wayTo(_coordinate, useMetric));
+        }
 
+    // line three: METAR information, if available
+    if (!_meteorologist.isNull() && _properties.contains("COD")) {
+        auto descr = _meteorologist->briefDescription(_properties.value("COD").toString());
+        if (!descr.isEmpty())
+            lines << QString("<font size='2'>%1</font>").arg(descr);
+    }
+
+    return lines.join("<br>");
+}
+
+QString Waypoint::simpleDescription() const
+{
     QString codeName;
     if (_properties.contains("COD"))
         codeName += _properties.value("COD").toString();
@@ -134,6 +137,17 @@ QString Waypoint::richTextName() const
         return QString("<strong>%1</strong><br><font size='2'>%2</font>").arg(codeName, extendedName());
 
     return extendedName();
+}
+
+
+QObject *Waypoint::weatherReport() const
+{
+    if (_meteorologist.isNull())
+        return nullptr;
+    if (!_properties.contains("COD"))
+        return nullptr;
+
+    return _meteorologist->report(_properties.value("COD").toString());
 }
 
 
@@ -234,13 +248,17 @@ void Waypoint::setSatNav(SatNav *satNav)
 
 void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 {
-    if (!_meteorologist.isNull())
+    if (!_meteorologist.isNull()) {
         disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
+        disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::weatherReportChanged);
+    }
 
     _meteorologist = meteorologist;
 
-    if (!_meteorologist.isNull())
+    if (!_meteorologist.isNull()) {
         connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
+        connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::weatherReportChanged);
+    }
 }
 
 void Waypoint::setGlobalSettings(GlobalSettings *globalSettings)

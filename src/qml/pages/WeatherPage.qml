@@ -125,7 +125,7 @@ Page {
                     satNav.status
                     satNav.lastValidCoordinate
 
-                    return wp.richTextName(satNav, globalSettings.useMetricUnits)
+                    return wp.richTextName
                 }
                 if (satNav.status === SatNav.OK)
                     result += "<br>" + satNav.wayTo(model.modelData.location, globalSettings.useMetricUnits)

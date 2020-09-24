@@ -39,6 +39,67 @@ Dialog {
     focus: true
 
     Component {
+        id: metarInfoDelegate
+
+
+        Label {
+            id: metarLabel
+
+            property string rawText: {
+                // Mention items that will lead to change of text
+                clock.time
+                meteorologist.reports
+
+                return meteorologist.briefDescription(dialogArgs.waypoint.get("COD"))
+            }
+
+            text: rawText + " • <a href='xx'>" + qsTr("full report") + "</a>"
+            visible: rawText != ""
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+            bottomPadding: 0.2*Qt.application.font.pixelSize
+            topPadding: 0.2*Qt.application.font.pixelSize
+            leftPadding: 0.2*Qt.application.font.pixelSize
+            rightPadding: 0.2*Qt.application.font.pixelSize
+
+            onLinkActivated: {
+                console.log(dialogLoader.dialogArgs.waypoint)
+                console.log(dialogLoader.dialogArgs.waypoint.weatherReport)
+                var weatherRep = dialogLoader.dialogArgs.waypoint.weatherReport
+                mobileAdaptor.vibrateBrief()
+                dialogLoader.active = false
+                dialogLoader.dialogArgs = {station: weatherRep}
+                dialogLoader.text = ""
+                dialogLoader.source = "../dialogs/WeatherReport.qml"
+                dialogLoader.active = true
+            }
+
+            // Background color according to METAR/FAA flight category
+            background: Rectangle {
+                border.color: "black"
+                color: {
+                    // Mention idel.tex, to ensure that this color gets updated whenever the text updates
+                    metarLabel.text
+
+                    var cat = meteorologist.cat(dialogArgs.waypoint.get("COD"))
+                    if (cat === "VFR")
+                        return "green"
+                    if (cat === "MVFR")
+                        return "yellow"
+                    if (cat === "IFR")
+                        return "red"
+                    if (cat === "LIFR")
+                        return "red"
+                    return "transparent"
+                }
+                opacity: 0.2
+            }
+
+        }
+
+    }
+
+    Component {
         id: waypointPropertyDelegate
 
 
@@ -206,10 +267,9 @@ Dialog {
                 wrapMode: Text.WordWrap
             }
         }
-    } // Component
+    }
 
-
-    contentItem: ColumnLayout {
+    ColumnLayout {
         width: dlg.availableWidth
         height: dlg.availableHeight
 
@@ -247,61 +307,6 @@ Dialog {
             wrapMode: Text.WordWrap
         }
 
-        Label {
-            id: idel
-
-            property string rawText: {
-                // Mention items that will lead to change of text
-                clock.time
-                meteorologist.reports
-
-                return meteorologist.briefDescription(dialogArgs.waypoint.get("COD"))
-            }
-
-            text: rawText + " • <a href='xx'>" + qsTr("full report") + "</a>"
-            visible: rawText != ""
-            Layout.fillWidth: true
-            wrapMode: Text.WordWrap
-            bottomPadding: 0.2*Qt.application.font.pixelSize
-            topPadding: 0.2*Qt.application.font.pixelSize
-            leftPadding: 0.2*Qt.application.font.pixelSize
-            rightPadding: 0.2*Qt.application.font.pixelSize
-
-            onLinkActivated: {
-                console.log(dialogLoader.dialogArgs.waypoint)
-                console.log(dialogLoader.dialogArgs.waypoint.weatherReport)
-                var weatherRep = dialogLoader.dialogArgs.waypoint.weatherReport
-                mobileAdaptor.vibrateBrief()
-                dialogLoader.active = false
-                dialogLoader.dialogArgs = {station: weatherRep}
-                dialogLoader.text = ""
-                dialogLoader.source = "../dialogs/WeatherReport.qml"
-                dialogLoader.active = true
-            }
-
-            // Background color according to METAR/FAA flight category
-            background: Rectangle {
-                border.color: "black"
-                color: {
-                    // Mention idel.tex, to ensure that this color gets updated whenever the text updates
-                    idel.text
-
-                    var cat = meteorologist.cat(dialogArgs.waypoint.get("COD"))
-                    if (cat === "VFR")
-                        return "green"
-                    if (cat === "MVFR")
-                        return "yellow"
-                    if (cat === "IFR")
-                        return "red"
-                    if (cat === "LIFR")
-                        return "red"
-                    return "transparent"
-                }
-                opacity: 0.2
-            }
-
-        }
-
         ScrollView {
             id: sv
             Layout.fillWidth: true
@@ -325,6 +330,8 @@ Dialog {
 
 
                 Component.onCompleted: {
+                    metarInfoDelegate.createObject(co)
+
                     var pro = dialogLoader.dialogArgs.waypoint.tabularDescription
                     for (var j in pro)
                         waypointPropertyDelegate.createObject(co, {text: pro[j]});

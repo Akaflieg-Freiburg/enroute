@@ -67,21 +67,7 @@ Page {
                 // Background color according to METAR/FAA flight category
                 Rectangle {
                     anchors.fill: parent
-                    color: {
-                        // Mention idel.tex, to ensure that this color gets updated whenever the text updates
-                        idel.text
-
-                        var cat = meteorologist.cat(model.modelData.get("COD"))
-                        if (cat === "VFR")
-                            return "green"
-                        if (cat === "MVFR")
-                            return "yellow"
-                        if (cat === "IFR")
-                            return "red"
-                        if (cat === "LIFR")
-                            return "red"
-                        return "transparent"
-                    }
+                    color: model.modelData.color
                     opacity: 0.2
                 }
 

@@ -77,21 +77,7 @@ Dialog {
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: {
-                    // Mention idel.tex, to ensure that this color gets updated whenever the text updates
-                    metarLabel.text
-
-                    var cat = meteorologist.cat(dialogArgs.waypoint.get("COD"))
-                    if (cat === "VFR")
-                        return "green"
-                    if (cat === "MVFR")
-                        return "yellow"
-                    if (cat === "IFR")
-                        return "red"
-                    if (cat === "LIFR")
-                        return "red"
-                    return "transparent"
-                }
+                color: dialogArgs.waypoint.color
                 opacity: 0.2
             }
 

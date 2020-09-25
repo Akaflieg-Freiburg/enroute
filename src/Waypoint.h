@@ -154,7 +154,7 @@ public:
     /* \brief Validity
 
     This is a simple shortcut for coordinate().isValid
-  */
+    */
     bool isValid() const { return _coordinate.isValid(); }
 
 #warning documentation
@@ -163,6 +163,10 @@ public:
     {
         return QString("/icons/waypoints/%1.svg").arg(get("CAT").toString());
     }
+
+#warning documentation. THIS IS NOT CONSTANT!
+    Q_PROPERTY(QString color READ color NOTIFY colorChanged)
+    QString color() const;
 
 #warning documentation
     Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)
@@ -182,7 +186,7 @@ public:
     /*! \brief Getter function for property with the same name
 
     @returns Property tabularDescription
-  */
+    */
     QList<QString> tabularDescription() const;
 
     /*! \brief Serialization to GeoJSON object
@@ -193,7 +197,7 @@ public:
     The waypoint can be restored with the obvious constructor
     
     @returns QJsonObject describing the waypoint
-  */
+    */
     QJsonObject toJSON() const;
 
     /*! \brief Description of the way from a given position to the waypoint
@@ -205,11 +209,13 @@ public:
     */
     Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const;
 
+#warning documentation
     bool operator==(const Waypoint &other) const {
         return _coordinate == other._coordinate;
     }
 
 signals:
+    void colorChanged();
     void richTextNameChanged();
     void weatherReportChanged();
 

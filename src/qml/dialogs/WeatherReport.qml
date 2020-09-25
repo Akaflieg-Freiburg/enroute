@@ -46,8 +46,6 @@ Dialog {
 
             width: dlg.availableWidth
             implicitWidth: dlg.availableWidth
-//            Layout.preferredWidth: sv.width
-//            width: 200
 
             property var text: ({});
 

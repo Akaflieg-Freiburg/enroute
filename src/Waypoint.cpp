@@ -249,6 +249,7 @@ void Waypoint::setSatNav(SatNav *satNav)
 void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 {
     if (!_meteorologist.isNull()) {
+        disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::colorChanged);
         disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
         disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::weatherReportChanged);
     }
@@ -256,6 +257,7 @@ void Waypoint::setMeteorologist(Meteorologist *meteorologist)
     _meteorologist = meteorologist;
 
     if (!_meteorologist.isNull()) {
+        connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::colorChanged);
         connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
         connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::weatherReportChanged);
     }
@@ -270,4 +272,28 @@ void Waypoint::setGlobalSettings(GlobalSettings *globalSettings)
 
     if (!_globalSettings.isNull())
         connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::richTextNameChanged);
+}
+
+QString Waypoint::color() const
+{
+    if (_meteorologist.isNull())
+        return "transparent";
+
+    if (!_properties.contains("COD"))
+        return "transparent";
+
+    auto cod = _properties.value("COD").toString();
+    auto rep = _meteorologist->report(cod);
+    if (rep == nullptr)
+        return "transparent";
+    auto cat = rep->cat();
+    if (cat == "VFR")
+        return "green";
+    if (cat == "MVFR")
+        return "yellow";
+    if (cat == "IFR")
+        return "red";
+    if (cat == "LVFR")
+        return "red";
+    return "transparent";
 }

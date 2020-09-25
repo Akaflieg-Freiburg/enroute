@@ -278,7 +278,7 @@ Dialog {
             Layout.fillWidth: true
 
             Image {
-                source: "/icons/waypoints/"+dialogArgs.waypoint.get("CAT")+".svg"
+                source: dialogArgs.waypoint.icon
                 sourceSize.width: 25
             }
             Label {

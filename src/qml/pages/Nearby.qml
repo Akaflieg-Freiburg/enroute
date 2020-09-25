@@ -95,7 +95,7 @@ Page {
                         meteorologist.reports
                         return model.modelData.richTextName
                     }
-                    icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
+                    icon.source: model.modelData.icon
                     icon.color: "transparent"
 
                     width: sv.width

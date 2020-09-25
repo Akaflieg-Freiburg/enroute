@@ -46,7 +46,7 @@ Page {
 
             ItemDelegate {
                 visible: model.modelData instanceof Waypoint
-                icon.source: (model.modelData instanceof Waypoint) ? "/icons/waypoints/"+model.modelData.get("CAT")+".svg" : ""
+                icon.source: (model.modelData instanceof Waypoint) ? model.modelData.icon : ""
                 icon.color: "transparent"
                 Layout.fillWidth: true
                 text: model.modelData.simpleDescription

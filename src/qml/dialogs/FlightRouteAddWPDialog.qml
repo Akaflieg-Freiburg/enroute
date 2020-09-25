@@ -43,7 +43,7 @@ Dialog {
 
         ItemDelegate {
             text: model.modelData.simpleDescription
-            icon.source: "/icons/waypoints/"+model.modelData.get("CAT")+".svg"
+            icon.source: model.modelData.icon
             icon.color: "transparent"
 
             width: parent.width

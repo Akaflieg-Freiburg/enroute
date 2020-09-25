@@ -89,6 +89,8 @@ public:
     // Standard destructor
     ~Waypoint() = default;
 
+
+
 #warning documentation
     void setClock(Clock *clock=nullptr);
     void setSatNav(SatNav *satNav=nullptr);
@@ -154,6 +156,13 @@ public:
     This is a simple shortcut for coordinate().isValid
   */
     bool isValid() const { return _coordinate.isValid(); }
+
+#warning documentation
+    Q_PROPERTY(QString icon READ icon CONSTANT)
+    QString icon() const
+    {
+        return QString("/icons/waypoints/%1.svg").arg(get("CAT").toString());
+    }
 
 #warning documentation
     Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)

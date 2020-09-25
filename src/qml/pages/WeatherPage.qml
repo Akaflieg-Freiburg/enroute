@@ -117,20 +117,7 @@ Page {
         ItemDelegate {
             width: pg.width
 
-            text: {
-                var result = model.modelData.id
-                var wp = geoMapProvider.findByID(model.modelData.id)
-                if (wp !== null) {
-                    // Mention items that will lead to change of text
-                    satNav.status
-                    satNav.lastValidCoordinate
-
-                    return wp.richTextName
-                }
-                if (satNav.status === SatNav.OK)
-                    result += "<br>" + satNav.wayTo(model.modelData.location, globalSettings.useMetricUnits)
-                return result
-            }
+            text: model.modelData.richTextName
 
             icon.source: "/icons/weather/" + model.modelData.cat + ".svg"
             icon.color: "transparent"

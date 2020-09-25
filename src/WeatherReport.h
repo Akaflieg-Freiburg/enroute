@@ -25,6 +25,12 @@
 #include <QPointer>
 #include <QVariant>
 
+#include "Clock.h"
+#include "SatNav.h"
+
+class GlobalSettings;
+
+
 /*! \brief WeatherReport, a weather report containing a METAR and/or a TAF
  *
  * This class holds the weather report provided by a given station. The report
@@ -58,6 +64,11 @@ explicit WeatherReport(QObject *parent = nullptr);
 
     // Standard destructor
     ~WeatherReport() = default;
+
+#warning documentation
+    void setClock(Clock *clock=nullptr);
+    void setSatNav(SatNav *satNav=nullptr);
+    void setGlobalSettings(GlobalSettings *globalSettings=nullptr);
 
     /*! \brief The station ID
      *
@@ -186,16 +197,26 @@ explicit WeatherReport(QObject *parent = nullptr);
 
     Q_INVOKABLE QString oneLineDescription() const;
 
+#warning documentation
+    Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)
+    QString richTextName() const;
 
 signals:
     /* \brief Notifier signal */
     void metarChanged();
+#warning documentation
+    void richTextNameChanged();
 
 private slots:
     void autodestruct();
 
 private:
     Q_DISABLE_COPY_MOVE(WeatherReport)
+
+    // Pointers to other classes that are used internally
+    QPointer<Clock> _clock {};
+    QPointer<SatNav> _satNav {};
+    QPointer<GlobalSettings> _globalSettings {};
 
     /*! \brief The station ID */
     QString _id;

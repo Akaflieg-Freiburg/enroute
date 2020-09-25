@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "Meteorologist.h"
 #include "WeatherReport.h"
 
 #include <QQmlEngine>
@@ -231,4 +232,53 @@ QString WeatherReport::oneLineDescription() const {
     else
         qWarning() << station_id() << "No METAR";
     return QString();
+}
+
+
+void WeatherReport::setClock(Clock *clock)
+{
+    if (!_clock.isNull())
+        disconnect(_clock, &Clock::timeChanged, this, &WeatherReport::richTextNameChanged);
+
+    _clock = clock;
+
+    if (!_clock.isNull())
+        connect(_clock, &Clock::timeChanged, this, &WeatherReport::richTextNameChanged);
+}
+
+void WeatherReport::setSatNav(SatNav *satNav)
+{
+    if (!_satNav.isNull()) {
+        disconnect(_satNav, &SatNav::statusChanged, this, &WeatherReport::richTextNameChanged);
+        disconnect(_satNav, &SatNav::update, this, &WeatherReport::richTextNameChanged);
+    }
+
+    _satNav = satNav;
+
+    if (!_satNav.isNull()) {
+        connect(_satNav, &SatNav::statusChanged, this, &WeatherReport::richTextNameChanged);
+        connect(_satNav, &SatNav::update, this, &WeatherReport::richTextNameChanged);
+    }
+}
+
+QString WeatherReport::richTextName() const
+{
+    return "Arglebargle";
+
+    /*
+                {
+                    var result = model.modelData.id
+                    var wp = geoMapProvider.findByID(model.modelData.id)
+                    if (wp !== null) {
+                        // Mention items that will lead to change of text
+                        satNav.status
+                        satNav.lastValidCoordinate
+
+                        return wp.richTextName
+                    }
+                    if (satNav.status === SatNav.OK)
+                        result += "<br>" + satNav.wayTo(model.modelData.location, globalSettings.useMetricUnits)
+                    return result
+                }
+    */
 }

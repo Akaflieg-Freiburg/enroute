@@ -36,6 +36,10 @@
 #include "TileServer.h"
 #include "Waypoint.h"
 
+class Librarian;
+class Meteorologist;
+class SatNav;
+class Waypoint;
 
 /*! \brief Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON
  *
@@ -135,7 +139,7 @@ public:
      * For better cooperation with QML is not a pointer
      * of type Waypoint*, but ratherof type QObject*. The object is owned by this class and must not be deleted.
      */
-    Q_INVOKABLE QObject* findByID(const QString& id);
+    Waypoint* findByID(const QString& id);
 
 
     /*! List of nearby waypoints

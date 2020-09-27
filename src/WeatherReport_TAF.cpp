@@ -139,3 +139,8 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
 
 }
 
+
+QString WeatherReport::TAF::clearText() const
+{
+    return "This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF";
+}

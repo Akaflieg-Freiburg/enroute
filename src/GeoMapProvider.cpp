@@ -84,7 +84,7 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 }
 
 
-QObject* GeoMapProvider::findByID(const QString &id)
+Waypoint* GeoMapProvider::findByID(const QString &id)
 {
     auto wps = waypoints();
 

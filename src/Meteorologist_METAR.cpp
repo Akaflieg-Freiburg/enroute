@@ -18,14 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
-#include <QTimer>
-
-#include "Clock.h"
-#include "WeatherReport_METAR.h"
+#include "Meteorologist_METAR.h"
+#include "WeatherReport.h"
 
 
-WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(parent)
+Meteorologist::METAR::METAR(QObject *parent)
+    : QObject(parent)
+{
+
+}
+
+
+Meteorologist::METAR::METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent)
+    : QObject(parent), _clock(clock)
 {
 
     // Lambda to read sky condition
@@ -53,7 +58,7 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
 
         // Read Station_ID
         if (xml.isStartElement() && name == "station_id") {
-            _station_id = xml.readElementText();
+            _ICAOCode = xml.readElementText();
             continue;
         }
 
@@ -93,6 +98,20 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
             auto content = xml.readElementText();
             data.insert("observation_time", content);
             _observationTime = QDateTime::fromString(content, Qt::ISODate);
+            continue;
+        }
+
+        // Flight category
+        if (xml.isStartElement() && name == "flight_category") {
+            auto content = xml.readElementText();
+            if (content == "VFR")
+                _flightCategory = VFR;
+            if (content == "MVFR")
+                _flightCategory = MVFR;
+            if (content == "IFR")
+                _flightCategory = IFR;
+            if (content == "LIFR")
+                _flightCategory = LIFR;
             continue;
         }
 
@@ -157,10 +176,42 @@ WeatherReport::METAR::METAR(QXmlStreamReader &xml, QObject *parent) : QObject(pa
             QTimer::singleShot(timeOut, this, SLOT(deleteLater()));
 
     }
+
+    if (isValid() && !_clock.isNull()) {
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::oneLineDescriptionChanged);
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::relativeObservationTimeChanged);
+    }
+
 }
 
 
-Q_INVOKABLE QString WeatherReport::METAR::oneLineDescription() const {
+QDateTime Meteorologist::METAR::expiration() const
+{
+    if (_raw_text.contains("NOSIG"))
+        return _observationTime.addSecs(3*60*60);
+    return _observationTime.addSecs(1.5*60*60);
+}
+
+
+QString Meteorologist::METAR::decodedText() const
+{
+    return "This is a clear text presentation of the METAR";
+}
+
+
+QString Meteorologist::METAR::flightCategoryColor() const
+{
+    if (_flightCategory == VFR)
+        return "green";
+    if (_flightCategory == MVFR)
+        return "yellow";
+    if ((_flightCategory == IFR) || (_flightCategory == LIFR))
+        return "red";
+    return "transparent";
+}
+
+
+QString Meteorologist::METAR::summary() const {
 
     QStringList resultList;
 
@@ -172,20 +223,25 @@ Q_INVOKABLE QString WeatherReport::METAR::oneLineDescription() const {
             sky = "CAVOK";
     }
 
-    if (data.contains("flight_category")) {
-        auto val = data.value("flight_category").toString();
-        if (val == "VFR") {
-            resultList << "VMC";
-            if (!sky.isEmpty())
-                resultList << "CAVOK";
-        }
-        if (val == "MVFR")
-            resultList << "marginal VMC";
-        if (val == "IFR")
-            resultList << "IMC";
-        if (val == "LIFR")
-            resultList << "low IMC";
+    switch (_flightCategory) {
+    case VFR:
+        resultList << tr("VMC");
+        if (!sky.isEmpty())
+            resultList << tr("CAVOK");
+        break;
+    case MVFR:
+        resultList << tr("marginal VMC");
+        break;
+    case IFR:
+        resultList << tr("IMC");
+        break;
+    case LIFR:
+        resultList << tr("low IMC");
+        break;
+    default:
+        break;
     }
+
 
     int windSpeed = 0;
     int gustSpeed = 0;
@@ -194,10 +250,11 @@ Q_INVOKABLE QString WeatherReport::METAR::oneLineDescription() const {
     if (data.contains("wind_gust_kt"))
         gustSpeed = data.value("wind_gust_kt").toString().toInt();
 
+#warning Look at units!
     if (gustSpeed > 15)
-        resultList << tr("Gusts of %1 kt").arg(gustSpeed);
+        resultList << tr("gusts of %1 kt").arg(gustSpeed);
     else if (windSpeed > 10)
-        resultList << tr("Wind at %1 kt").arg(windSpeed);
+        resultList << tr("wind at %1 kt").arg(windSpeed);
 
     if (data.contains("wx_string"))
         resultList << WeatherReport::decodeWx(data.value("wx_string"));
@@ -206,4 +263,34 @@ Q_INVOKABLE QString WeatherReport::METAR::oneLineDescription() const {
         return QString();
 
     return tr("METAR %1: %2").arg(Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
+}
+
+
+QString Meteorologist::METAR::relativeObservationTime() const
+{
+    if (_clock.isNull())
+        return QString();
+    if (!_observationTime.isValid())
+        return QString();
+
+    return Clock::describeTimeDifference(_observationTime);
+}
+
+bool Meteorologist::METAR::isValid() const
+{
+    if (!_location.isValid())
+        return false;
+    if (!_observationTime.isValid())
+        return false;
+    if (_ICAOCode.isEmpty())
+        return false;
+
+#warning more thorough checks needed
+    return true;
+}
+
+QString Meteorologist::METAR::messageType() const
+{
+#warning WRONG
+    return "METAR";
 }

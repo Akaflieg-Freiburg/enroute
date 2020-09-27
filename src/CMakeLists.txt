@@ -80,11 +80,11 @@ set(SOURCES
     GlobalSettings.h
     Librarian.h
     Meteorologist.h
+    Meteorologist_METAR.h
     MobileAdaptor.h
     SatNav.h
     ScaleQuickItem.h
     WeatherReport.h
-    WeatherReport_METAR.h
     WeatherReport_TAF.h
 
     # C++ files
@@ -105,6 +105,7 @@ set(SOURCES
     main.cpp
     MapManager.cpp
     Meteorologist.cpp
+    Meteorologist_METAR.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     SatNav.cpp
@@ -113,7 +114,6 @@ set(SOURCES
     TileServer.cpp
     Waypoint.cpp
     WeatherReport.cpp
-    WeatherReport_METAR.cpp
     WeatherReport_TAF.cpp
     Wind.cpp
     )

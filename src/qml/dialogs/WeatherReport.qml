@@ -21,7 +21,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Shapes 1.15
 
 import enroute 1.0
 
@@ -32,54 +31,24 @@ Dialog {
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
     modal: true
     standardButtons: Dialog.Close
     focus: true
 
-    Component {
-        id: reportPropertyDelegate
+    ColumnLayout {
+        anchors.fill: parent
 
-        RowLayout {
-            id: repRow
-
-            width: dlg.availableWidth
-            implicitWidth: dlg.availableWidth
-
-            property var text: ({});
-
-            Label {
-                text: repRow.text.substring(0,4)
-                Layout.preferredWidth: Qt.application.font.pixelSize*3
-                Layout.alignment: Qt.AlignTop
-                font.bold: true
-
-            }
-            Label {
-                Layout.fillWidth: true
-                text: repRow.text.substring(4)
-                wrapMode: Text.WordWrap
-                textFormat: Text.RichText
-            }
-
-        }
-    }
-
-    contentItem: ColumnLayout {
-        width: dlg.availableWidth
-        height: dlg.availableHeight
-
-        RowLayout {
+        RowLayout { // Header with icon and name
             id: headX
             Layout.fillWidth: true
 
             Image {
-                source: "/icons/weather/" + dialogArgs.station.cat + ".svg"
+                source: dialogArgs.waypoint.icon
                 sourceSize.width: 25
             }
             Label {
-                text: dialogArgs.station.id
+                text: dialogArgs.waypoint.extendedName
                 font.bold: true
                 font.pixelSize: 1.2*Qt.application.font.pixelSize
                 Layout.fillWidth: true
@@ -88,13 +57,21 @@ Dialog {
             }
         }
 
-        ScrollView {
+        Label { // Second header line with distance and QUJ
+            text: dialogArgs.waypoint.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
+            visible: satNav.status === SatNav.OK
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignRight
+            wrapMode: Text.WordWrap
+        }
+
+        ScrollView { // ScrollView with METAR & TAF information
             id: sv
 
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            contentHeight: co.implicitHeight
+            contentHeight: co.height
             contentWidth: dlg.availableWidth
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
@@ -108,48 +85,74 @@ Dialog {
 
             ColumnLayout {
                 id: co
-                width: dlg.availableWidth
+                width: parent.width
 
-                Label {
-                    text: "METAR"
+                Label { // title: "METAR"
+                    visible: dialogArgs.waypoint.hasMetar
+                    text: dialogArgs.waypoint.hasMetar ? (dialogArgs.waypoint.metar.messageType + " " + dialogArgs.waypoint.metar.relativeObservationTime) : ""
                     font.bold: true
                     font.pixelSize: 1.2*Qt.application.font.pixelSize
                 }
 
-                ColumnLayout {
-                    id: metarCO
+                Label { // raw METAR text
+                    visible: dialogArgs.waypoint.hasMetar
+                    text: dialogArgs.waypoint.metar.rawText
+                    Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
 
-                    width: parent.width
-                    
-                    Component.onCompleted: {
-                        var metar = dialogLoader.dialogArgs.station.metarStrings
+                    bottomPadding: 0.2*Qt.application.font.pixelSize
+                    topPadding: 0.2*Qt.application.font.pixelSize
+                    leftPadding: 0.2*Qt.application.font.pixelSize
+                    rightPadding: 0.2*Qt.application.font.pixelSize
 
-                        for (var j in metar)
-                            reportPropertyDelegate.createObject(metarCO, {text: metar[j]});
+                    // Background color according to METAR/FAA flight category
+                    background: Rectangle {
+                        border.color: "black"
+                        color: dialogArgs.waypoint.color
+                        opacity: 0.2
                     }
                 }
 
-                Label {
+                Label { // decoded METAR text
+                    visible: dialogArgs.waypoint.hasMetar
+                    text: dialogArgs.waypoint.metar.decodedText
+                    Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
+                }
+
+                Label { // title: "TAF"
+                    visible: dialogArgs.waypoint.hasTaf
                     text: "TAF"
                     font.bold: true
                     font.pixelSize: 1.2*Qt.application.font.pixelSize
                 }
 
-                ColumnLayout {
-                    id: tafCO
+                Label { // raw TAF text
+                    visible: dialogArgs.waypoint.hasTaf
+                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.raw : ""
+                    Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
 
-                    width: parent.width
+                    bottomPadding: 0.2*Qt.application.font.pixelSize
+                    topPadding: 0.2*Qt.application.font.pixelSize
+                    leftPadding: 0.2*Qt.application.font.pixelSize
+                    rightPadding: 0.2*Qt.application.font.pixelSize
 
-                    Component.onCompleted: {
-                        var taf = dialogLoader.dialogArgs.station.tafStrings
-                        for (var j in taf)
-                            reportPropertyDelegate.createObject(tafCO, {text: taf[j]});
+                    background: Rectangle {
+                        border.color: "black"
                     }
                 }
 
-            } // ColumnLayout
+                Label { // decoded TAF text
+                    visible: dialogArgs.waypoint.hasTaf
+                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.clearText : ""
+                    Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
+                }
 
-        } // ScrollView
+            }
+
+        }
 
         Keys.onBackPressed: {
             event.accepted = true;
@@ -157,4 +160,4 @@ Dialog {
         }
     }
 
-} // Dialog
+}

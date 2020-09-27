@@ -30,7 +30,7 @@ WeatherReport::WeatherReport(QObject *parent) : QObject(parent)
 }
 
 WeatherReport::WeatherReport(const QString &id,
-                             WeatherReport::METAR *metar,
+                             Meteorologist::METAR *metar,
                              WeatherReport::TAF *taf,
                              QObject *parent) : QObject(parent), _id(id)
 {
@@ -47,15 +47,6 @@ WeatherReport::WeatherReport(const QString &id,
 }
 
 
-QString WeatherReport::cat() const
-{
-    // Get flight category
-    if (_metar == nullptr)
-        return "UKN";
-    return _metar->data.contains("flight_category") ? _metar->data.value("flight_category").toString() : "UKN";
-}
-
-
 QList<QString> WeatherReport::tafStrings() const
 {
     if (_taf.isNull())
@@ -64,18 +55,10 @@ QList<QString> WeatherReport::tafStrings() const
 }
 
 
-QList<QString> WeatherReport::metarStrings() const
-{
-    if (_metar.isNull())
-        return QList<QString>();
-    return _metar->dataStrings;
-}
-
-
 QGeoCoordinate WeatherReport::location() const
 {
     if (!_metar.isNull())
-        return _metar->_location;
+        return _metar->coordinate();
     if (!_taf.isNull())
         return _taf->_location;
     return QGeoCoordinate();
@@ -85,7 +68,7 @@ QGeoCoordinate WeatherReport::location() const
 QString WeatherReport::station_id() const
 {
     if (!_metar.isNull())
-        return _metar->_station_id;
+        return _metar->ICAOCode();
     if (!_taf.isNull())
         return _taf->_station_id;
     return QString();
@@ -97,7 +80,7 @@ int WeatherReport::qnh() const
 {
     if (_metar.isNull())
         return 0;
-    return _metar->_qnh;
+    return _metar->QNH();
 }
 
 
@@ -225,10 +208,11 @@ QString WeatherReport::decodeClouds(const QVariantList &clouds) {
     return clds;
 }
 
+
 QString WeatherReport::oneLineDescription() const {
 
     if (_metar)
-        return _metar->oneLineDescription();
+        return _metar->summary();
     else
         qWarning() << station_id() << "No METAR";
     return QString();
@@ -246,6 +230,7 @@ void WeatherReport::setClock(Clock *clock)
         connect(_clock, &Clock::timeChanged, this, &WeatherReport::richTextNameChanged);
 }
 
+
 void WeatherReport::setSatNav(SatNav *satNav)
 {
     if (!_satNav.isNull()) {
@@ -260,6 +245,7 @@ void WeatherReport::setSatNav(SatNav *satNav)
         connect(_satNav, &SatNav::update, this, &WeatherReport::richTextNameChanged);
     }
 }
+
 
 QString WeatherReport::richTextName() const
 {

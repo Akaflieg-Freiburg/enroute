@@ -26,6 +26,7 @@
 #include <QVariant>
 
 #include "Clock.h"
+#include "Meteorologist.h"
 #include "SatNav.h"
 
 class GlobalSettings;
@@ -43,7 +44,6 @@ class WeatherReport : public QObject {
     Q_OBJECT
 
 public:
-    class METAR;
     class TAF;
 
     /*! \brief Standard constructor
@@ -57,7 +57,7 @@ public:
     * @param parent The standard QObject parent pointer
     */
     explicit WeatherReport(const QString &id,
-                           WeatherReport::METAR *metar,
+                           Meteorologist::METAR *metar,
                            WeatherReport::TAF *taf,
                            QObject *parent = nullptr);
 explicit WeatherReport(QObject *parent = nullptr);
@@ -83,23 +83,6 @@ explicit WeatherReport(QObject *parent = nullptr);
      */
     QString id() const { return _id; }
 
-    /*! \brief The FAA flight category
-     *
-     * The FAA (U.S.) flight categories are defined by the following visibility
-     * (in statute miles) and ceiling (in feet):
-     * - VFR (visual flight rules): vis > 5, ceil > 3000
-     * - MVFR (marginal visual flight rules): 3 < vis < 5, 1000 < ceil < 3000
-     * - IFR (instrument flight rules): 1 < vis < 3, 500 < ceil < 1000
-     * - LIFR (low instrument flight rules): vis < 1, ceil < 500
-     */
-    Q_PROPERTY(QString cat READ cat NOTIFY metarChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property cat
-     */
-    QString cat() const;
-
     /*! \brief The METAR data
      *
      * A list of formated strings constituting the METAR data (observations).
@@ -115,36 +98,13 @@ explicit WeatherReport(QObject *parent = nullptr);
      * - DEWP: the dewpoint
      * - QNH: the pressure at sea-level
      */
-    Q_PROPERTY(WeatherReport::METAR *metar READ metar NOTIFY metarChanged)
+    Q_PROPERTY(Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property metar
      */
-    WeatherReport::METAR *metar() const { return _metar; }
-
-    /*! \brief The METAR data
-     *
-     * A list of formated strings constituting the METAR data (observations).
-     * If the station has no METAR, the list only contains "NONE". The first 4
-     * letters of each string indicate which field the data belong to:
-     * - RAW: the raw metar report
-     * - TIME: the time of emission
-     * - WIND: the wind direction and speed
-     * - VIS: the horizontal visibility
-     * - WX: the significant weather
-     * - CLDS: the clouds
-     * - TEMP: the temperature
-     * - DEWP: the dewpoint
-     * - QNH: the pressure at sea-level
-     */
-    Q_PROPERTY(QList<QString> metarStrings READ metarStrings NOTIFY metarChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property metarStrings
-     */
-    QList<QString> metarStrings() const;
+    Meteorologist::METAR *metar() const { return _metar; }
 
     /*! \brief The TAF data
      *
@@ -201,31 +161,6 @@ explicit WeatherReport(QObject *parent = nullptr);
     Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)
     QString richTextName() const;
 
-signals:
-    /* \brief Notifier signal */
-    void metarChanged();
-#warning documentation
-    void richTextNameChanged();
-
-private slots:
-    void autodestruct();
-
-private:
-    Q_DISABLE_COPY_MOVE(WeatherReport)
-
-    // Pointers to other classes that are used internally
-    QPointer<Clock> _clock {};
-    QPointer<SatNav> _satNav {};
-    QPointer<GlobalSettings> _globalSettings {};
-
-    /*! \brief The station ID */
-    QString _id;
-
-    /*! \brief METAR */
-    QPointer<WeatherReport::METAR> _metar;
-
-    /*! \brief TAF */
-    QPointer<WeatherReport::TAF> _taf;
 
     /*! \brief Converts the time into a human readable string */
     static QString decodeTime(const QVariant &time);
@@ -247,7 +182,32 @@ private:
 
     /*! \brief Converts the clouds into a human readable string */
     static QString decodeClouds(const QVariantList &clouds);
+
+signals:
+    /* \brief Notifier signal */
+    void metarChanged();
+#warning documentation
+    void richTextNameChanged();
+
+private slots:
+    void autodestruct();
+
+private:
+    Q_DISABLE_COPY_MOVE(WeatherReport)
+
+    // Pointers to other classes that are used internally
+    QPointer<Clock> _clock {};
+    QPointer<SatNav> _satNav {};
+    QPointer<GlobalSettings> _globalSettings {};
+
+    /*! \brief The station ID */
+    QString _id;
+
+    /*! \brief METAR */
+    QPointer<Meteorologist::METAR> _metar;
+
+    /*! \brief TAF */
+    QPointer<WeatherReport::TAF> _taf;
 };
 
-#include "WeatherReport_METAR.h"
 #include "WeatherReport_TAF.h"

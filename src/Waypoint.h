@@ -74,6 +74,9 @@ public:
   */
     explicit Waypoint(const QGeoCoordinate& coordinate, QObject *parent = nullptr);
 
+    explicit Waypoint(const QGeoCoordinate& coordinate, QString code, QObject *parent= nullptr);
+
+
     /*! \brief Constructs a waypoint from a GeoJSON object
 
     This method constructs a Waypoint from a GeoJSON description. The GeoJSON
@@ -179,6 +182,28 @@ public:
 #warning documentation
     Q_PROPERTY(QObject *weatherReport READ weatherReport NOTIFY weatherReportChanged)
     QObject *weatherReport() const;
+
+#warning documentation
+    Q_PROPERTY(QObject *metar READ metar NOTIFY weatherReportChanged)
+    QObject *metar() const;
+
+#warning documentation
+    Q_PROPERTY(bool hasMetar READ hasMetar NOTIFY weatherReportChanged)
+    bool hasMetar() const
+    {
+        return metar() != nullptr;
+    }
+
+#warning documentation
+    Q_PROPERTY(QObject *taf READ taf NOTIFY weatherReportChanged)
+    QObject *taf() const;
+
+#warning documentation
+    Q_PROPERTY(bool hasTaf READ hasTaf NOTIFY weatherReportChanged)
+    bool hasTaf() const
+    {
+        return taf() != nullptr;
+    }
 
     /* \brief Description of waypoint details as an HTML table */
     Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)

@@ -28,11 +28,14 @@
 
 #include "Clock.h"
 #include "FlightRoute.h"
+#include "GeoMapProvider.h"
 #include "GlobalSettings.h"
 #include "SatNav.h"
-#include "WeatherReport.h"
+//#include "WeatherReport.h"
 
+class WeatherReport;
 class FlightRoute;
+class GeoMapProvider;
 
 /*! \brief Meteorologist, weather service manager
  *
@@ -44,6 +47,8 @@ class Meteorologist : public QObject {
     Q_OBJECT
 
 public:
+    class METAR;
+
     /*! \brief Standard constructor
      *
      * @param clock A clock object
@@ -60,6 +65,7 @@ public:
                            SatNav *sat,
                            FlightRoute *route,
                            GlobalSettings *globalSettings,
+                           GeoMapProvider *geoMapProvider,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
 
@@ -105,6 +111,20 @@ public:
      */
     QList<QObject*> reports() const;
 
+    /*! \brief The list of weather reports
+     *
+     * Returns the weather reports as a list of QObject for better interraction
+     * with QML.
+     */
+    Q_PROPERTY(QList<QObject*> reportsAsWaypoints READ reportsAsWaypoints NOTIFY reportsChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property reports
+     */
+    QList<QObject*> reportsAsWaypoints();
+
+
     /*! \brief Downloading flag
      *
      * Indicates if the Meteorologist is currently downloading METAR/TAF information from the internet
@@ -140,32 +160,9 @@ public:
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
-    Q_INVOKABLE QString briefDescription(QString code) const
-    {
-        auto rep = report(code);
-        if (rep)
-            return rep->oneLineDescription();
-        return QString();
-    }
+    Q_INVOKABLE QString briefDescription(QString code) const;
 
-    WeatherReport *report(QString code) const
-    {
-        foreach(auto report, _reports) {
-            if (report.isNull())
-                continue;
-            if (report->id() == code)
-                return report;
-        }
-        return nullptr;
-    }
-
-    Q_INVOKABLE QString cat(QString code) const
-    {
-        auto rep = report(code);
-        if (rep == nullptr)
-            return QString();
-        return rep->cat();
-    }
+    WeatherReport *report(QString code) const;
 
 signals:
     /*! \brief Notifier signal */
@@ -188,6 +185,12 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
+
+#warning docu
+    QPointer<GeoMapProvider> _geoMapProvider;
+
+    /*! \brief Pointer to satellite navigation system */
+    QPointer<Clock> _clock;
 
     /*! \brief Pointer to satellite navigation system */
     QPointer<SatNav> _sat;
@@ -222,3 +225,6 @@ private:
     /*! \brief Process the replies from aviationweather.com and generates the reports */
     void process();
 };
+
+
+#include "Meteorologist_METAR.h"

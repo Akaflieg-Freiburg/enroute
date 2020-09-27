@@ -27,6 +27,7 @@
 #include "GlobalSettings.h"
 #include "SatNav.h"
 #include "Waypoint.h"
+#include "WeatherReport.h"
 
 
 Waypoint::Waypoint(QObject *parent)
@@ -48,6 +49,19 @@ Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
     _properties.insert("NAM", QString("Waypoint"));
     _properties.insert("TYP", QString("WP"));
 }
+
+
+Waypoint::Waypoint(const QGeoCoordinate& coordinate, QString code, QObject *parent)
+    : QObject(parent), _coordinate(coordinate)
+{
+    _properties.insert("CAT", QString("WP"));
+    if (code.isEmpty())
+        _properties.insert("NAM", QString("Waypoint"));
+    else
+        _properties.insert("COD", code);
+    _properties.insert("TYP", QString("WP"));
+}
+
 
 
 Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
@@ -89,7 +103,6 @@ QString Waypoint::extendedName() const
     return _properties.value("NAM").toString();
 }
 
-
 QString Waypoint::richTextName() const
 {
     QStringList lines;
@@ -104,7 +117,8 @@ QString Waypoint::richTextName() const
         lines << extendedName();
     else {
         lines << QString("<strong>%1</strong>").arg(codeName);
-        lines << QString("<font size='2'>%1</font>").arg(extendedName());
+        if (!extendedName().isEmpty())
+            lines << QString("<font size='2'>%1</font>").arg(extendedName());
     }
 
     // line two: code name, codename and "way to" if available
@@ -139,7 +153,6 @@ QString Waypoint::simpleDescription() const
     return extendedName();
 }
 
-
 QObject *Waypoint::weatherReport() const
 {
     if (_meteorologist.isNull())
@@ -150,6 +163,31 @@ QObject *Waypoint::weatherReport() const
     return _meteorologist->report(_properties.value("COD").toString());
 }
 
+QObject *Waypoint::metar() const
+{
+    if (_meteorologist.isNull())
+        return nullptr;
+    if (!_properties.contains("COD"))
+        return nullptr;
+    auto rep = _meteorologist->report(_properties.value("COD").toString());
+    if (rep == nullptr)
+        return nullptr;
+
+    return rep->metar();
+}
+
+QObject *Waypoint::taf() const
+{
+    if (_meteorologist.isNull())
+        return nullptr;
+    if (!_properties.contains("COD"))
+        return nullptr;
+    auto rep = _meteorologist->report(_properties.value("COD").toString());
+    if (rep == nullptr)
+        return nullptr;
+
+    return rep->taf();
+}
 
 QList<QString> Waypoint::tabularDescription() const
 {
@@ -188,7 +226,6 @@ QList<QString> Waypoint::tabularDescription() const
 
     return result;
 }
-
 
 QJsonObject Waypoint::toJSON() const
 {
@@ -276,24 +313,8 @@ void Waypoint::setGlobalSettings(GlobalSettings *globalSettings)
 
 QString Waypoint::color() const
 {
-    if (_meteorologist.isNull())
+    auto _metar = (Meteorologist::METAR *)metar();
+    if (_metar == nullptr)
         return "transparent";
-
-    if (!_properties.contains("COD"))
-        return "transparent";
-
-    auto cod = _properties.value("COD").toString();
-    auto rep = _meteorologist->report(cod);
-    if (rep == nullptr)
-        return "transparent";
-    auto cat = rep->cat();
-    if (cat == "VFR")
-        return "green";
-    if (cat == "MVFR")
-        return "yellow";
-    if (cat == "IFR")
-        return "red";
-    if (cat == "LVFR")
-        return "red";
-    return "transparent";
+    return _metar->flightCategoryColor();
 }

@@ -155,10 +155,6 @@ int main(int argc, char *argv[])
     auto networkAccessManager = new QNetworkAccessManager();
     networkAccessManager->setTransferTimeout();
 
-    // Attach meteorologist
-    auto meteorologist = new Meteorologist(clock, navEngine, flightroute, globalSettings, networkAccessManager, engine);
-    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
-
     // Attach map manager
     auto mapManager = new MapManager(networkAccessManager);
     engine->rootContext()->setContextProperty("mapManager", mapManager);
@@ -168,9 +164,13 @@ int main(int argc, char *argv[])
     auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, librarian);
     geoMapProvider->setClock(clock);
     geoMapProvider->setGlobalSettings(globalSettings);
-    geoMapProvider->setMeteorologist(meteorologist);
     geoMapProvider->setSatNav(navEngine);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
+
+    // Attach meteorologist
+    auto meteorologist = new Meteorologist(clock, navEngine, flightroute, globalSettings, geoMapProvider, networkAccessManager, engine);
+    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
+    geoMapProvider->setMeteorologist(meteorologist);
 
     // Restore saved settings and make them available to QML
     QSettings settings;

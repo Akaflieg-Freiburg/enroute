@@ -46,6 +46,21 @@ public:
     // Standard destructor
     ~TAF() override = default;
 
+
+    Q_PROPERTY(QString clearText READ clearText NOTIFY oneLineDescriptionChanged)
+    QString clearText() const;
+
+    Q_PROPERTY(QString raw READ raw NOTIFY oneLineDescriptionChanged)
+    QString raw() const
+    {
+        return "RAW TAF TEXT";
+    }
+
+
+signals:
+    void oneLineDescriptionChanged();
+
+public:
     QGeoCoordinate _location;
     QString _station_id;
 

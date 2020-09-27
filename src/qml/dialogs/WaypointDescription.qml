@@ -41,34 +41,29 @@ Dialog {
     Component {
         id: metarInfoDelegate
 
-
         Label {
             id: metarLabel
 
-            property string rawText: {
-                // Mention items that will lead to change of text
-                clock.time
-                meteorologist.reports
-
-                return meteorologist.briefDescription(dialogArgs.waypoint.get("COD"))
+            text: {
+                if (dialogArgs.waypoint.hasMetar)
+                    return dialogArgs.waypoint.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
 
-            text: rawText + " • <a href='xx'>" + qsTr("full report") + "</a>"
-            visible: rawText != ""
+            visible: dialogArgs.waypoint.hasMetar || dialogArgs.waypoint.hasTaf
+
             Layout.fillWidth: true
-            wrapMode: Text.WordWrap
+            textFormat: Text.RichText
+            wrapMode: Text.Wrap // WARNING: Does not seem to work
             bottomPadding: 0.2*Qt.application.font.pixelSize
             topPadding: 0.2*Qt.application.font.pixelSize
             leftPadding: 0.2*Qt.application.font.pixelSize
             rightPadding: 0.2*Qt.application.font.pixelSize
 
             onLinkActivated: {
-                console.log(dialogLoader.dialogArgs.waypoint)
-                console.log(dialogLoader.dialogArgs.waypoint.weatherReport)
-                var weatherRep = dialogLoader.dialogArgs.waypoint.weatherReport
                 mobileAdaptor.vibrateBrief()
                 dialogLoader.active = false
-                dialogLoader.dialogArgs = {station: weatherRep}
+//                dialogLoader.dialogArgs = {station: dialogArgs.waypoint}
                 dialogLoader.text = ""
                 dialogLoader.source = "../dialogs/WeatherReport.qml"
                 dialogLoader.active = true
@@ -295,8 +290,8 @@ Dialog {
 
         ScrollView {
             id: sv
+
             Layout.fillWidth: true
-            Layout.preferredWidth: parent.width
             Layout.fillHeight: true
 
             contentHeight: co.implicitHeight
@@ -313,7 +308,6 @@ Dialog {
                 id: co
 
                 width: parent.width
-
 
                 Component.onCompleted: {
                     metarInfoDelegate.createObject(co)

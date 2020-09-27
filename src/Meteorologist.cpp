@@ -31,10 +31,12 @@ Meteorologist::Meteorologist(Clock *clock,
                              SatNav *sat,
                              FlightRoute *route,
                              GlobalSettings *globalSettings,
+                             GeoMapProvider *geoMapProvider,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
-    QObject(parent), _sat(sat), _route(route), _globalSettings(globalSettings),
-    _networkAccessManager(networkAccessManager)
+    QObject(parent),
+    _geoMapProvider(geoMapProvider), _sat(sat), _route(route), _globalSettings(globalSettings), _networkAccessManager(networkAccessManager), _clock(clock)
+
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
@@ -82,6 +84,43 @@ QList<QObject *> Meteorologist::reports() const {
     QList<QObject *> result;
     foreach(auto rep, sortedReports)
         result += rep;
+    return result;
+}
+
+QList<QObject *> Meteorologist::reportsAsWaypoints() {
+
+    // Produce a list of reports, without nullpointers
+    QList<WeatherReport *> sortedReports;
+    foreach(auto rep, _reports)
+        if (!rep.isNull())
+            sortedReports += rep;
+
+    // Sort list
+    auto compare = [&](WeatherReport *a, WeatherReport *b) {
+        auto here = _sat->lastValidCoordinate();
+        return here.distanceTo(a->location()) < here.distanceTo(b->location());
+    };
+    std::sort(sortedReports.begin(), sortedReports.end(), compare);
+
+    // Generate waypoint, convert to QObjectList
+    QList<QObject *> result;
+#warning
+    foreach(auto rep, sortedReports) {
+        auto wp = _geoMapProvider->findByID(rep->id());
+        if (wp != nullptr)
+            result << wp;
+        else {
+#warning who will delete?
+            wp = new Waypoint(rep->location(), rep->id(), this);
+#warning need to set clock
+            //            wp->setClock(_clock);
+            wp->setSatNav(_sat);
+            wp->setMeteorologist(this);
+            wp->setGlobalSettings(_globalSettings);
+
+            result << wp;
+        }
+    }
     return result;
 }
 
@@ -185,7 +224,7 @@ void Meteorologist::process() {
 
 
     // These maps associate the weather station ID to its METAR/TAF replies
-    QMap<QString, QPointer<WeatherReport::METAR>> metars;
+    QMap<QString, QPointer<Meteorologist::METAR>> metars;
     QMap<QString, QPointer<WeatherReport::TAF>> tafs;
     // These lists contain the weather station ID and will be used to handle duplicate or unpaired stations
     QList<QString> mStations;
@@ -205,10 +244,10 @@ void Meteorologist::process() {
                 // Read the METAR and get the data, if the station has not been encountered yet
                 if (xml.name() == "METAR") {
 
-                    auto metar = new WeatherReport::METAR(xml, this);
-                    if (!mStations.contains(metar->_station_id)) {
-                        mStations.push_back(metar->_station_id);
-                        metars.insert(metar->_station_id, metar);
+                    auto metar = new Meteorologist::METAR(xml, _clock, this);
+                    if (!mStations.contains(metar->ICAOCode())) {
+                        mStations.push_back(metar->ICAOCode());
+                        metars.insert(metar->ICAOCode(), metar);
                     } else
                         delete metar;
                 }
@@ -310,7 +349,7 @@ QString Meteorologist::QNHInfo() const
     if (closestReportWithQNH) {
         return tr("QNH: %1 hPa in %2, %3").arg(closestReportWithQNH->qnh())
                 .arg(closestReportWithQNH->station_id())
-                .arg(Clock::describeTimeDifference(closestReportWithQNH->metar()->_observationTime));
+                .arg(Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }
     return QString();
 }
@@ -375,3 +414,23 @@ QString Meteorologist::SunInfo() const
     }
     return QString();
 }
+
+
+QString Meteorologist::briefDescription(QString code) const
+{
+    auto rep = report(code);
+    if (rep)
+        return rep->oneLineDescription();
+    return QString();
+}
+
+WeatherReport *Meteorologist::report(QString code) const
+                 {
+                     foreach(auto report, _reports) {
+                         if (report.isNull())
+                             continue;
+                         if (report->id() == code)
+                             return report;
+                     }
+                     return nullptr;
+                 }

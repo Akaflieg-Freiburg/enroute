@@ -109,28 +109,45 @@ Page {
 
             }
         }
-    } // ToolBar
+    }
 
     Component {
         id: stationDelegate
 
-        ItemDelegate {
-            width: pg.width
+        Item {
+            width: stationList.width
+            height: idel.height
 
-            text: model.modelData.richTextName
+            // Background color according to METAR/FAA flight category
+            Rectangle {
+                anchors.fill: parent
+                color: model.modelData.color
+                opacity: 0.2
+            }
 
-            icon.source: "/icons/weather/" + model.modelData.cat + ".svg"
-            icon.color: "transparent"
-            icon.width: Qt.application.font.pixelSize*3
-            icon.height: Qt.application.font.pixelSize*3
+            ItemDelegate {
+                id: idel
+                text: {
+                    // Mention items that will lead to change of text
+                    clock.time
+                    satNav.status
+                    satNav.lastValidCoordinate
+                    meteorologist.reports
+                    return model.modelData.richTextName
+                }
+                icon.source: model.modelData.icon
+                icon.color: "transparent"
 
-            onClicked: {
-                mobileAdaptor.vibrateBrief()
-                dialogLoader.active = false
-                dialogLoader.dialogArgs = {station: model.modelData}
-                dialogLoader.text = ""
-                dialogLoader.source = "../dialogs/WeatherReport.qml"
-                dialogLoader.active = true
+                width: parent.width
+
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    dialogLoader.active = false
+                    dialogLoader.dialogArgs = {waypoint: model.modelData}
+                    dialogLoader.text = ""
+                    dialogLoader.source = "../dialogs/WeatherReport.qml"
+                    dialogLoader.active = true
+                }
             }
         }
     }
@@ -146,7 +163,7 @@ Page {
             Layout.fillWidth: true
             clip: true
 
-            model: meteorologist.reports
+            model: meteorologist.reportsAsWaypoints
             delegate: stationDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 

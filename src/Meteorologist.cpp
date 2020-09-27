@@ -225,7 +225,7 @@ void Meteorologist::process() {
 
     // These maps associate the weather station ID to its METAR/TAF replies
     QMap<QString, QPointer<Meteorologist::METAR>> metars;
-    QMap<QString, QPointer<WeatherReport::TAF>> tafs;
+    QMap<QString, QPointer<Meteorologist::TAF>> tafs;
     // These lists contain the weather station ID and will be used to handle duplicate or unpaired stations
     QList<QString> mStations;
     QList<QString> tStations;
@@ -255,10 +255,10 @@ void Meteorologist::process() {
                 // Read the TAF and get the data, if the station has not been encountered yet
                 if (xml.name() == "TAF") {
 
-                    auto taf = new WeatherReport::TAF(xml, this);
-                    if (!tStations.contains(taf->_station_id)) {
-                        tStations.push_back(taf->_station_id);
-                        tafs.insert(taf->_station_id, taf);
+                    auto taf = new Meteorologist::TAF(xml, _clock, this);
+                    if (!tStations.contains(taf->_ICAOCode)) {
+                        tStations.push_back(taf->_ICAOCode);
+                        tafs.insert(taf->_ICAOCode, taf);
                     } else
                         delete taf;
                 }

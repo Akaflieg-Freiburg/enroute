@@ -22,45 +22,30 @@
 
 #include "Meteorologist.h"
 
-/*! \brief METAR report
+/*! \brief TAF report
  *
- * This class contains the data of a METAR or SPECI report and provided a few
+ * This class contains the data of a TAF or SPECI report and provided a few
  * methods to access the data. Instances of this class are provided by the
  * Meteorologist class; there is no way to construct valid instances yourself.
  */
 
-class Meteorologist::METAR : public QObject {
+class Meteorologist::TAF : public QObject {
     Q_OBJECT
 
     friend class Meteorologist;
 public:
     /*! \brief Default constructor
      *
-     * This constructor creates an invalid METAR instance.
+     * This constructor creates an invalid TAF instance.
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit METAR(QObject *parent = nullptr);
+    explicit TAF(QObject *parent = nullptr);
 
     // Standard destructor
-    ~METAR() override = default;
+    ~TAF() override = default;
 
-    /*! \brief Flight category
-     *
-     * Flight category, as defined in
-     * https://www.aviationweather.gov/metar/help?page=plot#fltcat
-     */
-    enum FlightCategory
-      {
-       VFR,     /*!< Visual Flight Rules */
-       MVFR,    /*!< Marginal Visual Flight Rules */
-       IFR,     /*!< Instrument Flight Rules */
-       LIFR,    /*!< Low Instrument Flight Rules */
-       unknown  /*!< Unknown conditions */
-      };
-    Q_ENUM(FlightCategory)
-
-    /*! METAR, as a translated, human-readable text */
+    /*! TAF, as a translated, human-readable text */
     Q_PROPERTY(QString decodedText READ decodedText CONSTANT)
 
     /*! \brief Getter function for property with the same name
@@ -69,27 +54,7 @@ public:
      */
     QString decodedText() const;
 
-    /*! Suggested color describing tlight category for this METAR
-     *
-     * The suggested colors are  the following
-     *
-     * - "green" for VFR
-     *
-     * - "yellow" for MVFR
-     *
-     * - "red" for "IFR" and "LIFR"
-     *
-     * - "transparant" for "unknown"
-     */
-    Q_PROPERTY(QString flightCategoryColor READ flightCategoryColor CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property color
-     */
-    QString flightCategoryColor() const;
-
-    /*! Geographical coordinate of the station reporting this METAR
+    /*! Geographical coordinate of the station reporting this TAF
      *
      * If the station coordinate is unknown, the property contains an invalid coordinate.
      */
@@ -106,7 +71,7 @@ public:
 
     /*! Expiration time and date
      *
-     * A METAR message is supposed to expire 1.5 hours after observation time,
+     * A TAF message is supposed to expire 1.5 hours after observation time,
      * unless raw text contains "NOSIG", then it is 3 hours.
      */
     Q_PROPERTY(QDateTime expiration READ expiration CONSTANT)
@@ -117,22 +82,7 @@ public:
      */
     QDateTime expiration() const;
 
-    /*! Flight category for this METAR
-     *
-     * If the station coordinate is unknown, the property contains an invalid coordinate.
-     */
-    Q_PROPERTY(FlightCategory flightCategory READ flightCategory CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property flightCategory
-     */
-    FlightCategory flightCategory() const
-    {
-        return _flightCategory;
-    }
-
-    /*! ICAO code of the station reporting this METAR
+    /*! ICAO code of the station reporting this TAF
      *
      * This is a string such as "LSZB" for Bern/Belp airport. If the station code is unknown,
      * the property contains an empty string.
@@ -148,7 +98,7 @@ public:
         return _ICAOCode;
     }
 
-    /*! Indicates if the class represents a valid METAR report */
+    /*! Indicates if the class represents a valid TAF report */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
     /*! \brief Getter function for property with the same name
@@ -157,36 +107,21 @@ public:
      */
     bool isValid() const;
 
-    /*! Observation time of this METAR */
-    Q_PROPERTY(QDateTime observationTime READ observationTime CONSTANT)
+    /*! Issue time of this TAF */
+    Q_PROPERTY(QDateTime issueTime READ issueTime CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property observationTime
      */
-    QDateTime observationTime() const
+    QDateTime issueTime() const
     {
-        return _observationTime;
+        return _issueTime;
     }
 
-    /*! QNH value in this METAR, in hPa
+    /*! Raw TAF text
      *
-     * The QNH property is set to zero if no QNH is known. Otherwise, the values is guaranteed to lie in the interval [800 … 1200]
-     */
-    Q_PROPERTY(QString QNH READ QNH CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property qnh
-     */
-    int QNH() const
-    {
-        return _qnh;
-    }
-
-    /*! Raw METAR text
-     *
-     * This is a string such as "METAR EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=".
+     * This is a string such as "TAF EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=".
      */
     Q_PROPERTY(QString rawText READ rawText CONSTANT)
 
@@ -199,70 +134,37 @@ public:
         return _raw_text;
     }
 
-    /*! Observation time, relative to now
+    /*! Issue time, relative to now
      *
      * This is a translated, human-readable string such as "1h and 43min ago" that describes
      * the observation time.
      */
-    Q_PROPERTY(QString relativeObservationTime READ relativeObservationTime NOTIFY relativeObservationTimeChanged)
+    Q_PROPERTY(QString relativeIssueTime READ relativeIssueTime NOTIFY relativeIssueTimeChanged)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property relativeObservationTime
      */
-    QString relativeObservationTime() const;
-
-    /*! Type of message
-     *
-     * This is one of the strings "METAR" or "SPECI"
-     */
-    Q_PROPERTY(QString messageType READ messageType CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property messageType
-     */
-    QString messageType() const;
-
-    /*! One-line summary of the METAR
-     *
-     * This is a translated, human-readable string of the form "METAR 14min ago: marginal VMC • wind at 15kt • rain"
-     */
-    Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property summary
-     */
-    QString summary() const;
+    QString relativeIssueTime() const;
 
 signals:
     /*! Notifier signal */
-    void summaryChanged();
-
-    /*! Notifier signal */
-    void relativeObservationTimeChanged();
+    void relativeIssueTimeChanged();
 
 private:
     // This constructor reads a XML stream, as provided by the Aviation Weather Center's Text Data Server,
     // https://www.aviationweather.gov/dataserver
-    explicit METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent = nullptr);
+    explicit TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent = nullptr);
 
-    Q_DISABLE_COPY_MOVE(METAR)
-
-    // Flight category, as returned by the Aviation Weather Center
-    FlightCategory _flightCategory {unknown};
+    Q_DISABLE_COPY_MOVE(TAF)
 
     // Station coordinate, as returned by the Aviation Weather Center
     QGeoCoordinate _location;
 
     // Observation time, as returned by the Aviation Weather Center
-    QDateTime _observationTime;
+    QDateTime _issueTime;
 
-    // QNH in hPa, as returned by the Aviation Weather Center
-    int _qnh {0};
-
-    // Raw METAR text, as returned by the Aviation Weather Center
+    // Raw TAF text, as returned by the Aviation Weather Center
     QString _raw_text;
 
     // Station ID, as returned by the Aviation Weather Center

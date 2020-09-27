@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "WeatherReport_TAF.h"
+#include "Clock.h"
+#include "Meteorologist_TAF.h"
+#include "WeatherReport.h"
 
 
-WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent)
+Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent) : QObject(parent)
 {
 
     // Lambda to read sky condition
@@ -47,7 +49,7 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
 
         // Read Station_ID
         if (xml.isStartElement() && name == "station_id") {
-            _station_id = xml.readElementText();
+            _ICAOCode = xml.readElementText();
             continue;
         }
 
@@ -62,6 +64,13 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
         }
         if (xml.isStartElement() && name == "elevation_m") {
             _location.setAltitude(xml.readElementText().toDouble());
+            continue;
+        }
+
+        // Read raw text
+        if (xml.isStartElement() && name == "raw_text") {
+            _raw_text = xml.readElementText();
+            data.insert("raw_text", _raw_text);
             continue;
         }
 
@@ -114,7 +123,7 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
             QString fcst;
             if (forecast.contains("fcst_time_from") && forecast.contains("fcst_time_to")) {
                 if (!forecast.contains("change_indicator"))
-                    fcst += "From " + WeatherReport::decodeTime(forecast.value("fcst_time_from")) + " to " + WeatherReport::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                    fcst += "From " +WeatherReport::decodeTime(forecast.value("fcst_time_from")) + " to " + WeatherReport::decodeTime(forecast.value("fcst_time_to")) + "<br>";
                 else if (forecast.value("change_indicator").toString() == "TEMPO")
                     fcst += "Temporary from " + WeatherReport::decodeTime(forecast.value("fcst_time_from")) + " to " + WeatherReport::decodeTime(forecast.value("fcst_time_to")) + "<br>";
                 else if (forecast.value("change_indicator").toString() == "BECMG")
@@ -140,7 +149,28 @@ WeatherReport::TAF::TAF(QXmlStreamReader &xml, QObject *parent) : QObject(parent
 }
 
 
-QString WeatherReport::TAF::clearText() const
+QString Meteorologist::TAF::decodedText() const
 {
+#warning not implemented
     return "This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF";
 }
+
+
+QDateTime Meteorologist::TAF::expiration() const
+{
+#warning not implemented
+    return QDateTime();
+}
+
+bool Meteorologist::TAF::isValid() const
+{
+#warning not implemented
+    return true;
+}
+
+QString Meteorologist::TAF::relativeIssueTime() const
+{
+#warning not implemented
+    return "not implemented";
+}
+

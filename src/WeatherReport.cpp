@@ -31,7 +31,7 @@ WeatherReport::WeatherReport(QObject *parent) : QObject(parent)
 
 WeatherReport::WeatherReport(const QString &id,
                              Meteorologist::METAR *metar,
-                             WeatherReport::TAF *taf,
+                             Meteorologist::TAF *taf,
                              QObject *parent) : QObject(parent), _id(id)
 {
     _metar = metar;
@@ -47,20 +47,12 @@ WeatherReport::WeatherReport(const QString &id,
 }
 
 
-QList<QString> WeatherReport::tafStrings() const
-{
-    if (_taf.isNull())
-        return QList<QString>();
-    return _taf->dataStrings;
-}
-
-
 QGeoCoordinate WeatherReport::location() const
 {
     if (!_metar.isNull())
         return _metar->coordinate();
     if (!_taf.isNull())
-        return _taf->_location;
+        return _taf->coordinate();
     return QGeoCoordinate();
 }
 
@@ -70,7 +62,7 @@ QString WeatherReport::station_id() const
     if (!_metar.isNull())
         return _metar->ICAOCode();
     if (!_taf.isNull())
-        return _taf->_station_id;
+        return _taf->ICAOCode();
     return QString();
 
 }

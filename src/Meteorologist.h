@@ -48,6 +48,7 @@ class Meteorologist : public QObject {
 
 public:
     class METAR;
+    class TAF;
 
     /*! \brief Standard constructor
      *
@@ -228,3 +229,4 @@ private:
 
 
 #include "Meteorologist_METAR.h"
+#include "Meteorologist_TAF.h"

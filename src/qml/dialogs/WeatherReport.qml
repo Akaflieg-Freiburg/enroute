@@ -129,7 +129,7 @@ Dialog {
 
                 Label { // raw TAF text
                     visible: dialogArgs.waypoint.hasTaf
-                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.raw : ""
+                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.rawText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
 
@@ -145,7 +145,7 @@ Dialog {
 
                 Label { // decoded TAF text
                     visible: dialogArgs.waypoint.hasTaf
-                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.clearText : ""
+                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                 }

@@ -58,7 +58,7 @@ public:
     */
     explicit WeatherReport(const QString &id,
                            Meteorologist::METAR *metar,
-                           WeatherReport::TAF *taf,
+                           Meteorologist::TAF *taf,
                            QObject *parent = nullptr);
 explicit WeatherReport(QObject *parent = nullptr);
 
@@ -120,35 +120,13 @@ explicit WeatherReport(QObject *parent = nullptr);
      * speed and direction, the visibility, the significant weather and the
      * clouds.
      */
-    Q_PROPERTY(WeatherReport::TAF *taf READ taf CONSTANT)
+    Q_PROPERTY(Meteorologist::TAF *taf READ taf CONSTANT)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    WeatherReport::TAF *taf() const { return _taf; }
-
-    /*! \brief The TAF data
-     *
-     * A list of formated strings constituting the TAF data (forecast).
-     * If the station has no TAF, the list only contains "NONE". The first 4
-     * letters of each string indicate which field the data belong to:
-     * - RAW: the raw metar report
-     * - TIME: the time of emission
-     * - FROM: the time at which the forecast starts
-     * - TO: the time at which the forecast ends
-     * - FCST: the forecast(s)
-     * Each forecast contains the start and end times, its probability, the wind
-     * speed and direction, the visibility, the significant weather and the
-     * clouds.
-     */
-    Q_PROPERTY(QList<QString> tafStrings READ tafStrings CONSTANT)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property taf
-     */
-    QList<QString> tafStrings() const;
+    Meteorologist::TAF *taf() const { return _taf; }
 
     Q_PROPERTY(QGeoCoordinate location READ location CONSTANT);
     QGeoCoordinate location() const;
@@ -207,7 +185,6 @@ private:
     QPointer<Meteorologist::METAR> _metar;
 
     /*! \brief TAF */
-    QPointer<WeatherReport::TAF> _taf;
+    QPointer<Meteorologist::TAF> _taf;
 };
 
-#include "WeatherReport_TAF.h"

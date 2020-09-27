@@ -178,7 +178,7 @@ Meteorologist::METAR::METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent
     }
 
     if (isValid() && !_clock.isNull()) {
-        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::oneLineDescriptionChanged);
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::summaryChanged);
         connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::relativeObservationTimeChanged);
     }
 

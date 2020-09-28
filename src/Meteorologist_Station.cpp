@@ -31,55 +31,30 @@ Meteorologist::Station::Station(QObject *parent) : QObject(parent)
 Meteorologist::Station::Station(const QString &id,
                              Meteorologist::METAR *metar,
                              Meteorologist::TAF *taf,
-                             QObject *parent) : QObject(parent), _id(id)
+                             QObject *parent) : QObject(parent), _ICAOCode(id)
 {
     _metar = metar;
     if (!_metar.isNull()) {
         connect(_metar, &QObject::destroyed, this, &Meteorologist::Station::metarChanged);
-        connect(_metar, &QObject::destroyed, this, &Meteorologist::Station::autodestruct);
     }
 
     _taf = taf;
-    if (!_taf.isNull()) {
-        connect(_taf, &QObject::destroyed, this, &Meteorologist::Station::autodestruct);
-    }
 }
 
 
-QGeoCoordinate Meteorologist::Station::location() const
+bool Meteorologist::Station::isValid() const
+{
+#warning not implemented
+    return true;
+}
+
+QGeoCoordinate Meteorologist::Station::coordinate() const
 {
     if (!_metar.isNull())
         return _metar->coordinate();
     if (!_taf.isNull())
         return _taf->coordinate();
     return QGeoCoordinate();
-}
-
-
-QString Meteorologist::Station::station_id() const
-{
-    if (!_metar.isNull())
-        return _metar->ICAOCode();
-    if (!_taf.isNull())
-        return _taf->ICAOCode();
-    return QString();
-
-}
-
-
-int Meteorologist::Station::qnh() const
-{
-    if (_metar.isNull())
-        return 0;
-    return _metar->QNH();
-}
-
-
-void Meteorologist::Station::autodestruct()
-{
-    qWarning() << station_id() << "Autodestruct";
-    if (_metar.isNull() && _taf.isNull())
-        deleteLater();
 }
 
 
@@ -197,65 +172,4 @@ QString Meteorologist::Station::decodeClouds(const QVariantList &clouds) {
     clds.replace("TCU", "Towering cumulus");
     clds.replace("CU", "Cumulus");
     return clds;
-}
-
-
-QString Meteorologist::Station::oneLineDescription() const {
-
-    if (_metar)
-        return _metar->summary();
-    else
-        qWarning() << station_id() << "No METAR";
-    return QString();
-}
-
-
-void Meteorologist::Station::setClock(Clock *clock)
-{
-    if (!_clock.isNull())
-        disconnect(_clock, &Clock::timeChanged, this, &Meteorologist::Station::richTextNameChanged);
-
-    _clock = clock;
-
-    if (!_clock.isNull())
-        connect(_clock, &Clock::timeChanged, this, &Meteorologist::Station::richTextNameChanged);
-}
-
-
-void Meteorologist::Station::setSatNav(SatNav *satNav)
-{
-    if (!_satNav.isNull()) {
-        disconnect(_satNav, &SatNav::statusChanged, this, &Meteorologist::Station::richTextNameChanged);
-        disconnect(_satNav, &SatNav::update, this, &Meteorologist::Station::richTextNameChanged);
-    }
-
-    _satNav = satNav;
-
-    if (!_satNav.isNull()) {
-        connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::Station::richTextNameChanged);
-        connect(_satNav, &SatNav::update, this, &Meteorologist::Station::richTextNameChanged);
-    }
-}
-
-
-QString Meteorologist::Station::richTextName() const
-{
-    return "Arglebargle";
-
-    /*
-                {
-                    var result = model.modelData.id
-                    var wp = geoMapProvider.findByID(model.modelData.id)
-                    if (wp !== null) {
-                        // Mention items that will lead to change of text
-                        satNav.status
-                        satNav.lastValidCoordinate
-
-                        return wp.richTextName
-                    }
-                    if (satNav.status === SatNav.OK)
-                        result += "<br>" + satNav.wayTo(model.modelData.location, globalSettings.useMetricUnits)
-                    return result
-                }
-    */
 }

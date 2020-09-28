@@ -20,84 +20,74 @@
 
 #pragma once
 
-#include <QGeoCoordinate>
-#include <QObject>
-#include <QPointer>
-#include <QVariant>
-
-#include "Clock.h"
 #include "Meteorologist.h"
-#include "SatNav.h"
-
-class GlobalSettings;
 
 
-/*! \brief Meteorologist::Station, a weather report containing a METAR and/or a TAF
+/*! \brief This class represents a weather station
  *
- * This class holds the weather report provided by a given station. The report
- * consists of a METAR (observations) and/or a TAF (forecast), and are generated
- * from the maps provided by the Meteorologist.
- * This class provides the raw data and also formats them into a human readable
- * language.
+ * This is a very simple class that represents a weather station. Weather stations
+ * are uniquely identified by their ICAO code. Depending on available data, they
+ * hold pointers to the latest METAR and TAF reports.
  */
 class Meteorologist::Station : public QObject {
     Q_OBJECT
 
+    friend class Meteorologist;
+    friend class Meteorologist::METAR;
+    friend class Meteorologist::TAF;
 public:
-    class TAF;
-
     /*! \brief Standard constructor
-    *
-    * @param id The station ID
-    * 
-    * @param metar The METAR data
-    * 
-    * @param taf The TAF data
-    * 
-    * @param parent The standard QObject parent pointer
-    */
-    explicit Station(const QString &id,
-                           Meteorologist::METAR *metar,
-                           Meteorologist::TAF *taf,
-                           QObject *parent = nullptr);
-
-explicit Station(QObject *parent = nullptr);
+     *
+     * This standard constructor creates an weather station invalid.
+     * Valid weather stations can only be created by instances of the
+     * Meteorologist class.
+     *
+     * @param parent The standard QObject parent pointer
+     */
+    explicit Station(QObject *parent = nullptr);
 
     // Standard destructor
     ~Station() = default;
 
-#warning documentation
-    void setClock(Clock *clock=nullptr);
-    void setSatNav(SatNav *satNav=nullptr);
-    void setGlobalSettings(GlobalSettings *globalSettings=nullptr);
+    /*! Geographical coordinate of the station reporting this METAR
+     *
+     * If the station coordinate is unknown, the property contains an invalid coordinate.
+     */
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordiante
+     */
+    QGeoCoordinate coordinate() const;
 
     /*! \brief The station ID
      *
      * The ID of the weather station is usually the ICAO designator of the
      * aerodrome on which the station is located.
      */
-    Q_PROPERTY(QString id READ id CONSTANT)
+    Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property id
      */
-    QString id() const { return _id; }
+    QString ICAOCode() const { return _ICAOCode; }
 
-    /*! \brief The METAR data
+    /*! Indicates if the station is valid */
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+
+    /*! \brief Getter function for property with the same name
      *
-     * A list of formated strings constituting the METAR data (observations).
-     * If the station has no METAR, the list only contains "NONE". The first 4
-     * letters of each string indicate which field the data belong to:
-     * - RAW: the raw metar report
-     * - TIME: the time of emission
-     * - WIND: the wind direction and speed
-     * - VIS: the horizontal visibility
-     * - WX: the significant weather
-     * - CLDS: the clouds
-     * - TEMP: the temperature
-     * - DEWP: the dewpoint
-     * - QNH: the pressure at sea-level
+     * @returns Property isValid
+     */
+    bool isValid() const;
+
+    /*! \brief Last METAR provided by this station
+     *
+     * This property holds a pointer to the last METAR provided by this station.
+     * The METAR instance is owned by an instance of Meteorologist, and can be deleted or
+     * updated by the Meteorologist anytime.
      */
     Q_PROPERTY(Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
 
@@ -105,41 +95,40 @@ explicit Station(QObject *parent = nullptr);
      *
      * @returns Property metar
      */
-    Meteorologist::METAR *metar() const { return _metar; }
+    Meteorologist::METAR *metar() const
+    {
+        return _metar;
+    }
 
-    /*! \brief The TAF data
+    /*! \brief Last TAF provided by this station
      *
-     * A list of formated strings constituting the TAF data (forecast).
-     * If the station has no TAF, the list only contains "NONE". The first 4
-     * letters of each string indicate which field the data belong to:
-     * - RAW: the raw metar report
-     * - TIME: the time of emission
-     * - FROM: the time at which the forecast starts
-     * - TO: the time at which the forecast ends
-     * - FCST: the forecast(s)
-     * Each forecast contains the start and end times, its probability, the wind
-     * speed and direction, the visibility, the significant weather and the
-     * clouds.
+     * This property holds a pointer to the last TAF provided by this station.
+     * The TAF instance is owned by an instance of Meteorologist, and can be deleted or
+     * updated by the Meteorologist anytime.
      */
-    Q_PROPERTY(Meteorologist::TAF *taf READ taf CONSTANT)
+    Q_PROPERTY(Meteorologist::TAF *taf READ taf NOTIFY tafChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    Meteorologist::TAF *taf() const { return _taf; }
+    Meteorologist::TAF *taf() const
+    {
+        return _taf;
+    }
 
-    Q_PROPERTY(QGeoCoordinate location READ location CONSTANT);
-    QGeoCoordinate location() const;
-    QString station_id() const;
-    int qnh() const;
+signals:
+    /* \brief Notifier signal */
+    void metarChanged();
 
-    Q_INVOKABLE QString oneLineDescription() const;
+    /* \brief Notifier signal */
+    void tafChanged();
 
-#warning documentation
-    Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)
-    QString richTextName() const;
+private:
+    Q_DISABLE_COPY_MOVE(Station)
 
+    // This constructor is only meant to be called by instances of the Meteorologist class
+    explicit Station(const QString &id, Meteorologist::METAR *metar, Meteorologist::TAF *taf, QObject *parent = nullptr);
 
     /*! \brief Converts the time into a human readable string */
     static QString decodeTime(const QVariant &time);
@@ -162,25 +151,9 @@ explicit Station(QObject *parent = nullptr);
     /*! \brief Converts the clouds into a human readable string */
     static QString decodeClouds(const QVariantList &clouds);
 
-signals:
-    /* \brief Notifier signal */
-    void metarChanged();
-#warning documentation
-    void richTextNameChanged();
-
-private slots:
-    void autodestruct();
-
-private:
-    Q_DISABLE_COPY_MOVE(Station)
-
-    // Pointers to other classes that are used internally
-    QPointer<Clock> _clock {};
-    QPointer<SatNav> _satNav {};
-    QPointer<GlobalSettings> _globalSettings {};
 
     /*! \brief The station ID */
-    QString _id;
+    QString _ICAOCode;
 
     /*! \brief METAR */
     QPointer<Meteorologist::METAR> _metar;

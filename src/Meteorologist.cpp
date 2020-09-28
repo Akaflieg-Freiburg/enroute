@@ -75,7 +75,7 @@ QList<QObject *> Meteorologist::reports() const {
     // Sort list
     auto compare = [&](Station *a, Station *b) {
         auto here = _sat->lastValidCoordinate();
-        return here.distanceTo(a->location()) < here.distanceTo(b->location());
+        return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);
 
@@ -97,7 +97,7 @@ QList<QObject *> Meteorologist::reportsAsWaypoints() {
     // Sort list
     auto compare = [&](Station *a, Station *b) {
         auto here = _sat->lastValidCoordinate();
-        return here.distanceTo(a->location()) < here.distanceTo(b->location());
+        return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);
 
@@ -105,12 +105,12 @@ QList<QObject *> Meteorologist::reportsAsWaypoints() {
     QList<QObject *> result;
 #warning
     foreach(auto rep, sortedReports) {
-        auto wp = _geoMapProvider->findByID(rep->id());
+        auto wp = _geoMapProvider->findByID(rep->ICAOCode());
         if (wp != nullptr)
             result << wp;
         else {
 #warning who will delete?
-            wp = new Waypoint(rep->location(), rep->id(), this);
+            wp = new Waypoint(rep->coordinate(), rep->ICAOCode(), this);
 #warning need to set clock
             //            wp->setClock(_clock);
             wp->setSatNav(_sat);
@@ -329,12 +329,16 @@ QString Meteorologist::QNHInfo() const
 
     // Find QNH of nearest airfield
     Station *closestReportWithQNH = nullptr;
+    int QNH = 0;
     foreach(auto report, _reports) {
         if (report.isNull())
             continue;
-        if (report->qnh() == 0)
+        if (report->metar() == nullptr)
             continue;
-        if (!report->location().isValid())
+        QNH = report->metar()->QNH();
+        if (QNH == 0)
+            continue;
+        if (!report->coordinate().isValid())
             continue;
         if (closestReportWithQNH == nullptr) {
             closestReportWithQNH = report;
@@ -342,12 +346,12 @@ QString Meteorologist::QNHInfo() const
         }
 
         QGeoCoordinate here = _sat->lastValidCoordinate();
-        if (here.distanceTo(report->location()) < here.distanceTo(closestReportWithQNH->location()))
+        if (here.distanceTo(report->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
             closestReportWithQNH = report;
     }
     if (closestReportWithQNH) {
-        return tr("QNH: %1 hPa in %2, %3").arg(closestReportWithQNH->qnh())
-                .arg(closestReportWithQNH->station_id())
+        return tr("QNH: %1 hPa in %2, %3").arg(QNH)
+                .arg(closestReportWithQNH->ICAOCode())
                 .arg(Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }
     return QString();
@@ -419,16 +423,18 @@ QString Meteorologist::briefDescription(QString code) const
 {
     auto rep = report(code);
     if (rep)
-        return rep->oneLineDescription();
+        if (rep->metar())
+            return rep->metar()->summary();
     return QString();
 }
+
 
 Meteorologist::Station *Meteorologist::report(QString code) const
 {
     foreach(auto report, _reports) {
         if (report.isNull())
             continue;
-        if (report->id() == code)
+        if (report->ICAOCode() == code)
             return report;
     }
     return nullptr;

@@ -60,6 +60,22 @@ public:
       };
     Q_ENUM(FlightCategory)
 
+
+    /*! Geographical coordinate of the station reporting this METAR
+     *
+     * If the station coordinate is unknown, the property contains an invalid coordinate.
+     */
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordiante
+     */
+    QGeoCoordinate coordinate() const
+    {
+        return _location;
+    }
+
     /*! METAR, as a translated, human-readable text */
     Q_PROPERTY(QString decodedText READ decodedText CONSTANT)
 
@@ -88,21 +104,6 @@ public:
      * @returns Property color
      */
     QString flightCategoryColor() const;
-
-    /*! Geographical coordinate of the station reporting this METAR
-     *
-     * If the station coordinate is unknown, the property contains an invalid coordinate.
-     */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordiante
-     */
-    QGeoCoordinate coordinate() const
-    {
-        return _location;
-    }
 
     /*! Expiration time and date
      *

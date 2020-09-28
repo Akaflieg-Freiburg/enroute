@@ -46,7 +46,6 @@
 #include "MobileAdaptor.h"
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
-#include "WeatherReport.h"
 #include "Wind.h"
 
 int main(int argc, char *argv[])
@@ -61,7 +60,6 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterUncreatableType<Meteorologist>("enroute", 1, 0, "Meteorologist", "Meteorologist objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
-    qmlRegisterType<WeatherReport>("enroute", 1, 0, "WeatherReport");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
 
     // Set up application

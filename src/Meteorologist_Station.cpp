@@ -19,35 +19,34 @@
  ***************************************************************************/
 
 #include "Meteorologist.h"
-#include "WeatherReport.h"
 
 #include <QQmlEngine>
 #include <QDateTime>
 #include <cmath>
 
-WeatherReport::WeatherReport(QObject *parent) : QObject(parent)
+Meteorologist::Station::Station(QObject *parent) : QObject(parent)
 {
 }
 
-WeatherReport::WeatherReport(const QString &id,
+Meteorologist::Station::Station(const QString &id,
                              Meteorologist::METAR *metar,
                              Meteorologist::TAF *taf,
                              QObject *parent) : QObject(parent), _id(id)
 {
     _metar = metar;
     if (!_metar.isNull()) {
-        connect(_metar, &QObject::destroyed, this, &WeatherReport::metarChanged);
-        connect(_metar, &QObject::destroyed, this, &WeatherReport::autodestruct);
+        connect(_metar, &QObject::destroyed, this, &Meteorologist::Station::metarChanged);
+        connect(_metar, &QObject::destroyed, this, &Meteorologist::Station::autodestruct);
     }
 
     _taf = taf;
     if (!_taf.isNull()) {
-        connect(_taf, &QObject::destroyed, this, &WeatherReport::autodestruct);
+        connect(_taf, &QObject::destroyed, this, &Meteorologist::Station::autodestruct);
     }
 }
 
 
-QGeoCoordinate WeatherReport::location() const
+QGeoCoordinate Meteorologist::Station::location() const
 {
     if (!_metar.isNull())
         return _metar->coordinate();
@@ -57,7 +56,7 @@ QGeoCoordinate WeatherReport::location() const
 }
 
 
-QString WeatherReport::station_id() const
+QString Meteorologist::Station::station_id() const
 {
     if (!_metar.isNull())
         return _metar->ICAOCode();
@@ -68,7 +67,7 @@ QString WeatherReport::station_id() const
 }
 
 
-int WeatherReport::qnh() const
+int Meteorologist::Station::qnh() const
 {
     if (_metar.isNull())
         return 0;
@@ -76,7 +75,7 @@ int WeatherReport::qnh() const
 }
 
 
-void WeatherReport::autodestruct()
+void Meteorologist::Station::autodestruct()
 {
     qWarning() << station_id() << "Autodestruct";
     if (_metar.isNull() && _taf.isNull())
@@ -84,13 +83,13 @@ void WeatherReport::autodestruct()
 }
 
 
-QString WeatherReport::decodeTime(const QVariant &time) {
+QString Meteorologist::Station::decodeTime(const QVariant &time) {
     QDateTime tim = QDateTime::fromString(time.toString().replace("T", " "), "yyyy-MM-dd hh:mm:ssZ");
     return tim.toString("ddd MMMM d yyyy hh:mm") + " UTC";
 }
 
 
-QString WeatherReport::decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg) {
+QString Meteorologist::Station::decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg) {
     QString w;
     if (windd.toString() == "0")
         if (winds.toString() == "0")
@@ -106,25 +105,25 @@ QString WeatherReport::decodeWind(const QVariant &windd, const QVariant &winds, 
 }
 
 
-QString WeatherReport::decodeVis(const QVariant &vis) {
+QString Meteorologist::Station::decodeVis(const QVariant &vis) {
     long v = std::lround(vis.toString().toDouble() * 1.61);
     return QString::number(v) + " km";
 }
 
 
-QString WeatherReport::decodeTemp(const QVariant &temp) {
+QString Meteorologist::Station::decodeTemp(const QVariant &temp) {
     QString tmp = temp.toString();
     return tmp.left(tmp.lastIndexOf(".")) + " °C";
 }
 
 
-QString WeatherReport::decodeQnh(const QVariant &altim) {
+QString Meteorologist::Station::decodeQnh(const QVariant &altim) {
     long qnh = std::lround(altim.toString().toDouble() * 33.86);
     return QString::number(qnh) + " hPa";
 }
 
 
-QString WeatherReport::decodeWx(const QVariant &wx) {
+QString Meteorologist::Station::decodeWx(const QVariant &wx) {
     QString w = wx.toString();
     // clear
     w.replace("NSW", "No significant weather");
@@ -169,7 +168,7 @@ QString WeatherReport::decodeWx(const QVariant &wx) {
 }
 
 
-QString WeatherReport::decodeClouds(const QVariantList &clouds) {
+QString Meteorologist::Station::decodeClouds(const QVariantList &clouds) {
     QString clds;
     for (int i = clouds.size() - 1; i >= 0; --i) {
         QList<QString> layer = clouds[i].toString().split(",");
@@ -201,7 +200,7 @@ QString WeatherReport::decodeClouds(const QVariantList &clouds) {
 }
 
 
-QString WeatherReport::oneLineDescription() const {
+QString Meteorologist::Station::oneLineDescription() const {
 
     if (_metar)
         return _metar->summary();
@@ -211,35 +210,35 @@ QString WeatherReport::oneLineDescription() const {
 }
 
 
-void WeatherReport::setClock(Clock *clock)
+void Meteorologist::Station::setClock(Clock *clock)
 {
     if (!_clock.isNull())
-        disconnect(_clock, &Clock::timeChanged, this, &WeatherReport::richTextNameChanged);
+        disconnect(_clock, &Clock::timeChanged, this, &Meteorologist::Station::richTextNameChanged);
 
     _clock = clock;
 
     if (!_clock.isNull())
-        connect(_clock, &Clock::timeChanged, this, &WeatherReport::richTextNameChanged);
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::Station::richTextNameChanged);
 }
 
 
-void WeatherReport::setSatNav(SatNav *satNav)
+void Meteorologist::Station::setSatNav(SatNav *satNav)
 {
     if (!_satNav.isNull()) {
-        disconnect(_satNav, &SatNav::statusChanged, this, &WeatherReport::richTextNameChanged);
-        disconnect(_satNav, &SatNav::update, this, &WeatherReport::richTextNameChanged);
+        disconnect(_satNav, &SatNav::statusChanged, this, &Meteorologist::Station::richTextNameChanged);
+        disconnect(_satNav, &SatNav::update, this, &Meteorologist::Station::richTextNameChanged);
     }
 
     _satNav = satNav;
 
     if (!_satNav.isNull()) {
-        connect(_satNav, &SatNav::statusChanged, this, &WeatherReport::richTextNameChanged);
-        connect(_satNav, &SatNav::update, this, &WeatherReport::richTextNameChanged);
+        connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::Station::richTextNameChanged);
+        connect(_satNav, &SatNav::update, this, &Meteorologist::Station::richTextNameChanged);
     }
 }
 
 
-QString WeatherReport::richTextName() const
+QString Meteorologist::Station::richTextName() const
 {
     return "Arglebargle";
 

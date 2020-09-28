@@ -74,18 +74,23 @@ set(SOURCES
 
     # Header files
     Aircraft.h
+    Airspace.h
     Clock.h
+    Downloadable.h
+    DownloadableGroup.h
+    DownloadableGroupWatcher.h
     FlightRoute.h
     GeoMapProvider.h
     GlobalSettings.h
     Librarian.h
     Meteorologist.h
     Meteorologist_METAR.h
+    Meteorologist_Station.h
     Meteorologist_TAF.h
     MobileAdaptor.h
     SatNav.h
     ScaleQuickItem.h
-    WeatherReport.h
+    Waypoint.h
 
     # C++ files
     Aircraft.cpp
@@ -106,6 +111,7 @@ set(SOURCES
     MapManager.cpp
     Meteorologist.cpp
     Meteorologist_METAR.cpp
+    Meteorologist_Station.cpp
     Meteorologist_TAF.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
@@ -114,7 +120,6 @@ set(SOURCES
     TileHandler.cpp
     TileServer.cpp
     Waypoint.cpp
-    WeatherReport.cpp
     Wind.cpp
     )
 

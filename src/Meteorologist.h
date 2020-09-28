@@ -48,6 +48,7 @@ class Meteorologist : public QObject {
 
 public:
     class METAR;
+    class Station;
     class TAF;
 
     /*! \brief Standard constructor
@@ -163,7 +164,7 @@ public:
 
     Q_INVOKABLE QString briefDescription(QString code) const;
 
-    WeatherReport *report(QString code) const;
+    Station *report(QString code) const;
 
 signals:
     /*! \brief Notifier signal */
@@ -218,7 +219,7 @@ private:
     bool _backgroundUpdate {true};
 
     /*! \brief List of weather reports */
-    QList<QPointer<WeatherReport>> _reports;
+    QList<QPointer<Station>> _reports;
 
     /*! \brief Slot activated when a download is finished */
     void downloadFinished();
@@ -229,4 +230,5 @@ private:
 
 
 #include "Meteorologist_METAR.h"
+#include "Meteorologist_Station.h"
 #include "Meteorologist_TAF.h"

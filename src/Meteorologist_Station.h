@@ -32,7 +32,7 @@
 class GlobalSettings;
 
 
-/*! \brief WeatherReport, a weather report containing a METAR and/or a TAF
+/*! \brief Meteorologist::Station, a weather report containing a METAR and/or a TAF
  *
  * This class holds the weather report provided by a given station. The report
  * consists of a METAR (observations) and/or a TAF (forecast), and are generated
@@ -40,7 +40,7 @@ class GlobalSettings;
  * This class provides the raw data and also formats them into a human readable
  * language.
  */
-class WeatherReport : public QObject {
+class Meteorologist::Station : public QObject {
     Q_OBJECT
 
 public:
@@ -56,14 +56,15 @@ public:
     * 
     * @param parent The standard QObject parent pointer
     */
-    explicit WeatherReport(const QString &id,
+    explicit Station(const QString &id,
                            Meteorologist::METAR *metar,
                            Meteorologist::TAF *taf,
                            QObject *parent = nullptr);
-explicit WeatherReport(QObject *parent = nullptr);
+
+explicit Station(QObject *parent = nullptr);
 
     // Standard destructor
-    ~WeatherReport() = default;
+    ~Station() = default;
 
 #warning documentation
     void setClock(Clock *clock=nullptr);
@@ -171,7 +172,7 @@ private slots:
     void autodestruct();
 
 private:
-    Q_DISABLE_COPY_MOVE(WeatherReport)
+    Q_DISABLE_COPY_MOVE(Station)
 
     // Pointers to other classes that are used internally
     QPointer<Clock> _clock {};

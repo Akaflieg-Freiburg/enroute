@@ -20,7 +20,6 @@
 
 #include "Clock.h"
 #include "Meteorologist.h"
-#include "WeatherReport.h"
 
 #include <QtGlobal>
 #include <QQmlEngine>
@@ -68,13 +67,13 @@ Meteorologist::~Meteorologist()
 QList<QObject *> Meteorologist::reports() const {
 
     // Produce a list of reports, without nullpointers
-    QList<WeatherReport *> sortedReports;
+    QList<Station *> sortedReports;
     foreach(auto rep, _reports)
         if (!rep.isNull())
             sortedReports += rep;
 
     // Sort list
-    auto compare = [&](WeatherReport *a, WeatherReport *b) {
+    auto compare = [&](Station *a, Station *b) {
         auto here = _sat->lastValidCoordinate();
         return here.distanceTo(a->location()) < here.distanceTo(b->location());
     };
@@ -90,13 +89,13 @@ QList<QObject *> Meteorologist::reports() const {
 QList<QObject *> Meteorologist::reportsAsWaypoints() {
 
     // Produce a list of reports, without nullpointers
-    QList<WeatherReport *> sortedReports;
+    QList<Station *> sortedReports;
     foreach(auto rep, _reports)
         if (!rep.isNull())
             sortedReports += rep;
 
     // Sort list
-    auto compare = [&](WeatherReport *a, WeatherReport *b) {
+    auto compare = [&](Station *a, Station *b) {
         auto here = _sat->lastValidCoordinate();
         return here.distanceTo(a->location()) < here.distanceTo(b->location());
     };
@@ -282,17 +281,17 @@ void Meteorologist::process() {
     foreach(auto station, mStations) {
         // Station has both METAR and TAF
         if (tafs.contains(station)) {
-            _reports.append(new WeatherReport(station, metars.value(station), tafs.value(station)));
+            _reports.append(new Station(station, metars.value(station), tafs.value(station)));
             int i = tStations.indexOf(station);
             tStations.removeAt(i);
         }
         // Station only has METAR
         else
-            _reports.append(new WeatherReport(station, metars.value(station), nullptr)); // empty TAF
+            _reports.append(new Station(station, metars.value(station), nullptr)); // empty TAF
     }
     // Stations only have TAF
     foreach(auto station, tStations)
-        _reports.append(new WeatherReport(station, nullptr, tafs.value(station))); // empty METAR
+        _reports.append(new Station(station, nullptr, tafs.value(station))); // empty METAR
 
     // Report change of reports when weather reports start to auto-delete themsleves
     foreach(auto report, _reports) {
@@ -329,7 +328,7 @@ QString Meteorologist::QNHInfo() const
         return QString();
 
     // Find QNH of nearest airfield
-    WeatherReport *closestReportWithQNH = nullptr;
+    Station *closestReportWithQNH = nullptr;
     foreach(auto report, _reports) {
         if (report.isNull())
             continue;
@@ -424,13 +423,13 @@ QString Meteorologist::briefDescription(QString code) const
     return QString();
 }
 
-WeatherReport *Meteorologist::report(QString code) const
-                 {
-                     foreach(auto report, _reports) {
-                         if (report.isNull())
-                             continue;
-                         if (report->id() == code)
-                             return report;
-                     }
-                     return nullptr;
-                 }
+Meteorologist::Station *Meteorologist::report(QString code) const
+{
+    foreach(auto report, _reports) {
+        if (report.isNull())
+            continue;
+        if (report->id() == code)
+            return report;
+    }
+    return nullptr;
+}

@@ -82,43 +82,6 @@ QList<Meteorologist::Station *> Meteorologist::stations() const {
     return sortedReports;
 }
 
-QList<QObject *> Meteorologist::reportsAsWaypoints() {
-
-    // Produce a list of reports, without nullpointers
-    QList<Station *> sortedReports;
-    foreach(auto rep, _reports)
-        if (!rep.isNull())
-            sortedReports += rep;
-
-    // Sort list
-    auto compare = [&](Station *a, Station *b) {
-        auto here = _sat->lastValidCoordinate();
-        return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
-    };
-    std::sort(sortedReports.begin(), sortedReports.end(), compare);
-
-    // Generate waypoint, convert to QObjectList
-    QList<QObject *> result;
-#warning
-    foreach(auto rep, sortedReports) {
-        auto wp = _geoMapProvider->findByID(rep->ICAOCode());
-        if (wp != nullptr)
-            result << wp;
-        else {
-#warning who will delete?
-            wp = new Waypoint(rep->coordinate(), rep->ICAOCode(), this);
-#warning need to set clock
-            //            wp->setClock(_clock);
-            wp->setSatNav(_sat);
-            wp->setMeteorologist(this);
-            wp->setGlobalSettings(_globalSettings);
-
-            result << wp;
-        }
-    }
-    return result;
-}
-
 
 void Meteorologist::update(bool isBackgroundUpdate) {
     // Paranoid safety checks

@@ -114,19 +114,6 @@ public:
      */
     QList<Meteorologist::Station *> stations() const;
 
-    /*! \brief The list of weather reports
-     *
-     * Returns the weather reports as a list of QObject for better interraction
-     * with QML.
-     */
-    Q_PROPERTY(QList<QObject*> reportsAsWaypoints READ reportsAsWaypoints NOTIFY stationsChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property reports
-     */
-    QList<QObject*> reportsAsWaypoints();
-
     /*! \brief Downloading flag
      *
      * Indicates if the Meteorologist is currently downloading METAR/TAF information from the internet

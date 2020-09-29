@@ -46,7 +46,7 @@ Meteorologist::Meteorologist(Clock *clock,
     _updateTimer.start();
 
     // Update the description text when needed
-    connect(this, &Meteorologist::reportsChanged, this, &Meteorologist::QNHInfoChanged);
+    connect(this, &Meteorologist::stationsChanged, this, &Meteorologist::QNHInfoChanged);
     connect(clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
     connect(sat, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
     connect(clock, &Clock::timeChanged, this, &Meteorologist::SunInfoChanged);
@@ -64,7 +64,7 @@ Meteorologist::~Meteorologist()
 }
 
 
-QList<QObject *> Meteorologist::reports() const {
+QList<Meteorologist::Station *> Meteorologist::stations() const {
 
     // Produce a list of reports, without nullpointers
     QList<Station *> sortedReports;
@@ -79,11 +79,7 @@ QList<QObject *> Meteorologist::reports() const {
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);
 
-    // Convert to QObjectList
-    QList<QObject *> result;
-    foreach(auto rep, sortedReports)
-        result += rep;
-    return result;
+    return sortedReports;
 }
 
 QList<QObject *> Meteorologist::reportsAsWaypoints() {
@@ -270,7 +266,7 @@ void Meteorologist::process() {
     foreach(auto report, _reports) {
         if (report.isNull())
             continue;
-        disconnect(report, &QObject::destroyed, this, &Meteorologist::reportsChanged);
+        disconnect(report, &QObject::destroyed, this, &Meteorologist::stationsChanged);
         report->deleteLater();
     }
     _reports.clear();
@@ -281,23 +277,33 @@ void Meteorologist::process() {
     foreach(auto station, mStations) {
         // Station has both METAR and TAF
         if (tafs.contains(station)) {
-            _reports.append(new Station(station, metars.value(station), tafs.value(station)));
+            auto stationPtr = new Station(station, this);
+            stationPtr->setMETAR(metars.value(station));
+            stationPtr->setTAF(tafs.value(station));
+
+            _reports << stationPtr;
             int i = tStations.indexOf(station);
             tStations.removeAt(i);
         }
         // Station only has METAR
-        else
-            _reports.append(new Station(station, metars.value(station), nullptr)); // empty TAF
+        else {
+            auto stationPtr = new Station(station, this);
+            stationPtr->setMETAR(metars.value(station));
+            _reports << stationPtr; // empty TAF
+        }
     }
     // Stations only have TAF
-    foreach(auto station, tStations)
-        _reports.append(new Station(station, nullptr, tafs.value(station))); // empty METAR
+    foreach(auto station, tStations) {
+        auto stationPtr = new Station(station, this);
+        stationPtr->setTAF(tafs.value(station));
+        _reports << stationPtr;
+    }
 
     // Report change of reports when weather reports start to auto-delete themsleves
     foreach(auto report, _reports) {
         if (report.isNull())
             continue;
-        connect(report, &QObject::destroyed, this, &Meteorologist::reportsChanged);
+        connect(report, &QObject::destroyed, this, &Meteorologist::stationsChanged);
     }
 
     // Clear replies container
@@ -305,7 +311,7 @@ void Meteorologist::process() {
     _replies.clear();
 
     // Update flag and signals
-    emit reportsChanged();
+    emit stationsChanged();
 
     _lastUpdate = QDateTime::currentDateTimeUtc();
     emit QNHInfoChanged();
@@ -415,16 +421,6 @@ QString Meteorologist::SunInfo() const
             return tr("SS %1, %2").arg(Clock::describePointInTime(sunset, coord), Clock::describeTimeDifference(sunset));
         return tr("SR %1, %2").arg(Clock::describePointInTime(sunriseTomorrow, coord), Clock::describeTimeDifference(sunriseTomorrow));
     }
-    return QString();
-}
-
-
-QString Meteorologist::briefDescription(QString code) const
-{
-    auto rep = report(code);
-    if (rep)
-        if (rep->metar())
-            return rep->metar()->summary();
     return QString();
 }
 

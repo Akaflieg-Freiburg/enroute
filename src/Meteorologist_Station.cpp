@@ -20,33 +20,16 @@
 
 #include "Meteorologist.h"
 
-#include <QQmlEngine>
-#include <QDateTime>
-#include <cmath>
 
 Meteorologist::Station::Station(QObject *parent) : QObject(parent)
 {
 }
 
-Meteorologist::Station::Station(const QString &id,
-                             Meteorologist::METAR *metar,
-                             Meteorologist::TAF *taf,
-                             QObject *parent) : QObject(parent), _ICAOCode(id)
-{
-    _metar = metar;
-    if (!_metar.isNull()) {
-        connect(_metar, &QObject::destroyed, this, &Meteorologist::Station::metarChanged);
-    }
 
-    _taf = taf;
+Meteorologist::Station::Station(const QString &id, QObject *parent) : QObject(parent), _ICAOCode(id)
+{
 }
 
-
-bool Meteorologist::Station::isValid() const
-{
-#warning not implemented
-    return true;
-}
 
 QGeoCoordinate Meteorologist::Station::coordinate() const
 {
@@ -57,6 +40,48 @@ QGeoCoordinate Meteorologist::Station::coordinate() const
     return QGeoCoordinate();
 }
 
+
+void Meteorologist::Station::setMETAR(Meteorologist::METAR *metar)
+{
+    // If metar did not change, then do nothing
+    if (metar == _metar)
+        return;
+
+    // Disconnect old metar
+    if (!_metar.isNull())
+        disconnect(_metar, &QObject::destroyed, this, &Meteorologist::Station::metarChanged);
+
+    // Overwrite metar pointer and connect new metar
+    _metar = metar;
+    if (!_metar.isNull())
+        connect(_metar, &QObject::destroyed, this, &Meteorologist::Station::metarChanged);
+
+    // Let the world know that the metar changed
+    emit metarChanged();
+}
+
+
+void Meteorologist::Station::setTAF(Meteorologist::TAF *taf)
+{
+    // If metar did not change, then do nothing
+    if (taf == _taf)
+        return;
+
+    // Disconnect old taf
+    if (!_taf.isNull())
+        disconnect(_taf, &QObject::destroyed, this, &Meteorologist::Station::tafChanged);
+
+    // Overwrite metar pointer and connect new taf
+    _taf = taf;
+    if (!_taf.isNull())
+        connect(_taf, &QObject::destroyed, this, &Meteorologist::Station::tafChanged);
+
+    // Let the world know that the taf changed
+    emit tafChanged();
+}
+
+// ================================
+#warning old functionality, needs to go out
 
 QString Meteorologist::Station::decodeTime(const QVariant &time) {
     QDateTime tim = QDateTime::fromString(time.toString().replace("T", " "), "yyyy-MM-dd hh:mm:ssZ");

@@ -127,13 +127,19 @@ QString Waypoint::richTextName() const
         if (!_globalSettings.isNull())
             useMetric = _globalSettings->useMetricUnits();
         lines << QString("<font size='2'>%1</font>").arg(_satNav->wayTo(_coordinate, useMetric));
-        }
+    }
 
     // line three: METAR information, if available
     if (!_meteorologist.isNull() && _properties.contains("COD")) {
-        auto descr = _meteorologist->briefDescription(_properties.value("COD").toString());
-        if (!descr.isEmpty())
-            lines << QString("<font size='2'>%1</font>").arg(descr);
+        auto station = _meteorologist->report(_properties.value("COD").toString());
+        if (station) {
+            auto metar = station->metar();
+            if (metar) {
+                auto descr = metar->summary();
+                if (!descr.isEmpty())
+                    lines << QString("<font size='2'>%1</font>").arg(descr);
+            }
+        }
     }
 
     return lines.join("<br>");
@@ -286,17 +292,17 @@ void Waypoint::setSatNav(SatNav *satNav)
 void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 {
     if (!_meteorologist.isNull()) {
-        disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::colorChanged);
-        disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
-        disconnect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::weatherReportChanged);
+        disconnect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::colorChanged);
+        disconnect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::richTextNameChanged);
+        disconnect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::weatherReportChanged);
     }
 
     _meteorologist = meteorologist;
 
     if (!_meteorologist.isNull()) {
-        connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::colorChanged);
-        connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::richTextNameChanged);
-        connect(_meteorologist, &Meteorologist::reportsChanged, this, &Waypoint::weatherReportChanged);
+        connect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::colorChanged);
+        connect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::richTextNameChanged);
+        connect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::weatherReportChanged);
     }
 }
 

@@ -105,27 +105,27 @@ public:
      * Returns the weather reports as a list of QObject for better interraction
      * with QML.
      */
-    Q_PROPERTY(QList<QObject*> reports READ reports NOTIFY reportsChanged)
+    Q_PROPERTY(QList<Meteorologist::Station *> stations READ stations NOTIFY stationsChanged)
+#warning need to explain about sorting
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property reports
      */
-    QList<QObject*> reports() const;
+    QList<Meteorologist::Station *> stations() const;
 
     /*! \brief The list of weather reports
      *
      * Returns the weather reports as a list of QObject for better interraction
      * with QML.
      */
-    Q_PROPERTY(QList<QObject*> reportsAsWaypoints READ reportsAsWaypoints NOTIFY reportsChanged)
+    Q_PROPERTY(QList<QObject*> reportsAsWaypoints READ reportsAsWaypoints NOTIFY stationsChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property reports
      */
     QList<QObject*> reportsAsWaypoints();
-
 
     /*! \brief Downloading flag
      *
@@ -162,8 +162,7 @@ public:
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
-    Q_INVOKABLE QString briefDescription(QString code) const;
-
+    /*! \brief Get station */
     Station *report(QString code) const;
 
 signals:
@@ -183,7 +182,7 @@ signals:
     void SunInfoChanged();
 
     /*! \brief Signal emitted when the list of weather reports changes */
-    void reportsChanged();
+    void stationsChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)

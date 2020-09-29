@@ -72,7 +72,10 @@ public:
      *
      * @returns Property id
      */
-    QString ICAOCode() const { return _ICAOCode; }
+    QString ICAOCode() const
+    {
+        return _ICAOCode;
+    }
 
     /*! Indicates if the station is valid */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
@@ -81,11 +84,14 @@ public:
      *
      * @returns Property isValid
      */
-    bool isValid() const;
+    bool isValid() const
+    {
+        return (_ICAOCode.length() == 4);
+    }
 
     /*! \brief Last METAR provided by this station
      *
-     * This property holds a pointer to the last METAR provided by this station.
+     * This property holds a pointer to the last METAR provided by this station, which can be a nullptr if no data is available.
      * The METAR instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
@@ -102,7 +108,7 @@ public:
 
     /*! \brief Last TAF provided by this station
      *
-     * This property holds a pointer to the last TAF provided by this station.
+     * This property holds a pointer to the last TAF provided by this station, which can be a nullptr if no data is available.
      * The TAF instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
@@ -128,7 +134,13 @@ private:
     Q_DISABLE_COPY_MOVE(Station)
 
     // This constructor is only meant to be called by instances of the Meteorologist class
-    explicit Station(const QString &id, Meteorologist::METAR *metar, Meteorologist::TAF *taf, QObject *parent = nullptr);
+    explicit Station(const QString &id, QObject *parent);
+
+    // Sets the METAR message. The signal metarChanged() will be emitted if appropriate.
+    void setMETAR(Meteorologist::METAR *metar);
+
+    // Sets the METAR message. The signal tafChanged() will be emitted if appropriate.
+    void setTAF(Meteorologist::TAF *taf);
 
     /*! \brief Converts the time into a human readable string */
     static QString decodeTime(const QVariant &time);
@@ -161,4 +173,3 @@ private:
     /*! \brief TAF */
     QPointer<Meteorologist::TAF> _taf;
 };
-

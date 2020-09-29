@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "Meteorologist_METAR.h"
-#include "Meteorologist_Station.h"
+#include "Meteorologist_WeatherStation.h"
 
 
 Meteorologist::METAR::METAR(QObject *parent)
@@ -139,25 +139,25 @@ Meteorologist::METAR::METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent
     if (data.contains("raw_text"))
         dataStrings.push_back("RAW " + data.value("raw_text").toString());
     if (data.contains("observation_time"))
-        dataStrings.push_back("TIME" + Meteorologist::Station::decodeTime(data.value("observation_time")));
+        dataStrings.push_back("TIME" + Meteorologist::WeatherStation::decodeTime(data.value("observation_time")));
     if (data.contains("wind_dir_degrees") && data.contains("wind_speed_kt")) {
         if (data.contains("wind_gust_kt"))
-            dataStrings.push_back("WIND" + Meteorologist::Station::decodeWind(data.value("wind_dir_degrees"), data.value("wind_speed_kt"), data.value("wind_gust_kt")));
+            dataStrings.push_back("WIND" + Meteorologist::WeatherStation::decodeWind(data.value("wind_dir_degrees"), data.value("wind_speed_kt"), data.value("wind_gust_kt")));
         else
-            dataStrings.push_back("WIND" + Meteorologist::Station::decodeWind(data.value("wind_dir_degrees"), data.value("wind_speed_kt")));
+            dataStrings.push_back("WIND" + Meteorologist::WeatherStation::decodeWind(data.value("wind_dir_degrees"), data.value("wind_speed_kt")));
     }
     if (data.contains("visibility_statute_mi"))
-        dataStrings.push_back("VIS " + Meteorologist::Station::decodeVis(data.value("visibility_statute_mi")));
+        dataStrings.push_back("VIS " + Meteorologist::WeatherStation::decodeVis(data.value("visibility_statute_mi")));
     if (data.contains("wx_string"))
-        dataStrings.push_back("WX  " + Meteorologist::Station::decodeWx(data.value("wx_string")));
+        dataStrings.push_back("WX  " + Meteorologist::WeatherStation::decodeWx(data.value("wx_string")));
     if (data.contains("sky_condition"))
-        dataStrings.push_back("CLDS" + Meteorologist::Station::decodeClouds(data.values("sky_condition")));
+        dataStrings.push_back("CLDS" + Meteorologist::WeatherStation::decodeClouds(data.values("sky_condition")));
     if (data.contains("temp_c"))
-        dataStrings.push_back("TEMP" + Meteorologist::Station::decodeTemp(data.value("temp_c")));
+        dataStrings.push_back("TEMP" + Meteorologist::WeatherStation::decodeTemp(data.value("temp_c")));
     if (data.contains("dewpoint_c"))
-        dataStrings.push_back("DEWP" + Meteorologist::Station::decodeTemp(data.value("dewpoint_c")));
+        dataStrings.push_back("DEWP" + Meteorologist::WeatherStation::decodeTemp(data.value("dewpoint_c")));
     if (data.contains("altim_in_hg"))
-        dataStrings.push_back("QNH " + Meteorologist::Station::decodeQnh(data.value("altim_in_hg")));
+        dataStrings.push_back("QNH " + Meteorologist::WeatherStation::decodeQnh(data.value("altim_in_hg")));
 
     //
     // Set up self-destruction timer
@@ -257,7 +257,7 @@ QString Meteorologist::METAR::summary() const {
         resultList << tr("wind at %1 kt").arg(windSpeed);
 
     if (data.contains("wx_string"))
-        resultList << Meteorologist::Station::decodeWx(data.value("wx_string"));
+        resultList << Meteorologist::WeatherStation::decodeWx(data.value("wx_string"));
 
     if (resultList.isEmpty())
         return QString();

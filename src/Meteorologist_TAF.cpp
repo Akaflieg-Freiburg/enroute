@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "Clock.h"
-#include "Meteorologist_Station.h"
 #include "Meteorologist_TAF.h"
+#include "Meteorologist_WeatherStation.h"
 
 
 Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent) : QObject(parent)
@@ -112,36 +112,36 @@ Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent) : 
     if (data.contains("raw_text"))
         dataStrings.push_back("RAW " + data.value("raw_text").toString());
     if (data.contains("issue_time"))
-        dataStrings.push_back("TIME" + Meteorologist::Station::decodeTime(data.value("issue_time")));
+        dataStrings.push_back("TIME" + Meteorologist::WeatherStation::decodeTime(data.value("issue_time")));
     if (data.contains("valid_time_from"))
-        dataStrings.push_back("FROM" + Meteorologist::Station::decodeTime(data.value("valid_time_from")));
+        dataStrings.push_back("FROM" + Meteorologist::WeatherStation::decodeTime(data.value("valid_time_from")));
     if (data.contains("valid_time_to"))
-        dataStrings.push_back("TO  " + Meteorologist::Station::decodeTime(data.value("valid_time_to")));
+        dataStrings.push_back("TO  " + Meteorologist::WeatherStation::decodeTime(data.value("valid_time_to")));
     if (data.contains("forecast")) {
         for (int i = data.values("forecast").size() - 1; i >= 0; --i) {
             QMultiMap<QString, QVariant> forecast = data.values("forecast")[i].toMap();
             QString fcst;
             if (forecast.contains("fcst_time_from") && forecast.contains("fcst_time_to")) {
                 if (!forecast.contains("change_indicator"))
-                    fcst += "From " +Meteorologist::Station::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::Station::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                    fcst += "From " +Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_to")) + "<br>";
                 else if (forecast.value("change_indicator").toString() == "TEMPO")
-                    fcst += "Temporary from " + Meteorologist::Station::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::Station::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                    fcst += "Temporary from " + Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_to")) + "<br>";
                 else if (forecast.value("change_indicator").toString() == "BECMG")
-                    fcst += "Transition from " + Meteorologist::Station::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::Station::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                    fcst += "Transition from " + Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_to")) + "<br>";
                 else
-                    fcst += "From " + Meteorologist::Station::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::Station::decodeTime(forecast.value("fcst_time_to")) + "<br>";
+                    fcst += "From " + Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_from")) + " to " + Meteorologist::WeatherStation::decodeTime(forecast.value("fcst_time_to")) + "<br>";
 
             }
             if (forecast.contains("probability"))
                 fcst.push_back(forecast.value("probability").toString() + "% probability<br>");
             if (forecast.contains("wind_dir_degrees") && forecast.contains("wind_speed_kt"))
-                fcst.push_back("Wind " + Meteorologist::Station::decodeWind(forecast.value("wind_dir_degrees"), forecast.value("wind_speed_kt")) + "<br>");
+                fcst.push_back("Wind " + Meteorologist::WeatherStation::decodeWind(forecast.value("wind_dir_degrees"), forecast.value("wind_speed_kt")) + "<br>");
             if (forecast.contains("visibility_statute_mi"))
-                fcst.push_back("Visibility " + Meteorologist::Station::decodeVis(forecast.value("visibility_statute_mi")) + "<br>");
+                fcst.push_back("Visibility " + Meteorologist::WeatherStation::decodeVis(forecast.value("visibility_statute_mi")) + "<br>");
             if (forecast.contains("wx_string"))
-                fcst.push_back(Meteorologist::Station::decodeWx(forecast.value("wx_string")) + "<br>");
+                fcst.push_back(Meteorologist::WeatherStation::decodeWx(forecast.value("wx_string")) + "<br>");
             if (forecast.contains("sky_condition"))
-                fcst.push_back(Meteorologist::Station::decodeClouds(forecast.values("sky_condition")));
+                fcst.push_back(Meteorologist::WeatherStation::decodeClouds(forecast.values("sky_condition")));
             dataStrings.push_back("FCST" + fcst);
         }
     }

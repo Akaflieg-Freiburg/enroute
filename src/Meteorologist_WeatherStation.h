@@ -23,13 +23,13 @@
 #include "Meteorologist.h"
 
 
-/*! \brief This class represents a weather station
+/*! \brief This class represents a weather station that issues METAR or TAF report
  *
  * This is a very simple class that represents a weather station. Weather stations
  * are uniquely identified by their ICAO code. Depending on available data, they
  * hold pointers to the latest METAR and TAF reports.
  */
-class Meteorologist::Station : public QObject {
+class Meteorologist::WeatherStation : public QObject {
     Q_OBJECT
 
     friend class Meteorologist;
@@ -38,20 +38,20 @@ class Meteorologist::Station : public QObject {
 public:
     /*! \brief Standard constructor
      *
-     * This standard constructor creates an weather station invalid.
-     * Valid weather stations can only be created by instances of the
+     * This standard constructor creates an weather WeatherStation invalid.
+     * Valid weather WeatherStations can only be created by instances of the
      * Meteorologist class.
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Station(QObject *parent = nullptr);
+    explicit WeatherStation(QObject *parent = nullptr);
 
     // Standard destructor
-    ~Station() = default;
+    ~WeatherStation() = default;
 
-    /*! Geographical coordinate of the station reporting this METAR
+    /*! Geographical coordinate of the WeatherStation reporting this METAR
      *
-     * If the station coordinate is unknown, the property contains an invalid coordinate.
+     * If the WeatherStation coordinate is unknown, the property contains an invalid coordinate.
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
@@ -61,10 +61,10 @@ public:
      */
     QGeoCoordinate coordinate() const;
 
-    /*! \brief The station ID
+    /*! \brief The WeatherStation ID
      *
-     * The ID of the weather station is usually the ICAO designator of the
-     * aerodrome on which the station is located.
+     * The ID of the weather WeatherStation is usually the ICAO designator of the
+     * aerodrome on which the WeatherStation is located.
      */
     Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
 
@@ -77,7 +77,7 @@ public:
         return _ICAOCode;
     }
 
-    /*! Indicates if the station is valid */
+    /*! Indicates if the WeatherStation is valid */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
     /*! \brief Getter function for property with the same name
@@ -89,36 +89,36 @@ public:
         return (_ICAOCode.length() == 4);
     }
 
-    /*! \brief Last METAR provided by this station
+    /*! \brief Last METAR provided by this WeatherStation
      *
-     * This property holds a pointer to the last METAR provided by this station, which can be a nullptr if no data is available.
+     * This property holds a pointer to the last METAR provided by this WeatherStation, which can be a nullptr if no data is available.
      * The METAR instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
-    Q_PROPERTY(Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
+    Q_PROPERTY(const Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property metar
      */
-    Meteorologist::METAR *metar() const
+    const Meteorologist::METAR *metar() const
     {
         return _metar;
     }
 
-    /*! \brief Last TAF provided by this station
+    /*! \brief Last TAF provided by this WeatherStation
      *
-     * This property holds a pointer to the last TAF provided by this station, which can be a nullptr if no data is available.
+     * This property holds a pointer to the last TAF provided by this WeatherStation, which can be a nullptr if no data is available.
      * The TAF instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
-    Q_PROPERTY(Meteorologist::TAF *taf READ taf NOTIFY tafChanged)
+    Q_PROPERTY(const Meteorologist::TAF *taf READ taf NOTIFY tafChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    Meteorologist::TAF *taf() const
+    const Meteorologist::TAF *taf() const
     {
         return _taf;
     }
@@ -131,10 +131,10 @@ signals:
     void tafChanged();
 
 private:
-    Q_DISABLE_COPY_MOVE(Station)
+    Q_DISABLE_COPY_MOVE(WeatherStation)
 
     // This constructor is only meant to be called by instances of the Meteorologist class
-    explicit Station(const QString &id, QObject *parent);
+    explicit WeatherStation(const QString &id, QObject *parent);
 
     // Sets the METAR message. The signal metarChanged() will be emitted if appropriate.
     void setMETAR(Meteorologist::METAR *metar);
@@ -164,7 +164,7 @@ private:
     static QString decodeClouds(const QVariantList &clouds);
 
 
-    /*! \brief The station ID */
+    /*! \brief The WeatherStation ID */
     QString _ICAOCode;
 
     /*! \brief METAR */

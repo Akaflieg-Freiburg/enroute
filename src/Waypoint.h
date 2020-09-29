@@ -184,8 +184,8 @@ public:
     const QObject *weatherReport() const;
 
 #warning documentation
-    Q_PROPERTY(QObject *metar READ metar NOTIFY weatherReportChanged)
-    QObject *metar() const;
+    Q_PROPERTY(const QObject *metar READ metar NOTIFY weatherReportChanged)
+    const QObject *metar() const;
 
 #warning documentation
     Q_PROPERTY(bool hasMetar READ hasMetar NOTIFY weatherReportChanged)
@@ -195,8 +195,8 @@ public:
     }
 
 #warning documentation
-    Q_PROPERTY(QObject *taf READ taf NOTIFY weatherReportChanged)
-    QObject *taf() const;
+    Q_PROPERTY(const QObject *taf READ taf NOTIFY weatherReportChanged)
+    const QObject *taf() const;
 
 #warning documentation
     Q_PROPERTY(bool hasTaf READ hasTaf NOTIFY weatherReportChanged)

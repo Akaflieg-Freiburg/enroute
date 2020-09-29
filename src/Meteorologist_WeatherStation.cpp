@@ -21,17 +21,17 @@
 #include "Meteorologist.h"
 
 
-Meteorologist::Station::Station(QObject *parent) : QObject(parent)
+Meteorologist::WeatherStation::WeatherStation(QObject *parent) : QObject(parent)
 {
 }
 
 
-Meteorologist::Station::Station(const QString &id, QObject *parent) : QObject(parent), _ICAOCode(id)
+Meteorologist::WeatherStation::WeatherStation(const QString &id, QObject *parent) : QObject(parent), _ICAOCode(id)
 {
 }
 
 
-QGeoCoordinate Meteorologist::Station::coordinate() const
+QGeoCoordinate Meteorologist::WeatherStation::coordinate() const
 {
     if (!_metar.isNull())
         return _metar->coordinate();
@@ -41,7 +41,7 @@ QGeoCoordinate Meteorologist::Station::coordinate() const
 }
 
 
-void Meteorologist::Station::setMETAR(Meteorologist::METAR *metar)
+void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
 {
     // If metar did not change, then do nothing
     if (metar == _metar)
@@ -49,19 +49,19 @@ void Meteorologist::Station::setMETAR(Meteorologist::METAR *metar)
 
     // Disconnect old metar
     if (!_metar.isNull())
-        disconnect(_metar, &QObject::destroyed, this, &Meteorologist::Station::metarChanged);
+        disconnect(_metar, &QObject::destroyed, this, &Meteorologist::WeatherStation::metarChanged);
 
     // Overwrite metar pointer and connect new metar
     _metar = metar;
     if (!_metar.isNull())
-        connect(_metar, &QObject::destroyed, this, &Meteorologist::Station::metarChanged);
+        connect(_metar, &QObject::destroyed, this, &Meteorologist::WeatherStation::metarChanged);
 
     // Let the world know that the metar changed
     emit metarChanged();
 }
 
 
-void Meteorologist::Station::setTAF(Meteorologist::TAF *taf)
+void Meteorologist::WeatherStation::setTAF(Meteorologist::TAF *taf)
 {
     // If metar did not change, then do nothing
     if (taf == _taf)
@@ -69,12 +69,12 @@ void Meteorologist::Station::setTAF(Meteorologist::TAF *taf)
 
     // Disconnect old taf
     if (!_taf.isNull())
-        disconnect(_taf, &QObject::destroyed, this, &Meteorologist::Station::tafChanged);
+        disconnect(_taf, &QObject::destroyed, this, &Meteorologist::WeatherStation::tafChanged);
 
     // Overwrite metar pointer and connect new taf
     _taf = taf;
     if (!_taf.isNull())
-        connect(_taf, &QObject::destroyed, this, &Meteorologist::Station::tafChanged);
+        connect(_taf, &QObject::destroyed, this, &Meteorologist::WeatherStation::tafChanged);
 
     // Let the world know that the taf changed
     emit tafChanged();
@@ -83,13 +83,13 @@ void Meteorologist::Station::setTAF(Meteorologist::TAF *taf)
 // ================================
 #warning old functionality, needs to go out
 
-QString Meteorologist::Station::decodeTime(const QVariant &time) {
+QString Meteorologist::WeatherStation::decodeTime(const QVariant &time) {
     QDateTime tim = QDateTime::fromString(time.toString().replace("T", " "), "yyyy-MM-dd hh:mm:ssZ");
     return tim.toString("ddd MMMM d yyyy hh:mm") + " UTC";
 }
 
 
-QString Meteorologist::Station::decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg) {
+QString Meteorologist::WeatherStation::decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg) {
     QString w;
     if (windd.toString() == "0")
         if (winds.toString() == "0")
@@ -105,25 +105,25 @@ QString Meteorologist::Station::decodeWind(const QVariant &windd, const QVariant
 }
 
 
-QString Meteorologist::Station::decodeVis(const QVariant &vis) {
+QString Meteorologist::WeatherStation::decodeVis(const QVariant &vis) {
     long v = std::lround(vis.toString().toDouble() * 1.61);
     return QString::number(v) + " km";
 }
 
 
-QString Meteorologist::Station::decodeTemp(const QVariant &temp) {
+QString Meteorologist::WeatherStation::decodeTemp(const QVariant &temp) {
     QString tmp = temp.toString();
     return tmp.left(tmp.lastIndexOf(".")) + " °C";
 }
 
 
-QString Meteorologist::Station::decodeQnh(const QVariant &altim) {
+QString Meteorologist::WeatherStation::decodeQnh(const QVariant &altim) {
     long qnh = std::lround(altim.toString().toDouble() * 33.86);
     return QString::number(qnh) + " hPa";
 }
 
 
-QString Meteorologist::Station::decodeWx(const QVariant &wx) {
+QString Meteorologist::WeatherStation::decodeWx(const QVariant &wx) {
     QString w = wx.toString();
     // clear
     w.replace("NSW", "No significant weather");
@@ -168,7 +168,7 @@ QString Meteorologist::Station::decodeWx(const QVariant &wx) {
 }
 
 
-QString Meteorologist::Station::decodeClouds(const QVariantList &clouds) {
+QString Meteorologist::WeatherStation::decodeClouds(const QVariantList &clouds) {
     QString clds;
     for (int i = clouds.size() - 1; i >= 0; --i) {
         QList<QString> layer = clouds[i].toString().split(",");

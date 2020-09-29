@@ -25,7 +25,7 @@
 #include "AviationUnits.h"
 #include "Clock.h"
 #include "GlobalSettings.h"
-#include "Meteorologist_Station.h"
+#include "Meteorologist_WeatherStation.h"
 #include "SatNav.h"
 #include "Waypoint.h"
 
@@ -131,7 +131,7 @@ QString Waypoint::richTextName() const
 
     // line three: METAR information, if available
     if (!_meteorologist.isNull() && _properties.contains("COD")) {
-        auto station = _meteorologist->findStation(_properties.value("COD").toString());
+        auto station = _meteorologist->findWeatherStation(_properties.value("COD").toString());
         if (station) {
             auto metar = station->metar();
             if (metar) {
@@ -166,29 +166,29 @@ const QObject *Waypoint::weatherReport() const
     if (!_properties.contains("COD"))
         return nullptr;
 
-    return _meteorologist->findStation(_properties.value("COD").toString());
+    return _meteorologist->findWeatherStation(_properties.value("COD").toString());
 }
 
-QObject *Waypoint::metar() const
+const QObject *Waypoint::metar() const
 {
     if (_meteorologist.isNull())
         return nullptr;
     if (!_properties.contains("COD"))
         return nullptr;
-    auto rep = _meteorologist->findStation(_properties.value("COD").toString());
+    auto rep = _meteorologist->findWeatherStation(_properties.value("COD").toString());
     if (rep == nullptr)
         return nullptr;
 
     return rep->metar();
 }
 
-QObject *Waypoint::taf() const
+const QObject *Waypoint::taf() const
 {
     if (_meteorologist.isNull())
         return nullptr;
     if (!_properties.contains("COD"))
         return nullptr;
-    auto rep = _meteorologist->findStation(_properties.value("COD").toString());
+    auto rep = _meteorologist->findWeatherStation(_properties.value("COD").toString());
     if (rep == nullptr)
         return nullptr;
 
@@ -292,17 +292,17 @@ void Waypoint::setSatNav(SatNav *satNav)
 void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 {
     if (!_meteorologist.isNull()) {
-        disconnect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::colorChanged);
-        disconnect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::richTextNameChanged);
-        disconnect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::weatherReportChanged);
+        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::colorChanged);
+        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::richTextNameChanged);
+        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherReportChanged);
     }
 
     _meteorologist = meteorologist;
 
     if (!_meteorologist.isNull()) {
-        connect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::colorChanged);
-        connect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::richTextNameChanged);
-        connect(_meteorologist, &Meteorologist::stationsChanged, this, &Waypoint::weatherReportChanged);
+        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::colorChanged);
+        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::richTextNameChanged);
+        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherReportChanged);
     }
 }
 

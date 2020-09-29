@@ -48,8 +48,8 @@ class Meteorologist : public QObject {
 
 public:
     class METAR;
-    class Station;
     class TAF;
+    class WeatherStation;
 
     /*! \brief Standard constructor
      *
@@ -105,14 +105,14 @@ public:
      * Returns the weather reports as a list of QObject for better interraction
      * with QML.
      */
-    Q_PROPERTY(QList<Meteorologist::Station *> stations READ stations NOTIFY stationsChanged)
+    Q_PROPERTY(QList<const Meteorologist::WeatherStation *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
 #warning need to explain about sorting
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property reports
      */
-    QList<Meteorologist::Station *> stations() const;
+    QList<const Meteorologist::WeatherStation *> weatherStations() const;
 
     /*! \brief Downloading flag
      *
@@ -149,16 +149,16 @@ public:
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
-    /*! \brief Find station by ICAO code
+    /*! \brief Find WeatherStation by ICAO code
      *
-     * This method returns a pointer to the station with the given ICAO code,
-     * or a nullprt if no station with the given code is known.
+     * This method returns a pointer to the WeatherStation with the given ICAO code,
+     * or a nullprt if no WeatherStation with the given code is known.
      *
-     * @param ICAOCode ICAO code name of the station, such as "EDDF"
+     * @param ICAOCode ICAO code name of the WeatherStation, such as "EDDF"
      *
-     * @returns Pointer to station
+     * @returns Pointer to WeatherStation
      */
-    const Station *findStation(const QString &ICAOCode) const;
+    const Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const;
 
 signals:
     /*! \brief Notifier signal */
@@ -177,7 +177,7 @@ signals:
     void SunInfoChanged();
 
     /*! \brief Signal emitted when the list of weather reports changes */
-    void stationsChanged();
+    void weatherStationsChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
@@ -213,7 +213,7 @@ private:
     bool _backgroundUpdate {true};
 
     /*! \brief List of weather reports */
-    QList<QPointer<Station>> _reports;
+    QList<QPointer<WeatherStation>> _reports;
 
     /*! \brief Slot activated when a download is finished */
     void downloadFinished();
@@ -222,7 +222,6 @@ private:
     void process();
 };
 
-
 #include "Meteorologist_METAR.h"
-#include "Meteorologist_Station.h"
 #include "Meteorologist_TAF.h"
+#include "Meteorologist_WeatherStation.h"

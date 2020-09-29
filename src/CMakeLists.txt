@@ -85,8 +85,8 @@ set(SOURCES
     Librarian.h
     Meteorologist.h
     Meteorologist_METAR.h
-    Meteorologist_Station.h
     Meteorologist_TAF.h
+    Meteorologist_WeatherStation.h
     MobileAdaptor.h
     SatNav.h
     ScaleQuickItem.h
@@ -111,8 +111,8 @@ set(SOURCES
     MapManager.cpp
     Meteorologist.cpp
     Meteorologist_METAR.cpp
-    Meteorologist_Station.cpp
     Meteorologist_TAF.cpp
+    Meteorologist_WeatherStation.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     SatNav.cpp

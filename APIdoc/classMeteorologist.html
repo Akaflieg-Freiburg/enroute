@@ -62,11 +62,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1METAR.html">METAR</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> report.  <a href="classMeteorologist_1_1METAR.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1Station.html">Station</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a weather station.  <a href="classMeteorologist_1_1Station.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html">TAF</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> report.  <a href="classMeteorologist_1_1TAF.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html">WeatherStation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a weather station that issues <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> or <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> report.  <a href="classMeteorologist_1_1WeatherStation.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
@@ -91,10 +91,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#aea0ff2aa06cb5ec4edeac362697e56b2">SunInfoChanged</a> ()</td></tr>
 <tr class="memdesc:aea0ff2aa06cb5ec4edeac362697e56b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 <tr class="separator:aea0ff2aa06cb5ec4edeac362697e56b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aa72c71b7ab765037ca30169d919353"><td class="memItemLeft" align="right" valign="top"><a id="a3aa72c71b7ab765037ca30169d919353"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a3aa72c71b7ab765037ca30169d919353">reportsChanged</a> ()</td></tr>
-<tr class="memdesc:a3aa72c71b7ab765037ca30169d919353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the list of weather reports changes. <br /></td></tr>
-<tr class="separator:a3aa72c71b7ab765037ca30169d919353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac84959b7a2d234aa434e17f8256a7741"><td class="memItemLeft" align="right" valign="top"><a id="ac84959b7a2d234aa434e17f8256a7741"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ac84959b7a2d234aa434e17f8256a7741">weatherStationsChanged</a> ()</td></tr>
+<tr class="memdesc:ac84959b7a2d234aa434e17f8256a7741"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the list of weather reports changes. <br /></td></tr>
+<tr class="separator:ac84959b7a2d234aa434e17f8256a7741"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -111,12 +111,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a010af9e576470aac5fb17193039eee18"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a010af9e576470aac5fb17193039eee18">SunInfo</a> () const</td></tr>
 <tr class="memdesc:a010af9e576470aac5fb17193039eee18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a010af9e576470aac5fb17193039eee18">More...</a><br /></td></tr>
 <tr class="separator:a010af9e576470aac5fb17193039eee18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1914f04ab37e267fc5463a449b32ecf4"><td class="memItemLeft" align="right" valign="top">QList&lt; QObject * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a1914f04ab37e267fc5463a449b32ecf4">reports</a> () const</td></tr>
-<tr class="memdesc:a1914f04ab37e267fc5463a449b32ecf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a1914f04ab37e267fc5463a449b32ecf4">More...</a><br /></td></tr>
-<tr class="separator:a1914f04ab37e267fc5463a449b32ecf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96151ffee23f7e203bef37ccce7ac4f7"><td class="memItemLeft" align="right" valign="top">QList&lt; QObject * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a96151ffee23f7e203bef37ccce7ac4f7">reportsAsWaypoints</a> ()</td></tr>
-<tr class="memdesc:a96151ffee23f7e203bef37ccce7ac4f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a96151ffee23f7e203bef37ccce7ac4f7">More...</a><br /></td></tr>
-<tr class="separator:a96151ffee23f7e203bef37ccce7ac4f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addc4c849af11502fdad337bdd3a74d6f"><td class="memItemLeft" align="right" valign="top">QList&lt; const <a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#addc4c849af11502fdad337bdd3a74d6f">weatherStations</a> () const</td></tr>
+<tr class="memdesc:addc4c849af11502fdad337bdd3a74d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#addc4c849af11502fdad337bdd3a74d6f">More...</a><br /></td></tr>
+<tr class="separator:addc4c849af11502fdad337bdd3a74d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b71bed055f7bf7e37f2676e1f35ed25"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a3b71bed055f7bf7e37f2676e1f35ed25">downloading</a> () const</td></tr>
 <tr class="memdesc:a3b71bed055f7bf7e37f2676e1f35ed25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a3b71bed055f7bf7e37f2676e1f35ed25">More...</a><br /></td></tr>
 <tr class="separator:a3b71bed055f7bf7e37f2676e1f35ed25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a91fcf497a2975fb2079aef628e657baa"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a91fcf497a2975fb2079aef628e657baa">update</a> (bool isBackgroundUpdate=true)</td></tr>
 <tr class="memdesc:a91fcf497a2975fb2079aef628e657baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update method.  <a href="#a91fcf497a2975fb2079aef628e657baa">More...</a><br /></td></tr>
 <tr class="separator:a91fcf497a2975fb2079aef628e657baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41a6b0c2bc7f9c27f133256a332c9153"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a41a6b0c2bc7f9c27f133256a332c9153">findWeatherStation</a> (const QString &amp;ICAOCode) const</td></tr>
+<tr class="memdesc:a41a6b0c2bc7f9c27f133256a332c9153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> by ICAO code.  <a href="#a41a6b0c2bc7f9c27f133256a332c9153">More...</a><br /></td></tr>
+<tr class="separator:a41a6b0c2bc7f9c27f133256a332c9153"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -135,12 +135,9 @@ Properties</h2></td></tr>
 <tr class="memitem:ad4401c6fbf37a76975707c5419e4953d"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ad4401c6fbf37a76975707c5419e4953d">SunInfo</a></td></tr>
 <tr class="memdesc:ad4401c6fbf37a76975707c5419e4953d"><td class="mdescLeft">&#160;</td><td class="mdescRight">SunInfo.  <a href="#ad4401c6fbf37a76975707c5419e4953d">More...</a><br /></td></tr>
 <tr class="separator:ad4401c6fbf37a76975707c5419e4953d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab13f16b290b008b399e6dbf4a3e293fd"><td class="memItemLeft" align="right" valign="top">QList&lt; QObject * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ab13f16b290b008b399e6dbf4a3e293fd">reports</a></td></tr>
-<tr class="memdesc:ab13f16b290b008b399e6dbf4a3e293fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of weather reports.  <a href="#ab13f16b290b008b399e6dbf4a3e293fd">More...</a><br /></td></tr>
-<tr class="separator:ab13f16b290b008b399e6dbf4a3e293fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c226efde5f6e52efaa351fd56f96064"><td class="memItemLeft" align="right" valign="top">QList&lt; QObject * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a6c226efde5f6e52efaa351fd56f96064">reportsAsWaypoints</a></td></tr>
-<tr class="memdesc:a6c226efde5f6e52efaa351fd56f96064"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of weather reports.  <a href="#a6c226efde5f6e52efaa351fd56f96064">More...</a><br /></td></tr>
-<tr class="separator:a6c226efde5f6e52efaa351fd56f96064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae95ca35d6d0ecc0215abdde48e46952d"><td class="memItemLeft" align="right" valign="top">QList&lt; const <a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#ae95ca35d6d0ecc0215abdde48e46952d">weatherStations</a></td></tr>
+<tr class="memdesc:ae95ca35d6d0ecc0215abdde48e46952d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of weather reports.  <a href="#ae95ca35d6d0ecc0215abdde48e46952d">More...</a><br /></td></tr>
+<tr class="separator:ae95ca35d6d0ecc0215abdde48e46952d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a298a2ae373b7185b6dc5961a0a0eee4b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist.html#a298a2ae373b7185b6dc5961a0a0eee4b">downloading</a></td></tr>
 <tr class="memdesc:a298a2ae373b7185b6dc5961a0a0eee4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloading flag.  <a href="#a298a2ae373b7185b6dc5961a0a0eee4b">More...</a><br /></td></tr>
 <tr class="separator:a298a2ae373b7185b6dc5961a0a0eee4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,7 +256,7 @@ Properties</h2></td></tr>
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property processing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00152">152</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00139">139</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -283,6 +280,34 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a41a6b0c2bc7f9c27f133256a332c9153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41a6b0c2bc7f9c27f133256a332c9153">&#9670;&nbsp;</a></span>findWeatherStation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a>* Meteorologist::findWeatherStation </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>ICAOCode</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Find <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> by ICAO code. </p>
+<p>This method returns a pointer to the <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> with the given ICAO code, or a nullprt if no <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> with the given code is known.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ICAOCode</td><td>ICAO code name of the <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a>, such as "EDDF"</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> </dd></dl>
+
+</div>
+</div>
 <a id="aec926b6165fbd76075f5444621bc4e2a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec926b6165fbd76075f5444621bc4e2a">&#9670;&nbsp;</a></span>QNHInfo()</h2>
 
@@ -300,46 +325,6 @@ Properties</h2></td></tr>
 
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property infoString </dd></dl>
-
-</div>
-</div>
-<a id="a1914f04ab37e267fc5463a449b32ecf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1914f04ab37e267fc5463a449b32ecf4">&#9670;&nbsp;</a></span>reports()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QList&lt;QObject*&gt; Meteorologist::reports </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter method for property of the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property reports </dd></dl>
-
-</div>
-</div>
-<a id="a96151ffee23f7e203bef37ccce7ac4f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96151ffee23f7e203bef37ccce7ac4f7">&#9670;&nbsp;</a></span>reportsAsWaypoints()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QList&lt;QObject*&gt; Meteorologist::reportsAsWaypoints </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter method for property of the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property reports </dd></dl>
 
 </div>
 </div>
@@ -390,6 +375,26 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="addc4c849af11502fdad337bdd3a74d6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addc4c849af11502fdad337bdd3a74d6f">&#9670;&nbsp;</a></span>weatherStations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QList&lt;const <a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a> *&gt; Meteorologist::weatherStations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property reports </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="ab5eb185e6a4011d0d918aeb20b0df240"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab5eb185e6a4011d0d918aeb20b0df240">&#9670;&nbsp;</a></span>backgroundUpdate</h2>
@@ -414,7 +419,7 @@ Properties</h2></td></tr>
 <p>Background update flag. </p>
 <p>Indicates if the last download process was started as a background update, or if it was explicitly started by the user. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00146">146</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00133">133</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -441,7 +446,7 @@ Properties</h2></td></tr>
 <p>Downloading flag. </p>
 <p>Indicates if the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> is currently downloading METAR/TAF information from the internet </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00134">134</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00121">121</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -472,60 +477,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ab13f16b290b008b399e6dbf4a3e293fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab13f16b290b008b399e6dbf4a3e293fd">&#9670;&nbsp;</a></span>reports</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QList&lt;QObject*&gt; Meteorologist::reports</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The list of weather reports. </p>
-<p>Returns the weather reports as a list of QObject for better interraction with QML. </p>
-
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00108">108</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
-
-</div>
-</div>
-<a id="a6c226efde5f6e52efaa351fd56f96064"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c226efde5f6e52efaa351fd56f96064">&#9670;&nbsp;</a></span>reportsAsWaypoints</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QList&lt;QObject*&gt; Meteorologist::reportsAsWaypoints</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The list of weather reports. </p>
-<p>Returns the weather reports as a list of QObject for better interraction with QML. </p>
-
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00121">121</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
-
-</div>
-</div>
 <a id="ad4401c6fbf37a76975707c5419e4953d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad4401c6fbf37a76975707c5419e4953d">&#9670;&nbsp;</a></span>SunInfo</h2>
 
@@ -550,6 +501,33 @@ Properties</h2></td></tr>
 <p>This property holds a richt-text string with global information. A typical result could be "Sunset at 17:01, in 32 minutes.&lt;br&gt;Last METAR/TAF update 21 minutes ago." Depending on availability of information, the string can also be shorter, or altogether empty. </p>
 
 <p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00095">95</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+
+</div>
+</div>
+<a id="ae95ca35d6d0ecc0215abdde48e46952d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae95ca35d6d0ecc0215abdde48e46952d">&#9670;&nbsp;</a></span>weatherStations</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QList&lt;const <a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a> *&gt; Meteorologist::weatherStations</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The list of weather reports. </p>
+<p>Returns the weather reports as a list of QObject for better interraction with QML. </p>
+
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00108">108</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>

@@ -425,7 +425,7 @@ QString Meteorologist::SunInfo() const
 }
 
 
-Meteorologist::Station *Meteorologist::report(QString code) const
+const Meteorologist::Station *Meteorologist::findStation(const QString &code) const
 {
     foreach(auto report, _reports) {
         if (report.isNull())

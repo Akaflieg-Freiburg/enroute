@@ -180,8 +180,8 @@ public:
     QString simpleDescription() const;
 
 #warning documentation
-    Q_PROPERTY(QObject *weatherReport READ weatherReport NOTIFY weatherReportChanged)
-    QObject *weatherReport() const;
+    Q_PROPERTY(const QObject *weatherReport READ weatherReport NOTIFY weatherReportChanged)
+    const QObject *weatherReport() const;
 
 #warning documentation
     Q_PROPERTY(QObject *metar READ metar NOTIFY weatherReportChanged)

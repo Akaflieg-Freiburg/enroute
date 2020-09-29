@@ -131,7 +131,7 @@ QString Waypoint::richTextName() const
 
     // line three: METAR information, if available
     if (!_meteorologist.isNull() && _properties.contains("COD")) {
-        auto station = _meteorologist->report(_properties.value("COD").toString());
+        auto station = _meteorologist->findStation(_properties.value("COD").toString());
         if (station) {
             auto metar = station->metar();
             if (metar) {
@@ -159,14 +159,14 @@ QString Waypoint::simpleDescription() const
     return extendedName();
 }
 
-QObject *Waypoint::weatherReport() const
+const QObject *Waypoint::weatherReport() const
 {
     if (_meteorologist.isNull())
         return nullptr;
     if (!_properties.contains("COD"))
         return nullptr;
 
-    return _meteorologist->report(_properties.value("COD").toString());
+    return _meteorologist->findStation(_properties.value("COD").toString());
 }
 
 QObject *Waypoint::metar() const
@@ -175,7 +175,7 @@ QObject *Waypoint::metar() const
         return nullptr;
     if (!_properties.contains("COD"))
         return nullptr;
-    auto rep = _meteorologist->report(_properties.value("COD").toString());
+    auto rep = _meteorologist->findStation(_properties.value("COD").toString());
     if (rep == nullptr)
         return nullptr;
 
@@ -188,7 +188,7 @@ QObject *Waypoint::taf() const
         return nullptr;
     if (!_properties.contains("COD"))
         return nullptr;
-    auto rep = _meteorologist->report(_properties.value("COD").toString());
+    auto rep = _meteorologist->findStation(_properties.value("COD").toString());
     if (rep == nullptr)
         return nullptr;
 

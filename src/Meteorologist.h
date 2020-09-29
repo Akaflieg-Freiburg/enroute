@@ -162,8 +162,16 @@ public:
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
-    /*! \brief Get station */
-    Station *report(QString code) const;
+    /*! \brief Find station by ICAO code
+     *
+     * This method returns a pointer to the station with the given ICAO code,
+     * or a nullprt if no station with the given code is known.
+     *
+     * @param ICAOCode ICAO code name of the station, such as "EDDF"
+     *
+     * @returns Pointer to station
+     */
+    const Station *findStation(const QString &ICAOCode) const;
 
 signals:
     /*! \brief Notifier signal */

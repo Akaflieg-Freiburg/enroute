@@ -66,27 +66,54 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab829b80019cc61062ffc721e77503204"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ab829b80019cc61062ffc721e77503204">Waypoint</a> (const QGeoCoordinate &amp;<a class="el" href="classWaypoint.html#a7b4b09e48657db8f50e25d2da776a04f">coordinate</a>, QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ab829b80019cc61062ffc721e77503204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a way point from a coordinate.  <a href="#ab829b80019cc61062ffc721e77503204">More...</a><br /></td></tr>
 <tr class="separator:ab829b80019cc61062ffc721e77503204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa798523c4e9d7a510cc2253c5d9c503"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#afa798523c4e9d7a510cc2253c5d9c503">Waypoint</a> (const QGeoCoordinate &amp;<a class="el" href="classWaypoint.html#a7b4b09e48657db8f50e25d2da776a04f">coordinate</a>, QString ICAOCode, QObject *parent=nullptr)</td></tr>
+<tr class="memdesc:afa798523c4e9d7a510cc2253c5d9c503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a way point from a coordinate and sets the COD property.  <a href="#afa798523c4e9d7a510cc2253c5d9c503">More...</a><br /></td></tr>
+<tr class="separator:afa798523c4e9d7a510cc2253c5d9c503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac44284009382c3814bec41e6e86434b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aac44284009382c3814bec41e6e86434b">Waypoint</a> (const QJsonObject &amp;geoJSONObject, QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:aac44284009382c3814bec41e6e86434b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a GeoJSON object.  <a href="#aac44284009382c3814bec41e6e86434b">More...</a><br /></td></tr>
 <tr class="separator:aac44284009382c3814bec41e6e86434b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a05438fb0dd918f9918656fdc9d0277"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a5a05438fb0dd918f9918656fdc9d0277">contains</a> (const QString &amp;name) const</td></tr>
-<tr class="memdesc:a5a05438fb0dd918f9918656fdc9d0277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check property existence.  <a href="#a5a05438fb0dd918f9918656fdc9d0277">More...</a><br /></td></tr>
-<tr class="separator:a5a05438fb0dd918f9918656fdc9d0277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbe8664404d761f94212f69c01d8926e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#afbe8664404d761f94212f69c01d8926e">containsProperty</a> (const QString &amp;propertyName) const</td></tr>
+<tr class="memdesc:afbe8664404d761f94212f69c01d8926e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check existence of a given property.  <a href="#afbe8664404d761f94212f69c01d8926e">More...</a><br /></td></tr>
+<tr class="separator:afbe8664404d761f94212f69c01d8926e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2342fac6ccc6e29f719feca861de1b15"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a2342fac6ccc6e29f719feca861de1b15">coordinate</a> () const</td></tr>
 <tr class="memdesc:a2342fac6ccc6e29f719feca861de1b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a2342fac6ccc6e29f719feca861de1b15">More...</a><br /></td></tr>
 <tr class="separator:a2342fac6ccc6e29f719feca861de1b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5ae63c31b1a9a25d5aa03798df58862"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ab5ae63c31b1a9a25d5aa03798df58862">extendedName</a> () const</td></tr>
-<tr class="memdesc:ab5ae63c31b1a9a25d5aa03798df58862"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#ab5ae63c31b1a9a25d5aa03798df58862">More...</a><br /></td></tr>
-<tr class="separator:ab5ae63c31b1a9a25d5aa03798df58862"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad848b6abe3cc708e1a99aae8a34e1189"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVariant&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ad848b6abe3cc708e1a99aae8a34e1189">get</a> (const QString &amp;name) const</td></tr>
-<tr class="memdesc:ad848b6abe3cc708e1a99aae8a34e1189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve member by name.  <a href="#ad848b6abe3cc708e1a99aae8a34e1189">More...</a><br /></td></tr>
-<tr class="separator:ad848b6abe3cc708e1a99aae8a34e1189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adad2cd9c0325755baa8fb8dae87ee790"><td class="memItemLeft" align="right" valign="top">QList&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#adad2cd9c0325755baa8fb8dae87ee790">tabularDescription</a> () const</td></tr>
-<tr class="memdesc:adad2cd9c0325755baa8fb8dae87ee790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#adad2cd9c0325755baa8fb8dae87ee790">More...</a><br /></td></tr>
-<tr class="separator:adad2cd9c0325755baa8fb8dae87ee790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b7ee95099b3cd50ba93e0dc3f92c3fb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVariant&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a9b7ee95099b3cd50ba93e0dc3f92c3fb">get</a> (const QString &amp;propertyName) const</td></tr>
+<tr class="memdesc:a9b7ee95099b3cd50ba93e0dc3f92c3fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve property by name.  <a href="#a9b7ee95099b3cd50ba93e0dc3f92c3fb">More...</a><br /></td></tr>
+<tr class="separator:a9b7ee95099b3cd50ba93e0dc3f92c3fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57680a13a07eac9e8f98c216963633e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a57680a13a07eac9e8f98c216963633e5">hasMETAR</a> () const</td></tr>
+<tr class="memdesc:a57680a13a07eac9e8f98c216963633e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a57680a13a07eac9e8f98c216963633e5">More...</a><br /></td></tr>
+<tr class="separator:a57680a13a07eac9e8f98c216963633e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fc59df3dd7a9e3aa679d45494b814d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a2fc59df3dd7a9e3aa679d45494b814d7">hasTAF</a> () const</td></tr>
+<tr class="memdesc:a2fc59df3dd7a9e3aa679d45494b814d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a2fc59df3dd7a9e3aa679d45494b814d7">More...</a><br /></td></tr>
+<tr class="separator:a2fc59df3dd7a9e3aa679d45494b814d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add45a9bc678dffc9607338f43a955ed2"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#add45a9bc678dffc9607338f43a955ed2">icon</a> () const</td></tr>
+<tr class="memdesc:add45a9bc678dffc9607338f43a955ed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#add45a9bc678dffc9607338f43a955ed2">More...</a><br /></td></tr>
+<tr class="separator:add45a9bc678dffc9607338f43a955ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a845aedeee29c2e9de67daff8814d7406"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a845aedeee29c2e9de67daff8814d7406">setGlobalSettings</a> (<a class="el" href="classGlobalSettings.html">GlobalSettings</a> *globalSettings=nullptr)</td></tr>
+<tr class="memdesc:a845aedeee29c2e9de67daff8814d7406"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set optional pointer to a <a class="el" href="classGlobalSettings.html" title="Global Settings Manager. ">GlobalSettings</a> instance, in order to improve messages.  <a href="#a845aedeee29c2e9de67daff8814d7406">More...</a><br /></td></tr>
+<tr class="separator:a845aedeee29c2e9de67daff8814d7406"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab83fd0351e51b33ab5c941f15c741c57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ab83fd0351e51b33ab5c941f15c741c57">setMeteorologist</a> (<a class="el" href="classMeteorologist.html">Meteorologist</a> *meteorologist=nullptr)</td></tr>
+<tr class="memdesc:ab83fd0351e51b33ab5c941f15c741c57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set optional pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance, in order to access weather information.  <a href="#ab83fd0351e51b33ab5c941f15c741c57">More...</a><br /></td></tr>
+<tr class="separator:ab83fd0351e51b33ab5c941f15c741c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a072ecf30e61a5fd9840e8813a38129ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a072ecf30e61a5fd9840e8813a38129ab">setSatNav</a> (<a class="el" href="classSatNav.html">SatNav</a> *satNav=nullptr)</td></tr>
+<tr class="memdesc:a072ecf30e61a5fd9840e8813a38129ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set optional pointer to a <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> instance, in order to improve messages.  <a href="#a072ecf30e61a5fd9840e8813a38129ab">More...</a><br /></td></tr>
+<tr class="separator:a072ecf30e61a5fd9840e8813a38129ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a092b50386d2f6baf40f85224c195d777"><td class="memItemLeft" align="right" valign="top">QJsonObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a092b50386d2f6baf40f85224c195d777">toJSON</a> () const</td></tr>
 <tr class="memdesc:a092b50386d2f6baf40f85224c195d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization to GeoJSON object.  <a href="#a092b50386d2f6baf40f85224c195d777">More...</a><br /></td></tr>
 <tr class="separator:a092b50386d2f6baf40f85224c195d777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac16c7b552d3fb88674e8fe9171ca3835"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ac16c7b552d3fb88674e8fe9171ca3835">weatherStation</a> () const</td></tr>
+<tr class="memdesc:ac16c7b552d3fb88674e8fe9171ca3835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#ac16c7b552d3fb88674e8fe9171ca3835">More...</a><br /></td></tr>
+<tr class="separator:ac16c7b552d3fb88674e8fe9171ca3835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeca86fd3b3530b87c17177a64e0151f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aeca86fd3b3530b87c17177a64e0151f2">operator==</a> (const <a class="el" href="classWaypoint.html">Waypoint</a> &amp;other) const</td></tr>
+<tr class="memdesc:aeca86fd3b3530b87c17177a64e0151f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality check.  <a href="#aeca86fd3b3530b87c17177a64e0151f2">More...</a><br /></td></tr>
+<tr class="separator:aeca86fd3b3530b87c17177a64e0151f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5ae63c31b1a9a25d5aa03798df58862"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ab5ae63c31b1a9a25d5aa03798df58862">extendedName</a> () const</td></tr>
+<tr class="memdesc:ab5ae63c31b1a9a25d5aa03798df58862"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#ab5ae63c31b1a9a25d5aa03798df58862">More...</a><br /></td></tr>
+<tr class="separator:ab5ae63c31b1a9a25d5aa03798df58862"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adad2cd9c0325755baa8fb8dae87ee790"><td class="memItemLeft" align="right" valign="top">QList&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#adad2cd9c0325755baa8fb8dae87ee790">tabularDescription</a> () const</td></tr>
+<tr class="memdesc:adad2cd9c0325755baa8fb8dae87ee790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#adad2cd9c0325755baa8fb8dae87ee790">More...</a><br /></td></tr>
+<tr class="separator:adad2cd9c0325755baa8fb8dae87ee790"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a712c622729567c8d0adacc1aa3af169b"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a712c622729567c8d0adacc1aa3af169b">wayFrom</a> (const QGeoCoordinate &amp;position, bool useMetricUnits) const</td></tr>
 <tr class="memdesc:a712c622729567c8d0adacc1aa3af169b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given position to the waypoint.  <a href="#a712c622729567c8d0adacc1aa3af169b">More...</a><br /></td></tr>
 <tr class="separator:a712c622729567c8d0adacc1aa3af169b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -96,22 +123,30 @@ Properties</h2></td></tr>
 <tr class="memitem:a7b4b09e48657db8f50e25d2da776a04f"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a7b4b09e48657db8f50e25d2da776a04f">coordinate</a></td></tr>
 <tr class="memdesc:a7b4b09e48657db8f50e25d2da776a04f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinate of the waypoint.  <a href="#a7b4b09e48657db8f50e25d2da776a04f">More...</a><br /></td></tr>
 <tr class="separator:a7b4b09e48657db8f50e25d2da776a04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52906ad03e0b76613f136f050d20fade"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a52906ad03e0b76613f136f050d20fade">hasMETAR</a></td></tr>
+<tr class="memdesc:a52906ad03e0b76613f136f050d20fade"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a METAR weather report is known for the waypoint.  <a href="#a52906ad03e0b76613f136f050d20fade">More...</a><br /></td></tr>
+<tr class="separator:a52906ad03e0b76613f136f050d20fade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c2a152206701882ecd515df2d27ee1b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a0c2a152206701882ecd515df2d27ee1b">hasTAF</a></td></tr>
+<tr class="memdesc:a0c2a152206701882ecd515df2d27ee1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a TAF weather forcast is known for the waypoint.  <a href="#a0c2a152206701882ecd515df2d27ee1b">More...</a><br /></td></tr>
+<tr class="separator:a0c2a152206701882ecd515df2d27ee1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0397153dad986becbf2ad250159dd1f"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#af0397153dad986becbf2ad250159dd1f">icon</a></td></tr>
+<tr class="memdesc:af0397153dad986becbf2ad250159dd1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggested icon file.  <a href="#af0397153dad986becbf2ad250159dd1f">More...</a><br /></td></tr>
+<tr class="separator:af0397153dad986becbf2ad250159dd1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4cdb10526ca6a172084be62ee109806"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aa4cdb10526ca6a172084be62ee109806">weatherStation</a></td></tr>
+<tr class="memdesc:aa4cdb10526ca6a172084be62ee109806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a WeatherStation exists at this point.  <a href="#aa4cdb10526ca6a172084be62ee109806">More...</a><br /></td></tr>
+<tr class="separator:aa4cdb10526ca6a172084be62ee109806"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55ac7febb3bfa9303600d265f4bda556"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a55ac7febb3bfa9303600d265f4bda556">extendedName</a></td></tr>
 <tr class="memdesc:a55ac7febb3bfa9303600d265f4bda556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extended name of the Waypoints.  <a href="#a55ac7febb3bfa9303600d265f4bda556">More...</a><br /></td></tr>
 <tr class="separator:a55ac7febb3bfa9303600d265f4bda556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classWaypoint.html" title="Waypoint, such as an airfield, a navaid station or a reporting point. ">Waypoint</a>, such as an airfield, a navaid station or a reporting point. </p>
-<p>This class represents a waypoint feature of a GeoJSON file, as described in <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. In essence, it contains two bits of data:</p>
-<ul>
-<li>The coordinate of the waypoint.</li>
-<li>A QMap&lt;QString, QVariant&gt; that represents the waypoint properties found in the GeoJSON file. </li>
-</ul>
+<p>This class represents a waypoint. The relevant data that describes the waypoint is stored as a list of properties that can be retrieved using the method <a class="el" href="classWaypoint.html#a9b7ee95099b3cd50ba93e0dc3f92c3fb" title="Retrieve property by name. ">get()</a> the properties correspond to the feature of the GeoJSON files that are used in Enroute, and that are described <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. There are numerous helper methods. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00047">47</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00045">45</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4de232dafbdebfad262279e70c22c509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4de232dafbdebfad262279e70c22c509">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4de232dafbdebfad262279e70c22c509">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,7 +180,7 @@ Properties</h2></td></tr>
 </div>
 </div>
 <a id="aafecadf8591d382ff5a7fdccede21c91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafecadf8591d382ff5a7fdccede21c91">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aafecadf8591d382ff5a7fdccede21c91">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +225,7 @@ Properties</h2></td></tr>
 </div>
 </div>
 <a id="ab829b80019cc61062ffc721e77503204"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab829b80019cc61062ffc721e77503204">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab829b80019cc61062ffc721e77503204">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,7 +259,59 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructs a way point from a coordinate. </p>
-<p>The waypoint constructed is generic. It will have property TYP="WP" and property CAT="WP".</p>
+<p>The waypoint constructed will have property TYP="WP" and property CAT="WP".</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coordinate</td><td>Geographical position of the waypoint</td></tr>
+    <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afa798523c4e9d7a510cc2253c5d9c503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa798523c4e9d7a510cc2253c5d9c503">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Waypoint::Waypoint </td>
+          <td>(</td>
+          <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
+          <td class="paramname"><em>coordinate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QString&#160;</td>
+          <td class="paramname"><em>ICAOCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QObject *&#160;</td>
+          <td class="paramname"><em>parent</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a way point from a coordinate and sets the COD property. </p>
+<p>The waypoint constructed will have property TYP="WP", property CAT="WP" and property COD=ICAOCode.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">coordinate</td><td>Geographical position of the waypoint</td></tr>
@@ -236,7 +323,7 @@ Properties</h2></td></tr>
 </div>
 </div>
 <a id="aac44284009382c3814bec41e6e86434b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac44284009382c3814bec41e6e86434b">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aac44284009382c3814bec41e6e86434b">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,8 +369,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5a05438fb0dd918f9918656fdc9d0277"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a05438fb0dd918f9918656fdc9d0277">&#9670;&nbsp;</a></span>contains()</h2>
+<a id="afbe8664404d761f94212f69c01d8926e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbe8664404d761f94212f69c01d8926e">&#9670;&nbsp;</a></span>containsProperty()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,10 +379,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE bool Waypoint::contains </td>
+          <td class="memname">Q_INVOKABLE bool Waypoint::containsProperty </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramname"><em>propertyName</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -306,17 +393,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check property existence. </p>
-<p>Recall that this class represents a waypoint feature of a GeoJSON file, as described in <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. This method allows to check for the existence of individual members described in this file.</p>
+<p>Check existence of a given property. </p>
+<p>Recall that the waypoint data is stored as a list of properties that correspond to waypoint feature of a GeoJSON file, as described in <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. This method allows to check for the existence of individual properties.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>The name of the member. This is a string such as "CAT", "TYP", "NAM", etc</td></tr>
+    <tr><td class="paramname">propertyName</td><td>The name of a property. This is a string such as "CAT", "TYP", "NAM", etc</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True is property exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00116">116</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00113">113</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -370,8 +457,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ad848b6abe3cc708e1a99aae8a34e1189"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad848b6abe3cc708e1a99aae8a34e1189">&#9670;&nbsp;</a></span>get()</h2>
+<a id="a9b7ee95099b3cd50ba93e0dc3f92c3fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b7ee95099b3cd50ba93e0dc3f92c3fb">&#9670;&nbsp;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -383,7 +470,7 @@ Properties</h2></td></tr>
           <td class="memname">Q_INVOKABLE QVariant Waypoint::get </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramname"><em>propertyName</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -394,17 +481,189 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Retrieve member by name. </p>
-<p>Recall that this class represents a waypoint feature of a GeoJSON file, as described in <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. This method allows to retrieve the individual members described in this file.</p>
+<p>Retrieve property by name. </p>
+<p>Recall that the waypoint data is stored as a list of properties that correspond to waypoint feature of a GeoJSON file, as described in <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. This method allows to retrieve the individual properties by name.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the member. This is a string such as "CAT", "TYP", "NAM", etc</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Value of the member </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Value of the proerty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00155">155</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00141">141</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
+<a id="a57680a13a07eac9e8f98c216963633e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57680a13a07eac9e8f98c216963633e5">&#9670;&nbsp;</a></span>hasMETAR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Waypoint::hasMETAR </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property hasMETAR </dd></dl>
+
+</div>
+</div>
+<a id="a2fc59df3dd7a9e3aa679d45494b814d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fc59df3dd7a9e3aa679d45494b814d7">&#9670;&nbsp;</a></span>hasTAF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Waypoint::hasTAF </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property hasMAF </dd></dl>
+
+</div>
+</div>
+<a id="add45a9bc678dffc9607338f43a955ed2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add45a9bc678dffc9607338f43a955ed2">&#9670;&nbsp;</a></span>icon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Waypoint::icon </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property icon </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00187">187</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
+<a id="aeca86fd3b3530b87c17177a64e0151f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeca86fd3b3530b87c17177a64e0151f2">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Waypoint::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classWaypoint.html">Waypoint</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Equality check. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the coordinates and all properties agree. </dd></dl>
+
+</div>
+</div>
+<a id="a845aedeee29c2e9de67daff8814d7406"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a845aedeee29c2e9de67daff8814d7406">&#9670;&nbsp;</a></span>setGlobalSettings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Waypoint::setGlobalSettings </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGlobalSettings.html">GlobalSettings</a> *&#160;</td>
+          <td class="paramname"><em>globalSettings</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set optional pointer to a <a class="el" href="classGlobalSettings.html" title="Global Settings Manager. ">GlobalSettings</a> instance, in order to improve messages. </p>
+<p>This method can be used to equip the waypoint instance with global settings information. If available, this information is used for instance by the method richTextName() to present distance from the current position in metric or imperial units, according to the user's choice.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">globalSettings</td><td>Pointer to a <a class="el" href="classGlobalSettings.html" title="Global Settings Manager. ">GlobalSettings</a> instance. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab83fd0351e51b33ab5c941f15c741c57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab83fd0351e51b33ab5c941f15c741c57">&#9670;&nbsp;</a></span>setMeteorologist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Waypoint::setMeteorologist </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMeteorologist.html">Meteorologist</a> *&#160;</td>
+          <td class="paramname"><em>meteorologist</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set optional pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance, in order to access weather information. </p>
+<p>This method can be used to equip the waypoint instance with Weather information. If available, this information is used for instance by the method <a class="el" href="classWaypoint.html#aa4cdb10526ca6a172084be62ee109806" title="Check if a WeatherStation exists at this point. ">weatherStation()</a> to check if there is a known weather station at the waypoint-</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">meteorologist</td><td>Pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a072ecf30e61a5fd9840e8813a38129ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a072ecf30e61a5fd9840e8813a38129ab">&#9670;&nbsp;</a></span>setSatNav()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Waypoint::setSatNav </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSatNav.html">SatNav</a> *&#160;</td>
+          <td class="paramname"><em>satNav</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set optional pointer to a <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> instance, in order to improve messages. </p>
+<p>This method can be used to equip the waypoint instance with <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> information. If available, this information is used for instance by the method richtTextName to print the distance from the current position to the waypoint.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">satNav</td><td>Pointer to a <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> instance. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -444,7 +703,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Serialization to GeoJSON object. </p>
-<p>This method serialises the waypoint route as a GeoJSON object. The object conforms to the specification outlined <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. The waypoint can be restored with the obvious constructor</p>
+<p>This method serialises the waypoint as a GeoJSON object. The object conforms to the specification outlined <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. The waypoint can be restored with the obvious constructor</p>
 <dl class="section return"><dt>Returns</dt><dd>QJsonObject describing the waypoint </dd></dl>
 
 </div>
@@ -484,6 +743,26 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a string of the form "DIST 65.2 NM • QUJ 276°" </dd></dl>
+
+</div>
+</div>
+<a id="ac16c7b552d3fb88674e8fe9171ca3835"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac16c7b552d3fb88674e8fe9171ca3835">&#9670;&nbsp;</a></span>weatherStation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a>* Waypoint::weatherStation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property weatherStation </dd></dl>
 
 </div>
 </div>
@@ -538,7 +817,115 @@ Properties</h2></td></tr>
 <p>Extended name of the Waypoints. </p>
 <p>This method returns a string of the form "Karlsruhe (DVOR-DME)" </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00134">134</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00272">272</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
+<a id="a52906ad03e0b76613f136f050d20fade"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52906ad03e0b76613f136f050d20fade">&#9670;&nbsp;</a></span>hasMETAR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Waypoint::hasMETAR</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if a METAR weather report is known for the waypoint. </p>
+<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#ab83fd0351e51b33ab5c941f15c741c57" title="Set optional pointer to a Meteorologist instance, in order to access weather information. ">setMeteorologist()</a>, this convenience property can be used to check if a METAR report is available for the waypoint. The actual METAR report can be accessed via the property weatherStation. </p>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00153">153</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
+<a id="a0c2a152206701882ecd515df2d27ee1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c2a152206701882ecd515df2d27ee1b">&#9670;&nbsp;</a></span>hasTAF</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Waypoint::hasTAF</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if a TAF weather forcast is known for the waypoint. </p>
+<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#ab83fd0351e51b33ab5c941f15c741c57" title="Set optional pointer to a Meteorologist instance, in order to access weather information. ">setMeteorologist()</a>, this convenience property can be used to check if a TAF forcast is available for the waypoint. The actual TAF report can be accessed via the property weatherStation. </p>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00168">168</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
+<a id="af0397153dad986becbf2ad250159dd1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0397153dad986becbf2ad250159dd1f">&#9670;&nbsp;</a></span>icon</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Waypoint::icon</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Suggested icon file. </p>
+<p>This property holds the name of an icon file in SVG format that best describes the waypoint. </p>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00181">181</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+
+</div>
+</div>
+<a id="aa4cdb10526ca6a172084be62ee109806"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4cdb10526ca6a172084be62ee109806">&#9670;&nbsp;</a></span>weatherStation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMeteorologist_1_1WeatherStation.html">Meteorologist::WeatherStation</a> Waypoint::weatherStation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if a WeatherStation exists at this point. </p>
+<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#ab83fd0351e51b33ab5c941f15c741c57" title="Set optional pointer to a Meteorologist instance, in order to access weather information. ">setMeteorologist()</a> and if a WeatherStation is known to exist at this point, then this property holds a pointer to the station. Otherwise, the property holds nullptr. Note that the WeatherStation object is owned by the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> and that it can be deleted anytime. </p>
+
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00252">252</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

@@ -29,6 +29,8 @@
 #include "SatNav.h"
 #include "Waypoint.h"
 
+#warning Need to emit weatherStationChanged signals when appropriate
+#warning Need to emit hasMETARChanged signals when appropriate
 
 Waypoint::Waypoint(QObject *parent)
     : QObject(parent)
@@ -62,8 +64,6 @@ Waypoint::Waypoint(const QGeoCoordinate& coordinate, QString code, QObject *pare
     _properties.insert("TYP", QString("WP"));
 }
 
-
-
 Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
     : QObject(parent)
 {
@@ -93,7 +93,6 @@ Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
     if (_properties.contains("ELE"))
         _coordinate.setAltitude(properties["ELE"].toDouble());
 }
-
 
 QString Waypoint::extendedName() const
 {
@@ -159,7 +158,7 @@ QString Waypoint::simpleDescription() const
     return extendedName();
 }
 
-const QObject *Waypoint::weatherReport() const
+Meteorologist::WeatherStation *Waypoint::weatherStation() const
 {
     if (_meteorologist.isNull())
         return nullptr;
@@ -169,7 +168,7 @@ const QObject *Waypoint::weatherReport() const
     return _meteorologist->findWeatherStation(_properties.value("COD").toString());
 }
 
-const QObject *Waypoint::metar() const
+QObject *Waypoint::metar() const
 {
     if (_meteorologist.isNull())
         return nullptr;
@@ -180,19 +179,6 @@ const QObject *Waypoint::metar() const
         return nullptr;
 
     return rep->metar();
-}
-
-const QObject *Waypoint::taf() const
-{
-    if (_meteorologist.isNull())
-        return nullptr;
-    if (!_properties.contains("COD"))
-        return nullptr;
-    auto rep = _meteorologist->findWeatherStation(_properties.value("COD").toString());
-    if (rep == nullptr)
-        return nullptr;
-
-    return rep->taf();
 }
 
 QList<QString> Waypoint::tabularDescription() const
@@ -263,17 +249,6 @@ QString Waypoint::wayFrom(const QGeoCoordinate& position, bool useMetricUnits) c
     return result;
 }
 
-void Waypoint::setClock(Clock *clock)
-{
-    if (!_clock.isNull())
-        disconnect(_clock, &Clock::timeChanged, this, &Waypoint::richTextNameChanged);
-
-    _clock = clock;
-
-    if (!_clock.isNull())
-        connect(_clock, &Clock::timeChanged, this, &Waypoint::richTextNameChanged);
-}
-
 void Waypoint::setSatNav(SatNav *satNav)
 {
     if (!_satNav.isNull()) {
@@ -294,7 +269,7 @@ void Waypoint::setMeteorologist(Meteorologist *meteorologist)
     if (!_meteorologist.isNull()) {
         disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::colorChanged);
         disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::richTextNameChanged);
-        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherReportChanged);
+        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
     }
 
     _meteorologist = meteorologist;
@@ -302,7 +277,7 @@ void Waypoint::setMeteorologist(Meteorologist *meteorologist)
     if (!_meteorologist.isNull()) {
         connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::colorChanged);
         connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::richTextNameChanged);
-        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherReportChanged);
+        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
     }
 }
 
@@ -323,4 +298,31 @@ QString Waypoint::color() const
     if (_metar == nullptr)
         return "transparent";
     return _metar->flightCategoryColor();
+}
+
+bool Waypoint::isValid() const
+{
+#warning need to check if properties satisfy GeoJSON standard.
+    return _coordinate.isValid();
+}
+
+bool Waypoint::operator==(const Waypoint &other) const {
+#warning need to ensure that all properties agree
+    return _coordinate == other._coordinate;
+}
+
+bool Waypoint::hasMETAR() const
+{
+    auto station = weatherStation();
+    if (station == nullptr)
+        return false;
+    return (station->metar() != nullptr);
+}
+
+bool Waypoint::hasTAF() const
+{
+    auto station = weatherStation();
+    if (station == nullptr)
+        return false;
+    return (station->taf() != nullptr);
 }

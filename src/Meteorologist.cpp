@@ -18,23 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Clock.h"
-#include "Meteorologist.h"
-
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include <QtGlobal>
 #include <QQmlEngine>
 #include <QXmlStreamReader>
+
 #include "sunset.h"
+
+#include "Clock.h"
+#include "GlobalSettings.h"
+#include "FlightRoute.h"
+#include "Meteorologist.h"
+#include "SatNav.h"
+
+
+#warning Need to store data on destruction and at regular intervals
+
+#warning Need to check regularly for outdated METAR/TAF reports and delete those
 
 Meteorologist::Meteorologist(Clock *clock,
                              SatNav *sat,
                              FlightRoute *route,
                              GlobalSettings *globalSettings,
-                             GeoMapProvider *geoMapProvider,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
     QObject(parent),
-    _geoMapProvider(geoMapProvider), _sat(sat), _route(route), _globalSettings(globalSettings), _networkAccessManager(networkAccessManager), _clock(clock)
+    _satNav(sat), _flightRoute(route), _globalSettings(globalSettings), _networkAccessManager(networkAccessManager), _clock(clock)
 
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
@@ -56,25 +66,25 @@ Meteorologist::Meteorologist(Clock *clock,
 
 Meteorologist::~Meteorologist()
 {
-    qDeleteAll(_reports);
-    _reports.clear();
+    qDeleteAll(_weatherStations);
+    _weatherStations.clear();
 
     qDeleteAll(_replies);
     _replies.clear();
 }
 
 
-QList<const Meteorologist::WeatherStation *> Meteorologist::weatherStations() const {
+QList<Meteorologist::WeatherStation *> Meteorologist::weatherStations() const {
 
     // Produce a list of reports, without nullpointers
-    QList<const WeatherStation *> sortedReports;
-    foreach(auto rep, _reports)
+    QList<WeatherStation *> sortedReports;
+    foreach(auto rep, _weatherStations)
         if (!rep.isNull())
             sortedReports += rep;
 
     // Sort list
     auto compare = [&](const WeatherStation *a, const WeatherStation *b) {
-        auto here = _sat->lastValidCoordinate();
+        auto here = _satNav->lastValidCoordinate();
         return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);
@@ -87,9 +97,9 @@ void Meteorologist::update(bool isBackgroundUpdate) {
     // Paranoid safety checks
     if (_globalSettings.isNull())
         return;
-    if (_route.isNull())
+    if (_flightRoute.isNull())
         return;
-    if (_sat.isNull())
+    if (_satNav.isNull())
         return;
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
@@ -120,8 +130,8 @@ void Meteorologist::update(bool isBackgroundUpdate) {
     _replies.clear();
 
     // Generate queries
-    const QGeoCoordinate& position = _sat->lastValidCoordinate();
-    const QVariantList& steerpts = _route->geoPath();
+    const QGeoCoordinate& position = _satNav->lastValidCoordinate();
+    const QVariantList& steerpts = _flightRoute->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
         queries.push_back(QString("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
@@ -161,11 +171,7 @@ void Meteorologist::downloadFinished() {
     // download processes and abort if indeed there are some.
     if (downloading())
         return;
-    process();
-}
 
-
-void Meteorologist::process() {
     // Check if some network replies contain errors. If so, emit error, completely ignore everything contained in any of the replies and abort
     bool hasError = false;
     foreach(auto rep, _replies)
@@ -226,13 +232,13 @@ void Meteorologist::process() {
     }
 
     // Clear old reports, if any. We disconnect first, to avoid repeated emissions of the signal reportsChanged
-    foreach(auto report, _reports) {
+    foreach(auto report, _weatherStations) {
         if (report.isNull())
             continue;
         disconnect(report, &QObject::destroyed, this, &Meteorologist::weatherStationsChanged);
         report->deleteLater();
     }
-    _reports.clear();
+    _weatherStations.clear();
 
     // Add new reports and handle unpaired METAR/TAF
     mStations.sort();
@@ -244,7 +250,7 @@ void Meteorologist::process() {
             stationPtr->setMETAR(metars.value(station));
             stationPtr->setTAF(tafs.value(station));
 
-            _reports << stationPtr;
+            _weatherStations << stationPtr;
             int i = tStations.indexOf(station);
             tStations.removeAt(i);
         }
@@ -252,18 +258,18 @@ void Meteorologist::process() {
         else {
             auto stationPtr = new WeatherStation(station, this);
             stationPtr->setMETAR(metars.value(station));
-            _reports << stationPtr; // empty TAF
+            _weatherStations << stationPtr; // empty TAF
         }
     }
     // Stations only have TAF
     foreach(auto station, tStations) {
         auto stationPtr = new WeatherStation(station, this);
         stationPtr->setTAF(tafs.value(station));
-        _reports << stationPtr;
+        _weatherStations << stationPtr;
     }
 
     // Report change of reports when weather reports start to auto-delete themsleves
-    foreach(auto report, _reports) {
+    foreach(auto report, _weatherStations) {
         if (report.isNull())
             continue;
         connect(report, &QObject::destroyed, this, &Meteorologist::weatherStationsChanged);
@@ -276,7 +282,6 @@ void Meteorologist::process() {
     // Update flag and signals
     emit weatherStationsChanged();
 
-    _lastUpdate = QDateTime::currentDateTimeUtc();
     emit QNHInfoChanged();
 }
 
@@ -293,13 +298,13 @@ bool Meteorologist::downloading() const
 QString Meteorologist::QNHInfo() const
 {
     // Paranoid safety checks
-    if (_sat.isNull())
+    if (_satNav.isNull())
         return QString();
 
     // Find QNH of nearest airfield
     WeatherStation *closestReportWithQNH = nullptr;
     int QNH = 0;
-    foreach(auto report, _reports) {
+    foreach(auto report, _weatherStations) {
         if (report.isNull())
             continue;
         if (report->metar() == nullptr)
@@ -314,7 +319,7 @@ QString Meteorologist::QNHInfo() const
             continue;
         }
 
-        QGeoCoordinate here = _sat->lastValidCoordinate();
+        QGeoCoordinate here = _satNav->lastValidCoordinate();
         if (here.distanceTo(report->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
             closestReportWithQNH = report;
     }
@@ -330,16 +335,16 @@ QString Meteorologist::QNHInfo() const
 QString Meteorologist::SunInfo() const
 {
     // Paranoid safety checks
-    if (_sat.isNull())
+    if (_satNav.isNull())
         return QString();
-    if (_sat->status() != SatNav::OK)
+    if (_satNav->status() != SatNav::OK)
         return tr("Waiting for precise position…");
 
     // Describe next sunset/sunrise
     QDateTime sunrise, sunset, sunriseTomorrow;
 
     SunSet sun;
-    auto coord = _sat->coordinate();
+    auto coord = _satNav->coordinate();
     auto timeZone = qRound(coord.longitude()/15.0);
 
     auto currentTime = QDateTime::currentDateTimeUtc();
@@ -388,9 +393,9 @@ QString Meteorologist::SunInfo() const
 }
 
 
-const Meteorologist::WeatherStation *Meteorologist::findWeatherStation(const QString &code) const
+Meteorologist::WeatherStation *Meteorologist::findWeatherStation(const QString &code) const
 {
-    foreach(auto report, _reports) {
+    foreach(auto report, _weatherStations) {
         if (report.isNull())
             continue;
         if (report->ICAOCode() == code)

@@ -133,7 +133,7 @@ Page {
                     satNav.status
                     satNav.lastValidCoordinate
                     meteorologist.reports
-                    return model.modelData.richTextName
+                    return model.modelData.ICAOCode
                 }
                 icon.source: model.modelData.icon
                 icon.color: "transparent"
@@ -163,7 +163,7 @@ Page {
             Layout.fillWidth: true
             clip: true
 
-            model: meteorologist.reportsAsWaypoints
+            model: meteorologist.weatherStations
             delegate: stationDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -310,7 +310,7 @@ Page {
                 id: qnhLabel
                 visible: qnhLabel.text != ""
                 Layout.fillWidth: true
-                text: meteorologist.QNHinfo
+                text: meteorologist.QNHInfo
             }
             Image {
                 visible: sunLabel.text != ""

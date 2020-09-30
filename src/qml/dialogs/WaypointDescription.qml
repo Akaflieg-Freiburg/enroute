@@ -45,12 +45,14 @@ Dialog {
             id: metarLabel
 
             text: {
-                if (dialogArgs.waypoint.hasMetar)
+                if (dialogArgs.waypoint.hasMETAR) {
+                    console.log(dialogArgs.waypoint.metar)
                     return dialogArgs.waypoint.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                }
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
 
-            visible: dialogArgs.waypoint.hasMetar || dialogArgs.waypoint.hasTaf
+            visible: dialogArgs.waypoint.hasMETAR || dialogArgs.waypoint.hasTAF
 
             Layout.fillWidth: true
             textFormat: Text.RichText

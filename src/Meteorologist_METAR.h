@@ -20,7 +20,13 @@
 
 #pragma once
 
+#include <QDateTime>
+#include <QMultiMap>
+#include <QGeoCoordinate>
+
 #include "Meteorologist.h"
+
+class QXmlStreamReader;
 
 /*! \brief METAR report
  *

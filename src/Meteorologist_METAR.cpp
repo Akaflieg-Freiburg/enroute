@@ -18,6 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QXmlStreamAttribute>
+
+#include "Clock.h"
 #include "Meteorologist_METAR.h"
 #include "Meteorologist_WeatherStation.h"
 

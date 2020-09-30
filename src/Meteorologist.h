@@ -20,28 +20,41 @@
 
 #pragma once
 
-#include <QObject>
 #include <QPointer>
 #include <QTimer>
-#include <QNetworkReply>
-#include <QXmlStreamReader>
 
-#include "Clock.h"
-#include "FlightRoute.h"
-#include "GeoMapProvider.h"
-#include "GlobalSettings.h"
-#include "SatNav.h"
-//#include "WeatherReport.h"
+class QNetworkAccessManager;
+class QNetworkReply;
 
-class WeatherReport;
+class Clock;
 class FlightRoute;
-class GeoMapProvider;
+class GlobalSettings;
+class SatNav;
+
 
 /*! \brief Meteorologist, weather service manager
  *
- * This class retrieves METAR/TAF weather reports from the "Aviation Weather Center" for all stations that
- * are within 75nm from the last-known user position or current route.  The reports are fetched from aviationweather.com in XML
- * format, and subsequently decoded.
+ * This class retrieves METAR/TAF weather reports from the "Aviation Weather
+ * Center" at aviationweather.com, for all weather stations that are within 75nm
+ * from the last-known user position or current route.  The reports can then be
+ * accessed via the property "weatherStations" and the method
+ * findWeatherStation.  The Meteorologist class honors
+ * GlobalSettings::acceptedWeatherTerms() and will initiate a download only if
+ * the user agreed to the privacy warning.
+ *
+ * Once constructed, the Meteorologist class will regularly perform background
+ * updates to retrieve up-to-date information. It will update the list of known
+ * weather stations and also the METAR/TAF reports for the weather stations.
+ * The class checks regularly for outdated METAR and TAF reports and deletes
+ * them automatically, along with those WeatherStations that no longer contain
+ * any report.
+ *
+ * In order to avoid loss of data when the app is accidently closed in-flight,
+ * the class stores all weather data at destruction and at regular intervals,
+ * and reads the data back in on construction.
+ *
+ * This class also contains a number or convenience methods and properties
+ * pertaining to sunrise/sunset
  */
 class Meteorologist : public QObject {
     Q_OBJECT
@@ -53,11 +66,20 @@ public:
 
     /*! \brief Standard constructor
      *
-     * @param clock A clock object
+     * @param clock A pointer to a Clock object, which is used to synchronize
+     * property updates, in order to avoid continuous GUI updates when many
+     * items are shown.
      *
-     * @param sat The satellite navigation system
+     * @param sat A pointer to a SatNav object, which is used to determine the
+     * position. This is used to find nearby weather stations, for
+     * sunset/sunrise computations, and for sorting WeatherStations according to
+     * position.
      *
-     * @param route The flight route
+     * @param route A pointer to a FlightRoute object. This is used to find
+     * WeatherStations near the planned route.
+     *
+     * @param globalSettings A pointer to a GlobalSettings object, used to check
+     * if the user has agreed to the privacy warning.
      * 
      * @param networkAccessManager The manager for network requests
      * 
@@ -67,7 +89,6 @@ public:
                            SatNav *sat,
                            FlightRoute *route,
                            GlobalSettings *globalSettings,
-                           GeoMapProvider *geoMapProvider,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
 
@@ -76,21 +97,25 @@ public:
 
     /*! \brief QNHInfo
      *
-     * This property holds a richt-text string with global information. A typical result could be "Sunset at 17:01, in 32 minutes.<br>Last METAR/TAF update 21 minutes ago."
-     * Depending on availability of information, the string can also be shorter, or altogether empty.
+     * This property holds a human-readable, translated, rich-text string with
+     * information about the QNH of the nearest weather station.  This could
+     * typically read like "QNH: 1019 hPa in LFGA, 4min ago".  If no information
+     * is available, the property holds an empty string.
      */
-    Q_PROPERTY(QString QNHinfo READ QNHInfo NOTIFY QNHInfoChanged)
+    Q_PROPERTY(QString QNHInfo READ QNHInfo NOTIFY QNHInfoChanged)
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property infoString
+     * @returns Property QNHInfo
      */
     QString QNHInfo() const;
 
     /*! \brief SunInfo
      *
-     * This property holds a richt-text string with global information. A typical result could be "Sunset at 17:01, in 32 minutes.<br>Last METAR/TAF update 21 minutes ago."
-     * Depending on availability of information, the string can also be shorter, or altogether empty.
+     * This property holds a human-readable, translated, rich-text string with 
+     * information about the next sunset or sunrise at the current position. This
+     * could typically read like "SS 17:01, in 3h and 5min" or "Waiting for exact
+     * position …"
      */
     Q_PROPERTY(QString SunInfo READ SunInfo NOTIFY SunInfoChanged)
 
@@ -100,74 +125,90 @@ public:
      */
     QString SunInfo() const;
 
-    /*! \brief The list of weather reports
+    /*! \brief List of weather stations
      *
-     * Returns the weather reports as a list of QObject for better interraction
-     * with QML.
+     * This property holds a list of all weather stations that are currently know to this instance of the Meteorologist class, sorted according to the distance to the last known position.
+     * The list can change at any time.
+     *
+     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime. Store it in a QPointer to avoid dangling pointers.
      */
-    Q_PROPERTY(QList<const Meteorologist::WeatherStation *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
-#warning need to explain about sorting
+    Q_PROPERTY(QList<Meteorologist::WeatherStation *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property reports
+     * @returns Property weatherStations
      */
-    QList<const Meteorologist::WeatherStation *> weatherStations() const;
+    QList<Meteorologist::WeatherStation *> weatherStations() const;
 
     /*! \brief Downloading flag
      *
-     * Indicates if the Meteorologist is currently downloading METAR/TAF information from the internet
+     * Indicates that the Meteorologist is currently downloading METAR/TAF information from the internet.
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property downaloading
+     * @returns Property downloading
      */
     bool downloading() const;
 
     /*! \brief Background update flag
      *
-     * Indicates if the last download process was started as a background update, or if it was explicitly started by the user.
+     * Indicates if the last download process was started as a background update.
      */
     Q_PROPERTY(bool backgroundUpdate READ backgroundUpdate NOTIFY backgroundUpdateChanged)
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property processing
+     * @returns Property backgroundUpdate
      */
     bool backgroundUpdate() const { return _backgroundUpdate; };
 
     /*! \brief Update method
      *
-     * Gets the last-known user location and the current route, generates the
-     * network queries and send them to aviationweather.com.  If the global settings indicate
-     * that connection to aviationweather.com is not allowed, this method does nothing and returns immediately.
+     * If the global settings indicate
+     * that connections to aviationweather.com are not allowed, this method does nothing and returns immediately.  Otherwise, this method initiates the asynchronous download of weather information from the internet. It
+     * generates the necessary network queries and sends them to aviationweather.com.
      *
-     * @param isBackgroundUpdate This is a simple flag that can be set and later retrieved in the "backgroundUpdate" property. This is a little helper for the GUI that might want to wish
-     * to make a distinction between automatically triggered background updates (which should not be shown to the user) and those that are explicitly started by the user.
+     * - If an error occurred while downloading, the signal "error" will be emitted.
+     *
+     * - If the download completes successfully, the notifier signal for the property weatherStations will be emitted.
+     *
+     * @param isBackgroundUpdate This is a simple flag that can be set and later
+     * retrieved in the "backgroundUpdate" property. This is a little helper for
+     * the GUI that might want to wish to make a distinction between
+     * automatically triggered background updates (which should not be shown to
+     * the user) and those that are explicitly started by the user.
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
     /*! \brief Find WeatherStation by ICAO code
      *
-     * This method returns a pointer to the WeatherStation with the given ICAO code,
-     * or a nullprt if no WeatherStation with the given code is known.
+     * This method returns a pointer to the WeatherStation with the given ICAO
+     * code, or a nullptr if no WeatherStation with the given code is known to
+     * the Meteorologist.
+     *
+     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime.  Store it in a QPointer to avoid dangling pointers.
      *
      * @param ICAOCode ICAO code name of the WeatherStation, such as "EDDF"
      *
      * @returns Pointer to WeatherStation
      */
-    const Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const;
+    Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const;
 
 signals:
     /*! \brief Notifier signal */
     void backgroundUpdateChanged();
 
-    /*! \brief Signal emitted when the processing flag changes */
+    /*! \brief Notifier signal */
     void downloadingChanged();
 
-    /*! \brief Signal emitted when a network error occurs */
+    /*! \brief Signal emitted when a network error occurs
+     *
+     * This signal is emitted to indicate that the Meteorologist failed to download weather data.
+     *
+     * @param message A human-readable, translated error message
+     */
     void error(QString message);
 
     /*! \brief Notifier signal */
@@ -179,47 +220,39 @@ signals:
     /*! \brief Signal emitted when the list of weather reports changes */
     void weatherStationsChanged();
 
+private slots:
+    // Called when a download is finished
+    void downloadFinished();
+
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 
-#warning docu
-    QPointer<GeoMapProvider> _geoMapProvider;
-
-    /*! \brief Pointer to satellite navigation system */
+    // Pointer to the clock
     QPointer<Clock> _clock;
 
-    /*! \brief Pointer to satellite navigation system */
-    QPointer<SatNav> _sat;
+    // Pointer to the flight route
+    QPointer<FlightRoute> _flightRoute;
 
-    /*! \brief Pointer to route */
-    QPointer<FlightRoute> _route;
-
-    /*! \brief Pointer to global settings */
+    // Pointer to global settings
     QPointer<GlobalSettings> _globalSettings;
 
-    /*! \brief Pointer to network manager */
+    // Pointer to the network access manager
     QPointer<QNetworkAccessManager> _networkAccessManager;
 
-    /*! \brief List of replies that will be fetched from aviationweather.com */
+    // Pointer to the satellite navigation system */
+    QPointer<SatNav> _satNav;
+
+    // List of replies from aviationweather.com
     QList<QPointer<QNetworkReply>> _replies;
 
-    /*! \brief A timer used for auto-updating the weather reports every 30 minutes */
+    // A timer used for auto-updating the weather reports every 30 minutes
     QTimer _updateTimer;
 
-    /*! \brief Time of last update */
-    QDateTime _lastUpdate {};
-
-    /*! \brief flag, as set by the update() method */
+    // Flag, as set by the update() method
     bool _backgroundUpdate {true};
 
-    /*! \brief List of weather reports */
-    QList<QPointer<WeatherStation>> _reports;
-
-    /*! \brief Slot activated when a download is finished */
-    void downloadFinished();
-
-    /*! \brief Process the replies from aviationweather.com and generates the reports */
-    void process();
+    // List of weather reports
+    QList<QPointer<WeatherStation>> _weatherStations;
 };
 
 #include "Meteorologist_METAR.h"

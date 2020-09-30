@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QVariant>
+
 #include "Meteorologist.h"
 
 
@@ -95,13 +97,13 @@ public:
      * The METAR instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
-    Q_PROPERTY(const Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
+    Q_PROPERTY(Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property metar
      */
-    const Meteorologist::METAR *metar() const
+    Meteorologist::METAR *metar() const
     {
         return _metar;
     }
@@ -112,13 +114,13 @@ public:
      * The TAF instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
-    Q_PROPERTY(const Meteorologist::TAF *taf READ taf NOTIFY tafChanged)
+    Q_PROPERTY(Meteorologist::TAF *taf READ taf NOTIFY tafChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    const Meteorologist::TAF *taf() const
+    Meteorologist::TAF *taf() const
     {
         return _taf;
     }

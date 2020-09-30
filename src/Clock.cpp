@@ -106,5 +106,5 @@ void Clock::setSingleShotTimer()
 
 QString Clock::time() const
 {
-    return QDateTime::currentDateTime().toUTC().toString("H:mm");
+    return QDateTime::currentDateTimeUtc().toString("H:mm");
 }

@@ -121,7 +121,7 @@ QString FlightRoute::gpxElements(const QString& indent, const QString& tag) cons
         auto lon = QString::number(position.longitude(), 'f', 8);
         gpx += indent + "<" + tag + " lat='" + lat + "' lon='" + lon + "'>\n";
 
-        if (_waypoint->contains("ELE")) {
+        if (_waypoint->containsProperty("ELE")) {
 
             // elevation in meters always for gpx
             //

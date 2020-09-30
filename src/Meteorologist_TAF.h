@@ -20,6 +20,12 @@
 
 #pragma once
 
+#include <QDateTime>
+#include <QMultiMap>
+#include <QGeoCoordinate>
+
+class QXmlStreamReader;
+
 #include "Meteorologist.h"
 
 /*! \brief TAF report

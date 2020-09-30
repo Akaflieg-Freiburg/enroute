@@ -73,7 +73,6 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 
     if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition)) {
         auto wp = new Waypoint(position, this);
-        wp->setClock(_clock);
         wp->setGlobalSettings(_globalSettings);
         wp->setMeteorologist(_meteorologist);
         wp->setSatNav(_satNav);
@@ -262,7 +261,6 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         auto wp = new Waypoint(object);
-        wp->setClock(_clock);
         wp->setGlobalSettings(_globalSettings);
         wp->setMeteorologist(_meteorologist);
         wp->setSatNav(_satNav);

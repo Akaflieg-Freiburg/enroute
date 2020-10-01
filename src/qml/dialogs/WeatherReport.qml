@@ -58,7 +58,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: dialogArgs.waypoint.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
+            text: dialogArgs.waypoint.wayTo
             visible: satNav.status === SatNav.OK
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -88,14 +88,14 @@ Dialog {
                 width: parent.width
 
                 Label { // title: "METAR"
-                    visible: dialogArgs.waypoint.hasMetar
+                    visible: dialogArgs.waypoint.hasMETAR
                     text: dialogArgs.waypoint.hasMetar ? (dialogArgs.waypoint.metar.messageType + " " + dialogArgs.waypoint.metar.relativeObservationTime) : ""
                     font.bold: true
                     font.pixelSize: 1.2*Qt.application.font.pixelSize
                 }
 
                 Label { // raw METAR text
-                    visible: dialogArgs.waypoint.hasMetar
+                    visible: dialogArgs.waypoint.hasMETAR
                     text: dialogArgs.waypoint.metar.rawText
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
@@ -108,7 +108,7 @@ Dialog {
                     // Background color according to METAR/FAA flight category
                     background: Rectangle {
                         border.color: "black"
-                        color: dialogArgs.waypoint.color
+                        color: dialogArgs.waypoint.flightCategoryColor
                         opacity: 0.2
                     }
                 }

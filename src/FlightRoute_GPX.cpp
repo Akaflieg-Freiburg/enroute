@@ -110,7 +110,7 @@ QString FlightRoute::gpxElements(const QString& indent, const QString& tag) cons
             continue; // skip silently
 
         QGeoCoordinate position = _waypoint->coordinate();
-        auto code = _waypoint->get("COD").toString();
+        auto code = _waypoint->getPropery("COD").toString();
         auto name = _waypoint->extendedName();
 
         if (code.isEmpty()) {
@@ -125,7 +125,7 @@ QString FlightRoute::gpxElements(const QString& indent, const QString& tag) cons
 
             // elevation in meters always for gpx
             //
-            auto elevation = QString::number(_waypoint->get("ELE").toDouble(), 'f', 2);
+            auto elevation = QString::number(_waypoint->getPropery("ELE").toDouble(), 'f', 2);
             gpx += indent + "  <ele>" + elevation + "</ele>\n";
         }
 
@@ -244,7 +244,7 @@ QString FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapPr
 
             if (nearest != nullptr) {
                 auto* wpt = dynamic_cast<Waypoint*>(nearest);
-                if (wpt->get("TYP") == "WP" && wpt->get("CAT") == "WP" && name.length() > 0)
+                if (wpt->getPropery("TYP") == "WP" && wpt->getPropery("CAT") == "WP" && name.length() > 0)
                     wpt->setProperty("NAM", name);
             }
         }

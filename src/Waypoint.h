@@ -30,7 +30,7 @@
 #include "SatNav.h"
 
 class GlobalSettings;
-class Meteorologist;
+
 
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
  *
@@ -127,6 +127,48 @@ public:
      */
     QGeoCoordinate coordinate() const { return _coordinate; }
 
+    /*! \brief Extended name of the waypoint
+     *
+     * This property holds a string of the form "Karlsruhe (DVOR-DME)"
+     */
+    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property extendedName
+    */
+    QString extendedName() const;
+
+    /*! \brief Convenience property to access the flight category color of the current METAR report
+     *
+     * If a pointer to a Meteorologist instance has been set with setMeteorologist()
+     * and if a WeatherStation is known to exist at this point, then this property
+     * holds the color code for latest METAR report. This is really a convenience, equivalent to
+     * calling weatherStation()->metar()->flightCategoryColor() (after checking for nullptrs).
+     * If no flight category color can be determined, then "transparent" is returned.
+     */
+    Q_PROPERTY(QString flightCategoryColor READ flightCategoryColor NOTIFY flightCategoryColorChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property flightCategoryColor
+     */
+    QString flightCategoryColor() const;
+
+    /*! \brief Four-line description of the waypoint name some additional data.
+     *
+     * This property holds a four-line description of the waypoint. In addition to the property twoLineTitle the additional line include the "way to" and "METAR summary". Depending on available data, a smaller number of lines will be shown.
+     *
+     * @see twoLineTitle
+     */
+    Q_PROPERTY(QString fourLineTitle READ fourLineTitle NOTIFY fourLineTitleChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property threeLineTitle
+     */
+    QString fourLineTitle() const;
+
     /*! \brief Retrieve property by name
      *
      * Recall that the waypoint data is stored as a list of properties that correspond to
@@ -138,7 +180,7 @@ public:
      *
      * @returns Value of the proerty
      */
-    Q_INVOKABLE QVariant get(const QString& propertyName) const
+    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
     {
         return _properties.value(propertyName);
     }
@@ -169,7 +211,7 @@ public:
 
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property hasMAF
+     * @returns Property hasTAF
      */
     bool hasTAF() const;
 
@@ -186,10 +228,10 @@ public:
      */
     QString icon() const
     {
-        return QString("/icons/waypoints/%1.svg").arg(get("CAT").toString());
+        return QString("/icons/waypoints/%1.svg").arg(getPropery("CAT").toString());
     }
 
-    /* \brief Check is the waypoint is valid
+    /* \brief Check if the waypoint is valid
      *
      * This method checks if the waypoint has a valid coordinate and
      * if the properties satisfy the specifications outlined
@@ -198,6 +240,22 @@ public:
      * @returns True if the waypoint is valid.
      */
     bool isValid() const;
+
+    /*! \brief Convenience property to access the summary of the current METAR report
+     *
+     * If a pointer to a Meteorologist instance has been set with setMeteorologist()
+     * and if a WeatherStation is known to exist at this point, then this property
+     * holds the summary of the latest METAR report. This is really a convenience, equivalent to
+     * calling weatherStation()->metar()->summary() (after checking for nullptrs).
+     * If no METAR is found, then an empty string is returned.
+     */
+    Q_PROPERTY(QString METARSummary READ METARSummary NOTIFY METARSummaryChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property METARSummary
+     */
+    QString METARSummary() const;
 
     /*! \brief Set optional pointer to a GlobalSettings instance, in order to improve messages
      *
@@ -230,6 +288,22 @@ public:
      */
     void setSatNav(SatNav *satNav=nullptr);
 
+    /* \brief Description of waypoint properties
+     *
+     * This method holds a list of strings in meaningful order that describe the waypoint properties.
+     * This includes airport frequency, runway information, etc. The data is returned as a list
+     * of strings where the first four letters of each string indicate the type of data with
+     * an abbreviation that will be understood by pilots ("RWY ", "ELEV", etc.). The rest of the string will then contain
+     * the actual data.
+     */
+    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property tabularDescription
+     */
+    QList<QString> tabularDescription() const;
+
     /*! \brief Serialization to GeoJSON object
      *
      * This method serialises the waypoint as a GeoJSON object. The object
@@ -240,6 +314,37 @@ public:
      * @returns QJsonObject describing the waypoint
      */
     QJsonObject toJSON() const;
+
+    /*! \brief Two-line description of the waypoint name
+     *
+     * This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a
+     * string of the form "<strong>LFKA</strong><br><font size='2'>ALBERTVILLE</font>" or simply "KIRCHZARTEN"
+     *
+     * @see threeLineTitle
+     */
+#warning think again about name!
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property twoLineTitle
+     */
+    QString twoLineTitle() const;
+
+    /*! \brief Description of the way from the current position to the waypoint
+     *
+     * If a pointer to a SatNav instance has been set with setSatNav(), then this property
+     * describes that way from the current position to the waypoint.  If a pointer to a GlobalSettings instance has been set with setGlobalSettings(), then
+     * user preferences (metric units versus miles) will be taken into account. The result is then a string such as "DIST 65.2 NM • QUJ 276°".
+     * If the way cannot be described (e.g. because the current position is not known), an empty string is returned.
+    */
+    Q_PROPERTY(QString wayTo READ wayTo NOTIFY wayToChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property wayTo
+     */
+    QString wayTo() const;
 
     /*! \brief Check if a WeatherStation exists at this point
      *
@@ -263,63 +368,27 @@ public:
      */
     bool operator==(const Waypoint &other) const;
 
-    // ===================================
-
-    /*! \brief Extended name of the Waypoints
-
-    This method returns a string of the form "Karlsruhe (DVOR-DME)"
-  */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-
-    @returns Property extendedName
-  */
-    Q_INVOKABLE QString extendedName() const;
-
-
-#warning documentation. THIS IS NOT CONSTANT!
-    Q_PROPERTY(QString color READ color NOTIFY colorChanged)
-    QString color() const;
-
-#warning documentation
-    Q_PROPERTY(QString richTextName READ richTextName NOTIFY richTextNameChanged)
-    QString richTextName() const;
-
-#warning documentation
-    Q_PROPERTY(QString simpleDescription READ simpleDescription CONSTANT)
-    QString simpleDescription() const;
-
-
-#warning documentation
-    Q_PROPERTY(QObject *metar READ metar NOTIFY weatherStationChanged)
-    QObject *metar() const;
-
-    /* \brief Description of waypoint details as an HTML table */
-    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-
-    @returns Property tabularDescription
-    */
-    QList<QString> tabularDescription() const;
-
-    /*! \brief Description of the way from a given position to the waypoint
-
-    @param position Position
-    @param useMetricUnits if true, render distance in km, else in NM
-
-    @returns a string of the form "DIST 65.2 NM • QUJ 276°"
-    */
-    Q_INVOKABLE QString wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const;
-
-
 signals:
-    void colorChanged();
+    /*! \brief Notifier signal */
+    void flightCategoryColorChanged();
+
+    /*! \brief Notifier signal */
     void hasMETARChanged();
+
+    /*! \brief Notifier signal */
     void hasTAFChanged();
-    void richTextNameChanged();
+
+    /*! \brief Notifier signal */
+    void METARSummaryChanged();
+
+    /*! \brief Notifier signal */
+    void fourLineTitleChanged();
+
+    /*! \brief Notifier signal */
     void weatherStationChanged();
+
+    /*! \brief Notifier signal */
+    void wayToChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(Waypoint)

@@ -90,7 +90,7 @@ Waypoint* GeoMapProvider::findByID(const QString &id)
     foreach(auto wp, wps) {
         if (wp.isNull())
             continue;
-        if (wp->get("COD").toString() == id)
+        if (wp->getPropery("COD").toString() == id)
             return wp;
     }
     return nullptr;
@@ -139,8 +139,8 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
             continue;
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = _librarian->simplifySpecialChars(wp->get("NAM").toString());
-            QString codeName = _librarian->simplifySpecialChars(wp->get("COD").toString());
+            QString fullName = _librarian->simplifySpecialChars(wp->getPropery("NAM").toString());
+            QString codeName = _librarian->simplifySpecialChars(wp->getPropery("COD").toString());
             QString wordx = _librarian->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
@@ -164,7 +164,7 @@ QList<QObject*> GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, 
     foreach(auto wp, wps) {
         if (wp.isNull())
             continue;
-        if (wp->get("TYP").toString() != type)
+        if (wp->getPropery("TYP").toString() != type)
             continue;
         tWps.append(wp);
     }
@@ -288,7 +288,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
     QJsonDocument geoDoc(resultObject);
 
     // Sort waypoints by name
-    std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->get("NAM").toString() < b->get("NAM").toString(); });
+    std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->getPropery("NAM").toString() < b->getPropery("NAM").toString(); });
 
     _aviationDataMutex.lock();
     foreach(auto airspace, _airspaces_) {

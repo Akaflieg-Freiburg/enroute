@@ -42,7 +42,7 @@ Dialog {
         id: waypointDelegate
 
         ItemDelegate {
-            text: model.modelData.simpleDescription
+            text: model.modelData.twoLineTitle
             icon.source: model.modelData.icon
             icon.color: "transparent"
 

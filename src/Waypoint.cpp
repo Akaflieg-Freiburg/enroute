@@ -31,6 +31,11 @@
 
 #warning Need to emit weatherStationChanged signals when appropriate
 #warning Need to emit hasMETARChanged signals when appropriate
+#warning Need to emit wayTo signals when appropriate
+#warning Need to emit flightCategoryColorChanged signals when appropriate
+#warning Need to emit METARSummaryChanged signals when appropriate
+#warning Need to emit threeLineTitleChanged signals when appropriate
+
 
 Waypoint::Waypoint(QObject *parent)
     : QObject(parent)
@@ -102,7 +107,7 @@ QString Waypoint::extendedName() const
     return _properties.value("NAM").toString();
 }
 
-QString Waypoint::richTextName() const
+QString Waypoint::fourLineTitle() const
 {
     QStringList lines;
 
@@ -144,7 +149,7 @@ QString Waypoint::richTextName() const
     return lines.join("<br>");
 }
 
-QString Waypoint::simpleDescription() const
+QString Waypoint::twoLineTitle() const
 {
     QString codeName;
     if (_properties.contains("COD"))
@@ -166,19 +171,6 @@ Meteorologist::WeatherStation *Waypoint::weatherStation() const
         return nullptr;
 
     return _meteorologist->findWeatherStation(_properties.value("COD").toString());
-}
-
-QObject *Waypoint::metar() const
-{
-    if (_meteorologist.isNull())
-        return nullptr;
-    if (!_properties.contains("COD"))
-        return nullptr;
-    auto rep = _meteorologist->findWeatherStation(_properties.value("COD").toString());
-    if (rep == nullptr)
-        return nullptr;
-
-    return rep->metar();
 }
 
 QList<QString> Waypoint::tabularDescription() const
@@ -235,48 +227,54 @@ QJsonObject Waypoint::toJSON() const
     return feature;
 }
 
-QString Waypoint::wayFrom(const QGeoCoordinate& position, bool useMetricUnits) const
+QString Waypoint::wayTo() const
 {
+    if (_satNav.isNull())
+        return QString();
+    if (_satNav->status() != SatNav::OK)
+        return QString();
+
+    bool useMetricUnits = false;
+    if (_globalSettings)
+        useMetricUnits = _globalSettings->useMetricUnits();
+
+    auto position = _satNav->lastValidCoordinate();
     auto dist = AviationUnits::Distance::fromM(position.distanceTo(_coordinate));
     auto QUJ = qRound(position.azimuthTo(_coordinate));
 
-    QString result;
-    if (useMetricUnits) {
-        result += QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    } else {
-        result += QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
-    }
-    return result;
+    if (useMetricUnits)
+        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
+    return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
 
 void Waypoint::setSatNav(SatNav *satNav)
 {
     if (!_satNav.isNull()) {
-        disconnect(_satNav, &SatNav::statusChanged, this, &Waypoint::richTextNameChanged);
-        disconnect(_satNav, &SatNav::update, this, &Waypoint::richTextNameChanged);
+        disconnect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
+        disconnect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
     }
 
     _satNav = satNav;
 
     if (!_satNav.isNull()) {
-        connect(_satNav, &SatNav::statusChanged, this, &Waypoint::richTextNameChanged);
-        connect(_satNav, &SatNav::update, this, &Waypoint::richTextNameChanged);
+        connect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
+        connect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
     }
 }
 
 void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 {
     if (!_meteorologist.isNull()) {
-        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::colorChanged);
-        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::richTextNameChanged);
+        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::flightCategoryColorChanged);
+        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
         disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
     }
 
     _meteorologist = meteorologist;
 
     if (!_meteorologist.isNull()) {
-        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::colorChanged);
-        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::richTextNameChanged);
+        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::flightCategoryColorChanged);
+        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
         connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
     }
 }
@@ -284,21 +282,36 @@ void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 void Waypoint::setGlobalSettings(GlobalSettings *globalSettings)
 {
     if (!_globalSettings.isNull())
-        disconnect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::richTextNameChanged);
+        disconnect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::fourLineTitle);
 
     _globalSettings = globalSettings;
 
     if (!_globalSettings.isNull())
-        connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::richTextNameChanged);
+        connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::fourLineTitle);
 }
 
-QString Waypoint::color() const
+QString Waypoint::flightCategoryColor() const
 {
-    auto _metar = (Meteorologist::METAR *)metar();
-    if (_metar == nullptr)
+    auto station = weatherStation();
+    if (station == nullptr)
         return "transparent";
-    return _metar->flightCategoryColor();
+    auto metar = station->metar();
+    if (metar == nullptr)
+        return "transparent";
+    return metar->flightCategoryColor();
 }
+
+QString Waypoint::METARSummary() const
+{
+    auto station = weatherStation();
+    if (station == nullptr)
+        return QString();
+    auto metar = station->metar();
+    if (metar == nullptr)
+        return QString();
+    return metar->summary();
+}
+
 
 bool Waypoint::isValid() const
 {

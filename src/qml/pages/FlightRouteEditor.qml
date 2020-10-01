@@ -49,7 +49,7 @@ Page {
                 icon.source: (model.modelData instanceof Waypoint) ? model.modelData.icon : ""
                 icon.color: "transparent"
                 Layout.fillWidth: true
-                text: model.modelData.simpleDescription
+                text: model.modelData.twoLineTitle
 
                 onClicked: {
                     mobileAdaptor.vibrateBrief()

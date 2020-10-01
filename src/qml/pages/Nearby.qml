@@ -67,7 +67,7 @@ Page {
                 // Background color according to METAR/FAA flight category
                 Rectangle {
                     anchors.fill: parent
-                    color: model.modelData.color
+                    color: model.modelData.flightCategoryColor
                     opacity: 0.2
                 }
 
@@ -79,7 +79,7 @@ Page {
                         satNav.status
                         satNav.lastValidCoordinate
                         meteorologist.reports
-                        return model.modelData.richTextName
+                        return model.modelData.fourLineTitle
                     }
                     icon.source: model.modelData.icon
                     icon.color: "transparent"

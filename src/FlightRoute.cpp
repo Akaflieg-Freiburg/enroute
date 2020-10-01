@@ -277,14 +277,14 @@ QString FlightRoute::suggestedFilename() const
     if (_waypoints.size() < 2)
         return result;
 
-    QString start = _waypoints.constFirst()->get("COD").toString();
+    QString start = _waypoints.constFirst()->getPropery("COD").toString();
     if (start.isEmpty())
-        start = _waypoints.constFirst()->get("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
+        start = _waypoints.constFirst()->getPropery("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
     if (start.isEmpty())
         return result;
-    QString end = _waypoints.constLast()->get("COD").toString();
+    QString end = _waypoints.constLast()->getPropery("COD").toString();
     if (end.isEmpty())
-        end = _waypoints.constLast()->get("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
+        end = _waypoints.constLast()->getPropery("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
     if (end.isEmpty())
         return result;
 

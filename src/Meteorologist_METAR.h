@@ -91,7 +91,20 @@ public:
      */
     QString decodedText() const;
 
-    /*! Suggested color describing tlight category for this METAR
+    /*! Expiration time and date
+     *
+     * A METAR message is supposed to expire 1.5 hours after observation time,
+     * unless raw text contains "NOSIG", then it is 3 hours.
+     */
+    Q_PROPERTY(QDateTime expiration READ expiration CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property expiration
+     */
+    QDateTime expiration() const;
+
+    /*! Suggested color describing the flight category for this METAR
      *
      * The suggested colors are  the following
      *
@@ -110,19 +123,6 @@ public:
      * @returns Property color
      */
     QString flightCategoryColor() const;
-
-    /*! Expiration time and date
-     *
-     * A METAR message is supposed to expire 1.5 hours after observation time,
-     * unless raw text contains "NOSIG", then it is 3 hours.
-     */
-    Q_PROPERTY(QDateTime expiration READ expiration CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property expiration
-     */
-    QDateTime expiration() const;
 
     /*! Flight category for this METAR
      *

@@ -45,10 +45,8 @@ Dialog {
             id: metarLabel
 
             text: {
-                if (dialogArgs.waypoint.hasMETAR) {
-                    console.log(dialogArgs.waypoint.metar)
-                    return dialogArgs.waypoint.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
-                }
+                if (dialogArgs.waypoint.hasMETAR)
+                    return dialogArgs.waypoint.METARSummary + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
 
@@ -74,7 +72,7 @@ Dialog {
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: dialogArgs.waypoint.color
+                color: dialogArgs.waypoint.flightCategoryColor
                 opacity: 0.2
             }
 
@@ -283,7 +281,7 @@ Dialog {
         }
 
         Label {
-            text: dialogArgs.waypoint.wayFrom(satNav.lastValidCoordinate, globalSettings.useMetricUnits)
+            text: dialogArgs.waypoint.wayTo
             visible: satNav.status === SatNav.OK
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

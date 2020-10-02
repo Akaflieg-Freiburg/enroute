@@ -155,20 +155,6 @@ public:
      */
     QString flightCategoryColor() const;
 
-    /*! \brief Four-line description of the waypoint name some additional data.
-     *
-     * This property holds a four-line description of the waypoint. In addition to the property twoLineTitle the additional line include the "way to" and "METAR summary". Depending on available data, a smaller number of lines will be shown.
-     *
-     * @see twoLineTitle
-     */
-    Q_PROPERTY(QString fourLineTitle READ fourLineTitle NOTIFY fourLineTitleChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property threeLineTitle
-     */
-    QString fourLineTitle() const;
-
     /*! \brief Retrieve property by name
      *
      * Recall that the waypoint data is stored as a list of properties that correspond to
@@ -322,7 +308,6 @@ public:
      *
      * @see threeLineTitle
      */
-#warning think again about name!
     Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
 
     /*! \brief Getter function for property with the same name

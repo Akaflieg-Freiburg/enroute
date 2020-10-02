@@ -107,48 +107,6 @@ QString Waypoint::extendedName() const
     return _properties.value("NAM").toString();
 }
 
-QString Waypoint::fourLineTitle() const
-{
-    QStringList lines;
-
-    QString codeName;
-    if (_properties.contains("COD"))
-        codeName += _properties.value("COD").toString();
-    if (_properties.contains("MOR"))
-        codeName += " " + _properties.value("MOR").toString();
-
-    if (codeName.isEmpty())
-        lines << extendedName();
-    else {
-        lines << QString("<strong>%1</strong>").arg(codeName);
-        if (!extendedName().isEmpty())
-            lines << QString("<font size='2'>%1</font>").arg(extendedName());
-    }
-
-    // line two: code name, codename and "way to" if available
-    if (!_satNav.isNull() && (_satNav->status() == SatNav::OK) && _coordinate.isValid()) {
-        bool useMetric = false;
-        if (!_globalSettings.isNull())
-            useMetric = _globalSettings->useMetricUnits();
-        lines << QString("<font size='2'>%1</font>").arg(_satNav->wayTo(_coordinate, useMetric));
-    }
-
-    // line three: METAR information, if available
-    if (!_meteorologist.isNull() && _properties.contains("COD")) {
-        auto station = _meteorologist->findWeatherStation(_properties.value("COD").toString());
-        if (station) {
-            auto metar = station->metar();
-            if (metar) {
-                auto descr = metar->summary();
-                if (!descr.isEmpty())
-                    lines << QString("<font size='2'>%1</font>").arg(descr);
-            }
-        }
-    }
-
-    return lines.join("<br>");
-}
-
 QString Waypoint::twoLineTitle() const
 {
     QString codeName;
@@ -250,15 +208,15 @@ QString Waypoint::wayTo() const
 void Waypoint::setSatNav(SatNav *satNav)
 {
     if (!_satNav.isNull()) {
-        disconnect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
-        disconnect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
+//        disconnect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
+//        disconnect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
     }
 
     _satNav = satNav;
 
     if (!_satNav.isNull()) {
-        connect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
-        connect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
+//        connect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
+//        connect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
     }
 }
 
@@ -266,7 +224,7 @@ void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 {
     if (!_meteorologist.isNull()) {
         disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::flightCategoryColorChanged);
-        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
+//        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
         disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
     }
 
@@ -274,20 +232,22 @@ void Waypoint::setMeteorologist(Meteorologist *meteorologist)
 
     if (!_meteorologist.isNull()) {
         connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::flightCategoryColorChanged);
-        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
+//        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
         connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
     }
 }
 
 void Waypoint::setGlobalSettings(GlobalSettings *globalSettings)
 {
-    if (!_globalSettings.isNull())
+/*
+ *     if (!_globalSettings.isNull())
         disconnect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::fourLineTitle);
-
+*/
     _globalSettings = globalSettings;
-
+/*
     if (!_globalSettings.isNull())
         connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::fourLineTitle);
+        */
 }
 
 QString Waypoint::flightCategoryColor() const

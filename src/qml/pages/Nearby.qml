@@ -74,12 +74,16 @@ Page {
                 ItemDelegate {
                     id: idel
                     text: {
-                        // Mention items that will lead to change of text
-                        clock.time
-                        satNav.status
-                        satNav.lastValidCoordinate
-                        meteorologist.reports
-                        return model.modelData.fourLineTitle
+                        var result = model.modelData.twoLineTitle
+
+                        var wayTo  = model.modelData.wayTo
+                        if (wayTo !== "")
+                            result = result + "<br>" + wayTo
+
+                        var met    = model.modelData.METARSummary
+                        if (met !== "")
+                            result = result + "<br>" + met
+                        return result
                     }
                     icon.source: model.modelData.icon
                     icon.color: "transparent"

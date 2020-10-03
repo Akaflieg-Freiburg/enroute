@@ -25,17 +25,85 @@ import QtQuick.Shapes 1.15
 
 import enroute 1.0
 
-Dialog {
-    id: dlg
 
-    property var dialogArgs: undefined
+/* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
+
+Dialog {
+    id: waypointDescriptionDialog
+
+    // Property waypoint, and code to handle waypoint changes
+    property Waypoint waypoint
+
+    onWaypointChanged: {
+        // Delete old text items
+        co.children = {}
+
+        // If no waypoint is given, then do nothing
+        if (waypoint === null)
+            return
+
+        // Create METAR info box
+        metarInfo.createObject(co);
+
+        // Create waypoint description items
+        var pro = waypoint.tabularDescription
+        for (var j in pro)
+            waypointPropertyDelegate.createObject(co, {text: pro[j]});
+
+        // Create airspace description items
+        var asl = geoMapProvider.airspaces(waypoint.coordinate)
+        for (var i in asl)
+            airspaceDelegate.createObject(co, {airspace: asl[i]});
+    }
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    width: Math.min(Overlay.overlay.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
+
+    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+    parent: Overlay.overlay
+    x: (parent.width-width)/2.0
+    y: (parent.height-height)/2.0
 
     modal: true
     standardButtons: Dialog.Cancel
     focus: true
+
+    Component {
+        id: metarInfo
+
+        Label { // METAR info
+            visible: (waypoint !== null) && (waypoint.hasMETAR || waypoint.hasTAF)
+            text: {
+                if (waypoint === null)
+                    return ""
+                if (waypoint.hasMETAR)
+                    return waypoint.METARSummary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                return "<a href='xx'>" + qsTr("read TAF") + "</a>"
+            }
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+
+            bottomPadding: 0.2*Qt.application.font.pixelSize
+            topPadding: 0.2*Qt.application.font.pixelSize
+            leftPadding: 0.2*Qt.application.font.pixelSize
+            rightPadding: 0.2*Qt.application.font.pixelSize
+            onLinkActivated: {
+                mobileAdaptor.vibrateBrief()
+                weatherReport.open()
+            }
+
+            // Background color according to METAR/FAA flight category
+            background: Rectangle {
+                border.color: "black"
+                color: (waypoint !== null) ? waypoint.flightCategoryColor : "transparent"
+                opacity: 0.2
+            }
+
+        }
+
+    }
 
     Component {
         id: waypointPropertyDelegate
@@ -215,12 +283,12 @@ Dialog {
             Layout.fillWidth: true
 
             Image {
-                source: dialogArgs.waypoint.icon
+                source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
                 sourceSize.width: 25
             }
 
             Label {
-                text: dialogArgs.waypoint.extendedName
+                text: (waypoint !== null) ? waypoint.extendedName : ""
                 font.bold: true
                 font.pixelSize: 1.2*Qt.application.font.pixelSize
                 Layout.fillWidth: true
@@ -238,7 +306,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: dialogArgs.waypoint.wayTo
+            text: (waypoint !== null) ? waypoint.wayTo : ""
             visible: satNav.status === SatNav.OK
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -252,7 +320,7 @@ Dialog {
             Layout.fillHeight: true
 
             contentHeight: co.height
-            contentWidth: dlg.availableWidth
+            contentWidth: waypointDescriptionDialog.availableWidth
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
@@ -266,51 +334,13 @@ Dialog {
             ColumnLayout {
                 id: co
                 width: parent.width
-
-                Label { // METAR info
-                    visible: dialogArgs.waypoint.hasMETAR || dialogArgs.waypoint.hasTAF
-                    text: {
-                        if (dialogArgs.waypoint.hasMETAR)
-                            return dialogArgs.waypoint.METARSummary + " • <a href='xx'>" + qsTr("full report") + "</a>"
-                        return "<a href='xx'>" + qsTr("read TAF") + "</a>"
-                    }
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-
-                    bottomPadding: 0.2*Qt.application.font.pixelSize
-                    topPadding: 0.2*Qt.application.font.pixelSize
-                    leftPadding: 0.2*Qt.application.font.pixelSize
-                    rightPadding: 0.2*Qt.application.font.pixelSize
-                    onLinkActivated: {
-                        mobileAdaptor.vibrateBrief()
-                        weatherReport.open()
-                    }
-
-                    // Background color according to METAR/FAA flight category
-                    background: Rectangle {
-                        border.color: "black"
-                        color: dialogArgs.waypoint.flightCategoryColor
-                        opacity: 0.2
-                    }
-
-                }
-
-                Component.onCompleted: {
-                    var pro = dialogLoader.dialogArgs.waypoint.tabularDescription
-                    for (var j in pro)
-                        waypointPropertyDelegate.createObject(co, {text: pro[j]});
-
-                    var asl = geoMapProvider.airspaces(dialogLoader.dialogArgs.waypoint.coordinate)
-                    for (var i in asl)
-                        airspaceDelegate.createObject(co, {airspace: asl[i]});
-                }
             } // ColumnLayout
 
         } // ScrollView
 
         Keys.onBackPressed: {
             event.accepted = true;
-            dlg.close()
+            waypointDescriptionDialog.close()
         }
     }
 
@@ -330,29 +360,29 @@ Dialog {
                 else {
                     flightRoute.clear()
                     flightRoute.append(satNav.lastValidCoordinate)
-                    flightRoute.append(dialogArgs.waypoint)
+                    flightRoute.append(waypoint)
                 }
             }
         }
 
         Button {
             flat: true
-            text: flightRoute.contains(dialogArgs.waypoint) ? qsTr("from Route") : qsTr("to Route")
-            icon.source: flightRoute.contains(dialogArgs.waypoint) ? "/icons/material/ic_remove_circle.svg" : "/icons/material/ic_add_circle.svg"
+            text: flightRoute.contains(waypoint) ? qsTr("from Route") : qsTr("to Route")
+            icon.source: flightRoute.contains(waypoint) ? "/icons/material/ic_remove_circle.svg" : "/icons/material/ic_add_circle.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                if (!flightRoute.contains(dialogArgs.waypoint)) {
-                    flightRoute.append(dialogArgs.waypoint)
+                if (!flightRoute.contains(waypoint)) {
+                    flightRoute.append(waypoint)
                 } else {
-                    flightRoute.removeWaypoint(dialogArgs.waypoint)
+                    flightRoute.removeWaypoint(waypoint)
                 }
             }
         }
 
         onRejected: close()
-    } // DialogButtonBox
+    }
 
     Dialog {
         id: overwriteDialog
@@ -381,19 +411,19 @@ Dialog {
             mobileAdaptor.vibrateBrief()
             flightRoute.clear()
             flightRoute.append(satNav.lastValidCoordinate)
-            flightRoute.append(dlg.dialogArgs.waypoint)
+            flightRoute.append(waypoint)
         }
         onRejected: {
             mobileAdaptor.vibrateBrief()
             close()
-            dlg.open()
+            waypointDescriptionDialog.open()
         }
 
-    } // overWriteDialog
+    }
 
     WeatherReport {
         id: weatherReport
-        weatherStation: dialogArgs.waypoint.weatherStation
+        weatherStation: (waypoint !== null) ? waypoint.weatherStation : null
     }
 
 } // Dialog

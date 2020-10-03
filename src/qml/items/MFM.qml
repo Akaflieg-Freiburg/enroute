@@ -28,6 +28,7 @@ import enroute 1.0
 import QtQml 2.15
 
 import ".."
+import "../dialogs"
 
 Item {
     id: page
@@ -237,13 +238,9 @@ Item {
 
             onDoubleClicked: {
                 mobileAdaptor.vibrateBrief()
-                dialogLoader.active = false
-                dialogLoader.dialogArgs = {waypoint: geoMapProvider.closestWaypoint(
-                                                         flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))}
-                dialogLoader.text = ""
-                dialogLoader.source = "../dialogs/WaypointDescription.qml"
-                dialogLoader.active = true
+                waypointDescription.waypoint = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
+                                                                              flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                waypointDescription.open()
             }
         }
 
@@ -379,5 +376,9 @@ Item {
         anchors.left: parent.left
 
         y: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? view.height - height : view.height
+    }
+
+    WaypointDescription {
+        id: waypointDescription
     }
 }

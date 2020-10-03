@@ -77,12 +77,5 @@
 	<file alias="icons/waypoints/DVOR-DME.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORDME.svg</file>
 	<file alias="icons/waypoints/DVORTAC.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORTAC.svg</file>
 
-	<!-- GUI icons: Weather -->
-	<file alias="icons/weather/VFR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/VFR.svg</file>
-	<file alias="icons/weather/MVFR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/MVFR.svg</file>
-	<file alias="icons/weather/IFR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/IFR.svg</file>
-	<file alias="icons/weather/LIFR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/LIFR.svg</file>
-	<file alias="icons/weather/UKN.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/weather/UKN.svg</file>
-
     </qresource>
 </RCC>

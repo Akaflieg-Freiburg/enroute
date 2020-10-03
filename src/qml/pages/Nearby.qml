@@ -24,6 +24,7 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import enroute 1.0
+import "../dialogs"
 import "../items"
 
 Page {
@@ -92,11 +93,8 @@ Page {
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
-                        dialogLoader.active = false
-                        dialogLoader.dialogArgs = {waypoint: model.modelData}
-                        dialogLoader.text = ""
-                        dialogLoader.source = "../dialogs/WaypointDescription.qml"
-                        dialogLoader.active = true
+                        waypointDescription.waypoint = model.modelData
+                        waypointDescription.open()
                     }
                 }
             }
@@ -170,4 +168,7 @@ Page {
 
     } // SwipeView
 
+    WaypointDescription {
+       id: waypointDescription
+    }
 } // Page

@@ -24,15 +24,23 @@ import QtQuick.Layouts 1.15
 
 import enroute 1.0
 
-Dialog {
-    id: dlg
+/* This is a dialog with detailed information about a weather station. To use this dialog, all you have to do is to set a WeatherStation in the property "weatherStation" and call open(). */
 
-    anchors.centerIn: Overlay.overlay
+
+Dialog {
+    id: weatherReportDialog
 
     property WeatherStation weatherStation
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
+
+    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+    parent: Overlay.overlay
+    x: (parent.width-width)/2.0
+    y: (parent.height-height)/2.0
 
     modal: true
     standardButtons: Dialog.Close
@@ -75,7 +83,7 @@ Dialog {
             Layout.fillWidth: true
 
             contentHeight: co.height
-            contentWidth: dlg.availableWidth
+            contentWidth: weatherReportDialog.availableWidth
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
@@ -159,7 +167,7 @@ Dialog {
 
         Keys.onBackPressed: {
             event.accepted = true;
-            dlg.close()
+            weatherReportDialog.close()
         }
     }
 

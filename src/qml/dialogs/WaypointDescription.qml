@@ -32,49 +32,10 @@ Dialog {
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
     modal: true
     standardButtons: Dialog.Cancel
     focus: true
-
-    Component {
-        id: metarInfoDelegate
-
-        Label {
-            id: metarLabel
-
-            text: {
-                if (dialogArgs.waypoint.hasMETAR)
-                    return dialogArgs.waypoint.METARSummary + " • <a href='xx'>" + qsTr("full report") + "</a>"
-                return "<a href='xx'>" + qsTr("read TAF") + "</a>"
-            }
-
-            visible: dialogArgs.waypoint.hasMETAR || dialogArgs.waypoint.hasTAF
-
-            Layout.fillWidth: true
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap // WARNING: Does not seem to work
-            bottomPadding: 0.2*Qt.application.font.pixelSize
-            topPadding: 0.2*Qt.application.font.pixelSize
-            leftPadding: 0.2*Qt.application.font.pixelSize
-            rightPadding: 0.2*Qt.application.font.pixelSize
-
-            onLinkActivated: {
-                mobileAdaptor.vibrateBrief()
-                weatherReport.open()
-            }
-
-            // Background color according to METAR/FAA flight category
-            background: Rectangle {
-                border.color: "black"
-                color: dialogArgs.waypoint.flightCategoryColor
-                opacity: 0.2
-            }
-
-        }
-
-    }
 
     Component {
         id: waypointPropertyDelegate
@@ -247,10 +208,9 @@ Dialog {
     }
 
     ColumnLayout {
-        width: dlg.availableWidth
-        height: dlg.availableHeight
+        anchors.fill: parent
 
-        RowLayout {
+        RowLayout { // Header with icon and name
             id: headX
             Layout.fillWidth: true
 
@@ -258,6 +218,7 @@ Dialog {
                 source: dialogArgs.waypoint.icon
                 sourceSize.width: 25
             }
+
             Label {
                 text: dialogArgs.waypoint.extendedName
                 font.bold: true
@@ -276,7 +237,7 @@ Dialog {
             }
         }
 
-        Label {
+        Label { // Second header line with distance and QUJ
             text: dialogArgs.waypoint.wayTo
             visible: satNav.status === SatNav.OK
             Layout.fillWidth: true
@@ -290,7 +251,9 @@ Dialog {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            contentHeight: co.implicitHeight
+            contentHeight: co.height
+            contentWidth: dlg.availableWidth
+
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
             // The visibility behavior of the vertical scroll bar is a little complex.
@@ -302,12 +265,37 @@ Dialog {
 
             ColumnLayout {
                 id: co
-
                 width: parent.width
 
-                Component.onCompleted: {
-                    metarInfoDelegate.createObject(co)
+                Label { // METAR info
+                    visible: dialogArgs.waypoint.hasMETAR || dialogArgs.waypoint.hasTAF
+                    text: {
+                        if (dialogArgs.waypoint.hasMETAR)
+                            return dialogArgs.waypoint.METARSummary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                        return "<a href='xx'>" + qsTr("read TAF") + "</a>"
+                    }
+                    Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
 
+                    bottomPadding: 0.2*Qt.application.font.pixelSize
+                    topPadding: 0.2*Qt.application.font.pixelSize
+                    leftPadding: 0.2*Qt.application.font.pixelSize
+                    rightPadding: 0.2*Qt.application.font.pixelSize
+                    onLinkActivated: {
+                        mobileAdaptor.vibrateBrief()
+                        weatherReport.open()
+                    }
+
+                    // Background color according to METAR/FAA flight category
+                    background: Rectangle {
+                        border.color: "black"
+                        color: dialogArgs.waypoint.flightCategoryColor
+                        opacity: 0.2
+                    }
+
+                }
+
+                Component.onCompleted: {
                     var pro = dialogLoader.dialogArgs.waypoint.tabularDescription
                     for (var j in pro)
                         waypointPropertyDelegate.createObject(co, {text: pro[j]});

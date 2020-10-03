@@ -62,11 +62,7 @@ Dialog {
 
             onLinkActivated: {
                 mobileAdaptor.vibrateBrief()
-                dialogLoader.active = false
-//                dialogLoader.dialogArgs = {station: dialogArgs.waypoint}
-                dialogLoader.text = ""
-                dialogLoader.source = "../dialogs/WeatherReport.qml"
-                dialogLoader.active = true
+                weatherReport.open()
             }
 
             // Background color according to METAR/FAA flight category
@@ -406,5 +402,10 @@ Dialog {
         }
 
     } // overWriteDialog
+
+    WeatherReport {
+        id: weatherReport
+        weatherStation: dialogArgs.waypoint.weatherStation
+    }
 
 } // Dialog

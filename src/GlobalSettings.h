@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QFile>
+#include <QLocale>
 #include <QObject>
 #include <QPointer>
 #include <QSettings>

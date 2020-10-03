@@ -27,7 +27,9 @@ import enroute 1.0
 Dialog {
     id: dlg
 
-    property var dialogArgs: undefined
+    anchors.centerIn: Overlay.overlay
+
+    property WeatherStation weatherStation
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
@@ -44,11 +46,12 @@ Dialog {
             Layout.fillWidth: true
 
             Image {
-                source: dialogArgs.waypoint.icon
+                source: (weatherStation !== null) ? weatherStation.icon : "/icons/waypoints/WP.svg"
                 sourceSize.width: 25
             }
+
             Label {
-                text: dialogArgs.waypoint.extendedName
+                text: (weatherStation !== null) ? weatherStation.extendedName : ""
                 font.bold: true
                 font.pixelSize: 1.2*Qt.application.font.pixelSize
                 Layout.fillWidth: true
@@ -58,7 +61,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: dialogArgs.waypoint.wayTo
+            text: (weatherStation !== null) ? weatherStation.wayTo : ""
             visible: satNav.status === SatNav.OK
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -88,15 +91,15 @@ Dialog {
                 width: parent.width
 
                 Label { // title: "METAR"
-                    visible: dialogArgs.waypoint.hasMETAR
-                    text: dialogArgs.waypoint.hasMetar ? (dialogArgs.waypoint.metar.messageType + " " + dialogArgs.waypoint.metar.relativeObservationTime) : ""
+                    visible: (weatherStation !== null) && weatherStation.hasMETAR
+                    text: (weatherStation !== null) && weatherStation.hasMETAR ? (weatherStation.metar.messageType + " " + weatherStation.metar.relativeObservationTime) : ""
                     font.bold: true
                     font.pixelSize: 1.2*Qt.application.font.pixelSize
                 }
 
                 Label { // raw METAR text
-                    visible: dialogArgs.waypoint.hasMETAR
-                    text: dialogArgs.waypoint.metar.rawText
+                    visible: (weatherStation !== null) && weatherStation.hasMETAR
+                    text: (weatherStation !== null) ? weatherStation.metar.rawText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
 
@@ -108,28 +111,28 @@ Dialog {
                     // Background color according to METAR/FAA flight category
                     background: Rectangle {
                         border.color: "black"
-                        color: dialogArgs.waypoint.flightCategoryColor
+                        color: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.flightCategoryColor : "transparent"
                         opacity: 0.2
                     }
                 }
 
                 Label { // decoded METAR text
-                    visible: dialogArgs.waypoint.hasMetar
-                    text: dialogArgs.waypoint.metar.decodedText
+                    visible: (weatherStation !== null) && weatherStation.hasMETAR
+                    text: (weatherStation !== null) ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                 }
 
                 Label { // title: "TAF"
-                    visible: dialogArgs.waypoint.hasTaf
+                    visible: (weatherStation !== null) && weatherStation.hasTAF
                     text: "TAF"
                     font.bold: true
                     font.pixelSize: 1.2*Qt.application.font.pixelSize
                 }
 
                 Label { // raw TAF text
-                    visible: dialogArgs.waypoint.hasTaf
-                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.rawText : ""
+                    visible: (weatherStation !== null) && weatherStation.hasTAF
+                    text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.rawText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
 
@@ -144,8 +147,8 @@ Dialog {
                 }
 
                 Label { // decoded TAF text
-                    visible: dialogArgs.waypoint.hasTaf
-                    text: dialogArgs.waypoint.hasTaf ? dialogArgs.waypoint.taf.decodedText : ""
+                    visible: (weatherStation !== null) && weatherStation.hasTAF
+                    text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                 }

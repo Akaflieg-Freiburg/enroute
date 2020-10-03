@@ -367,9 +367,6 @@ signals:
     void METARSummaryChanged();
 
     /*! \brief Notifier signal */
-    void fourLineTitleChanged();
-
-    /*! \brief Notifier signal */
     void weatherStationChanged();
 
     /*! \brief Notifier signal */
@@ -379,9 +376,9 @@ private:
     Q_DISABLE_COPY_MOVE(Waypoint)
 
     // Pointers to other classes that are used internally
+    QPointer<GlobalSettings> _globalSettings {};
     QPointer<Meteorologist> _meteorologist {};
     QPointer<SatNav> _satNav {};
-    QPointer<GlobalSettings> _globalSettings {};
 
     QGeoCoordinate _coordinate;
     QMultiMap<QString, QVariant> _properties;

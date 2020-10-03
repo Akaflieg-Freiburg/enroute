@@ -27,6 +27,7 @@
 #include "sunset.h"
 
 #include "Clock.h"
+#include "GeoMapProvider.h"
 #include "GlobalSettings.h"
 #include "FlightRoute.h"
 #include "Meteorologist.h"
@@ -41,10 +42,11 @@ Meteorologist::Meteorologist(Clock *clock,
                              SatNav *sat,
                              FlightRoute *route,
                              GlobalSettings *globalSettings,
+                             GeoMapProvider *geoMapProvider,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
     QObject(parent),
-    _satNav(sat), _flightRoute(route), _globalSettings(globalSettings), _networkAccessManager(networkAccessManager), _clock(clock)
+    _satNav(sat), _flightRoute(route), _geoMapProvider(geoMapProvider), _globalSettings(globalSettings), _networkAccessManager(networkAccessManager), _clock(clock)
 
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
@@ -246,7 +248,7 @@ void Meteorologist::downloadFinished() {
     foreach(auto station, mStations) {
         // Station has both METAR and TAF
         if (tafs.contains(station)) {
-            auto stationPtr = new WeatherStation(station, this);
+            auto stationPtr = new WeatherStation(station, _satNav, _globalSettings, _geoMapProvider, this);
             stationPtr->setMETAR(metars.value(station));
             stationPtr->setTAF(tafs.value(station));
 
@@ -256,14 +258,14 @@ void Meteorologist::downloadFinished() {
         }
         // Station only has METAR
         else {
-            auto stationPtr = new WeatherStation(station, this);
+            auto stationPtr = new WeatherStation(station, _satNav, _globalSettings, _geoMapProvider, this);
             stationPtr->setMETAR(metars.value(station));
             _weatherStations << stationPtr; // empty TAF
         }
     }
     // Stations only have TAF
     foreach(auto station, tStations) {
-        auto stationPtr = new WeatherStation(station, this);
+        auto stationPtr = new WeatherStation(station, _satNav, _globalSettings, _geoMapProvider, this);
         stationPtr->setTAF(tafs.value(station));
         _weatherStations << stationPtr;
     }

@@ -28,6 +28,7 @@ class QNetworkReply;
 
 class Clock;
 class FlightRoute;
+class GeoMapProvider;
 class GlobalSettings;
 class SatNav;
 
@@ -89,6 +90,7 @@ public:
                            SatNav *sat,
                            FlightRoute *route,
                            GlobalSettings *globalSettings,
+                           GeoMapProvider *geoMapProvider,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
 
@@ -232,6 +234,9 @@ private:
 
     // Pointer to the flight route
     QPointer<FlightRoute> _flightRoute;
+
+    // Pointer to global settings
+    QPointer<GeoMapProvider> _geoMapProvider;
 
     // Pointer to global settings
     QPointer<GlobalSettings> _globalSettings;

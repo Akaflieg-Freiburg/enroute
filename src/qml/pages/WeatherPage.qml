@@ -24,6 +24,7 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import enroute 1.0
+import "../dialogs"
 import "../items"
 
 /* TODO
@@ -121,19 +122,23 @@ Page {
             // Background color according to METAR/FAA flight category
             Rectangle {
                 anchors.fill: parent
-                color: model.modelData.color
+                color: model.modelData.hasMETAR ? model.modelData.metar.flightCategoryColor : "transparent"
                 opacity: 0.2
             }
 
             ItemDelegate {
                 id: idel
                 text: {
-                    // Mention items that will lead to change of text
-                    clock.time
-                    satNav.status
-                    satNav.lastValidCoordinate
-                    meteorologist.reports
-                    return model.modelData.ICAOCode
+                    var result = model.modelData.twoLineTitle
+
+                    var wayTo  = model.modelData.wayTo
+                    if (wayTo !== "")
+                        result = result + "<br>" + wayTo
+
+                    if (model.modelData.hasMETAR)
+                        result = result + "<br>" + model.modelData.metar.summary
+
+                    return result
                 }
                 icon.source: model.modelData.icon
                 icon.color: "transparent"
@@ -142,11 +147,8 @@ Page {
 
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
-                    dialogLoader.active = false
-                    dialogLoader.dialogArgs = {waypoint: model.modelData}
-                    dialogLoader.text = ""
-                    dialogLoader.source = "../dialogs/WeatherReport.qml"
-                    dialogLoader.active = true
+                    weatherReport.weatherStation = model.modelData
+                    weatherReport.open()
                 }
             }
         }
@@ -193,6 +195,7 @@ Page {
             onFlickStarted: {
                 refreshFlick = atYBeginning
             }
+
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     mobileAdaptor.vibrateBrief()
@@ -349,5 +352,9 @@ Page {
             dialogLoader.active = true
         }
     }
-    
+
+    WeatherReport {
+        id: weatherReport
+    }
+
 } // Page

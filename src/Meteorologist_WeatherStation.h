@@ -24,6 +24,8 @@
 
 #include "Meteorologist.h"
 
+class GeoMapProvider;
+
 
 /*! \brief This class represents a weather station that issues METAR or TAF report
  *
@@ -63,20 +65,85 @@ public:
      */
     QGeoCoordinate coordinate() const;
 
-    /*! \brief The WeatherStation ID
+    /*! \brief Extended name of the waypoint
      *
-     * The ID of the weather WeatherStation is usually the ICAO designator of the
-     * aerodrome on which the WeatherStation is located.
+     * This property holds a string of the form "Karlsruhe (DVOR-DME)"
+     */
+    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property extendedName
+    */
+    QString extendedName() const
+    {
+        return _extendedName;
+    }
+
+    /*! \brief Check if a METAR weather report is known for this weather station
+     *
+     * This convenience property can be used to check if a METAR report is available
+     * for the weather station.  The actual METAR report can be accessed via the
+     * property metar.
+     */
+    Q_PROPERTY(bool hasMETAR READ hasMETAR CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property hasMetar
+     */
+    bool hasMETAR() const
+    {
+        return !_metar.isNull();
+    }
+
+    /*! \brief Check if a TAF weather forecast is known for this weather station
+     *
+     * This convenience property can be used to check if a TAF forecast is available
+     * for the weather station.  The actual TAF can be accessed via the
+     * property taf.
+     */
+    Q_PROPERTY(bool hasTAF READ hasTAF CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property isValid
+     */
+    bool hasTAF() const
+    {
+        return !_taf.isNull();
+    }
+
+    /*! \brief ICAO code of the weather station
+     *
+     * This property holds the ICAO designator of the
+     * aerodrome on which the weather station is located.
      */
     Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property id
+     * @returns Property ICAOCode
      */
     QString ICAOCode() const
     {
         return _ICAOCode;
+    }
+
+    /*! \brief Suggested icon for this weather station
+     *
+     * This property holds the name of an icon file in SVG format
+     * that best describes the weather station.
+     */
+    Q_PROPERTY(QString icon READ icon CONSTANT)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property id
+     */
+    QString icon() const
+    {
+        return _icon;
     }
 
     /*! Indicates if the WeatherStation is valid */
@@ -108,6 +175,24 @@ public:
         return _metar;
     }
 
+    /*! \brief Two-line description of the waypoint name
+     *
+     * This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a
+     * string of the form "<strong>LFKA</strong><br><font size='2'>ALBERTVILLE</font>" or simply "KIRCHZARTEN"
+     *
+     * @see threeLineTitle
+     */
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property twoLineTitle
+     */
+    QString twoLineTitle() const
+    {
+        return _twoLineTitle;
+    }
+
     /*! \brief Last TAF provided by this WeatherStation
      *
      * This property holds a pointer to the last TAF provided by this WeatherStation, which can be a nullptr if no data is available.
@@ -125,6 +210,21 @@ public:
         return _taf;
     }
 
+    /*! \brief Description of the way from the current position to the waypoint
+     *
+     * If a pointer to a SatNav instance has been set with setSatNav(), then this property
+     * describes that way from the current position to the waypoint.  If a pointer to a GlobalSettings instance has been set with setGlobalSettings(), then
+     * user preferences (metric units versus miles) will be taken into account. The result is then a string such as "DIST 65.2 NM • QUJ 276°".
+     * If the way cannot be described (e.g. because the current position is not known), an empty string is returned.
+    */
+    Q_PROPERTY(QString wayTo READ wayTo NOTIFY wayToChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property wayTo
+     */
+    QString wayTo() const;
+
 signals:
     /* \brief Notifier signal */
     void metarChanged();
@@ -132,11 +232,14 @@ signals:
     /* \brief Notifier signal */
     void tafChanged();
 
+    /*! \brief Notifier signal */
+    void wayToChanged();
+
 private:
     Q_DISABLE_COPY_MOVE(WeatherStation)
 
     // This constructor is only meant to be called by instances of the Meteorologist class
-    explicit WeatherStation(const QString &id, QObject *parent);
+    explicit WeatherStation(const QString &id, SatNav *satNav, GlobalSettings *globalSettings, GeoMapProvider *geoMapProvider, QObject *parent);
 
     // Sets the METAR message. The signal metarChanged() will be emitted if appropriate.
     void setMETAR(Meteorologist::METAR *metar);
@@ -166,12 +269,25 @@ private:
     static QString decodeClouds(const QVariantList &clouds);
 
 
+    /*! \brief The weather station extended name */
+    QString _extendedName;
+
     /*! \brief The WeatherStation ID */
     QString _ICAOCode;
+
+    /*! \brief The WeatherStation ID */
+    QString _icon {"/icons/waypoints/WP.svg"};
 
     /*! \brief METAR */
     QPointer<Meteorologist::METAR> _metar;
 
     /*! \brief TAF */
     QPointer<Meteorologist::TAF> _taf;
+
+    /*! \brief Two-Line-Title */
+    QString _twoLineTitle;
+
+    // Pointers to other classes that are used internally
+    QPointer<GlobalSettings> _globalSettings {};
+    QPointer<SatNav> _satNav {};
 };

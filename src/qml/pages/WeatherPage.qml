@@ -126,7 +126,7 @@ Page {
                 opacity: 0.2
             }
 
-            ItemDelegate {
+            WordWrappingItemDelegate {
                 id: idel
                 text: {
                     var result = model.modelData.twoLineTitle

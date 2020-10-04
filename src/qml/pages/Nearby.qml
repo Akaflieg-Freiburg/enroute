@@ -72,8 +72,14 @@ Page {
                     opacity: 0.2
                 }
 
-                ItemDelegate {
+                WordWrappingItemDelegate {
                     id: idel
+
+                    width: sv.width
+
+                    icon.source: model.modelData.icon
+                    icon.color: "transparent"
+
                     text: {
                         var result = model.modelData.twoLineTitle
 
@@ -86,10 +92,6 @@ Page {
                             result = result + "<br>" + met
                         return result
                     }
-                    icon.source: model.modelData.icon
-                    icon.color: "transparent"
-
-                    width: sv.width
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
@@ -169,6 +171,6 @@ Page {
     } // SwipeView
 
     WaypointDescription {
-       id: waypointDescription
+        id: waypointDescription
     }
 } // Page

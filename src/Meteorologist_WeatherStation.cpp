@@ -26,39 +26,26 @@
 #include "Meteorologist.h"
 #include "SatNav.h"
 
-#warning Need to emit wayToChanged!
-
 Meteorologist::WeatherStation::WeatherStation(QObject *parent)
     : QObject(parent)
 {
 }
 
 
-Meteorologist::WeatherStation::WeatherStation(const QString &id, SatNav *satNav, GlobalSettings *globalSettings, GeoMapProvider *geoMapProvider, QObject *parent)
+Meteorologist::WeatherStation::WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent)
  : QObject(parent),
-   _ICAOCode(id),
-   _globalSettings(globalSettings),
-   _satNav(satNav)
+   _ICAOCode(id)
 {
-    _twoLineTitle = _ICAOCode;
     _extendedName = _ICAOCode;
+    _twoLineTitle = _ICAOCode;
 
     auto waypoint = geoMapProvider->findByID(_ICAOCode);
     if (waypoint) {
+        _coordinate = waypoint->coordinate();
         _extendedName = waypoint->extendedName();
         _icon = waypoint->icon();
         _twoLineTitle = waypoint->twoLineTitle();
     }
-}
-
-
-QGeoCoordinate Meteorologist::WeatherStation::coordinate() const
-{
-    if (!_metar.isNull())
-        return _metar->coordinate();
-    if (!_taf.isNull())
-        return _taf->coordinate();
-    return QGeoCoordinate();
 }
 
 
@@ -68,14 +55,27 @@ void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
     if (metar == _metar)
         return;
 
-    // Disconnect old metar
-    if (!_metar.isNull())
-        disconnect(_metar, &QObject::destroyed, this, &Meteorologist::WeatherStation::metarChanged);
+    // Clear and delete old METAR, if one exists.
+    if (!_metar.isNull()) {
+        disconnect(_metar, nullptr, this, nullptr);
+        _metar->deleteLater();
+    }
 
-    // Overwrite metar pointer and connect new metar
+    // Overwrite metar pointer
     _metar = metar;
-    if (!_metar.isNull())
+
+    // Take ownership and connect new METAR. Update the coordinate if necessary.
+    if (!_metar.isNull()) {
+        // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
+        _metar->setParent(this);
+
+        // Connect METAR
         connect(_metar, &QObject::destroyed, this, &Meteorologist::WeatherStation::metarChanged);
+
+        // Update coordinate
+        if (!_coordinate.isValid())
+            _coordinate = _metar->coordinate();
+    }
 
     // Let the world know that the metar changed
     emit metarChanged();
@@ -84,39 +84,54 @@ void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
 
 void Meteorologist::WeatherStation::setTAF(Meteorologist::TAF *taf)
 {
-    // If metar did not change, then do nothing
+    // If TAF did not change, then do nothing
     if (taf == _taf)
         return;
 
-    // Disconnect old taf
-    if (!_taf.isNull())
-        disconnect(_taf, &QObject::destroyed, this, &Meteorologist::WeatherStation::tafChanged);
+    // Clear and delete old TAF, if one exists.
+    if (!_taf.isNull()) {
+        disconnect(_taf, nullptr, this, nullptr);
+        _taf->deleteLater();
+    }
 
-    // Overwrite metar pointer and connect new taf
+    // Overwrite TAF pointer
     _taf = taf;
-    if (!_taf.isNull())
+
+    // Take ownership and connect new taf. Update the coordinate if necessary.
+    if (!_taf.isNull()) {
+        // Take ownership. This will guarantee that the TAF gets deleted along with this weather station.
+        _taf->setParent(this);
+
+        // Connect TAF
         connect(_taf, &QObject::destroyed, this, &Meteorologist::WeatherStation::tafChanged);
+
+        // Update coordinate
+        if (!_coordinate.isValid())
+            _coordinate = _taf->coordinate();
+    }
 
     // Let the world know that the taf changed
     emit tafChanged();
 }
 
 
-QString Meteorologist::WeatherStation::wayTo() const
+QString Meteorologist::WeatherStation::wayTo(QGeoCoordinate fromCoordinate, bool useMetricUnits) const
 {
-    QGeoCoordinate _coordinate;
-    if (hasMETAR())
-        _coordinate = metar()->coordinate();
-    else if (hasTAF())
-        _coordinate = taf()->coordinate();
+    // Paranoid safety checks
+    if (!fromCoordinate.isValid())
+        return QString();
+    auto _coordinate = coordinate();
     if (!_coordinate.isValid())
         return QString();
 
-    if (_satNav.isNull())
-        return QString();
+    auto dist = AviationUnits::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
+    auto QUJ = qRound(fromCoordinate.azimuthTo(_coordinate));
 
-    return _satNav->wayTo(_coordinate);
+    if (useMetricUnits)
+        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
+    return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
+
 
 
 // ================================

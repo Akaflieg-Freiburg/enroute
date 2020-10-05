@@ -131,7 +131,7 @@ Page {
                 text: {
                     var result = model.modelData.twoLineTitle
 
-                    var wayTo  = model.modelData.wayTo
+                    var wayTo  = model.modelData.wayTo(satNav.coordinate, globalSettings.useMetricUnits)
                     if (wayTo !== "")
                         result = result + "<br>" + wayTo
 

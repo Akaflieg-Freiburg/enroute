@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include <QVariant>
-
 #include "Meteorologist.h"
 
 class GeoMapProvider;
@@ -55,7 +53,8 @@ public:
 
     /*! Geographical coordinate of the WeatherStation reporting this METAR
      *
-     * If the WeatherStation coordinate is unknown, the property contains an invalid coordinate.
+     * If the WeatherStation coordinate is unknown, the property contains an
+     * invalid coordinate.
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
@@ -63,7 +62,10 @@ public:
      *
      * @returns Property coordiante
      */
-    QGeoCoordinate coordinate() const;
+    QGeoCoordinate coordinate() const
+    {
+        return _coordinate;
+    }
 
     /*! \brief Extended name of the waypoint
      *
@@ -82,9 +84,9 @@ public:
 
     /*! \brief Check if a METAR weather report is known for this weather station
      *
-     * This convenience property can be used to check if a METAR report is available
-     * for the weather station.  The actual METAR report can be accessed via the
-     * property metar.
+     * This convenience property can be used to check if a METAR report is
+     * available for the weather station.  The actual METAR report can be
+     * accessed via the property metar.
      */
     Q_PROPERTY(bool hasMETAR READ hasMETAR CONSTANT)
 
@@ -115,7 +117,7 @@ public:
     }
 
     /*! \brief ICAO code of the weather station
-     *
+     * 
      * This property holds the ICAO designator of the
      * aerodrome on which the weather station is located.
      */
@@ -160,9 +162,10 @@ public:
 
     /*! \brief Last METAR provided by this WeatherStation
      *
-     * This property holds a pointer to the last METAR provided by this WeatherStation, which can be a nullptr if no data is available.
-     * The METAR instance is owned by an instance of Meteorologist, and can be deleted or
-     * updated by the Meteorologist anytime.
+     * This property holds a pointer to the last METAR provided by this
+     * WeatherStation, which can be a nullptr if no data is available.  The
+     * METAR instance is owned by an instance of Meteorologist, and can be
+     * deleted or updated by the Meteorologist anytime.
      */
     Q_PROPERTY(Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
 
@@ -177,8 +180,10 @@ public:
 
     /*! \brief Two-line description of the waypoint name
      *
-     * This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a
-     * string of the form "<strong>LFKA</strong><br><font size='2'>ALBERTVILLE</font>" or simply "KIRCHZARTEN"
+     * This property holds a one-line or two-line description of the
+     * waypoint. Depending on available data, this is a string of the form
+     * "<strong>LFKA</strong><br><font size='2'>ALBERTVILLE</font>" or simply
+     * "KIRCHZARTEN"
      *
      * @see threeLineTitle
      */
@@ -194,9 +199,10 @@ public:
     }
 
     /*! \brief Last TAF provided by this WeatherStation
-     *
-     * This property holds a pointer to the last TAF provided by this WeatherStation, which can be a nullptr if no data is available.
-     * The TAF instance is owned by an instance of Meteorologist, and can be deleted or
+     * 
+     * This property holds a pointer to the last TAF provided by this
+     * WeatherStation, which can be a nullptr if no data is available.  The TAF
+     * instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
     Q_PROPERTY(Meteorologist::TAF *taf READ taf NOTIFY tafChanged)
@@ -210,20 +216,18 @@ public:
         return _taf;
     }
 
-    /*! \brief Description of the way from the current position to the waypoint
+    /*! \brief Description of the way from a given point to the weather station
      *
-     * If a pointer to a SatNav instance has been set with setSatNav(), then this property
-     * describes that way from the current position to the waypoint.  If a pointer to a GlobalSettings instance has been set with setGlobalSettings(), then
-     * user preferences (metric units versus miles) will be taken into account. The result is then a string such as "DIST 65.2 NM • QUJ 276°".
-     * If the way cannot be described (e.g. because the current position is not known), an empty string is returned.
-    */
-    Q_PROPERTY(QString wayTo READ wayTo NOTIFY wayToChanged)
-
-    /*! \brief Getter function for property with the same name
+     * @param from Starting point of the way
      *
-     * @returns Property wayTo
+     * @param useMetric If true, then description uses metric units. Otherwise,
+     * nautical units are used.
+     *
+     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot
+     * be described (e.g. because one of the coordinates is invalid or unknown),
+     * then an empty string is returned.
      */
-    QString wayTo() const;
+    Q_INVOKABLE QString wayTo(QGeoCoordinate from, bool useMetric) const;
 
 signals:
     /* \brief Notifier signal */
@@ -232,19 +236,18 @@ signals:
     /* \brief Notifier signal */
     void tafChanged();
 
-    /*! \brief Notifier signal */
-    void wayToChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(WeatherStation)
 
-    // This constructor is only meant to be called by instances of the Meteorologist class
-    explicit WeatherStation(const QString &id, SatNav *satNav, GlobalSettings *globalSettings, GeoMapProvider *geoMapProvider, QObject *parent);
+    // This constructor is only meant to be called by instances of the
+    // Meteorologist class
+    explicit WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
 
-    // Sets the METAR message. The signal metarChanged() will be emitted if appropriate.
+    // Sets the METAR message and deletes any existing METAR. This WeatherStation will take ownership of the METAR. The signal metarChanged() will be emitted if appropriate.
     void setMETAR(Meteorologist::METAR *metar);
 
-    // Sets the METAR message. The signal tafChanged() will be emitted if appropriate.
+    // Sets the TAF message, and deletes any existing TAF. This WeatherStation will take ownership of the TAF. The signal tafChanged() will be emitted if appropriate.
     void setTAF(Meteorologist::TAF *taf);
 
     /*! \brief Converts the time into a human readable string */
@@ -269,13 +272,16 @@ private:
     static QString decodeClouds(const QVariantList &clouds);
 
 
+    /*! \brief Coordinate of this weather station */
+    QGeoCoordinate _coordinate;
+
     /*! \brief The weather station extended name */
     QString _extendedName;
 
-    /*! \brief The WeatherStation ID */
+    /*! \brief ICAO code of this weather station */
     QString _ICAOCode;
 
-    /*! \brief The WeatherStation ID */
+    /*! \brief Icon for this weather station */
     QString _icon {"/icons/waypoints/WP.svg"};
 
     /*! \brief METAR */
@@ -286,8 +292,4 @@ private:
 
     /*! \brief Two-Line-Title */
     QString _twoLineTitle;
-
-    // Pointers to other classes that are used internally
-    QPointer<GlobalSettings> _globalSettings {};
-    QPointer<SatNav> _satNav {};
 };

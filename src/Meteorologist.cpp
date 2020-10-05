@@ -248,7 +248,7 @@ void Meteorologist::downloadFinished() {
     foreach(auto station, mStations) {
         // Station has both METAR and TAF
         if (tafs.contains(station)) {
-            auto stationPtr = new WeatherStation(station, _satNav, _globalSettings, _geoMapProvider, this);
+            auto stationPtr = new WeatherStation(station, _geoMapProvider, this);
             stationPtr->setMETAR(metars.value(station));
             stationPtr->setTAF(tafs.value(station));
 
@@ -258,14 +258,14 @@ void Meteorologist::downloadFinished() {
         }
         // Station only has METAR
         else {
-            auto stationPtr = new WeatherStation(station, _satNav, _globalSettings, _geoMapProvider, this);
+            auto stationPtr = new WeatherStation(station, _geoMapProvider, this);
             stationPtr->setMETAR(metars.value(station));
             _weatherStations << stationPtr; // empty TAF
         }
     }
     // Stations only have TAF
     foreach(auto station, tStations) {
-        auto stationPtr = new WeatherStation(station, _satNav, _globalSettings, _geoMapProvider, this);
+        auto stationPtr = new WeatherStation(station, _geoMapProvider, this);
         stationPtr->setTAF(tafs.value(station));
         _weatherStations << stationPtr;
     }

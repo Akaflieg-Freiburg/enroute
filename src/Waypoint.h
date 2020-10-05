@@ -257,7 +257,7 @@ public:
      *
      * @param useMetric If true, then description uses metric units. Otherwise, nautical units are used.
      *
-     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates isinvalid), then an empty string is returned.
+     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
      */
     Q_INVOKABLE QString wayTo(QGeoCoordinate from, bool useMetric) const;
 

@@ -44,7 +44,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#friends">Friends</a> &#124;
@@ -61,13 +60,6 @@ $(function() {
 
 <p>Inherits QObject.</p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
-Signals</h2></td></tr>
-<tr class="memitem:adf2086d6f319663fa4202aebaad520ae"><td class="memItemLeft" align="right" valign="top"><a id="adf2086d6f319663fa4202aebaad520ae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html#adf2086d6f319663fa4202aebaad520ae">wayToChanged</a> ()</td></tr>
-<tr class="memdesc:adf2086d6f319663fa4202aebaad520ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:adf2086d6f319663fa4202aebaad520ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:afe452e0bdcfbe5e314f9264730a0d23f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html#afe452e0bdcfbe5e314f9264730a0d23f">WeatherStation</a> (QObject *parent=nullptr)</td></tr>
@@ -103,9 +95,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a54a618b8c63464cc8552c8ecb89e73c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMeteorologist_1_1TAF.html">Meteorologist::TAF</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html#a54a618b8c63464cc8552c8ecb89e73c9">taf</a> () const</td></tr>
 <tr class="memdesc:a54a618b8c63464cc8552c8ecb89e73c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a54a618b8c63464cc8552c8ecb89e73c9">More...</a><br /></td></tr>
 <tr class="separator:a54a618b8c63464cc8552c8ecb89e73c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a735ba5d960272657f9c7737ea4a6b135"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html#a735ba5d960272657f9c7737ea4a6b135">wayTo</a> () const</td></tr>
-<tr class="memdesc:a735ba5d960272657f9c7737ea4a6b135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a735ba5d960272657f9c7737ea4a6b135">More...</a><br /></td></tr>
-<tr class="separator:a735ba5d960272657f9c7737ea4a6b135"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa338ce6c72fbda8b4b65427dff9d12e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html#aaa338ce6c72fbda8b4b65427dff9d12e">wayTo</a> (QGeoCoordinate from, bool useMetric) const</td></tr>
+<tr class="memdesc:aaa338ce6c72fbda8b4b65427dff9d12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given point to the weather station.  <a href="#aaa338ce6c72fbda8b4b65427dff9d12e">More...</a><br /></td></tr>
+<tr class="separator:aaa338ce6c72fbda8b4b65427dff9d12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -137,9 +129,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a7b74f7b2ad94791213ba111272a871c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMeteorologist_1_1TAF.html">Meteorologist::TAF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html#a7b74f7b2ad94791213ba111272a871c8">taf</a></td></tr>
 <tr class="memdesc:a7b74f7b2ad94791213ba111272a871c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> provided by this <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a>.  <a href="#a7b74f7b2ad94791213ba111272a871c8">More...</a><br /></td></tr>
 <tr class="separator:a7b74f7b2ad94791213ba111272a871c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab934f827b37b8f2113a67b05c5668b03"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html#ab934f827b37b8f2113a67b05c5668b03">wayTo</a></td></tr>
-<tr class="memdesc:ab934f827b37b8f2113a67b05c5668b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from the current position to the waypoint.  <a href="#ab934f827b37b8f2113a67b05c5668b03">More...</a><br /></td></tr>
-<tr class="separator:ab934f827b37b8f2113a67b05c5668b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -157,7 +146,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <div class="textblock"><p>This class represents a weather station that issues <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> or <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> report. </p>
 <p>This is a very simple class that represents a weather station. Weather stations are uniquely identified by their ICAO code. Depending on available data, they hold pointers to the latest <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> and <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> reports. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00036">36</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00034">34</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afe452e0bdcfbe5e314f9264730a0d23f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe452e0bdcfbe5e314f9264730a0d23f">&#9670;&nbsp;</a></span>WeatherStation()</h2>
@@ -200,6 +189,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">QGeoCoordinate Meteorologist::WeatherStation::coordinate </td>
@@ -208,10 +200,17 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordiante </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00065">65</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -241,7 +240,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property extendedName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00078">78</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00080">80</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -271,7 +270,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hasMetar </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00095">95</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00097">97</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +300,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isValid </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00112">112</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00114">114</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -331,7 +330,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ICAOCode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00128">128</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00130">130</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -361,7 +360,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property id </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00144">144</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00146">146</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -391,7 +390,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isValid </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00156">156</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00158">158</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -421,7 +420,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property metar </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00173">173</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00176">176</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -451,7 +450,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property taf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00208">208</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00214">214</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -481,27 +480,45 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property twoLineTitle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00191">191</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00196">196</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
-<a id="a735ba5d960272657f9c7737ea4a6b135"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a735ba5d960272657f9c7737ea4a6b135">&#9670;&nbsp;</a></span>wayTo()</h2>
+<a id="aaa338ce6c72fbda8b4b65427dff9d12e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa338ce6c72fbda8b4b65427dff9d12e">&#9670;&nbsp;</a></span>wayTo()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QString Meteorologist::WeatherStation::wayTo </td>
+          <td class="memname">Q_INVOKABLE QString Meteorologist::WeatherStation::wayTo </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">QGeoCoordinate&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useMetric</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Getter function for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property wayTo </dd></dl>
+<p>Description of the way from a given point to the weather station. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">from</td><td>Starting point of the way</td></tr>
+    <tr><td class="paramname">useMetric</td><td>If true, then description uses metric units. Otherwise, nautical units are used.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string such as "DIST 65.2 NM • QUJ 276°". If the way cannot be described (e.g. because one of the coordinates is invalid or unknown), then an empty string is returned. </dd></dl>
 
 </div>
 </div>
@@ -528,7 +545,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Geographical coordinate of the <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> reporting this <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a></p>
 <p>If the <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> coordinate is unknown, the property contains an invalid coordinate. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00060">60</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00059">59</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -555,7 +572,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Extended name of the waypoint. </p>
 <p>This property holds a string of the form "Karlsruhe (DVOR-DME)" </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00072">72</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00074">74</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -582,7 +599,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Check if a <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> weather report is known for this weather station. </p>
 <p>This convenience property can be used to check if a <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> report is available for the weather station. The actual <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> report can be accessed via the property metar. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00089">89</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00091">91</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -609,7 +626,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Check if a <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> weather forecast is known for this weather station. </p>
 <p>This convenience property can be used to check if a <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> forecast is available for the weather station. The actual <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> can be accessed via the property taf. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00106">106</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00108">108</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -636,7 +653,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>ICAO code of the weather station. </p>
 <p>This property holds the ICAO designator of the aerodrome on which the weather station is located. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00122">122</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00124">124</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -663,7 +680,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Suggested icon for this weather station. </p>
 <p>This property holds the name of an icon file in SVG format that best describes the weather station. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00138">138</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00140">140</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -688,7 +705,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 </div><div class="memdoc">
 <p>Indicates if the <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> is valid </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00150">150</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00152">152</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -715,7 +732,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Last <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> provided by this <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a>. </p>
 <p>This property holds a pointer to the last <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> provided by this <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a>, which can be a nullptr if no data is available. The <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> instance is owned by an instance of <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a>, and can be deleted or updated by the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> anytime. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00167">167</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00170">170</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +759,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>Last <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> provided by this <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a>. </p>
 <p>This property holds a pointer to the last <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> provided by this <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a>, which can be a nullptr if no data is available. The <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> instance is owned by an instance of <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a>, and can be deleted or updated by the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> anytime. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00202">202</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00208">208</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>
@@ -770,34 +787,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist::TAF</
 <p>This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a string of the form "&lt;strong&gt;LFKA&lt;/strong&gt;&lt;br&gt;&lt;font size='2'&gt;ALBERTVILLE&lt;/font&gt;" or simply "KIRCHZARTEN"</p>
 <dl class="section see"><dt>See also</dt><dd>threeLineTitle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00185">185</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
-
-</div>
-</div>
-<a id="ab934f827b37b8f2113a67b05c5668b03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab934f827b37b8f2113a67b05c5668b03">&#9670;&nbsp;</a></span>wayTo</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Meteorologist::WeatherStation::wayTo</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Description of the way from the current position to the waypoint. </p>
-<p>If a pointer to a <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> instance has been set with setSatNav(), then this property describes that way from the current position to the waypoint. If a pointer to a <a class="el" href="classGlobalSettings.html" title="Global Settings Manager. ">GlobalSettings</a> instance has been set with setGlobalSettings(), then user preferences (metric units versus miles) will be taken into account. The result is then a string such as "DIST 65.2 NM • QUJ 276°". If the way cannot be described (e.g. because the current position is not known), an empty string is returned. </p>
-
-<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00220">220</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__WeatherStation_8h_source.html#l00190">190</a> of file <a class="el" href="Meteorologist__WeatherStation_8h_source.html">Meteorologist_WeatherStation.h</a>.</p>
 
 </div>
 </div>

@@ -91,9 +91,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9d95fcd638ff80c7ba64325d798f78c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#a9d95fcd638ff80c7ba64325d798f78c0">SatNav</a> (QObject *parent=nullptr)</td></tr>
-<tr class="memdesc:a9d95fcd638ff80c7ba64325d798f78c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="#a9d95fcd638ff80c7ba64325d798f78c0">More...</a><br /></td></tr>
-<tr class="separator:a9d95fcd638ff80c7ba64325d798f78c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24263a08c803b3b4981f8ef47a8f6194"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#a24263a08c803b3b4981f8ef47a8f6194">SatNav</a> (<a class="el" href="classGlobalSettings.html">GlobalSettings</a> *globalSettings, QObject *parent=nullptr)</td></tr>
+<tr class="memdesc:a24263a08c803b3b4981f8ef47a8f6194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="#a24263a08c803b3b4981f8ef47a8f6194">More...</a><br /></td></tr>
+<tr class="separator:a24263a08c803b3b4981f8ef47a8f6194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a714e7054c3bee681ac5925937da23b02"><td class="memItemLeft" align="right" valign="top"><a id="a714e7054c3bee681ac5925937da23b02"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#a714e7054c3bee681ac5925937da23b02">~SatNav</a> () override</td></tr>
 <tr class="memdesc:a714e7054c3bee681ac5925937da23b02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard deconstructor. <br /></td></tr>
@@ -182,9 +182,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6782467dea63ac559034167e127494b"><td class="memItemLeft" align="right" valign="top">QGeoPositionInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#ab6782467dea63ac559034167e127494b">lastFix</a> () const</td></tr>
 <tr class="memdesc:ab6782467dea63ac559034167e127494b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix received.  <a href="#ab6782467dea63ac559034167e127494b">More...</a><br /></td></tr>
 <tr class="separator:ab6782467dea63ac559034167e127494b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb03c3bf153b6513ab26f965ad6716c4"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#afb03c3bf153b6513ab26f965ad6716c4">wayTo</a> (const QGeoCoordinate &amp;position, bool useMetricUnits) const</td></tr>
-<tr class="memdesc:afb03c3bf153b6513ab26f965ad6716c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from the current position to the given position.  <a href="#afb03c3bf153b6513ab26f965ad6716c4">More...</a><br /></td></tr>
-<tr class="separator:afb03c3bf153b6513ab26f965ad6716c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae61d1c01723e0fe69b1621d7ba0207fe"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSatNav.html#ae61d1c01723e0fe69b1621d7ba0207fe">wayTo</a> (const QGeoCoordinate &amp;positionUnits) const</td></tr>
+<tr class="memdesc:ae61d1c01723e0fe69b1621d7ba0207fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from the current position to the given position.  <a href="#ae61d1c01723e0fe69b1621d7ba0207fe">More...</a><br /></td></tr>
+<tr class="separator:ae61d1c01723e0fe69b1621d7ba0207fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -278,7 +278,7 @@ Properties</h2></td></tr>
 <p>Once constructed, the health status of the satellite navigation subsystem can be queried using the status property. If all is well, the class receives regular satellite navigation data packets (aka 'fixes'), in the form a QGeoPositionInfo object, and the signal 'update' is emitted. The QGeoPositionInfo is considered valid for one minute, and can be accessed via the method <a class="el" href="classSatNav.html#ab6782467dea63ac559034167e127494b" title="Last SatNav fix received. ">lastFix()</a>, or via a multitude of properties that present the data in formats suitable for GUI applications. If no new <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fixes come in for one minute, the QGeoPositionInfo will cleared, and the status is set to Timeout until new data arrives.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00056">56</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00057">57</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a5046a81f5761b8a56c438ff252bbbae6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5046a81f5761b8a56c438ff252bbbae6">&#9670;&nbsp;</a></span>Status</h2>
@@ -302,13 +302,13 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00071">71</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00074">74</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9d95fcd638ff80c7ba64325d798f78c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d95fcd638ff80c7ba64325d798f78c0">&#9670;&nbsp;</a></span>SatNav()</h2>
+<a id="a24263a08c803b3b4981f8ef47a8f6194"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24263a08c803b3b4981f8ef47a8f6194">&#9670;&nbsp;</a></span>SatNav()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,9 +319,19 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">SatNav::SatNav </td>
           <td>(</td>
-          <td class="paramtype">QObject *&#160;</td>
-          <td class="paramname"><em>parent</em> = <code>nullptr</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classGlobalSettings.html">GlobalSettings</a> *&#160;</td>
+          <td class="paramname"><em>globalSettings</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">QObject *&#160;</td>
+          <td class="paramname"><em>parent</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -408,7 +418,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordinate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00219">219</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00222">222</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -558,7 +568,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hasAltitude </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00206">206</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00209">209</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -648,7 +658,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isInFlight </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00331">331</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00334">334</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -678,7 +688,7 @@ Properties</h2></td></tr>
 <p>Last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix received. </p>
 <dl class="section return"><dt>Returns</dt><dd>the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix received. If no <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> has been received for more than one minute, this method return an empty QGeoPositionInfo. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00484">484</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00487">487</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -728,7 +738,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastValidTrack </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00367">367</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00370">370</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -907,7 +917,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property timestamp </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00409">409</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00412">412</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -971,8 +981,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="afb03c3bf153b6513ab26f965ad6716c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb03c3bf153b6513ab26f965ad6716c4">&#9670;&nbsp;</a></span>wayTo()</h2>
+<a id="ae61d1c01723e0fe69b1621d7ba0207fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae61d1c01723e0fe69b1621d7ba0207fe">&#9670;&nbsp;</a></span>wayTo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -981,31 +991,21 @@ Properties</h2></td></tr>
           <td class="memname">Q_INVOKABLE QString SatNav::wayTo </td>
           <td>(</td>
           <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
-          <td class="paramname"><em>position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>useMetricUnits</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramname"><em>positionUnits</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Description of the way from the current position to the given position. </p>
+<p>This method uses the unit system preferred by the user.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td>Position </td></tr>
-    <tr><td class="paramname">useMetricUnits</td><td>if true, render distance in km, else in NM</td></tr>
+    <tr><td class="paramname">position</td><td>Position</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a string of the form "DIST 65.2 NM • QUJ 276°" </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A string of the form "DIST 65.2 NM • QUJ 276°" or an empty string if the current position is not known. </dd></dl>
 
 </div>
 </div>
@@ -1033,7 +1033,7 @@ Properties</h2></td></tr>
 <p>Altitude. </p>
 <p>This property holds the altitude, defined as rawAltitude()+altitudeCorrection, in feet above sea level. Negative altitudes are possible. In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, or in case where no altitude information is reported, the property is set to the value "0". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00122">122</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00125">125</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1061,7 +1061,7 @@ Properties</h2></td></tr>
 <p>This property holds the altitude, defined as rawAltitude()+altitudeCorrection, as a string of the form "2.943 ft". In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, or in case where no altitude information is reported, the property is set to the value "-".</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSatNav.html#a7489389d108e5eb8f830047e02f959ab" title="Altitude. ">altitudeInFeet</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00153">153</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00156">156</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1088,7 +1088,7 @@ Properties</h2></td></tr>
 <p>Coordinate reading from the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the coordinate found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, the property is set an invalid coordinate. </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00213">213</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00216">216</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1115,7 +1115,7 @@ Properties</h2></td></tr>
 <p>Geoidal separation. </p>
 <p>This property holds the geoidal separation between the ellipsoidal height as reported by the GPS receiver and the orthometric height (AMSL, commonly used in maps). above sea level. In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, or in case where no altitude information is reported, the property is set to the value "0". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00178">178</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00181">181</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1143,7 +1143,7 @@ Properties</h2></td></tr>
 <p>This property holds the geoidal separation, a string of the form "143 ft". In case no valid satnav fix exists, or in case where no geoidal separation information is reported, the property is set to the value "-".</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSatNav.html#add6f6dcbc29df0076c6e53762d46b2cc" title="Geoidal separation. ">geoidalSeparation</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00194">194</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00197">197</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1170,7 +1170,7 @@ Properties</h2></td></tr>
 <p>Ground speed reading from the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix in km/h. </p>
 <p>This property holds the ground speed found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, as a string of the form "132 km/h". In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, the property is set to the value "-", otherwise the number returned is never negative </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00269">269</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00272">272</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1197,7 @@ Properties</h2></td></tr>
 <p>Ground speed reading from the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the ground speed found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, in knots. In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, the property is set to the value "-1", otherwise the number returned is never negative </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00227">227</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00230">230</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1224,7 +1224,7 @@ Properties</h2></td></tr>
 <p>Ground speed reading from the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix in knots. </p>
 <p>This property holds the ground speed found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, as a string of the form "97 kn". In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, the property is set to the value "-", otherwise the number returned is never negative </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00255">255</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00258">258</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1251,7 +1251,7 @@ Properties</h2></td></tr>
 <p>Ground speed reading from the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the ground speed found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, in meters per second. In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, the property is set to the value "-1.0", otherwise the number returned is never negative </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00241">241</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00244">244</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1279,7 +1279,7 @@ Properties</h2></td></tr>
 <p>This property is set to "true" if the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix contains altitude information.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSatNav.html#a7489389d108e5eb8f830047e02f959ab" title="Altitude. ">altitudeInFeet</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00168">168</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00171">171</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1306,7 +1306,7 @@ Properties</h2></td></tr>
 <p>Horizontal precision estimate for last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds an estimate for the precision of the horizontal position info, in meters. If no estimate or no data exists, the property is set to "-1". Otherwise, the estimate is always non-negative. </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00283">283</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00286">286</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1333,7 +1333,7 @@ Properties</h2></td></tr>
 <p>Horizontal precision estimate for last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds an estimate for the precision of the horizontal position info, as a string of the form "±5 m". If no estimate or no data exists, the property is set to "-". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00297">297</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00300">300</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1360,7 +1360,7 @@ Properties</h2></td></tr>
 <p>Suggested icon. </p>
 <p>This property suggests an icon, to be used for the own position. This is always one of "/icons/self-noSatNav.svg", "/icons/self-noDirection.svg" and "/icons/self-withDirection.svg" </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00311">311</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00314">314</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1387,7 @@ Properties</h2></td></tr>
 <p>Estimate whether the device is flying or on the ground. </p>
 <p>This property holds an estimate, as to whether the device is flying or on the ground. The current implementation considers the device is flying if the groundspeed can be read and is greater then 30 knots. </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00325">325</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00328">328</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1415,7 +1415,7 @@ Properties</h2></td></tr>
 <p>This property holds the last valid coordinate found in a <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. At the first start, this property is set to the location Freiburg Airport, EDTF. The value is stored in a QSetting at destruction, and restored in the construction.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSatNav.html#ab255756722d23b3213b7a64f15991da0" title="Last valid coordinate reading from the last SatNav fix. ">lastValidCoordinate</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00342">342</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00345">345</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1443,7 +1443,7 @@ Properties</h2></td></tr>
 <p>This property holds the last valid track found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. This property differs from track, in that it remains unchanged when no track information can be found or when an error occurs. At the first start, this property is set to 0. The property always satisfies 0 &lt;= track &lt; 360. The value is stored in a QSetting at destruction, and restored in the construction.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSatNav.html#acf4daea76ff81f686e472f24549bf764" title="Last valid track reading from the last SatNav fix. ">lastValidTrack</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00361">361</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00364">364</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1470,7 +1470,7 @@ Properties</h2></td></tr>
 <p>Latitude in last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the latitude of the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, as a string of the form "37° 52' 57.36'' N". If no latitude is available, the property is set to "-". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00375">375</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00378">378</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1497,7 +1497,7 @@ Properties</h2></td></tr>
 <p>Longitude in last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the longitude of the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, as a string of the form "122° 16' 1.93'' W". If no longitude is available, the property is set to "-". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00389">389</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00392">392</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1524,7 +1524,7 @@ Properties</h2></td></tr>
 <p>Raw altitude. </p>
 <p>This property holds the raw altitude found in the last satnav fix, in feet above sea level. Negative altitudes are possible. In case no valid <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix exists, or in case where no altitude information is reported, the property is set to the value "0". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00089">89</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00092">92</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1552,7 +1552,7 @@ Properties</h2></td></tr>
 <p>This property holds the raw altitude found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, as a string of the form "2.943 ft". In case no valid satnav fix exists, or in case where no altitude information is reported, the property is set to the value "-".</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSatNav.html#a94afaae36b60aa36273bb477a833e6fb" title="Raw altitude. ">rawAltitudeInFeet</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00106">106</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00109">109</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1579,7 +1579,7 @@ Properties</h2></td></tr>
 <p>Status of the <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> class. </p>
 <p>This property holds the status of the <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> class. </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00457">457</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00460">460</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1607,7 +1607,7 @@ Properties</h2></td></tr>
 <p>This property holds a localized string that describes the status of the <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> class. A typical string is of the form "Connection to SatNav
 subsystem lost". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00471">471</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00474">474</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1634,7 +1634,7 @@ subsystem lost". </p>
 <p>Time and date of last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the date and time at which the position was reported last, in UTC time. The QDateTime is invalid if no time and date has been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00403">403</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00406">406</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1661,7 +1661,7 @@ subsystem lost". </p>
 <p>Time of last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the time at which the position was reported last as a string of the form "13:42:32 UTC". If no time has been set, the property is set to "-". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00417">417</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00420">420</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1688,7 +1688,7 @@ subsystem lost". </p>
 <p>Track found in last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the track (= true course) found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, in degrees. If no track is available, the property is set to "-1", otherwise the track is an integer satisfying 0 &lt;= track &lt; 360. </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00431">431</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00434">434</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>
@@ -1715,7 +1715,7 @@ subsystem lost". </p>
 <p>Track found in last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix. </p>
 <p>This property holds the track (= true course) found in the last <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a> fix, as a string of the form "127°". If no track is available, the property is set to "-". </p>
 
-<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00445">445</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SatNav_8h_source.html#l00448">448</a> of file <a class="el" href="SatNav_8h_source.html">SatNav.h</a>.</p>
 
 </div>
 </div>

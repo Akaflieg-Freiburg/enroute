@@ -225,7 +225,7 @@ Page {
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.RichText
             wrapMode: Text.Wrap
-            text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAR data from the Aviation Weather Center…</p>")
+            text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
             onLinkActivated: Qt.openUrlExternally(link)
         } // downloadIndicatorLabel
 

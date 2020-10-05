@@ -23,18 +23,8 @@
 #include <QVariant>
 
 #include "AviationUnits.h"
-#include "Clock.h"
-#include "GlobalSettings.h"
 #include "Meteorologist_WeatherStation.h"
-#include "SatNav.h"
 #include "Waypoint.h"
-
-#warning Need to emit weatherStationChanged signals when appropriate
-#warning Need to emit hasMETARChanged signals when appropriate
-#warning Need to emit wayTo signals when appropriate
-#warning Need to emit flightCategoryColorChanged signals when appropriate
-#warning Need to emit METARSummaryChanged signals when appropriate
-#warning Need to emit threeLineTitleChanged signals when appropriate
 
 
 Waypoint::Waypoint(QObject *parent)
@@ -44,33 +34,32 @@ Waypoint::Waypoint(QObject *parent)
 
 
 Waypoint::Waypoint(const Waypoint &other, QObject *parent)
-    : QObject(parent), _coordinate(other._coordinate), _properties(other._properties)
+    : QObject(parent),
+      _meteorologist(other._meteorologist),
+      _coordinate(other._coordinate),
+      _properties(other._properties)
 {
+    // Initialize connections
+    initializeMeteorologistConnections();
 }
 
 
 Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
-    : QObject(parent), _coordinate(coordinate)
+    : QObject(parent),
+      _coordinate(coordinate)
 {
     _properties.insert("CAT", QString("WP"));
     _properties.insert("NAM", QString("Waypoint"));
     _properties.insert("TYP", QString("WP"));
+
+    // Initialize connections
+    initializeMeteorologistConnections();
 }
 
 
-Waypoint::Waypoint(const QGeoCoordinate& coordinate, QString code, QObject *parent)
-    : QObject(parent), _coordinate(coordinate)
-{
-    _properties.insert("CAT", QString("WP"));
-    if (code.isEmpty())
-        _properties.insert("NAM", QString("Waypoint"));
-    else
-        _properties.insert("COD", code);
-    _properties.insert("TYP", QString("WP"));
-}
-
-Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
-    : QObject(parent)
+Waypoint::Waypoint(const QJsonObject &geoJSONObject, Meteorologist *meteorologist, QObject *parent)
+    : QObject(parent),
+      _meteorologist(meteorologist)
 {
     // Paranoid safety checks
     if (geoJSONObject["type"] != "Feature")
@@ -97,7 +86,11 @@ Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
     _coordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble() );
     if (_properties.contains("ELE"))
         _coordinate.setAltitude(properties["ELE"].toDouble());
+
+    // Initialize connections
+    initializeMeteorologistConnections();
 }
+
 
 QString Waypoint::extendedName() const
 {
@@ -107,29 +100,187 @@ QString Waypoint::extendedName() const
     return _properties.value("NAM").toString();
 }
 
-QString Waypoint::twoLineTitle() const
+
+bool Waypoint::hasMETAR() const
 {
-    QString codeName;
-    if (_properties.contains("COD"))
-        codeName += _properties.value("COD").toString();
-    if (_properties.contains("MOR"))
-        codeName += " " + _properties.value("MOR").toString();
-
-    if (!codeName.isEmpty())
-        return QString("<strong>%1</strong><br><font size='2'>%2</font>").arg(codeName, extendedName());
-
-    return extendedName();
+    auto station = weatherStation();
+    if (station == nullptr)
+        return false;
+    return (station->metar() != nullptr);
 }
 
-Meteorologist::WeatherStation *Waypoint::weatherStation() const
+
+bool Waypoint::hasTAF() const
 {
+    auto station = weatherStation();
+    if (station == nullptr)
+        return false;
+    return (station->taf() != nullptr);
+}
+
+
+void Waypoint::initializeMeteorologistConnections()
+{
+    // No meteorologist? Then nothing to do.
     if (_meteorologist.isNull())
-        return nullptr;
-    if (!_properties.contains("COD"))
-        return nullptr;
+        return;
 
-    return _meteorologist->findWeatherStation(_properties.value("COD").toString());
+    // If the waypoint does not have a four-letter ICAO code, there is certainly no weather station.
+    // In that case, return and do not do anything.
+    if (!_properties.contains("COD"))
+        return;
+    if (_properties.value("COD").toString().length() != 4)
+        return;
+
+    // Wire up the _meteorologist
+    connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::initializeWeatherStationConnections);
+
+    initializeWeatherStationConnections();
 }
+
+
+void Waypoint::initializeWeatherStationConnections()
+{
+    // Get new weather station
+    auto newStationPtr = weatherStation();
+    if (newStationPtr == nullptr)
+        return;
+
+    // Do nothing if newStation is not really new
+    if (newStationPtr == _weatherStation_unguarded)
+        return;
+
+    //
+    // Delete old connections, etc
+    //
+    if (_weatherStation_guarded) {
+        disconnect(_weatherStation_guarded, nullptr, this, nullptr);
+        auto oldMETAR = _weatherStation_guarded->metar();
+        if (oldMETAR)
+            disconnect(oldMETAR, nullptr, this, nullptr);
+    }
+
+    // Set new stations
+    _weatherStation_guarded = newStationPtr;
+    _weatherStation_unguarded = newStationPtr;
+
+    // Setup new connections
+    if (newStationPtr) {
+        connect(newStationPtr, &Meteorologist::WeatherStation::metarChanged, this, &Waypoint::hasMETARChanged);
+        connect(newStationPtr, &Meteorologist::WeatherStation::tafChanged, this, &Waypoint::hasTAFChanged);
+        connect(newStationPtr, &Meteorologist::WeatherStation::destroyed, this, &Waypoint::initializeWeatherStationConnections);
+    }
+
+    // Emit all relevant changes
+    emit hasMETARChanged();
+    emit hasTAFChanged();
+    emit weatherStationChanged();
+}
+
+
+bool Waypoint::isValid() const
+{
+    if (!_coordinate.isValid())
+        return false;
+    if (!_properties.contains("TYP"))
+        return false;
+    auto TYP = _properties.value("TYP").toString();
+
+    // Handle airfields
+    if (TYP == "AD") {
+        // Property CAT
+        if (!_properties.contains("CAT"))
+            return false;
+        auto CAT = _properties.value("CAT").toString();
+        if ((CAT != "AD") && (CAT != "AD-GRASS") && (CAT != "AD-PAVED") &&
+                (CAT != "AD-INOP") && (CAT != "AD-GLD") && (CAT != "AD-MIL") &&
+                (CAT != "AD-MIL-GRASS") && (CAT != "AD-MIL-PAVED") && (CAT != "AD-UL") &&
+                (CAT != "AD-WATER"))
+            return false;
+
+        // Property ELE
+        if (!_properties.contains("ELE"))
+            return false;
+        bool ok;
+        _properties.value("ELE").toInt(&ok);
+        if (!ok)
+            return false;
+
+        // Property NAM
+        if (!_properties.contains("NAM"))
+            return false;
+        return true;
+    }
+
+    // Handle NavAids
+    if (TYP == "NAV") {
+        // Property CAT
+        if (!_properties.contains("CAT"))
+            return false;
+        auto CAT = _properties.value("CAT").toString();
+        if ((CAT != "NDB") && (CAT != "VOR") && (CAT != "VOR-DME") &&
+                (CAT != "VORTAC") && (CAT != "DVOR") && (CAT != "DVOR-DME") &&
+                (CAT != "DVORTAC"))
+            return false;
+
+        // Property COD
+        if (!_properties.contains("COD"))
+            return false;
+
+        // Property NAM
+        if (!_properties.contains("NAM"))
+            return false;
+
+        // Property NAV
+        if (!_properties.contains("NAV"))
+            return false;
+
+        // Property MOR
+        if (!_properties.contains("MOR"))
+            return false;
+
+        return true;
+    }
+
+    // Handle waypoints
+    if (TYP == "WP") {
+        // Property CAT
+        if (!_properties.contains("CAT"))
+            return false;
+        auto CAT = _properties.value("CAT").toString();
+        if ((CAT != "MRP") && (CAT != "RP") && (CAT != "WP"))
+            return false;
+
+        // Property COD
+        if ((CAT == "MRP") || (CAT == "RP"))
+            if (!_properties.contains("COD"))
+                return false;
+
+        // Property NAM
+        if (!_properties.contains("NAM"))
+            return false;
+
+        // Property SCO
+        if ((CAT == "MRP") || (CAT == "RP"))
+            if (!_properties.contains("SCO"))
+                return false;
+
+        return true;
+    }
+
+    // Unknown TYP
+    return false;
+}
+
+
+bool Waypoint::operator==(const Waypoint &other) const {
+    if (_coordinate != other._coordinate)
+        return false;
+    if (_properties != other._properties)
+        return false;
+    return true;
+}
+
 
 QList<QString> Waypoint::tabularDescription() const
 {
@@ -169,6 +320,7 @@ QList<QString> Waypoint::tabularDescription() const
     return result;
 }
 
+
 QJsonObject Waypoint::toJSON() const
 {
     QJsonArray coords;
@@ -185,117 +337,46 @@ QJsonObject Waypoint::toJSON() const
     return feature;
 }
 
-QString Waypoint::wayTo() const
+
+QString Waypoint::twoLineTitle() const
 {
-    if (_satNav.isNull())
+    QString codeName;
+    if (_properties.contains("COD"))
+        codeName += _properties.value("COD").toString();
+    if (_properties.contains("MOR"))
+        codeName += " " + _properties.value("MOR").toString();
+
+    if (!codeName.isEmpty())
+        return QString("<strong>%1</strong><br><font size='2'>%2</font>").arg(codeName, extendedName());
+
+    return extendedName();
+}
+
+
+QString Waypoint::wayTo(QGeoCoordinate fromCoordinate, bool useMetricUnits) const
+{
+    // Paranoid safety checks
+    if (!fromCoordinate.isValid())
         return QString();
-    if (_satNav->status() != SatNav::OK)
+    if (!_coordinate.isValid())
         return QString();
 
-    bool useMetricUnits = false;
-    if (_globalSettings)
-        useMetricUnits = _globalSettings->useMetricUnits();
-
-    auto position = _satNav->lastValidCoordinate();
-    auto dist = AviationUnits::Distance::fromM(position.distanceTo(_coordinate));
-    auto QUJ = qRound(position.azimuthTo(_coordinate));
+    auto dist = AviationUnits::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
+    auto QUJ = qRound(fromCoordinate.azimuthTo(_coordinate));
 
     if (useMetricUnits)
         return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
 
-void Waypoint::setSatNav(SatNav *satNav)
+
+Meteorologist::WeatherStation *Waypoint::weatherStation() const
 {
-    if (!_satNav.isNull()) {
-//        disconnect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
-//        disconnect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
-    }
+    if (_meteorologist.isNull())
+        return nullptr;
+    if (!_properties.contains("COD"))
+        return nullptr;
 
-    _satNav = satNav;
-
-    if (!_satNav.isNull()) {
-//        connect(_satNav, &SatNav::statusChanged, this, &Waypoint::fourLineTitle);
-//        connect(_satNav, &SatNav::update, this, &Waypoint::fourLineTitle);
-    }
+    return _meteorologist->findWeatherStation(_properties.value("COD").toString());
 }
 
-void Waypoint::setMeteorologist(Meteorologist *meteorologist)
-{
-    if (!_meteorologist.isNull()) {
-        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::flightCategoryColorChanged);
-//        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
-        disconnect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
-    }
-
-    _meteorologist = meteorologist;
-
-    if (!_meteorologist.isNull()) {
-        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::flightCategoryColorChanged);
-//        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::fourLineTitle);
-        connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::weatherStationChanged);
-    }
-}
-
-void Waypoint::setGlobalSettings(GlobalSettings *globalSettings)
-{
-/*
- *     if (!_globalSettings.isNull())
-        disconnect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::fourLineTitle);
-*/
-    _globalSettings = globalSettings;
-/*
-    if (!_globalSettings.isNull())
-        connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Waypoint::fourLineTitle);
-        */
-}
-
-QString Waypoint::flightCategoryColor() const
-{
-    auto station = weatherStation();
-    if (station == nullptr)
-        return "transparent";
-    auto metar = station->metar();
-    if (metar == nullptr)
-        return "transparent";
-    return metar->flightCategoryColor();
-}
-
-QString Waypoint::METARSummary() const
-{
-    auto station = weatherStation();
-    if (station == nullptr)
-        return QString();
-    auto metar = station->metar();
-    if (metar == nullptr)
-        return QString();
-    return metar->summary();
-}
-
-
-bool Waypoint::isValid() const
-{
-#warning need to check if properties satisfy GeoJSON standard.
-    return _coordinate.isValid();
-}
-
-bool Waypoint::operator==(const Waypoint &other) const {
-#warning need to ensure that all properties agree
-    return _coordinate == other._coordinate;
-}
-
-bool Waypoint::hasMETAR() const
-{
-    auto station = weatherStation();
-    if (station == nullptr)
-        return false;
-    return (station->metar() != nullptr);
-}
-
-bool Waypoint::hasTAF() const
-{
-    auto station = weatherStation();
-    if (station == nullptr)
-        return false;
-    return (station->taf() != nullptr);
-}

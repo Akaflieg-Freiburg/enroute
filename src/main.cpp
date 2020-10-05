@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
     QObject::connect(globalSettings, &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
-    auto navEngine = new SatNav(engine);
+    auto navEngine = new SatNav(globalSettings, engine);
     engine->rootContext()->setContextProperty("satNav", navEngine);
 
     // Attach global settings object

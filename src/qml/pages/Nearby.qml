@@ -68,7 +68,7 @@ Page {
                 // Background color according to METAR/FAA flight category
                 Rectangle {
                     anchors.fill: parent
-                    color: model.modelData.flightCategoryColor
+                    color: model.modelData.hasMETAR ? model.modelData.weatherStation.metar.flightCategoryColor : "transparent"
                     opacity: 0.2
                 }
 
@@ -83,13 +83,12 @@ Page {
                     text: {
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = model.modelData.wayTo
+                        var wayTo  = model.modelData.wayTo(satNav.coordinate, globalSettings.useMetricUnits)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
-                        var met    = model.modelData.METARSummary
-                        if (met !== "")
-                            result = result + "<br>" + met
+                        if (model.modelData.hasMETAR)
+                            result = result + "<br>" + model.modelData.weatherStation.metar.summary
                         return result
                     }
 

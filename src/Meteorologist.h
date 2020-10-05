@@ -26,11 +26,12 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
+#include "SatNav.h"
+
 class Clock;
 class FlightRoute;
 class GeoMapProvider;
 class GlobalSettings;
-class SatNav;
 
 
 /*! \brief Meteorologist, weather service manager

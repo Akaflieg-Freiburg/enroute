@@ -25,14 +25,10 @@
 #include "AviationUnits.h"
 #include "SatNav.h"
 
-#include <QStringList>
-#include <QDebug>
 
-SatNav::SatNav(QObject *parent)
-    : QObject(parent),
-      _lastValidCoordinate(EDTF_lat, EDTF_lon, EDTF_ele),
-      _geoid(nullptr),
-      _lastValidGeoidCorrection(0.)
+
+SatNav::SatNav(GlobalSettings *globalSettings, QObject *parent)
+    : QObject(parent), _globalSettings(globalSettings)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
 
@@ -439,17 +435,24 @@ QString SatNav::trackAsString() const
 }
 
 
-QString SatNav::wayTo(const QGeoCoordinate& position, bool useMetricUnits) const
+QString SatNav::wayTo(const QGeoCoordinate& position) const
 {
+    // Paranoid safety checks
+    if (status() != SatNav::OK)
+        return QString();
+    if (!position.isValid())
+        return QString();
+    if (!_lastValidCoordinate.isValid())
+        return QString();
+
+    bool useMetricUnits = false;
+    if (_globalSettings)
+        useMetricUnits = _globalSettings->useMetricUnits();
 
     auto dist = AviationUnits::Distance::fromM(_lastValidCoordinate.distanceTo(position));
     auto QUJ = qRound(_lastValidCoordinate.azimuthTo(position));
 
-    QString result;
-    if (useMetricUnits) {
-        result += QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    } else {
-        result += QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
-    }
-    return result;
+    if (useMetricUnits)
+        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
+    return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }

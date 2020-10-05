@@ -25,6 +25,7 @@
 #include <QTimer>
 
 #include "Geoid.h"
+#include "GlobalSettings.h"
 
 /*! \brief Satellite Navigator
 
@@ -59,10 +60,12 @@ class SatNav : public QObject
 
 public:
   /*! \brief Standard constructor
-
-    @param parent The standard QObject parent pointer
-  */
-  explicit SatNav(QObject *parent = nullptr);
+   *
+   * @paragraph globalSettings Pointer to a GlobalSettings instance. This is used to present data with in the unit system preferred by the user.
+   *
+   * @param parent The standard QObject parent pointer
+   */
+  explicit SatNav(GlobalSettings *globalSettings, QObject *parent = nullptr);
 
   /*! \brief Standard deconstructor */
   ~SatNav() override;
@@ -484,13 +487,15 @@ public:
   QGeoPositionInfo lastFix() const { return lastInfo; }
 
   /*! \brief Description of the way from the current position to the given position
-
-  @param position Position
-  @param useMetricUnits if true, render distance in km, else in NM
-
-  @returns a string of the form "DIST 65.2 NM • QUJ 276°"
-  */
-  Q_INVOKABLE QString wayTo(const QGeoCoordinate& position, bool useMetricUnits) const;
+   *
+   * This method uses the unit system preferred by the user.
+   *
+   * @param position Position
+   *
+   * @returns A string of the form "DIST 65.2 NM • QUJ 276°" or an empty string if the
+   * current position is not known.
+   */
+  Q_INVOKABLE QString wayTo(const QGeoCoordinate& positionUnits) const;
 
 signals:
   /*! \brief Emitted whenever the suggested icon changes */
@@ -521,7 +526,7 @@ private slots:
 private:
   Q_DISABLE_COPY_MOVE(SatNav)
 
-  // Aircraft is considered flying is speed is at least this high
+  // Aircraft is considered flying if speed is at least this high
   static constexpr double minFlightSpeedInKT = 30.0;
   // Hysteresis for flight speed
   static constexpr double flightSpeedHysteresis = 5.0;
@@ -534,15 +539,15 @@ private:
   QLocale myLocale;
   QGeoPositionInfoSource *source;
   QGeoPositionInfo lastInfo;
-  QGeoCoordinate _lastValidCoordinate;
+  QGeoCoordinate _lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};
   int _lastValidTrack {0};
   bool _isInFlight {false};
 
   // altitude = raw altitude + altitudeCorrection
   int altitudeCorrectionInM {0};
 
-  Geoid* _geoid;
-  qreal _lastValidGeoidCorrection;
+  Geoid* _geoid {nullptr};
+  qreal _lastValidGeoidCorrection {0.0};
 
   // Constant: timeout occurs after one minute without receiving new data
   const int timeoutThreshold = 60*1000;
@@ -557,4 +562,7 @@ private:
   // QTimer used to measure time since last data packet was received.  Connected
   // to call timeout() after timeoutThreshold milliseconds of no data.
   QTimer timeoutCounter;
+
+  // Pointer to other structures
+  QPointer<GlobalSettings> _globalSettings;
 };

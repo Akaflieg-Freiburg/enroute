@@ -27,6 +27,7 @@
 #include <QQmlEngine>
 #include <QRandomGenerator>
 
+#include "Clock.h"
 #include "GeoMapProvider.h"
 #include "Waypoint.h"
 
@@ -73,9 +74,6 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 
     if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition)) {
         auto wp = new Waypoint(position, this);
-        wp->setGlobalSettings(_globalSettings);
-        wp->setMeteorologist(_meteorologist);
-        wp->setSatNav(_satNav);
         return wp;
     }
 
@@ -260,10 +258,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         newFeatures += object;
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
-        auto wp = new Waypoint(object);
-        wp->setGlobalSettings(_globalSettings);
-        wp->setMeteorologist(_meteorologist);
-        wp->setSatNav(_satNav);
+        auto wp = new Waypoint(object, _meteorologist);
         wp->moveToThread(QApplication::instance()->thread());
         if (wp->isValid()) {
             QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);

@@ -389,7 +389,7 @@ QString FlightRoute::loadFromGeoJSON(QString fileName)
 
     QList<QPointer<Waypoint>> newWaypoints;
     foreach(auto value, document.object()["features"].toArray()) {
-        auto wp = new Waypoint(value.toObject());
+        auto wp = new Waypoint(value.toObject(), nullptr, this);
         if (!wp->isValid()) {
             qDeleteAll(newWaypoints);
             return tr("Cannot parse content of file '%1'.").arg(fileName);

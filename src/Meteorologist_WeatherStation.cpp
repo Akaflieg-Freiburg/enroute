@@ -28,13 +28,17 @@
 
 #warning Need to emit wayToChanged!
 
-Meteorologist::WeatherStation::WeatherStation(QObject *parent) : QObject(parent)
+Meteorologist::WeatherStation::WeatherStation(QObject *parent)
+    : QObject(parent)
 {
 }
 
 
 Meteorologist::WeatherStation::WeatherStation(const QString &id, SatNav *satNav, GlobalSettings *globalSettings, GeoMapProvider *geoMapProvider, QObject *parent)
- : QObject(parent), _ICAOCode(id), _globalSettings(globalSettings), _satNav(satNav)
+ : QObject(parent),
+   _ICAOCode(id),
+   _globalSettings(globalSettings),
+   _satNav(satNav)
 {
     _twoLineTitle = _ICAOCode;
     _extendedName = _ICAOCode;
@@ -57,34 +61,6 @@ QGeoCoordinate Meteorologist::WeatherStation::coordinate() const
     return QGeoCoordinate();
 }
 
-#warning This code should move to SatNav!
-QString Meteorologist::WeatherStation::wayTo() const
-{
-    QGeoCoordinate _coordinate;
-    if (hasMETAR())
-        _coordinate = metar()->coordinate();
-    else if (hasTAF())
-        _coordinate = taf()->coordinate();
-    if (!_coordinate.isValid())
-        return QString();
-
-    if (_satNav.isNull())
-        return QString();
-    if (_satNav->status() != SatNav::OK)
-        return QString();
-
-    bool useMetricUnits = false;
-    if (_globalSettings)
-        useMetricUnits = _globalSettings->useMetricUnits();
-
-    auto position = _satNav->lastValidCoordinate();
-    auto dist = AviationUnits::Distance::fromM(position.distanceTo(_coordinate));
-    auto QUJ = qRound(position.azimuthTo(_coordinate));
-
-    if (useMetricUnits)
-        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
-}
 
 void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
 {
@@ -124,6 +100,24 @@ void Meteorologist::WeatherStation::setTAF(Meteorologist::TAF *taf)
     // Let the world know that the taf changed
     emit tafChanged();
 }
+
+
+QString Meteorologist::WeatherStation::wayTo() const
+{
+    QGeoCoordinate _coordinate;
+    if (hasMETAR())
+        _coordinate = metar()->coordinate();
+    else if (hasTAF())
+        _coordinate = taf()->coordinate();
+    if (!_coordinate.isValid())
+        return QString();
+
+    if (_satNav.isNull())
+        return QString();
+
+    return _satNav->wayTo(_coordinate);
+}
+
 
 // ================================
 #warning old functionality, needs to go out

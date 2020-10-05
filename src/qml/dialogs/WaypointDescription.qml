@@ -79,7 +79,7 @@ Dialog {
                 if (waypoint === null)
                     return ""
                 if (waypoint.hasMETAR)
-                    return waypoint.METARSummary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                    return waypoint.weatherStation.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
             Layout.fillWidth: true
@@ -97,7 +97,7 @@ Dialog {
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: (waypoint !== null) ? waypoint.flightCategoryColor : "transparent"
+                color: (waypoint.hasMETAR) ? waypoint.weatherStation.metar.flightCategoryColor : "transparent"
                 opacity: 0.2
             }
 
@@ -306,8 +306,8 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (waypoint !== null) ? waypoint.wayTo : ""
-            visible: satNav.status === SatNav.OK
+            text: (waypoint !== null) ? waypoint.wayTo(satNav.coordinate, globalSettings.useMetricUnits) : ""
+            visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
             wrapMode: Text.WordWrap

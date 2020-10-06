@@ -98,6 +98,45 @@ public:
     /*! \brief Destructor */
     ~Meteorologist() override;
 
+
+    /*! \brief Background update flag
+     *
+     * Indicates if the last download process was started as a background update.
+     */
+    Q_PROPERTY(bool backgroundUpdate READ backgroundUpdate NOTIFY backgroundUpdateChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property backgroundUpdate
+     */
+    bool backgroundUpdate() const { return _backgroundUpdate; };
+
+    /*! \brief Downloading flag
+     *
+     * Indicates that the Meteorologist is currently downloading METAR/TAF information from the internet.
+     */
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property downloading
+     */
+    bool downloading() const;
+
+    /*! \brief Find WeatherStation by ICAO code
+     *
+     * This method returns a pointer to the WeatherStation with the given ICAO
+     * code, or a nullptr if no WeatherStation with the given code is known to
+     * the Meteorologist.
+     *
+     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime.  Store it in a QPointer to avoid dangling pointers.
+     *
+     * @param ICAOCode ICAO code name of the WeatherStation, such as "EDDF"
+     *
+     * @returns Pointer to WeatherStation
+     */
+    Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const;
+
     /*! \brief QNHInfo
      *
      * This property holds a human-readable, translated, rich-text string with
@@ -113,59 +152,20 @@ public:
      */
     QString QNHInfo() const;
 
-    /*! \brief SunInfo
+    /*! \brief sunInfo
      *
      * This property holds a human-readable, translated, rich-text string with 
      * information about the next sunset or sunrise at the current position. This
      * could typically read like "SS 17:01, in 3h and 5min" or "Waiting for exact
      * position …"
      */
-    Q_PROPERTY(QString SunInfo READ SunInfo NOTIFY SunInfoChanged)
+    Q_PROPERTY(QString sunInfo READ sunInfo NOTIFY sunInfoChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property infoString
      */
-    QString SunInfo() const;
-
-    /*! \brief List of weather stations
-     *
-     * This property holds a list of all weather stations that are currently know to this instance of the Meteorologist class, sorted according to the distance to the last known position.
-     * The list can change at any time.
-     *
-     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime. Store it in a QPointer to avoid dangling pointers.
-     */
-    Q_PROPERTY(QList<Meteorologist::WeatherStation *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property weatherStations
-     */
-    QList<Meteorologist::WeatherStation *> weatherStations() const;
-
-    /*! \brief Downloading flag
-     *
-     * Indicates that the Meteorologist is currently downloading METAR/TAF information from the internet.
-     */
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property downloading
-     */
-    bool downloading() const;
-
-    /*! \brief Background update flag
-     *
-     * Indicates if the last download process was started as a background update.
-     */
-    Q_PROPERTY(bool backgroundUpdate READ backgroundUpdate NOTIFY backgroundUpdateChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property backgroundUpdate
-     */
-    bool backgroundUpdate() const { return _backgroundUpdate; };
+    QString sunInfo() const;
 
     /*! \brief Update method
      *
@@ -185,19 +185,20 @@ public:
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
-    /*! \brief Find WeatherStation by ICAO code
+    /*! \brief List of weather stations
      *
-     * This method returns a pointer to the WeatherStation with the given ICAO
-     * code, or a nullptr if no WeatherStation with the given code is known to
-     * the Meteorologist.
+     * This property holds a list of all weather stations that are currently known to this instance of the Meteorologist class, sorted according to the distance to the last known position.
+     * The list can change at any time.
      *
-     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime.  Store it in a QPointer to avoid dangling pointers.
-     *
-     * @param ICAOCode ICAO code name of the WeatherStation, such as "EDDF"
-     *
-     * @returns Pointer to WeatherStation
+     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime. Store it in a QPointer to avoid dangling pointers.
      */
-    Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const;
+    Q_PROPERTY(QList<Meteorologist::WeatherStation *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property weatherStations
+     */
+    QList<Meteorologist::WeatherStation *> weatherStations() const;
 
 signals:
     /*! \brief Notifier signal */
@@ -218,7 +219,7 @@ signals:
     void QNHInfoChanged();
 
     /*! \brief Notifier signal */
-    void SunInfoChanged();
+    void sunInfoChanged();
 
     /*! \brief Signal emitted when the list of weather reports changes */
     void weatherStationsChanged();
@@ -257,7 +258,7 @@ private:
     // Flag, as set by the update() method
     bool _backgroundUpdate {true};
 
-    // List of weather reports
+    // List of weather stations
     QList<QPointer<WeatherStation>> _weatherStations;
 };
 

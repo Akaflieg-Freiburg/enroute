@@ -323,7 +323,7 @@ Page {
                 id: sunLabel
                 visible: sunLabel.text != ""
                 Layout.fillWidth: true
-                text: meteorologist.SunInfo
+                text: meteorologist.sunInfo
             }
 
         }

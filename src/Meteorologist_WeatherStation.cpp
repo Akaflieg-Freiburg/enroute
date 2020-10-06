@@ -18,13 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <cmath>
-
-#include "AviationUnits.h"
 #include "GeoMapProvider.h"
-#include "GlobalSettings.h"
 #include "Meteorologist.h"
-#include "SatNav.h"
+
 
 Meteorologist::WeatherStation::WeatherStation(QObject *parent)
     : QObject(parent)

@@ -61,8 +61,8 @@ Meteorologist::Meteorologist(Clock *clock,
     connect(this, &Meteorologist::weatherStationsChanged, this, &Meteorologist::QNHInfoChanged);
     connect(clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
     connect(sat, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
-    connect(clock, &Clock::timeChanged, this, &Meteorologist::SunInfoChanged);
-    connect(sat, &SatNav::statusChanged, this, &Meteorologist::SunInfoChanged);
+    connect(clock, &Clock::timeChanged, this, &Meteorologist::sunInfoChanged);
+    connect(sat, &SatNav::statusChanged, this, &Meteorologist::sunInfoChanged);
 }
 
 
@@ -334,7 +334,7 @@ QString Meteorologist::QNHInfo() const
 }
 
 
-QString Meteorologist::SunInfo() const
+QString Meteorologist::sunInfo() const
 {
     // Paranoid safety checks
     if (_satNav.isNull())

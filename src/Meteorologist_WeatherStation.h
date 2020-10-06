@@ -134,8 +134,8 @@ public:
 
     /*! \brief Suggested icon for this weather station
      *
-     * This property holds the name of an icon file in SVG format
-     * that best describes the weather station.
+     * This property holds the name of an icon file in SVG format that best
+     * describes the weather station.
      */
     Q_PROPERTY(QString icon READ icon CONSTANT)
 
@@ -236,7 +236,6 @@ signals:
     /* \brief Notifier signal */
     void tafChanged();
 
-
 private:
     Q_DISABLE_COPY_MOVE(WeatherStation)
 
@@ -244,52 +243,56 @@ private:
     // Meteorologist class
     explicit WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
 
-    // Sets the METAR message and deletes any existing METAR. This WeatherStation will take ownership of the METAR. The signal metarChanged() will be emitted if appropriate.
+    // Sets the METAR message and deletes any existing METAR. This
+    // WeatherStation will take ownership of the METAR. The signal
+    // metarChanged() will be emitted if appropriate.
     void setMETAR(Meteorologist::METAR *metar);
 
-    // Sets the TAF message, and deletes any existing TAF. This WeatherStation will take ownership of the TAF. The signal tafChanged() will be emitted if appropriate.
+    // Sets the TAF message, and deletes any existing TAF. This WeatherStation
+    // will take ownership of the TAF. The signal tafChanged() will be emitted
+    // if appropriate.
     void setTAF(Meteorologist::TAF *taf);
 
-    /*! \brief Converts the time into a human readable string */
+    // Converts the time into a human readable string
     static QString decodeTime(const QVariant &time);
 
-    /*! \brief Converts the wind data into a human readable string */
+    // Converts the wind data into a human readable string
     static QString decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg = QVariant("0"));
 
-    /*! \brief Converts the visibility into a human readable string */
+    // Converts the visibility into a human readable string
     static QString decodeVis(const QVariant &vis);
 
-    /*! \brief Converts the temperature/dewpoint into a human readable string */
+    // Converts the temperature/dewpoint into a human readable string
     static QString decodeTemp(const QVariant &temp);
 
-    /*! \brief Converts the QNH (pressure) into a human readable string */
+    // Converts the QNH (pressure) into a human readable string
     static QString decodeQnh(const QVariant &altim);
 
-    /*! \brief Converts the weather into a human readable string */
+    // Converts the weather into a human readable string
     static QString decodeWx(const QVariant &wx);
 
-    /*! \brief Converts the clouds into a human readable string */
+    // Converts the clouds into a human readable string
     static QString decodeClouds(const QVariantList &clouds);
 
 
-    /*! \brief Coordinate of this weather station */
+    // Coordinate of this weather station
     QGeoCoordinate _coordinate;
 
-    /*! \brief The weather station extended name */
+    // The weather station extended name
     QString _extendedName;
 
-    /*! \brief ICAO code of this weather station */
+    // ICAO code of this weather station
     QString _ICAOCode;
 
-    /*! \brief Icon for this weather station */
+    // Icon for this weather station
     QString _icon {"/icons/waypoints/WP.svg"};
 
-    /*! \brief METAR */
+    // METAR
     QPointer<Meteorologist::METAR> _metar;
 
-    /*! \brief TAF */
+    // TAF
     QPointer<Meteorologist::TAF> _taf;
 
-    /*! \brief Two-Line-Title */
+    // Two-Line-Title
     QString _twoLineTitle;
 };

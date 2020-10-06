@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QMap>
 #include <QPointer>
 #include <QTimer>
 
@@ -135,7 +136,10 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const;
+    Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const
+    {
+        return _weatherStationsByICAOCode.value(ICAOCode, nullptr);
+    }
 
     /*! \brief QNHInfo
      *
@@ -231,6 +235,9 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 
+    // Similar to findWeatherStation, but will create a weather station if no station with the given code is known
+    Meteorologist::WeatherStation *findOrConstructWeatherStation(const QString &ICAOCode);
+
     // Pointer to the clock
     QPointer<Clock> _clock;
 
@@ -258,8 +265,8 @@ private:
     // Flag, as set by the update() method
     bool _backgroundUpdate {true};
 
-    // List of weather stations
-    QList<QPointer<WeatherStation>> _weatherStations;
+    // List of weather stations, accessible by ICAO code
+    QMap<QString, QPointer<WeatherStation>> _weatherStationsByICAOCode;
 };
 
 #include "Meteorologist_METAR.h"

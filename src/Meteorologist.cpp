@@ -68,8 +68,8 @@ Meteorologist::Meteorologist(Clock *clock,
 
 Meteorologist::~Meteorologist()
 {
-    qDeleteAll(_weatherStations);
-    _weatherStations.clear();
+    qDeleteAll(_weatherStationsByICAOCode);
+    _weatherStationsByICAOCode.clear();
 
     qDeleteAll(_replies);
     _replies.clear();
@@ -80,9 +80,9 @@ QList<Meteorologist::WeatherStation *> Meteorologist::weatherStations() const {
 
     // Produce a list of reports, without nullpointers
     QList<WeatherStation *> sortedReports;
-    foreach(auto rep, _weatherStations)
-        if (!rep.isNull())
-            sortedReports += rep;
+    foreach(auto stations, _weatherStationsByICAOCode)
+        if (!stations.isNull())
+            sortedReports += stations;
 
     // Sort list
     auto compare = [&](const WeatherStation *a, const WeatherStation *b) {
@@ -190,11 +190,9 @@ void Meteorologist::downloadFinished() {
 
 
     // These maps associate the weather station ID to its METAR/TAF replies
-    QMap<QString, QPointer<Meteorologist::METAR>> metars;
-    QMap<QString, QPointer<Meteorologist::TAF>> tafs;
-    // These lists contain the weather station ID and will be used to handle duplicate or unpaired stations
-    QList<QString> mStations;
-    QList<QString> tStations;
+    QList<QPointer<Meteorologist::METAR>> metars;
+    QList<QPointer<Meteorologist::TAF>> tafs;
+
     // Read all replies and store the data in respective maps
     foreach(auto rep, _replies) {
 
@@ -211,71 +209,46 @@ void Meteorologist::downloadFinished() {
                 if (xml.name() == "METAR") {
 
                     auto metar = new Meteorologist::METAR(xml, _clock, this);
-                    if (!mStations.contains(metar->ICAOCode())) {
-                        mStations.push_back(metar->ICAOCode());
-                        metars.insert(metar->ICAOCode(), metar);
-                    } else
-                        delete metar;
+                    metars.append(metar);
                 }
 
                 // Read the TAF and get the data, if the station has not been encountered yet
                 if (xml.name() == "TAF") {
 
                     auto taf = new Meteorologist::TAF(xml, _clock, this);
-                    if (!tStations.contains(taf->_ICAOCode)) {
-                        tStations.push_back(taf->_ICAOCode);
-                        tafs.insert(taf->_ICAOCode, taf);
-                    } else
-                        delete taf;
+                    tafs.append(taf);
                 }
 
             }
         }
     }
 
-    // Clear old reports, if any. We disconnect first, to avoid repeated emissions of the signal reportsChanged
-    foreach(auto report, _weatherStations) {
-        if (report.isNull())
+    // Add METARs
+    foreach(auto metar, metars) {
+        if (metar.isNull())
             continue;
-        disconnect(report, &QObject::destroyed, this, &Meteorologist::weatherStationsChanged);
-        report->deleteLater();
-    }
-    _weatherStations.clear();
-
-    // Add new reports and handle unpaired METAR/TAF
-    mStations.sort();
-    tStations.sort();
-    foreach(auto station, mStations) {
-        // Station has both METAR and TAF
-        if (tafs.contains(station)) {
-            auto stationPtr = new WeatherStation(station, _geoMapProvider, this);
-            stationPtr->setMETAR(metars.value(station));
-            stationPtr->setTAF(tafs.value(station));
-
-            _weatherStations << stationPtr;
-            int i = tStations.indexOf(station);
-            tStations.removeAt(i);
+        if (!_weatherStationsByICAOCode.contains(metar->ICAOCode())) {
+            auto newWeatherStation = new WeatherStation(metar->ICAOCode(), _geoMapProvider, this);
+            _weatherStationsByICAOCode.insert(metar->ICAOCode(), newWeatherStation);
         }
-        // Station only has METAR
-        else {
-            auto stationPtr = new WeatherStation(station, _geoMapProvider, this);
-            stationPtr->setMETAR(metars.value(station));
-            _weatherStations << stationPtr; // empty TAF
-        }
-    }
-    // Stations only have TAF
-    foreach(auto station, tStations) {
-        auto stationPtr = new WeatherStation(station, _geoMapProvider, this);
-        stationPtr->setTAF(tafs.value(station));
-        _weatherStations << stationPtr;
+
+        auto weatherStationPtr = _weatherStationsByICAOCode.value(metar->ICAOCode());
+        weatherStationPtr->setMETAR(metar);
     }
 
-    // Report change of reports when weather reports start to auto-delete themsleves
-    foreach(auto report, _weatherStations) {
-        if (report.isNull())
+    // Add TAFs
+    foreach(auto taf, tafs) {
+        if (taf.isNull())
             continue;
-        connect(report, &QObject::destroyed, this, &Meteorologist::weatherStationsChanged);
+        if (!_weatherStationsByICAOCode.contains(taf->ICAOCode())) {
+            auto newWeatherStation = new WeatherStation(taf->ICAOCode(), _geoMapProvider, this);
+            _weatherStationsByICAOCode.insert(taf->ICAOCode(), newWeatherStation);
+        }
+
+        auto weatherStationPtr = _weatherStationsByICAOCode.value(taf->ICAOCode());
+        weatherStationPtr->setTAF(taf);
     }
+
 
     // Clear replies container
     qDeleteAll(_replies);
@@ -285,6 +258,19 @@ void Meteorologist::downloadFinished() {
     emit weatherStationsChanged();
 
     emit QNHInfoChanged();
+}
+
+
+Meteorologist::WeatherStation *Meteorologist::findOrConstructWeatherStation(const QString &ICAOCode)
+{
+    auto weatherStationPtr = _weatherStationsByICAOCode.value(ICAOCode, nullptr);
+
+    if (!weatherStationPtr.isNull())
+        return weatherStationPtr;
+
+    auto newWeatherStation = new WeatherStation(ICAOCode, _geoMapProvider, this);
+    _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
+    return newWeatherStation;
 }
 
 
@@ -306,24 +292,24 @@ QString Meteorologist::QNHInfo() const
     // Find QNH of nearest airfield
     WeatherStation *closestReportWithQNH = nullptr;
     int QNH = 0;
-    foreach(auto report, _weatherStations) {
-        if (report.isNull())
+    foreach(auto weatherStationPtr, _weatherStationsByICAOCode) {
+        if (weatherStationPtr.isNull())
             continue;
-        if (report->metar() == nullptr)
+        if (weatherStationPtr->metar() == nullptr)
             continue;
-        QNH = report->metar()->QNH();
+        QNH = weatherStationPtr->metar()->QNH();
         if (QNH == 0)
             continue;
-        if (!report->coordinate().isValid())
+        if (!weatherStationPtr->coordinate().isValid())
             continue;
         if (closestReportWithQNH == nullptr) {
-            closestReportWithQNH = report;
+            closestReportWithQNH = weatherStationPtr;
             continue;
         }
 
         QGeoCoordinate here = _satNav->lastValidCoordinate();
-        if (here.distanceTo(report->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
-            closestReportWithQNH = report;
+        if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
+            closestReportWithQNH = weatherStationPtr;
     }
     if (closestReportWithQNH) {
         return tr("QNH: %1 hPa in %2, %3").arg(QNH)
@@ -395,13 +381,3 @@ QString Meteorologist::sunInfo() const
 }
 
 
-Meteorologist::WeatherStation *Meteorologist::findWeatherStation(const QString &code) const
-{
-    foreach(auto report, _weatherStations) {
-        if (report.isNull())
-            continue;
-        if (report->ICAOCode() == code)
-            return report;
-    }
-    return nullptr;
-}

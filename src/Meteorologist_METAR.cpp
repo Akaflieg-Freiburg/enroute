@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDataStream>
 #include <QXmlStreamAttribute>
 
 #include "Clock.h"
@@ -279,6 +280,7 @@ QString Meteorologist::METAR::relativeObservationTime() const
     return Clock::describeTimeDifference(_observationTime);
 }
 
+
 bool Meteorologist::METAR::isValid() const
 {
     if (!_location.isValid())
@@ -292,8 +294,22 @@ bool Meteorologist::METAR::isValid() const
     return true;
 }
 
+
 QString Meteorologist::METAR::messageType() const
 {
 #warning WRONG
     return "METAR";
+}
+
+
+QDataStream &operator<<(QDataStream &out, const Meteorologist::METAR &metar)
+{
+    out << metar._flightCategory;
+    out << metar._ICAOCode;
+    out << metar._location;
+    out << metar._observationTime;
+    out << metar._qnh;
+    out << metar._raw_text;
+
+    return out;
 }

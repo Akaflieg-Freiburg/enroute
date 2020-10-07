@@ -39,6 +39,7 @@ class Meteorologist::METAR : public QObject {
     Q_OBJECT
 
     friend class Meteorologist;
+    friend QDataStream &operator<<(QDataStream &out, const Meteorologist::METAR &metar);
 public:
     /*! \brief Default constructor
      *
@@ -57,13 +58,13 @@ public:
      * https://www.aviationweather.gov/metar/help?page=plot#fltcat
      */
     enum FlightCategory
-      {
-       VFR,     /*!< Visual Flight Rules */
-       MVFR,    /*!< Marginal Visual Flight Rules */
-       IFR,     /*!< Instrument Flight Rules */
-       LIFR,    /*!< Low Instrument Flight Rules */
-       unknown  /*!< Unknown conditions */
-      };
+    {
+        VFR,     /*!< Visual Flight Rules */
+        MVFR,    /*!< Marginal Visual Flight Rules */
+        IFR,     /*!< Instrument Flight Rules */
+        LIFR,    /*!< Low Instrument Flight Rules */
+        unknown  /*!< Unknown conditions */
+    };
     Q_ENUM(FlightCategory)
 
 
@@ -180,13 +181,13 @@ public:
      *
      * The QNH property is set to zero if no QNH is known. Otherwise, the values is guaranteed to lie in the interval [800 … 1200]
      */
-    Q_PROPERTY(QString QNH READ QNH CONSTANT)
+    Q_PROPERTY(quint16 QNH READ QNH CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property qnh
      */
-    int QNH() const
+    quint16 QNH() const
     {
         return _qnh;
     }
@@ -260,6 +261,9 @@ private:
     // Flight category, as returned by the Aviation Weather Center
     FlightCategory _flightCategory {unknown};
 
+    // Station ID, as returned by the Aviation Weather Center
+    QString _ICAOCode;
+
     // Station coordinate, as returned by the Aviation Weather Center
     QGeoCoordinate _location;
 
@@ -267,13 +271,10 @@ private:
     QDateTime _observationTime;
 
     // QNH in hPa, as returned by the Aviation Weather Center
-    int _qnh {0};
+    quint16 _qnh {0};
 
     // Raw METAR text, as returned by the Aviation Weather Center
     QString _raw_text;
-
-    // Station ID, as returned by the Aviation Weather Center
-    QString _ICAOCode;
 
     // Pointers to other classes that are used internally
     QPointer<Clock> _clock {};
@@ -282,3 +283,14 @@ private:
     QMultiMap<QString, QVariant> data;
     QStringList dataStrings;
 };
+
+
+/*! \brief Serialization of a METAR object into a QDataStream
+ *
+ * @param out QDataStream that the object is written to
+ *
+ * @param metar METAR object that is written to the QDataStrem
+ *
+ * @returns Reference to the QDataStream
+ */
+QDataStream &operator<<(QDataStream &out, const Meteorologist::METAR &metar);

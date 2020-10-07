@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDataStream>
+#include <QStandardPaths>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QtGlobal>
@@ -36,8 +38,6 @@
 
 #warning Need to store data on destruction and at regular intervals
 
-#warning Need to check regularly for outdated METAR/TAF reports and delete those
-
 Meteorologist::Meteorologist(Clock *clock,
                              SatNav *sat,
                              FlightRoute *route,
@@ -46,16 +46,24 @@ Meteorologist::Meteorologist(Clock *clock,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
     QObject(parent),
-    _satNav(sat), _flightRoute(route), _geoMapProvider(geoMapProvider), _globalSettings(globalSettings), _networkAccessManager(networkAccessManager), _clock(clock)
-
+    _clock(clock),
+    _flightRoute(route),
+    _geoMapProvider(geoMapProvider),
+    _globalSettings(globalSettings),
+    _networkAccessManager(networkAccessManager),
+    _satNav(sat)
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
-    connect(&_updateTimer, &QTimer::timeout, [=](){ this->update();});
-
     // Schedule the first update in 1 seconds from now
+    connect(&_updateTimer, &QTimer::timeout, [=](){ this->update();});
     _updateTimer.setInterval(1*1000);
     _updateTimer.start();
+
+    // Connect the timer to check for expired messages
+    connect(&_deleteExiredMessagesTimer, &QTimer::timeout, this, &Meteorologist::deleteExpiredMesages);
+    _deleteExiredMessagesTimer.setInterval(10*60*1000);
+    _deleteExiredMessagesTimer.start();
 
     // Update the description text when needed
     connect(this, &Meteorologist::weatherStationsChanged, this, &Meteorologist::QNHInfoChanged);
@@ -68,11 +76,7 @@ Meteorologist::Meteorologist(Clock *clock,
 
 Meteorologist::~Meteorologist()
 {
-    qDeleteAll(_weatherStationsByICAOCode);
-    _weatherStationsByICAOCode.clear();
 
-    qDeleteAll(_replies);
-    _replies.clear();
 }
 
 
@@ -128,8 +132,8 @@ void Meteorologist::update(bool isBackgroundUpdate) {
     }
 
     // Clear old replies, if any
-    qDeleteAll(_replies);
-    _replies.clear();
+    qDeleteAll(_networkReplies);
+    _networkReplies.clear();
 
     // Generate queries
     const QGeoCoordinate& position = _satNav->lastValidCoordinate();
@@ -154,7 +158,7 @@ void Meteorologist::update(bool isBackgroundUpdate) {
         QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
         QNetworkRequest request(url);
         QPointer<QNetworkReply> reply = _networkAccessManager->get(request);
-        _replies.push_back(reply);
+        _networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Meteorologist::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Meteorologist::downloadFinished);
     }
@@ -166,6 +170,7 @@ void Meteorologist::update(bool isBackgroundUpdate) {
 
 
 void Meteorologist::downloadFinished() {
+
     // Update flag
     emit downloadingChanged();
 
@@ -174,89 +179,49 @@ void Meteorologist::downloadFinished() {
     if (downloading())
         return;
 
-    // Check if some network replies contain errors. If so, emit error, completely ignore everything contained in any of the replies and abort
-    bool hasError = false;
-    foreach(auto rep, _replies)
-        if (rep->error() != QNetworkReply::NoError) {
-            emit error(rep->errorString());
-            hasError = true;
-            break;
-        }
-    if (hasError) {
-        qDeleteAll(_replies);
-        _replies.clear();
-        return;
-    }
-
-
-    // These maps associate the weather station ID to its METAR/TAF replies
-    QList<QPointer<Meteorologist::METAR>> metars;
-    QList<QPointer<Meteorologist::TAF>> tafs;
-
     // Read all replies and store the data in respective maps
-    foreach(auto rep, _replies) {
+    foreach(auto networkReply, _networkReplies) {
+        // Paranoid safety checks
+        if (networkReply.isNull())
+            continue;
+        if (networkReply->error() != QNetworkReply::NoError) {
+            emit error(networkReply->errorString());
+            continue;
+        }
 
         // Decode XML
-        QXmlStreamReader xml(rep);
+        QXmlStreamReader xml(networkReply);
         while (!xml.atEnd() && !xml.hasError())
         {
-            auto token = xml.readNext();
-            if (!token)
-                break;
-            
-            if (xml.isStartElement()) {
-                // Read the METAR and get the data, if the station has not been encountered yet
-                if (xml.name() == "METAR") {
+            xml.readNext();
 
-                    auto metar = new Meteorologist::METAR(xml, _clock, this);
-                    metars.append(metar);
-                }
-
-                // Read the TAF and get the data, if the station has not been encountered yet
-                if (xml.name() == "TAF") {
-
-                    auto taf = new Meteorologist::TAF(xml, _clock, this);
-                    tafs.append(taf);
-                }
-
+            // Read METAR
+            if (xml.isStartElement() && (xml.name() == "METAR")) {
+                auto metar = new Meteorologist::METAR(xml, _clock, this);
+                if (metar->isValid())
+                    findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
+                else
+                    delete metar;
             }
+
+            // Read TAF
+            if (xml.isStartElement() && (xml.name() == "TAF")) {
+                auto taf = new Meteorologist::TAF(xml, _clock, this);
+                if (taf->isValid())
+                    findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
+                else
+                    delete taf;
+            }
+
         }
     }
-
-    // Add METARs
-    foreach(auto metar, metars) {
-        if (metar.isNull())
-            continue;
-        if (!_weatherStationsByICAOCode.contains(metar->ICAOCode())) {
-            auto newWeatherStation = new WeatherStation(metar->ICAOCode(), _geoMapProvider, this);
-            _weatherStationsByICAOCode.insert(metar->ICAOCode(), newWeatherStation);
-        }
-
-        auto weatherStationPtr = _weatherStationsByICAOCode.value(metar->ICAOCode());
-        weatherStationPtr->setMETAR(metar);
-    }
-
-    // Add TAFs
-    foreach(auto taf, tafs) {
-        if (taf.isNull())
-            continue;
-        if (!_weatherStationsByICAOCode.contains(taf->ICAOCode())) {
-            auto newWeatherStation = new WeatherStation(taf->ICAOCode(), _geoMapProvider, this);
-            _weatherStationsByICAOCode.insert(taf->ICAOCode(), newWeatherStation);
-        }
-
-        auto weatherStationPtr = _weatherStationsByICAOCode.value(taf->ICAOCode());
-        weatherStationPtr->setTAF(taf);
-    }
-
 
     // Clear replies container
-    qDeleteAll(_replies);
-    _replies.clear();
+    qDeleteAll(_networkReplies);
+    _networkReplies.clear();
 
     // Update flag and signals
     emit weatherStationsChanged();
-
     emit QNHInfoChanged();
 }
 
@@ -276,9 +241,13 @@ Meteorologist::WeatherStation *Meteorologist::findOrConstructWeatherStation(cons
 
 bool Meteorologist::downloading() const
 {
-    foreach(auto reply, _replies)
-        if (reply->isRunning())
+    foreach(auto networkReply, _networkReplies) {
+        if (networkReply.isNull())
+            continue;
+        if (networkReply->isRunning())
             return true;
+    }
+
     return false;
 }
 
@@ -359,7 +328,6 @@ QString Meteorologist::sunInfo() const
     }
 
     localTime = localTime.addDays(1);
-    qWarning() << "A" << localTime;
     localDate = localTime.date();
     sun.setCurrentDate(localDate.year(), localDate.month(), localDate.day());
     auto sunriseTomorrowTimeInMin = sun.calcSunrise();
@@ -381,3 +349,63 @@ QString Meteorologist::sunInfo() const
 }
 
 
+void Meteorologist::deleteExpiredMesages()
+{
+    QVector<QString> ICAOCodesToDelete;
+
+    foreach(auto weatherStation, _weatherStationsByICAOCode) {
+        if (weatherStation->hasMETAR()) {
+            if (weatherStation->metar()->expiration() < QDateTime::currentDateTime())
+                weatherStation->setMETAR(nullptr);
+        }
+        if (weatherStation->hasTAF()) {
+            if (weatherStation->taf()->expiration() < QDateTime::currentDateTime())
+                weatherStation->setTAF(nullptr);
+        }
+
+        if (!weatherStation->hasMETAR() && !weatherStation->hasTAF()) {
+            ICAOCodesToDelete << weatherStation->ICAOCode();
+            weatherStation->deleteLater();
+        }
+    }
+
+    // If there is nothing to delete, wonderful
+    if (ICAOCodesToDelete.isEmpty())
+        return;
+
+    // Otherwiese, remove the weather stations from the list, and let the world know
+    foreach(auto ICAOCodeToDelete, ICAOCodesToDelete)
+        _weatherStationsByICAOCode.remove(ICAOCodeToDelete);
+    emit weatherStationsChanged();
+}
+
+
+void Meteorologist::save()
+{
+#warning documentation!
+#warning Error handling!
+#warning File locking!
+
+   auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
+   auto outputFile = QFile(stdFileName);
+   outputFile.open(QIODevice::WriteOnly);
+   QDataStream outputStream(&outputFile);
+   outputStream.setVersion(QDataStream::Qt_4_0);
+
+   // Magic number and version
+   outputStream << (quint32)0x31415;
+   outputStream << (quint32)1;
+   foreach(auto weatherStation, _weatherStationsByICAOCode) {
+       if (weatherStation.isNull())
+           continue;
+       if (weatherStation->hasMETAR()) {
+           outputStream << QChar('M');
+           outputStream << *(weatherStation->metar());
+       }
+       if (weatherStation->hasTAF()) {
+           outputStream << QChar('T');
+           outputStream << *(weatherStation->taf());
+       }
+   }
+
+}

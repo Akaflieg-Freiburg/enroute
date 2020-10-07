@@ -232,11 +232,18 @@ private slots:
     // Called when a download is finished
     void downloadFinished();
 
+    // Check for expired METARs and TAFs and delete them.
+    // This also deletes weather stations if they are no longer in use.
+    void deleteExpiredMesages();
+
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 
     // Similar to findWeatherStation, but will create a weather station if no station with the given code is known
     Meteorologist::WeatherStation *findOrConstructWeatherStation(const QString &ICAOCode);
+
+#warning documentation
+    void save();
 
     // Pointer to the clock
     QPointer<Clock> _clock;
@@ -257,10 +264,13 @@ private:
     QPointer<SatNav> _satNav;
 
     // List of replies from aviationweather.com
-    QList<QPointer<QNetworkReply>> _replies;
+    QList<QPointer<QNetworkReply>> _networkReplies;
 
     // A timer used for auto-updating the weather reports every 30 minutes
     QTimer _updateTimer;
+
+    // A timer used for deleting expired weather reports ever 11 minutes
+    QTimer _deleteExiredMessagesTimer;
 
     // Flag, as set by the update() method
     bool _backgroundUpdate {true};

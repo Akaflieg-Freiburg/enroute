@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDataStream>
 #include <QXmlStreamAttribute>
 
 #include "Clock.h"
@@ -164,11 +165,13 @@ QDateTime Meteorologist::TAF::expiration() const
     return QDateTime();
 }
 
+
 bool Meteorologist::TAF::isValid() const
 {
 #warning not implemented
     return true;
 }
+
 
 QString Meteorologist::TAF::relativeIssueTime() const
 {
@@ -176,3 +179,12 @@ QString Meteorologist::TAF::relativeIssueTime() const
     return "not implemented";
 }
 
+
+QDataStream &operator<<(QDataStream &out, const Meteorologist::TAF &taf)
+{
+    out << taf._ICAOCode;
+    out << taf._issueTime;
+    out << taf._location;
+    out << taf._raw_text;
+    return out;
+}

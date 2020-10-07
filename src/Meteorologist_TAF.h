@@ -39,6 +39,8 @@ class Meteorologist::TAF : public QObject {
     Q_OBJECT
 
     friend class Meteorologist;
+    friend QDataStream &operator<<(QDataStream &out, const Meteorologist::TAF &taf);
+
 public:
     /*! \brief Default constructor
      *
@@ -164,17 +166,17 @@ private:
 
     Q_DISABLE_COPY_MOVE(TAF)
 
-    // Station coordinate, as returned by the Aviation Weather Center
-    QGeoCoordinate _location;
+    // Station ID, as returned by the Aviation Weather Center
+    QString _ICAOCode;
 
     // Observation time, as returned by the Aviation Weather Center
     QDateTime _issueTime;
 
+    // Station coordinate, as returned by the Aviation Weather Center
+    QGeoCoordinate _location;
+
     // Raw TAF text, as returned by the Aviation Weather Center
     QString _raw_text;
-
-    // Station ID, as returned by the Aviation Weather Center
-    QString _ICAOCode;
 
     // Pointers to other classes that are used internally
     QPointer<Clock> _clock {};
@@ -183,3 +185,14 @@ private:
     QMultiMap<QString, QVariant> data;
     QStringList dataStrings;
 };
+
+
+/*! \brief Serialization of a TAF object into a QDataStream
+ *
+ * @param out QDataStream that the object is written to
+ *
+ * @param taf TAF object that is written to the QDataStrem
+ *
+ * @returns Reference to the QDataStream
+ */
+QDataStream &operator<<(QDataStream &out, const Meteorologist::TAF &taf);

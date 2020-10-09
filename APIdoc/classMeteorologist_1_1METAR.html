@@ -106,6 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afaf1340feef4f345654e956dcadf3e2a"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1METAR.html#afaf1340feef4f345654e956dcadf3e2a">ICAOCode</a> () const</td></tr>
 <tr class="memdesc:afaf1340feef4f345654e956dcadf3e2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#afaf1340feef4f345654e956dcadf3e2a">More...</a><br /></td></tr>
 <tr class="separator:afaf1340feef4f345654e956dcadf3e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62f86e1896a97a0f558ea50fe37655e9"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1METAR.html#a62f86e1896a97a0f558ea50fe37655e9">isExpired</a> () const</td></tr>
+<tr class="memdesc:a62f86e1896a97a0f558ea50fe37655e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience method to check if this <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> is already expired.  <a href="#a62f86e1896a97a0f558ea50fe37655e9">More...</a><br /></td></tr>
+<tr class="separator:a62f86e1896a97a0f558ea50fe37655e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2b8cbfdb8773e828a352c651140313d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1METAR.html#ae2b8cbfdb8773e828a352c651140313d">isValid</a> () const</td></tr>
 <tr class="memdesc:ae2b8cbfdb8773e828a352c651140313d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#ae2b8cbfdb8773e828a352c651140313d">More...</a><br /></td></tr>
 <tr class="separator:ae2b8cbfdb8773e828a352c651140313d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -390,6 +393,26 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 
 </div>
 </div>
+<a id="a62f86e1896a97a0f558ea50fe37655e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62f86e1896a97a0f558ea50fe37655e9">&#9670;&nbsp;</a></span>isExpired()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Meteorologist::METAR::isExpired </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience method to check if this <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> is already expired. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if an expiration date/time is known and if the current time is larger than the expiration </dd></dl>
+
+</div>
+</div>
 <a id="ae2b8cbfdb8773e828a352c651140313d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2b8cbfdb8773e828a352c651140313d">&#9670;&nbsp;</a></span>isValid()</h2>
 
@@ -456,7 +479,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property observationTime </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00175">175</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00181">181</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -486,7 +509,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property qnh </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00190">190</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00196">196</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -516,7 +539,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property extendedName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00205">205</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00211">211</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -842,7 +865,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 </div><div class="memdoc">
 <p>Indicates if the class represents a valid <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> report </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00160">160</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00166">166</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -868,7 +891,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Type of message</p>
 <p>This is one of the strings "METAR" or "SPECI" </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00227">227</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00233">233</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -893,7 +916,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 </div><div class="memdoc">
 <p>Observation time of this <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00169">169</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00175">175</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -919,7 +942,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>QNH value in this <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a>, in hPa</p>
 <p>The QNH property is set to zero if no QNH is known. Otherwise, the values is guaranteed to lie in the interval [800 … 1200] </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00184">184</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00190">190</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -945,7 +968,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Raw <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> text</p>
 <p>This is a string such as "METAR EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=". </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00199">199</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00205">205</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -971,7 +994,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Observation time, relative to now</p>
 <p>This is a translated, human-readable string such as "1h and 43min ago" that describes the observation time. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00215">215</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00221">221</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>
@@ -997,7 +1020,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>One-line summary of the <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a></p>
 <p>This is a translated, human-readable string of the form "METAR 14min ago: marginal VMC • wind at 15kt • rain" </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00239">239</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__METAR_8h_source.html#l00245">245</a> of file <a class="el" href="Meteorologist__METAR_8h_source.html">Meteorologist_METAR.h</a>.</p>
 
 </div>
 </div>

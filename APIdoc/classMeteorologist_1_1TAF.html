@@ -83,6 +83,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae89227ccb3da9637c82adcae65113781"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html#ae89227ccb3da9637c82adcae65113781">ICAOCode</a> () const</td></tr>
 <tr class="memdesc:ae89227ccb3da9637c82adcae65113781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#ae89227ccb3da9637c82adcae65113781">More...</a><br /></td></tr>
 <tr class="separator:ae89227ccb3da9637c82adcae65113781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8041f3fe07dcb9405c6390b96e0a07a"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html#ac8041f3fe07dcb9405c6390b96e0a07a">isExpired</a> () const</td></tr>
+<tr class="memdesc:ac8041f3fe07dcb9405c6390b96e0a07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience method to check if this <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> is already expired.  <a href="#ac8041f3fe07dcb9405c6390b96e0a07a">More...</a><br /></td></tr>
+<tr class="separator:ac8041f3fe07dcb9405c6390b96e0a07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab96a60c41de3b5183c994b8ae8a0c63a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html#ab96a60c41de3b5183c994b8ae8a0c63a">isValid</a> () const</td></tr>
 <tr class="memdesc:ab96a60c41de3b5183c994b8ae8a0c63a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#ab96a60c41de3b5183c994b8ae8a0c63a">More...</a><br /></td></tr>
 <tr class="separator:ab96a60c41de3b5183c994b8ae8a0c63a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -105,6 +108,7 @@ Properties</h2></td></tr>
 <tr class="memitem:a598bb9b6173ded93c81da324b01950c9"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html#a598bb9b6173ded93c81da324b01950c9">expiration</a></td></tr>
 <tr class="separator:a598bb9b6173ded93c81da324b01950c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53d26786acb3954b52ff1be62a59b601"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html#a53d26786acb3954b52ff1be62a59b601">ICAOCode</a></td></tr>
+<tr class="memdesc:a53d26786acb3954b52ff1be62a59b601"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICAO code of the station reporting this <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a>.  <a href="#a53d26786acb3954b52ff1be62a59b601">More...</a><br /></td></tr>
 <tr class="separator:a53d26786acb3954b52ff1be62a59b601"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a665326310449661c268e252c203956ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html#a665326310449661c268e252c203956ad">isValid</a></td></tr>
 <tr class="separator:a665326310449661c268e252c203956ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -262,7 +266,27 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ICAOCode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00104">104</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00103">103</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+
+</div>
+</div>
+<a id="ac8041f3fe07dcb9405c6390b96e0a07a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8041f3fe07dcb9405c6390b96e0a07a">&#9670;&nbsp;</a></span>isExpired()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Meteorologist::TAF::isExpired </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience method to check if this <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> is already expired. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if an expiration date/time is known and if the current time is larger than the expiration </dd></dl>
 
 </div>
 </div>
@@ -292,7 +316,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property observationTime </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00125">125</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00130">130</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +366,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property extendedName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00140">140</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00145">145</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>
@@ -511,9 +535,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 </table>
 </div><div class="memdoc">
 <p>Expiration time and date</p>
-<p>A <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> message is supposed to expire 1.5 hours after observation time, unless raw text contains "NOSIG", then it is 3 hours. </p>
+<p>A <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> message is supposed to expire once the last forecast period ends. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00085">85</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00084">84</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>
@@ -536,10 +560,11 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
   </tr>
 </table>
 </div><div class="memdoc">
-<p>ICAO code of the station reporting this <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a></p>
+
+<p>ICAO code of the station reporting this <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a>. </p>
 <p>This is a string such as "LSZB" for Bern/Belp airport. If the station code is unknown, the property contains an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00098">98</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00097">97</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>
@@ -564,7 +589,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 </div><div class="memdoc">
 <p>Issue time of this <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00119">119</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00124">124</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>
@@ -589,7 +614,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 </div><div class="memdoc">
 <p>Indicates if the class represents a valid <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> report </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00110">110</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00115">115</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>
@@ -615,7 +640,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Raw <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> text</p>
 <p>This is a string such as "TAF EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=". </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00134">134</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00139">139</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>
@@ -641,7 +666,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Meteorologist</b></t
 <p>Issue time, relative to now</p>
 <p>This is a translated, human-readable string such as "1h and 43min ago" that describes the observation time. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00150">150</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist__TAF_8h_source.html#l00155">155</a> of file <a class="el" href="Meteorologist__TAF_8h_source.html">Meteorologist_TAF.h</a>.</p>
 
 </div>
 </div>

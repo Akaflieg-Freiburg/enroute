@@ -29,27 +29,77 @@ Meteorologist::WeatherStation::WeatherStation(QObject *parent)
 
 
 Meteorologist::WeatherStation::WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent)
- : QObject(parent),
-   _ICAOCode(id)
+    : QObject(parent),
+      _ICAOCode(id),
+      _geoMapProvider(geoMapProvider)
 {
     _extendedName = _ICAOCode;
     _twoLineTitle = _ICAOCode;
 
-    auto waypoint = geoMapProvider->findByID(_ICAOCode);
-    if (waypoint) {
-        _coordinate = waypoint->coordinate();
-        _extendedName = waypoint->extendedName();
-        _icon = waypoint->icon();
-        _twoLineTitle = waypoint->twoLineTitle();
-    }
+    // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
+    connect(_geoMapProvider, &GeoMapProvider::geoJSONChanged, this, &Meteorologist::WeatherStation::readDataFromWaypoint);
+    readDataFromWaypoint();
+}
+
+
+void Meteorologist::WeatherStation::readDataFromWaypoint()
+{
+    // Paranoid safety checks
+    if (_geoMapProvider.isNull())
+        return;
+    // Immediately quit if we already have the necessary data
+    if (hasWaypointData)
+        return;
+
+    auto waypoint = _geoMapProvider->findByID(_ICAOCode);
+    if (waypoint == nullptr)
+        return;
+    hasWaypointData = true;
+
+    // Update data
+    auto cacheCoordiante = _coordinate;
+    _coordinate = waypoint->coordinate();
+    if (_coordinate != cacheCoordiante)
+        emit coordinateChanged();
+
+    auto cacheExtendedName = _extendedName;
+    _extendedName = waypoint->extendedName();
+    if (_extendedName != cacheExtendedName)
+        emit extendedNameChanged();
+
+    auto cacheIcon = _icon;
+    _icon = waypoint->icon();
+    if (_icon != cacheIcon)
+        emit iconChanged();
+
+    auto cacheTwoLineTitle = _twoLineTitle;
+    _twoLineTitle = waypoint->twoLineTitle();
+    if (_twoLineTitle != cacheTwoLineTitle)
+        emit twoLineTitleChanged();
+
+    disconnect(_geoMapProvider, nullptr, this, nullptr);
 }
 
 
 void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
 {
-    // If metar did not change, then do nothing
+    // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
+    if (metar)
+        if (!metar->isValid() || metar->isExpired() || (metar->ICAOCode() != _ICAOCode)) {
+            metar->deleteLater();
+            return;
+        }
+
+    // If METAR did not change, then do nothing
     if (metar == _metar)
         return;
+
+    // Cache values
+    auto cacheHasMETAR = hasMETAR();
+
+    // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
+    if (metar)
+        metar->setParent(this);
 
     // Clear and delete old METAR, if one exists.
     if (!_metar.isNull()) {
@@ -60,12 +110,8 @@ void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
     // Overwrite metar pointer
     _metar = metar;
 
-    // Take ownership and connect new METAR. Update the coordinate if necessary.
-    if (!_metar.isNull()) {
-        // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
-        _metar->setParent(this);
-
-        // Connect METAR
+    if (_metar) {
+        // Connect new METAR, update the coordinate if necessary.
         connect(_metar, &QObject::destroyed, this, &Meteorologist::WeatherStation::metarChanged);
 
         // Update coordinate
@@ -74,15 +120,31 @@ void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
     }
 
     // Let the world know that the metar changed
+    if (cacheHasMETAR != hasMETAR())
+        emit hasMETARChanged();
     emit metarChanged();
 }
 
 
 void Meteorologist::WeatherStation::setTAF(Meteorologist::TAF *taf)
 {
+    // Ignore invalid and expired TAFs. Also ignore TAFs whose ICAO code does not match with this weather station
+    if (taf)
+        if (!taf->isValid() || taf->isExpired() || (taf->ICAOCode() != _ICAOCode)) {
+            taf->deleteLater();
+            return;
+        }
+
     // If TAF did not change, then do nothing
     if (taf == _taf)
         return;
+
+    // Cache values
+    auto cacheHasTAF = hasTAF();
+
+    // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
+    if (taf)
+        taf->setParent(this);
 
     // Clear and delete old TAF, if one exists.
     if (!_taf.isNull()) {
@@ -93,12 +155,8 @@ void Meteorologist::WeatherStation::setTAF(Meteorologist::TAF *taf)
     // Overwrite TAF pointer
     _taf = taf;
 
-    // Take ownership and connect new taf. Update the coordinate if necessary.
-    if (!_taf.isNull()) {
-        // Take ownership. This will guarantee that the TAF gets deleted along with this weather station.
-        _taf->setParent(this);
-
-        // Connect TAF
+    if (_taf) {
+        // Connect new TAF, update the coordinate if necessary.
         connect(_taf, &QObject::destroyed, this, &Meteorologist::WeatherStation::tafChanged);
 
         // Update coordinate
@@ -107,6 +165,8 @@ void Meteorologist::WeatherStation::setTAF(Meteorologist::TAF *taf)
     }
 
     // Let the world know that the taf changed
+    if (cacheHasTAF != hasTAF())
+        emit hasTAFChanged();
     emit tafChanged();
 }
 

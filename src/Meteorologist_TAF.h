@@ -79,8 +79,7 @@ public:
 
     /*! Expiration time and date
      *
-     * A TAF message is supposed to expire 1.5 hours after observation time,
-     * unless raw text contains "NOSIG", then it is 3 hours.
+     * A TAF message is supposed to expire once the last forecast period ends.
      */
     Q_PROPERTY(QDateTime expiration READ expiration CONSTANT)
 
@@ -90,7 +89,7 @@ public:
      */
     QDateTime expiration() const;
 
-    /*! ICAO code of the station reporting this TAF
+    /*! \brief ICAO code of the station reporting this TAF
      *
      * This is a string such as "LSZB" for Bern/Belp airport. If the station code is unknown,
      * the property contains an empty string.
@@ -105,6 +104,12 @@ public:
     {
         return _ICAOCode;
     }
+
+    /*! \brief Convenience method to check if this TAF is already expired
+     *
+     * @returns true if an expiration date/time is known and if the current time is larger than the expiration
+     */
+    Q_INVOKABLE bool isExpired() const;
 
     /*! Indicates if the class represents a valid TAF report */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
@@ -164,12 +169,18 @@ private:
     // https://www.aviationweather.gov/dataserver
     explicit TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent = nullptr);
 
+    // This constructor reads a serialized TAF from a QDataStream
+    explicit TAF(QDataStream &inputStream, Clock *clock, QObject *parent = nullptr);
+
     Q_DISABLE_COPY_MOVE(TAF)
+
+    // Expiration time
+    QDateTime _expirationTime;
 
     // Station ID, as returned by the Aviation Weather Center
     QString _ICAOCode;
 
-    // Observation time, as returned by the Aviation Weather Center
+    // Issue time, as returned by the Aviation Weather Center
     QDateTime _issueTime;
 
     // Station coordinate, as returned by the Aviation Weather Center

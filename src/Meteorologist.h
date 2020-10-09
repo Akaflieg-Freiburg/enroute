@@ -242,7 +242,12 @@ private:
     // Similar to findWeatherStation, but will create a weather station if no station with the given code is known
     Meteorologist::WeatherStation *findOrConstructWeatherStation(const QString &ICAOCode);
 
-#warning documentation
+    // This method loads METAR/TAFs from a file "weather.dat" in QStandardPaths::AppDataLocation.
+    // There is locking to ensure that no two processes access the file. The method will fail silently on error.
+    void load();
+
+    // This method saves all METAR/TAFs that are valid and not yet expired to a file "weather.dat" in QStandardPaths::AppDataLocation.
+    // There is locking to ensure that no two processes access the file. The method will fail silently on error.
     void save();
 
     // Pointer to the clock

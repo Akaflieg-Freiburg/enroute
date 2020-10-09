@@ -34,7 +34,8 @@ Meteorologist::METAR::METAR(QObject *parent)
 
 
 Meteorologist::METAR::METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent)
-    : QObject(parent), _clock(clock)
+    : QObject(parent),
+      _clock(clock)
 {
 
     // Lambda to read sky condition
@@ -189,11 +190,33 @@ Meteorologist::METAR::METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent
 }
 
 
+Meteorologist::METAR::METAR(QDataStream &inputStream, Clock *clock, QObject *parent)
+    : QObject(parent),
+      _clock(clock)
+{
+    inputStream >> _flightCategory;
+    inputStream >> _ICAOCode;
+    inputStream >> _location;
+    inputStream >> _observationTime;
+    inputStream >> _qnh;
+    inputStream >> _raw_text;
+}
+
+
 QDateTime Meteorologist::METAR::expiration() const
 {
     if (_raw_text.contains("NOSIG"))
         return _observationTime.addSecs(3*60*60);
     return _observationTime.addSecs(1.5*60*60);
+}
+
+
+bool Meteorologist::METAR::isExpired() const
+{
+    auto exp = expiration();
+    if (!exp.isValid())
+        return false;
+    return QDateTime::currentDateTime() > exp;
 }
 
 

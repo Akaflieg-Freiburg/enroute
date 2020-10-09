@@ -26,7 +26,9 @@
 #include "Meteorologist_WeatherStation.h"
 
 
-Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent) : QObject(parent)
+Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent)
+    : QObject(parent),
+      _clock(clock)
 {
 
     // Lambda to read sky condition
@@ -152,6 +154,18 @@ Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent) : 
 }
 
 
+Meteorologist::TAF::TAF(QDataStream &inputStream, Clock *clock, QObject *parent)
+    : QObject(parent),
+      _clock(clock)
+{
+    inputStream >> _expirationTime;
+    inputStream >> _ICAOCode;
+    inputStream >> _issueTime;
+    inputStream >> _location;
+    inputStream >> _raw_text;
+}
+
+
 QString Meteorologist::TAF::decodedText() const
 {
 #warning not implemented
@@ -163,6 +177,15 @@ QDateTime Meteorologist::TAF::expiration() const
 {
 #warning not implemented
     return QDateTime();
+}
+
+
+bool Meteorologist::TAF::isExpired() const
+{
+    auto exp = expiration();
+    if (!exp.isValid())
+        return false;
+    return QDateTime::currentDateTime() > exp;
 }
 
 
@@ -180,11 +203,12 @@ QString Meteorologist::TAF::relativeIssueTime() const
 }
 
 
-QDataStream &operator<<(QDataStream &out, const Meteorologist::TAF &taf)
+QDataStream &operator<<(QDataStream &outputStream, const Meteorologist::TAF &taf)
 {
-    out << taf._ICAOCode;
-    out << taf._issueTime;
-    out << taf._location;
-    out << taf._raw_text;
-    return out;
+    outputStream << taf._expirationTime;
+    outputStream << taf._ICAOCode;
+    outputStream << taf._issueTime;
+    outputStream << taf._location;
+    outputStream << taf._raw_text;
+    return outputStream;
 }

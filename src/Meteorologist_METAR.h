@@ -156,6 +156,12 @@ public:
         return _ICAOCode;
     }
 
+    /*! \brief Convenience method to check if this METAR is already expired
+     *
+     * @returns true if an expiration date/time is known and if the current time is larger than the expiration
+     */
+    Q_INVOKABLE bool isExpired() const;
+
     /*! Indicates if the class represents a valid METAR report */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
@@ -255,6 +261,9 @@ private:
     // This constructor reads a XML stream, as provided by the Aviation Weather Center's Text Data Server,
     // https://www.aviationweather.gov/dataserver
     explicit METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent = nullptr);
+
+    // This constructor reads a serialized METAR from a QDataStream
+    explicit METAR(QDataStream &inputStream, Clock *clock, QObject *parent = nullptr);
 
     Q_DISABLE_COPY_MOVE(METAR)
 

@@ -33,7 +33,12 @@
 
 
 GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, Librarian *librarian, QObject *parent)
-    : QObject(parent), _manager(manager), _settings(settings), _librarian(librarian), _tileServer(QUrl()), _styleFile(nullptr)
+    : QObject(parent),
+      _manager(manager),
+      _settings(settings),
+      _librarian(librarian),
+      _tileServer(QUrl()),
+      _styleFile(nullptr)
 {
     // Initialize _combinedGeoJSON_ with an empty document
     QJsonObject resultObject;

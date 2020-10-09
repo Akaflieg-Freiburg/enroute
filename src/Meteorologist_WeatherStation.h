@@ -56,7 +56,7 @@ public:
      * If the WeatherStation coordinate is unknown, the property contains an
      * invalid coordinate.
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate NOTIFY coordinateChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -71,7 +71,7 @@ public:
      *
      * This property holds a string of the form "Karlsruhe (DVOR-DME)"
      */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+    Q_PROPERTY(QString extendedName READ extendedName NOTIFY extendedNameChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -88,7 +88,7 @@ public:
      * available for the weather station.  The actual METAR report can be
      * accessed via the property metar.
      */
-    Q_PROPERTY(bool hasMETAR READ hasMETAR CONSTANT)
+    Q_PROPERTY(bool hasMETAR READ hasMETAR NOTIFY hasMETARChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -105,7 +105,7 @@ public:
      * for the weather station.  The actual TAF can be accessed via the
      * property taf.
      */
-    Q_PROPERTY(bool hasTAF READ hasTAF CONSTANT)
+    Q_PROPERTY(bool hasTAF READ hasTAF NOTIFY hasTAFChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -137,7 +137,7 @@ public:
      * This property holds the name of an icon file in SVG format that best
      * describes the weather station.
      */
-    Q_PROPERTY(QString icon READ icon CONSTANT)
+    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
 
     /*! \brief Getter method for property of the same name
      *
@@ -187,7 +187,7 @@ public:
      *
      * @see threeLineTitle
      */
-    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle NOTIFY twoLineTitleChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -231,10 +231,34 @@ public:
 
 signals:
     /* \brief Notifier signal */
+    void coordinateChanged();
+
+    /* \brief Notifier signal */
+    void extendedNameChanged();
+
+    /* \brief Notifier signal */
+    void hasMETARChanged();
+
+    /* \brief Notifier signal */
+    void hasTAFChanged();
+
+    /* \brief Notifier signal */
+    void iconChanged();
+
+    /* \brief Notifier signal */
     void metarChanged();
 
     /* \brief Notifier signal */
     void tafChanged();
+
+    /* \brief Notifier signal */
+    void twoLineTitleChanged();
+
+private slots:
+    // This method attempts to find a waypoint matchting this weather station,
+    // in order to learn additional data about the station. This method is called
+    // automaticall whenever the GeoMapProvider has new data.
+    void readDataFromWaypoint();
 
 private:
     Q_DISABLE_COPY_MOVE(WeatherStation)
@@ -243,12 +267,12 @@ private:
     // Meteorologist class
     explicit WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
 
-    // Sets the METAR message and deletes any existing METAR. This
+    // If the metar is valid, not expired and newer than the existing metar, this method sets the METAR message and deletes any existing METAR; otherwise, the metar is deleted. In any case, this
     // WeatherStation will take ownership of the METAR. The signal
     // metarChanged() will be emitted if appropriate.
     void setMETAR(Meteorologist::METAR *metar);
 
-    // Sets the TAF message, and deletes any existing TAF. This WeatherStation
+    // If the taf is valid, not expired and newer than the existing taf, this method sets the TAF message and deletes any existing TAF; otherwise, the taf is deleted. In any case, this WeatherStation
     // will take ownership of the TAF. The signal tafChanged() will be emitted
     // if appropriate.
     void setTAF(Meteorologist::TAF *taf);
@@ -295,4 +319,10 @@ private:
 
     // Two-Line-Title
     QString _twoLineTitle;
+
+    // Pointer to GeoMapProvider, used in order to find matching waypoints
+    QPointer<GeoMapProvider> _geoMapProvider;
+
+    // Internal flag to indicate if data has been read from a matching waypoint already
+    bool hasWaypointData {false};
 };

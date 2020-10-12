@@ -35,12 +35,12 @@ Waypoint::Waypoint(QObject *parent)
 
 Waypoint::Waypoint(const Waypoint &other, QObject *parent)
     : QObject(parent),
-      _meteorologist(other._meteorologist),
+
       _coordinate(other._coordinate),
       _properties(other._properties)
 {
     // Initialize connections
-    initializeMeteorologistConnections();
+    setMeteorologist(other._meteorologist);
 }
 
 
@@ -51,15 +51,11 @@ Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
     _properties.insert("CAT", QString("WP"));
     _properties.insert("NAM", QString("Waypoint"));
     _properties.insert("TYP", QString("WP"));
-
-    // Initialize connections
-    initializeMeteorologistConnections();
 }
 
 
-Waypoint::Waypoint(const QJsonObject &geoJSONObject, Meteorologist *meteorologist, QObject *parent)
-    : QObject(parent),
-      _meteorologist(meteorologist)
+Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
+    : QObject(parent)
 {
     // Paranoid safety checks
     if (geoJSONObject["type"] != "Feature")
@@ -86,9 +82,6 @@ Waypoint::Waypoint(const QJsonObject &geoJSONObject, Meteorologist *meteorologis
     _coordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble() );
     if (_properties.contains("ELE"))
         _coordinate.setAltitude(properties["ELE"].toDouble());
-
-    // Initialize connections
-    initializeMeteorologistConnections();
 }
 
 
@@ -116,26 +109,6 @@ bool Waypoint::hasTAF() const
     if (station == nullptr)
         return false;
     return (station->taf() != nullptr);
-}
-
-
-void Waypoint::initializeMeteorologistConnections()
-{
-    // No meteorologist? Then nothing to do.
-    if (_meteorologist.isNull())
-        return;
-
-    // If the waypoint does not have a four-letter ICAO code, there is certainly no weather station.
-    // In that case, return and do not do anything.
-    if (!_properties.contains("COD"))
-        return;
-    if (_properties.value("COD").toString().length() != 4)
-        return;
-
-    // Wire up the _meteorologist
-    connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::initializeWeatherStationConnections);
-
-    initializeWeatherStationConnections();
 }
 
 
@@ -279,6 +252,31 @@ bool Waypoint::operator==(const Waypoint &other) const {
     if (_properties != other._properties)
         return false;
     return true;
+}
+
+
+void Waypoint::setMeteorologist(Meteorologist *meteorologist)
+{
+    // No meteorologist? Then nothing to do.
+    if (meteorologist == nullptr)
+        return;
+    // No new meteorologist? Then nothing to do.
+    if (meteorologist == _meteorologist)
+        return;
+
+    // Set meteorologist
+    _meteorologist = meteorologist;
+
+    // If the waypoint does not have a four-letter ICAO code, there is certainly no weather station.
+    // In that case, return and do not do anything.
+    if (!_properties.contains("COD"))
+        return;
+    if (_properties.value("COD").toString().length() != 4)
+        return;
+
+    // Wire up the _meteorologist
+    connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::initializeWeatherStationConnections);
+    initializeWeatherStationConnections();
 }
 
 

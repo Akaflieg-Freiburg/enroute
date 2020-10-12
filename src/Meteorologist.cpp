@@ -249,6 +249,7 @@ void Meteorologist::load()
 
     // Ok, done
     lockFile.unlock();
+    deleteExpiredMesages();
     emit weatherStationsChanged();
 }
 

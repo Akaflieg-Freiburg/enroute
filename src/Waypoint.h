@@ -75,12 +75,9 @@ public:
      *
      * @param geoJSONObject GeoJSON Object that describes the waypoint
      *
-     * @param meteorologist Pointer to an instance of Meteorologist, used to
-     * provide access to weather stations at the site of the waypoint
-     *
      * @param parent The standard QObject parent pointer
      */
-    explicit Waypoint(const QJsonObject &geoJSONObject, Meteorologist *meteorologist, QObject *parent = nullptr);
+    explicit Waypoint(const QJsonObject &geoJSONObject, QObject *parent = nullptr);
 
     // Standard destructor
     ~Waypoint() = default;
@@ -161,10 +158,10 @@ public:
 
     /*! \brief Check if a TAF weather forcast is known for the waypoint
      *
-     * If a pointer to a Meteorologist instance has been set with setMeteorologist(),
-     * this convenience property can be used to check if a TAF forcast is available
-     * for the waypoint.  The actual TAF report can be accessed via the
-     * property weatherStation.
+     * If a pointer to a Meteorologist instance has been set with
+     * setMeteorologist(), this convenience property can be used to check if a
+     * TAF forcast is available for the waypoint.  The actual TAF report can be
+     * accessed via the property weatherStation.
      */
     Q_PROPERTY(bool hasTAF READ hasTAF NOTIFY hasTAFChanged)
 
@@ -208,12 +205,12 @@ public:
 
     /* \brief Description of waypoint properties
      *
-     * This method holds a list of strings in meaningful order that describe the waypoint
-     * properties.
-     * This includes airport frequency, runway information, etc. The data is returned as a list
-     * of strings where the first four letters of each string indicate the type of data with
-     * an abbreviation that will be understood by pilots ("RWY ", "ELEV", etc.). The rest of the string will then contain
-     * the actual data.
+     * This method holds a list of strings in meaningful order that describe the
+     * waypoint properties.  This includes airport frequency, runway
+     * information, etc. The data is returned as a list of strings where the
+     * first four letters of each string indicate the type of data with an
+     * abbreviation that will be understood by pilots ("RWY ", "ELEV",
+     * etc.). The rest of the string will then contain the actual data.
      */
     Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
 
@@ -233,6 +230,14 @@ public:
      * @returns QJsonObject describing the waypoint
      */
     QJsonObject toJSON() const;
+
+    /*! \brief Connects this waypoint with a Meteorologist instance
+     *
+     * This method optionally connects the waypoint with an instance of the
+     * Meteorologist class.  Once connected, functions such has hasTAF can be
+     * used.
+     */
+    void setMeteorologist(Meteorologist *meteorologist);
 
     /*! \brief Two-line description of the waypoint name
      *
@@ -292,12 +297,11 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(Waypoint)
 
-    // At construction time, when everything else is settled, initialize connections from Meteorologist
-    void initializeMeteorologistConnections();
-
-    // This method is called when the _meteorologist is set, and then every time the weather station for this
-    // waypoint changes (e.g. because the Meteorologist receives a new list of stations, or the existing
-    // weather station gets destructed). It wires the weather station up and emits appropriate signals.
+    // This method is called when the _meteorologist is set, and then every time
+    // the weather station for this waypoint changes (e.g. because the
+    // Meteorologist receives a new list of stations, or the existing weather
+    // station gets destructed). It wires the weather station up and emits
+    // appropriate signals.
     void initializeWeatherStationConnections();
 
     // Pointers to other classes that are used internally

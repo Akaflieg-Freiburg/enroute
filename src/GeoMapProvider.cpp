@@ -32,10 +32,10 @@
 #include "Waypoint.h"
 
 
-GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, Librarian *librarian, QObject *parent)
+GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* globalSettings, Librarian *librarian, QObject *parent)
     : QObject(parent),
+      _globalSettings(globalSettings),
       _manager(manager),
-      _settings(settings),
       _librarian(librarian),
       _tileServer(QUrl()),
       _styleFile(nullptr)
@@ -47,17 +47,31 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* settings, Li
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::aviationMapsChanged);
-    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::baseMapsChanged);
-    connect(_settings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
-
-    _aviationDataCacheTimer.setSingleShot(true);
-    _aviationDataCacheTimer.setInterval(3*1000);
-    connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMapProvider::aviationMapsChanged);
-
     _tileServer.listen(QHostAddress("127.0.0.1"));
-    aviationMapsChanged();
-    baseMapsChanged();
+}
+
+
+QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
+{
+    // Lock data
+    QMutexLocker lock(&_aviationDataMutex);
+
+    QList<Airspace*> result;
+    foreach(auto airspace, _airspaces_) {
+        if (airspace.isNull()) // Paranoid safety
+            continue;
+        if (airspace->polygon().contains(position))
+            result.append(airspace);
+    }
+
+    // Sort airspaces according to lower boundary
+    std::sort(result.begin(), result.end(), [](Airspace* a, Airspace* b) {return (a->estimatedLowerBoundInFtMSL() > b->estimatedLowerBoundInFtMSL()); });
+
+    QList<QObject*> final;
+    foreach(auto airspace, result)
+        final.append(airspace);
+
+    return final;
 }
 
 
@@ -83,44 +97,6 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
     }
 
     return result;
-}
-
-
-Waypoint* GeoMapProvider::findByID(const QString &id)
-{
-    auto wps = waypoints();
-
-    foreach(auto wp, wps) {
-        if (wp.isNull())
-            continue;
-        if (wp->getPropery("COD").toString() == id)
-            return wp;
-    }
-    return nullptr;
-}
-
-
-QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
-{
-    // Lock data
-    QMutexLocker lock(&_aviationDataMutex);
-
-    QList<Airspace*> result;
-    foreach(auto airspace, _airspaces_) {
-        if (airspace.isNull()) // Paranoid safety
-            continue;
-        if (airspace->polygon().contains(position))
-            result.append(airspace);
-    }
-
-    // Sort airspaces according to lower boundary
-    std::sort(result.begin(), result.end(), [](Airspace* a, Airspace* b) {return (a->estimatedLowerBoundInFtMSL() > b->estimatedLowerBoundInFtMSL()); });
-
-    QList<QObject*> final;
-    foreach(auto airspace, result)
-        final.append(airspace);
-
-    return final;
 }
 
 
@@ -156,6 +132,20 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
     }
 
     return result;
+}
+
+
+Waypoint* GeoMapProvider::findByID(const QString &id)
+{
+    auto wps = waypoints();
+
+    foreach(auto wp, wps) {
+        if (wp.isNull())
+            continue;
+        if (wp->getPropery("COD").toString() == id)
+            return wp;
+    }
+    return nullptr;
 }
 
 
@@ -218,7 +208,36 @@ void GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, _settings->hideUpperAirspaces());
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, _globalSettings->hideUpperAirspaces());
+}
+
+
+void GeoMapProvider::baseMapsChanged()
+{
+    // Paranoid safety checks
+    if (_manager.isNull())
+        return;
+
+    // Delete old style file, stop serving tiles
+    delete _styleFile;
+    _tileServer.removeMbtilesFileSet(_currentPath);
+
+    // Serve new tile set under new name
+    _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
+    _tileServer.addMbtilesFileSet(_manager->baseMaps()->downloadablesWithFile(), _currentPath);
+
+    // Generate new mapbox style file
+    _styleFile = new QTemporaryFile(this);
+    QFile file(":/flightMap/osm-liberty.json");
+    file.open(QIODevice::ReadOnly);
+    QByteArray data = file.readAll();
+    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
+    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+    _styleFile->open();
+    _styleFile->write(data);
+    _styleFile->close();
+
+    emit styleFileURLChanged();
 }
 
 
@@ -263,8 +282,10 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         newFeatures += object;
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
-        auto wp = new Waypoint(object, _meteorologist);
+        auto wp = new Waypoint(object);
         wp->moveToThread(QApplication::instance()->thread());
+        wp->setParent(this);
+        wp->setMeteorologist(_meteorologist);
         if (wp->isValid()) {
             QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
             newWaypoints.append(wp);
@@ -275,6 +296,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
         auto as = new Airspace(object);
         as->moveToThread(QApplication::instance()->thread());
+        as->setParent(this);
         if (as->isValid()) {
             QQmlEngine::setObjectOwnership(as, QQmlEngine::CppOwnership);
             newAirspaces.append(as);
@@ -310,51 +332,22 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 }
 
 
-void GeoMapProvider::baseMapsChanged()
-{
-    // Paranoid safety checks
-    if (_manager.isNull())
-        return;
-
-    // Delete old style file, stop serving tiles
-    delete _styleFile;
-    _tileServer.removeMbtilesFileSet(_currentPath);
-
-    // Serve new tile set under new name
-    _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(_manager->baseMaps()->downloadablesWithFile(), _currentPath);
-
-    // Generate new mapbox style file
-    _styleFile = new QTemporaryFile(this);
-    QFile file(":/flightMap/osm-liberty.json");
-    file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll();
-    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
-    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
-    _styleFile->open();
-    _styleFile->write(data);
-    _styleFile->close();
-
-    emit styleFileURLChanged();
-}
-
-#warning docu
-void GeoMapProvider::setClock(Clock *clock)
-{
-    _clock = clock;
-}
-
-void GeoMapProvider::setSatNav(SatNav *satNav)
-{
-    _satNav = satNav;
-}
-
 void GeoMapProvider::setMeteorologist(Meteorologist *meteorologist)
 {
+    if (meteorologist == nullptr)
+        return;
     _meteorologist = meteorologist;
-}
 
-void GeoMapProvider::setGlobalSettings(GlobalSettings *globalSettings)
-{
-    _globalSettings = globalSettings;
+
+    // Connect the Downloadmanager, so aviation maps will be generated
+    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::aviationMapsChanged);
+    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::baseMapsChanged);
+    connect(_globalSettings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
+
+    _aviationDataCacheTimer.setSingleShot(true);
+    _aviationDataCacheTimer.setInterval(3*1000);
+    connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMapProvider::aviationMapsChanged);
+
+    aviationMapsChanged();
+    baseMapsChanged();
 }

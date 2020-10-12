@@ -114,7 +114,8 @@ public:
 
     /*! \brief Downloading flag
      *
-     * Indicates that the Meteorologist is currently downloading METAR/TAF information from the internet.
+     * Indicates that the Meteorologist is currently downloading METAR/TAF
+     * information from the internet.
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
@@ -130,7 +131,9 @@ public:
      * code, or a nullptr if no WeatherStation with the given code is known to
      * the Meteorologist.
      *
-     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime.  Store it in a QPointer to avoid dangling pointers.
+     * @warning The WeatherStation objects are owned by the Meteorologist and
+     * can be deleted anytime.  Store it in a QPointer to avoid dangling
+     * pointers.
      *
      * @param ICAOCode ICAO code name of the WeatherStation, such as "EDDF"
      *
@@ -173,13 +176,16 @@ public:
 
     /*! \brief Update method
      *
-     * If the global settings indicate
-     * that connections to aviationweather.com are not allowed, this method does nothing and returns immediately.  Otherwise, this method initiates the asynchronous download of weather information from the internet. It
-     * generates the necessary network queries and sends them to aviationweather.com.
+     * If the global settings indicate that connections to aviationweather.com
+     * are not allowed, this method does nothing and returns immediately.
+     * Otherwise, this method initiates the asynchronous download of weather
+     * information from the internet. It generates the necessary network queries
+     * and sends them to aviationweather.com.
      *
      * - If an error occurred while downloading, the signal "error" will be emitted.
      *
-     * - If the download completes successfully, the notifier signal for the property weatherStations will be emitted.
+     * - If the download completes successfully, the notifier signal for the
+     *   property weatherStations will be emitted.
      *
      * @param isBackgroundUpdate This is a simple flag that can be set and later
      * retrieved in the "backgroundUpdate" property. This is a little helper for
@@ -191,10 +197,14 @@ public:
 
     /*! \brief List of weather stations
      *
-     * This property holds a list of all weather stations that are currently known to this instance of the Meteorologist class, sorted according to the distance to the last known position.
-     * The list can change at any time.
+     * This property holds a list of all weather stations that are currently
+     * known to this instance of the Meteorologist class, sorted according to
+     * the distance to the last known position.  The list can change at any
+     * time.
      *
-     * @warning The WeatherStation objects are owned by the Meteorologist and can be deleted anytime. Store it in a QPointer to avoid dangling pointers.
+     * @warning The WeatherStation objects are owned by the Meteorologist and
+     * can be deleted anytime. Store it in a QPointer to avoid dangling
+     * pointers.
      */
     Q_PROPERTY(QList<Meteorologist::WeatherStation *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
 
@@ -213,7 +223,8 @@ signals:
 
     /*! \brief Signal emitted when a network error occurs
      *
-     * This signal is emitted to indicate that the Meteorologist failed to download weather data.
+     * This signal is emitted to indicate that the Meteorologist failed to
+     * download weather data.
      *
      * @param message A human-readable, translated error message
      */
@@ -239,15 +250,19 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 
-    // Similar to findWeatherStation, but will create a weather station if no station with the given code is known
+    // Similar to findWeatherStation, but will create a weather station if no
+    // station with the given code is known
     Meteorologist::WeatherStation *findOrConstructWeatherStation(const QString &ICAOCode);
 
-    // This method loads METAR/TAFs from a file "weather.dat" in QStandardPaths::AppDataLocation.
-    // There is locking to ensure that no two processes access the file. The method will fail silently on error.
+    // This method loads METAR/TAFs from a file "weather.dat" in
+    // QStandardPaths::AppDataLocation.  There is locking to ensure that no two
+    // processes access the file. The method will fail silently on error.
     void load();
 
-    // This method saves all METAR/TAFs that are valid and not yet expired to a file "weather.dat" in QStandardPaths::AppDataLocation.
-    // There is locking to ensure that no two processes access the file. The method will fail silently on error.
+    // This method saves all METAR/TAFs that are valid and not yet expired to a
+    // file "weather.dat" in QStandardPaths::AppDataLocation.  There is locking
+    // to ensure that no two processes access the file. The method will fail
+    // silently on error.
     void save();
 
     // Pointer to the clock

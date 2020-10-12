@@ -161,9 +161,6 @@ int main(int argc, char *argv[])
 
     // Attach geo map provider
     auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, librarian);
-    geoMapProvider->setClock(clock);
-    geoMapProvider->setGlobalSettings(globalSettings);
-    geoMapProvider->setSatNav(navEngine);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach meteorologist

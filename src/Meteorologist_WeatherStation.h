@@ -118,8 +118,8 @@ public:
 
     /*! \brief ICAO code of the weather station
      * 
-     * This property holds the ICAO designator of the
-     * aerodrome on which the weather station is located.
+     * This property holds the ICAO designator of the aerodrome on which the
+     * weather station is located.
      */
     Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
 
@@ -161,7 +161,7 @@ public:
     }
 
     /*! \brief Last METAR provided by this WeatherStation
-     *
+     * 
      * This property holds a pointer to the last METAR provided by this
      * WeatherStation, which can be a nullptr if no data is available.  The
      * METAR instance is owned by an instance of Meteorologist, and can be
@@ -256,8 +256,8 @@ signals:
 
 private slots:
     // This method attempts to find a waypoint matchting this weather station,
-    // in order to learn additional data about the station. This method is called
-    // automaticall whenever the GeoMapProvider has new data.
+    // in order to learn additional data about the station. This method is
+    // called automaticall whenever the GeoMapProvider has new data.
     void readDataFromWaypoint();
 
 private:
@@ -267,14 +267,17 @@ private:
     // Meteorologist class
     explicit WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
 
-    // If the metar is valid, not expired and newer than the existing metar, this method sets the METAR message and deletes any existing METAR; otherwise, the metar is deleted. In any case, this
-    // WeatherStation will take ownership of the METAR. The signal
-    // metarChanged() will be emitted if appropriate.
+    // If the metar is valid, not expired and newer than the existing metar,
+    // this method sets the METAR message and deletes any existing METAR;
+    // otherwise, the metar is deleted. In any case, this WeatherStation will
+    // take ownership of the METAR. The signal metarChanged() will be emitted if
+    // appropriate.
     void setMETAR(Meteorologist::METAR *metar);
 
-    // If the taf is valid, not expired and newer than the existing taf, this method sets the TAF message and deletes any existing TAF; otherwise, the taf is deleted. In any case, this WeatherStation
-    // will take ownership of the TAF. The signal tafChanged() will be emitted
-    // if appropriate.
+    // If the taf is valid, not expired and newer than the existing taf, this
+    // method sets the TAF message and deletes any existing TAF; otherwise, the
+    // taf is deleted. In any case, this WeatherStation will take ownership of
+    // the TAF. The signal tafChanged() will be emitted if appropriate.
     void setTAF(Meteorologist::TAF *taf);
 
     // Converts the time into a human readable string
@@ -297,7 +300,6 @@ private:
 
     // Converts the clouds into a human readable string
     static QString decodeClouds(const QVariantList &clouds);
-
 
     // Coordinate of this weather station
     QGeoCoordinate _coordinate;
@@ -323,6 +325,7 @@ private:
     // Pointer to GeoMapProvider, used in order to find matching waypoints
     QPointer<GeoMapProvider> _geoMapProvider;
 
-    // Internal flag to indicate if data has been read from a matching waypoint already
+    // Internal flag to indicate if data has been read from a matching waypoint
+    // already
     bool hasWaypointData {false};
 };

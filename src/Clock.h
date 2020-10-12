@@ -46,7 +46,7 @@ public:
 
     /*! Describe time difference in human readable form
      *
-     * This method describes the difference between the current time and a given time in human  eadable form.
+     * This method describes the difference between the current time and a given time in human readable form.
      *
      * @param pointInTime A point in time that is compared to the current time
      *
@@ -69,18 +69,34 @@ public:
      */
     Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime, QGeoCoordinate position=QGeoCoordinate());
 
-    /*! \brief Current time
+    /*! \brief Current time in UTC as a string
      *
      * This property holds the current time in UTC as a string of the form "8:06" or "13:45". The implementation makes some effort to ensure
      * that the notifier signal is emitted just after every minute change.
      */
-    Q_PROPERTY(QString time READ time NOTIFY timeChanged)
+    Q_PROPERTY(QString timeAsUTCString READ timeAsUTCString NOTIFY timeChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property time
      */
-    QString time() const;
+    QString timeAsUTCString() const;
+
+    /*! \brief Current time
+     *
+     * This property holds the current time. The implementation makes some effort to ensure
+     * that the notifier signal is emitted just after every minute change.
+     */
+    Q_PROPERTY(QDateTime time READ time NOTIFY timeChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property time
+     */
+    QDateTime time() const
+    {
+        return QDateTime::currentDateTime();
+    }
 
 signals:
     /*! \brief Notifier signal */

@@ -74,7 +74,7 @@ Rectangle {
         Label {
             Layout.fillWidth: true
 
-            text: clock.time
+            text: clock.timeAsUTCString
 
             horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Bold

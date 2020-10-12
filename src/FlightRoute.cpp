@@ -57,25 +57,9 @@ void FlightRoute::append(QObject *waypoint)
 }
 
 
-bool FlightRoute::contains(QObject * waypoint) const
+void FlightRoute::append(const QGeoCoordinate& position)
 {
-    if (waypoint == nullptr)
-        return false;
-    if (!waypoint->inherits("Waypoint"))
-        return false;
-
-    auto testWaypoint = dynamic_cast<Waypoint *>(waypoint);
-    // must loop over list in order to compare values (not pointers)
-    for (const auto &_waypoint : _waypoints) {
-        if (_waypoint.isNull())
-            continue;
-        if (!_waypoint->isValid())
-            continue;
-        if (*_waypoint == *testWaypoint) {
-            return true;
-        }
-    }
-    return false;
+    append(new Waypoint(position, this));
 }
 
 
@@ -98,6 +82,38 @@ QGeoRectangle FlightRoute::boundingRectangle() const
     }
 
     return bbox;
+}
+
+
+void FlightRoute::clear()
+{
+    qDeleteAll(_waypoints);
+    _waypoints.clear();
+
+    updateLegs();
+    emit waypointsChanged();
+}
+
+
+bool FlightRoute::contains(QObject * waypoint) const
+{
+    if (waypoint == nullptr)
+        return false;
+    if (!waypoint->inherits("Waypoint"))
+        return false;
+
+    auto testWaypoint = dynamic_cast<Waypoint *>(waypoint);
+    // must loop over list in order to compare values (not pointers)
+    for (const auto &_waypoint : _waypoints) {
+        if (_waypoint.isNull())
+            continue;
+        if (!_waypoint->isValid())
+            continue;
+        if (*_waypoint == *testWaypoint) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -134,13 +150,94 @@ QObject* FlightRoute::lastWaypointObject() const
 }
 
 
-void FlightRoute::clear()
+QString FlightRoute::loadFromGeoJSON(QString fileName)
 {
-    qDeleteAll(_waypoints);
-    _waypoints.clear();
+    if (fileName.isEmpty())
+        fileName = stdFileName;
 
+    QFile file(fileName);
+    auto success = file.open(QIODevice::ReadOnly);
+    if (!success)
+        return tr("Cannot open file '%1' for reading.").arg(fileName);
+    auto fileContent = file.readAll();
+    if (fileContent.isEmpty())
+        return tr("Cannot read data from file '%1'.").arg(fileName);
+    file.close();
+
+    QJsonParseError parseError{};
+    auto document = QJsonDocument::fromJson(fileContent, &parseError);
+    if (parseError.error != QJsonParseError::NoError)
+        return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
+
+    QList<QPointer<Waypoint>> newWaypoints;
+    foreach(auto value, document.object()["features"].toArray()) {
+        auto wp = new Waypoint(value.toObject(), this);
+        if (!wp->isValid()) {
+            qDeleteAll(newWaypoints);
+            return tr("Cannot parse content of file '%1'.").arg(fileName);
+        }
+        QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
+        newWaypoints.append(wp);
+    }
+
+    qDeleteAll(_waypoints);
+    _waypoints = newWaypoints;
     updateLegs();
     emit waypointsChanged();
+
+    return QString();
+}
+
+
+QString FlightRoute::makeSummary(bool inMetricUnits) const
+{
+    if (_legs.empty())
+        return {};
+
+    QString result;
+
+    auto dist = AviationUnits::Distance::fromM(0.0);
+    auto time = AviationUnits::Time::fromS(0.0);
+    double fuelInL = 0.0;
+
+    for(auto _leg : _legs) {
+        dist += _leg->distance();
+        if (dist.toM() > 100) {
+            time += _leg->Time();
+            fuelInL += _leg->Fuel();
+        }
+    }
+
+    if (inMetricUnits) {
+        result += QString("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
+    } else {
+        result += QString("Total: %1&nbsp;NM").arg(dist.toNM(), 0, 'f', 1);
+    }
+    if (time.isFinite())
+        result += QString(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
+    if (qIsFinite(fuelInL))
+        result += QString(" • %1&nbsp;L").arg(qRound(fuelInL));
+
+
+    QStringList complaints;
+    if (!_aircraft.isNull()) {
+        if (!qIsFinite(_aircraft->cruiseSpeedInKT()))
+            complaints += tr("Cruise speed not specified.");
+        if (!qIsFinite(_aircraft->fuelConsumptionInLPH()))
+            complaints += tr("Fuel consumption not specified.");
+    }
+    if (!_wind.isNull()) {
+        if (!qIsFinite(_wind->windSpeedInKT()))
+            complaints += tr("Wind speed not specified.");
+        if (!qIsFinite(_wind->windDirectionInDEG()))
+            if (!qIsFinite(_wind->windDirectionInDEG()))
+                complaints += tr("Wind direction not specified.");
+    }
+
+    if (!complaints.isEmpty())
+        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(" "));
+
+    return result;
 }
 
 
@@ -226,34 +323,6 @@ void FlightRoute::reverse()
 }
 
 
-QString FlightRoute::save(const QString& fileName) const
-{
-    QFile file(fileName);
-    auto success = file.open(QIODevice::WriteOnly);
-    if (!success)
-        return tr("Unable to open the file '%1' for writing.").arg(fileName);
-    auto numBytesWritten = file.write(toGeoJSON());
-    if (numBytesWritten == -1) {
-        file.close();
-        QFile::remove(fileName);
-        return tr("Unable to write to file '%1'.").arg(fileName);
-    }
-    file.close();
-    return QString();
-}
-
-
-void FlightRoute::updateLegs()
-{
-    foreach(auto _leg, _legs)
-        _leg->deleteLater();
-    _legs.clear();
-
-    for(int i=0; i<_waypoints.size()-1; i++)
-        _legs.append(new Leg(_waypoints[i], _waypoints[i+1], _aircraft, _wind, this));
-}
-
-
 QList<QObject*> FlightRoute::routeObjects() const
 {
     QList<QObject*> result;
@@ -268,6 +337,23 @@ QList<QObject*> FlightRoute::routeObjects() const
     result.append(_waypoints.last());
 
     return result;
+}
+
+
+QString FlightRoute::save(const QString& fileName) const
+{
+    QFile file(fileName);
+    auto success = file.open(QIODevice::WriteOnly);
+    if (!success)
+        return tr("Unable to open the file '%1' for writing.").arg(fileName);
+    auto numBytesWritten = file.write(toGeoJSON());
+    if (numBytesWritten == -1) {
+        file.close();
+        QFile::remove(fileName);
+        return tr("Unable to write to file '%1'.").arg(fileName);
+    }
+    file.close();
+    return QString();
 }
 
 
@@ -302,58 +388,6 @@ QString FlightRoute::summaryMetric() const {
 }
 
 
-QString FlightRoute::makeSummary(bool inMetricUnits) const
-{
-    if (_legs.empty())
-        return {};
-
-    QString result;
-
-    auto dist = AviationUnits::Distance::fromM(0.0);
-    auto time = AviationUnits::Time::fromS(0.0);
-    double fuelInL = 0.0;
-
-    for(auto _leg : _legs) {
-        dist += _leg->distance();
-        if (dist.toM() > 100) {
-            time += _leg->Time();
-            fuelInL += _leg->Fuel();
-        }
-    }
-
-    if (inMetricUnits) {
-        result += QString("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
-    } else {
-        result += QString("Total: %1&nbsp;NM").arg(dist.toNM(), 0, 'f', 1);
-    }
-    if (time.isFinite())
-        result += QString(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
-    if (qIsFinite(fuelInL))
-        result += QString(" • %1&nbsp;L").arg(qRound(fuelInL));
-
-
-    QStringList complaints;
-    if (!_aircraft.isNull()) {
-        if (!qIsFinite(_aircraft->cruiseSpeedInKT()))
-            complaints += tr("Cruise speed not specified.");
-        if (!qIsFinite(_aircraft->fuelConsumptionInLPH()))
-            complaints += tr("Fuel consumption not specified.");
-    }
-    if (!_wind.isNull()) {
-        if (!qIsFinite(_wind->windSpeedInKT()))
-            complaints += tr("Wind speed not specified.");
-        if (!qIsFinite(_wind->windDirectionInDEG()))
-            if (!qIsFinite(_wind->windDirectionInDEG()))
-                complaints += tr("Wind direction not specified.");
-    }
-
-    if (!complaints.isEmpty())
-        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(" "));
-
-    return result;
-}
-
-
 QByteArray FlightRoute::toGeoJSON() const
 {
     QJsonArray waypointArray;
@@ -368,46 +402,12 @@ QByteArray FlightRoute::toGeoJSON() const
 }
 
 
-QString FlightRoute::loadFromGeoJSON(QString fileName)
+void FlightRoute::updateLegs()
 {
-    if (fileName.isEmpty())
-        fileName = stdFileName;
+    foreach(auto _leg, _legs)
+        _leg->deleteLater();
+    _legs.clear();
 
-    QFile file(fileName);
-    auto success = file.open(QIODevice::ReadOnly);
-    if (!success)
-        return tr("Cannot open file '%1' for reading.").arg(fileName);
-    auto fileContent = file.readAll();
-    if (fileContent.isEmpty())
-        return tr("Cannot read data from file '%1'.").arg(fileName);
-    file.close();
-
-    QJsonParseError parseError{};
-    auto document = QJsonDocument::fromJson(fileContent, &parseError);
-    if (parseError.error != QJsonParseError::NoError)
-        return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
-
-    QList<QPointer<Waypoint>> newWaypoints;
-    foreach(auto value, document.object()["features"].toArray()) {
-        auto wp = new Waypoint(value.toObject(), nullptr, this);
-        if (!wp->isValid()) {
-            qDeleteAll(newWaypoints);
-            return tr("Cannot parse content of file '%1'.").arg(fileName);
-        }
-        QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
-        newWaypoints.append(wp);
-    }
-
-    qDeleteAll(_waypoints);
-    _waypoints = newWaypoints;
-    updateLegs();
-    emit waypointsChanged();
-
-    return QString();
-}
-
-#warning clean up
-void FlightRoute::append(const QGeoCoordinate& position)
-{
-    append(new Waypoint(position, this));
+    for(int i=0; i<_waypoints.size()-1; i++)
+        _legs.append(new Leg(_waypoints[i], _waypoints[i+1], _aircraft, _wind, this));
 }

@@ -66,6 +66,10 @@ class GeoMapProvider : public QObject
 public:
     /*! \brief Create a new GeoMap provider
      *
+     * This constructor creates a new GeoMapProvider instance. Note that the
+     * instance will only start to work once the method setMeteorologist() has
+     * been called.
+     *
      * @param manager Pointer to a MapManager whose files will be served. The
      * manager shall exist for the lifetime of this object.
      *
@@ -135,9 +139,10 @@ public:
      *
      * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
      *
-     * @returns a nullpointer if no waypoint has been found, or else a pointer to the waypoint
-     * For better cooperation with QML is not a pointer
-     * of type Waypoint*, but ratherof type QObject*. The object is owned by this class and must not be deleted.
+     * @returns a nullpointer if no waypoint has been found, or else a pointer
+     * to the waypoint. For better cooperation with QML is not a pointer of type
+     * Waypoint, but ratherof type QObject. The object is owned by this class
+     * and must not be deleted.
      */
     Waypoint* findByID(const QString& id);
 
@@ -147,11 +152,10 @@ public:
      * @param position Position near which waypoints are searched for
      * @param type Type of waypoints (AD, NAV, WP)
      *
-     * @returns a list of the 20 waypoints of requested type that are closest
-     * to the given position; the list may however be empty or contain fewer
-     * than 20 items.
-     * For better cooperation with QML the list does not contain elements
-     * of type Waypoint*, but elements of type QObject*
+     * @returns a list of the 20 waypoints of requested type that are closest to
+     * the given position; the list may however be empty or contain fewer than
+     * 20 items.  For better cooperation with QML the list does not contain
+     * elements of type Waypoint*, but elements of type QObject*
      */
     Q_INVOKABLE QList<QObject*> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
@@ -182,11 +186,21 @@ public:
         return _waypoints_;
     }
 
-#warning documentation
-    void setClock(Clock *clock=nullptr);
-    void setSatNav(SatNav *satNav=nullptr);
-    void setMeteorologist(Meteorologist *meteorologist=nullptr);
-    void setGlobalSettings(GlobalSettings *globalSettings=nullptr);
+    /*! \brief Connects this GeoMapProvider with a Meteorologist instance
+     *
+     * To work right, the GeoMapProvider needs access to an instance of the
+     * Meteorologist class. Because of cross-dependencies between the classes
+     * GeoMapProvider and Meteorologist, the pointer to the Meteorologist is not
+     * given as an argument in the constructor, but must be set as soon as
+     * possible after construction with the present method.
+     *
+     * The GeoMapProvider will not crash if the Meteorologist is deleted at
+     * run-time, but several method will only work with reduced functionality,
+     * as newly generated waypoint will no longer contain weather information.
+     *
+     * @param meteorologist Pointer to a Meteorologist object.
+     */
+    void setMeteorologist(Meteorologist *meteorologist);
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -199,9 +213,7 @@ private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
 
     // Pointers to other classes that are used internally
-    QPointer<Clock> _clock;
     QPointer<Meteorologist> _meteorologist;
-    QPointer<SatNav> _satNav;
     QPointer<GlobalSettings> _globalSettings;
 
     // Caches used to speed up the method simplifySpecialChars
@@ -229,9 +241,6 @@ private:
     // Pointer to the MapManager
     QPointer<MapManager> _manager;
 
-    // Pointer to global settings
-    QPointer<GlobalSettings> _settings;
-
     // Pointer to library
     QPointer<Librarian> _librarian;
 
@@ -246,8 +255,9 @@ private:
     //
     QFuture<void>    _aviationDataCacheFuture; // Future; indicates if fillAviationDataCache() is currently running
     QTimer           _aviationDataCacheTimer;  // Timer used to start another run of fillAviationDataCache()
+
     // The data in this group is accessed by several threads. The following classes
-    // (whose names ends in an underscore)are therefore
+    // (whose names ends in an underscore) are therefore
     // protected by this mutex.
     QMutex           _aviationDataMutex;
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON

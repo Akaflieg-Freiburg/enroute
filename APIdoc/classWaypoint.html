@@ -82,9 +82,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab829b80019cc61062ffc721e77503204"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ab829b80019cc61062ffc721e77503204">Waypoint</a> (const QGeoCoordinate &amp;<a class="el" href="classWaypoint.html#a7b4b09e48657db8f50e25d2da776a04f">coordinate</a>, QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ab829b80019cc61062ffc721e77503204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a coordinate.  <a href="#ab829b80019cc61062ffc721e77503204">More...</a><br /></td></tr>
 <tr class="separator:ab829b80019cc61062ffc721e77503204"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28257278c6f4f670587794a093cdb276"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a28257278c6f4f670587794a093cdb276">Waypoint</a> (const QJsonObject &amp;geoJSONObject, <a class="el" href="classMeteorologist.html">Meteorologist</a> *meteorologist, QObject *parent=nullptr)</td></tr>
-<tr class="memdesc:a28257278c6f4f670587794a093cdb276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a GeoJSON object.  <a href="#a28257278c6f4f670587794a093cdb276">More...</a><br /></td></tr>
-<tr class="separator:a28257278c6f4f670587794a093cdb276"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac44284009382c3814bec41e6e86434b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aac44284009382c3814bec41e6e86434b">Waypoint</a> (const QJsonObject &amp;geoJSONObject, QObject *parent=nullptr)</td></tr>
+<tr class="memdesc:aac44284009382c3814bec41e6e86434b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a GeoJSON object.  <a href="#aac44284009382c3814bec41e6e86434b">More...</a><br /></td></tr>
+<tr class="separator:aac44284009382c3814bec41e6e86434b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbe8664404d761f94212f69c01d8926e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#afbe8664404d761f94212f69c01d8926e">containsProperty</a> (const QString &amp;propertyName) const</td></tr>
 <tr class="memdesc:afbe8664404d761f94212f69c01d8926e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check existence of a given property.  <a href="#afbe8664404d761f94212f69c01d8926e">More...</a><br /></td></tr>
 <tr class="separator:afbe8664404d761f94212f69c01d8926e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,6 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a092b50386d2f6baf40f85224c195d777"><td class="memItemLeft" align="right" valign="top">QJsonObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a092b50386d2f6baf40f85224c195d777">toJSON</a> () const</td></tr>
 <tr class="memdesc:a092b50386d2f6baf40f85224c195d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization to GeoJSON object.  <a href="#a092b50386d2f6baf40f85224c195d777">More...</a><br /></td></tr>
 <tr class="separator:a092b50386d2f6baf40f85224c195d777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac2af0afbe9d07c61c8765cdc6508f42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42">setMeteorologist</a> (<a class="el" href="classMeteorologist.html">Meteorologist</a> *meteorologist)</td></tr>
+<tr class="memdesc:aac2af0afbe9d07c61c8765cdc6508f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects this waypoint with a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance.  <a href="#aac2af0afbe9d07c61c8765cdc6508f42">More...</a><br /></td></tr>
+<tr class="separator:aac2af0afbe9d07c61c8765cdc6508f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69a2da8f5a48f5a71c6a53fed68896fa"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a69a2da8f5a48f5a71c6a53fed68896fa">twoLineTitle</a> () const</td></tr>
 <tr class="memdesc:a69a2da8f5a48f5a71c6a53fed68896fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a69a2da8f5a48f5a71c6a53fed68896fa">More...</a><br /></td></tr>
 <tr class="separator:a69a2da8f5a48f5a71c6a53fed68896fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,8 +283,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a28257278c6f4f670587794a093cdb276"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28257278c6f4f670587794a093cdb276">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[4/4]</span></h2>
+<a id="aac44284009382c3814bec41e6e86434b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac44284009382c3814bec41e6e86434b">&#9670;&nbsp;</a></span>Waypoint() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,12 +297,6 @@ Properties</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const QJsonObject &amp;&#160;</td>
           <td class="paramname"><em>geoJSONObject</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classMeteorologist.html">Meteorologist</a> *&#160;</td>
-          <td class="paramname"><em>meteorologist</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -325,7 +322,6 @@ Properties</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">geoJSONObject</td><td>GeoJSON Object that describes the waypoint</td></tr>
-    <tr><td class="paramname">meteorologist</td><td>Pointer to an instance of <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a>, used to provide access to weather stations at the site of the waypoint</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
   </table>
   </dd>
@@ -368,7 +364,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True is property exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00101">101</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00098">98</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -398,7 +394,7 @@ Properties</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordinate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00116">116</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00113">113</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -456,7 +452,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of the proerty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00142">142</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00139">139</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -526,7 +522,7 @@ Properties</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property icon </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00188">188</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00185">185</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -548,6 +544,27 @@ Properties</h2></td></tr>
 
 <p>Equality check. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if the coordinates and all properties agree. </dd></dl>
+
+</div>
+</div>
+<a id="aac2af0afbe9d07c61c8765cdc6508f42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac2af0afbe9d07c61c8765cdc6508f42">&#9670;&nbsp;</a></span>setMeteorologist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Waypoint::setMeteorologist </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMeteorologist.html">Meteorologist</a> *&#160;</td>
+          <td class="paramname"><em>meteorologist</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Connects this waypoint with a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance. </p>
+<p>This method optionally connects the waypoint with an instance of the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> class. Once connected, functions such has hasTAF can be used. </p>
 
 </div>
 </div>
@@ -694,7 +711,7 @@ Properties</h2></td></tr>
 <p>Coordinate of the waypoint. </p>
 <p>If the coordinate is invalid, this waypoint should not be used </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00110">110</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00107">107</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -721,7 +738,7 @@ Properties</h2></td></tr>
 <p>Extended name of the waypoint. </p>
 <p>This property holds a string of the form "Karlsruhe (DVOR-DME)" </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00122">122</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00119">119</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -746,9 +763,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check if a METAR weather report is known for the waypoint. </p>
-<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with setMeteorologist(), this convenience property can be used to check if a METAR report is available for the waypoint. The actual METAR report can be accessed via the property weatherStation. </p>
+<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42" title="Connects this waypoint with a Meteorologist instance. ">setMeteorologist()</a>, this convenience property can be used to check if a METAR report is available for the waypoint. The actual METAR report can be accessed via the property weatherStation. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00154">154</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00151">151</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -773,9 +790,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check if a TAF weather forcast is known for the waypoint. </p>
-<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with setMeteorologist(), this convenience property can be used to check if a TAF forcast is available for the waypoint. The actual TAF report can be accessed via the property weatherStation. </p>
+<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42" title="Connects this waypoint with a Meteorologist instance. ">setMeteorologist()</a>, this convenience property can be used to check if a TAF forcast is available for the waypoint. The actual TAF report can be accessed via the property weatherStation. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00169">169</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00166">166</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -802,7 +819,7 @@ Properties</h2></td></tr>
 <p>Suggested icon file. </p>
 <p>This property holds the name of an icon file in SVG format that best describes the waypoint. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00182">182</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00179">179</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -830,7 +847,7 @@ Properties</h2></td></tr>
 <p>This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a string of the form "&lt;strong&gt;LFKA&lt;/strong&gt;&lt;br&gt;&lt;font size='2'&gt;ALBERTVILLE&lt;/font&gt;" or simply "KIRCHZARTEN"</p>
 <dl class="section see"><dt>See also</dt><dd>threeLineTitle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00246">246</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00251">251</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -855,9 +872,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check if a WeatherStation exists at this point. </p>
-<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with setMeteorologist() and if a WeatherStation is known to exist at this point, then this property holds a pointer to the station. Otherwise, the property holds nullptr. Note that the WeatherStation object is owned by the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> and that it can be deleted anytime. </p>
+<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42" title="Connects this waypoint with a Meteorologist instance. ">setMeteorologist()</a> and if a WeatherStation is known to exist at this point, then this property holds a pointer to the station. Otherwise, the property holds nullptr. Note that the WeatherStation object is owned by the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> and that it can be deleted anytime. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00272">272</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00277">277</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

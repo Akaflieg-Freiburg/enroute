@@ -69,9 +69,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf35e02ec22946ff5265073e70a28160"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#abf35e02ec22946ff5265073e70a28160">Clock</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:abf35e02ec22946ff5265073e70a28160"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#abf35e02ec22946ff5265073e70a28160">More...</a><br /></td></tr>
 <tr class="separator:abf35e02ec22946ff5265073e70a28160"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6156e12bcd6b6a54428fe1b8dada5916"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a6156e12bcd6b6a54428fe1b8dada5916">time</a> () const</td></tr>
-<tr class="memdesc:a6156e12bcd6b6a54428fe1b8dada5916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a6156e12bcd6b6a54428fe1b8dada5916">More...</a><br /></td></tr>
-<tr class="separator:a6156e12bcd6b6a54428fe1b8dada5916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa85456c0830b6e9a1fea27c1b9ad6f70"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#aa85456c0830b6e9a1fea27c1b9ad6f70">timeAsUTCString</a> () const</td></tr>
+<tr class="memdesc:aa85456c0830b6e9a1fea27c1b9ad6f70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#aa85456c0830b6e9a1fea27c1b9ad6f70">More...</a><br /></td></tr>
+<tr class="separator:aa85456c0830b6e9a1fea27c1b9ad6f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71945662fa5df27e4938ae67c865cd48"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a71945662fa5df27e4938ae67c865cd48">time</a> () const</td></tr>
+<tr class="memdesc:a71945662fa5df27e4938ae67c865cd48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="#a71945662fa5df27e4938ae67c865cd48">More...</a><br /></td></tr>
+<tr class="separator:a71945662fa5df27e4938ae67c865cd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -82,9 +85,12 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a320880418635158ee9326d24666da7e6"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a320880418635158ee9326d24666da7e6">time</a></td></tr>
-<tr class="memdesc:a320880418635158ee9326d24666da7e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current time.  <a href="#a320880418635158ee9326d24666da7e6">More...</a><br /></td></tr>
-<tr class="separator:a320880418635158ee9326d24666da7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a527aac86ef071be66cbdcb4ea929ffba"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a527aac86ef071be66cbdcb4ea929ffba">timeAsUTCString</a></td></tr>
+<tr class="memdesc:a527aac86ef071be66cbdcb4ea929ffba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current time in UTC as a string.  <a href="#a527aac86ef071be66cbdcb4ea929ffba">More...</a><br /></td></tr>
+<tr class="separator:a527aac86ef071be66cbdcb4ea929ffba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7244af50d4eba4e5c188f89caef4900b"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a7244af50d4eba4e5c188f89caef4900b">time</a></td></tr>
+<tr class="memdesc:a7244af50d4eba4e5c188f89caef4900b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current time.  <a href="#a7244af50d4eba4e5c188f89caef4900b">More...</a><br /></td></tr>
+<tr class="separator:a7244af50d4eba4e5c188f89caef4900b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This extremely simple class give accss to time and offers a few time-related functions. </p>
@@ -197,7 +203,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Describe time difference in human readable form</p>
-<p>This method describes the difference between the current time and a given time in human eadable form.</p>
+<p>This method describes the difference between the current time and a given time in human readable form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pointInTime</td><td>A point in time that is compared to the current time</td></tr>
@@ -208,14 +214,44 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a6156e12bcd6b6a54428fe1b8dada5916"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6156e12bcd6b6a54428fe1b8dada5916">&#9670;&nbsp;</a></span>time()</h2>
+<a id="a71945662fa5df27e4938ae67c865cd48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71945662fa5df27e4938ae67c865cd48">&#9670;&nbsp;</a></span>time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QDateTime Clock::time </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property time </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00096">96</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+
+</div>
+</div>
+<a id="aa85456c0830b6e9a1fea27c1b9ad6f70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa85456c0830b6e9a1fea27c1b9ad6f70">&#9670;&nbsp;</a></span>timeAsUTCString()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QString Clock::time </td>
+          <td class="memname">QString Clock::timeAsUTCString </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -229,8 +265,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a320880418635158ee9326d24666da7e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a320880418635158ee9326d24666da7e6">&#9670;&nbsp;</a></span>time</h2>
+<a id="a7244af50d4eba4e5c188f89caef4900b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7244af50d4eba4e5c188f89caef4900b">&#9670;&nbsp;</a></span>time</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -239,7 +275,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QString Clock::time</td>
+          <td class="memname">QDateTime Clock::time</td>
         </tr>
       </table>
   </td>
@@ -250,6 +286,33 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Current time. </p>
+<p>This property holds the current time. The implementation makes some effort to ensure that the notifier signal is emitted just after every minute change. </p>
+
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00090">90</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+
+</div>
+</div>
+<a id="a527aac86ef071be66cbdcb4ea929ffba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a527aac86ef071be66cbdcb4ea929ffba">&#9670;&nbsp;</a></span>timeAsUTCString</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Clock::timeAsUTCString</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current time in UTC as a string. </p>
 <p>This property holds the current time in UTC as a string of the form "8:06" or "13:45". The implementation makes some effort to ensure that the notifier signal is emitted just after every minute change. </p>
 
 <p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00077">77</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>

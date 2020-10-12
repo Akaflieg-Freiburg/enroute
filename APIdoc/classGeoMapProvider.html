@@ -94,6 +94,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab02771ce94f867720455ba7af0195904"><td class="memItemLeft" align="right" valign="top">QList&lt; QPointer&lt; <a class="el" href="classWaypoint.html">Waypoint</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#ab02771ce94f867720455ba7af0195904">waypoints</a> ()</td></tr>
 <tr class="memdesc:ab02771ce94f867720455ba7af0195904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waypoints.  <a href="#ab02771ce94f867720455ba7af0195904">More...</a><br /></td></tr>
 <tr class="separator:ab02771ce94f867720455ba7af0195904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121e926cbf60d103be199942d3b18940"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a121e926cbf60d103be199942d3b18940">setMeteorologist</a> (<a class="el" href="classMeteorologist.html">Meteorologist</a> *meteorologist)</td></tr>
+<tr class="memdesc:a121e926cbf60d103be199942d3b18940"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects this <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> with a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance.  <a href="#a121e926cbf60d103be199942d3b18940">More...</a><br /></td></tr>
+<tr class="separator:a121e926cbf60d103be199942d3b18940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -162,6 +165,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Create a new GeoMap provider. </p>
+<p>This constructor creates a new <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> instance. Note that the instance will only start to work once the method <a class="el" href="classGeoMapProvider.html#a121e926cbf60d103be199942d3b18940" title="Connects this GeoMapProvider with a Meteorologist instance. ">setMeteorologist()</a> has been called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">manager</td><td>Pointer to a <a class="el" href="classMapManager.html" title="Manages the list of geographic maps. ">MapManager</a> whose files will be served. The manager shall exist for the lifetime of this object.</td></tr>
@@ -289,7 +293,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a nullpointer if no waypoint has been found, or else a pointer to the waypoint For better cooperation with QML is not a pointer of type Waypoint*, but ratherof type QObject*. The object is owned by this class and must not be deleted. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a nullpointer if no waypoint has been found, or else a pointer to the waypoint. For better cooperation with QML is not a pointer of type <a class="el" href="classWaypoint.html" title="Waypoint, such as an airfield, a navaid station or a reporting point. ">Waypoint</a>, but ratherof type QObject. The object is owned by this class and must not be deleted. </dd></dl>
 
 </div>
 </div>
@@ -319,7 +323,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property geoJSON </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00129">129</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00133">133</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -357,6 +361,34 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a list of the 20 waypoints of requested type that are closest to the given position; the list may however be empty or contain fewer than 20 items. For better cooperation with QML the list does not contain elements of type Waypoint*, but elements of type QObject* </dd></dl>
+
+</div>
+</div>
+<a id="a121e926cbf60d103be199942d3b18940"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121e926cbf60d103be199942d3b18940">&#9670;&nbsp;</a></span>setMeteorologist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GeoMapProvider::setMeteorologist </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMeteorologist.html">Meteorologist</a> *&#160;</td>
+          <td class="paramname"><em>meteorologist</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Connects this <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> with a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance. </p>
+<p>To work right, the <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> needs access to an instance of the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> class. Because of cross-dependencies between the classes <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> and <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a>, the pointer to the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> is not given as an argument in the constructor, but must be set as soon as possible after construction with the present method.</p>
+<p>The <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> will not crash if the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> is deleted at run-time, but several method will only work with reduced functionality, as newly generated waypoint will no longer contain weather information.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">meteorologist</td><td>Pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> object. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -406,7 +438,7 @@ Properties</h2></td></tr>
 <p>Waypoints. </p>
 <dl class="section return"><dt>Returns</dt><dd>a list of all waypoints known to this <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> (that is, the union of all waypoints in any of the installed maps) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00180">180</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00184">184</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -434,7 +466,7 @@ Properties</h2></td></tr>
 <p>Union of all aviation maps in GeoJSON format. </p>
 <p>This property holds all installed aviation maps in GeoJSON format, combined into one GeoJSON document. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00123">123</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00127">127</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -461,7 +493,7 @@ Properties</h2></td></tr>
 <p>URL where a style file for the base map can be retrieved. </p>
 <p>This property holds a URL where a mapbox style file for the base map can be retrieved. The style file is adjusted, so that its source element points to the local <a class="el" href="classTileServer.html" title="HTTP server for mapbox&#39; MBTiles files. ">TileServer</a> URL where the base map is served. Whenever the base map changes (e.g. because new maps have been downloaded or removed), the style file is deleted, a new style file is generated and a notification signal is emitted. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00167">167</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00171">171</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>

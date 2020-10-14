@@ -250,6 +250,8 @@ public:
      */
     QString summary() const;
 
+#warning Test
+    void process();
 signals:
     /*! Notifier signal */
     void summaryChanged();
@@ -289,6 +291,9 @@ private:
     QPointer<Clock> _clock {};
 
     // Private data structures
+    QString _weather;
+    QString _decoded;
+
     QMultiMap<QString, QVariant> data;
     QStringList dataStrings;
 };

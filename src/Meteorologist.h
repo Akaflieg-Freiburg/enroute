@@ -63,6 +63,7 @@ class Meteorologist : public QObject {
     Q_OBJECT
 
 public:
+    class Decoder;
     class METAR;
     class TAF;
     class WeatherStation;
@@ -299,6 +300,7 @@ private:
     QMap<QString, QPointer<WeatherStation>> _weatherStationsByICAOCode;
 };
 
+#include "Meteorologist_Decoder.h"
 #include "Meteorologist_METAR.h"
 #include "Meteorologist_TAF.h"
 #include "Meteorologist_WeatherStation.h"

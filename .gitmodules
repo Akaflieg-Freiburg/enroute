@@ -24,3 +24,6 @@
 [submodule "3rdParty/sunset"]
 	path = 3rdParty/sunset
 	url = https://github.com/buelowp/sunset.git
+[submodule "3rdParty/metaf"]
+	path = 3rdParty/metaf
+	url = https://gitlab.com/nnaumenko/metaf.git

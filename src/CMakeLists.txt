@@ -84,6 +84,7 @@ set(SOURCES
     GlobalSettings.h
     Librarian.h
     Meteorologist.h
+    Meteorologist_Decoder.h
     Meteorologist_METAR.h
     Meteorologist_TAF.h
     Meteorologist_WeatherStation.h
@@ -110,6 +111,7 @@ set(SOURCES
     main.cpp
     MapManager.cpp
     Meteorologist.cpp
+    Meteorologist_Decoder.cpp
     Meteorologist_METAR.cpp
     Meteorologist_TAF.cpp
     Meteorologist_WeatherStation.cpp

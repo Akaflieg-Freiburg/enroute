@@ -21,6 +21,14 @@
 #include <QDataStream>
 #include <QXmlStreamAttribute>
 
+#include <QDebug>
+#include "../3rdParty/metaf/include/metaf.hpp"
+#include <vector>
+#include <string>
+#include <string_view>
+#include <sstream>
+#include <cmath>
+
 #include "Clock.h"
 #include "Meteorologist_METAR.h"
 #include "Meteorologist_WeatherStation.h"
@@ -187,6 +195,8 @@ Meteorologist::METAR::METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent
         connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::relativeObservationTimeChanged);
     }
 
+#warning experimental
+    process();
 }
 
 
@@ -200,6 +210,9 @@ Meteorologist::METAR::METAR(QDataStream &inputStream, Clock *clock, QObject *par
     inputStream >> _observationTime;
     inputStream >> _qnh;
     inputStream >> _raw_text;
+
+#warning experimental
+    process();
 }
 
 
@@ -222,7 +235,7 @@ bool Meteorologist::METAR::isExpired() const
 
 QString Meteorologist::METAR::decodedText() const
 {
-    return "This is a clear text presentation of the METAR";
+    return _decoded;
 }
 
 
@@ -284,7 +297,7 @@ QString Meteorologist::METAR::summary() const {
         resultList << tr("wind at %1 kt").arg(windSpeed);
 
     if (data.contains("wx_string"))
-        resultList << Meteorologist::WeatherStation::decodeWx(data.value("wx_string"));
+        resultList << _weather;
 
     if (resultList.isEmpty())
         return QString();
@@ -335,4 +348,343 @@ QDataStream &operator<<(QDataStream &out, const Meteorologist::METAR &metar)
     out << metar._raw_text;
 
     return out;
+}
+
+
+using namespace metaf;
+
+static const inline std::string groupNotValidMessage =
+        "Data in this group may be errorneous, incomplete or inconsistent";
+
+
+QString explainMetafTime(const metaf::MetafTime & metafTime)
+{
+#warning Many things need doing here!
+
+    QString result;
+
+    const auto day = metafTime.day();
+    if (day.has_value()) {
+        result += QString("day %1, ").arg(*day);
+    }
+
+    return result += QString("%1:%2").arg(metafTime.hour()).arg(metafTime.minute());
+}
+
+QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
+{
+    /* Handle special cases */
+    const auto weatherStr = Meteorologist::Decoder::specialWeatherPhenomenaToString(wp);
+    if (!weatherStr.isEmpty())
+        return weatherStr;
+
+
+    // String that will hold the result
+    QString result;
+
+    QStringList weatherPhenomena;
+    for (const auto w : wp.weather())
+        // This is a string such as "hail" or "rain"
+        weatherPhenomena << Meteorologist::Decoder::weatherPhenomenaWeatherToString(w);
+    result += weatherPhenomena.join(", ");
+
+    QStringList parenthesisTexts;
+
+    // Qualifier, such as "light" or "moderate"
+    const auto qualifier = Meteorologist::Decoder::weatherPhenomenaQualifierToString(wp.qualifier());
+    if (!qualifier.isEmpty())
+        parenthesisTexts << qualifier;
+    // Descriptor, such as "freezing" or "blowing"
+    const auto descriptor = Meteorologist::Decoder::weatherPhenomenaDescriptorToString(wp.descriptor());
+    if (!descriptor.isEmpty())
+        parenthesisTexts << descriptor;
+    auto parenthesisText = parenthesisTexts.join(", ");
+    if (!parenthesisText.isEmpty())
+        result += QString(" (%1)").arg(parenthesisText);
+
+
+    const auto time = wp.time();
+    switch (wp.event()){
+    case metaf::WeatherPhenomena::Event::BEGINNING:
+        if (!time.has_value())
+            break;
+        result += " began: " + explainMetafTime(*wp.time());
+        break;
+
+    case metaf::WeatherPhenomena::Event::ENDING:
+        if (!time.has_value())
+            break;
+        result += " ended: " + explainMetafTime(*wp.time());
+        break;
+
+    case metaf::WeatherPhenomena::Event::NONE:
+        break;
+    }
+
+    return result;
+}
+
+
+class MyVisitor : public Visitor<std::string> {
+    virtual std::string visitKeywordGroup(
+            const KeywordGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Keyword: " + rawString);
+    }
+
+    virtual std::string visitLocationGroup(
+            const LocationGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("ICAO location: " + rawString);
+    }
+
+    virtual std::string visitReportTimeGroup(
+            const ReportTimeGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Report Release Time: " + rawString);
+    }
+
+    virtual std::string visitTrendGroup(
+            const TrendGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Trend Header: " + rawString);
+    }
+
+    virtual std::string visitWindGroup(
+            const WindGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Wind: " + rawString);
+    }
+
+    virtual std::string visitVisibilityGroup(
+            const VisibilityGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Visibility: " + rawString);
+    }
+
+    virtual std::string visitCloudGroup(
+            const CloudGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Cloud Data: " + rawString);
+    }
+
+    virtual std::string visitWeatherGroup(
+            const WeatherGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)reportPart; (void)rawString;
+        std::ostringstream result;
+
+        if (!group.isValid())
+            result << groupNotValidMessage << "\n";
+
+        // Gather string with list of phenomena
+        QStringList phenomenaList;
+        for (const auto p : group.weatherPhenomena())
+            phenomenaList << explainWeatherPhenomena(p);
+        auto phenomenaString = phenomenaList.join(" • ");
+
+
+        switch (group.type()) {
+        case metaf::WeatherGroup::Type::CURRENT:
+            return phenomenaString.toStdString();
+
+        case metaf::WeatherGroup::Type::RECENT:
+            return "Recent weather: " + phenomenaString.toStdString();
+
+        case metaf::WeatherGroup::Type::EVENT:
+            return "Precipitation beginning/ending time: " + phenomenaString.toStdString();
+
+        case metaf::WeatherGroup::Type::NSW:
+            return "End of significant weather phenomena";
+
+        case metaf::WeatherGroup::Type::PWINO:
+            return "This automated station is equipped with present weather identifier and this sensor is not operating";
+
+        case metaf::WeatherGroup::Type::TSNO:
+            return "This automated station is equipped with lightning detector and this sensor is not operating";
+
+        case metaf::WeatherGroup::Type::WX_MISG:
+            return "Weather phenomena data is missing";
+
+        case metaf::WeatherGroup::Type::TS_LTNG_TEMPO_UNAVBL:
+            return "Thunderstorm / lightning data is missing";
+        }
+        return "";
+    }
+
+    virtual std::string visitTemperatureGroup(
+            const TemperatureGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Temperature and Dew Point: " + rawString);
+    }
+
+    virtual std::string visitPressureGroup(
+            const PressureGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Pressure: " + rawString);
+    }
+
+    virtual std::string visitRunwayStateGroup(
+            const RunwayStateGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("State of Runway:" + rawString);
+    }
+
+    virtual std::string visitSeaSurfaceGroup(
+            const SeaSurfaceGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Sea Surface: " + rawString);
+    }
+
+    virtual std::string visitMinMaxTemperatureGroup(
+            const MinMaxTemperatureGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Minimum/Maximum Temperature: " + rawString);
+    }
+
+    virtual std::string visitPrecipitationGroup(
+            const PrecipitationGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Precipitation: " + rawString);
+    }
+
+    virtual std::string visitLayerForecastGroup(
+            const LayerForecastGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Atmospheric Layer Forecast: " + rawString);
+    }
+
+    virtual std::string visitPressureTendencyGroup(
+            const PressureTendencyGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Pressure Tendency: " + rawString);
+    }
+
+    virtual std::string visitCloudTypesGroup(
+            const CloudTypesGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Cloud Types: " + rawString);
+    }
+
+    virtual std::string visitLowMidHighCloudGroup(
+            const LowMidHighCloudGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Low, middle, and high cloud layers: " + rawString);
+    }
+
+    virtual std::string visitLightningGroup(
+            const LightningGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Lightning data: " + rawString);
+    }
+
+    virtual std::string visitVicinityGroup(
+            const VicinityGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Events in vicinity: " + rawString);
+    }
+
+    virtual std::string visitMiscGroup(
+            const MiscGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Miscellaneous Data: " + rawString);
+    }
+
+    virtual std::string visitUnknownGroup(
+            const UnknownGroup & group,
+            ReportPart reportPart,
+            const std::string & rawString)
+    {
+        (void)group; (void)reportPart;
+        return ("Not recognised by the parser: " + rawString);
+    }
+};
+
+
+
+void Meteorologist::METAR::process()
+{
+    auto report = rawText().toStdString();
+    const auto result = metaf::Parser::parse(report);
+
+    // Error handling
+    /*
+ *     if (result.reportMetadata.error == metaf::ReportError::NONE)
+        qDebug() << "parsed successfully";
+*(
+*/
+    QStringList decodedStrings;
+    MyVisitor visitor;
+    for (const auto &groupInfo : result.groups) {
+        auto description = QString::fromStdString(visitor.visit(groupInfo));
+        decodedStrings.append(description);
+        if (std::holds_alternative<metaf::WeatherGroup>(groupInfo.group)) {
+            _weather = description;
+            qWarning() << description;
+        }
+    }
+
+    _decoded = decodedStrings.join("<br>");
 }

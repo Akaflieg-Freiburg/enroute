@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 #endif
 
     // Create global settings object. We do this before creating the application engine because this also installs translators.
-    auto globalSettings = new GlobalSettings();
+//    auto globalSettings = new GlobalSettings();
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     auto *adaptor = new MobileAdaptor();
@@ -117,14 +117,13 @@ int main(int argc, char *argv[])
      * Set up ApplicationEngine for QML
      */
     auto engine = new QQmlApplicationEngine();
-    QObject::connect(globalSettings, &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
+    QObject::connect(GlobalSettings::globalInstance(), &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
-    auto navEngine = new SatNav(globalSettings, engine);
-    engine->rootContext()->setContextProperty("satNav", navEngine);
+    engine->rootContext()->setContextProperty("satNav", SatNav::globalInstance());
 
     // Attach global settings object
-    engine->rootContext()->setContextProperty("globalSettings", globalSettings);
+    engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());
 
     // Make MobileAdaptor available to QML engine
     QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
@@ -160,11 +159,11 @@ int main(int argc, char *argv[])
     QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
-    auto geoMapProvider = new GeoMapProvider(mapManager, globalSettings, librarian);
+    auto geoMapProvider = new GeoMapProvider(mapManager, librarian);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach meteorologist
-    auto meteorologist = new Meteorologist(clock, navEngine, flightroute, globalSettings, geoMapProvider, networkAccessManager, engine);
+    auto meteorologist = new Meteorologist(clock, flightroute, geoMapProvider, networkAccessManager, engine);
     engine->rootContext()->setContextProperty("meteorologist", meteorologist);
     geoMapProvider->setMeteorologist(meteorologist);
 

@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "Clock.h"
+#include "SatNav.h"
 
-#include <QDebug>
 #include <QGuiApplication>
 #include <QTimer>
 
@@ -74,9 +74,15 @@ QString Clock::describeTimeDifference(QDateTime pointInTime)
 }
 
 
-QString Clock::describePointInTime(QDateTime pointInTime, QGeoCoordinate position)
+QString Clock::describePointInTime(QDateTime pointInTime)
 {
     pointInTime = pointInTime.toUTC();
+
+    // Obtain current position
+    QGeoCoordinate position;
+    auto _satNav = SatNav::globalInstance();
+    if (_satNav)
+        position = _satNav->lastValidCoordinate();
 
     if (position.isValid()) {
         auto lastMidnight = QDateTime::currentDateTimeUtc();

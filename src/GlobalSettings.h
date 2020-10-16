@@ -32,8 +32,10 @@
  *
  * This class holds a few data items and exposes them via QObject properties, so
  * that they can be used in QML.  All data stored in this class is saved via
- * QSettings on destruction.  Only one instance of this class should exist at
- * any given time.
+ * QSettings on destruction.
+ *
+ * There exists one static instance of this class, which can be accessed via the
+ * method globalInstance().  No other instance of this class should be used.
  *
  * The methods in this class are reentrant, but not thread safe.
  */
@@ -102,9 +104,19 @@ public:
      */
     bool hasTranslation() const { return QFile::exists(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
 
+    /*! \brief Pointer to static instance
+     *
+     * This method returns a pointer to a static instance of this class. In rare
+     * situations, during shutdown of the app, a nullptr might be returned.
+     *
+     * @returns A pointer to a static instance of this class
+     */
+    static GlobalSettings *globalInstance();
+
     /*! \brief Hash of the last "what's new message that was shown to the user
      *
-     * This property is used in the app to determine if the message has been shown or not.
+     * This property is used in the app to determine if the message has been
+     * shown or not.
      */
     Q_PROPERTY(uint lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
 
@@ -150,7 +162,8 @@ public:
      */
     void setHideUpperAirspaces(bool hide);
 
-    /*! \brief Set to true is app should be shown in English rather than the system language */
+    /*! \brief Set to true is app should be shown in English rather than the
+     * system language */
     Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits NOTIFY useMetricUnitsChanged)
 
     /*! \brief Getter function for property of the same name
@@ -161,7 +174,8 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * Setting this property will switch the horrizontal speed unit to km/h instead of kt.
+     * Setting this property will switch the horizontal speed unit to km/h
+     * instead of kt.
      *
      * @param unitHorrizKmh Property unitHorrizKmh
      */
@@ -209,7 +223,8 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(GlobalSettings)
 
-    // Removes/Installs global application translators, according to the settings value "System/preferEnglish"
+    // Removes/Installs global application translators, according to the
+    // settings value "System/preferEnglish"
     void installTranslators();
 
     QPointer<QTranslator> enrouteTranslator {nullptr};

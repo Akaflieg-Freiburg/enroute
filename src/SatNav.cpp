@@ -26,9 +26,12 @@
 #include "SatNav.h"
 
 
+// Static instance of this class
+Q_GLOBAL_STATIC(SatNav, satNavStatic);
 
-SatNav::SatNav(GlobalSettings *globalSettings, QObject *parent)
-    : QObject(parent), _globalSettings(globalSettings)
+
+SatNav::SatNav(QObject *parent)
+    : QObject(parent)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
 
@@ -109,6 +112,26 @@ void SatNav::setAltitudeInFeet(int altitudeInFeet)
 }
 
 
+void SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
+{
+    // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
+    auto oldStatus = status();
+    sourceStatus = newSourceStatus;
+
+    // If there really is an error, reset lastInfo and cancel all counters
+    if (newSourceStatus != QGeoPositionInfoSource::NoError) {
+        lastInfo = QGeoPositionInfo();
+        timeoutCounter.stop();
+    }
+
+    if (oldStatus != status()) {
+        emit iconChanged();
+        emit statusChanged();
+        emit update();
+    }
+}
+
+
 int SatNav::rawAltitudeInFeet() const
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
@@ -145,23 +168,9 @@ QString SatNav::geoidalSeparationAsString() const
 }
 
 
-void SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
+SatNav *SatNav::globalInstance()
 {
-    // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
-    auto oldStatus = status();
-    sourceStatus = newSourceStatus;
-
-    // If there really is an error, reset lastInfo and cancel all counters
-    if (newSourceStatus != QGeoPositionInfoSource::NoError) {
-        lastInfo = QGeoPositionInfo();
-        timeoutCounter.stop();
-    }
-
-    if (oldStatus != status()) {
-        emit iconChanged();
-        emit statusChanged();
-        emit update();
-    }
+    return satNavStatic;
 }
 
 
@@ -446,6 +455,7 @@ QString SatNav::wayTo(const QGeoCoordinate& position) const
         return QString();
 
     bool useMetricUnits = false;
+    auto _globalSettings = GlobalSettings::globalInstance();
     if (_globalSettings)
         useMetricUnits = _globalSettings->useMetricUnits();
 

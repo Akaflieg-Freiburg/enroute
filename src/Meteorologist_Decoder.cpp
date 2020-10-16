@@ -102,7 +102,7 @@ QString Meteorologist::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPh
 {
     switch (weather) {
     case metaf::WeatherPhenomena::Weather::NOT_REPORTED:
-        return tr("not reported");
+        return QString();
 
     case metaf::WeatherPhenomena::Weather::DRIZZLE:
         return tr("drizzle");
@@ -175,84 +175,123 @@ QString Meteorologist::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPh
 
 QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp)
 {
-    using WeatherVector = std::vector<metaf::WeatherPhenomena::Weather>;
-    using SpecialWeatherPhenomena = std::tuple<
-    metaf::WeatherPhenomena::Qualifier,
-    metaf::WeatherPhenomena::Descriptor,
-    WeatherVector,
-    QString
-    >;
+    QStringList results;
+    for (const auto &weather : wp.weather()) {
 
-    static const std::vector <SpecialWeatherPhenomena>
-            specialWeatherPhenomena = {
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::VICINITY,
-        metaf::WeatherPhenomena::Descriptor::SHOWERS,
-        {},
-        tr("precipitation in vicinity")),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::NONE,
-        metaf::WeatherPhenomena::Descriptor::NONE,
-        { metaf::WeatherPhenomena::Weather::ICE_CRYSTALS },
-        tr("ice crystals")),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::NONE,
-        metaf::WeatherPhenomena::Descriptor::NONE,
-        { metaf::WeatherPhenomena::Weather::DUST },
-        tr("widespread dust")),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::NONE,
-        metaf::WeatherPhenomena::Descriptor::NONE,
-        { metaf::WeatherPhenomena::Weather::UNDETERMINED },
-        tr("undetermined precipitation")
-        ),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::NONE,
-        metaf::WeatherPhenomena::Descriptor::SHALLOW,
-        { metaf::WeatherPhenomena::Weather::FOG },
-        tr("shallow fog")
-        ),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::NONE,
-        metaf::WeatherPhenomena::Descriptor::PARTIAL,
-        { metaf::WeatherPhenomena::Weather::FOG },
-        tr("partial fog covering")
-        ),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::NONE,
-        metaf::WeatherPhenomena::Descriptor::PATCHES,
-        { metaf::WeatherPhenomena::Weather::FOG },
-        tr("patches of fog")
-        ),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::NONE,
-        metaf::WeatherPhenomena::Descriptor::FREEZING,
-        { metaf::WeatherPhenomena::Weather::FOG },
-        tr("freezing fog")
-        ),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::HEAVY,
-        metaf::WeatherPhenomena::Descriptor::NONE,
-        { metaf::WeatherPhenomena::Weather::FUNNEL_CLOUD },
-        tr("tornado or waterspout")
-        ),
-        SpecialWeatherPhenomena(
-        metaf::WeatherPhenomena::Qualifier::VICINITY,
-        metaf::WeatherPhenomena::Descriptor::NONE,
-        { metaf::WeatherPhenomena::Weather::FUNNEL_CLOUD },
-        tr("tornado in vicinity")
-        )
-    };
-
-    for (const auto & w : specialWeatherPhenomena) {
-        if (wp.qualifier() ==
-                std::get<metaf::WeatherPhenomena::Qualifier>(w) &&
-                wp.descriptor() ==
-                std::get<metaf::WeatherPhenomena::Descriptor>(w) &&
-                wp.weather() == std::get<WeatherVector>(w))
-        {
-            return std::get<QString>(w);
+        // DRIZZLE
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::DRIZZLE) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light drizzle");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate drizzle");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy drizzle");
+                break;
+            default:
+                return QString();
+            }
+            continue;
         }
+
+        // FOG
+        if (wp.qualifier() == metaf::WeatherPhenomena::Qualifier::NONE && weather == metaf::WeatherPhenomena::Weather::FOG) {
+            switch(wp.descriptor()) {
+            case metaf::WeatherPhenomena::Descriptor::FREEZING:
+                results << tr("freezing fog");
+                break;
+            case metaf::WeatherPhenomena::Descriptor::PARTIAL:
+                results << tr("partial fog");
+                break;
+            case metaf::WeatherPhenomena::Descriptor::PATCHES:
+                results << tr("patches of fog");
+                break;
+            case metaf::WeatherPhenomena::Descriptor::SHALLOW:
+                results << tr("shallow fog");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+
+        // RAIN
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::RAIN) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy rain");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // RAIN SHOWERS
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::RAIN) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light rain showers");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate rain showers");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy rain showers");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // SNOW
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::SNOW) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light snowfall");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate snowfall");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy snowfall");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // SNOW SHOWERS
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::SNOW) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light snow showers");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate snow showers");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy snow showers");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        return QString();
     }
-    return QString();
+
+    return results.join(" • ");
 }

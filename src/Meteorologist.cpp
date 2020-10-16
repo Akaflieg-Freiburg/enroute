@@ -39,9 +39,7 @@
 
 
 Meteorologist::Meteorologist(Clock *clock,
-                             SatNav *sat,
                              FlightRoute *route,
-                             GlobalSettings *globalSettings,
                              GeoMapProvider *geoMapProvider,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
@@ -49,9 +47,7 @@ Meteorologist::Meteorologist(Clock *clock,
     _clock(clock),
     _flightRoute(route),
     _geoMapProvider(geoMapProvider),
-    _globalSettings(globalSettings),
-    _networkAccessManager(networkAccessManager),
-    _satNav(sat)
+    _networkAccessManager(networkAccessManager)
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
@@ -68,9 +64,14 @@ Meteorologist::Meteorologist(Clock *clock,
     // Update the description text when needed
     connect(this, &Meteorologist::weatherStationsChanged, this, &Meteorologist::QNHInfoChanged);
     connect(clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
-    connect(sat, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
+#warning move this to extra function
+    auto _satNav = SatNav::globalInstance();
+    if (_satNav) {
+        connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
+        connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::sunInfoChanged);
+    }
     connect(clock, &Clock::timeChanged, this, &Meteorologist::sunInfoChanged);
-    connect(sat, &SatNav::statusChanged, this, &Meteorologist::sunInfoChanged);
+
 
     // Read METAR/TAF from "weather.dat"
     load();
@@ -308,7 +309,8 @@ void Meteorologist::save()
 QString Meteorologist::sunInfo() const
 {
     // Paranoid safety checks
-    if (_satNav.isNull())
+    auto _satNav = SatNav::globalInstance();
+    if (_satNav == nullptr)
         return QString();
     if (_satNav->status() != SatNav::OK)
         return tr("Waiting for precise position…");
@@ -356,10 +358,10 @@ QString Meteorologist::sunInfo() const
 
     if (sunrise.isValid() && sunset.isValid() && sunriseTomorrow.isValid()) {
         if (currentTime < sunrise)
-            return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise, coord), Clock::describeTimeDifference(sunrise));
+            return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise), Clock::describeTimeDifference(sunrise));
         if (currentTime < sunset.addSecs(40*60))
-            return tr("SS %1, %2").arg(Clock::describePointInTime(sunset, coord), Clock::describeTimeDifference(sunset));
-        return tr("SR %1, %2").arg(Clock::describePointInTime(sunriseTomorrow, coord), Clock::describeTimeDifference(sunriseTomorrow));
+            return tr("SS %1, %2").arg(Clock::describePointInTime(sunset), Clock::describeTimeDifference(sunset));
+        return tr("SR %1, %2").arg(Clock::describePointInTime(sunriseTomorrow), Clock::describeTimeDifference(sunriseTomorrow));
     }
     return QString();
 }
@@ -368,7 +370,8 @@ QString Meteorologist::sunInfo() const
 QString Meteorologist::QNHInfo() const
 {
     // Paranoid safety checks
-    if (_satNav.isNull())
+    auto _satNav = SatNav::globalInstance();
+    if (_satNav == nullptr)
         return QString();
 
     // Find QNH of nearest airfield
@@ -404,11 +407,13 @@ QString Meteorologist::QNHInfo() const
 
 void Meteorologist::update(bool isBackgroundUpdate) {
     // Paranoid safety checks
-    if (_globalSettings.isNull())
+    auto _globalSettings = GlobalSettings::globalInstance();
+    if (_globalSettings == nullptr)
         return;
     if (_flightRoute.isNull())
         return;
-    if (_satNav.isNull())
+    auto _satNav = SatNav::globalInstance();
+    if (_satNav == nullptr)
         return;
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
@@ -481,11 +486,14 @@ QList<Meteorologist::WeatherStation *> Meteorologist::weatherStations() const {
             sortedReports += stations;
 
     // Sort list
-    auto compare = [&](const WeatherStation *a, const WeatherStation *b) {
-        auto here = _satNav->lastValidCoordinate();
-        return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
-    };
-    std::sort(sortedReports.begin(), sortedReports.end(), compare);
+    auto _satNav = SatNav::globalInstance();
+    if (_satNav) {
+        auto compare = [&](const WeatherStation *a, const WeatherStation *b) {
+            auto here = _satNav->lastValidCoordinate();
+            return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
+        };
+        std::sort(sortedReports.begin(), sortedReports.end(), compare);
+    }
 
     return sortedReports;
 }

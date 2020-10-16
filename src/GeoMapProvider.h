@@ -73,15 +73,12 @@ public:
      * @param manager Pointer to a MapManager whose files will be served. The
      * manager shall exist for the lifetime of this object.
      *
-     * @param settings GlobalSettings object where settings are stored. The
-     * settings shall exist for the lifetime of this object.
-     *
      * @param librarian Global Librarian object. The librarian shall exist for
      * the lifetime of this object.
      *
      * @param parent The standard QObject parent
      */
-    explicit GeoMapProvider(MapManager *manager, GlobalSettings* settings, Librarian *librarian, QObject *parent = nullptr);
+    explicit GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent = nullptr);
 
     // Standard destructor
     ~GeoMapProvider() override = default;
@@ -214,7 +211,6 @@ private:
 
     // Pointers to other classes that are used internally
     QPointer<Meteorologist> _meteorologist;
-    QPointer<GlobalSettings> _globalSettings;
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars {"[^a-zA-Z0-9]"};

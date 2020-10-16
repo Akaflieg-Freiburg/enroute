@@ -62,12 +62,9 @@ public:
      *
      * \param pointInTime The point in time that is to be described.
      *
-     * \param position Position of the user. This is used to make sense of the notions "tomorrow" and "yesterday". If the
-     * position is invalid, a string of the form "12. Sept., 17:51" is returned.
-     *
      * \return String with the description
      */
-    Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime, QGeoCoordinate position=QGeoCoordinate());
+    Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime);
 
     /*! \brief Current time in UTC as a string
      *

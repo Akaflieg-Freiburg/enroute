@@ -74,25 +74,15 @@ public:
      * property updates, in order to avoid continuous GUI updates when many
      * items are shown.
      *
-     * @param sat A pointer to a SatNav object, which is used to determine the
-     * position. This is used to find nearby weather stations, for
-     * sunset/sunrise computations, and for sorting WeatherStations according to
-     * position.
-     *
      * @param route A pointer to a FlightRoute object. This is used to find
      * WeatherStations near the planned route.
-     *
-     * @param globalSettings A pointer to a GlobalSettings object, used to check
-     * if the user has agreed to the privacy warning.
      * 
      * @param networkAccessManager The manager for network requests
      * 
      * @param parent The standard QObject parent pointer
      */
     explicit Meteorologist(Clock *clock,
-                           SatNav *sat,
                            FlightRoute *route,
-                           GlobalSettings *globalSettings,
                            GeoMapProvider *geoMapProvider,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
@@ -275,14 +265,8 @@ private:
     // Pointer to global settings
     QPointer<GeoMapProvider> _geoMapProvider;
 
-    // Pointer to global settings
-    QPointer<GlobalSettings> _globalSettings;
-
     // Pointer to the network access manager
     QPointer<QNetworkAccessManager> _networkAccessManager;
-
-    // Pointer to the satellite navigation system */
-    QPointer<SatNav> _satNav;
 
     // List of replies from aviationweather.com
     QList<QPointer<QNetworkReply>> _networkReplies;

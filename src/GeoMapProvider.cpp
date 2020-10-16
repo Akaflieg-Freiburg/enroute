@@ -32,9 +32,8 @@
 #include "Waypoint.h"
 
 
-GeoMapProvider::GeoMapProvider(MapManager *manager, GlobalSettings* globalSettings, Librarian *librarian, QObject *parent)
+GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent)
     : QObject(parent),
-      _globalSettings(globalSettings),
       _manager(manager),
       _librarian(librarian),
       _tileServer(QUrl()),
@@ -208,7 +207,11 @@ void GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, _globalSettings->hideUpperAirspaces());
+    auto _globalSettings = GlobalSettings::globalInstance();
+    if (_globalSettings == nullptr)
+        _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, _globalSettings->hideUpperAirspaces());
+    else
+        _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, false);
 }
 
 
@@ -342,7 +345,9 @@ void GeoMapProvider::setMeteorologist(Meteorologist *meteorologist)
     // Connect the Downloadmanager, so aviation maps will be generated
     connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::aviationMapsChanged);
     connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::baseMapsChanged);
-    connect(_globalSettings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
+    auto _globalSettings = GlobalSettings::globalInstance();
+    if (_globalSettings)
+        connect(_globalSettings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3*1000);

@@ -19,12 +19,15 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
-#include <QDebug>
 #include <QLibraryInfo>
 #include <QLocale>
 #include <QSettings>
 
 #include "GlobalSettings.h"
+
+
+// Static instance of this class
+Q_GLOBAL_STATIC(GlobalSettings, globalSettingsStatic);
 
 
 GlobalSettings::GlobalSettings(QObject *parent)
@@ -36,13 +39,14 @@ GlobalSettings::GlobalSettings(QObject *parent)
 
 GlobalSettings::~GlobalSettings()
 {
-    // Remove translators
-    if (enrouteTranslator)
-        QCoreApplication::removeTranslator(enrouteTranslator);
-    delete enrouteTranslator;
-
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
+}
+
+
+GlobalSettings *GlobalSettings::globalInstance()
+{
+    return globalSettingsStatic;
 }
 
 
@@ -53,6 +57,7 @@ void GlobalSettings::setAcceptedTerms(int terms)
     settings.setValue("acceptedTerms", terms);
     emit acceptedTermsChanged();
 }
+
 
 void GlobalSettings::setAcceptedWeatherTerms(bool terms)
 {
@@ -98,6 +103,7 @@ void GlobalSettings::setUseMetricUnits(bool unitHorrizKmh)
     settings.setValue("System/useMetricUnits", unitHorrizKmh);
     emit useMetricUnitsChanged();
 }
+
 
 void GlobalSettings::setPreferEnglish(bool preferEng)
 {

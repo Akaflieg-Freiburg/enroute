@@ -361,6 +361,22 @@ QString explainMetafTime(const metaf::MetafTime & metafTime)
 {
 #warning Many things need doing here!
 
+#warning We should use the reporting time of the METAR/TAF here, but for now this is a good approximation
+    auto currentDateTime = QDateTime::currentDateTimeUtc();
+    auto metarDateTime = currentDateTime;
+
+    const auto day = metafTime.day();
+    if (day.has_value()) {
+        if (currentDateTime.date().day() > 25 && *day < 5)
+            metarDateTime = currentDateTime.addMonths(1);
+        if (currentDateTime.date().day() < 5 && *day > 25)
+            metarDateTime = currentDateTime.addMonths(-1);
+    }
+    metarDateTime.setTime(QTime(metafTime.hour(), metafTime.minute()));
+
+    return Clock::describePointInTime(metarDateTime);
+
+    /*
     QString result;
 
     const auto day = metafTime.day();
@@ -369,6 +385,7 @@ QString explainMetafTime(const metaf::MetafTime & metafTime)
     }
 
     return result += QString("%1:%2").arg(metafTime.hour()).arg(metafTime.minute());
+    */
 }
 
 QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
@@ -378,24 +395,50 @@ QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
     if (!weatherStr.isEmpty())
         return weatherStr;
 
+    // Obtain strings for qualifier & descriptor
+    auto qualifier = Meteorologist::Decoder::weatherPhenomenaQualifierToString(wp.qualifier()); // Qualifier, such as "light" or "moderate"
+    auto descriptor = Meteorologist::Decoder::weatherPhenomenaDescriptorToString(wp.descriptor()); // Descriptor, such as "freezing" or "blowing"
 
     // String that will hold the result
     QString result;
 
     QStringList weatherPhenomena;
-    for (const auto w : wp.weather())
+    for (const auto w : wp.weather()) {
         // This is a string such as "hail" or "rain"
-        weatherPhenomena << Meteorologist::Decoder::weatherPhenomenaWeatherToString(w);
+        auto wpString = Meteorologist::Decoder::weatherPhenomenaWeatherToString(w);
+        if (!wpString.isEmpty())
+            weatherPhenomena << Meteorologist::Decoder::weatherPhenomenaWeatherToString(w);
+    }
+    // Special case: "shower" is used as a phenomenom
+    if (weatherPhenomena.isEmpty() && wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS) {
+#warning needs translation
+        weatherPhenomena << QString("shower");
+        descriptor = QString();
+    }
+    if (weatherPhenomena.isEmpty() && wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM) {
+#warning needs translation
+        weatherPhenomena << QString("thunderstorm");
+        descriptor = QString();
+    }
     result += weatherPhenomena.join(", ");
 
-    QStringList parenthesisTexts;
+    // Handle special qualifiers
 
-    // Qualifier, such as "light" or "moderate"
-    const auto qualifier = Meteorologist::Decoder::weatherPhenomenaQualifierToString(wp.qualifier());
+    if (wp.qualifier() == metaf::WeatherPhenomena::Qualifier::RECENT) {
+#warning needs translation
+        result = QString("recently %1").arg(result);
+        qualifier = QString();
+    }
+    if (wp.qualifier() == metaf::WeatherPhenomena::Qualifier::VICINITY) {
+#warning needs translation
+        result = QString("%1 in the vicinity").arg(result);
+        qualifier = QString();
+    }
+
+    // The remaining descriptors and qualifiers go into a parenthesis text
+    QStringList parenthesisTexts;
     if (!qualifier.isEmpty())
         parenthesisTexts << qualifier;
-    // Descriptor, such as "freezing" or "blowing"
-    const auto descriptor = Meteorologist::Decoder::weatherPhenomenaDescriptorToString(wp.descriptor());
     if (!descriptor.isEmpty())
         parenthesisTexts << descriptor;
     auto parenthesisText = parenthesisTexts.join(", ");
@@ -408,18 +451,23 @@ QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
     case metaf::WeatherPhenomena::Event::BEGINNING:
         if (!time.has_value())
             break;
+#warning needs translation
         result += " began: " + explainMetafTime(*wp.time());
         break;
 
     case metaf::WeatherPhenomena::Event::ENDING:
         if (!time.has_value())
             break;
+#warning needs translation
         result += " ended: " + explainMetafTime(*wp.time());
         break;
 
     case metaf::WeatherPhenomena::Event::NONE:
         break;
     }
+
+    if (!parenthesisText.isEmpty())
+        qWarning() << "Weather phenomena w/o special handling code" << result;
 
     return result;
 }
@@ -661,7 +709,6 @@ class MyVisitor : public Visitor<std::string> {
         return ("Not recognised by the parser: " + rawString);
     }
 };
-
 
 
 void Meteorologist::METAR::process()

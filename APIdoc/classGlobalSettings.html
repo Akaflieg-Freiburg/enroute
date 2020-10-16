@@ -42,6 +42,7 @@ $(function() {
   <div class="summary">
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGlobalSettings-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -128,6 +129,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab670eae544532cc3d1488390756c22e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="#ab670eae544532cc3d1488390756c22e4">More...</a><br /></td></tr>
 <tr class="separator:ab670eae544532cc3d1488390756c22e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a062a11894751612d23913d6435a648d1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGlobalSettings.html">GlobalSettings</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a062a11894751612d23913d6435a648d1">globalInstance</a> ()</td></tr>
+<tr class="memdesc:a062a11894751612d23913d6435a648d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance.  <a href="#a062a11894751612d23913d6435a648d1">More...</a><br /></td></tr>
+<tr class="separator:a062a11894751612d23913d6435a648d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:ae23a599964215140c627ebfec52b90d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#ae23a599964215140c627ebfec52b90d9">acceptedTerms</a></td></tr>
@@ -162,10 +169,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Global Settings Manager. </p>
-<p>This class holds a few data items and exposes them via QObject properties, so that they can be used in QML. All data stored in this class is saved via QSettings on destruction. Only one instance of this class should exist at any given time.</p>
+<p>This class holds a few data items and exposes them via QObject properties, so that they can be used in QML. All data stored in this class is saved via QSettings on destruction.</p>
+<p>There exists one static instance of this class, which can be accessed via the method <a class="el" href="classGlobalSettings.html#a062a11894751612d23913d6435a648d1" title="Pointer to static instance. ">globalInstance()</a>. No other instance of this class should be used.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00041">41</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00043">43</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a02d443f7d431bd3c913964b2177d210c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a02d443f7d431bd3c913964b2177d210c">&#9670;&nbsp;</a></span>GlobalSettings()</h2>
@@ -228,7 +236,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property acceptedTerms </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00068">68</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00070">70</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -284,7 +292,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property acceptedWeatherTerms </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00088">88</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00090">90</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -340,7 +348,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property autoFlightDetection </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00130">130</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00142">142</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -370,6 +378,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a062a11894751612d23913d6435a648d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a062a11894751612d23913d6435a648d1">&#9670;&nbsp;</a></span>globalInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classGlobalSettings.html">GlobalSettings</a>* GlobalSettings::globalInstance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to static instance. </p>
+<p>This method returns a pointer to a static instance of this class. In rare situations, during shutdown of the app, a nullptr might be returned.</p>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to a static instance of this class </dd></dl>
+
+</div>
+</div>
 <a id="a7b36819b494d705de635210c2b931364"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b36819b494d705de635210c2b931364">&#9670;&nbsp;</a></span>hasTranslation()</h2>
 
@@ -396,7 +433,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hasTranslation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00103">103</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00105">105</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -426,7 +463,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hideUpperAirspaces </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00145">145</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00157">157</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -482,7 +519,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00115">115</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00127">127</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -538,7 +575,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property preferEnglish </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00177">177</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00191">191</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +779,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Setter function for property of the same name. </p>
-<p>Setting this property will switch the horrizontal speed unit to km/h instead of kt.</p>
+<p>Setting this property will switch the horizontal speed unit to km/h instead of kt.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">unitHorrizKmh</td><td>Property unitHorrizKmh </td></tr>
@@ -778,7 +815,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property useMetricUnits </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00160">160</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00173">173</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -832,7 +869,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Find out if Terms &amp; Conditions have been accepted. </p>
 <p>This property says which version of our "terms and conditions" have been accepted by the user; this is used to determine whether the first-use-dialog should be shown. If nothing has been accepted yet, 0 is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00062">62</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00064">64</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -859,7 +896,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Find out if Weather Terms have been accepted. </p>
 <p>This property says if the user has agreed to share its location and route with aviationweather.gov (US government website providing weather data). If nothing has been accepted yet, false is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00082">82</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00084">84</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -886,7 +923,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Hash of the last "what's new message that was shown to the user. </p>
 <p>This property is used in the app to determine if the message has been shown or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00109">109</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00121">121</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>

@@ -80,8 +80,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6b8a3d436bd8bf6a9f6a6ebb2bb482d1"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a6b8a3d436bd8bf6a9f6a6ebb2bb482d1">describeTimeDifference</a> (QDateTime pointInTime)</td></tr>
 <tr class="separator:a6b8a3d436bd8bf6a9f6a6ebb2bb482d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a974b5a01525d320af8b5855a8ebac0cd"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a974b5a01525d320af8b5855a8ebac0cd">describePointInTime</a> (QDateTime pointInTime, QGeoCoordinate position=QGeoCoordinate())</td></tr>
-<tr class="separator:a974b5a01525d320af8b5855a8ebac0cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd64bd9b6dd40b8f46e105b3c5acb964"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#abd64bd9b6dd40b8f46e105b3c5acb964">describePointInTime</a> (QDateTime pointInTime)</td></tr>
+<tr class="separator:abd64bd9b6dd40b8f46e105b3c5acb964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -133,8 +133,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a974b5a01525d320af8b5855a8ebac0cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a974b5a01525d320af8b5855a8ebac0cd">&#9670;&nbsp;</a></span>describePointInTime()</h2>
+<a id="abd64bd9b6dd40b8f46e105b3c5acb964"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd64bd9b6dd40b8f46e105b3c5acb964">&#9670;&nbsp;</a></span>describePointInTime()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,18 +146,8 @@ Properties</h2></td></tr>
           <td class="memname">static Q_INVOKABLE QString Clock::describePointInTime </td>
           <td>(</td>
           <td class="paramtype">QDateTime&#160;</td>
-          <td class="paramname"><em>pointInTime</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>pointInTime</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">QGeoCoordinate&#160;</td>
-          <td class="paramname"><em>position</em> = <code>QGeoCoordinate()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -171,7 +161,6 @@ Properties</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pointInTime</td><td>The point in time that is to be described.</td></tr>
-    <tr><td class="paramname">position</td><td>Position of the user. This is used to make sense of the notions "tomorrow" and "yesterday". If the position is invalid, a string of the form "12. Sept., 17:51" is returned.</td></tr>
   </table>
   </dd>
 </dl>
@@ -240,7 +229,7 @@ Properties</h2></td></tr>
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property time </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00096">96</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00093">93</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
 
 </div>
 </div>
@@ -288,7 +277,7 @@ Properties</h2></td></tr>
 <p>Current time. </p>
 <p>This property holds the current time. The implementation makes some effort to ensure that the notifier signal is emitted just after every minute change. </p>
 
-<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00090">90</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00087">87</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +304,7 @@ Properties</h2></td></tr>
 <p>Current time in UTC as a string. </p>
 <p>This property holds the current time in UTC as a string of the form "8:06" or "13:45". The implementation makes some effort to ensure that the notifier signal is emitted just after every minute change. </p>
 
-<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00077">77</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00074">74</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
 
 </div>
 </div>

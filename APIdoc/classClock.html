@@ -82,6 +82,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a6b8a3d436bd8bf6a9f6a6ebb2bb482d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd64bd9b6dd40b8f46e105b3c5acb964"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#abd64bd9b6dd40b8f46e105b3c5acb964">describePointInTime</a> (QDateTime pointInTime)</td></tr>
 <tr class="separator:abd64bd9b6dd40b8f46e105b3c5acb964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a629967c9826acf3adc3ddb86d03814c5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classClock.html">Clock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClock.html#a629967c9826acf3adc3ddb86d03814c5">globalInstance</a> ()</td></tr>
+<tr class="memdesc:a629967c9826acf3adc3ddb86d03814c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance.  <a href="#a629967c9826acf3adc3ddb86d03814c5">More...</a><br /></td></tr>
+<tr class="separator:a629967c9826acf3adc3ddb86d03814c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -94,8 +97,9 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This extremely simple class give accss to time and offers a few time-related functions. </p>
+<p>There exists one static instance of this class, which can be accessed via the method <a class="el" href="classClock.html#a629967c9826acf3adc3ddb86d03814c5" title="Pointer to static instance. ">globalInstance()</a>. No other instance of this class should be used. </p>
 
-<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00030">30</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00035">35</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abf35e02ec22946ff5265073e70a28160"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf35e02ec22946ff5265073e70a28160">&#9670;&nbsp;</a></span>Clock()</h2>
@@ -122,7 +126,6 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>This constructor reads the values of the properties listed below via QSettings. The values are set to NaN if no valid numbers can be found in the settings object.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
@@ -203,6 +206,35 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a629967c9826acf3adc3ddb86d03814c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a629967c9826acf3adc3ddb86d03814c5">&#9670;&nbsp;</a></span>globalInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classClock.html">Clock</a>* Clock::globalInstance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to static instance. </p>
+<p>This method returns a pointer to a static instance of this class. In rare situations, during shutdown of the app, a nullptr might be returned.</p>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to a static instance of this class </dd></dl>
+
+</div>
+</div>
 <a id="a71945662fa5df27e4938ae67c865cd48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a71945662fa5df27e4938ae67c865cd48">&#9670;&nbsp;</a></span>time()</h2>
 
@@ -229,7 +261,7 @@ Properties</h2></td></tr>
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property time </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00093">93</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00103">103</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
 
 </div>
 </div>
@@ -277,7 +309,7 @@ Properties</h2></td></tr>
 <p>Current time. </p>
 <p>This property holds the current time. The implementation makes some effort to ensure that the notifier signal is emitted just after every minute change. </p>
 
-<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00087">87</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00097">97</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
 
 </div>
 </div>
@@ -304,7 +336,7 @@ Properties</h2></td></tr>
 <p>Current time in UTC as a string. </p>
 <p>This property holds the current time in UTC as a string of the form "8:06" or "13:45". The implementation makes some effort to ensure that the notifier signal is emitted just after every minute change. </p>
 
-<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00074">74</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Clock_8h_source.html#l00084">84</a> of file <a class="el" href="Clock_8h_source.html">Clock.h</a>.</p>
 
 </div>
 </div>

@@ -70,10 +70,6 @@ public:
 
     /*! \brief Standard constructor
      *
-     * @param clock A pointer to a Clock object, which is used to synchronize
-     * property updates, in order to avoid continuous GUI updates when many
-     * items are shown.
-     *
      * @param route A pointer to a FlightRoute object. This is used to find
      * WeatherStations near the planned route.
      * 
@@ -81,8 +77,7 @@ public:
      * 
      * @param parent The standard QObject parent pointer
      */
-    explicit Meteorologist(Clock *clock,
-                           FlightRoute *route,
+    explicit Meteorologist(FlightRoute *route,
                            GeoMapProvider *geoMapProvider,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
@@ -255,9 +250,6 @@ private:
     // to ensure that no two processes access the file. The method will fail
     // silently on error.
     void save();
-
-    // Pointer to the clock
-    QPointer<Clock> _clock;
 
     // Pointer to the flight route
     QPointer<FlightRoute> _flightRoute;

@@ -26,9 +26,8 @@
 #include "Meteorologist_WeatherStation.h"
 
 
-Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent)
-    : QObject(parent),
-      _clock(clock)
+Meteorologist::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
+    : QObject(parent)
 {
 
     // Lambda to read sky condition
@@ -151,25 +150,27 @@ Meteorologist::TAF::TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent)
         }
     }
 
+    process();
 }
 
 
-Meteorologist::TAF::TAF(QDataStream &inputStream, Clock *clock, QObject *parent)
-    : QObject(parent),
-      _clock(clock)
+Meteorologist::TAF::TAF(QDataStream &inputStream, QObject *parent)
+    : QObject(parent)
 {
     inputStream >> _expirationTime;
     inputStream >> _ICAOCode;
     inputStream >> _issueTime;
     inputStream >> _location;
     inputStream >> _raw_text;
+
+    process();
 }
 
 
 QString Meteorologist::TAF::decodedText() const
 {
 #warning not implemented
-    return "This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF -- This is a clear text presentation of the TAF";
+    return _decoded;
 }
 
 
@@ -211,4 +212,11 @@ QDataStream &operator<<(QDataStream &outputStream, const Meteorologist::TAF &taf
     outputStream << taf._location;
     outputStream << taf._raw_text;
     return outputStream;
+}
+
+
+void Meteorologist::TAF::process()
+{
+    Meteorologist::Decoder decoder(_raw_text);
+    _decoded = decoder.decodedText();
 }

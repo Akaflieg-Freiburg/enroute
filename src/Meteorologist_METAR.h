@@ -252,6 +252,7 @@ public:
 
 #warning Test
     void process();
+
 signals:
     /*! Notifier signal */
     void summaryChanged();
@@ -262,10 +263,10 @@ signals:
 private:
     // This constructor reads a XML stream, as provided by the Aviation Weather Center's Text Data Server,
     // https://www.aviationweather.gov/dataserver
-    explicit METAR(QXmlStreamReader &xml, Clock *clock, QObject *parent = nullptr);
+    explicit METAR(QXmlStreamReader &xml, QObject *parent = nullptr);
 
     // This constructor reads a serialized METAR from a QDataStream
-    explicit METAR(QDataStream &inputStream, Clock *clock, QObject *parent = nullptr);
+    explicit METAR(QDataStream &inputStream, QObject *parent = nullptr);
 
     Q_DISABLE_COPY_MOVE(METAR)
 
@@ -287,15 +288,11 @@ private:
     // Raw METAR text, as returned by the Aviation Weather Center
     QString _raw_text;
 
-    // Pointers to other classes that are used internally
-    QPointer<Clock> _clock {};
-
     // Private data structures
     QString _weather;
-    QString _decoded;
 
-    QMultiMap<QString, QVariant> data;
-    QStringList dataStrings;
+    // Decoded METAR text
+    QString _decoded;
 };
 
 

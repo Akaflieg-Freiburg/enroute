@@ -25,6 +25,10 @@
 #include <QTimer>
 
 
+// Static instance of this class
+Q_GLOBAL_STATIC(Clock, clockStatic);
+
+
 Clock::Clock(QObject *parent) : QObject(parent)
 {
     // We need to update the time regularly. I do not use a simple timer here that emits "timeChanged" once per minute, because I
@@ -99,6 +103,12 @@ QString Clock::describePointInTime(QDateTime pointInTime)
     }
 
     return pointInTime.toString("d. MMM, H:mm");
+}
+
+
+Clock *Clock::globalInstance()
+{
+    return clockStatic;
 }
 
 

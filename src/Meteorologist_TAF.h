@@ -160,6 +160,9 @@ public:
      */
     QString relativeIssueTime() const;
 
+#warning Test
+    void process();
+
 signals:
     /*! Notifier signal */
     void relativeIssueTimeChanged();
@@ -167,10 +170,10 @@ signals:
 private:
     // This constructor reads a XML stream, as provided by the Aviation Weather Center's Text Data Server,
     // https://www.aviationweather.gov/dataserver
-    explicit TAF(QXmlStreamReader &xml, Clock *clock, QObject *parent = nullptr);
+    explicit TAF(QXmlStreamReader &xml, QObject *parent = nullptr);
 
     // This constructor reads a serialized TAF from a QDataStream
-    explicit TAF(QDataStream &inputStream, Clock *clock, QObject *parent = nullptr);
+    explicit TAF(QDataStream &inputStream, QObject *parent = nullptr);
 
     Q_DISABLE_COPY_MOVE(TAF)
 
@@ -193,6 +196,7 @@ private:
     QPointer<Clock> _clock {};
 
     // Private data structures
+    QString _decoded;
     QMultiMap<QString, QVariant> data;
     QStringList dataStrings;
 };

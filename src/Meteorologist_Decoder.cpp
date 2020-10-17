@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDataStream>
+#include <QTimeZone>
 #include <QXmlStreamAttribute>
 
 #include <QDebug>
@@ -34,10 +35,141 @@
 #include "Meteorologist_WeatherStation.h"
 
 
-Meteorologist::Decoder::Decoder(QObject *parent)
+Meteorologist::Decoder::Decoder(QString rawText, QObject *parent)
     : QObject(parent)
 {
 
+    const auto result = metaf::Parser::parse(rawText.toStdString());
+
+    // Error handling
+    /*
+    if (result.reportMetadata.error == metaf::ReportError::NONE)
+        qDebug() << "parsed successfully";
+    */
+
+    QStringList decodedStrings;
+    for (const auto &groupInfo : result.groups) {
+        auto description = visit(groupInfo);
+        decodedStrings.append(description);
+/*
+           if (std::holds_alternative<metaf::WeatherGroup>(groupInfo.group))
+            _weather = description;
+ */
+    }
+
+    _decodedText = decodedStrings.join("<br>");
+}
+
+
+QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafTime)
+{
+    // QTime for result
+    auto metafQTime = QTime(metafTime.hour(), metafTime.minute());
+
+#warning We should use the reporting time of the METAR/TAF here, but for now this is a good approximation
+    // Compute QDime for result. This is complicated because METARs/TAFs contain only the day of the month, but
+    // not the day.
+    auto currentQDate = QDate::currentDate();
+    auto currentDate = metaf::MetafTime::Date(currentQDate.year(), currentQDate.month(), currentQDate.day());
+    auto metafDate = metafTime.dateBeforeRef(currentDate);
+    auto metafQDate = QDate(metafDate.year, metafDate.month, metafDate.day);
+
+    auto metafQDateTime = QDateTime(metafQDate, metafQTime, QTimeZone::utc());
+    return Clock::describePointInTime(metafQDateTime);
+
+
+    auto currentDateTime = QDateTime::currentDateTimeUtc();
+    auto metarDateTime = currentDateTime;
+
+    const auto day = metafTime.day();
+    if (day.has_value()) {
+        if (currentDateTime.date().day() > 25 && *day < 5)
+            metarDateTime = currentDateTime.addMonths(1);
+        if (currentDateTime.date().day() < 5 && *day > 25)
+            metarDateTime = currentDateTime.addMonths(-1);
+    }
+    metarDateTime.setTime(QTime(metafTime.hour(), metafTime.minute()));
+
+    return Clock::describePointInTime(metarDateTime);
+}
+
+
+QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
+{
+    /* Handle special cases */
+    const auto weatherStr = Meteorologist::Decoder::specialWeatherPhenomenaToString(wp);
+    if (!weatherStr.isEmpty())
+        return weatherStr;
+
+    // Obtain strings for qualifier & descriptor
+    auto qualifier = Meteorologist::Decoder::weatherPhenomenaQualifierToString(wp.qualifier()); // Qualifier, such as "light" or "moderate"
+    auto descriptor = Meteorologist::Decoder::weatherPhenomenaDescriptorToString(wp.descriptor()); // Descriptor, such as "freezing" or "blowing"
+
+    // String that will hold the result
+    QString result;
+
+    QStringList weatherPhenomena;
+    for (const auto w : wp.weather()) {
+        // This is a string such as "hail" or "rain"
+        auto wpString = Meteorologist::Decoder::weatherPhenomenaWeatherToString(w);
+        if (!wpString.isEmpty())
+            weatherPhenomena << Meteorologist::Decoder::weatherPhenomenaWeatherToString(w);
+    }
+    // Special case: "shower" is used as a phenomenom
+    if (weatherPhenomena.isEmpty() && wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS) {
+        weatherPhenomena << tr("shower");
+        descriptor = QString();
+    }
+    if (weatherPhenomena.isEmpty() && wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM) {
+        weatherPhenomena << tr("thunderstorm");
+        descriptor = QString();
+    }
+    result += weatherPhenomena.join(", ");
+
+    // Handle special qualifiers
+
+    if (wp.qualifier() == metaf::WeatherPhenomena::Qualifier::RECENT) {
+        result = tr("recent %1").arg(result);
+        qualifier = QString();
+    }
+    if (wp.qualifier() == metaf::WeatherPhenomena::Qualifier::VICINITY) {
+        result = tr("%1 in the vicinity").arg(result);
+        qualifier = QString();
+    }
+
+    // The remaining descriptors and qualifiers go into a parenthesis text
+    QStringList parenthesisTexts;
+    if (!qualifier.isEmpty())
+        parenthesisTexts << qualifier;
+    if (!descriptor.isEmpty())
+        parenthesisTexts << descriptor;
+    auto parenthesisText = parenthesisTexts.join(", ");
+    if (!parenthesisText.isEmpty())
+        result += QString(" (%1)").arg(parenthesisText);
+
+
+    const auto time = wp.time();
+    switch (wp.event()){
+    case metaf::WeatherPhenomena::Event::BEGINNING:
+        if (!time.has_value())
+            break;
+        result += " " + tr("began:") + " " + Meteorologist::Decoder::explainMetafTime(*wp.time());
+        break;
+
+    case metaf::WeatherPhenomena::Event::ENDING:
+        if (!time.has_value())
+            break;
+        result += " " + tr("ended:") + " " + Meteorologist::Decoder::explainMetafTime(*wp.time());
+        break;
+
+    case metaf::WeatherPhenomena::Event::NONE:
+        break;
+    }
+
+    if (!parenthesisText.isEmpty())
+        qWarning() << "Weather phenomena w/o special handling code" << result;
+
+    return result;
 }
 
 
@@ -178,6 +310,27 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
     QStringList results;
     for (const auto &weather : wp.weather()) {
 
+        // PRECIPITATION, undetermined
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::UNDETERMINED) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy precipitation");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
         // DRIZZLE
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::DRIZZLE) {
             switch(wp.qualifier()) {
@@ -189,6 +342,27 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy drizzle");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // DUST, BLOWING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::BLOWING && weather == metaf::WeatherPhenomena::Weather::DUST) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("blowing dust");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light blowing dust");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate blowing dust");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy blowing dust");
                 break;
             default:
                 return QString();
@@ -248,6 +422,9 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy rain showers");
                 break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent rain showers");
+                break;
             default:
                 return QString();
             }
@@ -265,6 +442,48 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy snowfall");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // SNOW, BLOWING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::BLOWING && weather == metaf::WeatherPhenomena::Weather::SNOW) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("blowing snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light blowing snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate blowing snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy blowing snow");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // SNOW, LOW_DRIFTING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::LOW_DRIFTING && weather == metaf::WeatherPhenomena::Weather::SNOW) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("drifting snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light drifting snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate drifting snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy drifting snow");
                 break;
             default:
                 return QString();

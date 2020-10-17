@@ -25,17 +25,18 @@
 #include <QObject>
 
 
-/*! \brief This extremely simple class give accss to time and offers a few time-related functions */
+/*! \brief This extremely simple class give accss to time and offers a few time-related functions
+ *
+ *
+ * There exists one static instance of this class, which can be accessed via the
+ * method globalInstance().  No other instance of this class should be used.
+ */
 
 class Clock : public QObject {
     Q_OBJECT
 
 public:
     /*! \brief Default constructor
-     *
-     * This constructor reads the values of the properties listed below via
-     * QSettings. The values are set to NaN if no valid numbers can be found
-     * in the settings object.
      *
      * @param parent The standard QObject parent pointer
      */
@@ -65,6 +66,15 @@ public:
      * \return String with the description
      */
     Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime);
+
+    /*! \brief Pointer to static instance
+     *
+     * This method returns a pointer to a static instance of this class. In rare
+     * situations, during shutdown of the app, a nullptr might be returned.
+     *
+     * @returns A pointer to a static instance of this class
+     */
+    static Clock *globalInstance();
 
     /*! \brief Current time in UTC as a string
      *

@@ -102,9 +102,6 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    // Create global settings object. We do this before creating the application engine because this also installs translators.
-//    auto globalSettings = new GlobalSettings();
-
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     auto *adaptor = new MobileAdaptor();
     if (positionalArguments.length() == 1)
@@ -142,8 +139,7 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("wind", wind);
 
     // Attach clock
-    auto clock = new Clock(engine);
-    engine->rootContext()->setContextProperty("clock", clock);
+    engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
 
     // Attach flight route
     auto flightroute = new FlightRoute(aircraft, wind, engine);
@@ -163,7 +159,7 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach meteorologist
-    auto meteorologist = new Meteorologist(clock, flightroute, geoMapProvider, networkAccessManager, engine);
+    auto meteorologist = new Meteorologist(flightroute, geoMapProvider, networkAccessManager, engine);
     engine->rootContext()->setContextProperty("meteorologist", meteorologist);
     geoMapProvider->setMeteorologist(meteorologist);
 

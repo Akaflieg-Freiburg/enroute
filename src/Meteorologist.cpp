@@ -38,13 +38,11 @@
 #include "SatNav.h"
 
 
-Meteorologist::Meteorologist(Clock *clock,
-                             FlightRoute *route,
+Meteorologist::Meteorologist(FlightRoute *route,
                              GeoMapProvider *geoMapProvider,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
     QObject(parent),
-    _clock(clock),
     _flightRoute(route),
     _geoMapProvider(geoMapProvider),
     _networkAccessManager(networkAccessManager)
@@ -63,15 +61,19 @@ Meteorologist::Meteorologist(Clock *clock,
 
     // Update the description text when needed
     connect(this, &Meteorologist::weatherStationsChanged, this, &Meteorologist::QNHInfoChanged);
-    connect(clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
 #warning move this to extra function
     auto _satNav = SatNav::globalInstance();
     if (_satNav) {
         connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
         connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::sunInfoChanged);
     }
-    connect(clock, &Clock::timeChanged, this, &Meteorologist::sunInfoChanged);
 
+#warning move this to extra function
+    auto _clock = Clock::globalInstance();
+    if (_clock) {
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::sunInfoChanged);
+    }
 
     // Read METAR/TAF from "weather.dat"
     load();
@@ -157,13 +159,13 @@ void Meteorologist::downloadFinished() {
 
             // Read METAR
             if (xml.isStartElement() && (xml.name() == "METAR")) {
-                auto metar = new Meteorologist::METAR(xml, _clock, this);
+                auto metar = new Meteorologist::METAR(xml, this);
                 findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             }
 
             // Read TAF
             if (xml.isStartElement() && (xml.name() == "TAF")) {
-                auto taf = new Meteorologist::TAF(xml, _clock, this);
+                auto taf = new Meteorologist::TAF(xml, this);
                 findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             }
 
@@ -233,13 +235,13 @@ void Meteorologist::load()
 
         if (type == 'M') {
             // Read METAR
-            auto metar = new Meteorologist::METAR(inputStream, _clock, this);
+            auto metar = new Meteorologist::METAR(inputStream, this);
             findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             continue;
         }
         if (type == 'T') {
             // Read TAF
-            auto taf = new Meteorologist::TAF(inputStream, _clock, this);
+            auto taf = new Meteorologist::TAF(inputStream, this);
             findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             continue;
         }

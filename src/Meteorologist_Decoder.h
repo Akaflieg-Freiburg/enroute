@@ -49,14 +49,17 @@ public:
 
     // Explanation functions
     static QString explainMetafTime(const metaf::MetafTime & metafTime);
+    static QString explainPressure(const metaf::Pressure & pressure);
     static QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
-    // Internal functions pertaining to weather phenomena
+    // … toString Methods
+    static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
     static QString weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor);
     static QString weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier);
     static QString weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather);
-    static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
 
+    // visitor Methods
+    virtual QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString);
 
 
     // ==================================================
@@ -138,7 +141,6 @@ public:
         }
         return result.str();
     }
-
 
     std::string_view cardinalDirectionToString(metaf::Direction::Cardinal cardinal)
     {
@@ -315,10 +317,7 @@ public:
         }
     }
 
-    virtual QString visitKeywordGroup(
-            const KeywordGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitKeywordGroup(const KeywordGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -442,7 +441,6 @@ public:
             return "";
         }
     }
-
 
     virtual QString visitTrendGroup(const TrendGroup & group, ReportPart reportPart, const std::string & rawString)
     {
@@ -1044,8 +1042,7 @@ public:
         return result.str();
     }
 
-    std::string_view convectiveTypeToString(
-            metaf::CloudGroup::ConvectiveType type)
+    std::string_view convectiveTypeToString(metaf::CloudGroup::ConvectiveType type)
     {
         switch (type) {
         case metaf::CloudGroup::ConvectiveType::NONE:
@@ -1113,10 +1110,7 @@ public:
         }
     }
 
-    virtual QString visitCloudGroup(
-            const CloudGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1265,10 +1259,7 @@ public:
         return result.str();
     }
 
-    virtual QString visitTemperatureGroup(
-            const TemperatureGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1299,74 +1290,7 @@ public:
     }
 
 
-    std::string explainPressure(const metaf::Pressure & pressure) {
-        if (!pressure.pressure().has_value()) return "not reported";
-        std::ostringstream result;
-        if (const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
-                phpa.has_value())
-        {
-            result << roundTo(*phpa, 1) << " hPa";
-        } else {
-            result << "[unable to convert pressure to hPa]";
-        }
-        result << " / ";
-        if (const auto pinhg = pressure.toUnit(metaf::Pressure::Unit::INCHES_HG);
-                pinhg.has_value())
-        {
-            result << roundTo(*pinhg, 2) << " inHg";
-        } else {
-            result << "[unable to convert pressure to inHg]";
-        }
-        result << " / ";
-        if (const auto pmmhg = pressure.toUnit(metaf::Pressure::Unit::MM_HG);
-                pmmhg.has_value())
-        {
-            result << roundTo(*pmmhg, 1) << " mmHg";
-        } else {
-            result << "[unable to convert pressure to mmHg]";
-        }
-        return result.str();
-    }
-
-    virtual QString visitPressureGroup(
-            const PressureGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        switch(group.type()) {
-        case metaf::PressureGroup::Type::OBSERVED_QNH:
-            result << "Observed mean atmospheric pressure ";
-            result << "(normalised to sea level): ";
-            result << explainPressure(group.atmosphericPressure());
-            break;
-
-        case metaf::PressureGroup::Type::FORECAST_LOWEST_QNH:
-            result << "Forecast lowest sea level pressure: ";
-            result << explainPressure(group.atmosphericPressure());
-            break;
-
-        case metaf::PressureGroup::Type::OBSERVED_QFE:
-            result << "Observed actual atmospheric pressure: ";
-            result << explainPressure(group.atmosphericPressure());
-            break;
-
-        case metaf::PressureGroup::Type::SLPNO:
-            result << "Mean sea-level pressure information is not available";
-            break;
-
-        case metaf::PressureGroup::Type::PRES_MISG:
-            result << "Atmospheric pressure (altimeter) data is missing";
-            break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
-    std::string_view runwayStateDepositsToString(
-            metaf::RunwayStateGroup::Deposits deposits)
+    std::string_view runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
     {
         switch(deposits) {
         case metaf::RunwayStateGroup::Deposits::NOT_REPORTED:
@@ -1403,8 +1327,8 @@ public:
             return "frozen ruts or ridges";
         }
     }
-    std::string explainPrecipitation(
-            const metaf::Precipitation & precipitation)
+
+    std::string explainPrecipitation(const metaf::Precipitation & precipitation)
     {
         std::ostringstream result;
         if (!precipitation.isReported()) return "not reported";
@@ -1428,8 +1352,7 @@ public:
         return result.str();
     }
 
-    std::string_view runwayStateExtentToString(
-            metaf::RunwayStateGroup::Extent extent)
+    std::string_view runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent)
     {
         switch(extent) {
         case metaf::RunwayStateGroup::Extent::NOT_REPORTED:
@@ -1467,8 +1390,7 @@ public:
         }
     }
 
-    std::string explainSurfaceFriction(
-            const metaf::SurfaceFriction & surfaceFriction)
+    std::string explainSurfaceFriction(const metaf::SurfaceFriction & surfaceFriction)
     {
         switch (surfaceFriction.type()) {
         case metaf::SurfaceFriction::Type::NOT_REPORTED:
@@ -1489,8 +1411,7 @@ public:
         }
     }
 
-    std::string_view brakingActionToString(
-            metaf::SurfaceFriction::BrakingAction brakingAction)
+    std::string_view brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction)
     {
         switch(brakingAction) {
         case metaf::SurfaceFriction::BrakingAction::NONE:
@@ -1513,11 +1434,7 @@ public:
         }
     }
 
-
-    virtual QString visitRunwayStateGroup(
-            const RunwayStateGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1561,8 +1478,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view stateOfSeaSurfaceToString(
-            metaf::WaveHeight::StateOfSurface stateOfSurface)
+    std::string_view stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface)
     {
         switch(stateOfSurface) {
         case metaf::WaveHeight::StateOfSurface::NOT_REPORTED:
@@ -1600,8 +1516,7 @@ public:
         }
     }
 
-    std::string explainWaveHeight(
-            const metaf::WaveHeight & waveHeight)
+    std::string explainWaveHeight(const metaf::WaveHeight & waveHeight)
     {
         switch (waveHeight.type()) {
         case metaf::WaveHeight::Type::STATE_OF_SURFACE:
@@ -1635,10 +1550,7 @@ public:
         }
     }
 
-    virtual QString visitSeaSurfaceGroup(
-            const SeaSurfaceGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1650,10 +1562,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitMinMaxTemperatureGroup(
-            const MinMaxTemperatureGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1694,10 +1603,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitPrecipitationGroup(
-            const PrecipitationGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1886,10 +1792,7 @@ public:
         }
     }
 
-    virtual QString visitLayerForecastGroup(
-            const LayerForecastGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1907,8 +1810,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view pressureTendencyTypeToString(
-            metaf::PressureTendencyGroup::Type type)
+    std::string_view pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type)
     {
         switch(type) {
         case metaf::PressureTendencyGroup::Type::INCREASING_THEN_DECREASING:
@@ -1961,8 +1863,7 @@ public:
         }
     }
 
-    std::string_view pressureTendencyTrendToString(
-            metaf::PressureTendencyGroup::Trend trend)
+    std::string_view pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend)
     {
         switch(trend) {
         case metaf::PressureTendencyGroup::Trend::NOT_REPORTED:
@@ -1985,10 +1886,7 @@ public:
         }
     }
 
-    virtual QString visitPressureTendencyGroup(
-            const PressureTendencyGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -1999,7 +1897,7 @@ public:
         case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
             result << "3-hourly pressure tendency is not reported";
             result << "\nAbsolute pressure change is ";
-            result << explainPressure(group.difference());
+            result << explainPressure(group.difference()).toStdString();
             break;
 
         case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
@@ -2016,16 +1914,13 @@ public:
                           metaf::PressureTendencyGroup::trend(group.type()));
             result << " 3 hours ago";
             result << "\nAbsolute pressure change is ";
-            result << explainPressure(group.difference());
+            result << explainPressure(group.difference()).toStdString();
             break;
         }
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitCloudTypesGroup(
-            const CloudTypesGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -2039,8 +1934,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view cloudLowLayerToString(
-            metaf::LowMidHighCloudGroup::LowLayer lowLayer)
+    std::string_view cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer)
     {
         switch(lowLayer) {
         case metaf::LowMidHighCloudGroup::LowLayer::NONE:
@@ -2098,8 +1992,7 @@ public:
         }
     }
 
-    std::string_view cloudMidLayerToString(
-            metaf::LowMidHighCloudGroup::MidLayer midLayer)
+    std::string_view cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer)
     {
         switch(midLayer) {
         case metaf::LowMidHighCloudGroup::MidLayer::NONE:
@@ -2160,8 +2053,7 @@ public:
         }
     }
 
-    std::string_view cloudHighLayerToString(
-            metaf::LowMidHighCloudGroup::HighLayer highLayer)
+    std::string_view cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer)
     {
         switch(highLayer) {
         case metaf::LowMidHighCloudGroup::HighLayer::NONE:
@@ -2229,10 +2121,7 @@ public:
         }
     }
 
-    virtual QString visitLowMidHighCloudGroup(
-            const LowMidHighCloudGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -2246,10 +2135,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitLightningGroup(
-            const LightningGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitLightningGroup(const LightningGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -2303,10 +2189,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitVicinityGroup(
-            const VicinityGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitVicinityGroup(const VicinityGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -2406,10 +2289,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitMiscGroup(
-            const MiscGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitMiscGroup(const MiscGroup & group,  ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
         std::ostringstream result;
@@ -2517,10 +2397,7 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitUnknownGroup(
-            const UnknownGroup & group,
-            ReportPart reportPart,
-            const std::string & rawString)
+    virtual QString visitUnknownGroup(const UnknownGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)group;(void)reportPart;
         std::ostringstream result;

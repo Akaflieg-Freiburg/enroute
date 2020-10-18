@@ -61,6 +61,8 @@ Meteorologist::Decoder::Decoder(QString rawText, QObject *parent)
 }
 
 
+// explanation Methods
+
 QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafTime)
 {
     // QTime for result
@@ -93,6 +95,16 @@ QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafT
     return Clock::describePointInTime(metarDateTime);
 }
 
+QString Meteorologist::Decoder::explainPressure(const metaf::Pressure & pressure) {
+
+    if (!pressure.pressure().has_value())
+        return tr("not reported");
+
+    const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
+    if (phpa.has_value())
+        return QString("%1 hPa").arg(qRound(*phpa));
+    return tr("unable to convert pressure to hPa");
+}
 
 QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
 {
@@ -173,6 +185,8 @@ QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhen
 }
 
 
+// …toString Methods
+
 QString Meteorologist::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor)
 {
     switch(descriptor) {
@@ -205,7 +219,6 @@ QString Meteorologist::Decoder::weatherPhenomenaDescriptorToString(metaf::Weathe
     }
 }
 
-
 QString Meteorologist::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier)
 {
     switch (qualifier) {
@@ -228,7 +241,6 @@ QString Meteorologist::Decoder::weatherPhenomenaQualifierToString(metaf::Weather
         return tr("heavy");
     }
 }
-
 
 QString Meteorologist::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather)
 {
@@ -303,7 +315,6 @@ QString Meteorologist::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPh
         return tr("dust storm");
     }
 }
-
 
 QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp)
 {
@@ -513,4 +524,34 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
     }
 
     return results.join(" • ");
+}
+
+
+// Visitor methods
+
+QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    switch(group.type()) {
+    case metaf::PressureGroup::Type::OBSERVED_QNH:
+        return tr("QNH: %1").arg(explainPressure(group.atmosphericPressure()));
+
+    case metaf::PressureGroup::Type::FORECAST_LOWEST_QNH:
+        return tr("Forecast lowest QNH: %1").arg(explainPressure(group.atmosphericPressure()));
+        break;
+
+    case metaf::PressureGroup::Type::OBSERVED_QFE:
+        return tr("QFE: %1").arg(explainPressure(group.atmosphericPressure()));
+        break;
+
+    case metaf::PressureGroup::Type::SLPNO:
+        return tr("QNH is not available");
+        break;
+
+    case metaf::PressureGroup::Type::PRES_MISG:
+        return tr("Atmospheric pressure data is missing");
+    }
+    return QString();
 }

@@ -95,6 +95,26 @@ QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafT
     return Clock::describePointInTime(metarDateTime);
 }
 
+QString Meteorologist::Decoder::explainTemperature(const metaf::Temperature & temperature)
+{
+    if (!temperature.temperature().has_value())
+        return tr("not reported");
+
+    QString temperatureString = tr("[unable to convert temperature to °C]");
+    const auto t = temperature.toUnit(metaf::Temperature::Unit::C);
+    if (t.has_value())
+        temperatureString = QString("%1 °C").arg(qRound(*t));
+
+    if (!(*temperature.temperature()) && !temperature.isPrecise()) {
+        if (temperature.isFreezing())
+            return tr("slightly less than %1").arg(temperatureString);
+        if (!temperature.isFreezing())
+            return tr("slightly more than %1").arg(temperatureString);
+    }
+
+    return temperatureString;
+}
+
 QString Meteorologist::Decoder::explainPressure(const metaf::Pressure & pressure) {
 
     if (!pressure.pressure().has_value())
@@ -103,7 +123,7 @@ QString Meteorologist::Decoder::explainPressure(const metaf::Pressure & pressure
     const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
     if (phpa.has_value())
         return QString("%1 hPa").arg(qRound(*phpa));
-    return tr("unable to convert pressure to hPa");
+    return tr("[unable to convert pressure to hPa]");
 }
 
 QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
@@ -529,7 +549,7 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
 
 // Visitor methods
 
-QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString)
+QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
         return tr("Invalid data");
@@ -552,6 +572,28 @@ QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, 
 
     case metaf::PressureGroup::Type::PRES_MISG:
         return tr("Atmospheric pressure data is missing");
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitTemperatureGroup(const TemperatureGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    const auto rh = group.relativeHumidity();
+
+    switch (group.type()) {
+    case metaf::TemperatureGroup::Type::TEMPERATURE_AND_DEW_POINT:
+        if (rh.has_value())
+            return tr("Temperature: %1, Dew point: %2, Humidity: %3%").arg(explainTemperature(group.airTemperature())).arg(explainTemperature(group.dewPoint())).arg(qRound(*rh));
+        return tr("Temperature: %1, Dew point: %2").arg(explainTemperature(group.airTemperature())).arg(explainTemperature(group.dewPoint()));
+
+    case metaf::TemperatureGroup::Type::T_MISG:
+        return tr("Temperature data is missing");
+
+    case metaf::TemperatureGroup::Type::TD_MISG:
+        return tr("Dew point data is missing");
     }
     return QString();
 }

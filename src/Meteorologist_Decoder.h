@@ -50,6 +50,7 @@ public:
     // Explanation functions
     static QString explainMetafTime(const metaf::MetafTime & metafTime);
     static QString explainPressure(const metaf::Pressure & pressure);
+    static QString explainTemperature(const metaf::Temperature & temperature);
     static QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
     // … toString Methods
@@ -60,6 +61,7 @@ public:
 
     // visitor Methods
     virtual QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
 
 
     // ==================================================
@@ -1233,62 +1235,6 @@ public:
         return "";
     }
 
-    std::string explainTemperature(const metaf::Temperature & temperature)
-    {
-        if (!temperature.temperature().has_value()) return "not reported";
-        std::ostringstream result;
-        if (!(*temperature.temperature()) && !temperature.isPrecise()) {
-            if (temperature.isFreezing()) result << "slightly less than ";
-            if (!temperature.isFreezing()) result << "slightly more than ";
-        }
-        if (const auto t = temperature.toUnit(metaf::Temperature::Unit::C);
-                t.has_value())
-        {
-            result << roundTo(*t, 1) << " &deg;C";
-        } else {
-            result << "[unable to convert temperature to &deg;C]";
-        }
-        result << " / ";
-        if (const auto t = temperature.toUnit(metaf::Temperature::Unit::F);
-                t.has_value())
-        {
-            result << roundTo(*t, 1) << " &deg;F";
-        } else {
-            result << "[unable to convert temperature to &deg;F]";
-        }
-        return result.str();
-    }
-
-    virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        switch (group.type()) {
-        case metaf::TemperatureGroup::Type::TEMPERATURE_AND_DEW_POINT:
-            result << "Ambient air temperature: ";
-            result << explainTemperature(group.airTemperature());
-            result << "\nDew point: ";
-            result << explainTemperature(group.dewPoint());
-            if (const auto rh = group.relativeHumidity(); rh.has_value()) {
-                result << "\nRelative humidity: ";
-                result << static_cast<int>(*rh);
-                result << " percent";
-            }
-            break;
-
-        case metaf::TemperatureGroup::Type::T_MISG:
-            result << "Temperature data is missing";
-            break;
-
-        case metaf::TemperatureGroup::Type::TD_MISG:
-            result << "Dew point data is missing";
-            break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
 
     std::string_view runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
     {
@@ -1557,7 +1503,7 @@ public:
         if (!group.isValid()) result << groupNotValidMessage << "\n";
 
         result << "Sea surface temperature ";
-        result << explainTemperature(group.surfaceTemperature()) << ", ";
+        result << explainTemperature(group.surfaceTemperature()).toStdString() << ", ";
         result << explainWaveHeight(group.waves());
         return QString::fromStdString(result.str());
     }
@@ -1571,30 +1517,30 @@ public:
         case metaf::MinMaxTemperatureGroup::Type::OBSERVED_6_HOURLY:
             result << "Observed 6-hourly minimum/maximum temperature: ";
             result << "\nMinimum ambient air temperature: ";
-            result << explainTemperature(group.minimum());
+            result << explainTemperature(group.minimum()).toStdString();
             result << "\nMaximum ambient air temperature: ";
-            result << explainTemperature(group.maximum());
+            result << explainTemperature(group.maximum()).toStdString();
             break;
 
         case metaf::MinMaxTemperatureGroup::Type::OBSERVED_24_HOURLY:
             result << "Observed 24-hourly minimum/maximum temperature: ";
             result << "\nMinimum ambient air temperature: ";
-            result << explainTemperature(group.minimum());
+            result << explainTemperature(group.minimum()).toStdString();
             result << "\nMaximum ambient air temperature: ";
-            result << explainTemperature(group.maximum());
+            result << explainTemperature(group.maximum()).toStdString();
             break;
 
         case metaf::MinMaxTemperatureGroup::Type::FORECAST:
             result << "Forecast minimum/maximum temperature";
             if (group.minimum().isReported()) {
                 result << "\nMinimum ambient air temperature: ";
-                result << explainTemperature(group.minimum());
+                result << explainTemperature(group.minimum()).toStdString();
                 result << ", expected at ";
                 result << explainMetafTime(group.minimumTime().value()).toStdString();
             }
             if (group.maximum().isReported()) {
                 result << "\nMaximum ambient air temperature: ";
-                result << explainTemperature(group.maximum());
+                result << explainTemperature(group.maximum()).toStdString();
                 result << ", expected at ";
                 result << explainMetafTime(group.maximumTime().value()).toStdString();
             }

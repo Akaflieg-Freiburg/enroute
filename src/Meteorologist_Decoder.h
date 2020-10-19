@@ -26,6 +26,7 @@
 
 #include "../3rdParty/metaf/include/metaf.hpp"
 
+#include "GlobalSettings.h"
 #include "Meteorologist.h"
 
 using namespace metaf;
@@ -48,12 +49,17 @@ public:
     }
 
     // Explanation functions
+    static QString explainDirection(const metaf::Direction & direction, bool trueCardinalDirections=true);
+    static QString explainDistance_FT(const metaf::Distance & distance);
     static QString explainMetafTime(const metaf::MetafTime & metafTime);
     static QString explainPressure(const metaf::Pressure & pressure);
+    static QString explainRunway(const metaf::Runway & runway);
+    static QString explainSpeed(const metaf::Speed & speed);
     static QString explainTemperature(const metaf::Temperature & temperature);
     static QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
     // … toString Methods
+    static QString cardinalDirectionToString(metaf::Direction::Cardinal cardinal);
     static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
     static QString weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor);
     static QString weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier);
@@ -62,146 +68,10 @@ public:
     // visitor Methods
     virtual QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString);
 
 
     // ==================================================
-
-
-    std::string explainDirection(const metaf::Direction & direction, bool trueCardinalDirections = false)
-    {
-        std::ostringstream result;
-        switch (direction.type()) {
-        case metaf::Direction::Type::NOT_REPORTED:
-            result << "not reported";
-            break;
-
-        case metaf::Direction::Type::VARIABLE:
-            result << "variable";
-            break;
-
-        case metaf::Direction::Type::NDV:
-            result << "no directional variation";
-            break;
-
-        case metaf::Direction::Type::VALUE_DEGREES:
-            if (const auto d = direction.degrees(); d.has_value()) {
-                result << *d << " degrees";
-            } else {
-                result << "[unable to produce value in &deg;]";
-            }
-        case metaf::Direction::Type::VALUE_CARDINAL:
-            if (const auto c =
-                    cardinalDirectionToString(
-                        direction.cardinal(trueCardinalDirections));
-                    !c.empty())
-            {
-                if (direction.type() == metaf::Direction::Type::VALUE_DEGREES) {
-                    result << "(" << c << ")";
-                } else {
-                    result << c;
-                }
-            }
-            break;
-
-        case metaf::Direction::Type::OVERHEAD:
-            result << "overhead";
-            break;
-
-        case metaf::Direction::Type::ALQDS:
-            result << "all quadrants (all directions)";
-            break;
-
-        case metaf::Direction::Type::UNKNOWN:
-            result << "unknown direction";
-            break;
-        }
-        return result.str();
-    }
-
-    std::string explainRunway(const metaf::Runway & runway) {
-        if (runway.isAllRunways())
-            return "all runways";
-        if (runway.isMessageRepetition())
-            return "same runway (repetition of last message)";
-        std::ostringstream result;
-        result << "runway ";
-        result << (runway.number() < 10 ? "0" : "");
-        result << runway.number();
-        std::string designatorStr;
-        switch(runway.designator()) {
-        case metaf::Runway::Designator::NONE:
-            break;
-        case metaf::Runway::Designator::LEFT:
-            result << " LEFT";
-            break;
-        case metaf::Runway::Designator::CENTER:
-            result << " CENTER";
-            break;
-        case metaf::Runway::Designator::RIGHT:
-            result << " RIGHT";
-            break;
-        }
-        return result.str();
-    }
-
-    std::string_view cardinalDirectionToString(metaf::Direction::Cardinal cardinal)
-    {
-        switch(cardinal) {
-        case metaf::Direction::Cardinal::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::Direction::Cardinal::N:
-            return "north";
-
-        case metaf::Direction::Cardinal::S:
-            return "south";
-
-        case metaf::Direction::Cardinal::W:
-            return "west";
-
-        case metaf::Direction::Cardinal::E:
-            return "east";
-
-        case metaf::Direction::Cardinal::NW:
-            return "northwest";
-
-        case metaf::Direction::Cardinal::NE:
-            return "northeast";
-
-        case metaf::Direction::Cardinal::SW:
-            return "southwest";
-
-        case metaf::Direction::Cardinal::SE:
-            return "southeast";
-
-        case metaf::Direction::Cardinal::TRUE_N:
-            return "true north";
-
-        case metaf::Direction::Cardinal::TRUE_W:
-            return "true west";
-
-        case metaf::Direction::Cardinal::TRUE_S:
-            return "true south";
-
-        case metaf::Direction::Cardinal::TRUE_E:
-            return "true east";
-
-        case metaf::Direction::Cardinal::NDV:
-            return "no directional variations";
-
-        case metaf::Direction::Cardinal::VRB:
-            return "variable";
-
-        case metaf::Direction::Cardinal::OHD:
-            return "overhead";
-
-        case metaf::Direction::Cardinal::ALQDS:
-            return "all quadrants (in all directions)";
-
-        case metaf::Direction::Cardinal::UNKNOWN:
-            return "unknown direction";
-        }
-    }
 
     std::string roundTo(float number, size_t digitsAfterDecimalPoint)
     {
@@ -232,71 +102,14 @@ public:
         }
     }
 
-    std::string explainSpeed(const metaf::Speed & speed) {
-        std::ostringstream result;
-        if (const auto s = speed.speed(); s.has_value()) {
-            result << *speed.speed() << " " << speedUnitToString(speed.unit());
-        } else {
-            return "not reported";
-        }
-        result << " (";
-        if (speed.unit() != metaf::Speed::Unit::KNOTS) {
-            if (const auto s = speed.toUnit(metaf::Speed::Unit::KNOTS);
-                    s.has_value())
-            {
-                result << roundTo(*s, 1) << " ";
-                result << speedUnitToString(metaf::Speed::Unit::KNOTS);
-            } else {
-                result << "[unable to convert speed to knots]";
-            }
-            result << " / ";
-        }
-        if (speed.unit() != metaf::Speed::Unit::METERS_PER_SECOND) {
-            if (const auto s = speed.toUnit(metaf::Speed::Unit::METERS_PER_SECOND);
-                    s.has_value())
-            {
-                result << roundTo(*s, 1) << " ";
-                result << speedUnitToString(metaf::Speed::Unit::METERS_PER_SECOND);
-            } else {
-                result << "[unable to convert speed to m/s]";
-            }
-            result << " / ";
-        }
-        if (speed.unit() != metaf::Speed::Unit::KILOMETERS_PER_HOUR) {
-            if (const auto s =
-                    speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
-                    s.has_value())
-            {
-                result << roundTo(*s, 1) << " ";
-                result <<
-                          speedUnitToString(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
-            } else {
-                result << "[unable to convert speed to km/h]";
-            }
-            if (speed.unit() != metaf::Speed::Unit::MILES_PER_HOUR) result << " / ";
-        }
-        if (speed.unit() != metaf::Speed::Unit::MILES_PER_HOUR) {
-            if (const auto s = speed.toUnit(metaf::Speed::Unit::MILES_PER_HOUR);
-                    s.has_value())
-            {
-                result << roundTo(*s, 1) << " ";
-                result << speedUnitToString(metaf::Speed::Unit::MILES_PER_HOUR);
-            } else {
-                result << "[unable to convert speed to mph]";
-            }
-        }
-        result << ")";
-        return result.str();
-    }
-
-    std::string explainDirectionSector(const std::vector<metaf::Direction> dir)
+    QString explainDirectionSector(const std::vector<metaf::Direction> dir)
     {
         std::string result;
         for (auto i=0u; i<dir.size(); i++) {
             if (i) result += ", ";
-            result += cardinalDirectionToString(dir[i].cardinal());
+            result += cardinalDirectionToString(dir[i].cardinal()).toStdString();
         }
-        return result;
+        return QString::fromStdString(result);
     }
 
     std::string_view visTrendToString(metaf::VisibilityGroup::Trend trend)
@@ -696,120 +509,6 @@ public:
         return result.str();
     }
 
-    virtual QString visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        switch (group.type()) {
-        case metaf::WindGroup::Type::SURFACE_WIND_CALM:
-            result << "No wind";
-            break;
-
-        case metaf::WindGroup::Type::SURFACE_WIND:
-            result << "Surface wind";
-            result << "\nWind direction: ";
-            result << explainDirection(group.direction(), true);
-            result << "\nWind speed: ";
-            result << explainSpeed(group.windSpeed());
-            if (group.gustSpeed().isReported()) {
-                result << "\nGust speed: ";
-                result << explainSpeed(group.gustSpeed());
-            }
-            break;
-
-        case metaf::WindGroup::Type::VARIABLE_WIND_SECTOR:
-            result << "Variable wind sector";
-            result << "\nVariable wind direction sector from ";
-            result << explainDirection(group.varSectorBegin());
-            result << " clockwise to ";
-            result << explainDirection(group.varSectorEnd());
-            break;
-
-        case metaf::WindGroup::Type::SURFACE_WIND_WITH_VARIABLE_SECTOR:
-            result << "Surface wind with variable with sector";
-            result << "\nWind direction: ";
-            result << explainDirection(group.direction(), true);
-            result << "\nWind speed: ";
-            result << explainSpeed(group.windSpeed());
-            if (group.gustSpeed().isReported()) {
-                result << "\nGust speed: ";
-                result << explainSpeed(group.gustSpeed());
-            }
-            result << "\nVariable wind direction sector from ";
-            result << explainDirection(group.varSectorBegin());
-            result << " clockwise to ";
-            result << explainDirection(group.varSectorEnd());
-            break;
-
-        case metaf::WindGroup::Type::WIND_SHEAR:
-            result << "Wind shear at height ";
-            result << explainDistance(group.height());
-            result << ":\n";
-            result << "Wind direction: ";
-            result << explainDirection(group.direction(), true);
-            result << "Wind speed: ";
-            result << explainSpeed(group.windSpeed());
-            if (group.gustSpeed().isReported()) {
-                result << "\nGust speed: ";
-                result << explainSpeed(group.gustSpeed());
-            }
-            break;
-
-        case metaf::WindGroup::Type::WIND_SHIFT:
-            result << "Wind direction changed 45&deg; or more in less than ";
-            result << "15 minutes with sustained wind speed of 10 knots";
-            result << " (5.1 m/s / 18.5 km/h / 11.5 mph)";
-            if (group.eventTime()) {
-                result << "\nWind shift began at ";
-                result << explainMetafTime(*group.eventTime()).toStdString();
-            }
-            break;
-
-        case metaf::WindGroup::Type::WIND_SHIFT_FROPA:
-            result << "Wind direction changed 45&deg; or more in less than ";
-            result << "15 minutes with sustained wind speed of 10 knots";
-            result << " (5.1 m/s / 18.5 km/h / 11.5 mph)";
-            if (group.eventTime()) {
-                result << "\nWind shift began at ";
-                result << explainMetafTime(*group.eventTime()).toStdString();
-            }
-            result << "\nThis wind shift is associated with weather front passage";
-            break;
-
-        case metaf::WindGroup::Type::PEAK_WIND:
-            result << "Peak wind was observed at ";
-            result << explainMetafTime(group.eventTime().value()).toStdString();
-            result << "\nWind direction: ";
-            result << explainDirection(group.direction(), true);
-            result << "\nWind speed: ";
-            result << explainSpeed(group.windSpeed());
-            break;
-
-        case metaf::WindGroup::Type::WIND_SHEAR_IN_LOWER_LAYERS:
-            result << "Wind shear significant to aircraft operations ";
-            result << "is present along the take-off path or approach path ";
-            result << "between runway level and 500 metres (1 600 ft)";
-            if (const auto rw = group.runway(); rw.has_value())
-                result << " at " << explainRunway(*rw);
-            break;
-
-        case metaf::WindGroup::Type::WSCONDS:
-            result << "Potential wind shear conditions are present ";
-            result << "but there's not enough information to reliably forecast ";
-            result << "height, direction and speed of wind shear";
-            break;
-
-        case metaf::WindGroup::Type::WND_MISG:
-            result << "Wind data is missing";
-            break;
-        }
-        return QString::fromStdString(result.str());
-
-
-    }
-
     virtual QString visitVisibilityGroup(const VisibilityGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
@@ -831,13 +530,13 @@ public:
 
         case metaf::VisibilityGroup::Type::DIRECTIONAL:
             result << "Directional visibility toward ";
-            result << explainDirection(group.direction().value());
+            result << explainDirection(group.direction().value()).toStdString();
             result << " is " << explainDistance(group.visibility());
             break;
 
         case metaf::VisibilityGroup::Type::RUNWAY:
             result << "Visibility for ";
-            result << explainRunway(group.runway().value());
+            result << explainRunway(group.runway().value()).toStdString();
             result << " is " << explainDistance(group.visibility());
             break;
 
@@ -847,7 +546,7 @@ public:
                 break;
             }
             result << "Runway visual range for ";
-            result << explainRunway(group.runway().value()) << " is ";
+            result << explainRunway(group.runway().value()).toStdString() << " is ";
             result << explainDistance(group.visibility());
             if (group.trend() != metaf::VisibilityGroup::Trend::NONE) {
                 result << ", and the trend is " << visTrendToString(group.trend());
@@ -868,7 +567,7 @@ public:
             result << "Sector visibility is ";
             result << explainDistance(group.visibility());
             result << "\nIn the following directions: ";
-            result << explainDirectionSector(group.sectorDirections());
+            result << explainDirectionSector(group.sectorDirections()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::VARIABLE_PREVAILING:
@@ -880,7 +579,7 @@ public:
 
         case metaf::VisibilityGroup::Type::VARIABLE_DIRECTIONAL:
             result << "Directional visibility toward ";
-            result << explainDirection(group.direction().value());
+            result << explainDirection(group.direction().value()).toStdString();
             result << " is variable from ";
             result << explainDistance(group.minVisibility());
             result << " to ";
@@ -889,7 +588,7 @@ public:
 
         case metaf::VisibilityGroup::Type::VARIABLE_RUNWAY:
             result << "Visibility for ";
-            result << explainRunway(group.runway().value());
+            result << explainRunway(group.runway().value()).toStdString();
             result << " is variable from ";
             result << explainDistance(group.minVisibility());
             result << " to ";
@@ -898,7 +597,7 @@ public:
 
         case metaf::VisibilityGroup::Type::VARIABLE_RVR:
             result << "Runway visual range for ";
-            result << explainRunway(group.runway().value());
+            result << explainRunway(group.runway().value()).toStdString();
             result << " is variable from ";
             result << explainDistance(group.minVisibility());
             result << " to ";
@@ -914,7 +613,7 @@ public:
             result << " to ";
             result << explainDistance(group.maxVisibility());
             result << "\nIn the following directions: ";
-            result << explainDirectionSector(group.sectorDirections());
+            result << explainDirectionSector(group.sectorDirections()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::VIS_MISG:
@@ -932,10 +631,10 @@ public:
         case metaf::VisibilityGroup::Type::VISNO:
             result << "Visibility data not awailable";
             if (const auto r = group.runway(); r.has_value()) {
-                result << " for " << explainRunway(*r);
+                result << " for " << explainRunway(*r).toStdString();
             }
             if (const auto d = group.direction(); d.has_value()) {
-                result << " in the direction of " << explainDirection(*d);
+                result << " in the direction of " << explainDirection(*d).toStdString();
             }
             break;
         }
@@ -1142,10 +841,10 @@ public:
         case metaf::CloudGroup::Type::CEILING:
             result << "Ceiling height " << explainDistance(group.height());
             if (const auto rw = group.runway(); rw.has_value()) {
-                result << " at " << explainRunway(*rw);
+                result << " at " << explainRunway(*rw).toStdString();
             }
             if (const auto d = group.direction(); d.has_value()) {
-                result << " towards " << explainDirection(*d);
+                result << " towards " << explainDirection(*d).toStdString();
             }
             break;
 
@@ -1155,20 +854,20 @@ public:
             result << " and ";
             result << explainDistance(group.maxHeight());
             if (const auto rw = group.runway(); rw.has_value()) {
-                result << " at " << explainRunway(*rw);
+                result << " at " << explainRunway(*rw).toStdString();
             }
             if (const auto d = group.direction(); d.has_value()) {
-                result << " towards " << explainDirection(*d);
+                result << " towards " << explainDirection(*d).toStdString();
             }
             break;
 
         case metaf::CloudGroup::Type::CHINO:
             result << "Ceiling data not awailable";
             if (const auto rw = group.runway(); rw.has_value()) {
-                result << " at " << explainRunway(*rw);
+                result << " at " << explainRunway(*rw).toStdString();
             }
             if (const auto d = group.direction(); d.has_value()) {
-                result << " towards " << explainDirection(*d);
+                result << " towards " << explainDirection(*d).toStdString();
             }
             break;
 
@@ -1234,7 +933,6 @@ public:
         }
         return "";
     }
-
 
     std::string_view runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
     {
@@ -1386,7 +1084,7 @@ public:
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
 
-        result << "State of " << explainRunway(group.runway()) << ":\n";
+        result << "State of " << explainRunway(group.runway()).toStdString() << ":\n";
 
         switch (group.type()) {
         case metaf::RunwayStateGroup::Type::RUNWAY_STATE:
@@ -2130,7 +1828,7 @@ public:
         }
         if (const auto directions = group.directions(); directions.size()) {
             result << "\nLightning strikes observed in the following directions: ";
-            result << explainDirectionSector(directions);
+            result << explainDirectionSector(directions).toStdString();
         }
         return QString::fromStdString(result.str());
     }
@@ -2225,11 +1923,11 @@ public:
         }
         if (const auto directions = group.directions(); directions.size()) {
             result << "\nObserved in the following directions: ";
-            result << explainDirectionSector(directions);
+            result << explainDirectionSector(directions).toStdString();
         }
         if (group.movingDirection().isReported()) {
             result << "\nMoving towards ";
-            result << cardinalDirectionToString(group.movingDirection().cardinal());
+            result << cardinalDirectionToString(group.movingDirection().cardinal()).toStdString();
         }
 
         return QString::fromStdString(result.str());

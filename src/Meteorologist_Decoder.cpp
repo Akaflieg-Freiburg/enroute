@@ -63,6 +63,75 @@ Meteorologist::Decoder::Decoder(QString rawText, QObject *parent)
 
 // explanation Methods
 
+
+QString Meteorologist::Decoder::explainDirection(const metaf::Direction & direction, bool trueCardinalDirections)
+{
+    std::ostringstream result;
+    switch (direction.type()) {
+    case metaf::Direction::Type::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::Direction::Type::VARIABLE:
+        return tr("variable");
+
+    case metaf::Direction::Type::NDV:
+        return tr("no directional variation");
+
+    case metaf::Direction::Type::VALUE_DEGREES:
+        if (const auto d = direction.degrees(); d.has_value())
+            return QString("%1°").arg(*d);
+        return tr("[unable to produce value in °]");
+
+    case metaf::Direction::Type::VALUE_CARDINAL:
+        if (const auto c = cardinalDirectionToString(direction.cardinal(trueCardinalDirections)); !c.isEmpty()) {
+            if (direction.type() == metaf::Direction::Type::VALUE_DEGREES)
+                return QString("(%1)").arg(c);
+            return c;
+        }
+        break;
+
+    case metaf::Direction::Type::OVERHEAD:
+        return tr("overhead");
+
+    case metaf::Direction::Type::ALQDS:
+        return tr("all quadrants (all directions)");
+
+    case metaf::Direction::Type::UNKNOWN:
+        return tr("unknown direction");
+    }
+
+    return QString();
+}
+
+QString Meteorologist::Decoder::explainDistance_FT(const metaf::Distance & distance) {
+
+    if (!distance.isReported())
+        return tr("not reported");
+
+    QString modifier;
+    switch (distance.modifier()) {
+    case metaf::Distance::Modifier::LESS_THAN:
+        modifier = "≤ ";
+        break;
+
+    case metaf::Distance::Modifier::MORE_THAN:
+        modifier = "≥ ";
+        break;
+
+    default:
+        break;
+    }
+
+    if (!distance.isValue())
+        return tr("no value");
+
+    const auto d = distance.toUnit(metaf::Distance::Unit::FEET);
+    if (d.has_value())
+        return modifier + QString("%1 ft").arg(qRound(*d));
+
+    return "[unable to convert distance to feet]";
+}
+
 QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafTime)
 {
     // QTime for result
@@ -95,6 +164,63 @@ QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafT
     return Clock::describePointInTime(metarDateTime);
 }
 
+QString Meteorologist::Decoder::explainPressure(const metaf::Pressure & pressure) {
+
+    if (!pressure.pressure().has_value())
+        return tr("not reported");
+
+    const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
+    if (phpa.has_value())
+        return QString("%1 hPa").arg(qRound(*phpa));
+    return tr("[unable to convert pressure to hPa]");
+}
+
+QString Meteorologist::Decoder::explainRunway(const metaf::Runway & runway) {
+    if (runway.isAllRunways())
+        return tr("all runways");
+    if (runway.isMessageRepetition())
+        return tr("same runway (repetition of last message)");
+
+    switch(runway.designator()) {
+    case metaf::Runway::Designator::NONE:
+        return tr("runway %1").arg(runway.number(), 2, 10, QChar('0'));
+
+    case metaf::Runway::Designator::LEFT:
+        return tr("runway %1 LEFT").arg(runway.number(), 2, 10, QChar('0'));
+
+    case metaf::Runway::Designator::CENTER:
+        return tr("runway %1 CENTER").arg(runway.number(), 2, 10, QChar('0'));
+
+    case metaf::Runway::Designator::RIGHT:
+        return tr("runway %1 RIGHT").arg(runway.number(), 2, 10, QChar('0'));
+
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::explainSpeed(const metaf::Speed & speed) {
+
+    if (const auto s = speed.speed(); !s.has_value())
+        return tr("not reported");
+
+    bool useMetric = false;
+    auto globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings)
+        useMetric = globalSettings->useMetricUnits();
+
+    if (useMetric) {
+        const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
+        if (s.has_value())
+            return QString("%1 km/h").arg(qRound(*s));
+        return tr("[unable to convert speed to km/h]");
+    }
+
+    const auto s = speed.toUnit(metaf::Speed::Unit::KNOTS);
+    if (s.has_value())
+        return QString("%1 kt").arg(qRound(*s));
+    return tr("[unable to convert speed to knots]");
+}
+
 QString Meteorologist::Decoder::explainTemperature(const metaf::Temperature & temperature)
 {
     if (!temperature.temperature().has_value())
@@ -113,17 +239,6 @@ QString Meteorologist::Decoder::explainTemperature(const metaf::Temperature & te
     }
 
     return temperatureString;
-}
-
-QString Meteorologist::Decoder::explainPressure(const metaf::Pressure & pressure) {
-
-    if (!pressure.pressure().has_value())
-        return tr("not reported");
-
-    const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
-    if (phpa.has_value())
-        return QString("%1 hPa").arg(qRound(*phpa));
-    return tr("[unable to convert pressure to hPa]");
 }
 
 QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
@@ -206,6 +321,66 @@ QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhen
 
 
 // …toString Methods
+
+
+QString Meteorologist::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal cardinal)
+{
+    switch(cardinal) {
+    case metaf::Direction::Cardinal::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::Direction::Cardinal::N:
+        return tr("north");
+
+    case metaf::Direction::Cardinal::S:
+        return tr("south");
+
+    case metaf::Direction::Cardinal::W:
+        return tr("west");
+
+    case metaf::Direction::Cardinal::E:
+        return tr("east");
+
+    case metaf::Direction::Cardinal::NW:
+        return tr("northwest");
+
+    case metaf::Direction::Cardinal::NE:
+        return tr("northeast");
+
+    case metaf::Direction::Cardinal::SW:
+        return tr("southwest");
+
+    case metaf::Direction::Cardinal::SE:
+        return tr("southeast");
+
+    case metaf::Direction::Cardinal::TRUE_N:
+        return tr("true north");
+
+    case metaf::Direction::Cardinal::TRUE_W:
+        return tr("true west");
+
+    case metaf::Direction::Cardinal::TRUE_S:
+        return tr("true south");
+
+    case metaf::Direction::Cardinal::TRUE_E:
+        return tr("true east");
+
+    case metaf::Direction::Cardinal::NDV:
+        return tr("no directional variations");
+
+    case metaf::Direction::Cardinal::VRB:
+        return "variable";
+
+    case metaf::Direction::Cardinal::OHD:
+        return "overhead";
+
+    case metaf::Direction::Cardinal::ALQDS:
+        return "all quadrants (in all directions)";
+
+    case metaf::Direction::Cardinal::UNKNOWN:
+        return "unknown direction";
+    }
+}
 
 QString Meteorologist::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor)
 {
@@ -586,14 +761,95 @@ QString Meteorologist::Decoder::visitTemperatureGroup(const TemperatureGroup & g
     switch (group.type()) {
     case metaf::TemperatureGroup::Type::TEMPERATURE_AND_DEW_POINT:
         if (rh.has_value())
-            return tr("Temperature: %1, Dew point: %2, Humidity: %3%").arg(explainTemperature(group.airTemperature())).arg(explainTemperature(group.dewPoint())).arg(qRound(*rh));
-        return tr("Temperature: %1, Dew point: %2").arg(explainTemperature(group.airTemperature())).arg(explainTemperature(group.dewPoint()));
+            return tr("Temperature %1, Dew point %2, Humidity %3%").arg(explainTemperature(group.airTemperature())).arg(explainTemperature(group.dewPoint())).arg(qRound(*rh));
+        return tr("Temperature %1, Dew point %2").arg(explainTemperature(group.airTemperature())).arg(explainTemperature(group.dewPoint()));
 
     case metaf::TemperatureGroup::Type::T_MISG:
         return tr("Temperature data is missing");
 
     case metaf::TemperatureGroup::Type::TD_MISG:
         return tr("Dew point data is missing");
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitWindGroup(const WindGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    switch (group.type()) {
+    case metaf::WindGroup::Type::SURFACE_WIND_CALM:
+        return tr("No wind");
+
+    case metaf::WindGroup::Type::SURFACE_WIND:
+        if (group.gustSpeed().isReported())
+            return tr("Wind direction %1, wind speed %2, gusts at %3")
+                    .arg(explainDirection(group.direction(), true))
+                    .arg(explainSpeed(group.windSpeed()))
+                    .arg(explainSpeed(group.gustSpeed()));
+        return tr("Wind direction %1, wind speed %2")
+                .arg(explainDirection(group.direction(), true))
+                .arg(explainSpeed(group.windSpeed()));
+
+    case metaf::WindGroup::Type::VARIABLE_WIND_SECTOR:
+        return tr("Variable wind direction %1 -- %2")
+                .arg(explainDirection(group.varSectorBegin()))
+                .arg(explainDirection(group.varSectorEnd()));
+
+    case metaf::WindGroup::Type::SURFACE_WIND_WITH_VARIABLE_SECTOR:
+        if (group.gustSpeed().isReported())
+            return tr("Wind direction %1 (%2 -- %3), wind speed %4, gusts at %5")
+                    .arg(explainDirection(group.direction(), true))
+                    .arg(explainDirection(group.varSectorBegin()))
+                    .arg(explainDirection(group.varSectorEnd()))
+                    .arg(explainSpeed(group.windSpeed()))
+                    .arg(explainSpeed(group.gustSpeed()));
+        return tr("Wind direction %1 (%2 -- %3), wind speed %4")
+                .arg(explainDirection(group.direction(), true))
+                .arg(explainDirection(group.varSectorBegin()))
+                .arg(explainDirection(group.varSectorEnd()))
+                .arg(explainSpeed(group.windSpeed()));
+
+    case metaf::WindGroup::Type::WIND_SHEAR:
+        if (group.gustSpeed().isReported())
+            return tr("Wind shear at % AGL, wind direction %2, wind speed %3, gusts at %4")
+                    .arg(explainDistance_FT(group.height()))
+                    .arg(explainDirection(group.direction(), true))
+                    .arg(explainSpeed(group.windSpeed()))
+                    .arg(explainSpeed(group.gustSpeed()));
+        return tr("Wind shear at % AGL, wind direction %2, wind speed %3")
+                .arg(explainDistance_FT(group.height()))
+                .arg(explainDirection(group.direction(), true))
+                .arg(explainSpeed(group.windSpeed()));
+
+
+    case metaf::WindGroup::Type::WIND_SHIFT:
+        if (group.eventTime())
+            return tr("Wind direction changed at %1").arg(explainMetafTime(*group.eventTime()));
+        return tr("Wind direction changed recently");
+
+    case metaf::WindGroup::Type::WIND_SHIFT_FROPA:
+        if (group.eventTime())
+            return tr("Wind direction changed at %1 because of weather front passage").arg(explainMetafTime(*group.eventTime()));
+        return tr("Wind directed changed recently because of weather front passage");
+
+    case metaf::WindGroup::Type::PEAK_WIND:
+        return tr("Peak wind observed at %1, wind direction %2, wind speed %3")
+                .arg(explainMetafTime(group.eventTime().value()))
+                .arg(explainDirection(group.direction(), true))
+                .arg(explainSpeed(group.windSpeed()));
+
+    case metaf::WindGroup::Type::WIND_SHEAR_IN_LOWER_LAYERS:
+        if (const auto rw = group.runway(); rw.has_value())
+            return  tr("Wind shear between runway level and 1.600 ft at runway %1").arg(explainRunway(*rw));
+        return tr("Wind shear between runway level and 1.600 ft");
+
+    case metaf::WindGroup::Type::WSCONDS:
+        return tr("Potential wind shear");
+
+    case metaf::WindGroup::Type::WND_MISG:
+        return tr("Wind data is missing");
     }
     return QString();
 }

@@ -813,12 +813,12 @@ QString Meteorologist::Decoder::visitWindGroup(const WindGroup & group, ReportPa
 
     case metaf::WindGroup::Type::WIND_SHEAR:
         if (group.gustSpeed().isReported())
-            return tr("Wind shear at % AGL, wind direction %2, wind speed %3, gusts at %4")
+            return tr("Wind shear at %1 AGL, wind direction %2, wind speed %3, gusts at %4")
                     .arg(explainDistance_FT(group.height()))
                     .arg(explainDirection(group.direction(), true))
                     .arg(explainSpeed(group.windSpeed()))
                     .arg(explainSpeed(group.gustSpeed()));
-        return tr("Wind shear at % AGL, wind direction %2, wind speed %3")
+        return tr("Wind shear at %1 AGL, wind direction %2, wind speed %3")
                 .arg(explainDistance_FT(group.height()))
                 .arg(explainDirection(group.direction(), true))
                 .arg(explainSpeed(group.windSpeed()));

@@ -57,6 +57,7 @@ public:
     static QString explainRunway(const metaf::Runway & runway);
     static QString explainSpeed(const metaf::Speed & speed);
     static QString explainTemperature(const metaf::Temperature & temperature);
+    static QString explainWaveHeight(const metaf::WaveHeight & waveHeight);
     static QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
     // … toString Methods
@@ -73,7 +74,9 @@ public:
     // visitor Methods
     virtual QString visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitWeatherGroup(const WeatherGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString);
 
 
@@ -647,49 +650,6 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitWeatherGroup(const WeatherGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-
-        if (!group.isValid())
-            result << "Data in this group may be errorneous, incomplete or inconsistent" << "\n";
-
-        // Gather string with list of phenomena
-        QStringList phenomenaList;
-        for (const auto p : group.weatherPhenomena())
-            phenomenaList << Meteorologist::Decoder::explainWeatherPhenomena(p);
-        auto phenomenaString = phenomenaList.join(" • ");
-
-
-        switch (group.type()) {
-        case metaf::WeatherGroup::Type::CURRENT:
-            return "Current weather: " + phenomenaString;
-
-        case metaf::WeatherGroup::Type::RECENT:
-            return "Recent weather: " + phenomenaString;
-
-        case metaf::WeatherGroup::Type::EVENT:
-            return "Precipitation beginning/ending time: " + phenomenaString;
-
-        case metaf::WeatherGroup::Type::NSW:
-            return "no significant weather";
-
-        case metaf::WeatherGroup::Type::PWINO:
-            return "automated weather identifier is INOP";
-
-        case metaf::WeatherGroup::Type::TSNO:
-            return "lightning detector is INOP";
-
-        case metaf::WeatherGroup::Type::WX_MISG:
-            return "Weather phenomena data is missing";
-
-        case metaf::WeatherGroup::Type::TS_LTNG_TEMPO_UNAVBL:
-            return "thunderstorm / lightning data is missing";
-        }
-        return "";
-    }
-
     std::string_view runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
     {
         switch(deposits) {
@@ -875,52 +835,6 @@ public:
             result << "Runway is not operational";
             break;
         }
-        return QString::fromStdString(result.str());
-    }
-
-
-    std::string explainWaveHeight(const metaf::WaveHeight & waveHeight)
-    {
-        switch (waveHeight.type()) {
-        case metaf::WaveHeight::Type::STATE_OF_SURFACE:
-            return QString("state of sea surface: %1").arg(stateOfSeaSurfaceToString(waveHeight.stateOfSurface())).toStdString();
-
-        case metaf::WaveHeight::Type::WAVE_HEIGHT:
-            if (waveHeight.isReported()) {
-                std::ostringstream result;
-                result << "wave height: ";
-                if (const auto h =
-                        waveHeight.toUnit(metaf::WaveHeight::Unit::METERS);
-                        h.has_value())
-                {
-                    result << roundTo(*h, 1) << " meters";
-                } else {
-                    result << "[unable to convert wave height to meters]";
-                }
-                result << " / ";
-                if (const auto h =
-                        waveHeight.toUnit(metaf::WaveHeight::Unit::FEET);
-                        h.has_value())
-                {
-                    result << roundTo(*h, 1) << " feet";
-                } else {
-                    result << "[unable to convert wave height to feet]";
-                }
-                return result.str();
-            }
-            return "wave height not reported";
-        }
-    }
-
-    virtual QString visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        result << "Sea surface temperature ";
-        result << explainTemperature(group.surfaceTemperature()).toStdString() << ", ";
-        result << explainWaveHeight(group.waves());
         return QString::fromStdString(result.str());
     }
 

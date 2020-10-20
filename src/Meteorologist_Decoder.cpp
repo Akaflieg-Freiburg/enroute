@@ -252,6 +252,23 @@ QString Meteorologist::Decoder::explainTemperature(const metaf::Temperature & te
     return temperatureString;
 }
 
+QString Meteorologist::Decoder::explainWaveHeight(const metaf::WaveHeight & waveHeight)
+{
+    switch (waveHeight.type()) {
+    case metaf::WaveHeight::Type::STATE_OF_SURFACE:
+        return tr("state of sea surface: %1").arg(stateOfSeaSurfaceToString(waveHeight.stateOfSurface()));
+
+    case metaf::WaveHeight::Type::WAVE_HEIGHT:
+        if (waveHeight.isReported()) {
+            const auto h = waveHeight.toUnit(metaf::WaveHeight::Unit::METERS);
+            if (h.has_value())
+                return tr("wave height: %1 m").arg(qRound(*h));
+            return tr("[unable to convert wave height to meters]");
+        }
+        return tr("wave height not reported");
+    }
+}
+
 QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
 {
     /* Handle special cases */
@@ -1033,6 +1050,16 @@ QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, 
     return QString();
 }
 
+QString Meteorologist::Decoder::visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    return tr("Sea surface temperature: %1, %2")
+            .arg(explainTemperature(group.surfaceTemperature()))
+            .arg(explainWaveHeight(group.waves()));
+}
+
 QString Meteorologist::Decoder::visitTemperatureGroup(const TemperatureGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
@@ -1052,6 +1079,47 @@ QString Meteorologist::Decoder::visitTemperatureGroup(const TemperatureGroup & g
     case metaf::TemperatureGroup::Type::TD_MISG:
         return tr("Dew point data is missing");
     }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    // Gather string with list of phenomena
+    QStringList phenomenaList;
+    for (const auto p : group.weatherPhenomena())
+        phenomenaList << Meteorologist::Decoder::explainWeatherPhenomena(p);
+    auto phenomenaString = phenomenaList.join(" • ");
+
+
+    switch (group.type()) {
+    case metaf::WeatherGroup::Type::CURRENT:
+        return phenomenaString; // tr("Current weather: %1").arg(phenomenaString);
+
+    case metaf::WeatherGroup::Type::RECENT:
+        return tr("Recent weather: %1").arg(phenomenaString);
+
+    case metaf::WeatherGroup::Type::EVENT:
+        return tr("Precipitation beginning/ending time: %1").arg(phenomenaString);
+
+    case metaf::WeatherGroup::Type::NSW:
+        return tr("No significant weather");
+
+    case metaf::WeatherGroup::Type::PWINO:
+        return tr("Automated weather identifier INOP");
+
+    case metaf::WeatherGroup::Type::TSNO:
+        return tr("Lightning detector INOP");
+
+    case metaf::WeatherGroup::Type::WX_MISG:
+        return tr("Weather phenomena data is missing");
+
+    case metaf::WeatherGroup::Type::TS_LTNG_TEMPO_UNAVBL:
+        return tr("Thunderstorm / lightning data is missing");
+    }
+
     return QString();
 }
 

@@ -63,6 +63,17 @@ Meteorologist::Decoder::Decoder(QString rawText, QObject *parent)
 
 // explanation Methods
 
+QString Meteorologist::Decoder::explainCloudType(const metaf::CloudType ct) {
+    const auto h = ct.height();
+    if (h.isReported())
+        return tr("Cloud cover %1/8, %2, base height %3")
+                .arg(ct.okta())
+                .arg(cloudTypeToString(ct.type()))
+                .arg(explainDistance_FT(ct.height()));
+    return tr("Cloud cover %1/8, %2")
+            .arg(ct.okta())
+            .arg(cloudTypeToString(ct.type()));
+}
 
 QString Meteorologist::Decoder::explainDirection(const metaf::Direction & direction, bool trueCardinalDirections)
 {
@@ -528,135 +539,6 @@ QString Meteorologist::Decoder::convectiveTypeToString(metaf::CloudGroup::Convec
     }
 }
 
-QString Meteorologist::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor)
-{
-    switch(descriptor) {
-    case metaf::WeatherPhenomena::Descriptor::NONE:
-        return QString();
-
-    case metaf::WeatherPhenomena::Descriptor::SHALLOW:
-        return tr("shallow");
-
-    case metaf::WeatherPhenomena::Descriptor::PARTIAL:
-        return tr("partial");
-
-    case metaf::WeatherPhenomena::Descriptor::PATCHES:
-        return tr("patches");
-
-    case metaf::WeatherPhenomena::Descriptor::LOW_DRIFTING:
-        return tr("low drifting");
-
-    case metaf::WeatherPhenomena::Descriptor::BLOWING:
-        return tr("blowing");
-
-    case metaf::WeatherPhenomena::Descriptor::SHOWERS:
-        return tr("showers");
-
-    case metaf::WeatherPhenomena::Descriptor::THUNDERSTORM:
-        return tr("thunderstorm");
-
-    case metaf::WeatherPhenomena::Descriptor::FREEZING:
-        return tr("freezing");
-    }
-}
-
-QString Meteorologist::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier)
-{
-    switch (qualifier) {
-    case metaf::WeatherPhenomena::Qualifier::NONE:
-        return QString();
-
-    case metaf::WeatherPhenomena::Qualifier::RECENT:
-        return QString("recent");
-
-    case metaf::WeatherPhenomena::Qualifier::VICINITY:
-        return QString("in vicinity");
-
-    case metaf::WeatherPhenomena::Qualifier::LIGHT:
-        return tr("light");
-
-    case metaf::WeatherPhenomena::Qualifier::MODERATE:
-        return tr("moderate");
-
-    case metaf::WeatherPhenomena::Qualifier::HEAVY:
-        return tr("heavy");
-    }
-}
-
-QString Meteorologist::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather)
-{
-    switch (weather) {
-    case metaf::WeatherPhenomena::Weather::NOT_REPORTED:
-        return QString();
-
-    case metaf::WeatherPhenomena::Weather::DRIZZLE:
-        return tr("drizzle");
-
-    case metaf::WeatherPhenomena::Weather::RAIN:
-        return tr("rain");
-
-    case metaf::WeatherPhenomena::Weather::SNOW:
-        return tr("snow");
-
-    case metaf::WeatherPhenomena::Weather::SNOW_GRAINS:
-        return tr("snow grains");
-
-    case metaf::WeatherPhenomena::Weather::ICE_CRYSTALS:
-        return tr("ice crystals");
-
-    case metaf::WeatherPhenomena::Weather::ICE_PELLETS:
-        return tr("ice pellets");
-
-    case metaf::WeatherPhenomena::Weather::HAIL:
-        return tr("hail");
-
-    case metaf::WeatherPhenomena::Weather::SMALL_HAIL:
-        return tr("small hail");
-
-    case metaf::WeatherPhenomena::Weather::UNDETERMINED:
-        return tr("undetermined precipitation");
-
-    case metaf::WeatherPhenomena::Weather::MIST:
-        return tr("mist");
-
-    case metaf::WeatherPhenomena::Weather::FOG:
-        return tr("fog");
-
-    case metaf::WeatherPhenomena::Weather::SMOKE:
-        return tr("smoke");
-
-    case metaf::WeatherPhenomena::Weather::VOLCANIC_ASH:
-        return tr("volcanic ash");
-
-    case metaf::WeatherPhenomena::Weather::DUST:
-        return tr("dust");
-
-    case metaf::WeatherPhenomena::Weather::SAND:
-        return tr("sand");
-
-    case metaf::WeatherPhenomena::Weather::HAZE:
-        return tr("haze");
-
-    case metaf::WeatherPhenomena::Weather::SPRAY:
-        return tr("spray");
-
-    case metaf::WeatherPhenomena::Weather::DUST_WHIRLS:
-        return tr("dust or sand whirls");
-
-    case metaf::WeatherPhenomena::Weather::SQUALLS:
-        return tr("squalls");
-
-    case metaf::WeatherPhenomena::Weather::FUNNEL_CLOUD:
-        return tr("funnel cloud");
-
-    case metaf::WeatherPhenomena::Weather::SANDSTORM:
-        return tr("sand storm");
-
-    case metaf::WeatherPhenomena::Weather::DUSTSTORM:
-        return tr("dust storm");
-    }
-}
-
 QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp)
 {
     QStringList results;
@@ -867,10 +749,178 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
     return results.join(" • ");
 }
 
+QString Meteorologist::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface)
+{
+    switch(stateOfSurface) {
+    case metaf::WaveHeight::StateOfSurface::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::WaveHeight::StateOfSurface::CALM_GLASSY:
+        return tr("calm (glassy), no waves");
+
+    case metaf::WaveHeight::StateOfSurface::CALM_RIPPLED:
+        return tr("calm (rippled), wave height <0.1 meters");
+
+    case metaf::WaveHeight::StateOfSurface::SMOOTH:
+        return tr("smooth, wave height 0.1 to 0.5 meters");
+
+    case metaf::WaveHeight::StateOfSurface::SLIGHT:
+        return tr("slight, wave height 0.5 to 1.25 meters");
+
+    case metaf::WaveHeight::StateOfSurface::MODERATE:
+        return tr("moderate, wave height 1.25 to 2.5 meters");
+
+    case metaf::WaveHeight::StateOfSurface::ROUGH:
+        return tr("rough, wave height 2.5 to 4 meters");
+
+    case metaf::WaveHeight::StateOfSurface::VERY_ROUGH:
+        return tr("very rough, wave height 4 to 6 meters");
+
+    case metaf::WaveHeight::StateOfSurface::HIGH:
+        return tr("high, wave height 6 to 9 meters");
+
+    case metaf::WaveHeight::StateOfSurface::VERY_HIGH:
+        return tr("very high, wave height 9 to 14 meters");
+
+    case metaf::WaveHeight::StateOfSurface::PHENOMENAL:
+        return tr("phenomenal, wave height >14 meters");
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor)
+{
+    switch(descriptor) {
+    case metaf::WeatherPhenomena::Descriptor::NONE:
+        return QString();
+
+    case metaf::WeatherPhenomena::Descriptor::SHALLOW:
+        return tr("shallow");
+
+    case metaf::WeatherPhenomena::Descriptor::PARTIAL:
+        return tr("partial");
+
+    case metaf::WeatherPhenomena::Descriptor::PATCHES:
+        return tr("patches");
+
+    case metaf::WeatherPhenomena::Descriptor::LOW_DRIFTING:
+        return tr("low drifting");
+
+    case metaf::WeatherPhenomena::Descriptor::BLOWING:
+        return tr("blowing");
+
+    case metaf::WeatherPhenomena::Descriptor::SHOWERS:
+        return tr("showers");
+
+    case metaf::WeatherPhenomena::Descriptor::THUNDERSTORM:
+        return tr("thunderstorm");
+
+    case metaf::WeatherPhenomena::Descriptor::FREEZING:
+        return tr("freezing");
+    }
+}
+
+QString Meteorologist::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier)
+{
+    switch (qualifier) {
+    case metaf::WeatherPhenomena::Qualifier::NONE:
+        return QString();
+
+    case metaf::WeatherPhenomena::Qualifier::RECENT:
+        return QString("recent");
+
+    case metaf::WeatherPhenomena::Qualifier::VICINITY:
+        return QString("in vicinity");
+
+    case metaf::WeatherPhenomena::Qualifier::LIGHT:
+        return tr("light");
+
+    case metaf::WeatherPhenomena::Qualifier::MODERATE:
+        return tr("moderate");
+
+    case metaf::WeatherPhenomena::Qualifier::HEAVY:
+        return tr("heavy");
+    }
+}
+
+QString Meteorologist::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather)
+{
+    switch (weather) {
+    case metaf::WeatherPhenomena::Weather::NOT_REPORTED:
+        return QString();
+
+    case metaf::WeatherPhenomena::Weather::DRIZZLE:
+        return tr("drizzle");
+
+    case metaf::WeatherPhenomena::Weather::RAIN:
+        return tr("rain");
+
+    case metaf::WeatherPhenomena::Weather::SNOW:
+        return tr("snow");
+
+    case metaf::WeatherPhenomena::Weather::SNOW_GRAINS:
+        return tr("snow grains");
+
+    case metaf::WeatherPhenomena::Weather::ICE_CRYSTALS:
+        return tr("ice crystals");
+
+    case metaf::WeatherPhenomena::Weather::ICE_PELLETS:
+        return tr("ice pellets");
+
+    case metaf::WeatherPhenomena::Weather::HAIL:
+        return tr("hail");
+
+    case metaf::WeatherPhenomena::Weather::SMALL_HAIL:
+        return tr("small hail");
+
+    case metaf::WeatherPhenomena::Weather::UNDETERMINED:
+        return tr("undetermined precipitation");
+
+    case metaf::WeatherPhenomena::Weather::MIST:
+        return tr("mist");
+
+    case metaf::WeatherPhenomena::Weather::FOG:
+        return tr("fog");
+
+    case metaf::WeatherPhenomena::Weather::SMOKE:
+        return tr("smoke");
+
+    case metaf::WeatherPhenomena::Weather::VOLCANIC_ASH:
+        return tr("volcanic ash");
+
+    case metaf::WeatherPhenomena::Weather::DUST:
+        return tr("dust");
+
+    case metaf::WeatherPhenomena::Weather::SAND:
+        return tr("sand");
+
+    case metaf::WeatherPhenomena::Weather::HAZE:
+        return tr("haze");
+
+    case metaf::WeatherPhenomena::Weather::SPRAY:
+        return tr("spray");
+
+    case metaf::WeatherPhenomena::Weather::DUST_WHIRLS:
+        return tr("dust or sand whirls");
+
+    case metaf::WeatherPhenomena::Weather::SQUALLS:
+        return tr("squalls");
+
+    case metaf::WeatherPhenomena::Weather::FUNNEL_CLOUD:
+        return tr("funnel cloud");
+
+    case metaf::WeatherPhenomena::Weather::SANDSTORM:
+        return tr("sand storm");
+
+    case metaf::WeatherPhenomena::Weather::DUSTSTORM:
+        return tr("dust storm");
+    }
+}
+
 
 // Visitor methods
 
-QString Meteorologist::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString)
+QString Meteorologist::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
         return tr("Invalid data");

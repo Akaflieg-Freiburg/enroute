@@ -49,6 +49,7 @@ public:
     }
 
     // Explanation functions
+    static QString explainCloudType(const metaf::CloudType ct);
     static QString explainDirection(const metaf::Direction & direction, bool trueCardinalDirections=true);
     static QString explainDistance_FT(const metaf::Distance & distance);
     static QString explainMetafTime(const metaf::MetafTime & metafTime);
@@ -64,6 +65,7 @@ public:
     static QString cloudTypeToString(metaf::CloudType::Type type);
     static QString convectiveTypeToString(metaf::CloudGroup::ConvectiveType type);
     static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
+    static QString stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface);
     static QString weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor);
     static QString weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier);
     static QString weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather);
@@ -645,19 +647,6 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    QString explainCloudType(const metaf::CloudType ct) {
-        std::ostringstream result;
-        result << cloudTypeToString(ct.type()).toStdString();
-        result << " covering ";
-        result << ct.okta();
-        result << "/8 of the sky";
-        if (const auto h = ct.height(); h.isReported()) {
-            result << ", base height ";
-            result << explainDistance(ct.height());
-        }
-        return QString::fromStdString(result.str());
-    }
-
     virtual QString visitWeatherGroup(const WeatherGroup & group, ReportPart reportPart, const std::string & rawString)
     {
         (void)reportPart; (void)rawString;
@@ -889,50 +878,12 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface)
-    {
-        switch(stateOfSurface) {
-        case metaf::WaveHeight::StateOfSurface::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::WaveHeight::StateOfSurface::CALM_GLASSY:
-            return "calm (glassy), no waves";
-
-        case metaf::WaveHeight::StateOfSurface::CALM_RIPPLED:
-            return "calm (rippled), wave height &lt;0.1 meters / &lt;1/3 feet";
-
-        case metaf::WaveHeight::StateOfSurface::SMOOTH:
-            return "smooth, wave height 0.1 to 0.5 meters / 1/3 to 1 1/2 feet";
-
-        case metaf::WaveHeight::StateOfSurface::SLIGHT:
-            return "slight, wave height 0.5 to 1.25 meters / 1 1/2 to 4 feet";
-
-        case metaf::WaveHeight::StateOfSurface::MODERATE:
-            return "moderate, wave height 1.25 to 2.5 meters / 4 to 8 feet";
-
-        case metaf::WaveHeight::StateOfSurface::ROUGH:
-            return "rough, wave height 2.5 to 4 meters / 8 to 13 feet";
-
-        case metaf::WaveHeight::StateOfSurface::VERY_ROUGH:
-            return "very rough, wave height 4 to 6 meters / 13 to 20 feet";
-
-        case metaf::WaveHeight::StateOfSurface::HIGH:
-            return "high, wave height 6 to 9 meters / 20 to 30 feet";
-
-        case metaf::WaveHeight::StateOfSurface::VERY_HIGH:
-            return "very high, wave height 9 to 14 meters / 30 to 46 feet";
-
-        case metaf::WaveHeight::StateOfSurface::PHENOMENAL:
-            return "phenomenal, wave height >14 meters / &gt;46 feet";
-        }
-    }
 
     std::string explainWaveHeight(const metaf::WaveHeight & waveHeight)
     {
         switch (waveHeight.type()) {
         case metaf::WaveHeight::Type::STATE_OF_SURFACE:
-            return ("state of sea surface: " +
-                    std::string(stateOfSeaSurfaceToString(waveHeight.stateOfSurface())));
+            return QString("state of sea surface: %1").arg(stateOfSeaSurfaceToString(waveHeight.stateOfSurface())).toStdString();
 
         case metaf::WaveHeight::Type::WAVE_HEIGHT:
             if (waveHeight.isReported()) {

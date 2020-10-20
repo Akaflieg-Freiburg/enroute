@@ -322,7 +322,6 @@ QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhen
 
 // …toString Methods
 
-
 QString Meteorologist::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal cardinal)
 {
     switch(cardinal) {
@@ -379,6 +378,153 @@ QString Meteorologist::Decoder::cardinalDirectionToString(metaf::Direction::Card
 
     case metaf::Direction::Cardinal::UNKNOWN:
         return "unknown direction";
+    }
+}
+
+QString Meteorologist::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount) {
+    switch (amount) {
+    case metaf::CloudGroup::Amount::NOT_REPORTED:
+        return tr("Cloud amount not reported");
+
+    case metaf::CloudGroup::Amount::NSC:
+        return tr("No significant cloud");
+
+    case metaf::CloudGroup::Amount::NCD:
+        return tr("No cloud detected");
+
+    case metaf::CloudGroup::Amount::NONE_CLR:
+    case metaf::CloudGroup::Amount::NONE_SKC:
+        return tr("Clear sky");
+
+    case metaf::CloudGroup::Amount::FEW:
+        return tr("Few clouds");
+
+    case metaf::CloudGroup::Amount::SCATTERED:
+        return tr("Scattered clouds");
+
+    case metaf::CloudGroup::Amount::BROKEN:
+        return tr("Broken clouds");
+
+    case metaf::CloudGroup::Amount::OVERCAST:
+        return tr("Overcast clouds");
+
+    case metaf::CloudGroup::Amount::OBSCURED:
+        return tr("Sky obscured");
+
+    case metaf::CloudGroup::Amount::VARIABLE_FEW_SCATTERED:
+        return tr("Few -- scattered clouds");
+
+    case metaf::CloudGroup::Amount::VARIABLE_SCATTERED_BROKEN:
+        return tr("Scattered -- broken clouds");
+
+    case metaf::CloudGroup::Amount::VARIABLE_BROKEN_OVERCAST:
+        return tr("Broken -- overcast clouds");
+    }
+}
+
+QString Meteorologist::Decoder::cloudTypeToString(metaf::CloudType::Type type)
+{
+    switch(type) {
+    case metaf::CloudType::Type::NOT_REPORTED:
+        return tr("cumulonimbus");
+
+    case metaf::CloudType::Type::CUMULONIMBUS:
+        return tr("cumulonimbus");
+
+    case metaf::CloudType::Type::TOWERING_CUMULUS:
+        return tr("towering cumulus");
+
+    case metaf::CloudType::Type::CUMULUS:
+        return tr("cumulus");
+
+    case metaf::CloudType::Type::CUMULUS_FRACTUS:
+        return tr("cumulus fractus");
+
+    case metaf::CloudType::Type::STRATOCUMULUS:
+        return tr("stratocumulus");
+
+    case metaf::CloudType::Type::NIMBOSTRATUS:
+        return tr("nimbostratus");
+
+    case metaf::CloudType::Type::STRATUS:
+        return tr("stratus");
+
+    case metaf::CloudType::Type::STRATUS_FRACTUS:
+        return tr("stratus fractus");
+
+    case metaf::CloudType::Type::ALTOSTRATUS:
+        return tr("altostratus");
+
+    case metaf::CloudType::Type::ALTOCUMULUS:
+        return tr("altocumulus");
+
+    case metaf::CloudType::Type::ALTOCUMULUS_CASTELLANUS:
+        return tr("altocumulus castellanus");
+
+    case metaf::CloudType::Type::CIRRUS:
+        return tr("cirrus");
+
+    case metaf::CloudType::Type::CIRROSTRATUS:
+        return tr("cirrostratus");
+
+    case metaf::CloudType::Type::CIRROCUMULUS:
+        return tr("cirrocumulus");
+
+    case metaf::CloudType::Type::BLOWING_SNOW:
+        return tr("blowing snow");
+
+    case metaf::CloudType::Type::BLOWING_DUST:
+        return tr("blowing dust");
+
+    case metaf::CloudType::Type::BLOWING_SAND:
+        return tr("blowing sand");
+
+    case metaf::CloudType::Type::ICE_CRYSTALS:
+        return tr("ice crystals");
+
+    case metaf::CloudType::Type::RAIN:
+        return tr("rain");
+
+    case metaf::CloudType::Type::DRIZZLE:
+        return tr("drizzle");
+
+    case metaf::CloudType::Type::SNOW:
+        return tr("snow");
+
+    case metaf::CloudType::Type::ICE_PELLETS:
+        return tr("ice pellets");
+
+    case metaf::CloudType::Type::SMOKE:
+        return tr("smoke");
+
+    case metaf::CloudType::Type::FOG:
+        return tr("fog");
+
+    case metaf::CloudType::Type::MIST:
+        return tr("mist");
+
+    case metaf::CloudType::Type::HAZE:
+        return tr("haze");
+
+    case metaf::CloudType::Type::VOLCANIC_ASH:
+        return tr("volcanic ash");
+    }
+}
+
+QString Meteorologist::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveType type)
+{
+    switch (type) {
+    case metaf::CloudGroup::ConvectiveType::NONE:
+        return QString();
+
+    case metaf::CloudGroup::ConvectiveType::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::CloudGroup::ConvectiveType::TOWERING_CUMULUS:
+        return tr("towering cumulus");
+
+    case metaf::CloudGroup::ConvectiveType::CUMULONIMBUS:
+        return tr("cumulonimbus");
     }
 }
 
@@ -723,6 +869,92 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
 
 
 // Visitor methods
+
+QString Meteorologist::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    const auto rw = group.runway();
+    const auto d = group.direction();
+
+    switch (group.type()) {
+    case metaf::CloudGroup::Type::NO_CLOUDS:
+        return cloudAmountToString(group.amount());
+
+    case metaf::CloudGroup::Type::CLOUD_LAYER:
+        if (group.convectiveType() != metaf::CloudGroup::ConvectiveType::NONE)
+            return tr("%1 (%2) in %3 AGL")
+                    .arg(cloudAmountToString(group.amount()))
+                    .arg(convectiveTypeToString(group.convectiveType()))
+                    .arg(explainDistance_FT(group.height()));
+        return tr("%1 in %2 AGL")
+                .arg(cloudAmountToString(group.amount()))
+                .arg(explainDistance_FT(group.height()));
+
+    case metaf::CloudGroup::Type::VERTICAL_VISIBILITY:
+        return tr("Sky obscured, vertical visibility is %1")
+                .arg(explainDistance_FT(group.verticalVisibility()));
+
+    case metaf::CloudGroup::Type::CEILING:
+        if (rw.has_value() && d.has_value())
+            return tr("Ceiling height %1 AGL at %2 towards %3")
+                    .arg(explainDistance_FT(group.height()))
+                    .arg(explainRunway(*rw))
+                    .arg(explainDirection(*d));
+        if (rw.has_value())
+            return tr("Ceiling height %1 AGL at %2")
+                    .arg(explainDistance_FT(group.height()))
+                    .arg(explainRunway(*rw));
+        if (d.has_value())
+            return tr("Ceiling height %1 AGL towards %2")
+                    .arg(explainDistance_FT(group.height()))
+                    .arg(explainDirection(*d));
+        return tr("Ceiling height %1")
+                .arg(explainDistance_FT(group.height()));
+
+    case metaf::CloudGroup::Type::VARIABLE_CEILING:
+        if (rw.has_value() && d.has_value())
+            return tr("Ceiling height %1 -- %2 AGL at %3 towards %4")
+                    .arg(explainDistance_FT(group.minHeight()))
+                    .arg(explainDistance_FT(group.maxHeight()))
+                    .arg(explainRunway(*rw))
+                    .arg(explainDirection(*d));
+        if (rw.has_value())
+            return tr("Ceiling height %1 -- %2 AGL at %3")
+                    .arg(explainDistance_FT(group.minHeight()))
+                    .arg(explainDistance_FT(group.maxHeight()))
+                    .arg(explainRunway(*rw));
+        if (d.has_value())
+            return tr("Ceiling height %1 -- %2 AGL towards %3")
+                    .arg(explainDistance_FT(group.minHeight()))
+                    .arg(explainDistance_FT(group.maxHeight()))
+                    .arg(explainDirection(*d));
+        return tr("Ceiling height %1 -- %2 AGL")
+                .arg(explainDistance_FT(group.minHeight()))
+                .arg(explainDistance_FT(group.maxHeight()));
+
+    case metaf::CloudGroup::Type::CHINO:
+        return tr("Ceiling data not awailable");
+
+    case metaf::CloudGroup::Type::CLD_MISG:
+        return tr("Sky condition data (cloud data) is missing");
+
+    case metaf::CloudGroup::Type::OBSCURATION:
+        const auto h = group.height().distance();
+        const auto ct = group.cloudType();
+        if (h.has_value() && !h.value() && ct.has_value())
+            return tr("Ground-based obscuration, %1").arg(explainCloudType(ct.value()));
+        if (h.has_value() && !h.value())
+            return tr("Ground-based obscuration");
+        if (h.has_value() && h.value() && ct.has_value())
+            return tr("Aloft obscuration, %1").arg(explainCloudType(ct.value()));
+        if (h.has_value() && h.value())
+            return tr("Aloft obscuration");
+        return explainCloudType(ct.value());
+    }
+    return QString();
+}
 
 QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart, const std::string &)
 {

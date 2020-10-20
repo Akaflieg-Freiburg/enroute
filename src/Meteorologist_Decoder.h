@@ -60,12 +60,16 @@ public:
 
     // … toString Methods
     static QString cardinalDirectionToString(metaf::Direction::Cardinal cardinal);
+    static QString cloudAmountToString(metaf::CloudGroup::Amount amount);
+    static QString cloudTypeToString(metaf::CloudType::Type type);
+    static QString convectiveTypeToString(metaf::CloudGroup::ConvectiveType type);
     static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
     static QString weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor);
     static QString weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier);
     static QString weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather);
 
     // visitor Methods
+    virtual QString visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString);
@@ -641,252 +645,15 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view cloudTypeToString(metaf::CloudType::Type type)
-    {
-        switch(type) {
-        case metaf::CloudType::Type::NOT_REPORTED:
-            return "cumulonimbus";
-
-        case metaf::CloudType::Type::CUMULONIMBUS:
-            return "cumulonimbus";
-
-        case metaf::CloudType::Type::TOWERING_CUMULUS:
-            return "towering cumulus";
-
-        case metaf::CloudType::Type::CUMULUS:
-            return "cumulus";
-
-        case metaf::CloudType::Type::CUMULUS_FRACTUS:
-            return "cumulus fractus";
-
-        case metaf::CloudType::Type::STRATOCUMULUS:
-            return "stratocumulus";
-
-        case metaf::CloudType::Type::NIMBOSTRATUS:
-            return "nimbostratus";
-
-        case metaf::CloudType::Type::STRATUS:
-            return "stratus";
-
-        case metaf::CloudType::Type::STRATUS_FRACTUS:
-            return "stratus fractus";
-
-        case metaf::CloudType::Type::ALTOSTRATUS:
-            return "altostratus";
-
-        case metaf::CloudType::Type::ALTOCUMULUS:
-            return "altocumulus";
-
-        case metaf::CloudType::Type::ALTOCUMULUS_CASTELLANUS:
-            return "altocumulus castellanus";
-
-        case metaf::CloudType::Type::CIRRUS:
-            return "cirrus";
-
-        case metaf::CloudType::Type::CIRROSTRATUS:
-            return "cirrostratus";
-
-        case metaf::CloudType::Type::CIRROCUMULUS:
-            return "cirrocumulus";
-
-        case metaf::CloudType::Type::BLOWING_SNOW:
-            return "blowing snow";
-
-        case metaf::CloudType::Type::BLOWING_DUST:
-            return "blowing dust";
-
-        case metaf::CloudType::Type::BLOWING_SAND:
-            return "blowing sand";
-
-        case metaf::CloudType::Type::ICE_CRYSTALS:
-            return "ice crystals";
-
-        case metaf::CloudType::Type::RAIN:
-            return "rain";
-
-        case metaf::CloudType::Type::DRIZZLE:
-            return "drizzle";
-
-        case metaf::CloudType::Type::SNOW:
-            return "snow";
-
-        case metaf::CloudType::Type::ICE_PELLETS:
-            return "ice pellets";
-
-        case metaf::CloudType::Type::SMOKE:
-            return "smoke";
-
-        case metaf::CloudType::Type::FOG:
-            return "fog";
-
-        case metaf::CloudType::Type::MIST:
-            return "mist";
-
-        case metaf::CloudType::Type::HAZE:
-            return "haze";
-
-        case metaf::CloudType::Type::VOLCANIC_ASH:
-            return "volcanic ash";
-        }
-    }
-
-    std::string explainCloudType(const metaf::CloudType ct) {
+    QString explainCloudType(const metaf::CloudType ct) {
         std::ostringstream result;
-        result << cloudTypeToString(ct.type());
+        result << cloudTypeToString(ct.type()).toStdString();
         result << " covering ";
         result << ct.okta();
         result << "/8 of the sky";
         if (const auto h = ct.height(); h.isReported()) {
             result << ", base height ";
             result << explainDistance(ct.height());
-        }
-        return result.str();
-    }
-
-    std::string_view convectiveTypeToString(metaf::CloudGroup::ConvectiveType type)
-    {
-        switch (type) {
-        case metaf::CloudGroup::ConvectiveType::NONE:
-            return std::string_view();
-
-        case metaf::CloudGroup::ConvectiveType::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::CloudGroup::ConvectiveType::TOWERING_CUMULUS:
-            return "towering cumulus";
-
-        case metaf::CloudGroup::ConvectiveType::CUMULONIMBUS:
-            return "cumulonimbus";
-        }
-    }
-
-    std::string_view cloudAmountToString(metaf::CloudGroup::Amount amount) {
-        switch (amount) {
-        case metaf::CloudGroup::Amount::NOT_REPORTED:
-            return "Cloud amount not reported";
-
-        case metaf::CloudGroup::Amount::NSC:
-            return "No significant cloud: "
-                   "no cloud below 5000 feet (1500 meters), no cumulonimbus or towering "
-                   "cumulus clouds, no vertical visibility restriction";
-
-        case metaf::CloudGroup::Amount::NCD:
-            return "No cloud detected: automated weather station did not detect any clouds; "
-                   "this can happen due to either no clouds present or sensor error";
-
-        case metaf::CloudGroup::Amount::NONE_CLR:
-            return "Clear sky: "
-                   "no cloud layers are detected at or below 12000 feet (3700 meters) (US) "
-                   "or 25000 feet (7600 meters) (Canada); "
-                   "indicates that station is at least partly automated";
-
-        case metaf::CloudGroup::Amount::NONE_SKC:
-            return "Clear sky: "
-                   "In North America indicates report producted by human rather than "
-                   "automatic weather station";
-
-        case metaf::CloudGroup::Amount::FEW:
-            return "Few clouds (1/8 to 2/8 sky covered)";
-
-        case metaf::CloudGroup::Amount::SCATTERED:
-            return "Scattered clouds (3/8 to 4/8 sky covered)";
-
-        case metaf::CloudGroup::Amount::BROKEN:
-            return "Broken clouds (5/8 to 7/8 sky covered)";
-
-        case metaf::CloudGroup::Amount::OVERCAST:
-            return "Overcast (8/8 sky covered)";
-
-        case metaf::CloudGroup::Amount::OBSCURED:
-            return "Sky obscured";
-
-        case metaf::CloudGroup::Amount::VARIABLE_FEW_SCATTERED:
-            return "Sky cover variable between few and scattered clouds (sky coverage variable between 1/8 and 4/8)";
-
-        case metaf::CloudGroup::Amount::VARIABLE_SCATTERED_BROKEN:
-            return "Sky cover variable between scattered and broken clouds (sky coverage variable between 3/8 and 7/8)";
-
-        case metaf::CloudGroup::Amount::VARIABLE_BROKEN_OVERCAST:
-            return "Sky cover variable between broken clouds and overcast (sky coverage variable between 5/8 and 8/8)";
-        }
-    }
-
-    virtual QString visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        switch (group.type()) {
-        case metaf::CloudGroup::Type::NO_CLOUDS:
-            result << cloudAmountToString(group.amount());
-            break;
-
-        case metaf::CloudGroup::Type::CLOUD_LAYER:
-            result << "Cloud layer\n";
-            result << cloudAmountToString(group.amount());
-            result << "\nBase height ";
-            result << explainDistance(group.height());
-            if (group.convectiveType() != metaf::CloudGroup::ConvectiveType::NONE) {
-                result << "\nConvective type: ";
-                result << convectiveTypeToString(group.convectiveType());
-            }
-            break;
-
-        case metaf::CloudGroup::Type::VERTICAL_VISIBILITY:
-            result << "Sky is obscured, vertical visibility is ";
-            result << explainDistance(group.verticalVisibility());
-            break;
-
-        case metaf::CloudGroup::Type::CEILING:
-            result << "Ceiling height " << explainDistance(group.height());
-            if (const auto rw = group.runway(); rw.has_value()) {
-                result << " at " << explainRunway(*rw).toStdString();
-            }
-            if (const auto d = group.direction(); d.has_value()) {
-                result << " towards " << explainDirection(*d).toStdString();
-            }
-            break;
-
-        case metaf::CloudGroup::Type::VARIABLE_CEILING:
-            result << "Ceiling height is variable between ";
-            result << explainDistance(group.minHeight());
-            result << " and ";
-            result << explainDistance(group.maxHeight());
-            if (const auto rw = group.runway(); rw.has_value()) {
-                result << " at " << explainRunway(*rw).toStdString();
-            }
-            if (const auto d = group.direction(); d.has_value()) {
-                result << " towards " << explainDirection(*d).toStdString();
-            }
-            break;
-
-        case metaf::CloudGroup::Type::CHINO:
-            result << "Ceiling data not awailable";
-            if (const auto rw = group.runway(); rw.has_value()) {
-                result << " at " << explainRunway(*rw).toStdString();
-            }
-            if (const auto d = group.direction(); d.has_value()) {
-                result << " towards " << explainDirection(*d).toStdString();
-            }
-            break;
-
-        case metaf::CloudGroup::Type::CLD_MISG:
-            result << "Sky condition data (cloud data) is missing";
-            break;
-
-        case metaf::CloudGroup::Type::OBSCURATION:
-            if (const auto h = group.height().distance(); h.has_value()) {
-                if (!h.value()) {
-                    result << "Ground-based obscuration\n";
-                } else {
-                    result << "Aloft obscuration\n";
-                }
-            }
-            if (const auto ct = group.cloudType(); ct.has_value()) {
-                result << explainCloudType(ct.value());
-            }
-            break;
         }
         return QString::fromStdString(result.str());
     }
@@ -1573,7 +1340,7 @@ public:
         result << "Obscuration / cloud layers: ";
         for (auto i = 0u; i < clouds.size(); i++) {
             result << "\n";
-            result << explainCloudType(clouds.at(i));
+            result << explainCloudType(clouds.at(i)).toStdString();
         }
         return QString::fromStdString(result.str());
     }

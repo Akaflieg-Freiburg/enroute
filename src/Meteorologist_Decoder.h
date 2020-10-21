@@ -53,18 +53,26 @@ public:
     static QString explainDirection(const metaf::Direction & direction, bool trueCardinalDirections=true);
     static QString explainDistance_FT(const metaf::Distance & distance);
     static QString explainMetafTime(const metaf::MetafTime & metafTime);
+    static QString explainPrecipitation(const metaf::Precipitation & precipitation);
     static QString explainPressure(const metaf::Pressure & pressure);
     static QString explainRunway(const metaf::Runway & runway);
     static QString explainSpeed(const metaf::Speed & speed);
+    static QString explainSurfaceFriction(const metaf::SurfaceFriction & surfaceFriction);
     static QString explainTemperature(const metaf::Temperature & temperature);
     static QString explainWaveHeight(const metaf::WaveHeight & waveHeight);
     static QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
     // … toString Methods
+    static QString brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction);
     static QString cardinalDirectionToString(metaf::Direction::Cardinal cardinal);
     static QString cloudAmountToString(metaf::CloudGroup::Amount amount);
     static QString cloudTypeToString(metaf::CloudType::Type type);
     static QString convectiveTypeToString(metaf::CloudGroup::ConvectiveType type);
+    static QString layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type);
+    static QString pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend);
+    static QString pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type);
+    static QString runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits);
+    static QString runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent);
     static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
     static QString stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface);
     static QString weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor);
@@ -73,7 +81,11 @@ public:
 
     // visitor Methods
     virtual QString visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitLocationGroup(const LocationGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitReportTimeGroup(const ReportTimeGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitWeatherGroup(const WeatherGroup & group, ReportPart reportPart, const std::string & rawString);
@@ -143,6 +155,9 @@ public:
 
     virtual QString visitKeywordGroup(const KeywordGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -231,27 +246,6 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    virtual QString visitLocationGroup(const LocationGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-        result << "ICAO code of station: " << group.toString();
-        return QString::fromStdString(result.str());
-    }
-
-    virtual QString visitReportTimeGroup(const ReportTimeGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        QString result;
-
-        if (!group.isValid())
-            result += QString::fromStdString(groupNotValidMessage);
-        result += "Day and time of report release: ";
-        result += explainMetafTime(group.time());
-        return result;
-    }
-
     std::string_view probabilityToString(metaf::TrendGroup::Probability prob)
     {
         switch (prob) {
@@ -268,6 +262,9 @@ public:
 
     virtual QString visitTrendGroup(const TrendGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -520,6 +517,9 @@ public:
 
     virtual QString visitVisibilityGroup(const VisibilityGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
 
@@ -650,196 +650,11 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
-    {
-        switch(deposits) {
-        case metaf::RunwayStateGroup::Deposits::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::RunwayStateGroup::Deposits::CLEAR_AND_DRY:
-            return "clear and dry";
-
-        case metaf::RunwayStateGroup::Deposits::DAMP:
-            return "damp";
-
-        case metaf::RunwayStateGroup::Deposits::WET_AND_WATER_PATCHES:
-            return "wet and water patches";
-
-        case metaf::RunwayStateGroup::Deposits::RIME_AND_FROST_COVERED:
-            return "rime and frost covered";
-
-        case metaf::RunwayStateGroup::Deposits::DRY_SNOW:
-            return "dry snow";
-
-        case metaf::RunwayStateGroup::Deposits::WET_SNOW:
-            return "wet snow";
-
-        case metaf::RunwayStateGroup::Deposits::SLUSH:
-            return "slush";
-
-        case metaf::RunwayStateGroup::Deposits::ICE:
-            return "ice";
-
-        case metaf::RunwayStateGroup::Deposits::COMPACTED_OR_ROLLED_SNOW:
-            return "compacted or rolled snow";
-
-        case metaf::RunwayStateGroup::Deposits::FROZEN_RUTS_OR_RIDGES:
-            return "frozen ruts or ridges";
-        }
-    }
-
-    std::string explainPrecipitation(const metaf::Precipitation & precipitation)
-    {
-        std::ostringstream result;
-        if (!precipitation.isReported()) return "not reported";
-        if (const auto p = precipitation.amount(); p.has_value() && !*p)
-            return "trace amount";
-        if (const auto p = precipitation.toUnit(metaf::Precipitation::Unit::MM);
-                p.has_value())
-        {
-            result << roundTo(*p, 1) << " mm";
-        } else {
-            result << "[unable to convert precipitation to mm]";
-        }
-        result << " / ";
-        if (const auto p = precipitation.toUnit(metaf::Precipitation::Unit::INCHES);
-                p.has_value())
-        {
-            result << roundTo(*p, 2) << " inches";
-        } else {
-            result << "[unable to convert precipitation to inches]";
-        }
-        return result.str();
-    }
-
-    std::string_view runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent)
-    {
-        switch(extent) {
-        case metaf::RunwayStateGroup::Extent::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::RunwayStateGroup::Extent::NONE:
-            return "none";
-
-        case metaf::RunwayStateGroup::Extent::LESS_THAN_10_PERCENT:
-            return "&lt;10 percent";
-
-        case metaf::RunwayStateGroup::Extent::FROM_11_TO_25_PERCENT:
-            return "11 to 25 percent";
-
-        case metaf::RunwayStateGroup::Extent::FROM_26_TO_50_PERCENT:
-            return "26 to 50 percent";
-
-        case metaf::RunwayStateGroup::Extent::MORE_THAN_51_PERCENT:
-            return "&gt;51 percent";
-
-        case metaf::RunwayStateGroup::Extent::RESERVED_3:
-            return "[reserved_extent_value 3]";
-
-        case metaf::RunwayStateGroup::Extent::RESERVED_4:
-            return "[reserved_extent_value 4]";
-
-        case metaf::RunwayStateGroup::Extent::RESERVED_6:
-            return "[reserved_extent_value 6]";
-
-        case metaf::RunwayStateGroup::Extent::RESERVED_7:
-            return "[reserved_extent_value 7]";
-
-        case metaf::RunwayStateGroup::Extent::RESERVED_8:
-            return "[reserved_extent_value 8]";
-        }
-    }
-
-    std::string explainSurfaceFriction(const metaf::SurfaceFriction & surfaceFriction)
-    {
-        switch (surfaceFriction.type()) {
-        case metaf::SurfaceFriction::Type::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::SurfaceFriction::Type::SURFACE_FRICTION_REPORTED:
-            if (const auto c = surfaceFriction.coefficient(); c.has_value()) {
-                return ("friction coefficient " + roundTo(*c, 2));
-            }
-            return "[unable to produce a friction coefficient]";
-
-        case metaf::SurfaceFriction::Type::BRAKING_ACTION_REPORTED:
-            return ("braking action " +
-                    std::string(brakingActionToString(surfaceFriction.brakingAction())));
-
-        case metaf::SurfaceFriction::Type::UNRELIABLE:
-            return "unreliable or unmeasurable";
-        }
-    }
-
-    std::string_view brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction)
-    {
-        switch(brakingAction) {
-        case metaf::SurfaceFriction::BrakingAction::NONE:
-            return "not reported";
-
-        case metaf::SurfaceFriction::BrakingAction::POOR:
-            return "poor (friction coefficient 0.0 to 0.25)";
-
-        case metaf::SurfaceFriction::BrakingAction::MEDIUM_POOR:
-            return "medium/poor (friction coefficient 0.26 to 0.29)";
-
-        case metaf::SurfaceFriction::BrakingAction::MEDIUM:
-            return "medium (friction coefficient 0.30 to 0.35)";
-
-        case metaf::SurfaceFriction::BrakingAction::MEDIUM_GOOD:
-            return "medium/good (friction coefficient 0.36 to 0.40)";
-
-        case metaf::SurfaceFriction::BrakingAction::GOOD:
-            return "good (friction coefficient 0.40 to 1.00)";
-        }
-    }
-
-    virtual QString visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        result << "State of " << explainRunway(group.runway()).toStdString() << ":\n";
-
-        switch (group.type()) {
-        case metaf::RunwayStateGroup::Type::RUNWAY_STATE:
-            result << runwayStateDepositsToString(group.deposits());
-            if (group.deposits() !=
-                    metaf::RunwayStateGroup::Deposits::CLEAR_AND_DRY)
-            {
-                result << "\nDepth of deposits on runway: ";
-                result << explainPrecipitation(group.depositDepth());
-                result << "\nRunway contamination extent: ";
-                result << runwayStateExtentToString(group.contaminationExtent());
-            }
-            result << "\nSurface friction: ";
-            result << explainSurfaceFriction(group.surfaceFriction());
-            break;
-
-        case metaf::RunwayStateGroup::Type::RUNWAY_CLRD:
-            result << "Deposits on runway were cleared or ceased to exist";
-            result << "\nSurface friction: ";
-            result << explainSurfaceFriction(group.surfaceFriction());
-            break;
-
-        case metaf::RunwayStateGroup::Type::RUNWAY_SNOCLO:
-            result << "Runway closed due to snow accumulation";
-            break;
-
-        case metaf::RunwayStateGroup::Type::AERODROME_SNOCLO:
-            result << "Aerodrome closed due to snow accumulation";
-            break;
-
-        case metaf::RunwayStateGroup::Type::RUNWAY_NOT_OPERATIONAL:
-            result << "Runway is not operational";
-            break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
     virtual QString visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -881,89 +696,92 @@ public:
 
     virtual QString visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
         switch(group.type()) {
         case metaf::PrecipitationGroup::Type::TOTAL_PRECIPITATION_HOURLY:
             result << "Total precipitation for the past hour: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::SNOW_DEPTH_ON_GROUND:
             result << "Snow depth on ground: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_OR_6_HOURLY:
             result << "Water equivalent of frozen precipitation ";
             result << "for the last 3 or 6 hours: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_HOURLY:
             result << "Water equivalent of frozen precipitation";
             result << " for the last 3 hours: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_6_HOURLY:
             result << "Water equivalent of frozen precipitation";
             result << "for the last 6 hours: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_24_HOURLY:
             result << "Water equivalent of frozen precipitation ";
             result << "for the last 24 hours: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::SNOW_6_HOURLY:
             result << "Snowfall for the last 6 hours: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::WATER_EQUIV_OF_SNOW_ON_GROUND:
             result << "Water equivalent of snow on ground: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_HOUR:
             result << "Ice accretion for the last hour: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_3_HOURS:
             result << "Ice accretion for the last 3 hours: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_6_HOURS:
             result << "Ice accretion for the last 6 hours: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::
         PRECIPITATION_ACCUMULATION_SINCE_LAST_REPORT:
             result << "Precipitation accumulation since last report: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::SNOW_INCREASING_RAPIDLY:
             result << "Snow increasing rapidly";
             result << "\nFor the last hour snow increased by ";
-            result << explainPrecipitation(group.recent());
+            result << explainPrecipitation(group.recent()).toStdString();
             result << "\nTotal snowfall: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::RAINFALL_9AM_10MIN:
             result << "Rainfall for the last 10 minutes before ";
             result << "report release time: ";
-            result << explainPrecipitation(group.recent());
+            result << explainPrecipitation(group.recent()).toStdString();
             result << "\nRainfall since 9AM (9:00) local time: ";
-            result << explainPrecipitation(group.total());
+            result << explainPrecipitation(group.total()).toStdString();
             break;
 
         case metaf::PrecipitationGroup::Type::PNO:
@@ -989,91 +807,15 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type)
-    {
-        switch(type) {
-        case metaf::LayerForecastGroup::Type::ICING_TRACE_OR_NONE:
-            return "Trace icing or no icing";
-
-        case metaf::LayerForecastGroup::Type::ICING_LIGHT_MIXED:
-            return "Light mixed icing";
-
-        case metaf::LayerForecastGroup::Type::ICING_LIGHT_RIME_IN_CLOUD:
-            return "Light rime icing in cloud";
-
-        case metaf::LayerForecastGroup::Type::
-        ICING_LIGHT_CLEAR_IN_PRECIPITATION:
-            return "Light clear icing in precipitation";
-
-        case metaf::LayerForecastGroup::Type::ICING_MODERATE_MIXED:
-            return "Moderate mixed icing";
-
-        case metaf::LayerForecastGroup::Type::ICING_MODERATE_RIME_IN_CLOUD:
-            return "Moderate rime icing in cloud";
-
-        case metaf::LayerForecastGroup::Type::
-        ICING_MODERATE_CLEAR_IN_PRECIPITATION:
-            return "Moderate clear icing in precipitation";
-
-        case metaf::LayerForecastGroup::Type::ICING_SEVERE_MIXED:
-            return "Severe mixed icing";
-
-        case metaf::LayerForecastGroup::Type::ICING_SEVERE_RIME_IN_CLOUD:
-            return "Severe rime icing in cloud";
-
-        case metaf::LayerForecastGroup::Type::
-        ICING_SEVERE_CLEAR_IN_PRECIPITATION:
-            return "Severe clear icing in precipitation";
-
-        case metaf::LayerForecastGroup::Type::TURBULENCE_NONE:
-            return "No turbulence";
-
-        case metaf::LayerForecastGroup::Type::TURBULENCE_LIGHT:
-            return "Light turbulence";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_MODERATE_IN_CLEAR_AIR_OCCASIONAL:
-            return "Occasional moderate turbulence in clear air";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_MODERATE_IN_CLEAR_AIR_FREQUENT:
-            return "Frequent moderate turbulence in clear air";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_MODERATE_IN_CLOUD_OCCASIONAL:
-            return "Occasional moderate turbulence in cloud";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_MODERATE_IN_CLOUD_FREQUENT:
-            return "Frequent moderate turbulence in cloud";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_SEVERE_IN_CLEAR_AIR_OCCASIONAL:
-            return "Occasional severe turbulence in clear air";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_SEVERE_IN_CLEAR_AIR_FREQUENT:
-            return "Frequent severe turbulence in clear air";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_SEVERE_IN_CLOUD_OCCASIONAL:
-            return "Occasional severe turbulence in cloud";
-
-        case metaf::LayerForecastGroup::Type::
-        TURBULENCE_SEVERE_IN_CLOUD_FREQUENT:
-            return "Frequent severe turbulence in cloud";
-
-        case metaf::LayerForecastGroup::Type::TURBULENCE_EXTREME:
-            return "Extreme turbulence";
-        }
-    }
-
     virtual QString visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
-        result << layerForecastGroupTypeToString(group.type());
+        result << layerForecastGroupTypeToString(group.type()).toStdString();
         result << " at ";
         if (!group.baseHeight().isReported() && !group.topHeight().isReported()) {
             result << "all heights";
@@ -1086,118 +828,11 @@ public:
         return QString::fromStdString(result.str());
     }
 
-    std::string_view pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type)
-    {
-        switch(type) {
-        case metaf::PressureTendencyGroup::Type::INCREASING_THEN_DECREASING:
-            return "increasing, then decreasing";
-
-        case metaf::PressureTendencyGroup::Type::INCREASING_MORE_SLOWLY:
-            return "increasing, then steady, "
-                   "or increasing then increasing more slowly";
-
-        case metaf::PressureTendencyGroup::Type::INCREASING:
-            return "increasing steadily or unsteadily";
-
-        case metaf::PressureTendencyGroup::Type::INCREASING_MORE_RAPIDLY:
-            return "decreasing or steady, then increasing; "
-                   "or increasing then increasing more rapidly";
-
-        case metaf::PressureTendencyGroup::Type::STEADY:
-            return "steady";
-
-        case metaf::PressureTendencyGroup::Type::DECREASING_THEN_INCREASING:
-            return "decreasing, then increasing";
-
-        case metaf::PressureTendencyGroup::Type::DECREASING_MORE_SLOWLY:
-            return "decreasing then steady; "
-                   "or decreasing then decreasing more slowly";
-
-        case metaf::PressureTendencyGroup::Type::DECREASING:
-            return "decreasing steadily or unsteadily";
-
-        case metaf::PressureTendencyGroup::Type::DECREASING_MORE_RAPIDLY:
-            return "steady or increasing, then decreasing; "
-                   "or decreasing then decreasing more rapidly";
-
-        case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
-            return "rising rapidly at a rate of "
-                   "at least 0.06 inch of mercury (2.03 hectopascal) per hour "
-                   "and the pressure change totals "
-                   "0.02 inch of mercury (0.68 hectopascal) or more "
-                   "at the time of the observation";
-
-        case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
-            return "falling rapidly at a rate of "
-                   "at least 0.06 inch of mercury (2.03 hectopascal) per hour "
-                   "and the pressure change totals "
-                   "0.02 inch of mercury (0.68 hectopascal) or more "
-                   "at the time of the observation";
-        }
-    }
-
-    std::string_view pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend)
-    {
-        switch(trend) {
-        case metaf::PressureTendencyGroup::Trend::NOT_REPORTED:
-            return "not reported";
-
-        case metaf::PressureTendencyGroup::Trend::HIGHER:
-            return "higher than";
-
-        case metaf::PressureTendencyGroup::Trend::HIGHER_OR_SAME:
-            return "higher or the same as";
-
-        case metaf::PressureTendencyGroup::Trend::SAME:
-            return "same as";
-
-        case metaf::PressureTendencyGroup::Trend::LOWER_OR_SAME:
-            return "lower or the same as";
-
-        case metaf::PressureTendencyGroup::Trend::LOWER:
-            return "lower than";
-        }
-    }
-
-    virtual QString visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        switch (group.type()) {
-        case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
-            result << "3-hourly pressure tendency is not reported";
-            result << "\nAbsolute pressure change is ";
-            result << explainPressure(group.difference()).toStdString();
-            break;
-
-        case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
-        case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
-            result << "Atmospheric pressure is ";
-            result << pressureTendencyTypeToString (group.type());
-            break;
-
-        default:
-            result << "During last 3 hours the atmospheric pressure was ";
-            result << pressureTendencyTypeToString (group.type());
-            result << "\nNow the atmospheric pressure is ";
-            result << pressureTendencyTrendToString(
-                          metaf::PressureTendencyGroup::trend(group.type()));
-            result << " 3 hours ago";
-            result << "\nAbsolute pressure change is ";
-            result << explainPressure(group.difference()).toStdString();
-            break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
     virtual QString visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -1399,6 +1034,9 @@ public:
 
     virtual QString visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -1413,6 +1051,9 @@ public:
 
     virtual QString visitLightningGroup(const LightningGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -1467,6 +1108,9 @@ public:
 
     virtual QString visitVicinityGroup(const VicinityGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -1567,6 +1211,9 @@ public:
 
     virtual QString visitMiscGroup(const MiscGroup & group,  ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)reportPart; (void)rawString;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";
@@ -1675,6 +1322,9 @@ public:
 
     virtual QString visitUnknownGroup(const UnknownGroup & group, ReportPart reportPart, const std::string & rawString)
     {
+        if (!group.isValid())
+            return tr("Invalid data");
+
         (void)group;(void)reportPart;
         std::ostringstream result;
         if (!group.isValid()) result << groupNotValidMessage << "\n";

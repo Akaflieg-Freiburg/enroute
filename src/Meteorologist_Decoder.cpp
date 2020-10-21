@@ -175,6 +175,20 @@ QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafT
     return Clock::describePointInTime(metarDateTime);
 }
 
+QString Meteorologist::Decoder::explainPrecipitation(const metaf::Precipitation & precipitation)
+{
+    if (!precipitation.isReported())
+        return "not reported";
+
+    if (const auto p = precipitation.amount(); p.has_value() && !*p)
+        return tr("trace amount");
+
+    const auto p = precipitation.toUnit(metaf::Precipitation::Unit::MM);
+    if (p.has_value())
+        return QString("%1 mm").arg(QString::number(*p, 'f', 2));
+    return tr("[unable to convert precipitation to mm]");
+}
+
 QString Meteorologist::Decoder::explainPressure(const metaf::Pressure & pressure) {
 
     if (!pressure.pressure().has_value())
@@ -230,6 +244,28 @@ QString Meteorologist::Decoder::explainSpeed(const metaf::Speed & speed) {
     if (s.has_value())
         return QString("%1 kt").arg(qRound(*s));
     return tr("[unable to convert speed to knots]");
+}
+
+QString Meteorologist::Decoder::explainSurfaceFriction(const metaf::SurfaceFriction & surfaceFriction)
+{
+    const auto c = surfaceFriction.coefficient();
+
+    switch (surfaceFriction.type()) {
+    case metaf::SurfaceFriction::Type::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::SurfaceFriction::Type::SURFACE_FRICTION_REPORTED:
+        if (c.has_value())
+            return tr("friction coefficient %1").arg(QString::number(*c, 'f', 2));
+        return tr("[unable to produce a friction coefficient]");
+
+    case metaf::SurfaceFriction::Type::BRAKING_ACTION_REPORTED:
+        return tr("braking action %1").arg(brakingActionToString(surfaceFriction.brakingAction()));
+
+    case metaf::SurfaceFriction::Type::UNRELIABLE:
+        return tr("unreliable or unmeasurable");
+    }
+    return QString();
 }
 
 QString Meteorologist::Decoder::explainTemperature(const metaf::Temperature & temperature)
@@ -349,6 +385,29 @@ QString Meteorologist::Decoder::explainWeatherPhenomena(const metaf::WeatherPhen
 
 
 // …toString Methods
+
+QString Meteorologist::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction)
+{
+    switch(brakingAction) {
+    case metaf::SurfaceFriction::BrakingAction::NONE:
+        return tr("not reported");
+
+    case metaf::SurfaceFriction::BrakingAction::POOR:
+        return tr("poor (friction coefficient 0.0 to 0.25)");
+
+    case metaf::SurfaceFriction::BrakingAction::MEDIUM_POOR:
+        return tr("medium/poor (friction coefficient 0.26 to 0.29)");
+
+    case metaf::SurfaceFriction::BrakingAction::MEDIUM:
+        return tr("medium (friction coefficient 0.30 to 0.35)");
+
+    case metaf::SurfaceFriction::BrakingAction::MEDIUM_GOOD:
+        return tr("medium/good (friction coefficient 0.36 to 0.40)");
+
+    case metaf::SurfaceFriction::BrakingAction::GOOD:
+        return tr("good (friction coefficient 0.40 to 1.00)");
+    }
+}
 
 QString Meteorologist::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal cardinal)
 {
@@ -554,6 +613,206 @@ QString Meteorologist::Decoder::convectiveTypeToString(metaf::CloudGroup::Convec
     case metaf::CloudGroup::ConvectiveType::CUMULONIMBUS:
         return tr("cumulonimbus");
     }
+}
+
+QString Meteorologist::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type)
+{
+    switch(type) {
+    case metaf::LayerForecastGroup::Type::ICING_TRACE_OR_NONE:
+        return tr("Trace icing or no icing");
+
+    case metaf::LayerForecastGroup::Type::ICING_LIGHT_MIXED:
+        return tr("Light mixed icing");
+
+    case metaf::LayerForecastGroup::Type::ICING_LIGHT_RIME_IN_CLOUD:
+        return tr("Light rime icing in cloud");
+
+    case metaf::LayerForecastGroup::Type::ICING_LIGHT_CLEAR_IN_PRECIPITATION:
+        return tr("Light clear icing in precipitation");
+
+    case metaf::LayerForecastGroup::Type::ICING_MODERATE_MIXED:
+        return tr("Moderate mixed icing");
+
+    case metaf::LayerForecastGroup::Type::ICING_MODERATE_RIME_IN_CLOUD:
+        return tr("Moderate rime icing in cloud");
+
+    case metaf::LayerForecastGroup::Type::ICING_MODERATE_CLEAR_IN_PRECIPITATION:
+        return tr("Moderate clear icing in precipitation");
+
+    case metaf::LayerForecastGroup::Type::ICING_SEVERE_MIXED:
+        return tr("Severe mixed icing");
+
+    case metaf::LayerForecastGroup::Type::ICING_SEVERE_RIME_IN_CLOUD:
+        return tr("Severe rime icing in cloud");
+
+    case metaf::LayerForecastGroup::Type::ICING_SEVERE_CLEAR_IN_PRECIPITATION:
+        return tr("Severe clear icing in precipitation");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_NONE:
+        return tr("No turbulence");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_LIGHT:
+        return tr("Light turbulence");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLEAR_AIR_OCCASIONAL:
+        return tr("Occasional moderate turbulence in clear air");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLEAR_AIR_FREQUENT:
+        return tr("Frequent moderate turbulence in clear air");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLOUD_OCCASIONAL:
+        return tr("Occasional moderate turbulence in cloud");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLOUD_FREQUENT:
+        return tr("Frequent moderate turbulence in cloud");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLEAR_AIR_OCCASIONAL:
+        return tr("Occasional severe turbulence in clear air");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLEAR_AIR_FREQUENT:
+        return tr("Frequent severe turbulence in clear air");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLOUD_OCCASIONAL:
+        return tr("Occasional severe turbulence in cloud");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLOUD_FREQUENT:
+        return tr("Frequent severe turbulence in cloud");
+
+    case metaf::LayerForecastGroup::Type::TURBULENCE_EXTREME:
+        return tr("Extreme turbulence");
+    }
+}
+
+QString Meteorologist::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend)
+{
+    switch(trend) {
+    case metaf::PressureTendencyGroup::Trend::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::PressureTendencyGroup::Trend::HIGHER:
+        return tr("higher than");
+
+    case metaf::PressureTendencyGroup::Trend::HIGHER_OR_SAME:
+        return tr("higher or the same as");
+
+    case metaf::PressureTendencyGroup::Trend::SAME:
+        return tr("same as");
+
+    case metaf::PressureTendencyGroup::Trend::LOWER_OR_SAME:
+        return tr("lower or the same as");
+
+    case metaf::PressureTendencyGroup::Trend::LOWER:
+        return tr("lower than");
+    }
+}
+
+QString Meteorologist::Decoder::pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type)
+{
+    switch(type) {
+    case metaf::PressureTendencyGroup::Type::INCREASING_THEN_DECREASING:
+        return tr("increasing, then decreasing");
+
+    case metaf::PressureTendencyGroup::Type::INCREASING_MORE_SLOWLY:
+        return tr("increasing more slowly");
+
+    case metaf::PressureTendencyGroup::Type::INCREASING:
+        return tr("increasing");
+
+    case metaf::PressureTendencyGroup::Type::INCREASING_MORE_RAPIDLY:
+        return tr("increasing more rapidly");
+
+    case metaf::PressureTendencyGroup::Type::STEADY:
+        return tr("steady");
+
+    case metaf::PressureTendencyGroup::Type::DECREASING_THEN_INCREASING:
+        return tr("decreasing, then increasing");
+
+    case metaf::PressureTendencyGroup::Type::DECREASING_MORE_SLOWLY:
+        return tr("decreasing more slowly");
+
+    case metaf::PressureTendencyGroup::Type::DECREASING:
+        return tr("decreasing");
+
+    case metaf::PressureTendencyGroup::Type::DECREASING_MORE_RAPIDLY:
+        return tr("decreasing more rapidly");
+
+    case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
+        return tr("rising rapidly");
+
+    case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
+        return tr("falling rapidly");
+    }
+}
+
+QString Meteorologist::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
+{
+    switch(deposits) {
+    case metaf::RunwayStateGroup::Deposits::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::RunwayStateGroup::Deposits::CLEAR_AND_DRY:
+        return tr("clear and dry");
+
+    case metaf::RunwayStateGroup::Deposits::DAMP:
+        return tr("damp");
+
+    case metaf::RunwayStateGroup::Deposits::WET_AND_WATER_PATCHES:
+        return tr("wet and water patches");
+
+    case metaf::RunwayStateGroup::Deposits::RIME_AND_FROST_COVERED:
+        return tr("rime and frost covered");
+
+    case metaf::RunwayStateGroup::Deposits::DRY_SNOW:
+        return tr("dry snow");
+
+    case metaf::RunwayStateGroup::Deposits::WET_SNOW:
+        return tr("wet snow");
+
+    case metaf::RunwayStateGroup::Deposits::SLUSH:
+        return tr("slush");
+
+    case metaf::RunwayStateGroup::Deposits::ICE:
+        return tr("ice");
+
+    case metaf::RunwayStateGroup::Deposits::COMPACTED_OR_ROLLED_SNOW:
+        return tr("compacted or rolled snow");
+
+    case metaf::RunwayStateGroup::Deposits::FROZEN_RUTS_OR_RIDGES:
+        return tr("frozen ruts or ridges");
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent)
+{
+    switch(extent) {
+    case metaf::RunwayStateGroup::Extent::NOT_REPORTED:
+    case metaf::RunwayStateGroup::Extent::RESERVED_3:
+    case metaf::RunwayStateGroup::Extent::RESERVED_4:
+    case metaf::RunwayStateGroup::Extent::RESERVED_6:
+    case metaf::RunwayStateGroup::Extent::RESERVED_7:
+    case metaf::RunwayStateGroup::Extent::RESERVED_8:
+        return tr("not reported");
+
+    case metaf::RunwayStateGroup::Extent::NONE:
+        return tr("none");
+
+    case metaf::RunwayStateGroup::Extent::LESS_THAN_10_PERCENT:
+        return QString("< 10%");
+
+    case metaf::RunwayStateGroup::Extent::FROM_11_TO_25_PERCENT:
+        return QString("11% -- 25%");
+
+    case metaf::RunwayStateGroup::Extent::FROM_26_TO_50_PERCENT:
+        return QString("26% -- 50%");
+
+    case metaf::RunwayStateGroup::Extent::MORE_THAN_51_PERCENT:
+        return QString(">51%");
+    }
+    return QString();
 }
 
 QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp)
@@ -1023,6 +1282,14 @@ QString Meteorologist::Decoder::visitCloudGroup(const CloudGroup & group, Report
     return QString();
 }
 
+QString Meteorologist::Decoder::visitLocationGroup(const LocationGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    return tr("Report for %1").arg(QString::fromStdString(group.toString()));
+}
+
 QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
@@ -1048,6 +1315,73 @@ QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, 
         return tr("Atmospheric pressure data is missing");
     }
     return QString();
+}
+
+QString Meteorologist::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    switch (group.type()) {
+    case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
+        return tr("3-hour pressure tendency is not reported. Absolute pressure change is %1.")
+                .arg(explainPressure(group.difference()));
+
+    case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
+    case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
+        return tr("Atmospheric pressure is %1")
+                .arg(pressureTendencyTypeToString(group.type()));
+
+    default:
+        return tr("During last 3 hours the atmospheric pressure was %1. Now the atmospheric pressure is %2 3h ago. Absolute pressure change is %3")
+                .arg(pressureTendencyTypeToString(group.type()))
+                .arg(pressureTendencyTrendToString(metaf::PressureTendencyGroup::trend(group.type())))
+                .arg(explainPressure(group.difference()));
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitReportTimeGroup(const ReportTimeGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    return tr("Issued at %1").arg(explainMetafTime(group.time()));
+}
+
+QString Meteorologist::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    QString result = tr("State of %1:").arg(explainRunway(group.runway()));
+
+    switch (group.type()) {
+    case metaf::RunwayStateGroup::Type::RUNWAY_STATE:
+        result += runwayStateDepositsToString(group.deposits());
+        if (group.deposits() != metaf::RunwayStateGroup::Deposits::CLEAR_AND_DRY)
+            result += ", " + tr("%1 of deposits, %2 of runway contaminated")
+                    .arg(explainPrecipitation(group.depositDepth()))
+                    .arg(runwayStateExtentToString(group.contaminationExtent()));
+        result += ", " + explainSurfaceFriction(group.surfaceFriction());
+        break;
+
+    case metaf::RunwayStateGroup::Type::RUNWAY_CLRD:
+        result += tr("deposits on runway were cleared or ceased to exist");
+        result += ", " + explainSurfaceFriction(group.surfaceFriction());
+        break;
+
+    case metaf::RunwayStateGroup::Type::RUNWAY_SNOCLO:
+        result += tr("runway closed due to snow accumulation");
+        break;
+
+    case metaf::RunwayStateGroup::Type::AERODROME_SNOCLO:
+        return tr("Aerodrome closed due to snow accumulation");
+
+    case metaf::RunwayStateGroup::Type::RUNWAY_NOT_OPERATIONAL:
+        result += tr("runway is not operational");
+    }
+    return result;
 }
 
 QString Meteorologist::Decoder::visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart, const std::string &)

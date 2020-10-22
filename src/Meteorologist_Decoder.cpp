@@ -1493,7 +1493,7 @@ QString Meteorologist::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudG
     if (!group.isValid())
         return tr("Invalid data");
 
-    return tr("Low cloud layer: %1 • Mid cloud layer: %2 • High cloud layer: %2")
+    return tr("Low cloud layer: %1 • Mid cloud layer: %2 • High cloud layer: %3")
             .arg(cloudLowLayerToString(group.lowLayer()))
             .arg(cloudMidLayerToString(group.midLayer()))
             .arg(cloudHighLayerToString(group.highLayer()));

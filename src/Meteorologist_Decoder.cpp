@@ -1656,6 +1656,7 @@ QString Meteorologist::Decoder::visitPressureTendencyGroup(const PressureTendenc
                 .arg(pressureTendencyTypeToString(group.type()));
 
     default:
+        //: Note: the string %2 will be replaced by a text such as "less than"
         return tr("During last 3 hours the atmospheric pressure was %1. Now the atmospheric pressure is %2 3h ago. Absolute pressure change is %3")
                 .arg(pressureTendencyTypeToString(group.type()))
                 .arg(pressureTendencyTrendToString(metaf::PressureTendencyGroup::trend(group.type())))

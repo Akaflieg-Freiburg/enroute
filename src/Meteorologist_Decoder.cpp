@@ -509,6 +509,122 @@ QString Meteorologist::Decoder::cloudAmountToString(metaf::CloudGroup::Amount am
     }
 }
 
+QString Meteorologist::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer)
+{
+    switch(highLayer) {
+    case metaf::LowMidHighCloudGroup::HighLayer::NONE:
+        return tr("No high-layer clouds");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CI_FIB_CI_UNC:
+        return tr("Cirrus fibratus or Cirrus uncinus");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CI_SPI_CI_CAS_CI_FLO:
+        return tr("Cirrus spissatus or Cirrus castellanus or Cirrus floccus");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CI_SPI_CBGEN:
+        return tr("Cirrus spissatus cumulonimbogenitus");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CI_FIB_CI_UNC_SPREADING:
+        return tr("Cirrus uncinus or Cirrus fibratus progressively invading the sky");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CI_CS_LOW_ABOVE_HORIZON:
+        return tr("Cirrus or Cirrostratus progressively invading the sky, but the continuous veil does not reach 45° above the horizon");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CI_CS_HIGH_ABOVE_HORIZON:
+        return tr("Cirrus or Cirrostratus progressively invading the sky, the continuous veil extends more than 45° above the horizon, without the sky being totally covered");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CS_NEB_CS_FIB_COVERING_ENTIRE_SKY:
+        return tr("Cirrostratus nebulosus or Cirrostratus fibratus covering the whole sky");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CS:
+        return tr("Cirrostratus that is not invading the sky and that does not completely cover the whole sky");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::CC:
+        return tr("Cirrocumulus alone");
+
+    case metaf::LowMidHighCloudGroup::HighLayer::NOT_OBSERVABLE:
+        return tr("Clouds are not observable");
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer)
+{
+    switch(lowLayer) {
+    case metaf::LowMidHighCloudGroup::LowLayer::NONE:
+        return tr("No low layer clouds");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::CU_HU_CU_FR:
+        return tr("Cumulus humilis or Cumulus fractus");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::CU_MED_CU_CON:
+        return tr("Cumulus clouds with moderate or significant vertical extent");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::CB_CAL:
+        return tr("Cumulonimbus calvus");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::SC_CUGEN:
+        return tr("Stratocumulus cumulogenitus");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::SC_NON_CUGEN:
+        return tr("Stratocumulus non-cumulogenitus");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::ST_NEB_ST_FR:
+        return tr("Stratus nebulosus or Stratus fractus");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::ST_FR_CU_FR_PANNUS:
+        return tr("Stratus fractus or Cumulus fractus");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::CU_SC_NON_CUGEN_DIFFERENT_LEVELS:
+        return tr("Cumulus and Stratocumulus with bases at different levels");
+
+    case metaf::LowMidHighCloudGroup::LowLayer::CB_CAP:
+        return "Cumulonimbus capillatus or Cumulonimbus capillatus incus)";
+
+    case metaf::LowMidHighCloudGroup::LowLayer::NOT_OBSERVABLE:
+        return tr("Clouds are not observable due to fog, blowing dust or sand, or other similar phenomena");
+    }
+}
+
+QString Meteorologist::Decoder::cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer)
+{
+    switch(midLayer) {
+    case metaf::LowMidHighCloudGroup::MidLayer::NONE:
+        return tr("No mid-layer clouds");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AS_TR:
+        return tr("Altostratus translucidus");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AS_OP_NS:
+        return tr("Altostratus opacus or Nimbostratus");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AC_TR:
+        return tr("Altocumulus translucidus at a single level");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AC_TR_LEN_PATCHES:
+        return tr("Patches of Altocumulus translucidus");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AC_TR_AC_OP_SPREADING:
+        return tr("Altocumulus translucidus in bands");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AC_CUGEN_AC_CBGEN:
+        return tr("Altocumulus cumulogenitus or Altocumulus cumulonimbogenitus");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AC_DU_AC_OP_AC_WITH_AS_OR_NS:
+        return tr("Altocumulus duplicatus, or Altocumulus opacus in a single layer");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AC_CAS_AC_FLO:
+        return tr("Altocumulus castellanus or Altocumulus floccus");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::AC_OF_CHAOTIC_SKY:
+        return tr("Broken cloud sheets of ill-defined species or varieties");
+
+    case metaf::LowMidHighCloudGroup::MidLayer::NOT_OBSERVABLE:
+        return tr("Clouds are not observable");
+    }
+    return QString();
+}
+
 QString Meteorologist::Decoder::cloudTypeToString(metaf::CloudType::Type type)
 {
     switch(type) {
@@ -1282,12 +1398,219 @@ QString Meteorologist::Decoder::visitCloudGroup(const CloudGroup & group, Report
     return QString();
 }
 
+QString Meteorologist::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    QStringList layers;
+    const auto clouds = group.cloudTypes();
+    for (auto i = 0u; i < clouds.size(); i++)
+        layers << explainCloudType(clouds.at(i));
+    return tr("Cloud layers: %1").arg(layers.join(" • "));
+}
+
+QString Meteorologist::Decoder::visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    if (!group.baseHeight().isReported() && !group.topHeight().isReported())
+        return tr("%1 at all heights")
+                .arg(layerForecastGroupTypeToString(group.type()));
+
+    return tr("%1 at heights from %1 to %2.")
+            .arg(layerForecastGroupTypeToString(group.type()))
+            .arg(explainDistance(group.baseHeight()))
+            .arg(explainDistance(group.topHeight()));
+}
+
+QString Meteorologist::Decoder::visitLightningGroup(const LightningGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    QStringList result;
+    result << tr("Lightning strikes observed.");
+
+    if (group.distance().isReported())
+        result << tr("Distance %1.").arg(explainDistance(group.distance()));
+
+    switch(group.frequency()) {
+    case metaf::LightningGroup::Frequency::NONE:
+        break;
+
+    case metaf::LightningGroup::Frequency::OCCASIONAL:
+        result << tr("Less than 1 strike per minute.");
+        break;
+
+    case metaf::LightningGroup::Frequency::FREQUENT:
+        result << tr("1 -- 6 strikes per minute.");
+        break;
+
+    case metaf::LightningGroup::Frequency::CONSTANT:
+        result << tr("More than 6 strikes per minute.");
+        break;
+    }
+
+    if (group.isCloudGround() || group.isInCloud() || group.isCloudCloud() || group.isCloudAir()) {
+        QStringList typeList;
+        if (group.isCloudGround())
+            typeList << tr("cloud-to-ground");
+        if (group.isInCloud())
+            typeList << tr("in-cloud");
+        if (group.isCloudCloud())
+            typeList << tr("cloud-to-cloud");
+        if (group.isCloudAir())
+            typeList << tr("cloud-to-air without strike to ground");
+        if (!typeList.isEmpty())
+            result << tr("Lightning types: %1.").arg(typeList.join(", "));
+    }
+
+    if (group.isUnknownType())
+        result << tr("Lightning strike types not recognised by parser.");
+
+    QStringList directionList;
+    if (const auto directions = group.directions(); directions.size()) {
+        directionList << explainDirectionSector(directions);
+    }
+    if (!directionList.isEmpty())
+        result << tr("Lightning strikes observed in the following directions: %1").arg(directionList.join(", "));
+
+    return result.join(" ");
+}
+
 QString Meteorologist::Decoder::visitLocationGroup(const LocationGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
         return tr("Invalid data");
 
     return tr("Report for %1").arg(QString::fromStdString(group.toString()));
+}
+
+QString Meteorologist::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    return tr("Low cloud layer: %1 • Mid cloud layer: %2 • High cloud layer: %2")
+            .arg(cloudLowLayerToString(group.lowLayer()))
+            .arg(cloudMidLayerToString(group.midLayer()))
+            .arg(cloudHighLayerToString(group.highLayer()));
+}
+
+QString Meteorologist::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    QString result;
+    switch(group.type()) {
+    case metaf::MinMaxTemperatureGroup::Type::OBSERVED_6_HOURLY:
+        return tr("Observed 6-hourly minimum/maximum temperature: %1/%2")
+                .arg(explainTemperature(group.minimum()))
+                .arg(explainTemperature(group.maximum()));
+
+    case metaf::MinMaxTemperatureGroup::Type::OBSERVED_24_HOURLY:
+        return tr("Observed 24-hourly minimum/maximum temperature: %1/%2")
+                .arg(explainTemperature(group.minimum()))
+                .arg(explainTemperature(group.maximum()));
+
+    case metaf::MinMaxTemperatureGroup::Type::FORECAST:
+        if (group.minimum().isReported())
+            result += tr("Minimum forecast temperature: %1, expected at %2.")
+                    .arg(explainTemperature(group.minimum()))
+                    .arg(explainMetafTime(group.minimumTime().value()));
+        if (group.maximum().isReported())
+            result += " " + tr("Maximum forecast temperature: %1, expected at %2.")
+                    .arg(explainTemperature(group.maximum()))
+                    .arg(explainMetafTime(group.maximumTime().value()));
+        return result;
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    (void)reportPart; (void)rawString;
+    std::ostringstream result;
+    if (!group.isValid()) result << groupNotValidMessage << "\n";
+    switch(group.type()) {
+    case metaf::PrecipitationGroup::Type::TOTAL_PRECIPITATION_HOURLY:
+        return tr("Total precipitation for the past hour: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::SNOW_DEPTH_ON_GROUND:
+        return tr("Snow depth on ground: %1")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_OR_6_HOURLY:
+        return tr("Water equivalent of frozen precipitation for the last 3 or 6 hours: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_HOURLY:
+        return tr("Water equivalent of frozen precipitation for the last 3 hours: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_6_HOURLY:
+        return tr("Water equivalent of frozen precipitation for the last 6 hours: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_24_HOURLY:
+        return tr("Water equivalent of frozen precipitation for the last 24 hours: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::SNOW_6_HOURLY:
+        return tr("Snowfall for the last 6 hours: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::WATER_EQUIV_OF_SNOW_ON_GROUND:
+        return tr("Water equivalent of snow on ground: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_HOUR:
+        return tr("Ice accretion for the last hour: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_3_HOURS:
+        return tr("Ice accretion for the last 3 hours: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_6_HOURS:
+        return tr("Ice accretion for the last 6 hours: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::PRECIPITATION_ACCUMULATION_SINCE_LAST_REPORT:
+        return tr("Precipitation accumulation since last report: %1.")
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::SNOW_INCREASING_RAPIDLY:
+        return tr("Snow increasing rapidly. For the last hour snow increased by %1. Total snowfall: %2.")
+                .arg(explainPrecipitation(group.recent()))
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::RAINFALL_9AM_10MIN:
+        return tr("Rainfall for the last 10 minutes before report release time: %1. Rainfall since 9:00 local time: %2.")
+                .arg(explainPrecipitation(group.recent()))
+                .arg(explainPrecipitation(group.total()));
+
+    case metaf::PrecipitationGroup::Type::PNO:
+        return tr("Tipping bucket rain gauge INOP.");
+
+    case metaf::PrecipitationGroup::Type::FZRANO:
+        return tr("Freezing rain sensor INOP.");
+
+    case metaf::PrecipitationGroup::Type::ICG_MISG:
+        return tr("Icing data is missing.");
+
+    case metaf::PrecipitationGroup::Type::PCPN_MISG:
+        return tr("Precipitation data is missing.");
+    }
+
+    return QString();
 }
 
 QString Meteorologist::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart, const std::string &)
@@ -1349,7 +1672,7 @@ QString Meteorologist::Decoder::visitReportTimeGroup(const ReportTimeGroup & gro
     return tr("Issued at %1").arg(explainMetafTime(group.time()));
 }
 
-QString Meteorologist::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString)
+QString Meteorologist::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
         return tr("Invalid data");

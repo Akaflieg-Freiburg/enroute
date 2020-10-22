@@ -66,6 +66,9 @@ public:
     static QString brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction);
     static QString cardinalDirectionToString(metaf::Direction::Cardinal cardinal);
     static QString cloudAmountToString(metaf::CloudGroup::Amount amount);
+    static QString cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer);
+    static QString cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer);
+    static QString cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer);
     static QString cloudTypeToString(metaf::CloudType::Type type);
     static QString convectiveTypeToString(metaf::CloudGroup::ConvectiveType type);
     static QString layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type);
@@ -81,10 +84,16 @@ public:
 
     // visitor Methods
     virtual QString visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitLightningGroup(const LightningGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitLocationGroup(const LocationGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitReportTimeGroup(const ReportTimeGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
@@ -421,7 +430,7 @@ public:
         }
     }
 
-    std::string explainDistance(const metaf::Distance & distance) {
+    QString explainDistance(const metaf::Distance & distance) {
         if (!distance.isReported()) return "not reported";
         std::ostringstream result;
         switch (distance.modifier()) {
@@ -447,7 +456,8 @@ public:
             break;
         }
 
-        if (!distance.isValue()) return result.str();
+        if (!distance.isValue())
+            return QString::fromStdString(result.str());
 
         if (distance.unit() == metaf::Distance::Unit::STATUTE_MILES) {
             const auto d = distance.miles();
@@ -512,7 +522,7 @@ public:
             }
         }
         result << ")";
-        return result.str();
+        return QString::fromStdString(result.str());
     }
 
     virtual QString visitVisibilityGroup(const VisibilityGroup & group, ReportPart reportPart, const std::string & rawString)
@@ -527,12 +537,12 @@ public:
         switch (group.type()) {
         case metaf::VisibilityGroup::Type::PREVAILING:
             result << "Prevailing visibility is ";
-            result << explainDistance(group.visibility());
+            result << explainDistance(group.visibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::PREVAILING_NDV:
             result << "Prevailing visibility is ";
-            result << explainDistance(group.visibility());
+            result << explainDistance(group.visibility()).toStdString();
             result << "\nThis station cannot differentiate the directional ";
             result << "variation of visibility";
             break;
@@ -540,13 +550,13 @@ public:
         case metaf::VisibilityGroup::Type::DIRECTIONAL:
             result << "Directional visibility toward ";
             result << explainDirection(group.direction().value()).toStdString();
-            result << " is " << explainDistance(group.visibility());
+            result << " is " << explainDistance(group.visibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::RUNWAY:
             result << "Visibility for ";
             result << explainRunway(group.runway().value()).toStdString();
-            result << " is " << explainDistance(group.visibility());
+            result << " is " << explainDistance(group.visibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::RVR:
@@ -556,7 +566,7 @@ public:
             }
             result << "Runway visual range for ";
             result << explainRunway(group.runway().value()).toStdString() << " is ";
-            result << explainDistance(group.visibility());
+            result << explainDistance(group.visibility()).toStdString();
             if (group.trend() != metaf::VisibilityGroup::Trend::NONE) {
                 result << ", and the trend is " << visTrendToString(group.trend());
             }
@@ -564,53 +574,53 @@ public:
 
         case metaf::VisibilityGroup::Type::SURFACE:
             result << "Visibility at surface level is ";
-            result << explainDistance(group.visibility());
+            result << explainDistance(group.visibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::TOWER:
             result << "Visibility from air traffic control tower is ";
-            result << explainDistance(group.visibility());
+            result << explainDistance(group.visibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::SECTOR:
             result << "Sector visibility is ";
-            result << explainDistance(group.visibility());
+            result << explainDistance(group.visibility()).toStdString();
             result << "\nIn the following directions: ";
             result << explainDirectionSector(group.sectorDirections()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::VARIABLE_PREVAILING:
             result << "Prevailing visibility is variable from ";
-            result << explainDistance(group.minVisibility());
+            result << explainDistance(group.minVisibility()).toStdString();
             result << " to ";
-            result << explainDistance(group.maxVisibility());
+            result << explainDistance(group.maxVisibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::VARIABLE_DIRECTIONAL:
             result << "Directional visibility toward ";
             result << explainDirection(group.direction().value()).toStdString();
             result << " is variable from ";
-            result << explainDistance(group.minVisibility());
+            result << explainDistance(group.minVisibility()).toStdString();
             result << " to ";
-            result << explainDistance(group.maxVisibility());
+            result << explainDistance(group.maxVisibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::VARIABLE_RUNWAY:
             result << "Visibility for ";
             result << explainRunway(group.runway().value()).toStdString();
             result << " is variable from ";
-            result << explainDistance(group.minVisibility());
+            result << explainDistance(group.minVisibility()).toStdString();
             result << " to ";
-            result << explainDistance(group.maxVisibility());
+            result << explainDistance(group.maxVisibility()).toStdString();
             break;
 
         case metaf::VisibilityGroup::Type::VARIABLE_RVR:
             result << "Runway visual range for ";
             result << explainRunway(group.runway().value()).toStdString();
             result << " is variable from ";
-            result << explainDistance(group.minVisibility());
+            result << explainDistance(group.minVisibility()).toStdString();
             result << " to ";
-            result << explainDistance(group.maxVisibility());
+            result << explainDistance(group.maxVisibility()).toStdString();
             if (group.trend() != metaf::VisibilityGroup::Trend::NONE) {
                 result << ", and the trend is " << visTrendToString(group.trend());
             }
@@ -618,9 +628,9 @@ public:
 
         case metaf::VisibilityGroup::Type::VARIABLE_SECTOR:
             result << "Sector visibility is variable from ";
-            result << explainDistance(group.minVisibility());
+            result << explainDistance(group.minVisibility()).toStdString();
             result << " to ";
-            result << explainDistance(group.maxVisibility());
+            result << explainDistance(group.maxVisibility()).toStdString();
             result << "\nIn the following directions: ";
             result << explainDirectionSector(group.sectorDirections()).toStdString();
             break;
@@ -646,462 +656,6 @@ public:
                 result << " in the direction of " << explainDirection(*d).toStdString();
             }
             break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
-    virtual QString visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        if (!group.isValid())
-            return tr("Invalid data");
-
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-        switch(group.type()) {
-        case metaf::MinMaxTemperatureGroup::Type::OBSERVED_6_HOURLY:
-            result << "Observed 6-hourly minimum/maximum temperature: ";
-            result << "\nMinimum ambient air temperature: ";
-            result << explainTemperature(group.minimum()).toStdString();
-            result << "\nMaximum ambient air temperature: ";
-            result << explainTemperature(group.maximum()).toStdString();
-            break;
-
-        case metaf::MinMaxTemperatureGroup::Type::OBSERVED_24_HOURLY:
-            result << "Observed 24-hourly minimum/maximum temperature: ";
-            result << "\nMinimum ambient air temperature: ";
-            result << explainTemperature(group.minimum()).toStdString();
-            result << "\nMaximum ambient air temperature: ";
-            result << explainTemperature(group.maximum()).toStdString();
-            break;
-
-        case metaf::MinMaxTemperatureGroup::Type::FORECAST:
-            result << "Forecast minimum/maximum temperature";
-            if (group.minimum().isReported()) {
-                result << "\nMinimum ambient air temperature: ";
-                result << explainTemperature(group.minimum()).toStdString();
-                result << ", expected at ";
-                result << explainMetafTime(group.minimumTime().value()).toStdString();
-            }
-            if (group.maximum().isReported()) {
-                result << "\nMaximum ambient air temperature: ";
-                result << explainTemperature(group.maximum()).toStdString();
-                result << ", expected at ";
-                result << explainMetafTime(group.maximumTime().value()).toStdString();
-            }
-            break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
-    virtual QString visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        if (!group.isValid())
-            return tr("Invalid data");
-
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-        switch(group.type()) {
-        case metaf::PrecipitationGroup::Type::TOTAL_PRECIPITATION_HOURLY:
-            result << "Total precipitation for the past hour: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::SNOW_DEPTH_ON_GROUND:
-            result << "Snow depth on ground: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_OR_6_HOURLY:
-            result << "Water equivalent of frozen precipitation ";
-            result << "for the last 3 or 6 hours: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_HOURLY:
-            result << "Water equivalent of frozen precipitation";
-            result << " for the last 3 hours: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_6_HOURLY:
-            result << "Water equivalent of frozen precipitation";
-            result << "for the last 6 hours: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_24_HOURLY:
-            result << "Water equivalent of frozen precipitation ";
-            result << "for the last 24 hours: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::SNOW_6_HOURLY:
-            result << "Snowfall for the last 6 hours: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::WATER_EQUIV_OF_SNOW_ON_GROUND:
-            result << "Water equivalent of snow on ground: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_HOUR:
-            result << "Ice accretion for the last hour: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_3_HOURS:
-            result << "Ice accretion for the last 3 hours: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_6_HOURS:
-            result << "Ice accretion for the last 6 hours: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::
-        PRECIPITATION_ACCUMULATION_SINCE_LAST_REPORT:
-            result << "Precipitation accumulation since last report: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::SNOW_INCREASING_RAPIDLY:
-            result << "Snow increasing rapidly";
-            result << "\nFor the last hour snow increased by ";
-            result << explainPrecipitation(group.recent()).toStdString();
-            result << "\nTotal snowfall: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::RAINFALL_9AM_10MIN:
-            result << "Rainfall for the last 10 minutes before ";
-            result << "report release time: ";
-            result << explainPrecipitation(group.recent()).toStdString();
-            result << "\nRainfall since 9AM (9:00) local time: ";
-            result << explainPrecipitation(group.total()).toStdString();
-            break;
-
-        case metaf::PrecipitationGroup::Type::PNO:
-            result << "This automated station is equipped with ";
-            result << "tipping bucket rain gauge ";
-            result << "and this sensor is not operating";
-            break;
-
-        case metaf::PrecipitationGroup::Type::FZRANO:
-            result << "This automated station is equipped with ";
-            result << "freezing rain sensor ";
-            result << "and this sensor is not operating";
-            break;
-
-        case metaf::PrecipitationGroup::Type::ICG_MISG:
-            result << "Icing data is missing";
-            break;
-
-        case metaf::PrecipitationGroup::Type::PCPN_MISG:
-            result << "Precipitation data is missing";
-            break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
-    virtual QString visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        if (!group.isValid())
-            return tr("Invalid data");
-
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-        result << layerForecastGroupTypeToString(group.type()).toStdString();
-        result << " at ";
-        if (!group.baseHeight().isReported() && !group.topHeight().isReported()) {
-            result << "all heights";
-        } else {
-            result << "heights from ";
-            result << explainDistance(group.baseHeight());
-            result << " to ";
-            result << explainDistance(group.topHeight());
-        }
-        return QString::fromStdString(result.str());
-    }
-
-    virtual QString visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        if (!group.isValid())
-            return tr("Invalid data");
-
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-        const auto clouds = group.cloudTypes();
-        result << "Obscuration / cloud layers: ";
-        for (auto i = 0u; i < clouds.size(); i++) {
-            result << "\n";
-            result << explainCloudType(clouds.at(i)).toStdString();
-        }
-        return QString::fromStdString(result.str());
-    }
-
-    std::string_view cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer)
-    {
-        switch(lowLayer) {
-        case metaf::LowMidHighCloudGroup::LowLayer::NONE:
-            return "No low layer clouds";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::CU_HU_CU_FR:
-            return "Cumulus clouds showing little vertical extent "
-                   "(Cumulus humilis or Cumulus fractus of dry weather or both)";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::CU_MED_CU_CON:
-            return "Cumulus clouds showing moderate or significant vertical extent "
-                   "(Cumulus mediocris or Cumulus congestus, with or without Cumulus "
-                   "humilis or Cumulus fractus or stratocumulus, "
-                   "all having their bases on the same level)";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::CB_CAL:
-            return "Cumulonimbus clouds without fibrous or striated parts at "
-                   "summit (Cumulonimbus calvus with or without Cumulus, "
-                   "Stratocumulus or Stratus)";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::SC_CUGEN:
-            return "Stratocumulus clouds resulting from "
-                   "the spreading out of Cumulus (Stratocumulus cumulogenitus; "
-                   "Cumulus may also be present)";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::SC_NON_CUGEN:
-            return "Stratocumulus clouds not resulting from "
-                   "the spreading out of Cumulus (Stratocumulus non-cumulogenitus)";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::ST_NEB_ST_FR:
-            return "Stratus clouds which consist of a continuous "
-                   "single sheet or layer with a fairly uniform base, or "
-                   "transitory stage during the formation or "
-                   "the dissipation of such clouds "
-                   "(Stratus nebulosus or Stratus fractus of dry weather, or both)";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::ST_FR_CU_FR_PANNUS:
-            return "Ragged grey clouds which form below precipitating clouds "
-                   "(Stratus fractus or Cumulus fractus of wet weather, "
-                   "or both (pannus) )";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::
-        CU_SC_NON_CUGEN_DIFFERENT_LEVELS:
-            return "Cumulus and Stratocumulus not formed by spreading of Cumulus "
-                   "with bases at different levels";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::CB_CAP:
-            return "Cumulonimbus clouds with fibrous or striated summits, "
-                   "often with an anvil (Cumulonimbus capillatus or "
-                   "Cumulonimbus capillatus incus)";
-
-        case metaf::LowMidHighCloudGroup::LowLayer::NOT_OBSERVABLE:
-            return "Clouds are not observable due to fog, blowing dust or sand, "
-                   "or other similar phenomena";
-        }
-    }
-
-    std::string_view cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer)
-    {
-        switch(midLayer) {
-        case metaf::LowMidHighCloudGroup::MidLayer::NONE:
-            return "No mid-layer clouds";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AS_TR:
-            return "A veil of greyish or bluish colour translucent enough "
-                   "to reveal the position of the Sun or Moon "
-                   "(Altostratus translucidus)";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AS_OP_NS:
-            return "A veil of a darker grey or a darker bluish grey dense enough "
-                   "to completely mask the Sun or Moon "
-                   "(Altostratus opacus or Nimbostratus)";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AC_TR:
-            return "Altocumulus (mackerel sky) clouds in patches or sheets at "
-                   "the same level or in a single layer "
-                   "(Altocumulus translucidus at a single level)";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AC_TR_LEN_PATCHES:
-            return "Patches, often lenticular (lens or almond-shaped), "
-                   "of Altocumulus translucidus, continually changing and "
-                   "occurring at one or more levels";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AC_TR_AC_OP_SPREADING:
-            return "Altocumulus translucidus in bands, or one or more layers of "
-                   "Altocumulus translucidus or Altocumulus opacus, "
-                   "progressively invading the sky";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AC_CUGEN_AC_CBGEN:
-            return "Altocumulus resulting generally from the spreading "
-                   "out of the summits of Cumulus; or Alcocumulus clouds "
-                   "acompanying Cumulonimbus (Altocumulus cumulogenitus or "
-                   "Altocumulus cumulonimbogenitus)";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::
-        AC_DU_AC_OP_AC_WITH_AS_OR_NS:
-            return "Altocumulus duplicatus, or Altocumulus opacus in a single "
-                   "layer, not progressively invading the sky, or Altocumulus "
-                   "with Altostratus or Nimbostratus.";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AC_CAS_AC_FLO:
-            return "Turrets at appear to be arranged in lines with a "
-                   "common horizontal base or scattered tufts with rounded and "
-                   "slightly bulging upper parts (Altocumulus castellanus or "
-                   "Altocumulus floccus)";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::AC_OF_CHAOTIC_SKY:
-            return "Sky of chaotic, heavy and stagnant appearance, "
-                   "which consists of superposed, more or less broken cloud sheets "
-                   "of ill-defined species or varieties";
-
-        case metaf::LowMidHighCloudGroup::MidLayer::NOT_OBSERVABLE:
-            return "Clouds are not observable due to fog, blowing dust or sand, "
-                   "or other similar phenomena "
-                   "or because of a continuous layer of lower clouds";
-        }
-    }
-
-    std::string_view cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer)
-    {
-        switch(highLayer) {
-        case metaf::LowMidHighCloudGroup::HighLayer::NONE:
-            return "No high-layer clouds";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CI_FIB_CI_UNC:
-            return "Nearly straight or more or less curved filaments; more rarely, "
-                   "they are shaped like commas topped with either a hook or a tuft "
-                   "that is not rounded "
-                   "(Cirrus fibratus and sometimes Cirrus uncinus, not "
-                   "progressively invading the sky)";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CI_SPI_CI_CAS_CI_FLO:
-            return "Cirrus spissatus, in patches or entangled sheaves, "
-                   "that usually do not increase and sometimes appear to be "
-                   "the remains of the upper part of a Cumulonimbus; or "
-                   "Cirrus clouds with small fibrous turrets rising from common base; "
-                   "or more or less isolated tufts, often with trails "
-                   "(Cirrus spissatus or Cirrus castellanus or Cirrus floccus)";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CI_SPI_CBGEN:
-            return "Cirrus clouds originated from a Cumulonimbus cloud(s) "
-                   "(Cirrus spissatus cumulonimbogenitus)";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CI_FIB_CI_UNC_SPREADING:
-            return "Cirrus uncinus, Cirrus fibratus or both, "
-                   "progressively invading the sky; they generally thicken as a whole";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CI_CS_LOW_ABOVE_HORIZON:
-            return "Cirrus (often in bands) and Cirrostratus, "
-                   "or Cirrostratus alone, progressively invading the sky; "
-                   "they generally thicken as a whole, "
-                   "but the continuous veil does not reach 45&deg; above the horizon";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CI_CS_HIGH_ABOVE_HORIZON:
-            return "Cirrus (often in bands) and Cirrostratus, "
-                   "or Cirrostratus alone, progressively invading the sky; "
-                   "they generally thicken as a whole; "
-                   "the continuous veil extends more than 45&deg; above the horizon, "
-                   "without the sky being totally covered";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::
-        CS_NEB_CS_FIB_COVERING_ENTIRE_SKY:
-            return "Light, uniform and nebulous veil showing no distinct details"
-                   "or a white and fibrous veil with more "
-                   "or less clear-cut striations, covering the whole sky"
-                   "(Cirrostratus nebulosus or "
-                   "Cirrostratus fibratus covering the whole sky)";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CS:
-            return "A veil of Cirrostratus that is not (or no longer) "
-                   "invading the sky progressively "
-                   "and that does not completely cover the whole sky";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::CC:
-            return "Cirrocumulus alone, or "
-                   "predominant among the high-layer clouds; "
-                   "when alone, its elements are frequently grouped into more or less "
-                   "extensive patches with very characteristic small wavelets";
-
-        case metaf::LowMidHighCloudGroup::HighLayer::NOT_OBSERVABLE:
-            return "Clouds are not observable due to fog, blowing dust or sand, "
-                   "or other similar phenomena "
-                   "or because of a continuous layer of lower clouds";
-        }
-    }
-
-    virtual QString visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        if (!group.isValid())
-            return tr("Invalid data");
-
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-        result << "Low cloud layer:\n";
-        result << cloudLowLayerToString(group.lowLayer());
-        result << "\nMid cloud layer:\n";
-        result << cloudMidLayerToString(group.midLayer());
-        result << "\nHigh cloud layer:\n";
-        result << cloudHighLayerToString(group.highLayer());
-        return QString::fromStdString(result.str());
-    }
-
-    virtual QString visitLightningGroup(const LightningGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        if (!group.isValid())
-            return tr("Invalid data");
-
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-
-        result << "Lightning strikes observed";
-        if (group.distance().isReported())
-        {
-            result << " at distance ";
-            result << explainDistance(group.distance());
-        }
-
-        switch(group.frequency()) {
-        case metaf::LightningGroup::Frequency::NONE:
-            break;
-
-        case metaf::LightningGroup::Frequency::OCCASIONAL:
-            result << "\nLess than 1 strike per minute";
-            break;
-
-        case metaf::LightningGroup::Frequency::FREQUENT:
-            result << "\n1 to 6 strikes per minute";
-            break;
-
-        case metaf::LightningGroup::Frequency::CONSTANT:
-            result << "\nMore than 6 strikes per minute";
-            break;
-        }
-
-        if (group.isCloudGround() ||
-                group.isInCloud() ||
-                group.isCloudCloud() ||
-                group.isCloudAir())
-        {
-            result << "\nThe following lightning types are observed: ";
-            if (group.isCloudGround()) result << "\ncloud-to-ground";
-            if (group.isInCloud()) result << "\nin-cloud";
-            if (group.isCloudCloud()) result << "\ncloud-to-cloud";
-            if (group.isCloudAir())
-                result << "\ncloud-to-air without strike to ground";
-        }
-        if (group.isUnknownType())
-        {
-            result << "\nSome lightning strike types specified in this group ";
-            result << "were not recognised by parser";
-        }
-        if (const auto directions = group.directions(); directions.size()) {
-            result << "\nLightning strikes observed in the following directions: ";
-            result << explainDirectionSector(directions).toStdString();
         }
         return QString::fromStdString(result.str());
     }
@@ -1195,7 +749,7 @@ public:
         if (group.distance().isReported())
         {
             result << " at distance ";
-            result << explainDistance(group.distance());
+            result << explainDistance(group.distance()).toStdString();
         }
         if (const auto directions = group.directions(); directions.size()) {
             result << "\nObserved in the following directions: ";

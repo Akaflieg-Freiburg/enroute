@@ -1180,6 +1180,30 @@ QString Meteorologist::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::Sta
     return QString();
 }
 
+QString Meteorologist::Decoder::visTrendToString(metaf::VisibilityGroup::Trend trend)
+{
+    switch(trend) {
+    case metaf::VisibilityGroup::Trend::NONE:
+        return QString();
+
+    case metaf::VisibilityGroup::Trend::NOT_REPORTED:
+        return tr("not reported");
+
+    case metaf::VisibilityGroup::Trend::UPWARD:
+        //: visibility trend
+        return tr("upward");
+
+    case metaf::VisibilityGroup::Trend::NEUTRAL:
+        //: visibility trend
+        return tr("neutral");
+
+    case metaf::VisibilityGroup::Trend::DOWNWARD:
+        //: visibility trend
+        return tr("downward");
+    }
+    return QString();
+}
+
 QString Meteorologist::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor)
 {
     switch(descriptor) {
@@ -1410,6 +1434,63 @@ QString Meteorologist::Decoder::visitCloudTypesGroup(const CloudTypesGroup & gro
     return tr("Cloud layers: %1").arg(layers.join(" • "));
 }
 
+QString Meteorologist::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    switch (group.type()) {
+    case metaf::KeywordGroup::Type::METAR:
+        return tr("Report type: METAR");
+
+    case metaf::KeywordGroup::Type::SPECI:
+        return tr("Report type: unscheduled METAR");
+
+    case metaf::KeywordGroup::Type::TAF:
+        return tr("Report type: TAF");
+
+    case metaf::KeywordGroup::Type::AMD:
+        return tr("Amended report");
+
+    case metaf::KeywordGroup::Type::NIL:
+        return tr("Missing report");
+
+    case metaf::KeywordGroup::Type::CNL:
+        return tr("Cancelled report");
+
+    case metaf::KeywordGroup::Type::COR:
+        return tr("Correctional report");
+
+    case metaf::KeywordGroup::Type::AUTO:
+        return tr("Automated report");
+
+    case metaf::KeywordGroup::Type::CAVOK:
+        return tr("CAVOK");
+
+    case metaf::KeywordGroup::Type::RMK:
+        return tr("<strong>Remarks</strong>");
+
+    case metaf::KeywordGroup::Type::MAINTENANCE_INDICATOR:
+        return tr("Automated station requires maintenance");
+
+    case metaf::KeywordGroup::Type::AO1:
+        return tr("Automated station w/o precipitation discriminator");
+
+    case metaf::KeywordGroup::Type::AO2:
+        return tr("Automated station with precipitation discriminator");
+
+    case metaf::KeywordGroup::Type::AO1A:
+        return tr("Automated station w/o precipitation discriminator, report augmented by a human observer");
+
+    case metaf::KeywordGroup::Type::AO2A:
+        return tr("Automated station with precipitation discriminator, report augmented by a human observer");
+
+    case metaf::KeywordGroup::Type::NOSPECI:
+        return tr("Manual station, does not issue SPECI reports");
+    }
+    return QString();
+}
+
 QString Meteorologist::Decoder::visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
@@ -1526,6 +1607,93 @@ QString Meteorologist::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperat
                     .arg(explainTemperature(group.maximum()))
                     .arg(explainMetafTime(group.maximumTime().value()));
         return result;
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    static const QString colourCodeBlack = tr("Colour code BLACK: aerodrome closed due to snow accumulation or non-weather reasons");
+    QString result;
+
+    switch (group.type()) {
+    case metaf::MiscGroup::Type::SUNSHINE_DURATION_MINUTES:
+        if (const auto duration = group.data(); *duration)
+            return tr("Duration of sunshine that occurred the previous calendar day is %1 minutes.").arg(qRound(*duration));
+        return tr("No sunshine occurred the previous calendar day");
+
+    case metaf::MiscGroup::Type::CORRECTED_WEATHER_OBSERVATION:
+        return tr("This report is the corrected weather observation, correction number is %1").arg(static_cast<int>(*group.data()));
+
+    case metaf::MiscGroup::Type::DENSITY_ALTITUDE:
+        if (!group.data().has_value())
+            return QString();
+        return tr("Density altitude is %1 feet").arg(qRound(*group.data()));
+
+    case metaf::MiscGroup::Type::HAILSTONE_SIZE:
+        return tr("Largest hailstone size is %1 inches").arg(*group.data());
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKBLUE:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLUE:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
+        return result;
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKWHITE:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_WHITE:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code WHITE: visibility >5000 m and lowest cloud base height >1500 ft");
+        return result;
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKGREEN:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_GREEN:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code GREEN: visibility >3700 m and lowest cloud base height >700 ft");
+        return result;
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW1:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW1:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code YELLOW 1: visibility >2500 m and lowest cloud base height >500 ft");
+        return result;
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW2:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW2:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code YELLOW 2: visibility >1600 m and lowest cloud base height >300 ft");
+        return result;
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKAMBER:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_AMBER:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code AMBER: visibility >800 m and lowest cloud base height >200 ft");
+        return result;
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKRED:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_RED:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code RED: either visibility >800 m or lowest cloud base height >200 ft or both");
+        return result;
+
+    case metaf::MiscGroup::Type::FROIN:
+        return tr("Frost on the instrument (e.g. due to freezing fog depositing rime).");
     }
     return QString();
 }
@@ -1736,6 +1904,225 @@ QString Meteorologist::Decoder::visitTemperatureGroup(const TemperatureGroup & g
 
     case metaf::TemperatureGroup::Type::TD_MISG:
         return tr("Dew point data is missing");
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitUnknownGroup(const UnknownGroup & group, ReportPart, const std::string & rawString)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    return tr("Not recognised by parser: %1").arg(QString::fromStdString(rawString));
+}
+
+QString Meteorologist::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+
+    QString type;
+    switch (group.type()) {
+    case metaf::VicinityGroup::Type::THUNDERSTORM:
+        type = tr("Thunderstorm");
+        break;
+
+    case metaf::VicinityGroup::Type::CUMULONIMBUS:
+        type = tr("Cumulonimbus cloud(s)");
+        break;
+
+    case metaf::VicinityGroup::Type::CUMULONIMBUS_MAMMATUS:
+        type = tr("Cumulonimbus cloud(s) with mammatus");
+        break;
+
+    case metaf::VicinityGroup::Type::TOWERING_CUMULUS:
+        type = tr("Towering cumulus cloud(s)");
+        break;
+
+    case metaf::VicinityGroup::Type::ALTOCUMULUS_CASTELLANUS:
+        type = tr("Altocumulus cloud(s)");
+        break;
+
+    case metaf::VicinityGroup::Type::STRATOCUMULUS_STANDING_LENTICULAR:
+        type = tr("Stratocumulus standing lenticular cloud(s)");
+        break;
+
+    case metaf::VicinityGroup::Type::ALTOCUMULUS_STANDING_LENTICULAR:
+        type = tr("Altocumulus standing lenticular cloud(s)");
+        break;
+
+    case metaf::VicinityGroup::Type::CIRROCUMULUS_STANDING_LENTICULAR:
+        type = tr("Cirrocumulus standing lenticular cloud(s)");
+        break;
+
+    case metaf::VicinityGroup::Type::ROTOR_CLOUD:
+        type = tr("Rotor cloud(s)");
+        break;
+
+    case metaf::VicinityGroup::Type::VIRGA:
+        type = tr("Virga");
+        break;
+
+    case metaf::VicinityGroup::Type::PRECIPITATION_IN_VICINITY:
+        type = tr("Precipitation");
+        break;
+
+    case metaf::VicinityGroup::Type::FOG:
+        type = tr("Fog");
+        break;
+
+    case metaf::VicinityGroup::Type::FOG_SHALLOW:
+        type = tr("Shallow fog");
+        break;
+
+    case metaf::VicinityGroup::Type::FOG_PATCHES:
+        type = tr("Patches of fog");
+        break;
+
+    case metaf::VicinityGroup::Type::HAZE:
+        type = tr("Haze");
+        break;
+
+    case metaf::VicinityGroup::Type::SMOKE:
+        type = tr("Smoke");
+        break;
+
+    case metaf::VicinityGroup::Type::BLOWING_SNOW:
+        type = tr("Blowing snow");
+        break;
+
+    case metaf::VicinityGroup::Type::BLOWING_SAND:
+        type = tr("Blowing sand");
+        break;
+
+    case metaf::VicinityGroup::Type::BLOWING_DUST:
+        type = tr("Blowing dust");
+        break;
+    }
+
+    //: %1 is string like 'Smoke'
+    QStringList results;
+    results << tr("%1 observed.");
+
+    if (group.distance().isReported())
+        results << tr("Distance %1.").arg(explainDistance(group.distance()));
+    if (const auto directions = group.directions(); directions.size())
+        results << tr("Directions: %1").arg(explainDirectionSector(directions));
+    if (group.movingDirection().isReported())
+        //: %1 is string like 'west'
+        results << tr("Moving towards %1.").arg(cardinalDirectionToString(group.movingDirection().cardinal()));
+
+    return results.join(" ");
+}
+
+QString Meteorologist::Decoder::visitVisibilityGroup(const VisibilityGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    switch (group.type()) {
+    case metaf::VisibilityGroup::Type::PREVAILING:
+        return tr("Visibility is %1")
+                .arg(explainDistance(group.visibility()));
+
+    case metaf::VisibilityGroup::Type::PREVAILING_NDV:
+        return tr("Visibility is %1. Station cannot differentiate the directional variation of visibility")
+                .arg(explainDistance(group.visibility()));
+
+    case metaf::VisibilityGroup::Type::DIRECTIONAL:
+        return tr("Visibility toward %1 is %2")
+                .arg(explainDirection(group.direction().value()))
+                .arg(explainDistance(group.visibility()));
+
+    case metaf::VisibilityGroup::Type::RUNWAY:
+        return tr("Visibility for %1 is %2")
+                .arg(explainRunway(group.runway().value()))
+                .arg(explainDistance(group.visibility()));
+
+    case metaf::VisibilityGroup::Type::RVR:
+        if (!group.runway().has_value())
+            return QString();
+        if (group.trend() != metaf::VisibilityGroup::Trend::NONE)
+            return tr("Runway visual range for %1 is %2 and the trend is %3")
+                    .arg(explainRunway(group.runway().value()))
+                    .arg(explainDistance(group.visibility()))
+                    .arg(visTrendToString(group.trend()));
+        return tr("Runway visual range for %1 is %2")
+                .arg(explainRunway(group.runway().value()))
+                .arg(explainDistance(group.visibility()));
+
+    case metaf::VisibilityGroup::Type::SURFACE:
+        return tr("Visibility at surface level is %1")
+                .arg(explainDistance(group.visibility()));
+
+    case metaf::VisibilityGroup::Type::TOWER:
+        return tr("Visibility from air traffic control tower is %1")
+                .arg(explainDistance(group.visibility()));
+
+    case metaf::VisibilityGroup::Type::SECTOR:
+        return tr("Sector visibility is %1 in the following directions %2")
+                .arg(explainDistance(group.visibility()))
+                .arg(explainDirectionSector(group.sectorDirections()));
+
+    case metaf::VisibilityGroup::Type::VARIABLE_PREVAILING:
+        return tr("Visibility is variable from %1 to %2")
+                .arg(explainDistance(group.minVisibility()))
+                .arg(explainDistance(group.maxVisibility()));
+
+    case metaf::VisibilityGroup::Type::VARIABLE_DIRECTIONAL:
+        return tr("Directional visibility toward %1 is variable from %2 to %3")
+                .arg(explainDirection(group.direction().value()))
+                .arg(explainDistance(group.minVisibility()))
+                .arg(explainDistance(group.maxVisibility()));
+
+    case metaf::VisibilityGroup::Type::VARIABLE_RUNWAY:
+        return tr("Visibility for %1 is variable from %2 to %3")
+                .arg(explainRunway(group.runway().value()))
+                .arg(explainDistance(group.minVisibility()))
+                .arg(explainDistance(group.maxVisibility()));
+
+    case metaf::VisibilityGroup::Type::VARIABLE_RVR:
+        if (group.trend() != metaf::VisibilityGroup::Trend::NONE)
+            return tr("Runway visual range for %1 is variable from %2 to %3 and the trend is %4")
+                    .arg(explainRunway(group.runway().value()))
+                    .arg(explainDistance(group.minVisibility()))
+                    .arg(explainDistance(group.maxVisibility()))
+                    .arg(visTrendToString(group.trend()));
+        return tr("Runway visual range for %1 is variable from %2 to %3")
+                .arg(explainRunway(group.runway().value()))
+                .arg(explainDistance(group.minVisibility()))
+                .arg(explainDistance(group.maxVisibility()));
+
+    case metaf::VisibilityGroup::Type::VARIABLE_SECTOR:
+        return tr("Sector visibility is variable from %1 to %2 in the following directions: %3")
+                .arg(explainDistance(group.minVisibility()))
+                .arg(explainDistance(group.maxVisibility()))
+                .arg(explainDirectionSector(group.sectorDirections()));
+
+    case metaf::VisibilityGroup::Type::VIS_MISG:
+        return tr("Visibility data missing");
+
+    case metaf::VisibilityGroup::Type::RVR_MISG:
+        return tr("Runway visual range data is missing");
+
+    case metaf::VisibilityGroup::Type::RVRNO:
+        return tr("Runway visual range should be reported but is missing");
+
+    case metaf::VisibilityGroup::Type::VISNO:
+        const auto r = group.runway();
+        const auto d = group.direction();
+        if (r.has_value() && d.has_value())
+            return tr("Visibility data not available for %1 in the direction of %2")
+                    .arg(explainRunway(*r))
+                    .arg(explainDirection(*d));
+        if (r.has_value())
+            return tr("Visibility data not available for %1")
+                    .arg(explainRunway(*r));
+        if (d.has_value())
+            return tr("Visibility data not available in the direction of %1")
+                    .arg(explainDirection(*d));
+        return tr("Visibility data not awailable");
     }
     return QString();
 }

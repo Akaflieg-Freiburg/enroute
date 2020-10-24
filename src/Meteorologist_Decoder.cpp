@@ -863,6 +863,20 @@ QString Meteorologist::Decoder::pressureTendencyTypeToString(metaf::PressureTend
     }
 }
 
+QString Meteorologist::Decoder::probabilityToString(metaf::TrendGroup::Probability prob)
+{
+    switch (prob) {
+    case metaf::TrendGroup::Probability::PROB_30:
+        return tr("Probability 30%");
+
+    case metaf::TrendGroup::Probability::PROB_40:
+        return tr("Probability 40%");
+
+    case metaf::TrendGroup::Probability::NONE:
+        return "";
+    }
+}
+
 QString Meteorologist::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
 {
     switch(deposits) {
@@ -1904,6 +1918,77 @@ QString Meteorologist::Decoder::visitTemperatureGroup(const TemperatureGroup & g
 
     case metaf::TemperatureGroup::Type::TD_MISG:
         return tr("Dew point data is missing");
+    }
+    return QString();
+}
+
+QString Meteorologist::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart, const std::string &)
+{
+    if (!group.isValid())
+        return tr("Invalid data");
+
+    const auto timeFrom = group.timeFrom();
+    const auto timeUntil = group.timeUntil();
+    const auto timeAt = group.timeAt();
+
+    QString result;
+    switch (group.type()) {
+    case metaf::TrendGroup::Type::NOSIG:
+        return tr("No significant weather changes expected");
+
+    case metaf::TrendGroup::Type::BECMG:
+        result += tr("Gradually changing");
+        if (timeFrom)
+            result += " " + tr("from %1").arg(explainMetafTime(*timeFrom));
+        if (timeUntil)
+            result += " " + tr("until %1").arg(explainMetafTime(*timeUntil));
+        if (timeAt)
+            result += " " + tr("at %1").arg(explainMetafTime(*timeAt));
+        return "<strong>" + result + "</strong>";
+
+    case metaf::TrendGroup::Type::TEMPO:
+    case metaf::TrendGroup::Type::INTER:
+        result += tr("Temporarily");
+        if (timeFrom)
+            result += " " + tr("from %1").arg(explainMetafTime(*timeFrom));
+        if (timeUntil)
+            result += " " + tr("until %1").arg(explainMetafTime(*timeUntil));
+        if (timeAt)
+            result += " " + tr("at %1").arg(explainMetafTime(*timeAt));
+        if (group.probability() != metaf::TrendGroup::Probability::NONE)
+            result += QString(" (%1)").arg(probabilityToString(group.probability()));
+        return "<strong>" + result + "</strong>";
+
+    case metaf::TrendGroup::Type::FROM:
+        result = tr("Forecast: rapid weather change at %1")
+                .arg(explainMetafTime(*group.timeFrom()));
+        return "<strong>" + result + "</strong>";
+
+    case metaf::TrendGroup::Type::UNTIL:
+        result = tr("Forecast until %1")
+                .arg(explainMetafTime(*group.timeUntil()));
+        return "<strong>" + result + "</strong>";
+
+    case metaf::TrendGroup::Type::AT:
+        result = tr("Forecast for %1")
+                .arg(explainMetafTime(*group.timeAt()));
+        return "<strong>" + result + "</strong>";
+
+    case metaf::TrendGroup::Type::TIME_SPAN:
+        if (group.probability() != metaf::TrendGroup::Probability::NONE)
+            result = tr("Forecast from %1 to %2 (%3)")
+                    .arg(explainMetafTime(*group.timeFrom()))
+                    .arg(explainMetafTime(*group.timeUntil()))
+                    .arg(probabilityToString(group.probability()));
+        else
+            result = tr("Forecast from %1 to %2")
+                    .arg(explainMetafTime(*group.timeFrom()))
+                    .arg(explainMetafTime(*group.timeUntil()));
+        return "<strong>" + result + "</strong>";
+
+    case metaf::TrendGroup::Type::PROB:
+        return tr("Forecast %1")
+                .arg(probabilityToString(group.probability()));
     }
     return QString();
 }

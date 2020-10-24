@@ -74,6 +74,7 @@ public:
     static QString layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type);
     static QString pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend);
     static QString pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type);
+    static QString probabilityToString(metaf::TrendGroup::Probability prob);
     static QString runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits);
     static QString runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent);
     static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
@@ -100,6 +101,7 @@ public:
     virtual QString visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString);
+    virtual QString visitTrendGroup(const TrendGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitUnknownGroup(const UnknownGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitVicinityGroup(const VicinityGroup & group, ReportPart reportPart, const std::string & rawString);
     virtual QString visitVisibilityGroup(const VisibilityGroup & group, ReportPart reportPart, const std::string & rawString);
@@ -148,130 +150,7 @@ public:
         return QString::fromStdString(result);
     }
 
-    std::string_view probabilityToString(metaf::TrendGroup::Probability prob)
-    {
-        switch (prob) {
-        case metaf::TrendGroup::Probability::PROB_30:
-            return "Trend probability is 30 percent";
-
-        case metaf::TrendGroup::Probability::PROB_40:
-            return "Trend probability is 40 percent";
-
-        case metaf::TrendGroup::Probability::NONE:
-            return "";
-        }
-    }
-
-    virtual QString visitTrendGroup(const TrendGroup & group, ReportPart reportPart, const std::string & rawString)
-    {
-        if (!group.isValid())
-            return tr("Invalid data");
-
-        (void)reportPart; (void)rawString;
-        std::ostringstream result;
-        if (!group.isValid()) result << groupNotValidMessage << "\n";
-        switch (group.type()) {
-        case metaf::TrendGroup::Type::NOSIG:
-            result << "No significant weather changes expected";
-            break;
-
-        case metaf::TrendGroup::Type::BECMG:
-            result << "Weather conditions are expected to gradually change ";
-            result << "as follows";
-            if (const auto timeFrom = group.timeFrom(); timeFrom) {
-                result << "\nFrom ";
-                result << explainMetafTime(*timeFrom).toStdString();
-            }
-            if (const auto timeUntil = group.timeUntil(); timeUntil) {
-                result << "\nUntil ";
-                result << explainMetafTime(*timeUntil).toStdString();
-            }
-            if (const auto timeAt = group.timeAt(); timeAt) {
-                result << "\nAt ";
-                result << explainMetafTime(*timeAt).toStdString();
-            }
-            break;
-
-        case metaf::TrendGroup::Type::TEMPO:
-            result << "The following temporary weather conditions may arise ";
-            result << " for less than 60 minutes";
-            if (const auto timeFrom = group.timeFrom(); timeFrom) {
-                result << "\nFrom ";
-                result << explainMetafTime(*timeFrom).toStdString();
-            }
-            if (const auto timeUntil = group.timeUntil(); timeUntil) {
-                result << "\nUntil ";
-                result << explainMetafTime(*timeUntil).toStdString();
-            }
-            if (const auto timeAt = group.timeAt(); timeAt) {
-                result << "\nAt ";
-                result << explainMetafTime(*timeAt).toStdString();
-            }
-            if (group.probability() != metaf::TrendGroup::Probability::NONE) {
-                result << "\n";
-                result << probabilityToString(group.probability());
-            }
-            break;
-
-        case metaf::TrendGroup::Type::INTER:
-            result << "The following temporary weather conditions may arise ";
-            result << "for less than 30 minutes";
-            if (const auto timeFrom = group.timeFrom(); timeFrom) {
-                result << "\nFrom ";
-                result << explainMetafTime(*timeFrom).toStdString();
-            }
-            if (const auto timeUntil = group.timeUntil(); timeUntil) {
-                result << "\nUntil ";
-                result << explainMetafTime(*timeUntil).toStdString();
-            }
-            if (const auto timeAt = group.timeAt(); timeAt) {
-                result << "\nAt ";
-                result << explainMetafTime(*timeAt).toStdString();
-            }
-            if (group.probability() != metaf::TrendGroup::Probability::NONE) {
-                result << "\n";
-                result << probabilityToString(group.probability());
-            }
-            break;
-
-        case metaf::TrendGroup::Type::FROM:
-            result << "Weather conditions are expected to change rapidly from ";
-            result << explainMetafTime(*group.timeFrom()).toStdString();
-            result << "\nAll previous weather conditions are superseded by ";
-            result << "the following conditions";
-            break;
-
-        case metaf::TrendGroup::Type::UNTIL:
-            result << "The following weather conditions expected to last until ";
-            result << explainMetafTime(*group.timeUntil()).toStdString();
-            break;
-
-        case metaf::TrendGroup::Type::AT:
-            result << "The following weather conditions expected to occur at ";
-            result << explainMetafTime(*group.timeAt()).toStdString();
-            break;
-
-        case metaf::TrendGroup::Type::TIME_SPAN:
-            result << "The following weather condition are expected within ";
-            result << "time span from ";
-            result << explainMetafTime(*group.timeFrom()).toStdString();
-            result << " until ";
-            result << explainMetafTime(*group.timeUntil()).toStdString();
-            if (group.probability() != metaf::TrendGroup::Probability::NONE) {
-                result << "\n";
-                result << probabilityToString(group.probability());
-            }
-            break;
-
-        case metaf::TrendGroup::Type::PROB:
-            result << "The weather conditions probability is as follows\n";
-            result << probabilityToString(group.probability());
-            break;
-        }
-        return QString::fromStdString(result.str());
-    }
-
-    std::string_view distanceUnitToString(metaf::Distance::Unit unit)
+    QString distanceUnitToString(metaf::Distance::Unit unit)
     {
         switch (unit) {
         case metaf::Distance::Unit::METERS:
@@ -370,7 +249,7 @@ public:
                 return "[unable to get distance's floating-point value]";
             result << static_cast<int>(*d);
         }
-        result << " " << distanceUnitToString(distance.unit());
+        result << " " << distanceUnitToString(distance.unit()).toStdString();
         result << " (";
         if (distance.unit() != metaf::Distance::Unit::METERS) {
             if (const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
@@ -378,7 +257,7 @@ public:
             {
                 result << static_cast<int>(*d);
                 result << " ";
-                result << distanceUnitToString(metaf::Distance::Unit::METERS);
+                result << distanceUnitToString(metaf::Distance::Unit::METERS).toStdString();
             } else {
                 result << "[unable to convert distance to meters]";
             }
@@ -398,7 +277,7 @@ public:
                 if (fraction != metaf::Distance::MilesFraction::NONE)
                     result << distanceMilesFractionToString(fraction);
                 result << " ";
-                result << distanceUnitToString(metaf::Distance::Unit::STATUTE_MILES);
+                result << distanceUnitToString(metaf::Distance::Unit::STATUTE_MILES).toStdString();
             } else {
                 result << "[unable to convert distance to statute miles]";
             }
@@ -409,7 +288,7 @@ public:
                     d.has_value())
             {
                 result << static_cast<int>(*d);
-                result << " " << distanceUnitToString(metaf::Distance::Unit::FEET);
+                result << " " << distanceUnitToString(metaf::Distance::Unit::FEET).toStdString();
             } else {
                 result << "[unable to convert distance to feet]";
             }

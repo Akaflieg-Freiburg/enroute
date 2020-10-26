@@ -21,6 +21,7 @@
 #include <QtMath>
 
 #include "AviationUnits.h"
+#include "GlobalSettings.h"
 
 QString AviationUnits::Angle::toString() const {
     double angleInDegrees = toDEG();
@@ -54,6 +55,18 @@ QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QS
         lon *= -1.0;
 
     return QGeoCoordinate(lat, lon);
+}
+
+QString AviationUnits::Speed::toString() const {
+    // Find out that unit system we should use
+    bool useMetric = false;
+    auto globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings)
+        useMetric = globalSettings->useMetricUnits();
+
+    if (useMetric)
+        return QString("%1 km/h").arg( qRound(toKMH()) );
+    return QString("%1 kt").arg( qRound(toKT()) );
 }
 
 QString AviationUnits::Time::toHoursAndMinutes() const {

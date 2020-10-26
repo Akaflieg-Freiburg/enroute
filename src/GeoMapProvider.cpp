@@ -208,7 +208,7 @@ void GeoMapProvider::aviationMapsChanged()
     }
 
     auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings == nullptr)
+    if (_globalSettings != nullptr)
         _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, _globalSettings->hideUpperAirspaces());
     else
         _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, false);

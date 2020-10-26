@@ -33,7 +33,7 @@ Clock::Clock(QObject *parent) : QObject(parent)
 {
     // We need to update the time regularly. I do not use a simple timer here that emits "timeChanged" once per minute, because I
     // want the signal to be emitted right after the full minute. So, I use a timer that once a minute set a single-shot time
-    // that is set to fire up 500ms after the full minute. This design will also work reliably if "timer" get out of synce,
+    // that is set to fire up 500ms after the full minute. This design will also work reliably if "timer" get out of sync,
     // for instance because the app was sleeping for a while.
     auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Clock::setSingleShotTimer);
@@ -114,9 +114,11 @@ Clock *Clock::globalInstance()
 
 void Clock::setSingleShotTimer()
 {
-    QTime current = QTime::currentTime();
+    QTime current = QDateTime::currentDateTime().time();
     int msecsToNextMinute = 60*1000 - (current.msecsSinceStartOfDay() % (60*1000));
     QTimer::singleShot(msecsToNextMinute+500, this, &Clock::timeChanged);
+    if (current.msecsSinceStartOfDay() < 1000*60)
+        emit dateChanged();
 }
 
 

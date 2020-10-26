@@ -45,6 +45,22 @@ public:
     // Standard destructor
     ~Clock() override = default;
 
+    /*! \brief Current date
+     *
+     * This property holds the current date for the local time zone. The implementation makes some effort to ensure
+     * that the notifier signal is emitted just after midnight in the local time zone.
+     */
+    Q_PROPERTY(QDate date READ date NOTIFY dateChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property date
+     */
+    QDate date() const
+    {
+        return QDateTime::currentDateTime().date();
+    }
+
     /*! Describe time difference in human readable form
      *
      * This method describes the difference between the current time and a given time in human readable form.
@@ -106,6 +122,9 @@ public:
     }
 
 signals:
+    /*! \brief Notifier signal */
+    void dateChanged();
+
     /*! \brief Notifier signal */
     void timeChanged();
 

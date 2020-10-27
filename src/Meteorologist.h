@@ -276,7 +276,7 @@ private:
     QMap<QString, QPointer<WeatherStation>> _weatherStationsByICAOCode;
 };
 
-#include "Meteorologist_Decoder.h"
+#warning What is really needed here?!
 #include "Meteorologist_METAR.h"
 #include "Meteorologist_TAF.h"
 #include "Meteorologist_WeatherStation.h"

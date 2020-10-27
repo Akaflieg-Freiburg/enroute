@@ -18,46 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDataStream>
-#include <QTimeZone>
-#include <QXmlStreamAttribute>
-
 #include <QDebug>
-#include "../3rdParty/metaf/include/metaf.hpp"
-#include <vector>
-#include <string>
-#include <string_view>
-#include <sstream>
-#include <cmath>
+#include <QTimeZone>
 
 #include "Clock.h"
 #include "Meteorologist_Decoder.h"
-#include "Meteorologist_WeatherStation.h"
 
 
-Meteorologist::Decoder::Decoder(QString rawText, QObject *parent)
+Meteorologist::Decoder::Decoder(QObject *parent)
     : QObject(parent)
 {
+    // Re-parse the text whenever the date changes
+    auto _clock = Clock::globalInstance();
+    if (_clock)
+        connect(_clock, &Clock::dateChanged, this, &Meteorologist::Decoder::parse);
+}
 
-    const auto result = metaf::Parser::parse(rawText.toStdString());
 
-    // Error handling
-    /*
-    if (result.reportMetadata.error == metaf::ReportError::NONE)
-        qDebug() << "parsed successfully";
-    */
+void Meteorologist::Decoder::setRawText(QString rawText, QDate referenceDate)
+{
+    if ((_rawText == rawText) && (_referenceDate == referenceDate))
+        return;
 
+    _referenceDate = referenceDate;
+    _rawText = rawText;
+    emit rawTextChanged();
+    parse();
+}
+
+
+void Meteorologist::Decoder::parse()
+{
+    parseResult = metaf::Parser::parse(_rawText.toStdString());
     QStringList decodedStrings;
-    for (const auto &groupInfo : result.groups) {
-        auto description = visit(groupInfo);
-        decodedStrings.append(description);
-/*
-           if (std::holds_alternative<metaf::WeatherGroup>(groupInfo.group))
-            _weather = description;
- */
-    }
-
+    for (const auto &groupInfo : parseResult.groups)
+        decodedStrings << visit(groupInfo);
+    auto newDecodedText = _decodedText;
     _decodedText = decodedStrings.join("<br>");
+
+    if (_decodedText != newDecodedText)
+        emit decodedTextChanged();
 }
 
 
@@ -114,6 +114,100 @@ QString Meteorologist::Decoder::explainDirection(const metaf::Direction & direct
     return QString();
 }
 
+QString Meteorologist::Decoder::explainDirectionSector(const std::vector<metaf::Direction> dir)
+{
+    std::string result;
+    for (auto i=0u; i<dir.size(); i++) {
+        if (i) result += ", ";
+        result += cardinalDirectionToString(dir[i].cardinal()).toStdString();
+    }
+    return QString::fromStdString(result);
+}
+
+QString Meteorologist::Decoder::explainDistance(const metaf::Distance & distance) {
+    if (!distance.isReported())
+        return tr("not reported");
+
+    bool useMetric = false;
+    auto _globalSettings = GlobalSettings::globalInstance();
+    if (_globalSettings)
+        useMetric = _globalSettings->useMetricUnits();
+
+    QStringList results;
+    switch (distance.modifier()) {
+    case metaf::Distance::Modifier::NONE:
+        break;
+
+    case metaf::Distance::Modifier::LESS_THAN:
+        results << "<";
+        break;
+
+    case metaf::Distance::Modifier::MORE_THAN:
+        results << ">";
+        break;
+
+    case metaf::Distance::Modifier::DISTANT:
+        if (useMetric)
+            results << tr("19 to 55 km");
+        else
+            results << tr("10 to 30 NM");
+        break;
+
+    case metaf::Distance::Modifier::VICINITY:
+        if (useMetric)
+            results << tr("9 to 19 km");
+        else
+            results << tr("5 to 10 NM");
+        break;
+    }
+
+    if (!distance.isValue())
+        return results.join(" ");
+
+    // Give distance in natural units
+    if (distance.unit() == metaf::Distance::Unit::STATUTE_MILES) {
+        const auto d = distance.miles();
+        if (!d.has_value())
+            return tr("[unable to get distance value in miles]");
+        const auto integer = std::get<unsigned int>(d.value());
+        const auto fraction = std::get<metaf::Distance::MilesFraction>(d.value());
+        if (integer || fraction == metaf::Distance::MilesFraction::NONE)
+            results << QString::number(integer);
+        if (fraction != metaf::Distance::MilesFraction::NONE)
+            results << distanceMilesFractionToString(fraction);
+        results << distanceUnitToString(distance.unit());
+    } else if (distance.unit() == metaf::Distance::Unit::METERS) {
+        const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
+        if (d.has_value()) {
+            if ((*d) < 5000)
+                results << QString("%1 m").arg(qRound(*d));
+            else
+                results << QString("%1 km").arg( QString::number( *d/1000.0, 'f', 1));
+        } else {
+            results << tr("[unable to convert distance to meters]");
+        }
+    } else {
+        const auto d = distance.toUnit(distance.unit());
+        if (!d.has_value())
+            return tr("[unable to get distance's floating-point value]");
+        results << QString::number(qRound(*d));
+        results << distanceUnitToString(distance.unit());
+    }
+
+    if (useMetric && (distance.unit() != metaf::Distance::Unit::METERS)) {
+        const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
+        if (d.has_value()) {
+            if ((*d) < 5000)
+                results << QString("(%1 m)").arg(qRound(*d));
+            else
+                results << QString("(%1 km)").arg( QString::number( *d/1000.0, 'f', 1));
+        } else {
+            results << tr("[unable to convert distance to meters]");
+        }
+    }
+    return results.join(" ");
+}
+
 QString Meteorologist::Decoder::explainDistance_FT(const metaf::Distance & distance) {
 
     if (!distance.isReported())
@@ -148,31 +242,15 @@ QString Meteorologist::Decoder::explainMetafTime(const metaf::MetafTime & metafT
     // QTime for result
     auto metafQTime = QTime(metafTime.hour(), metafTime.minute());
 
-#warning We should use the reporting time of the METAR/TAF here, but for now this is a good approximation
-    // Compute QDime for result. This is complicated because METARs/TAFs contain only the day of the month, but
-    // not the day.
-    auto currentQDate = QDate::currentDate();
+    auto currentQDate = QDate::currentDate().addDays(5);
     auto currentDate = metaf::MetafTime::Date(currentQDate.year(), currentQDate.month(), currentQDate.day());
+    if (_referenceDate.isValid())
+        currentDate = metaf::MetafTime::Date(_referenceDate.year(), _referenceDate.month(), _referenceDate.day());
     auto metafDate = metafTime.dateBeforeRef(currentDate);
     auto metafQDate = QDate(metafDate.year, metafDate.month, metafDate.day);
 
     auto metafQDateTime = QDateTime(metafQDate, metafQTime, QTimeZone::utc());
     return Clock::describePointInTime(metafQDateTime);
-
-
-    auto currentDateTime = QDateTime::currentDateTimeUtc();
-    auto metarDateTime = currentDateTime;
-
-    const auto day = metafTime.day();
-    if (day.has_value()) {
-        if (currentDateTime.date().day() > 25 && *day < 5)
-            metarDateTime = currentDateTime.addMonths(1);
-        if (currentDateTime.date().day() < 5 && *day > 25)
-            metarDateTime = currentDateTime.addMonths(-1);
-    }
-    metarDateTime.setTime(QTime(metafTime.hour(), metafTime.minute()));
-
-    return Clock::describePointInTime(metarDateTime);
 }
 
 QString Meteorologist::Decoder::explainPrecipitation(const metaf::Precipitation & precipitation)
@@ -731,6 +809,58 @@ QString Meteorologist::Decoder::convectiveTypeToString(metaf::CloudGroup::Convec
     }
 }
 
+QString Meteorologist::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFraction f)
+{
+    switch (f) {
+    case metaf::Distance::MilesFraction::NONE:
+        return "";
+
+    case metaf::Distance::MilesFraction::F_1_16:
+        return "1/16";
+
+    case metaf::Distance::MilesFraction::F_1_8:
+        return "1/8";
+
+    case metaf::Distance::MilesFraction::F_3_16:
+        return "3/16";
+
+    case metaf::Distance::MilesFraction::F_1_4:
+        return "1/4";
+
+    case metaf::Distance::MilesFraction::F_5_16:
+        return "5/16";
+
+    case metaf::Distance::MilesFraction::F_3_8:
+        return "3/8";
+
+    case metaf::Distance::MilesFraction::F_1_2:
+        return "1/2";
+
+    case metaf::Distance::MilesFraction::F_5_8:
+        return "5/8";
+
+    case metaf::Distance::MilesFraction::F_3_4:
+        return "3/4";
+
+    case metaf::Distance::MilesFraction::F_7_8:
+        return "7/8";
+    }
+}
+
+QString Meteorologist::Decoder::distanceUnitToString(metaf::Distance::Unit unit)
+{
+    switch (unit) {
+    case metaf::Distance::Unit::METERS:
+        return "m";
+
+    case metaf::Distance::Unit::STATUTE_MILES:
+        return tr("statute miles");
+
+    case metaf::Distance::Unit::FEET:
+        return "ft";
+    }
+}
+
 QString Meteorologist::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type)
 {
     switch(type) {
@@ -989,6 +1119,27 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
             continue;
         }
 
+        // DRIZZLE, FREEZING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::FREEZING && weather == metaf::WeatherPhenomena::Weather::DRIZZLE) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light freezing drizzle");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate freezing drizzle");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy freezing drizzle");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent freezing drizzle");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
         // DUST, BLOWING
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::BLOWING && weather == metaf::WeatherPhenomena::Weather::DUST) {
             switch(wp.qualifier()) {
@@ -1031,6 +1182,26 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
             continue;
         }
 
+        // HAIL, SHOWERS
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::HAIL) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light hail showers");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate hail showers");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy hail showers");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent hail showers");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
 
         // RAIN
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::RAIN) {
@@ -1050,7 +1221,25 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
             continue;
         }
 
-        // RAIN SHOWERS
+        // RAIN, FREEZING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::FREEZING && weather == metaf::WeatherPhenomena::Weather::RAIN) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light freezing rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate freezing rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy freezing rain");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // RAIN, SHOWERS
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::RAIN) {
             switch(wp.qualifier()) {
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
@@ -1064,6 +1253,24 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
                 results << tr("recent rain showers");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // RAIN, THUNDERSTORM
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::RAIN) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light thunderstorm with rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate thunderstorm with rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy thunderstorm with rain");
                 break;
             default:
                 return QString();
@@ -1142,6 +1349,24 @@ QString Meteorologist::Decoder::specialWeatherPhenomenaToString(const metaf::Wea
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy snow showers");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
+        // SMALL HAIL, THUNDERSTORM
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::SMALL_HAIL) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light thunderstorm with small hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate thunderstorm with small hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy thunderstorm with small hail");
                 break;
             default:
                 return QString();
@@ -1514,7 +1739,7 @@ QString Meteorologist::Decoder::visitLayerForecastGroup(const LayerForecastGroup
         return tr("%1 at all heights")
                 .arg(layerForecastGroupTypeToString(group.type()));
 
-    return tr("%1 at heights from %1 to %2.")
+    return tr("%1 at heights from %2 to %3.")
             .arg(layerForecastGroupTypeToString(group.type()))
             .arg(explainDistance(group.baseHeight()))
             .arg(explainDistance(group.topHeight()));
@@ -1712,14 +1937,11 @@ QString Meteorologist::Decoder::visitMiscGroup(const MiscGroup & group,  ReportP
     return QString();
 }
 
-QString Meteorologist::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString)
+QString Meteorologist::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart, const std::string &)
 {
     if (!group.isValid())
         return tr("Invalid data");
 
-    (void)reportPart; (void)rawString;
-    std::ostringstream result;
-    if (!group.isValid()) result << groupNotValidMessage << "\n";
     switch(group.type()) {
     case metaf::PrecipitationGroup::Type::TOTAL_PRECIPITATION_HOURLY:
         return tr("Total precipitation for the past hour: %1.")

@@ -31,6 +31,8 @@
 #include <cmath>
 
 #include "Clock.h"
+#include "Meteorologist.h"
+#include "Meteorologist_Decoder.h"
 #include "Meteorologist_METAR.h"
 #include "Meteorologist_WeatherStation.h"
 
@@ -300,6 +302,7 @@ using namespace metaf;
 
 void Meteorologist::METAR::process()
 {
-    Meteorologist::Decoder decoder(_raw_text);
+    Meteorologist::Decoder decoder;
+    decoder.setRawText(_raw_text, _observationTime.date());
     _decoded = decoder.decodedText();
 }

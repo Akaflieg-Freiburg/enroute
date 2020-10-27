@@ -21,6 +21,7 @@
 #include "Clock.h"
 #include "SatNav.h"
 
+#include <QDate>
 #include <QGuiApplication>
 #include <QTimer>
 
@@ -82,24 +83,20 @@ QString Clock::describePointInTime(QDateTime pointInTime)
 {
     pointInTime = pointInTime.toUTC();
 
+    auto currentDateLocal = QDate::currentDate();
+    auto pointInTimeDateLocal = pointInTime.toLocalTime().date();
+
     // Obtain current position
-    QGeoCoordinate position;
-    auto _satNav = SatNav::globalInstance();
-    if (_satNav)
-        position = _satNav->lastValidCoordinate();
-
-    if (position.isValid()) {
-        auto lastMidnight = QDateTime::currentDateTimeUtc();
-        lastMidnight.setTime( QTime::fromMSecsSinceStartOfDay(4.0*position.longitude()*60.0*1000.0) );
-        if (lastMidnight > QDateTime::currentDateTime())
-            lastMidnight = lastMidnight.addDays(-1);
-
-        if ((pointInTime < lastMidnight) && (pointInTime > lastMidnight.addDays(-1)))
-            return tr("yesterday %1").arg(pointInTime.toString("H:mm"));
-        if ((pointInTime > lastMidnight) && (pointInTime < lastMidnight.addDays(1)))
-            return pointInTime.toString("H:mm");
-        if ((pointInTime > lastMidnight.addDays(1)) && (pointInTime < lastMidnight.addDays(2)))
-            return tr("tomorrow %1").arg(pointInTime.toString("H:mm"));
+    auto dayDelta = currentDateLocal.daysTo(pointInTimeDateLocal);
+    switch(dayDelta) {
+    case -1:
+        return tr("yesterday %1").arg(pointInTime.toString("H:mm"));
+    case 0:
+        return pointInTime.toString("H:mm");
+    case 1:
+        return tr("tomorrow %1").arg(pointInTime.toString("H:mm"));
+    default:
+        return pointInTime.toString("d. MMM, H:mm");
     }
 
     return pointInTime.toString("d. MMM, H:mm");

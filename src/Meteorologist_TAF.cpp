@@ -23,6 +23,7 @@
 
 #include "Clock.h"
 #include "Meteorologist_TAF.h"
+#include "Meteorologist_Decoder.h"
 #include "Meteorologist_WeatherStation.h"
 
 
@@ -217,6 +218,7 @@ QDataStream &operator<<(QDataStream &outputStream, const Meteorologist::TAF &taf
 
 void Meteorologist::TAF::process()
 {
-    Meteorologist::Decoder decoder(_raw_text);
+    Meteorologist::Decoder decoder;
+    decoder.setRawText(_raw_text, QDate());
     _decoded = decoder.decodedText();
 }

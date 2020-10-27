@@ -20,39 +20,101 @@
 
 #pragma once
 
-#include <QDateTime>
-#include <QMultiMap>
-#include <QGeoCoordinate>
-
 #include "../3rdParty/metaf/include/metaf.hpp"
 
-#include "GlobalSettings.h"
 #include "Meteorologist.h"
 
 using namespace metaf;
 
 
-static const inline std::string groupNotValidMessage = "Data in this group may be errorneous, incomplete or inconsistent";
+/*!\brief METAR/TAF decoder
+ *
+ * This class takes METAR or TAF messages in raw form and converts them to human-
+ * readable, translated text.
+ */
 
-
-#warning docu
-
-class Meteorologist::Decoder : public QObject, public Visitor<QString> {
+class Meteorologist::Decoder : public QObject, public metaf::Visitor<QString> {
     Q_OBJECT
 
 public:
-    explicit Decoder(QString rawText, QObject *parent = nullptr);
+    /*! \brief Default constructor
+     *
+     * This constructor creates a Decoder instance.  You need to set the raw text
+     * before this class can be useful.
+     *
+     * @param parent The standard QObject parent pointer
+     */
+    explicit Decoder(QObject *parent = nullptr);
 
+    /*! Decoded text of the METAR/TAF message
+     *
+     * This property holds the decoded text of the message, as a human-readable,
+     * rich text string.  The text might change in responde to changes in
+     * user settings, and might also change by midnight (the text uses words such
+     * as 'tomorrow' whose meaning changes at the end of the day).
+     */
+    Q_PROPERTY(QString decodedText READ decodedText NOTIFY decodedTextChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property decodedText
+     */
     QString decodedText() const
     {
         return _decodedText;
     }
 
+    /*! Raw text of the METAR/TAF message */
+    Q_PROPERTY(QString rawText READ rawText NOTIFY rawTextChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property rawText
+     */
+    QString rawText() const
+    {
+        return _rawText;
+    }
+
+    /*! \brief Setter function for property with the same name
+     *
+     * @param Raw METAR/TAF message
+     *
+     * @param Reference date. Since METAR/TAF messages specify points in time only by "day of month" and "time",
+     * the decoder needs to know the month and year. Set this reference date to any date between in the interval [issue date, issue date + 28 days]
+     */
+#warning needs to become protected
+    void setRawText(QString rawText, QDate referenceDate);
+
+#warning needs to become protected
+    bool hasParseError() const
+    {
+        return (parseResult.reportMetadata.error != metaf::ReportError::NONE);
+    }
+
+    // -----------------------------------------
+
+
+
+signals:
+    // Notifier signal
+    void decodedTextChanged();
+
+    // Notifier signal
+    void rawTextChanged();
+
+private slots:
+    // This slot does the actual parsing
+    void parse();
+
+private:
     // Explanation functions
     static QString explainCloudType(const metaf::CloudType ct);
     static QString explainDirection(const metaf::Direction & direction, bool trueCardinalDirections=true);
+    static QString explainDirectionSector(const std::vector<metaf::Direction> dir);
+    static QString explainDistance(const metaf::Distance & distance);
     static QString explainDistance_FT(const metaf::Distance & distance);
-    static QString explainMetafTime(const metaf::MetafTime & metafTime);
+    QString explainMetafTime(const metaf::MetafTime & metafTime);
     static QString explainPrecipitation(const metaf::Precipitation & precipitation);
     static QString explainPressure(const metaf::Pressure & pressure);
     static QString explainRunway(const metaf::Runway & runway);
@@ -60,7 +122,7 @@ public:
     static QString explainSurfaceFriction(const metaf::SurfaceFriction & surfaceFriction);
     static QString explainTemperature(const metaf::Temperature & temperature);
     static QString explainWaveHeight(const metaf::WaveHeight & waveHeight);
-    static QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
+    QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
     // … toString Methods
     static QString brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction);
@@ -71,6 +133,8 @@ public:
     static QString cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer);
     static QString cloudTypeToString(metaf::CloudType::Type type);
     static QString convectiveTypeToString(metaf::CloudGroup::ConvectiveType type);
+    static QString distanceMilesFractionToString(metaf::Distance::MilesFraction f);
+    static QString distanceUnitToString(metaf::Distance::Unit unit);
     static QString layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type);
     static QString pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend);
     static QString pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type);
@@ -109,195 +173,12 @@ public:
     virtual QString visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString);
 
 
-    // ==================================================
-
-    std::string roundTo(float number, size_t digitsAfterDecimalPoint)
-    {
-        static const char decimalPoint = '.';
-        std::string numStr = std::to_string(number);
-        const auto decimalPointPos = numStr.find(decimalPoint);
-        if (decimalPointPos == std::string::npos) return numStr;
-        const auto decimalsAfterPoint = numStr.length() - decimalPointPos;
-        if (decimalsAfterPoint > digitsAfterDecimalPoint) {
-            return numStr.substr(0, decimalPointPos + digitsAfterDecimalPoint + 1);
-        }
-        return numStr;
-    }
-
-    std::string_view speedUnitToString(metaf::Speed::Unit unit) {
-        switch (unit) {
-        case metaf::Speed::Unit::KNOTS:
-            return "knots";
-
-        case metaf::Speed::Unit::METERS_PER_SECOND:
-            return "m/s";
-
-        case metaf::Speed::Unit::KILOMETERS_PER_HOUR:
-            return "km/h";
-
-        case metaf::Speed::Unit::MILES_PER_HOUR:
-            return "mph";
-        }
-    }
-
-    QString explainDirectionSector(const std::vector<metaf::Direction> dir)
-    {
-        std::string result;
-        for (auto i=0u; i<dir.size(); i++) {
-            if (i) result += ", ";
-            result += cardinalDirectionToString(dir[i].cardinal()).toStdString();
-        }
-        return QString::fromStdString(result);
-    }
-
-    QString distanceUnitToString(metaf::Distance::Unit unit)
-    {
-        switch (unit) {
-        case metaf::Distance::Unit::METERS:
-            return "meters";
-
-        case metaf::Distance::Unit::STATUTE_MILES:
-            return "statute miles";
-
-        case metaf::Distance::Unit::FEET:
-            return "feet";
-        }
-    }
-
-    std::string_view distanceMilesFractionToString(metaf::Distance::MilesFraction f)
-    {
-        switch (f) {
-        case metaf::Distance::MilesFraction::NONE:
-            return "";
-
-        case metaf::Distance::MilesFraction::F_1_16:
-            return "1/16";
-
-        case metaf::Distance::MilesFraction::F_1_8:
-            return "1/8";
-
-        case metaf::Distance::MilesFraction::F_3_16:
-            return "3/16";
-
-        case metaf::Distance::MilesFraction::F_1_4:
-            return "1/4";
-
-        case metaf::Distance::MilesFraction::F_5_16:
-            return "5/16";
-
-        case metaf::Distance::MilesFraction::F_3_8:
-            return "3/8";
-
-        case metaf::Distance::MilesFraction::F_1_2:
-            return "1/2";
-
-        case metaf::Distance::MilesFraction::F_5_8:
-            return "5/8";
-
-        case metaf::Distance::MilesFraction::F_3_4:
-            return "3/4";
-
-        case metaf::Distance::MilesFraction::F_7_8:
-            return "7/8";
-        }
-    }
-
-    QString explainDistance(const metaf::Distance & distance) {
-        if (!distance.isReported()) return "not reported";
-        std::ostringstream result;
-        switch (distance.modifier()) {
-        case metaf::Distance::Modifier::NONE:
-            break;
-
-        case metaf::Distance::Modifier::LESS_THAN:
-            result << "&lt;";
-            break;
-
-        case metaf::Distance::Modifier::MORE_THAN:
-            result << "&gt;";
-            break;
-
-        case metaf::Distance::Modifier::DISTANT:
-            result << "10 to 30 nautical miles ";
-            result << "(19 to 55 km, 12 to 35 statue miles)";
-            break;
-
-        case metaf::Distance::Modifier::VICINITY:
-            result << "5 to 10 nautical miles ";
-            result << "(9 to 19 km, 6 to 12 statue miles)";
-            break;
-        }
-
-        if (!distance.isValue())
-            return QString::fromStdString(result.str());
-
-        if (distance.unit() == metaf::Distance::Unit::STATUTE_MILES) {
-            const auto d = distance.miles();
-            if (!d.has_value()) return "[unable to get distance value in miles]";
-            const auto integer = std::get<unsigned int>(d.value());
-            const auto fraction =
-                    std::get<metaf::Distance::MilesFraction>(d.value());
-            if (integer || fraction == metaf::Distance::MilesFraction::NONE)
-                result << integer;
-            if (integer && fraction != metaf::Distance::MilesFraction::NONE)
-                result << " ";
-            if (fraction != metaf::Distance::MilesFraction::NONE)
-                result << distanceMilesFractionToString(fraction);
-        } else {
-            const auto d = distance.toUnit(distance.unit());
-            if (!d.has_value())
-                return "[unable to get distance's floating-point value]";
-            result << static_cast<int>(*d);
-        }
-        result << " " << distanceUnitToString(distance.unit()).toStdString();
-        result << " (";
-        if (distance.unit() != metaf::Distance::Unit::METERS) {
-            if (const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
-                    d.has_value())
-            {
-                result << static_cast<int>(*d);
-                result << " ";
-                result << distanceUnitToString(metaf::Distance::Unit::METERS).toStdString();
-            } else {
-                result << "[unable to convert distance to meters]";
-            }
-            result << " / ";
-        }
-        if (distance.unit() != metaf::Distance::Unit::STATUTE_MILES) {
-            if (const auto d = distance.miles(); d.has_value()) {
-                if (!d.has_value())
-                    return "[unable to get distance value in miles]";
-                const auto integer = std::get<unsigned int>(d.value());
-                const auto fraction =
-                        std::get<metaf::Distance::MilesFraction>(d.value());
-                if (integer || fraction == metaf::Distance::MilesFraction::NONE)
-                    result << integer;
-                if (integer && fraction != metaf::Distance::MilesFraction::NONE)
-                    result << " ";
-                if (fraction != metaf::Distance::MilesFraction::NONE)
-                    result << distanceMilesFractionToString(fraction);
-                result << " ";
-                result << distanceUnitToString(metaf::Distance::Unit::STATUTE_MILES).toStdString();
-            } else {
-                result << "[unable to convert distance to statute miles]";
-            }
-            if (distance.unit() != metaf::Distance::Unit::FEET) result << " / ";
-        }
-        if (distance.unit() != metaf::Distance::Unit::FEET) {
-            if (const auto d = distance.toUnit(metaf::Distance::Unit::FEET);
-                    d.has_value())
-            {
-                result << static_cast<int>(*d);
-                result << " " << distanceUnitToString(metaf::Distance::Unit::FEET).toStdString();
-            } else {
-                result << "[unable to convert distance to feet]";
-            }
-        }
-        result << ")";
-        return QString::fromStdString(result.str());
-    }
-
 #warning docu
     QString _decodedText;
+    QString _rawText;
+    QDate _referenceDate;
+
+    // Result of the parser
+    ParseResult parseResult;
 };
 

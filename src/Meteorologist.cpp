@@ -75,6 +75,8 @@ Meteorologist::Meteorologist(FlightRoute *route,
         connect(_clock, &Clock::timeChanged, this, &Meteorologist::sunInfoChanged);
     }
 
+#warning make sure that METAR/TAFs are not immediately reloaded if recent versions exist in the file
+
     // Read METAR/TAF from "weather.dat"
     load();
 }

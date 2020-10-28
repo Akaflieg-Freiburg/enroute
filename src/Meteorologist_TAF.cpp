@@ -23,12 +23,11 @@
 
 #include "Clock.h"
 #include "Meteorologist_TAF.h"
-#include "Meteorologist_Decoder.h"
 #include "Meteorologist_WeatherStation.h"
 
 
 Meteorologist::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
-    : QObject(parent)
+    : Weather::Decoder(parent)
 {
 
     // Lambda to read sky condition
@@ -156,7 +155,7 @@ Meteorologist::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
 
 
 Meteorologist::TAF::TAF(QDataStream &inputStream, QObject *parent)
-    : QObject(parent)
+    : Weather::Decoder(parent)
 {
     inputStream >> _expirationTime;
     inputStream >> _ICAOCode;
@@ -165,13 +164,6 @@ Meteorologist::TAF::TAF(QDataStream &inputStream, QObject *parent)
     inputStream >> _raw_text;
 
     process();
-}
-
-
-QString Meteorologist::TAF::decodedText() const
-{
-#warning not implemented
-    return _decoded;
 }
 
 
@@ -218,7 +210,5 @@ QDataStream &operator<<(QDataStream &outputStream, const Meteorologist::TAF &taf
 
 void Meteorologist::TAF::process()
 {
-    Meteorologist::Decoder decoder;
-    decoder.setRawText(_raw_text, QDate());
-    _decoded = decoder.decodedText();
+    setRawText(_raw_text, QDate());
 }

@@ -18,34 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDataStream>
-#include <QTimeZone>
-#include <QXmlStreamAttribute>
-
-#include <QDebug>
-#include "../3rdParty/metaf/include/metaf.hpp"
-#include <vector>
-#include <string>
-#include <string_view>
-#include <sstream>
-#include <cmath>
+#include <QXmlStreamReader>
 
 #include "Clock.h"
 #include "Meteorologist.h"
-#include "Meteorologist_Decoder.h"
-#include "Meteorologist_METAR.h"
-#include "Meteorologist_WeatherStation.h"
 
 
 Meteorologist::METAR::METAR(QObject *parent)
-    : QObject(parent)
+    : Weather::Decoder(parent)
 {
 
 }
 
 
 Meteorologist::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
-    : QObject(parent)
+    : Weather::Decoder(parent)
 {
 
     while (true) {
@@ -87,6 +74,29 @@ Meteorologist::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
             continue;
         }
 
+        // Wind
+        if (xml.isStartElement() && name == "wind_speed_kt") {
+            auto content = xml.readElementText();
+            _wind = AviationUnits::Speed::fromKT(content.toDouble());
+            continue;
+        }
+
+        // Gust
+        if (xml.isStartElement() && name == "wind_gust_kt") {
+            auto content = xml.readElementText();
+            _gust = AviationUnits::Speed::fromKT(content.toDouble());
+            continue;
+        }
+
+        // QNH
+        if (xml.isStartElement() && name == "altim_in_hg") {
+            auto content = xml.readElementText();
+            _qnh = qRound(content.toDouble() * 33.86);
+            if ((_qnh < 800) || (_qnh > 1200))
+                _qnh = 0;
+            continue;
+        }
+
         // Observation Time
         if (xml.isStartElement() && name == "observation_time") {
             auto content = xml.readElementText();
@@ -108,43 +118,20 @@ Meteorologist::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
             continue;
         }
 
-                if (xml.isEndElement() && name == "METAR")
+        if (xml.isEndElement() && name == "METAR")
             break;
 
         xml.skipCurrentElement();
     }
 
-    //
-    // Set up self-destruction timer
-    //
-
-    if (!_observationTime.isValid())
-        deleteLater();
-    else {
-        // Time out is 1.5 hours after observation time, unless raw text contains "NOSIG", then it is 3 hours
-        auto timeOut = QDateTime::currentDateTimeUtc().msecsTo(_observationTime.addSecs(1.5*60*60));
-        if (_raw_text.contains("NOSIG"))
-            timeOut = QDateTime::currentDateTimeUtc().msecsTo(_observationTime.addSecs(3*60*60));
-        if (timeOut < 1000)
-            deleteLater();
-        else
-            QTimer::singleShot(timeOut, this, SLOT(deleteLater()));
-
-    }
-
-    auto _clock = Clock::globalInstance();
-    if (isValid() && _clock) {
-        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::summaryChanged);
-        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::relativeObservationTimeChanged);
-    }
-
-#warning experimental
-    process();
+    // Interpret the METAR message
+    setRawText(_raw_text, _observationTime.date());
+    setupSignals();
 }
 
 
 Meteorologist::METAR::METAR(QDataStream &inputStream, QObject *parent)
-    : QObject(parent)
+    : Weather::Decoder(parent)
 {
     inputStream >> _flightCategory;
     inputStream >> _ICAOCode;
@@ -152,9 +139,12 @@ Meteorologist::METAR::METAR(QDataStream &inputStream, QObject *parent)
     inputStream >> _observationTime;
     inputStream >> _qnh;
     inputStream >> _raw_text;
+    inputStream >> _wind;
+    inputStream >> _gust;
 
-#warning experimental
-    process();
+    // Interpret the METAR message
+    setRawText(_raw_text, _observationTime.date());
+    setupSignals();
 }
 
 
@@ -163,21 +153,6 @@ QDateTime Meteorologist::METAR::expiration() const
     if (_raw_text.contains("NOSIG"))
         return _observationTime.addSecs(3*60*60);
     return _observationTime.addSecs(1.5*60*60);
-}
-
-
-bool Meteorologist::METAR::isExpired() const
-{
-    auto exp = expiration();
-    if (!exp.isValid())
-        return false;
-    return QDateTime::currentDateTime() > exp;
-}
-
-
-QString Meteorologist::METAR::decodedText() const
-{
-    return _decoded;
 }
 
 
@@ -193,27 +168,64 @@ QString Meteorologist::METAR::flightCategoryColor() const
 }
 
 
+bool Meteorologist::METAR::isExpired() const
+{
+    auto exp = expiration();
+    if (!exp.isValid())
+        return false;
+    return QDateTime::currentDateTime() > exp;
+}
+
+
+bool Meteorologist::METAR::isValid() const
+{
+    if (!_location.isValid())
+        return false;
+    if (!_observationTime.isValid())
+        return false;
+    if (_ICAOCode.isEmpty())
+        return false;
+    if (hasParseError())
+        return false;
+
+    return true;
+}
+
+
+QString Meteorologist::METAR::relativeObservationTime() const
+{
+    if (!_observationTime.isValid())
+        return QString();
+
+    return Clock::describeTimeDifference(_observationTime);
+}
+
+
+void Meteorologist::METAR::setupSignals()
+{
+    // Emit notifier signals whenever the time changes
+    auto _clock = Clock::globalInstance();
+    if (_clock) {
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::summaryChanged);
+        connect(_clock, &Clock::timeChanged, this, &Meteorologist::METAR::relativeObservationTimeChanged);
+    }
+
+    auto _globalSettings = GlobalSettings::globalInstance();
+    if (_globalSettings)
+        connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Meteorologist::METAR::summaryChanged);
+}
+
+
 QString Meteorologist::METAR::summary() const {
 
     QStringList resultList;
 
-    // Get flight category
-    QString sky;
-
-#warning
-/*
- *     if (data.contains("sky_condition")) {
-        auto val = data.value("sky_condition").toString();
-        if (val.contains("CAVOK"))
-            sky = "CAVOK";
-    }
-*/
-
     switch (_flightCategory) {
     case VFR:
-        resultList << tr("VMC");
-        if (!sky.isEmpty())
+        if (_raw_text.contains("CAVOK"))
             resultList << tr("CAVOK");
+        else
+            resultList << tr("VMC");
         break;
     case MVFR:
         resultList << tr("marginal VMC");
@@ -228,59 +240,21 @@ QString Meteorologist::METAR::summary() const {
         break;
     }
 
-#warning
-    /*
-    int windSpeed = 0;
-    int gustSpeed = 0;
-    if (data.contains("wind_speed_kt"))
-        windSpeed = data.value("wind_speed_kt").toString().toInt();
-    if (data.contains("wind_gust_kt"))
-        gustSpeed = data.value("wind_gust_kt").toString().toInt();
+    // Wind and Gusts
+    if (_gust.toKT() > 15)
+        resultList << tr("gusts of %1").arg(_gust.toString() );
+    else if (_wind.toKT() > 10)
+        resultList << tr("wind at %1").arg(_wind.toString());
 
-#warning Look at units!
-    if (gustSpeed > 15)
-        resultList << tr("gusts of %1 kt").arg(gustSpeed);
-    else if (windSpeed > 10)
-        resultList << tr("wind at %1 kt").arg(windSpeed);
-
-    if (data.contains("wx_string"))
-        resultList << _weather;
-*/
+    // Weather
+    auto curWeather = currentWeather();
+    if (!curWeather.isEmpty())
+        resultList << curWeather;
 
     if (resultList.isEmpty())
         return QString();
 
-    return tr("METAR %1: %2").arg(Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
-}
-
-
-QString Meteorologist::METAR::relativeObservationTime() const
-{
-    if (!_observationTime.isValid())
-        return QString();
-
-    return Clock::describeTimeDifference(_observationTime);
-}
-
-
-bool Meteorologist::METAR::isValid() const
-{
-    if (!_location.isValid())
-        return false;
-    if (!_observationTime.isValid())
-        return false;
-    if (_ICAOCode.isEmpty())
-        return false;
-
-#warning more thorough checks needed
-    return true;
-}
-
-
-QString Meteorologist::METAR::messageType() const
-{
-#warning WRONG
-    return "METAR";
+    return tr("%1 %2: %3").arg(messageType(), Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
 }
 
 
@@ -292,17 +266,8 @@ QDataStream &operator<<(QDataStream &out, const Meteorologist::METAR &metar)
     out << metar._observationTime;
     out << metar._qnh;
     out << metar._raw_text;
+    out << metar._wind;
+    out << metar._gust;
 
     return out;
-}
-
-
-using namespace metaf;
-
-
-void Meteorologist::METAR::process()
-{
-    Meteorologist::Decoder decoder;
-    decoder.setRawText(_raw_text, _observationTime.date());
-    _decoded = decoder.decodedText();
 }

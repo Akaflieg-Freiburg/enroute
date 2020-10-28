@@ -63,7 +63,6 @@ class Meteorologist : public QObject {
     Q_OBJECT
 
 public:
-    class Decoder;
     class METAR;
     class TAF;
     class WeatherStation;

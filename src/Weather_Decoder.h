@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2020 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,35 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#pragma once
-
-#include "../3rdParty/metaf/include/metaf.hpp"
-
-#include "Meteorologist.h"
-
-using namespace metaf;
-
-
-/*!\brief METAR/TAF decoder
- *
- * This class takes METAR or TAF messages in raw form and converts them to human-
- * readable, translated text.
+/* This is a heavily altered version of a file from the metaf library package
+ * Copyright (C) 2018-2020 Nick Naumenko (https://gitlab.com/nnaumenko)
+ * Distributed under the terms of the MIT license.
  */
 
-class Meteorologist::Decoder : public QObject, public metaf::Visitor<QString> {
+#pragma once
+
+#include <QDate>
+#include <QObject>
+
+#include "../3rdParty/metaf/include/metaf.hpp"
+using namespace metaf;
+
+namespace Weather {
+
+
+/*! \brief METAR/TAF decoder
+ *
+ * This class takes METAR or TAF messages in raw form and converts them to human-readable, translated text.
+ * This class is not meant to be used directly. Instead, use the classes Weather::METAR or Weather::TAF.
+ */
+
+class Decoder : public QObject, private metaf::Visitor<QString> {
     Q_OBJECT
 
 public:
-    /*! \brief Default constructor
+    /*! \brief Description of the current weather
      *
-     * This constructor creates a Decoder instance.  You need to set the raw text
-     * before this class can be useful.
-     *
-     * @param parent The standard QObject parent pointer
+     * For METAR messages, this property holds a description of the current weather
+     * in translated, human-readable form, such as "low drifting snow" or "light rain".
+     * The property can contain an empty string if there is nothing to report.
      */
-    explicit Decoder(QObject *parent = nullptr);
+    Q_PROPERTY(QString currentWeather READ currentWeather NOTIFY rawTextChanged)
 
-    /*! Decoded text of the METAR/TAF message
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property currentWeather
+     */
+    QString currentWeather() const
+    {
+        return _currentWeather;
+    }
+
+    /*! \brief Decoded text of the METAR/TAF message
      *
      * This property holds the decoded text of the message, as a human-readable,
      * rich text string.  The text might change in responde to changes in
@@ -64,7 +79,19 @@ public:
         return _decodedText;
     }
 
-    /*! Raw text of the METAR/TAF message */
+    /*! \brief Message Type
+     *
+     * This is a string of the form "METAR", "TAF" or "METAR/SPECI".
+     */
+    Q_PROPERTY(QString messageType READ messageType NOTIFY rawTextChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property currentWeather
+     */
+    QString messageType() const;
+
+    /*! \brief Raw text of the METAR/TAF message */
     Q_PROPERTY(QString rawText READ rawText NOTIFY rawTextChanged)
 
     /*! \brief Getter function for property with the same name
@@ -76,32 +103,27 @@ public:
         return _rawText;
     }
 
-    /*! \brief Setter function for property with the same name
-     *
-     * @param Raw METAR/TAF message
-     *
-     * @param Reference date. Since METAR/TAF messages specify points in time only by "day of month" and "time",
-     * the decoder needs to know the month and year. Set this reference date to any date between in the interval [issue date, issue date + 28 days]
-     */
-#warning needs to become protected
+signals:
+    /*! \brief  Notifier signal */
+    void decodedTextChanged();
+
+    /*! \brief  Notifier signal */
+    void rawTextChanged();
+
+protected:
+    // This constructor creates a Decoder instance.  You need to set the raw text before this class can be useful.
+    explicit Decoder(QObject *parent = nullptr);
+
+    // Sets the raw METAR/TAF message and starts processing. Since METAR/TAF messages specify points in time only by "day of month" and "time",
+    // the decoder needs to know the month and year. Set this reference date to any date between in the interval [issue date, issue date + 28 days]
     void setRawText(QString rawText, QDate referenceDate);
 
-#warning needs to become protected
+    // Indicates if the parser was able to read the text without error. If an error occurs, the decoded will
+    // still be available, but is probably incomplete
     bool hasParseError() const
     {
         return (parseResult.reportMetadata.error != metaf::ReportError::NONE);
     }
-
-    // -----------------------------------------
-
-
-
-signals:
-    // Notifier signal
-    void decodedTextChanged();
-
-    // Notifier signal
-    void rawTextChanged();
 
 private slots:
     // This slot does the actual parsing
@@ -173,12 +195,22 @@ private:
     virtual QString visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString);
 
 
-#warning docu
+    // Cached data
+
+    // Decoded text generated by last run of parser
     QString _decodedText;
+
+    // Raw text, as set with setRawText(…)
     QString _rawText;
+
+    // Current weather, as read from METAR
+    QString _currentWeather;
+
+    // Reference date, as set with setRawText(…)
     QDate _referenceDate;
 
     // Result of the parser
     ParseResult parseResult;
 };
 
+}

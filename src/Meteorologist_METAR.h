@@ -20,13 +20,11 @@
 
 #pragma once
 
-#include <QDateTime>
-#include <QMultiMap>
-#include <QGeoCoordinate>
-
-#include "Meteorologist.h"
+#include "AviationUnits.h"
+#include "Weather_Decoder.h"
 
 class QXmlStreamReader;
+
 
 /*! \brief METAR report
  *
@@ -35,7 +33,7 @@ class QXmlStreamReader;
  * Meteorologist class; there is no way to construct valid instances yourself.
  */
 
-class Meteorologist::METAR : public QObject {
+class Meteorologist::METAR : public Weather::Decoder {
     Q_OBJECT
 
     friend class Meteorologist;
@@ -50,7 +48,7 @@ public:
     explicit METAR(QObject *parent = nullptr);
 
     // Standard destructor
-    ~METAR() override = default;
+    ~METAR() = default;
 
     /*! \brief Flight category
      *
@@ -67,7 +65,6 @@ public:
     };
     Q_ENUM(FlightCategory)
 
-
     /*! Geographical coordinate of the station reporting this METAR
      *
      * If the station coordinate is unknown, the property contains an invalid coordinate.
@@ -82,15 +79,6 @@ public:
     {
         return _location;
     }
-
-    /*! METAR, as a translated, human-readable text */
-    Q_PROPERTY(QString decodedText READ decodedText CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property messageType
-     */
-    QString decodedText() const;
 
     /*! Expiration time and date
      *
@@ -226,18 +214,6 @@ public:
      */
     QString relativeObservationTime() const;
 
-    /*! Type of message
-     *
-     * This is one of the strings "METAR" or "SPECI"
-     */
-    Q_PROPERTY(QString messageType READ messageType CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property messageType
-     */
-    QString messageType() const;
-
     /*! One-line summary of the METAR
      *
      * This is a translated, human-readable string of the form "METAR 14min ago: marginal VMC • wind at 15kt • rain"
@@ -249,9 +225,6 @@ public:
      * @returns Property summary
      */
     QString summary() const;
-
-#warning Test
-    void process();
 
 signals:
     /*! Notifier signal */
@@ -268,10 +241,19 @@ private:
     // This constructor reads a serialized METAR from a QDataStream
     explicit METAR(QDataStream &inputStream, QObject *parent = nullptr);
 
+    // Connects signals; this method is used internally from the constructor(s)
+    void setupSignals();
+
     Q_DISABLE_COPY_MOVE(METAR)
+
+    // Decoded METAR text
+    QString _decoded;
 
     // Flight category, as returned by the Aviation Weather Center
     FlightCategory _flightCategory {unknown};
+
+    // Gust speed, as returned by the Aviation Weather Center
+    AviationUnits::Speed _gust;
 
     // Station ID, as returned by the Aviation Weather Center
     QString _ICAOCode;
@@ -288,11 +270,8 @@ private:
     // Raw METAR text, as returned by the Aviation Weather Center
     QString _raw_text;
 
-    // Private data structures
-    QString _weather;
-
-    // Decoded METAR text
-    QString _decoded;
+    // Wind speed, as returned by the Aviation Weather Center
+    AviationUnits::Speed _wind;
 };
 
 

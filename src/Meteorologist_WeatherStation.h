@@ -21,6 +21,7 @@
 #pragma once
 
 #include "Meteorologist.h"
+#include "Meteorologist_METAR.h"
 
 class GeoMapProvider;
 

@@ -35,6 +35,7 @@ QString AviationUnits::Angle::toString() const {
     return QString("%1° %2' %3\"").arg(deg).arg(min).arg(angleInDegrees, 0, 'f', 2);
 }
 
+
 double AviationUnits::Angle::toNormalizedDEG() const {
     double angle = toDEG();
     if (!std::isfinite(angle))
@@ -43,6 +44,7 @@ double AviationUnits::Angle::toNormalizedDEG() const {
     double a = angle / 360.0;
     return 360.0 * (a - qFloor(a));
 }
+
 
 QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geoLong) {
     // Interpret coordinates.
@@ -57,6 +59,7 @@ QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QS
     return QGeoCoordinate(lat, lon);
 }
 
+
 QString AviationUnits::Speed::toString() const {
     // Find out that unit system we should use
     bool useMetric = false;
@@ -68,6 +71,23 @@ QString AviationUnits::Speed::toString() const {
         return QString("%1 km/h").arg( qRound(toKMH()) );
     return QString("%1 kt").arg( qRound(toKT()) );
 }
+
+
+QDataStream &operator<<(QDataStream &out, const AviationUnits::Speed &speed)
+{
+    out << speed.toMPS();
+    return out;
+}
+
+
+QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed)
+{
+    double buffer;
+    in >> buffer;
+    speed = AviationUnits::Speed::fromMPS(buffer);
+    return in;
+}
+
 
 QString AviationUnits::Time::toHoursAndMinutes() const {
     // Paranoid safety checks

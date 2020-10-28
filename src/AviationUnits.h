@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QDataStream>
 #include <QGeoCoordinate>
 #include <QString>
 #include <QtMath>
@@ -439,6 +440,29 @@ public:
         double _timeInS{qQNaN()};
     };
 };
+
+
+/*! \brief Serialization of a speed object into a QDataStream
+ *
+ * @param out QDataStream that the object is written to
+ *
+ * @param speed Speed object that is written to the QDataStrem
+ *
+ * @returns Reference to the QDataStream
+ */
+QDataStream &operator<<(QDataStream &out, const AviationUnits::Speed &speed);
+
+
+/*! \brief Deserialization of a speed object into a QDataStream
+ *
+ * @param in QDataStream that the object is written from
+ *
+ * @param speed Speed object that is read from the QDataStrem
+ *
+ * @returns Reference to the QDataStream
+ */
+QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed);
+
 
 /*! \brief Divide distance and speed
  *

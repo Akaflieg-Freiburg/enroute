@@ -27,6 +27,7 @@
 class QXmlStreamReader;
 
 #include "Meteorologist.h"
+#include "Weather_Decoder.h"
 
 /*! \brief TAF report
  *
@@ -35,7 +36,7 @@ class QXmlStreamReader;
  * Meteorologist class; there is no way to construct valid instances yourself.
  */
 
-class Meteorologist::TAF : public QObject {
+class Meteorologist::TAF : public Weather::Decoder {
     Q_OBJECT
 
     friend class Meteorologist;
@@ -52,15 +53,6 @@ public:
 
     // Standard destructor
     ~TAF() override = default;
-
-    /*! TAF, as a translated, human-readable text */
-    Q_PROPERTY(QString decodedText READ decodedText CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property messageType
-     */
-    QString decodedText() const;
 
     /*! Geographical coordinate of the station reporting this TAF
      *

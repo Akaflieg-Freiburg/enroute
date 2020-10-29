@@ -23,8 +23,8 @@
 #include <QVariant>
 
 #include "AviationUnits.h"
-#include "Meteorologist_WeatherStation.h"
 #include "Waypoint.h"
+#include "Weather_Station.h"
 
 
 Waypoint::Waypoint(QObject *parent)
@@ -139,9 +139,9 @@ void Waypoint::initializeWeatherStationConnections()
 
     // Setup new connections
     if (newStationPtr) {
-        connect(newStationPtr, &Meteorologist::WeatherStation::metarChanged, this, &Waypoint::hasMETARChanged);
-        connect(newStationPtr, &Meteorologist::WeatherStation::tafChanged, this, &Waypoint::hasTAFChanged);
-        connect(newStationPtr, &Meteorologist::WeatherStation::destroyed, this, &Waypoint::initializeWeatherStationConnections);
+        connect(newStationPtr, &Weather::Station::metarChanged, this, &Waypoint::hasMETARChanged);
+        connect(newStationPtr, &Weather::Station::tafChanged, this, &Waypoint::hasTAFChanged);
+        connect(newStationPtr, &Weather::Station::destroyed, this, &Waypoint::initializeWeatherStationConnections);
     }
 
     // Emit all relevant changes
@@ -368,7 +368,7 @@ QString Waypoint::wayTo(QGeoCoordinate fromCoordinate, bool useMetricUnits) cons
 }
 
 
-Meteorologist::WeatherStation *Waypoint::weatherStation() const
+Weather::Station *Waypoint::weatherStation() const
 {
     if (_meteorologist.isNull())
         return nullptr;

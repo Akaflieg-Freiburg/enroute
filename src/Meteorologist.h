@@ -28,6 +28,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 
 #include "SatNav.h"
+#include "Weather_Station.h"
 
 class Clock;
 class FlightRoute;
@@ -122,7 +123,7 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    Meteorologist::WeatherStation *findWeatherStation(const QString &ICAOCode) const
+    Weather::Station *findWeatherStation(const QString &ICAOCode) const
     {
         return _weatherStationsByICAOCode.value(ICAOCode, nullptr);
     }
@@ -189,13 +190,13 @@ public:
      * can be deleted anytime. Store it in a QPointer to avoid dangling
      * pointers.
      */
-    Q_PROPERTY(QList<Meteorologist::WeatherStation *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
+    Q_PROPERTY(QList<Weather::Station *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property weatherStations
      */
-    QList<Meteorologist::WeatherStation *> weatherStations() const;
+    QList<Weather::Station *> weatherStations() const;
 
 signals:
     /*! \brief Notifier signal */
@@ -235,7 +236,7 @@ private:
 
     // Similar to findWeatherStation, but will create a weather station if no
     // station with the given code is known
-    Meteorologist::WeatherStation *findOrConstructWeatherStation(const QString &ICAOCode);
+    Weather::Station *findOrConstructWeatherStation(const QString &ICAOCode);
 
     // This method loads METAR/TAFs from a file "weather.dat" in
     // QStandardPaths::AppDataLocation.  There is locking to ensure that no two
@@ -270,8 +271,6 @@ private:
     bool _backgroundUpdate {true};
 
     // List of weather stations, accessible by ICAO code
-    QMap<QString, QPointer<WeatherStation>> _weatherStationsByICAOCode;
+    QMap<QString, QPointer<Weather::Station>> _weatherStationsByICAOCode;
 };
 
-#warning What is really needed here?!
-#include "Meteorologist_WeatherStation.h"

@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterUncreatableType<Meteorologist>("enroute", 1, 0, "Meteorologist", "Meteorologist objects cannot be created in QML");
-    qmlRegisterType<Meteorologist::WeatherStation>("enroute", 1, 0, "WeatherStation");
+    qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
 

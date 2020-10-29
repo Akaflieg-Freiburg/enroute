@@ -274,13 +274,13 @@ public:
      * Note that the WeatherStation object is owned by the Meteorologist and that
      * it can be deleted anytime.
      */
-    Q_PROPERTY(Meteorologist::WeatherStation *weatherStation READ weatherStation NOTIFY weatherStationChanged)
+    Q_PROPERTY(Weather::Station *weatherStation READ weatherStation NOTIFY weatherStationChanged)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property weatherStation
      */
-    Meteorologist::WeatherStation *weatherStation() const;
+    Weather::Station *weatherStation() const;
 
 
 signals:
@@ -311,6 +311,6 @@ private:
     QMultiMap<QString, QVariant> _properties;
 
     // Guarded and unguarded pointers
-    Meteorologist::WeatherStation *_weatherStation_unguarded {nullptr};
-    QPointer<Meteorologist::WeatherStation> _weatherStation_guarded;
+    Weather::Station *_weatherStation_unguarded {nullptr};
+    QPointer<Weather::Station> _weatherStation_guarded;
 };

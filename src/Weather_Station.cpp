@@ -19,16 +19,16 @@
  ***************************************************************************/
 
 #include "GeoMapProvider.h"
-#include "Meteorologist.h"
+#include "Weather_Station.h"
 
 
-Meteorologist::WeatherStation::WeatherStation(QObject *parent)
+Weather::Station::Station(QObject *parent)
     : QObject(parent)
 {
 }
 
 
-Meteorologist::WeatherStation::WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent)
+Weather::Station::Station(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent)
     : QObject(parent),
       _ICAOCode(id),
       _geoMapProvider(geoMapProvider)
@@ -37,12 +37,12 @@ Meteorologist::WeatherStation::WeatherStation(const QString &id, GeoMapProvider 
     _twoLineTitle = _ICAOCode;
 
     // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
-    connect(_geoMapProvider, &GeoMapProvider::geoJSONChanged, this, &Meteorologist::WeatherStation::readDataFromWaypoint);
+    connect(_geoMapProvider, &GeoMapProvider::geoJSONChanged, this, &Weather::Station::readDataFromWaypoint);
     readDataFromWaypoint();
 }
 
 
-void Meteorologist::WeatherStation::readDataFromWaypoint()
+void Weather::Station::readDataFromWaypoint()
 {
     // Paranoid safety checks
     if (_geoMapProvider.isNull())
@@ -81,7 +81,7 @@ void Meteorologist::WeatherStation::readDataFromWaypoint()
 }
 
 
-void Meteorologist::WeatherStation::setMETAR(Weather::METAR *metar)
+void Weather::Station::setMETAR(Weather::METAR *metar)
 {
     // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
     if (metar)
@@ -112,7 +112,7 @@ void Meteorologist::WeatherStation::setMETAR(Weather::METAR *metar)
 
     if (_metar) {
         // Connect new METAR, update the coordinate if necessary.
-        connect(_metar, &QObject::destroyed, this, &Meteorologist::WeatherStation::metarChanged);
+        connect(_metar, &QObject::destroyed, this, &Weather::Station::metarChanged);
 
         // Update coordinate
         if (!_coordinate.isValid())
@@ -126,7 +126,7 @@ void Meteorologist::WeatherStation::setMETAR(Weather::METAR *metar)
 }
 
 
-void Meteorologist::WeatherStation::setTAF(Weather::TAF *taf)
+void Weather::Station::setTAF(Weather::TAF *taf)
 {
     // Ignore invalid and expired TAFs. Also ignore TAFs whose ICAO code does not match with this weather station
     if (taf)
@@ -157,7 +157,7 @@ void Meteorologist::WeatherStation::setTAF(Weather::TAF *taf)
 
     if (_taf) {
         // Connect new TAF, update the coordinate if necessary.
-        connect(_taf, &QObject::destroyed, this, &Meteorologist::WeatherStation::tafChanged);
+        connect(_taf, &QObject::destroyed, this, &Weather::Station::tafChanged);
 
         // Update coordinate
         if (!_coordinate.isValid())
@@ -171,7 +171,7 @@ void Meteorologist::WeatherStation::setTAF(Weather::TAF *taf)
 }
 
 
-QString Meteorologist::WeatherStation::wayTo(QGeoCoordinate fromCoordinate, bool useMetricUnits) const
+QString Weather::Station::wayTo(QGeoCoordinate fromCoordinate, bool useMetricUnits) const
 {
     // Paranoid safety checks
     if (!fromCoordinate.isValid())
@@ -186,125 +186,4 @@ QString Meteorologist::WeatherStation::wayTo(QGeoCoordinate fromCoordinate, bool
     if (useMetricUnits)
         return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
-}
-
-
-
-// ================================
-#warning old functionality, needs to go out
-
-QString Meteorologist::WeatherStation::decodeTime(const QVariant &time) {
-    QDateTime tim = QDateTime::fromString(time.toString().replace("T", " "), "yyyy-MM-dd hh:mm:ssZ");
-    return tim.toString("ddd MMMM d yyyy hh:mm") + " UTC";
-}
-
-
-QString Meteorologist::WeatherStation::decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg) {
-    QString w;
-    if (windd.toString() == "0")
-        if (winds.toString() == "0")
-            return "calm";
-        else
-            w += "variable";
-    else
-        w += "from " + windd.toString() + "°";
-    w += " at " + winds.toString() + " kt";
-    if (windg.toString() != "0")
-        w+= ", gusty " + windg.toString() + " kt";
-    return w;
-}
-
-
-QString Meteorologist::WeatherStation::decodeVis(const QVariant &vis) {
-    long v = std::lround(vis.toString().toDouble() * 1.61);
-    return QString::number(v) + " km";
-}
-
-
-QString Meteorologist::WeatherStation::decodeTemp(const QVariant &temp) {
-    QString tmp = temp.toString();
-    return tmp.left(tmp.lastIndexOf(".")) + " °C";
-}
-
-
-QString Meteorologist::WeatherStation::decodeQnh(const QVariant &altim) {
-    long qnh = std::lround(altim.toString().toDouble() * 33.86);
-    return QString::number(qnh) + " hPa";
-}
-
-
-QString Meteorologist::WeatherStation::decodeWx(const QVariant &wx) {
-    QString w = wx.toString();
-    // clear
-    w.replace("NSW", "No significant weather");
-    // intensity
-    w.replace("-", "light ");
-    w.replace("+", "heavy ");
-    w.replace("VC", "in the vicinity ");
-    w.replace("RE", "recent ");
-    // qualifier
-    w.replace("BC", "patches of");
-    w.replace("BL", "blowing");
-    w.replace("FZ", "freezing");
-    w.replace("MI", "shallow");
-    w.replace("PR", "partial");
-    w.replace("RE", "recent");
-    w.replace("SH", "showers of");
-    // precipitation
-    w.replace("DZ", "drizzle");
-    w.replace("IC", "ice crystal");
-    w.replace("GR", "hail");
-    w.replace("GS", "snow pellets");
-    w.replace("PL", "ice pellets");
-    w.replace("RA", "rain");
-    w.replace("SN", "snow");
-    w.replace("SG", "snow grains");
-    // obscuration
-    w.replace("BR", "mist");
-    w.replace("DU", "dust");
-    w.replace("FG", "fog");
-    w.replace("FU", "smoke");
-    w.replace("HZ", "haze");
-    w.replace("PY", "spray");
-    w.replace("SA", "sand");
-    w.replace("VA", "volcanic ash");
-    // other
-    w.replace("DS", "duststorm");
-    w.replace("FC", "tornado");
-    w.replace("TS", "thunderstorm");
-    w.replace("SQ", "squalls");
-    w.replace("SS", "sandstorm");
-    return w;
-}
-
-
-QString Meteorologist::WeatherStation::decodeClouds(const QVariantList &clouds) {
-    QString clds;
-    for (int i = clouds.size() - 1; i >= 0; --i) {
-        QList<QString> layer = clouds[i].toString().split(",");
-        clds += layer[0];
-        if (layer.size() >= 2) {
-            if (layer.size() == 3)
-                clds += " " + layer[2];
-            else
-                clds += " clouds";
-            clds += " at " + layer[1] + " ft AGL";
-        }
-        if (i > 0)
-            clds += "<br>";
-    }
-    clds.replace("NSC", "No significant clouds");
-    clds.replace("SKC", "Sky clear");
-    clds.replace("CLR", "Clear");
-    clds.replace("CAVOK", "Ceiling and visibility OK");
-    clds.replace("FEW", "Few");
-    clds.replace("SCT", "Scattered");
-    clds.replace("BKN", "Broken");
-    clds.replace("OVC", "Overcast");
-    clds.replace("OVX", "Obscured");
-    clds.replace("OVCX", "Obscured");
-    clds.replace("CB", "Cumulonimbus");
-    clds.replace("TCU", "Towering cumulus");
-    clds.replace("CU", "Cumulus");
-    return clds;
 }

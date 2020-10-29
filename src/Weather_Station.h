@@ -20,12 +20,15 @@
 
 #pragma once
 
-#include "Meteorologist.h"
+#include <QPointer>
+
 #include "Weather_METAR.h"
 #include "Weather_TAF.h"
 
 class GeoMapProvider;
+class Meteorologist;
 
+namespace Weather {
 
 /*! \brief This class represents a weather station that issues METAR or TAF report
  *
@@ -33,10 +36,10 @@ class GeoMapProvider;
  * are uniquely identified by their ICAO code. Depending on available data, they
  * hold pointers to the latest METAR and TAF reports.
  */
-class Meteorologist::WeatherStation : public QObject {
+class Station : public QObject {
     Q_OBJECT
 
-    friend class Meteorologist;
+    friend Meteorologist;
     friend class Weather::METAR;
     friend class Weather::TAF;
 public:
@@ -48,12 +51,12 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit WeatherStation(QObject *parent = nullptr);
+    explicit Station(QObject *parent = nullptr);
 
     // Standard destructor
-    ~WeatherStation() = default;
+    ~Station() = default;
 
-    /*! Geographical coordinate of the WeatherStation reporting this METAR
+    /*! \brief Geographical coordinate of the WeatherStation reporting this METAR
      *
      * If the WeatherStation coordinate is unknown, the property contains an
      * invalid coordinate.
@@ -150,7 +153,7 @@ public:
         return _icon;
     }
 
-    /*! Indicates if the WeatherStation is valid */
+    /*! \brief Indicates if the WeatherStation is valid */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
     /*! \brief Getter function for property with the same name
@@ -263,11 +266,11 @@ private slots:
     void readDataFromWaypoint();
 
 private:
-    Q_DISABLE_COPY_MOVE(WeatherStation)
+    Q_DISABLE_COPY_MOVE(Station)
 
     // This constructor is only meant to be called by instances of the
     // Meteorologist class
-    explicit WeatherStation(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
+    explicit Station(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
 
     // If the metar is valid, not expired and newer than the existing metar,
     // this method sets the METAR message and deletes any existing METAR;
@@ -281,27 +284,6 @@ private:
     // taf is deleted. In any case, this WeatherStation will take ownership of
     // the TAF. The signal tafChanged() will be emitted if appropriate.
     void setTAF(Weather::TAF *taf);
-
-    // Converts the time into a human readable string
-    static QString decodeTime(const QVariant &time);
-
-    // Converts the wind data into a human readable string
-    static QString decodeWind(const QVariant &windd, const QVariant &winds, const QVariant &windg = QVariant("0"));
-
-    // Converts the visibility into a human readable string
-    static QString decodeVis(const QVariant &vis);
-
-    // Converts the temperature/dewpoint into a human readable string
-    static QString decodeTemp(const QVariant &temp);
-
-    // Converts the QNH (pressure) into a human readable string
-    static QString decodeQnh(const QVariant &altim);
-
-    // Converts the weather into a human readable string
-    static QString decodeWx(const QVariant &wx);
-
-    // Converts the clouds into a human readable string
-    static QString decodeClouds(const QVariantList &clouds);
 
     // Coordinate of this weather station
     QGeoCoordinate _coordinate;
@@ -331,3 +313,5 @@ private:
     // already
     bool hasWaypointData {false};
 };
+
+} // Namespace

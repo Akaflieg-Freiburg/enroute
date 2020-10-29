@@ -85,13 +85,13 @@ set(SOURCES
     GlobalSettings.h
     Librarian.h
     Meteorologist.h
-    Meteorologist_WeatherStation.h
     MobileAdaptor.h
     SatNav.h
     ScaleQuickItem.h
     Waypoint.h
     Weather_Decoder.h
     Weather_METAR.h
+    Weather_Station.h
     Weather_TAF.h
 
     # C++ files
@@ -112,7 +112,6 @@ set(SOURCES
     main.cpp
     MapManager.cpp
     Meteorologist.cpp
-    Meteorologist_WeatherStation.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     SatNav.cpp
@@ -122,6 +121,7 @@ set(SOURCES
     Waypoint.cpp
     Weather_Decoder.cpp
     Weather_METAR.cpp
+    Weather_Station.cpp
     Weather_TAF.cpp
     Wind.cpp
     )

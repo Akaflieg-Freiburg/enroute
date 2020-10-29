@@ -186,14 +186,14 @@ void Meteorologist::downloadFinished() {
 }
 
 
-Meteorologist::WeatherStation *Meteorologist::findOrConstructWeatherStation(const QString &ICAOCode)
+Weather::Station *Meteorologist::findOrConstructWeatherStation(const QString &ICAOCode)
 {
     auto weatherStationPtr = _weatherStationsByICAOCode.value(ICAOCode, nullptr);
 
     if (!weatherStationPtr.isNull())
         return weatherStationPtr;
 
-    auto newWeatherStation = new WeatherStation(ICAOCode, _geoMapProvider, this);
+    auto newWeatherStation = new Weather::Station(ICAOCode, _geoMapProvider, this);
     _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
     return newWeatherStation;
 }
@@ -380,7 +380,7 @@ QString Meteorologist::QNHInfo() const
         return QString();
 
     // Find QNH of nearest airfield
-    WeatherStation *closestReportWithQNH = nullptr;
+    Weather::Station *closestReportWithQNH = nullptr;
     int QNH = 0;
     foreach(auto weatherStationPtr, _weatherStationsByICAOCode) {
         if (weatherStationPtr.isNull())
@@ -482,10 +482,10 @@ void Meteorologist::update(bool isBackgroundUpdate) {
 }
 
 
-QList<Meteorologist::WeatherStation *> Meteorologist::weatherStations() const {
+QList<Weather::Station *> Meteorologist::weatherStations() const {
 
     // Produce a list of reports, without nullpointers
-    QList<WeatherStation *> sortedReports;
+    QList<Weather::Station *> sortedReports;
     foreach(auto stations, _weatherStationsByICAOCode)
         if (!stations.isNull())
             sortedReports += stations;
@@ -493,7 +493,7 @@ QList<Meteorologist::WeatherStation *> Meteorologist::weatherStations() const {
     // Sort list
     auto _satNav = SatNav::globalInstance();
     if (_satNav) {
-        auto compare = [&](const WeatherStation *a, const WeatherStation *b) {
+        auto compare = [&](const Weather::Station *a, const Weather::Station *b) {
             auto here = _satNav->lastValidCoordinate();
             return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
         };

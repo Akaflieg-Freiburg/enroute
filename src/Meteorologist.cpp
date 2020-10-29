@@ -36,6 +36,7 @@
 #include "FlightRoute.h"
 #include "Meteorologist.h"
 #include "SatNav.h"
+#include "Weather_METAR.h"
 
 
 Meteorologist::Meteorologist(FlightRoute *route,
@@ -161,13 +162,13 @@ void Meteorologist::downloadFinished() {
 
             // Read METAR
             if (xml.isStartElement() && (xml.name() == "METAR")) {
-                auto metar = new Meteorologist::METAR(xml, this);
+                auto metar = new Weather::METAR(xml, this);
                 findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             }
 
             // Read TAF
             if (xml.isStartElement() && (xml.name() == "TAF")) {
-                auto taf = new Meteorologist::TAF(xml, this);
+                auto taf = new Weather::TAF(xml, this);
                 findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             }
 
@@ -237,13 +238,13 @@ void Meteorologist::load()
 
         if (type == 'M') {
             // Read METAR
-            auto metar = new Meteorologist::METAR(inputStream, this);
+            auto metar = new Weather::METAR(inputStream, this);
             findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             continue;
         }
         if (type == 'T') {
             // Read TAF
-            auto taf = new Meteorologist::TAF(inputStream, this);
+            auto taf = new Weather::TAF(inputStream, this);
             findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             continue;
         }
@@ -292,7 +293,7 @@ void Meteorologist::save()
             // Save only valid METARs that are not yet expired
             if (weatherStation->metar()->isValid() && !weatherStation->metar()->isExpired()) {
                 outputStream << QChar('M');
-                outputStream << *(weatherStation->metar());
+                weatherStation->metar()->write(outputStream);
             }
         }
 
@@ -300,7 +301,7 @@ void Meteorologist::save()
             // Save only valid TAFs that are not yet expired
             if (weatherStation->taf()->isValid() && !weatherStation->taf()->isExpired()) {
                 outputStream << QChar('T');
-                outputStream << *(weatherStation->taf());
+                weatherStation->taf()->write(outputStream);
             }
         }
     }

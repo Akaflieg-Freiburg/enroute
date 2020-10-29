@@ -21,7 +21,8 @@
 #pragma once
 
 #include "Meteorologist.h"
-#include "Meteorologist_METAR.h"
+#include "Weather_METAR.h"
+#include "Weather_TAF.h"
 
 class GeoMapProvider;
 
@@ -36,8 +37,8 @@ class Meteorologist::WeatherStation : public QObject {
     Q_OBJECT
 
     friend class Meteorologist;
-    friend class Meteorologist::METAR;
-    friend class Meteorologist::TAF;
+    friend class Weather::METAR;
+    friend class Weather::TAF;
 public:
     /*! \brief Standard constructor
      *
@@ -168,13 +169,13 @@ public:
      * METAR instance is owned by an instance of Meteorologist, and can be
      * deleted or updated by the Meteorologist anytime.
      */
-    Q_PROPERTY(Meteorologist::METAR *metar READ metar NOTIFY metarChanged)
+    Q_PROPERTY(Weather::METAR *metar READ metar NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property metar
      */
-    Meteorologist::METAR *metar() const
+    Weather::METAR *metar() const
     {
         return _metar;
     }
@@ -206,13 +207,13 @@ public:
      * instance is owned by an instance of Meteorologist, and can be deleted or
      * updated by the Meteorologist anytime.
      */
-    Q_PROPERTY(Meteorologist::TAF *taf READ taf NOTIFY tafChanged)
+    Q_PROPERTY(Weather::TAF *taf READ taf NOTIFY tafChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    Meteorologist::TAF *taf() const
+    Weather::TAF *taf() const
     {
         return _taf;
     }
@@ -273,13 +274,13 @@ private:
     // otherwise, the metar is deleted. In any case, this WeatherStation will
     // take ownership of the METAR. The signal metarChanged() will be emitted if
     // appropriate.
-    void setMETAR(Meteorologist::METAR *metar);
+    void setMETAR(Weather::METAR *metar);
 
     // If the taf is valid, not expired and newer than the existing taf, this
     // method sets the TAF message and deletes any existing TAF; otherwise, the
     // taf is deleted. In any case, this WeatherStation will take ownership of
     // the TAF. The signal tafChanged() will be emitted if appropriate.
-    void setTAF(Meteorologist::TAF *taf);
+    void setTAF(Weather::TAF *taf);
 
     // Converts the time into a human readable string
     static QString decodeTime(const QVariant &time);
@@ -315,10 +316,10 @@ private:
     QString _icon {"/icons/waypoints/WP.svg"};
 
     // METAR
-    QPointer<Meteorologist::METAR> _metar;
+    QPointer<Weather::METAR> _metar;
 
     // TAF
-    QPointer<Meteorologist::TAF> _taf;
+    QPointer<Weather::TAF> _taf;
 
     // Two-Line-Title
     QString _twoLineTitle;

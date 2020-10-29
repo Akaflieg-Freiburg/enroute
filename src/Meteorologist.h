@@ -63,8 +63,6 @@ class Meteorologist : public QObject {
     Q_OBJECT
 
 public:
-    class METAR;
-    class TAF;
     class WeatherStation;
 
     /*! \brief Standard constructor
@@ -276,6 +274,4 @@ private:
 };
 
 #warning What is really needed here?!
-#include "Meteorologist_METAR.h"
-#include "Meteorologist_TAF.h"
 #include "Meteorologist_WeatherStation.h"

@@ -20,27 +20,28 @@
 
 #pragma once
 
-#include <QDateTime>
-#include <QMultiMap>
-#include <QGeoCoordinate>
+#include <QDataStream>
+#include <QXmlStreamReader>
 
-class QXmlStreamReader;
-
-#include "Meteorologist.h"
+#include "AviationUnits.h"
 #include "Weather_Decoder.h"
+
+class Meteorologist;
+
+
+namespace Weather {
 
 /*! \brief TAF report
  *
- * This class contains the data of a TAF or SPECI report and provided a few
+ * This class contains the data of a TAF report and provided a few
  * methods to access the data. Instances of this class are provided by the
  * Meteorologist class; there is no way to construct valid instances yourself.
  */
 
-class Meteorologist::TAF : public Weather::Decoder {
+class TAF : public Decoder {
     Q_OBJECT
 
-    friend class Meteorologist;
-    friend QDataStream &operator<<(QDataStream &out, const Meteorologist::TAF &taf);
+    friend Meteorologist;
 
 public:
     /*! \brief Default constructor
@@ -54,7 +55,7 @@ public:
     // Standard destructor
     ~TAF() override = default;
 
-    /*! Geographical coordinate of the station reporting this TAF
+    /*! \brief Geographical coordinate of the station reporting this TAF
      *
      * If the station coordinate is unknown, the property contains an invalid coordinate.
      */
@@ -69,7 +70,7 @@ public:
         return _location;
     }
 
-    /*! Expiration time and date
+    /*! \brief Expiration time and date
      *
      * A TAF message is supposed to expire once the last forecast period ends.
      */
@@ -79,7 +80,10 @@ public:
      *
      * @returns Property expiration
      */
-    QDateTime expiration() const;
+    QDateTime expiration() const
+    {
+        return _expirationTime;
+    }
 
     /*! \brief ICAO code of the station reporting this TAF
      *
@@ -112,7 +116,7 @@ public:
      */
     bool isValid() const;
 
-    /*! Issue time of this TAF */
+    /*! \brief Issue time of this TAF */
     Q_PROPERTY(QDateTime issueTime READ issueTime CONSTANT)
 
     /*! \brief Getter function for property with the same name
@@ -124,7 +128,7 @@ public:
         return _issueTime;
     }
 
-    /*! Raw TAF text
+    /*! \brief  Raw TAF text
      *
      * This is a string such as "TAF EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=".
      */
@@ -139,7 +143,7 @@ public:
         return _raw_text;
     }
 
-    /*! Issue time, relative to now
+    /*! \brief Issue time, relative to now
      *
      * This is a translated, human-readable string such as "1h and 43min ago" that describes
      * the observation time.
@@ -152,11 +156,8 @@ public:
      */
     QString relativeIssueTime() const;
 
-#warning Test
-    void process();
-
 signals:
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void relativeIssueTimeChanged();
 
 private:
@@ -166,6 +167,12 @@ private:
 
     // This constructor reads a serialized TAF from a QDataStream
     explicit TAF(QDataStream &inputStream, QObject *parent = nullptr);
+
+    // Connects signals; this method is used internally from the constructor(s)
+    void setupSignals();
+
+    // Writes the TAF report to a data stream
+    void write(QDataStream &out);
 
     Q_DISABLE_COPY_MOVE(TAF)
 
@@ -183,23 +190,6 @@ private:
 
     // Raw TAF text, as returned by the Aviation Weather Center
     QString _raw_text;
-
-    // Pointers to other classes that are used internally
-    QPointer<Clock> _clock {};
-
-    // Private data structures
-    QString _decoded;
-    QMultiMap<QString, QVariant> data;
-    QStringList dataStrings;
 };
 
-
-/*! \brief Serialization of a TAF object into a QDataStream
- *
- * @param out QDataStream that the object is written to
- *
- * @param taf TAF object that is written to the QDataStrem
- *
- * @returns Reference to the QDataStream
- */
-QDataStream &operator<<(QDataStream &out, const Meteorologist::TAF &taf);
+}

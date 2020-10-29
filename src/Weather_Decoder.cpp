@@ -1128,6 +1128,27 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             continue;
         }
 
+        // PRECIPITATION, THUNDERSTORM
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::UNDETERMINED) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("thunderstorm with precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light thunderstorm with precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate thunderstorm with precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy thunderstorm with precipitation");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
         // DRIZZLE
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::DRIZZLE) {
             switch(wp.qualifier()) {
@@ -1182,6 +1203,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy blowing dust");
                 break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent blowing dust");
+                break;
             default:
                 return QString();
             }
@@ -1230,6 +1254,27 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             continue;
         }
 
+        // HAIL, THUNDERSTORM
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::HAIL) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light thunderstorm with hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate thunderstorm with hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy thunderstorm with hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent thunderstorm with hail");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
         // RAIN
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::RAIN) {
             switch(wp.qualifier()) {
@@ -1241,6 +1286,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent rain");
                 break;
             default:
                 return QString();
@@ -1259,6 +1307,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy freezing rain");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent freezing rain");
                 break;
             default:
                 return QString();
@@ -1299,6 +1350,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy thunderstorm with rain");
                 break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent thunderstorm with rain");
+                break;
             default:
                 return QString();
             }
@@ -1316,6 +1370,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy snowfall");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent snowfall");
                 break;
             default:
                 return QString();
@@ -1338,6 +1395,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy blowing snow");
                 break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent blowing snow");
+                break;
             default:
                 return QString();
             }
@@ -1359,6 +1419,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy drifting snow");
                 break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent drifting snow");
+                break;
             default:
                 return QString();
             }
@@ -1377,6 +1440,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy snow showers");
                 break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent snow showers");
+                break;
             default:
                 return QString();
             }
@@ -1394,6 +1460,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
                 results << tr("heavy thunderstorm with small hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent thunderstorm with small hail");
                 break;
             default:
                 return QString();

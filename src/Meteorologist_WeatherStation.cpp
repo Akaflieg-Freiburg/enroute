@@ -81,7 +81,7 @@ void Meteorologist::WeatherStation::readDataFromWaypoint()
 }
 
 
-void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
+void Meteorologist::WeatherStation::setMETAR(Weather::METAR *metar)
 {
     // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
     if (metar)
@@ -126,7 +126,7 @@ void Meteorologist::WeatherStation::setMETAR(Meteorologist::METAR *metar)
 }
 
 
-void Meteorologist::WeatherStation::setTAF(Meteorologist::TAF *taf)
+void Meteorologist::WeatherStation::setTAF(Weather::TAF *taf)
 {
     // Ignore invalid and expired TAFs. Also ignore TAFs whose ICAO code does not match with this weather station
     if (taf)

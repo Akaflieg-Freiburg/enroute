@@ -93,6 +93,7 @@ set(SOURCES
     Weather_METAR.h
     Weather_Station.h
     Weather_TAF.h
+    Weather_Wind.h
 
     # C++ files
     Aircraft.cpp
@@ -123,7 +124,7 @@ set(SOURCES
     Weather_METAR.cpp
     Weather_Station.cpp
     Weather_TAF.cpp
-    Wind.cpp
+    Weather_Wind.cpp
     )
 
 

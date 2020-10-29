@@ -23,6 +23,7 @@
 #include <QSettings>
 #include "AviationUnits.h"
 
+namespace Weather {
 
 /*! \brief This extremely simple class holds the wind speed and direction */
 
@@ -153,3 +154,5 @@ private:
 
   QSettings settings;
 };
+
+}

@@ -30,7 +30,7 @@
 #include "Aircraft.h"
 
 #include "Waypoint.h"
-#include "Wind.h"
+#include "Weather_Wind.h"
 
 class GeoMapProvider;
 class GlobalSettings;
@@ -72,7 +72,7 @@ public:
      *
      * @param parent The standard QObject parent pointer.
      */
-    explicit FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent = nullptr);
+    explicit FlightRoute(Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
 
     // Standard destructor
     ~FlightRoute() override = default;
@@ -357,7 +357,7 @@ private:
     QList<Leg*> _legs;
 
     QPointer<Aircraft> _aircraft {nullptr};
-    QPointer<Wind> _wind {nullptr};
+    QPointer<Weather::Wind> _wind {nullptr};
 
     QLocale myLocale;
 };

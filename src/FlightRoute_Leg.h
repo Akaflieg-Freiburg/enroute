@@ -49,7 +49,7 @@ public:
    *
    * @param parent The standard QObject parent pointer.
    */
-  explicit Leg(const Waypoint* start, const Waypoint *end, Aircraft *aircraft, Wind *wind, QObject *parent = nullptr);
+  explicit Leg(const Waypoint* start, const Waypoint *end, Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
 
   // Standard destructor
   ~Leg() override = default;
@@ -177,5 +177,5 @@ private:
   QPointer<Waypoint> _start {nullptr};
   QPointer<Waypoint> _end {nullptr};
   QPointer<Aircraft> _aircraft {nullptr};
-  QPointer<Wind> _wind {nullptr};
+  QPointer<Weather::Wind> _wind {nullptr};
 };

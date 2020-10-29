@@ -25,7 +25,7 @@
 
 #include "FlightRoute.h"
 
-FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
+FlightRoute::FlightRoute(Aircraft *aircraft, Weather::Wind *wind, QObject *parent)
     : QObject(parent), _aircraft(aircraft), _wind(wind)
 {
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
@@ -38,7 +38,7 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Wind *wind, QObject *parent)
     if (!_aircraft.isNull())
         connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::summaryChanged);
     if (!_wind.isNull())
-        connect(_wind, &Wind::valChanged, this, &FlightRoute::summaryChanged);
+        connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::summaryChanged);
 }
 
 

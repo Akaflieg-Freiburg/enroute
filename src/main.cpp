@@ -46,7 +46,7 @@
 #include "MobileAdaptor.h"
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
-#include "Wind.h"
+#include "Weather_Wind.h"
 
 int main(int argc, char *argv[])
 {
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("aircraft", aircraft);
 
     // Attach wind info
-    auto wind = new Wind(engine);
+    auto wind = new Weather::Wind(engine);
     engine->rootContext()->setContextProperty("wind", wind);
 
     // Attach clock

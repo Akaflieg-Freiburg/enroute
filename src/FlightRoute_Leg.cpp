@@ -23,7 +23,7 @@
 #include "FlightRoute_Leg.h"
 
 
-FlightRoute::Leg::Leg(const Waypoint* start, const Waypoint *end, Aircraft *aircraft, Wind *wind, QObject* parent)
+FlightRoute::Leg::Leg(const Waypoint* start, const Waypoint *end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
     : QObject(parent), _aircraft(aircraft), _wind(wind)
 {
     _start = new Waypoint(*start, this);
@@ -32,7 +32,7 @@ FlightRoute::Leg::Leg(const Waypoint* start, const Waypoint *end, Aircraft *airc
     if (!_aircraft.isNull())
         connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::Leg::valChanged);
     if (!_wind.isNull())
-        connect(_wind, &Wind::valChanged, this, &FlightRoute::Leg::valChanged);
+        connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::Leg::valChanged);
 }
 
 

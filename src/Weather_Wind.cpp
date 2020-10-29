@@ -20,10 +20,10 @@
 
 #include <QtGlobal>
 
-#include "Wind.h"
+#include "Weather_Wind.h"
 
 
-Wind::Wind(QObject *parent)
+Weather::Wind::Wind(QObject *parent)
     : QObject(parent)
 {
     _windSpeedInKT = settings.value("Wind/windSpeedInKT", -1.0).toDouble();
@@ -36,13 +36,13 @@ Wind::Wind(QObject *parent)
 }
 
 
-double Wind::windSpeedInKT() const
+double Weather::Wind::windSpeedInKT() const
 {
     return _windSpeedInKT;
 }
 
 
-void Wind::setWindSpeedInKT(double speedInKT)
+void Weather::Wind::setWindSpeedInKT(double speedInKT)
 {
     if ((speedInKT < minWindSpeedInKT) || (speedInKT > maxWindSpeedInKT))
         speedInKT = qQNaN();
@@ -55,14 +55,14 @@ void Wind::setWindSpeedInKT(double speedInKT)
 }
 
 
-double Wind::windSpeedInKMH() const
+double Weather::Wind::windSpeedInKMH() const
 {
     auto speed = AviationUnits::Speed::fromKT(_windSpeedInKT);
     return speed.toKMH();
 }
 
 
-void Wind::setWindSpeedInKMH(double speedInKMH)
+void Weather::Wind::setWindSpeedInKMH(double speedInKMH)
 {
     setWindSpeedInKT(
         AviationUnits::Speed::fromKMH(speedInKMH).toKT()
@@ -70,7 +70,7 @@ void Wind::setWindSpeedInKMH(double speedInKMH)
 }
 
 
-void Wind::setWindDirectionInDEG(double windDirection)
+void Weather::Wind::setWindDirectionInDEG(double windDirection)
 {
     if ((windDirection < minWindDirection) || (windDirection > maxWindDirection))
         windDirection = qQNaN();

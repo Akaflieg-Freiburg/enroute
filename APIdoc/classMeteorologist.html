@@ -59,14 +59,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1METAR.html">METAR</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> report.  <a href="classMeteorologist_1_1METAR.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1TAF.html">TAF</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> report.  <a href="classMeteorologist_1_1TAF.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeteorologist_1_1WeatherStation.html">WeatherStation</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a weather station that issues <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> or <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> report.  <a href="classMeteorologist_1_1WeatherStation.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a weather station that issues METAR or TAF report.  <a href="classMeteorologist_1_1WeatherStation.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
@@ -148,7 +142,7 @@ Properties</h2></td></tr>
 <div class="textblock"><p><a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a>, weather service manager. </p>
 <p>This class retrieves METAR/TAF weather reports from the "Aviation Weather
 Center" at aviationweather.com, for all weather stations that are within 75nm from the last-known user position or current route. The reports can then be accessed via the property "weatherStations" and the method findWeatherStation. The <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> class honors <a class="el" href="classGlobalSettings.html#af53f09f2300cbe950823fe32f4390776" title="Find out if Weather Terms have been accepted. ">GlobalSettings::acceptedWeatherTerms()</a> and will initiate a download only if the user agreed to the privacy warning.</p>
-<p>Once constructed, the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> class will regularly perform background updates to retrieve up-to-date information. It will update the list of known weather stations and also the METAR/TAF reports for the weather stations. The class checks regularly for outdated <a class="el" href="classMeteorologist_1_1METAR.html" title="METAR report. ">METAR</a> and <a class="el" href="classMeteorologist_1_1TAF.html" title="TAF report. ">TAF</a> reports and deletes them automatically, along with those WeatherStations that no longer contain any report.</p>
+<p>Once constructed, the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> class will regularly perform background updates to retrieve up-to-date information. It will update the list of known weather stations and also the METAR/TAF reports for the weather stations. The class checks regularly for outdated METAR and TAF reports and deletes them automatically, along with those WeatherStations that no longer contain any report.</p>
 <p>In order to avoid loss of data when the app is accidently closed in-flight, the class stores all weather data at destruction and at regular intervals, and reads the data back in on construction.</p>
 <p>This class also contains a number or convenience methods and properties pertaining to sunrise/sunset </p>
 
@@ -239,7 +233,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property backgroundUpdate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00098">98</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00096">96</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -333,7 +327,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00127">127</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00125">125</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -452,7 +446,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>Background update flag. </p>
 <p>Indicates if the last download process was started as a background update. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00092">92</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00090">90</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -479,7 +473,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>Downloading flag. </p>
 <p>Indicates that the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> is currently downloading METAR/TAF information from the internet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00098">98</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00096">96</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -506,7 +500,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>QNHInfo. </p>
 <p>This property holds a human-readable, translated, rich-text string with information about the QNH of the nearest weather station. This could typically read like "QNH: 1019 hPa in LFGA, 4min ago". If no information is available, the property holds an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00139">139</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00137">137</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -534,7 +528,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>This property holds a human-readable, translated, rich-text string with information about the next sunset or sunrise at the current position. This could typically read like "SS 17:01, in 3h and 5min" or "Waiting for exact
 position …" </p>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00154">154</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00152">152</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>
@@ -562,7 +556,7 @@ position …" </p>
 <p>This property holds a list of all weather stations that are currently known to this instance of the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> class, sorted according to the distance to the last known position. The list can change at any time.</p>
 <dl class="section warning"><dt>Warning</dt><dd>The <a class="el" href="classMeteorologist_1_1WeatherStation.html" title="This class represents a weather station that issues METAR or TAF report. ">WeatherStation</a> objects are owned by the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> and can be deleted anytime. Store it in a QPointer to avoid dangling pointers. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00194">194</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Meteorologist_8h_source.html#l00192">192</a> of file <a class="el" href="Meteorologist_8h_source.html">Meteorologist.h</a>.</p>
 
 </div>
 </div>

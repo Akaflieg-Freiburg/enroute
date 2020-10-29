@@ -104,7 +104,6 @@ QString Weather::Decoder::explainCloudType(const metaf::CloudType ct) {
 
 QString Weather::Decoder::explainDirection(const metaf::Direction & direction, bool trueCardinalDirections)
 {
-    std::ostringstream result;
     switch (direction.type()) {
     case metaf::Direction::Type::NOT_REPORTED:
         return tr("not reported");

@@ -231,6 +231,11 @@ private slots:
     // This also deletes weather stations if they are no longer in use.
     void deleteExpiredMesages();
 
+    // Name says it all. This method is called from the constructor,
+    // but with a little lag to avoid conflicts in the initialisation of
+    // static objects.
+    void setupConnections();
+
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 

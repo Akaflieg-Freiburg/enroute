@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDataStream>
+#include <QDebug>
 #include <QLockFile>
 #include <QStandardPaths>
 #include <QNetworkRequest>
@@ -62,24 +63,30 @@ Meteorologist::Meteorologist(FlightRoute *route,
 
     // Update the description text when needed
     connect(this, &Meteorologist::weatherStationsChanged, this, &Meteorologist::QNHInfoChanged);
-#warning move this to extra function
+
+    // Set up connections to other static objects, but do so with a little lag to avoid conflicts in the initialisation
+    QTimer::singleShot(0, this, &Meteorologist::setupConnections);
+
+#warning make sure that METAR/TAFs are not immediately reloaded if recent versions exist in the file
+
+    // Read METAR/TAF from "weather.dat"
+    load();
+}
+
+
+void Meteorologist::setupConnections()
+{
     auto _satNav = SatNav::globalInstance();
     if (_satNav) {
         connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
         connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::sunInfoChanged);
     }
 
-#warning move this to extra function
     auto _clock = Clock::globalInstance();
     if (_clock) {
         connect(_clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
         connect(_clock, &Clock::timeChanged, this, &Meteorologist::sunInfoChanged);
     }
-
-#warning make sure that METAR/TAFs are not immediately reloaded if recent versions exist in the file
-
-    // Read METAR/TAF from "weather.dat"
-    load();
 }
 
 
@@ -411,6 +418,8 @@ QString Meteorologist::QNHInfo() const
 
 
 void Meteorologist::update(bool isBackgroundUpdate) {
+    qWarning() << "Meteorologist::UPDATE";
+
     // Paranoid safety checks
     auto _globalSettings = GlobalSettings::globalInstance();
     if (_globalSettings == nullptr)

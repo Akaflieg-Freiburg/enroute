@@ -115,9 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a092b50386d2f6baf40f85224c195d777"><td class="memItemLeft" align="right" valign="top">QJsonObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a092b50386d2f6baf40f85224c195d777">toJSON</a> () const</td></tr>
 <tr class="memdesc:a092b50386d2f6baf40f85224c195d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization to GeoJSON object.  <a href="#a092b50386d2f6baf40f85224c195d777">More...</a><br /></td></tr>
 <tr class="separator:a092b50386d2f6baf40f85224c195d777"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac2af0afbe9d07c61c8765cdc6508f42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42">setMeteorologist</a> (<a class="el" href="classMeteorologist.html">Meteorologist</a> *meteorologist)</td></tr>
-<tr class="memdesc:aac2af0afbe9d07c61c8765cdc6508f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects this waypoint with a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance.  <a href="#aac2af0afbe9d07c61c8765cdc6508f42">More...</a><br /></td></tr>
-<tr class="separator:aac2af0afbe9d07c61c8765cdc6508f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a862e165e04634b32089b009f11291056"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056">setDownloadManager</a> (<a class="el" href="classWeather_1_1DownloadManager.html">Weather::DownloadManager</a> *downloadManager)</td></tr>
+<tr class="memdesc:a862e165e04634b32089b009f11291056"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects this waypoint with a DownloadManager instance.  <a href="#a862e165e04634b32089b009f11291056">More...</a><br /></td></tr>
+<tr class="separator:a862e165e04634b32089b009f11291056"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69a2da8f5a48f5a71c6a53fed68896fa"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a69a2da8f5a48f5a71c6a53fed68896fa">twoLineTitle</a> () const</td></tr>
 <tr class="memdesc:a69a2da8f5a48f5a71c6a53fed68896fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a69a2da8f5a48f5a71c6a53fed68896fa">More...</a><br /></td></tr>
 <tr class="separator:a69a2da8f5a48f5a71c6a53fed68896fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -547,24 +547,24 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="aac2af0afbe9d07c61c8765cdc6508f42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac2af0afbe9d07c61c8765cdc6508f42">&#9670;&nbsp;</a></span>setMeteorologist()</h2>
+<a id="a862e165e04634b32089b009f11291056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a862e165e04634b32089b009f11291056">&#9670;&nbsp;</a></span>setDownloadManager()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Waypoint::setMeteorologist </td>
+          <td class="memname">void Waypoint::setDownloadManager </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classMeteorologist.html">Meteorologist</a> *&#160;</td>
-          <td class="paramname"><em>meteorologist</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classWeather_1_1DownloadManager.html">Weather::DownloadManager</a> *&#160;</td>
+          <td class="paramname"><em>downloadManager</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Connects this waypoint with a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance. </p>
-<p>This method optionally connects the waypoint with an instance of the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> class. Once connected, functions such has hasTAF can be used. </p>
+<p>Connects this waypoint with a DownloadManager instance. </p>
+<p>This method optionally connects the waypoint with an instance of the DownloadManager class. Once connected, functions such has hasTAF can be used. </p>
 
 </div>
 </div>
@@ -763,7 +763,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check if a METAR weather report is known for the waypoint. </p>
-<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42" title="Connects this waypoint with a Meteorologist instance. ">setMeteorologist()</a>, this convenience property can be used to check if a METAR report is available for the waypoint. The actual METAR report can be accessed via the property weatherStation. </p>
+<p>If a pointer to a DownloadManager instance has been set with <a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056" title="Connects this waypoint with a DownloadManager instance. ">setDownloadManager()</a>, this convenience property can be used to check if a METAR report is available for the waypoint. The actual METAR report can be accessed via the property weatherStation. </p>
 
 <p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00151">151</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
@@ -790,7 +790,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check if a TAF weather forcast is known for the waypoint. </p>
-<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42" title="Connects this waypoint with a Meteorologist instance. ">setMeteorologist()</a>, this convenience property can be used to check if a TAF forcast is available for the waypoint. The actual TAF report can be accessed via the property weatherStation. </p>
+<p>If a pointer to a DownloadManager instance has been set with <a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056" title="Connects this waypoint with a DownloadManager instance. ">setDownloadManager()</a>, this convenience property can be used to check if a TAF forcast is available for the waypoint. The actual TAF report can be accessed via the property weatherStation. </p>
 
 <p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00166">166</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
@@ -872,7 +872,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check if a WeatherStation exists at this point. </p>
-<p>If a pointer to a <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> instance has been set with <a class="el" href="classWaypoint.html#aac2af0afbe9d07c61c8765cdc6508f42" title="Connects this waypoint with a Meteorologist instance. ">setMeteorologist()</a> and if a WeatherStation is known to exist at this point, then this property holds a pointer to the station. Otherwise, the property holds nullptr. Note that the WeatherStation object is owned by the <a class="el" href="classMeteorologist.html" title="Meteorologist, weather service manager. ">Meteorologist</a> and that it can be deleted anytime. </p>
+<p>If a pointer to a DownloadManager instance has been set with <a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056" title="Connects this waypoint with a DownloadManager instance. ">setDownloadManager()</a> and if a WeatherStation is known to exist at this point, then this property holds a pointer to the station. Otherwise, the property holds nullptr. Note that the WeatherStation object is owned by the DownloadManager and that it can be deleted anytime. </p>
 
 <p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00277">277</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 

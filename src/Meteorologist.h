@@ -239,6 +239,9 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Meteorologist)
 
+    // Update interval is 30 mins
+    static const int updateInterval_ms = 30*60*1000;
+
     // Similar to findWeatherStation, but will create a weather station if no
     // station with the given code is known
     Weather::Station *findOrConstructWeatherStation(const QString &ICAOCode);
@@ -277,5 +280,8 @@ private:
 
     // List of weather stations, accessible by ICAO code
     QMap<QString, QPointer<Weather::Station>> _weatherStationsByICAOCode;
+
+    // Date and Time of last update
+    QDateTime _lastUpdate;
 };
 

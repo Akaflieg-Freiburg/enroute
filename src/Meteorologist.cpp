@@ -181,6 +181,7 @@ void Meteorologist::downloadFinished() {
 
         }
     }
+    _lastUpdate = QDateTime::currentDateTimeUtc();
 
     // Clear replies container
     qDeleteAll(_networkReplies);
@@ -239,6 +240,10 @@ void Meteorologist::load()
         return;
     }
 
+    // Read time of last update
+    inputStream >> _lastUpdate;
+
+    // Read file
     while (!inputStream.atEnd() && (inputStream.status() == QDataStream::Ok)) {
         QChar type;
         inputStream >> type;
@@ -264,6 +269,13 @@ void Meteorologist::load()
     lockFile.unlock();
     deleteExpiredMesages();
     emit weatherStationsChanged();
+
+    // Compute time for next update
+    int remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateInterval_ms) );
+    if (!_lastUpdate.isValid() || (remainingTime < 0))
+        update();
+    else
+        _updateTimer.setInterval(remainingTime);
 }
 
 
@@ -290,6 +302,7 @@ void Meteorologist::save()
     // Write magic number and version
     outputStream << (quint32)0x31415;
     outputStream << (quint32)1;
+    outputStream << _lastUpdate;
 
     // Write data
     foreach(auto weatherStation, _weatherStationsByICAOCode) {
@@ -410,15 +423,15 @@ QString Meteorologist::QNHInfo() const
     }
     if (closestReportWithQNH) {
         return tr("QNH: %1 hPa in %2, %3").arg(QNH)
-                .arg(closestReportWithQNH->ICAOCode())
-                .arg(Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
+                .arg(closestReportWithQNH->ICAOCode(),
+                     Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }
     return QString();
 }
 
 
 void Meteorologist::update(bool isBackgroundUpdate) {
-    qWarning() << "Meteorologist::UPDATE";
+    qWarning() << "Meteorologist::UPDATE" << QDateTime::currentDateTimeUtc();
 
     // Paranoid safety checks
     auto _globalSettings = GlobalSettings::globalInstance();
@@ -435,7 +448,7 @@ void Meteorologist::update(bool isBackgroundUpdate) {
         return;
 
     // Schedule the next update in 30 minutes from now
-    _updateTimer.setInterval(30*60*1000);
+    _updateTimer.setInterval(updateInterval_ms);
     _updateTimer.start();
 
     // If a request is currently running, then do not update

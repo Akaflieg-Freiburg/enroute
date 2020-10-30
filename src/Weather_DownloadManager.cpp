@@ -35,12 +35,12 @@
 #include "GeoMapProvider.h"
 #include "GlobalSettings.h"
 #include "FlightRoute.h"
-#include "Meteorologist.h"
 #include "SatNav.h"
+#include "Weather_DownloadManager.h"
 #include "Weather_METAR.h"
 
 
-Meteorologist::Meteorologist(FlightRoute *route,
+Weather::DownloadManager::DownloadManager(FlightRoute *route,
                              GeoMapProvider *geoMapProvider,
                              QNetworkAccessManager *networkAccessManager,
                              QObject *parent) :
@@ -57,46 +57,44 @@ Meteorologist::Meteorologist(FlightRoute *route,
     _updateTimer.start();
 
     // Connect the timer to check for expired messages
-    connect(&_deleteExiredMessagesTimer, &QTimer::timeout, this, &Meteorologist::deleteExpiredMesages);
+    connect(&_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::DownloadManager::deleteExpiredMesages);
     _deleteExiredMessagesTimer.setInterval(10*60*1000);
     _deleteExiredMessagesTimer.start();
 
     // Update the description text when needed
-    connect(this, &Meteorologist::weatherStationsChanged, this, &Meteorologist::QNHInfoChanged);
+    connect(this, &Weather::DownloadManager::weatherStationsChanged, this, &Weather::DownloadManager::QNHInfoChanged);
 
     // Set up connections to other static objects, but do so with a little lag to avoid conflicts in the initialisation
-    QTimer::singleShot(0, this, &Meteorologist::setupConnections);
-
-#warning make sure that METAR/TAFs are not immediately reloaded if recent versions exist in the file
+    QTimer::singleShot(0, this, &Weather::DownloadManager::setupConnections);
 
     // Read METAR/TAF from "weather.dat"
     load();
 }
 
 
-void Meteorologist::setupConnections()
+void Weather::DownloadManager::setupConnections()
 {
     auto _satNav = SatNav::globalInstance();
     if (_satNav) {
-        connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::QNHInfoChanged);
-        connect(_satNav, &SatNav::statusChanged, this, &Meteorologist::sunInfoChanged);
+        connect(_satNav, &SatNav::statusChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+        connect(_satNav, &SatNav::statusChanged, this, &Weather::DownloadManager::sunInfoChanged);
     }
 
     auto _clock = Clock::globalInstance();
     if (_clock) {
-        connect(_clock, &Clock::timeChanged, this, &Meteorologist::QNHInfoChanged);
-        connect(_clock, &Clock::timeChanged, this, &Meteorologist::sunInfoChanged);
+        connect(_clock, &Clock::timeChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+        connect(_clock, &Clock::timeChanged, this, &Weather::DownloadManager::sunInfoChanged);
     }
 }
 
 
-Meteorologist::~Meteorologist()
+Weather::DownloadManager::~DownloadManager()
 {
 
 }
 
 
-void Meteorologist::deleteExpiredMesages()
+void Weather::DownloadManager::deleteExpiredMesages()
 {
     QVector<QString> ICAOCodesToDelete;
 
@@ -128,7 +126,7 @@ void Meteorologist::deleteExpiredMesages()
 }
 
 
-bool Meteorologist::downloading() const
+bool Weather::DownloadManager::downloading() const
 {
     foreach(auto networkReply, _networkReplies) {
         if (networkReply.isNull())
@@ -141,7 +139,7 @@ bool Meteorologist::downloading() const
 }
 
 
-void Meteorologist::downloadFinished() {
+void Weather::DownloadManager::downloadFinished() {
 
     // Update flag
     emit downloadingChanged();
@@ -194,7 +192,7 @@ void Meteorologist::downloadFinished() {
 }
 
 
-Weather::Station *Meteorologist::findOrConstructWeatherStation(const QString &ICAOCode)
+Weather::Station *Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAOCode)
 {
     auto weatherStationPtr = _weatherStationsByICAOCode.value(ICAOCode, nullptr);
 
@@ -207,7 +205,7 @@ Weather::Station *Meteorologist::findOrConstructWeatherStation(const QString &IC
 }
 
 
-void Meteorologist::load()
+void Weather::DownloadManager::load()
 {
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
 
@@ -279,7 +277,7 @@ void Meteorologist::load()
 }
 
 
-void Meteorologist::save()
+void Weather::DownloadManager::save()
 {
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
 
@@ -331,7 +329,7 @@ void Meteorologist::save()
 }
 
 
-QString Meteorologist::sunInfo() const
+QString Weather::DownloadManager::sunInfo() const
 {
     // Paranoid safety checks
     auto _satNav = SatNav::globalInstance();
@@ -392,7 +390,7 @@ QString Meteorologist::sunInfo() const
 }
 
 
-QString Meteorologist::QNHInfo() const
+QString Weather::DownloadManager::QNHInfo() const
 {
     // Paranoid safety checks
     auto _satNav = SatNav::globalInstance();
@@ -430,8 +428,8 @@ QString Meteorologist::QNHInfo() const
 }
 
 
-void Meteorologist::update(bool isBackgroundUpdate) {
-    qWarning() << "Meteorologist::UPDATE" << QDateTime::currentDateTimeUtc();
+void Weather::DownloadManager::update(bool isBackgroundUpdate) {
+    qWarning() << "Weather::DownloadManager::UPDATE" << QDateTime::currentDateTimeUtc();
 
     // Paranoid safety checks
     auto _globalSettings = GlobalSettings::globalInstance();
@@ -494,8 +492,8 @@ void Meteorologist::update(bool isBackgroundUpdate) {
         QNetworkRequest request(url);
         QPointer<QNetworkReply> reply = _networkAccessManager->get(request);
         _networkReplies.push_back(reply);
-        connect(reply, &QNetworkReply::finished, this, &Meteorologist::downloadFinished);
-        connect(reply, &QNetworkReply::errorOccurred, this, &Meteorologist::downloadFinished);
+        connect(reply, &QNetworkReply::finished, this, &Weather::DownloadManager::downloadFinished);
+        connect(reply, &QNetworkReply::errorOccurred, this, &Weather::DownloadManager::downloadFinished);
     }
 
     // Emit "downloading" and handle the case if none of the requests have started (e.g. because
@@ -504,7 +502,7 @@ void Meteorologist::update(bool isBackgroundUpdate) {
 }
 
 
-QList<Weather::Station *> Meteorologist::weatherStations() const {
+QList<Weather::Station *> Weather::DownloadManager::weatherStations() const {
 
     // Produce a list of reports, without nullpointers
     QList<Weather::Station *> sortedReports;

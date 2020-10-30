@@ -288,7 +288,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         auto wp = new Waypoint(object);
         wp->moveToThread(QApplication::instance()->thread());
         wp->setParent(this);
-        wp->setMeteorologist(_meteorologist);
+        wp->setDownloadManager(_downloadManager);
         if (wp->isValid()) {
             QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
             newWaypoints.append(wp);
@@ -335,11 +335,11 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 }
 
 
-void GeoMapProvider::setMeteorologist(Meteorologist *meteorologist)
+void GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManager)
 {
-    if (meteorologist == nullptr)
+    if (downloadManager == nullptr)
         return;
-    _meteorologist = meteorologist;
+    _downloadManager = downloadManager;
 
 
     // Connect the Downloadmanager, so aviation maps will be generated

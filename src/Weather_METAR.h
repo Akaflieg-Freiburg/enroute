@@ -26,22 +26,22 @@
 #include "AviationUnits.h"
 #include "Weather_Decoder.h"
 
-class Meteorologist;
-
 
 namespace Weather {
+
+class DownloadManager;
 
 /*! \brief METAR report
  *
  * This class contains the data of a METAR or SPECI report and provided a few
  * methods to access the data. Instances of this class are provided by the
- * Meteorologist class; there is no way to construct valid instances yourself.
+ * DownloadManager class; there is no way to construct valid instances yourself.
  */
 
 class METAR : public Decoder {
     Q_OBJECT
 
-    friend Meteorologist;
+    friend DownloadManager;
 
 public:
     /*! \brief Default constructor

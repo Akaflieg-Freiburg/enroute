@@ -26,9 +26,10 @@
 #include "Weather_TAF.h"
 
 class GeoMapProvider;
-class Meteorologist;
 
 namespace Weather {
+
+class DownloadManager;
 
 /*! \brief This class represents a weather station that issues METAR or TAF report
  *
@@ -39,15 +40,15 @@ namespace Weather {
 class Station : public QObject {
     Q_OBJECT
 
-    friend Meteorologist;
-    friend class Weather::METAR;
-    friend class Weather::TAF;
+    friend Weather::DownloadManager;
+    friend METAR;
+    friend TAF;
 public:
     /*! \brief Standard constructor
      *
      * This standard constructor creates an weather WeatherStation invalid.
      * Valid weather WeatherStations can only be created by instances of the
-     * Meteorologist class.
+     * DownloadManager class.
      *
      * @param parent The standard QObject parent pointer
      */
@@ -169,8 +170,8 @@ public:
      * 
      * This property holds a pointer to the last METAR provided by this
      * WeatherStation, which can be a nullptr if no data is available.  The
-     * METAR instance is owned by an instance of Meteorologist, and can be
-     * deleted or updated by the Meteorologist anytime.
+     * METAR instance is owned by an instance of DownloadManager, and can be
+     * deleted or updated by the DownloadManager anytime.
      */
     Q_PROPERTY(Weather::METAR *metar READ metar NOTIFY metarChanged)
 
@@ -207,8 +208,8 @@ public:
      * 
      * This property holds a pointer to the last TAF provided by this
      * WeatherStation, which can be a nullptr if no data is available.  The TAF
-     * instance is owned by an instance of Meteorologist, and can be deleted or
-     * updated by the Meteorologist anytime.
+     * instance is owned by an instance of DownloadManager, and can be deleted or
+     * updated by the DownloadManager anytime.
      */
     Q_PROPERTY(Weather::TAF *taf READ taf NOTIFY tafChanged)
 
@@ -269,7 +270,7 @@ private:
     Q_DISABLE_COPY_MOVE(Station)
 
     // This constructor is only meant to be called by instances of the
-    // Meteorologist class
+    // DownloadManager class
     explicit Station(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
 
     // If the metar is valid, not expired and newer than the existing metar,

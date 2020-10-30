@@ -64,13 +64,16 @@ set(SOURCES
     # Translations
     enroute_de.qm
     enroute_fr.qm
-    
+    enroute_it.qm
+    enroute_pl.qm
+
     # Other files
+    AndroidManifest.xml.in
     flightMap.qrc.in
     icons.qrc.in
     qml.qrc.in
+    README.md
     ressources.qrc.in
-    AndroidManifest.xml.in
 
     # Header files
     Aircraft.h
@@ -84,12 +87,12 @@ set(SOURCES
     GeoMapProvider.h
     GlobalSettings.h
     Librarian.h
-    Meteorologist.h
     MobileAdaptor.h
     SatNav.h
     ScaleQuickItem.h
     Waypoint.h
     Weather_Decoder.h
+    Weather_DownloadManager.h
     Weather_METAR.h
     Weather_Station.h
     Weather_TAF.h
@@ -112,7 +115,6 @@ set(SOURCES
     Librarian.cpp
     main.cpp
     MapManager.cpp
-    Meteorologist.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     SatNav.cpp
@@ -121,6 +123,7 @@ set(SOURCES
     TileServer.cpp
     Waypoint.cpp
     Weather_Decoder.cpp
+    Weather_DownloadManager.cpp
     Weather_METAR.cpp
     Weather_Station.cpp
     Weather_TAF.cpp

@@ -40,7 +40,7 @@ Waypoint::Waypoint(const Waypoint &other, QObject *parent)
       _properties(other._properties)
 {
     // Initialize connections
-    setMeteorologist(other._meteorologist);
+    setDownloadManager(other._downloadManager);
 }
 
 
@@ -255,17 +255,17 @@ bool Waypoint::operator==(const Waypoint &other) const {
 }
 
 
-void Waypoint::setMeteorologist(Meteorologist *meteorologist)
+void Waypoint::setDownloadManager(Weather::DownloadManager *downloadManager)
 {
-    // No meteorologist? Then nothing to do.
-    if (meteorologist == nullptr)
+    // No DownloadManager? Then nothing to do.
+    if (downloadManager == nullptr)
         return;
-    // No new meteorologist? Then nothing to do.
-    if (meteorologist == _meteorologist)
+    // No new DownloadManager? Then nothing to do.
+    if (downloadManager == _downloadManager)
         return;
 
-    // Set meteorologist
-    _meteorologist = meteorologist;
+    // Set downloadManager
+    _downloadManager = downloadManager;
 
     // If the waypoint does not have a four-letter ICAO code, there is certainly no weather station.
     // In that case, return and do not do anything.
@@ -274,8 +274,8 @@ void Waypoint::setMeteorologist(Meteorologist *meteorologist)
     if (_properties.value("COD").toString().length() != 4)
         return;
 
-    // Wire up the _meteorologist
-    connect(_meteorologist, &Meteorologist::weatherStationsChanged, this, &Waypoint::initializeWeatherStationConnections);
+    // Wire up the _downloadManager
+    connect(_downloadManager, &Weather::DownloadManager::weatherStationsChanged, this, &Waypoint::initializeWeatherStationConnections);
     initializeWeatherStationConnections();
 }
 
@@ -370,11 +370,11 @@ QString Waypoint::wayTo(QGeoCoordinate fromCoordinate, bool useMetricUnits) cons
 
 Weather::Station *Waypoint::weatherStation() const
 {
-    if (_meteorologist.isNull())
+    if (_downloadManager.isNull())
         return nullptr;
     if (!_properties.contains("COD"))
         return nullptr;
 
-    return _meteorologist->findWeatherStation(_properties.value("COD").toString());
+    return _downloadManager->findWeatherStation(_properties.value("COD").toString());
 }
 

@@ -35,18 +35,19 @@ class FlightRoute;
 class GeoMapProvider;
 class GlobalSettings;
 
+namespace Weather {
 
-/*! \brief Meteorologist, weather service manager
+/*! \brief DownloadManager, weather service manager
  *
  * This class retrieves METAR/TAF weather reports from the "Aviation Weather
  * Center" at aviationweather.com, for all weather stations that are within 75nm
  * from the last-known user position or current route.  The reports can then be
  * accessed via the property "weatherStations" and the method
- * findWeatherStation.  The Meteorologist class honors
+ * findWeatherStation.  The DownloadManager class honors
  * GlobalSettings::acceptedWeatherTerms() and will initiate a download only if
  * the user agreed to the privacy warning.
  *
- * Once constructed, the Meteorologist class will regularly perform background
+ * Once constructed, the DownloadManager class will regularly perform background
  * updates to retrieve up-to-date information. It will update the list of known
  * weather stations and also the METAR/TAF reports for the weather stations.
  * The class checks regularly for outdated METAR and TAF reports and deletes
@@ -60,7 +61,7 @@ class GlobalSettings;
  * This class also contains a number or convenience methods and properties
  * pertaining to sunrise/sunset
  */
-class Meteorologist : public QObject {
+class DownloadManager : public QObject {
     Q_OBJECT
 
 public:
@@ -75,13 +76,13 @@ public:
      * 
      * @param parent The standard QObject parent pointer
      */
-    explicit Meteorologist(FlightRoute *route,
+    explicit DownloadManager(FlightRoute *route,
                            GeoMapProvider *geoMapProvider,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
 
     /*! \brief Destructor */
-    ~Meteorologist() override;
+    ~DownloadManager() override;
 
 
     /*! \brief Background update flag
@@ -98,7 +99,7 @@ public:
 
     /*! \brief Downloading flag
      *
-     * Indicates that the Meteorologist is currently downloading METAR/TAF
+     * Indicates that the DownloadManager is currently downloading METAR/TAF
      * information from the internet.
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
@@ -113,9 +114,9 @@ public:
      *
      * This method returns a pointer to the WeatherStation with the given ICAO
      * code, or a nullptr if no WeatherStation with the given code is known to
-     * the Meteorologist.
+     * the DownloadManager.
      *
-     * @warning The WeatherStation objects are owned by the Meteorologist and
+     * @warning The WeatherStation objects are owned by the DownloadManager and
      * can be deleted anytime.  Store it in a QPointer to avoid dangling
      * pointers.
      *
@@ -182,11 +183,11 @@ public:
     /*! \brief List of weather stations
      *
      * This property holds a list of all weather stations that are currently
-     * known to this instance of the Meteorologist class, sorted according to
+     * known to this instance of the DownloadManager class, sorted according to
      * the distance to the last known position.  The list can change at any
      * time.
      *
-     * @warning The WeatherStation objects are owned by the Meteorologist and
+     * @warning The WeatherStation objects are owned by the DownloadManager and
      * can be deleted anytime. Store it in a QPointer to avoid dangling
      * pointers.
      */
@@ -207,7 +208,7 @@ signals:
 
     /*! \brief Signal emitted when a network error occurs
      *
-     * This signal is emitted to indicate that the Meteorologist failed to
+     * This signal is emitted to indicate that the DownloadManager failed to
      * download weather data.
      *
      * @param message A human-readable, translated error message
@@ -237,7 +238,7 @@ private slots:
     void setupConnections();
 
 private:
-    Q_DISABLE_COPY_MOVE(Meteorologist)
+    Q_DISABLE_COPY_MOVE(DownloadManager)
 
     // Update interval is 30 mins
     static const int updateInterval_ms = 30*60*1000;
@@ -285,3 +286,5 @@ private:
     QDateTime _lastUpdate;
 };
 
+
+}

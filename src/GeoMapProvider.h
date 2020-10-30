@@ -37,9 +37,13 @@
 #include "Waypoint.h"
 
 class Librarian;
-class Meteorologist;
 class SatNav;
 class Waypoint;
+
+namespace Weather {
+class DownloadManager;
+}
+
 
 /*! \brief Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON
  *
@@ -67,7 +71,7 @@ public:
     /*! \brief Create a new GeoMap provider
      *
      * This constructor creates a new GeoMapProvider instance. Note that the
-     * instance will only start to work once the method setMeteorologist() has
+     * instance will only start to work once the method setDownloadManager() has
      * been called.
      *
      * @param manager Pointer to a MapManager whose files will be served. The
@@ -183,21 +187,21 @@ public:
         return _waypoints_;
     }
 
-    /*! \brief Connects this GeoMapProvider with a Meteorologist instance
+    /*! \brief Connects this GeoMapProvider with a DownloadManager instance
      *
      * To work right, the GeoMapProvider needs access to an instance of the
-     * Meteorologist class. Because of cross-dependencies between the classes
-     * GeoMapProvider and Meteorologist, the pointer to the Meteorologist is not
+     * DownloadManager class. Because of cross-dependencies between the classes
+     * GeoMapProvider and DownloadManager, the pointer to the DownloadManager is not
      * given as an argument in the constructor, but must be set as soon as
      * possible after construction with the present method.
      *
-     * The GeoMapProvider will not crash if the Meteorologist is deleted at
+     * The GeoMapProvider will not crash if the DownloadManager is deleted at
      * run-time, but several method will only work with reduced functionality,
      * as newly generated waypoint will no longer contain weather information.
      *
-     * @param meteorologist Pointer to a Meteorologist object.
+     * @param DownloadManager Pointer to a DownloadManager object.
      */
-    void setMeteorologist(Meteorologist *meteorologist);
+    void setDownloadManager(Weather::DownloadManager *downloadManager);
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -210,7 +214,7 @@ private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
 
     // Pointers to other classes that are used internally
-    QPointer<Meteorologist> _meteorologist;
+    QPointer<Weather::DownloadManager> _downloadManager;
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars {"[^a-zA-Z0-9]"};

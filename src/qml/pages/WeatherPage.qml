@@ -89,11 +89,11 @@ Page {
 
                     MenuItem {
                         text: qsTr("Update METAR/TAF data")
-                        enabled: (!meteorologist.downloading) && (globalSettings.acceptedWeatherTerms)
+                        enabled: (!weatherDownloadManager.downloading) && (globalSettings.acceptedWeatherTerms)
                         onTriggered: {
                             mobileAdaptor.vibrateBrief()
-                            if (!meteorologist.downloading)
-                                meteorologist.update(false)
+                            if (!weatherDownloadManager.downloading)
+                                weatherDownloadManager.update(false)
                         }
                     } // MenuItem
 
@@ -165,7 +165,7 @@ Page {
             Layout.fillWidth: true
             clip: true
 
-            model: meteorologist.weatherStations
+            model: weatherDownloadManager.weatherStations
             delegate: stationDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -199,7 +199,7 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     mobileAdaptor.vibrateBrief()
-                    meteorologist.update(false)
+                    weatherDownloadManager.update(false)
                 }
             }
 
@@ -212,7 +212,7 @@ Page {
         anchors.fill: parent
 
         color: "white"
-        visible: meteorologist.downloading && !meteorologist.backgroundUpdate
+        visible: weatherDownloadManager.downloading && !weatherDownloadManager.backgroundUpdate
 
         Label {
             id: downloadIndicatorLabel
@@ -239,9 +239,9 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: meteorologist
+            target: weatherDownloadManager
             function onDownloadingChanged () {
-                if (meteorologist.downloading && !meteorologist.backgroundUpdate) {
+                if (weatherDownloadManager.downloading && !weatherDownloadManager.backgroundUpdate) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -287,7 +287,7 @@ Page {
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     globalSettings.acceptedWeatherTerms = true
-                    meteorologist.update()
+                    weatherDownloadManager.update()
                 }
             }
 
@@ -313,7 +313,7 @@ Page {
                 id: qnhLabel
                 visible: qnhLabel.text != ""
                 Layout.fillWidth: true
-                text: meteorologist.QNHInfo
+                text: weatherDownloadManager.QNHInfo
             }
             Image {
                 visible: sunLabel.text != ""
@@ -323,7 +323,7 @@ Page {
                 id: sunLabel
                 visible: sunLabel.text != ""
                 Layout.fillWidth: true
-                text: meteorologist.sunInfo
+                text: weatherDownloadManager.sunInfo
             }
 
         }
@@ -334,16 +334,16 @@ Page {
     // is empty. This is not a background update, we want user interaction.
     Component.onCompleted: {
         if (stationList.count == 0)
-            meteorologist.update(false)
+            weatherDownloadManager.update(false)
         else
-            meteorologist.update(true)
+            weatherDownloadManager.update(true)
     }
 
     // Show error when weather cannot be updated -- but not if we are running a background upate
     Connections {
-        target: meteorologist
+        target: weatherDownloadManager
         function onError (message) {
-            if (meteorologist.backgroundUpdate)
+            if (weatherDownloadManager.backgroundUpdate)
                 return
             dialogLoader.active = false
             dialogLoader.title = qsTr("Update Error")

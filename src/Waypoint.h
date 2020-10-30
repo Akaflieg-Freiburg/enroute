@@ -24,7 +24,7 @@
 #include <QMap>
 #include <QJsonObject>
 
-#include "Meteorologist.h"
+#include "Weather_DownloadManager.h"
 
 
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
@@ -143,8 +143,8 @@ public:
 
     /*! \brief Check if a METAR weather report is known for the waypoint
      *
-     * If a pointer to a Meteorologist instance has been set with
-     * setMeteorologist(), this convenience property can be used to check if a
+     * If a pointer to a DownloadManager instance has been set with
+     * setDownloadManager(), this convenience property can be used to check if a
      * METAR report is available for the waypoint.  The actual METAR report can
      * be accessed via the property weatherStation.
      */
@@ -158,8 +158,8 @@ public:
 
     /*! \brief Check if a TAF weather forcast is known for the waypoint
      *
-     * If a pointer to a Meteorologist instance has been set with
-     * setMeteorologist(), this convenience property can be used to check if a
+     * If a pointer to a DownloadManager instance has been set with
+     * setDownloadManager(), this convenience property can be used to check if a
      * TAF forcast is available for the waypoint.  The actual TAF report can be
      * accessed via the property weatherStation.
      */
@@ -231,13 +231,13 @@ public:
      */
     QJsonObject toJSON() const;
 
-    /*! \brief Connects this waypoint with a Meteorologist instance
+    /*! \brief Connects this waypoint with a DownloadManager instance
      *
      * This method optionally connects the waypoint with an instance of the
-     * Meteorologist class.  Once connected, functions such has hasTAF can be
+     * DownloadManager class.  Once connected, functions such has hasTAF can be
      * used.
      */
-    void setMeteorologist(Meteorologist *meteorologist);
+    void setDownloadManager(Weather::DownloadManager *downloadManager);
 
     /*! \brief Two-line description of the waypoint name
      *
@@ -268,10 +268,10 @@ public:
 
     /*! \brief Check if a WeatherStation exists at this point
      *
-     * If a pointer to a Meteorologist instance has been set with setMeteorologist()
+     * If a pointer to a DownloadManager instance has been set with setDownloadManager()
      * and if a WeatherStation is known to exist at this point, then this property
      * holds a pointer to the station.  Otherwise, the property holds nullptr.
-     * Note that the WeatherStation object is owned by the Meteorologist and that
+     * Note that the WeatherStation object is owned by the DownloadManager and that
      * it can be deleted anytime.
      */
     Q_PROPERTY(Weather::Station *weatherStation READ weatherStation NOTIFY weatherStationChanged)
@@ -297,15 +297,15 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(Waypoint)
 
-    // This method is called when the _meteorologist is set, and then every time
+    // This method is called when the _DownloadManager is set, and then every time
     // the weather station for this waypoint changes (e.g. because the
-    // Meteorologist receives a new list of stations, or the existing weather
+    // DownloadManager receives a new list of stations, or the existing weather
     // station gets destructed). It wires the weather station up and emits
     // appropriate signals.
     void initializeWeatherStationConnections();
 
     // Pointers to other classes that are used internally
-    QPointer<Meteorologist> _meteorologist {};
+    QPointer<Weather::DownloadManager> _downloadManager {};
 
     QGeoCoordinate _coordinate;
     QMultiMap<QString, QVariant> _properties;

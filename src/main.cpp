@@ -42,10 +42,10 @@
 #include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MapManager.h"
-#include "Meteorologist.h"
 #include "MobileAdaptor.h"
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
+#include "Weather_DownloadManager.h"
 #include "Weather_Wind.h"
 
 int main(int argc, char *argv[])
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
-    qmlRegisterUncreatableType<Meteorologist>("enroute", 1, 0, "Meteorologist", "Meteorologist objects cannot be created in QML");
+    qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
@@ -158,10 +158,10 @@ int main(int argc, char *argv[])
     auto geoMapProvider = new GeoMapProvider(mapManager, librarian);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
-    // Attach meteorologist
-    auto meteorologist = new Meteorologist(flightroute, geoMapProvider, networkAccessManager, engine);
-    engine->rootContext()->setContextProperty("meteorologist", meteorologist);
-    geoMapProvider->setMeteorologist(meteorologist);
+    // Attach Weather::DownloadManager
+    auto downloadManager = new Weather::DownloadManager(flightroute, geoMapProvider, networkAccessManager, engine);
+    engine->rootContext()->setContextProperty("weatherDownloadManager", downloadManager);
+    geoMapProvider->setDownloadManager(downloadManager);
 
     // Restore saved settings and make them available to QML
     QSettings settings;

@@ -349,7 +349,6 @@ ApplicationWindow {
     LongTextDialog {
         id: exitDialog
         standardButtons: Dialog.No | Dialog.Yes
-        anchors.centerIn: parent
 
         title: qsTr("Exit…?")
         text: qsTr("Do you wish to exit <strong>Enroute Flight Navigation</strong>?")

@@ -113,10 +113,6 @@
                     "type": "git",
                     "url": "git://code.qt.io/qt/qtdeclarative.git",
                     "tag": "${Qt5_VERSION}"
-                },
-		{
-                    "type": "patch",
-                    "path": "patch/qtdeclarative-use-python3.patch"
                 }
 
             ]

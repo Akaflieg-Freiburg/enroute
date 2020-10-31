@@ -8,7 +8,6 @@
 #
 
 configure_file(${APP_ID}.json.in ${APP_ID}.json)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/flatpak-kde-runtime/patch/qtdeclarative-use-python3.patch patch/qtdeclarative-use-python3.patch COPYONLY)
 
 
 #

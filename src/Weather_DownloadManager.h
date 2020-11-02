@@ -240,8 +240,9 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(DownloadManager)
 
-    // Update interval is 30 mins
-    static const int updateInterval_ms = 30*60*1000;
+    // Update interval is 30 mins, or 5 mins if update failed
+    static const int updateIntervalNormal_ms  = 30*60*1000;
+    static const int updateIntervalOnError_ms =  5*60*1000;
 
     // Similar to findWeatherStation, but will create a weather station if no
     // station with the given code is known
@@ -250,7 +251,8 @@ private:
     // This method loads METAR/TAFs from a file "weather.dat" in
     // QStandardPaths::AppDataLocation.  There is locking to ensure that no two
     // processes access the file. The method will fail silently on error.
-    void load();
+    // Returns true on success and false on failure.
+    bool load();
 
     // This method saves all METAR/TAFs that are valid and not yet expired to a
     // file "weather.dat" in QStandardPaths::AppDataLocation.  There is locking

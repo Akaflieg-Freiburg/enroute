@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include <QDataStream>
-#include <QDebug>
 #include <QLockFile>
 #include <QStandardPaths>
 #include <QNetworkRequest>
@@ -53,7 +52,7 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
     // which is true. So these updates happen in the background.
     // Schedule the first update in 1 seconds from now
     connect(&_updateTimer, &QTimer::timeout, [=](){ this->update(); });
-    _updateTimer.setInterval(1*1000);
+    _updateTimer.setInterval(updateIntervalNormal_ms);
     _updateTimer.start();
 
     // Connect the timer to check for expired messages
@@ -68,7 +67,14 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
     QTimer::singleShot(0, this, &Weather::DownloadManager::setupConnections);
 
     // Read METAR/TAF from "weather.dat"
-    load();
+    bool success = load();
+
+    // Compute time for next update
+    int remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateIntervalNormal_ms) );
+    if (!success || !_lastUpdate.isValid() || (remainingTime < 0))
+        update();
+    else
+        _updateTimer.setInterval(remainingTime);
 }
 
 
@@ -141,20 +147,22 @@ bool Weather::DownloadManager::downloading() const
 
 void Weather::DownloadManager::downloadFinished() {
 
-    // Update flag
-    emit downloadingChanged();
-
     // Start to process the data only once ALL replies have been received. So, we check here if there are any running
     // download processes and abort if indeed there are some.
     if (downloading())
         return;
 
+    // Update flag
+    emit downloadingChanged();
+
     // Read all replies and store the data in respective maps
+    bool hasError = false;
     foreach(auto networkReply, _networkReplies) {
         // Paranoid safety checks
         if (networkReply.isNull())
             continue;
         if (networkReply->error() != QNetworkReply::NoError) {
+            hasError = true;
             emit error(networkReply->errorString());
             continue;
         }
@@ -179,7 +187,6 @@ void Weather::DownloadManager::downloadFinished() {
 
         }
     }
-    _lastUpdate = QDateTime::currentDateTimeUtc();
 
     // Clear replies container
     qDeleteAll(_networkReplies);
@@ -188,7 +195,14 @@ void Weather::DownloadManager::downloadFinished() {
     // Update flag and signals
     emit weatherStationsChanged();
     emit QNHInfoChanged();
-    save();
+
+    if (hasError)
+        _updateTimer.setInterval(updateIntervalOnError_ms);
+    else {
+        _lastUpdate = QDateTime::currentDateTimeUtc();
+        _updateTimer.setInterval(updateIntervalNormal_ms);
+        save();
+    }
 }
 
 
@@ -205,20 +219,20 @@ Weather::Station *Weather::DownloadManager::findOrConstructWeatherStation(const 
 }
 
 
-void Weather::DownloadManager::load()
+bool Weather::DownloadManager::load()
 {
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
 
     // Use LockFile. If lock could not be obtained, do nothing.
     QLockFile lockFile(stdFileName+".lock");
     if (!lockFile.tryLock())
-        return;
+        return false;
 
     // Open file
     auto inputFile = QFile(stdFileName);
     if (!inputFile.open(QIODevice::ReadOnly)) {
         lockFile.unlock();
-        return;
+        return false;
     }
 
     // Generate input stream
@@ -229,19 +243,20 @@ void Weather::DownloadManager::load()
     inputStream >> magic;
     if (magic != (quint32)0x31415) {
         lockFile.unlock();
-        return;
+        return false;
     }
     quint32 version;
     inputStream >> version;
     if (version != (quint32)1) {
         lockFile.unlock();
-        return;
+        return false;
     }
 
     // Read time of last update
     inputStream >> _lastUpdate;
 
     // Read file
+    bool hasError = false;
     while (!inputStream.atEnd() && (inputStream.status() == QDataStream::Ok)) {
         QChar type;
         inputStream >> type;
@@ -260,6 +275,7 @@ void Weather::DownloadManager::load()
         }
 
         // Other type? That's bad! Quit immediately!
+        hasError = true;
         break;
     }
 
@@ -268,12 +284,7 @@ void Weather::DownloadManager::load()
     deleteExpiredMesages();
     emit weatherStationsChanged();
 
-    // Compute time for next update
-    int remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateInterval_ms) );
-    if (!_lastUpdate.isValid() || (remainingTime < 0))
-        update();
-    else
-        _updateTimer.setInterval(remainingTime);
+    return !hasError && (inputStream.status() == QDataStream::Ok);
 }
 
 
@@ -429,8 +440,6 @@ QString Weather::DownloadManager::QNHInfo() const
 
 
 void Weather::DownloadManager::update(bool isBackgroundUpdate) {
-    qWarning() << "Weather::DownloadManager::UPDATE" << QDateTime::currentDateTimeUtc();
-
     // Paranoid safety checks
     auto _globalSettings = GlobalSettings::globalInstance();
     if (_globalSettings == nullptr)
@@ -444,10 +453,6 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
     if (!_globalSettings->acceptedWeatherTerms())
         return;
-
-    // Schedule the next update in 30 minutes from now
-    _updateTimer.setInterval(updateInterval_ms);
-    _updateTimer.start();
 
     // If a request is currently running, then do not update
     if (downloading()) {

@@ -17,10 +17,6 @@
 [submodule "3rdParty/KDSingleApplication"]
 	path = 3rdParty/KDSingleApplication
 	url = https://github.com/KDAB/KDSingleApplication.git
-[submodule "3rdParty/flatpak-kde-runtime"]
-	path = 3rdParty/flatpak-kde-runtime
-	url = https://invent.kde.org/packaging/flatpak-kde-runtime.git
-	branch = qt5.15lts
 [submodule "3rdParty/sunset"]
 	path = 3rdParty/sunset
 	url = https://github.com/buelowp/sunset.git

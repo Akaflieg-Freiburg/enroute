@@ -332,7 +332,7 @@ ApplicationWindow {
         property var dialogArgs: undefined
 
         onLoaded: {
-            item.anchors.centerIn = dialogLoader
+            item.anchors.centerIn = Overlay.overlay
             item.modal = true
             if (dialogArgs && item.hasOwnProperty('dialogArgs')) {
                 item.dialogArgs = dialogArgs

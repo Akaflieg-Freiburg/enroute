@@ -26,6 +26,8 @@ The manual has kindly been provided by Michael Horbaschk.
 
 * **German**: Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.
 
+* **Italian**: Ivan Battistella and Luca Bertoncello. Luca flies ultralight planes since 2014 and has become a flight instructor in 2019. He programs since 1988 and works as a systems administrator in Dresden, Germany.</p>
+
 * **Polish**: Szymon Kocur
 
 

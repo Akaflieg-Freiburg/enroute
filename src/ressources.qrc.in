@@ -9,7 +9,6 @@
         <file>enroute_de.qm</file>
         <file>enroute_fr.qm</file>
         <file>enroute_it.qm</file>
-        <file>enroute_pl.qm</file>
     </qresource>
     
     <!-- Geoid correction data -->

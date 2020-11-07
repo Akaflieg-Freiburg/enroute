@@ -33,81 +33,6 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 
 QString Librarian::getStringFromRessource(const QString &name) const
 {
-    if (name == ":text/info_enroute.html") {
-        QString version(PROJECT_VERSION);
-        if (!QString(GIT_COMMIT).isEmpty())
-            version += QString(" • GIT #")+QString(GIT_COMMIT);
-        return tr(R"html(<h3>Enroute Flight Navigation</h3>
-
-<p>Version %1</p>
-
-<p><strong>Enroute Flight Navigation</strong> is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg.</p>
-
-<ul>
-  <li>Simple, elegant and functional</li>
-  <li>No ads, no commercical "pro" version</li>
-  <li>No registration, no membership</li>
-  <li>Does not spy on you</li>
-  <li>100% Open Source, written without commercial interest</li>
-</ul>
-
-<p>Check <a href="https://akaflieg-freiburg.github.io/enroute/">the web site</a> for more information.</p>
-
-<h3>Academic Sponsor</h3>
-      
-<p>The author gratefully acknowledges support by our academic sponsor, the <a href="https://www.uni-freiburg.de">University of Freiburg</a>.  The university kindly provides the infrastructure used to generate our maps, and the bandwidth required to serve them.</p>
-
-<h3>Acknowledgements</h3>
-
-<p>This program builds on a number of open source libraries, including <a href="https://https://github.com/nnaumenko/metaf">Metaf</a>, <a href="https://www.openssl.org">OpenSSL</a>, <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> and <a href="https://github.com/buelowp/sunset">sunset</a>.</p>
-
-<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
-     }
-
-    if (name == ":text/info_license.html") {
-      return tr(R"html(<h3>License</h3>
-
-<p>This program is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU General Public License V3</a> or, at your choice, any later version of this license.</p>
-
-<h4>Third-Party software and data included in this program</h4>
-
-<p>This program includes several libraries from the <a href="https://qt.io">Qt</a> project, licensed under the <a href="https://www.qt.io/download-open-source">GNU General Public License V3</a>. This program includes the library <a href="https://github.com/nitroshare/qhttpengine">qhttpengine</a>, which is licensed under the <a href="https://github.com/nitroshare/qhttpengine/blob/master/LICENSE.txt">MIT license</a>. This program includes the library <a href="https://openssl.org">OpenSSL</a>, licensed under the <a href="https://www.openssl.org/source/license.html">Apache License 2.0</a>.</p>
-
-<p>This program includes versions of the <a href="https://github.com/google/roboto">Google Roboto Fonts</a>, which are licensed under the <a href="https://github.com/google/roboto/blob/master/LICENSE">Apache License 2.0</a> license. This program includes several <a href="https://github.com/google/material-design-icons">Google Material Design Icons</a>, which are licensed under the <a href="https://github.com/google/material-design-icons/blob/master/LICENSE">Apache License 2.0</a> license.</p>
-
-<p>The style specification of the basemap is a modified version of the <a href="https://github.com/maputnik/osm-liberty">OSM liberty map design</a>, which is in turn originally derived from OSM Bright from Mapbox Open Styles. The code is licenses under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">BSD license</a>. The design is derived (although heavily altered) from OSM Bright from Mapbox Open Styles which is licensed under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">Creative Commons Attribution 3.0 license</a>. The map is displaying and styling modified data from <a href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a> with <a href="https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md">CC-BY 4.0 design license</a>.
-
-<p>The map is displaying and styling data from <a href="http://www.openaip.net">openAIP</a>, which is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</a>. The map is also displaying and styling data from <a href="https://www.openflightmaps.org/">open flightmaps</a>, which is licensed under the <a href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA General Users´ License</a>.</p>)html");
-    }
-
-    if (name == ":text/participate.html") {
-      return tr(R"html(<h3>Suggest features and improvements</h3>
-
-<p>We have great plans for <strong>Enroute Flight Navigation</strong>, check our <a href="https://github.com/Akaflieg-Freiburg/enroute/projects">project list at GitHub</a> to see what's coming.  Please make further suggestions through the <a href="https://github.com/Akaflieg-Freiburg/enroute/issues">GitHub issue tracker</a> (this might require opening an account with GitHub).  If you find this difficult, then please <a href="mailto:stefan.kebekus@gmail.com">contact the author</a> directly.  We ask for your understanding that not all your suggestions can be implemented immediately.</p>
-
-<h3>Join the project</h3>
-
-<p>If you would like to <strong>translate the app to your native language</strong>, we would like to <a href="mailto:stefan.kebekus@gmail.com">hear from you</a>. Programming experience is not necessary, but good computer skills are required.</p>
-
-<p>This app should run fine on <strong>Apple devices</strong>. If you would like to port the app to iOS and if you have development experience with C++/Qt programming and with Apple systems, like <a href="mailto:stefan.kebekus@gmail.com">get in touch with us</a> today.</p>
-
-<p>If you are fluent in C++ and if you would like to <strong>help with the programming</strong>, <a href="mailto:stefan.kebekus@gmail.com">let us know</a>.</p>)html");
-    }
-
-    if (name == ":text/tooManyDownloads.html") {
-      return tr(R"html(<h3>Too many maps</h3>
-
-<p>Thank you for using Enroute Flight Navigation, we appreciate your engagement very much.</p>
-
-<p>However, we'd like to ask you <strong>to limit yourself to 8 %1.</strong>
-
-<p>On the one hand, the bandwidth for map downloads is kindly sponsored by the University of Freiburg, under the assumption that <strong>the costs stays within reasonable limits.</strong></p>
-
-<p>On the other, the app will perform much better if it doesn't have to process many megabytes of map data.</p>
-
-<p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that. You already have <strong>%2 maps</strong>.</p>)html");
-    }
-
     if (name == ":text/authors.html") {
         return tr(R"html(<h3>Authors</h3>
 
@@ -181,13 +106,13 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
 
-<p><strong>Italian:</strong> Luca Bertoncello. Luca flies ultralight planes since 2014 and has become a flight instructor in 2019. He programs since 1988 and works as a systems administrator in Dresden, Germany.</p>
+<p><strong>Italian:</strong> Ivan Battistella and Luca Bertoncello. Luca flies ultralight planes since 2014 and has become a flight instructor in 2019. He programs since 1988 and works as a systems administrator in Dresden, Germany.  Ivan Battistella has recently started to fly ultralight aircraft. He works freelance as a software consultant.</p>
 
 <p><strong>Polish:</strong> Szymon Kocur, computer Science and aviation enthusiast. Laureate of IT nationwide competitions, including 'HackYeah 2019', and 'Golden Wolf 2017' for the best technological project in Poland.</p>
 
 <p></p>)html");
      }
-    
+
     if (name == ":text/bugReport.html") {
       return tr(R"html(<h3>Bug Report</h3>
 
@@ -220,6 +145,53 @@ QString Librarian::getStringFromRessource(const QString &name) const
 <p>The flight routes can be accessed by other programs, such as backup software or file synchronization apps.  This can be useful to share a flight route library with other devices.</p>)html");
     }
 
+    if (name == ":text/info_enroute.html") {
+        QString version(PROJECT_VERSION);
+        if (!QString(GIT_COMMIT).isEmpty())
+            version += QString(" • GIT #")+QString(GIT_COMMIT);
+        return tr(R"html(<h3>Enroute Flight Navigation</h3>
+
+<p>Version %1</p>
+
+<p><strong>Enroute Flight Navigation</strong> is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg.</p>
+
+<ul>
+  <li>Simple, elegant and functional</li>
+  <li>No ads, no commercical "pro" version</li>
+  <li>No registration, no membership</li>
+  <li>Does not spy on you</li>
+  <li>100% Open Source, written without commercial interest</li>
+</ul>
+
+<p>Check <a href="https://akaflieg-freiburg.github.io/enroute/">the web site</a> for more information.</p>
+
+<h3>Academic Sponsor</h3>
+      
+<p>The author gratefully acknowledges support by our academic sponsor, the <a href="https://www.uni-freiburg.de">University of Freiburg</a>.  The university kindly provides the infrastructure used to generate our maps, and the bandwidth required to serve them.</p>
+
+<h3>Acknowledgements</h3>
+
+<p>This program builds on a number of open source libraries, including <a href="https://https://github.com/nnaumenko/metaf">Metaf</a>, <a href="https://www.openssl.org">OpenSSL</a>, <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> and <a href="https://github.com/buelowp/sunset">sunset</a>.</p>
+
+<p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
+     }
+
+    if (name == ":text/info_license.html") {
+      return tr(R"html(<h3>License</h3>
+
+<p>This program is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU General Public License V3</a> or, at your choice, any later version of this license.</p>
+
+<h4>Third-Party software and data included in this program</h4>
+
+<p>This program includes several libraries from the <a href="https://qt.io">Qt</a> project, licensed under the <a href="https://www.qt.io/download-open-source">GNU General Public License V3</a>. This program includes the library <a href="https://github.com/nitroshare/qhttpengine">qhttpengine</a>, which is licensed under the <a href="https://github.com/nitroshare/qhttpengine/blob/master/LICENSE.txt">MIT license</a>. This program includes the library <a href="https://openssl.org">OpenSSL</a>, licensed under the <a href="https://www.openssl.org/source/license.html">Apache License 2.0</a>.</p>
+
+<p>This program includes versions of the <a href="https://github.com/google/roboto">Google Roboto Fonts</a>, which are licensed under the <a href="https://github.com/google/roboto/blob/master/LICENSE">Apache License 2.0</a> license. This program includes several <a href="https://github.com/google/material-design-icons">Google Material Design Icons</a>, which are licensed under the <a href="https://github.com/google/material-design-icons/blob/master/LICENSE">Apache License 2.0</a> license.</p>
+
+<p>The style specification of the basemap is a modified version of the <a href="https://github.com/maputnik/osm-liberty">OSM liberty map design</a>, which is in turn originally derived from OSM Bright from Mapbox Open Styles. The code is licenses under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">BSD license</a>. The design is derived (although heavily altered) from OSM Bright from Mapbox Open Styles which is licensed under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">Creative Commons Attribution 3.0 license</a>. The map is displaying and styling modified data from <a href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a> with <a href="https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md">CC-BY 4.0 design license</a>.
+
+<p>The map is displaying and styling data from <a href="http://www.openaip.net">openAIP</a>, which is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</a>. The map is also displaying and styling data from <a href="https://www.openflightmaps.org/">open flightmaps</a>, which is licensed under the <a href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA General Users´ License</a>.</p>)html");
+    }
+
     if (name == ":text/missingPermissions.html") {
         return tr(R"html(<h3>Missing Permissions</h3>
 
@@ -231,13 +203,33 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p>&#8212; Stefan Kebekus.</p>)html");
     }
-    
-    if (name == ":text/whatsnew.html") {
-        return tr(R"html(<p>Adrien Crovato and Stefan Kebekus have implemented <strong>METAR/TAF</strong> access. Look for the new <strong>Weather</strong> entry in the main menu to try it out!</p>
 
-<p>Heiner Tholen has improved the auto-panning feature of the moving map display.</p>
+    if (name == ":text/participate.html") {
+      return tr(R"html(<h3>Suggest features and improvements</h3>
 
-<p>Ivan Battistella and Luca Bertoncello translated the app to Italian.</p>)html");
+<p>We have great plans for <strong>Enroute Flight Navigation</strong>, check our <a href="https://github.com/Akaflieg-Freiburg/enroute/projects">project list at GitHub</a> to see what's coming.  Please make further suggestions through the <a href="https://github.com/Akaflieg-Freiburg/enroute/issues">GitHub issue tracker</a> (this might require opening an account with GitHub).  If you find this difficult, then please <a href="mailto:stefan.kebekus@gmail.com">contact the author</a> directly.  We ask for your understanding that not all your suggestions can be implemented immediately.</p>
+
+<h3>Join the project</h3>
+
+<p>If you would like to <strong>translate the app to your native language</strong>, we would like to <a href="mailto:stefan.kebekus@gmail.com">hear from you</a>. Programming experience is not necessary, but good computer skills are required.</p>
+
+<p>This app should run fine on <strong>Apple devices</strong>. If you would like to port the app to iOS and if you have development experience with C++/Qt programming and with Apple systems, like <a href="mailto:stefan.kebekus@gmail.com">get in touch with us</a> today.</p>
+
+<p>If you are fluent in C++ and if you would like to <strong>help with the programming</strong>, <a href="mailto:stefan.kebekus@gmail.com">let us know</a>.</p>)html");
+    }
+
+    if (name == ":text/tooManyDownloads.html") {
+      return tr(R"html(<h3>Too many maps</h3>
+
+<p>Thank you for using Enroute Flight Navigation, we appreciate your engagement very much.</p>
+
+<p>However, we'd like to ask you <strong>to limit yourself to 8 %1.</strong>
+
+<p>On the one hand, the bandwidth for map downloads is kindly sponsored by the University of Freiburg, under the assumption that <strong>the costs stays within reasonable limits.</strong></p>
+
+<p>On the other, the app will perform much better if it doesn't have to process many megabytes of map data.</p>
+
+<p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that. You already have <strong>%2 maps</strong>.</p>)html");
     }
 
     if (name == ":text/weatherPermissions.html") {
@@ -248,6 +240,10 @@ QString Librarian::getStringFromRessource(const QString &name) const
 <p>In order to request up-to-date weather information, the app needs to <strong>send your location and your current route to the Aviation Weather Center</strong> at regular intervals. If you agree to this, you can enable the weather feature by clicking on the button below. You can disable the feature at any time using the three-dot menu at the top of this screen.</p>
 
 <p><strong>We have no control over data collected by the Aviation Weather Center. We do not guarantee correctness of the weather information in any way!</strong></p>)html");
+    }
+
+    if (name == ":text/whatsnew.html") {
+        return tr(R"html(<p>We are looking for help with the Polish translations. If you speak Polish, know how to use the version control system 'git' and would like to help, please let us know.</p>)html");
     }
 
     QFile file(name);

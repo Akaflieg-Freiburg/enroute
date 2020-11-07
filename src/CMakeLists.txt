@@ -12,6 +12,7 @@
 find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
     HINTS ${Qt5Core_DIR}/../../../translations
     HINTS /usr/share/qt5/translations
+    HINTS /usr/share/qt/translations
     HINTS /usr/translations
     REQUIRED
     )

@@ -50,6 +50,9 @@
 
 int main(int argc, char *argv[])
 {
+    // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
+    putenv((char *)"QSG_RENDER_LOOP=basic");
+
     // Register types
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");

@@ -88,6 +88,7 @@ set(SOURCES
     GeoMapProvider.h
     GlobalSettings.h
     Librarian.h
+    MapManager.h
     MobileAdaptor.h
     SatNav.h
     ScaleQuickItem.h

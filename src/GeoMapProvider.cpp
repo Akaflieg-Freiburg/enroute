@@ -286,10 +286,10 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         auto wp = new Waypoint(object);
-        wp->moveToThread(QApplication::instance()->thread());
-        wp->setParent(this);
         wp->setDownloadManager(_downloadManager);
         if (wp->isValid()) {
+            wp->moveToThread(QApplication::instance()->thread());
+            wp->setParent(this);
             QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
             newWaypoints.append(wp);
             continue;
@@ -298,9 +298,9 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
         auto as = new Airspace(object);
-        as->moveToThread(QApplication::instance()->thread());
-        as->setParent(this);
         if (as->isValid()) {
+            as->moveToThread(QApplication::instance()->thread());
+            as->setParent(this);
             QQmlEngine::setObjectOwnership(as, QQmlEngine::CppOwnership);
             newAirspaces.append(as);
             continue;

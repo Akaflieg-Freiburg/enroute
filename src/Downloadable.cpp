@@ -490,9 +490,19 @@ void Downloadable::downloadFileFinished() {
 
 
 void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
-    auto oldDownloadProgress = _downloadProgress ;
-    _downloadProgress =
-            (bytesTotal == 0) ? 0 : static_cast<int>((100.0 * bytesReceived) / bytesTotal);
+    auto oldDownloadProgress = _downloadProgress;
+
+    // If the content is compressed, then Qt does not know the total size and will set 'bytesTotal' to -1. In that case, the number _remoteFileSize might be a better estimate.
+    if ((bytesTotal < 0) && (_remoteFileSize > 0))
+        bytesTotal = _remoteFileSize;
+    if (bytesTotal <= 0)
+        _downloadProgress = 0;
+    else
+        _downloadProgress = qRound((100.0 * bytesReceived) / bytesTotal);
+
+    // Whatever, make sure that the number computed is between 0 and 100
+    _downloadProgress = qBound( 0, _downloadProgress, 100);
+
     if (_downloadProgress != oldDownloadProgress)
         emit downloadProgressChanged(_downloadProgress);
 }
@@ -500,7 +510,6 @@ void Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 byt
 
 void Downloadable::downloadFilePartialDataReceiver() {
     // Paranoid safety checks
-    Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_saveFile.isNull());
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
         stopFileDownload();
         return;

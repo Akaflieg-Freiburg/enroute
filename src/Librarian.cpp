@@ -243,7 +243,12 @@ QString Librarian::getStringFromRessource(const QString &name) const
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr(R"html(<p>We are looking for help with the Polish translations. If you speak Polish, know how to use the version control system 'git' and would like to help, please let us know.</p>)html");
+        return tr(R"html(
+<p>Map updates have become much faster, in particular for users on mobile networks.</p>
+
+<p>An annoying bug has been fixed that caused infrequent crashes on startup and on map updated.</p>
+
+<p>We are looking for help with the Polish translations. If you speak Polish, know how to use the version control system 'git' and would like to help, please let us know.</p>)html");
     }
 
     QFile file(name);

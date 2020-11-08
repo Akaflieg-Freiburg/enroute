@@ -32,7 +32,7 @@
 
 MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
     QObject(parent),
-    _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv001/maps.json"),
+    _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
                 QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
                 networkAccessManager),
     _networkAccessManager(networkAccessManager)

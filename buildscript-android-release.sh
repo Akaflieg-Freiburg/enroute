@@ -54,7 +54,7 @@ cmake .. \
       -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
       -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
       -DANDROID_STL:STRING=c++_shared \
-      -DCMAKE_BUILD_TYPE:STRING=Release \
+      -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
       -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
       -DCMAKE_CXX_FLAGS="-Werror -Wall -Wextra" \
       -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \

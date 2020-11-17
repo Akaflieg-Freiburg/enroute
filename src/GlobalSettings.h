@@ -54,6 +54,15 @@ public:
     /*! \brief Standard deconstructor */
     ~GlobalSettings() override;
 
+    /*! \brief Possible map bearing policies */
+    enum MapBearingPolicyValues
+    {
+        NUp, /*!< North is up. */
+        TTUp, /*!< True Track is up.  */
+        UserDefinedBearingUp /*!< User-defined bearing is up. */
+    };
+    Q_ENUM(MapBearingPolicyValues)
+
     /*! \brief Find out if Terms & Conditions have been accepted
      *
      * This property says which version of our "terms and conditions" have been
@@ -95,6 +104,21 @@ public:
      */
     void setAcceptedWeatherTerms(bool terms);
 
+    /*! \brief Hide airspaces with lower bound FL100 or above */
+    Q_PROPERTY(bool autoFlightDetection READ autoFlightDetection WRITE setAutoFlightDetection NOTIFY autoFlightDetectionChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property autoFlightDetection
+     */
+    bool autoFlightDetection() const { return settings.value("Map/autoFlightDetection", true).toBool(); }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param autoDetect Property autoFlightDetection
+     */
+    void setAutoFlightDetection(bool autoDetect);
+
     /*! \brief True if translation files exist for the system language */
     Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
 
@@ -103,6 +127,21 @@ public:
      * @returns Property hasTranslation
      */
     bool hasTranslation() const { return QFile::exists(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
+
+    /*! \brief Hide airspaces with lower bound FL100 or above */
+    Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property hideUpperAirspaces
+     */
+    bool hideUpperAirspaces() const { return settings.value("Map/hideUpperAirspaces", false).toBool(); }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param hide Property hideUpperAirspaces
+     */
+    void setHideUpperAirspaces(bool hide);
 
     /*! \brief Pointer to static instance
      *
@@ -132,35 +171,20 @@ public:
      */
     void setLastWhatsNewHash(uint lwnh);
 
-    /*! \brief Hide airspaces with lower bound FL100 or above */
-    Q_PROPERTY(bool autoFlightDetection READ autoFlightDetection WRITE setAutoFlightDetection NOTIFY autoFlightDetectionChanged)
+    /*! \brief Map bearing policy */
+    Q_PROPERTY(MapBearingPolicyValues mapBearingPolicy READ mapBearingPolicy WRITE setMapBearingPolicy NOTIFY mapBearingPolicyChanged)
 
     /*! \brief Getter function for property of the same name
      *
-     * @returns Property autoFlightDetection
+     * @returns Property mapBearingPolicy
      */
-    bool autoFlightDetection() const { return settings.value("Map/autoFlightDetection", true).toBool(); }
+    MapBearingPolicyValues mapBearingPolicy() const;
 
     /*! \brief Setter function for property of the same name
      *
-     * @param autoDetect Property autoFlightDetection
+     * @param policy Property mapBearingPolicy
      */
-    void setAutoFlightDetection(bool autoDetect);
-
-    /*! \brief Hide airspaces with lower bound FL100 or above */
-    Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property hideUpperAirspaces
-     */
-    bool hideUpperAirspaces() const { return settings.value("Map/hideUpperAirspaces", false).toBool(); }
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param hide Property hideUpperAirspaces
-     */
-    void setHideUpperAirspaces(bool hide);
+    void setMapBearingPolicy(MapBearingPolicyValues policy);
 
     /*! \brief Set to true is app should be shown in English rather than the
      * system language */
@@ -177,9 +201,9 @@ public:
      * Setting this property will switch the horizontal speed unit to km/h
      * instead of kt.
      *
-     * @param unitHorrizKmh Property unitHorrizKmh
+     * @param unitHorizKmh Property unitHorizKmh
      */
-    void setUseMetricUnits(bool unitHorrizKmh);
+    void setUseMetricUnits(bool unitHorizKmh);
 
     /*! \brief Set to true is app should be shown in English rather than the system language */
     Q_PROPERTY(bool preferEnglish READ preferEnglish WRITE setPreferEnglish NOTIFY preferEnglishChanged)
@@ -213,6 +237,9 @@ signals:
 
     /*! Notifier signal */
     void lastWhatsNewHashChanged();
+
+    /*! Notifier signal */
+    void mapBearingPolicyChanged();
 
     /*! Notifier signal */
     void preferEnglishChanged();

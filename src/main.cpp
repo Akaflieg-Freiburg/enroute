@@ -58,12 +58,13 @@ int main(int argc, char *argv[])
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
-    qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterType<DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
+    qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
-    qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
 
     // Set up application

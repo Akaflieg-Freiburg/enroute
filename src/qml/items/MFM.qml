@@ -22,6 +22,7 @@ import QtLocation 5.15
 import QtPositioning 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 import enroute 1.0
 
@@ -63,7 +64,11 @@ Item {
         gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture|MapGestureArea.RotationGesture
         gesture.onPanStarted: {flightMap.followGPS = false}
         gesture.onPinchStarted: {flightMap.followGPS = false}
-        gesture.onRotationStarted: {flightMap.followGPS = false}
+        gesture.onRotationStarted: {
+            flightMap.followGPS = false
+            globalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+
+        }
 
 
         // PROPERTY "bearing"
@@ -77,13 +82,10 @@ Item {
 
             target: satNav
             function onLastValidTrackChanged() {
-                if (flightMap.followGPS === true) {
-                    if (!globalSettings.autoFlightDetection || satNav.isInFlight) {
-                        flightMap.bearing = satNav.track
-                    } else {
-                        flightMap.bearing = 0.0
-                    }
-                }
+                if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
+                    flightMap.bearing = 0.0
+                if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
+                    flightMap.bearing = satNav.track
             }
         }
 
@@ -104,9 +106,9 @@ Item {
                 let coordForCenter = satNav.lastValidCoordinate;
                 if (satNav.isInFlight) {
                     const targetHeight = Math.min(
-                        flightMap.height-150,  // stay above the ruler scale a couple of pixels
-                        flightMap.height*3/4    // otherwise 4/5 of the view is fine
-                    );
+                                           flightMap.height-150,  // stay above the ruler scale a couple of pixels
+                                           flightMap.height*3/4    // otherwise 4/5 of the view is fine
+                                           );
                     const center = flightMap.toCoordinate(Qt.point(width/2, height/2), false);
                     const target = flightMap.toCoordinate(Qt.point(width/2, targetHeight), false);
                     const centerTargetDistance = center.distanceTo(target);
@@ -270,18 +272,43 @@ Item {
         }
     }
 
-    Image {
-        id: northArrow
+    Button {
+        id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
-        rotation: -flightMap.bearing
+        contentItem: ColumnLayout {
+            Image {
+                Layout.alignment: Qt.AlignHCenter
+                id: northArrow
 
-        source: "/icons/NorthArrow.svg"
-        sourceSize.width: 44
-        sourceSize.height: 44
+                rotation: -flightMap.bearing
+
+                source: "/icons/NorthArrow.svg"
+                sourceSize.width: 44
+                sourceSize.height: 44
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: {
+                    if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
+                        return "TT ↑"
+                    if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
+                        return "N ↑"
+                    return Math.round(flightMap.bearing)+"° ↑"
+                }
+
+            }
+        }
+
+        onClicked: {
+            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
+                globalSettings.mapBearingPolicy = GlobalSettings.TTUp
+            else
+                globalSettings.mapBearingPolicy = GlobalSettings.NUp
+        }
     }
 
     Button {

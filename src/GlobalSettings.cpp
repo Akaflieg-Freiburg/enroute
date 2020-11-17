@@ -95,6 +95,37 @@ void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 }
 
 
+GlobalSettings::MapBearingPolicyValues GlobalSettings::mapBearingPolicy() const
+{
+    auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
+    if (intVal == 0)
+        return NUp;
+    if (intVal == 1)
+        return TTUp;
+    return UserDefinedBearingUp;
+}
+
+
+void GlobalSettings::setMapBearingPolicy(MapBearingPolicyValues policy)
+{
+    if (policy == mapBearingPolicy())
+        return;
+
+    switch(policy){
+    case NUp:
+        settings.setValue("Map/bearingPolicy", 0);
+        break;
+    case TTUp:
+        settings.setValue("Map/bearingPolicy", 1);
+        break;
+    default:
+        settings.setValue("Map/bearingPolicy", 2);
+        break;
+    }
+    emit mapBearingPolicyChanged();
+}
+
+
 void GlobalSettings::setUseMetricUnits(bool unitHorrizKmh)
 {
     if (unitHorrizKmh == useMetricUnits())

@@ -7,16 +7,20 @@
 # https://cplx.vm.uni-freiburg.de/storage/QtSources/
 #
 
-add_custom_target(DistributeQtSource
-  COMMAND ssh-cplx wget --quiet http://download.qt.io/archive/qt/${Qt5Core_VERSION_MAJOR}.${Qt5Core_VERSION_MINOR}/${Qt5Core_VERSION}/single/qt-everywhere-src-${Qt5Core_VERSION}.tar.xz
-  COMMAND ssh-cplx mv qt-everywhere-src-${Qt5Core_VERSION}.tar.xz /var/www/storage/QtSources
-  COMMENT "Downloading Qt sources and making them available on the internet"
-  )
-
-add_custom_target(packaging)
-
 if (UNIX AND NOT ANDROID)
-  add_subdirectory(flatpak)
-  add_subdirectory(snap)
+    add_custom_target(distributeQtSource
+        COMMAND ssh-cplx wget --quiet http://download.qt.io/archive/qt/${Qt5Core_VERSION_MAJOR}.${Qt5Core_VERSION_MINOR}/${Qt5Core_VERSION}/single/qt-everywhere-src-${Qt5Core_VERSION}.tar.xz
+        COMMAND ssh-cplx mv qt-everywhere-src-${Qt5Core_VERSION}.tar.xz /var/www/storage/QtSources
+        COMMENT "Downloading Qt sources and making them available on the internet"
+        )
+
+    add_subdirectory(flatpak)
+    add_subdirectory(snap)
+
+    add_custom_target(publish
+        DEPENDS distributeQtSource
+        DEPENDS flatpak-publish
+        DEPENDS snap-publish
+        )
 endif (UNIX AND NOT ANDROID)
 

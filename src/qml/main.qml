@@ -178,7 +178,7 @@ ApplicationWindow {
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
                                 dialogLoader.active = false
-                                dialogLoader.source = "../dialogs/SatNavStatusDialog.qml"
+                                dialogLoader.source = "dialogs/SatNavStatusDialog.qml"
                                 dialogLoader.active = true
                                 aboutMenu.close()
                                 drawer.close()

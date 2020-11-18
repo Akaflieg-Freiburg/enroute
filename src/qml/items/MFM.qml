@@ -67,26 +67,37 @@ Item {
         gesture.onRotationStarted: {
             flightMap.followGPS = false
             globalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
-
         }
 
 
+        //
         // PROPERTY "bearing"
+        //
 
         // Initially, set the bearing to the last saved value
         bearing: savedBearing
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Connections {
-            id: trackChangedConnection
+            id: mapBearingPolicyChangedConnection
 
-            target: satNav
-            function onLastValidTrackChanged() {
-                if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
-                    flightMap.bearing = 0.0
-                if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
-                    flightMap.bearing = satNav.track
+            target: globalSettings
+            function mapBearingPolicyChanged() {
+                flightMap.setBearingBinding()
             }
+        }
+
+        function setBearingBinding() {
+            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
+                flightMap.bearing = 0.0
+            if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
+                flightMap.bearing = Qt.binding( flightMap.calculateBearing )
+        }
+
+        function calculateBearing() {
+            if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
+                return satNav.track
+            return 0.0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -246,9 +257,14 @@ Item {
             }
         }
 
-        // Oddly, this is necessary, or else the system will try to reset
-        // the write-once property 'plugin' on language changes
-        Component.onCompleted: plugin = mapPlugin
+        Component.onCompleted: {
+            // Once the map the there, think again about the bearing
+            setBearingBinding()
+
+            // Oddly, this is necessary, or else the system will try to reset
+            // the write-once property 'plugin' on language changes
+            plugin = mapPlugin
+        }
     }
 
     Rectangle {

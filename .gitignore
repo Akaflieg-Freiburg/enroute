@@ -3,6 +3,8 @@ CMakeLists.txt.user
 # build dirs
 build
 build-android-release
+build-android-debug/
+build-linux-debug/
 
 # IDE
 .vscode

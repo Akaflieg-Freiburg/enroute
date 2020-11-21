@@ -68,7 +68,7 @@ Dialog {
         Label {
             Layout.fillWidth: true
 
-            text: qsTr("Enter a file name or choose an existing name from the list below.")
+            text: qsTr("Enter a name or choose an existing name from the list below.")
             color: Material.primary
             wrapMode: Text.Wrap
             textFormat: Text.RichText
@@ -79,7 +79,7 @@ Dialog {
 
             Layout.fillWidth: true
             focus: true
-            placeholderText: qsTr("File Name")
+            placeholderText: qsTr("Flight Route Name")
 
             onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
 
@@ -196,14 +196,14 @@ Dialog {
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
         height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
-        title: qsTr("Overwrite file?")
+        title: qsTr("Overwrite flight route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("The file <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
+            text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.RichText
         }

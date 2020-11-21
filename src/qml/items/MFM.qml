@@ -78,56 +78,69 @@ Item {
         bearing: savedBearing
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
+/*
         Connections {
             id: mapBearingPolicyChangedConnection
 
             target: globalSettings
-            function mapBearingPolicyChanged() {
+            function onMapBearingPolicyChanged() {
                 flightMap.setBearingBinding()
             }
         }
 
         function setBearingBinding() {
-            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
-                flightMap.bearing = 0.0
+            flightMap.bearing = calculateBearing()
             if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
                 flightMap.bearing = Qt.binding( flightMap.calculateBearing )
         }
 
         function calculateBearing() {
             if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
-                return satNav.track
+                return satNav.lastValidTrack
             return 0.0
+        }
+*/
+        Binding on bearing {
+            restoreMode: Binding.RestoreBinding
+            when: globalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
+            value: satNav.lastValidTrack
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
         Behavior on bearing { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
 
 
+        //
         // PROPERTY "center"
+        //
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
+        // or the zoom level changes
         Binding on center {
             id: centerBinding
 
             restoreMode: Binding.RestoreBinding
             when: flightMap.followGPS === true
             value: {
-                flightMap.zoomLevel;  // zoomLevel mentioned to trigger center re-calculation after zoom-in / -out
-                let coordForCenter = satNav.lastValidCoordinate;
-                if (satNav.isInFlight) {
-                    const targetHeight = Math.min(
-                                           flightMap.height-150,  // stay above the ruler scale a couple of pixels
-                                           flightMap.height*3/4    // otherwise 4/5 of the view is fine
-                                           );
-                    const center = flightMap.toCoordinate(Qt.point(width/2, height/2), false);
-                    const target = flightMap.toCoordinate(Qt.point(width/2, targetHeight), false);
-                    const centerTargetDistance = center.distanceTo(target);
-                    let bearing = satNav.track;
-                    bearing = bearing < 0 ? 0 : bearing;  // set to 0 if undefined (which is -1)
-                    coordForCenter = coordForCenter.atDistanceAndAzimuth(centerTargetDistance, bearing);
-                }
-                return coordForCenter
+                // If not in flight, then aircraft stays in center of display
+//                if (!satNav.isInFlight)
+//                    return satNav.lastValidCoordinate
+
+                // Otherwise, we position the aircraft someplace on a circle around the
+                // center, so that the map shows a larger portion of the airspace ahead
+                // of the aircraft. The following lines find a good radius for that
+                // circle, which ensures that the circle does not collide with any of the
+                // GUI elements.
+                const xCenter = flightMap.width/2.0
+                const yCenter = flightMap.height/2.0
+                const radiusInPixel = Math.min(
+                            Math.abs(xCenter-zoomIn.x),
+                            Math.abs(xCenter-followGPSButton.x-followGPSButton.width),
+                            Math.abs(yCenter-northButton.y-northButton.height),
+                            Math.abs(yCenter-zoomIn.y)
+                            )
+                const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
+                return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, flightMap.bearing)
             }
         }
 
@@ -143,13 +156,17 @@ Item {
                 omitAnimationForZoomTimer.start()
             }
         }
+
         Timer {
             id: omitAnimationForZoomTimer
             interval: 410  // little more than time for animation
             onTriggered: centerBindingAnimation.enabled = true
         }
 
+
+        //
         // PROPERTY "zoomLevel"
+        //
 
         // Initially, set the zoom level to the last saved value
         zoomLevel: savedZoomLevel
@@ -257,9 +274,10 @@ Item {
             }
         }
 
+        // On completion, re-consider the binding of the property bearing
         Component.onCompleted: {
             // Once the map the there, think again about the bearing
-            setBearingBinding()
+//            setBearingBinding()
 
             // Oddly, this is necessary, or else the system will try to reset
             // the write-once property 'plugin' on language changes
@@ -342,7 +360,6 @@ Item {
         onClicked: {
             mobileAdaptor.vibrateBrief()
             flightMap.followGPS = true
-            trackChangedConnection.onLastValidTrackChanged()
         }
     }
 

@@ -173,7 +173,7 @@ if( ANDROID )
     add_custom_command(
         OUTPUT ${ANDROID_EXTRA_SOURCES}
         DEPENDS ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/android android
+        COMMAND cp -prd ${CMAKE_CURRENT_SOURCE_DIR}/android .
         COMMAND ${CMAKE_COMMAND} -E make_directory android/res/drawable-xxxhdpi
         COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg -o ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable-xxxhdpi/icon.png -h 384 -w 384
         COMMAND ${CMAKE_COMMAND} -E make_directory android/res/drawable-xxhdpi

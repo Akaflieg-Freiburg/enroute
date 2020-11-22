@@ -78,32 +78,10 @@ Item {
         bearing: savedBearing
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
-/*
-        Connections {
-            id: mapBearingPolicyChangedConnection
-
-            target: globalSettings
-            function onMapBearingPolicyChanged() {
-                flightMap.setBearingBinding()
-            }
-        }
-
-        function setBearingBinding() {
-            flightMap.bearing = calculateBearing()
-            if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
-                flightMap.bearing = Qt.binding( flightMap.calculateBearing )
-        }
-
-        function calculateBearing() {
-            if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
-                return satNav.lastValidTrack
-            return 0.0
-        }
-*/
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
             when: globalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: satNav.lastValidTrack
+            value: globalSettings.mapBearingPolicy === GlobalSettings.TTUp ? satNav.lastValidTrack : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -123,8 +101,8 @@ Item {
             when: flightMap.followGPS === true
             value: {
                 // If not in flight, then aircraft stays in center of display
-//                if (!satNav.isInFlight)
-//                    return satNav.lastValidCoordinate
+                if (!satNav.isInFlight)
+                    return satNav.lastValidCoordinate
 
                 // Otherwise, we position the aircraft someplace on a circle around the
                 // center, so that the map shows a larger portion of the airspace ahead
@@ -140,7 +118,8 @@ Item {
                             Math.abs(yCenter-zoomIn.y)
                             )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
-                return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, flightMap.bearing)
+
+                return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, satNav.lastValidTrack)
             }
         }
 
@@ -276,9 +255,6 @@ Item {
 
         // On completion, re-consider the binding of the property bearing
         Component.onCompleted: {
-            // Once the map the there, think again about the bearing
-//            setBearingBinding()
-
             // Oddly, this is necessary, or else the system will try to reset
             // the write-once property 'plugin' on language changes
             plugin = mapPlugin

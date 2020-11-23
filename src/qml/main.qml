@@ -310,7 +310,6 @@ ApplicationWindow {
             // Start accepting files
             mobileAdaptor.startReceiveOpenFileRequests()
 
-            whatsNewDialog.open()
             if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !satNav.isInFlight) {
                 whatsNewDialog.open()
                 return

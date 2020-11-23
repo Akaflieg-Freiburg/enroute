@@ -51,7 +51,6 @@ Dialog {
             text: dialogLoader.text
             width: dlg.availableWidth
             textFormat: Text.RichText
-            horizontalAlignment: Text.AlignJustify
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
         } // Label

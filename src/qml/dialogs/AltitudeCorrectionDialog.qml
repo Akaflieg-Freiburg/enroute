@@ -55,7 +55,6 @@ Dialog {
                 id: lbl1
                 text: qsTr("If you have good satellite reception and if know your altitude precisely, you can set the satellite altimeter here.")
                 textFormat: Text.RichText
-                horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.Wrap
                 width: dlg.availableWidth
             }
@@ -89,7 +88,6 @@ Dialog {
                 text: satNav.hasAltitude ? qsTr("The current raw altimeter reading as reported by the satellite navigation system is %1 MSL.").arg(satNav.rawAltitudeInFeetAsString)
                                          : qsTr("Insufficient satellite reception. Altimeter cannot be set.")
                 textFormat: Text.RichText
-                horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.Wrap
                 width: dlg.availableWidth
             }

@@ -169,6 +169,7 @@ int main(int argc, char *argv[])
 
     // Restore saved settings and make them available to QML
     QSettings settings;
+    engine->rootContext()->setContextProperty("savedCenter", settings.value("Map/center", QVariant::fromValue(QGeoCoordinate(48.022653, 7.832583))));
     engine->rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));
     engine->rootContext()->setContextProperty("savedZoomLevel", settings.value("Map/zoomLevel", 9));
 
@@ -189,6 +190,7 @@ int main(int argc, char *argv[])
             break;
     }
     if (flightMap) {
+        settings.setValue("Map/center", QQmlProperty::read(flightMap, "center"));
         settings.setValue("Map/bearing", QQmlProperty::read(flightMap, "bearing"));
         settings.setValue("Map/zoomLevel", QQmlProperty::read(flightMap, "zoomLevel"));
     }

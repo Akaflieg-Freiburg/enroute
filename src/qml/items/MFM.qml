@@ -92,6 +92,9 @@ Item {
         // PROPERTY "center"
         //
 
+        // Initially, set the center to the last saved value
+        center: savedCenter
+
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
         Binding on center {

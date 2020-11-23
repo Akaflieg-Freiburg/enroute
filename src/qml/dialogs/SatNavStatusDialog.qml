@@ -26,6 +26,8 @@ import QtQuick.Layouts 1.15
 import enroute 1.0
 
 Dialog {
+    id: satNavStatusDialog
+
     title: qsTr("Satellite Status")
 
     // Size is chosen so that the dialog does not cover the parent in full
@@ -39,9 +41,13 @@ Dialog {
         clip: true
         anchors.fill: parent
 
-        ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-        ScrollBar.vertical.policy: ScrollBar.AsNeeded
+        contentHeight: gl.height
+        contentWidth: satNavStatusDialog.availableWidth
 
+        // The visibility behavior of the vertical scroll bar is a little complex.
+        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
         GridLayout {
             id: gl

@@ -1448,6 +1448,27 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             continue;
         }
 
+        // SMALL HAIL, SHOWERS
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::SMALL_HAIL) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light shower with small hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate shower with small hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy shower with small hail");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent shower with small hail");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
         // SMALL HAIL, THUNDERSTORM
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::SMALL_HAIL) {
             switch(wp.qualifier()) {

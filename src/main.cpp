@@ -58,12 +58,13 @@ int main(int argc, char *argv[])
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
-    qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterType<DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
+    qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
-    qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
 
     // Set up application
@@ -168,6 +169,7 @@ int main(int argc, char *argv[])
 
     // Restore saved settings and make them available to QML
     QSettings settings;
+    engine->rootContext()->setContextProperty("savedCenter", settings.value("Map/center", QVariant::fromValue(QGeoCoordinate(48.022653, 7.832583))));
     engine->rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));
     engine->rootContext()->setContextProperty("savedZoomLevel", settings.value("Map/zoomLevel", 9));
 
@@ -188,6 +190,7 @@ int main(int argc, char *argv[])
             break;
     }
     if (flightMap) {
+        settings.setValue("Map/center", QQmlProperty::read(flightMap, "center"));
         settings.setValue("Map/bearing", QQmlProperty::read(flightMap, "bearing"));
         settings.setValue("Map/zoomLevel", QQmlProperty::read(flightMap, "zoomLevel"));
     }

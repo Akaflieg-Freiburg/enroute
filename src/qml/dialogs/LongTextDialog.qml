@@ -43,32 +43,26 @@ Dialog {
         id: sv
         anchors.fill: parent
 
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        contentHeight: lbl.height
+        contentWidth: dlg.availableWidth
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.vertical.policy: (height < lbl.implicitHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
         ScrollBar.vertical.interactive: false
 
         clip: true
-         
-        // The Label that we really want to show is wrapped into an Item. This allows
-        // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-        // without binding loops
-        Item {
-            implicitHeight: lbl.implicitHeight
-            width: dlg.availableWidth
 
-            Label {
-                id: lbl
-                text: dlg.text
-                width: dlg.availableWidth
-                textFormat: Text.RichText
-                horizontalAlignment: Text.AlignJustify
-                wrapMode: Text.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
-            } // Label
-        } // Item
+        Label {
+            id: lbl
+            text: dlg.text
+            width: dlg.availableWidth
+            textFormat: Text.RichText
+            horizontalAlignment: Text.AlignJustify
+            wrapMode: Text.Wrap
+            onLinkActivated: Qt.openUrlExternally(link)
+        } // Label
     } // ScrollView
 
 } // Dialog

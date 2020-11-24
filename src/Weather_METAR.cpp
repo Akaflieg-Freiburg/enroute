@@ -204,15 +204,10 @@ QString Weather::METAR::relativeObservationTime() const
 void Weather::METAR::setupSignals()
 {
     // Emit notifier signals whenever the time changes
-    auto _clock = Clock::globalInstance();
-    if (_clock) {
-        connect(_clock, &Clock::timeChanged, this, &Weather::METAR::summaryChanged);
-        connect(_clock, &Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
-    }
+    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::METAR::summaryChanged);
+    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
 
-    auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings)
-        connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Weather::METAR::summaryChanged);
+    connect(GlobalSettings::globalInstance(), &GlobalSettings::useMetricUnitsChanged, this, &Weather::METAR::summaryChanged);
 }
 
 

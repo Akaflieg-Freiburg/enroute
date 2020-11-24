@@ -207,11 +207,7 @@ void GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings != nullptr)
-        _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, _globalSettings->hideUpperAirspaces());
-    else
-        _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, false);
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalSettings::hideUpperAirspacesStatic());
 }
 
 
@@ -345,9 +341,7 @@ void GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManage
     // Connect the Downloadmanager, so aviation maps will be generated
     connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::aviationMapsChanged);
     connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::baseMapsChanged);
-    auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings)
-        connect(_globalSettings, &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
+    connect(GlobalSettings::globalInstance(), &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3*1000);

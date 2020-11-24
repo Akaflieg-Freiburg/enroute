@@ -270,6 +270,17 @@ QGeoCoordinate SatNav::lastValidCoordinate() const
 }
 
 
+QGeoCoordinate SatNav::lastValidCoordinateStatic()
+{
+    // Find out that unit system we should use
+    auto _satNav = SatNav::globalInstance();
+    if (_satNav)
+        return _satNav->lastValidCoordinate();
+    // Fallback in the very unlikely case that no global object exists
+    return QGeoCoordinate();
+}
+
+
 QString SatNav::latitudeAsString() const
 {
     if (!lastInfo.isValid())
@@ -454,15 +465,10 @@ QString SatNav::wayTo(const QGeoCoordinate& position) const
     if (!_lastValidCoordinate.isValid())
         return QString();
 
-    bool useMetricUnits = false;
-    auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings)
-        useMetricUnits = _globalSettings->useMetricUnits();
-
     auto dist = AviationUnits::Distance::fromM(_lastValidCoordinate.distanceTo(position));
     auto QUJ = qRound(_lastValidCoordinate.azimuthTo(position));
 
-    if (useMetricUnits)
+    if (GlobalSettings::useMetricUnitsStatic())
         return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }

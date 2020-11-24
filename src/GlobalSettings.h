@@ -98,6 +98,15 @@ public:
      */
     bool acceptedWeatherTerms() const { return settings.value("acceptedWeatherTerms", false).toBool(); }
 
+    /*! \brief Getter function for property of the same name
+     *
+     * This function differs from acceptedWeatherTerms() only in that it is static.
+     * It uses the globalInstance() to retrieve data.
+     *
+     * @returns Property acceptedWeatherTerms
+     */
+    static bool acceptedWeatherTermsStatic();
+
     /*! \brief Setter function for property of the same name
      *
      * @param terms Property acceptedWeatherTerms
@@ -136,6 +145,15 @@ public:
      * @returns Property hideUpperAirspaces
      */
     bool hideUpperAirspaces() const { return settings.value("Map/hideUpperAirspaces", false).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * This function differs from hideUpperAirspaces() only in that it is static.
+     * It uses the globalInstance() to retrieve data.
+     *
+     * @returns Property hideUpperAirspaces
+     */
+    static bool hideUpperAirspacesStatic();
 
     /*! \brief Setter function for property of the same name
      *
@@ -195,6 +213,15 @@ public:
      * @returns Property useMetricUnits
      */
     bool useMetricUnits() const { return settings.value("System/useMetricUnits", false).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * This function differs from useMetricUnits() only in that it is static.
+     * It uses the globalInstance() to retrieve data.
+     *
+     * @returns Property useMetricUnits
+     */
+    static bool useMetricUnitsStatic();
 
     /*! \brief Setter function for property of the same name
      *

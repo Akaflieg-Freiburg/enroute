@@ -363,6 +363,15 @@ public:
   */
     QGeoCoordinate lastValidCoordinate() const;
 
+    /*! \brief Getter function for property of the same name
+     *
+     * This function differs from lastValidCoordinate() only in that it is static.
+     * It uses the globalInstance() to retrieve data.
+     *
+     * @returns Property lastValidCoordinate
+     */
+    static QGeoCoordinate lastValidCoordinateStatic();
+
     /*! \brief Last valid track reading from the last SatNav fix
 
     This property holds the last valid track found in the last SatNav fix.  This

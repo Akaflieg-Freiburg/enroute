@@ -133,9 +133,7 @@ QString Weather::TAF::relativeIssueTime() const
 void Weather::TAF::setupSignals()
 {
     // Emit notifier signals whenever the time changes
-    auto _clock = Clock::globalInstance();
-    if (_clock)
-        connect(_clock, &Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
+    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
 }
 
 

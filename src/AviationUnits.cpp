@@ -61,13 +61,7 @@ QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QS
 
 
 QString AviationUnits::Speed::toString() const {
-    // Find out that unit system we should use
-    bool useMetric = false;
-    auto globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings)
-        useMetric = globalSettings->useMetricUnits();
-
-    if (useMetric)
+    if (GlobalSettings::useMetricUnitsStatic())
         return QString("%1 km/h").arg( qRound(toKMH()) );
     return QString("%1 kt").arg( qRound(toKT()) );
 }

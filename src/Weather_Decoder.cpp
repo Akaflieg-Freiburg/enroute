@@ -35,14 +35,10 @@ Weather::Decoder::Decoder(QObject *parent)
     : QObject(parent)
 {
     // Re-parse the text whenever the date changes
-    auto _clock = Clock::globalInstance();
-    if (_clock)
-        connect(_clock, &Clock::dateChanged, this, &Weather::Decoder::parse);
+    connect(Clock::globalInstance(), &Clock::dateChanged, this, &Weather::Decoder::parse);
 
     // Re-parse whenever the preferred unit system changes
-    auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings)
-        connect(_globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &Weather::Decoder::parse);
+    connect(GlobalSettings::globalInstance(), &GlobalSettings::useMetricUnitsChanged, this, &Weather::Decoder::parse);
 }
 
 
@@ -154,11 +150,6 @@ QString Weather::Decoder::explainDistance(const metaf::Distance & distance) {
     if (!distance.isReported())
         return tr("not reported");
 
-    bool useMetric = false;
-    auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings)
-        useMetric = _globalSettings->useMetricUnits();
-
     QStringList results;
     switch (distance.modifier()) {
     case metaf::Distance::Modifier::NONE:
@@ -173,14 +164,14 @@ QString Weather::Decoder::explainDistance(const metaf::Distance & distance) {
         break;
 
     case metaf::Distance::Modifier::DISTANT:
-        if (useMetric)
+        if (GlobalSettings::useMetricUnitsStatic())
             results << tr("19 to 55 km");
         else
             results << tr("10 to 30 NM");
         break;
 
     case metaf::Distance::Modifier::VICINITY:
-        if (useMetric)
+        if (GlobalSettings::useMetricUnitsStatic())
             results << tr("9 to 19 km");
         else
             results << tr("5 to 10 NM");
@@ -220,7 +211,7 @@ QString Weather::Decoder::explainDistance(const metaf::Distance & distance) {
         results << distanceUnitToString(distance.unit());
     }
 
-    if (useMetric && (distance.unit() != metaf::Distance::Unit::METERS)) {
+    if (GlobalSettings::useMetricUnitsStatic() && (distance.unit() != metaf::Distance::Unit::METERS)) {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
         if (d.has_value()) {
             if ((*d) < 5000)

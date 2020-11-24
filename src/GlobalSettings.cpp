@@ -44,9 +44,31 @@ GlobalSettings::~GlobalSettings()
 }
 
 
+bool GlobalSettings::acceptedWeatherTermsStatic()
+{
+    // Find out that unit system we should use
+    auto globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings)
+        return globalSettings->acceptedWeatherTerms();
+    // Fallback in the very unlikely case that no global object exists
+    return false;
+}
+
+
 GlobalSettings *GlobalSettings::globalInstance()
 {
     return globalSettingsStatic;
+}
+
+
+bool GlobalSettings::hideUpperAirspacesStatic()
+{
+    // Find out that unit system we should use
+    auto globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings)
+        return globalSettings->hideUpperAirspaces();
+    // Fallback in the very unlikely case that no global object exists
+    return false;
 }
 
 
@@ -144,6 +166,17 @@ void GlobalSettings::setPreferEnglish(bool preferEng)
     settings.setValue("System/preferEnglish", preferEng);
     installTranslators();
     emit preferEnglishChanged();
+}
+
+
+bool GlobalSettings::useMetricUnitsStatic()
+{
+    // Find out that unit system we should use
+    auto globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings)
+        return globalSettings->useMetricUnits();
+    // Fallback in the very unlikely case that no global object exists
+    return false;
 }
 
 

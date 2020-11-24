@@ -40,9 +40,9 @@
 
 
 Weather::DownloadManager::DownloadManager(FlightRoute *route,
-                             GeoMapProvider *geoMapProvider,
-                             QNetworkAccessManager *networkAccessManager,
-                             QObject *parent) :
+                                          GeoMapProvider *geoMapProvider,
+                                          QNetworkAccessManager *networkAccessManager,
+                                          QObject *parent) :
     QObject(parent),
     _flightRoute(route),
     _geoMapProvider(geoMapProvider),
@@ -80,17 +80,11 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
 
 void Weather::DownloadManager::setupConnections()
 {
-    auto _satNav = SatNav::globalInstance();
-    if (_satNav) {
-        connect(_satNav, &SatNav::statusChanged, this, &Weather::DownloadManager::QNHInfoChanged);
-        connect(_satNav, &SatNav::statusChanged, this, &Weather::DownloadManager::sunInfoChanged);
-    }
+    connect(SatNav::globalInstance(), &SatNav::statusChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+    connect(SatNav::globalInstance(), &SatNav::statusChanged, this, &Weather::DownloadManager::sunInfoChanged);
 
-    auto _clock = Clock::globalInstance();
-    if (_clock) {
-        connect(_clock, &Clock::timeChanged, this, &Weather::DownloadManager::QNHInfoChanged);
-        connect(_clock, &Clock::timeChanged, this, &Weather::DownloadManager::sunInfoChanged);
-    }
+    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::sunInfoChanged);
 }
 
 
@@ -441,17 +435,11 @@ QString Weather::DownloadManager::QNHInfo() const
 
 void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     // Paranoid safety checks
-    auto _globalSettings = GlobalSettings::globalInstance();
-    if (_globalSettings == nullptr)
-        return;
     if (_flightRoute.isNull())
-        return;
-    auto _satNav = SatNav::globalInstance();
-    if (_satNav == nullptr)
         return;
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
-    if (!_globalSettings->acceptedWeatherTerms())
+    if (!GlobalSettings::acceptedWeatherTermsStatic())
         return;
 
     // If a request is currently running, then do not update
@@ -474,7 +462,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     _networkReplies.clear();
 
     // Generate queries
-    const QGeoCoordinate& position = _satNav->lastValidCoordinate();
+    const QGeoCoordinate& position = SatNav::lastValidCoordinateStatic();
     const QVariantList& steerpts = _flightRoute->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
@@ -516,14 +504,11 @@ QList<Weather::Station *> Weather::DownloadManager::weatherStations() const {
             sortedReports += stations;
 
     // Sort list
-    auto _satNav = SatNav::globalInstance();
-    if (_satNav) {
-        auto compare = [&](const Weather::Station *a, const Weather::Station *b) {
-            auto here = _satNav->lastValidCoordinate();
-            return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
-        };
-        std::sort(sortedReports.begin(), sortedReports.end(), compare);
-    }
+    auto compare = [&](const Weather::Station *a, const Weather::Station *b) {
+        auto here = SatNav::lastValidCoordinateStatic();
+        return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
+    };
+    std::sort(sortedReports.begin(), sortedReports.end(), compare);
 
     return sortedReports;
 }

@@ -52,15 +52,10 @@ configure_file(ressources.qrc.in ressources.qrc)
 # Set up sources
 #
 
-# We use this macro here to avoid creating extremely large C++ files with binary content
-#qt5_add_big_resources(BIGRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc)
-
 set(SOURCES
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
-    ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
-    ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
 
     # Translations
     enroute_de.qm
@@ -132,6 +127,11 @@ set(SOURCES
     Weather_Wind.cpp
     )
 
+# We use this macro here to avoid creating extremely large C++ files with binary content
+qt_add_big_resources(SOURCES
+    ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
+    ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
+    )
 
 #
 # Generate android executable

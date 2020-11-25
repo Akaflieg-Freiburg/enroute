@@ -23,6 +23,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
+import "../dialogs"
 import "../items"
 
 Page {
@@ -66,8 +67,8 @@ Page {
                 if (nFilesTotal > 7) {
                     dialogLoader.active = false;
                     dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startFileDownload,
-                                               nFilesTotal: nFilesTotal,
-                                               mapTypeString: mapTypeString};
+                        nFilesTotal: nFilesTotal,
+                        mapTypeString: mapTypeString};
                     dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
                     dialogLoader.active = true;
                 } else {
@@ -286,6 +287,37 @@ Page {
 
                 section.property: "modelData.section"
                 section.delegate: sectionHeading
+
+                footer: ColumnLayout {
+                    width: parent.width
+
+                    Rectangle {
+                        Layout.fillWidth: true
+                        height: 1
+                        color: "gray"
+                    }
+
+                    ItemDelegate {
+                        Layout.fillWidth: true
+                        icon.source: "/icons/material/ic_info_outline.svg"
+                        text: qsTr("How to request additional aviation maps…")
+                        onClicked: ltd.open()
+
+                        LongTextDialog {
+                            id: ltd
+                            standardButtons: Dialog.Ok
+
+                            title: qsTr("Request additional aviation maps")
+                            text: librarian.getStringFromRessource(":text/aviationMapMissing.html")
+                        }
+
+                    }
+
+                    Item { // Spacer
+                        height: 3
+                    }
+
+                }
 
                 // Refresh list of maps on overscroll
                 property int refreshFlick: 0

@@ -119,7 +119,7 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
 <p>If you are convinced that the data is good enough to be added, you can request to add the country. Please go to <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/issues">this web site</a> and open an 'issue' with your request. Please tell us who you are, where you fly and how you convinced yourself that the data is good. If you find that the data is not good enough, you are welcome to join the openAIP project and help to improve the data.</p>
 
-<p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point us that sending us impolite demands is not likely to give the result that you desire.</p>)html");
+<p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
     }
 
     if (name == ":text/bugReport.html") {

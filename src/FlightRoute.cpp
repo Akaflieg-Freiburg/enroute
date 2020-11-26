@@ -359,55 +359,56 @@ QString FlightRoute::save(const QString& fileName) const
 
 QString FlightRoute::suggestedFilename() const
 {
-    
-int max_char = 30; // zu NEU (3), für Begrenzung der Streckennamen, s.u.
-				   // die 30 ist ein erster Schätzwert, später evtl. anpassen
-	QString	temp = "";
-	QString	inbetween = " - ";
-
-    QString result = tr("Flight Route");
     if (_waypoints.size() < 2)
-        return result;
+        return tr("Flight Route");
 
     // NEU (1): ICAO-Code UND Namen nennen, soweit Code vorhanden:
-	QString start = _waypoints.constFirst()->getPropery("NAM").toString();
-	QString start_icao = "";
-	if (true)   // NEU (2): später Einstellung anbieten und hier abfragen, ob Strecke mit 
-				// oder ohne ICAO-Code benannt werden soll; true = mit ICAO-Code
-		start_icao = _waypoints.constFirst()->getPropery("COD").toString();
+    QStringList resultList;
 
-    if (!start_icao.isEmpty()) // ICAO-Code vorhanden, also zusammensetzen
-        start = start_icao + "_" + start;  // ohne ICAO-Code bleibt start = Name
+    //
+    // Get name for start point (e.g. "EDTL (LAHR)")
+    //
+    QString start = _waypoints.constFirst()->getPropery("COD").toString(); // ICAO code of start point
+    QString name = _waypoints.constFirst()->getPropery("NAM").toString(); // Name of start point
+    qWarning() << name;
+    name.replace("(", "");
+    name.replace(")", "");
+    if (name.length() > 11)  // Shorten name
+        name = name.left(10)+"…";
+    if (!name.isEmpty()) {
+        if (start.isEmpty())
+            start = name;
+        else
+            start += " (" + name + ")";
+    }
 
-    if (start.isEmpty())       // sollte hier jetzt eigentlich entbehrlich sein
-        return result; 		
+    //
+    // Get name for start point (e.g. "EDTG (BREMGARTEN)")
+    //
+    QString end = _waypoints.constLast()->getPropery("COD").toString(); // ICAO code of start point
+    name = _waypoints.constLast()->getPropery("NAM").toString(); // Name of start point
+    name.replace("(", "");
+    name.replace(")", "");
+    if (name.length() > 11)  // Shorten name
+        name = name.left(10)+"…";
+    if (!name.isEmpty()) {
+        if (end.isEmpty())
+            end = name;
+        else
+            end += " (" + name + ")";
+    }
 
-	// Ziel analog:
-	QString end = _waypoints.constLast()->getPropery("NAM").toString();
-	QString end_icao = "";
-	if (true)   // NEU (2), derselbe Schalter wie oben
-		end_icao = _waypoints.constLast()->getPropery("COD").toString();
+    if (start.isEmpty() && end.isEmpty())
+        return tr("Flight Route");
 
-    if (!end_icao.isEmpty()) 
-        end = end_icao + "_" + end;  
+    if (start.isEmpty())
+        return end;
 
-    if (end.isEmpty())       // s.o.
-        return result; 			
+    if (end.isEmpty())
+        return start;
 
-	// NEU (3): Rücksicht auf schmale (also Smartphone-) Displays nehmen. Anstelle der if-true-Abfrage 
-	// später einen Schalter in den Einstellungen abfragen, der etwa heißen könnte "Streckennamen verkürzen"
-	if (true) { // später true = verkürzen
-		temp = start + inbetween + end;
-		while (temp.length > max_char) { // also verkürzen
-			if (start.length > ((max_char - inbetween.length) / 2 )) // nur lange  Namen verkürzen
-				start = start.substr(0, start.length - 1); 
-			if (end.length > ((max_char - inbetween.length) / 2 ))
-				end = end.substr(0, end.length - 1);
-			temp = start + inbetween + end;
-		}
-	}
 
-    return start + inbetween + end;
+    return start + " - " + end;
 }
 
 

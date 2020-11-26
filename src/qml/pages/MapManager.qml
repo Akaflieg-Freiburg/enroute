@@ -297,7 +297,7 @@ Page {
                         color: "gray"
                     }
 
-                    ItemDelegate {
+                    WordWrappingItemDelegate {
                         Layout.fillWidth: true
                         icon.source: "/icons/material/ic_info_outline.svg"
                         text: qsTr("How to request additional aviation maps…")

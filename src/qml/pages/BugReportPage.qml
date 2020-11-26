@@ -33,25 +33,27 @@ Page {
     ScrollView {
         clip: true
         anchors.fill: parent
-        
-        // The Label that we really want to show is wrapped into an Item. This allows
-        // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-        // without binding loops
-        Item {
-            implicitHeight: lbl1.implicitHeight
+
+        contentHeight: lbl1.height
+        contentWidth: pg.width
+
+        // The visibility behavior of the vertical scroll bar is a little complex.
+        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+        ScrollBar.vertical.interactive: false
+
+        Label {
+            id: lbl1
+            text: librarian.getStringFromRessource(":text/bugReport.html")
+            textFormat: Text.RichText
             width: pg.width
-            
-            Label {
-                id: lbl1
-                text: librarian.getStringFromRessource(":text/bugReport.html")
-                textFormat: Text.RichText
-                width: pg.width
-                wrapMode: Text.Wrap
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
-                onLinkActivated: Qt.openUrlExternally(link)
-            } // Label
-        } // Item
+            wrapMode: Text.Wrap
+            topPadding: Qt.application.font.pixelSize*1
+            leftPadding: Qt.application.font.pixelSize*0.5
+            rightPadding: Qt.application.font.pixelSize*0.5
+            onLinkActivated: Qt.openUrlExternally(link)
+        } // Label
+
     } // ScrollView
 } // Page

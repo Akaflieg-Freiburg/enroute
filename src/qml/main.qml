@@ -157,7 +157,6 @@ ApplicationWindow {
                     icon.source: "/icons/material/ic_info_outline.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
-                    visible: !satNav.isInFlight
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()

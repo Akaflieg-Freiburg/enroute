@@ -1160,6 +1160,9 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
         // DRIZZLE, FREEZING
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::FREEZING && weather == metaf::WeatherPhenomena::Weather::DRIZZLE) {
             switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("freezing drizzle");
+                break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
                 results << tr("light freezing drizzle");
                 break;

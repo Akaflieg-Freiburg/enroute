@@ -359,22 +359,55 @@ QString FlightRoute::save(const QString& fileName) const
 
 QString FlightRoute::suggestedFilename() const
 {
+    
+int max_char = 30; // zu NEU (3), für Begrenzung der Streckennamen, s.u.
+				   // die 30 ist ein erster Schätzwert, später evtl. anpassen
+	QString	temp = "";
+	QString	inbetween = " - ";
+
     QString result = tr("Flight Route");
     if (_waypoints.size() < 2)
         return result;
 
-    QString start = _waypoints.constFirst()->getPropery("COD").toString();
-    if (start.isEmpty())
-        start = _waypoints.constFirst()->getPropery("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
-    if (start.isEmpty())
-        return result;
-    QString end = _waypoints.constLast()->getPropery("COD").toString();
-    if (end.isEmpty())
-        end = _waypoints.constLast()->getPropery("NAM").toString();  // kein ICAO-Code vorhanden, deshalb mit Namen versuchen
-    if (end.isEmpty())
-        return result;
+    // NEU (1): ICAO-Code UND Namen nennen, soweit Code vorhanden:
+	QString start = _waypoints.constFirst()->getPropery("NAM").toString();
+	QString start_icao = "";
+	if (true)   // NEU (2): später Einstellung anbieten und hier abfragen, ob Strecke mit 
+				// oder ohne ICAO-Code benannt werden soll; true = mit ICAO-Code
+		start_icao = _waypoints.constFirst()->getPropery("COD").toString();
 
-    return start+" - "+end;
+    if (!start_icao.isEmpty()) // ICAO-Code vorhanden, also zusammensetzen
+        start = start_icao + "_" + start;  // ohne ICAO-Code bleibt start = Name
+
+    if (start.isEmpty())       // sollte hier jetzt eigentlich entbehrlich sein
+        return result; 		
+
+	// Ziel analog:
+	QString end = _waypoints.constLast()->getPropery("NAM").toString();
+	QString end_icao = "";
+	if (true)   // NEU (2), derselbe Schalter wie oben
+		end_icao = _waypoints.constLast()->getPropery("COD").toString();
+
+    if (!end_icao.isEmpty()) 
+        end = end_icao + "_" + end;  
+
+    if (end.isEmpty())       // s.o.
+        return result; 			
+
+	// NEU (3): Rücksicht auf schmale (also Smartphone-) Displays nehmen. Anstelle der if-true-Abfrage 
+	// später einen Schalter in den Einstellungen abfragen, der etwa heißen könnte "Streckennamen verkürzen"
+	if (true) { // später true = verkürzen
+		temp = start + inbetween + end;
+		while (temp.length > max_char) { // also verkürzen
+			if (start.length > ((max_char - inbetween.length) / 2 )) // nur lange  Namen verkürzen
+				start = start.substr(0, start.length - 1); 
+			if (end.length > ((max_char - inbetween.length) / 2 ))
+				end = end.substr(0, end.length - 1);
+			temp = start + inbetween + end;
+		}
+	}
+
+    return start + inbetween + end;
 }
 
 

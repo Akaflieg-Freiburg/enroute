@@ -189,12 +189,12 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(Aircraft)
 
-    static constexpr double minAircraftSpeedInKT  = 40.0;
+    static constexpr double minAircraftSpeedInKT  = 10.0;
     static constexpr double minAircraftSpeedInKMH = minAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
     static constexpr double maxAircraftSpeedInKT  = 400.0;
     static constexpr double maxAircraftSpeedInKMH = maxAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
     static constexpr double minFuelConsuption = 5.0;
-    static constexpr double maxFuelConsuption = 100.0;
+    static constexpr double maxFuelConsuption = 300.0;
 
     double _cruiseSpeedInKT{qQNaN()};
     double _descentSpeedInKT{qQNaN()};

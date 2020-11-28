@@ -31,3 +31,9 @@ good enough, you are welcome to join the openAIP project and help to improve the
 data.
 
 
+## What is the minimum Android version?
+
+At present **Enroute Flight Navigation** requires Android 5.0 or later, but we
+expect that we will soon require Android 6.0 or later.  We ask for your
+understanding that we cannot support older devices, as this would require
+manpower that we simply do not have.

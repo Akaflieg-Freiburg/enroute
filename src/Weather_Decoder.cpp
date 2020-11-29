@@ -2038,7 +2038,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart, c
     case metaf::MiscGroup::Type::COLOUR_CODE_RED:
         if (!result.isEmpty())
             result += " ";
-        result += tr("Colour code RED: either visibility >800 m or lowest cloud base height >200 ft or both");
+        result += tr("Colour code RED: visibility <800 m or lowest cloud base height <200 ft");
         return result;
 
     case metaf::MiscGroup::Type::FROIN:

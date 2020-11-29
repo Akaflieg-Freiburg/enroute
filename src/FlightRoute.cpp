@@ -383,10 +383,10 @@ QString FlightRoute::suggestedFilename() const
     }
 
     //
-    // Get name for start point (e.g. "EDTG (BREMGARTEN)")
+    // Get name for end point (e.g. "EDTG (BREMGARTEN)")
     //
-    QString end = _waypoints.constLast()->getPropery("COD").toString(); // ICAO code of start point
-    name = _waypoints.constLast()->getPropery("NAM").toString(); // Name of start point
+    QString end = _waypoints.constLast()->getPropery("COD").toString(); // ICAO code of end point
+    name = _waypoints.constLast()->getPropery("NAM").toString(); // Name of end point
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11)  // Shorten name
@@ -398,6 +398,7 @@ QString FlightRoute::suggestedFilename() const
             end += " (" + name + ")";
     }
 
+    // Compile final result
     if (start.isEmpty() && end.isEmpty())
         return tr("Flight Route");
 

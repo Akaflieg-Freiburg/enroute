@@ -105,7 +105,7 @@ Dialog {
 
                 Label { // raw METAR text
                     visible: (weatherStation !== null) && weatherStation.hasMETAR
-                    text: (weatherStation !== null) ? weatherStation.metar.rawText : ""
+                    text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.rawText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
 
@@ -124,7 +124,7 @@ Dialog {
 
                 Label { // decoded METAR text
                     visible: (weatherStation !== null) && weatherStation.hasMETAR
-                    text: (weatherStation !== null) ? weatherStation.metar.decodedText : ""
+                    text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                 }

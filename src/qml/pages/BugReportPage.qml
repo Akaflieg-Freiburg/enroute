@@ -142,11 +142,19 @@ Page {
                     Layout.fillWidth: true
                     text: qsTr("Procedures/Traffic circuits")
                     icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked:  {
+                        mobileAdaptor.vibrateBrief()
+                        stack.push(checkIfOFMcountry)
+                    }
                 }
                 Button {
                     Layout.fillWidth: true
                     text: qsTr("Reporting points")
                     icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked:  {
+                        mobileAdaptor.vibrateBrief()
+                        stack.push(checkIfOFMcountry)
+                    }
                 }
                 Label {
                     Layout.fillWidth: true
@@ -199,7 +207,7 @@ Page {
 
 <p>Like many other software projects, the developers of <strong>Enroute Flight Navigation</strong> use the web service GitHub to coordinate their work. We request that you use GitHub to submit your report. This ensures that your report will reach the right people, that your report will not be forgotten and that you will be informed about any progress.</p>
 
-<p>Please use the button below to go to our GitHub Issue Page and check if the problem has already been reported. If not, please open a new issue. If you prefer to work on your desktop computer, you also send yourself a link to GitHub by e-mail.</p>")
+<p>Please use the button below to go to our GitHub Issue Page and check if the problem has already been reported. If not, please open a new issue. If you prefer to work on your desktop computer, you can also send yourself a link to GitHub by e-mail.</p>")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
                     } // Label
@@ -220,7 +228,6 @@ Page {
                             mobileAdaptor.vibrateBrief()
                             Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to GitHub: https://github.com/Akaflieg-Freiburg/enroute/issues"))
                         }
-
                     }
                     Label {
                         Layout.fillWidth: true
@@ -290,7 +297,7 @@ Page {
 
 <h4>Aviation Data</h4>
 
-<p>The aviation data concerned in your report comes from <a href='http://openAIP.net'>openAIP.net</a>, a free aviation database operated by Garrecht Avionik GmbH in Germany.</p>
+<p>The aviation data concerned in your report comes from openAIP, a free aviation database operated by Garrecht Avionik GmbH in Germany.</p>
 
 <p>To correct the data in openAIP, we ask for your help. Please go to the openAIP web site, create an account and log in. You can then suggest corrections. Once your change is approved, the correction will appear in <strong>Enroute Flight Navigation</strong> within a week.</p>")
                         textFormat: Text.RichText
@@ -383,9 +390,9 @@ Page {
 
 <h4>Airspace Data</h4>
 
-<p>Airspace data shown in **Enroute Flight Navigation** comes from <a href='http://openAIP.net'>openAIP.net</a>, a free aviation database operated by Garrecht Avionik GmbH in Germany.</p>
+<p>Airspace data in <strong>Enroute Flight Navigation</strong> comes from openAIP, a free aviation database operated by Garrecht Avionik GmbH in Germany.</p>
 
-<p>Please contact Peter Kemme by e-mail, who has kindly volunteered to help our users. Peter speaks English and German.</p>")
+<p>Airspace data can only be edited by the administrators of openAIP. Please contact Peter Kemme by e-mail, who has kindly volunteered to help. Peter speaks English and German. Alternatively, you could open an account with openAIP and discuss your issue in the forum there.</p>")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
                     }
@@ -412,6 +419,227 @@ Page {
 
         }
 
+    }
+
+    Component {
+        id: checkIfOFMcountry
+
+        ColumnLayout {
+            ScrollView {
+                id: sv
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                clip: true
+
+                topPadding: Qt.application.font.pixelSize*1
+                leftPadding: Qt.application.font.pixelSize*0.5
+                rightPadding: Qt.application.font.pixelSize*0.5
+
+                contentHeight: cL.height
+                contentWidth: pg.width-leftPadding-rightPadding
+
+                // The visibility behavior of the vertical scroll bar is a little complex.
+                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+                ScrollBar.vertical.interactive: false
+
+                ColumnLayout {
+                    id: cL
+
+                    width: pg.width-sv.leftPadding-sv.rightPadding
+
+                    Label {
+                        Layout.fillWidth: true
+
+                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+
+<h4>Aviation Data</h4>
+
+<p>Does your report concern aviation data in one of the following countries?</p>
+
+<ul>
+<li>Austria</li>
+<li>Belgium</li>
+<li>Bulgaria</li>
+<li>Croatia</li>
+<li>Czech Republic</li>
+<li>Denmark</li>
+<li>Finland</li>
+<li>Germany</li>
+<li>Greece</li>
+<li>Hungary</li>
+<li>Italy</li>
+<li>Namibia</li>
+<li>Netherlands</li>
+<li>Malta</li>
+<li>Poland</li>
+<li>Romania</li>
+<li>Slovakia</li>
+<li>Slovenia</li>
+<li>South Africa</li>
+<li>Sweden</li>
+<li>Switzerland</li>
+</ul>")
+                        textFormat: Text.RichText
+                        wrapMode: Text.Wrap
+                    }
+                    Button {
+                        Layout.fillWidth: true
+                        text: qsTr("Yes")
+                        icon.source: "/icons/material/ic_bug_report.svg"
+                        onClicked:  {
+                            mobileAdaptor.vibrateBrief()
+                            stack.push(ofm)
+                        }
+                    }
+                    Button {
+                        Layout.fillWidth: true
+                        text: qsTr("No")
+                        icon.source: "/icons/material/ic_bug_report.svg"
+                        onClicked: {
+                            mobileAdaptor.vibrateBrief()
+                            stack.push(nixofm)
+                        }
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("<h3>Thank you for your help!</h3>")
+                        textFormat: Text.RichText
+                        wrapMode: Text.Wrap
+                    }
+                }
+            } // ScrollView
+
+        }
+
+    }
+
+    Component {
+        id: ofm
+
+        ColumnLayout {
+            ScrollView {
+                id: sv
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                clip: true
+
+                topPadding: Qt.application.font.pixelSize*1
+                leftPadding: Qt.application.font.pixelSize*0.5
+                rightPadding: Qt.application.font.pixelSize*0.5
+
+                contentHeight: cL.height
+                contentWidth: pg.width-leftPadding-rightPadding
+
+                // The visibility behavior of the vertical scroll bar is a little complex.
+                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+                ScrollBar.vertical.interactive: false
+
+                ColumnLayout {
+                    id: cL
+
+                    width: pg.width-sv.leftPadding-sv.rightPadding
+
+                    Label {
+                        Layout.fillWidth: true
+
+                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+
+<h4>Airspace Data</h4>
+
+<p>The aviation data concerned in your report comes from open flightmaps, an open source aviation database operated by the open flightmaps association in Austria.</p>
+<p>Please use the error report form at open flightmaps to report your issue. If you prefer to work on your desktop computer, you can also send yourself a link to GitHub by e-mail.</p>")
+                        textFormat: Text.RichText
+                        wrapMode: Text.Wrap
+                    }
+                    Button {
+                        Layout.fillWidth: true
+                        text: qsTr("Open error report form")
+                        icon.source: "/icons/material/ic_bug_report.svg"
+                        onClicked: {
+                            mobileAdaptor.vibrateBrief()
+                            Qt.openUrlExternally("https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform")
+                        }
+                    }
+                    Button {
+                        Layout.fillWidth: true
+                        text: qsTr("Send link by e-mail")
+                        icon.source: "/icons/material/ic_bug_report.svg"
+                        onClicked: {
+                            mobileAdaptor.vibrateBrief()
+                            Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to open flightmaps error report form: https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform"))
+                        }
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("<h3>Thank you for your help!</h3>")
+                        textFormat: Text.RichText
+                        wrapMode: Text.Wrap
+                    }
+
+                }
+
+            } // ScrollView
+
+        }
+
+    }
+
+    Component {
+        id: nixofm
+
+        ColumnLayout {
+            ScrollView {
+                id: sv
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                clip: true
+
+                topPadding: Qt.application.font.pixelSize*1
+                leftPadding: Qt.application.font.pixelSize*0.5
+                rightPadding: Qt.application.font.pixelSize*0.5
+
+                contentHeight: cL.height
+                contentWidth: pg.width-leftPadding-rightPadding
+
+                // The visibility behavior of the vertical scroll bar is a little complex.
+                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+                ScrollBar.vertical.interactive: false
+
+                ColumnLayout {
+                    id: cL
+
+                    width: pg.width-sv.leftPadding-sv.rightPadding
+
+                    Label {
+                        Layout.fillWidth: true
+
+                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+
+<h4>Aviation Data</h4>
+
+<p>The aviation data that you mentioned (procedures or reporting points) is available from open flightmaps for some regions, but not for your country. We are not aware of any free, publicly available and reliable source for this type of information that we could use in our app.</p>
+
+<p>There is nothing that we can do. We regret that we have no better news.</p>")
+                        textFormat: Text.RichText
+                        wrapMode: Text.Wrap
+                    }
+
+                } // ScrollView
+
+            }
+        }
     }
 
 } // Page

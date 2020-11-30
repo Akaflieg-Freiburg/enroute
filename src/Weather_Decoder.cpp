@@ -1268,6 +1268,27 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             continue;
         }
 
+        // ICE PELLETS
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::ICE_PELLETS) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light ice pellet precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate ice pellet precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy ice pellet precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent ice pellet precipitation");
+                break;
+            default:
+                return QString();
+            }
+            continue;
+        }
+
         // RAIN
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::RAIN) {
             switch(wp.qualifier()) {
@@ -1993,6 +2014,22 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart, c
         result += tr("Colour code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
         return result;
 
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKBLUE_PLUS:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLUE_PLUS:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code BLUE+: visibility >8000 m or lowest cloud base height >2000 ft");
+        return result;
+
+    case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW:
+        result = colourCodeBlack;
+    case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW:
+        if (!result.isEmpty())
+            result += " ";
+        result += tr("Colour code YELLOW: visibility 1600-3700 m or lowest cloud base height 300-700 ft");
+        return result;
+
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKWHITE:
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_WHITE:
@@ -2039,7 +2076,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart, c
         if (!result.isEmpty())
             result += " ";
         result += tr("Colour code RED: visibility <800 m or lowest cloud base height <200 ft");
-        return result;
+        return result;       
 
     case metaf::MiscGroup::Type::FROIN:
         return tr("Frost on the instrument (e.g. due to freezing fog depositing rime).");

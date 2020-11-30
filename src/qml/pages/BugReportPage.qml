@@ -83,16 +83,24 @@ Page {
                 Label {
                     Layout.fillWidth: true
 
-                    text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+                    text: qsTr("
+<h3>Report a bug or make a suggestion for improvement</h3>
 
-<p>We aim to provide high-quality software. Fixing errors is therefore always our first priority. We are grateful for every report that we get, and we would also like to hear your suggestions for improvement.</p>")
+<p>We aim to provide high-quality software. Fixing errors
+is therefore always our first priority. We are grateful for
+every report that we get, and we would also like to hear
+your suggestions for improvement.</p>
+")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
                 } // Label
 
                 Label {
                     Layout.fillWidth: true
-                    text: qsTr("<p>Use this button to report an issue in the main application.</p>")
+                    text: qsTr("
+<p>Use this button to report an issue in the main
+application.</p>
+")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
                 }
@@ -107,7 +115,11 @@ Page {
                 }
                 Label {
                     Layout.fillWidth: true
-                    text: qsTr("<p>Use these buttons to report error in the aviation data, such as wrong frequencies, outdated traffic patterns, missing navaids, etc.</p>")
+                    text: qsTr("
+<p>If you would like to report problems with the aviation
+data (such as wrong frequencies, outdated traffic patterns,
+missing navaids, …), then please use the buttons below.</p>
+")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
                 }
@@ -158,7 +170,9 @@ Page {
                 }
                 Label {
                     Layout.fillWidth: true
-                    text: qsTr("<h4>Thank you for your help!</h4>")
+                    text: qsTr("
+<h4>Thank you for your help!</h4>
+")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap
                 }
@@ -201,15 +215,29 @@ Page {
                     Label {
                         Layout.fillWidth: true
 
-                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+                        text: qsTr("
+<h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Issue in the main application</h4>
 
-<p>Like many other software projects, the developers of <strong>Enroute Flight Navigation</strong> use the web service GitHub to coordinate their work. We request that you use GitHub to submit your report. This ensures that your report will reach the right people, that your report will not be forgotten and that you will be informed about any progress.</p>
+<p>Like many other software projects, the developers of
+<strong>Enroute Flight Navigation</strong> use the web
+service <a href='https://github.com'>GitHub</a> to
+coordinate their work. We request that you use GitHub to
+submit your report. This ensures that your report will
+reach the right people, that your report will not be
+forgotten and that you will be notified about any
+progress.</p>
 
-<p>Please use the button below to go to our GitHub Issue Page and check if the problem has already been reported. If not, please open a new issue. If you prefer to work on your desktop computer, you can also send yourself a link to GitHub by e-mail.</p>")
+<p>Please use the button below to go to our GitHub Issue
+Page and check if the problem has already been reported. If
+not, please open a new issue. If you prefer to work on
+your desktop computer, you can also send yourself a link to
+GitHub by e-mail.</p>
+")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     } // Label
                     Button {
                         Layout.fillWidth: true
@@ -231,26 +259,27 @@ Page {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: qsTr("<p>If you have difficulties with GitHub, you could also contact Markus Sachs by e-mail, who has kindly volunteered to help our users. Markus speaks English and German.</p>")
-                        textFormat: Text.RichText
-                        wrapMode: Text.Wrap
-                    }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Send e-mail to Markus Sachs")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            mobileAdaptor.vibrateBrief()
-                            Qt.openUrlExternally(qsTr("mailto:ms@squawk-vfr.de?subject=Enroute Flight Navigation, Issue Report"))
-                        }
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("<p>Please note that <strong>Enroute Flight Navigation</strong> is written by a very small group of flight enthusiasts in their spare time, as a service to the community. Development of quality software takes time, and we ask for your understanding that that we are not able to implement all feature requests.  Bugfixing always comes first!</p>
+                        text: qsTr("
+<p>If you have difficulties with GitHub, you could also
+contact
+<a href='mailto:ms@squawk-vfr.de?subject=Enroute Flight
+Navigation, Issue Report'>Markus Sachs</a> by e-mail.
+Markus has kindly volunteered to help our users in his
+spare time. He speaks English and German.</p>
 
-<h3>Thank you for your help!</h3>")
+<p>Please note that <strong>Enroute Flight
+Navigation</strong> is written by a very small group of
+flight enthusiasts in their spare time, as a service to
+the community. Development of quality software takes time,
+and we ask for your understanding that that we are not
+able to implement all feature requests. Bugfixing always
+comes first!</p>
+
+<h3>Thank you for your help!</h3>
+")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     }
                 }
 

@@ -193,7 +193,7 @@ private:
     static constexpr double minAircraftSpeedInKMH = minAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
     static constexpr double maxAircraftSpeedInKT  = 400.0;
     static constexpr double maxAircraftSpeedInKMH = maxAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
-    static constexpr double minFuelConsuption = 5.0;
+    static constexpr double minFuelConsuption = 2.0;
     static constexpr double maxFuelConsuption = 300.0;
 
     double _cruiseSpeedInKT{qQNaN()};

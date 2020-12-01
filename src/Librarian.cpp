@@ -122,14 +122,6 @@ QString Librarian::getStringFromRessource(const QString &name) const
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
     }
 
-    if (name == ":text/bugReport.html") {
-      return tr(R"html(<h3>Bug Report</h3>
-
-<p>We aim to provide very high-quality software. Fixing errors is therefore always our first priority. We are grateful for every report that we get.</p>
-
-<p>Please report errors through the <a href="https://github.com/Akaflieg-Freiburg/enroute/issues">GitHub issue tracker</a> (this might require opening an account with GitHub).  If you find this difficult, then please <a href="mailto:stefan.kebekus@gmail.com">contact the author</a> directly.</p>)html");
-    }
-
     if (name == ":text/firstStart.html") {
         return tr(R"html(<h3>Welcome to Enroute Flight Navigation - A project of Akaflieg Freiburg</h3>
 
@@ -211,20 +203,6 @@ QString Librarian::getStringFromRessource(const QString &name) const
 <p>Fly safely and enjoy many happy landings!</p>
 
 <p>&#8212; Stefan Kebekus.</p>)html");
-    }
-
-    if (name == ":text/participate.html") {
-      return tr(R"html(<h3>Suggest features and improvements</h3>
-
-<p>We have great plans for <strong>Enroute Flight Navigation</strong>, check our <a href="https://github.com/Akaflieg-Freiburg/enroute/projects">project list at GitHub</a> to see what's coming.  Please make further suggestions through the <a href="https://github.com/Akaflieg-Freiburg/enroute/issues">GitHub issue tracker</a> (this might require opening an account with GitHub).  If you find this difficult, then please <a href="mailto:stefan.kebekus@gmail.com">contact the author</a> directly.  We ask for your understanding that not all your suggestions can be implemented immediately.</p>
-
-<h3>Join the project</h3>
-
-<p>If you would like to <strong>translate the app to your native language</strong>, we would like to <a href="mailto:stefan.kebekus@gmail.com">hear from you</a>. Programming experience is not necessary, but good computer skills are required.</p>
-
-<p>This app should run fine on <strong>Apple devices</strong>. If you would like to port the app to iOS and if you have development experience with C++/Qt programming and with Apple systems, like <a href="mailto:stefan.kebekus@gmail.com">get in touch with us</a> today.</p>
-
-<p>If you are fluent in C++ and if you would like to <strong>help with the programming</strong>, <a href="mailto:stefan.kebekus@gmail.com">let us know</a>.</p>)html");
     }
 
     if (name == ":text/tooManyDownloads.html") {

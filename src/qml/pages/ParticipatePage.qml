@@ -43,8 +43,38 @@ Page {
             
             Label {
                 id: lbl1
-                text: librarian.getStringFromRessource(":text/participate.html")
-                textFormat: Text.RichText
+                textFormat: Qt.RichText
+                text: qsTr("
+<h3>Participate in the development</h3>
+
+<p>We have great plans for <strong>Enroute Flight
+Navigation</strong>, check our
+<a href='https://github.com/Akaflieg-Freiburg/enroute/projects'>project
+list at GitHub</a> to see what's coming.</p>
+
+<h3>Translate</h3>
+
+<p>If know how to use the GIT version control system and if
+you would like to translate the app to your native
+language, we would like to hear from you. Programming
+experience is not necessary, but good computer skills are
+required.</p>
+
+<h3>Join the development</h3>
+
+<p>If you are fluent in C++ and if you would like to help
+with the programming, please get in touch with us by
+opening a GitHub issue. We are also struggling with power
+management on Android and would be grateful for any help
+that we could get.</p>
+
+<h3>Port to iOS</h3>
+
+<p>This app should run fine on Apple devices. If you would
+like to port the app to iOS and if you have development
+experience with C++/Qt programming and with Apple systems,
+please get in touch with us by opening a GitHub issue.</p>
+")
                 width: pg.width
                 wrapMode: Text.Wrap
                 topPadding: Qt.application.font.pixelSize*1

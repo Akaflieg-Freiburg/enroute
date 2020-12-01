@@ -472,7 +472,7 @@ QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed);
  *
  * @returns quotient of numerator and denominator as time
  */
-[[maybe_unused]] static AviationUnits::Time operator/(const AviationUnits::Distance &dist,
+[[maybe_unused]]  static AviationUnits::Time operator/(const AviationUnits::Distance &dist,
                                                       const AviationUnits::Speed &speed) {
     if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
         return {};

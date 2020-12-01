@@ -260,8 +260,7 @@ GitHub by e-mail.</p>
                     Label {
                         Layout.fillWidth: true
                         text: qsTr("
-<p>If you have difficulties with GitHub, you could also
-contact
+<p>If you have difficulties with GitHub, you can contact
 <a href='mailto:ms@squawk-vfr.de?subject=Enroute Flight
 Navigation, Issue Report'>Markus Sachs</a> by e-mail.
 Markus has kindly volunteered to help our users in his
@@ -322,15 +321,25 @@ comes first!</p>
                     Label {
                         Layout.fillWidth: true
 
-                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+                        text: qsTr("
+<h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
 
-<p>The aviation data concerned in your report comes from openAIP, a free aviation database operated by Garrecht Avionik GmbH in Germany.</p>
+<p>The aviation data concerned in your report comes from
+<a href='http://openaip.net'>openAIP</a>, a free aviation
+database operated by Garrecht Avionik GmbH in Germany.</p>
 
-<p>To correct the data in openAIP, we ask for your help. Please go to the openAIP web site, create an account and log in. You can then suggest corrections. Once your change is approved, the correction will appear in <strong>Enroute Flight Navigation</strong> within a week.</p>")
+<p>To correct the data in openAIP, we ask for your help.
+Please go to the openAIP web site, create an account and
+log in. You can then suggest corrections. Once your
+suggestion is approved, the correction will appear in
+<strong>Enroute Flight Navigation</strong> within a
+week.</p>
+")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     } // Label
                     Button {
                         Layout.fillWidth: true
@@ -353,27 +362,20 @@ comes first!</p>
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: qsTr("<p>If you have difficulties with the openAIP web site, you could also contact Peter Kemme by e-mail, who has kindly volunteered to help our users. Peter speaks English and German.</p>")
+                        text: qsTr("
+<p>If you have difficulties with the openAIP web site, you
+can contact
+<a href='mailto:peter.kemme@openflightmaps.org?subject=Enroute
+Flight Navigation, Issue Report'>Peter Kemme</a> by e-mail,
+who has kindly volunteered to help our users in his spare
+time. Peter speaks English and German.</p>
+
+<h3>Thank you for your help!</h3>
+")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Send e-mail to Peter Kemme")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            mobileAdaptor.vibrateBrief()
-                            Qt.openUrlExternally(qsTr("mailto:peter.kemme@openflightmaps.org?subject=Enroute Flight Navigation, Issue Report"))
-                        }
-
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("<h3>Thank you for your help!</h3>")
-                        textFormat: Text.RichText
-                        wrapMode: Text.Wrap
-                    }
-
                 }
 
             } // ScrollView
@@ -415,31 +417,30 @@ comes first!</p>
                     Label {
                         Layout.fillWidth: true
 
-                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+                        text: qsTr("
+<h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Airspace Data</h4>
 
-<p>Airspace data in <strong>Enroute Flight Navigation</strong> comes from openAIP, a free aviation database operated by Garrecht Avionik GmbH in Germany.</p>
+<p>Airspace data in <strong>Enroute Flight
+Navigation</strong> comes from
+<a href='http://openaip.net'>openAIP</a>, a free aviation
+database operated by Garrecht Avionik GmbH in Germany.</p>
 
-<p>Airspace data can only be edited by the administrators of openAIP. Please contact Peter Kemme by e-mail, who has kindly volunteered to help. Peter speaks English and German. Alternatively, you could open an account with openAIP and discuss your issue in the forum there.</p>")
+<p>Airspace data can only be edited by the administrators
+of openAIP. Please contact
+<a href='mailto:peter.kemme@openflightmaps.org?subject=Enroute
+Flight Navigation, Issue Report'>Peter Kemme</a> by e-mail,
+who knows openAIP and has kindly volunteered to help our
+users in his spare time. Peter speaks English and German.
+Alternatively, you could open an account with openAIP and
+discuss your issue in the forum there.</p>
+
+<h3>Thank you for your help!</h3>
+")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
-                    }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Send e-mail to Peter Kemme")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            mobileAdaptor.vibrateBrief()
-                            Qt.openUrlExternally(qsTr("mailto:peter.kemme@openflightmaps.org?subject=Enroute Flight Navigation, Issue Report"))
-                        }
-
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("<h3>Thank you for your help!</h3>")
-                        textFormat: Text.RichText
-                        wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     }
 
                 }
@@ -483,11 +484,13 @@ comes first!</p>
                     Label {
                         Layout.fillWidth: true
 
-                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+                        text: qsTr("
+<h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
 
-<p>Does your report concern aviation data in one of the following countries?</p>
+<p>Does your report concern aviation data in one of the
+following countries?</p>
 
 <ul>
 <li>Austria</li>
@@ -514,6 +517,7 @@ comes first!</p>
 </ul>")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     }
                     Button {
                         Layout.fillWidth: true
@@ -579,14 +583,23 @@ comes first!</p>
                     Label {
                         Layout.fillWidth: true
 
-                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+                        text: qsTr("
+<h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Airspace Data</h4>
 
-<p>The aviation data concerned in your report comes from open flightmaps, an open source aviation database operated by the open flightmaps association in Austria.</p>
-<p>Please use the error report form at open flightmaps to report your issue. If you prefer to work on your desktop computer, you can also send yourself a link to GitHub by e-mail.</p>")
+<p>The aviation data concerned in your report comes from
+<a href='https://www.openflightmaps.org/'>open
+flightmaps</a>, an open source aviation database operated
+by the open flightmaps association in Austria.</p>
+
+<p>Please use the error report form at open flightmaps to
+report your issue. If you prefer to work on your desktop
+computer, you can also send yourself a link by e-mail.</p>
+")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     }
                     Button {
                         Layout.fillWidth: true
@@ -611,6 +624,7 @@ comes first!</p>
                         text: qsTr("<h3>Thank you for your help!</h3>")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
+                        onLinkActivated: Qt.openUrlExternally(link)
                     }
 
                 }
@@ -654,13 +668,20 @@ comes first!</p>
                     Label {
                         Layout.fillWidth: true
 
-                        text: qsTr("<h3>Report a bug or make a suggestion for improvement</h3>
+                        text: qsTr("
+<h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
 
-<p>The aviation data that you mentioned (procedures or reporting points) is available from open flightmaps for some regions, but not for your country. We are not aware of any free, publicly available and reliable source for this type of information that we could use in our app.</p>
+<p>The aviation data that you mentioned (procedures or
+reporting points) is available from open flightmaps for
+some regions, but not for your country. We are not aware of
+any free, publicly available and reliable source for this
+type of information that we could use in our app.</p>
 
-<p>There is nothing that we can do. We regret that we have no better news.</p>")
+<p>There is nothing that we can do. We regret that we have
+no better news.</p>
+")
                         textFormat: Text.RichText
                         wrapMode: Text.Wrap
                     }

@@ -44,7 +44,7 @@ Page {
         visible: stack.depth > 1
 
         ToolButton {
-            text: qsTr("Go Back")
+            text: qsTr("Bug Report Home")
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked:  {
                 mobileAdaptor.vibrateBrief()

@@ -152,7 +152,7 @@ ApplicationWindow {
                     color: Material.primary
                 }
 
-                ItemDelegate {
+                ItemDelegate { // Info
                     text: qsTr("Information")
                     icon.source: "/icons/material/ic_info_outline.svg"
                     icon.color: Material.primary
@@ -163,7 +163,7 @@ ApplicationWindow {
                         aboutMenu.popup()
                     }
 
-                    AutoSizingMenu {
+                    AutoSizingMenu { // Info Menu
                         id: aboutMenu
 
                         ItemDelegate {
@@ -190,6 +190,27 @@ ApplicationWindow {
                             color: Material.primary
                         }
 
+                        ItemDelegate { // Manual
+                            text: qsTr("Manual")
+                            icon.source: "/icons/material/ic_help_outline.svg"
+                            icon.color: Material.primary
+                            Layout.fillWidth: true
+                            visible: !satNav.isInFlight
+
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                stackView.pop()
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enroute/manual");
+                                drawer.close()
+                            }
+                        }
+
+                        Rectangle {
+                            height: 1
+                            Layout.fillWidth: true
+                            color: Material.primary
+                        }
+
                         ItemDelegate {
                             text: qsTr("About Enroute Flight Navigation")
                             icon.source: "/icons/material/ic_info_outline.svg"
@@ -204,21 +225,7 @@ ApplicationWindow {
                             }
                         }
 
-                        ItemDelegate {
-                            text: qsTr("Bug report")
-                            icon.source: "/icons/material/ic_bug_report.svg"
-                            icon.color: Material.primary
-
-                            onClicked: {
-                                mobileAdaptor.vibrateBrief()
-                                stackView.pop()
-                                stackView.push("pages/BugReportPage.qml")
-                                aboutMenu.close()
-                                drawer.close()
-                            }
-                        }
-
-                        ItemDelegate {
+                        ItemDelegate { // Participate
                             text: qsTr("Participate")
                             icon.source: "/icons/nav_participate.svg"
                             icon.color: Material.primary
@@ -234,17 +241,17 @@ ApplicationWindow {
                     } // Menu
                 }
 
-                ItemDelegate {
-                    text: qsTr("Manual")
-                    icon.source: "/icons/material/ic_help_outline.svg"
+                ItemDelegate { // Bug report
+                    text: qsTr("Bug report")
+                    icon.source: "/icons/material/ic_bug_report.svg"
                     icon.color: Material.primary
                     Layout.fillWidth: true
-                    visible: !satNav.isInFlight
 
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         stackView.pop()
-                        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enroute/manual");
+                        stackView.push("pages/BugReportPage.qml")
+                        aboutMenu.close()
                         drawer.close()
                     }
                 }
@@ -256,7 +263,7 @@ ApplicationWindow {
                     visible: !satNav.isInFlight
                 }
 
-                ItemDelegate {
+                ItemDelegate { // Exit
                     text: qsTr("Exit")
                     icon.source: "/icons/material/ic_exit_to_app.svg"
                     icon.color: Material.primary

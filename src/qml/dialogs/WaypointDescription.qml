@@ -300,7 +300,9 @@ Dialog {
 
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
-                    Qt.openUrlExternally(qsTr("mailto:stefan.kebekus@gmail.com?subject=Enroute, Error Report &body=Thank you for suggesting a correction in the map data. Please describe the issue here."))
+                    close()
+                    stackView.pop()
+                    stackView.push("../pages/BugReportPage.qml")
                 }
             }
         }

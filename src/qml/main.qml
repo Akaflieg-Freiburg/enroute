@@ -166,7 +166,7 @@ ApplicationWindow {
                     AutoSizingMenu { // Info Menu
                         id: aboutMenu
 
-                        ItemDelegate {
+                        ItemDelegate { // Sat Status
                             text: qsTr("Satellite Status")
                                   +`<br><font color="#606060" size="2">`
                                   + qsTr("Current Status")
@@ -211,7 +211,7 @@ ApplicationWindow {
                             color: Material.primary
                         }
 
-                        ItemDelegate {
+                        ItemDelegate { // About
                             text: qsTr("About Enroute Flight Navigation")
                             icon.source: "/icons/material/ic_info_outline.svg"
                             icon.color: Material.primary
@@ -234,6 +234,20 @@ ApplicationWindow {
                                 mobileAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/ParticipatePage.qml")
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                        ItemDelegate { // Donate
+                            text: qsTr("Donate")
+                            icon.source: "/icons/material/ic_attach_money.svg"
+                            icon.color: Material.primary
+
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/DonatePage.qml")
                                 aboutMenu.close()
                                 drawer.close()
                             }

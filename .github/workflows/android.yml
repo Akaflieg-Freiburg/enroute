@@ -27,7 +27,7 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with:
         target: 'android'
-        version: '5.15.0'
+        version: '5.15.2'
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
     - name: Install Additional Software
       run: |

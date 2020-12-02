@@ -2247,6 +2247,10 @@ QString Weather::Decoder::visitPressureGroup(const PressureGroup & group, Report
         return tr("QFE: %1").arg(explainPressure(group.atmosphericPressure()));
         break;
 
+    case metaf::PressureGroup::Type::OBSERVED_SLP:
+        return tr("Standard sea level pressure: %1").arg(explainPressure(group.atmosphericPressure()));
+        break;
+
     case metaf::PressureGroup::Type::SLPNO:
         return tr("QNH is not available");
         break;

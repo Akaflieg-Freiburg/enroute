@@ -26,7 +26,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("Improve this app")
+    title: qsTr("Donate")
 
     header: StandardHeader {}
 
@@ -45,21 +45,36 @@ Page {
                 id: lbl1
                 textFormat: Qt.RichText
                 text: qsTr("
-<h3>Donate</h3>
+<p><strong>Enroute Flight Navigation</strong> is a
+non-commercial project of Akaflieg Freiburg and the
+University of Freiburg. The app has been written by flight
+enthusiasts in their spare time, as a service to the
+community. The developers do not take donations</p>
 
-<p><strong>Enroute Flight Navigation</strong> is a non-commercial project of Akaflieg Freiburg and the University of Freiburg.
-The app has been written by flight enthusiasts in their spare time, as a service to the community. The developers do not take donations</p>
+<p>If you appreciate the app, please consider a donation to
+Akaflieg Freiburg, a tax-privileged, not-for-profit flight
+club of public utility in Freiburg, Germany. </p>
 
-<p>If you appreciate the app, please consider a donation to Akaflieg Freiburg, a tax-privileged, not-for-profit flight club of public utility in Freiburg, Germany.</p>
-
-<pre>
-IBAN:    DE35 6809 0000 0027 6409 07
-BIC:     GENODE61FR1
-Bank:    Volksbank Freiburg
-UStId.:  DE142115943
-
-Message: Enroute Flight Navigation.
-</pre>
+<p>
+  <table>
+    <tr>
+      <td>IBAN:</td>
+      <td>DE35 6809 0000 0027 6409 07</td>
+    </tr>
+    <tr>
+      <td>BIC:</td>
+      <td>GENODE61FR1</td>
+    </tr>
+    <tr>
+      <td>Bank:</td>
+      <td>Volksbank Freiburg</td>
+    </tr>
+    <tr>
+      <td>Message:</td>
+      <td>Enroute Flight Navigation</td>
+    </tr>
+  </table>
+</p>
 ")
                 width: pg.width
                 wrapMode: Text.Wrap

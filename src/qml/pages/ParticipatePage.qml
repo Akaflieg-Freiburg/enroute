@@ -26,7 +26,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("Improve this app")
+    title: qsTr("Participate")
 
     header: StandardHeader {}
 

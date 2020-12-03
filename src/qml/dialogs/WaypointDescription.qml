@@ -181,21 +181,24 @@ Dialog {
                                 return "blue";
                             case "TMZ":
                                 return "black";
+                            case "NRA":
+                                return "green";
                             }
                             return "transparent"
                         }
                         strokeStyle:  {
-                            switch(airspace.mapLayout) {
+                            switch(airspace.CAT) {
                             case "A":
                             case "B":
                             case "C":
                             case "D":
+                            case "NRA":
                                 return ShapePath.SolidLine;
                             }
                             return ShapePath.DashLine
                         }
                         dashPattern:  {
-                            switch(airspace.mapLayout) {
+                            switch(airspace.CAT) {
                             case "TMZ":
                                 return [4, 2, 1, 2];
                             }
@@ -227,6 +230,8 @@ Dialog {
                             return "#40ff0000";
                         case "RMZ":
                             return "#400000ff";
+                        case "NRA":
+                            return "#4000ff00";
                         }
                         return "transparent"
                     }

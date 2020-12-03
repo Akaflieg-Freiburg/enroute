@@ -1471,6 +1471,31 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             continue;
         }
 
+        // SNOW GRAINS
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::SNOW_GRAINS) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("snow grain precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("snow grain precipitation in the vicinity");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light snow grain precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate snow grain precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy snow grain precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent snow grain precipitation");
+                break;
+            }
+            continue;
+        }
+
         // SNOW, LOW_DRIFTING
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::LOW_DRIFTING && weather == metaf::WeatherPhenomena::Weather::SNOW) {
             switch(wp.qualifier()) {

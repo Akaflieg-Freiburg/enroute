@@ -287,8 +287,67 @@ Map {
         property var iconTextFit: "both"
         property var iconTextFitPadding: [2,5,2,5]
     }
+
     
-    
+    /*
+     * Nature Reserve Area
+     */
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "natureReserveAreas"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "NRA"]
+    }
+
+    MapParameter {
+        type: "paint"
+        property var layer: "natureReserveAreas"
+        property var lineColor: "green"
+        property var lineOpacity: 0.2
+        property var lineWidth: airspaceLineWidth
+        property var lineOffset: airspaceLineWidth/2.0
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "natureReserveAreaOutlines"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "NRA"]
+    }
+
+    MapParameter {
+        type: "paint"
+        property var layer: "natureReserveAreaOutlines"
+        property var lineColor: "green"
+        property var lineWidth: 2.0
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "natureReserveAreaLabels"
+        property var layerType: "symbol"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "NRA"]
+        property var minzoom: 10
+    }
+
+    MapParameter {
+        type: "layout"
+
+        property var layer: "natureReserveAreaLabels"
+        property var textField: ["get", "NAM"]
+        property var textSize: 12
+        property var iconImage: "WhiteBox"
+        property var iconTextFit: "both"
+        property var iconTextFitPadding: [2,5,2,5]
+    }
+
     /*
      * Danger Zone, Prohibited Zone, Restricted Zone
      */

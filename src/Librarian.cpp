@@ -231,7 +231,9 @@ QString Librarian::getStringFromRessource(const QString &name) const
 
     if (name == ":text/whatsnew.html") {
         return tr(R"html(
-<p>This release implements the users' most requested feature: tap on the north arrow to switch between map bearing modes <strong>North Up</strong> and <strong>Track Up</strong>, or use the standard rotation gesture to rotate the map manually.</p>)html");
+<p>For countries covered by open flightmaps, the map now
+shows nature reserve areas. This is extremely important if
+you fly in Austria.</p>)html");
     }
 
     QFile file(name);

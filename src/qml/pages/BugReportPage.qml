@@ -138,7 +138,7 @@ application.</p>
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: qsTr("Nature Reserve Area")
+                    text: qsTr("Nature Reserve Areas")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
                         mobileAdaptor.vibrateBrief()
@@ -160,8 +160,9 @@ application.</p>
 <h4>Aviation Data</h4>
 
 <p>If you would like to report problems with other aviation
-data (such as wrong frequencies, outdated traffic patterns,
-missing navaids, …), then please use the buttons below.</p>
+data (such as wrong airfield frequencies, outdated traffic
+patterns, missing navaids, …), then please use the buttons
+below.</p>
 ")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap

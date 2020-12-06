@@ -242,7 +242,6 @@ Map {
         property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
-    
     MapParameter {
         type: "paint"
         property var layer: "controlZones"
@@ -258,7 +257,6 @@ Map {
         property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
-    
     MapParameter {
         type: "paint"
         property var layer: "controlZoneOutlines"
@@ -266,7 +264,6 @@ Map {
         property var lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
     }
-    
     MapParameter {
         type: "layer"
         
@@ -276,7 +273,6 @@ Map {
         property var filter: ["==", ["get", "CAT"], "CTR"]
         property var minzoom: 10
     }
-    
     MapParameter {
         type: "layout"
 
@@ -396,14 +392,12 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
         property var minzoom: 10
     }
-    
     MapParameter {
         type: "paint"
         property var layer: "dangerZoneLabels"
         property var textHaloWidth: 2
         property var textHaloColor: "white"
     }
-    
     MapParameter {
         type: "layout"
         
@@ -418,7 +412,7 @@ Map {
     // End of airspaces
 
     /*
-     * TFC - Traffic circuit
+     * Procedures
      */
     
     MapParameter {
@@ -452,12 +446,12 @@ Map {
         property var layer: "TFCLabels"
         property var symbolPlacement: "line"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
+        property var textSize: 16
     }
     MapParameter {
         type: "paint"
         property var layer: "TFCLabels"
-        property var textHaloWidth: 2
+        property var textHaloWidth: 10
         property var textHaloColor: "white"
     }
 

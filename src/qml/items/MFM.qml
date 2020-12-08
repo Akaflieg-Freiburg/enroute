@@ -100,7 +100,7 @@ Item {
         Binding on center {
             id: centerBinding
 
-            restoreMode: Binding.RestoreBinding
+            restoreMode: Binding.RestoreNone
             when: flightMap.followGPS === true
             value: {
                 // If not in flight, then aircraft stays in center of display

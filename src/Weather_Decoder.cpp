@@ -1278,7 +1278,7 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
                 results << tr("thunderstorm with hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with hail in the vicinite");
+                results << tr("thunderstorm with hail in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
                 results << tr("light thunderstorm with hail");

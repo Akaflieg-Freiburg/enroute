@@ -418,18 +418,53 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "TFC"
+        property var name: "PRC_DEP"
         property var layerType: "line"
         property var source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "PRC"]
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "DEP"]]
         property var minzoom: 10
     }
     MapParameter {
         type: "paint"
-        property var layer: "TFC"
+        property var layer: "PRC_DEP"
+        property var lineColor: ["get", "GAC"]
+        property var lineWidth: 3.0
+        property var lineDasharray: [3.0, 3.0]
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "PRC_ARR"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "ARR"]]
+        property var minzoom: 10
+    }
+    MapParameter {
+        type: "paint"
+        property var layer: "PRC_ARR"
+        property var lineColor: ["get", "GAC"]
+        property var lineWidth: 3.0
+        property var lineDasharray: [9.0, 3.0]
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "PRC_OTH"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "ARR"], ["!=", ["get", "USE"], "DEP"]]
+        property var minzoom: 10
+    }
+    MapParameter {
+        type: "paint"
+        property var layer: "PRC_OTH"
         property var lineColor: ["get", "GAC"]
         property var lineWidth: 3.0
     }
+
     
     MapParameter {
         type: "layer"

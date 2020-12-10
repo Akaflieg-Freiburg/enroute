@@ -134,6 +134,16 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 }
 
 
+QString GeoMapProvider::fileInfo(QString fileName)
+{
+    QMutexLocker locker(&_aviationDataMutex);
+    if (_fileInfo_.contains(fileName))
+        if (!_fileInfo_.value(fileName).isEmpty())
+            return _fileInfo_.value(fileName);
+    return tr("No information available.");
+}
+
+
 Waypoint* GeoMapProvider::findByID(const QString &id)
 {
     auto wps = waypoints();
@@ -242,6 +252,8 @@ void GeoMapProvider::baseMapsChanged()
 
 void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces)
 {
+    QMap<QString, QString> newFileInfo;
+
     //
     // Generate new GeoJSON array and new list of waypoints
     //
@@ -258,6 +270,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         file.close();
         lockFile.unlock();
 
+        newFileInfo.insert(JSONFileName, document.object()["info"].toString());
         foreach(auto value, document.object()["features"].toArray()) {
             auto object = value.toObject();
 
@@ -322,6 +335,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
             continue;
         waypoint->deleteLater();
     }
+    _fileInfo_ = newFileInfo;
     _airspaces_ = newAirspaces;
     _waypoints_ = newWaypoints;
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);

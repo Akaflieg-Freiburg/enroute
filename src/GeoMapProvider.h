@@ -136,6 +136,20 @@ public:
         return _combinedGeoJSON_;
     }
 
+    /*! \brief Describe installed map
+     *
+     * This method describes an installed map.
+     *
+     * @warning The data is only updated
+     * after the maps have been parsed in the GeoJSON parsing process. It is
+     * therefore possible that the method returns wrong information if it is
+     * called directly after a new map has been installed.
+     *
+     * @returns A string of the form "Map data compiled from the
+     * following source: …" or an empty string if no data is available
+     */
+    Q_INVOKABLE QString fileInfo(QString fileName);
+
     /*! Find a waypoint by its ICAO code
      *
      * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
@@ -146,7 +160,6 @@ public:
      * and must not be deleted.
      */
     Waypoint* findByID(const QString& id);
-
 
     /*! List of nearby waypoints
      *
@@ -263,5 +276,5 @@ private:
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
     QList<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
     QList<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
-
+    QMap<QString, QString> _fileInfo_;           // Cache: Info for installed maps
 };

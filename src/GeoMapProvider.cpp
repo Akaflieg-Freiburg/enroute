@@ -99,6 +99,34 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 }
 
 
+QString GeoMapProvider::describeMapFile(QString fileName)
+{
+    QFileInfo fi(fileName);
+    if (!fi.exists())
+        return tr("No information available.");
+    QString result = QString("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
+            .arg(tr("Installed"),
+                 fi.lastModified().toUTC().toString(),
+                 tr("File Size"),
+                 QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
+
+    _aviationDataMutex.lock();
+    QString concatInfoString = _geoJSONFileInfo_.value(fileName, "");
+    _aviationDataMutex.unlock();
+
+    if (!concatInfoString.isEmpty()) {
+        result += "<p>"+tr("The map data was compiled from the following sources.")+"</p><ul>";
+
+        auto infoStrings = concatInfoString.split(";");
+        foreach(auto infoString, infoStrings)
+            result += "<li>"+infoString+"</li>";
+        result += "</ul>";
+    }
+
+    return result;
+}
+
+
 QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 {
     auto wps = waypoints();
@@ -131,16 +159,6 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
     }
 
     return result;
-}
-
-
-QString GeoMapProvider::fileInfo(QString fileName)
-{
-    QMutexLocker locker(&_aviationDataMutex);
-    if (_fileInfo_.contains(fileName))
-        if (!_fileInfo_.value(fileName).isEmpty())
-            return _fileInfo_.value(fileName);
-    return tr("No information available.");
 }
 
 
@@ -335,7 +353,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
             continue;
         waypoint->deleteLater();
     }
-    _fileInfo_ = newFileInfo;
+    _geoJSONFileInfo_ = newFileInfo;
     _airspaces_ = newAirspaces;
     _waypoints_ = newWaypoints;
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);

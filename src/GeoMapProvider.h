@@ -109,6 +109,21 @@ public:
      */
     Q_INVOKABLE QObject* closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
 
+    /*! \brief Describe installed map
+     *
+     * This method describes installed GeoJSON map files.
+     *
+     * @warning The data is only updated
+     * after the maps have been parsed in the GeoJSON parsing process. It is
+     * therefore possible that the method returns wrong information if it is
+     * called directly after a new map has been installed.
+     *
+     * @param fileName Name of a GeoJSON file.
+     *
+     * @returns A human-readable HTML string, or an empty string if no data is available
+     */
+    Q_INVOKABLE QString describeMapFile(QString fileName);
+
     /*! \brief Waypoints containing a given substring
      *
      * @param filter List of words
@@ -135,20 +150,6 @@ public:
         QMutexLocker lock(&_aviationDataMutex);
         return _combinedGeoJSON_;
     }
-
-    /*! \brief Describe installed map
-     *
-     * This method describes an installed map.
-     *
-     * @warning The data is only updated
-     * after the maps have been parsed in the GeoJSON parsing process. It is
-     * therefore possible that the method returns wrong information if it is
-     * called directly after a new map has been installed.
-     *
-     * @returns A string of the form "Map data compiled from the
-     * following source: …" or an empty string if no data is available
-     */
-    Q_INVOKABLE QString fileInfo(QString fileName);
 
     /*! Find a waypoint by its ICAO code
      *
@@ -276,5 +277,5 @@ private:
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
     QList<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
     QList<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
-    QMap<QString, QString> _fileInfo_;           // Cache: Info for installed maps
+    QMap<QString, QString> _geoJSONFileInfo_;    // Cache: Info for installed GeoJSON files, by file name
 };

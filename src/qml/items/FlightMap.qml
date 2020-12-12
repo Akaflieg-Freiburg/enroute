@@ -41,7 +41,7 @@ Map {
     property string geoJSON
     
     /*! \brief Width of thick lines around airspaces, such as class D */
-    property real airspaceLineWidth: 5.0
+    property real airspaceLineWidth: 7.0
 
     /*
     * Handle changes in zoom level

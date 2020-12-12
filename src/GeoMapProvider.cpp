@@ -26,6 +26,8 @@
 #include <QJsonObject>
 #include <QQmlEngine>
 #include <QRandomGenerator>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 #include "Clock.h"
 #include "GeoMapProvider.h"
@@ -111,20 +113,53 @@ QString GeoMapProvider::describeMapFile(QString fileName)
                  QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
 
     // Extract infomation from GeoJSON
-    QLockFile lockFile(fileName+".lock");
-    lockFile.lock();
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    auto document = QJsonDocument::fromJson(file.readAll());
-    file.close();
-    lockFile.unlock();
-    QString concatInfoString = document.object()["info"].toString();
-    if (!concatInfoString.isEmpty()) {
-        result += "<p>"+tr("The map data was compiled from the following sources.")+"</p><ul>";
-        auto infoStrings = concatInfoString.split(";");
-        foreach(auto infoString, infoStrings)
-            result += "<li>"+infoString+"</li>";
-        result += "</ul>";
+    if (fileName.endsWith(".geojson")) {
+        QLockFile lockFile(fileName+".lock");
+        lockFile.lock();
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly);
+        auto document = QJsonDocument::fromJson(file.readAll());
+        file.close();
+        lockFile.unlock();
+        QString concatInfoString = document.object()["info"].toString();
+        if (!concatInfoString.isEmpty()) {
+            result += "<p>"+tr("The map data was compiled from the following sources.")+"</p><ul>";
+            auto infoStrings = concatInfoString.split(";");
+            foreach(auto infoString, infoStrings)
+                result += "<li>"+infoString+"</li>";
+            result += "</ul>";
+        }
+    }
+
+    // Extract infomation from MBTILES
+    if (fileName.endsWith(".mbtiles")) {
+        QString _attribution = "";
+        QString _description = "empty tile set";
+        QString _name        = "empty";
+        QString _mtime       = "";
+
+        // Open database
+        auto databaseConnectionName = "GeoMapProvider::describeMapFile "+fileName;
+        auto db = QSqlDatabase::addDatabase("QSQLITE", databaseConnectionName);
+        db.setDatabaseName(fileName);
+        db.open();
+        if (!db.isOpenError()) {
+            // Read metadata from database
+            QSqlQuery query(db);
+            QString intResult;
+            if (query.exec("select name, value from metadata;")) {
+                while(query.next()) {
+                    QString key = query.value(0).toString();
+                    if (key == "json")
+                        continue;
+                    intResult += QString("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
+                                .arg(key, query.value(1).toString());
+                }
+            }
+            if (!intResult.isEmpty())
+                result += QString("<h4>%1</h4><table>%2</table>").arg(tr("Internal Map Data"), intResult);
+            db.close();
+        }
     }
 
     return result;

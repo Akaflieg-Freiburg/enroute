@@ -110,7 +110,7 @@ QString GeoMapProvider::describeMapFile(QString fileName)
                  tr("File Size"),
                  QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
 
-    // Read the lock file
+    // Extract infomation from GeoJSON
     QLockFile lockFile(fileName+".lock");
     lockFile.lock();
     QFile file(fileName);
@@ -118,17 +118,9 @@ QString GeoMapProvider::describeMapFile(QString fileName)
     auto document = QJsonDocument::fromJson(file.readAll());
     file.close();
     lockFile.unlock();
-
     QString concatInfoString = document.object()["info"].toString();
-
-    /*
-    _aviationDataMutex.lock();
-    QString concatInfoString = _geoJSONFileInfo_.value(fileName, "");
-    _aviationDataMutex.unlock();
-*/
     if (!concatInfoString.isEmpty()) {
         result += "<p>"+tr("The map data was compiled from the following sources.")+"</p><ul>";
-
         auto infoStrings = concatInfoString.split(";");
         foreach(auto infoString, infoStrings)
             result += "<li>"+infoString+"</li>";
@@ -282,8 +274,6 @@ void GeoMapProvider::baseMapsChanged()
 
 void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces)
 {
-    QMap<QString, QString> newFileInfo;
-
     //
     // Generate new GeoJSON array and new list of waypoints
     //
@@ -300,7 +290,6 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         file.close();
         lockFile.unlock();
 
-        newFileInfo.insert(JSONFileName, document.object()["info"].toString());
         foreach(auto value, document.object()["features"].toArray()) {
             auto object = value.toObject();
 
@@ -365,7 +354,6 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
             continue;
         waypoint->deleteLater();
     }
-    _geoJSONFileInfo_ = newFileInfo;
     _airspaces_ = newAirspaces;
     _waypoints_ = newWaypoints;
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);

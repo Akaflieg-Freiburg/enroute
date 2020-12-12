@@ -277,5 +277,4 @@ private:
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
     QList<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
     QList<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
-    QMap<QString, QString> _geoJSONFileInfo_;    // Cache: Info for installed GeoJSON files, by file name
 };

@@ -16,6 +16,14 @@ Our base maps are edited versions of maps kindly provided by [Klokan Technologie
 
 Our free aeronautical maps are compiled from databases provided by the [openAIP](http://openaip.net) and the [open flightmaps](https://www.openflightmaps.org/) projects. While openAIP covers most of the world, the open flightmaps cover fewer countries but contain more detailed information. The maps receive near-weekly updates.
 
+| Map Feature | Data Origin |
+| ----------- | ----------- |
+| Airfields | openAIP |
+| Airspace: Nature Preserve Areas | open flightmaps |
+| Airspace: all other | openAIP |
+| Navaids | openAIP |
+| Procedures (Traffic Circuits, …) | open flightmaps |
+| Reporting Points | open flightmaps |
 
 ### Class 1 and Class 2 maps
 

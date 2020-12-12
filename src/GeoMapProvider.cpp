@@ -110,10 +110,22 @@ QString GeoMapProvider::describeMapFile(QString fileName)
                  tr("File Size"),
                  QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
 
+    // Read the lock file
+    QLockFile lockFile(fileName+".lock");
+    lockFile.lock();
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
+    auto document = QJsonDocument::fromJson(file.readAll());
+    file.close();
+    lockFile.unlock();
+
+    QString concatInfoString = document.object()["info"].toString();
+
+    /*
     _aviationDataMutex.lock();
     QString concatInfoString = _geoJSONFileInfo_.value(fileName, "");
     _aviationDataMutex.unlock();
-
+*/
     if (!concatInfoString.isEmpty()) {
         result += "<p>"+tr("The map data was compiled from the following sources.")+"</p><ul>";
 

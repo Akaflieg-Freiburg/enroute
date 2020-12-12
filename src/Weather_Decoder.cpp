@@ -2171,6 +2171,12 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart, c
 
     case metaf::MiscGroup::Type::FROIN:
         return tr("Frost on the instrument (e.g. due to freezing fog depositing rime).");
+
+    case metaf::MiscGroup::Type::ISSUER_ID_FN:
+        return tr("Report issuer identifier is %. This forecast is issued at The Fleet Weather Center Norfolk, VA.").arg(static_cast<int>(*group.data()));
+
+    case metaf::MiscGroup::Type::ISSUER_ID_FS:
+        return tr("Report issuer identifier is %. This forecast is issued at The Fleet Weather Center San Diego, CA (FS).").arg(static_cast<int>(*group.data()));
     }
     return QString();
 }

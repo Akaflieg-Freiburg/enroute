@@ -233,7 +233,9 @@ QString Librarian::getStringFromRessource(const QString &name) const
         return tr(R"html(
 <p>For countries covered by open flightmaps, the map now
 shows nature reserve areas. This is extremely important if
-you fly in Austria.</p>)html");
+you fly in Austria. The height of traffic circuits is now
+displayed prominently. Arrival and departure routes for
+control zones are more clearly marked.</p>)html");
     }
 
     QFile file(name);

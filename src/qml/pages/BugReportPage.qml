@@ -147,7 +147,7 @@ application.</p>
                 }
                 Button {
                     Layout.fillWidth: true
-                    text: qsTr("All Other Airspacea")
+                    text: qsTr("All Other Airspaces")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
                         mobileAdaptor.vibrateBrief()

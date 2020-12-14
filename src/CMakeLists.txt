@@ -85,6 +85,7 @@ set(SOURCES
     Librarian.h
     MapManager.h
     MobileAdaptor.h
+    Navigation_FLARMAdaptor.h
     SatNav.h
     ScaleQuickItem.h
     Waypoint.h
@@ -114,6 +115,7 @@ set(SOURCES
     MapManager.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
+    Navigation_FLARMAdaptor.cpp
     SatNav.cpp
     ScaleQuickItem.cpp
     TileHandler.cpp

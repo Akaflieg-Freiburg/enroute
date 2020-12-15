@@ -87,7 +87,29 @@ Map {
         property var sprite: ":flightMap/sprites/WhiteBox.png"
     }
     
-    
+
+    /*
+     * FIS - Flight Information Sector
+     */
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "FIS"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "FIS"]
+    }
+
+    MapParameter {
+        type: "paint"
+        property var layer: "FIS"
+        property var lineColor: "black"
+        property var lineWidth: 0.5
+        // property var lineDasharray: [4.0, 4.0]
+    }
+
+
     /*
      * RMZ - Radio Mandatory Zone
      */
@@ -653,7 +675,6 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
     }
 
-    
     MapParameter {
         type: "layout"
 

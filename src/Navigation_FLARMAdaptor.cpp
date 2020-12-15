@@ -18,9 +18,69 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDebug>
+
 #include "Navigation_FLARMAdaptor.h"
 
+
 Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
+
+    // Wire up socket
+    connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::receiveSocketConnected);
+    connect(&socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::receiveSocketDisconnected);
+    connect(&socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::receiveSocketErrorOccurred);
+    connect(&socket, &QTcpSocket::readyRead, this, &Navigation::FLARMAdaptor::readFromStream);
+
+    // Wire up the connectTimer. Set it to attempt a FLARM connection every 5 Minutes
+    connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToFLARM);
+    connectTimer.start(1000*60*5);
+
+    // Try our first connect 30sec after startup
+    QTimer::singleShot(1000*30, this, &Navigation::FLARMAdaptor::connectToFLARM);
 }
 
 
+void Navigation::FLARMAdaptor::connectToFLARM()
+{
+    qWarning() << "Navigation::FLARMAdaptor::connectToFLARM()";
+
+    if (socket.state() != QAbstractSocket::UnconnectedState) {
+        qWarning() << "Navigation::FLARMAdaptor::connectToFLARM(): socket is not unconnected";
+        return;
+    }
+
+    // Expect a FLARM device at address 192.168.1.1, port 2000^
+    qWarning() << "Navigation::FLARMAdaptor::connectToFLARM() initiate connection";
+    socket.connectToHost("192.168.1.1", 2000);
+}
+
+
+void Navigation::FLARMAdaptor::receiveSocketConnected()
+{
+    qWarning() << "Navigation::FLARMAdaptor::receiveSocketConnected()";
+    stream.setDevice(&socket);
+}
+
+
+void Navigation::FLARMAdaptor::receiveSocketDisconnected()
+{
+    qWarning() << "Navigation::FLARMAdaptor::receiveSocketDisconnected()";
+}
+
+
+void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError)
+{
+    qWarning() << "Navigation::FLARMAdaptor::receiveSocketErrorOccurred()" << socketError;
+}
+
+
+bool Navigation::FLARMAdaptor::receiving() const
+{
+    return false;
+}
+
+
+void Navigation::FLARMAdaptor::readFromStream()
+{
+    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << stream.readLine();
+}

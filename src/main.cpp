@@ -43,6 +43,7 @@
 #include "Librarian.h"
 #include "MapManager.h"
 #include "MobileAdaptor.h"
+#include "Navigation_FLARMAdaptor.h"
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
 #include "Weather_DownloadManager.h"
@@ -113,6 +114,9 @@ int main(int argc, char *argv[])
 #if !defined(Q_OS_ANDROID)
     QObject::connect(&kdsingleapp, SIGNAL(messageReceived(const QByteArray &)), adaptor, SLOT(processFileOpenRequest(const QByteArray &)));
 #endif
+
+#warning Needs to move to the right place
+    Navigation::FLARMAdaptor flarmAdaptor;
 
     /*
      * Set up ApplicationEngine for QML

@@ -20,12 +20,9 @@
 
 #pragma once
 
-#include <QSettings>
-#include "AviationUnits.h"
-
-
-/*! \brief This extremely simple class holds a few numbers that describe an
-    FLARMAdaptor */
+#include <QTcpSocket>
+#include <QTimer>
+#include <QObject>
 
 namespace Navigation {
 
@@ -41,6 +38,29 @@ public:
 
     // Standard destructor
     ~FLARMAdaptor() override = default;
+
+    Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
+    bool receiving() const;
+
+
+
+signals:
+    void receivingChanged();
+
+private slots:
+    void connectToFLARM();
+
+    void receiveSocketConnected();
+    void receiveSocketDisconnected();
+    void receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError);
+
+    void readFromStream();
+
+private:
+    QTimer connectTimer;
+
+    QTcpSocket socket;
+    QTextStream stream;
 };
 
 }

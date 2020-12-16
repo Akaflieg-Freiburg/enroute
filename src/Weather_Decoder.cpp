@@ -1421,6 +1421,31 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             continue;
         }
 
+        // SAND, BLOWING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::BLOWING && weather == metaf::WeatherPhenomena::Weather::SAND) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("blowing sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("blowing sand in the vicinity");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light blowing sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate blowing sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy blowing sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent blowing sand");
+                break;
+            }
+            continue;
+        }
+
         // SNOW
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::SNOW) {
             switch(wp.qualifier()) {

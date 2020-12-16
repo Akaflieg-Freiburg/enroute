@@ -104,9 +104,9 @@ Map {
     MapParameter {
         type: "paint"
         property var layer: "FIS"
-        property var lineColor: "black"
-        property var lineWidth: 0.5
-        // property var lineDasharray: [4.0, 4.0]
+        property var lineColor: "green"
+        property var lineWidth: 1.0
+        //property var lineDasharray: [4.0, 4.0]
     }
 
 

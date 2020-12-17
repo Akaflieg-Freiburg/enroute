@@ -256,7 +256,7 @@ void MapManager::autoUpdateGeoMapList()
 }
 
 
-QList<QString> MapManager::unattachedFiles() const
+auto MapManager::unattachedFiles() const -> QList<QString>
 {
     QList<QString> result;
 

@@ -44,7 +44,7 @@ GlobalSettings::~GlobalSettings()
 }
 
 
-bool GlobalSettings::acceptedWeatherTermsStatic()
+auto GlobalSettings::acceptedWeatherTermsStatic() -> bool
 {
     // Find out that unit system we should use
     auto globalSettings = GlobalSettings::globalInstance();
@@ -55,13 +55,13 @@ bool GlobalSettings::acceptedWeatherTermsStatic()
 }
 
 
-GlobalSettings *GlobalSettings::globalInstance()
+auto GlobalSettings::globalInstance() -> GlobalSettings *
 {
     return globalSettingsStatic;
 }
 
 
-bool GlobalSettings::hideUpperAirspacesStatic()
+auto GlobalSettings::hideUpperAirspacesStatic() -> bool
 {
     // Find out that unit system we should use
     auto globalSettings = GlobalSettings::globalInstance();
@@ -117,7 +117,7 @@ void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 }
 
 
-GlobalSettings::MapBearingPolicyValues GlobalSettings::mapBearingPolicy() const
+auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolicyValues
 {
     auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
     if (intVal == 0)
@@ -169,7 +169,7 @@ void GlobalSettings::setPreferEnglish(bool preferEng)
 }
 
 
-bool GlobalSettings::useMetricUnitsStatic()
+auto GlobalSettings::useMetricUnitsStatic() -> bool
 {
     // Find out that unit system we should use
     auto globalSettings = GlobalSettings::globalInstance();

@@ -52,7 +52,7 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObjec
 }
 
 
-QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
+auto GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*>
 {
     // Lock data
     QMutexLocker lock(&_aviationDataMutex);
@@ -76,7 +76,7 @@ QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
 }
 
 
-QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
+auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> QObject*
 {
     position.setAltitude(qQNaN());
 
@@ -101,7 +101,7 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 }
 
 
-QString GeoMapProvider::describeMapFile(QString fileName)
+auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
 {
     QFileInfo fi(fileName);
     if (!fi.exists())
@@ -166,7 +166,7 @@ QString GeoMapProvider::describeMapFile(QString fileName)
 }
 
 
-QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
+auto GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QObject*>
 {
     auto wps = waypoints();
 
@@ -201,7 +201,7 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 }
 
 
-Waypoint* GeoMapProvider::findByID(const QString &id)
+auto GeoMapProvider::findByID(const QString &id) -> Waypoint*
 {
     auto wps = waypoints();
 
@@ -215,7 +215,7 @@ Waypoint* GeoMapProvider::findByID(const QString &id)
 }
 
 
-QList<QObject*> GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type)
+auto GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<QObject*>
 {
     auto wps = waypoints();
 
@@ -243,7 +243,7 @@ QList<QObject*> GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, 
 }
 
 
-QString GeoMapProvider::styleFileURL() const
+auto GeoMapProvider::styleFileURL() const -> QString
 {
     if (_styleFile.isNull())
         return ":/flightMap/empty.json";

@@ -172,7 +172,7 @@ void TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
 }
 
 
-QByteArray TileHandler::tileJSON() const
+auto TileHandler::tileJSON() const -> QByteArray
 {
     QJsonObject result;
     result.insert("tilejson", "2.2.0");

@@ -31,7 +31,7 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 }
 
 
-QString Librarian::getStringFromRessource(const QString &name) const
+auto Librarian::getStringFromRessource(const QString &name) const -> QString
 {
     if (name == ":text/authors.html") {
         return tr(R"html(<h3>Authors</h3>
@@ -246,19 +246,19 @@ Flight Information Sectors are shown.</p>)html");
 }
 
 
-uint Librarian::getStringHashFromRessource(const QString &name) const
+auto Librarian::getStringHashFromRessource(const QString &name) const -> uint
 {
     return qHash(getStringFromRessource(name), 0);
 }
 
 
-bool Librarian::flightRouteExists(const QString &baseName) const
+auto Librarian::flightRouteExists(const QString &baseName) const -> bool
 {
   return QFile::exists(flightRouteFullPath(baseName));
 }
 
 
-QObject *Librarian::flightRouteGet(const QString &baseName) const
+auto Librarian::flightRouteGet(const QString &baseName) const -> QObject *
 {
     auto route = new FlightRoute(nullptr, nullptr);
     if (!route)
@@ -271,7 +271,7 @@ QObject *Librarian::flightRouteGet(const QString &baseName) const
 }
 
 
-QString Librarian::flightRouteFullPath(const QString &baseName) const
+auto Librarian::flightRouteFullPath(const QString &baseName) const -> QString
 {
     return flightRouteLibraryDir.path()+"/"+baseName+".geojson";
 }
@@ -289,7 +289,7 @@ void Librarian::flightRouteRename(const QString &oldName, const QString &newName
 }
 
 
-QStringList Librarian::flightRoutes(const QString &filter)
+auto Librarian::flightRoutes(const QString &filter) -> QStringList
 {
     QStringList filterList;
     filterList << "*.geojson";
@@ -304,7 +304,7 @@ QStringList Librarian::flightRoutes(const QString &filter)
 }
 
 
-QStringList Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter)
+auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter) -> QStringList
 {
     QString simplifiedFilter = simplifySpecialChars(filter);
 
@@ -317,7 +317,7 @@ QStringList Librarian::permissiveFilter(const QStringList &inputStrings, const Q
 }
 
 
-QString Librarian::simplifySpecialChars(const QString &string)
+auto Librarian::simplifySpecialChars(const QString &string) -> QString
 {
     QString cacheString = simplifySpecialChars_cache[string];
     if (!cacheString.isEmpty())

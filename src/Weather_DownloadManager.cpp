@@ -89,9 +89,7 @@ void Weather::DownloadManager::setupConnections()
 
 
 Weather::DownloadManager::~DownloadManager()
-{
-
-}
+= default;
 
 
 void Weather::DownloadManager::deleteExpiredMesages()
@@ -126,7 +124,7 @@ void Weather::DownloadManager::deleteExpiredMesages()
 }
 
 
-bool Weather::DownloadManager::downloading() const
+auto Weather::DownloadManager::downloading() const -> bool
 {
     foreach(auto networkReply, _networkReplies) {
         if (networkReply.isNull())
@@ -200,7 +198,7 @@ void Weather::DownloadManager::downloadFinished() {
 }
 
 
-Weather::Station *Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAOCode)
+auto Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAOCode) -> Weather::Station *
 {
     auto weatherStationPtr = _weatherStationsByICAOCode.value(ICAOCode, nullptr);
 
@@ -213,7 +211,7 @@ Weather::Station *Weather::DownloadManager::findOrConstructWeatherStation(const 
 }
 
 
-bool Weather::DownloadManager::load()
+auto Weather::DownloadManager::load() -> bool
 {
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
 
@@ -334,7 +332,7 @@ void Weather::DownloadManager::save()
 }
 
 
-QString Weather::DownloadManager::sunInfo() const
+auto Weather::DownloadManager::sunInfo() const -> QString
 {
     // Paranoid safety checks
     auto _satNav = SatNav::globalInstance();
@@ -344,7 +342,9 @@ QString Weather::DownloadManager::sunInfo() const
         return tr("Waiting for precise position…");
 
     // Describe next sunset/sunrise
-    QDateTime sunrise, sunset, sunriseTomorrow;
+    QDateTime sunrise;
+    QDateTime sunset;
+    QDateTime sunriseTomorrow;
 
     SunSet sun;
     auto coord = _satNav->coordinate();
@@ -360,7 +360,7 @@ QString Weather::DownloadManager::sunInfo() const
     auto sunriseTimeInMin = sun.calcSunrise();
     if (qIsFinite(sunriseTimeInMin)) {
         sunrise = localTime;
-        sunrise.setTime(QTime::fromMSecsSinceStartOfDay(sunriseTimeInMin*60*1000));
+        sunrise.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunriseTimeInMin*60*1000)));
         sunrise = sunrise.toOffsetFromUtc(0);
         sunrise.setTimeSpec(Qt::UTC);
     }
@@ -368,7 +368,7 @@ QString Weather::DownloadManager::sunInfo() const
     auto sunsetTimeInMin = sun.calcSunset();
     if (qIsFinite(sunsetTimeInMin)) {
         sunset = localTime;
-        sunset.setTime(QTime::fromMSecsSinceStartOfDay(sunsetTimeInMin*60*1000));
+        sunset.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunsetTimeInMin*60*1000)));
         sunset = sunset.toOffsetFromUtc(0);
         sunset.setTimeSpec(Qt::UTC);
     }
@@ -379,7 +379,7 @@ QString Weather::DownloadManager::sunInfo() const
     auto sunriseTomorrowTimeInMin = sun.calcSunrise();
     if (qIsFinite(sunriseTomorrowTimeInMin)) {
         sunriseTomorrow = localTime;
-        sunriseTomorrow.setTime(QTime::fromMSecsSinceStartOfDay(sunriseTomorrowTimeInMin*60*1000));
+        sunriseTomorrow.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunriseTomorrowTimeInMin*60*1000)));
         sunriseTomorrow = sunriseTomorrow.toOffsetFromUtc(0);
         sunriseTomorrow.setTimeSpec(Qt::UTC);
     }
@@ -395,7 +395,7 @@ QString Weather::DownloadManager::sunInfo() const
 }
 
 
-QString Weather::DownloadManager::QNHInfo() const
+auto Weather::DownloadManager::QNHInfo() const -> QString
 {
     // Paranoid safety checks
     auto _satNav = SatNav::globalInstance();
@@ -472,7 +472,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     if (!steerpts.empty()) {
         QString qpos;
         foreach(auto var, steerpts) {
-            QGeoCoordinate posit = var.value<QGeoCoordinate>();
+            auto posit = var.value<QGeoCoordinate>();
             qpos += ";" + QString::number(posit.longitude()) + "," + QString::number(posit.latitude());
         }
         queries.push_back(QString("dataSource=metars&flightPath=85%1").arg(qpos));
@@ -495,7 +495,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
 }
 
 
-QList<Weather::Station *> Weather::DownloadManager::weatherStations() const {
+auto Weather::DownloadManager::weatherStations() const -> QList<Weather::Station *> {
 
     // Produce a list of reports, without nullpointers
     QList<Weather::Station *> sortedReports;

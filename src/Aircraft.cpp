@@ -36,7 +36,7 @@ Aircraft::Aircraft(QObject *parent) : QObject(parent) {
         _fuelConsumptionInLPH = qQNaN();
 }
 
-double Aircraft::cruiseSpeedInKT() const {
+auto Aircraft::cruiseSpeedInKT() const -> double {
     return _cruiseSpeedInKT;
 }
 
@@ -51,7 +51,7 @@ void Aircraft::setCruiseSpeedInKT(double speedInKT) {
     }
 }
 
-double Aircraft::cruiseSpeedInKMH() const {
+auto Aircraft::cruiseSpeedInKMH() const -> double {
     auto speed = AviationUnits::Speed::fromKT(_cruiseSpeedInKT);
     return speed.toKMH();
 }
@@ -61,7 +61,7 @@ void Aircraft::setCruiseSpeedInKMH(double speedInKMH) {
     setCruiseSpeedInKT(speed.toKT());
 }
 
-double Aircraft::descentSpeedInKT() const {
+auto Aircraft::descentSpeedInKT() const -> double {
     return _descentSpeedInKT;
 }
 
@@ -76,7 +76,7 @@ void Aircraft::setDescentSpeedInKT(double speedInKT) {
     }
 }
 
-double Aircraft::descentSpeedInKMH() const {
+auto Aircraft::descentSpeedInKMH() const -> double {
     auto speed = AviationUnits::Speed::fromKT(_descentSpeedInKT);
     return speed.toKMH();
 }

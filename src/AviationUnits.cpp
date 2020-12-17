@@ -23,7 +23,7 @@
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
 
-QString AviationUnits::Angle::toString() const {
+auto AviationUnits::Angle::toString() const -> QString {
     double angleInDegrees = toDEG();
 
     angleInDegrees = qAbs(angleInDegrees);
@@ -36,7 +36,7 @@ QString AviationUnits::Angle::toString() const {
 }
 
 
-double AviationUnits::Angle::toNormalizedDEG() const {
+auto AviationUnits::Angle::toNormalizedDEG() const -> double {
     double angle = toDEG();
     if (!std::isfinite(angle))
         return qQNaN();
@@ -46,7 +46,7 @@ double AviationUnits::Angle::toNormalizedDEG() const {
 }
 
 
-QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geoLong) {
+auto AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geoLong) -> QGeoCoordinate {
     // Interpret coordinates.
     auto lat = geoLat.chopped(1).toDouble();
     if (geoLat.right(1) == "S")
@@ -60,21 +60,21 @@ QGeoCoordinate AviationUnits::stringToCoordinate(const QString &geoLat, const QS
 }
 
 
-QString AviationUnits::Speed::toString() const {
+auto AviationUnits::Speed::toString() const -> QString {
     if (GlobalSettings::useMetricUnitsStatic())
         return QString("%1 km/h").arg( qRound(toKMH()) );
     return QString("%1 kt").arg( qRound(toKT()) );
 }
 
 
-QDataStream &operator<<(QDataStream &out, const AviationUnits::Speed &speed)
+auto operator<<(QDataStream &out, const AviationUnits::Speed &speed) -> QDataStream &
 {
     out << speed.toMPS();
     return out;
 }
 
 
-QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed)
+auto operator>>(QDataStream &in, AviationUnits::Speed &speed) -> QDataStream &
 {
     double buffer;
     in >> buffer;
@@ -83,7 +83,7 @@ QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed)
 }
 
 
-QString AviationUnits::Time::toHoursAndMinutes() const {
+auto AviationUnits::Time::toHoursAndMinutes() const -> QString {
     // Paranoid safety checks
     if (!isFinite())
         return "-:--";

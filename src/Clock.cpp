@@ -49,7 +49,7 @@ Clock::Clock(QObject *parent) : QObject(parent)
 }
 
 
-QString Clock::describeTimeDifference(QDateTime pointInTime)
+auto Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
 {
     auto minutes = qRound(QDateTime::currentDateTime().secsTo(pointInTime)/60.0);
 
@@ -79,7 +79,7 @@ QString Clock::describeTimeDifference(QDateTime pointInTime)
 }
 
 
-QString Clock::describePointInTime(QDateTime pointInTime)
+auto Clock::describePointInTime(QDateTime pointInTime) -> QString
 {
     pointInTime = pointInTime.toUTC();
 
@@ -103,7 +103,7 @@ QString Clock::describePointInTime(QDateTime pointInTime)
 }
 
 
-Clock *Clock::globalInstance()
+auto Clock::globalInstance() -> Clock *
 {
     return clockStatic;
 }
@@ -119,7 +119,7 @@ void Clock::setSingleShotTimer()
 }
 
 
-QString Clock::timeAsUTCString() const
+auto Clock::timeAsUTCString() const -> QString
 {
     return QDateTime::currentDateTimeUtc().toString("H:mm");
 }

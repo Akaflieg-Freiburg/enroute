@@ -148,7 +148,7 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
 }
 
 
-QDateTime Weather::METAR::expiration() const
+auto Weather::METAR::expiration() const -> QDateTime
 {
     if (_raw_text.contains("NOSIG"))
         return _observationTime.addSecs(3*60*60);
@@ -156,7 +156,7 @@ QDateTime Weather::METAR::expiration() const
 }
 
 
-QString Weather::METAR::flightCategoryColor() const
+auto Weather::METAR::flightCategoryColor() const -> QString
 {
     if (_flightCategory == VFR)
         return "green";
@@ -168,7 +168,7 @@ QString Weather::METAR::flightCategoryColor() const
 }
 
 
-bool Weather::METAR::isExpired() const
+auto Weather::METAR::isExpired() const -> bool
 {
     auto exp = expiration();
     if (!exp.isValid())
@@ -177,7 +177,7 @@ bool Weather::METAR::isExpired() const
 }
 
 
-bool Weather::METAR::isValid() const
+auto Weather::METAR::isValid() const -> bool
 {
     if (!_location.isValid())
         return false;
@@ -192,7 +192,7 @@ bool Weather::METAR::isValid() const
 }
 
 
-QString Weather::METAR::relativeObservationTime() const
+auto Weather::METAR::relativeObservationTime() const -> QString
 {
     if (!_observationTime.isValid())
         return QString();
@@ -211,7 +211,7 @@ void Weather::METAR::setupSignals()
 }
 
 
-QString Weather::METAR::summary() const {
+auto Weather::METAR::summary() const -> QString {
 
     QStringList resultList;
 

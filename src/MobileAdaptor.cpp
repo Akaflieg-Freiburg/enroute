@@ -105,7 +105,7 @@ void MobileAdaptor::hideSplashScreen()
 }
 
 
-Q_INVOKABLE bool MobileAdaptor::missingPermissionsExist()
+Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 {
 #if defined (Q_OS_ANDROID)
     // Check is required permissions have been granted

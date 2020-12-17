@@ -48,7 +48,7 @@
 #include "Weather_DownloadManager.h"
 #include "Weather_Wind.h"
 
-int main(int argc, char *argv[])
+auto main(int argc, char *argv[]) -> int
 {
     // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
     putenv((char *)"QSG_RENDER_LOOP=basic");

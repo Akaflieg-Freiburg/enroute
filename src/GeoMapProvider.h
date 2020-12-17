@@ -122,7 +122,7 @@ public:
      *
      * @returns A human-readable HTML string, or an empty string if no data is available
      */
-    Q_INVOKABLE QString describeMapFile(QString fileName);
+    Q_INVOKABLE QString describeMapFile(const QString& fileName);
 
     /*! \brief Waypoints containing a given substring
      *

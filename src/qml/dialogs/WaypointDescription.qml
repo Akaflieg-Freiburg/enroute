@@ -181,6 +181,7 @@ Dialog {
                                 return "blue";
                             case "TMZ":
                                 return "black";
+                            case "FIS":
                             case "NRA":
                                 return "green";
                             }
@@ -201,6 +202,8 @@ Dialog {
                             switch(airspace.CAT) {
                             case "TMZ":
                                 return [4, 2, 1, 2];
+                            case "FIS":
+                                return [4, 0]
                             }
                             return [4, 4]
                         }

@@ -121,9 +121,9 @@ Page {
             }
 
             ItemDelegate {
-                text: qsTr("Maps") + (MapManager.aviationMapUpdatesAvailable ?
-                                          `<br><font color="#606060" size="2">`
-                                          +qsTr("Updates available") + "</font>" : "")
+                text: qsTr("Maps")
+                      + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                      + (satNav.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                 icon.source: "/icons/material/ic_map.svg"
                 icon.color: Material.primary
                 Layout.fillWidth: true

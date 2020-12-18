@@ -151,12 +151,9 @@ Dialog {
                 id: box
 
                 Layout.preferredWidth: Qt.application.font.pixelSize*3
-                Layout.preferredHeight: Qt.application.font.pixelSize*3
+                Layout.preferredHeight: Qt.application.font.pixelSize*2.5
                 Layout.rowSpan: 3
                 Layout.alignment: Qt.AlignLeft
-
-                property var boxWidth: Qt.application.font.pixelSize*3
-                property var boxHeight: Qt.application.font.pixelSize*2.5
 
                 Shape {
                     anchors.fill: parent
@@ -209,16 +206,16 @@ Dialog {
                         }
 
                         startX: 1; startY: 1
-                        PathLine { x: 1;           y: box.boxHeight }
-                        PathLine { x: box.boxWidth; y: box.boxHeight }
-                        PathLine { x: box.boxWidth; y: 1 }
+                        PathLine { x: 1;           y: box.height-1 }
+                        PathLine { x: box.width-1; y: box.height-1 }
+                        PathLine { x: box.width-1; y: 1 }
                         PathLine { x: 1;           y: 1 }
                     }
                 }
 
                 Rectangle {
-                    width: box.boxWidth
-                    height: box.boxHeight
+                    width: box.width
+                    height: box.height
 
                     border.color: {
                         switch(airspace.CAT) {
@@ -261,6 +258,7 @@ Dialog {
             Label {
                 Layout.fillWidth: true
                 Layout.rowSpan: 3
+                Layout.alignment: Qt.AlignVCenter
                 text: gridLYO.airspace.name
                 wrapMode: Text.WordWrap
             }

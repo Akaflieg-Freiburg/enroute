@@ -86,7 +86,7 @@ public:
   */
   DownloadableGroupWatcher *aviationMaps() { return &_aviationMaps; }
   
-  /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
+  /*! \brief Pointer to the DownloadableGroup that holds all base maps
 
     The is a DownloadableGroup that holds all base maps. The maps also appear in
     geoMaps, which is the union of aviation maps and base maps.

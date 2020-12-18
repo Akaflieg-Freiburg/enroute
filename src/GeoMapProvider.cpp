@@ -133,11 +133,6 @@ auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
 
     // Extract infomation from MBTILES
     if (fileName.endsWith(".mbtiles")) {
-        QString _attribution = "";
-        QString _description = "empty tile set";
-        QString _name        = "empty";
-        QString _mtime       = "";
-
         // Open database
         auto databaseConnectionName = "GeoMapProvider::describeMapFile "+fileName;
         auto db = QSqlDatabase::addDatabase("QSQLITE", databaseConnectionName);

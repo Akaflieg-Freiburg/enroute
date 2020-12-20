@@ -128,6 +128,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
+                    textFormat: Text.RichText
                 }
 
                 Label { // title: "TAF"
@@ -158,6 +159,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
+                    textFormat: Text.RichText
                 }
 
             }

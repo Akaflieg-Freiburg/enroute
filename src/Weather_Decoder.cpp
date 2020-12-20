@@ -75,9 +75,17 @@ void Weather::Decoder::parse()
 
     parseResult = metaf::Parser::parse(_rawText.toStdString());
     QStringList decodedStrings;
-    for (const auto &groupInfo : parseResult.groups)
-        decodedStrings << visit(groupInfo);
-    _decodedText = decodedStrings.join("<br>");
+    QString listStart = "<ul style=\"margin-left:-25px;\">";
+    QString listEnd = "</ul>";
+    for (const auto &groupInfo : parseResult.groups) {
+        auto decodedString = visit(groupInfo);
+        if (decodedString.contains("<strong>")) {
+            decodedStrings << listEnd+"<li>"+decodedString+"</li>"+listStart;
+        }
+        else
+            decodedStrings << "<li>"+decodedString+"</li>";
+    }
+    _decodedText = listStart+decodedStrings.join("\n")+listEnd+"<br>";
 
     if (_decodedText != oldDecodedText)
         emit decodedTextChanged();

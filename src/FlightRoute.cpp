@@ -63,7 +63,7 @@ void FlightRoute::append(const QGeoCoordinate& position)
 }
 
 
-QGeoRectangle FlightRoute::boundingRectangle() const
+auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 {
     QGeoRectangle bbox;
 
@@ -95,7 +95,7 @@ void FlightRoute::clear()
 }
 
 
-bool FlightRoute::contains(QObject * waypoint) const
+auto FlightRoute::contains(QObject * waypoint) const -> bool
 {
     if (waypoint == nullptr)
         return false;
@@ -117,7 +117,7 @@ bool FlightRoute::contains(QObject * waypoint) const
 }
 
 
-QObject* FlightRoute::firstWaypointObject() const
+auto FlightRoute::firstWaypointObject() const -> QObject*
 {
     if (_waypoints.isEmpty())
         return nullptr;
@@ -125,7 +125,7 @@ QObject* FlightRoute::firstWaypointObject() const
 }
 
 
-QVariantList FlightRoute::geoPath() const
+auto FlightRoute::geoPath() const -> QVariantList
 {
     // Paranoid safety checks
     if (_waypoints.size() < 2)
@@ -142,7 +142,7 @@ QVariantList FlightRoute::geoPath() const
 }
 
 
-QObject* FlightRoute::lastWaypointObject() const
+auto FlightRoute::lastWaypointObject() const -> QObject*
 {
     if (_waypoints.isEmpty())
         return nullptr;
@@ -150,7 +150,7 @@ QObject* FlightRoute::lastWaypointObject() const
 }
 
 
-QString FlightRoute::loadFromGeoJSON(QString fileName)
+auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
 {
     if (fileName.isEmpty())
         fileName = stdFileName;
@@ -189,7 +189,7 @@ QString FlightRoute::loadFromGeoJSON(QString fileName)
 }
 
 
-QString FlightRoute::makeSummary(bool inMetricUnits) const
+auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
 {
     if (_legs.empty())
         return {};
@@ -323,7 +323,7 @@ void FlightRoute::reverse()
 }
 
 
-QList<QObject*> FlightRoute::routeObjects() const
+auto FlightRoute::routeObjects() const -> QList<QObject*>
 {
     QList<QObject*> result;
 
@@ -340,7 +340,7 @@ QList<QObject*> FlightRoute::routeObjects() const
 }
 
 
-QString FlightRoute::save(const QString& fileName) const
+auto FlightRoute::save(const QString& fileName) const -> QString
 {
     QFile file(fileName);
     auto success = file.open(QIODevice::WriteOnly);
@@ -357,7 +357,7 @@ QString FlightRoute::save(const QString& fileName) const
 }
 
 
-QString FlightRoute::suggestedFilename() const
+auto FlightRoute::suggestedFilename() const -> QString
 {
     if (_waypoints.size() < 2)
         return tr("Flight Route");
@@ -413,17 +413,17 @@ QString FlightRoute::suggestedFilename() const
 }
 
 
-QString FlightRoute::summary() const {
+auto FlightRoute::summary() const -> QString {
     return makeSummary(false);
 }
 
 
-QString FlightRoute::summaryMetric() const {
+auto FlightRoute::summaryMetric() const -> QString {
     return makeSummary(true);
 }
 
 
-QByteArray FlightRoute::toGeoJSON() const
+auto FlightRoute::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
     foreach(auto waypoint, _waypoints)

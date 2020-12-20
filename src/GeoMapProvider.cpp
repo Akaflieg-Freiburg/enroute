@@ -26,6 +26,8 @@
 #include <QJsonObject>
 #include <QQmlEngine>
 #include <QRandomGenerator>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 #include "Clock.h"
 #include "GeoMapProvider.h"
@@ -50,7 +52,7 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObjec
 }
 
 
-QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
+auto GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*>
 {
     // Lock data
     QMutexLocker lock(&_aviationDataMutex);
@@ -74,7 +76,7 @@ QList<QObject*> GeoMapProvider::airspaces(const QGeoCoordinate& position)
 }
 
 
-QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
+auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> QObject*
 {
     position.setAltitude(qQNaN());
 
@@ -99,7 +101,67 @@ QObject* GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoor
 }
 
 
-QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
+auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
+{
+    QFileInfo fi(fileName);
+    if (!fi.exists())
+        return tr("No information available.");
+    QString result = QString("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
+            .arg(tr("Installed"),
+                 fi.lastModified().toUTC().toString(),
+                 tr("File Size"),
+                 QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
+
+    // Extract infomation from GeoJSON
+    if (fileName.endsWith(".geojson")) {
+        QLockFile lockFile(fileName+".lock");
+        lockFile.lock();
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly);
+        auto document = QJsonDocument::fromJson(file.readAll());
+        file.close();
+        lockFile.unlock();
+        QString concatInfoString = document.object()["info"].toString();
+        if (!concatInfoString.isEmpty()) {
+            result += "<p>"+tr("The map data was compiled from the following sources.")+"</p><ul>";
+            auto infoStrings = concatInfoString.split(";");
+            foreach(auto infoString, infoStrings)
+                result += "<li>"+infoString+"</li>";
+            result += "</ul>";
+        }
+    }
+
+    // Extract infomation from MBTILES
+    if (fileName.endsWith(".mbtiles")) {
+        // Open database
+        auto databaseConnectionName = "GeoMapProvider::describeMapFile "+fileName;
+        auto db = QSqlDatabase::addDatabase("QSQLITE", databaseConnectionName);
+        db.setDatabaseName(fileName);
+        db.open();
+        if (!db.isOpenError()) {
+            // Read metadata from database
+            QSqlQuery query(db);
+            QString intResult;
+            if (query.exec("select name, value from metadata;")) {
+                while(query.next()) {
+                    QString key = query.value(0).toString();
+                    if (key == "json")
+                        continue;
+                    intResult += QString("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
+                                .arg(key, query.value(1).toString());
+                }
+            }
+            if (!intResult.isEmpty())
+                result += QString("<h4>%1</h4><table>%2</table>").arg(tr("Internal Map Data"), intResult);
+            db.close();
+        }
+    }
+
+    return result;
+}
+
+
+auto GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QObject*>
 {
     auto wps = waypoints();
 
@@ -134,7 +196,7 @@ QList<QObject*> GeoMapProvider::filteredWaypointObjects(const QString &filter)
 }
 
 
-Waypoint* GeoMapProvider::findByID(const QString &id)
+auto GeoMapProvider::findByID(const QString &id) -> Waypoint*
 {
     auto wps = waypoints();
 
@@ -148,7 +210,7 @@ Waypoint* GeoMapProvider::findByID(const QString &id)
 }
 
 
-QList<QObject*> GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type)
+auto GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<QObject*>
 {
     auto wps = waypoints();
 
@@ -176,7 +238,7 @@ QList<QObject*> GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, 
 }
 
 
-QString GeoMapProvider::styleFileURL() const
+auto GeoMapProvider::styleFileURL() const -> QString
 {
     if (_styleFile.isNull())
         return ":/flightMap/empty.json";

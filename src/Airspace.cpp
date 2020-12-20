@@ -71,7 +71,7 @@ Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(
     _lowerBound = properties["BOT"].toString();
 }
 
-double Airspace::estimatedLowerBoundInFtMSL() const {
+auto Airspace::estimatedLowerBoundInFtMSL() const -> double {
     double result = 0.0;
     bool ok;
 
@@ -103,7 +103,7 @@ double Airspace::estimatedLowerBoundInFtMSL() const {
     return 0.0;
 }
 
-bool Airspace::isUpper() const {
+auto Airspace::isUpper() const -> bool {
     QString AL = _lowerBound.simplified();
 
     if (!AL.startsWith("FL", Qt::CaseInsensitive))

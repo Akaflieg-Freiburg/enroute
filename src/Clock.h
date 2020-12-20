@@ -69,7 +69,7 @@ public:
      *
      * @returns A localized string such as "just now" (if the pointInTime is rougly equal to the current time), "3 minutes ago" (if the pointInTime is in the past), or "in 1 hour 5 minutes"  (if the pointInTime is in the future)
      */
-    Q_INVOKABLE static QString describeTimeDifference(QDateTime pointInTime);
+    Q_INVOKABLE static QString describeTimeDifference(const QDateTime& pointInTime);
 
     /*! Describe a point in time in human-readable form
      *

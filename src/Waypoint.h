@@ -264,7 +264,7 @@ public:
      *
      * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
      */
-    Q_INVOKABLE QString wayTo(QGeoCoordinate from, bool useMetric) const;
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
 
     /*! \brief Check if a WeatherStation exists at this point
      *

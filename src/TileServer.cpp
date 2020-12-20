@@ -33,7 +33,7 @@ TileServer::TileServer(QUrl baseUrl, QObject *parent)
 }
 
 
-QString TileServer::serverUrl() const
+auto TileServer::serverUrl() const -> QString
 {
     if (isListening())
         return QString("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));

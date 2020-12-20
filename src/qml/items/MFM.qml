@@ -50,7 +50,9 @@ Item {
         objectName: "flightMap"
 
         anchors.fill: parent
+
         geoJSON: geoMapProvider.geoJSON
+        copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
         property real animatedTrack: satNav.lastValidTrack
@@ -406,6 +408,20 @@ Item {
         useMetricUnits: globalSettings.useMetricUnits
         pixelPer10km: flightMap.pixelPer10km
         height: 30
+    }
+
+    Label { // Copyright notice
+        anchors.bottom: navBar.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
+
+        text: "© <a href='http://www.openmaptiles.org/'>&copy; OpenMapTiles</a> <a href='http://www.openstreetmap.org/about/'>&copy; OpenStreetMap contributors</a>"
+        color: "blue"
+        font.pointSize: 10
+        linkColor: "blue"
+        horizontalAlignment: Text.AlignHCenter
+        onLinkActivated: Qt.openUrlExternally(link)
     }
 
     NavBar {

@@ -36,7 +36,7 @@ FlightRoute::Leg::Leg(const Waypoint* start, const Waypoint *end, Aircraft *airc
 }
 
 
-AviationUnits::Distance FlightRoute::Leg::distance() const
+auto FlightRoute::Leg::distance() const -> AviationUnits::Distance
 {
     // Paranoid safety checks
     if (!isValid())
@@ -46,7 +46,7 @@ AviationUnits::Distance FlightRoute::Leg::distance() const
 }
 
 
-double FlightRoute::Leg::Fuel() const
+auto FlightRoute::Leg::Fuel() const -> double
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle())
@@ -56,7 +56,7 @@ double FlightRoute::Leg::Fuel() const
 }
 
 
-AviationUnits::Speed FlightRoute::Leg::GS() const
+auto FlightRoute::Leg::GS() const -> AviationUnits::Speed
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle())
@@ -73,7 +73,7 @@ AviationUnits::Speed FlightRoute::Leg::GS() const
 }
 
 
-AviationUnits::Angle FlightRoute::Leg::TC() const
+auto FlightRoute::Leg::TC() const -> AviationUnits::Angle
 {
     // Paranoid safety checks
     if (!isValid())
@@ -85,7 +85,7 @@ AviationUnits::Angle FlightRoute::Leg::TC() const
 }
 
 
-AviationUnits::Angle FlightRoute::Leg::WCA() const
+auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle())
@@ -100,7 +100,7 @@ AviationUnits::Angle FlightRoute::Leg::WCA() const
 }
 
 
-bool FlightRoute::Leg::isValid() const
+auto FlightRoute::Leg::isValid() const -> bool
 {
     if (_start.isNull())
         return false;
@@ -114,19 +114,19 @@ bool FlightRoute::Leg::isValid() const
 }
 
 
-QString FlightRoute::Leg::description() const
+auto FlightRoute::Leg::description() const -> QString
 {
     return makeDescription(false);
 }
 
 
-QString FlightRoute::Leg::descriptionMetric() const
+auto FlightRoute::Leg::descriptionMetric() const -> QString
 {
     return makeDescription(true);
 }
 
 
-QString FlightRoute::Leg::makeDescription(bool useMetricUnits) const
+auto FlightRoute::Leg::makeDescription(bool useMetricUnits) const -> QString
 {
     if (!isValid())
         return QString();
@@ -151,7 +151,7 @@ QString FlightRoute::Leg::makeDescription(bool useMetricUnits) const
 }
 
 
-bool FlightRoute::Leg::hasDataForWindTriangle() const
+auto FlightRoute::Leg::hasDataForWindTriangle() const -> bool
 {
     if ( _aircraft.isNull() )
         return false;

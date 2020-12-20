@@ -31,6 +31,7 @@ Dialog {
     id: weatherReportDialog
 
     property WeatherStation weatherStation
+    onWeatherStationChanged: sv.ScrollBar.vertical.position = 0.0 // Reset scroll bar if station changes
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
@@ -127,6 +128,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
+                    textFormat: Text.RichText
                 }
 
                 Label { // title: "TAF"
@@ -157,6 +159,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
+                    textFormat: Text.RichText
                 }
 
             }

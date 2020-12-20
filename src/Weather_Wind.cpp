@@ -36,7 +36,7 @@ Weather::Wind::Wind(QObject *parent)
 }
 
 
-double Weather::Wind::windSpeedInKT() const
+auto Weather::Wind::windSpeedInKT() const -> double
 {
     return _windSpeedInKT;
 }
@@ -55,7 +55,7 @@ void Weather::Wind::setWindSpeedInKT(double speedInKT)
 }
 
 
-double Weather::Wind::windSpeedInKMH() const
+auto Weather::Wind::windSpeedInKMH() const -> double
 {
     auto speed = AviationUnits::Speed::fromKT(_windSpeedInKT);
     return speed.toKMH();

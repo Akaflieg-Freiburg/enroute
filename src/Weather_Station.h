@@ -233,7 +233,7 @@ public:
      * be described (e.g. because one of the coordinates is invalid or unknown),
      * then an empty string is returned.
      */
-    Q_INVOKABLE QString wayTo(QGeoCoordinate from, bool useMetric) const;
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
 
 signals:
     /* \brief Notifier signal */
@@ -271,7 +271,7 @@ private:
 
     // This constructor is only meant to be called by instances of the
     // DownloadManager class
-    explicit Station(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent);
+    explicit Station(QString id, GeoMapProvider *geoMapProvider, QObject *parent);
 
     // If the metar is valid, not expired and newer than the existing metar,
     // this method sets the METAR message and deletes any existing METAR;

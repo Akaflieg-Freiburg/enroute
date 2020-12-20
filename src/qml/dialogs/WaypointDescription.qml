@@ -151,12 +151,9 @@ Dialog {
                 id: box
 
                 Layout.preferredWidth: Qt.application.font.pixelSize*3
-                Layout.preferredHeight: Qt.application.font.pixelSize*3
+                Layout.preferredHeight: Qt.application.font.pixelSize*2.5
                 Layout.rowSpan: 3
                 Layout.alignment: Qt.AlignLeft
-
-                property var boxWidth: Qt.application.font.pixelSize*3
-                property var boxHeight: Qt.application.font.pixelSize*2.5
 
                 Shape {
                     anchors.fill: parent
@@ -181,38 +178,44 @@ Dialog {
                                 return "blue";
                             case "TMZ":
                                 return "black";
+                            case "FIS":
+                            case "NRA":
+                                return "green";
                             }
                             return "transparent"
                         }
                         strokeStyle:  {
-                            switch(airspace.mapLayout) {
+                            switch(airspace.CAT) {
                             case "A":
                             case "B":
                             case "C":
                             case "D":
+                            case "NRA":
                                 return ShapePath.SolidLine;
                             }
                             return ShapePath.DashLine
                         }
                         dashPattern:  {
-                            switch(airspace.mapLayout) {
+                            switch(airspace.CAT) {
                             case "TMZ":
                                 return [4, 2, 1, 2];
+                            case "FIS":
+                                return [4, 0]
                             }
                             return [4, 4]
                         }
 
                         startX: 1; startY: 1
-                        PathLine { x: 1;           y: box.boxHeight }
-                        PathLine { x: box.boxWidth; y: box.boxHeight }
-                        PathLine { x: box.boxWidth; y: 1 }
+                        PathLine { x: 1;           y: box.height-1 }
+                        PathLine { x: box.width-1; y: box.height-1 }
+                        PathLine { x: box.width-1; y: 1 }
                         PathLine { x: 1;           y: 1 }
                     }
                 }
 
                 Rectangle {
-                    width: box.boxWidth
-                    height: box.boxHeight
+                    width: box.width
+                    height: box.height
 
                     border.color: {
                         switch(airspace.CAT) {
@@ -227,6 +230,8 @@ Dialog {
                             return "#40ff0000";
                         case "RMZ":
                             return "#400000ff";
+                        case "NRA":
+                            return "#4000ff00";
                         }
                         return "transparent"
                     }
@@ -253,6 +258,7 @@ Dialog {
             Label {
                 Layout.fillWidth: true
                 Layout.rowSpan: 3
+                Layout.alignment: Qt.AlignVCenter
                 text: gridLYO.airspace.name
                 wrapMode: Text.WordWrap
             }

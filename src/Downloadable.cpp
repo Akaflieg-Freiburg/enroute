@@ -53,7 +53,7 @@ Downloadable::~Downloadable() {
 }
 
 
-QString Downloadable::infoText() const {
+auto Downloadable::infoText() const -> QString {
     if (downloading())
         return tr("downloading … %1% complete").arg(_downloadProgress);
 
@@ -80,7 +80,7 @@ QString Downloadable::infoText() const {
 }
 
 
-QByteArray Downloadable::fileContent() const {
+auto Downloadable::fileContent() const -> QByteArray {
     // Paranoid safety checks
     Q_ASSERT(!_fileName.isEmpty());  
 
@@ -147,7 +147,7 @@ void Downloadable::setSection(const QString& sectionName)
 }
 
 
-bool Downloadable::updatable() const {
+auto Downloadable::updatable() const -> bool {
     if (downloading())
         return false;
     if (!QFile::exists(_fileName))

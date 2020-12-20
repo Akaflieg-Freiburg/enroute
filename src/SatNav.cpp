@@ -79,7 +79,7 @@ SatNav::~SatNav()
 }
 
 
-int SatNav::altitudeInFeet() const
+auto SatNav::altitudeInFeet() const -> int
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return 0;
@@ -89,7 +89,7 @@ int SatNav::altitudeInFeet() const
 }
 
 
-QString SatNav::altitudeInFeetAsString() const
+auto SatNav::altitudeInFeetAsString() const -> QString
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return "-";
@@ -132,7 +132,7 @@ void SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
 }
 
 
-int SatNav::rawAltitudeInFeet() const
+auto SatNav::rawAltitudeInFeet() const -> int
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return 0;
@@ -142,7 +142,7 @@ int SatNav::rawAltitudeInFeet() const
 }
 
 
-QString SatNav::rawAltitudeInFeetAsString() const
+auto SatNav::rawAltitudeInFeetAsString() const -> QString
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D)
         return "-";
@@ -151,14 +151,14 @@ QString SatNav::rawAltitudeInFeetAsString() const
 }
 
 
-int SatNav::geoidalSeparation() const
+auto SatNav::geoidalSeparation() const -> int
 {
     auto corr = AviationUnits::Distance::fromM(_lastValidGeoidCorrection);
     return qRound(corr.toFeet());
 }
 
 
-QString SatNav::geoidalSeparationAsString() const
+auto SatNav::geoidalSeparationAsString() const -> QString
 {
     if (_geoid == nullptr || !_geoid->valid() || !lastInfo.isValid()) {
         return "-";
@@ -168,13 +168,13 @@ QString SatNav::geoidalSeparationAsString() const
 }
 
 
-SatNav *SatNav::globalInstance()
+auto SatNav::globalInstance() -> SatNav *
 {
     return satNavStatic;
 }
 
 
-int SatNav::groundSpeedInKnots() const
+auto SatNav::groundSpeedInKnots() const -> int
 {
     auto gsInMPS = groundSpeedInMetersPerSecond();
 
@@ -186,7 +186,7 @@ int SatNav::groundSpeedInKnots() const
 }
 
 
-QString SatNav::groundSpeedInKnotsAsString() const
+auto SatNav::groundSpeedInKnotsAsString() const -> QString
 {
     auto gsInKnots = groundSpeedInKnots();
 
@@ -196,7 +196,7 @@ QString SatNav::groundSpeedInKnotsAsString() const
 }
 
 
-QString SatNav::groundSpeedInKMHAsString() const
+auto SatNav::groundSpeedInKMHAsString() const -> QString
 {
     auto gsInMPS = groundSpeedInMetersPerSecond();
 
@@ -208,7 +208,7 @@ QString SatNav::groundSpeedInKMHAsString() const
 }
 
 
-qreal SatNav::groundSpeedInMetersPerSecond() const
+auto SatNav::groundSpeedInMetersPerSecond() const -> qreal
 {
     if (!lastInfo.isValid())
         return -1.0;
@@ -225,7 +225,7 @@ qreal SatNav::groundSpeedInMetersPerSecond() const
 }
 
 
-int SatNav::horizontalPrecisionInMeters() const
+auto SatNav::horizontalPrecisionInMeters() const -> int
 {
     if (!lastInfo.isValid())
         return -1;
@@ -242,7 +242,7 @@ int SatNav::horizontalPrecisionInMeters() const
 }
 
 
-QString SatNav::horizontalPrecisionInMetersAsString() const
+auto SatNav::horizontalPrecisionInMetersAsString() const -> QString
 {
     auto _horizontalPrecisionInMeters = horizontalPrecisionInMeters();
 
@@ -252,7 +252,7 @@ QString SatNav::horizontalPrecisionInMetersAsString() const
 }
 
 
-QString SatNav::icon() const
+auto SatNav::icon() const -> QString
 {
     if (status() != OK)
         return "/icons/self-noSatNav.svg";
@@ -264,13 +264,13 @@ QString SatNav::icon() const
 }
 
 
-QGeoCoordinate SatNav::lastValidCoordinate() const
+auto SatNav::lastValidCoordinate() const -> QGeoCoordinate
 {
     return _lastValidCoordinate;
 }
 
 
-QGeoCoordinate SatNav::lastValidCoordinateStatic()
+auto SatNav::lastValidCoordinateStatic() -> QGeoCoordinate
 {
     // Find out that unit system we should use
     auto _satNav = SatNav::globalInstance();
@@ -281,7 +281,7 @@ QGeoCoordinate SatNav::lastValidCoordinateStatic()
 }
 
 
-QString SatNav::latitudeAsString() const
+auto SatNav::latitudeAsString() const -> QString
 {
     if (!lastInfo.isValid())
         return "-";
@@ -297,7 +297,7 @@ QString SatNav::latitudeAsString() const
 }
 
 
-QString SatNav::longitudeAsString() const
+auto SatNav::longitudeAsString() const -> QString
 {
     if (!lastInfo.isValid())
         return "-";
@@ -314,7 +314,7 @@ QString SatNav::longitudeAsString() const
 }
 
 
-SatNav::Status SatNav::status() const
+auto SatNav::status() const -> SatNav::Status
 {
     if (source == nullptr)
         return Status::Error;
@@ -329,7 +329,7 @@ SatNav::Status SatNav::status() const
 }
 
 
-QString SatNav::statusAsString() const
+auto SatNav::statusAsString() const -> QString
 {
     if (source == nullptr)
         return tr("Not installed or access denied");
@@ -414,7 +414,7 @@ void SatNav::timeout()
 }
 
 
-QString SatNav::timestampAsString() const
+auto SatNav::timestampAsString() const -> QString
 {
     if (!lastInfo.isValid())
         return "-";
@@ -426,7 +426,7 @@ QString SatNav::timestampAsString() const
 }
 
 
-int SatNav::track() const
+auto SatNav::track() const -> int
 {
     if (groundSpeedInKnots() < 4)
         return -1;
@@ -445,7 +445,7 @@ int SatNav::track() const
 }
 
 
-QString SatNav::trackAsString() const
+auto SatNav::trackAsString() const -> QString
 {
     auto _track = track();
 
@@ -455,7 +455,7 @@ QString SatNav::trackAsString() const
 }
 
 
-QString SatNav::wayTo(const QGeoCoordinate& position) const
+auto SatNav::wayTo(const QGeoCoordinate& position) const -> QString
 {
     // Paranoid safety checks
     if (status() != SatNav::OK)

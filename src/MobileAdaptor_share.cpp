@@ -51,7 +51,7 @@ void MobileAdaptor::importContent()
 }
 
 
-QString MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
@@ -85,7 +85,7 @@ QString MobileAdaptor::exportContent(const QByteArray& content, const QString& m
 #endif
 }
 
-QString MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
+auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
@@ -106,7 +106,7 @@ QString MobileAdaptor::viewContent(const QByteArray& content, const QString& mim
 }
 
 
-QString MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate)
+auto MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
     QString fname = fileNameTemplate.arg(now.toString("yyyy-MM-dd_hh.mm.ss"));

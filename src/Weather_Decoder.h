@@ -116,7 +116,7 @@ protected:
 
     // Sets the raw METAR/TAF message and starts processing. Since METAR/TAF messages specify points in time only by "day of month" and "time",
     // the decoder needs to know the month and year. Set this reference date to any date between in the interval [issue date, issue date + 28 days]
-    void setRawText(QString rawText, QDate referenceDate);
+    void setRawText(const QString& rawText, QDate referenceDate);
 
     // Indicates if the parser was able to read the text without error. If an error occurs, the decoded will
     // still be available, but is probably incomplete
@@ -133,7 +133,7 @@ private:
     // Explanation functions
     static QString explainCloudType(const metaf::CloudType ct);
     static QString explainDirection(const metaf::Direction & direction, bool trueCardinalDirections=true);
-    static QString explainDirectionSector(const std::vector<metaf::Direction> dir);
+    static QString explainDirectionSector(const std::vector<metaf::Direction>& dir);
     static QString explainDistance(const metaf::Distance & distance);
     static QString explainDistance_FT(const metaf::Distance & distance);
     QString explainMetafTime(const metaf::MetafTime & metafTime);

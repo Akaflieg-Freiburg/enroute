@@ -96,7 +96,7 @@ Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
 }
 
 
-bool Weather::TAF::isExpired() const
+auto Weather::TAF::isExpired() const -> bool
 {
     if (!_expirationTime.isValid())
         return true;
@@ -104,7 +104,7 @@ bool Weather::TAF::isExpired() const
 }
 
 
-bool Weather::TAF::isValid() const
+auto Weather::TAF::isValid() const -> bool
 {
     if (!_location.isValid())
         return false;
@@ -121,7 +121,7 @@ bool Weather::TAF::isValid() const
 }
 
 
-QString Weather::TAF::relativeIssueTime() const
+auto Weather::TAF::relativeIssueTime() const -> QString
 {
     if (!_issueTime.isValid())
         return QString();

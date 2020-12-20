@@ -21,6 +21,8 @@
 #include "GeoMapProvider.h"
 #include "Weather_Station.h"
 
+#include <utility>
+
 
 Weather::Station::Station(QObject *parent)
     : QObject(parent)
@@ -28,9 +30,9 @@ Weather::Station::Station(QObject *parent)
 }
 
 
-Weather::Station::Station(const QString &id, GeoMapProvider *geoMapProvider, QObject *parent)
+Weather::Station::Station(QString id, GeoMapProvider *geoMapProvider, QObject *parent)
     : QObject(parent),
-      _ICAOCode(id),
+      _ICAOCode(std::move(id)),
       _geoMapProvider(geoMapProvider)
 {
     _extendedName = _ICAOCode;
@@ -171,7 +173,7 @@ void Weather::Station::setTAF(Weather::TAF *taf)
 }
 
 
-QString Weather::Station::wayTo(QGeoCoordinate fromCoordinate, bool useMetricUnits) const
+auto Weather::Station::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetricUnits) const -> QString
 {
     // Paranoid safety checks
     if (!fromCoordinate.isValid())

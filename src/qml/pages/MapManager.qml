@@ -145,7 +145,19 @@ Page {
                         id: removeMenu
 
                         Action {
-                            id: updateAction
+                            id: infoAction
+
+                            text: qsTr("Map Info")
+
+                            onTriggered: {
+                                mobileAdaptor.vibrateBrief()
+                                infoDialog.title = qsTr("Map Info: ") + model.modelData.objectName
+                                infoDialog.text = geoMapProvider.describeMapFile(model.modelData.fileName)
+                                infoDialog.open()
+                            }
+                        }
+                        Action {
+                            id: removeAction
 
                             text: qsTr("Uninstall")
 
@@ -470,4 +482,11 @@ Page {
         }
     }
 
+
+    LongTextDialog {
+        id: infoDialog
+
+        text: ""
+        standardButtons: Dialog.Ok
+    }
 } // Page

@@ -23,7 +23,7 @@
 #include "GeoMapProvider.h"
 
 
-QByteArray FlightRoute::toGpx() const
+auto FlightRoute::toGpx() const -> QByteArray
 {
     // now in UTC, ISO 8601 alike
     //
@@ -98,7 +98,7 @@ QByteArray FlightRoute::toGpx() const
 }
 
 
-QString FlightRoute::gpxElements(const QString& indent, const QString& tag) const
+auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -> QString
 {
     QString gpx = "";
 
@@ -139,7 +139,7 @@ QString FlightRoute::gpxElements(const QString& indent, const QString& tag) cons
 }
 
 
-QString FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider)
+auto FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider) -> QString
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
@@ -150,14 +150,14 @@ QString FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMap
 }
 
 
-QString FlightRoute::loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider)
+auto FlightRoute::loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider) -> QString
 {
     QXmlStreamReader xml(data);
     return loadFromGpx(xml, geoMapProvider);
 }
 
 
-QString FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider)
+auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider) -> QString
 {
 
     // collect all route points and track points and waypoints

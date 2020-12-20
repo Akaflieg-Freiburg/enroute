@@ -41,7 +41,7 @@ Map {
     property string geoJSON
     
     /*! \brief Width of thick lines around airspaces, such as class D */
-    property real airspaceLineWidth: 5.0
+    property real airspaceLineWidth: 7.0
 
     /*
     * Handle changes in zoom level
@@ -87,7 +87,29 @@ Map {
         property var sprite: ":flightMap/sprites/WhiteBox.png"
     }
     
-    
+
+    /*
+     * FIS - Flight Information Sector
+     */
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "FIS"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "FIS"]
+    }
+
+    MapParameter {
+        type: "paint"
+        property var layer: "FIS"
+        property var lineColor: "green"
+        property var lineWidth: 2.0
+        //property var lineDasharray: [4.0, 4.0]
+    }
+
+
     /*
      * RMZ - Radio Mandatory Zone
      */
@@ -242,7 +264,6 @@ Map {
         property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
-    
     MapParameter {
         type: "paint"
         property var layer: "controlZones"
@@ -258,7 +279,6 @@ Map {
         property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
-    
     MapParameter {
         type: "paint"
         property var layer: "controlZoneOutlines"
@@ -266,7 +286,6 @@ Map {
         property var lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
     }
-    
     MapParameter {
         type: "layer"
         
@@ -276,7 +295,6 @@ Map {
         property var filter: ["==", ["get", "CAT"], "CTR"]
         property var minzoom: 10
     }
-    
     MapParameter {
         type: "layout"
 
@@ -287,8 +305,67 @@ Map {
         property var iconTextFit: "both"
         property var iconTextFitPadding: [2,5,2,5]
     }
+
     
-    
+    /*
+     * Nature Reserve Area
+     */
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "natureReserveAreas"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "NRA"]
+    }
+
+    MapParameter {
+        type: "paint"
+        property var layer: "natureReserveAreas"
+        property var lineColor: "green"
+        property var lineOpacity: 0.2
+        property var lineWidth: airspaceLineWidth
+        property var lineOffset: airspaceLineWidth/2.0
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "natureReserveAreaOutlines"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "NRA"]
+    }
+
+    MapParameter {
+        type: "paint"
+        property var layer: "natureReserveAreaOutlines"
+        property var lineColor: "green"
+        property var lineWidth: 2.0
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "natureReserveAreaLabels"
+        property var layerType: "symbol"
+        property var source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "NRA"]
+        property var minzoom: 10
+    }
+
+    MapParameter {
+        type: "layout"
+
+        property var layer: "natureReserveAreaLabels"
+        property var textField: ["get", "NAM"]
+        property var textSize: 12
+        property var iconImage: "WhiteBox"
+        property var iconTextFit: "both"
+        property var iconTextFitPadding: [2,5,2,5]
+    }
+
     /*
      * Danger Zone, Prohibited Zone, Restricted Zone
      */
@@ -337,14 +414,12 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
         property var minzoom: 10
     }
-    
     MapParameter {
         type: "paint"
         property var layer: "dangerZoneLabels"
         property var textHaloWidth: 2
         property var textHaloColor: "white"
     }
-    
     MapParameter {
         type: "layout"
         
@@ -359,24 +434,59 @@ Map {
     // End of airspaces
 
     /*
-     * TFC - Traffic circuit
+     * Procedures
      */
     
     MapParameter {
         type: "layer"
         
-        property var name: "TFC"
+        property var name: "PRC_DEP"
         property var layerType: "line"
         property var source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "PRC"]
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "DEP"]]
         property var minzoom: 10
     }
     MapParameter {
         type: "paint"
-        property var layer: "TFC"
+        property var layer: "PRC_DEP"
+        property var lineColor: ["get", "GAC"]
+        property var lineWidth: 3.0
+        property var lineDasharray: [3.0, 3.0]
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "PRC_ARR"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "ARR"]]
+        property var minzoom: 10
+    }
+    MapParameter {
+        type: "paint"
+        property var layer: "PRC_ARR"
+        property var lineColor: ["get", "GAC"]
+        property var lineWidth: 3.0
+        property var lineDasharray: [9.0, 3.0]
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property var name: "PRC_OTH"
+        property var layerType: "line"
+        property var source: "aviationData"
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "ARR"], ["!=", ["get", "USE"], "DEP"]]
+        property var minzoom: 10
+    }
+    MapParameter {
+        type: "paint"
+        property var layer: "PRC_OTH"
         property var lineColor: ["get", "GAC"]
         property var lineWidth: 3.0
     }
+
     
     MapParameter {
         type: "layer"
@@ -393,12 +503,12 @@ Map {
         property var layer: "TFCLabels"
         property var symbolPlacement: "line"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
+        property var textSize: 16
     }
     MapParameter {
         type: "paint"
         property var layer: "TFCLabels"
-        property var textHaloWidth: 2
+        property var textHaloWidth: 10
         property var textHaloColor: "white"
     }
 
@@ -565,7 +675,6 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
     }
 
-    
     MapParameter {
         type: "layout"
 

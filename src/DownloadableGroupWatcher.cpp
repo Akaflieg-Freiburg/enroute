@@ -41,7 +41,7 @@ void DownloadableGroupWatcher::emitLocalFileContentChanged_delayed()
 }
 
 
-bool DownloadableGroupWatcher::hasFile() const
+auto DownloadableGroupWatcher::hasFile() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
@@ -53,7 +53,7 @@ bool DownloadableGroupWatcher::hasFile() const
 }
 
 
-bool DownloadableGroupWatcher::downloading() const
+auto DownloadableGroupWatcher::downloading() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
@@ -65,7 +65,7 @@ bool DownloadableGroupWatcher::downloading() const
 }
 
 
-QStringList DownloadableGroupWatcher::files() const
+auto DownloadableGroupWatcher::files() const -> QStringList
 {
     QStringList result;
 
@@ -81,7 +81,7 @@ QStringList DownloadableGroupWatcher::files() const
 }
 
 
-bool DownloadableGroupWatcher::updatable() const
+auto DownloadableGroupWatcher::updatable() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull())
@@ -149,7 +149,7 @@ void DownloadableGroupWatcher::checkAndEmitSignals()
 }
 
 
-QList<QPointer<Downloadable>> DownloadableGroupWatcher::downloadables() const
+auto DownloadableGroupWatcher::downloadables() const -> QList<QPointer<Downloadable>>
 {
     QList<QPointer<Downloadable>> result;
     foreach(auto _downloadable, _downloadables) {
@@ -171,7 +171,7 @@ QList<QPointer<Downloadable>> DownloadableGroupWatcher::downloadables() const
 }
 
 
-QList<QPointer<Downloadable>> DownloadableGroupWatcher::downloadablesWithFile() const
+auto DownloadableGroupWatcher::downloadablesWithFile() const -> QList<QPointer<Downloadable>>
 {
     QList<QPointer<Downloadable>> result;
     foreach(auto _downloadable, _downloadables) {
@@ -195,7 +195,7 @@ QList<QPointer<Downloadable>> DownloadableGroupWatcher::downloadablesWithFile() 
 }
 
 
-QList<QObject*> DownloadableGroupWatcher::downloadablesAsObjectList() const
+auto DownloadableGroupWatcher::downloadablesAsObjectList() const -> QList<QObject*>
 {
     QList<QObject*> result;
     foreach(auto downloadablePtr, downloadables())
@@ -215,18 +215,18 @@ void DownloadableGroupWatcher::updateAll()
 }
 
 
-QString DownloadableGroupWatcher::updateSize() const
+auto DownloadableGroupWatcher::updateSize() const -> QString
 {
     qint64 downloadSize = 0;
-      foreach(auto downloadable, _downloadables)
-          if (downloadable->updatable())
-              downloadSize += downloadable->remoteFileSize();
+    foreach(auto downloadable, _downloadables)
+        if (downloadable->updatable())
+            downloadSize += downloadable->remoteFileSize();
 
-      return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
+    return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
 }
 
 
-int DownloadableGroupWatcher::numberOfFilesTotal() const
+auto DownloadableGroupWatcher::numberOfFilesTotal() const -> int
 {
     int nFilesTotal = 0;
     foreach(auto _downloadable, _downloadables) {
@@ -234,8 +234,10 @@ int DownloadableGroupWatcher::numberOfFilesTotal() const
             continue;
         if (_downloadable->hasFile())
             nFilesTotal += 1;
-        else if (_downloadable->downloading())
-            nFilesTotal += 1;
+        else {
+            if (_downloadable->downloading())
+                nFilesTotal += 1;
+        }
     }
     return nFilesTotal;
 }

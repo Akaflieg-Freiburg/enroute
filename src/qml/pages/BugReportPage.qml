@@ -98,6 +98,8 @@ your suggestions for improvement.</p>
                 Label {
                     Layout.fillWidth: true
                     text: qsTr("
+<h4>Main Application</h4>
+
 <p>Use this button to report an issue in the main
 application.</p>
 ")
@@ -116,9 +118,51 @@ application.</p>
                 Label {
                     Layout.fillWidth: true
                     text: qsTr("
-<p>If you would like to report problems with the aviation
-data (such as wrong frequencies, outdated traffic patterns,
-missing navaids, …), then please use the buttons below.</p>
+<h4>Airspaces</h4>
+
+<p>If you would like to report problems with airspaces
+(such as wrong missing airspaces, wrong vertical limits,
+…), then please use the buttons below.</p>
+")
+                    textFormat: Text.RichText
+                    wrapMode: Text.Wrap
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Flight Information Regions")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked:  {
+                        mobileAdaptor.vibrateBrief()
+                        stack.push(checkIfOFMcountry)
+                    }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Nature Reserve Areas")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked:  {
+                        mobileAdaptor.vibrateBrief()
+                        stack.push(checkIfOFMcountry)
+                    }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("All Other Airspaces")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked:  {
+                        mobileAdaptor.vibrateBrief()
+                        stack.push(openAIPAirspace)
+                    }
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("
+<h4>Aviation Data</h4>
+
+<p>If you would like to report problems with other aviation
+data (such as wrong airfield frequencies, outdated traffic
+patterns, missing navaids, …), then please use the buttons
+below.</p>
 ")
                     textFormat: Text.RichText
                     wrapMode: Text.Wrap

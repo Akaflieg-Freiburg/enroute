@@ -68,7 +68,7 @@ Geoid::Geoid()
 // we do a simple bilinear interpolation between the four surrounding data points
 // according to Numerical Recipies in C++ 3.6 "Interpolation in Two or More Dimensions".
 //
-qreal Geoid::operator()(qreal latitude, qreal longitude)
+auto Geoid::operator()(qreal latitude, qreal longitude) -> qreal
 {
     if (egm.empty())
         return 0.0;

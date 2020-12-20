@@ -410,15 +410,17 @@ Item {
         height: 30
     }
 
-    Label {
+    Label { // Copyright notice
         anchors.bottom: navBar.top
-        anchors.left: followGPSButton.right
-        anchors.leftMargin: 0.5*Qt.application.font.pixelSize
-        anchors.bottomMargin: 0.2*Qt.application.font.pixelSize
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
 
         text: "© <a href='http://www.openmaptiles.org/'>&copy; OpenMapTiles</a> <a href='http://www.openstreetmap.org/about/'>&copy; OpenStreetMap contributors</a>"
         color: "blue"
+        font.pointSize: 10
         linkColor: "blue"
+        horizontalAlignment: Text.AlignHCenter
         onLinkActivated: Qt.openUrlExternally(link)
     }
 

@@ -56,11 +56,21 @@ private slots:
 
     void readFromStream();
 
+    void readFromSimulatorStream();
+
+    void processFLARMMessage(QString msg);
+
 private:
     QTimer connectTimer;
 
     QTcpSocket socket;
     QTextStream stream;
+
+    // Simulator related members
+    QTextStream simulatorStream;
+    QTimer simulatorTimer;
+    int lastTime {0};
+    QString lastPayload;
 };
 
 }

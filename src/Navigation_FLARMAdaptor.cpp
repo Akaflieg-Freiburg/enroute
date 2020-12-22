@@ -20,7 +20,9 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QGeoCoordinate>
 
+#include "AviationUnits.h"
 #include "Navigation_FLARMAdaptor.h"
 
 
@@ -65,11 +67,46 @@ void Navigation::FLARMAdaptor::connectToFLARM()
     socket.connectToHost("192.168.1.1", 2000);
 }
 
+qreal interpretNMEALatLong(QString A, QString B)
+{
+    bool ok1, ok2;
+    qreal result = A.left(2).toDouble(&ok1) + A.mid(2).toDouble(&ok2)/60.0;
+    if (!ok1 || !ok2)
+        return qQNaN();
+
+    if ((B == "S") || (B == "W"))
+        result *= -1.0;
+    return result;
+}
 
 void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 {
 //    qWarning() << "Navigation::FLARMAdaptor::processFLARMMessage()" << msg;
-    auto pieces = msg.split(",");
+    if (msg.isEmpty())
+        return;
+
+    // Check that line starts with a dollar sign
+    if (msg[0] != "$")
+        return;
+    msg = msg.mid(1);
+
+    // Check the NMEA checksum
+    auto pieces = msg.split("*");
+    if (pieces.length() != 2)
+        return;
+    msg = pieces[0];
+    auto checksum = pieces[1].toInt(nullptr, 16);
+    int myChecksum = 0;
+    for(int i=0; i<msg.length(); i++)
+       myChecksum ^= msg[i].toLatin1();
+    if (checksum != myChecksum)
+        return;
+
+    // Split the message into pieces
+    auto arguments = msg.split(",");
+    if (arguments.isEmpty())
+        return;
+    auto messageType = arguments.takeFirst();
 
     // FLARM Heartbeat
     if (pieces[0] == "$PFLAU") {
@@ -80,15 +117,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         }
 
-        auto RX = pieces[1];
-        auto TX = pieces[2];
-        auto GPSPower = pieces[3];
-        auto AlarmLevel = pieces[4];
-        auto RelativeBearing = pieces[5];
-        auto AlarmType = pieces[6];
-        auto RelativeVertical = pieces[7];
-        auto RelativeDistance = pieces[8];
-        auto ID = pieces[9];
         return;
     }
 
@@ -105,14 +133,33 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
     }
 
     // Recommended minimum specific GPS/Transit data
-    if (pieces[0] == "$GPRMC") {
-//        qWarning() << "Recommended minimum specific GPS/Transit data";
+    if (messageType == "GPRMC") {
+//        qWarning() << "Recommended minimum specific GPS/Transit data" << arguments;
+        if (arguments.length() < 8)
+            return;
+        if (arguments[1] != "A")
+            return;
+
+        auto lat = interpretNMEALatLong(arguments[2], arguments[3]);
+        auto lon = interpretNMEALatLong(arguments[4], arguments[5]);
+        QGeoCoordinate coordinate(lat, lon);
+
+        auto hSpeed = AviationUnits::Speed::fromKT(arguments[6].toDouble());
+        auto TT = arguments[7].toDouble();
+        qWarning() << coordinate << QString::number(hSpeed.toKT()) + " KT" << QString::number(TT) + "°";
         return;
     }
 
     // NMEA GPS 3D-fix data
-    if (pieces[0] == "$GPGGA") {
-//        qWarning() << "NMEA GPS 3D-fix data";
+    if (messageType == "GPGGA") {
+        qWarning() << "NMEA GPS 3D-fix data";
+        if (arguments.length() < 5)
+            return;
+        auto lat = interpretNMEALatLong(arguments[1], arguments[2]);
+        auto lon = interpretNMEALatLong(arguments[3], arguments[4]);
+        auto alt = arguments[8].toDouble();
+        QGeoCoordinate coordinate(lat, lon, alt);
+        qWarning() << coordinate;
         return;
     }
 

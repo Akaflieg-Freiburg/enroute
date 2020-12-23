@@ -21,9 +21,13 @@
 #include <QDebug>
 #include <QFile>
 #include <QGeoCoordinate>
+#include <QGeoPositionInfo>
 
 #include "AviationUnits.h"
 #include "Navigation_FLARMAdaptor.h"
+
+// Static instance of this class
+Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
 
 
 Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
@@ -53,6 +57,14 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 }
 
 
+
+auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
+{
+    return FLARMAdaptorStatic;
+}
+
+
+
 void Navigation::FLARMAdaptor::connectToFLARM()
 {
     qWarning() << "Navigation::FLARMAdaptor::connectToFLARM()";
@@ -67,6 +79,7 @@ void Navigation::FLARMAdaptor::connectToFLARM()
     socket.connectToHost("192.168.1.1", 2000);
 }
 
+
 qreal interpretNMEALatLong(QString A, QString B)
 {
     bool ok1, ok2;
@@ -78,6 +91,21 @@ qreal interpretNMEALatLong(QString A, QString B)
         result *= -1.0;
     return result;
 }
+
+QDateTime interpretNMEATime(QString timeString)
+{
+    auto HH = timeString.mid(0,2);
+    auto MM = timeString.mid(2,2);
+    auto SS = timeString.mid(4,2);
+    auto MS = timeString.mid(6);
+    QTime time(HH.toInt(), MM.toInt(), SS.toInt());
+    if (MS.isEmpty())
+        time = time.addMSecs(qRound(MS.toDouble()*1000.0));
+    auto dateTime = QDateTime::currentDateTimeUtc();
+    dateTime.setTime(time);
+    return dateTime;
+}
+
 
 void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 {
@@ -134,32 +162,71 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // Recommended minimum specific GPS/Transit data
     if (messageType == "GPRMC") {
-//        qWarning() << "Recommended minimum specific GPS/Transit data" << arguments;
         if (arguments.length() < 8)
             return;
+
+        // Quality check
         if (arguments[1] != "A")
             return;
 
+        // Get Time
+        auto dateTime = interpretNMEATime(arguments[0]);
+        if (!dateTime.isValid())
+            return;
+
+        // Get coordinate
         auto lat = interpretNMEALatLong(arguments[2], arguments[3]);
         auto lon = interpretNMEALatLong(arguments[4], arguments[5]);
         QGeoCoordinate coordinate(lat, lon);
+        if (!coordinate.isValid())
+            return;
+        QGeoPositionInfo pInfo(coordinate, dateTime);
 
-        auto hSpeed = AviationUnits::Speed::fromKT(arguments[6].toDouble());
-        auto TT = arguments[7].toDouble();
-        qWarning() << coordinate << QString::number(hSpeed.toKT()) + " KT" << QString::number(TT) + "°";
+        // Ground speed
+        bool ok;
+        auto groundSpeed = AviationUnits::Speed::fromKT(arguments[6].toDouble(&ok));
+        if (!ok)
+            return;
+        if (groundSpeed.isFinite())
+            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS() );
+
+        // Track
+        auto TT = arguments[7].toDouble(&ok);
+        if (!ok)
+            return;
+        if (TT != qQNaN())
+            pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
+
+        qWarning() << "GPRMC" << pInfo;
         return;
     }
 
     // NMEA GPS 3D-fix data
     if (messageType == "GPGGA") {
-        qWarning() << "NMEA GPS 3D-fix data";
-        if (arguments.length() < 5)
+        if (arguments.length() < 9)
             return;
+
+        // Quality check
+        if (arguments[5] == "0")
+            return;
+
+        // Get Time
+        auto dateTime = interpretNMEATime(arguments[0]);
+        if (!dateTime.isValid())
+            return;
+
+        // Get coordinate
         auto lat = interpretNMEALatLong(arguments[1], arguments[2]);
         auto lon = interpretNMEALatLong(arguments[3], arguments[4]);
         auto alt = arguments[8].toDouble();
         QGeoCoordinate coordinate(lat, lon, alt);
-        qWarning() << coordinate;
+        if (!coordinate.isValid())
+            return;
+
+        // Construct positionInfo
+        QGeoPositionInfo pInfo(coordinate, dateTime);
+
+        qWarning() << "GPGGA" << pInfo;
         return;
     }
 

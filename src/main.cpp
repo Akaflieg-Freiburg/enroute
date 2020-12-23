@@ -115,9 +115,6 @@ auto main(int argc, char *argv[]) -> int
     QObject::connect(&kdsingleapp, SIGNAL(messageReceived(const QByteArray &)), adaptor, SLOT(processFileOpenRequest(const QByteArray &)));
 #endif
 
-#warning Needs to move to the right place
-    Navigation::FLARMAdaptor flarmAdaptor;
-
     /*
      * Set up ApplicationEngine for QML
      */
@@ -126,6 +123,9 @@ auto main(int argc, char *argv[]) -> int
 
     // Make GPS available to QML engine
     engine->rootContext()->setContextProperty("satNav", SatNav::globalInstance());
+
+    // Make FLARM available to QML engine
+    engine->rootContext()->setContextProperty("flarmAdaptor", Navigation::FLARMAdaptor::globalInstance());
 
     // Attach global settings object
     engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());

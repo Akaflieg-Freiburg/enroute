@@ -184,6 +184,24 @@ ApplicationWindow {
                             }
                         }
 
+                        ItemDelegate { // FLARM Status
+                            text: qsTr("FLARM Status")
+                                  +`<br><font color="#606060" size="2">`
+                                  + qsTr("Current Status")
+                                  + `: ${flarmAdaptor.statusAsString}</font>`
+                            icon.source: "/icons/material/ic_satellite.svg"
+                            icon.color: Material.primary
+                            Layout.fillWidth: true
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                dialogLoader.active = false
+                                dialogLoader.source = "dialogs/FLARMStatusDialog.qml"
+                                dialogLoader.active = true
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
                         Rectangle {
                             height: 1
                             Layout.fillWidth: true

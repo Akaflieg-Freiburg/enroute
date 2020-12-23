@@ -39,13 +39,25 @@ public:
     // Standard destructor
     ~FLARMAdaptor() override = default;
 
+    /*! \brief Pointer to static instance
+     */
+    static FLARMAdaptor *globalInstance();
+
+
+    Q_PROPERTY(QString statusAsString READ statusAsString NOTIFY statusAsStringChanged)
+
+    QString statusAsString() const
+    {
+        return "Simulator Mode";
+    }
+
+
     Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
     bool receiving() const;
 
-
-
 signals:
     void receivingChanged();
+    void statusAsStringChanged();
 
 private slots:
     void connectToFLARM();

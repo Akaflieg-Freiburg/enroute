@@ -25,6 +25,7 @@
 
 
 #include "Navigation_FLARMAdaptor.h"
+#include "SatNav.h"
 
 // Static instance of this class
 Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
@@ -42,22 +43,31 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToFLARM);
     connectTimer.start(1000*60*5);
 
+    // Wire up the setStatus()
+    heartBeatTimer.setSingleShot(true);
+    heartBeatTimer.setInterval(1000*5);
+    connect(&heartBeatTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::setStatus);
+    connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatus);
+    connect(&socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatus);
+    connect(&socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatus);
+
+    // Wire up setStatusString()
+    connect(this, &Navigation::FLARMAdaptor::statusChanged, this, &Navigation::FLARMAdaptor::setStatusString);
+    connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatusString);
+    connect(&socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatusString);
+    connect(&socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatusString);
+
     // Try our first connect 30sec after startup
     QTimer::singleShot(1000*30, this, &Navigation::FLARMAdaptor::connectToFLARM);
 
     // Setup simulator
-//    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-hard.txt");
-    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
-//    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
-//    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
-
-    simulatorFile->open(QIODevice::ReadOnly);
-    simulatorStream.setDevice(simulatorFile);
+    //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-hard.txt");
+    //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
+    //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-    simulatorTimer.setSingleShot(true);
-    readFromSimulatorStream();
-}
+    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
 
+}
 
 
 auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
@@ -106,6 +116,7 @@ qreal interpretNMEALatLong(QString A, QString B)
     return result;
 }
 
+
 QDateTime interpretNMEATime(QString timeString)
 {
     auto HH = timeString.mid(0,2);
@@ -128,6 +139,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         return;
 
     // Check that line starts with a dollar sign
+    if (msg.isEmpty())
+        return;
     if (msg[0] != "$")
         return;
     msg = msg.mid(1);
@@ -328,6 +341,13 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         return;
     }
 
+    // FLARM Heartbeat
+    if (messageType == "PFLAU") {
+        heartBeatTimer.start();
+        setStatus();
+        return;
+    }
+
     // Version information
     if (messageType == "PFLAV") {
         if (arguments.length() < 4)
@@ -372,21 +392,52 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // ===============0
 
-    // FLARM Heartbeat
-    if (pieces[0] == "$PFLAU") {
-        //        qWarning() << "FLARM Heartbeat";
-
-        if ((pieces.size() < 9) || (pieces.size() > 10)) {
-            qWarning() << "Message ill-formed";
-            return;
-        }
-
-        return;
-    }
-
     // Data on other proximate aircraft
-    if (pieces[0] == "$PFLAA") {
-        //        qWarning() << "Data on other proximate aircraft";
+    if (messageType == "PFLAA") {
+        qWarning() << "Data on other proximate aircraft";
+
+        auto satNav = SatNav::globalInstance();
+        if (satNav == nullptr)
+            return;
+        if (satNav->status() != SatNav::OK)
+            return;
+        auto targetCoordinate = satNav->coordinate();
+        if (!targetCoordinate.isValid())
+            return;
+
+        bool ok;
+        auto alarmLevel = arguments[0].toInt(&ok);
+        if (!ok)
+            return;
+        if ((alarmLevel < 0)||(alarmLevel > 3))
+            return;
+
+        auto relativeNorth = arguments[1].toInt(&ok);
+        if (!ok)
+            return;
+        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
+
+        auto relativeEast = arguments[2].toInt(&ok);
+        if (!ok)
+            return;
+        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
+
+        auto relativeVertical = arguments[3].toInt(&ok);
+        if (!ok)
+            return;
+        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
+
+        auto targetID = arguments[4];
+        auto targetTT = arguments[5];
+        auto targetGS = arguments[8];
+        auto targetType = arguments[10];
+
+        qWarning() << "Traffic";
+        qWarning() << "Alarm     " << alarmLevel;
+        qWarning() << "Position  " << targetCoordinate;
+        qWarning() << "Vertical  " << relativeVertical;
+        qWarning() << "targetGS  " << targetGS;
+        qWarning() << "targetType" << targetType;
         return;
     }
 
@@ -415,12 +466,6 @@ void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::Socke
 }
 
 
-bool Navigation::FLARMAdaptor::receiving() const
-{
-    return false;
-}
-
-
 void Navigation::FLARMAdaptor::readFromStream()
 {
     qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << stream.readLine();
@@ -430,12 +475,18 @@ void Navigation::FLARMAdaptor::readFromStream()
 void Navigation::FLARMAdaptor::readFromSimulatorStream()
 {
     //    qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
+    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorStream.atEnd()) {
+        setSimulatorFile();
+        return;
+    }
 
     if (!lastPayload.isEmpty())
         processFLARMMessage(lastPayload);
 
     auto line = simulatorStream.readLine();
     auto tuple = line.split(" ");
+    if (tuple.length() < 2)
+        return;
     auto time = tuple[0].toInt();
     lastPayload = tuple[1];
 
@@ -445,4 +496,70 @@ void Navigation::FLARMAdaptor::readFromSimulatorStream()
         simulatorTimer.setInterval(time-lastTime);
     simulatorTimer.start();
     lastTime = time;
+}
+
+
+void Navigation::FLARMAdaptor::setStatus()
+{
+    Status newStatus = Status::InOp;
+    if (heartBeatTimer.isActive())
+        newStatus = Status::OK;
+
+    if (newStatus == _status)
+        return;
+    _status = newStatus;
+    qWarning() << "status" << _status;
+    emit statusChanged();
+}
+
+
+void Navigation::FLARMAdaptor::setStatusString()
+{
+    auto computeString = [=]()
+    {
+        // Simulator mode
+        if (simulatorFile.isOpen()) {
+            if (status() == Status::OK)
+                return tr("Simulation • OK");
+            return tr("Simulation • Waiting for data");
+        }
+
+        if (status() == Status::OK)
+            return tr("OK");
+        if (socket.state() == QAbstractSocket::ConnectedState)
+            return tr("Connected • Waiting for data");
+        if (socket.state() == QAbstractSocket::ConnectingState)
+            return tr("Trying to connect…");
+        return tr("Not connected");
+    };
+
+
+    auto result = computeString();
+    if  (result == _statusString)
+        return;
+
+    _statusString = result;
+    emit statusStringChanged();
+}
+
+
+void Navigation::FLARMAdaptor::setSimulatorFile(QString fileName)
+{
+    lastPayload = QString();
+    simulatorFile.close();
+
+    if (fileName.isEmpty()) {
+        setStatus();
+        setStatusString();
+        return;
+    }
+
+    simulatorFile.setFileName(fileName);
+    if (!simulatorFile.open(QIODevice::ReadOnly))
+        return;
+
+    simulatorStream.setDevice(&simulatorFile);
+    readFromSimulatorStream();
+    setStatus();
+    setStatusString();
 }

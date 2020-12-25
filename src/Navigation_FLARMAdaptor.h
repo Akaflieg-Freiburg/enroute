@@ -42,16 +42,25 @@ public:
     // Standard destructor
     ~FLARMAdaptor() override = default;
 
+    /*! \brief Status codes */
+    enum Status
+    {
+        OK, /*!< A FLARM device is connected and receives data. */
+        WaitingForData, /*!< A FLARM device is connected, but no data has been received for more than 5 seconds.  */
+        InOp /*!< No FLARM device connected */
+    };
+    Q_ENUM(Status)
+
     /*! \brief Pointer to static instance
      */
     static FLARMAdaptor *globalInstance();
 
 
-    Q_PROPERTY(QString statusAsString READ statusAsString NOTIFY statusAsStringChanged)
+    Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
 
-    QString statusAsString() const
+    QString statusString() const
     {
-        return "Simulator Mode";
+        return _statusString;
     }
 
     Q_PROPERTY(QString FLARMHwVersion READ FLARMHwVersion NOTIFY FLARMHwVersionChanged)
@@ -82,9 +91,22 @@ public:
         return _FLARMSelfTest;
     }
 
+    /*! \brief Status of the FLARM adaptor
 
-    Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
-    bool receiving() const;
+    This property holds the status of the FLARM adaptor class.
+    */
+    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
+
+    /*! \brief Getter function for the property with the same name
+
+    @returns Property status
+  */
+    Status status() const
+    {
+        return _status;
+    };
+
+    void setSimulatorFile(QString fileName = QString() );
 
 signals:
     void flarmSelfTestFailed();
@@ -93,7 +115,8 @@ signals:
     void FLARMSwVersionChanged();
     void FLARMObstVersionChanged();
     void receivingChanged();
-    void statusAsStringChanged();
+    void statusStringChanged();
+    void statusChanged();
 
 private slots:
     void connectToFLARM();
@@ -109,12 +132,21 @@ private slots:
     void processFLARMMessage(QString msg);
 
     void clearFlarmDeviceInfo();
+    void setStatus();
+    void setStatusString();
 
 private:
     QTimer connectTimer;
+    QTimer heartBeatTimer;
 
     QTcpSocket socket;
     QTextStream stream;
+
+    // General status info. Should only been written to by setStatus()
+    Status _status {InOp};
+
+    // Detailed status info. Should only been written to by setStatusString()
+    QString _statusString;
 
     // Height information
     AviationUnits::Distance GPGGAHeight;
@@ -127,6 +159,7 @@ private:
     QString _FLARMSelfTest;
 
     // Simulator related members
+    QFile simulatorFile;
     QTextStream simulatorStream;
     QTimer simulatorTimer;
     int lastTime {0};

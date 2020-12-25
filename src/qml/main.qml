@@ -188,7 +188,7 @@ ApplicationWindow {
                             text: qsTr("FLARM Status")
                                   +`<br><font color="#606060" size="2">`
                                   + qsTr("Current Status")
-                                  + `: ${flarmAdaptor.statusAsString}</font>`
+                                  + `: ${flarmAdaptor.statusString}</font>`
                             icon.source: "/icons/material/ic_satellite.svg"
                             icon.color: Material.primary
                             Layout.fillWidth: true

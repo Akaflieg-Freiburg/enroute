@@ -24,6 +24,9 @@
 #include <QTimer>
 #include <QObject>
 
+#include "AviationUnits.h"
+
+
 namespace Navigation {
 
 class FLARMAdaptor : public QObject {
@@ -51,11 +54,44 @@ public:
         return "Simulator Mode";
     }
 
+    Q_PROPERTY(QString FLARMHwVersion READ FLARMHwVersion NOTIFY FLARMHwVersionChanged)
+
+    QString FLARMHwVersion() const
+    {
+        return _FLARMHwVersion;
+    }
+
+    Q_PROPERTY(QString FLARMSwVersion READ FLARMSwVersion NOTIFY FLARMSwVersionChanged)
+
+    QString FLARMSwVersion() const
+    {
+        return _FLARMSwVersion;
+    }
+
+    Q_PROPERTY(QString FLARMObstVersion READ FLARMObstVersion NOTIFY FLARMObstVersionChanged)
+
+    QString FLARMObstVersion() const
+    {
+        return _FLARMObstVersion;
+    }
+
+    Q_PROPERTY(QString FLARMSelfTest READ FLARMSelfTest NOTIFY FLARMSelfTestChanged)
+
+    QString FLARMSelfTest() const
+    {
+        return _FLARMSelfTest;
+    }
+
 
     Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
     bool receiving() const;
 
 signals:
+    void flarmSelfTestFailed();
+    void FLARMSelfTestChanged();
+    void FLARMHwVersionChanged();
+    void FLARMSwVersionChanged();
+    void FLARMObstVersionChanged();
     void receivingChanged();
     void statusAsStringChanged();
 
@@ -72,11 +108,23 @@ private slots:
 
     void processFLARMMessage(QString msg);
 
+    void clearFlarmDeviceInfo();
+
 private:
     QTimer connectTimer;
 
     QTcpSocket socket;
     QTextStream stream;
+
+    // Height information
+    AviationUnits::Distance GPGGAHeight;
+    QDateTime GPGGATime;
+
+    // FLARM information
+    QString _FLARMHwVersion; // Hardware version
+    QString _FLARMSwVersion; // Software version
+    QString _FLARMObstVersion; // Name of obstacle database
+    QString _FLARMSelfTest;
 
     // Simulator related members
     QTextStream simulatorStream;

@@ -31,8 +31,9 @@ Dialog {
     title: qsTr("Satellite Status")
 
     // Size is chosen so that the dialog does not cover the parent in full
-    contentWidth: gl.implicitWidth
-    contentHeight: gl.implicitHeight
+    // Size is chosen so that the dialog does not cover the parent in full
+    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+    height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
     standardButtons: Dialog.Ok
 
@@ -40,9 +41,6 @@ Dialog {
         id: view
         clip: true
         anchors.fill: parent
-
-        contentHeight: gl.height
-        contentWidth: satNavStatusDialog.availableWidth
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -54,18 +52,39 @@ Dialog {
             columnSpacing: 30
             columns: 2
 
-            Text { text: qsTr("Satellite Status") }
+            width: satNavStatusDialog.availableWidth
+
             Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Satellite Status")
+            }
+            Text {
+                Layout.fillWidth: true
                 font.weight: Font.Bold
                 text: satNav.statusAsString
                 color: (satNav.status === SatNav.OK) ? "green" : "red"
+                wrapMode: Text.Wrap
             }
 
-            Text { text: qsTr("Last Fix") }
-            Text { text: satNav.timestampAsString }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Last Fix")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: satNav.timestampAsString
+                wrapMode: Text.Wrap
+            }
 
-            Text { text: qsTr("Mode") }
-            Text { text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground") }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Mode")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground")
+                wrapMode: Text.Wrap
+            }
 
             Text {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
@@ -78,20 +97,55 @@ Dialog {
                 Layout.columnSpan: 2
             }
 
-            Text { text: qsTr("Latitude") }
-            Text { text: satNav.latitudeAsString }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Latitude")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: satNav.latitudeAsString
+                wrapMode: Text.Wrap
+            }
 
-            Text { text: qsTr("Longitude") }
-            Text { text: satNav.longitudeAsString }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Longitude")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: satNav.longitudeAsString
+                wrapMode: Text.Wrap
+            }
 
-            Text { text: qsTr("Error") }
-            Text { text: satNav.horizontalPrecisionInMetersAsString }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Error")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: satNav.horizontalPrecisionInMetersAsString
+                wrapMode: Text.Wrap
+            }
 
-            Text { text: qsTr("GS"); textFormat: Text.RichText }
-            Text { text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("GS")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
+                wrapMode: Text.Wrap
+            }
 
-            Text { text: qsTr("TT") }
-            Text { text: satNav.trackAsString }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("TT")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: satNav.trackAsString
+                wrapMode: Text.Wrap
+            }
 
             Text {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
@@ -104,8 +158,15 @@ Dialog {
                 Layout.columnSpan: 2
             }
 
-            Text { text: qsTr("ALT") }
-            Text { text: satNav.altitudeInFeetAsString }
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("ALT")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: satNav.altitudeInFeetAsString
+                wrapMode: Text.Wrap
+            }
 
         } // GridLayout
 

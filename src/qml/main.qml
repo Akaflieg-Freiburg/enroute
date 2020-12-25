@@ -428,7 +428,21 @@ ApplicationWindow {
         text: librarian.getStringFromRessource(":text/whatsnew.html")
         onOpened: globalSettings.lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
-    
+
+    LongTextDialog {
+        id: flarmErrorDialog
+        standardButtons: Dialog.Ok
+        anchors.centerIn: parent
+
+        title: qsTr("FLARM Error")
+        text: qsTr("<p>This app successfully connected to a FLARM device, but the device reported the following error.</p>")+"<p><strong>"+flarmAdaptor.FLARMSelfTest+"</strong></p>"
+
+        Connections {
+            target: flarmAdaptor
+            function onFlarmSelfTestFailed() {flarmErrorDialog.open()}
+        }
+    }
+
     Shortcut {
         sequence: StandardKey.Quit
         onActivated: Qt.quit()

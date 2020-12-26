@@ -238,6 +238,41 @@ Item {
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
+        MapQuickItem {
+            id: traffic1MapItem
+
+            anchorPoint.x: trafficImage1.width/2
+            anchorPoint.y: trafficImage1.height/2
+
+            coordinate: traffic1.coordinate
+            Behavior on coordinate {CoordinateAnimation { duration: 1000 }}
+
+            sourceItem: Item{
+                Image {
+                    id: trafficImage1
+
+                    rotation: traffic1.TT-flightMap.bearing
+
+                    source:  "/icons/self-withDirection.svg"
+                    sourceSize.width: 40
+                    sourceSize.height: 40
+                }
+
+                Label {
+                    anchors.left: trafficImage1.right
+                    anchors.bottom: trafficImage1.top
+                    text: traffic1.vDistText
+
+                    leftInset: -2
+                    rightInset: -2
+                    bottomInset: -1
+                    topInset: -2
+                    background: Rectangle {color: "white"}
+                }
+            }
+        }
+
+
         // Mouse Area, in order to receive mouse clicks
         MouseArea {
             anchors.fill: parent

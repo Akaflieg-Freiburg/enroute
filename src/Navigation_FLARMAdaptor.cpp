@@ -25,6 +25,7 @@
 
 
 #include "Navigation_FLARMAdaptor.h"
+#include "Navigation_Traffic.h"
 #include "SatNav.h"
 
 // Static instance of this class
@@ -394,7 +395,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // Data on other proximate aircraft
     if (messageType == "PFLAA") {
-        qWarning() << "Data on other proximate aircraft";
+        qWarning() << "Data on other proximate aircraft"  << arguments;
 
         auto satNav = SatNav::globalInstance();
         if (satNav == nullptr)
@@ -422,22 +423,32 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
 
-        auto relativeVertical = arguments[3].toInt(&ok);
+        auto relativeVertical = arguments[3].toDouble(&ok);
         if (!ok)
             return;
         targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
+        Navigation::Traffic::globalInstance(1)->setVDist( AviationUnits::Distance::fromM(relativeVertical));
 
-        auto targetID = arguments[4];
-        auto targetTT = arguments[5];
+        Navigation::Traffic::globalInstance(1)->setCoordinate(targetCoordinate);
+
+        auto targetID = arguments[5];
+        auto targetTT = arguments[6].toInt(&ok);
+        if (!ok)
+            return;
+        qWarning() << targetTT;
         auto targetGS = arguments[8];
         auto targetType = arguments[10];
 
+        Navigation::Traffic::globalInstance(1)->setTT(targetTT);
+
+        /*
         qWarning() << "Traffic";
         qWarning() << "Alarm     " << alarmLevel;
         qWarning() << "Position  " << targetCoordinate;
         qWarning() << "Vertical  " << relativeVertical;
         qWarning() << "targetGS  " << targetGS;
         qWarning() << "targetType" << targetType;
+        */
         return;
     }
 

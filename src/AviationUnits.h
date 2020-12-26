@@ -223,6 +223,14 @@ public:
          */
         bool isNegative() const { return _distanceInM < 0.0; }
 
+        /*! \brief Equality check
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        bool operator==(const Distance& rhs) const { return _distanceInM == rhs._distanceInM; }
+
         /*! \brief Convert to nautical miles
          *
          * @returns distance in nautical miles
@@ -246,6 +254,25 @@ public:
          * @returns distance in feet
          */
         double toFeet() const { return _distanceInM / MetersPerFeet; }
+
+        /*! \brief Convert to string
+         *
+         *  This method converts the distance to string that is fit for
+         *  human consumption, of the form "10.9 nm", "130 ft" or "3500 m".
+         *  The distance is rounded to reasonable precision.
+         *
+         *  @param useMetric Determines whether metric or imperial units are used.
+         *
+         *  @param vertical If 'true', then meters or feet are used. Otherwise, the
+         *  method uses kilometer, meters or feet.
+         *
+         *  @param forceSign If 'true', then positive distances are prepended by a
+         *  "+" sign.
+         *
+         *  @returns A string that describes the distance, or an empty string if
+         *  no reasonable distance is set.
+         */
+        QString toString(bool useMetric, bool vertical, bool forceSign=false) const;
 
     private:
         static constexpr double MetersPerFeet = 0.3048;

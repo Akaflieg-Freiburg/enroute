@@ -60,6 +60,49 @@ auto AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geo
 }
 
 
+QString AviationUnits::Distance::toString(bool useMetric, bool vertical, bool forceSign) const
+{
+    if (!isFinite())
+        return QString();
+
+    double roundedDist;
+    QString unit;
+
+    if (vertical && useMetric) {
+        roundedDist = qRound(toM());
+        unit = "m";
+    }
+    if (vertical && !useMetric) {
+        roundedDist = qRound(toFeet());
+        unit = "ft";
+    }
+    if (!vertical && useMetric) {
+        if (qAbs(toM()) < 5000) {
+            roundedDist = qRound(toM());
+            unit = "m";
+        } else {
+            roundedDist = qRound(toKM()*10.0)/10.0;
+            unit = "km";
+        }
+    }
+    if (!vertical && !useMetric) {
+        roundedDist = qRound(toNM()*10.0)/10.0;
+        unit = "nm";
+    }
+
+    // Round value to reasonable numbers
+    if (qAbs(roundedDist) > 1000.0)
+        roundedDist = qRound(roundedDist/100.0)*100.0;
+    else if (qAbs(roundedDist) > 100.0)
+        roundedDist = qRound(roundedDist/10.0)*10.0;
+
+    QString signString;
+    if (forceSign && roundedDist > 0.0)
+        signString += "+";
+    return signString + QString::number(roundedDist) + " " + unit;
+}
+
+
 auto AviationUnits::Speed::toString() const -> QString {
     if (GlobalSettings::useMetricUnitsStatic())
         return QString("%1 km/h").arg( qRound(toKMH()) );

@@ -44,6 +44,7 @@
 #include "MapManager.h"
 #include "MobileAdaptor.h"
 #include "Navigation_FLARMAdaptor.h"
+#include "Navigation_Traffic.h"
 #include "SatNav.h"
 #include "ScaleQuickItem.h"
 #include "Weather_DownloadManager.h"
@@ -57,12 +58,14 @@ auto main(int argc, char *argv[]) -> int
     // Register types
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
+
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::FLARMAdaptor>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
+    qmlRegisterUncreatableType<Navigation::Traffic>("enroute", 1, 0, "Traffic", "Traffic objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
@@ -127,6 +130,16 @@ auto main(int argc, char *argv[]) -> int
 
     // Make FLARM available to QML engine
     engine->rootContext()->setContextProperty("flarmAdaptor", Navigation::FLARMAdaptor::globalInstance());
+
+    // Make Traffic available to QML
+    engine->rootContext()->setContextProperty("traffic1", Navigation::Traffic::globalInstance(1));
+    engine->rootContext()->setContextProperty("traffic2", Navigation::Traffic::globalInstance(2));
+    engine->rootContext()->setContextProperty("traffic3", Navigation::Traffic::globalInstance(3));
+    engine->rootContext()->setContextProperty("traffic4", Navigation::Traffic::globalInstance(4));
+    engine->rootContext()->setContextProperty("traffic5", Navigation::Traffic::globalInstance(5));
+    engine->rootContext()->setContextProperty("traffic6", Navigation::Traffic::globalInstance(6));
+    engine->rootContext()->setContextProperty("traffic7", Navigation::Traffic::globalInstance(7));
+    engine->rootContext()->setContextProperty("traffic8", Navigation::Traffic::globalInstance(8));
 
     // Attach global settings object
     engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());

@@ -53,6 +53,8 @@
         <file alias="icons/self-noSatNav.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noSatNav.svg</file>
         <file alias="icons/self-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-withDirection.svg</file>
         <file alias="icons/tholen.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/tholen.jpg</file>
+        <file alias="icons/traffic-noDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection.svg</file>
+        <file alias="icons/traffic-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection.svg</file>
         <file alias="icons/vertLine.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/vertLine.svg</file>
         <file alias="icons/zellner.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/zellner.jpg</file>
 

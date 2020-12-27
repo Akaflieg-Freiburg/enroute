@@ -427,19 +427,47 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (!ok)
             return;
         targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
-        Navigation::Traffic::globalInstance(1)->setVDist( AviationUnits::Distance::fromM(relativeVertical));
 
-        Navigation::Traffic::globalInstance(1)->setCoordinate(targetCoordinate);
-
-        auto targetID = arguments[5];
         auto targetTT = arguments[6].toInt(&ok);
         if (!ok)
             return;
-        qWarning() << targetTT;
-        auto targetGS = arguments[8];
-        auto targetType = arguments[10];
 
+        auto targetType = arguments[10];
+        Navigation::Traffic::Type type = Navigation::Traffic::unknown;
+        if (targetType == "1")
+            type = Navigation::Traffic::Glider;
+        if (targetType == "2")
+            type = Navigation::Traffic::TowPlane;
+        if (targetType == "3")
+            type = Navigation::Traffic::Copter;
+        if (targetType == "4")
+            type = Navigation::Traffic::Skydiver;
+        if (targetType == "5")
+            type = Navigation::Traffic::Aircraft;
+        if (targetType == "6")
+            type = Navigation::Traffic::HangGlider;
+        if (targetType == "7")
+            type = Navigation::Traffic::Paraglider;
+        if (targetType == "8")
+            type = Navigation::Traffic::Aircraft;
+        if (targetType == "9")
+            type = Navigation::Traffic::Jet;
+        if (targetType == "B")
+            type = Navigation::Traffic::Balloon;
+        if (targetType == "C")
+            type = Navigation::Traffic::Airship;
+        if (targetType == "F")
+            type = Navigation::Traffic::StaticObstacle;
+
+        Navigation::Traffic::globalInstance(1)->setAlarmLevel(alarmLevel);
+        Navigation::Traffic::globalInstance(1)->setVDist(AviationUnits::Distance::fromM(relativeVertical));
+        Navigation::Traffic::globalInstance(1)->setCoordinate(targetCoordinate);
         Navigation::Traffic::globalInstance(1)->setTT(targetTT);
+        Navigation::Traffic::globalInstance(1)->setType(type);
+
+
+        auto targetID = arguments[5];
+        auto targetGS = arguments[8];
 
         /*
         qWarning() << "Traffic";

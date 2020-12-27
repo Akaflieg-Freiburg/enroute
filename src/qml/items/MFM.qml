@@ -253,7 +253,7 @@ Item {
 
                     rotation: traffic1.TT-flightMap.bearing
 
-                    source:  "/icons/self-withDirection.svg"
+                    source: traffic1.icon
                     sourceSize.width: 40
                     sourceSize.height: 40
                 }

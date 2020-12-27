@@ -349,6 +349,14 @@ public:
             return _speedInMPS / rhs._speedInMPS;
         }
 
+        /*! \brief Equality check
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        bool operator==(const Speed& rhs) const { return _speedInMPS == rhs._speedInMPS; }
+
         /*! \brief Convert to meters per second
          *
          * @returns speed in meters per second

@@ -53,7 +53,9 @@
         <file alias="icons/self-noSatNav.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noSatNav.svg</file>
         <file alias="icons/self-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-withDirection.svg</file>
         <file alias="icons/tholen.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/tholen.jpg</file>
-        <file alias="icons/traffic-noDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection.svg</file>
+        <file alias="icons/traffic-noDirection-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection-green.svg</file>
+        <file alias="icons/traffic-noDirection-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection-yellow.svg</file>
+        <file alias="icons/traffic-noDirection-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection-red.svg</file>
         <file alias="icons/traffic-withDirection-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-green.svg</file>
         <file alias="icons/traffic-withDirection-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-yellow.svg</file>
         <file alias="icons/traffic-withDirection-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-red.svg</file>

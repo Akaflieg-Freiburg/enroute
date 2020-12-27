@@ -459,15 +459,18 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (targetType == "F")
             type = Navigation::Traffic::StaticObstacle;
 
+        auto targetGS = AviationUnits::Speed::fromMPS(arguments[8].toDouble(&ok));
+
+
         Navigation::Traffic::globalInstance(1)->setAlarmLevel(alarmLevel);
         Navigation::Traffic::globalInstance(1)->setVDist(AviationUnits::Distance::fromM(relativeVertical));
         Navigation::Traffic::globalInstance(1)->setCoordinate(targetCoordinate);
         Navigation::Traffic::globalInstance(1)->setTT(targetTT);
+        Navigation::Traffic::globalInstance(1)->setGS(targetGS);
         Navigation::Traffic::globalInstance(1)->setType(type);
 
 
         auto targetID = arguments[5];
-        auto targetGS = arguments[8];
 
         /*
         qWarning() << "Traffic";

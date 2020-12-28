@@ -232,11 +232,14 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
     if (name == ":text/whatsnew.html") {
         return tr(R"html(
 <p>For countries covered by open flightmaps: the map now
-shows nature reserve areas (extremely important if
-you fly in Austria). If avaliable, the height of traffic
-circuits is now displayed prominently. Arrival and
-departure routes for control zones are more clearly marked.
-Flight Information Sectors are shown.</p>)html");
+shows <strong>nature reserve areas</strong> (extremely important if
+you fly in Austria). If avaliable, the <strong>height of traffic
+circuits</strong> is now displayed prominently. <strong>Arrival and
+departure routes</strong> for control zones are more clearly marked.
+Flight Information Sectors are shown.</p>
+
+<p>Thanks to the help of Sławek Mikuła, the app is again
+available in <strong>Polish language</strong>.</p>)html");
     }
 
     QFile file(name);

@@ -308,6 +308,9 @@ Item {
             // the write-once property 'plugin' on language changes
             plugin = mapPlugin
         }
+
+         onCopyrightLinkActivated: Qt.openUrlExternally(link)
+
     }
 
     Rectangle {
@@ -454,18 +457,12 @@ Item {
         height: 30
     }
 
-    Label { // Copyright notice
+    MapCopyrightNotice {
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
-        anchors.left: parent.left
-        anchors.right: parent.right
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
-
-        text: "© <a href='http://www.openmaptiles.org/'>&copy; OpenMapTiles</a> <a href='http://www.openstreetmap.org/about/'>&copy; OpenStreetMap contributors</a>"
-        color: "blue"
-        font.pointSize: 10
-        linkColor: "blue"
-        horizontalAlignment: Text.AlignHCenter
-        onLinkActivated: Qt.openUrlExternally(link)
+        mapSource: flightMap
+        styleSheet: "body { font-size: 12px} a{ font-family: \"Roboto\"; font-size: 12px; color:#0000A0}"
     }
 
     NavBar {

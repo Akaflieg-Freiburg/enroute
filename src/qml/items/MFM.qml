@@ -160,6 +160,15 @@ Item {
 
 
         // ADDITINAL MAP ITEMS
+        MapCircle {
+            id: trafficWarning
+            center: satNav.lastValidCoordinate
+            radius: 5000
+            color: "red"
+            opacity: 0.2
+            visible: true
+        }
+
         MapQuickItem {
             id: fiveMinuteBar
 

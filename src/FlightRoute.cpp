@@ -209,9 +209,9 @@ auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
     }
 
     if (inMetricUnits) {
-        result += QString("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
+        result += tr("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
     } else {
-        result += QString("Total: %1&nbsp;NM").arg(dist.toNM(), 0, 'f', 1);
+        result += tr("Total: %1&nbsp;NM").arg(dist.toNM(), 0, 'f', 1);
     }
     if (time.isFinite())
         result += QString(" • %1&nbsp;h").arg(time.toHoursAndMinutes());

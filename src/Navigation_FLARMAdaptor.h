@@ -25,6 +25,7 @@
 #include <QObject>
 
 #include "AviationUnits.h"
+#include "GlobalSettings.h"
 
 
 namespace Navigation {
@@ -106,9 +107,41 @@ public:
         return _status;
     };
 
+    Q_PROPERTY(int nonDirectionalTargetHDistance READ nonDirectionalTargetHDistance NOTIFY nonDirectionalTargetHDistanceChanged)
+
+    int nonDirectionalTargetHDistance() const
+    {
+        return _nonDirectionalTargetHDistance.toM();
+    }
+
+    Q_PROPERTY(AviationUnits::Distance nonDirectionalTargetVDistance READ nonDirectionalTargetVDistance NOTIFY nonDirectionalTargetVDistanceChanged)
+
+    AviationUnits::Distance nonDirectionalTargetVDistance() const
+    {
+        return _nonDirectionalTargetVDistance;
+    }
+
+    Q_PROPERTY(QString nonDirectionalTargetVDistanceText READ nonDirectionalTargetVDistanceText NOTIFY nonDirectionalTargetVDistanceChanged)
+
+    QString nonDirectionalTargetVDistanceText() const
+    {
+        return _nonDirectionalTargetVDistance.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
+    }
+
+
+    Q_PROPERTY(AviationUnits::Distance barometricAltitude READ barometricAltitude NOTIFY barometricAltitudeChanged)
+
+    AviationUnits::Distance barometricAltitude() const
+    {
+        return _barometricAltitude;
+    }
+
     void setSimulatorFile(QString fileName = QString() );
 
+
+
 signals:
+    void barometricAltitudeChanged();
     void flarmSelfTestFailed();
     void FLARMSelfTestChanged();
     void FLARMHwVersionChanged();
@@ -117,6 +150,8 @@ signals:
     void receivingChanged();
     void statusStringChanged();
     void statusChanged();
+    void nonDirectionalTargetHDistanceChanged();
+    void nonDirectionalTargetVDistanceChanged();
 
 private slots:
     void connectToFLARM();
@@ -132,6 +167,9 @@ private slots:
     void processFLARMMessage(QString msg);
 
     void clearFlarmDeviceInfo();
+
+    void setBarometricAltitude(AviationUnits::Distance alt);
+    void setNonDirectionalTargetDistance(AviationUnits::Distance hdist, AviationUnits::Distance vdist);
     void setStatus();
     void setStatusString();
 
@@ -147,6 +185,13 @@ private:
 
     // Detailed status info. Should only been written to by setStatusString()
     QString _statusString;
+
+    // Target distance. Should only be set by setNonDirectionalTargetDistance()
+    AviationUnits::Distance _nonDirectionalTargetHDistance;
+    AviationUnits::Distance _nonDirectionalTargetVDistance;
+
+    // Target distance. Should only be set by setBarometricAltitude()
+    AviationUnits::Distance _barometricAltitude;
 
     // Height information
     AviationUnits::Distance GPGGAHeight;
@@ -164,6 +209,7 @@ private:
     QTimer simulatorTimer;
     int lastTime {0};
     QString lastPayload;
+
 };
 
 }

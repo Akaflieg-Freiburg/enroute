@@ -344,6 +344,10 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         return;
     }
 
+    // Debug Information -- Ignore
+    if (messageType == "PFLAS")
+        return;
+
     // FLARM Heartbeat
     if (messageType == "PFLAU") {
         heartBeatTimer.start();
@@ -389,7 +393,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (!barometricAlt.isFinite())
             return;
 
-        qWarning() << "Barometric Altitude" << barometricAlt.toM() << "m";
+        setBarometricAltitude(barometricAlt);
         return;
     }
 
@@ -419,6 +423,12 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (!ok)
             return;
         targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
+
+        if (arguments[2] == "") {
+            setNonDirectionalTargetDistance( AviationUnits::Distance::fromM(relativeNorth), AviationUnits::Distance::fromM(17));
+            return;
+        }
+
 
         auto relativeEast = arguments[2].toInt(&ok);
         if (!ok)
@@ -606,4 +616,27 @@ void Navigation::FLARMAdaptor::setSimulatorFile(QString fileName)
     readFromSimulatorStream();
     setStatus();
     setStatusString();
+}
+
+
+void Navigation::FLARMAdaptor::setNonDirectionalTargetDistance(AviationUnits::Distance hDist, AviationUnits::Distance vDist)
+{
+    if (hDist != _nonDirectionalTargetHDistance) {
+        _nonDirectionalTargetHDistance = hDist;
+        emit nonDirectionalTargetHDistanceChanged();
+    }
+
+    if (vDist != _nonDirectionalTargetVDistance) {
+        _nonDirectionalTargetVDistance = vDist;
+        emit nonDirectionalTargetVDistanceChanged();
+    }
+}
+
+void Navigation::FLARMAdaptor::setBarometricAltitude(AviationUnits::Distance alt)
+{
+    if (alt == _barometricAltitude)
+        return;
+
+    _barometricAltitude = alt;
+    emit barometricAltitudeChanged();
 }

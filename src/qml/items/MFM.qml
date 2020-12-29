@@ -117,11 +117,11 @@ Item {
                 const xCenter = flightMap.width/2.0
                 const yCenter = flightMap.height/2.0
                 const radiusInPixel = Math.min(
-                            Math.abs(xCenter-zoomIn.x),
-                            Math.abs(xCenter-followGPSButton.x-followGPSButton.width),
-                            Math.abs(yCenter-northButton.y-northButton.height),
-                            Math.abs(yCenter-zoomIn.y)
-                            )
+                                        Math.abs(xCenter-zoomIn.x),
+                                        Math.abs(xCenter-followGPSButton.x-followGPSButton.width),
+                                        Math.abs(yCenter-northButton.y-northButton.height),
+                                        Math.abs(yCenter-zoomIn.y)
+                                        )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
                 return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, satNav.lastValidTrack)
@@ -161,12 +161,34 @@ Item {
 
         // ADDITINAL MAP ITEMS
         MapCircle {
-            id: trafficWarning
+            id: nonDirTrafficWarning
             center: satNav.lastValidCoordinate
-            radius: 5000
+            radius: Math.max(500, flarmAdaptor.nonDirectionalTargetHDistance)
+            Behavior on radius { NumberAnimation { duration: 1000 }}
             color: "red"
-            opacity: 0.2
-            visible: true
+            opacity: 0.3
+            visible: (flarmAdaptor.nonDirectionalTargetHDistance !== 0)
+        }
+
+        MapQuickItem {
+            coordinate: satNav.lastValidCoordinate
+            anchorPoint.x: nonDirTargetLabel.width/2
+            visible: flarmAdaptor.nonDirectionalTargetVDistanceText !== ""
+
+            sourceItem: Label {
+                id: nonDirTargetLabel
+
+                y: 30
+
+                text: flarmAdaptor.nonDirectionalTargetVDistanceText
+
+                leftInset: -2
+                rightInset: -2
+                bottomInset: -1
+                topInset: -2
+                background: Rectangle {color: "white"}
+            }
+
         }
 
         MapQuickItem {
@@ -309,7 +331,7 @@ Item {
             plugin = mapPlugin
         }
 
-         onCopyrightLinkActivated: Qt.openUrlExternally(link)
+        onCopyrightLinkActivated: Qt.openUrlExternally(link)
 
     }
 
@@ -462,7 +484,6 @@ Item {
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
         mapSource: flightMap
-        styleSheet: "body { font-size: 12px} a{ font-family: \"Roboto\"; font-size: 12px; color:#0000A0}"
     }
 
     NavBar {

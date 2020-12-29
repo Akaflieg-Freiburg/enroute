@@ -231,6 +231,14 @@ public:
          */
         bool operator==(const Distance& rhs) const { return _distanceInM == rhs._distanceInM; }
 
+        /*! \brief Inequality check
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        bool operator!=(const Distance& rhs) const { return _distanceInM != rhs._distanceInM; }
+
         /*! \brief Convert to nautical miles
          *
          * @returns distance in nautical miles

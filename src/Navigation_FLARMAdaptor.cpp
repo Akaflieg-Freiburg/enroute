@@ -66,9 +66,9 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-//    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
-    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt");
-//        setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
+    //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
+    //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt");
+    setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
 
@@ -408,42 +408,27 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         if (satNav->status() != SatNav::OK)
             return;
-        auto targetCoordinate = satNav->coordinate();
-        if (!targetCoordinate.isValid())
-            return;
 
+        // Helper variable
         bool ok;
+
+        //
+        // We begin by reading a few fields that are relevant both for directional and for non-directional targets
+        //
+
+        // Alarm level is mandatory
         auto alarmLevel = arguments[0].toInt(&ok);
         if (!ok)
             return;
         if ((alarmLevel < 0)||(alarmLevel > 3))
             return;
 
-        auto relativeNorth = arguments[1].toInt(&ok);
-        if (!ok)
-            return;
-        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
-
-        if (arguments[2] == "") {
-            setNonDirectionalTargetDistance( AviationUnits::Distance::fromM(relativeNorth), AviationUnits::Distance::fromM(17));
-            return;
-        }
-
-
-        auto relativeEast = arguments[2].toInt(&ok);
-        if (!ok)
-            return;
-        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
-
+        // Relative vertical information is optional
         auto relativeVertical = arguments[3].toDouble(&ok);
         if (!ok)
-            return;
-        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
+            relativeVertical = qQNaN();
 
-        auto targetTT = arguments[6].toInt(&ok);
-        if (!ok)
-            return;
-
+        // Target type is optional
         auto targetType = arguments[10];
         Navigation::Traffic::Type type = Navigation::Traffic::unknown;
         if (targetType == "1")
@@ -471,27 +456,75 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (targetType == "F")
             type = Navigation::Traffic::StaticObstacle;
 
-        auto targetGS = AviationUnits::Speed::fromMPS(arguments[8].toDouble(&ok));
-
-
-        Navigation::Traffic::globalInstance(1)->setAlarmLevel(alarmLevel);
-        Navigation::Traffic::globalInstance(1)->setVDist(AviationUnits::Distance::fromM(relativeVertical));
-        Navigation::Traffic::globalInstance(1)->setCoordinate(targetCoordinate);
-        Navigation::Traffic::globalInstance(1)->setTT(targetTT);
-        Navigation::Traffic::globalInstance(1)->setGS(targetGS);
-        Navigation::Traffic::globalInstance(1)->setType(type);
-
-
+        // Target ID is optional
         auto targetID = arguments[5];
 
-        /*
-        qWarning() << "Traffic";
-        qWarning() << "Alarm     " << alarmLevel;
-        qWarning() << "Position  " << targetCoordinate;
-        qWarning() << "Vertical  " << relativeVertical;
-        qWarning() << "targetGS  " << targetGS;
-        qWarning() << "targetType" << targetType;
-        */
+
+        //
+        // Handle non-directional targets
+        //
+        if (arguments[2] == "") {
+            // Horizontal distance is mandatory
+            auto hDist = AviationUnits::Distance::fromM(arguments[1].toInt(&ok));
+            if (!ok)
+                return;
+
+            // Vertical distance is optional
+            auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
+            if (!ok)
+                vDist = AviationUnits::Distance::fromM(qQNaN());
+
+            setNonDirectionalTargetDistance(hDist, vDist);
+            return;
+        }
+
+        //
+        // From now on, we assume that we have a directional target
+        //
+
+        // As a first step, we obtain the target's coordinate. We take our own coordinate as a starting point.
+        auto targetCoordinate = satNav->coordinate();
+        if (!targetCoordinate.isValid())
+            return;
+        auto relativeNorth = arguments[1].toInt(&ok);
+        if (!ok)
+            return;
+        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
+        auto relativeEast = arguments[2].toInt(&ok);
+        if (!ok)
+            return;
+        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
+        if (qIsFinite(relativeVertical))
+            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
+
+        // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
+        QGeoPositionInfo pInfo(targetCoordinate, QDateTime::currentDateTimeUtc());
+        auto targetTT = arguments[6].toInt(&ok);
+        if (ok)
+            pInfo.setAttribute(QGeoPositionInfo::Direction, targetTT);
+        auto targetGS = arguments[8].toDouble(&ok);
+        if (ok)
+            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, targetGS);
+        auto targetVS = arguments[9].toDouble(&ok);
+        if (ok)
+            pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
+
+        // Construct a traffic object
+        auto traffic = Navigation::Traffic();
+        traffic.setAlarmLevel(alarmLevel);
+        traffic.setID(targetID);
+        traffic.setVDist(AviationUnits::Distance::fromM(relativeVertical));
+        traffic.setPositionInfo(pInfo);
+        traffic.setType(type);
+
+        if (targetID == Navigation::Traffic::globalInstance(1)->ID()) {
+            Navigation::Traffic::globalInstance(1)->copyFrom(traffic);
+            return;
+        }
+
+        if (traffic > *Navigation::Traffic::globalInstance(1))
+            Navigation::Traffic::globalInstance(1)->copyFrom(traffic);
+
         return;
     }
 

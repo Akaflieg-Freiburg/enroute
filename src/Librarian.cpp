@@ -238,6 +238,9 @@ circuits</strong> is now displayed prominently. <strong>Arrival and
 departure routes</strong> for control zones are more clearly marked.
 Flight Information Sectors are shown.</p>
 
+<p>This release also fixes an infrequent problem with saving flight
+routes. We apologize for any inconvenience!</p>
+
 <p>Thanks to the help of Sławek Mikuła, the app is again
 available in <strong>Polish language</strong>.</p>)html");
     }

@@ -131,16 +131,6 @@ auto main(int argc, char *argv[]) -> int
     // Make FLARM available to QML engine
     engine->rootContext()->setContextProperty("flarmAdaptor", Navigation::FLARMAdaptor::globalInstance());
 
-    // Make Traffic available to QML
-    engine->rootContext()->setContextProperty("traffic1", Navigation::Traffic::globalInstance(1));
-    engine->rootContext()->setContextProperty("traffic2", Navigation::Traffic::globalInstance(2));
-    engine->rootContext()->setContextProperty("traffic3", Navigation::Traffic::globalInstance(3));
-    engine->rootContext()->setContextProperty("traffic4", Navigation::Traffic::globalInstance(4));
-    engine->rootContext()->setContextProperty("traffic5", Navigation::Traffic::globalInstance(5));
-    engine->rootContext()->setContextProperty("traffic6", Navigation::Traffic::globalInstance(6));
-    engine->rootContext()->setContextProperty("traffic7", Navigation::Traffic::globalInstance(7));
-    engine->rootContext()->setContextProperty("traffic8", Navigation::Traffic::globalInstance(8));
-
     // Attach global settings object
     engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());
 

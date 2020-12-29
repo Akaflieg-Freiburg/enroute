@@ -23,10 +23,11 @@
 #include <QTcpSocket>
 #include <QTimer>
 #include <QObject>
+#include <QQmlListProperty>
 
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
-
+#include "Navigation_Traffic.h"
 
 namespace Navigation {
 
@@ -138,6 +139,12 @@ public:
 
     void setSimulatorFile(QString fileName = QString() );
 
+    Q_PROPERTY(QQmlListProperty<Navigation::Traffic> trafficObjects4QML READ trafficObjects4QML CONSTANT)
+
+    QQmlListProperty<Navigation::Traffic> trafficObjects4QML()
+    {
+        return QQmlListProperty(this, &targets);
+    }
 
 
 signals:
@@ -210,6 +217,8 @@ private:
     int lastTime {0};
     QString lastPayload;
 
+    // Targets
+    QList<Navigation::Traffic *> targets;
 };
 
 }

@@ -33,6 +33,9 @@ Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
 
 
 Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
+    // Create targets
+    for(int i = 0; i<8; i++)
+        targets.append( new Navigation::Traffic(this) );
 
     // Wire up socket
     connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::receiveSocketConnected);
@@ -517,13 +520,22 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         traffic.setPositionInfo(pInfo);
         traffic.setType(type);
 
-        if (targetID == Navigation::Traffic::globalInstance(1)->ID()) {
-            Navigation::Traffic::globalInstance(1)->copyFrom(traffic);
-            return;
+        foreach(auto target, targets) {
+            if (targetID == target->ID()) {
+                qWarning() << "Reuse ID";
+                target->copyFrom(traffic);
+                return;
+            }
         }
 
-        if (traffic > *Navigation::Traffic::globalInstance(1))
-            Navigation::Traffic::globalInstance(1)->copyFrom(traffic);
+        Navigation::Traffic *lowestPriObject = nullptr;
+        foreach(auto target, targets) {
+            if ((lowestPriObject == nullptr) || (*lowestPriObject > *target))
+                lowestPriObject = target;
+        }
+
+        if ((lowestPriObject != nullptr) && (traffic > *lowestPriObject))
+            lowestPriObject->copyFrom(traffic);
 
         return;
     }

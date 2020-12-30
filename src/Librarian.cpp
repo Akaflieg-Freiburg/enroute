@@ -108,7 +108,11 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 
 <p><strong>Italian:</strong> Ivan Battistella and Luca Bertoncello. Luca flies ultralight planes since 2014 and has become a flight instructor in 2019. He programs since 1988 and works as a systems administrator in Dresden, Germany.  Ivan Battistella has recently started to fly ultralight aircraft. He works freelance as a software consultant.</p>
 
-<p><strong>Polish:</strong> Szymon Kocur, computer Science and aviation enthusiast. Laureate of IT nationwide competitions, including 'HackYeah 2019', and 'Golden Wolf 2017' for the best technological project in Poland.</p>
+<p><strong>Polish:</strong> Sławek Mikuła.</p>
+
+<h3>Alumni</h3>
+
+<p>Szymon Kocur (Polish translation)</p>
 
 <p></p>)html");
      }

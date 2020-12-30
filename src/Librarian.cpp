@@ -108,7 +108,11 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 
 <p><strong>Italian:</strong> Ivan Battistella and Luca Bertoncello. Luca flies ultralight planes since 2014 and has become a flight instructor in 2019. He programs since 1988 and works as a systems administrator in Dresden, Germany.  Ivan Battistella has recently started to fly ultralight aircraft. He works freelance as a software consultant.</p>
 
-<p><strong>Polish:</strong> Szymon Kocur, computer Science and aviation enthusiast. Laureate of IT nationwide competitions, including 'HackYeah 2019', and 'Golden Wolf 2017' for the best technological project in Poland.</p>
+<p><strong>Polish:</strong> Sławek Mikuła.</p>
+
+<h3>Alumni</h3>
+
+<p>Szymon Kocur (Polish translation)</p>
 
 <p></p>)html");
      }
@@ -237,6 +241,9 @@ you fly in Austria). If avaliable, the <strong>height of traffic
 circuits</strong> is now displayed prominently. <strong>Arrival and
 departure routes</strong> for control zones are more clearly marked.
 Flight Information Sectors are shown.</p>
+
+<p>This release also fixes an infrequent problem with saving flight
+routes. We apologize for any inconvenience!</p>
 
 <p>Thanks to the help of Sławek Mikuła, the app is again
 available in <strong>Polish language</strong>.</p>)html");

@@ -370,7 +370,6 @@ auto FlightRoute::suggestedFilename() const -> QString
     //
     QString start = _waypoints.constFirst()->getPropery("COD").toString(); // ICAO code of start point
     QString name = _waypoints.constFirst()->getPropery("NAM").toString(); // Name of start point
-    qWarning() << name;
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11)  // Shorten name
@@ -398,7 +397,12 @@ auto FlightRoute::suggestedFilename() const -> QString
             end += " (" + name + ")";
     }
 
+    // Remove some problematic characters
+    start.replace("/", "-");
+    end.replace("/", "-");
+
     // Compile final result
+
     if (start.isEmpty() && end.isEmpty())
         return tr("Flight Route");
 

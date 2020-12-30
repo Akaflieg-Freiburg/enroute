@@ -513,12 +513,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
 
         // Construct a traffic object
-        auto traffic = Navigation::Traffic();
-        traffic.setAlarmLevel(alarmLevel);
-        traffic.setID(targetID);
-        traffic.setVDist(AviationUnits::Distance::fromM(relativeVertical));
-        traffic.setPositionInfo(pInfo);
-        traffic.setType(type);
+        auto traffic = Navigation::Traffic(alarmLevel, targetID,  AviationUnits::Distance::fromM(relativeVertical), type, pInfo, this);
 
         foreach(auto target, targets) {
             if (targetID == target->ID()) {

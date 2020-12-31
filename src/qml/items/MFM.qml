@@ -182,13 +182,17 @@ Item {
 
                 y: 30
 
-                text: flarmAdaptor.trafficNoPos.vDistText
+                text: flarmAdaptor.trafficNoPos.typeString + "<br>" + flarmAdaptor.trafficNoPos.vDistText
 
-                leftInset: -2
-                rightInset: -2
+                leftInset: -4
+                rightInset: -4
                 bottomInset: -1
                 topInset: -2
-                background: Rectangle {color: "white"}
+                background: Rectangle {
+                    border.color: "black"
+                    border.width: 1
+                    color: Qt.lighter(flarmAdaptor.trafficNoPos.color, 1.9) // "white"
+                }
             }
 
         }

@@ -28,6 +28,9 @@
 
 namespace Navigation {
 
+/*! \brief Traffic
+*/
+
 class Traffic : public QObject {
     Q_OBJECT
 
@@ -150,6 +153,10 @@ public:
     {
         return _type;
     }
+
+    Q_PROPERTY(QString typeString READ typeString NOTIFY typeChanged)
+
+    QString typeString() const;
 
 
     Q_PROPERTY(bool animate READ animate NOTIFY animateChanged)

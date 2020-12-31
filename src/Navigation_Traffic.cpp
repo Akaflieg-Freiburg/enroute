@@ -93,6 +93,7 @@ void Navigation::Traffic::copyFrom(const Traffic & other)
     setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo);
 }
 
+
 auto Navigation::Traffic::color() const -> QString
 {
     if (_alarmLevel == 0) {
@@ -103,6 +104,7 @@ auto Navigation::Traffic::color() const -> QString
     }
     return QStringLiteral("red");
 }
+
 
 void Navigation::Traffic::setIcon()
 {
@@ -177,4 +179,34 @@ auto Navigation::Traffic::valid() const -> bool
         return false;
     }
     return timeOutCounter.isActive();
+}
+
+
+QString Navigation::Traffic::typeString() const
+{
+    if (_type == Aircraft)
+        return tr("Aircraft");
+    if (_type == Airship)
+        return tr("Airship");
+    if (_type == Balloon)
+        return tr("Balloon");
+    if (_type == Copter)
+        return tr("Copter");
+    if (_type == Drone)
+        return tr("Drone");
+    if (_type == Glider)
+        return tr("Glider");
+    if (_type == HangGlider)
+        return tr("Hang glider");
+    if (_type == Jet)
+        return tr("Jet");
+    if (_type == Paraglider)
+        return tr("Paraglider");
+    if (_type == Skydiver)
+        return tr("Skydiver");
+    if (_type == StaticObstacle)
+        return tr("Static Obstacle");
+    if (_type == TowPlane)
+        return tr("Tow Plane");
+    return tr("Traffic");
 }

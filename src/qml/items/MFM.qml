@@ -164,24 +164,25 @@ Item {
         MapCircle {
             id: nonDirTrafficWarning
             center: satNav.lastValidCoordinate
-            radius: Math.max(500, flarmAdaptor.nonDirectionalTargetHDistance)
+            radius: Math.max(500, flarmAdaptor.trafficNoPos.hDistM)
             Behavior on radius { NumberAnimation { duration: 1000 }}
-            color: "red"
+            color: flarmAdaptor.trafficNoPos.color
+            Behavior on color { ColorAnimation { duration: 400 }}
             opacity: 0.3
-            visible: (flarmAdaptor.nonDirectionalTargetHDistance !== 0)
+            visible: flarmAdaptor.trafficNoPos.valid
         }
 
         MapQuickItem { // non-directionalTraffic
             coordinate: satNav.lastValidCoordinate
             anchorPoint.x: nonDirTargetLabel.width/2
-            visible: flarmAdaptor.nonDirectionalTargetVDistanceText !== ""
+            visible: flarmAdaptor.trafficNoPos.valid
 
             sourceItem: Label {
                 id: nonDirTargetLabel
 
                 y: 30
 
-                text: flarmAdaptor.nonDirectionalTargetVDistanceText
+                text: flarmAdaptor.trafficNoPos.vDistText
 
                 leftInset: -2
                 rightInset: -2

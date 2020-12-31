@@ -87,6 +87,7 @@ set(SOURCES
     MobileAdaptor.h
     Navigation_FLARMAdaptor.h
     Navigation_Traffic.h
+    Navigation_TrafficNoPos.h
     SatNav.h
     ScaleQuickItem.h
     Waypoint.h
@@ -118,6 +119,7 @@ set(SOURCES
     MobileAdaptor_share.cpp
     Navigation_FLARMAdaptor.cpp
     Navigation_Traffic.cpp
+    Navigation_TrafficNoPos.cpp
     SatNav.cpp
     ScaleQuickItem.cpp
     TileHandler.cpp

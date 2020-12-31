@@ -28,6 +28,7 @@
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "Navigation_Traffic.h"
+#include "Navigation_TrafficNoPos.h"
 
 namespace Navigation {
 
@@ -146,6 +147,13 @@ public:
         return QQmlListProperty(this, &targets);
     }
 
+    Q_PROPERTY(Navigation::TrafficNoPos *trafficNoPos READ trafficNoPos CONSTANT)
+
+    Navigation::TrafficNoPos *trafficNoPos()
+    {
+        return &targetNoPos;
+    }
+
 
 signals:
     void barometricAltitudeChanged();
@@ -219,6 +227,7 @@ private:
 
     // Targets
     QList<Navigation::Traffic *> targets;
+    Navigation::TrafficNoPos targetNoPos;
 };
 
 }

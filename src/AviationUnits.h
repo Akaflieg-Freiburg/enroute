@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <compare>
+
 #include <QDataStream>
 #include <QGeoCoordinate>
 #include <QString>
@@ -223,21 +225,13 @@ public:
          */
         bool isNegative() const { return _distanceInM < 0.0; }
 
-        /*! \brief Equality check
+        /*! \brief Comparison
          *
          *  @param rhs Right hand side of the comparison
          *
          *  @returns Result of the comparison
          */
-        bool operator==(const Distance& rhs) const { return _distanceInM == rhs._distanceInM; }
-
-        /*! \brief Inequality check
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        bool operator!=(const Distance& rhs) const { return _distanceInM != rhs._distanceInM; }
+        auto operator<=>(const Distance& rhs) const = default;
 
         /*! \brief Convert to nautical miles
          *

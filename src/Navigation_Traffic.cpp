@@ -43,21 +43,37 @@ Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
 }
 
 
-Navigation::Traffic::Traffic(int __alarmLevel, QString __ID,  AviationUnits::Distance __vDist, Type __type, QGeoPositionInfo __pInfo, QObject *parent)
-    : QObject(parent),
-      _alarmLevel(__alarmLevel),
-      _positionInfo(__pInfo),
-      _ID(__ID),
-      _type(__type),
-      _vDist(__vDist)
+void Navigation::Traffic::setData(int __alarmLevel, QString __ID,  AviationUnits::Distance __vdist, Type __type, QGeoPositionInfo __pInfo)
 {
-    timeOutCounter.setInterval(3*1000);
-    timeOutCounter.setSingleShot(true);
     timeOutCounter.start();
-    connect(&timeOutCounter, &QTimer::timeout, this, &Navigation::Traffic::timeOut);
 
-    connect(this, &Navigation::Traffic::alarmLevelChanged, this, &Navigation::Traffic::setIcon);
-    connect(this, &Navigation::Traffic::positionInfoChanged, this, &Navigation::Traffic::setIcon);
+    if (_ID != __ID) {
+        setAnimate(false);
+        _ID = __ID;
+    }
+
+    if (_alarmLevel != __alarmLevel) {
+        _alarmLevel = __alarmLevel;
+        emit alarmLevelChanged();
+    }
+
+    if (_positionInfo != __pInfo) {
+        _positionInfo = __pInfo;
+        emit positionInfoChanged();
+    }
+
+
+    if (_type != __type) {
+        _type = __type;
+        emit typeChanged();
+    }
+
+    if (_vDist != __vdist) {
+        _vDist = __vdist;
+        emit vDistChanged();
+    }
+
+    setAnimate(true);
     setIcon();
 }
 
@@ -65,36 +81,7 @@ Navigation::Traffic::Traffic(int __alarmLevel, QString __ID,  AviationUnits::Dis
 void Navigation::Traffic::copyFrom(const Traffic & other)
 {
     qWarning() << "copyFrom";
-    timeOutCounter.start();
-
-    if (_ID != other._ID) {
-        setAnimate(false);
-        _ID = other._ID;
-    }
-
-    if (_alarmLevel != other._alarmLevel) {
-        _alarmLevel = other._alarmLevel;
-        emit alarmLevelChanged();
-    }
-
-    if (_positionInfo != other._positionInfo) {
-        _positionInfo = other._positionInfo;
-        qWarning() << _positionInfo;
-        emit positionInfoChanged();
-    }
-
-
-    if (_type != other._type) {
-        _type = other._type;
-        emit typeChanged();
-    }
-
-    if (_vDist != other._vDist) {
-        _vDist = other._vDist;
-        emit vDistChanged();
-    }
-
-    setAnimate(true);
+    setData(other._alarmLevel, other._ID, other._vDist, other._type, other._positionInfo);
 }
 
 

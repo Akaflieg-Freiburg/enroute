@@ -171,7 +171,7 @@ Item {
             visible: (flarmAdaptor.nonDirectionalTargetHDistance !== 0)
         }
 
-        MapQuickItem {
+        MapQuickItem { // non-directionalTraffic
             coordinate: satNav.lastValidCoordinate
             anchorPoint.x: nonDirTargetLabel.width/2
             visible: flarmAdaptor.nonDirectionalTargetVDistanceText !== ""
@@ -275,7 +275,7 @@ Item {
             Traffic { trafficInfo: model.modelData }
         }
 
-        MapItemView {
+        MapItemView { // Traffic opponents
             model: flarmAdaptor.trafficObjects4QML
             delegate: trafficComponent
 
@@ -309,7 +309,6 @@ Item {
         }
 
         onCopyrightLinkActivated: Qt.openUrlExternally(link)
-
     }
 
     Rectangle {

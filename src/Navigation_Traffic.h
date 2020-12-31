@@ -60,11 +60,10 @@ public:
      */
     explicit Traffic(QObject *parent = nullptr);
 
-    Traffic(int __alarmLevel, QString __ID,  AviationUnits::Distance __vdist, Type __type, QGeoPositionInfo __pInfo, QObject *parent = nullptr);
-
     // Standard destructor
     ~Traffic() override = default;
 
+    void setData(int __alarmLevel, QString __ID,  AviationUnits::Distance __vdist, Type __type, QGeoPositionInfo __pInfo);
 
 
     void copyFrom(const Traffic & other);

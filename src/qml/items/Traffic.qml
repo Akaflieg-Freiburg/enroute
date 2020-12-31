@@ -41,6 +41,7 @@ MapQuickItem {
     Behavior on coordinate
     {
         CoordinateAnimation { duration: 1000 }
+        enabled: trafficInfo.animate
     }
 
     sourceItem: Item {

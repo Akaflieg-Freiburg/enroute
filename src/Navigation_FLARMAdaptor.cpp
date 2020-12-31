@@ -513,7 +513,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
 
         // Construct a traffic object
-        auto traffic = Navigation::Traffic(alarmLevel, targetID,  AviationUnits::Distance::fromM(relativeVertical), type, pInfo, this);
+        auto traffic = Navigation::Traffic(this);
+        traffic.setData(alarmLevel, targetID,  AviationUnits::Distance::fromM(relativeVertical), type, pInfo);
 
         foreach(auto target, targets) {
             if (targetID == target->ID()) {
@@ -523,13 +524,13 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             }
         }
 
-        Navigation::Traffic *lowestPriObject = nullptr;
+        Navigation::Traffic *lowestPriObject = targets[0];
         foreach(auto target, targets) {
-            if ((lowestPriObject == nullptr) || (*lowestPriObject > *target))
+            if (*lowestPriObject > *target)
                 lowestPriObject = target;
         }
 
-        if ((lowestPriObject != nullptr) && (traffic > *lowestPriObject))
+        if (traffic > *lowestPriObject)
             lowestPriObject->copyFrom(traffic);
 
         return;
@@ -671,6 +672,7 @@ void Navigation::FLARMAdaptor::setNonDirectionalTargetDistance(AviationUnits::Di
         emit nonDirectionalTargetVDistanceChanged();
     }
 }
+
 
 void Navigation::FLARMAdaptor::setBarometricAltitude(AviationUnits::Distance alt)
 {

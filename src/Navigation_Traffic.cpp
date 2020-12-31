@@ -75,6 +75,7 @@ void Navigation::Traffic::setData(int __alarmLevel, QString __ID,  AviationUnits
 
     setAnimate(true);
     setIcon();
+    emit validChanged();
 }
 
 
@@ -114,24 +115,29 @@ void Navigation::Traffic::setIcon()
 
 bool Navigation::Traffic::operator>(const Traffic &rhs)
 {
+    // Criterion 1: Valid instances have higher priority than invalid ones
+    if (!rhs.valid())
+        return true;
+    if (!valid())
+        return false;
+    // At this point, both instances are valid.
+
+    // Criterion 2: Alarm level
     if (_alarmLevel > rhs._alarmLevel)
         return true;
     if (_alarmLevel < rhs._alarmLevel)
         return false;
+    // At this point, both instances have equal alarm levels
 
+    // Final criterion: distance to current position
     auto coordinate = SatNav::globalInstance()->lastValidCoordinate();
-
     return coordinate.distanceTo(_positionInfo.coordinate()) < coordinate.distanceTo(rhs._positionInfo.coordinate());
 }
 
 
 void Navigation::Traffic::timeOut()
 {
-    if (_alarmLevel == -1)
-        return;
-
-    _alarmLevel = -1;
-    emit alarmLevelChanged();
+    emit validChanged();
 }
 
 
@@ -151,6 +157,5 @@ bool Navigation::Traffic::valid() const
         return false;
     if (!_positionInfo.isValid())
         return false;
-    return true;
     return timeOutCounter.isActive();
 }

@@ -166,7 +166,7 @@ private slots:
 private:
     void setAnimate(bool a);
 
-    int _alarmLevel {-1};
+    int _alarmLevel {0};
     bool _animate {true};
     QGeoPositionInfo _positionInfo;
     QString _icon;

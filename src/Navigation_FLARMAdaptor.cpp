@@ -409,8 +409,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         auto satNav = SatNav::globalInstance();
         if (satNav == nullptr)
             return;
-        if (satNav->status() != SatNav::OK)
-            return;
 
         // Helper variable
         bool ok;
@@ -486,7 +484,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         //
 
         // As a first step, we obtain the target's coordinate. We take our own coordinate as a starting point.
-        auto targetCoordinate = satNav->coordinate();
+        auto targetCoordinate = satNav->lastValidCoordinate();
         if (!targetCoordinate.isValid())
             return;
         auto relativeNorth = arguments[1].toInt(&ok);
@@ -516,20 +514,16 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         auto traffic = Navigation::Traffic(this);
         traffic.setData(alarmLevel, targetID,  AviationUnits::Distance::fromM(relativeVertical), type, pInfo);
 
-        foreach(auto target, targets) {
+        foreach(auto target, targets)
             if (targetID == target->ID()) {
-                qWarning() << "Reuse ID";
                 target->copyFrom(traffic);
                 return;
             }
-        }
 
-        Navigation::Traffic *lowestPriObject = targets[0];
-        foreach(auto target, targets) {
+        auto *lowestPriObject = targets[0];
+        foreach(auto target, targets)
             if (*lowestPriObject > *target)
                 lowestPriObject = target;
-        }
-
         if (traffic > *lowestPriObject)
             lowestPriObject->copyFrom(traffic);
 

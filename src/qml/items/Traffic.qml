@@ -38,8 +38,7 @@ MapQuickItem {
     anchorPoint.y: image.height/2
 
     coordinate: trafficInfo.coordinate
-    Behavior on coordinate
-    {
+    Behavior on coordinate {
         CoordinateAnimation { duration: 1000 }
         enabled: trafficInfo.animate
     }

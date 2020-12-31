@@ -89,7 +89,7 @@ void Navigation::Traffic::copyFrom(const Traffic & other)
 void Navigation::Traffic::setIcon()
 {
     // BaseType
-    QString baseType = "noDirection";
+    QString baseType = QStringLiteral("noDirection");
     if (_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
         auto GS = AviationUnits::Speed::fromMPS( _positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
         if (GS.isFinite() && (GS.toKT() > 4))

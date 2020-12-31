@@ -138,7 +138,7 @@ public:
         return _barometricAltitude;
     }
 
-    void setSimulatorFile(QString fileName = QString() );
+    void setSimulatorFile(const QString& fileName = QString() );
 
     Q_PROPERTY(QQmlListProperty<Navigation::Traffic> trafficObjects4QML READ trafficObjects4QML CONSTANT)
 

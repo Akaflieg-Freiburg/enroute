@@ -20,13 +20,10 @@
 
 #pragma once
 
-#include <QGeoCoordinate>
 #include <QGeoPositionInfo>
 #include <QTimer>
-#include <QObject>
 
 #include "AviationUnits.h"
-#include "GlobalSettings.h"
 
 
 namespace Navigation {
@@ -36,7 +33,7 @@ class Traffic : public QObject {
 
 public:
     /*! \brief Traffic type */
-    enum Type
+    enum AircraftType
     {
         unknown,
         Aircraft,
@@ -52,7 +49,7 @@ public:
         StaticObstacle,
         TowPlane
     };
-    Q_ENUM(Type)
+    Q_ENUM(AircraftType)
 
     /*! \brief Default constructor
      *
@@ -63,8 +60,7 @@ public:
     // Standard destructor
     ~Traffic() override = default;
 
-    void setData(int __alarmLevel, QString __ID,  AviationUnits::Distance __vdist, Type __type, QGeoPositionInfo __pInfo);
-
+    void setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo);
 
     void copyFrom(const Traffic & other);
 
@@ -76,6 +72,12 @@ public:
     }
 
     void setAlarmLevel(int level);
+
+    Q_PROPERTY(QString color READ color NOTIFY alarmLevelChanged)
+
+    QString color() const;
+
+
 
     Q_PROPERTY(QString ID READ ID NOTIFY IDChanged)
 
@@ -102,13 +104,27 @@ public:
         return _icon;
     }
 
+    Q_PROPERTY(AviationUnits::Distance hDist READ hDist NOTIFY hDistChanged)
+
+    AviationUnits::Distance hDist() const
+    {
+        return _hDist;
+    }
+
+    Q_PROPERTY(double hDistM READ hDistM NOTIFY hDistChanged)
+
+    double hDistM() const
+    {
+        qWarning() << "hDist" << _hDist.toM();
+        return _hDist.toM();
+    }
+
     Q_PROPERTY(AviationUnits::Distance vDist READ vDist NOTIFY vDistChanged)
 
     AviationUnits::Distance vDist() const
     {
         return _vDist;
     }
-
 
     Q_PROPERTY(QString vDistText READ vDistText NOTIFY vDistChanged)
 
@@ -128,9 +144,9 @@ public:
     }
 
 
-    Q_PROPERTY(Type type READ type NOTIFY typeChanged)
+    Q_PROPERTY(AircraftType type READ type NOTIFY typeChanged)
 
-    Type type() const
+    AircraftType type() const
     {
         return _type;
     }
@@ -147,7 +163,7 @@ public:
 
     bool valid() const;
 
-    bool operator>(const Traffic &other);
+    bool operator>(const Traffic &rhs);
 
 signals:
     void alarmLevelChanged();
@@ -156,6 +172,7 @@ signals:
     void IDChanged();
     void positionInfoChanged();
     void typeChanged();
+    void hDistChanged();
     void vDistChanged();
     void validChanged();
 
@@ -171,8 +188,9 @@ private:
     QGeoPositionInfo _positionInfo;
     QString _icon;
     QString _ID;
-    Type _type {Type::unknown};
+    AircraftType _type {AircraftType::unknown};
     AviationUnits::Distance _vDist;
+    AviationUnits::Distance _hDist;
 
     QTimer timeOutCounter;
 };

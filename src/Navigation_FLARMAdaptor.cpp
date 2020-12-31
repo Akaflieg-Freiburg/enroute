@@ -76,7 +76,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
     //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
     setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
-    // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
+    //setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
 
@@ -516,7 +516,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
         // Target type is optional
         auto targetType = arguments[10];
-        Navigation::Traffic::Type type = Navigation::Traffic::unknown;
+        Navigation::Traffic::AircraftType type = Navigation::Traffic::unknown;
         if (targetType == u"1") {
             type = Navigation::Traffic::Glider;
         }
@@ -563,7 +563,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         //
         if (arguments[2] == u"") {
             // Horizontal distance is mandatory
-            auto hDist = AviationUnits::Distance::fromM(arguments[1].toInt(&ok));
+            auto hDist = AviationUnits::Distance::fromM(arguments[1].toDouble(&ok));
             if (!ok) {
                 return;
             }
@@ -574,8 +574,9 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
                 vDist = AviationUnits::Distance::fromM(qQNaN());
             }
 
-            auto trafficNP = Navigation::TrafficNoPos(this);
-            trafficNP.setData(alarmLevel, targetID, hDist, vDist, Navigation::TrafficNoPos::Aircraft);
+            auto trafficNP = Navigation::Traffic(this);
+            qWarning() << hDist.toM();
+            trafficNP.setData(alarmLevel, targetID, hDist, vDist, type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
             if ((trafficNP.ID() == targetNoPos.ID()) || (trafficNP > targetNoPos)) {
                 targetNoPos.copyFrom(trafficNP);
             }
@@ -591,12 +592,12 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (!targetCoordinate.isValid()) {
             return;
         }
-        auto relativeNorth = arguments[1].toInt(&ok);
+        auto relativeNorth = arguments[1].toDouble(&ok);
         if (!ok) {
             return;
         }
         targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
-        auto relativeEast = arguments[2].toInt(&ok);
+        auto relativeEast = arguments[2].toDouble(&ok);
         if (!ok) {
             return;
         }
@@ -604,6 +605,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (qIsFinite(relativeVertical)) {
             targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
         }
+        auto hDist = AviationUnits::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
 
         // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
         QGeoPositionInfo pInfo(targetCoordinate, QDateTime::currentDateTimeUtc());
@@ -622,7 +624,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
         // Construct a traffic object
         auto traffic = Navigation::Traffic(this);
-        traffic.setData(alarmLevel, targetID,  AviationUnits::Distance::fromM(relativeVertical), type, pInfo);
+
+        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(relativeVertical), type, pInfo);
 
         foreach(auto target, targets)
             if (targetID == target->ID()) {

@@ -76,7 +76,7 @@ public:
      *
      * @returns Property acceptedTerms
      */
-    int acceptedTerms() const { return settings.value("acceptedTerms", 0).toInt(); }
+    int acceptedTerms() const { return settings.value(QStringLiteral("acceptedTerms"), 0).toInt(); }
 
     /*! \brief Setter function for property of the same name
      *
@@ -96,7 +96,7 @@ public:
      *
      * @returns Property acceptedWeatherTerms
      */
-    bool acceptedWeatherTerms() const { return settings.value("acceptedWeatherTerms", false).toBool(); }
+    bool acceptedWeatherTerms() const { return settings.value(QStringLiteral("acceptedWeatherTerms"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -120,7 +120,7 @@ public:
      *
      * @returns Property autoFlightDetection
      */
-    bool autoFlightDetection() const { return settings.value("Map/autoFlightDetection", true).toBool(); }
+    bool autoFlightDetection() const { return settings.value(QStringLiteral("Map/autoFlightDetection"), true).toBool(); }
 
     /*! \brief Setter function for property of the same name
      *
@@ -135,7 +135,7 @@ public:
      *
      * @returns Property hasTranslation
      */
-    bool hasTranslation() const { return QFile::exists(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
+    bool hasTranslation() const { return QFile::exists(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
 
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
@@ -144,7 +144,7 @@ public:
      *
      * @returns Property hideUpperAirspaces
      */
-    bool hideUpperAirspaces() const { return settings.value("Map/hideUpperAirspaces", false).toBool(); }
+    bool hideUpperAirspaces() const { return settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -181,7 +181,7 @@ public:
      *
      * @returns Property lastWhatsNewHash
      */
-    uint lastWhatsNewHash() const { return settings.value("lastWhatsNewHash", 0).toUInt(); }
+    uint lastWhatsNewHash() const { return settings.value(QStringLiteral("lastWhatsNewHash"), 0).toUInt(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -212,7 +212,7 @@ public:
      *
      * @returns Property useMetricUnits
      */
-    bool useMetricUnits() const { return settings.value("System/useMetricUnits", false).toBool(); }
+    bool useMetricUnits() const { return settings.value(QStringLiteral("System/useMetricUnits"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -239,7 +239,7 @@ public:
      *
      * @returns Property preferEnglish
      */
-    bool preferEnglish() const { return settings.value("System/preferEnglish", false).toBool(); }
+    bool preferEnglish() const { return settings.value(QStringLiteral("System/preferEnglish"), false).toBool(); }
 
     /*! \brief Setter function for property of the same name
      *

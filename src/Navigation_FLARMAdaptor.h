@@ -28,7 +28,6 @@
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "Navigation_Traffic.h"
-#include "Navigation_TrafficNoPos.h"
 
 namespace Navigation {
 
@@ -147,9 +146,9 @@ public:
         return QQmlListProperty(this, &targets);
     }
 
-    Q_PROPERTY(Navigation::TrafficNoPos *trafficNoPos READ trafficNoPos CONSTANT)
+    Q_PROPERTY(Navigation::Traffic *trafficNoPos READ trafficNoPos CONSTANT)
 
-    Navigation::TrafficNoPos *trafficNoPos()
+    Navigation::Traffic *trafficNoPos()
     {
         return &targetNoPos;
     }
@@ -227,7 +226,7 @@ private:
 
     // Targets
     QList<Navigation::Traffic *> targets;
-    Navigation::TrafficNoPos targetNoPos;
+    Navigation::Traffic targetNoPos;
 };
 
 }

@@ -92,7 +92,7 @@ public:
          *
          * @returns Sum of the two angles
          */
-        Angle operator+(const Angle &rhs) {
+        Angle operator+(AviationUnits::Angle rhs) {
             Angle result;
             result._angleInRAD = _angleInRAD + rhs._angleInRAD;
             return result;
@@ -104,7 +104,7 @@ public:
          *
          * @returns Difference of the two angles
          */
-        Angle operator-(const Angle &rhs) {
+        Angle operator-(AviationUnits::Angle rhs) {
             Angle result;
             result._angleInRAD = _angleInRAD - rhs._angleInRAD;
             return result;
@@ -116,7 +116,7 @@ public:
          *
          * @returns Cosine of the angle
          */
-        static double cos(const Angle &arg) { return std::cos(arg._angleInRAD); }
+        static double cos(AviationUnits::Angle arg) { return std::cos(arg._angleInRAD); }
 
         /*! \brief Sine of an angle, as a dimension-less number
          *
@@ -124,7 +124,7 @@ public:
          *
          * @returns Sine of the angle
          */
-        static double sin(const Angle &arg) { return std::sin(arg._angleInRAD); }
+        static double sin(AviationUnits::Angle arg) { return std::sin(arg._angleInRAD); }
 
         /*! \brief Arcsine of a dimension-less number as an angle
          *
@@ -208,7 +208,7 @@ public:
          *
          * @returns reference to this distance
          */
-        Distance &operator+=(const Distance &other) {
+        Distance &operator+=(AviationUnits::Distance other) {
             _distanceInM += other._distanceInM;
             return *this;
         }
@@ -231,7 +231,7 @@ public:
          *
          *  @returns Result of the comparison
          */
-        auto operator<=>(const Distance& rhs) const = default;
+        auto operator<=>(const AviationUnits::Distance &rhs) const = default;
 
         /*! \brief Convert to nautical miles
          *
@@ -345,7 +345,7 @@ public:
          *
          * @returns Quotient as a dimension-less number
          */
-        double operator/(const Speed &rhs) {
+        double operator/(AviationUnits::Speed rhs) {
             if (qFuzzyIsNull(rhs._speedInMPS))
                 return qQNaN();
             return _speedInMPS / rhs._speedInMPS;
@@ -357,7 +357,7 @@ public:
          *
          *  @returns Result of the comparison
          */
-        bool operator==(const Speed& rhs) const { return _speedInMPS == rhs._speedInMPS; }
+        bool operator==(AviationUnits::Speed rhs) const { return _speedInMPS == rhs._speedInMPS; }
 
         /*! \brief Convert to meters per second
          *
@@ -440,7 +440,7 @@ public:
          *
          * @returns reference to this time
          */
-        Time &operator+=(const Time &other) {
+        Time &operator+=(AviationUnits::Time other) {
             _timeInS += other._timeInS;
             return *this;
         }
@@ -509,8 +509,8 @@ QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed);
  *
  * @returns quotient of numerator and denominator as time
  */
-[[maybe_unused]]  static AviationUnits::Time operator/(const AviationUnits::Distance &dist,
-                                                      const AviationUnits::Speed &speed) {
+[[maybe_unused]]  static AviationUnits::Time operator/(AviationUnits::Distance dist,
+                                                      AviationUnits::Speed speed) {
     if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
         return {};
     return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());

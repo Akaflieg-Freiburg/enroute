@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,12 +28,15 @@
 #include "GlobalSettings.h"
 #include "Navigation_Traffic.h"
 #include "SatNav.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 
 Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
 {  
-    timeOutCounter.setInterval(3*1000);
+    timeOutCounter.setInterval(3s);
     timeOutCounter.setSingleShot(true);
     connect(&timeOutCounter, &QTimer::timeout, this, &Navigation::Traffic::timeOut);
 
@@ -43,34 +46,39 @@ Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
 }
 
 
-void Navigation::Traffic::setData(int __alarmLevel, QString __ID,  AviationUnits::Distance __vdist, Type __type, QGeoPositionInfo __pInfo)
+void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
 {
     timeOutCounter.start();
 
-    if (_ID != __ID) {
+    if (_ID != newID) {
         setAnimate(false);
-        _ID = __ID;
+        _ID = newID;
     }
 
-    if (_alarmLevel != __alarmLevel) {
-        _alarmLevel = __alarmLevel;
+    if (_alarmLevel != newAlarmLevel) {
+        _alarmLevel = newAlarmLevel;
         emit alarmLevelChanged();
     }
 
-    if (_positionInfo != __pInfo) {
-        _positionInfo = __pInfo;
+    if (_positionInfo != newPositionInfo) {
+        _positionInfo = newPositionInfo;
         emit positionInfoChanged();
     }
 
 
-    if (_type != __type) {
-        _type = __type;
+    if (_type != newType) {
+        _type = newType;
         emit typeChanged();
     }
 
-    if (_vDist != __vdist) {
-        _vDist = __vdist;
+    if (_vDist != newVDist) {
+        _vDist = newVDist;
         emit vDistChanged();
+    }
+
+    if (_hDist != newHDist) {
+        _hDist = newHDist;
+        emit hDistChanged();
     }
 
     setAnimate(true);
@@ -82,9 +90,19 @@ void Navigation::Traffic::setData(int __alarmLevel, QString __ID,  AviationUnits
 void Navigation::Traffic::copyFrom(const Traffic & other)
 {
     qWarning() << "copyFrom";
-    setData(other._alarmLevel, other._ID, other._vDist, other._type, other._positionInfo);
+    setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo);
 }
 
+auto Navigation::Traffic::color() const -> QString
+{
+    if (_alarmLevel == 0) {
+        return QStringLiteral("green");
+    }
+    if (_alarmLevel == 1) {
+        return QStringLiteral("yellow");
+    }
+    return QStringLiteral("red");
+}
 
 void Navigation::Traffic::setIcon()
 {
@@ -92,46 +110,44 @@ void Navigation::Traffic::setIcon()
     QString baseType = QStringLiteral("noDirection");
     if (_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
         auto GS = AviationUnits::Speed::fromMPS( _positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
-        if (GS.isFinite() && (GS.toKT() > 4))
-            baseType = "withDirection";
+        if (GS.isFinite() && (GS.toKT() > 4)) {
+            baseType = QStringLiteral("withDirection");
+        }
     }
 
-    // Color
-    QString color = "red";
-    if (_alarmLevel == 0)
-        color = "green";
-    if (_alarmLevel == 1)
-        color = "yellow";
+    QString newIcon = "/icons/traffic-"+baseType+"-"+color()+".svg";
 
-    QString newIcon = "/icons/traffic-"+baseType+"-"+color+".svg";
-
-    if (newIcon == _icon)
+    if (newIcon == _icon) {
         return;
+    }
 
     _icon = newIcon;
     emit iconChanged();
 }
 
 
-bool Navigation::Traffic::operator>(const Traffic &rhs)
+auto Navigation::Traffic::operator>(const Traffic &rhs) -> bool
 {
     // Criterion 1: Valid instances have higher priority than invalid ones
-    if (!rhs.valid())
+    if (!rhs.valid()) {
         return true;
-    if (!valid())
+    }
+    if (!valid()) {
         return false;
+    }
     // At this point, both instances are valid.
 
     // Criterion 2: Alarm level
-    if (_alarmLevel > rhs._alarmLevel)
+    if (_alarmLevel > rhs._alarmLevel) {
         return true;
-    if (_alarmLevel < rhs._alarmLevel)
+    }
+    if (_alarmLevel < rhs._alarmLevel) {
         return false;
+    }
     // At this point, both instances have equal alarm levels
 
     // Final criterion: distance to current position
-    auto coordinate = SatNav::globalInstance()->lastValidCoordinate();
-    return coordinate.distanceTo(_positionInfo.coordinate()) < coordinate.distanceTo(rhs._positionInfo.coordinate());
+    return (_hDist < rhs._hDist);
 }
 
 
@@ -143,19 +159,22 @@ void Navigation::Traffic::timeOut()
 
 void Navigation::Traffic::setAnimate(bool a)
 {
-    if (a == _animate)
+    if (a == _animate) {
         return;
+    }
 
     _animate = a;
     emit animateChanged();
 }
 
 
-bool Navigation::Traffic::valid() const
+auto Navigation::Traffic::valid() const -> bool
 {
-    if ((_alarmLevel < 0) || (_alarmLevel > 3))
+    if ((_alarmLevel < 0) || (_alarmLevel > 3)) {
         return false;
-    if (!_positionInfo.isValid())
+    }
+    if (!_positionInfo.timestamp().isValid()) {
         return false;
+    }
     return timeOutCounter.isActive();
 }

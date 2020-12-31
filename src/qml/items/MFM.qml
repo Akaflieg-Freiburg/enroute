@@ -270,14 +270,16 @@ Item {
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[0] }
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[1] }
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[2] }
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[3] }
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[4] }
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[5] }
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[6] }
-        Traffic { trafficInfo: flarmAdaptor.trafficObjects4QML[7] }
+        Component {
+            id: trafficComponent
+            Traffic { trafficInfo: model.modelData }
+        }
+
+        MapItemView {
+            model: flarmAdaptor.trafficObjects4QML
+            delegate: trafficComponent
+
+        }
 
         // Mouse Area, in order to receive mouse clicks
         MouseArea {

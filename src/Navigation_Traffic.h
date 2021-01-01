@@ -81,6 +81,10 @@ public:
      * - Valid traffic objects have higher priority than invalid objects.
      * - Traffic objects with higher alarm level have higher priority.
      * - Traffic objects that are closer have higher priority.
+     *
+     * @param rhs Right hand side of the comparison
+     *
+     * @returns Boolean with the result
      */
     bool hasHigherPriorityThan(const Traffic &rhs);
 

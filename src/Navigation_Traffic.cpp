@@ -29,13 +29,24 @@ using namespace std::chrono_literals;
 
 Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
 {  
-    timeOutCounter.setInterval(3s);
     timeOutCounter.setSingleShot(true);
-    connect(&timeOutCounter, &QTimer::timeout, this, &Navigation::Traffic::timeOut);
 
-    connect(this, &Navigation::Traffic::alarmLevelChanged, this, &Navigation::Traffic::setIcon);
+    // Compute derived properties and set bindings
+    connect(this, &Navigation::Traffic::alarmLevelChanged, this, &Navigation::Traffic::setColor);
+    setColor();
+
+    connect(this, &Navigation::Traffic::coordinateChanged, this, &Navigation::Traffic::setDescription);
+    connect(this, &Navigation::Traffic::typeChanged, this, &Navigation::Traffic::setDescription);
+    connect(this, &Navigation::Traffic::vDistChanged, this, &Navigation::Traffic::setDescription);
+    setDescription();
+
+    connect(this, &Navigation::Traffic::colorChanged, this, &Navigation::Traffic::setIcon);
     connect(this, &Navigation::Traffic::positionInfoChanged, this, &Navigation::Traffic::setIcon);
     setIcon();
+
+    connect(this, &Navigation::Traffic::positionInfoChanged, this, &Navigation::Traffic::setValid);
+    connect(&timeOutCounter, &QTimer::timeout, this, &Navigation::Traffic::setValid);
+    setValid();
 }
 
 
@@ -64,90 +75,6 @@ auto Navigation::Traffic::hasHigherPriorityThan(const Traffic &rhs) -> bool
 }
 
 
-// ==========================
-
-void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
-{
-    timeOutCounter.start();
-
-    if (_ID != newID) {
-        setAnimate(false);
-        _ID = newID;
-    }
-
-    if (_alarmLevel != newAlarmLevel) {
-        _alarmLevel = newAlarmLevel;
-        emit alarmLevelChanged();
-    }
-
-    if (_positionInfo != newPositionInfo) {
-        _positionInfo = newPositionInfo;
-        emit positionInfoChanged();
-    }
-
-
-    if (_type != newType) {
-        _type = newType;
-        emit typeChanged();
-    }
-
-    if (_vDist != newVDist) {
-        _vDist = newVDist;
-        emit vDistChanged();
-    }
-
-    if (_hDist != newHDist) {
-        _hDist = newHDist;
-        emit hDistChanged();
-    }
-
-    setAnimate(true);
-    setIcon();
-    emit validChanged();
-    emit descriptionChanged();
-}
-
-
-auto Navigation::Traffic::color() const -> QString
-{
-    if (_alarmLevel == 0) {
-        return QStringLiteral("green");
-    }
-    if (_alarmLevel == 1) {
-        return QStringLiteral("yellow");
-    }
-    return QStringLiteral("red");
-}
-
-
-void Navigation::Traffic::setIcon()
-{
-    // BaseType
-    QString baseType = QStringLiteral("noDirection");
-    if (_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
-        auto GS = AviationUnits::Speed::fromMPS( _positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
-        if (GS.isFinite() && (GS.toKT() > 4)) {
-            baseType = QStringLiteral("withDirection");
-        }
-    }
-
-    QString newIcon = "/icons/traffic-"+baseType+"-"+color()+".svg";
-
-    if (newIcon == _icon) {
-        return;
-    }
-
-    _icon = newIcon;
-    emit iconChanged();
-}
-
-
-void Navigation::Traffic::timeOut()
-{
-    emit validChanged();
-}
-
-
 void Navigation::Traffic::setAnimate(bool a)
 {
     if (a == _animate) {
@@ -159,19 +86,81 @@ void Navigation::Traffic::setAnimate(bool a)
 }
 
 
-auto Navigation::Traffic::valid() const -> bool
+void Navigation::Traffic::setColor()
 {
-    if ((_alarmLevel < 0) || (_alarmLevel > 3)) {
-        return false;
+    QString newColor = QStringLiteral("red");
+    if (_alarmLevel == 0) {
+        newColor = QStringLiteral("green");
     }
-    if (!_positionInfo.timestamp().isValid()) {
-        return false;
+    if (_alarmLevel == 1) {
+        newColor = QStringLiteral("yellow");
     }
-    return timeOutCounter.isActive();
+
+    // Set value and emit signal, if appropriate
+    if (_color == newColor) {
+        return;
+    }
+    _color = newColor;
+    emit colorChanged();
 }
 
 
-auto Navigation::Traffic::description() const -> QString
+void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
+{
+    // Set properties
+    bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
+    _alarmLevel = newAlarmLevel;
+
+    bool hasIDChanged = (_ID != newID);
+    _ID = newID;
+
+    bool hasCoordinateChanged = (coordinate() != newPositionInfo.coordinate());
+    bool _positionInfoChanged = (_positionInfo != newPositionInfo);
+    _positionInfo = newPositionInfo;
+
+    bool hasTypeChanged = (_type != newType);
+    _type = newType;
+
+    bool hasVDistChanged = (_vDist != newVDist);
+    _vDist = newVDist;
+
+    bool hasHDistChanged = (_hDist != newHDist);
+    _hDist = newHDist;
+
+    // If the ID changed, do not animate property changes in the GUI.
+    if (hasIDChanged) {
+       setAnimate(false);
+    }
+
+    // Emit notifier signals as appropriate
+    if (hasAlarmLevelChanged) {
+        emit alarmLevelChanged();
+    }
+    if (hasCoordinateChanged) {
+        emit coordinateChanged();
+    }
+    if (hasHDistChanged) {
+        emit hDistChanged();
+    }
+    if (hasIDChanged) {
+        emit IDChanged();
+       setAnimate(false);
+    }
+    if (_positionInfoChanged)  {
+        emit positionInfoChanged();
+    }
+    if (hasTypeChanged) {
+        emit typeChanged();
+    }
+    if (hasVDistChanged) {
+        emit vDistChanged();
+    }
+
+    setAnimate(true);
+}
+
+
+void Navigation::Traffic::setDescription()
 {
     QStringList results;
 
@@ -223,5 +212,62 @@ auto Navigation::Traffic::description() const -> QString
     if (_vDist.isFinite()) {
         results << _vDist.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
     }
-    return results.join(u"<br>");
+
+    auto newDescription = results.join(u"<br>");
+
+    // Set value and emit signal, if appropriate
+    if (_description == newDescription) {
+        return;
+    }
+    _description = newDescription;
+    emit descriptionChanged();
+}
+
+
+void Navigation::Traffic::setIcon()
+{
+    // BaseType
+    QString baseType = QStringLiteral("noDirection");
+    if (_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
+        auto GS = AviationUnits::Speed::fromMPS( _positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
+        if (GS.isFinite() && (GS.toKT() > 4)) {
+            baseType = QStringLiteral("withDirection");
+        }
+    }
+
+    auto newIcon = "/icons/traffic-"+baseType+"-"+color()+".svg";
+
+    // Set value and emit signal, if appropriate
+    if (_icon == newIcon) {
+        return;
+    }
+    _icon = newIcon;
+    emit iconChanged();
+}
+
+
+void Navigation::Traffic::setValid()
+{
+    // Compute validity
+    bool newValid = true;
+    if (!_positionInfo.timestamp().isValid()) {
+        newValid = false;
+    } else {
+        // If this traffic object it not invalid for trivial reasons, check the age and set the timer.
+        auto delta = QDateTime::currentDateTimeUtc().msecsTo( _positionInfo.timestamp().addMSecs(3*1000) );
+        if (delta <= 0) {
+            newValid = false;
+        } else {
+            newValid = true;
+            timeOutCounter.start(delta);
+        }
+
+    }
+
+    // Set value and emit signal, if appropriate
+    if (_valid == newValid) {
+        return;
+    }
+    _valid = newValid;
+    emit validChanged();
 }

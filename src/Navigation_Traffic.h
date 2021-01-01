@@ -134,20 +134,23 @@ public:
      *  - alarmLevel == 1: yellow
      *  - alarmLevel >= 2: red
      */
-    Q_PROPERTY(QString color READ color NOTIFY alarmLevelChanged)
+    Q_PROPERTY(QString color READ color NOTIFY colorChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property color
      */
-    QString color() const;
+    QString color() const
+    {
+        return _color;
+    }
 
     /*! \brief Coordinate of the traffic, as reported by FLARM
      *
      *  This property contains the coordinate part of the positionInfo. The property exists
      *  for better cooperation with QML
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate NOTIFY positionInfoChanged)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate NOTIFY coordinateChanged)
 
     /*! \brief Getter method for property with the same name
      *
@@ -169,7 +172,10 @@ public:
      *
      *  @returns Property description
      */
-    QString description() const;
+    QString description() const
+    {
+        return _description;
+    }
 
     /*! \brief Horizontal distance from own position to the traffic in meters, at the time of report
      *
@@ -258,7 +264,10 @@ public:
      *
      *  @returns Property valid
      */
-    bool valid() const;
+    bool valid() const
+    {
+        return _valid;
+    }
 
     /*! \brief Vertical distance from own position to the traffic, at the time of report
      *
@@ -276,45 +285,87 @@ public:
         return _vDist;
     }
 
-    // =========================
-
 signals:
+    /*! \brief Notifier signal */
     void alarmLevelChanged();
+
+    /*! \brief Notifier signal */
     void animateChanged();
+
+    /*! \brief Notifier signal */
+    void colorChanged();
+
+    /*! \brief Notifier signal */
+    void coordinateChanged();
+
+    /*! \brief Notifier signal */
     void descriptionChanged();
+
+    /*! \brief Notifier signal */
     void iconChanged();
+
+    /*! \brief Notifier signal */
     void IDChanged();
+
+    /*! \brief Notifier signal */
     void positionInfoChanged();
+
+    /*! \brief Notifier signal */
     void typeChanged();
+
+    /*! \brief Notifier signal */
     void hDistChanged();
+
+    /*! \brief Notifier signal */
     void vDistChanged();
+
+    /*! \brief Notifier signal */
     void validChanged();
 
 private slots:
+    // Setter function for the property color. This slot is bound to the notifier signals of all the properties that color depends on.
+    void setColor();
+
+    // Setter function for the property description. This slot is bound to the notifier signals of all the properties that color depends on.
+    void setDescription();
+
+    // Setter function for the property icon. This slot is bound to the notifier signals of all the properties that color depends on.
     void setIcon();
-    void timeOut();
+
+    // Setter function for the property valid. This slot is bound to the notifier signals of all the properties that color depends on.
+    // This method will also set the timer, to ensure that it is called again once the object times out.
+    void setValid();
 
 private:
+    // Copy data from other object
     void copyFrom(const Traffic & other)
     {
         setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo);
     }
 
-    void setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo);
-
+    // Set data
+    void setData(int newAlarmLevel, const QString & newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo & newPositionInfo);
 
 private:
+    // Setter function for property animate
     void setAnimate(bool a);
 
+    //
+    // Property values
+    //
     int _alarmLevel {0};
     bool _animate {true};
+    QString _color {QStringLiteral("red")};
+    QString _description;
     QGeoPositionInfo _positionInfo;
     QString _icon;
     QString _ID;
     AircraftType _type {AircraftType::unknown};
+    bool _valid {false};
     AviationUnits::Distance _vDist;
     AviationUnits::Distance _hDist;
 
+    // Timer for timeout
     QTimer timeOutCounter;
 };
 

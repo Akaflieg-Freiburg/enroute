@@ -446,7 +446,7 @@ Properties</h2></td></tr>
 <p>Recall that the waypoint data is stored as a list of properties that correspond to waypoint feature of a GeoJSON file, as described in <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. This method allows to retrieve the individual properties by name.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>The name of the member. This is a string such as "CAT", "TYP", "NAM", etc</td></tr>
+    <tr><td class="paramname">propertyName</td><td>The name of the member. This is a string such as "CAT", "TYP", "NAM", etc</td></tr>
   </table>
   </dd>
 </dl>
@@ -543,6 +543,12 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Equality check. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>Right hand side of the equality check</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the coordinates and all properties agree. </dd></dl>
 
 </div>
@@ -564,7 +570,13 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Connects this waypoint with a DownloadManager instance. </p>
-<p>This method optionally connects the waypoint with an instance of the DownloadManager class. Once connected, functions such has hasTAF can be used. </p>
+<p>This method optionally connects the waypoint with an instance of the DownloadManager class. Once connected, functions such has hasTAF can be used.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">downloadManager</td><td>Pointer to a download manager </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -847,7 +859,7 @@ Properties</h2></td></tr>
 <p>This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a string of the form "&lt;strong&gt;LFKA&lt;/strong&gt;&lt;br&gt;&lt;font size='2'&gt;ALBERTVILLE&lt;/font&gt;" or simply "KIRCHZARTEN"</p>
 <dl class="section see"><dt>See also</dt><dd>threeLineTitle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00251">251</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00255">255</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -874,7 +886,7 @@ Properties</h2></td></tr>
 <p>Check if a WeatherStation exists at this point. </p>
 <p>If a pointer to a DownloadManager instance has been set with <a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056" title="Connects this waypoint with a DownloadManager instance. ">setDownloadManager()</a> and if a WeatherStation is known to exist at this point, then this property holds a pointer to the station. Otherwise, the property holds nullptr. Note that the WeatherStation object is owned by the DownloadManager and that it can be deleted anytime. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00277">277</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00281">281</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

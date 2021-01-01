@@ -202,6 +202,9 @@ public:
      * @param data GPX route data
      *
      * @param geoMapProvider Pointer to a geoMapProvider or nullptr
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
      */
     Q_INVOKABLE QString loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider);
 
@@ -212,6 +215,9 @@ public:
      * @param xml XML Document with GPX data
      *
      * @param geoMapProvider Pointer to a geoMapProvider or nullptr
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
      */
     Q_INVOKABLE QString loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider);
 

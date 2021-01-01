@@ -131,7 +131,7 @@ public:
      * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
      * This method allows to retrieve the individual properties by name.
      *
-     * @param name The name of the member. This is a string such as "CAT",
+     * @param propertyName The name of the member. This is a string such as "CAT",
      * "TYP", "NAM", etc
      *
      * @returns Value of the proerty
@@ -199,6 +199,8 @@ public:
 
     /*! \brief Equality check
      *
+     * @param other Right hand side of the equality check
+     *
      * @returns True if the coordinates and all properties agree.
      */
     bool operator==(const Waypoint &other) const;
@@ -236,6 +238,8 @@ public:
      * This method optionally connects the waypoint with an instance of the
      * DownloadManager class.  Once connected, functions such has hasTAF can be
      * used.
+     *
+     * @param downloadManager Pointer to a download manager
      */
     void setDownloadManager(Weather::DownloadManager *downloadManager);
 

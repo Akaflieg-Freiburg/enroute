@@ -577,7 +577,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             auto trafficNP = Navigation::Traffic(this);
             qWarning() << hDist.toM();
             trafficNP.setData(alarmLevel, targetID, hDist, vDist, type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
-            if ((trafficNP.ID() == targetNoPos.ID()) || (trafficNP > targetNoPos)) {
+            if ((trafficNP.ID() == targetNoPos.ID()) || trafficNP.hasHigherPriorityThan(targetNoPos)) {
                 targetNoPos.copyFrom(trafficNP);
             }
             return;
@@ -635,10 +635,10 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
         auto *lowestPriObject = targets[0];
         foreach(auto target, targets)
-            if (*lowestPriObject > *target) {
+            if (lowestPriObject->hasHigherPriorityThan(*target)) {
                 lowestPriObject = target;
             }
-        if (traffic > *lowestPriObject) {
+        if (traffic.hasHigherPriorityThan(*lowestPriObject)) {
             lowestPriObject->copyFrom(traffic);
         }
 

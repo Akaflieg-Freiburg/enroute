@@ -57,7 +57,7 @@ MapQuickItem {
         Label {
             anchors.left: image.right
             anchors.bottom: image.top
-            text: trafficInfo.vDistText
+            text: trafficInfo.description
 
             leftInset: -2
             rightInset: -2

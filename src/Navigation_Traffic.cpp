@@ -18,20 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
-#include <QFile>
-#include <QGeoCoordinate>
-#include <QGeoPositionInfo>
-#include <QtGlobal>
 
+#include <chrono>
 
 #include "GlobalSettings.h"
 #include "Navigation_Traffic.h"
-#include "SatNav.h"
-#include <chrono>
 
 using namespace std::chrono_literals;
-
 
 
 Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
@@ -45,6 +38,33 @@ Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
     setIcon();
 }
 
+
+auto Navigation::Traffic::hasHigherPriorityThan(const Traffic &rhs) -> bool
+{
+    // Criterion 1: Valid instances have higher priority than invalid ones
+    if (!rhs.valid()) {
+        return true;
+    }
+    if (!valid()) {
+        return false;
+    }
+    // At this point, both instances are valid.
+
+    // Criterion 2: Alarm level
+    if (_alarmLevel > rhs._alarmLevel) {
+        return true;
+    }
+    if (_alarmLevel < rhs._alarmLevel) {
+        return false;
+    }
+    // At this point, both instances have equal alarm levels
+
+    // Final criterion: distance to current position
+    return (_hDist < rhs._hDist);
+}
+
+
+// ==========================
 
 void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
 {
@@ -84,13 +104,7 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
     setAnimate(true);
     setIcon();
     emit validChanged();
-}
-
-
-void Navigation::Traffic::copyFrom(const Traffic & other)
-{
-    qWarning() << "copyFrom";
-    setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo);
+    emit descriptionChanged();
 }
 
 
@@ -128,31 +142,6 @@ void Navigation::Traffic::setIcon()
 }
 
 
-auto Navigation::Traffic::operator>(const Traffic &rhs) -> bool
-{
-    // Criterion 1: Valid instances have higher priority than invalid ones
-    if (!rhs.valid()) {
-        return true;
-    }
-    if (!valid()) {
-        return false;
-    }
-    // At this point, both instances are valid.
-
-    // Criterion 2: Alarm level
-    if (_alarmLevel > rhs._alarmLevel) {
-        return true;
-    }
-    if (_alarmLevel < rhs._alarmLevel) {
-        return false;
-    }
-    // At this point, both instances have equal alarm levels
-
-    // Final criterion: distance to current position
-    return (_hDist < rhs._hDist);
-}
-
-
 void Navigation::Traffic::timeOut()
 {
     emit validChanged();
@@ -182,31 +171,57 @@ auto Navigation::Traffic::valid() const -> bool
 }
 
 
-QString Navigation::Traffic::typeString() const
+auto Navigation::Traffic::description() const -> QString
 {
-    if (_type == Aircraft)
-        return tr("Aircraft");
-    if (_type == Airship)
-        return tr("Airship");
-    if (_type == Balloon)
-        return tr("Balloon");
-    if (_type == Copter)
-        return tr("Copter");
-    if (_type == Drone)
-        return tr("Drone");
-    if (_type == Glider)
-        return tr("Glider");
-    if (_type == HangGlider)
-        return tr("Hang glider");
-    if (_type == Jet)
-        return tr("Jet");
-    if (_type == Paraglider)
-        return tr("Paraglider");
-    if (_type == Skydiver)
-        return tr("Skydiver");
-    if (_type == StaticObstacle)
-        return tr("Static Obstacle");
-    if (_type == TowPlane)
-        return tr("Tow Plane");
-    return tr("Traffic");
+    QStringList results;
+
+    switch(_type) {
+    case Aircraft:
+        results << tr("Aircraft");
+        break;
+    case Airship:
+        results << tr("Airship");
+        break;
+    case Balloon:
+        results << tr("Balloon");
+        break;
+    case Copter:
+        results << tr("Copter");
+        break;
+    case Drone:
+        results << tr("Drone");
+        break;
+    case Glider:
+        results << tr("Glider");
+        break;
+    case HangGlider:
+        results << tr("Hang glider");
+        break;
+    case Jet:
+        results << tr("Jet");
+        break;
+    case Paraglider:
+        results << tr("Paraglider");
+        break;
+    case Skydiver:
+        results << tr("Skydiver");
+        break;
+    case StaticObstacle:
+        results << tr("Static Obstacle");
+        break;
+    case TowPlane:
+        results << tr("Tow Plane");
+        break;
+    default:
+        results << tr("Traffic");
+    }
+
+    if (!_positionInfo.coordinate().isValid()) {
+        results << tr("Position unknown");
+    }
+
+    if (_vDist.isFinite()) {
+        results << _vDist.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
+    }
+    return results.join(u"<br>");
 }

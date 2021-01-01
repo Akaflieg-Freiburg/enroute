@@ -182,7 +182,7 @@ Item {
 
                 y: 30
 
-                text: flarmAdaptor.trafficNoPos.typeString + "<br>" + flarmAdaptor.trafficNoPos.vDistText
+                text: flarmAdaptor.trafficNoPos.description
 
                 leftInset: -4
                 rightInset: -4

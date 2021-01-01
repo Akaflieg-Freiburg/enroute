@@ -71,6 +71,8 @@ public:
      *
      * @param route A pointer to a FlightRoute object. This is used to find
      * WeatherStations near the planned route.
+     *
+     * @param geoMapProvider Pointer to GeoMapProvider
      * 
      * @param networkAccessManager The manager for network requests
      * 

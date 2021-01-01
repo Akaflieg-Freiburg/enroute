@@ -64,8 +64,6 @@ class SatNav : public QObject
 public:
     /*! \brief Standard constructor
    *
-   * @paragraph globalSettings Pointer to a GlobalSettings instance. This is used to present data with in the unit system preferred by the user.
-   *
    * @param parent The standard QObject parent pointer
    */
     explicit SatNav(QObject *parent = nullptr);
@@ -517,7 +515,7 @@ public:
    * @returns A string of the form "DIST 65.2 NM • QUJ 276°" or an empty string if the
    * current position is not known.
    */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& positionUnits) const;
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& position) const;
 
 signals:
     /*! \brief Emitted whenever the suggested icon changes */

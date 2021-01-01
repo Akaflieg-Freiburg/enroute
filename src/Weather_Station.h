@@ -40,7 +40,7 @@ class DownloadManager;
 class Station : public QObject {
     Q_OBJECT
 
-    friend Weather::DownloadManager;
+    friend DownloadManager;
     friend METAR;
     friend TAF;
 public:

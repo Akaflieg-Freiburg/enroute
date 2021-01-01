@@ -213,7 +213,7 @@ public:
      * run-time, but several method will only work with reduced functionality,
      * as newly generated waypoint will no longer contain weather information.
      *
-     * @param DownloadManager Pointer to a DownloadManager object.
+     * @param downloadManager Pointer to a DownloadManager object.
      */
     void setDownloadManager(Weather::DownloadManager *downloadManager);
 

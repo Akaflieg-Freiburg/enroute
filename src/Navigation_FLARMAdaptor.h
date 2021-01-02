@@ -63,7 +63,10 @@ public:
     // Methods
     //
 
-    /*! \brief Pointer to static instance of this class  */
+    /*! \brief Pointer to static instance of this class
+     *
+     *  @returns Pointer to global instance
+     */
     static FLARMAdaptor *globalInstance();
 
     /*! \brief Last position information

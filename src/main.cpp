@@ -44,8 +44,8 @@
 #include "MapManager.h"
 #include "MobileAdaptor.h"
 #include "Navigation_FLARMAdaptor.h"
+#include "Navigation_SatNav.h"
 #include "Navigation_Traffic.h"
-#include "SatNav.h"
 #include "ScaleQuickItem.h"
 #include "Weather_DownloadManager.h"
 #include "Weather_Wind.h"
@@ -65,8 +65,8 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::FLARMAdaptor>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
+    qmlRegisterUncreatableType<Navigation::SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::Traffic>("enroute", 1, 0, "Traffic", "Traffic objects cannot be created in QML");
-    qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
@@ -126,7 +126,7 @@ auto main(int argc, char *argv[]) -> int
     QObject::connect(GlobalSettings::globalInstance(), &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
-    engine->rootContext()->setContextProperty("satNav", SatNav::globalInstance());
+    engine->rootContext()->setContextProperty("satNav", Navigation::SatNav::globalInstance());
 
     // Make FLARM available to QML engine
     engine->rootContext()->setContextProperty("flarmAdaptor", Navigation::FLARMAdaptor::globalInstance());

@@ -34,7 +34,7 @@
 #include "GeoMapProvider.h"
 #include "GlobalSettings.h"
 #include "FlightRoute.h"
-#include "SatNav.h"
+#include "Navigation_SatNav.h"
 #include "Weather_DownloadManager.h"
 #include "Weather_METAR.h"
 
@@ -80,8 +80,8 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
 
 void Weather::DownloadManager::setupConnections()
 {
-    connect(SatNav::globalInstance(), &SatNav::statusChanged, this, &Weather::DownloadManager::QNHInfoChanged);
-    connect(SatNav::globalInstance(), &SatNav::statusChanged, this, &Weather::DownloadManager::sunInfoChanged);
+    connect(Navigation::SatNav::globalInstance(), &Navigation::SatNav::statusChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+    connect(Navigation::SatNav::globalInstance(), &Navigation::SatNav::statusChanged, this, &Weather::DownloadManager::sunInfoChanged);
 
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::QNHInfoChanged);
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::sunInfoChanged);
@@ -335,10 +335,10 @@ void Weather::DownloadManager::save()
 auto Weather::DownloadManager::sunInfo() const -> QString
 {
     // Paranoid safety checks
-    auto _satNav = SatNav::globalInstance();
+    auto _satNav = Navigation::SatNav::globalInstance();
     if (_satNav == nullptr)
         return QString();
-    if (_satNav->status() != SatNav::OK)
+    if (_satNav->status() != Navigation::SatNav::OK)
         return tr("Waiting for precise position…");
 
     // Describe next sunset/sunrise
@@ -398,7 +398,7 @@ auto Weather::DownloadManager::sunInfo() const -> QString
 auto Weather::DownloadManager::QNHInfo() const -> QString
 {
     // Paranoid safety checks
-    auto _satNav = SatNav::globalInstance();
+    auto _satNav = Navigation::SatNav::globalInstance();
     if (_satNav == nullptr)
         return QString();
 
@@ -462,7 +462,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     _networkReplies.clear();
 
     // Generate queries
-    const QGeoCoordinate& position = SatNav::lastValidCoordinateStatic();
+    const QGeoCoordinate& position = Navigation::SatNav::lastValidCoordinateStatic();
     const QVariantList& steerpts = _flightRoute->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
@@ -505,7 +505,7 @@ auto Weather::DownloadManager::weatherStations() const -> QList<Weather::Station
 
     // Sort list
     auto compare = [&](const Weather::Station *a, const Weather::Station *b) {
-        auto here = SatNav::lastValidCoordinateStatic();
+        auto here = Navigation::SatNav::lastValidCoordinateStatic();
         return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);

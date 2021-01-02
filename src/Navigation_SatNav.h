@@ -27,6 +27,8 @@
 #include "Geoid.h"
 #include "GlobalSettings.h"
 
+namespace Navigation {
+
 /*! \brief Satellite Navigator
 
   This class is a thin wrapper around QGeoPositionInfoSource.  The main
@@ -583,3 +585,5 @@ private:
     // to call timeout() after timeoutThreshold milliseconds of no data.
     QTimer timeoutCounter;
 };
+
+}

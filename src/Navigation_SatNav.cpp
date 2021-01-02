@@ -23,14 +23,14 @@
 #include <QtMath>
 
 #include "AviationUnits.h"
-#include "SatNav.h"
+#include "Navigation_SatNav.h"
 
 
 // Static instance of this class
-Q_GLOBAL_STATIC(SatNav, satNavStatic);
+Q_GLOBAL_STATIC(Navigation::SatNav, satNavStatic);
 
 
-SatNav::SatNav(QObject *parent)
+Navigation::SatNav::SatNav(QObject *parent)
     : QObject(parent)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
@@ -50,7 +50,7 @@ SatNav::SatNav(QObject *parent)
     altitudeCorrectionInM = settings.value(QStringLiteral("SatNav/altitudeCorrection"), 0).toInt();
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         _lastValidCoordinate = tmp;
-}
+    }
     _lastValidTrack = qBound(0, settings.value(QStringLiteral("SatNav/lastValidTrack"), 0).toInt(), 359);
 
     if (source != nullptr) {
@@ -66,7 +66,7 @@ SatNav::SatNav(QObject *parent)
 }
 
 
-SatNav::~SatNav()
+Navigation::SatNav::~SatNav()
 {
     QSettings settings;
 
@@ -80,32 +80,32 @@ SatNav::~SatNav()
 }
 
 
-auto SatNav::altitudeInFeet() const -> int
+auto Navigation::SatNav::altitudeInFeet() const -> int
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return 0;
-}
+    }
 
     auto correction = AviationUnits::Distance::fromM(altitudeCorrectionInM);
     return qRound(rawAltitudeInFeet() + correction.toFeet());
 }
 
 
-auto SatNav::altitudeInFeetAsString() const -> QString
+auto Navigation::SatNav::altitudeInFeetAsString() const -> QString
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return QStringLiteral("-");
-}
+    }
 
     return myLocale.toString(altitudeInFeet()) + " ft";
 }
 
 
-void SatNav::setAltitudeInFeet(int altitudeInFeet)
+void Navigation::SatNav::setAltitudeInFeet(int altitudeInFeet)
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return;
-}
+    }
 
     auto altCorrection = AviationUnits::Distance::fromFT(altitudeInFeet-rawAltitudeInFeet());
 
@@ -116,7 +116,7 @@ void SatNav::setAltitudeInFeet(int altitudeInFeet)
 }
 
 
-void SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
+void Navigation::SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
 {
     // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
     auto oldStatus = status();
@@ -136,35 +136,35 @@ void SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
 }
 
 
-auto SatNav::rawAltitudeInFeet() const -> int
+auto Navigation::SatNav::rawAltitudeInFeet() const -> int
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return 0;
-}
+    }
 
     auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude());
     return qRound(alt.toFeet() - geoidalSeparation());
 }
 
 
-auto SatNav::rawAltitudeInFeetAsString() const -> QString
+auto Navigation::SatNav::rawAltitudeInFeetAsString() const -> QString
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return QStringLiteral("-");
-}
+    }
 
     return myLocale.toString(rawAltitudeInFeet()) + " ft";
 }
 
 
-auto SatNav::geoidalSeparation() const -> int
+auto Navigation::SatNav::geoidalSeparation() const -> int
 {
     auto corr = AviationUnits::Distance::fromM(_lastValidGeoidCorrection);
     return qRound(corr.toFeet());
 }
 
 
-auto SatNav::geoidalSeparationAsString() const -> QString
+auto Navigation::SatNav::geoidalSeparationAsString() const -> QString
 {
     if (_geoid == nullptr || !_geoid->valid() || !lastInfo.isValid()) {
         return QStringLiteral("-");
@@ -174,144 +174,144 @@ auto SatNav::geoidalSeparationAsString() const -> QString
 }
 
 
-auto SatNav::globalInstance() -> SatNav *
+auto Navigation::SatNav::globalInstance() -> SatNav *
 {
     return satNavStatic;
 }
 
 
-auto SatNav::groundSpeedInKnots() const -> int
+auto Navigation::SatNav::groundSpeedInKnots() const -> int
 {
     auto gsInMPS = groundSpeedInMetersPerSecond();
 
     if (gsInMPS < 0.0) {
         return -1;
-}
+    }
 
     auto groundSpeed = AviationUnits::Speed::fromMPS(gsInMPS);
     return qRound(groundSpeed.toKT());
 }
 
 
-auto SatNav::groundSpeedInKnotsAsString() const -> QString
+auto Navigation::SatNav::groundSpeedInKnotsAsString() const -> QString
 {
     auto gsInKnots = groundSpeedInKnots();
 
     if (gsInKnots < 0) {
         return QStringLiteral("-");
-}
+    }
     return myLocale.toString(gsInKnots) + " kt";
 }
 
 
-auto SatNav::groundSpeedInKMHAsString() const -> QString
+auto Navigation::SatNav::groundSpeedInKMHAsString() const -> QString
 {
     auto gsInMPS = groundSpeedInMetersPerSecond();
 
     if (gsInMPS < 0.0) {
         return QStringLiteral("-");
-}
+    }
 
     auto gsInKMH = qRound(AviationUnits::Speed::fromMPS(gsInMPS).toKMH());
     return myLocale.toString(gsInKMH) + " km/h";
 }
 
 
-auto SatNav::groundSpeedInMetersPerSecond() const -> qreal
+auto Navigation::SatNav::groundSpeedInMetersPerSecond() const -> qreal
 {
     if (!lastInfo.isValid()) {
         return -1.0;
-}
+    }
     if (!lastInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
         return -1.0;
-}
+    }
 
     auto groundSpeed = lastInfo.attribute(QGeoPositionInfo::GroundSpeed);
     if (!qIsFinite(groundSpeed)) {
         return -1.0;
-}
+    }
     if (groundSpeed < 0.0) {
         return -1.0;
-}
+    }
 
     return groundSpeed;
 }
 
 
-auto SatNav::horizontalPrecisionInMeters() const -> int
+auto Navigation::SatNav::horizontalPrecisionInMeters() const -> int
 {
     if (!lastInfo.isValid()) {
         return -1;
-}
+    }
     if (!lastInfo.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
         return -1;
-}
+    }
 
     auto horizontalPrecision = lastInfo.attribute(QGeoPositionInfo::HorizontalAccuracy);
     if (!qIsFinite(horizontalPrecision)) {
         return -1;
-}
+    }
     if (horizontalPrecision <= 0.0) {
         return -1;
-}
+    }
 
     return static_cast<int>(qFloor(horizontalPrecision+0.5));
 }
 
 
-auto SatNav::horizontalPrecisionInMetersAsString() const -> QString
+auto Navigation::SatNav::horizontalPrecisionInMetersAsString() const -> QString
 {
     auto _horizontalPrecisionInMeters = horizontalPrecisionInMeters();
 
     if (_horizontalPrecisionInMeters < 0) {
         return QStringLiteral("-");
-}
+    }
     return QStringLiteral("±%1 m").arg(_horizontalPrecisionInMeters);
 }
 
 
-auto SatNav::icon() const -> QString
+auto Navigation::SatNav::icon() const -> QString
 {
     if (status() != OK) {
         return QStringLiteral("/icons/self-noSatNav.svg");
-}
+    }
 
     if (track() < 0) {
         return QStringLiteral("/icons/self-noDirection.svg");
-}
+    }
 
     return QStringLiteral("/icons/self-withDirection.svg");
 }
 
 
-auto SatNav::lastValidCoordinate() const -> QGeoCoordinate
+auto Navigation::SatNav::lastValidCoordinate() const -> QGeoCoordinate
 {
     return _lastValidCoordinate;
 }
 
 
-auto SatNav::lastValidCoordinateStatic() -> QGeoCoordinate
+auto Navigation::SatNav::lastValidCoordinateStatic() -> QGeoCoordinate
 {
     // Find out that unit system we should use
     auto *_satNav = SatNav::globalInstance();
     if (_satNav != nullptr) {
         return _satNav->lastValidCoordinate();
-}
+    }
     // Fallback in the very unlikely case that no global object exists
     return QGeoCoordinate();
 }
 
 
-auto SatNav::latitudeAsString() const -> QString
+auto Navigation::SatNav::latitudeAsString() const -> QString
 {
     if (!lastInfo.isValid()) {
         return QStringLiteral("-");
-}
+    }
 
     auto x = lastInfo.coordinate().latitude();
     if ((!qIsFinite(x)) || (x < -90.0) || (x > 90.0)) {
         return QStringLiteral("-");
-}
+    }
 
     auto angle = AviationUnits::Angle::fromDEG(x);
     QString latString = angle.toString();
@@ -320,16 +320,16 @@ auto SatNav::latitudeAsString() const -> QString
 }
 
 
-auto SatNav::longitudeAsString() const -> QString
+auto Navigation::SatNav::longitudeAsString() const -> QString
 {
     if (!lastInfo.isValid()) {
         return QStringLiteral("-");
-}
+    }
 
     auto x = lastInfo.coordinate().longitude();
     if ((!qIsFinite(x)) || (x < -180.0) || (x > 180.0)) {
         return QStringLiteral("-");
-}
+    }
 
     auto angle = AviationUnits::Angle::fromDEG(x);
     QString lonString = angle.toString();
@@ -339,51 +339,51 @@ auto SatNav::longitudeAsString() const -> QString
 }
 
 
-auto SatNav::status() const -> SatNav::Status
+auto Navigation::SatNav::status() const -> SatNav::Status
 {
     if (source == nullptr) {
         return Status::Error;
-}
+    }
 
     if (sourceStatus != QGeoPositionInfoSource::NoError) {
         return Status::Error;
-}
+    }
 
     if (!timeoutCounter.isActive()) {
         return Status::Timeout;
-}
+    }
 
     return Status::OK;
 }
 
 
-auto SatNav::statusAsString() const -> QString
+auto Navigation::SatNav::statusAsString() const -> QString
 {
     if (source == nullptr) {
         return tr("Not installed or access denied");
-}
+    }
 
     if (sourceStatus == QGeoPositionInfoSource::AccessError) {
         return tr("Access denied");
-}
+    }
 
     if (sourceStatus == QGeoPositionInfoSource::ClosedError) {
         return tr("Connection to satellite system lost");
-}
+    }
 
     if (sourceStatus != QGeoPositionInfoSource::NoError) {
         return tr("Unknown error");
-}
+    }
 
     if (!timeoutCounter.isActive()) {
         return tr("Waiting for signal");
-}
+    }
 
     return tr("OK");
 }
 
 
-void SatNav::statusUpdate(const QGeoPositionInfo &info)
+void Navigation::SatNav::statusUpdate(const QGeoPositionInfo &info)
 {
     // Ignore invalid infos
     if (!info.isValid()) {
@@ -439,7 +439,7 @@ void SatNav::statusUpdate(const QGeoPositionInfo &info)
 }
 
 
-void SatNav::timeout()
+void Navigation::SatNav::timeout()
 {
     // Clear lastInfo, stop counter
     lastInfo = QGeoPositionInfo();
@@ -450,72 +450,72 @@ void SatNav::timeout()
 }
 
 
-auto SatNav::timestampAsString() const -> QString
+auto Navigation::SatNav::timestampAsString() const -> QString
 {
     if (!lastInfo.isValid()) {
         return QStringLiteral("-");
-}
+    }
     QDateTime timeStamp = lastInfo.timestamp();
     if (!timeStamp.isValid()) {
         return QStringLiteral("-");
-}
+    }
 
     return timeStamp.time().toString(QStringLiteral("HH:mm:ss")) + " UTC";
 }
 
 
-auto SatNav::track() const -> int
+auto Navigation::SatNav::track() const -> int
 {
     if (groundSpeedInKnots() < 4) {
         return -1;
-}
+    }
     if (!lastInfo.hasAttribute(QGeoPositionInfo::Direction)) {
         return -1;
-}
+    }
 
     auto track = lastInfo.attribute(QGeoPositionInfo::Direction);
     if (!qIsFinite(track)) {
         return -1;
-}
+    }
 
     auto intTrack = static_cast<int>(qFloor(track+0.5));
     if ((intTrack < 0) || (intTrack > 360)) {
         return -1;
-}
+    }
 
     return intTrack % 360;
 }
 
 
-auto SatNav::trackAsString() const -> QString
+auto Navigation::SatNav::trackAsString() const -> QString
 {
     auto _track = track();
 
     if (_track < 0) {
         return QStringLiteral("-");
-}
+    }
     return QStringLiteral("%1°").arg(_track);
 }
 
 
-auto SatNav::wayTo(const QGeoCoordinate& position) const -> QString
+auto Navigation::SatNav::wayTo(const QGeoCoordinate& position) const -> QString
 {
     // Paranoid safety checks
     if (status() != SatNav::OK) {
         return QString();
-}
+    }
     if (!position.isValid()) {
         return QString();
-}
+    }
     if (!_lastValidCoordinate.isValid()) {
         return QString();
-}
+    }
 
     auto dist = AviationUnits::Distance::fromM(_lastValidCoordinate.distanceTo(position));
     auto QUJ = qRound(_lastValidCoordinate.azimuthTo(position));
 
     if (GlobalSettings::useMetricUnitsStatic()) {
         return QStringLiteral("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-}
+    }
     return QStringLiteral("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }

@@ -86,8 +86,8 @@ set(SOURCES
     MapManager.h
     MobileAdaptor.h
     Navigation_FLARMAdaptor.h
+    Navigation_SatNav.h
     Navigation_Traffic.h
-    SatNav.h
     ScaleQuickItem.h
     Waypoint.h
     Weather_Decoder.h
@@ -117,8 +117,8 @@ set(SOURCES
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     Navigation_FLARMAdaptor.cpp
+    Navigation_SatNav.cpp
     Navigation_Traffic.cpp
-    SatNav.cpp
     ScaleQuickItem.cpp
     TileHandler.cpp
     TileServer.cpp

@@ -25,8 +25,8 @@
 #include <QQmlEngine>
 
 #include "Navigation_FLARMAdaptor.h"
+#include "Navigation_SatNav.h"
 #include "Navigation_Traffic.h"
-#include "SatNav.h"
 #include <chrono>
 
 using namespace std::chrono_literals;

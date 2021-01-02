@@ -165,24 +165,24 @@ Item {
             center: satNav.lastValidCoordinate
             Behavior on center {
                 CoordinateAnimation { duration: 1000 }
-                enabled: flarmAdaptor.trafficNoPos.animate
+                enabled: flarmAdaptor.trafficObjectWithoutPosition.animate
             }
-            radius: Math.max(500, flarmAdaptor.trafficNoPos.hDistM)
+            radius: Math.max(500, flarmAdaptor.trafficObjectWithoutPosition.hDistM)
             Behavior on radius {
                 NumberAnimation { duration: 1000 }
-                enabled: flarmAdaptor.trafficNoPos.animate
+                enabled: flarmAdaptor.trafficObjectWithoutPosition.animate
             }
-            color: flarmAdaptor.trafficNoPos.color
+            color: flarmAdaptor.trafficObjectWithoutPosition.color
             Behavior on color {
                 ColorAnimation { duration: 400 }
-                enabled: flarmAdaptor.trafficNoPos.animate
+                enabled: flarmAdaptor.trafficObjectWithoutPosition.animate
             }
             opacity: 0.3
-            visible: flarmAdaptor.trafficNoPos.valid
+            visible: flarmAdaptor.trafficObjectWithoutPosition.valid
         }
 
         TrafficLabel { // Label for nondirectional traffic warning
-            trafficInfo: flarmAdaptor.trafficNoPos
+            trafficInfo: flarmAdaptor.trafficObjectWithoutPosition
             track: satNav.lastValidTrack
         }
 

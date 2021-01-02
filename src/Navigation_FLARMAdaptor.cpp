@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +22,7 @@
 #include <QFile>
 #include <QGeoCoordinate>
 #include <QGeoPositionInfo>
-
+#include <QQmlEngine>
 
 #include "Navigation_FLARMAdaptor.h"
 #include "Navigation_Traffic.h"
@@ -36,11 +36,18 @@ Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
 
 
 Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
-    // Create targets
-    for(int i = 0; i<8; i++) {
-        auto *traffic = new Navigation::Traffic(this);
-        targets.append( traffic );
+    // Create traffic objects
+    for(int i = 0; i<20; i++) {
+        auto *trafficObject = new Navigation::Traffic(this);
+        QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
+        _trafficObjects.append( trafficObject );
     }
+    _trafficObjectWithoutPosition = new Navigation::Traffic(this);
+    QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
+
+    // Connections
+    connect(&_barometricAltitudeTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearBarometricAltitude);
+    connect(&_positionInfoTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearPositionInfo);
 
     // Wire up socket
     connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::receiveSocketConnected);
@@ -78,6 +85,13 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
      setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
+}
+
+AviationUnits::Distance Navigation::FLARMAdaptor::barometricAltitude() const
+{
+    if (!_barometricAltitudeTimer.isActive())
+        return AviationUnits::Distance();
+    return _barometricAltitude;
 }
 
 
@@ -209,8 +223,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         }
 
-        GPGGAHeight = AviationUnits::Distance::fromM(alt);
-        GPGGATime = dateTime;
+        _altitude = AviationUnits::Distance::fromM(alt);
+        _altitudeTimeStamp = dateTime;
         return;
     }
 
@@ -238,8 +252,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (!coordinate.isValid()) {
             return;
         }
-        if (GPGGATime.secsTo(dateTime) < 5) {
-            coordinate.setAltitude(GPGGAHeight.toM());
+        if (_altitudeTimeStamp.secsTo(dateTime) < 5) {
+            coordinate.setAltitude(_altitude.toM());
         }
         QGeoPositionInfo pInfo(coordinate, dateTime);
 
@@ -261,8 +275,168 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (TT != qQNaN()) {
             pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
         }
+        setPositionInfo(pInfo);
+        return;
+    }
 
-        qWarning() << "positionInfo       " << pInfo;
+    // Data on other proximate aircraft
+    if (messageType == u"PFLAA") {
+        //qWarning() << "Data on other proximate aircraft"  << arguments;
+
+        auto *satNav = SatNav::globalInstance();
+        if (satNav == nullptr) {
+            return;
+        }
+
+        // Helper variable
+        bool ok = false;
+
+        //
+        // We begin by reading a few fields that are relevant both for directional and for non-directional targets
+        //
+
+        // Alarm level is mandatory
+        auto alarmLevel = arguments[0].toInt(&ok);
+        if (!ok) {
+            return;
+        }
+        if ((alarmLevel < 0)||(alarmLevel > 3)) {
+            return;
+        }
+
+        // Relative vertical information is optional
+        auto relativeVertical = arguments[3].toDouble(&ok);
+        if (!ok) {
+            relativeVertical = qQNaN();
+        }
+
+        // Target type is optional
+        auto targetType = arguments[10];
+        Navigation::Traffic::AircraftType type = Navigation::Traffic::unknown;
+        if (targetType == u"1") {
+            type = Navigation::Traffic::Glider;
+        }
+        if (targetType == u"2") {
+            type = Navigation::Traffic::TowPlane;
+        }
+        if (targetType == u"3") {
+            type = Navigation::Traffic::Copter;
+        }
+        if (targetType == u"4") {
+            type = Navigation::Traffic::Skydiver;
+        }
+        if (targetType == u"5") {
+            type = Navigation::Traffic::Aircraft;
+        }
+        if (targetType == u"6") {
+            type = Navigation::Traffic::HangGlider;
+        }
+        if (targetType == u"7") {
+            type = Navigation::Traffic::Paraglider;
+        }
+        if (targetType == u"8") {
+            type = Navigation::Traffic::Aircraft;
+        }
+        if (targetType == u"9") {
+            type = Navigation::Traffic::Jet;
+        }
+        if (targetType == u"B") {
+            type = Navigation::Traffic::Balloon;
+        }
+        if (targetType == u"C") {
+            type = Navigation::Traffic::Airship;
+        }
+        if (targetType == u"F") {
+            type = Navigation::Traffic::StaticObstacle;
+        }
+
+        // Target ID is optional
+        auto targetID = arguments[5];
+
+
+        //
+        // Handle non-directional targets
+        //
+        if (arguments[2] == u"") {
+            // Horizontal distance is mandatory
+            auto hDist = AviationUnits::Distance::fromM(arguments[1].toDouble(&ok));
+            if (!ok) {
+                return;
+            }
+
+            // Vertical distance is optional
+            auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
+            if (!ok) {
+                vDist = AviationUnits::Distance::fromM(qQNaN());
+            }
+
+            auto trafficNP = Navigation::Traffic(this);
+            trafficNP.setData(alarmLevel, targetID, hDist, vDist, type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
+            if ((trafficNP.ID() == _trafficObjectWithoutPosition->ID()) || trafficNP.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
+                _trafficObjectWithoutPosition->copyFrom(trafficNP);
+            }
+            return;
+        }
+
+        //
+        // From now on, we assume that we have a directional target
+        //
+
+        // As a first step, we obtain the target's coordinate. We take our own coordinate as a starting point.
+        auto targetCoordinate = satNav->lastValidCoordinate();
+        if (!targetCoordinate.isValid()) {
+            return;
+        }
+        auto relativeNorth = arguments[1].toDouble(&ok);
+        if (!ok) {
+            return;
+        }
+        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
+        auto relativeEast = arguments[2].toDouble(&ok);
+        if (!ok) {
+            return;
+        }
+        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
+        if (qIsFinite(relativeVertical)) {
+            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
+        }
+        auto hDist = AviationUnits::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
+
+        // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
+        QGeoPositionInfo pInfo(targetCoordinate, QDateTime::currentDateTimeUtc());
+        auto targetTT = arguments[6].toInt(&ok);
+        if (ok) {
+            pInfo.setAttribute(QGeoPositionInfo::Direction, targetTT);
+        }
+        auto targetGS = arguments[8].toDouble(&ok);
+        if (ok) {
+            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, targetGS);
+        }
+        auto targetVS = arguments[9].toDouble(&ok);
+        if (ok) {
+            pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
+        }
+
+        // Construct a traffic object
+        auto traffic = Navigation::Traffic(this);
+
+        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(relativeVertical), type, pInfo);
+
+        foreach(auto target, _trafficObjects)
+            if (targetID == target->ID()) {
+                target->copyFrom(traffic);
+                return;
+            }
+
+        auto *lowestPriObject = _trafficObjects[0];
+        foreach(auto target, _trafficObjects)
+            if (lowestPriObject->hasHigherPriorityThan(*target)) {
+                lowestPriObject = target;
+            }
+        if (traffic.hasHigherPriorityThan(*lowestPriObject)) {
+            lowestPriObject->copyFrom(traffic);
+        }
+
         return;
     }
 
@@ -483,168 +657,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // ===============0
 
-    // Data on other proximate aircraft
-    if (messageType == u"PFLAA") {
-        //qWarning() << "Data on other proximate aircraft"  << arguments;
-
-        auto *satNav = SatNav::globalInstance();
-        if (satNav == nullptr) {
-            return;
-        }
-
-        // Helper variable
-        bool ok = false;
-
-        //
-        // We begin by reading a few fields that are relevant both for directional and for non-directional targets
-        //
-
-        // Alarm level is mandatory
-        auto alarmLevel = arguments[0].toInt(&ok);
-        if (!ok) {
-            return;
-        }
-        if ((alarmLevel < 0)||(alarmLevel > 3)) {
-            return;
-        }
-
-        // Relative vertical information is optional
-        auto relativeVertical = arguments[3].toDouble(&ok);
-        if (!ok) {
-            relativeVertical = qQNaN();
-        }
-
-        // Target type is optional
-        auto targetType = arguments[10];
-        Navigation::Traffic::AircraftType type = Navigation::Traffic::unknown;
-        if (targetType == u"1") {
-            type = Navigation::Traffic::Glider;
-        }
-        if (targetType == u"2") {
-            type = Navigation::Traffic::TowPlane;
-        }
-        if (targetType == u"3") {
-            type = Navigation::Traffic::Copter;
-        }
-        if (targetType == u"4") {
-            type = Navigation::Traffic::Skydiver;
-        }
-        if (targetType == u"5") {
-            type = Navigation::Traffic::Aircraft;
-        }
-        if (targetType == u"6") {
-            type = Navigation::Traffic::HangGlider;
-        }
-        if (targetType == u"7") {
-            type = Navigation::Traffic::Paraglider;
-        }
-        if (targetType == u"8") {
-            type = Navigation::Traffic::Aircraft;
-        }
-        if (targetType == u"9") {
-            type = Navigation::Traffic::Jet;
-        }
-        if (targetType == u"B") {
-            type = Navigation::Traffic::Balloon;
-        }
-        if (targetType == u"C") {
-            type = Navigation::Traffic::Airship;
-        }
-        if (targetType == u"F") {
-            type = Navigation::Traffic::StaticObstacle;
-        }
-
-        // Target ID is optional
-        auto targetID = arguments[5];
-
-
-        //
-        // Handle non-directional targets
-        //
-        if (arguments[2] == u"") {
-            // Horizontal distance is mandatory
-            auto hDist = AviationUnits::Distance::fromM(arguments[1].toDouble(&ok));
-            if (!ok) {
-                return;
-            }
-
-            // Vertical distance is optional
-            auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
-            if (!ok) {
-                vDist = AviationUnits::Distance::fromM(qQNaN());
-            }
-
-            auto trafficNP = Navigation::Traffic(this);
-            qWarning() << hDist.toM();
-            trafficNP.setData(alarmLevel, targetID, hDist, vDist, type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
-            if ((trafficNP.ID() == targetNoPos.ID()) || trafficNP.hasHigherPriorityThan(targetNoPos)) {
-                targetNoPos.copyFrom(trafficNP);
-            }
-            return;
-        }
-
-        //
-        // From now on, we assume that we have a directional target
-        //
-
-        // As a first step, we obtain the target's coordinate. We take our own coordinate as a starting point.
-        auto targetCoordinate = satNav->lastValidCoordinate();
-        if (!targetCoordinate.isValid()) {
-            return;
-        }
-        auto relativeNorth = arguments[1].toDouble(&ok);
-        if (!ok) {
-            return;
-        }
-        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
-        auto relativeEast = arguments[2].toDouble(&ok);
-        if (!ok) {
-            return;
-        }
-        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
-        if (qIsFinite(relativeVertical)) {
-            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
-        }
-        auto hDist = AviationUnits::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
-
-        // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
-        QGeoPositionInfo pInfo(targetCoordinate, QDateTime::currentDateTimeUtc());
-        auto targetTT = arguments[6].toInt(&ok);
-        if (ok) {
-            pInfo.setAttribute(QGeoPositionInfo::Direction, targetTT);
-        }
-        auto targetGS = arguments[8].toDouble(&ok);
-        if (ok) {
-            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, targetGS);
-        }
-        auto targetVS = arguments[9].toDouble(&ok);
-        if (ok) {
-            pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
-        }
-
-        // Construct a traffic object
-        auto traffic = Navigation::Traffic(this);
-
-        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(relativeVertical), type, pInfo);
-
-        foreach(auto target, targets)
-            if (targetID == target->ID()) {
-                target->copyFrom(traffic);
-                return;
-            }
-
-        auto *lowestPriObject = targets[0];
-        foreach(auto target, targets)
-            if (lowestPriObject->hasHigherPriorityThan(*target)) {
-                lowestPriObject = target;
-            }
-        if (traffic.hasHigherPriorityThan(*lowestPriObject)) {
-            lowestPriObject->copyFrom(traffic);
-        }
-
-        return;
-    }
-
     qWarning() << "FLARM Sentence not understood" << pieces[0];
 }
 
@@ -780,26 +792,49 @@ void Navigation::FLARMAdaptor::setSimulatorFile(const QString& fileName)
 }
 
 
-void Navigation::FLARMAdaptor::setNonDirectionalTargetDistance(AviationUnits::Distance hDist, AviationUnits::Distance vDist)
+void Navigation::FLARMAdaptor::clearBarometricAltitude()
 {
-    if (hDist != _nonDirectionalTargetHDistance) {
-        _nonDirectionalTargetHDistance = hDist;
-        emit nonDirectionalTargetHDistanceChanged();
+    _barometricAltitudeTimer.stop();
+    if (!_barometricAltitude.isFinite()) {
+        return;
     }
-
-    if (vDist != _nonDirectionalTargetVDistance) {
-        _nonDirectionalTargetVDistance = vDist;
-        emit nonDirectionalTargetVDistanceChanged();
-    }
+    _barometricAltitude = AviationUnits::Distance();
+    emit barometricAltitudeChanged();
 }
 
 
-void Navigation::FLARMAdaptor::setBarometricAltitude(AviationUnits::Distance alt)
+void Navigation::FLARMAdaptor::setBarometricAltitude(AviationUnits::Distance newBarometricAltitude)
 {
-    if (alt == _barometricAltitude) {
+    _barometricAltitudeTimer.start(3s);
+
+    if (newBarometricAltitude == _barometricAltitude) {
         return;
     }
 
-    _barometricAltitude = alt;
+    _barometricAltitude = newBarometricAltitude;
     emit barometricAltitudeChanged();
 }
+
+
+void Navigation::FLARMAdaptor::setPositionInfo(QGeoPositionInfo newPositionInfo)
+{
+    if (_positionInfo == newPositionInfo) {
+        return;
+    }
+
+    _positionInfo = newPositionInfo;
+    _positionInfoTimer.stop();
+
+    auto delta = QDateTime::currentDateTimeUtc().msecsTo( _positionInfo.timestamp().addMSecs(3*1000) );
+    if (delta >= 0) {
+        _positionInfoTimer.start(delta);
+    }
+    emit positionInfoChanged();
+}
+
+void Navigation::FLARMAdaptor::clearPositionInfo()
+{
+    _positionInfoTimer.stop();
+    emit positionInfoChanged();
+}
+

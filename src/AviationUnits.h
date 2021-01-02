@@ -174,7 +174,7 @@ public:
     /*! \brief Convenience class for distance computations
      *
      * This extremely simple class allows computation with distances, without the
-     * need to worry about units.
+     * need to worry about units. On construction, the distance is set to NaN.
      */
     class Distance {
     public:

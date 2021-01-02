@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoPositionInfo>
 #include <QTcpSocket>
 #include <QTimer>
 #include <QObject>
@@ -31,6 +32,10 @@
 
 namespace Navigation {
 
+/*! \brief Traffic receiver
+ *
+ *  This class connects via WIFI to a traffic receiver. Once connected, it exposes position and traffic information.
+ */
 class FLARMAdaptor : public QObject {
     Q_OBJECT
 
@@ -53,9 +58,101 @@ public:
     };
     Q_ENUM(Status)
 
-    /*! \brief Pointer to static instance
-     */
+
+    //
+    // Methods
+    //
+
+    /*! \brief Pointer to static instance of this class  */
     static FLARMAdaptor *globalInstance();
+
+    /*! \brief Last position information
+     *
+     *  This method differs from positionInfo() in that it always returns the last report, even
+     *  if the report is older than 3 seconds.
+     *
+     *  @returns Last position information
+     */
+    QGeoPositionInfo lastPositionInfo() const
+    {
+        return _positionInfo;
+    }
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Barometric altitude
+     *
+     * This property holds the barometric altitude, as reported by the NMEA source, or NaN if no barometric altitude is available.
+     * An altitude report is considered valid for 3 seconds after it is reported. After that time, the content of this property
+     * goes back to NaN.
+     */
+    Q_PROPERTY(AviationUnits::Distance barometricAltitude READ barometricAltitude NOTIFY barometricAltitudeChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property barometricAltitude
+     */
+    AviationUnits::Distance barometricAltitude() const;
+
+    /*! \brief Position information for own aircraft
+     *
+     *  This property holds the own position, as reported by the NMEA source, or an invalid QGeoPositionInfo if no current data is available.
+     *  A position report is considered valid for 3 seconds after it is reported. After that time, the content of this property
+     *  goes back to an invalid QGeoPositionInfo.
+     */
+    Q_PROPERTY(QGeoPositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    QGeoPositionInfo positionInfo() const
+    {
+        if (_positionInfoTimer.isActive()) {
+            return _positionInfo;
+        }
+        return QGeoPositionInfo();
+    }
+
+    /*! \brief Traffic objects whose position is known
+     *
+     *  This property holds a list of the most relevant traffic objects, as a QQmlListProperty for better cooperation with QML. Note that only the valid items in this list pertain to actual
+     *  traffic. Invalid items should be ignored. The list is not sorted in any way. The items themselves are owned by this class.
+     */
+    Q_PROPERTY(QQmlListProperty<Navigation::Traffic> trafficObjects4QML READ trafficObjects4QML CONSTANT)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property trafficObjects4QML
+     */
+    QQmlListProperty<Navigation::Traffic> trafficObjects4QML()
+    {
+        return QQmlListProperty(this, &_trafficObjects);
+    }
+
+    /*! \brief Most relevant traffic objects whose position is not known
+     *
+     *  This property holds a pointer to the most relevant traffic object whose position is not known.
+     *  This item should be ignored if invalid. The item is owned by this class.
+     */
+    Q_PROPERTY(Navigation::Traffic *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property trafficObjectWithoutPosition
+     */
+    Navigation::Traffic *trafficObjectWithoutPosition()
+    {
+        return _trafficObjectWithoutPosition;
+    }
+
+
+
+// =================
+
 
 
     Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
@@ -100,59 +197,15 @@ public:
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
 
     /*! \brief Getter function for the property with the same name
-
-    @returns Property status
-  */
+     *
+     * @returns Property status
+     */
     Status status() const
     {
         return _status;
     };
 
-    Q_PROPERTY(int nonDirectionalTargetHDistance READ nonDirectionalTargetHDistance NOTIFY nonDirectionalTargetHDistanceChanged)
-
-    int nonDirectionalTargetHDistance() const
-    {
-        return _nonDirectionalTargetHDistance.toM();
-    }
-
-    Q_PROPERTY(AviationUnits::Distance nonDirectionalTargetVDistance READ nonDirectionalTargetVDistance NOTIFY nonDirectionalTargetVDistanceChanged)
-
-    AviationUnits::Distance nonDirectionalTargetVDistance() const
-    {
-        return _nonDirectionalTargetVDistance;
-    }
-
-    Q_PROPERTY(QString nonDirectionalTargetVDistanceText READ nonDirectionalTargetVDistanceText NOTIFY nonDirectionalTargetVDistanceChanged)
-
-    QString nonDirectionalTargetVDistanceText() const
-    {
-        return _nonDirectionalTargetVDistance.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
-    }
-
-
-    Q_PROPERTY(AviationUnits::Distance barometricAltitude READ barometricAltitude NOTIFY barometricAltitudeChanged)
-
-    AviationUnits::Distance barometricAltitude() const
-    {
-        return _barometricAltitude;
-    }
-
     void setSimulatorFile(const QString& fileName = QString() );
-
-    Q_PROPERTY(QQmlListProperty<Navigation::Traffic> trafficObjects4QML READ trafficObjects4QML CONSTANT)
-
-    QQmlListProperty<Navigation::Traffic> trafficObjects4QML()
-    {
-        return QQmlListProperty(this, &targets);
-    }
-
-    Q_PROPERTY(Navigation::Traffic *trafficNoPos READ trafficNoPos CONSTANT)
-
-    Navigation::Traffic *trafficNoPos()
-    {
-        return &targetNoPos;
-    }
-
 
 signals:
     void barometricAltitudeChanged();
@@ -164,8 +217,7 @@ signals:
     void receivingChanged();
     void statusStringChanged();
     void statusChanged();
-    void nonDirectionalTargetHDistanceChanged();
-    void nonDirectionalTargetVDistanceChanged();
+    void positionInfoChanged();
 
 private slots:
     void connectToFLARM();
@@ -182,8 +234,18 @@ private slots:
 
     void clearFlarmDeviceInfo();
 
+    // Sets the barometric altitude to NaN and emits the notifier signal when appropriate
+    void clearBarometricAltitude();
+
+    // Stops the _positionInfoTimer and emits the notifier signal when appropriate
+    void clearPositionInfo();
+
+    // Sets the barometric altitude and emits the notifier signal when appropriate
     void setBarometricAltitude(AviationUnits::Distance alt);
-    void setNonDirectionalTargetDistance(AviationUnits::Distance hdist, AviationUnits::Distance vdist);
+
+    // Sets the position info and emits the notifier signal when appropriate
+    void setPositionInfo(QGeoPositionInfo newPositionInfo);
+
     void setStatus();
     void setStatusString();
 
@@ -200,22 +262,23 @@ private:
     // Detailed status info. Should only been written to by setStatusString()
     QString _statusString;
 
-    // Target distance. Should only be set by setNonDirectionalTargetDistance()
-    AviationUnits::Distance _nonDirectionalTargetHDistance;
-    AviationUnits::Distance _nonDirectionalTargetVDistance;
-
-    // Target distance. Should only be set by setBarometricAltitude()
+    // Barometric height information
     AviationUnits::Distance _barometricAltitude;
+    QTimer _barometricAltitudeTimer;
 
-    // Height information
-    AviationUnits::Distance GPGGAHeight;
-    QDateTime GPGGATime;
+    // PositionInfo
+    QGeoPositionInfo _positionInfo;
+    QTimer _positionInfoTimer;
 
     // FLARM information
     QString _FLARMHwVersion; // Hardware version
     QString _FLARMSwVersion; // Software version
     QString _FLARMObstVersion; // Name of obstacle database
     QString _FLARMSelfTest;
+
+    // GPS altitude and position information
+    AviationUnits::Distance _altitude;
+    QDateTime _altitudeTimeStamp;
 
     // Simulator related members
     QFile simulatorFile;
@@ -225,8 +288,8 @@ private:
     QString lastPayload;
 
     // Targets
-    QList<Navigation::Traffic *> targets;
-    Navigation::Traffic targetNoPos;
+    QList<Navigation::Traffic *> _trafficObjects;
+    Navigation::Traffic * _trafficObjectWithoutPosition;
 };
 
 }

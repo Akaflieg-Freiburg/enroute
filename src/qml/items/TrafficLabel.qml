@@ -21,17 +21,17 @@
 import QtLocation 5.15
 import QtPositioning 5.15
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 
 MapQuickItem {
-    id: traffic1MapItem
-
     property var trafficInfo: ({})
+    property real track: 0
 
-    anchorPoint.x: image.width/2
-    anchorPoint.y: image.height/2
+    property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
+    property real t: isFinite(track) ? 2*Math.PI*(track-flightMap.bearing)/360.0 : 0
 
-    coordinate: trafficInfo.coordinate
+    coordinate: trafficInfo.coordinate.isValid ? trafficInfo.coordinate : satNav.lastValidCoordinate
     Behavior on coordinate {
         CoordinateAnimation { duration: 1000 }
         enabled: trafficInfo.animate
@@ -39,16 +39,28 @@ MapQuickItem {
 
     visible: trafficInfo.valid
 
-    sourceItem: Item {
-        Image {
-            id: image
+    sourceItem: Label {
+        id: lbl
 
-            rotation: trafficInfo.TT-flightMap.bearing
+        x: -distFromCenter*Math.sin(t) - width/2
+        y: distFromCenter*Math.cos(t) - height/2
 
-            source: trafficInfo.icon
+        text: trafficInfo.description
 
-            sourceSize.width: 40
-            sourceSize.height: 40
+        leftInset: -4
+        rightInset: -4
+        bottomInset: -1
+        topInset: -2
+
+        background: Rectangle {
+            border.color: "black"
+            border.width: 1
+            color: Qt.lighter(trafficInfo.color, 1.9)
+            Behavior on color {
+                ColorAnimation { duration: 400 }
+                enabled: trafficInfo.animate
+            }
+            radius: 4
         }
     }
 }

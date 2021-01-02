@@ -161,9 +161,12 @@ Item {
 
 
         // ADDITINAL MAP ITEMS
-        MapCircle {
-            id: nonDirTrafficWarning
+        MapCircle { // Circle for nondirectional traffic warning
             center: satNav.lastValidCoordinate
+            Behavior on center {
+                CoordinateAnimation { duration: 1000 }
+                enabled: flarmAdaptor.trafficNoPos.animate
+            }
             radius: Math.max(500, flarmAdaptor.trafficNoPos.hDistM)
             Behavior on radius {
                 NumberAnimation { duration: 1000 }
@@ -178,41 +181,19 @@ Item {
             visible: flarmAdaptor.trafficNoPos.valid
         }
 
-        MapQuickItem {
-            id: nonDirTrafficWarningLabel
-            coordinate: satNav.lastValidCoordinate
-            anchorPoint.x: nonDirTargetLabel.width/2
-            anchorPoint.y: nonDirTargetLabel.height/2
-            visible: flarmAdaptor.trafficNoPos.valid
+        TrafficLabel { // Label for nondirectional traffic warning
+            trafficInfo: flarmAdaptor.trafficNoPos
+            track: satNav.lastValidTrack
+        }
 
-            sourceItem: Label {
-                id: nonDirTargetLabel
-
-                x: {
-                    var t = (flarmAdaptor.trafficNoPos.TT === undefined) ? 0 : flarmAdaptor.trafficNoPos.TT-flightMap.bearing
-                    var d = Math.sqrt(width*width+height*height)*0.5+20
-                    return -d*Math.sin(t)
-                }
-                y: {
-                    var t = (flarmAdaptor.trafficNoPos.TT === undefined) ? 0 : flarmAdaptor.trafficNoPos.TT-flightMap.bearing
-                    var d = Math.sqrt(width*width+height*height)*0.5+20
-                    return d*Math.cos(t)
-                }
-
-                text: flarmAdaptor.trafficNoPos.description
-
-                leftInset: -4
-                rightInset: -4
-                bottomInset: -1
-                topInset: -2
-                background: Rectangle {
-                    border.color: "black"
-                    border.width: 1
-                    color: Qt.lighter(flarmAdaptor.trafficNoPos.color, 1.9)
-                    radius: 4
+        MapItemView { // Labels for traffic opponents
+            model: flarmAdaptor.trafficObjects4QML
+            delegate: Component {
+                TrafficLabel {
+                    trafficInfo: model.modelData
+                    track: model.modelData.TT
                 }
             }
-
         }
 
         MapQuickItem {
@@ -293,19 +274,12 @@ Item {
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
-        Component {
-            id: trafficComponent
-            Traffic { trafficInfo: model.modelData }
-        }
-
         MapItemView { // Traffic opponents
             model: flarmAdaptor.trafficObjects4QML
-            delegate: trafficComponent
-
+            delegate: Component { Traffic { trafficInfo: model.modelData } }
         }
 
-        // Mouse Area, in order to receive mouse clicks
-        MouseArea {
+        MouseArea { // Mouse Area, in order to receive mouse clicks
             anchors.fill: parent
             propagateComposedEvents: true
 

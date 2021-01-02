@@ -74,9 +74,9 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-        setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
-    // setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
-    //setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
+    //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
+     setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
+    // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
 

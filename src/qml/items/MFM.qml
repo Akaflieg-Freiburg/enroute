@@ -165,22 +165,39 @@ Item {
             id: nonDirTrafficWarning
             center: satNav.lastValidCoordinate
             radius: Math.max(500, flarmAdaptor.trafficNoPos.hDistM)
-            Behavior on radius { NumberAnimation { duration: 1000 }}
+            Behavior on radius {
+                NumberAnimation { duration: 1000 }
+                enabled: flarmAdaptor.trafficNoPos.animate
+            }
             color: flarmAdaptor.trafficNoPos.color
-            Behavior on color { ColorAnimation { duration: 400 }}
+            Behavior on color {
+                ColorAnimation { duration: 400 }
+                enabled: flarmAdaptor.trafficNoPos.animate
+            }
             opacity: 0.3
             visible: flarmAdaptor.trafficNoPos.valid
         }
 
-        MapQuickItem { // non-directionalTraffic
+        MapQuickItem {
+            id: nonDirTrafficWarningLabel
             coordinate: satNav.lastValidCoordinate
             anchorPoint.x: nonDirTargetLabel.width/2
+            anchorPoint.y: nonDirTargetLabel.height/2
             visible: flarmAdaptor.trafficNoPos.valid
 
             sourceItem: Label {
                 id: nonDirTargetLabel
 
-                y: 30
+                x: {
+                    var t = (flarmAdaptor.trafficNoPos.TT === undefined) ? 0 : flarmAdaptor.trafficNoPos.TT-flightMap.bearing
+                    var d = Math.sqrt(width*width+height*height)*0.5+20
+                    return -d*Math.sin(t)
+                }
+                y: {
+                    var t = (flarmAdaptor.trafficNoPos.TT === undefined) ? 0 : flarmAdaptor.trafficNoPos.TT-flightMap.bearing
+                    var d = Math.sqrt(width*width+height*height)*0.5+20
+                    return d*Math.cos(t)
+                }
 
                 text: flarmAdaptor.trafficNoPos.description
 
@@ -191,7 +208,8 @@ Item {
                 background: Rectangle {
                     border.color: "black"
                     border.width: 1
-                    color: Qt.lighter(flarmAdaptor.trafficNoPos.color, 1.9) // "white"
+                    color: Qt.lighter(flarmAdaptor.trafficNoPos.color, 1.9)
+                    radius: 4
                 }
             }
 

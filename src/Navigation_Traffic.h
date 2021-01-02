@@ -257,6 +257,24 @@ public:
         return _type;
     }
 
+    /*! \brief True track of traffic, as reported by FLARM
+     *
+     *  This property holds the true track of the traffic, or NaN if no track is known.
+     */
+    Q_PROPERTY(double TT READ TT NOTIFY ttChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property TT
+     */
+    double TT() const
+    {
+        if (_positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
+            return _positionInfo.attribute(QGeoPositionInfo::Direction);
+        }
+        return qQNaN();
+    }
+
     /*! \brief Validity
      *
      * A traffic object is considered valid if the data is meaningful and if the report is no older than 3 seconds.
@@ -313,6 +331,9 @@ signals:
 
     /*! \brief Notifier signal */
     void positionInfoChanged();
+
+    /*! \brief Notifier signal */
+    void ttChanged();
 
     /*! \brief Notifier signal */
     void typeChanged();

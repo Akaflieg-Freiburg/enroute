@@ -74,8 +74,8 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-    //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
-    setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
+        setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
+    // setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
     //setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
@@ -485,7 +485,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // Data on other proximate aircraft
     if (messageType == u"PFLAA") {
-        qWarning() << "Data on other proximate aircraft"  << arguments;
+        //qWarning() << "Data on other proximate aircraft"  << arguments;
 
         auto *satNav = SatNav::globalInstance();
         if (satNav == nullptr) {

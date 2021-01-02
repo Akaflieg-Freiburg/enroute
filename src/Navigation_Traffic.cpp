@@ -115,6 +115,14 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
     _ID = newID;
 
     bool hasCoordinateChanged = (coordinate() != newPositionInfo.coordinate());
+    bool hasTTChanged = false;
+    if (_positionInfo.hasAttribute(QGeoPositionInfo::Direction) != newPositionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
+        hasTTChanged = true;
+    } else {
+        if (_positionInfo.attribute(QGeoPositionInfo::Direction) != newPositionInfo.attribute(QGeoPositionInfo::Direction)) {
+            hasTTChanged = true;
+        }
+    }
     bool _positionInfoChanged = (_positionInfo != newPositionInfo);
     _positionInfo = newPositionInfo;
 
@@ -148,6 +156,9 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
     }
     if (_positionInfoChanged)  {
         emit positionInfoChanged();
+    }
+    if (hasTTChanged) {
+        emit ttChanged();
     }
     if (hasTypeChanged) {
         emit typeChanged();

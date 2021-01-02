@@ -34,8 +34,10 @@ MapQuickItem {
 
     property var trafficInfo: ({})
 
+/*
     anchorPoint.x: image.width/2
     anchorPoint.y: image.height/2
+*/
 
     coordinate: trafficInfo.coordinate
     Behavior on coordinate {
@@ -47,16 +49,28 @@ MapQuickItem {
         Image {
             id: image
 
+            x: -20
+            y: -20
             rotation: trafficInfo.TT-flightMap.bearing
 
             source: trafficInfo.icon
+
             sourceSize.width: 40
             sourceSize.height: 40
         }
 
         Label {
-            anchors.left: image.right
-            anchors.bottom: image.top
+            x: {
+                var t = (trafficInfo.TT === undefined) ? 0 : trafficInfo.TT-flightMap.bearing
+                var d = Math.sqrt(width*width+height*height)*0.5+20
+                return -d*Math.sin(t)
+            }
+            y: {
+                var t = (trafficInfo.TT === undefined) ? 0 : trafficInfo.TT-flightMap.bearing
+                var d = Math.sqrt(width*width+height*height)*0.5+20
+                return d*Math.cos(t)
+            }
+
             text: trafficInfo.description
 
             leftInset: -2

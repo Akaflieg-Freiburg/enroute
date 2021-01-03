@@ -247,7 +247,7 @@ private slots:
     void setBarometricAltitude(AviationUnits::Distance alt);
 
     // Sets the position info and emits the notifier signal when appropriate
-    void setPositionInfo(QGeoPositionInfo newPositionInfo);
+    void setPositionInfo(const QGeoPositionInfo& newPositionInfo);
 
     void setStatus();
     void setStatusString();

@@ -87,10 +87,11 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 
 }
 
-AviationUnits::Distance Navigation::FLARMAdaptor::barometricAltitude() const
+auto Navigation::FLARMAdaptor::barometricAltitude() const -> AviationUnits::Distance
 {
-    if (!_barometricAltitudeTimer.isActive())
+    if (!_barometricAltitudeTimer.isActive()) {
         return AviationUnits::Distance();
+}
     return _barometricAltitude;
 }
 
@@ -816,7 +817,7 @@ void Navigation::FLARMAdaptor::setBarometricAltitude(AviationUnits::Distance new
 }
 
 
-void Navigation::FLARMAdaptor::setPositionInfo(QGeoPositionInfo newPositionInfo)
+void Navigation::FLARMAdaptor::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
 {
     if (_positionInfo == newPositionInfo) {
         return;

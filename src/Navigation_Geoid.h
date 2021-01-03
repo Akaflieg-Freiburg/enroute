@@ -21,10 +21,9 @@
 
 #include <QObject>
 
-/*!
- * \brief provide geoidal separation.
- *
- * according to https://en.wikipedia.org/wiki/Geoid
+namespace Navigation {
+
+/*! \brief Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid
  *
  * In maps and common use (like VFR) the height over the mean sea level
  * (such as orthometric height) is used to indicate the height of elevations
@@ -46,6 +45,7 @@
  * The comparison of the bilinear implementation here with the python's
  * bicubic interpolation showed a worldwide max deviation of about 1 m.
  */
+
 class Geoid
 {
 public:
@@ -76,3 +76,5 @@ private:
     const static qint32 egm96_cols = 1440;
     const static qint32 egm96_size = egm96_rows * egm96_cols;
 };
+
+}

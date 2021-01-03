@@ -115,22 +115,6 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
-                    text: qsTr("Set Altimeter") + (satNav.hasAltitude ? `<br><font color="#606060" size="2">${satNav.altitudeInFeetAsString} AMSL</font>` : `<br><font color="#606060" size="2">`
-                                                                        + qsTr("Insufficient reception")+`</font>`)
-                    icon.source: "/icons/material/ic_speed.svg"
-                    icon.color: Material.primary
-                    Layout.fillWidth: true
-                    enabled: satNav.hasAltitude
-                    onClicked: {
-                        mobileAdaptor.vibrateBrief()
-                        drawer.close()
-                        dialogLoader.active = false
-                        dialogLoader.source = "dialogs/AltitudeCorrectionDialog.qml"
-                        dialogLoader.active = true
-                    }
-                }
-
-                ItemDelegate {
                     id: menuItemSettings
 
                     text: qsTr("Settings")

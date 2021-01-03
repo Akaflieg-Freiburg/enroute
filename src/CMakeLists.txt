@@ -86,6 +86,7 @@ set(SOURCES
     MapManager.h
     MobileAdaptor.h
     Navigation_FLARMAdaptor.h
+    Navigation_Geoid.h
     Navigation_SatNav.h
     Navigation_Traffic.h
     ScaleQuickItem.h
@@ -108,7 +109,6 @@ set(SOURCES
     FlightRoute.cpp
     FlightRoute_GPX.cpp
     FlightRoute_Leg.cpp
-    Geoid.cpp
     GeoMapProvider.cpp
     GlobalSettings.cpp
     Librarian.cpp
@@ -117,6 +117,7 @@ set(SOURCES
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     Navigation_FLARMAdaptor.cpp
+    Navigation_Geoid.cpp
     Navigation_SatNav.cpp
     Navigation_Traffic.cpp
     ScaleQuickItem.cpp

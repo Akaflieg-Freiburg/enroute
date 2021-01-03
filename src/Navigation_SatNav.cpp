@@ -37,9 +37,9 @@ Navigation::SatNav::SatNav(QObject *parent)
 
     if (source != nullptr) {
         sourceStatus = source->error();
-        connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
+        connect(source,  SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
         connect(source, &QGeoPositionInfoSource::updateTimeout, this, &SatNav::timeout);
-        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &SatNav::statusUpdate);
+        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &SatNav::onPositionUpdated_Sat);
     }
 
     QSettings settings;
@@ -47,7 +47,6 @@ Navigation::SatNav::SatNav(QObject *parent)
     tmp.setLatitude(settings.value(QStringLiteral("SatNav/lastValidLatitude"), _lastValidCoordinate.latitude()).toDouble());
     tmp.setLongitude(settings.value(QStringLiteral("SatNav/lastValidLongitude"), _lastValidCoordinate.longitude()).toDouble());
     tmp.setAltitude(settings.value(QStringLiteral("SatNav/lastValidAltitude"), _lastValidCoordinate.altitude()).toDouble());
-    altitudeCorrectionInM = settings.value(QStringLiteral("SatNav/altitudeCorrection"), 0).toInt();
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         _lastValidCoordinate = tmp;
     }
@@ -56,7 +55,7 @@ Navigation::SatNav::SatNav(QObject *parent)
     if (source != nullptr) {
         source->startUpdates();
         if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
-            _geoid = new Geoid;
+            _geoid = new Navigation::Geoid;
         }
     }
 
@@ -74,7 +73,6 @@ Navigation::SatNav::~SatNav()
     settings.setValue(QStringLiteral("SatNav/lastValidLongitude"), _lastValidCoordinate.longitude());
     settings.setValue(QStringLiteral("SatNav/lastValidAltitude"), _lastValidCoordinate.altitude());
     settings.setValue(QStringLiteral("SatNav/lastValidTrack"), _lastValidTrack);
-    settings.setValue(QStringLiteral("SatNav/altitudeCorrection"), altitudeCorrectionInM);
     delete source;
     delete _geoid;
 }
@@ -86,8 +84,8 @@ auto Navigation::SatNav::altitudeInFeet() const -> int
         return 0;
     }
 
-    auto correction = AviationUnits::Distance::fromM(altitudeCorrectionInM);
-    return qRound(rawAltitudeInFeet() + correction.toFeet());
+    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude());
+    return qRound(alt.toFeet());
 }
 
 
@@ -98,21 +96,6 @@ auto Navigation::SatNav::altitudeInFeetAsString() const -> QString
     }
 
     return myLocale.toString(altitudeInFeet()) + " ft";
-}
-
-
-void Navigation::SatNav::setAltitudeInFeet(int altitudeInFeet)
-{
-    if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
-        return;
-    }
-
-    auto altCorrection = AviationUnits::Distance::fromFT(altitudeInFeet-rawAltitudeInFeet());
-
-    altitudeCorrectionInM = qRound(altCorrection.toM());
-    QSettings settings;
-    settings.setValue(QStringLiteral("SatNav/altitudeCorrection"), altitudeCorrectionInM);
-    emit update();
 }
 
 
@@ -133,44 +116,6 @@ void Navigation::SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
         emit statusChanged();
         emit update();
     }
-}
-
-
-auto Navigation::SatNav::rawAltitudeInFeet() const -> int
-{
-    if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
-        return 0;
-    }
-
-    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude());
-    return qRound(alt.toFeet() - geoidalSeparation());
-}
-
-
-auto Navigation::SatNav::rawAltitudeInFeetAsString() const -> QString
-{
-    if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
-        return QStringLiteral("-");
-    }
-
-    return myLocale.toString(rawAltitudeInFeet()) + " ft";
-}
-
-
-auto Navigation::SatNav::geoidalSeparation() const -> int
-{
-    auto corr = AviationUnits::Distance::fromM(_lastValidGeoidCorrection);
-    return qRound(corr.toFeet());
-}
-
-
-auto Navigation::SatNav::geoidalSeparationAsString() const -> QString
-{
-    if (_geoid == nullptr || !_geoid->valid() || !lastInfo.isValid()) {
-        return QStringLiteral("-");
-    }
-
-    return myLocale.toString(geoidalSeparation()) + " ft";
 }
 
 
@@ -339,6 +284,18 @@ auto Navigation::SatNav::longitudeAsString() const -> QString
 }
 
 
+void Navigation::SatNav::onPositionUpdated_Sat(const QGeoPositionInfo &info)
+{
+    auto correctedInfo = info;
+    if ((_geoid != nullptr) && (info.coordinate().type() == QGeoCoordinate::Coordinate3D)) {
+        auto geoidCorrection = _geoid->operator()(static_cast<qreal>(info.coordinate().latitude()), static_cast<qreal>(info.coordinate().longitude()));
+        correctedInfo.setCoordinate( correctedInfo.coordinate().atDistanceAndAzimuth(0, 0, -geoidCorrection) );
+    }
+
+    statusUpdate(info);
+}
+
+
 auto Navigation::SatNav::status() const -> SatNav::Status
 {
     if (source == nullptr) {
@@ -396,6 +353,10 @@ void Navigation::SatNav::statusUpdate(const QGeoPositionInfo &info)
     sourceStatus = QGeoPositionInfoSource::NoError;
 
     lastInfo = info;
+    if ((_geoid != nullptr) && (lastInfo.coordinate().type() == QGeoCoordinate::Coordinate3D)) {
+        auto geoidCorrection = _geoid->operator()(static_cast<qreal>(info.coordinate().latitude()), static_cast<qreal>(info.coordinate().longitude()));
+        lastInfo.setCoordinate( lastInfo.coordinate().atDistanceAndAzimuth(0, 0, -geoidCorrection) );
+    }
     timeoutCounter.start(timeoutThreshold);
 
     // Inform others
@@ -404,10 +365,6 @@ void Navigation::SatNav::statusUpdate(const QGeoPositionInfo &info)
     }
 
     _lastValidCoordinate = info.coordinate();
-    if (_geoid != nullptr) {
-        _lastValidGeoidCorrection = _geoid->operator()(static_cast<qreal>(lastInfo.coordinate().latitude()), static_cast<qreal>(lastInfo.coordinate().longitude()));
-    }
-
     emit update();
 
     // Change _isInFlight if appropriate.

@@ -24,8 +24,8 @@
 #include <QLocale>
 #include <QTimer>
 
-#include "Geoid.h"
 #include "GlobalSettings.h"
+#include "Navigation_Geoid.h"
 
 namespace Navigation {
 
@@ -95,38 +95,6 @@ public:
      */
     static SatNav *globalInstance();
 
-    /*! \brief Raw altitude
-
-    This property holds the raw altitude found in the last satnav fix, in feet
-    above sea level.  Negative altitudes are possible.  In case no valid SatNav
-    fix exists, or in case where no altitude information is reported, the
-    property is set to the value "0".
-  */
-    Q_PROPERTY(int rawAltitudeInFeet READ rawAltitudeInFeet NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns rawAltitudeInFeet
-  */
-    int rawAltitudeInFeet() const;
-
-    /*! \brief Raw altitude
-
-    This property holds the raw altitude found in the last SatNav fix, as a
-    string of the form "2.943 ft".  In case no valid satnav fix exists, or in
-    case where no altitude information is reported, the property is set to the
-    value "-".
-
-    \sa rawAltitudeInFeet
-  */
-    Q_PROPERTY(QString rawAltitudeInFeetAsString READ rawAltitudeInFeetAsString NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns rawAltitudeInFeetAsString
-  */
-    QString rawAltitudeInFeetAsString() const;
-
     /*! \brief Altitude
 
     This property holds the altitude, defined as
@@ -135,21 +103,7 @@ public:
     where no altitude information is reported, the property is set to the value
     "0".
   */
-    Q_PROPERTY(int altitudeInFeet READ altitudeInFeet WRITE setAltitudeInFeet NOTIFY update)
-
-    /*! \brief Set altimeter
-
-    This function sets the altimeter. It computes
-
-    altitudeCorrection := altitudeInFeed - rawAltitude
-
-    and stores altitudeCorrection in QSettings, so it can be used when the
-    program is run next. If the rawAltitude cannot be read (e.g. when there is
-    not satellite reception), this method does nothing.
-
-    @param altitudeInFeet Property altitudeInFeet
-  */
-    void setAltitudeInFeet(int altitudeInFeet);
+    Q_PROPERTY(int altitudeInFeet READ altitudeInFeet NOTIFY update)
 
     /*! \brief Getter function for the property with the same name
 
@@ -182,38 +136,6 @@ public:
     \sa altitudeInFeet
   */
     Q_PROPERTY(bool hasAltitude READ hasAltitude NOTIFY update)
-
-    /*! \brief Geoidal separation
-
-    This property holds the geoidal separation between the ellipsoidal height as
-    reported by the GPS receiver and the orthometric height (AMSL, commonly used in maps).
-    above sea level.
-    In case no valid SatNav fix exists, or in case where no altitude information is reported,
-    the property is set to the value "0".
-  */
-    Q_PROPERTY(int geoidalSeparation READ geoidalSeparation NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns geoidalSeparation
-  */
-    int geoidalSeparation() const;
-
-    /*! \brief geoidal separation as string
-
-    This property holds the geoidal separation, a string of the form "143 ft".
-    In case no valid satnav fix exists, or in case where no geoidal separation
-    information is reported, the property is set to the value "-".
-
-    \sa geoidalSeparation
-  */
-    Q_PROPERTY(QString geoidalSeparationAsString READ geoidalSeparationAsString NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns geoidalSeparationAsString
-  */
-    QString geoidalSeparationAsString() const;
 
     /*! \brief Getter function for the property with the same name
 
@@ -545,6 +467,9 @@ private slots:
     // Connected to timeoutCounter, in order to receive timeout after one minute
     void timeout();
 
+#warning
+    void onPositionUpdated_Sat(const QGeoPositionInfo &info);
+
 private:
     Q_DISABLE_COPY_MOVE(SatNav)
 
@@ -565,11 +490,7 @@ private:
     int _lastValidTrack {0};
     bool _isInFlight {false};
 
-    // altitude = raw altitude + altitudeCorrection
-    int altitudeCorrectionInM {0};
-
     Geoid* _geoid {nullptr};
-    qreal _lastValidGeoidCorrection {0.0};
 
     // Constant: timeout occurs after one minute without receiving new data
     const int timeoutThreshold = 60*1000;

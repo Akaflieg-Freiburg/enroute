@@ -17,15 +17,15 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "Geoid.h"
-#include <QIODevice>
+#include "Navigation_Geoid.h"
 #include <QDataStream>
 #include <QDebug>
 #include <QFile>
+#include <QIODevice>
 
-#include <QtMath>
 #include <QSysInfo>
 #include <QtEndian>
+#include <QtMath>
 
 // reading binary geoid data was carefully optimized for speed. We read
 // the binary content at once and do the byte order conversion afterwards.
@@ -33,9 +33,9 @@
 // with setByteOrder(QDataStream::BigEndian) and reading the shorts one
 // after the other with the QDataStream >> operator.
 //
-Geoid::Geoid()
+Navigation::Geoid::Geoid()
 {
-    QFile file(":/WW15MGH.DAC");
+    QFile file(QStringLiteral(":/WW15MGH.DAC"));
 
     qint64 egm96_size_2 = egm96_size * 2;
 
@@ -58,8 +58,9 @@ Geoid::Geoid()
         return;
     }
 
-    if (QSysInfo::ByteOrder == QSysInfo::LittleEndian)
+    if (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
         qFromBigEndian<qint16>(egm.data(), egm96_size, egm.data());
+    }
 }
 
 
@@ -68,13 +69,15 @@ Geoid::Geoid()
 // we do a simple bilinear interpolation between the four surrounding data points
 // according to Numerical Recipies in C++ 3.6 "Interpolation in Two or More Dimensions".
 //
-auto Geoid::operator()(qreal latitude, qreal longitude) -> qreal
+auto Navigation::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
 {
-    if (egm.empty())
+    if (egm.empty()) {
         return 0.0;
+    }
 
-    while (longitude < 0)
+    while (longitude < 0) {
         longitude += 360.;
+    }
 
     // coordinate transformation from lat/lon to the data file coordinate system.
     // The returning row and col are still reals (_not_ data index integers).

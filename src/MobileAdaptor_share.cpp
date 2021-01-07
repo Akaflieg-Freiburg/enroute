@@ -22,6 +22,7 @@
 #include "MobileAdaptor.h"
 
 #include <QDateTime>
+#include <QDebug>
 #include <QDesktopServices>
 #include <QFile>
 #include <QMimeDatabase>
@@ -45,8 +46,9 @@ void MobileAdaptor::importContent()
                                                   QDir::homePath(),
                                                   tr("All files (*)")
                                                   );
-    if (!fileNameX.isEmpty())
+    if (!fileNameX.isEmpty()) {
         processFileOpenRequest(fileNameX);
+    }
 #endif
 }
 
@@ -72,18 +74,22 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
                                                   QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(),
                                                   tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix())
                                                   );
-    if (fileNameX.isEmpty())
+    if (fileNameX.isEmpty()) {
         return QString();
+    }
     QFile file(fileNameX);
-    if (!file.open(QIODevice::WriteOnly))
+    if (!file.open(QIODevice::WriteOnly)) {
         return tr("Unable to open file <strong>%1</strong>.").arg(fileNameX);
+    }
 
-    if (file.write(content) != content.size())
+    if (file.write(content) != content.size()) {
         return tr("Unable to write to file <strong>%1</strong>.").arg(fileNameX);
+    }
     file.close();
     return QString();
 #endif
 }
+
 
 auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
@@ -99,8 +105,9 @@ auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeTy
     return tr("No suitable app for viewing this data could be found.");
 #else
     bool success = QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
-    if (success)
+    if (success) {
         return QString();
+    }
     return tr("Unable to open data in other app.");
 #endif
 }
@@ -109,7 +116,7 @@ auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeTy
 auto MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
-    QString fname = fileNameTemplate.arg(now.toString("yyyy-MM-dd_hh.mm.ss"));
+    QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
 
     // in Qt, resources are not stored absolute file paths, so in order to
     // share the content we save it to disk. We save these temporary files
@@ -145,8 +152,9 @@ void MobileAdaptor::startReceiveOpenFileRequests()
     }
 #endif
 
-    if (!pendingReceiveOpenFileRequest.isEmpty())
+    if (!pendingReceiveOpenFileRequest.isEmpty()) {
         processFileOpenRequest(pendingReceiveOpenFileRequest);
+    }
     pendingReceiveOpenFileRequest = QString();
 }
 
@@ -165,22 +173,25 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     }
 
     QString myPath;
-    if (path.startsWith("file:")) {
+    if (path.startsWith(u"file:")) {
         QUrl url(path.trimmed());
         myPath = url.toLocalFile();
-    } else
+    } else {
         myPath = path;
+    }
 
+//#warning THIS DOES NOT SEEM TO WORK WITH ANDROID and *.GPX FILES
     QMimeDatabase db;
     auto mimeType = db.mimeTypeForFile(myPath);
-    if ((mimeType.inherits("application/xml"))
-            || (mimeType.name() == "application/x-gpx+xml")) {
+    qWarning() << "XX" << mimeType;
+    if ((mimeType.inherits(QStringLiteral("application/xml")))
+            || (mimeType.name() == u"application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format
         emit openFileRequest(myPath, FlightRoute_GPX);
         return;
     }
-    if ((mimeType.name() == "text/plain")
-            || (mimeType.name() == "application/geo+json")) {
+    if ((mimeType.name() == u"application/geo+json")
+            || path.endsWith(u".geojson", Qt::CaseInsensitive)) {
         // We assume that the file contains a flight route in GeoJSON format
         emit openFileRequest(myPath, FlightRoute_GeoJSON);
         return;

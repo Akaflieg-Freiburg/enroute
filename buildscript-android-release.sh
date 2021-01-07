@@ -101,4 +101,5 @@ else
     cp android-build/build/outputs/bundle/release/android-build-release.aab enroute-release-signed.aab
     
     echo "Signed AAB file is available at $PWD/enroute-release-signed.aab"
+    nautilus $PWD &
 fi

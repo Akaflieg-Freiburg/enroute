@@ -22,6 +22,7 @@
 #include "MobileAdaptor.h"
 
 #include <QDateTime>
+#include <QDebug>
 #include <QDesktopServices>
 #include <QFile>
 #include <QMimeDatabase>
@@ -88,6 +89,7 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
     return QString();
 #endif
 }
+
 
 auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
@@ -178,17 +180,18 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         myPath = path;
     }
 
-#warning THIS DOES NOT SEEM TO WORK WITH ANDROID and *.GPX FILES
+//#warning THIS DOES NOT SEEM TO WORK WITH ANDROID and *.GPX FILES
     QMimeDatabase db;
     auto mimeType = db.mimeTypeForFile(myPath);
+    qWarning() << "XX" << mimeType;
     if ((mimeType.inherits(QStringLiteral("application/xml")))
             || (mimeType.name() == u"application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format
         emit openFileRequest(myPath, FlightRoute_GPX);
         return;
     }
-    if ((mimeType.name() == u"text/plain")
-            || (mimeType.name() == u"application/geo+json")) {
+    if ((mimeType.name() == u"application/geo+json")
+            || path.endsWith(u".geojson", Qt::CaseInsensitive)) {
         // We assume that the file contains a flight route in GeoJSON format
         emit openFileRequest(myPath, FlightRoute_GeoJSON);
         return;

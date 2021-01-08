@@ -238,6 +238,31 @@ Item {
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
+        MapItemView {
+            id: midFieldWaypoints
+            model: flightRoute.midFieldWaypoints
+            delegate: Component {
+
+                MapQuickItem {
+
+                    anchorPoint.x: image.width/2
+                    anchorPoint.y: image.height
+                    coordinate: model.modelData.coordinate
+
+                    sourceItem: Item{
+                        Image {
+                            id: image
+
+                            source:  "/icons/waypoints/WP.svg"
+                            sourceSize.width: 20
+                            sourceSize.height: 20
+                        }
+                    }
+                }
+
+            }
+        }
+
         // Mouse Area, in order to receive mouse clicks
         MouseArea {
             anchors.fill: parent

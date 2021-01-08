@@ -109,6 +109,22 @@ public:
      */
     Q_INVOKABLE QObject* closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
 
+    /*! \brief Copyright notice for the map
+     *
+     * This property holds the copyright notice for the installed aviation
+     * and base maps as a HTML string, ready to be shown to the user.
+     */
+    Q_PROPERTY(QString copyrightNotice READ copyrightNotice CONSTANT)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property copyrightNotice
+     */
+    QString copyrightNotice() const
+    {
+        return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://maptiler.com/copyright/'>© MapTiler</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
+    }
+
     /*! \brief Describe installed map
      *
      * This method describes installed GeoJSON map files.
@@ -122,7 +138,7 @@ public:
      *
      * @returns A human-readable HTML string, or an empty string if no data is available
      */
-    Q_INVOKABLE QString describeMapFile(const QString& fileName);
+    Q_INVOKABLE static QString describeMapFile(const QString& fileName);
 
     /*! \brief Waypoints containing a given substring
      *
@@ -196,7 +212,7 @@ public:
      * @returns a list of all waypoints known to this GeoMapProvider (that is,
      * the union of all waypoints in any of the installed maps)
      */
-    QList<QPointer<Waypoint>> waypoints() {
+    QVector<QPointer<Waypoint>> waypoints() {
         QMutexLocker locker(&_aviationDataMutex);
         return _waypoints_;
     }
@@ -231,7 +247,7 @@ private:
     QPointer<Weather::DownloadManager> _downloadManager;
 
     // Caches used to speed up the method simplifySpecialChars
-    QRegularExpression specialChars {"[^a-zA-Z0-9]"};
+    QRegularExpression specialChars {QStringLiteral("[^a-zA-Z0-9]")};
     QHash<QString, QString> simplifySpecialChars_cache;
 
     // This slot is called every time the the set of GeoJSON files changes. It
@@ -275,6 +291,6 @@ private:
     // protected by this mutex.
     QMutex           _aviationDataMutex;
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
-    QList<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
-    QList<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
+    QVector<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
+    QVector<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
 };

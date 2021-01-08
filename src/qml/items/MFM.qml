@@ -413,12 +413,33 @@ Item {
         height: 30
     }
 
-    MapCopyrightNotice {
+    Label {
+        id: copyrightInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
-        mapSource: flightMap
-        styleSheet: "body { font-size: 12px} a{ font-family: \"Roboto\"; font-size: 12px; color:#0000A0}"
+        text: geoMapProvider.copyrightNotice
+        linkColor: "blue"
+        visible: width < parent.width
+        onLinkActivated: Qt.openUrlExternally(link)
+    }
+
+    Label {
+        id: noCopyrightInfo
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: navBar.top
+        anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
+        text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
+        linkColor: "blue"
+        visible: !copyrightInfo.visible
+        onLinkActivated: copyrightDialog.open()
+
+        LongTextDialog {
+            id: copyrightDialog
+            title: qsTr("Map Data Copyright Information")
+            text: geoMapProvider.copyrightNotice.replace("•", "<br><br>").replace("•", "<br><br>").replace("•", "<br><br>")
+            standardButtons: Dialog.Cancel
+        }
     }
 
     NavBar {

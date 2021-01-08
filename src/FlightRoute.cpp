@@ -278,10 +278,12 @@ auto FlightRoute::midFieldWaypoints() const -> QList<QObject*>
     }
 
     foreach(auto wpt, _waypoints) {
-        if (wpt == nullptr)
+        if (wpt == nullptr) {
             continue;
-        if (wpt->getPropery("CAT") == "WP")
+        }
+        if (wpt->getPropery("CAT") == "WP") {
             result << wpt;
+        }
     }
 
     return result;

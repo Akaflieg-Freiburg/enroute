@@ -53,11 +53,8 @@ Page {
 
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
-                    dialogLoader.active = false
-                    dialogLoader.dialogArgs = {waypoint: model.modelData}
-                    dialogLoader.text = "noRouteButton"
-                    dialogLoader.source = "../dialogs/WaypointDescription.qml"
-                    dialogLoader.active = true
+                    waypointDescription.waypoint = model.modelData
+                    waypointDescription.open()
                 }
             }
 
@@ -698,6 +695,10 @@ Page {
             dialogLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
             dialogLoader.active = true
         }
+    }
+
+    WaypointDescription {
+        id: waypointDescription
     }
 
 } // Page

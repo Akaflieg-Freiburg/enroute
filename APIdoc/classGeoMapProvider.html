@@ -42,6 +42,7 @@ $(function() {
   <div class="summary">
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classGeoMapProvider-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -78,9 +79,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9a57992d78a372fa999359cebbeb63f"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#aa9a57992d78a372fa999359cebbeb63f">closestWaypoint</a> (QGeoCoordinate position, const QGeoCoordinate &amp;distPosition)</td></tr>
 <tr class="memdesc:aa9a57992d78a372fa999359cebbeb63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find closest waypoint to a given position.  <a href="#aa9a57992d78a372fa999359cebbeb63f">More...</a><br /></td></tr>
 <tr class="separator:aa9a57992d78a372fa999359cebbeb63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c14422f4d1bd3ae87a28dcb2f1f42ec"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a9c14422f4d1bd3ae87a28dcb2f1f42ec">describeMapFile</a> (const QString &amp;fileName)</td></tr>
-<tr class="memdesc:a9c14422f4d1bd3ae87a28dcb2f1f42ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describe installed map.  <a href="#a9c14422f4d1bd3ae87a28dcb2f1f42ec">More...</a><br /></td></tr>
-<tr class="separator:a9c14422f4d1bd3ae87a28dcb2f1f42ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bc78461bc40be8d16c9ab3a033aebca"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a2bc78461bc40be8d16c9ab3a033aebca">copyrightNotice</a> () const</td></tr>
+<tr class="memdesc:a2bc78461bc40be8d16c9ab3a033aebca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="#a2bc78461bc40be8d16c9ab3a033aebca">More...</a><br /></td></tr>
+<tr class="separator:a2bc78461bc40be8d16c9ab3a033aebca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05d222d211e9da12fcbe8ee17071b1e6"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QList&lt; QObject * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a05d222d211e9da12fcbe8ee17071b1e6">filteredWaypointObjects</a> (const QString &amp;filter)</td></tr>
 <tr class="memdesc:a05d222d211e9da12fcbe8ee17071b1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waypoints containing a given substring.  <a href="#a05d222d211e9da12fcbe8ee17071b1e6">More...</a><br /></td></tr>
 <tr class="separator:a05d222d211e9da12fcbe8ee17071b1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,15 +95,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaca2eace29b6dc261c32a4eb09fcf72f"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#aaca2eace29b6dc261c32a4eb09fcf72f">styleFileURL</a> () const</td></tr>
 <tr class="memdesc:aaca2eace29b6dc261c32a4eb09fcf72f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="#aaca2eace29b6dc261c32a4eb09fcf72f">More...</a><br /></td></tr>
 <tr class="separator:aaca2eace29b6dc261c32a4eb09fcf72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab02771ce94f867720455ba7af0195904"><td class="memItemLeft" align="right" valign="top">QList&lt; QPointer&lt; <a class="el" href="classWaypoint.html">Waypoint</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#ab02771ce94f867720455ba7af0195904">waypoints</a> ()</td></tr>
-<tr class="memdesc:ab02771ce94f867720455ba7af0195904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waypoints.  <a href="#ab02771ce94f867720455ba7af0195904">More...</a><br /></td></tr>
-<tr class="separator:ab02771ce94f867720455ba7af0195904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e0905dc6f6a82d4fa4ffde3e2f8174b"><td class="memItemLeft" align="right" valign="top">QVector&lt; QPointer&lt; <a class="el" href="classWaypoint.html">Waypoint</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a7e0905dc6f6a82d4fa4ffde3e2f8174b">waypoints</a> ()</td></tr>
+<tr class="memdesc:a7e0905dc6f6a82d4fa4ffde3e2f8174b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waypoints.  <a href="#a7e0905dc6f6a82d4fa4ffde3e2f8174b">More...</a><br /></td></tr>
+<tr class="separator:a7e0905dc6f6a82d4fa4ffde3e2f8174b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21ef018a46b98081e89198d6bb0d800a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a21ef018a46b98081e89198d6bb0d800a">setDownloadManager</a> (<a class="el" href="classWeather_1_1DownloadManager.html">Weather::DownloadManager</a> *downloadManager)</td></tr>
 <tr class="memdesc:a21ef018a46b98081e89198d6bb0d800a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects this <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> with a DownloadManager instance.  <a href="#a21ef018a46b98081e89198d6bb0d800a">More...</a><br /></td></tr>
 <tr class="separator:a21ef018a46b98081e89198d6bb0d800a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a879c83d9fa40ce09e3be57a1069da83f"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a879c83d9fa40ce09e3be57a1069da83f">describeMapFile</a> (const QString &amp;fileName)</td></tr>
+<tr class="memdesc:a879c83d9fa40ce09e3be57a1069da83f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describe installed map.  <a href="#a879c83d9fa40ce09e3be57a1069da83f">More...</a><br /></td></tr>
+<tr class="separator:a879c83d9fa40ce09e3be57a1069da83f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a1392b8d2047471bb85fb059bce551c86"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a1392b8d2047471bb85fb059bce551c86">copyrightNotice</a></td></tr>
+<tr class="memdesc:a1392b8d2047471bb85fb059bce551c86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copyright notice for the map.  <a href="#a1392b8d2047471bb85fb059bce551c86">More...</a><br /></td></tr>
+<tr class="separator:a1392b8d2047471bb85fb059bce551c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76f9c6e242dfcd8a673f961210d639a0"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMapProvider.html#a76f9c6e242dfcd8a673f961210d639a0">geoJSON</a></td></tr>
 <tr class="memdesc:a76f9c6e242dfcd8a673f961210d639a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Union of all aviation maps in GeoJSON format.  <a href="#a76f9c6e242dfcd8a673f961210d639a0">More...</a><br /></td></tr>
 <tr class="separator:a76f9c6e242dfcd8a673f961210d639a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,20 +250,58 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a9c14422f4d1bd3ae87a28dcb2f1f42ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c14422f4d1bd3ae87a28dcb2f1f42ec">&#9670;&nbsp;</a></span>describeMapFile()</h2>
+<a id="a2bc78461bc40be8d16c9ab3a033aebca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bc78461bc40be8d16c9ab3a033aebca">&#9670;&nbsp;</a></span>copyrightNotice()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE QString GeoMapProvider::describeMapFile </td>
+          <td class="memname">QString GeoMapProvider::copyrightNotice </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property copyrightNotice </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00123">123</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a879c83d9fa40ce09e3be57a1069da83f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a879c83d9fa40ce09e3be57a1069da83f">&#9670;&nbsp;</a></span>describeMapFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE QString GeoMapProvider::describeMapFile </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;&#160;</td>
           <td class="paramname"><em>fileName</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Describe installed map. </p>
@@ -348,7 +396,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property geoJSON </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00149">149</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00165">165</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -437,8 +485,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ab02771ce94f867720455ba7af0195904"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab02771ce94f867720455ba7af0195904">&#9670;&nbsp;</a></span>waypoints()</h2>
+<a id="a7e0905dc6f6a82d4fa4ffde3e2f8174b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e0905dc6f6a82d4fa4ffde3e2f8174b">&#9670;&nbsp;</a></span>waypoints()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -447,7 +495,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QList&lt;QPointer&lt;<a class="el" href="classWaypoint.html">Waypoint</a>&gt; &gt; GeoMapProvider::waypoints </td>
+          <td class="memname">QVector&lt;QPointer&lt;<a class="el" href="classWaypoint.html">Waypoint</a>&gt; &gt; GeoMapProvider::waypoints </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -463,11 +511,38 @@ Properties</h2></td></tr>
 <p>Waypoints. </p>
 <dl class="section return"><dt>Returns</dt><dd>a list of all waypoints known to this <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> (that is, the union of all waypoints in any of the installed maps) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00199">199</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00215">215</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a1392b8d2047471bb85fb059bce551c86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1392b8d2047471bb85fb059bce551c86">&#9670;&nbsp;</a></span>copyrightNotice</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString GeoMapProvider::copyrightNotice</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copyright notice for the map. </p>
+<p>This property holds the copyright notice for the installed aviation and base maps as a HTML string, ready to be shown to the user. </p>
+
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00117">117</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+
+</div>
+</div>
 <a id="a76f9c6e242dfcd8a673f961210d639a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a76f9c6e242dfcd8a673f961210d639a0">&#9670;&nbsp;</a></span>geoJSON</h2>
 
@@ -491,7 +566,7 @@ Properties</h2></td></tr>
 <p>Union of all aviation maps in GeoJSON format. </p>
 <p>This property holds all installed aviation maps in GeoJSON format, combined into one GeoJSON document. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00143">143</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00159">159</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -518,7 +593,7 @@ Properties</h2></td></tr>
 <p>URL where a style file for the base map can be retrieved. </p>
 <p>This property holds a URL where a mapbox style file for the base map can be retrieved. The style file is adjusted, so that its source element points to the local <a class="el" href="classTileServer.html" title="HTTP server for mapbox&#39; MBTiles files. ">TileServer</a> URL where the base map is served. Whenever the base map changes (e.g. because new maps have been downloaded or removed), the style file is deleted, a new style file is generated and a notification signal is emitted. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00186">186</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00202">202</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>

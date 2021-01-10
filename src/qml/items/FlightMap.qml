@@ -99,15 +99,16 @@ Map {
         property var layerType: "line"
         property var source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "FIS"]
+        property var maxzoom: 10
     }
 
     MapParameter {
         type: "paint"
         property var layer: "FIS"
         property var lineColor: "black"
-        property var lineWidth: 2.0
-        property var lineDasharray: [8.0, 2.0, 1.0, 2.0]        
-        //property var lineDasharray: [4.0, 4.0]
+        property var lineWidth: 0.5
+        // property var lineDasharray: [8.0, 2.0, 1.0, 2.0]
+        // property var lineDasharray: [4.0, 4.0]
     }
 
 

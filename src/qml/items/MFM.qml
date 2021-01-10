@@ -233,7 +233,7 @@ Item {
             id: flightPath
 
             line.width: 3
-            line.color: 'green'
+            line.color: '#008000' //'green'
             path: flightRoute.geoPath
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }

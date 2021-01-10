@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include <QApplication>
-#include <QtConcurrent/QtConcurrent>
 #include <QGeoCoordinate>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -28,10 +27,14 @@
 #include <QRandomGenerator>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QtConcurrent/QtConcurrent>
 
 #include "Clock.h"
 #include "GeoMapProvider.h"
 #include "Waypoint.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent)
@@ -43,12 +46,12 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObjec
 {
     // Initialize _combinedGeoJSON_ with an empty document
     QJsonObject resultObject;
-    resultObject.insert("type", "FeatureCollection");
-    resultObject.insert("features", QJsonArray());
+    resultObject.insert(QStringLiteral("type"), "FeatureCollection");
+    resultObject.insert(QStringLiteral("features"), QJsonArray());
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-    _tileServer.listen(QHostAddress("127.0.0.1"));
+    _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 }
 
 
@@ -59,10 +62,12 @@ auto GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*
 
     QList<Airspace*> result;
     foreach(auto airspace, _airspaces_) {
-        if (airspace.isNull()) // Paranoid safety
+        if (airspace.isNull()) { // Paranoid safety
             continue;
-        if (airspace->polygon().contains(position))
+        }
+        if (airspace->polygon().contains(position)) {
             result.append(airspace);
+        }
     }
 
     // Sort airspaces according to lower boundary
@@ -81,19 +86,22 @@ auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordina
     position.setAltitude(qQNaN());
 
     auto wps = waypoints();
-    if (wps.isEmpty())
+    if (wps.isEmpty()) {
         return nullptr;
+    }
 
     auto result = wps[0];
     foreach(auto wp, wps) {
-        if (wp.isNull())
+        if (wp.isNull()) {
             continue;
-        if (position.distanceTo(wp->coordinate()) < position.distanceTo(result->coordinate()))
+        }
+        if (position.distanceTo(wp->coordinate()) < position.distanceTo(result->coordinate())) {
             result = wp;
+        }
     }
 
     if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition)) {
-        auto wp = new Waypoint(position, this);
+        auto *wp = new Waypoint(position, this);
         return wp;
     }
 
@@ -104,16 +112,17 @@ auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordina
 auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
 {
     QFileInfo fi(fileName);
-    if (!fi.exists())
+    if (!fi.exists()) {
         return tr("No information available.");
-    QString result = QString("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
+    }
+    QString result = QStringLiteral("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
             .arg(tr("Installed"),
                  fi.lastModified().toUTC().toString(),
                  tr("File Size"),
                  QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
 
     // Extract infomation from GeoJSON
-    if (fileName.endsWith(".geojson")) {
+    if (fileName.endsWith(u".geojson")) {
         QLockFile lockFile(fileName+".lock");
         lockFile.lock();
         QFile file(fileName);
@@ -121,38 +130,40 @@ auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
         auto document = QJsonDocument::fromJson(file.readAll());
         file.close();
         lockFile.unlock();
-        QString concatInfoString = document.object()["info"].toString();
+        QString concatInfoString = document.object()[QStringLiteral("info")].toString();
         if (!concatInfoString.isEmpty()) {
             result += "<p>"+tr("The map data was compiled from the following sources.")+"</p><ul>";
-            auto infoStrings = concatInfoString.split(";");
+            auto infoStrings = concatInfoString.split(QStringLiteral(";"));
             foreach(auto infoString, infoStrings)
                 result += "<li>"+infoString+"</li>";
-            result += "</ul>";
+            result += u"</ul>";
         }
     }
 
     // Extract infomation from MBTILES
-    if (fileName.endsWith(".mbtiles")) {
+    if (fileName.endsWith(u".mbtiles")) {
         // Open database
         auto databaseConnectionName = "GeoMapProvider::describeMapFile "+fileName;
-        auto db = QSqlDatabase::addDatabase("QSQLITE", databaseConnectionName);
+        auto db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
         db.setDatabaseName(fileName);
         db.open();
         if (!db.isOpenError()) {
             // Read metadata from database
             QSqlQuery query(db);
             QString intResult;
-            if (query.exec("select name, value from metadata;")) {
+            if (query.exec(QStringLiteral("select name, value from metadata;"))) {
                 while(query.next()) {
                     QString key = query.value(0).toString();
-                    if (key == "json")
+                    if (key == u"json") {
                         continue;
-                    intResult += QString("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
-                                .arg(key, query.value(1).toString());
+                    }
+                    intResult += QStringLiteral("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
+                            .arg(key, query.value(1).toString());
                 }
             }
-            if (!intResult.isEmpty())
-                result += QString("<h4>%1</h4><table>%2</table>").arg(tr("Internal Map Data"), intResult);
+            if (!intResult.isEmpty()) {
+                result += QStringLiteral("<h4>%1</h4><table>%2</table>").arg(tr("Internal Map Data"), intResult);
+            }
             db.close();
         }
     }
@@ -168,19 +179,21 @@ auto GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QOb
     QStringList filterWords;
     foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
         QString simplifiedWord = _librarian->simplifySpecialChars(word);
-        if (simplifiedWord.isEmpty())
+        if (simplifiedWord.isEmpty()) {
             continue;
+        }
         filterWords.append(simplifiedWord);
     }
 
     QList<QObject*> result;
     foreach(auto wp, wps) {
-        if (wp.isNull())
+        if (wp.isNull()) {
             continue;
+        }
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = _librarian->simplifySpecialChars(wp->getPropery("NAM").toString());
-            QString codeName = _librarian->simplifySpecialChars(wp->getPropery("COD").toString());
+            QString fullName = _librarian->simplifySpecialChars(wp->getPropery(QStringLiteral("NAM")).toString());
+            QString codeName = _librarian->simplifySpecialChars(wp->getPropery(QStringLiteral("COD")).toString());
             QString wordx = _librarian->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
@@ -188,8 +201,9 @@ auto GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QOb
                 break;
             }
         }
-        if (allWordsFound)
+        if (allWordsFound) {
             result.append(wp);
+        }
     }
 
     return result;
@@ -201,10 +215,12 @@ auto GeoMapProvider::findByID(const QString &id) -> Waypoint*
     auto wps = waypoints();
 
     foreach(auto wp, wps) {
-        if (wp.isNull())
+        if (wp.isNull()) {
             continue;
-        if (wp->getPropery("COD").toString() == id)
+        }
+        if (wp->getPropery(QStringLiteral("COD")).toString() == id) {
             return wp;
+        }
     }
     return nullptr;
 }
@@ -216,10 +232,12 @@ auto GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QStri
 
     QList<Waypoint*> tWps;
     foreach(auto wp, wps) {
-        if (wp.isNull())
+        if (wp.isNull()) {
             continue;
-        if (wp->getPropery("TYP").toString() != type)
+        }
+        if (wp->getPropery(QStringLiteral("TYP")).toString() != type) {
             continue;
+        }
         tWps.append(wp);
     }
 
@@ -230,8 +248,9 @@ auto GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QStri
     foreach(auto ad, tWps) {
         result.append(ad);
         sz++;
-        if (sz == 20)
+        if (sz == 20) {
             break;
+        }
     }
 
     return result;
@@ -240,8 +259,9 @@ auto GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QStri
 
 auto GeoMapProvider::styleFileURL() const -> QString
 {
-    if (_styleFile.isNull())
-        return ":/flightMap/empty.json";
+    if (_styleFile.isNull()) {
+        return QStringLiteral(":/flightMap/empty.json");
+    }
     return "file://"+_styleFile->fileName();
 }
 
@@ -249,8 +269,9 @@ auto GeoMapProvider::styleFileURL() const -> QString
 void GeoMapProvider::aviationMapsChanged()
 {
     // Paranoid safety checks
-    if (_manager.isNull())
+    if (_manager.isNull()) {
         return;
+    }
     if (_aviationDataCacheFuture.isRunning()) {
         _aviationDataCacheTimer.start();
         return;
@@ -262,10 +283,12 @@ void GeoMapProvider::aviationMapsChanged()
     QStringList JSONFileNames;
     foreach(auto geoMapPtr, _manager->aviationMaps()->downloadables()) {
         // Ignore everything but geojson files
-        if (!geoMapPtr->fileName().endsWith(".geojson", Qt::CaseInsensitive))
+        if (!geoMapPtr->fileName().endsWith(u".geojson", Qt::CaseInsensitive)) {
             continue;
-        if (!geoMapPtr->hasFile())
+        }
+        if (!geoMapPtr->hasFile()) {
             continue;
+        }
         JSONFileNames += geoMapPtr->fileName();
     }
 
@@ -276,8 +299,9 @@ void GeoMapProvider::aviationMapsChanged()
 void GeoMapProvider::baseMapsChanged()
 {
     // Paranoid safety checks
-    if (_manager.isNull())
+    if (_manager.isNull()) {
         return;
+    }
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
@@ -289,7 +313,7 @@ void GeoMapProvider::baseMapsChanged()
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);
-    QFile file(":/flightMap/osm-liberty.json");
+    QFile file(QStringLiteral(":/flightMap/osm-liberty.json"));
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
@@ -327,8 +351,9 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
             // and that begin at FL100 or above.
             if (hideUpperAirspaces) {
                 Airspace airspaceTest(object);
-                if (airspaceTest.isUpper())
+                if (airspaceTest.isUpper()) {
                     continue;
+                }
             }
             objectSet += object;
         }
@@ -337,13 +362,13 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
-    QList<QPointer<Airspace>> newAirspaces;
-    QList<QPointer<Waypoint>> newWaypoints;
+    QVector<QPointer<Airspace>> newAirspaces;
+    QVector<QPointer<Waypoint>> newWaypoints;
     foreach(auto object, objectSet) {
         newFeatures += object;
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
-        auto wp = new Waypoint(object);
+        auto *wp = new Waypoint(object);
         wp->setDownloadManager(_downloadManager);
         if (wp->isValid()) {
             wp->moveToThread(QApplication::instance()->thread());
@@ -355,7 +380,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         delete wp;
 
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
-        auto as = new Airspace(object);
+        auto *as = new Airspace(object);
         if (as->isValid()) {
             as->moveToThread(QApplication::instance()->thread());
             as->setParent(this);
@@ -366,22 +391,24 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
         delete as;
     }
     QJsonObject resultObject;
-    resultObject.insert("type", "FeatureCollection");
-    resultObject.insert("features", newFeatures);
+    resultObject.insert(QStringLiteral("type"), "FeatureCollection");
+    resultObject.insert(QStringLiteral("features"), newFeatures);
     QJsonDocument geoDoc(resultObject);
 
     // Sort waypoints by name
-    std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->getPropery("NAM").toString() < b->getPropery("NAM").toString(); });
+    std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->getPropery(QStringLiteral("NAM")).toString() < b->getPropery(QStringLiteral("NAM")).toString(); });
 
     _aviationDataMutex.lock();
     foreach(auto airspace, _airspaces_) {
-        if (airspace.isNull())
+        if (airspace.isNull()) {
             continue;
+        }
         airspace->deleteLater();
     }
     foreach(auto waypoint, _waypoints_) {
-        if (waypoint.isNull())
+        if (waypoint.isNull()) {
             continue;
+        }
         waypoint->deleteLater();
     }
     _airspaces_ = newAirspaces;
@@ -395,8 +422,9 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 
 void GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManager)
 {
-    if (downloadManager == nullptr)
+    if (downloadManager == nullptr) {
         return;
+    }
     _downloadManager = downloadManager;
 
 
@@ -406,7 +434,7 @@ void GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManage
     connect(GlobalSettings::globalInstance(), &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
-    _aviationDataCacheTimer.setInterval(3*1000);
+    _aviationDataCacheTimer.setInterval(3s);
     connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMapProvider::aviationMapsChanged);
 
     aviationMapsChanged();

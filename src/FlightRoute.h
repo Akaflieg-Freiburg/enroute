@@ -221,6 +221,19 @@ public:
      */
     Q_INVOKABLE QString loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider);
 
+    /*! \brief List of waypoints in the flight route that are not airfields
+     *
+     * This property lists all the waypoints in the route that are not airfields,
+     * navaids, reporting points, etc.
+     */
+    Q_PROPERTY(QList<QObject*> midFieldWaypoints READ midFieldWaypoints NOTIFY waypointsChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property routeObjects
+     */
+    QList<QObject*> midFieldWaypoints() const;
+
     /*! \brief List of waypoints and legs
      *
      * This property lists all the waypoints and legs contained in the route. It
@@ -268,7 +281,7 @@ public:
      */
     QString summary() const;
 
-    /*! \brief Human-readable summary of the flight route in metric values*/
+    /*! \brief Human-readable summary of the flight route in metric values */
     Q_PROPERTY(QString summaryMetric READ summaryMetric NOTIFY summaryChanged)
 
     /*! \brief Getter function for the property with the same name
@@ -358,9 +371,9 @@ private:
     // "/flight route.geojson"
     QString stdFileName;
 
-    QList<QPointer<Waypoint>> _waypoints;
+    QVector<QPointer<Waypoint>> _waypoints;
 
-    QList<Leg*> _legs;
+    QVector<Leg*> _legs;
 
     QPointer<Aircraft> _aircraft {nullptr};
     QPointer<Weather::Wind> _wind {nullptr};

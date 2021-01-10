@@ -184,7 +184,7 @@ public:
      */
     QString icon() const
     {
-        return QString("/icons/waypoints/%1.svg").arg(getPropery("CAT").toString());
+        return QStringLiteral("/icons/waypoints/%1.svg").arg(getPropery(QStringLiteral("CAT")).toString());
     }
 
     /* \brief Check if the waypoint is valid

@@ -269,7 +269,7 @@ Item {
             id: flightPath
 
             line.width: 3
-            line.color: 'green'
+            line.color: '#008000' //'green'
             path: flightRoute.geoPath
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
@@ -279,7 +279,41 @@ Item {
             delegate: Component { Traffic { trafficInfo: model.modelData } }
         }
 
-        MouseArea { // Mouse Area, in order to receive mouse clicks
+        MapItemView {
+            id: midFieldWaypoints
+            model: flightRoute.midFieldWaypoints
+            delegate: Component {
+
+                MapQuickItem {
+
+                    anchorPoint.x: image.width/2
+                    anchorPoint.y: image.height
+                    coordinate: model.modelData.coordinate
+
+                    sourceItem: Item{
+                        Image {
+                            id: image
+
+                            source:  "/icons/waypoints/WP.svg"
+                            sourceSize.width: 20
+                            sourceSize.height: 20
+                        }
+                        Label {
+                            anchors.left: image.right
+                            text: model.modelData.extendedName
+                            visible: flightMap.zoomLevel > 11.0
+                            background: Rectangle {
+                                color: "white"
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // Mouse Area, in order to receive mouse clicks
+        MouseArea {
             anchors.fill: parent
             propagateComposedEvents: true
 
@@ -452,11 +486,34 @@ Item {
         height: 30
     }
 
-    MapCopyrightNotice {
+    Label {
+        id: copyrightInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
-        mapSource: flightMap
+
+        text: geoMapProvider.copyrightNotice
+        linkColor: "blue"
+        visible: width < parent.width
+        onLinkActivated: Qt.openUrlExternally(link)
+    }
+
+    Label {
+        id: noCopyrightInfo
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: navBar.top
+        anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
+        text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
+        linkColor: "blue"
+        visible: !copyrightInfo.visible
+        onLinkActivated: copyrightDialog.open()
+
+        LongTextDialog {
+            id: copyrightDialog
+            title: qsTr("Map Data Copyright Information")
+            text: geoMapProvider.copyrightNotice.replace("•", "<br><br>").replace("•", "<br><br>").replace("•", "<br><br>")
+            standardButtons: Dialog.Cancel
+        }
     }
 
     NavBar {

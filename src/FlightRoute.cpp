@@ -35,21 +35,25 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Weather::Wind *wind, QObject *paren
 
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
-    if (!_aircraft.isNull())
+    if (!_aircraft.isNull()) {
         connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::summaryChanged);
-    if (!_wind.isNull())
+    }
+    if (!_wind.isNull()) {
         connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::summaryChanged);
+    }
 }
 
 
 void FlightRoute::append(QObject *waypoint)
 {
-    if (waypoint == nullptr)
+    if (waypoint == nullptr) {
         return;
-    if (!waypoint->inherits("Waypoint"))
+    }
+    if (!waypoint->inherits("Waypoint")) {
         return;
+    }
 
-    auto* wp = dynamic_cast<Waypoint*>(waypoint);
+    auto* wp =  qobject_cast<Waypoint*>(waypoint);
     _waypoints.append(new Waypoint(*wp, this));
 
     updateLegs();
@@ -68,17 +72,20 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
     QGeoRectangle bbox;
 
     for(const auto &_waypoint : _waypoints) {
-        if (_waypoint.isNull())
+        if (_waypoint.isNull()) {
             continue;
-        if (!_waypoint->isValid())
+        }
+        if (!_waypoint->isValid()) {
             continue;
+        }
 
         QGeoCoordinate position = _waypoint->coordinate();
         if (!bbox.isValid()) {
             bbox.setTopLeft(position);
             bbox.setBottomRight(position);
-        } else
+        } else {
             bbox.extendRectangle(position);
+        }
     }
 
     return bbox;
@@ -97,18 +104,22 @@ void FlightRoute::clear()
 
 auto FlightRoute::contains(QObject * waypoint) const -> bool
 {
-    if (waypoint == nullptr)
+    if (waypoint == nullptr) {
         return false;
-    if (!waypoint->inherits("Waypoint"))
+    }
+    if (!waypoint->inherits("Waypoint")) {
         return false;
+    }
 
-    auto testWaypoint = dynamic_cast<Waypoint *>(waypoint);
+    auto *testWaypoint = qobject_cast<Waypoint *>(waypoint);
     // must loop over list in order to compare values (not pointers)
     for (const auto &_waypoint : _waypoints) {
-        if (_waypoint.isNull())
+        if (_waypoint.isNull()) {
             continue;
-        if (!_waypoint->isValid())
+        }
+        if (!_waypoint->isValid()) {
             continue;
+        }
         if (*_waypoint == *testWaypoint) {
             return true;
         }
@@ -119,8 +130,9 @@ auto FlightRoute::contains(QObject * waypoint) const -> bool
 
 auto FlightRoute::firstWaypointObject() const -> QObject*
 {
-    if (_waypoints.isEmpty())
+    if (_waypoints.isEmpty()) {
         return nullptr;
+    }
     return _waypoints.first();
 }
 
@@ -128,13 +140,15 @@ auto FlightRoute::firstWaypointObject() const -> QObject*
 auto FlightRoute::geoPath() const -> QVariantList
 {
     // Paranoid safety checks
-    if (_waypoints.size() < 2)
+    if (_waypoints.size() < 2) {
         return QVariantList();
+    }
 
     QVariantList result;
     for(const auto& _waypoint : _waypoints) {
-        if (!_waypoint->isValid())
+        if (!_waypoint->isValid()) {
             return QVariantList();
+        }
         result.append(QVariant::fromValue(_waypoint->coordinate()));
     }
 
@@ -144,34 +158,39 @@ auto FlightRoute::geoPath() const -> QVariantList
 
 auto FlightRoute::lastWaypointObject() const -> QObject*
 {
-    if (_waypoints.isEmpty())
+    if (_waypoints.isEmpty()) {
         return nullptr;
+    }
     return _waypoints.last();
 }
 
 
 auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
 {
-    if (fileName.isEmpty())
+    if (fileName.isEmpty()) {
         fileName = stdFileName;
+    }
 
     QFile file(fileName);
     auto success = file.open(QIODevice::ReadOnly);
-    if (!success)
+    if (!success) {
         return tr("Cannot open file '%1' for reading.").arg(fileName);
+    }
     auto fileContent = file.readAll();
-    if (fileContent.isEmpty())
+    if (fileContent.isEmpty()) {
         return tr("Cannot read data from file '%1'.").arg(fileName);
+    }
     file.close();
 
     QJsonParseError parseError{};
     auto document = QJsonDocument::fromJson(fileContent, &parseError);
-    if (parseError.error != QJsonParseError::NoError)
+    if (parseError.error != QJsonParseError::NoError) {
         return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
+    }
 
-    QList<QPointer<Waypoint>> newWaypoints;
+    QVector<QPointer<Waypoint>> newWaypoints;
     foreach(auto value, document.object()["features"].toArray()) {
-        auto wp = new Waypoint(value.toObject(), this);
+        auto *wp = new Waypoint(value.toObject(), this);
         if (!wp->isValid()) {
             qDeleteAll(newWaypoints);
             return tr("Cannot parse content of file '%1'.").arg(fileName);
@@ -191,8 +210,9 @@ auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
 
 auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
 {
-    if (_legs.empty())
+    if (_legs.empty()) {
         return {};
+    }
 
     QString result;
 
@@ -200,7 +220,7 @@ auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
     auto time = AviationUnits::Time::fromS(0.0);
     double fuelInL = 0.0;
 
-    for(auto _leg : _legs) {
+    for(auto *_leg : _legs) {
         dist += _leg->distance();
         if (dist.toM() > 100) {
             time += _leg->Time();
@@ -213,29 +233,58 @@ auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
     } else {
         result += tr("Total: %1&nbsp;NM").arg(dist.toNM(), 0, 'f', 1);
     }
-    if (time.isFinite())
-        result += QString(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
-    if (qIsFinite(fuelInL))
-        result += QString(" • %1&nbsp;L").arg(qRound(fuelInL));
+    if (time.isFinite()) {
+        result += QStringLiteral(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
+    }
+    if (qIsFinite(fuelInL)) {
+        result += QStringLiteral(" • %1&nbsp;L").arg(qRound(fuelInL));
+    }
 
 
     QStringList complaints;
     if (!_aircraft.isNull()) {
-        if (!qIsFinite(_aircraft->cruiseSpeedInKT()))
+        if (!qIsFinite(_aircraft->cruiseSpeedInKT())) {
             complaints += tr("Cruise speed not specified.");
-        if (!qIsFinite(_aircraft->fuelConsumptionInLPH()))
+        }
+        if (!qIsFinite(_aircraft->fuelConsumptionInLPH())) {
             complaints += tr("Fuel consumption not specified.");
+        }
     }
     if (!_wind.isNull()) {
-        if (!qIsFinite(_wind->windSpeedInKT()))
+        if (!qIsFinite(_wind->windSpeedInKT())) {
             complaints += tr("Wind speed not specified.");
-        if (!qIsFinite(_wind->windDirectionInDEG()))
-            if (!qIsFinite(_wind->windDirectionInDEG()))
+        }
+        if (!qIsFinite(_wind->windDirectionInDEG())) {
+            if (!qIsFinite(_wind->windDirectionInDEG())) {
                 complaints += tr("Wind direction not specified.");
+            }
+        }
     }
 
-    if (!complaints.isEmpty())
-        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(" "));
+    if (!complaints.isEmpty()) {
+        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(QStringLiteral(" ")));
+    }
+
+    return result;
+}
+
+
+auto FlightRoute::midFieldWaypoints() const -> QList<QObject*>
+{
+    QList<QObject*> result;
+
+    if (_waypoints.isEmpty()) {
+        return result;
+    }
+
+    foreach(auto wpt, _waypoints) {
+        if (wpt == nullptr) {
+            continue;
+        }
+        if (wpt->getPropery("CAT") == "WP") {
+            result << wpt;
+        }
+    }
 
     return result;
 }
@@ -244,14 +293,17 @@ auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
 void FlightRoute::moveDown(QObject *waypoint)
 {
     // Paranoid safety checks
-    if (waypoint == nullptr)
+    if (waypoint == nullptr) {
         return;
-    if (!waypoint->inherits("Waypoint"))
+    }
+    if (!waypoint->inherits("Waypoint")) {
         return;
-    if (waypoint == lastWaypointObject())
+    }
+    if (waypoint == lastWaypointObject()) {
         return;
+    }
 
-    auto swp = dynamic_cast<Waypoint*>(waypoint);
+    auto *swp = qobject_cast<Waypoint*>(waypoint);
 
     auto idx = _waypoints.indexOf(swp);
     _waypoints.move(idx, idx+1);
@@ -264,18 +316,22 @@ void FlightRoute::moveDown(QObject *waypoint)
 void FlightRoute::moveUp(QObject *waypoint)
 {
     // Paranoid safety checks
-    if (waypoint == nullptr)
+    if (waypoint == nullptr) {
         return;
-    if (!waypoint->inherits("Waypoint"))
+    }
+    if (!waypoint->inherits("Waypoint")) {
         return;
-    if (waypoint == firstWaypointObject())
+    }
+    if (waypoint == firstWaypointObject()) {
         return;
+    }
 
-    auto swp = dynamic_cast<Waypoint*>(waypoint);
+    auto *swp = qobject_cast<Waypoint*>(waypoint);
 
     auto idx = _waypoints.indexOf(swp);
-    if (idx > 0)
+    if (idx > 0) {
         _waypoints.move(idx, idx-1);
+    }
 
     updateLegs();
     emit waypointsChanged();
@@ -285,21 +341,25 @@ void FlightRoute::moveUp(QObject *waypoint)
 void FlightRoute::removeWaypoint(QObject *waypoint)
 {
     // Paranoid safety checks
-    if (waypoint == nullptr)
+    if (waypoint == nullptr) {
         return;
-    if (!waypoint->inherits("Waypoint"))
+    }
+    if (!waypoint->inherits("Waypoint")) {
         return;
+    }
 
-    auto waypointPtr = dynamic_cast<Waypoint*>(waypoint);
+    auto *waypointPtr = qobject_cast<Waypoint*>(waypoint);
 
     // if called from the waypoint dialog, the waypoint is not the
     // same instance as the one in `_waypoints`
     if (!_waypoints.contains(waypointPtr)) {
         foreach(const auto &_waypoint, _waypoints) {
-            if (_waypoint.isNull())
+            if (_waypoint.isNull()) {
                 continue;
-            if (!_waypoint->isValid())
+            }
+            if (!_waypoint->isValid()) {
                 continue;
+            }
             if (*_waypoint == *waypointPtr) {
                 waypointPtr = _waypoint;
                 break;
@@ -327,8 +387,9 @@ auto FlightRoute::routeObjects() const -> QList<QObject*>
 {
     QList<QObject*> result;
 
-    if (_waypoints.isEmpty())
+    if (_waypoints.isEmpty()) {
         return result;
+    }
 
     for(int i=0; i<_waypoints.size()-1; i++) {
         result.append(_waypoints[i]);
@@ -344,8 +405,9 @@ auto FlightRoute::save(const QString& fileName) const -> QString
 {
     QFile file(fileName);
     auto success = file.open(QIODevice::WriteOnly);
-    if (!success)
+    if (!success) {
         return tr("Unable to open the file '%1' for writing.").arg(fileName);
+    }
     auto numBytesWritten = file.write(toGeoJSON());
     if (numBytesWritten == -1) {
         file.close();
@@ -359,8 +421,9 @@ auto FlightRoute::save(const QString& fileName) const -> QString
 
 auto FlightRoute::suggestedFilename() const -> QString
 {
-    if (_waypoints.size() < 2)
+    if (_waypoints.size() < 2) {
         return tr("Flight Route");
+    }
 
     // NEU (1): ICAO-Code UND Namen nennen, soweit Code vorhanden:
     QStringList resultList;
@@ -368,33 +431,37 @@ auto FlightRoute::suggestedFilename() const -> QString
     //
     // Get name for start point (e.g. "EDTL (LAHR)")
     //
-    QString start = _waypoints.constFirst()->getPropery("COD").toString(); // ICAO code of start point
-    QString name = _waypoints.constFirst()->getPropery("NAM").toString(); // Name of start point
+    QString start = _waypoints.constFirst()->getPropery(QStringLiteral("COD")).toString(); // ICAO code of start point
+    QString name = _waypoints.constFirst()->getPropery(QStringLiteral("NAM")).toString(); // Name of start point
     name.replace("(", "");
     name.replace(")", "");
-    if (name.length() > 11)  // Shorten name
+    if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"…";
+    }
     if (!name.isEmpty()) {
-        if (start.isEmpty())
+        if (start.isEmpty()) {
             start = name;
-        else
+        } else {
             start += " (" + name + ")";
+        }
     }
 
     //
     // Get name for end point (e.g. "EDTG (BREMGARTEN)")
     //
-    QString end = _waypoints.constLast()->getPropery("COD").toString(); // ICAO code of end point
-    name = _waypoints.constLast()->getPropery("NAM").toString(); // Name of end point
+    QString end = _waypoints.constLast()->getPropery(QStringLiteral("COD")).toString(); // ICAO code of end point
+    name = _waypoints.constLast()->getPropery(QStringLiteral("NAM")).toString(); // Name of end point
     name.replace("(", "");
     name.replace(")", "");
-    if (name.length() > 11)  // Shorten name
+    if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"…";
+    }
     if (!name.isEmpty()) {
-        if (end.isEmpty())
+        if (end.isEmpty()) {
             end = name;
-        else
+        } else {
             end += " (" + name + ")";
+        }
     }
 
     // Remove some problematic characters
@@ -403,14 +470,17 @@ auto FlightRoute::suggestedFilename() const -> QString
 
     // Compile final result
 
-    if (start.isEmpty() && end.isEmpty())
+    if (start.isEmpty() && end.isEmpty()) {
         return tr("Flight Route");
+    }
 
-    if (start.isEmpty())
+    if (start.isEmpty()) {
         return end;
+    }
 
-    if (end.isEmpty())
+    if (end.isEmpty()) {
         return start;
+    }
 
 
     return start + " - " + end;
@@ -433,8 +503,8 @@ auto FlightRoute::toGeoJSON() const -> QByteArray
     foreach(auto waypoint, _waypoints)
         waypointArray.append(waypoint->toJSON());
     QJsonObject jsonObj;
-    jsonObj.insert("type", "FeatureCollection");
-    jsonObj.insert("features", waypointArray);
+    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
+    jsonObj.insert(QStringLiteral("features"), waypointArray);
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc.toJson();
@@ -447,6 +517,7 @@ void FlightRoute::updateLegs()
         _leg->deleteLater();
     _legs.clear();
 
-    for(int i=0; i<_waypoints.size()-1; i++)
+    for(int i=0; i<_waypoints.size()-1; i++) {
         _legs.append(new Leg(_waypoints[i], _waypoints[i+1], _aircraft, _wind, this));
+    }
 }

@@ -107,8 +107,6 @@ Map {
         property var layer: "FIS"
         property var lineColor: "black"
         property var lineWidth: 0.5
-        // property var lineDasharray: [8.0, 2.0, 1.0, 2.0]
-        // property var lineDasharray: [4.0, 4.0]
     }
 
 

@@ -257,6 +257,14 @@ Item {
                             sourceSize.width: 20
                             sourceSize.height: 20
                         }
+                        Label {
+                            anchors.left: image.right
+                            text: model.modelData.extendedName
+                            visible: flightMap.zoomLevel > 11.0
+                            background: Rectangle {
+                                color: "white"
+                            }
+                        }
                     }
                 }
 

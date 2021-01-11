@@ -68,6 +68,18 @@ Page {
             }
 
             ToolButton {
+                id: editButton
+
+                visible: (model.modelData instanceof Waypoint) && (model.modelData.icon.indexOf("WP") !== -1)
+                icon.source: "/icons/material/ic_send.svg"
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    wpEditor.waypoint = model.modelData
+                    wpEditor.open()
+                }
+            } // ToolButton
+
+            ToolButton {
                 id: wpMenuTB
 
                 visible: model.modelData instanceof Waypoint
@@ -699,6 +711,10 @@ Page {
 
     WaypointDescription {
         id: waypointDescription
+    }
+
+    WaypointEditor {
+        id: wpEditor
     }
 
 } // Page

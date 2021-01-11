@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019, 2021 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -99,6 +99,16 @@ auto Waypoint::extendedName() const -> QString
     }
 
     return _properties.value("NAM").toString();
+}
+
+
+void Waypoint::setExtendedName(QString newExtendedName)
+{
+    if (newExtendedName == _properties.value("NAM").toString()) {
+        return;
+}
+    _properties.insert("NAM", newExtendedName);
+    emit extendedNameChanged();
 }
 
 

@@ -58,6 +58,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
+<tr class="memitem:a9a28f0502c9d4d6331cb9a7929f80fc3"><td class="memItemLeft" align="right" valign="top"><a id="a9a28f0502c9d4d6331cb9a7929f80fc3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a9a28f0502c9d4d6331cb9a7929f80fc3">extendedNameChanged</a> ()</td></tr>
+<tr class="memdesc:a9a28f0502c9d4d6331cb9a7929f80fc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a9a28f0502c9d4d6331cb9a7929f80fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae03299780d9e62ad3d310dfd49de341b"><td class="memItemLeft" align="right" valign="top"><a id="ae03299780d9e62ad3d310dfd49de341b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#ae03299780d9e62ad3d310dfd49de341b">hasMETARChanged</a> ()</td></tr>
 <tr class="memdesc:ae03299780d9e62ad3d310dfd49de341b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -94,6 +98,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1cff65fffe4aaa643199a0a8dd4754fb"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a1cff65fffe4aaa643199a0a8dd4754fb">extendedName</a> () const</td></tr>
 <tr class="memdesc:a1cff65fffe4aaa643199a0a8dd4754fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="#a1cff65fffe4aaa643199a0a8dd4754fb">More...</a><br /></td></tr>
 <tr class="separator:a1cff65fffe4aaa643199a0a8dd4754fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83a2b5873e61243269bc468ee6ffb0fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a83a2b5873e61243269bc468ee6ffb0fe">setExtendedName</a> (const QString &amp;newExtendedName)</td></tr>
+<tr class="memdesc:a83a2b5873e61243269bc468ee6ffb0fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property with the same name.  <a href="#a83a2b5873e61243269bc468ee6ffb0fe">More...</a><br /></td></tr>
+<tr class="separator:a83a2b5873e61243269bc468ee6ffb0fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44698f03577f0aacf8668bf5e631b07d"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVariant&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaypoint.html#a44698f03577f0aacf8668bf5e631b07d">getPropery</a> (const QString &amp;propertyName) const</td></tr>
 <tr class="memdesc:a44698f03577f0aacf8668bf5e631b07d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve property by name.  <a href="#a44698f03577f0aacf8668bf5e631b07d">More...</a><br /></td></tr>
 <tr class="separator:a44698f03577f0aacf8668bf5e631b07d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -452,7 +459,7 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of the proerty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00139">139</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00145">145</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -522,7 +529,7 @@ Properties</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property icon </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00185">185</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00191">191</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -574,6 +581,32 @@ Properties</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">downloadManager</td><td>Pointer to a download manager </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a83a2b5873e61243269bc468ee6ffb0fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83a2b5873e61243269bc468ee6ffb0fe">&#9670;&nbsp;</a></span>setExtendedName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Waypoint::setExtendedName </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>newExtendedName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter function for property with the same name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newExtendedName</td><td>Property extendedName </td></tr>
   </table>
   </dd>
 </dl>
@@ -742,7 +775,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -777,7 +810,7 @@ Properties</h2></td></tr>
 <p>Check if a METAR weather report is known for the waypoint. </p>
 <p>If a pointer to a DownloadManager instance has been set with <a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056" title="Connects this waypoint with a DownloadManager instance. ">setDownloadManager()</a>, this convenience property can be used to check if a METAR report is available for the waypoint. The actual METAR report can be accessed via the property weatherStation. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00151">151</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00157">157</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -804,7 +837,7 @@ Properties</h2></td></tr>
 <p>Check if a TAF weather forcast is known for the waypoint. </p>
 <p>If a pointer to a DownloadManager instance has been set with <a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056" title="Connects this waypoint with a DownloadManager instance. ">setDownloadManager()</a>, this convenience property can be used to check if a TAF forcast is available for the waypoint. The actual TAF report can be accessed via the property weatherStation. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00166">166</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00172">172</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -831,7 +864,7 @@ Properties</h2></td></tr>
 <p>Suggested icon file. </p>
 <p>This property holds the name of an icon file in SVG format that best describes the waypoint. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00179">179</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00185">185</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -859,7 +892,7 @@ Properties</h2></td></tr>
 <p>This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a string of the form "&lt;strong&gt;LFKA&lt;/strong&gt;&lt;br&gt;&lt;font size='2'&gt;ALBERTVILLE&lt;/font&gt;" or simply "KIRCHZARTEN"</p>
 <dl class="section see"><dt>See also</dt><dd>threeLineTitle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00255">255</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00261">261</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -886,7 +919,7 @@ Properties</h2></td></tr>
 <p>Check if a WeatherStation exists at this point. </p>
 <p>If a pointer to a DownloadManager instance has been set with <a class="el" href="classWaypoint.html#a862e165e04634b32089b009f11291056" title="Connects this waypoint with a DownloadManager instance. ">setDownloadManager()</a> and if a WeatherStation is known to exist at this point, then this property holds a pointer to the station. Otherwise, the property holds nullptr. Note that the WeatherStation object is owned by the DownloadManager and that it can be deleted anytime. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00281">281</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00287">287</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

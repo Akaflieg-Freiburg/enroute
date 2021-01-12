@@ -180,10 +180,8 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         myPath = path;
     }
 
-//#warning THIS DOES NOT SEEM TO WORK WITH ANDROID and *.GPX FILES
     QMimeDatabase db;
     auto mimeType = db.mimeTypeForFile(myPath);
-    qWarning() << "XX" << mimeType;
     if ((mimeType.inherits(QStringLiteral("application/xml")))
             || (mimeType.name() == u"application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format

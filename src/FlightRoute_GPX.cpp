@@ -107,8 +107,9 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
     //
     for(const auto& _waypoint : _waypoints) {
 
-        if (!_waypoint->isValid())
+        if (!_waypoint->isValid()) {
             continue; // skip silently
+        }
 
         QGeoCoordinate position = _waypoint->coordinate();
         auto code = _waypoint->getPropery("COD").toString();
@@ -143,8 +144,9 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
 auto FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider) -> QString
 {
     QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
         return tr("Error opening file '%1'").arg(fileName);
+    }
 
     QXmlStreamReader xml(&file);
     return loadFromGpx(xml, geoMapProvider);
@@ -179,7 +181,7 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
             return;
         }
 
-        bool ok;
+        bool ok = false;
         double lon = xml.attributes().value("lon").toFloat(&ok);
         if (!ok) {
             qDebug() << "Unable to convert lon to float: " << xml.attributes().value("lon");
@@ -199,8 +201,9 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
         QString cmt;
         while (!xml.atEnd() && !xml.hasError())
         {
-            if (!xml.readNext())
+            if (xml.readNext() == 0u) {
                 break;
+            }
 
             QString xmlTag = xml.name().toString();
 
@@ -240,9 +243,11 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
         // of the coordinate which was just imported from gpx.
         QObject* nearest = nullptr;
         if (geoMapProvider != nullptr) {
-            QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
+            QGeoCoordinate distant_pos(lat + 1 /* 0.01 about 1.11 km */, lon);
             nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
         }
+#warning Does not seem to work
+qWarning() << name << nearest;
 
         // Now create a waypoint, owned by this, and set its name
         Waypoint *wpt = nullptr;
@@ -253,18 +258,20 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
         }
         QQmlEngine::setObjectOwnership(wpt, QQmlEngine::CppOwnership);
         connect(wpt, &Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
+
         if (wpt->getPropery("TYP") == "WP" && wpt->getPropery("CAT") == "WP" && name.length() > 0) {
-            wpt->setProperty("NAM", name);
+            wpt->setExtendedName(name);
         }
 
         target.append(wpt);
-   }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
+    }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
 
     while (!xml.atEnd() && !xml.hasError())
     {
         auto token = xml.readNext();
-        if (!token)
+        if (token == 0U) {
             break;
+        }
 
         auto name = xml.name().toString();
 
@@ -284,8 +291,8 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
     // Could be made configurable.
     //
     QList<Waypoint*> &source = (rtept.length() > 0) ? rtept :
-                               (trkpt.length() > 0) ? trkpt :
-                                                      wpt;
+                                                      (trkpt.length() > 0) ? trkpt :
+                                                                             wpt;
     if (source.length() == 0) {
         // don't have to delete lists rtept, trkpt, wpt as they're empty
         return tr("Error interpreting GPX file: no valid route found.");

@@ -102,7 +102,7 @@ auto Waypoint::extendedName() const -> QString
 }
 
 
-void Waypoint::setExtendedName(QString newExtendedName)
+void Waypoint::setExtendedName(const QString &newExtendedName)
 {
     if (newExtendedName == _properties.value("NAM").toString()) {
         return;

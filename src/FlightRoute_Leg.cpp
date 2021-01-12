@@ -29,18 +29,21 @@ FlightRoute::Leg::Leg(const Waypoint* start, const Waypoint *end, Aircraft *airc
     _start = new Waypoint(*start, this);
     _end   = new Waypoint(*end, this);
 
-    if (!_aircraft.isNull())
+    if (!_aircraft.isNull()) {
         connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::Leg::valChanged);
-    if (!_wind.isNull())
+    }
+    if (!_wind.isNull()) {
         connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::Leg::valChanged);
+    }
 }
 
 
 auto FlightRoute::Leg::distance() const -> AviationUnits::Distance
 {
     // Paranoid safety checks
-    if (!isValid())
+    if (!isValid()) {
         return {};
+    }
 
     return AviationUnits::Distance::fromM( _start->coordinate().distanceTo( _end->coordinate() ));
 }
@@ -49,8 +52,9 @@ auto FlightRoute::Leg::distance() const -> AviationUnits::Distance
 auto FlightRoute::Leg::Fuel() const -> double
 {
     // This also checks for _aircraft and _wind to be non-nullptr
-    if (!hasDataForWindTriangle())
+    if (!hasDataForWindTriangle()) {
         return qQNaN();
+    }
 
     return _aircraft->fuelConsumptionInLPH()*Time().toH();
 }
@@ -59,8 +63,9 @@ auto FlightRoute::Leg::Fuel() const -> double
 auto FlightRoute::Leg::GS() const -> AviationUnits::Speed
 {
     // This also checks for _aircraft and _wind to be non-nullptr
-    if (!hasDataForWindTriangle())
+    if (!hasDataForWindTriangle()) {
         return {};
+    }
 
     auto TASInKT = _aircraft->cruiseSpeedInKT();
     auto WSInKT  = _wind->windSpeedInKT();
@@ -76,10 +81,12 @@ auto FlightRoute::Leg::GS() const -> AviationUnits::Speed
 auto FlightRoute::Leg::TC() const -> AviationUnits::Angle
 {
     // Paranoid safety checks
-    if (!isValid())
+    if (!isValid()) {
         return {};
-    if( _start->coordinate().distanceTo( _end->coordinate() ) < minLegLength )
+    }
+    if( _start->coordinate().distanceTo( _end->coordinate() ) < minLegLength ) {
         return {};
+    }
 
     return AviationUnits::Angle::fromDEG( _start->coordinate().azimuthTo(_end->coordinate()) );
 }
@@ -88,8 +95,9 @@ auto FlightRoute::Leg::TC() const -> AviationUnits::Angle
 auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
 {
     // This also checks for _aircraft and _wind to be non-nullptr
-    if (!hasDataForWindTriangle())
+    if (!hasDataForWindTriangle()) {
         return {};
+    }
 
     AviationUnits::Speed TAS = AviationUnits::Speed::fromKT( _aircraft->cruiseSpeedInKT() );
     AviationUnits::Speed WS  = AviationUnits::Speed::fromKT( _wind->windSpeedInKT() );
@@ -102,14 +110,18 @@ auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
 
 auto FlightRoute::Leg::isValid() const -> bool
 {
-    if (_start.isNull())
+    if (_start.isNull()) {
         return false;
-    if (!_start->coordinate().isValid())
+    }
+    if (!_start->coordinate().isValid()) {
         return false;
-    if (_end.isNull())
+    }
+    if (_end.isNull()) {
         return false;
-    if (!_end->coordinate().isValid())
+    }
+    if (!_end->coordinate().isValid()) {
         return false;
+    }
     return true;
 }
 
@@ -128,8 +140,9 @@ auto FlightRoute::Leg::descriptionMetric() const -> QString
 
 auto FlightRoute::Leg::makeDescription(bool useMetricUnits) const -> QString
 {
-    if (!isValid())
+    if (!isValid()) {
         return QString();
+    }
 
     QString result;
     if (useMetricUnits) {
@@ -138,14 +151,17 @@ auto FlightRoute::Leg::makeDescription(bool useMetricUnits) const -> QString
         result += QString("%1 NM").arg(distance().toNM(), 0, 'f', 1);
     }
     auto _time = Time();
-    if (_time.isFinite())
+    if (_time.isFinite()) {
         result += QString(" • %1 h").arg(_time.toHoursAndMinutes());
+    }
     auto TCInDEG = TC().toNormalizedDEG();
-    if (qIsFinite(TCInDEG))
+    if (qIsFinite(TCInDEG)) {
         result += QString(" • TC %1°").arg(qRound(TCInDEG));
+    }
     double THInDEG = TH().toNormalizedDEG();
-    if (qIsFinite(THInDEG))
+    if (qIsFinite(THInDEG)) {
         result += QString(" • TH %1°").arg(qRound(THInDEG));
+    }
 
     return result;
 }
@@ -153,19 +169,25 @@ auto FlightRoute::Leg::makeDescription(bool useMetricUnits) const -> QString
 
 auto FlightRoute::Leg::hasDataForWindTriangle() const -> bool
 {
-    if ( _aircraft.isNull() )
+    if ( _aircraft.isNull() ) {
         return false;
-    if ( !qIsFinite(_aircraft->cruiseSpeedInKT()) )
+    }
+    if ( !qIsFinite(_aircraft->cruiseSpeedInKT()) ) {
         return false;
+    }
 
-    if (_wind.isNull())
+    if (_wind.isNull()) {
         return false;
-    if ( !qIsFinite(_wind->windSpeedInKT()) )
+    }
+    if ( !qIsFinite(_wind->windSpeedInKT()) ) {
         return false;
-    if ( !qIsFinite(_wind->windDirectionInDEG()) )
+    }
+    if ( !qIsFinite(_wind->windDirectionInDEG()) ) {
         return false;
-    if (_wind->windSpeedInKT() > 0.75*_aircraft->cruiseSpeedInKT())
+    }
+    if (_wind->windSpeedInKT() > 0.75*_aircraft->cruiseSpeedInKT()) {
         return false;
+    }
 
     return true;
 }

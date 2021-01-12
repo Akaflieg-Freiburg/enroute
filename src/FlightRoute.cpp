@@ -116,7 +116,7 @@ auto FlightRoute::contains(QObject * waypoint) const -> bool
 
     auto *testWaypoint = qobject_cast<Waypoint *>(waypoint);
     // must loop over list in order to compare values (not pointers)
-    for (const auto &_waypoint : _waypoints) {
+    foreach(auto _waypoint, _waypoints) {
         if (_waypoint.isNull()) {
             continue;
         }
@@ -524,6 +524,6 @@ void FlightRoute::updateLegs()
     _legs.clear();
 
     for(int i=0; i<_waypoints.size()-1; i++) {
-        _legs.append(new Leg(_waypoints[i], _waypoints[i+1], _aircraft, _wind, this));
+        _legs.append(new Leg(_waypoints.at(i), _waypoints.at(i+1), _aircraft, _wind, this));
     }
 }

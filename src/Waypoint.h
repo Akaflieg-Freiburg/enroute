@@ -128,7 +128,7 @@ public:
      *
      * @param newExtendedName Property extendedName
     */
-    void setExtendedName(QString newExtendedName);
+    void setExtendedName(const QString &newExtendedName);
 
     /*! \brief Retrieve property by name
      *

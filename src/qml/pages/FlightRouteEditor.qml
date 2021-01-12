@@ -38,6 +38,8 @@ Page {
         GridLayout {
             id: grid
             columns: 3
+
+            columnSpacing: 0
             rowSpacing: 0
 
             anchors.left: parent.left
@@ -66,6 +68,18 @@ Page {
                 enabled: false
                 text: globalSettings.useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
             }
+
+            ToolButton {
+                id: editButton
+
+                visible: (model.modelData instanceof Waypoint) && (model.modelData.icon.indexOf("WP") !== -1)
+                icon.source: "/icons/material/ic_mode_edit.svg"
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    wpEditor.waypoint = model.modelData
+                    wpEditor.open()
+                }
+            } // ToolButton
 
             ToolButton {
                 id: wpMenuTB
@@ -699,6 +713,10 @@ Page {
 
     WaypointDescription {
         id: waypointDescription
+    }
+
+    WaypointEditor {
+        id: wpEditor
     }
 
 } // Page

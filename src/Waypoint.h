@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -116,13 +116,19 @@ public:
      *
      * This property holds a string of the form "Karlsruhe (DVOR-DME)"
      */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+    Q_PROPERTY(QString extendedName READ extendedName WRITE setExtendedName NOTIFY extendedNameChanged)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property extendedName
     */
     QString extendedName() const;
+
+    /*! \brief Setter function for property with the same name
+     *
+     * @param newExtendedName Property extendedName
+    */
+    void setExtendedName(const QString &newExtendedName);
 
     /*! \brief Retrieve property by name
      *
@@ -214,7 +220,7 @@ public:
      * abbreviation that will be understood by pilots ("RWY ", "ELEV",
      * etc.). The rest of the string will then contain the actual data.
      */
-    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription CONSTANT)
+    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription  NOTIFY extendedNameChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -252,7 +258,7 @@ public:
      *
      * @see threeLineTitle
      */
-    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle NOTIFY extendedNameChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -288,6 +294,9 @@ public:
 
 
 signals:
+    /*! \brief Notifier signal */
+    void extendedNameChanged();
+
     /*! \brief Notifier signal */
     void hasMETARChanged();
 

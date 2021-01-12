@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org          *
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDateTime>
+#include <QQmlEngine>
 
 #include "FlightRoute.h"
 #include "GeoMapProvider.h"
@@ -106,8 +108,9 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
     //
     for(const auto& _waypoint : _waypoints) {
 
-        if (!_waypoint->isValid())
+        if (!_waypoint->isValid()) {
             continue; // skip silently
+        }
 
         QGeoCoordinate position = _waypoint->coordinate();
         auto code = _waypoint->getPropery("COD").toString();
@@ -142,8 +145,9 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
 auto FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider) -> QString
 {
     QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly)) {
         return tr("Error opening file '%1'").arg(fileName);
+    }
 
     QXmlStreamReader xml(&file);
     return loadFromGpx(xml, geoMapProvider);
@@ -178,7 +182,7 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
             return;
         }
 
-        bool ok;
+        bool ok = false;
         double lon = xml.attributes().value("lon").toFloat(&ok);
         if (!ok) {
             qDebug() << "Unable to convert lon to float: " << xml.attributes().value("lon");
@@ -198,8 +202,9 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
         QString cmt;
         while (!xml.atEnd() && !xml.hasError())
         {
-            if (!xml.readNext())
+            if (xml.readNext() == 0u) {
                 break;
+            }
 
             QString xmlTag = xml.name().toString();
 
@@ -241,21 +246,31 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
         if (geoMapProvider != nullptr) {
             QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
             nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
-
-            if (nearest != nullptr) {
-                auto* wpt = dynamic_cast<Waypoint*>(nearest);
-                if (wpt->getPropery("TYP") == "WP" && wpt->getPropery("CAT") == "WP" && name.length() > 0)
-                    wpt->setProperty("NAM", name);
-            }
         }
-        target.append(nearest == nullptr ? new Waypoint(pos, this) : new Waypoint(*dynamic_cast<Waypoint*>(nearest), this));
-   }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
+
+        // Now create a waypoint, owned by this, and set its name
+        Waypoint *wpt = nullptr;
+        if (nearest == nullptr) {
+            wpt = new Waypoint(pos, this);
+        } else {
+            wpt = new Waypoint(*qobject_cast<Waypoint*>(nearest), this);
+        }
+        QQmlEngine::setObjectOwnership(wpt, QQmlEngine::CppOwnership);
+        connect(wpt, &Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
+
+        if (wpt->getPropery("TYP") == "WP" && wpt->getPropery("CAT") == "WP" && name.length() > 0) {
+            wpt->setExtendedName(name);
+        }
+
+        target.append(wpt);
+    }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
 
     while (!xml.atEnd() && !xml.hasError())
     {
         auto token = xml.readNext();
-        if (!token)
+        if (token == 0U) {
             break;
+        }
 
         auto name = xml.name().toString();
 
@@ -275,8 +290,8 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
     // Could be made configurable.
     //
     QList<Waypoint*> &source = (rtept.length() > 0) ? rtept :
-                               (trkpt.length() > 0) ? trkpt :
-                                                      wpt;
+                                                      (trkpt.length() > 0) ? trkpt :
+                                                                             wpt;
     if (source.length() == 0) {
         // don't have to delete lists rtept, trkpt, wpt as they're empty
         return tr("Error interpreting GPX file: no valid route found.");

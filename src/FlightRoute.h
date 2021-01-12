@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -193,7 +193,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider=nullptr);
+    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -206,7 +206,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider);
+    QString loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -219,7 +219,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider);
+    QString loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider);
 
     /*! \brief List of waypoints in the flight route that are not airfields
      *

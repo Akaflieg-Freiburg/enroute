@@ -97,7 +97,7 @@ Dialog {
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: (waypoint.hasMETAR) ? waypoint.weatherStation.metar.flightCategoryColor : "transparent"
+                color: ((waypoint !== null) && waypoint.hasMETAR) ? waypoint.weatherStation.metar.flightCategoryColor : "transparent"
                 opacity: 0.2
             }
 
@@ -301,16 +301,6 @@ Dialog {
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_bug_report.svg"
-
-                onClicked: {
-                    mobileAdaptor.vibrateBrief()
-                    close()
-                    stackView.pop()
-                    stackView.push("../pages/BugReportPage.qml")
-                }
-            }
         }
 
         Label { // Second header line with distance and QUJ
@@ -432,5 +422,4 @@ Dialog {
         id: weatherReport
         weatherStation: (waypoint !== null) ? waypoint.weatherStation : null
     }
-
 } // Dialog

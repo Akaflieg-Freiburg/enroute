@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,10 +23,10 @@
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLibraryInfo>
-#include <QQuickItem>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlProperty>
+#include <QQuickItem>
 #include <QSettings>
 #include <QTranslator>
 
@@ -49,11 +49,14 @@
 #include "ScaleQuickItem.h"
 #include "Weather_DownloadManager.h"
 #include "Weather_Wind.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 auto main(int argc, char *argv[]) -> int
 {
     // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
-    putenv((char *)"QSG_RENDER_LOOP=basic");
+    qputenv("QSG_RENDER_LOOP", "basic");
 
     // Register types
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
@@ -62,6 +65,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterUncreatableType<GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
     qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::FLARMAdaptor>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
@@ -96,25 +100,28 @@ auto main(int argc, char *argv[]) -> int
     parser.addPositionalArgument("[fileName]", QCoreApplication::translate("main", "File to import."));
     parser.process(app);
     auto positionalArguments = parser.positionalArguments();
-    if (positionalArguments.length() > 1)
+    if (positionalArguments.length() > 1) {
         parser.showHelp();
+    }
 
 #if !defined(Q_OS_ANDROID)
     // Single application on desktops
     KDSingleApplication kdsingleapp;
     if (!kdsingleapp.isPrimaryInstance()) {
-        if (positionalArguments.length() > 0)
+        if (positionalArguments.length() > 0) {
             kdsingleapp.sendMessage(positionalArguments[0].toUtf8());
-        else
+        } else {
             kdsingleapp.sendMessage(QByteArray());
+        }
         return 0;
     }
 #endif
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     auto *adaptor = new MobileAdaptor();
-    if (positionalArguments.length() == 1)
+    if (positionalArguments.length() == 1) {
         adaptor->processFileOpenRequest(positionalArguments[0]);
+    }
 #if !defined(Q_OS_ANDROID)
     QObject::connect(&kdsingleapp, SIGNAL(messageReceived(const QByteArray &)), adaptor, SLOT(processFileOpenRequest(const QByteArray &)));
 #endif
@@ -122,7 +129,7 @@ auto main(int argc, char *argv[]) -> int
     /*
      * Set up ApplicationEngine for QML
      */
-    auto engine = new QQmlApplicationEngine();
+    auto *engine = new QQmlApplicationEngine();
     QObject::connect(GlobalSettings::globalInstance(), &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
@@ -135,43 +142,43 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());
 
     // Make MobileAdaptor available to QML engine
-    QTimer::singleShot(4000, adaptor, SLOT(hideSplashScreen()));
+    QTimer::singleShot(4s, adaptor, &MobileAdaptor::hideSplashScreen);
     engine->rootContext()->setContextProperty("mobileAdaptor", adaptor);
 
     // Attach library info
-    auto librarian = new Librarian(engine);
+    auto *librarian = new Librarian(engine);
     engine->rootContext()->setContextProperty("librarian", librarian);
 
     // Attach aircraft info
-    auto aircraft = new Aircraft(engine);
+    auto *aircraft = new Aircraft(engine);
     engine->rootContext()->setContextProperty("aircraft", aircraft);
 
     // Attach wind info
-    auto wind = new Weather::Wind(engine);
+    auto *wind = new Weather::Wind(engine);
     engine->rootContext()->setContextProperty("wind", wind);
 
     // Attach clock
     engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
 
     // Attach flight route
-    auto flightroute = new FlightRoute(aircraft, wind, engine);
+    auto *flightroute = new FlightRoute(aircraft, wind, engine);
     engine->rootContext()->setContextProperty("flightRoute", flightroute);
 
     // Create NetwortAccessManager
-    auto networkAccessManager = new QNetworkAccessManager();
+    auto *networkAccessManager = new QNetworkAccessManager();
     networkAccessManager->setTransferTimeout();
 
     // Attach map manager
-    auto mapManager = new MapManager(networkAccessManager);
+    auto *mapManager = new MapManager(networkAccessManager);
     engine->rootContext()->setContextProperty("mapManager", mapManager);
     QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
-    auto geoMapProvider = new GeoMapProvider(mapManager, librarian);
+    auto *geoMapProvider = new GeoMapProvider(mapManager, librarian);
     engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
 
     // Attach Weather::DownloadManager
-    auto downloadManager = new Weather::DownloadManager(flightroute, geoMapProvider, networkAccessManager, engine);
+    auto *downloadManager = new Weather::DownloadManager(flightroute, geoMapProvider, networkAccessManager, engine);
     engine->rootContext()->setContextProperty("weatherDownloadManager", downloadManager);
     geoMapProvider->setDownloadManager(downloadManager);
 
@@ -183,8 +190,9 @@ auto main(int argc, char *argv[]) -> int
 
     // Load GUI
     engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    if (engine->rootObjects().isEmpty())
+    if (engine->rootObjects().isEmpty()) {
         return -1;
+    }
 
     // Enter event loop
     QGuiApplication::exec();
@@ -194,10 +202,11 @@ auto main(int argc, char *argv[]) -> int
     QQuickItem *flightMap = nullptr;
     foreach (auto rootItem, engine->rootObjects()) {
         flightMap = rootItem->findChild<QQuickItem*>("flightMap");
-        if (flightMap != nullptr)
+        if (flightMap != nullptr) {
             break;
+        }
     }
-    if (flightMap) {
+    if (flightMap != nullptr) {
         settings.setValue("Map/center", QQmlProperty::read(flightMap, "center"));
         settings.setValue("Map/bearing", QQmlProperty::read(flightMap, "bearing"));
         settings.setValue("Map/zoomLevel", QQmlProperty::read(flightMap, "zoomLevel"));

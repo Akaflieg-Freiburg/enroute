@@ -14,6 +14,7 @@
         <file alias="dialogs/TooManyDownloadsDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/TooManyDownloadsDialog.qml</file>
         <file alias="dialogs/UpdateMapDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/UpdateMapDialog.qml</file>
         <file alias="dialogs/WaypointDescription.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointDescription.qml</file>
+        <file alias="dialogs/WaypointEditor.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointEditor.qml</file>
         <file alias="dialogs/WeatherReport.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WeatherReport.qml</file>
         <file alias="items/AutoSizingMenu.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/AutoSizingMenu.qml</file>
         <file alias="items/FlightMap.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/FlightMap.qml</file>

@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org          *
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -243,11 +244,9 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
         // of the coordinate which was just imported from gpx.
         QObject* nearest = nullptr;
         if (geoMapProvider != nullptr) {
-            QGeoCoordinate distant_pos(lat + 1 /* 0.01 about 1.11 km */, lon);
+            QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
             nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
         }
-#warning Does not seem to work
-qWarning() << name << nearest;
 
         // Now create a waypoint, owned by this, and set its name
         Waypoint *wpt = nullptr;

@@ -1579,6 +1579,31 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
             continue;
         }
 
+        // SNOW, THUNDERSTORM
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::SNOW) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("thunderstorm with snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("thunderstorm with snow in the vicinity");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light thunderstorm with snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate thunderstorm with snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy thunderstorm with snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent thunderstorm with snow");
+                break;
+            }
+            continue;
+        }
+
         // SMALL HAIL, SHOWERS
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::SMALL_HAIL) {
             switch(wp.qualifier()) {

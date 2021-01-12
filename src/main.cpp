@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -59,6 +59,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterUncreatableType<GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
     qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");

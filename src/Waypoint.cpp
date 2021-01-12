@@ -107,7 +107,7 @@ void Waypoint::setExtendedName(QString newExtendedName)
     if (newExtendedName == _properties.value("NAM").toString()) {
         return;
 }
-    _properties.insert("NAM", newExtendedName);
+    _properties.replace("NAM", newExtendedName);
     emit extendedNameChanged();
 }
 

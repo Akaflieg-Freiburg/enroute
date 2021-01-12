@@ -54,7 +54,10 @@ void FlightRoute::append(QObject *waypoint)
     }
 
     auto* wp =  qobject_cast<Waypoint*>(waypoint);
-    _waypoints.append(new Waypoint(*wp, this));
+    auto* myWp = new Waypoint(*wp, this);
+    QQmlEngine::setObjectOwnership(myWp, QQmlEngine::CppOwnership);
+    connect(myWp, &Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
+    _waypoints.append(myWp);
 
     updateLegs();
     emit waypointsChanged();
@@ -196,6 +199,7 @@ auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
             return tr("Cannot parse content of file '%1'.").arg(fileName);
         }
         QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
+        connect(wp, &Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
         newWaypoints.append(wp);
     }
 
@@ -391,6 +395,7 @@ auto FlightRoute::routeObjects() const -> QList<QObject*>
         return result;
     }
 
+    result.reserve(2*_waypoints.size()-1);
     for(int i=0; i<_waypoints.size()-1; i++) {
         result.append(_waypoints[i]);
         result.append(_legs[i]);
@@ -500,8 +505,9 @@ auto FlightRoute::summaryMetric() const -> QString {
 auto FlightRoute::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
-    foreach(auto waypoint, _waypoints)
+    foreach(auto waypoint, _waypoints) {
         waypointArray.append(waypoint->toJSON());
+    }
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
     jsonObj.insert(QStringLiteral("features"), waypointArray);

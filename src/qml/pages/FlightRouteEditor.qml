@@ -38,6 +38,8 @@ Page {
         GridLayout {
             id: grid
             columns: 3
+
+            columnSpacing: 0
             rowSpacing: 0
 
             anchors.left: parent.left
@@ -71,7 +73,7 @@ Page {
                 id: editButton
 
                 visible: (model.modelData instanceof Waypoint) && (model.modelData.icon.indexOf("WP") !== -1)
-                icon.source: "/icons/material/ic_send.svg"
+                icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     wpEditor.waypoint = model.modelData

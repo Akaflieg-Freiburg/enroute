@@ -18,6 +18,7 @@
  ***************************************************************************/
 
 #include <QDateTime>
+#include <QQmlEngine>
 
 #include "FlightRoute.h"
 #include "GeoMapProvider.h"
@@ -241,14 +242,22 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvi
         if (geoMapProvider != nullptr) {
             QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
             nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
-
-            if (nearest != nullptr) {
-                auto* wpt = dynamic_cast<Waypoint*>(nearest);
-                if (wpt->getPropery("TYP") == "WP" && wpt->getPropery("CAT") == "WP" && name.length() > 0)
-                    wpt->setProperty("NAM", name);
-            }
         }
-        target.append(nearest == nullptr ? new Waypoint(pos, this) : new Waypoint(*dynamic_cast<Waypoint*>(nearest), this));
+
+        // Now create a waypoint, owned by this, and set its name
+        Waypoint *wpt = nullptr;
+        if (nearest == nullptr) {
+            wpt = new Waypoint(pos, this);
+        } else {
+            wpt = new Waypoint(*qobject_cast<Waypoint*>(nearest), this);
+        }
+        QQmlEngine::setObjectOwnership(wpt, QQmlEngine::CppOwnership);
+        connect(wpt, &Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
+        if (wpt->getPropery("TYP") == "WP" && wpt->getPropery("CAT") == "WP" && name.length() > 0) {
+            wpt->setProperty("NAM", name);
+        }
+
+        target.append(wpt);
    }; // <<< lambda function to read a single gpx rtept, trkpt or wpt
 
     while (!xml.atEnd() && !xml.hasError())

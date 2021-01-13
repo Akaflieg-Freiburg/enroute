@@ -98,6 +98,10 @@ public:
      */
     Q_INVOKABLE void append(const QGeoCoordinate& position);
 
+#warning
+    Q_INVOKABLE QList<QObject *> potentialInsertPositions(Waypoint *wp);
+
+
     /*! \brief Returns true if waypoint is in this route
      *
      * @param waypoint Pointer to a waypoint

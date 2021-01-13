@@ -100,6 +100,12 @@ public:
         return _properties.contains(propertyName);
     }
 
+#warning
+    bool isNear(const Waypoint *other) const
+    {
+        return _coordinate.distanceTo(other->_coordinate) < 1000;
+    }
+
     /*! \brief Coordinate of the waypoint
      *
      * If the coordinate is invalid, this waypoint should not be used

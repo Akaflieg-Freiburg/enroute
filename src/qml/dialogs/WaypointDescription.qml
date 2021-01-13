@@ -25,6 +25,7 @@ import QtQuick.Shapes 1.15
 
 import enroute 1.0
 
+import "../items"
 
 /* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
 
@@ -343,8 +344,7 @@ Dialog {
 
     footer: DialogButtonBox {
 
-        Button {
-            flat: true
+        ToolButton {
             text: qsTr("Direct")
             icon.source: "/icons/material/ic_keyboard_tab.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
@@ -362,6 +362,7 @@ Dialog {
             }
         }
 
+        /*
         Button {
             flat: true
             text: flightRoute.contains(waypoint) ? qsTr("from Route") : qsTr("to Route")
@@ -377,6 +378,68 @@ Dialog {
                 }
             }
         }
+       */
+
+        ToolButton {
+            enabled: flightRoute.potentialInsertPositions(waypoint).length !== 0
+            icon.source: "/icons/material/ic_add_circle.svg"
+            text: qsTr("Route")
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                flightRoute.append(waypoint)
+                close();
+            }
+        }
+
+        ToolButton {
+            icon.source: "/icons/material/ic_remove_circle.svg"
+            text: qsTr("Route")
+            enabled: flightRoute.contains(waypoint)
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                flightRoute.removeWaypoint(waypoint)
+            }
+        }
+
+        ToolButton {
+            id: moreButton
+            icon.source: "/icons/material/ic_more_horiz.svg"
+
+            visible: model.modelData.hasFile & !model.modelData.downloading
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                removeMenu.popup()
+            }
+
+            AutoSizingMenu {
+                id: removeMenu
+
+                Action {
+                    id: infoAction
+
+                    text: qsTr("Map Info")
+
+                    onTriggered: {
+                        mobileAdaptor.vibrateBrief()
+                        infoDialog.title = qsTr("Map Info: ") + model.modelData.objectName
+                        infoDialog.text = geoMapProvider.describeMapFile(model.modelData.fileName)
+                        infoDialog.open()
+                    }
+                }
+                Action {
+                    id: removeAction
+
+                    text: qsTr("Uninstall")
+
+                    onTriggered: {
+                        mobileAdaptor.vibrateBrief()
+                        model.modelData.deleteFile()
+                    }
+                }
+            }
+
+        } // ToolButton
+
 
         onRejected: close()
     }

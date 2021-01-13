@@ -70,6 +70,38 @@ void FlightRoute::append(const QGeoCoordinate& position)
 }
 
 
+QList<QObject *> FlightRoute::potentialInsertPositions(Waypoint *wp)
+{
+    QList<QObject *> positions;
+
+    if (wp == nullptr) {
+        return positions;
+    }
+    if (_waypoints.isEmpty()) {
+        return positions;
+    }
+
+
+    // Check if wp can inserted at the very beginning
+    if ( !wp->isNear(_waypoints.first()) ) {
+        positions.append(nullptr);
+    }
+
+    // Check if wp can be inserted at the end
+    for(int i=0; i<_waypoints.length()-1; i++) {
+        if (!wp->isNear(_waypoints.at(i)) && !wp->isNear(_waypoints.at(i+1)) ) {
+            positions.append(_waypoints.at(i));
+        }
+    }
+    // Next, check is wp can be inserted at the very end
+    if (!wp->isNear(_waypoints.last())) {
+        positions.append(_waypoints.last());
+    }
+
+    return positions;
+}
+
+
 auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 {
     QGeoRectangle bbox;

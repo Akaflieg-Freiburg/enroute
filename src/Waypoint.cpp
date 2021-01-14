@@ -92,6 +92,30 @@ Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
 }
 
 
+//
+// METHODS
+//
+
+auto Waypoint::isNear(const Waypoint *other) const -> bool
+{
+    if (other == nullptr) {
+        return false;
+    }
+    if (!_coordinate.isValid()) {
+        return false;
+    }
+    if (!other->coordinate().isValid()) {
+        return false;
+    }
+
+    return _coordinate.distanceTo(other->_coordinate) < 2000;
+}
+
+
+//
+// PROPERTIES
+//
+
 auto Waypoint::extendedName() const -> QString
 {
     if (_properties.value("TYP").toString() == "NAV") {
@@ -106,7 +130,7 @@ void Waypoint::setExtendedName(const QString &newExtendedName)
 {
     if (newExtendedName == _properties.value("NAM").toString()) {
         return;
-}
+    }
     _properties.replace("NAM", newExtendedName);
     emit extendedNameChanged();
 }

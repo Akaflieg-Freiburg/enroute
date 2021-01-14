@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -362,84 +362,37 @@ Dialog {
             }
         }
 
-        /*
-        Button {
-            flat: true
-            text: flightRoute.contains(waypoint) ? qsTr("from Route") : qsTr("to Route")
-            icon.source: flightRoute.contains(waypoint) ? "/icons/material/ic_remove_circle.svg" : "/icons/material/ic_add_circle.svg"
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-
-            onClicked: {
-                mobileAdaptor.vibrateBrief()
-                if (!flightRoute.contains(waypoint)) {
-                    flightRoute.append(waypoint)
-                } else {
-                    flightRoute.removeWaypoint(waypoint)
-                }
-            }
-        }
-       */
-
         ToolButton {
-            enabled: flightRoute.potentialInsertPositions(waypoint).length !== 0
+            enabled: {
+                // Mention lastWaypointObject to ensure that property gets updated
+                // when flight route changes
+                flightRoute.lastWaypointObject
+
+                return (waypoint !== null) && flightRoute.canAppend(waypoint)
+            }
             icon.source: "/icons/material/ic_add_circle.svg"
-            text: qsTr("Route")
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 flightRoute.append(waypoint)
-                close();
+                close()
             }
         }
 
         ToolButton {
             icon.source: "/icons/material/ic_remove_circle.svg"
-            text: qsTr("Route")
-            enabled: flightRoute.contains(waypoint)
+            enabled:  {
+                // Mention lastWaypointObject to ensure that property gets updated
+                // when flight route changes
+                flightRoute.lastWaypointObject
+
+                return flightRoute.contains(waypoint)
+            }
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 flightRoute.removeWaypoint(waypoint)
+                close()
             }
         }
-
-        ToolButton {
-            id: moreButton
-            icon.source: "/icons/material/ic_more_horiz.svg"
-
-            visible: model.modelData.hasFile & !model.modelData.downloading
-            onClicked: {
-                mobileAdaptor.vibrateBrief()
-                removeMenu.popup()
-            }
-
-            AutoSizingMenu {
-                id: removeMenu
-
-                Action {
-                    id: infoAction
-
-                    text: qsTr("Map Info")
-
-                    onTriggered: {
-                        mobileAdaptor.vibrateBrief()
-                        infoDialog.title = qsTr("Map Info: ") + model.modelData.objectName
-                        infoDialog.text = geoMapProvider.describeMapFile(model.modelData.fileName)
-                        infoDialog.open()
-                    }
-                }
-                Action {
-                    id: removeAction
-
-                    text: qsTr("Uninstall")
-
-                    onTriggered: {
-                        mobileAdaptor.vibrateBrief()
-                        model.modelData.deleteFile()
-                    }
-                }
-            }
-
-        } // ToolButton
-
 
         onRejected: close()
     }

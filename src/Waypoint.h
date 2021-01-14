@@ -82,6 +82,9 @@ public:
     // Standard destructor
     ~Waypoint() = default;
 
+    //
+    // METHODS
+    //
 
     /*! \brief Check existence of a given property
      *
@@ -100,11 +103,84 @@ public:
         return _properties.contains(propertyName);
     }
 
-#warning
-    bool isNear(const Waypoint *other) const
+    /*! \brief Check if other waypoint is geographically near *this
+     *
+     *  @param other Pointer to other waypoint (nullptr is allowed)
+     *
+     *  @returns True if distance can be computed and is less than 2km
+     */
+    bool isNear(const Waypoint *other) const;
+
+    /*! \brief Retrieve property by name
+     *
+     * Recall that the waypoint data is stored as a list of properties that
+     * correspond to waypoint feature of a GeoJSON file, as described in
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * This method allows to retrieve the individual properties by name.
+     *
+     * @param propertyName The name of the member. This is a string such as "CAT",
+     * "TYP", "NAM", etc
+     *
+     * @returns Value of the proerty
+     */
+    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
     {
-        return _coordinate.distanceTo(other->_coordinate) < 1000;
+        return _properties.value(propertyName);
     }
+
+    /* \brief Check if the waypoint is valid
+     *
+     * This method checks if the waypoint has a valid coordinate and if the
+     * properties satisfy the specifications outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *
+     * @returns True if the waypoint is valid.
+     */
+    bool isValid() const;
+
+    /*! \brief Equality check
+     *
+     * @param other Right hand side of the equality check
+     *
+     * @returns True if the coordinates and all properties agree.
+     */
+    bool operator==(const Waypoint &other) const;
+
+    /*! \brief Serialization to GeoJSON object
+     *
+     * This method serialises the waypoint as a GeoJSON object. The object
+     * conforms to the specification outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * The waypoint can be restored with the obvious constructor
+     *
+     * @returns QJsonObject describing the waypoint
+     */
+    QJsonObject toJSON() const;
+
+    /*! \brief Connects this waypoint with a DownloadManager instance
+     *
+     * This method optionally connects the waypoint with an instance of the
+     * DownloadManager class.  Once connected, functions such has hasTAF can be
+     * used.
+     *
+     * @param downloadManager Pointer to a download manager
+     */
+    void setDownloadManager(Weather::DownloadManager *downloadManager);
+
+    /*! \brief Description of the way from a given point to the waypoint
+     *
+     * @param from Starting point of the way
+     *
+     * @param useMetric If true, then description uses metric units. Otherwise, nautical units are used.
+     *
+     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
+     */
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
+
+
+    //
+    // PROPERTIES
+    //
 
     /*! \brief Coordinate of the waypoint
      *
@@ -135,23 +211,6 @@ public:
      * @param newExtendedName Property extendedName
     */
     void setExtendedName(const QString &newExtendedName);
-
-    /*! \brief Retrieve property by name
-     *
-     * Recall that the waypoint data is stored as a list of properties that
-     * correspond to waypoint feature of a GeoJSON file, as described in
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * This method allows to retrieve the individual properties by name.
-     *
-     * @param propertyName The name of the member. This is a string such as "CAT",
-     * "TYP", "NAM", etc
-     *
-     * @returns Value of the proerty
-     */
-    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
-    {
-        return _properties.value(propertyName);
-    }
 
     /*! \brief Check if a METAR weather report is known for the waypoint
      *
@@ -199,24 +258,6 @@ public:
         return QStringLiteral("/icons/waypoints/%1.svg").arg(getPropery(QStringLiteral("CAT")).toString());
     }
 
-    /* \brief Check if the waypoint is valid
-     *
-     * This method checks if the waypoint has a valid coordinate and if the
-     * properties satisfy the specifications outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     *
-     * @returns True if the waypoint is valid.
-     */
-    bool isValid() const;
-
-    /*! \brief Equality check
-     *
-     * @param other Right hand side of the equality check
-     *
-     * @returns True if the coordinates and all properties agree.
-     */
-    bool operator==(const Waypoint &other) const;
-
     /* \brief Description of waypoint properties
      *
      * This method holds a list of strings in meaningful order that describe the
@@ -234,27 +275,6 @@ public:
      */
     QList<QString> tabularDescription() const;
 
-    /*! \brief Serialization to GeoJSON object
-     *
-     * This method serialises the waypoint as a GeoJSON object. The object
-     * conforms to the specification outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * The waypoint can be restored with the obvious constructor
-     *
-     * @returns QJsonObject describing the waypoint
-     */
-    QJsonObject toJSON() const;
-
-    /*! \brief Connects this waypoint with a DownloadManager instance
-     *
-     * This method optionally connects the waypoint with an instance of the
-     * DownloadManager class.  Once connected, functions such has hasTAF can be
-     * used.
-     *
-     * @param downloadManager Pointer to a download manager
-     */
-    void setDownloadManager(Weather::DownloadManager *downloadManager);
-
     /*! \brief Two-line description of the waypoint name
      *
      * This property holds a one-line or two-line description of the
@@ -271,16 +291,6 @@ public:
      * @returns Property twoLineTitle
      */
     QString twoLineTitle() const;
-
-    /*! \brief Description of the way from a given point to the waypoint
-     *
-     * @param from Starting point of the way
-     *
-     * @param useMetric If true, then description uses metric units. Otherwise, nautical units are used.
-     *
-     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
-     */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
 
     /*! \brief Check if a WeatherStation exists at this point
      *

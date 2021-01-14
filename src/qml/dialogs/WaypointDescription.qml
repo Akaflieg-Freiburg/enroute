@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@ import QtQuick.Shapes 1.15
 
 import enroute 1.0
 
+import "../items"
 
 /* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
 
@@ -343,8 +344,7 @@ Dialog {
 
     footer: DialogButtonBox {
 
-        Button {
-            flat: true
+        ToolButton {
             text: qsTr("Direct")
             icon.source: "/icons/material/ic_keyboard_tab.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
@@ -362,19 +362,35 @@ Dialog {
             }
         }
 
-        Button {
-            flat: true
-            text: flightRoute.contains(waypoint) ? qsTr("from Route") : qsTr("to Route")
-            icon.source: flightRoute.contains(waypoint) ? "/icons/material/ic_remove_circle.svg" : "/icons/material/ic_add_circle.svg"
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+        ToolButton {
+            enabled: {
+                // Mention lastWaypointObject to ensure that property gets updated
+                // when flight route changes
+                flightRoute.lastWaypointObject
 
+                return (waypoint !== null) && flightRoute.canAppend(waypoint)
+            }
+            icon.source: "/icons/material/ic_add_circle.svg"
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                if (!flightRoute.contains(waypoint)) {
-                    flightRoute.append(waypoint)
-                } else {
-                    flightRoute.removeWaypoint(waypoint)
-                }
+                flightRoute.append(waypoint)
+                close()
+            }
+        }
+
+        ToolButton {
+            icon.source: "/icons/material/ic_remove_circle.svg"
+            enabled:  {
+                // Mention lastWaypointObject to ensure that property gets updated
+                // when flight route changes
+                flightRoute.lastWaypointObject
+
+                return flightRoute.contains(waypoint)
+            }
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                flightRoute.removeWaypoint(waypoint)
+                close()
             }
         }
 

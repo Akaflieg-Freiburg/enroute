@@ -285,9 +285,21 @@ Item {
 
             onDoubleClicked: {
                 mobileAdaptor.vibrateBrief()
-                waypointDescription.waypoint = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                                              flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                var wp = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
+                                                        flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
+                                                        flightRoute)
+                if (wp !== null) {
+                    waypointDescription.waypoint = wp
+                } else {
+                    waypointTemplate.coordinate = flightMap.toCoordinate(Qt.point(mouse.x,mouse.y))
+                    waypointDescription.waypoint = waypointTemplate
+                }
+
                 waypointDescription.open()
+            }
+
+            Waypoint {
+                id: waypointTemplate
             }
         }
 

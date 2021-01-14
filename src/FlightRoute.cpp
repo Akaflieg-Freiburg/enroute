@@ -95,6 +95,19 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 }
 
 
+bool FlightRoute::canAppend(Waypoint *other) const
+{
+    if (other == nullptr) {
+        return true;
+    }
+    if (_waypoints.isEmpty() ) {
+        return true;
+    }
+
+    return !_waypoints.last()->isNear(other);
+}
+
+
 void FlightRoute::clear()
 {
     qDeleteAll(_waypoints);

@@ -30,6 +30,9 @@
 Waypoint::Waypoint(QObject *parent)
     : QObject(parent)
 {
+    _properties.insert("CAT", QString("WP"));
+    _properties.insert("NAM", QString("Waypoint"));
+    _properties.insert("TYP", QString("WP"));
 }
 
 
@@ -115,6 +118,16 @@ auto Waypoint::isNear(const Waypoint *other) const -> bool
 //
 // PROPERTIES
 //
+
+void Waypoint::setCoordinate(const QGeoCoordinate& newCoordinate)
+{
+    if (newCoordinate == _coordinate) {
+        return;
+}
+    _coordinate = newCoordinate;
+    emit coordinateChanged();
+}
+
 
 auto Waypoint::extendedName() const -> QString
 {

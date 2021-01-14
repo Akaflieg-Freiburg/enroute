@@ -112,11 +112,10 @@ auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordina
     }
 
     if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition)) {
-#warning WRONG! Should return nullptr!
-        auto *wp = new Waypoint(position, this);
-        return wp;
+        return nullptr;
     }
 
+    QQmlEngine::setObjectOwnership(result, QQmlEngine::CppOwnership);
     return result;
 }
 

@@ -44,6 +44,14 @@ class Waypoint : public QObject
 public:
     /*! \brief Constructs an invalid way point
      *
+     * This default constructor creates a waypoint with the following properties
+     *
+     * - "CAT" is set to "WP"
+     * - "NAM" is set to "Waypoint"
+     * - "TYP" is set to "WP"
+     *
+     * The coordinate is invalid.
+     *
      * @param parent The standard QObject parent pointer
      */
     explicit Waypoint(QObject *parent = nullptr);
@@ -186,13 +194,19 @@ public:
      *
      * If the coordinate is invalid, this waypoint should not be used
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property coordinate
      */
     QGeoCoordinate coordinate() const { return _coordinate; }
+
+    /*! \brief Setter function for property with the same name
+     *
+     * @param newCoordinate Property coordinate
+     */
+    void setCoordinate(const QGeoCoordinate& newCoordinate);
 
     /*! \brief Extended name of the waypoint
      *
@@ -308,8 +322,10 @@ public:
      */
     Weather::Station *weatherStation() const;
 
-
 signals:
+    /*! \brief Notifier signal */
+    void coordinateChanged();
+
     /*! \brief Notifier signal */
     void extendedNameChanged();
 

@@ -103,11 +103,17 @@ public:
      *
      * @param distPosition Reference position
      *
+     * @param flightRoute If not nullptr, then the mid-field waypoints of the
+     * flight route are also searched for nearby waypoints. (Note: This should be
+     * of type "const FlightRoute*", but QML cannot handle const)
+     *
      * @returns the Waypoint that is closest to the given position, provided
      * that the distance is not bigger than that to distPosition. If no
-     * sufficiently close waypoint is found a nullptr is returned.
+     * sufficiently close waypoint is found a nullptr is returned.  Ownership of
+     * the returned object is NOT transferred to the caller. For QML, ownership
+     * explicitly set to QQmlEngine::CppOwnership.
      */
-    Q_INVOKABLE QObject* closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
+    Q_INVOKABLE QObject* closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute=nullptr);
 
     /*! \brief Copyright notice for the map
      *

@@ -77,6 +77,11 @@ public:
     // Standard destructor
     ~FlightRoute() override = default;
 
+
+    //
+    // METHODS
+    //
+
     /*! \brief Adds a waypoint to the end of the route
      *
      * @warning This method accepts a pointer to a QObject and not a pointer to
@@ -98,13 +103,6 @@ public:
      */
     Q_INVOKABLE void append(const QGeoCoordinate& position);
 
-    /*! \brief Returns true if waypoint is in this route
-     *
-     * @param waypoint Pointer to a waypoint
-     * @returns bool true if waypoint in route
-     */
-    Q_INVOKABLE bool contains(QObject * waypoint) const;
-
     /*! Computes a bounding rectangle
      *
      * @returns A QGeoRectangle that contains the route. The rectangle returned
@@ -112,63 +110,20 @@ public:
      */
     QGeoRectangle boundingRectangle() const;
 
-    /*! \brief First waypoint in the route
+    /*! \brief Checks if other waypoint can be added as the new end of this route
      *
-     * This property holds a pointer to the first waypoint in the route, or a
-     * nullptr if the route is empty. In order to make the waypoints accessible
-     * to QML, the pointers are returned as pointers to QObjects rather than
-     * Waypoints. The waypoints are owned by this route.
+     *  @param other Pointer to other waypoint (may be nullptr)
      *
-     * @see lastWaypointObject
+     *  @returns True if route is emptry or if other waypoint is not near the current end of the route.
      */
-    Q_PROPERTY(QObject* firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
+    Q_INVOKABLE bool canAppend(Waypoint *other) const;
 
-    /*! \brief Getter function for the property with the same name
+    /*! \brief Returns true if waypoint is in this route
      *
-     * @returns Property firstWaypointObject
+     * @param waypoint Pointer to a waypoint
+     * @returns bool true if waypoint in route
      */
-    QObject* firstWaypointObject() const;
-
-    /*! \brief List of coordinates for the waypoints
-     *
-     * This property holds a list of coordinates of the waypoints, suitable for
-     * drawing the flight path on a QML map. For better interaction with QML,
-     * the data is returned in the form of a QVariantList rather than
-     * QList<QGeoCoordinate>.
-     */
-    Q_PROPERTY(QVariantList geoPath READ geoPath NOTIFY waypointsChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property geoPath
-     */
-    QVariantList geoPath() const;
-
-    /*! \brief True if the list of waypoints is empty*/
-    Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY waypointsChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property isEmpty
-     */
-    bool isEmpty() const {return _waypoints.isEmpty();}
-
-    /*! \brief Last waypoint in the route
-     *
-     * This property holds a pointer to the last waypoint in the route, or a
-     * nullptr if the route is empty. In order to make the waypoints accessible
-     * to QML, the pointers are returned as pointers to QObjects rather than
-     * Waypoints. The waypoints are owned by this route.
-     *
-     * @see firstWaypointObject
-     */
-    Q_PROPERTY(QObject* lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property lastWaypointObject
-     */
-    QObject* lastWaypointObject() const;
+    Q_INVOKABLE bool contains(QObject * waypoint) const;
 
     /*! \brief Loads the route from a GeoJSON document
      *
@@ -221,6 +176,112 @@ public:
      */
     QString loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider);
 
+    /*! \brief Saves flight route to a file
+     *
+     * This method saves the flight route as a GeoJSON file.  The file conforms
+     * to the specification outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *
+     * @param fileName File name, needs to include path and extension
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
+    Q_INVOKABLE QString save(const QString& fileName=QString()) const;
+
+    /*! \brief Suggests a name for saving this route
+     *
+     * This method suggests a name for saving the present route (without path
+     * and file extension).
+     *
+     * @returns Suggested name for saving the file. If no useful suggestion can
+     * be made, the returned string is a translation of "Flight Route"
+     */
+    Q_INVOKABLE QString suggestedFilename() const;
+
+    /*! \brief Exports to route to GeoJSON
+     *
+     * This method serialises the current flight route as a GeoJSON
+     * document. The document conforms to the specification outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *
+     * @returns QByteArray describing the flight route
+     */
+    Q_INVOKABLE QByteArray toGeoJSON() const;
+
+    /*! \brief Exports to route to GPX
+     *
+     * This method serialises the current flight route as a GPX document. The
+     * document conforms to the specification outlined
+     * [here](https://www.topografix.com/gpx.asp)
+     *
+     * @returns QByteArray containing GPX data describing the flight route
+     */
+    Q_INVOKABLE QByteArray toGpx() const;
+
+
+    //
+    // PROPERTIES
+    //
+
+    /*! \brief First waypoint in the route
+     *
+     * This property holds a pointer to the first waypoint in the route, or a
+     * nullptr if the route is empty. In order to make the waypoints accessible
+     * to QML, the pointers are returned as pointers to QObjects rather than
+     * Waypoints. The waypoints are owned by this route.
+     *
+     * @see lastWaypointObject
+     */
+    Q_PROPERTY(QObject* firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property firstWaypointObject
+     */
+    QObject* firstWaypointObject() const;
+
+    /*! \brief List of coordinates for the waypoints
+     *
+     * This property holds a list of coordinates of the waypoints, suitable for
+     * drawing the flight path on a QML map. For better interaction with QML,
+     * the data is returned in the form of a QVariantList rather than
+     * QList<QGeoCoordinate>.
+     */
+    Q_PROPERTY(QVariantList geoPath READ geoPath NOTIFY waypointsChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property geoPath
+     */
+    QVariantList geoPath() const;
+
+    /*! \brief True if the list of waypoints is empty */
+    Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY waypointsChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property isEmpty
+     */
+    bool isEmpty() const {return _waypoints.isEmpty();}
+
+    /*! \brief Last waypoint in the route
+     *
+     * This property holds a pointer to the last waypoint in the route, or a
+     * nullptr if the route is empty. In order to make the waypoints accessible
+     * to QML, the pointers are returned as pointers to QObjects rather than
+     * Waypoints. The waypoints are owned by this route.
+     *
+     * @see firstWaypointObject
+     */
+    Q_PROPERTY(QObject* lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property lastWaypointObject
+     */
+    QObject* lastWaypointObject() const;
+
     /*! \brief List of waypoints in the flight route that are not airfields
      *
      * This property lists all the waypoints in the route that are not airfields,
@@ -249,29 +310,6 @@ public:
      */
     QList<QObject*> routeObjects() const;
 
-    /*! \brief Saves flight route to a file
-     *
-     * This method saves the flight route as a GeoJSON file.  The file conforms
-     * to the specification outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     *
-     * @param fileName File name, needs to include path and extension
-     *
-     * @returns Empty string in case of success, human-readable, translated
-     * error message otherwise.
-     */
-    Q_INVOKABLE QString save(const QString& fileName=QString()) const;
-
-    /*! \brief Suggests a name for saving this route
-     *
-     * This method suggests a name for saving the present route (without path
-     * and file extension).
-     *
-     * @returns Suggested name for saving the file. If no useful suggestion can
-     * be made, the returned string is a translation of "Flight Route"
-     */
-    Q_INVOKABLE QString suggestedFilename() const;
-
     /*! \brief Human-readable summary of the flight route*/
     Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
 
@@ -289,26 +327,6 @@ public:
      * @returns Property summaryMetric
      */
     QString summaryMetric() const;
-
-    /*! \brief Exports to route to GeoJSON
-     *
-     * This method serialises the current flight route as a GeoJSON
-     * document. The document conforms to the specification outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     *
-     * @returns QByteArray describing the flight route
-     */
-    Q_INVOKABLE QByteArray toGeoJSON() const;
-
-    /*! \brief Exports to route to GPX
-     *
-     * This method serialises the current flight route as a GPX document. The
-     * document conforms to the specification outlined
-     * [here](https://www.topografix.com/gpx.asp)
-     *
-     * @returns QByteArray containing GPX data describing the flight route
-     */
-    Q_INVOKABLE QByteArray toGpx() const;
 
 public slots:
     /*! \brief Deletes all waypoints in the current route */

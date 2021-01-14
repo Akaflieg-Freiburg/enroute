@@ -286,7 +286,8 @@ Item {
             onDoubleClicked: {
                 mobileAdaptor.vibrateBrief()
                 waypointDescription.waypoint = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                                              flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                                                                              flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
+                                                                              flightRoute)
                 waypointDescription.open()
             }
         }

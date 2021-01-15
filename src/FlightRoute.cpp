@@ -95,6 +95,19 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 }
 
 
+auto FlightRoute::canAppend(Waypoint *other) const -> bool
+{
+    if (other == nullptr) {
+        return true;
+    }
+    if (_waypoints.isEmpty() ) {
+        return true;
+    }
+
+    return !_waypoints.last()->isNear(other);
+}
+
+
 void FlightRoute::clear()
 {
     qDeleteAll(_waypoints);
@@ -441,7 +454,7 @@ auto FlightRoute::suggestedFilename() const -> QString
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11) {  // Shorten name
-        name = name.left(10)+"…";
+        name = name.left(10)+"_";
     }
     if (!name.isEmpty()) {
         if (start.isEmpty()) {
@@ -459,7 +472,7 @@ auto FlightRoute::suggestedFilename() const -> QString
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11) {  // Shorten name
-        name = name.left(10)+"…";
+        name = name.left(10)+"_";
     }
     if (!name.isEmpty()) {
         if (end.isEmpty()) {

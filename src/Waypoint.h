@@ -44,9 +44,17 @@ class Waypoint : public QObject
 public:
     /*! \brief Constructs an invalid way point
      *
+     * This default constructor creates a waypoint with the following properties
+     *
+     * - "CAT" is set to "WP"
+     * - "NAM" is set to "Waypoint"
+     * - "TYP" is set to "WP"
+     *
+     * The coordinate is invalid.
+     *
      * @param parent The standard QObject parent pointer
      */
-    explicit Waypoint(QObject *parent = nullptr);
+    Q_INVOKABLE explicit Waypoint(QObject *parent = nullptr);
 
     /*! \brief Constructs a waypoint by copying data from another waypoint
      *
@@ -82,6 +90,9 @@ public:
     // Standard destructor
     ~Waypoint() = default;
 
+    //
+    // METHODS
+    //
 
     /*! \brief Check existence of a given property
      *
@@ -100,17 +111,102 @@ public:
         return _properties.contains(propertyName);
     }
 
+    /*! \brief Check if other waypoint is geographically near *this
+     *
+     *  @param other Pointer to other waypoint (nullptr is allowed)
+     *
+     *  @returns True if distance can be computed and is less than 2km
+     */
+    bool isNear(const Waypoint *other) const;
+
+    /*! \brief Retrieve property by name
+     *
+     * Recall that the waypoint data is stored as a list of properties that
+     * correspond to waypoint feature of a GeoJSON file, as described in
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * This method allows to retrieve the individual properties by name.
+     *
+     * @param propertyName The name of the member. This is a string such as "CAT",
+     * "TYP", "NAM", etc
+     *
+     * @returns Value of the proerty
+     */
+    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
+    {
+        return _properties.value(propertyName);
+    }
+
+    /* \brief Check if the waypoint is valid
+     *
+     * This method checks if the waypoint has a valid coordinate and if the
+     * properties satisfy the specifications outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     *
+     * @returns True if the waypoint is valid.
+     */
+    bool isValid() const;
+
+    /*! \brief Equality check
+     *
+     * @param other Right hand side of the equality check
+     *
+     * @returns True if the coordinates and all properties agree.
+     */
+    bool operator==(const Waypoint &other) const;
+
+    /*! \brief Serialization to GeoJSON object
+     *
+     * This method serialises the waypoint as a GeoJSON object. The object
+     * conforms to the specification outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     * The waypoint can be restored with the obvious constructor
+     *
+     * @returns QJsonObject describing the waypoint
+     */
+    QJsonObject toJSON() const;
+
+    /*! \brief Connects this waypoint with a DownloadManager instance
+     *
+     * This method optionally connects the waypoint with an instance of the
+     * DownloadManager class.  Once connected, functions such has hasTAF can be
+     * used.
+     *
+     * @param downloadManager Pointer to a download manager
+     */
+    void setDownloadManager(Weather::DownloadManager *downloadManager);
+
+    /*! \brief Description of the way from a given point to the waypoint
+     *
+     * @param from Starting point of the way
+     *
+     * @param useMetric If true, then description uses metric units. Otherwise, nautical units are used.
+     *
+     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
+     */
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
+
+
+    //
+    // PROPERTIES
+    //
+
     /*! \brief Coordinate of the waypoint
      *
      * If the coordinate is invalid, this waypoint should not be used
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property coordinate
      */
     QGeoCoordinate coordinate() const { return _coordinate; }
+
+    /*! \brief Setter function for property with the same name
+     *
+     * @param newCoordinate Property coordinate
+     */
+    void setCoordinate(const QGeoCoordinate& newCoordinate);
 
     /*! \brief Extended name of the waypoint
      *
@@ -129,23 +225,6 @@ public:
      * @param newExtendedName Property extendedName
     */
     void setExtendedName(const QString &newExtendedName);
-
-    /*! \brief Retrieve property by name
-     *
-     * Recall that the waypoint data is stored as a list of properties that
-     * correspond to waypoint feature of a GeoJSON file, as described in
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * This method allows to retrieve the individual properties by name.
-     *
-     * @param propertyName The name of the member. This is a string such as "CAT",
-     * "TYP", "NAM", etc
-     *
-     * @returns Value of the proerty
-     */
-    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
-    {
-        return _properties.value(propertyName);
-    }
 
     /*! \brief Check if a METAR weather report is known for the waypoint
      *
@@ -193,24 +272,6 @@ public:
         return QStringLiteral("/icons/waypoints/%1.svg").arg(getPropery(QStringLiteral("CAT")).toString());
     }
 
-    /* \brief Check if the waypoint is valid
-     *
-     * This method checks if the waypoint has a valid coordinate and if the
-     * properties satisfy the specifications outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     *
-     * @returns True if the waypoint is valid.
-     */
-    bool isValid() const;
-
-    /*! \brief Equality check
-     *
-     * @param other Right hand side of the equality check
-     *
-     * @returns True if the coordinates and all properties agree.
-     */
-    bool operator==(const Waypoint &other) const;
-
     /* \brief Description of waypoint properties
      *
      * This method holds a list of strings in meaningful order that describe the
@@ -227,27 +288,6 @@ public:
      * @returns Property tabularDescription
      */
     QList<QString> tabularDescription() const;
-
-    /*! \brief Serialization to GeoJSON object
-     *
-     * This method serialises the waypoint as a GeoJSON object. The object
-     * conforms to the specification outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * The waypoint can be restored with the obvious constructor
-     *
-     * @returns QJsonObject describing the waypoint
-     */
-    QJsonObject toJSON() const;
-
-    /*! \brief Connects this waypoint with a DownloadManager instance
-     *
-     * This method optionally connects the waypoint with an instance of the
-     * DownloadManager class.  Once connected, functions such has hasTAF can be
-     * used.
-     *
-     * @param downloadManager Pointer to a download manager
-     */
-    void setDownloadManager(Weather::DownloadManager *downloadManager);
 
     /*! \brief Two-line description of the waypoint name
      *
@@ -266,16 +306,6 @@ public:
      */
     QString twoLineTitle() const;
 
-    /*! \brief Description of the way from a given point to the waypoint
-     *
-     * @param from Starting point of the way
-     *
-     * @param useMetric If true, then description uses metric units. Otherwise, nautical units are used.
-     *
-     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
-     */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
-
     /*! \brief Check if a WeatherStation exists at this point
      *
      * If a pointer to a DownloadManager instance has been set with setDownloadManager()
@@ -292,8 +322,10 @@ public:
      */
     Weather::Station *weatherStation() const;
 
-
 signals:
+    /*! \brief Notifier signal */
+    void coordinateChanged();
+
     /*! \brief Notifier signal */
     void extendedNameChanged();
 

@@ -369,6 +369,41 @@ ApplicationWindow {
         }
     }
 
+    Label {
+        id: toast
+
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        x: (parent.width-width)/2.0
+        y: parent.height*(3.0/4.0)-height/2.0
+
+        text: "Lirum Larum, Löffelstiel"
+        color: "white"
+        bottomInset: -5
+        topInset: -5
+        leftInset: -5
+        rightInset: -5
+
+        horizontalAlignment: Text.AlignHCenter
+        background: Rectangle {
+            color: Material.primary
+            radius: 5
+        }
+
+        opacity: 0
+        SequentialAnimation {
+            id: seqA
+
+            NumberAnimation { target: toast; property: "opacity"; to: 1; duration: 400 }
+            PauseAnimation { duration: 1000 }
+            NumberAnimation { target: toast; property: "opacity"; to: 0; duration: 400 }
+        }
+
+        function doToast(string) {
+            toast.text = string
+            seqA.start()
+        }
+    }
+
     Loader {
         id: dialogLoader
         anchors.fill: parent
@@ -403,7 +438,7 @@ ApplicationWindow {
         onRejected: close()
     }
 
-    LongTextDialog {
+    LongTextDialogMD {
         id: whatsNewDialog
         standardButtons: Dialog.Ok
         anchors.centerIn: parent

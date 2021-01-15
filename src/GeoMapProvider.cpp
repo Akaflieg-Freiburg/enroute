@@ -81,11 +81,22 @@ auto GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*
 }
 
 
-auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> QObject*
+auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute) -> QObject*
 {
     position.setAltitude(qQNaN());
 
+    // Make a list of all waypoints that can be relevant
     auto wps = waypoints();
+    if (flightRoute != nullptr) {
+        foreach( auto objectPtr, flightRoute->midFieldWaypoints() ) {
+            auto *wp = qobject_cast<Waypoint*>(objectPtr);
+            if (wp != nullptr) {
+                wps << wp;
+            }
+        }
+    }
+
+    // No waypoints? Then return!
     if (wps.isEmpty()) {
         return nullptr;
     }
@@ -101,11 +112,19 @@ auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordina
     }
 
     if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition)) {
-        auto *wp = new Waypoint(position, this);
-        return wp;
+        return nullptr;
     }
 
+    QQmlEngine::setObjectOwnership(result, QQmlEngine::CppOwnership);
     return result;
+}
+
+
+auto GeoMapProvider::createWaypoint() -> Waypoint*
+{
+    auto *wp = new Waypoint();
+    QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
+    return wp;
 }
 
 

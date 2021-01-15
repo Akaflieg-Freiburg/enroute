@@ -429,7 +429,7 @@ Dialog {
             flightRoute.append(satNav.lastValidCoordinate)
             flightRoute.append(waypoint)
             close()
-            toast.doToast(qsTr("New light route: direct to %1.").arg(waypoint.extendedName))
+            toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }
         onRejected: {
             mobileAdaptor.vibrateBrief()

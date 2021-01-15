@@ -391,9 +391,9 @@ Dialog {
             }
             onClicked: {
                 mobileAdaptor.vibrateBrief()
-                flightRoute.removeWaypoint(waypoint)
                 close()
                 toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
+                flightRoute.removeWaypoint(waypoint)
             }
         }
 

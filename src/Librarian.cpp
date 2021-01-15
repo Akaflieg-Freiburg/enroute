@@ -234,19 +234,10 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr(R"html(
-<p>For countries covered by open flightmaps: the map now
-shows <strong>nature reserve areas</strong> (extremely important if
-you fly in Austria). If avaliable, the <strong>height of traffic
-circuits</strong> is now displayed prominently. <strong>Arrival and
-departure routes</strong> for control zones are more clearly marked.
-Flight Information Sectors are shown.</p>
-
-<p>This release also fixes an infrequent problem with saving flight
-routes. We apologize for any inconvenience!</p>
-
-<p>Thanks to the help of Sławek Mikuła, the app is again
-available in <strong>Polish language</strong>.</p>)html");
+        return tr(R"MD(
+There are many small improvements, in particular for **flight route editing**
+and **flight route import**.
+)MD");
     }
 
     QFile file(name);

@@ -436,7 +436,7 @@ ApplicationWindow {
         onRejected: close()
     }
 
-    LongTextDialog {
+    LongTextDialogMD {
         id: whatsNewDialog
         standardButtons: Dialog.Ok
         anchors.centerIn: parent

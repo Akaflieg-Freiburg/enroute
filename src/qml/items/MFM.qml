@@ -246,22 +246,31 @@ Item {
                 MapQuickItem {
 
                     anchorPoint.x: image.width/2
-                    anchorPoint.y: image.height
+                    anchorPoint.y: image.height/2
                     coordinate: model.modelData.coordinate
 
                     sourceItem: Item{
                         Image {
                             id: image
 
-                            source:  "/icons/waypoints/WP.svg"
-                            sourceSize.width: 20
-                            sourceSize.height: 20
+                            source:  "/icons/waypoints/WP-map.svg"
+                            sourceSize.width: 10
+                            sourceSize.height: 10
                         }
                         Label {
+                            anchors.verticalCenter: image.verticalCenter
                             anchors.left: image.right
+                            anchors.leftMargin: 5
                             text: model.modelData.extendedName
-                            visible: flightMap.zoomLevel > 11.0
+                            visible: (flightMap.zoomLevel > 11.0) && (model.modelData.extendedName !== "Waypoint")
+                            leftInset: -4
+                            rightInset: -4
+                            topInset: -2
+                            bottomInset: -2
                             background: Rectangle {
+                                opacity: 0.8
+                                border.color: "black"
+                                border.width: 0.5
                                 color: "white"
                             }
                         }

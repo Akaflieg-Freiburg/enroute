@@ -454,7 +454,7 @@ auto FlightRoute::suggestedFilename() const -> QString
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11) {  // Shorten name
-        name = name.left(10)+"…";
+        name = name.left(10)+"_";
     }
     if (!name.isEmpty()) {
         if (start.isEmpty()) {
@@ -472,7 +472,7 @@ auto FlightRoute::suggestedFilename() const -> QString
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11) {  // Shorten name
-        name = name.left(10)+"…";
+        name = name.left(10)+"_";
     }
     if (!name.isEmpty()) {
         if (end.isEmpty()) {

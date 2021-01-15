@@ -131,7 +131,7 @@ public:
         return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://maptiler.com/copyright/'>© MapTiler</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
     }
 
-    /*! \breif Create waypoint object
+    /*! \brief Create waypoint object
      *
      * This default constructor creates a waypoint with the following properties
      *

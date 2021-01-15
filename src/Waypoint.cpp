@@ -123,7 +123,7 @@ void Waypoint::setCoordinate(const QGeoCoordinate& newCoordinate)
 {
     if (newCoordinate == _coordinate) {
         return;
-}
+    }
     _coordinate = newCoordinate;
     emit coordinateChanged();
 }

@@ -131,6 +131,22 @@ public:
         return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://maptiler.com/copyright/'>© MapTiler</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
     }
 
+    /*! \breif Create waypoint object
+     *
+     * This default constructor creates a waypoint with the following properties
+     *
+     * - QObject parent is nullptr
+     * - "CAT" is set to "WP"
+     * - "NAM" is set to "Waypoint"
+     * - "TYP" is set to "WP"
+     *
+     * This method exists because it is difficult to create C++ objects in QML.
+     * The caller must accept ownership of the object.
+     *
+     * @returns Pointer to a newly created waypoint object
+     */
+    Q_INVOKABLE static Waypoint* createWaypoint() ;
+
     /*! \brief Describe installed map
      *
      * This method describes installed GeoJSON map files.

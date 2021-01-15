@@ -291,15 +291,12 @@ Item {
                 if (wp !== null) {
                     waypointDescription.waypoint = wp
                 } else {
+                    var waypointTemplate = geoMapProvider.createWaypoint()
+                    waypointTemplate.parent = flightMap
                     waypointTemplate.coordinate = flightMap.toCoordinate(Qt.point(mouse.x,mouse.y))
                     waypointDescription.waypoint = waypointTemplate
                 }
-
                 waypointDescription.open()
-            }
-
-            Waypoint {
-                id: waypointTemplate
             }
         }
 

@@ -120,6 +120,14 @@ auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordina
 }
 
 
+auto GeoMapProvider::createWaypoint() -> Waypoint*
+{
+    auto *wp = new Waypoint();
+    QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
+    return wp;
+}
+
+
 auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
 {
     QFileInfo fi(fileName);

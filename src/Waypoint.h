@@ -54,7 +54,7 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Waypoint(QObject *parent = nullptr);
+    Q_INVOKABLE explicit Waypoint(QObject *parent = nullptr);
 
     /*! \brief Constructs a waypoint by copying data from another waypoint
      *

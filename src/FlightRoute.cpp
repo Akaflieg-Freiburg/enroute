@@ -95,7 +95,7 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 }
 
 
-bool FlightRoute::canAppend(Waypoint *other) const
+auto FlightRoute::canAppend(Waypoint *other) const -> bool
 {
     if (other == nullptr) {
         return true;

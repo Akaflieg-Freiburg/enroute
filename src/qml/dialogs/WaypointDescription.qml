@@ -358,6 +358,7 @@ Dialog {
                     flightRoute.clear()
                     flightRoute.append(satNav.lastValidCoordinate)
                     flightRoute.append(waypoint)
+                    toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
                 }
             }
         }
@@ -375,6 +376,7 @@ Dialog {
                 mobileAdaptor.vibrateBrief()
                 flightRoute.append(waypoint)
                 close()
+                toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
             }
         }
 
@@ -391,6 +393,7 @@ Dialog {
                 mobileAdaptor.vibrateBrief()
                 flightRoute.removeWaypoint(waypoint)
                 close()
+                toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
             }
         }
 
@@ -425,6 +428,8 @@ Dialog {
             flightRoute.clear()
             flightRoute.append(satNav.lastValidCoordinate)
             flightRoute.append(waypoint)
+            close()
+            toast.doToast(qsTr("New light route: direct to %1.").arg(waypoint.extendedName))
         }
         onRejected: {
             mobileAdaptor.vibrateBrief()

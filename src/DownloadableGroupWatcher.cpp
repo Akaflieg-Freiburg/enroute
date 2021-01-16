@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,12 +21,15 @@
 #include <QLocale>
 
 #include "DownloadableGroupWatcher.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 DownloadableGroupWatcher::DownloadableGroupWatcher(QObject *parent)
     : QObject(parent)
 {
-    emitLocalFileContentChanged_delayedTimer.setInterval(2000);
+    emitLocalFileContentChanged_delayedTimer.setInterval(2s);
     connect(this, &DownloadableGroupWatcher::localFileContentChanged, &emitLocalFileContentChanged_delayedTimer, qOverload<>(&QTimer::start));
     connect(&emitLocalFileContentChanged_delayedTimer, &QTimer::timeout, this, &DownloadableGroupWatcher::emitLocalFileContentChanged_delayed);
 }
@@ -34,8 +37,9 @@ DownloadableGroupWatcher::DownloadableGroupWatcher(QObject *parent)
 
 void DownloadableGroupWatcher::emitLocalFileContentChanged_delayed()
 {
-    if (downloading())
+    if (downloading()) {
         return;
+    }
     emitLocalFileContentChanged_delayedTimer.stop();
     emit localFileContentChanged_delayed();
 }
@@ -44,10 +48,12 @@ void DownloadableGroupWatcher::emitLocalFileContentChanged_delayed()
 auto DownloadableGroupWatcher::hasFile() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull())
+        if (_downloadable.isNull()) {
             continue;
-        if (_downloadable->hasFile())
+        }
+        if (_downloadable->hasFile()) {
             return true;
+        }
     }
     return false;
 }
@@ -56,10 +62,12 @@ auto DownloadableGroupWatcher::hasFile() const -> bool
 auto DownloadableGroupWatcher::downloading() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull())
+        if (_downloadable.isNull()) {
             continue;
-        if (_downloadable->downloading())
+        }
+        if (_downloadable->downloading()) {
             return true;
+        }
     }
     return false;
 }
@@ -70,10 +78,12 @@ auto DownloadableGroupWatcher::files() const -> QStringList
     QStringList result;
 
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull())
+        if (_downloadable.isNull()) {
             continue;
-        if (!_downloadable->hasFile())
+        }
+        if (!_downloadable->hasFile()) {
             continue;
+        }
         result += _downloadable->fileName();
     }
 
@@ -84,10 +94,12 @@ auto DownloadableGroupWatcher::files() const -> QStringList
 auto DownloadableGroupWatcher::updatable() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull())
+        if (_downloadable.isNull()) {
             continue;
-        if (_downloadable->updatable())
+        }
+        if (_downloadable->updatable()) {
             return true;
+        }
     }
 
     return false;
@@ -98,15 +110,16 @@ void DownloadableGroupWatcher::cleanUp()
 {
     auto idx = _downloadables.indexOf(nullptr);
     _downloadables.removeAll(nullptr);
-    if (idx >= 0)
+    if (idx >= 0) {
         emit downloadablesChanged();
+    }
 }
 
 
 void DownloadableGroupWatcher::checkAndEmitSignals()
 {
     bool                          newDownloading           = downloading();
-    QList<QPointer<Downloadable>> newDownloadablesWithFile = downloadablesWithFile();
+    QVector<QPointer<Downloadable>> newDownloadablesWithFile = downloadablesWithFile();
     QStringList                   newFiles                 = files();
     bool                          newHasFile               = hasFile();
     bool                          newUpdatable             = updatable();
@@ -149,20 +162,22 @@ void DownloadableGroupWatcher::checkAndEmitSignals()
 }
 
 
-auto DownloadableGroupWatcher::downloadables() const -> QList<QPointer<Downloadable>>
+auto DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloadable>>
 {
-    QList<QPointer<Downloadable>> result;
+    QVector<QPointer<Downloadable>> result;
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull())
+        if (_downloadable.isNull()) {
             continue;
+        }
         result += _downloadable;
     }
 
     // Sort Downloadables according to lower boundary
     std::sort(result.begin(), result.end(), [](Downloadable* a, Downloadable* b)
     {
-        if (a->section() != b->section())
+        if (a->section() != b->section()) {
             return (a->section() < b->section());
+        }
         return (a->fileName() < b->fileName());
     }
     );
@@ -171,22 +186,25 @@ auto DownloadableGroupWatcher::downloadables() const -> QList<QPointer<Downloada
 }
 
 
-auto DownloadableGroupWatcher::downloadablesWithFile() const -> QList<QPointer<Downloadable>>
+auto DownloadableGroupWatcher::downloadablesWithFile() const -> QVector<QPointer<Downloadable>>
 {
-    QList<QPointer<Downloadable>> result;
+    QVector<QPointer<Downloadable>> result;
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull())
+        if (_downloadable.isNull()) {
             continue;
-        if (!_downloadable->hasFile())
+        }
+        if (!_downloadable->hasFile()) {
             continue;
+        }
         result += _downloadable;
     }
 
     // Sort Downloadables according to lower boundary
     std::sort(result.begin(), result.end(), [](Downloadable* a, Downloadable* b)
     {
-        if (a->section() != b->section())
+        if (a->section() != b->section()) {
             return (a->section() < b->section());
+        }
         return (a->fileName() < b->fileName());
     }
     );
@@ -195,9 +213,9 @@ auto DownloadableGroupWatcher::downloadablesWithFile() const -> QList<QPointer<D
 }
 
 
-auto DownloadableGroupWatcher::downloadablesAsObjectList() const -> QList<QObject*>
+auto DownloadableGroupWatcher::downloadablesAsObjectList() const -> QVector<QObject*>
 {
-    QList<QObject*> result;
+    QVector<QObject*> result;
     foreach(auto downloadablePtr, downloadables())
         result.append(downloadablePtr);
     return result;
@@ -207,10 +225,12 @@ auto DownloadableGroupWatcher::downloadablesAsObjectList() const -> QList<QObjec
 void DownloadableGroupWatcher::updateAll()
 {
     foreach(auto downloadablePtr, _downloadables) {
-        if (downloadablePtr.isNull())
+        if (downloadablePtr.isNull()) {
             continue;
-        if (downloadablePtr->updatable())
+        }
+        if (downloadablePtr->updatable()) {
             downloadablePtr->startFileDownload();
+        }
     }
 }
 
@@ -219,8 +239,9 @@ auto DownloadableGroupWatcher::updateSize() const -> QString
 {
     qint64 downloadSize = 0;
     foreach(auto downloadable, _downloadables)
-        if (downloadable->updatable())
+        if (downloadable->updatable()) {
             downloadSize += downloadable->remoteFileSize();
+        }
 
     return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
 }
@@ -230,13 +251,15 @@ auto DownloadableGroupWatcher::numberOfFilesTotal() const -> int
 {
     int nFilesTotal = 0;
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull())
+        if (_downloadable.isNull()) {
             continue;
-        if (_downloadable->hasFile())
+        }
+        if (_downloadable->hasFile()) {
             nFilesTotal += 1;
-        else {
-            if (_downloadable->downloading())
+        } else {
+            if (_downloadable->downloading()) {
                 nFilesTotal += 1;
+            }
         }
     }
     return nFilesTotal;

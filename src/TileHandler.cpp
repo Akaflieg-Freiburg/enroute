@@ -31,7 +31,7 @@
 #include "Downloadable.h"
 #include "TileHandler.h"
 
-TileHandler::TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
+TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
     // Initialize with default values

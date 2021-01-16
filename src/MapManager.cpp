@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,8 +36,8 @@ using namespace std::chrono_literals;
 MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
     QObject(parent),
     _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
-                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
-                networkAccessManager),
+               QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
+               networkAccessManager),
     _networkAccessManager(networkAccessManager)
 {
     QStringList offendingFiles;
@@ -47,7 +47,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
         fileIterator.next();
         if (fileIterator.filePath().endsWith(".geojson.geojson") || fileIterator.filePath().endsWith(".mbtiles.mbtiles")) {
             offendingFiles += fileIterator.filePath();
-}
+        }
     }
     foreach(auto offendingFile, offendingFiles)
         QFile::rename(offendingFile, offendingFile.section('.', 0, -2));
@@ -74,7 +74,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
         readGeoMapListFromJSONFile();
     } else {
         _maps_json.startFileDownload();
-}
+    }
 }
 
 
@@ -92,7 +92,7 @@ MapManager::~MapManager()
     do{
         didDelete = false;
         QDirIterator dirIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-				 "/aviation_maps", QDir::Dirs|QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+                                 "/aviation_maps", QDir::Dirs|QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
         while (dirIterator.hasNext()) {
             dirIterator.next();
 
@@ -132,10 +132,10 @@ void MapManager::localFileOfGeoMapChanged()
     foreach(auto geoMapPtr, geoMaps) {
         if (geoMapPtr->url().isValid()) {
             continue;
-}
+        }
         if (geoMapPtr->hasFile()) {
             continue;
-}
+        }
 
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
@@ -149,10 +149,10 @@ void MapManager::readGeoMapListFromJSONFile()
 {
     if (!_maps_json.hasFile()) {
         return;
-}
+    }
 
     // List of maps as we have them now
-    QList<QPointer<Downloadable>> oldMaps = _geoMaps.downloadables();
+    QVector<QPointer<Downloadable>> oldMaps = _geoMaps.downloadables();
 
     // To begin, we handle the maps described in the maps.json file. If these maps
     // were already present in the old list, we re-use them. Otherwise, we create
@@ -161,7 +161,7 @@ void MapManager::readGeoMapListFromJSONFile()
     auto doc = QJsonDocument::fromJson(_maps_json.fileContent(), &parseError);
     if (parseError.error != QJsonParseError::NoError) {
         return;
-}
+    }
 
     auto top = doc.object();
     auto baseURL = top.value("url").toString();
@@ -201,10 +201,10 @@ void MapManager::readGeoMapListFromJSONFile()
             _geoMaps.addToGroup(downloadable);
             if (localFileName.endsWith("geojson")) {
                 _aviationMaps.addToGroup(downloadable);
-}
+            }
             if (localFileName.endsWith("mbtiles")) {
                 _baseMaps.addToGroup(downloadable);
-}
+            }
         }
 
     }
@@ -217,7 +217,7 @@ void MapManager::readGeoMapListFromJSONFile()
     foreach(auto geoMapPtr, oldMaps) {
         if (geoMapPtr->hasFile()) {
             continue;
-}
+        }
         delete geoMapPtr;
     }
 
@@ -227,7 +227,7 @@ void MapManager::readGeoMapListFromJSONFile()
         // Generate proper object name from path
         QString objectName = path;
         objectName = objectName.remove(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-				       "/aviation_maps/").section('.', 0, 0);
+                                       "/aviation_maps/").section('.', 0, 0);
 
         auto *downloadable = new Downloadable(QUrl(), path, _networkAccessManager, this);
         downloadable->setSection("Unsupported Maps");
@@ -276,7 +276,7 @@ auto MapManager::unattachedFiles() const -> QList<QString>
     // contains files that we do not know whom they belong to. We hunt down those
     // files.
     QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps",
-			      QDir::Files, QDirIterator::Subdirectories);
+                              QDir::Files, QDirIterator::Subdirectories);
     while (fileIterator.hasNext()) {
         fileIterator.next();
 
@@ -290,7 +290,7 @@ auto MapManager::unattachedFiles() const -> QList<QString>
         }
         if (!isAttachedToAviationMap) {
             result.append(fileIterator.filePath());
-}
+        }
     }
 
     return result;

@@ -25,7 +25,10 @@
 #include <QSettings>
 #include <QStandardPaths>
 
+#include <chrono>
 #include <utility> 
+
+using namespace std::chrono_literals;
 
 #include "MapManager.h"
 
@@ -42,8 +45,9 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
                               QDir::Files, QDirIterator::Subdirectories);
     while (fileIterator.hasNext()) {
         fileIterator.next();
-        if (fileIterator.filePath().endsWith(".geojson.geojson") || fileIterator.filePath().endsWith(".mbtiles.mbtiles"))
+        if (fileIterator.filePath().endsWith(".geojson.geojson") || fileIterator.filePath().endsWith(".mbtiles.mbtiles")) {
             offendingFiles += fileIterator.filePath();
+}
     }
     foreach(auto offendingFile, offendingFiles)
         QFile::rename(offendingFile, offendingFile.section('.', 0, -2));
@@ -66,10 +70,11 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
     autoUpdateGeoMapList();
 
     // If there is a downloaded maps.json file, we read it. Otherwise, we start a download.
-    if (_maps_json.hasFile())
+    if (_maps_json.hasFile()) {
         readGeoMapListFromJSONFile();
-    else
+    } else {
         _maps_json.startFileDownload();
+}
 }
 
 
@@ -83,7 +88,7 @@ MapManager::~MapManager()
 
     // It might be possible that our download directory contains empty
     // subdirectories. We we remove them all.
-    bool didDelete;
+    bool didDelete = false;
     do{
         didDelete = false;
         QDirIterator dirIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
@@ -107,11 +112,11 @@ MapManager::~MapManager()
 
 void MapManager::updateGeoMapList()
 {
-    QTimer::singleShot(0, &_maps_json, SLOT(startFileDownload()));
+    QTimer::singleShot(0, &_maps_json, &Downloadable::startFileDownload);
 }
 
 
-void MapManager::errorReceiver(const QString&, QString message)
+void MapManager::errorReceiver(const QString& /*unused*/, QString message)
 {
     emit error(std::move(message));
 }
@@ -125,10 +130,12 @@ void MapManager::localFileOfGeoMapChanged()
     // candidates.
     auto geoMaps = _geoMaps.downloadables();
     foreach(auto geoMapPtr, geoMaps) {
-        if (geoMapPtr->url().isValid())
+        if (geoMapPtr->url().isValid()) {
             continue;
-        if (geoMapPtr->hasFile())
+}
+        if (geoMapPtr->hasFile()) {
             continue;
+}
 
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
@@ -140,8 +147,9 @@ void MapManager::localFileOfGeoMapChanged()
 
 void MapManager::readGeoMapListFromJSONFile()
 {
-    if (!_maps_json.hasFile())
+    if (!_maps_json.hasFile()) {
         return;
+}
 
     // List of maps as we have them now
     QList<QPointer<Downloadable>> oldMaps = _geoMaps.downloadables();
@@ -151,8 +159,9 @@ void MapManager::readGeoMapListFromJSONFile()
     // new Downloadable objects.
     QJsonParseError parseError{};
     auto doc = QJsonDocument::fromJson(_maps_json.fileContent(), &parseError);
-    if (parseError.error != QJsonParseError::NoError)
+    if (parseError.error != QJsonParseError::NoError) {
         return;
+}
 
     auto top = doc.object();
     auto baseURL = top.value("url").toString();
@@ -174,7 +183,7 @@ void MapManager::readGeoMapListFromJSONFile()
             }
         }
 
-        if (mapPtr) {
+        if (mapPtr != nullptr) {
             // Map exists
             oldMaps.removeAll(mapPtr);
             mapPtr->setRemoteFileDate(fileModificationDateTime);
@@ -184,16 +193,18 @@ void MapManager::readGeoMapListFromJSONFile()
             auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps/"+mapFileName;
 
             // Construct a new downloadable object.
-            auto downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);
+            auto *downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);
             downloadable->setObjectName(mapName.section("/", -1, -1));
             downloadable->setSection(mapName.section("/", -2, -2));
             downloadable->setRemoteFileDate(fileModificationDateTime);
             downloadable->setRemoteFileSize(fileSize);
             _geoMaps.addToGroup(downloadable);
-            if (localFileName.endsWith("geojson"))
+            if (localFileName.endsWith("geojson")) {
                 _aviationMaps.addToGroup(downloadable);
-            if (localFileName.endsWith("mbtiles"))
+}
+            if (localFileName.endsWith("mbtiles")) {
                 _baseMaps.addToGroup(downloadable);
+}
         }
 
     }
@@ -204,8 +215,9 @@ void MapManager::readGeoMapListFromJSONFile()
     // file, we keep them, but set their QUrl to invalid; this will mark them as
     // unsupported in the GUI.
     foreach(auto geoMapPtr, oldMaps) {
-        if (geoMapPtr->hasFile())
+        if (geoMapPtr->hasFile()) {
             continue;
+}
         delete geoMapPtr;
     }
 
@@ -217,7 +229,7 @@ void MapManager::readGeoMapListFromJSONFile()
         objectName = objectName.remove(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
 				       "/aviation_maps/").section('.', 0, 0);
 
-        auto downloadable = new Downloadable(QUrl(), path, _networkAccessManager, this);
+        auto *downloadable = new Downloadable(QUrl(), path, _networkAccessManager, this);
         downloadable->setSection("Unsupported Maps");
         downloadable->setObjectName(objectName);
         _geoMaps.addToGroup(downloadable);
@@ -233,7 +245,7 @@ void MapManager::setTimeOfLastUpdateToNow()
 
     // Now that we downloaded successfully, we need to check for updates only once
     // a day
-    _autoUpdateTimer.start(1000*60*60*24);
+    _autoUpdateTimer.start(24h);
 }
 
 
@@ -246,13 +258,13 @@ void MapManager::autoUpdateGeoMapList()
 
     if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)) ) {
         // Updates are due. Check again in one hour if the update went well or if we need to try again.
-        _autoUpdateTimer.start(1000*60*60*1);
+        _autoUpdateTimer.start(1h);
         updateGeoMapList();
         return;
     }
 
     // Updates are not yet due. Check again in one day.
-    _autoUpdateTimer.start(1000*60*60*24);
+    _autoUpdateTimer.start(24h);
 }
 
 
@@ -276,8 +288,9 @@ auto MapManager::unattachedFiles() const -> QList<QString>
                 break;
             }
         }
-        if (!isAttachedToAviationMap)
+        if (!isAttachedToAviationMap) {
             result.append(fileIterator.filePath());
+}
     }
 
     return result;

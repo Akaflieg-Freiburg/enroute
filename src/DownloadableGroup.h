@@ -26,7 +26,7 @@
 /*! \brief Manages a set of downloadable objects
 
   This class inherits from DownloadableGroupWatcher, but has a public
-  constructor and two methode (addToGroup, removeFromGroup) that allow to
+  constructor and two methods (addToGroup, removeFromGroup) that allow to
   manipulate the group.
  */
 

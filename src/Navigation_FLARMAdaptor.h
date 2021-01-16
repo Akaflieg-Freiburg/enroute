@@ -222,8 +222,10 @@ signals:
     void statusChanged();
     void positionInfoChanged();
 
-private slots:
+public slots:
     void connectToFLARM();
+
+private slots:
 
     void receiveSocketConnected();
     void receiveSocketDisconnected();

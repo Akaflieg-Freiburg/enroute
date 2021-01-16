@@ -26,9 +26,9 @@ import QtQuick.Layouts 1.15
 import enroute 1.0
 
 Dialog {
-    id: satNavStatusDialog
+    id: flarmStatusDialog
 
-    title: qsTr("Satellite Status")
+    title: qsTr("Traffic Receiver")
 
     // Size is chosen so that the dialog does not cover the parent in full
     // Size is chosen so that the dialog does not cover the parent in full
@@ -52,120 +52,72 @@ Dialog {
             columnSpacing: 30
             columns: 2
 
-            width: satNavStatusDialog.availableWidth
+            width: flarmStatusDialog.availableWidth
 
             Text {
                 Layout.alignment: Qt.AlignTop
-                text: qsTr("Satellite Status")
+                text: qsTr("Status")
             }
             Text {
                 Layout.fillWidth: true
                 font.weight: Font.Bold
-                text: satNav.statusAsString
-                color: (satNav.status === SatNav.OK) ? "green" : "red"
+                text: flarmAdaptor.statusString
+                color: {
+                    console.log(flarmAdaptor.status)
+                    console.log(FLARMAdaptor.OK)
+                    if (flarmAdaptor.status === FLARMAdaptor.OK)
+                        return "green"
+                    if (flarmAdaptor.status === FLARMAdaptor.WaitingForData)
+                        return "yellow"
+                    return "red"
+                }
                 wrapMode: Text.Wrap
             }
 
             Text {
                 Layout.alignment: Qt.AlignTop
-                text: qsTr("Last Fix")
+                text: qsTr("Hardware")
             }
             Text {
                 Layout.fillWidth: true
-                text: satNav.timestampAsString
+                text: flarmAdaptor.FLARMHwVersion
                 wrapMode: Text.Wrap
             }
 
             Text {
                 Layout.alignment: Qt.AlignTop
-                text: qsTr("Mode")
+                text: qsTr("Software")
             }
             Text {
                 Layout.fillWidth: true
-                text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground")
+                text: flarmAdaptor.FLARMSwVersion
                 wrapMode: Text.Wrap
             }
 
             Text {
-                font.pixelSize: Qt.application.font.pixelSize*0.5
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Obstacle DB")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: flarmAdaptor.FLARMObstVersion
+                wrapMode: Text.Wrap
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Self test")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: flarmAdaptor.FLARMSelfTest
+                wrapMode: Text.Wrap
+            }
+
+            Button {
                 Layout.columnSpan: 2
-            }
-
-            Text {
-                text: qsTr("Horizontal")
-                font.weight: Font.Bold
-                Layout.columnSpan: 2
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Latitude")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.latitudeAsString
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Longitude")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.longitudeAsString
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Error")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.horizontalPrecisionInMetersAsString
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("GS")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("TT")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.trackAsString
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                font.pixelSize: Qt.application.font.pixelSize*0.5
-                Layout.columnSpan: 2
-            }
-
-            Text {
-                text: qsTr("Vertical")
-                font.weight: Font.Bold
-                Layout.columnSpan: 2
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("ALT")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.altitudeInFeetAsString
-                wrapMode: Text.Wrap
+                text: qsTr("Connect")
+                onClicked: flarmAdaptor.connectToFLARM()
             }
 
         } // GridLayout

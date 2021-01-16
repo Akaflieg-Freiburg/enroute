@@ -73,16 +73,16 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     connect(&socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatusString);
     connect(&socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatusString);
 
-    // Try our first connect 30sec after startup
-    QTimer::singleShot(30s, this, &Navigation::FLARMAdaptor::connectToFLARM);
+    // Try our first connect 0sec after startup
+    QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToFLARM);
 
     // Setup simulator
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-hard.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-    //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
-     setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
+    // setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
+    // setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
@@ -666,6 +666,7 @@ void Navigation::FLARMAdaptor::receiveSocketConnected()
 {
     qWarning() << "Navigation::FLARMAdaptor::receiveSocketConnected()";
     stream.setDevice(&socket);
+    stream << "$PFLAV,R*33\a\n";
 }
 
 
@@ -685,7 +686,9 @@ void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::Socke
 
 void Navigation::FLARMAdaptor::readFromStream()
 {
-    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << stream.readLine();
+    auto sentence = stream.readLine();
+    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << sentence;
+    processFLARMMessage(sentence);
 }
 
 
@@ -724,6 +727,10 @@ void Navigation::FLARMAdaptor::setStatus()
     Status newStatus = Status::InOp;
     if (heartBeatTimer.isActive()) {
         newStatus = Status::OK;
+    } else {
+        if (socket.state() == QAbstractSocket::ConnectedState) {
+            newStatus = Status::WaitingForData;
+        }
     }
 
     if (newStatus == _status) {

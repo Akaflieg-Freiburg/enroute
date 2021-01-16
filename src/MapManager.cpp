@@ -40,18 +40,21 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
                networkAccessManager),
     _networkAccessManager(networkAccessManager)
 {
-    QStringList offendingFiles;
-    QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps",
-                              QDir::Files, QDirIterator::Subdirectories);
-    while (fileIterator.hasNext()) {
-        fileIterator.next();
-        if (fileIterator.filePath().endsWith(".geojson.geojson") || fileIterator.filePath().endsWith(".mbtiles.mbtiles")) {
-            offendingFiles += fileIterator.filePath();
+    // Earlier versions of this program constructed files with names ending in ".geojson.geojson"
+    // or ".mbtiles.mbtiles". We correct those file names here.
+    {
+        QStringList offendingFiles;
+        QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps",
+                                  QDir::Files, QDirIterator::Subdirectories);
+        while (fileIterator.hasNext()) {
+            fileIterator.next();
+            if (fileIterator.filePath().endsWith(".geojson.geojson") || fileIterator.filePath().endsWith(".mbtiles.mbtiles")) {
+                offendingFiles += fileIterator.filePath();
+            }
         }
+        foreach(auto offendingFile, offendingFiles)
+            QFile::rename(offendingFile, offendingFile.section('.', 0, -2));
     }
-    foreach(auto offendingFile, offendingFiles)
-        QFile::rename(offendingFile, offendingFile.section('.', 0, -2));
-
 
     // Construct the Dowloadable object "_maps_json". Let it point to the remote file "maps.json" and wire it up.
     connect(&_maps_json, &Downloadable::downloadingChanged, this, &MapManager::downloadingGeoMapListChanged);

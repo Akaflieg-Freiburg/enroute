@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtLocation 5.15
 import QtPositioning 5.15
 import QtQuick 2.15
@@ -309,6 +310,13 @@ Item {
             }
         }
 
+        BrightnessContrast {
+              anchors.fill: flightMap
+              source: flightMap
+              brightness: globalSettings.nightMode ? -0.8 : -0.2
+              contrast: globalSettings.nightMode ? 0.6 : 0.2
+          }
+
         // On completion, re-consider the binding of the property bearing
         Component.onCompleted: {
             // Oddly, this is necessary, or else the system will try to reset
@@ -319,7 +327,15 @@ Item {
          onCopyrightLinkActivated: Qt.openUrlExternally(link)
 
     }
+/*
+    Rectangle {
+        id: darkFilter
 
+        anchors.fill: flightMap
+        color: "black"
+        opacity: globalSettings.nightMode ? 0.7 : 0.0
+    }
+*/
     Rectangle {
         id: noMapWarningRect
 
@@ -353,6 +369,7 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 id: northArrow
 
+                opacity: globalSettings.nightMode ? 0.3 : 0.0
                 rotation: -flightMap.bearing
 
                 source: "/icons/NorthArrow.svg"
@@ -459,6 +476,8 @@ Item {
         anchors.rightMargin: 0.5*Qt.application.font.pixelSize
         anchors.verticalCenter: followGPSButton.verticalCenter
 
+        opacity: globalSettings.nightMode ? 0.3 : 0.0
+
         useMetricUnits: globalSettings.useMetricUnits
         pixelPer10km: flightMap.pixelPer10km
         height: 30
@@ -470,7 +489,7 @@ Item {
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
         text: geoMapProvider.copyrightNotice
-        linkColor: "blue"
+//        linkColor: "blue"
         visible: width < parent.width
         onLinkActivated: Qt.openUrlExternally(link)
     }

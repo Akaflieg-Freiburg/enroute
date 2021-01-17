@@ -76,6 +76,7 @@ Page {
                     text: librarian.getStringFromRessource(":text/info_enroute.html")
                     textFormat: Text.RichText
                     width: pg.width
+
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1
                     leftPadding: Qt.application.font.pixelSize*0.5

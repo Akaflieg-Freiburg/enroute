@@ -99,6 +99,21 @@ Page {
                 }
             }
 
+            SwitchDelegate {
+                id: nightMode
+                text: qsTr("Night mode")
+                icon.source: "/icons/material/ic_flight.svg"
+//                icon.color: Material.primary
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    nightMode.checked = globalSettings.nightMode
+                }
+                onToggled: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.nightMode = nightMode.checked
+                }
+            }
+
             Label {
                 Layout.leftMargin: Qt.application.font.pixelSize
                 text: qsTr("Libraries")

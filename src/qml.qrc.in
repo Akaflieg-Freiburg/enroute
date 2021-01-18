@@ -22,6 +22,7 @@
         <file alias="items/ImportManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/ImportManager.qml</file>
         <file alias="items/MFM.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/MFM.qml</file>
         <file alias="items/NavBar.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/NavBar.qml</file>
+        <file alias="items/NightAndDayLabel.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/NightAndDayLabel.qml</file>
         <file alias="items/StandardHeader.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/StandardHeader.qml</file>	
         <file alias="items/WordWrappingItemDelegate.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/WordWrappingItemDelegate.qml</file>	
         <file alias="pages/BugReportPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/BugReportPage.qml</file>

@@ -65,10 +65,10 @@ Page {
                 }
             }
 
-            Label {
+            NightAndDayLabel {
                 Layout.fillWidth: true
 
-                text: stackView.currentItem.title
+                nightAndDayText: stackView.currentItem.title
                 elide: Label.ElideRight
                 font.bold: true
                 horizontalAlignment: Qt.AlignHCenter
@@ -174,7 +174,7 @@ Page {
                 color: "white"
                 visible: stationList.count == 0
 
-                Label {
+                Text {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -214,7 +214,7 @@ Page {
         color: "white"
         visible: weatherDownloadManager.downloading && !weatherDownloadManager.backgroundUpdate
 
-        Label {
+        Text {
             id: downloadIndicatorLabel
 
             anchors.left: parent.left
@@ -226,7 +226,6 @@ Page {
             textFormat: Text.RichText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
         } // downloadIndicatorLabel
 
         BusyIndicator {
@@ -265,10 +264,10 @@ Page {
             width: parent.width
             implicitHeight: t1.height+t2.height
 
-            Label {
+            NightAndDayLabel {
                 id: t1
                 width: parent.width
-                text: librarian.getStringFromRessource(":text/weatherPermissions.html")
+                nightAndDayText: librarian.getStringFromRessource(":text/weatherPermissions.html")
                 leftPadding: Qt.application.font.pixelSize
                 rightPadding: Qt.application.font.pixelSize
                 topPadding: 2*Qt.application.font.pixelSize
@@ -306,24 +305,24 @@ Page {
             columns: 2
 
             Image {
-                visible: qnhLabel.text != ""
+                visible: qnhLabel.text != ""                
                 source: "/icons/material/ic_speed.svg"
             }
-            Label {
+            NightAndDayLabel {
                 id: qnhLabel
                 visible: qnhLabel.text != ""
                 Layout.fillWidth: true
-                text: weatherDownloadManager.QNHInfo
+                nightAndDayText: weatherDownloadManager.QNHInfo
             }
             Image {
                 visible: sunLabel.text != ""
                 source: "/icons/material/ic_wb_sunny.svg"
             }
-            Label {
+            NightAndDayLabel {
                 id: sunLabel
                 visible: sunLabel.text != ""
                 Layout.fillWidth: true
-                text: weatherDownloadManager.sunInfo
+                nightAndDayText: weatherDownloadManager.sunInfo
             }
 
         }

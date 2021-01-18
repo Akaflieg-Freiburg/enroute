@@ -327,15 +327,7 @@ Item {
          onCopyrightLinkActivated: Qt.openUrlExternally(link)
 
     }
-/*
-    Rectangle {
-        id: darkFilter
 
-        anchors.fill: flightMap
-        color: "black"
-        opacity: globalSettings.nightMode ? 0.7 : 0.0
-    }
-*/
     Rectangle {
         id: noMapWarningRect
 
@@ -369,7 +361,7 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 id: northArrow
 
-                opacity: globalSettings.nightMode ? 0.3 : 0.0
+                opacity: globalSettings.nightMode ? 0.3 : 1.0
                 rotation: -flightMap.bearing
 
                 source: "/icons/NorthArrow.svg"
@@ -483,24 +475,22 @@ Item {
         height: 30
     }
 
-    Label {
+    NightAndDayLabel {
         id: copyrightInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
-        text: geoMapProvider.copyrightNotice
-//        linkColor: "blue"
+        nightAndDayText: geoMapProvider.copyrightNotice
         visible: width < parent.width
         onLinkActivated: Qt.openUrlExternally(link)
     }
 
-    Label {
+    NightAndDayLabel {
         id: noCopyrightInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
-        text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-        linkColor: "blue"
+        nightAndDayText: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
         visible: !copyrightInfo.visible
         onLinkActivated: copyrightDialog.open()
 

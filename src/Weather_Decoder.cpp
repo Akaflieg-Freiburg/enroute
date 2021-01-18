@@ -1329,6 +1329,31 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
             continue;
         }
 
+        // ICE PELLETS, FREEZING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::FREEZING && weather == metaf::WeatherPhenomena::Weather::ICE_PELLETS) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("freezing ice pellet precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("freezing ice pellet precipitation in the vicinity");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light freezing ice pellet precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate freezing ice pellet precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy freezing ice pellet precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent freezing ice pellet precipitation");
+                break;
+            }
+            continue;
+        }
+
         // RAIN
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::RAIN) {
             switch(wp.qualifier()) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -111,7 +111,7 @@ Page {
 
             Component.onCompleted: adList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "AD")
 
-            Label {
+            NightAndDayLabel {
                 anchors.fill: parent
                 anchors.topMargin: Qt.application.font.pixelSize*2
                 visible: parent.count == 0
@@ -119,7 +119,7 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
-                text: qsTr("<h3>Sorry!</h3><p>No aerodrome data available. Please make sure that an aviation map is installed.</p>")
+                nightAndDayText: qsTr("<h3>Sorry!</h3><p>No aerodrome data available. Please make sure that an aviation map is installed.</p>")
             }
         }
 
@@ -133,7 +133,7 @@ Page {
 
             Component.onCompleted: naList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "NAV")
 
-            Label {
+            NightAndDayLabel {
                 anchors.fill: parent
                 anchors.topMargin: Qt.application.font.pixelSize*2
                 visible: parent.count == 0
@@ -141,7 +141,7 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
-                text: qsTr("<h3>Sorry!</h3><p>No navaid data available.</p>")
+                nightAndDayText: qsTr("<h3>Sorry!</h3><p>No navaid data available.</p>")
             }
         }
 
@@ -155,7 +155,7 @@ Page {
 
             Component.onCompleted: rpList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "WP")
             
-            Label {
+            NightAndDayLabel {
                 anchors.fill: parent
                 anchors.topMargin: Qt.application.font.pixelSize*2
                 visible: parent.count == 0
@@ -163,7 +163,7 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
-                text: qsTr("<h3>Sorry!</h3><p>No reporting point data available.</p>")
+                nightAndDayText: qsTr("<h3>Sorry!</h3><p>No reporting point data available.</p>")
             }
         }
 

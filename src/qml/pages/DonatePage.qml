@@ -34,17 +34,17 @@ Page {
         clip: true
         anchors.fill: parent
         
-        // The Label that we really want to show is wrapped into an Item. This allows
+        // The label that we really want to show is wrapped into an Item. This allows
         // to set implicitHeight, and thus compute the implicitHeight of the Dialog
         // without binding loops
         Item {
             implicitHeight: lbl1.implicitHeight
             width: pg.width
             
-            Label {
+            NightAndDayLabel {
                 id: lbl1
                 textFormat: Qt.RichText
-                text: qsTr("
+                nightAndDayText: qsTr("
 <p><strong>Enroute Flight Navigation</strong> is a
 non-commercial project of Akaflieg Freiburg and the
 University of Freiburg. The app has been written by flight
@@ -82,7 +82,7 @@ club of public utility in Freiburg, Germany. </p>
                 leftPadding: Qt.application.font.pixelSize*0.5
                 rightPadding: Qt.application.font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
-            } // Label
+            }
         } // Item
     } // ScrollView
 } // Page

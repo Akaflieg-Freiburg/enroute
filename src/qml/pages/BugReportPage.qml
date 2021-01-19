@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,8 @@ Page {
         id: stack
 
         anchors.fill: parent
+        anchors.leftMargin: Qt.application.font.pixelSize
+        anchors.rightMargin: Qt.application.font.pixelSize
         initialItem: mainPage
     }
 
@@ -91,7 +93,8 @@ is therefore always our first priority. We are grateful for
 every report that we get, and we would also like to hear
 your suggestions for improvement.</p>
 ")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 } // Label
 
@@ -103,7 +106,8 @@ your suggestions for improvement.</p>
 <p>Use this button to report an issue in the main
 application.</p>
 ")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -124,7 +128,8 @@ application.</p>
 (such as wrong missing airspaces, wrong vertical limits,
 …), then please use the buttons below.</p>
 ")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -164,7 +169,8 @@ data (such as wrong airfield frequencies, outdated traffic
 patterns, missing navaids, …), then please use the buttons
 below.</p>
 ")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -174,15 +180,6 @@ below.</p>
                     onClicked:  {
                         mobileAdaptor.vibrateBrief()
                         stack.push(openAIPNNonAirspace)
-                    }
-                }
-                Button {
-                    Layout.fillWidth: true
-                    text: qsTr("Airspace")
-                    icon.source: "/icons/material/ic_bug_report.svg"
-                    onClicked:  {
-                        mobileAdaptor.vibrateBrief()
-                        stack.push(openAIPAirspace)
                     }
                 }
                 Button {
@@ -217,7 +214,8 @@ below.</p>
                     text: qsTr("
 <h4>Thank you for your help!</h4>
 ")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
             }
@@ -279,7 +277,8 @@ not, please open a new issue. If you prefer to work on
 your desktop computer, you can also send yourself a link to
 GitHub by e-mail.</p>
 ")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     } // Label
@@ -320,7 +319,8 @@ comes first!</p>
 
 <h3>Thank you for your help!</h3>
 ")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     }
@@ -381,7 +381,8 @@ suggestion is approved, the correction will appear in
 <strong>Enroute Flight Navigation</strong> within a
 week.</p>
 ")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     } // Label
@@ -416,7 +417,8 @@ time. Peter speaks English and German.</p>
 
 <h3>Thank you for your help!</h3>
 ")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     }
@@ -482,7 +484,8 @@ discuss your issue in the forum there.</p>
 
 <h3>Thank you for your help!</h3>
 ")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     }
@@ -559,7 +562,8 @@ following countries?</p>
 <li>Sweden</li>
 <li>Switzerland</li>
 </ul>")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     }
@@ -584,7 +588,8 @@ following countries?</p>
                     Label {
                         Layout.fillWidth: true
                         text: qsTr("<h3>Thank you for your help!</h3>")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                     }
                 }
@@ -641,7 +646,8 @@ by the open flightmaps association in Austria.</p>
 report your issue. If you prefer to work on your desktop
 computer, you can also send yourself a link by e-mail.</p>
 ")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     }
@@ -666,7 +672,8 @@ computer, you can also send yourself a link by e-mail.</p>
                     Label {
                         Layout.fillWidth: true
                         text: qsTr("<h3>Thank you for your help!</h3>")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
                     }
@@ -726,7 +733,8 @@ type of information that we could use in our app.</p>
 <p>There is nothing that we can do. We regret that we have
 no better news.</p>
 ")
-                        textFormat: Text.RichText
+                        textFormat: Text.StyledText
+                        linkColor: Material.accent
                         wrapMode: Text.Wrap
                     }
 

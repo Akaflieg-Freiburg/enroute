@@ -36,6 +36,11 @@ ApplicationWindow {
     width: 1000
     height: 800
 
+    // Night mode
+    Material.theme: Material.Dark
+    Material.primary: (Material.theme === Material.Dark) ? Qt.darker("teal") : "teal"
+    Material.accent: (Material.theme === Material.Dark) ? Qt.lighter("teal") : "teal"
+
     Drawer {
         id: drawer
         width: col.implicitWidth
@@ -65,7 +70,6 @@ ApplicationWindow {
                     id: menuItemRoute
                     text: qsTr("Route")
                     icon.source: "/icons/material/ic_directions.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {
@@ -81,7 +85,6 @@ ApplicationWindow {
 
                     text: qsTr("Nearby Waypoints")
                     icon.source: "/icons/material/ic_my_location.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {
@@ -97,7 +100,6 @@ ApplicationWindow {
 
                     text: qsTr("Weather")
                     icon.source: "/icons/material/ic_cloud_queue.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {
@@ -118,7 +120,6 @@ ApplicationWindow {
                     text: qsTr("Set Altimeter") + (satNav.hasAltitude ? `<br><font color="#606060" size="2">${satNav.altitudeInFeetAsString} AMSL</font>` : `<br><font color="#606060" size="2">`
                                                                         + qsTr("Insufficient reception")+`</font>`)
                     icon.source: "/icons/material/ic_speed.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
                     enabled: satNav.hasAltitude
                     onClicked: {
@@ -135,7 +136,6 @@ ApplicationWindow {
 
                     text: qsTr("Settings")
                     icon.source: "/icons/material/ic_settings.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {
@@ -155,7 +155,6 @@ ApplicationWindow {
                 ItemDelegate { // Info
                     text: qsTr("Information")
                     icon.source: "/icons/material/ic_info_outline.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {
@@ -172,7 +171,6 @@ ApplicationWindow {
                                   + qsTr("Current Status")
                                   + `: ${satNav.statusAsString}</font>`
                             icon.source: "/icons/material/ic_satellite.svg"
-                            icon.color: Material.primary
                             Layout.fillWidth: true
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
@@ -193,7 +191,6 @@ ApplicationWindow {
                         ItemDelegate { // Manual
                             text: qsTr("Manual")
                             icon.source: "/icons/material/ic_help_outline.svg"
-                            icon.color: Material.primary
                             Layout.fillWidth: true
                             visible: !satNav.isInFlight
 
@@ -214,7 +211,6 @@ ApplicationWindow {
                         ItemDelegate { // About
                             text: qsTr("About Enroute Flight Navigation")
                             icon.source: "/icons/material/ic_info_outline.svg"
-                            icon.color: Material.primary
 
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
@@ -228,7 +224,6 @@ ApplicationWindow {
                         ItemDelegate { // Participate
                             text: qsTr("Participate")
                             icon.source: "/icons/nav_participate.svg"
-                            icon.color: Material.primary
 
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
@@ -242,7 +237,6 @@ ApplicationWindow {
                         ItemDelegate { // Donate
                             text: qsTr("Donate")
                             icon.source: "/icons/material/ic_attach_money.svg"
-                            icon.color: Material.primary
 
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
@@ -258,7 +252,6 @@ ApplicationWindow {
                 ItemDelegate { // Bug report
                     text: qsTr("Bug report")
                     icon.source: "/icons/material/ic_bug_report.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {
@@ -280,7 +273,6 @@ ApplicationWindow {
                 ItemDelegate { // Exit
                     text: qsTr("Exit")
                     icon.source: "/icons/material/ic_exit_to_app.svg"
-                    icon.color: Material.primary
                     Layout.fillWidth: true
 
                     onClicked: {

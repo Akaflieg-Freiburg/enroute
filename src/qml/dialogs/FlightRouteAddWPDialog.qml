@@ -46,7 +46,7 @@ Dialog {
             icon.source: model.modelData.icon
             icon.color: "transparent"
 
-            width: parent.width
+            width: wpList.width
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
@@ -64,7 +64,7 @@ Dialog {
             Layout.fillWidth: true
 
             text: qsTr("Choose a waypoint from the list below.")
-            color: Material.primary
+            color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }

@@ -35,8 +35,6 @@ Page {
         id: stack
 
         anchors.fill: parent
-        anchors.leftMargin: Qt.application.font.pixelSize
-        anchors.rightMargin: Qt.application.font.pixelSize
         initialItem: mainPage
     }
 

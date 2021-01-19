@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -1104,57 +1104,6 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
 {
     QStringList results;
     for (const auto &weather : wp.weather()) {
-
-        // PRECIPITATION, undetermined
-        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::UNDETERMINED) {
-            switch(wp.qualifier()) {
-            case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("precipitation in the vicinity");
-                break;
-            }
-            continue;
-        }
-
-        // PRECIPITATION, THUNDERSTORM
-        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::UNDETERMINED) {
-            switch(wp.qualifier()) {
-            case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("thunderstorm with precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent thunderstorm with precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with precipitation in the vicinity");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light thunderstorm with precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate thunderstorm with precipitation");
-                break;
-            case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy thunderstorm with precipitation");
-                break;
-            }
-            continue;
-        }
-
         // DRIZZLE
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::DRIZZLE) {
             switch(wp.qualifier()) {
@@ -1324,6 +1273,81 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
                 results << tr("recent ice pellet precipitation");
+                break;
+            }
+            continue;
+        }
+
+        // PRECIPITATION
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::UNDETERMINED) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("precipitation in the vicinity");
+                break;
+            }
+            continue;
+        }
+
+        // PRECIPITATION, SHOWERS
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::UNDETERMINED) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("showers with undetermined precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent showers with undetermined precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("showers in the vicinity with undetermined precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light showers with undetermined precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate showers with undetermined precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy showers with undetermined precipitation");
+                break;
+            }
+            continue;
+        }
+
+        // PRECIPITATION, THUNDERSTORM
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM && weather == metaf::WeatherPhenomena::Weather::UNDETERMINED) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("thunderstorm with precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent thunderstorm with precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("thunderstorm with precipitation in the vicinity");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light thunderstorm with precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate thunderstorm with precipitation");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy thunderstorm with precipitation");
                 break;
             }
             continue;

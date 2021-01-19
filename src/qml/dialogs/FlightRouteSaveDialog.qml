@@ -137,7 +137,7 @@ Dialog {
             lbl.text = errorString
             fileError.open()
         } else
-            toast.doToast(qsTr("Saved flight route %1").arg(finalFileName))
+            toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
     }
 
     Dialog {

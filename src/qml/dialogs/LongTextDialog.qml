@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 
 Dialog {
     id: dlg
@@ -58,7 +59,8 @@ Dialog {
             id: lbl
             text: dlg.text
             width: dlg.availableWidth
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
+            linkColor: Material.accent
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
         } // Label

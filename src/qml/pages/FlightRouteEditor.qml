@@ -362,7 +362,7 @@ Page {
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
 
                 text: qsTr("<h2>Empty Route</h2><p>Use the button <strong>Add Waypoint</strong> below.</p>")
             }
@@ -657,7 +657,7 @@ Page {
 
             text: qsTr("Once erased, the current flight route cannot be restored.")
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         onAccepted: {
@@ -699,7 +699,7 @@ Page {
             id: shareErrorDialogLabel
             width: shareErrorDialog.availableWidth
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.Ok

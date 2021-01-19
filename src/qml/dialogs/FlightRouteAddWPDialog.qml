@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -66,7 +66,7 @@ Dialog {
             text: qsTr("Choose a waypoint from the list below.")
             color: Material.primary
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         TextField {
@@ -105,7 +105,7 @@ Dialog {
 
                 visible: (wpList.count === 0)
                 horizontalAlignment: Text.AlignHCenter
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 text: (textInput.text === "")
                       ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")

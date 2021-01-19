@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,7 +54,7 @@ Dialog {
             Label {
                 id: lbl1
                 text: qsTr("If you have good satellite reception and if know your altitude precisely, you can set the satellite altimeter here.")
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 width: dlg.availableWidth
             }
@@ -87,7 +87,7 @@ Dialog {
                 id: lbl2
                 text: satNav.hasAltitude ? qsTr("The current raw altimeter reading as reported by the satellite navigation system is %1 MSL.").arg(satNav.rawAltitudeInFeetAsString)
                                          : qsTr("Insufficient satellite reception. Altimeter cannot be set.")
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 width: dlg.availableWidth
             }

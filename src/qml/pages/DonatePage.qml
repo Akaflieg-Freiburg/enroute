@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import "../items"
@@ -43,38 +44,25 @@ Page {
             
             Label {
                 id: lbl1
-                textFormat: Qt.RichText
+                textFormat: Text.MarkdownText
+                linkColor: Material.accent
                 text: qsTr("
-<p><strong>Enroute Flight Navigation</strong> is a
+**Enroute Flight Navigation** is a
 non-commercial project of Akaflieg Freiburg and the
 University of Freiburg. The app has been written by flight
 enthusiasts in their spare time, as a service to the
-community. The developers do not take donations</p>
+community. The developers do not take donations.
 
-<p>If you appreciate the app, please consider a donation to
+If you appreciate the app, please consider a donation to
 Akaflieg Freiburg, a tax-privileged, not-for-profit flight
-club of public utility in Freiburg, Germany. </p>
+club of public utility in Freiburg, Germany.
 
-<p>
-  <table>
-    <tr>
-      <td>IBAN:</td>
-      <td>DE35 6809 0000 0027 6409 07</td>
-    </tr>
-    <tr>
-      <td>BIC:</td>
-      <td>GENODE61FR1</td>
-    </tr>
-    <tr>
-      <td>Bank:</td>
-      <td>Volksbank Freiburg</td>
-    </tr>
-    <tr>
-      <td>Message:</td>
-      <td>Enroute Flight Navigation</td>
-    </tr>
-  </table>
-</p>
+```
+IBAN:    DE35 6809 0000 0027 6409 07
+BIC:     GENODE61FR1
+Bank:    Volksbank Freiburg
+Message: Enroute Flight Navigation
+```
 ")
                 width: pg.width
                 wrapMode: Text.Wrap

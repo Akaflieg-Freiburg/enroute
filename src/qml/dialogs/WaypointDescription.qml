@@ -128,7 +128,7 @@ Dialog {
                 Layout.fillWidth: true
                 text: rowLYO.text.substring(4)
                 wrapMode: Text.WordWrap
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
             }
 
         }
@@ -417,7 +417,7 @@ Dialog {
 
             text: qsTr("Once overwritten, the current flight route cannot be restored.")
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.No | Dialog.Yes

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -71,7 +71,7 @@ Dialog {
             text: qsTr("Enter a name or choose an existing name from the list below.")
             color: Material.primary
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         TextField {
@@ -171,7 +171,7 @@ Dialog {
             Label {
                 id: lbl
                 width: dlg.availableWidth
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             } // Label
@@ -198,7 +198,7 @@ Dialog {
 
             text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         onAccepted: {

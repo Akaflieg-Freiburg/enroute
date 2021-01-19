@@ -391,10 +391,9 @@ Page {
             anchors.topMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the item 'Update' from the menu.  To find the menu, look for the symbol '&#8942;' at the top right corner of the screen.</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
         }
     }
 
@@ -418,10 +417,9 @@ Page {
             anchors.topMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
         } // downloadIndicatorLabel
 
         BusyIndicator {

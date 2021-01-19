@@ -54,58 +54,58 @@ Dialog {
             columnSpacing: 30
             columns: 2
 
-            Text { text: qsTr("Satellite Status") }
-            Text {
+            Label { text: qsTr("Satellite Status") }
+            Label {
                 font.weight: Font.Bold
                 text: satNav.statusAsString
                 color: (satNav.status === SatNav.OK) ? "green" : "red"
             }
 
-            Text { text: qsTr("Last Fix") }
-            Text { text: satNav.timestampAsString }
+            Label { text: qsTr("Last Fix") }
+            Label { text: satNav.timestampAsString }
 
-            Text { text: qsTr("Mode") }
-            Text { text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground") }
+            Label { text: qsTr("Mode") }
+            Label { text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground") }
 
-            Text {
+            Label {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
-            Text {
+            Label {
                 text: qsTr("Horizontal")
                 font.weight: Font.Bold
                 Layout.columnSpan: 2
             }
 
-            Text { text: qsTr("Latitude") }
-            Text { text: satNav.latitudeAsString }
+            Label { text: qsTr("Latitude") }
+            Label { text: satNav.latitudeAsString }
 
-            Text { text: qsTr("Longitude") }
-            Text { text: satNav.longitudeAsString }
+            Label { text: qsTr("Longitude") }
+            Label { text: satNav.longitudeAsString }
 
-            Text { text: qsTr("Error") }
-            Text { text: satNav.horizontalPrecisionInMetersAsString }
+            Label { text: qsTr("Error") }
+            Label { text: satNav.horizontalPrecisionInMetersAsString }
 
-            Text { text: qsTr("GS"); textFormat: Text.RichText }
-            Text { text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString }
+            Label { text: qsTr("GS") }
+            Label { text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString }
 
-            Text { text: qsTr("TT") }
-            Text { text: satNav.trackAsString }
+            Label { text: qsTr("TT") }
+            Label { text: satNav.trackAsString }
 
-            Text {
+            Label {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
-            Text {
+            Label {
                 text: qsTr("Vertical")
                 font.weight: Font.Bold
                 Layout.columnSpan: 2
             }
 
-            Text { text: qsTr("ALT") }
-            Text { text: satNav.altitudeInFeetAsString }
+            Label { text: qsTr("ALT") }
+            Label { text: satNav.altitudeInFeetAsString }
 
         } // GridLayout
 

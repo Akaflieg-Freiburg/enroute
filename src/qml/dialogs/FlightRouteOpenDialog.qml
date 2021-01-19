@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -72,7 +72,7 @@ Dialog {
             text: qsTr("Choose a flight route from the list below.")
             color: Material.primary
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         TextField {
@@ -161,7 +161,7 @@ Dialog {
             Label {
                 id: lbl
                 width: dlg.availableWidth
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             } // Label
@@ -186,7 +186,7 @@ Dialog {
 
             text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.No | Dialog.Yes

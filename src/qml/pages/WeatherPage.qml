@@ -184,7 +184,7 @@ Page {
                     topPadding: 2*Qt.application.font.pixelSize
 
                     horizontalAlignment: Text.AlignHCenter
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
                     wrapMode: Text.Wrap
                     text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
                 }
@@ -223,10 +223,9 @@ Page {
             anchors.topMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
         } // downloadIndicatorLabel
 
         BusyIndicator {

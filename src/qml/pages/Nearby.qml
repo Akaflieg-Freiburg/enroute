@@ -117,7 +117,7 @@ Page {
                 visible: parent.count == 0
 
                 horizontalAlignment: Text.AlignHCenter
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 text: qsTr("<h3>Sorry!</h3><p>No aerodrome data available. Please make sure that an aviation map is installed.</p>")
             }
@@ -139,7 +139,7 @@ Page {
                 visible: parent.count == 0
 
                 horizontalAlignment: Text.AlignHCenter
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 text: qsTr("<h3>Sorry!</h3><p>No navaid data available.</p>")
             }
@@ -161,7 +161,7 @@ Page {
                 visible: parent.count == 0
 
                 horizontalAlignment: Text.AlignHCenter
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 text: qsTr("<h3>Sorry!</h3><p>No reporting point data available.</p>")
             }

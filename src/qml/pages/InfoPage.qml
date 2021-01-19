@@ -74,7 +74,8 @@ Page {
                 Label {
                     id: lbl1
                     text: librarian.getStringFromRessource(":text/info_enroute.html")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     width: pg.width
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1
@@ -97,8 +98,8 @@ Page {
 
                 Label {
                     id: lbl2
-                    text: librarian.getStringFromRessource(":text/authors.html")
-                    textFormat: Text.RichText
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/authors.html")
+                    textFormat: Text.RichText // Link OK
                     width: pg.width
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1
@@ -122,7 +123,8 @@ Page {
                 Label {
                     id: lbl3
                     text: librarian.getStringFromRessource(":text/info_license.html")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     width: pg.width
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1

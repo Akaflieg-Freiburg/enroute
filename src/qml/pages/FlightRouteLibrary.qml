@@ -302,12 +302,11 @@ Page {
         leftPadding: Qt.application.font.pixelSize*2
         rightPadding: Qt.application.font.pixelSize*2
 
-        textFormat: Text.RichText
+        textFormat: Text.StyledText
         wrapMode: Text.Wrap
         text: (textInput.text === "")
               ? qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
               : qsTr("<h3>Sorry!</h3><p>No flight routes match your filter criteria.</p>")
-        onLinkActivated: Qt.openUrlExternally(link)
     }
 
 
@@ -367,7 +366,8 @@ Page {
                 Label {
                     id: lbl
                     width: fileError.availableWidth
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 } // Label
@@ -402,7 +402,7 @@ Page {
 
             text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.No | Dialog.Yes
@@ -436,7 +436,7 @@ Page {
 
             text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.No | Dialog.Yes
@@ -482,7 +482,7 @@ Page {
                 color: Material.primary
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
             }
 
             TextField {
@@ -537,7 +537,7 @@ Page {
             width: shareErrorDialog.availableWidth
             onLinkActivated: Qt.openUrlExternally(link)
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.Ok

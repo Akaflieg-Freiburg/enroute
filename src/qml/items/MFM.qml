@@ -336,7 +336,7 @@ Item {
             wrapMode: Text.WordWrap
 
             text: qsTr("<p><strong>There is no aviation map installed.</strong></p><p>Please open the menu and go to <strong>Settings/Library/Maps</strong>.</p>")
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             color: "red"
         }
     }

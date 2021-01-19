@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -128,7 +128,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
-                    textFormat: Text.RichText
+                    textFormat: Text.RichText // OK
                 }
 
                 Label { // title: "TAF"
@@ -159,7 +159,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
-                    textFormat: Text.RichText
+                    textFormat: Text.RichText // OK
                 }
 
             }

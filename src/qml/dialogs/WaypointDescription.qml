@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Shapes 1.15
 
@@ -161,6 +163,7 @@ Dialog {
 
                     ShapePath {
                         strokeWidth: 2
+                        fillColor: "transparent"
                         strokeColor:  {
                             switch(airspace.CAT) {
                             case "A":
@@ -247,6 +250,7 @@ Dialog {
                         }
                         return "transparent"
                     }
+
                     Label {
                         anchors.centerIn: parent
                         text: airspace.CAT
@@ -270,7 +274,7 @@ Dialog {
                 wrapMode: Text.WordWrap
             }
             Rectangle {
-                color: "black"
+                color: Material.foreground
                 height: 1
                 width: Qt.application.font.pixelSize*5
             }
@@ -290,8 +294,16 @@ Dialog {
             Layout.fillWidth: true
 
             Image {
+                id: wpLblImg
                 source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
                 sourceSize.width: 25
+
+                ColorOverlay {
+                    id: colorOverlay
+                    anchors.fill: wpLblImg
+                    source: wpLblImg
+                    color: Material.foreground //"#000000"
+                }
             }
 
             Label {

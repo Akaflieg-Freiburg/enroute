@@ -46,7 +46,6 @@ Dialog {
             id: idel
             text: modelData
             icon.source: "/icons/material/ic_directions.svg"
-            icon.color: "transparent"
 
             anchors.left: parent.left
             anchors.right: parent.right
@@ -69,7 +68,7 @@ Dialog {
             Layout.fillWidth: true
 
             text: qsTr("Enter a name or choose an existing name from the list below.")
-            color: Material.primary
+            color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }

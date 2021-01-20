@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtLocation 5.15
 import QtPositioning 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import enroute 1.0
@@ -320,6 +322,16 @@ Item {
 
     }
 
+
+    // Graphical effects: increase contrast, reduce brithness in dark mode
+    BrightnessContrast {
+        anchors.fill: flightMap
+        source: flightMap
+        brightness: Material.theme === Material.Dark ? -0.7 : -0.3
+        contrast: 0.3
+    }
+
+
     Rectangle {
         id: noMapWarningRect
 
@@ -355,6 +367,7 @@ Item {
 
                 rotation: -flightMap.bearing
 
+                opacity: Material.theme === Material.Dark ? 0.4 : 1.0
                 source: "/icons/NorthArrow.svg"
                 sourceSize.width: 44
                 sourceSize.height: 44
@@ -458,6 +471,8 @@ Item {
         anchors.right: zoomIn.left
         anchors.rightMargin: 0.5*Qt.application.font.pixelSize
         anchors.verticalCenter: followGPSButton.verticalCenter
+
+        opacity: Material.theme === Material.Dark ? 0.3 : 1.0
 
         useMetricUnits: globalSettings.useMetricUnits
         pixelPer10km: flightMap.pixelPer10km

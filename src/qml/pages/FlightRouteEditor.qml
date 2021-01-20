@@ -238,7 +238,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Exported flight route"))
+                                toast.doToast(qsTr("Flight route exported"))
                         }
                     }
 
@@ -254,7 +254,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Exported flight route"))
+                                toast.doToast(qsTr("Flight route exported"))
                         }
                     }
                 }
@@ -276,7 +276,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Opened flight route in other app"))
+                                toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -293,7 +293,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Opened flight route in other app"))
+                                toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -321,7 +321,7 @@ Page {
                         mobileAdaptor.vibrateBrief()
                         highlighted = false
                         flightRoute.reverse()
-                        toast.doToast(qsTr("Reversed flight route"))
+                        toast.doToast(qsTr("Flight route reversed"))
                     }
                 }
 
@@ -663,7 +663,7 @@ Page {
         onAccepted: {
             mobileAdaptor.vibrateBrief()
             flightRoute.clear()
-            toast.doToast(qsTr("Cleared flight route"))
+            toast.doToast(qsTr("Flight route cleared"))
         }
         onRejected: {
             mobileAdaptor.vibrateBrief()

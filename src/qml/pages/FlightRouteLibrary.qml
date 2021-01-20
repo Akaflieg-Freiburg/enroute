@@ -179,9 +179,9 @@ Page {
                                     shareErrorDialog.open()
                                 } else {
                                     if (Qt.platform.os === "android")
-                                        toast.doToast(qsTr("Shared flight route"))
+                                        toast.doToast(qsTr("Flight route shared"))
                                     else
-                                        toast.doToast(qsTr("Exported flight route"))
+                                        toast.doToast(qsTr("Flight route exported"))
                                 }
                             }
                         }
@@ -200,9 +200,9 @@ Page {
                                     shareErrorDialog.open()
                                 } else {
                                     if (Qt.platform.os === "android")
-                                        toast.doToast(qsTr("Shared flight route"))
+                                        toast.doToast(qsTr("Flight route shared"))
                                     else
-                                        toast.doToast(qsTr("Exported flight route"))
+                                        toast.doToast(qsTr("Flight route exported"))
                                 }
                             }
                         }
@@ -224,7 +224,7 @@ Page {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
                                 } else
-                                    toast.doToast(qsTr("Opened flight route in other app"))
+                                    toast.doToast(qsTr("Flight route opened in other app"))
                             }
                         }
 
@@ -241,7 +241,7 @@ Page {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
                                 } else
-                                    toast.doToast(qsTr("Opened flight route in other app"))
+                                    toast.doToast(qsTr("Flight route opened in other app"))
                             }
                         }
 
@@ -446,7 +446,7 @@ Page {
             mobileAdaptor.vibrateBrief()
             librarian.flightRouteRemove(page.finalFileName)
             page.reloadFlightRouteList()
-            toast.doToast(qsTr("Removed flight route from device"))
+            toast.doToast(qsTr("Flight route removed from device"))
         }
         onRejected: {
             mobileAdaptor.vibrateBrief()
@@ -514,7 +514,7 @@ Page {
                 librarian.flightRouteRename(finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 close()
-                toast.doToast(qsTr("Renamed flight route"))
+                toast.doToast(qsTr("Flight route renamed"))
             }
         }
         onRejected: {

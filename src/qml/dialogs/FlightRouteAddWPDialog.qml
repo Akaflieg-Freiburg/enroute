@@ -44,7 +44,6 @@ Dialog {
         ItemDelegate {
             text: model.modelData.twoLineTitle
             icon.source: model.modelData.icon
-            icon.color: "transparent"
 
             width: wpList.width
 

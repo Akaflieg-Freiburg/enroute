@@ -169,6 +169,21 @@ auto Waypoint::hasTAF() const -> bool
 }
 
 
+auto Waypoint::icon() const -> QString
+{
+    auto CAT = getPropery(QStringLiteral("CAT")).toString();
+
+    // We prefer SVG icons. There are, however, a few icons that cannot be
+    // rendered by Qt's tinySVG renderer. We have generated PNGs for those
+    // and treat them separately here.
+    if ((CAT == "AD-GLD") || (CAT == "AD-GRASS") || (CAT == "AD-MIL-GRASS") || (CAT == "AD-UL")) {
+        return QStringLiteral("/icons/waypoints/%1.png").arg(CAT);
+    }
+
+    return QStringLiteral("/icons/waypoints/%1.svg").arg(CAT);
+}
+
+
 void Waypoint::initializeWeatherStationConnections()
 {
     // Get new weather station

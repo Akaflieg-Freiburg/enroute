@@ -80,5 +80,9 @@
 	<file alias="icons/waypoints/DVOR-DME.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORDME.svg</file>
 	<file alias="icons/waypoints/DVORTAC.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORTAC.svg</file>
 
+	<file alias="icons/waypoints/AD-GLD.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-GLD.png</file>
+	<file alias="icons/waypoints/AD-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-GRASS.png</file>
+	<file alias="icons/waypoints/AD-MIL-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-MIL-GRASS.png</file>
+	<file alias="icons/waypoints/AD-UL.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-UL.png</file>
     </qresource>
 </RCC>

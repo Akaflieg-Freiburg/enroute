@@ -6,23 +6,6 @@
    viewBox="0 0 50 50">
 
   <circle
-      id="circle symbol background"
-      cx="25"
-      cy="25"
-      style="fill:none;stroke:#ffffff;stroke-width:10"
-      r="16" />
-  <circle
-      style="fill:none;stroke:#ffffff;stroke-width:7"
-      cx="25"
-      cy="22"
-      r="2" />
-  <path
-      d="M 15 26 A 10.1 10.1 0 0 0 35 26"
-      style="fill:none;stroke:#ffffff;stroke-width:7" />
-  <path
-      d="M 25 15 25 35 Z"
-      style="fill:none;stroke:#ffffff;stroke-width:7" />
-  <circle
       id="circle symbol"
       style="fill:none;stroke:#1000b0;stroke-width:6"
       cx="25"

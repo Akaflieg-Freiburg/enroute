@@ -7,10 +7,6 @@
 
 <path
     d="M37.5 3.35 L50 25 L37.5 46.65 L12.5 46.65 L0 25 L12.5 3.35 Z"
-    style="fill:#ffffff;"
-    fill-opacity="0.8"/>
-<path
-    d="M37.5 3.35 L50 25 L37.5 46.65 L12.5 46.65 L0 25 L12.5 3.35 Z"
     style="fill:none;stroke:#1000b0;stroke-width:2"/>
 <rect
     x="23"

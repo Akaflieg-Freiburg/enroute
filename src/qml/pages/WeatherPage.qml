@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
@@ -55,6 +56,7 @@ Page {
                 id: backButton
 
                 icon.source: "/icons/material/ic_arrow_back.svg"
+                icon.color: "white"
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     if (stackView.depth > 1) {
@@ -69,6 +71,7 @@ Page {
                 Layout.fillWidth: true
 
                 text: stackView.currentItem.title
+                color: "white"
                 elide: Label.ElideRight
                 font.bold: true
                 horizontalAlignment: Qt.AlignHCenter
@@ -79,6 +82,8 @@ Page {
                 id: headerMenuToolButton
 
                 icon.source: "/icons/material/ic_more_vert.svg"
+                icon.color: "white"
+
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     headerMenuX.popup()
@@ -307,6 +312,11 @@ Page {
             Image {
                 visible: qnhLabel.text != ""                
                 source: "/icons/material/ic_speed.svg"
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: parent
+                    color: Material.foreground
+                }
             }
             Label {
                 id: qnhLabel
@@ -317,6 +327,11 @@ Page {
             Image {
                 visible: sunLabel.text != ""
                 source: "/icons/material/ic_wb_sunny.svg"
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: parent
+                    color: Material.foreground
+                }
             }
             Label {
                 id: sunLabel

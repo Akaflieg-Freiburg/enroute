@@ -325,7 +325,7 @@ Item {
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
         anchors.fill: flightMap
         source: flightMap
-        brightness: globalSettings.nightMode ? -0.8 : -0.2
+        brightness: globalSettings.nightMode ? -0.9 : -0.2
         contrast: globalSettings.nightMode ? 0.6 : 0.2
     }
 

@@ -302,7 +302,7 @@ Dialog {
                     id: colorOverlay
                     anchors.fill: wpLblImg
                     source: wpLblImg
-                    color: Material.foreground //"#000000"
+                    color: Material.foreground
                 }
             }
 

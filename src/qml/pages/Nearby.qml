@@ -78,7 +78,6 @@ Page {
                     width: sv.width
 
                     icon.source: model.modelData.icon
-                    icon.color: "transparent"
 
                     text: {
                         var result = model.modelData.twoLineTitle

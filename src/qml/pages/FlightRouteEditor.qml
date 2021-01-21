@@ -399,13 +399,17 @@ Page {
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.primary
+                    color: Material.accent
                 }
 
-                Label { text: qsTr("Direction") }
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Direction")
+                }
                 TextField {
                     id: windDirection
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: wind.minWindDirection
@@ -417,14 +421,17 @@ Page {
                         wind.windDirectionInDEG = text
                         windSpeed.focus = true
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
                     text: isFinite(wind.windDirectionInDEG) ? wind.windDirectionInDEG : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: "°" }
+                Label {
+                    text: "°"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: windDirection.text !== ""
                     onClicked: {
                         wind.windDirectionInDEG = -1
@@ -432,10 +439,14 @@ Page {
                     }
                 }
 
-                Label { text: qsTr("Speed") }
+                Label {
+                    text: qsTr("Speed")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: windSpeed
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
@@ -447,13 +458,16 @@ Page {
                         globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
                         focus = false
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     text: isFinite(wind.windSpeedInKT) ? Math.round(globalSettings.useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
+                Label {
+                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: windSpeed.text !== ""
                     onClicked: {
                         wind.windSpeedInKT = -1
@@ -486,13 +500,17 @@ Page {
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.primary
+                    color: Material.accent
                 }
 
-                Label { text: qsTr("Cruise") }
+                Label {
+                    text: qsTr("Cruise")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: cruiseSpeed
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
@@ -504,7 +522,7 @@ Page {
                         globalSettings.useMetricUnits ? aircraft.cruiseSpeedInKMH = text : aircraft.cruiseSpeedInKT = text
                         descentSpeed.focus = true
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: descentSpeed
                     KeyNavigation.backtab: windSpeed
                     text: isFinite(aircraft.cruiseSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
@@ -512,9 +530,12 @@ Page {
                                                                               aircraft.cruiseSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
+                Label {
+                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: cruiseSpeed.text !== ""
                     onClicked: {
                         aircraft.cruiseSpeedInKT = -1
@@ -522,10 +543,14 @@ Page {
                     }
                 }
 
-                Label { text: qsTr("Descent") }
+                Label {
+                    text: qsTr("Descent")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: descentSpeed
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
@@ -537,7 +562,7 @@ Page {
                         globalSettings.useMetricUnits ? aircraft.descentSpeedInKMH = text : aircraft.descentSpeedInKT = text
                         fuelConsumption.focus = true
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: fuelConsumption
                     KeyNavigation.backtab: cruiseSpeed
                     text: isFinite(aircraft.descentSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
@@ -545,9 +570,12 @@ Page {
                                                                                aircraft.descentSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
+                Label {
+                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: descentSpeed.text !== ""
                     onClicked: {
                         aircraft.descentSpeedInKT = -1
@@ -561,13 +589,17 @@ Page {
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.primary
+                    color: Material.accent
                 }
 
-                Label { text: qsTr("Cruise") }
+                Label {
+                    text: qsTr("Cruise")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: fuelConsumption
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: aircraft.minFuelConsuption
@@ -579,16 +611,18 @@ Page {
                         focus = false
                         aircraft.fuelConsumptionInLPH = text
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windDirection
                     KeyNavigation.backtab: descentSpeed
                     text: isFinite(aircraft.fuelConsumptionInLPH) ? aircraft.fuelConsumptionInLPH.toString() : ""
                     placeholderText: qsTr("undefined")
-
                 }
-                Label { text: qsTr("l/h") }
+                Label {
+                    text: qsTr("l/h")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: fuelConsumption.text !== ""
                     onClicked: {
                         aircraft.fuelConsumptionInLPH = -1
@@ -622,6 +656,8 @@ Page {
 
             ToolButton {
                 id: addWPButton
+
+                Material.foreground: Material.accent
 
                 visible: (sv.currentIndex === 0)
                 Layout.alignment: Qt.AlignHCenter

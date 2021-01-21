@@ -39,15 +39,9 @@ Page {
 
         currentIndex: sv.currentIndex
 
-        TabButton {
-            text: "Enroute"
-        }
-        TabButton {
-            text: qsTr("Authors")
-        }
-        TabButton {
-            text: qsTr("License")
-        }
+        TabButton { text: "Enroute" }
+        TabButton { text: qsTr("Authors") }
+        TabButton { text: qsTr("License") }
         Material.elevation: 3
     }
 
@@ -73,8 +67,8 @@ Page {
 
                 Label {
                     id: lbl1
-                    text: librarian.getStringFromRessource(":text/info_enroute.html")
-                    textFormat: Text.StyledText
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/info_enroute.html")
+                    textFormat: Text.RichText
                     linkColor: Material.accent
                     width: pg.width
 
@@ -84,8 +78,8 @@ Page {
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
-            } // Item
-        } // ScrollView
+            }
+        }
         
         ScrollView {
             clip: true
@@ -108,8 +102,8 @@ Page {
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
-            } // Item
-        } // ScrollView
+            }
+        }
 
         ScrollView {
             clip: true
@@ -133,8 +127,8 @@ Page {
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
-            } // Item
-        } // ScrollView
+            }
+        }
 
     } // StackView
 } // Page

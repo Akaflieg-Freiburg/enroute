@@ -92,6 +92,7 @@ Page {
                     text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
                     icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_map.svg"
                     Layout.fillWidth: true
+                    enabled: !model.modelData.hasFile
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
                             mobileAdaptor.vibrateBrief()

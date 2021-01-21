@@ -57,9 +57,9 @@ Dialog {
 
         Label {
             id: lbl
-            text: dlg.text
+            text: "<style>a:link { color: " + Material.accent + "; }</style>"+dlg.text
             width: dlg.availableWidth
-            textFormat: Text.StyledText
+            textFormat: Text.RichText
             linkColor: Material.accent
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)

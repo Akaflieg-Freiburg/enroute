@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -129,8 +129,6 @@ Page {
 
                 text: modelData
                 icon.source: "/icons/material/ic_directions.svg"
-                icon.color: Material.primary
-
             }
 
             ToolButton {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,7 +31,7 @@
 #include "Downloadable.h"
 #include "TileHandler.h"
 
-TileHandler::TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
+TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
     // Initialize with default values
@@ -72,20 +72,27 @@ TileHandler::TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const
         }
         while(query.next()) {
             QString key = query.value(0).toString();
-            if (key == "name")
+            if (key == "name") {
                 _name = query.value(1).toString();
-            if (key == "format")
+            }
+            if (key == "format") {
                 _format= query.value(1).toString();
-            if (key == "description")
+            }
+            if (key == "description") {
                 _description = query.value(1).toString();
-            if (key == "version")
+            }
+            if (key == "version") {
                 _version = query.value(1).toString();
-            if (key == "attribution")
+            }
+            if (key == "attribution") {
                 _attribution = query.value(1).toString();
-            if (key == "maxzoom")
-                _maxzoom = query.value(1).toInt();
-            if (key == "minzoom")
+            }
+            if (key == "maxzoom") {
+               _maxzoom = query.value(1).toInt();
+            }
+            if (key == "minzoom") {
                 _minzoom = query.value(1).toInt();
+            }
         }
         _tiles = baseURL+"/{z}/{x}/{y}."+_format;
 
@@ -109,8 +116,9 @@ void TileHandler::removeFile(const QString& localFileName)
 {
     QString connectionToRemove;
     foreach(auto databaseConnectionName, databaseConnections) {
-        if (!databaseConnectionName.endsWith(localFileName))
+        if (!databaseConnectionName.endsWith(localFileName)) {
             continue;
+        }
         connectionToRemove = databaseConnectionName;
         break;
     }
@@ -122,7 +130,7 @@ void TileHandler::removeFile(const QString& localFileName)
 
 void TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
 {
-// Serve tileJSON file, if requested
+    // Serve tileJSON file, if requested
     if (path.isEmpty() || path.endsWith("json", Qt::CaseInsensitive)) {
         socket->setHeader("Content-Type", "application/json");
         QByteArray json = tileJSON();
@@ -150,8 +158,9 @@ void TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
             query.exec(queryString);
 
             // Error handling
-            if (!query.first())
+            if (!query.first()) {
                 continue;
+            }
 
             // Get data
             QByteArray tileData = query.value(3).toByteArray();
@@ -182,18 +191,24 @@ auto TileHandler::tileJSON() const -> QByteArray
     tiles.append(_tiles);
     result.insert("tiles", tiles);
 
-    if (!_name.isEmpty())
+    if (!_name.isEmpty()) {
         result.insert("name", _name);
-    if (!_description.isEmpty())
+    }
+    if (!_description.isEmpty()) {
         result.insert("description", _description);
-    if (!_version.isEmpty())
+    }
+    if (!_version.isEmpty()) {
         result.insert("version", _version);
-    if (!_attribution.isEmpty())
+    }
+    if (!_attribution.isEmpty()) {
         result.insert("attribution", _attribution);
-    if (_maxzoom >= 0)
+    }
+    if (_maxzoom >= 0) {
         result.insert("maxzoom", _maxzoom);
-    if (_minzoom >= 0)
+    }
+    if (_minzoom >= 0) {
         result.insert("minzoom", _minzoom);
+    }
 
     QJsonDocument tileJSONDocument;
     tileJSONDocument.setObject(result);

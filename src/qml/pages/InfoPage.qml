@@ -64,32 +64,33 @@ Page {
         ScrollView {
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
+            // The label that we really want to show is wrapped into an Item. This allows
             // to set implicitHeight, and thus compute the implicitHeight of the Dialog
             // without binding loops
             Item {
                 implicitHeight: lbl1.implicitHeight
                 width: pg.width
 
-                Label {
+                NightAndDayLabel {
                     id: lbl1
                     text: librarian.getStringFromRessource(":text/info_enroute.html")
                     textFormat: Text.StyledText
                     linkColor: Material.accent
                     width: pg.width
+
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1
                     leftPadding: Qt.application.font.pixelSize*0.5
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
+                }
             } // Item
         } // ScrollView
         
         ScrollView {
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
+            // The label that we really want to show is wrapped into an Item. This allows
             // to set implicitHeight, and thus compute the implicitHeight of the Dialog
             // without binding loops
             Item {
@@ -106,14 +107,14 @@ Page {
                     leftPadding: Qt.application.font.pixelSize*0.5
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
+                }
             } // Item
         } // ScrollView
 
         ScrollView {
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
+            // The label that we really want to show is wrapped into an Item. This allows
             // to set implicitHeight, and thus compute the implicitHeight of the Dialog
             // without binding loops
             Item {
@@ -131,7 +132,7 @@ Page {
                     leftPadding: Qt.application.font.pixelSize*0.5
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
+                }
             } // Item
         } // ScrollView
 

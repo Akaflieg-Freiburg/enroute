@@ -35,7 +35,7 @@ Page {
         clip: true
         anchors.fill: parent
         
-        // The Label that we really want to show is wrapped into an Item. This allows
+        // The label that we really want to show is wrapped into an Item. This allows
         // to set implicitHeight, and thus compute the implicitHeight of the Dialog
         // without binding loops
         Item {
@@ -70,7 +70,7 @@ Message: Enroute Flight Navigation
                 leftPadding: Qt.application.font.pixelSize*0.5
                 rightPadding: Qt.application.font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
-            } // Label
+            }
         } // Item
     } // ScrollView
 } // Page

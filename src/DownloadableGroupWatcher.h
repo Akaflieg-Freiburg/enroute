@@ -43,26 +43,26 @@ public:
       by section() and then secondly by file name. The nullptr is never
       contained in the list.
     */
-    Q_PROPERTY(QList<QPointer<Downloadable>> downloadables READ downloadables NOTIFY downloadablesChanged)
+    Q_PROPERTY(QVector<QPointer<Downloadable>> downloadables READ downloadables NOTIFY downloadablesChanged)
 
     /*! \brief Getter function for the property with the same name
       
       @returns Property downloadables
     */
-    QList<QPointer<Downloadable>> downloadables() const;
+    QVector<QPointer<Downloadable>> downloadables() const;
 
     /*! \brief List of Downloadables in this group, as a list of QObjects
 
     This property is identical to downloadables, but returns the pointers to
     the Downloadable objects in the form of a QObjectList
     */
-    Q_PROPERTY(QList<QObject*> downloadablesAsObjectList READ downloadablesAsObjectList NOTIFY downloadablesChanged)
+    Q_PROPERTY(QVector<QObject*> downloadablesAsObjectList READ downloadablesAsObjectList NOTIFY downloadablesChanged)
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property downloadables
     */
-    QList<QObject*> downloadablesAsObjectList() const;
+    QVector<QObject*> downloadablesAsObjectList() const;
 
     /*! \brief List of Downloadable objects in this group that have local files
       
@@ -71,13 +71,13 @@ public:
       ascending order, first by section() and then secondly by file name. The
       nullptr is never contained in the list.
     */
-    Q_PROPERTY(QList<QPointer<Downloadable>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
+    Q_PROPERTY(QVector<QPointer<Downloadable>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property downloadablesWithFiles
     */
-    QList<QPointer<Downloadable>> downloadablesWithFile() const;
+    QVector<QPointer<Downloadable>> downloadablesWithFile() const;
 
     /*! \brief Indicates whether a download process is currently running
 
@@ -146,7 +146,7 @@ public slots:
 
 signals:
     /*! \brief Notifier signal for property downloading */
-    void downloadablesWithFileChanged(QList<QPointer<Downloadable>>);
+    void downloadablesWithFileChanged(QVector<QPointer<Downloadable>>);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged(bool);
@@ -209,7 +209,7 @@ private:
     QTimer emitLocalFileContentChanged_delayedTimer;
 
     bool                          _cachedDownloading {false};        // Cached value for the 'downloading' property
-    QList<QPointer<Downloadable>> _cachedDownloadablesWithFile {};   // Cached value for the 'downloadablesWithFiles' property
+    QVector<QPointer<Downloadable>> _cachedDownloadablesWithFile {};   // Cached value for the 'downloadablesWithFiles' property
     QStringList                   _cachedFiles {};                   // Cached value for the 'files' property
     bool                          _cachedHasFile {false};            // Cached value for the 'hasLocalFile' property
     bool                          _cachedUpdatable {false};          // Cached value for the 'updatable' property

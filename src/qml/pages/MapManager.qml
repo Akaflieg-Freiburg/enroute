@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,12 +33,12 @@ Page {
     Component {
         id: sectionHeading
 
-        Label {
+        NightAndDayLabel {
             x: Qt.application.font.pixelSize
-            text: section
+            nightAndDayText: section
             font.pixelSize: Qt.application.font.pixelSize*1.2
             font.bold: true
-            color: Material.primary
+            color: Material.accent
         }
     }
 
@@ -91,7 +91,6 @@ Page {
                 ItemDelegate {
                     text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
                     icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_map.svg"
-                    icon.color: model.modelData.hasFile ? Material.primary : "#9E9E9E"
                     Layout.fillWidth: true
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
@@ -202,13 +201,13 @@ Page {
             }
         } // ToolButton
 
-        Label {
+        NightAndDayLabel {
             anchors.left: backButton.right
             anchors.right: headerMenuToolButton.left
             anchors.bottom: parent.bottom
             anchors.top: parent.top
 
-            text: stackView.currentItem.title
+            nightAndDayText: stackView.currentItem.title
             elide: Label.ElideRight
             font.bold: true
             horizontalAlignment: Qt.AlignHCenter
@@ -384,7 +383,7 @@ Page {
         color: "white"
         visible: !mapManager.downloadingGeoMapList && !mapManager.hasGeoMapList
 
-        Label {
+        NightAndDayLabel {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -408,7 +407,7 @@ Page {
         color: "white"
         visible: mapManager.downloadingGeoMapList
 
-        Label {
+        NightAndDayLabel {
             id: downloadIndicatorLabel
 
             anchors.left: parent.left

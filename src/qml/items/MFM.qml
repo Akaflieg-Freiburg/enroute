@@ -119,11 +119,11 @@ Item {
                 const xCenter = flightMap.width/2.0
                 const yCenter = flightMap.height/2.0
                 const radiusInPixel = Math.min(
-                            Math.abs(xCenter-zoomIn.x),
-                            Math.abs(xCenter-followGPSButton.x-followGPSButton.width),
-                            Math.abs(yCenter-northButton.y-northButton.height),
-                            Math.abs(yCenter-zoomIn.y)
-                            )
+                                        Math.abs(xCenter-zoomIn.x),
+                                        Math.abs(xCenter-followGPSButton.x-followGPSButton.width),
+                                        Math.abs(yCenter-northButton.y-northButton.height),
+                                        Math.abs(yCenter-zoomIn.y)
+                                        )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
                 return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, satNav.lastValidTrack)
@@ -318,15 +318,15 @@ Item {
             plugin = mapPlugin
         }
 
-         onCopyrightLinkActivated: Qt.openUrlExternally(link)
+        onCopyrightLinkActivated: Qt.openUrlExternally(link)
 
     }
 
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
         anchors.fill: flightMap
         source: flightMap
-        brightness: Material.theme === Material.Dark ? -0.7 : -0.3
-        contrast: 0.3
+        brightness: globalSettings.nightMode ? -0.8 : -0.2
+        contrast: globalSettings.nightMode ? 0.6 : 0.2
     }
 
     Rectangle {
@@ -362,9 +362,9 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 id: northArrow
 
+                opacity: globalSettings.nightMode ? 0.3 : 1.0
                 rotation: -flightMap.bearing
 
-                opacity: Material.theme === Material.Dark ? 0.4 : 1.0
                 source: "/icons/NorthArrow.svg"
                 sourceSize.width: 44
                 sourceSize.height: 44
@@ -482,7 +482,6 @@ Item {
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
         text: geoMapProvider.copyrightNotice
-        linkColor: "blue"
         visible: width < parent.width
         onLinkActivated: Qt.openUrlExternally(link)
     }
@@ -493,7 +492,6 @@ Item {
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
         text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-        linkColor: "blue"
         visible: !copyrightInfo.visible
         onLinkActivated: copyrightDialog.open()
 

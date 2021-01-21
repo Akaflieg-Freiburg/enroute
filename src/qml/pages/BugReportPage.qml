@@ -44,7 +44,9 @@ Page {
         visible: stack.depth > 1
 
         ToolButton {
-            text: qsTr("Bug Report Home")
+            Material.foreground: Material.accent
+
+            text: qsTr("Go back in bug report")
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked:  {
                 mobileAdaptor.vibrateBrief()

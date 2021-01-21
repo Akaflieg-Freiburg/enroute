@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -49,7 +49,6 @@ Page {
             ItemDelegate {
                 visible: model.modelData instanceof Waypoint
                 icon.source: (model.modelData instanceof Waypoint) ? model.modelData.icon : ""
-                icon.color: "transparent"
                 Layout.fillWidth: true
                 text: model.modelData.twoLineTitle
 
@@ -63,7 +62,6 @@ Page {
             ItemDelegate {
                 visible: !(model.modelData instanceof Waypoint)
                 icon.source: "/icons/vertLine.svg"
-                icon.color: "transparent"
                 Layout.fillWidth: true
                 enabled: false
                 text: globalSettings.useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
@@ -79,7 +77,7 @@ Page {
                     wpEditor.waypoint = model.modelData
                     wpEditor.open()
                 }
-            } // ToolButton
+            }
 
             ToolButton {
                 id: wpMenuTB
@@ -123,12 +121,14 @@ Page {
                         }
                     } // Action
                 }
-            } // ToolButton
+            }
 
-        } // GridLayout
-    } // Component
+        }
+    }
 
     header: ToolBar {
+
+        Material.foreground: "white"
 
         ToolButton {
             id: backButton
@@ -145,7 +145,7 @@ Page {
                     drawer.open()
                 }
             }
-        } // ToolButton
+        }
 
         Label {
             anchors.left: backButton.right
@@ -326,9 +326,9 @@ Page {
                 }
 
             }
-        } // ToolButton
+        }
 
-    } // ToolBar
+    }
 
     TabBar {
         id: bar

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,8 @@ import QtQuick.Controls.Material 2.15
 
 ToolBar {
 
+    Material.foreground: "white"
+
     ToolButton {
         id: backButton
 
@@ -36,11 +38,7 @@ ToolBar {
             mobileAdaptor.vibrateBrief()
             stackView.pop()
         }
-
-        // Oddly, this seems necessary, or else the color will change
-        // on language changes
-        Component.onCompleted: icon.color = Material.foreground
-    } // ToolButton
+    }
 
     Label {
         anchors.left: backButton.right
@@ -53,9 +51,7 @@ ToolBar {
         font.bold: true
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
-
-        color: Material.foreground
-    } // Label
+    }
 
     ToolButton {
         // Invisible element for horizontal centering of the label
@@ -66,10 +62,6 @@ ToolBar {
 
         icon.source: "/icons/material/ic_arrow_back.svg"
         visible: false
-
-        // Oddly, this seems necessary, or else the color will change
-        // on language changes
-        Component.onCompleted: icon.color = Material.foreground
-    } // ToolButton
+    }
 
 } // ToolBar

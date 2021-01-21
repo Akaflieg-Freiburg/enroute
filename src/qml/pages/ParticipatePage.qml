@@ -42,7 +42,7 @@ Page {
             implicitHeight: lbl1.implicitHeight
             width: pg.width
             
-            NightAndDayLabel {
+            Label {
                 id: lbl1
                 textFormat: Text.StyledText
                 linkColor: Material.accent

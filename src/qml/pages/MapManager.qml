@@ -33,9 +33,9 @@ Page {
     Component {
         id: sectionHeading
 
-        NightAndDayLabel {
+        Label {
             x: Qt.application.font.pixelSize
-            nightAndDayText: section
+            text: section
             font.pixelSize: Qt.application.font.pixelSize*1.2
             font.bold: true
             color: Material.accent
@@ -201,13 +201,13 @@ Page {
             }
         } // ToolButton
 
-        NightAndDayLabel {
+        Label {
             anchors.left: backButton.right
             anchors.right: headerMenuToolButton.left
             anchors.bottom: parent.bottom
             anchors.top: parent.top
 
-            nightAndDayText: stackView.currentItem.title
+            text: stackView.currentItem.title
             elide: Label.ElideRight
             font.bold: true
             horizontalAlignment: Qt.AlignHCenter
@@ -383,7 +383,7 @@ Page {
         color: "white"
         visible: !mapManager.downloadingGeoMapList && !mapManager.hasGeoMapList
 
-        NightAndDayLabel {
+        Label {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -407,7 +407,7 @@ Page {
         color: "white"
         visible: mapManager.downloadingGeoMapList
 
-        NightAndDayLabel {
+        Label {
             id: downloadIndicatorLabel
 
             anchors.left: parent.left

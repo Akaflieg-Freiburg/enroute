@@ -40,7 +40,7 @@ Page {
             width: settingsPage.width
             implicitWidth: settingsPage.width
 
-            NightAndDayLabel {
+            Label {
                 Layout.leftMargin: Qt.application.font.pixelSize
                 Layout.fillWidth: true
                 text: qsTr("Moving Map")
@@ -87,9 +87,9 @@ Page {
                 }
             }
 
-            NightAndDayLabel {
+            Label {
                 Layout.leftMargin: Qt.application.font.pixelSize
-                nightAndDayText: qsTr("Libraries")
+                text: qsTr("Libraries")
                 font.pixelSize: Qt.application.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
@@ -122,9 +122,9 @@ Page {
                 }
             }
 
-            NightAndDayLabel {
+            Label {
                 Layout.leftMargin: Qt.application.font.pixelSize
-                nightAndDayText: qsTr("System")
+                text: qsTr("System")
                 font.pixelSize: Qt.application.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent

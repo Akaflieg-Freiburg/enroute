@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -65,10 +65,10 @@ Page {
                 }
             }
 
-            NightAndDayLabel {
+            Label {
                 Layout.fillWidth: true
 
-                nightAndDayText: stackView.currentItem.title
+                text: stackView.currentItem.title
                 elide: Label.ElideRight
                 font.bold: true
                 horizontalAlignment: Qt.AlignHCenter
@@ -264,10 +264,10 @@ Page {
             width: parent.width
             implicitHeight: t1.height+t2.height
 
-            NightAndDayLabel {
+            Label {
                 id: t1
                 width: parent.width
-                nightAndDayText: librarian.getStringFromRessource(":text/weatherPermissions.html")
+                text: librarian.getStringFromRessource(":text/weatherPermissions.html")
                 leftPadding: Qt.application.font.pixelSize
                 rightPadding: Qt.application.font.pixelSize
                 topPadding: 2*Qt.application.font.pixelSize
@@ -308,21 +308,21 @@ Page {
                 visible: qnhLabel.text != ""                
                 source: "/icons/material/ic_speed.svg"
             }
-            NightAndDayLabel {
+            Label {
                 id: qnhLabel
                 visible: qnhLabel.text != ""
                 Layout.fillWidth: true
-                nightAndDayText: weatherDownloadManager.QNHInfo
+                text: weatherDownloadManager.QNHInfo
             }
             Image {
                 visible: sunLabel.text != ""
                 source: "/icons/material/ic_wb_sunny.svg"
             }
-            NightAndDayLabel {
+            Label {
                 id: sunLabel
                 visible: sunLabel.text != ""
                 Layout.fillWidth: true
-                nightAndDayText: weatherDownloadManager.sunInfo
+                text: weatherDownloadManager.sunInfo
             }
 
         }

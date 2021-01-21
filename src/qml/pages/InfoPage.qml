@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -71,7 +71,7 @@ Page {
                 implicitHeight: lbl1.implicitHeight
                 width: pg.width
 
-                NightAndDayLabel {
+                Label {
                     id: lbl1
                     text: librarian.getStringFromRessource(":text/info_enroute.html")
                     textFormat: Text.StyledText

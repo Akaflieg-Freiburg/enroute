@@ -80,10 +80,10 @@ Page {
 
                 width: pg.width-sv.leftPadding-sv.rightPadding
 
-                NightAndDayLabel {
+                Label {
                     Layout.fillWidth: true
 
-                    nightAndDayText: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <p>We aim to provide high-quality software. Fixing errors
@@ -94,11 +94,11 @@ your suggestions for improvement.</p>
                     textFormat: Text.StyledText
                     linkColor: Material.accent
                     wrapMode: Text.Wrap
-                } // NightAndDayLabel
+                }
 
-                NightAndDayLabel {
+                Label {
                     Layout.fillWidth: true
-                    nightAndDayText: qsTr("
+                    text: qsTr("
 <h4>Main Application</h4>
 
 <p>Use this button to report an issue in the main
@@ -117,9 +117,9 @@ application.</p>
                         stack.push(mainAppPage)
                     }
                 }
-                NightAndDayLabel {
+                Label {
                     Layout.fillWidth: true
-                    nightAndDayText: qsTr("
+                    text: qsTr("
 <h4>Airspaces</h4>
 
 <p>If you would like to report problems with airspaces
@@ -157,9 +157,9 @@ application.</p>
                         stack.push(openAIPAirspace)
                     }
                 }
-                NightAndDayLabel {
+                Label {
                     Layout.fillWidth: true
-                    nightAndDayText: qsTr("
+                    text: qsTr("
 <h4>Aviation Data</h4>
 
 <p>If you would like to report problems with other aviation
@@ -207,9 +207,9 @@ below.</p>
                         stack.push(checkIfOFMcountry)
                     }
                 }
-                NightAndDayLabel {
+                Label {
                     Layout.fillWidth: true
-                    nightAndDayText: qsTr("
+                    text: qsTr("
 <h4>Thank you for your help!</h4>
 ")
                     textFormat: Text.StyledText
@@ -252,10 +252,10 @@ below.</p>
 
                     width: pg.width-sv.leftPadding-sv.rightPadding
 
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
 
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Issue in the main application</h4>
@@ -279,7 +279,7 @@ GitHub by e-mail.</p>
                         linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
-                    } // NightAndDayLabel
+                    }
                     Button {
                         Layout.fillWidth: true
                         text: qsTr("Open GitHub Issue Page")
@@ -298,9 +298,9 @@ GitHub by e-mail.</p>
                             Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to GitHub: https://github.com/Akaflieg-Freiburg/enroute/issues"))
                         }
                     }
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <p>If you have difficulties with GitHub, you can contact
 <a href='mailto:ms@squawk-vfr.de?subject=Enroute Flight
 Navigation, Issue Report'>Markus Sachs</a> by e-mail.
@@ -360,10 +360,10 @@ comes first!</p>
 
                     width: pg.width-sv.leftPadding-sv.rightPadding
 
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
 
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
@@ -383,7 +383,7 @@ week.</p>
                         linkColor: Material.accent
                         wrapMode: Text.Wrap
                         onLinkActivated: Qt.openUrlExternally(link)
-                    } // NightAndDayLabel
+                    }
                     Button {
                         Layout.fillWidth: true
                         text: qsTr("Open openAIP web site")
@@ -403,9 +403,9 @@ week.</p>
                         }
 
                     }
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <p>If you have difficulties with the openAIP web site, you
 can contact
 <a href='mailto:peter.kemme@openflightmaps.org?subject=Enroute
@@ -458,10 +458,10 @@ time. Peter speaks English and German.</p>
 
                     width: pg.width-sv.leftPadding-sv.rightPadding
 
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
 
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Airspace Data</h4>
@@ -526,10 +526,10 @@ discuss your issue in the forum there.</p>
 
                     width: pg.width-sv.leftPadding-sv.rightPadding
 
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
 
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
@@ -583,7 +583,7 @@ following countries?</p>
                             stack.push(nixofm)
                         }
                     }
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
                         text: qsTr("<h3>Thank you for your help!</h3>")
                         textFormat: Text.StyledText
@@ -627,10 +627,10 @@ following countries?</p>
 
                     width: pg.width-sv.leftPadding-sv.rightPadding
 
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
 
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Airspace Data</h4>
@@ -714,10 +714,10 @@ computer, you can also send yourself a link by e-mail.</p>
 
                     width: pg.width-sv.leftPadding-sv.rightPadding
 
-                    NightAndDayLabel {
+                    Label {
                         Layout.fillWidth: true
 
-                        nightAndDayText: qsTr("
+                        text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>

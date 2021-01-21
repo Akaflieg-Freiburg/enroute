@@ -54,9 +54,7 @@ ToolBar {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
 
-        // Oddly, this seems necessary, or else the color will change
-        // on language changes
-        Component.onCompleted: color = Material.foreground
+        color: Material.foreground
     } // Label
 
     ToolButton {

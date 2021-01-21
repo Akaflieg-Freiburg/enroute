@@ -43,7 +43,7 @@ ApplicationWindow {
 
     Drawer {
         id: drawer
-        width: col.implicitWidth
+
         height: view.height
 
         ScrollView {

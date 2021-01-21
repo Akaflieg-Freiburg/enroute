@@ -322,15 +322,12 @@ Item {
 
     }
 
-
-    // Graphical effects: increase contrast, reduce brithness in dark mode
-    BrightnessContrast {
+    BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
         anchors.fill: flightMap
         source: flightMap
         brightness: Material.theme === Material.Dark ? -0.7 : -0.3
         contrast: 0.3
     }
-
 
     Rectangle {
         id: noMapWarningRect

@@ -421,8 +421,8 @@ Dialog {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
 
         Label {
             width: overwriteDialog.availableWidth

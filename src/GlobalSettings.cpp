@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,9 +47,10 @@ GlobalSettings::~GlobalSettings()
 auto GlobalSettings::acceptedWeatherTermsStatic() -> bool
 {
     // Find out that unit system we should use
-    auto globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings)
+    auto *globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings != nullptr) {
         return globalSettings->acceptedWeatherTerms();
+}
     // Fallback in the very unlikely case that no global object exists
     return false;
 }
@@ -64,9 +65,10 @@ auto GlobalSettings::globalInstance() -> GlobalSettings *
 auto GlobalSettings::hideUpperAirspacesStatic() -> bool
 {
     // Find out that unit system we should use
-    auto globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings)
+    auto *globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings != nullptr) {
         return globalSettings->hideUpperAirspaces();
+}
     // Fallback in the very unlikely case that no global object exists
     return false;
 }
@@ -74,8 +76,9 @@ auto GlobalSettings::hideUpperAirspacesStatic() -> bool
 
 void GlobalSettings::setAcceptedTerms(int terms)
 {
-    if (terms == acceptedTerms())
+    if (terms == acceptedTerms()) {
         return;
+}
     settings.setValue("acceptedTerms", terms);
     emit acceptedTermsChanged();
 }
@@ -83,8 +86,9 @@ void GlobalSettings::setAcceptedTerms(int terms)
 
 void GlobalSettings::setAcceptedWeatherTerms(bool terms)
 {
-    if (terms == acceptedWeatherTerms())
+    if (terms == acceptedWeatherTerms()) {
         return;
+}
     settings.setValue("acceptedWeatherTerms", terms);
     emit acceptedWeatherTermsChanged();
 }
@@ -92,8 +96,9 @@ void GlobalSettings::setAcceptedWeatherTerms(bool terms)
 
 void GlobalSettings::setAutoFlightDetection(bool autoDetect)
 {
-    if (autoDetect == autoFlightDetection())
+    if (autoDetect == autoFlightDetection()) {
         return;
+}
     settings.setValue("Map/autoFlightDetection", autoDetect);
     emit autoFlightDetectionChanged();
 }
@@ -101,8 +106,9 @@ void GlobalSettings::setAutoFlightDetection(bool autoDetect)
 
 void GlobalSettings::setHideUpperAirspaces(bool hide)
 {
-    if (hide == hideUpperAirspaces())
+    if (hide == hideUpperAirspaces()) {
         return;
+}
     settings.setValue("Map/hideUpperAirspaces", hide);
     emit hideUpperAirspacesChanged();
 }
@@ -110,8 +116,9 @@ void GlobalSettings::setHideUpperAirspaces(bool hide)
 
 void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 {
-    if (lwnh == lastWhatsNewHash())
+    if (lwnh == lastWhatsNewHash()) {
         return;
+}
     settings.setValue("lastWhatsNewHash", lwnh);
     emit lastWhatsNewHashChanged();
 }
@@ -120,18 +127,21 @@ void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolicyValues
 {
     auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
-    if (intVal == 0)
+    if (intVal == 0) {
         return NUp;
-    if (intVal == 1)
+}
+    if (intVal == 1) {
         return TTUp;
+}
     return UserDefinedBearingUp;
 }
 
 
 void GlobalSettings::setMapBearingPolicy(MapBearingPolicyValues policy)
 {
-    if (policy == mapBearingPolicy())
+    if (policy == mapBearingPolicy()) {
         return;
+}
 
     switch(policy){
     case NUp:
@@ -148,20 +158,39 @@ void GlobalSettings::setMapBearingPolicy(MapBearingPolicyValues policy)
 }
 
 
-void GlobalSettings::setUseMetricUnits(bool unitHorrizKmh)
+auto GlobalSettings::nightMode() const -> bool
 {
-    if (unitHorrizKmh == useMetricUnits())
-        return;
+    return settings.value("Map/nightMode", false).toBool();
+}
 
-    settings.setValue("System/useMetricUnits", unitHorrizKmh);
+
+void GlobalSettings::setNightMode(bool newNightMode)
+{
+    if (newNightMode == nightMode()) {
+        return;
+}
+
+    settings.setValue("Map/nightMode", newNightMode);
+    emit nightModeChanged();
+}
+
+
+void GlobalSettings::setUseMetricUnits(bool unitHorizKmh)
+{
+    if (unitHorizKmh == useMetricUnits()) {
+        return;
+}
+
+    settings.setValue("System/useMetricUnits", unitHorizKmh);
     emit useMetricUnitsChanged();
 }
 
 
 void GlobalSettings::setPreferEnglish(bool preferEng)
 {
-    if (preferEng == preferEnglish())
+    if (preferEng == preferEnglish()) {
         return;
+}
 
     settings.setValue("System/preferEnglish", preferEng);
     installTranslators();
@@ -172,9 +201,10 @@ void GlobalSettings::setPreferEnglish(bool preferEng)
 auto GlobalSettings::useMetricUnitsStatic() -> bool
 {
     // Find out that unit system we should use
-    auto globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings)
+    auto *globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings != nullptr) {
         return globalSettings->useMetricUnits();
+}
     // Fallback in the very unlikely case that no global object exists
     return false;
 }
@@ -183,7 +213,7 @@ auto GlobalSettings::useMetricUnitsStatic() -> bool
 void GlobalSettings::installTranslators()
 {
     // Remove existing translators
-    if (enrouteTranslator) {
+    if (enrouteTranslator != nullptr) {
         QCoreApplication::removeTranslator(enrouteTranslator);
         delete enrouteTranslator;
     }

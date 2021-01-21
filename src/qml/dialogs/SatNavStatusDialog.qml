@@ -52,122 +52,59 @@ Dialog {
             columnSpacing: 30
             columns: 2
 
-            width: satNavStatusDialog.availableWidth
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Satellite Status")
-            }
-            Text {
-                Layout.fillWidth: true
+            Label { text: qsTr("Satellite Status") }
+            Label {
                 font.weight: Font.Bold
                 text: satNav.statusAsString
                 color: (satNav.status === SatNav.OK) ? "green" : "red"
                 wrapMode: Text.Wrap
             }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Last Fix")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.timestampAsString
-                wrapMode: Text.Wrap
-            }
+            Label { text: qsTr("Last Fix") }
+            Label { text: satNav.timestampAsString }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Mode")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground")
-                wrapMode: Text.Wrap
-            }
+            Label { text: qsTr("Mode") }
+            Label { text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground") }
 
-            Text {
+            Label {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
-            Text {
+            Label {
                 text: qsTr("Horizontal")
                 font.weight: Font.Bold
                 Layout.columnSpan: 2
             }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Latitude")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.latitudeAsString
-                wrapMode: Text.Wrap
-            }
+            Label { text: qsTr("Latitude") }
+            Label { text: satNav.latitudeAsString }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Longitude")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.longitudeAsString
-                wrapMode: Text.Wrap
-            }
+            Label { text: qsTr("Longitude") }
+            Label { text: satNav.longitudeAsString }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Error")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.horizontalPrecisionInMetersAsString
-                wrapMode: Text.Wrap
-            }
+            Label { text: qsTr("Error") }
+            Label { text: satNav.horizontalPrecisionInMetersAsString }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("GS")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
-                wrapMode: Text.Wrap
-            }
+            Label { text: qsTr("GS") }
+            Label { text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("TT")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.trackAsString
-                wrapMode: Text.Wrap
-            }
+            Label { text: qsTr("TT") }
+            Label { text: satNav.trackAsString }
 
-            Text {
+            Label {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
-            Text {
+            Label {
                 text: qsTr("Vertical")
                 font.weight: Font.Bold
                 Layout.columnSpan: 2
             }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("ALT")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: satNav.altitudeInFeetAsString
-                wrapMode: Text.Wrap
-            }
-
+            Label { text: qsTr("ALT") }
+            Label { text: satNav.altitudeInFeetAsString }
         } // GridLayout
 
     } // Scrollview

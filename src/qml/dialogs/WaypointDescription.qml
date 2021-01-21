@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Shapes 1.15
 
@@ -128,7 +130,7 @@ Dialog {
                 Layout.fillWidth: true
                 text: rowLYO.text.substring(4)
                 wrapMode: Text.WordWrap
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
             }
 
         }
@@ -161,6 +163,7 @@ Dialog {
 
                     ShapePath {
                         strokeWidth: 2
+                        fillColor: "transparent"
                         strokeColor:  {
                             switch(airspace.CAT) {
                             case "A":
@@ -247,6 +250,7 @@ Dialog {
                         }
                         return "transparent"
                     }
+
                     Label {
                         anchors.centerIn: parent
                         text: airspace.CAT
@@ -270,7 +274,7 @@ Dialog {
                 wrapMode: Text.WordWrap
             }
             Rectangle {
-                color: "black"
+                color: Material.foreground
                 height: 1
                 width: Qt.application.font.pixelSize*5
             }
@@ -290,8 +294,16 @@ Dialog {
             Layout.fillWidth: true
 
             Image {
+                id: wpLblImg
                 source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
                 sourceSize.width: 25
+
+                ColorOverlay {
+                    id: colorOverlay
+                    anchors.fill: wpLblImg
+                    source: wpLblImg
+                    color: Material.foreground
+                }
             }
 
             Label {
@@ -409,15 +421,15 @@ Dialog {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
 
         Label {
             width: overwriteDialog.availableWidth
 
             text: qsTr("Once overwritten, the current flight route cannot be restored.")
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.No | Dialog.Yes
@@ -429,7 +441,7 @@ Dialog {
             flightRoute.append(satNav.lastValidCoordinate)
             flightRoute.append(waypoint)
             close()
-            toast.doToast(qsTr("New light route: direct to %1.").arg(waypoint.extendedName))
+            toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }
         onRejected: {
             mobileAdaptor.vibrateBrief()

@@ -63,7 +63,7 @@ public:
     
     @param parent The standard QObject parent
   */
-  explicit TileHandler(const QList<QPointer<Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
+  explicit TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
   // Destructor
   ~TileHandler() override;

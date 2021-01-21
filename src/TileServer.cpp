@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019, 2021 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,13 +35,14 @@ TileServer::TileServer(QUrl baseUrl, QObject *parent)
 
 auto TileServer::serverUrl() const -> QString
 {
-    if (isListening())
+    if (isListening()) {
         return QString("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
+    }
     return QString();
 }
 
 
-void TileServer::addMbtilesFileSet(const QList<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName)
+void TileServer::addMbtilesFileSet(const QVector<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName)
 {
     mbtileFileNameSets[baseName] = baseMapsWithFiles;
     setUpTileHandlers();
@@ -58,25 +59,26 @@ void TileServer::removeMbtilesFileSet(const QString& path)
 void TileServer::setUpTileHandlers()
 {
     // Create new file system handler and delete old one
-    auto newFileSystemHandler = new QHttpEngine::FilesystemHandler(":", this);
+    auto *newFileSystemHandler = new QHttpEngine::FilesystemHandler(":", this);
     newFileSystemHandler->addRedirect(QRegExp("^$"), "/index.html");
     setHandler(newFileSystemHandler);
     delete currentFileSystemHandler;
     currentFileSystemHandler = newFileSystemHandler;
 
     // Now add subhandlers for each tile
-    QMapIterator<QString, QList<QPointer<Downloadable>>> iterator(mbtileFileNameSets);
+    QMapIterator<QString, QVector<QPointer<Downloadable>>> iterator(mbtileFileNameSets);
     while (iterator.hasNext()) {
         iterator.next();
 
         // Find base name of the file
         QString URL;
-        if (_baseUrl.isEmpty())
+        if (_baseUrl.isEmpty()) {
             URL = serverUrl()+"/"+iterator.key();
-        else
+        } else {
             URL = _baseUrl.toString()+"/"+iterator.key();
+        }
 
-        auto handler = new TileHandler(iterator.value(), URL, newFileSystemHandler);
+        auto *handler = new TileHandler(iterator.value(), URL, newFileSystemHandler);
         newFileSystemHandler->addSubHandler(QRegExp("^"+iterator.key()), handler);
     }
 

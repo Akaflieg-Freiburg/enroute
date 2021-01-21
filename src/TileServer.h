@@ -104,7 +104,7 @@ public slots:
      
     @param baseName The path under which the tiles willconst be available.
   */
-  void addMbtilesFileSet(const QList<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName);
+  void addMbtilesFileSet(const QVector<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName);
 
   /*! \brief Removes a set of tile files
    
@@ -119,7 +119,7 @@ private:
   
   QPointer<QHttpEngine::FilesystemHandler> currentFileSystemHandler;
   
-  QMap<QString,QList<QPointer<Downloadable>>> mbtileFileNameSets;
+  QMap<QString,QVector<QPointer<Downloadable>>> mbtileFileNameSets;
   
   QUrl _baseUrl;
 };

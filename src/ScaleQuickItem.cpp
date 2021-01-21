@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <cmath>
 #include <QPainter>
+#include <cmath>
 
 #include "ScaleQuickItem.h"
 
@@ -34,8 +34,9 @@ ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
 void ScaleQuickItem::paint(QPainter *painter)
 {
     // Safety check. Continue only if data provided is sane
-    if (_pixelPer10km < 20)
+    if (_pixelPer10km < 20) {
         return;
+    }
 
     // Pre-compute a few numbers that will be used when drawing
     qreal pixelPerUnit        = _useMetricUnits ? _pixelPer10km * 0.1 : _pixelPer10km * 0.1852;
@@ -47,17 +48,19 @@ void ScaleQuickItem::paint(QPainter *painter)
 
     // Compute size of text. Set font to somewhat smaller than standard size.
     QFont font = painter->font();
-    if (font.pointSizeF() > 0.0)
+    if (font.pointSizeF() > 0.0) {
         font.setPointSizeF(font.pointSizeF()*0.8);
-    else
+    } else {
         font.setPixelSize(qRound(font.pixelSize()*0.8));
+    }
     painter->setFont(font);
     QString text = QString(_useMetricUnits ? QString("%1 km") : QString("%1 NM")).arg(widthOfScaleInUnit);
     int textWidth = painter->fontMetrics().horizontalAdvance(text);
 
     // Draw only if width() is large enough
-    if (width() < textWidth*1.5)
+    if (width() < textWidth*1.5) {
         return;
+    }
 
 
     int baseX = qRound((width()-widthOfScaleInPix)/2.0);
@@ -71,15 +74,17 @@ void ScaleQuickItem::paint(QPainter *painter)
     painter->drawLine(baseX, baseY, baseX+widthOfScaleInPix, baseY);
     painter->drawLine(baseX, baseY+3, baseX, baseY-3);
     painter->drawLine(baseX+widthOfScaleInPix, baseY+3, baseX+widthOfScaleInPix, baseY-3);
-    for(int i=1; i*scaleUnitInUnit<widthOfScaleInUnit; i+= 1)
+    for(int i=1; i*scaleUnitInUnit<widthOfScaleInUnit; i+= 1) {
         painter->drawLine(baseX + i*widthOfUnitInPix, baseY, baseX + i*widthOfUnitInPix, baseY+3);
+    }
 
     painter->setPen(QPen(Qt::black, 1));
     painter->drawLine(baseX, baseY, baseX+widthOfScaleInPix, baseY);
     painter->drawLine(baseX, baseY+3, baseX, baseY-3);
     painter->drawLine(baseX+widthOfScaleInPix, baseY+3, baseX+widthOfScaleInPix, baseY-3);
-    for(int i=1; i*scaleUnitInUnit<widthOfScaleInUnit; i+= 1)
+    for(int i=1; i*scaleUnitInUnit<widthOfScaleInUnit; i+= 1) {
         painter->drawLine(baseX + i*widthOfUnitInPix, baseY, baseX + i*widthOfUnitInPix, baseY+3);
+    }
 
     // Draw text
     painter->drawText(baseX+widthOfScaleInPix/2-textWidth/2, baseY-5, text);
@@ -88,8 +93,9 @@ void ScaleQuickItem::paint(QPainter *painter)
 
 void ScaleQuickItem::setPixelPer10km(qreal _pxp10k)
 {
-    if (qFuzzyCompare(_pixelPer10km, _pxp10k))
+    if (qFuzzyCompare(_pixelPer10km, _pxp10k)) {
         return;
+    }
 
     _pixelPer10km = _pxp10k;
     update();
@@ -99,8 +105,9 @@ void ScaleQuickItem::setPixelPer10km(qreal _pxp10k)
 
 void ScaleQuickItem::setUseMetricUnits(bool useMetricUnits)
 {
-    if (_useMetricUnits == useMetricUnits)
+    if (_useMetricUnits == useMetricUnits) {
         return;
+    }
 
     _useMetricUnits = useMetricUnits;
     update();

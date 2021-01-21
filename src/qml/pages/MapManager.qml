@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -38,7 +38,7 @@ Page {
             text: section
             font.pixelSize: Qt.application.font.pixelSize*1.2
             font.bold: true
-            color: Material.primary
+            color: Material.accent
         }
     }
 
@@ -91,8 +91,8 @@ Page {
                 ItemDelegate {
                     text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
                     icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_map.svg"
-                    icon.color: model.modelData.hasFile ? Material.primary : "#9E9E9E"
                     Layout.fillWidth: true
+                    enabled: !model.modelData.hasFile
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
                             mobileAdaptor.vibrateBrief()
@@ -391,10 +391,9 @@ Page {
             anchors.topMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the item 'Update' from the menu.  To find the menu, look for the symbol '&#8942;' at the top right corner of the screen.</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
         }
     }
 
@@ -418,10 +417,9 @@ Page {
             anchors.topMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
         } // downloadIndicatorLabel
 
         BusyIndicator {

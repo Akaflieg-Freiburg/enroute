@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtLocation 5.15
 import QtPositioning 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import enroute 1.0
@@ -360,6 +362,13 @@ Item {
         onCopyrightLinkActivated: Qt.openUrlExternally(link)
     }
 
+    BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
+        anchors.fill: flightMap
+        source: flightMap
+        brightness: globalSettings.nightMode ? -0.9 : -0.2
+        contrast: globalSettings.nightMode ? 0.6 : 0.2
+    }
+
     Rectangle {
         id: noMapWarningRect
 
@@ -376,7 +385,7 @@ Item {
             wrapMode: Text.WordWrap
 
             text: qsTr("<p><strong>There is no aviation map installed.</strong></p><p>Please open the menu and go to <strong>Settings/Library/Maps</strong>.</p>")
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             color: "red"
         }
     }
@@ -393,6 +402,7 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 id: northArrow
 
+                opacity: globalSettings.nightMode ? 0.3 : 1.0
                 rotation: -flightMap.bearing
 
                 source: "/icons/NorthArrow.svg"
@@ -499,6 +509,8 @@ Item {
         anchors.rightMargin: 0.5*Qt.application.font.pixelSize
         anchors.verticalCenter: followGPSButton.verticalCenter
 
+        opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+
         useMetricUnits: globalSettings.useMetricUnits
         pixelPer10km: flightMap.pixelPer10km
         height: 30
@@ -511,7 +523,6 @@ Item {
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
 
         text: geoMapProvider.copyrightNotice
-        linkColor: "blue"
         visible: width < parent.width
         onLinkActivated: Qt.openUrlExternally(link)
     }
@@ -522,7 +533,6 @@ Item {
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
         text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-        linkColor: "blue"
         visible: !copyrightInfo.visible
         onLinkActivated: copyrightDialog.open()
 

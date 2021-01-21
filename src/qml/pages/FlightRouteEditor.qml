@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -49,7 +49,6 @@ Page {
             ItemDelegate {
                 visible: model.modelData instanceof Waypoint
                 icon.source: (model.modelData instanceof Waypoint) ? model.modelData.icon : ""
-                icon.color: "transparent"
                 Layout.fillWidth: true
                 text: model.modelData.twoLineTitle
 
@@ -63,7 +62,6 @@ Page {
             ItemDelegate {
                 visible: !(model.modelData instanceof Waypoint)
                 icon.source: "/icons/vertLine.svg"
-                icon.color: "transparent"
                 Layout.fillWidth: true
                 enabled: false
                 text: globalSettings.useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
@@ -79,7 +77,7 @@ Page {
                     wpEditor.waypoint = model.modelData
                     wpEditor.open()
                 }
-            } // ToolButton
+            }
 
             ToolButton {
                 id: wpMenuTB
@@ -123,12 +121,14 @@ Page {
                         }
                     } // Action
                 }
-            } // ToolButton
+            }
 
-        } // GridLayout
-    } // Component
+        }
+    }
 
     header: ToolBar {
+
+        Material.foreground: "white"
 
         ToolButton {
             id: backButton
@@ -145,7 +145,7 @@ Page {
                     drawer.open()
                 }
             }
-        } // ToolButton
+        }
 
         Label {
             anchors.left: backButton.right
@@ -238,7 +238,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Exported flight route"))
+                                toast.doToast(qsTr("Flight route exported"))
                         }
                     }
 
@@ -254,7 +254,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Exported flight route"))
+                                toast.doToast(qsTr("Flight route exported"))
                         }
                     }
                 }
@@ -276,7 +276,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Opened flight route in other app"))
+                                toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -293,7 +293,7 @@ Page {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Opened flight route in other app"))
+                                toast.doToast(qsTr("Flight route opened in other app"))
                         }
                     }
 
@@ -321,14 +321,14 @@ Page {
                         mobileAdaptor.vibrateBrief()
                         highlighted = false
                         flightRoute.reverse()
-                        toast.doToast(qsTr("Reversed flight route"))
+                        toast.doToast(qsTr("Flight route reversed"))
                     }
                 }
 
             }
-        } // ToolButton
+        }
 
-    } // ToolBar
+    }
 
     TabBar {
         id: bar
@@ -362,7 +362,7 @@ Page {
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
 
                 text: qsTr("<h2>Empty Route</h2><p>Use the button <strong>Add Waypoint</strong> below.</p>")
             }
@@ -399,13 +399,17 @@ Page {
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.primary
+                    color: Material.accent
                 }
 
-                Label { text: qsTr("Direction") }
+                Label {
+                    Layout.alignment: Qt.AlignBaseline
+                    text: qsTr("Direction")
+                }
                 TextField {
                     id: windDirection
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: wind.minWindDirection
@@ -417,14 +421,17 @@ Page {
                         wind.windDirectionInDEG = text
                         windSpeed.focus = true
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
                     text: isFinite(wind.windDirectionInDEG) ? wind.windDirectionInDEG : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: "°" }
+                Label {
+                    text: "°"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: windDirection.text !== ""
                     onClicked: {
                         wind.windDirectionInDEG = -1
@@ -432,10 +439,14 @@ Page {
                     }
                 }
 
-                Label { text: qsTr("Speed") }
+                Label {
+                    text: qsTr("Speed")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: windSpeed
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
@@ -447,13 +458,16 @@ Page {
                         globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
                         focus = false
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     text: isFinite(wind.windSpeedInKT) ? Math.round(globalSettings.useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
+                Label {
+                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: windSpeed.text !== ""
                     onClicked: {
                         wind.windSpeedInKT = -1
@@ -486,13 +500,17 @@ Page {
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.primary
+                    color: Material.accent
                 }
 
-                Label { text: qsTr("Cruise") }
+                Label {
+                    text: qsTr("Cruise")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: cruiseSpeed
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
@@ -504,7 +522,7 @@ Page {
                         globalSettings.useMetricUnits ? aircraft.cruiseSpeedInKMH = text : aircraft.cruiseSpeedInKT = text
                         descentSpeed.focus = true
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: descentSpeed
                     KeyNavigation.backtab: windSpeed
                     text: isFinite(aircraft.cruiseSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
@@ -512,9 +530,12 @@ Page {
                                                                               aircraft.cruiseSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
+                Label {
+                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: cruiseSpeed.text !== ""
                     onClicked: {
                         aircraft.cruiseSpeedInKT = -1
@@ -522,10 +543,14 @@ Page {
                     }
                 }
 
-                Label { text: qsTr("Descent") }
+                Label {
+                    text: qsTr("Descent")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: descentSpeed
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
@@ -537,7 +562,7 @@ Page {
                         globalSettings.useMetricUnits ? aircraft.descentSpeedInKMH = text : aircraft.descentSpeedInKT = text
                         fuelConsumption.focus = true
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: fuelConsumption
                     KeyNavigation.backtab: cruiseSpeed
                     text: isFinite(aircraft.descentSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
@@ -545,9 +570,12 @@ Page {
                                                                                aircraft.descentSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
-                Label { text: globalSettings.useMetricUnits ? "km/h" : "kt" }
+                Label {
+                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: descentSpeed.text !== ""
                     onClicked: {
                         aircraft.descentSpeedInKT = -1
@@ -561,13 +589,17 @@ Page {
                     Layout.columnSpan: 4
                     font.pixelSize: Qt.application.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.primary
+                    color: Material.accent
                 }
 
-                Label { text: qsTr("Cruise") }
+                Label {
+                    text: qsTr("Cruise")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 TextField {
                     id: fuelConsumption
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: aircraft.minFuelConsuption
@@ -579,16 +611,18 @@ Page {
                         focus = false
                         aircraft.fuelConsumptionInLPH = text
                     }
-                    color: (acceptableInput ? "black" : "red")
+                    color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windDirection
                     KeyNavigation.backtab: descentSpeed
                     text: isFinite(aircraft.fuelConsumptionInLPH) ? aircraft.fuelConsumptionInLPH.toString() : ""
                     placeholderText: qsTr("undefined")
-
                 }
-                Label { text: qsTr("l/h") }
+                Label {
+                    text: qsTr("l/h")
+                    Layout.alignment: Qt.AlignBaseline
+                }
                 ToolButton {
-                    icon.source: "/icons/material/ic_delete.svg"
+                    icon.source: "/icons/material/ic_clear.svg"
                     enabled: fuelConsumption.text !== ""
                     onClicked: {
                         aircraft.fuelConsumptionInLPH = -1
@@ -622,6 +656,8 @@ Page {
 
             ToolButton {
                 id: addWPButton
+
+                Material.foreground: Material.accent
 
                 visible: (sv.currentIndex === 0)
                 Layout.alignment: Qt.AlignHCenter
@@ -657,13 +693,13 @@ Page {
 
             text: qsTr("Once erased, the current flight route cannot be restored.")
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         onAccepted: {
             mobileAdaptor.vibrateBrief()
             flightRoute.clear()
-            toast.doToast(qsTr("Cleared flight route"))
+            toast.doToast(qsTr("Flight route cleared"))
         }
         onRejected: {
             mobileAdaptor.vibrateBrief()
@@ -699,7 +735,7 @@ Page {
             id: shareErrorDialogLabel
             width: shareErrorDialog.availableWidth
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.Ok

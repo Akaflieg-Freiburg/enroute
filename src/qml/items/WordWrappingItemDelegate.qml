@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 // This is a version of ItemDelegate that does word wrapping in the text
@@ -35,6 +37,11 @@ ItemDelegate {
             source: itemDelegate.icon.source
             sourceSize.width: 25
 
+            ColorOverlay {
+                anchors.fill: parent
+                source: parent
+                color: Material.foreground
+            }
         }
 
         Item { // Spacer

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,8 +30,9 @@ DownloadableGroup::DownloadableGroup(QObject *parent)
 void DownloadableGroup::addToGroup(Downloadable *downloadable)
 {
     // Avoid double entries
-    if (_downloadables.contains(downloadable))
+    if (_downloadables.contains(downloadable)) {
         return;
+    }
 
     // Add element to group
     _downloadables.append(downloadable);
@@ -52,8 +53,9 @@ void DownloadableGroup::removeFromGroup(Downloadable *downloadable)
     auto index = _downloadables.indexOf(downloadable);
 
     // Avoid double entries
-    if (index < 0)
+    if (index < 0) {
         return;
+    }
 
     _downloadables.takeAt(index);
     disconnect(downloadable, nullptr, this, nullptr);

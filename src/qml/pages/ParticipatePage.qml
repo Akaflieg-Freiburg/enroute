@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import "../items"
@@ -34,7 +35,7 @@ Page {
         clip: true
         anchors.fill: parent
         
-        // The Label that we really want to show is wrapped into an Item. This allows
+        // The label that we really want to show is wrapped into an Item. This allows
         // to set implicitHeight, and thus compute the implicitHeight of the Dialog
         // without binding loops
         Item {
@@ -43,7 +44,8 @@ Page {
             
             Label {
                 id: lbl1
-                textFormat: Qt.RichText
+                textFormat: Text.StyledText
+                linkColor: Material.accent
                 text: qsTr("
 <h3>Participate in the development</h3>
 
@@ -81,7 +83,7 @@ please get in touch with us by opening a GitHub issue.</p>
                 leftPadding: Qt.application.font.pixelSize*0.5
                 rightPadding: Qt.application.font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
-            } // Label
+            }
         } // Item
     } // ScrollView
 } // Page

@@ -6,14 +6,6 @@
    viewBox="0 0 50 50">
 
   <circle
-      id="circle symbol background"
-      cx="25"
-      cy="25"
-      style="fill:none;stroke:#ffffff;stroke-width:10"
-      r="16" />
-  <line x1="15" y1="15" x2="35" y2="35" style="stroke:#ffffff;stroke-width:10" />
-  <line x1="35" y1="15" x2="15" y2="35" style="stroke:#ffffff;stroke-width:10" />
-  <circle
       id="circle symbol"
       style="fill:none;stroke:#1000b0;stroke-width:6"
       cx="25"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import enroute 1.0
@@ -40,8 +42,8 @@ Dialog {
     // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
     // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
     parent: Overlay.overlay
-    x: (parent.width-width)/2.0
-    y: (parent.height-height)/2.0
+    x: (view.width-width)/2.0
+    y: (view.height-height)/2.0
 
     modal: true
     standardButtons: Dialog.Close
@@ -57,6 +59,14 @@ Dialog {
             Image {
                 source: (weatherStation !== null) ? weatherStation.icon : "/icons/waypoints/WP.svg"
                 sourceSize.width: 25
+
+                ColorOverlay {
+                    id: colorOverlay
+                    anchors.fill: parent
+                    source: parent
+                    color: Material.foreground //"#000000"
+                }
+
             }
 
             Label {
@@ -108,6 +118,8 @@ Dialog {
                     visible: (weatherStation !== null) && weatherStation.hasMETAR
                     text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.rawText : ""
                     Layout.fillWidth: true
+                    Layout.leftMargin: 4
+                    Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
                     bottomPadding: 0.2*Qt.application.font.pixelSize
@@ -115,11 +127,15 @@ Dialog {
                     leftPadding: 0.2*Qt.application.font.pixelSize
                     rightPadding: 0.2*Qt.application.font.pixelSize
 
+                    leftInset: -4
+                    rightInset: -4
+
                     // Background color according to METAR/FAA flight category
                     background: Rectangle {
                         border.color: "black"
                         color: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.flightCategoryColor : "transparent"
                         opacity: 0.2
+                        radius: 4
                     }
                 }
 
@@ -128,7 +144,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
-                    textFormat: Text.RichText
+                    textFormat: Text.RichText // OK
                 }
 
                 Label { // title: "TAF"
@@ -142,6 +158,8 @@ Dialog {
                     visible: (weatherStation !== null) && weatherStation.hasTAF
                     text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.rawText : ""
                     Layout.fillWidth: true
+                    Layout.leftMargin: 4
+                    Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
                     bottomPadding: 0.2*Qt.application.font.pixelSize
@@ -149,8 +167,14 @@ Dialog {
                     leftPadding: 0.2*Qt.application.font.pixelSize
                     rightPadding: 0.2*Qt.application.font.pixelSize
 
+                    leftInset: -4
+                    rightInset: -4
+
                     background: Rectangle {
                         border.color: "black"
+                        color: Material.foreground
+                        opacity: 0.2
+                        radius: 4
                     }
                 }
 
@@ -159,7 +183,7 @@ Dialog {
                     text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
-                    textFormat: Text.RichText
+                    textFormat: Text.RichText // OK
                 }
 
             }

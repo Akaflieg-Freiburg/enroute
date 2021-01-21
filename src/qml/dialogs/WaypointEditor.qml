@@ -53,6 +53,7 @@ Dialog {
         width: waypointEditorDialog.availableWidth
 
         text: (waypoint === null) ? "" : waypoint.extendedName
+        focus: true
 
         onEditingFinished: setName()
 

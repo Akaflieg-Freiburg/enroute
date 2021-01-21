@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,13 @@ Dialog {
     // Width and height are chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
     height: parent.height-2*Qt.application.font.pixelSize
+
+    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+    parent: Overlay.overlay
+    x: (parent.width-width)/2.0
+    y: (parent.height-height)/2.0
+
     implicitHeight: height
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
@@ -46,7 +53,6 @@ Dialog {
             id: idel
             text: modelData
             icon.source: "/icons/material/ic_directions.svg"
-            icon.color: "transparent"
 
             anchors.left: parent.left
             anchors.right: parent.right
@@ -69,9 +75,9 @@ Dialog {
             Layout.fillWidth: true
 
             text: qsTr("Enter a name or choose an existing name from the list below.")
-            color: Material.primary
+            color: Material.accent
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         TextField {
@@ -137,7 +143,7 @@ Dialog {
             lbl.text = errorString
             fileError.open()
         } else
-            toast.doToast(qsTr("Saved flight route %1").arg(finalFileName))
+            toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
     }
 
     Dialog {
@@ -171,7 +177,7 @@ Dialog {
             Label {
                 id: lbl
                 width: dlg.availableWidth
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             } // Label
@@ -198,7 +204,7 @@ Dialog {
 
             text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         onAccepted: {

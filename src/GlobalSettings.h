@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -204,6 +204,21 @@ public:
      */
     void setMapBearingPolicy(MapBearingPolicyValues policy);
 
+    /*! \brief Night mode */
+    Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property night mode
+     */
+    bool nightMode() const;
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param policy Property nightMode
+     */
+    void setNightMode(bool newNightMode);
+
     /*! \brief Set to true is app should be shown in English rather than the
      * system language */
     Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits NOTIFY useMetricUnitsChanged)
@@ -267,6 +282,9 @@ signals:
 
     /*! Notifier signal */
     void mapBearingPolicyChanged();
+
+    /*! Notifier signal */
+    void nightModeChanged();
 
     /*! Notifier signal */
     void preferEnglishChanged();

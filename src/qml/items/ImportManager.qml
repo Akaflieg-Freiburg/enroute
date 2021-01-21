@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -74,7 +74,7 @@ Item {
 
             text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.No | Dialog.Yes
@@ -129,7 +129,7 @@ Item {
             width: importDialog.availableWidth
 
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
     } // errorDialog

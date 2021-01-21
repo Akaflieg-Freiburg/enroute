@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,15 +39,9 @@ Page {
 
         currentIndex: sv.currentIndex
 
-        TabButton {
-            text: "Enroute"
-        }
-        TabButton {
-            text: qsTr("Authors")
-        }
-        TabButton {
-            text: qsTr("License")
-        }
+        TabButton { text: "Enroute" }
+        TabButton { text: qsTr("Authors") }
+        TabButton { text: qsTr("License") }
         Material.elevation: 3
     }
 
@@ -64,7 +58,7 @@ Page {
         ScrollView {
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
+            // The label that we really want to show is wrapped into an Item. This allows
             // to set implicitHeight, and thus compute the implicitHeight of the Dialog
             // without binding loops
             Item {
@@ -73,22 +67,24 @@ Page {
 
                 Label {
                     id: lbl1
-                    text: librarian.getStringFromRessource(":text/info_enroute.html")
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/info_enroute.html")
                     textFormat: Text.RichText
+                    linkColor: Material.accent
                     width: pg.width
+
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1
                     leftPadding: Qt.application.font.pixelSize*0.5
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
-            } // Item
-        } // ScrollView
+                }
+            }
+        }
         
         ScrollView {
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
+            // The label that we really want to show is wrapped into an Item. This allows
             // to set implicitHeight, and thus compute the implicitHeight of the Dialog
             // without binding loops
             Item {
@@ -97,22 +93,22 @@ Page {
 
                 Label {
                     id: lbl2
-                    text: librarian.getStringFromRessource(":text/authors.html")
-                    textFormat: Text.RichText
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/authors.html")
+                    textFormat: Text.RichText // Link OK
                     width: pg.width
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1
                     leftPadding: Qt.application.font.pixelSize*0.5
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
-            } // Item
-        } // ScrollView
+                }
+            }
+        }
 
         ScrollView {
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
+            // The label that we really want to show is wrapped into an Item. This allows
             // to set implicitHeight, and thus compute the implicitHeight of the Dialog
             // without binding loops
             Item {
@@ -122,16 +118,17 @@ Page {
                 Label {
                     id: lbl3
                     text: librarian.getStringFromRessource(":text/info_license.html")
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
                     width: pg.width
                     wrapMode: Text.Wrap
                     topPadding: Qt.application.font.pixelSize*1
                     leftPadding: Qt.application.font.pixelSize*0.5
                     rightPadding: Qt.application.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
-            } // Item
-        } // ScrollView
+                }
+            }
+        }
 
     } // StackView
 } // Page

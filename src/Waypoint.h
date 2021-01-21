@@ -267,10 +267,7 @@ public:
      *
      * @returns Property icon
      */
-    QString icon() const
-    {
-        return QStringLiteral("/icons/waypoints/%1.svg").arg(getPropery(QStringLiteral("CAT")).toString());
-    }
+    QString icon() const;
 
     /* \brief Description of waypoint properties
      *
@@ -321,6 +318,7 @@ public:
      * @returns Property weatherStation
      */
     Weather::Station *weatherStation() const;
+
 
 signals:
     /*! \brief Notifier signal */

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -34,6 +34,14 @@ Dialog {
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
     height: parent.height-2*Qt.application.font.pixelSize
+
+    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+    parent: Overlay.overlay
+    x: (parent.width-width)/2.0
+    y: (parent.height-height)/2.0
+
+
     implicitHeight: height
 
     standardButtons: DialogButtonBox.Cancel
@@ -45,7 +53,6 @@ Dialog {
             id: idel
             text: modelData
             icon.source: "/icons/material/ic_directions.svg"
-            icon.color: "transparent"
 
             anchors.left: parent.left
             anchors.right: parent.right
@@ -70,9 +77,9 @@ Dialog {
             Layout.fillWidth: true
 
             text: qsTr("Choose a flight route from the list below.")
-            color: Material.primary
+            color: Material.accent
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         TextField {
@@ -161,7 +168,7 @@ Dialog {
             Label {
                 id: lbl
                 width: dlg.availableWidth
-                textFormat: Text.RichText
+                textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             } // Label
@@ -186,7 +193,7 @@ Dialog {
 
             text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
             wrapMode: Text.Wrap
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
         }
 
         standardButtons: Dialog.No | Dialog.Yes

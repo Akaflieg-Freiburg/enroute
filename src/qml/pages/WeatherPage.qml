@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
@@ -55,6 +56,7 @@ Page {
                 id: backButton
 
                 icon.source: "/icons/material/ic_arrow_back.svg"
+                icon.color: "white"
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     if (stackView.depth > 1) {
@@ -69,6 +71,7 @@ Page {
                 Layout.fillWidth: true
 
                 text: stackView.currentItem.title
+                color: "white"
                 elide: Label.ElideRight
                 font.bold: true
                 horizontalAlignment: Qt.AlignHCenter
@@ -79,6 +82,8 @@ Page {
                 id: headerMenuToolButton
 
                 icon.source: "/icons/material/ic_more_vert.svg"
+                icon.color: "white"
+
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     headerMenuX.popup()
@@ -174,7 +179,7 @@ Page {
                 color: "white"
                 visible: stationList.count == 0
 
-                Label {
+                Text {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -184,7 +189,7 @@ Page {
                     topPadding: 2*Qt.application.font.pixelSize
 
                     horizontalAlignment: Text.AlignHCenter
-                    textFormat: Text.RichText
+                    textFormat: Text.StyledText
                     wrapMode: Text.Wrap
                     text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
                 }
@@ -214,7 +219,7 @@ Page {
         color: "white"
         visible: weatherDownloadManager.downloading && !weatherDownloadManager.backgroundUpdate
 
-        Label {
+        Text {
             id: downloadIndicatorLabel
 
             anchors.left: parent.left
@@ -223,10 +228,9 @@ Page {
             anchors.topMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
+            textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
-            onLinkActivated: Qt.openUrlExternally(link)
         } // downloadIndicatorLabel
 
         BusyIndicator {
@@ -306,8 +310,13 @@ Page {
             columns: 2
 
             Image {
-                visible: qnhLabel.text != ""
+                visible: qnhLabel.text != ""                
                 source: "/icons/material/ic_speed.svg"
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: parent
+                    color: Material.foreground
+                }
             }
             Label {
                 id: qnhLabel
@@ -318,6 +327,11 @@ Page {
             Image {
                 visible: sunLabel.text != ""
                 source: "/icons/material/ic_wb_sunny.svg"
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: parent
+                    color: Material.foreground
+                }
             }
             Label {
                 id: sunLabel

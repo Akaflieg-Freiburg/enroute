@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,7 +46,7 @@ Page {
                 text: qsTr("Moving Map")
                 font.pixelSize: Qt.application.font.pixelSize*1.2
                 font.bold: true
-                color: Material.primary
+                color: Material.accent
             }
 
             SwitchDelegate {
@@ -63,7 +63,6 @@ Page {
                     )
                 )
                 icon.source: "/icons/material/ic_map.svg"
-                icon.color: Material.primary
                 Layout.fillWidth: true
                 Component.onCompleted: {
                     hideUpperAsp.checked = globalSettings.hideUpperAirspaces
@@ -72,6 +71,63 @@ Page {
                     mobileAdaptor.vibrateBrief()
                     globalSettings.hideUpperAirspaces = hideUpperAsp.checked
                 }
+            }
+
+            SwitchDelegate {
+                id: nightMode
+                text: qsTr("Night mode")
+                icon.source: "/icons/material/ic_brightness_3.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    nightMode.checked = globalSettings.nightMode
+                }
+                onToggled: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.nightMode = nightMode.checked
+                }
+            }
+
+            Label {
+                Layout.leftMargin: Qt.application.font.pixelSize
+                text: qsTr("Libraries")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
+            }
+
+            ItemDelegate {
+                text: qsTr("Flight Routes")
+                icon.source: "/icons/material/ic_directions.svg"
+                Layout.fillWidth: true
+
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    stackView.push("FlightRouteLibrary.qml")
+                    drawer.close()
+                }
+            }
+
+            ItemDelegate {
+                text: qsTr("Maps")
+                      + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                      + (satNav.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
+                icon.source: "/icons/material/ic_map.svg"
+                Layout.fillWidth: true
+
+                enabled: !satNav.isInFlight
+                onClicked: {
+                    mobileAdaptor.vibrateBrief()
+                    stackView.push("MapManager.qml")
+                    drawer.close()
+                }
+            }
+
+            Label {
+                Layout.leftMargin: Qt.application.font.pixelSize
+                text: qsTr("System")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
             }
 
             SwitchDelegate {
@@ -88,7 +144,6 @@ Page {
                     )
                 )
                 icon.source: "/icons/material/ic_flight.svg"
-                icon.color: Material.primary
                 Layout.fillWidth: true
                 Component.onCompleted: {
                     autoFlightDetection.checked = globalSettings.autoFlightDetection
@@ -97,51 +152,6 @@ Page {
                     mobileAdaptor.vibrateBrief()
                     globalSettings.autoFlightDetection = autoFlightDetection.checked
                 }
-            }
-
-            Label {
-                Layout.leftMargin: Qt.application.font.pixelSize
-                text: qsTr("Libraries")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
-                font.bold: true
-                color: Material.primary
-            }
-
-            ItemDelegate {
-                text: qsTr("Flight Routes")
-                icon.source: "/icons/material/ic_directions.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-
-                onClicked: {
-                    mobileAdaptor.vibrateBrief()
-                    stackView.push("FlightRouteLibrary.qml")
-                    drawer.close()
-                }
-            }
-
-            ItemDelegate {
-                text: qsTr("Maps")
-                      + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
-                      + (satNav.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
-                icon.source: "/icons/material/ic_map.svg"
-                icon.color: Material.primary
-                Layout.fillWidth: true
-
-                enabled: !satNav.isInFlight
-                onClicked: {
-                    mobileAdaptor.vibrateBrief()
-                    stackView.push("MapManager.qml")
-                    drawer.close()
-                }
-            }
-
-            Label {
-                Layout.leftMargin: Qt.application.font.pixelSize
-                text: qsTr("System")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
-                font.bold: true
-                color: Material.primary
             }
 
             SwitchDelegate {
@@ -154,7 +164,6 @@ Page {
                         )
                       + "</font>"
                 icon.source: "/icons/material/ic_speed.svg"
-                icon.color: Material.primary
                 Layout.fillWidth: true
                 Component.onCompleted: useMetricUnits.checked = globalSettings.useMetricUnits
                 onCheckedChanged: {
@@ -167,7 +176,6 @@ Page {
                 id: preferEnglish
                 text: qsTr("Use English")
                 icon.source: "/icons/material/ic_translate.svg"
-                icon.color: Material.primary
                 visible: globalSettings.hasTranslation
                 Layout.fillWidth: true
                 Component.onCompleted: preferEnglish.checked = globalSettings.preferEnglish

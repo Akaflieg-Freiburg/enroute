@@ -295,8 +295,10 @@ Dialog {
 
             Image {
                 id: wpLblImg
+                fillMode: Image.PreserveAspectFit
                 source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
-                sourceSize.width: 25
+                Layout.preferredWidth: 24
+                Layout.preferredHeight: 24
 
                 ColorOverlay {
                     id: colorOverlay

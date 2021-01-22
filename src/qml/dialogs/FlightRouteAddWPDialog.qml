@@ -41,7 +41,7 @@ Dialog {
     Component {
         id: waypointDelegate
 
-        ItemDelegate {
+        WordWrappingItemDelegate {
             text: model.modelData.twoLineTitle
             icon.source: model.modelData.icon
 

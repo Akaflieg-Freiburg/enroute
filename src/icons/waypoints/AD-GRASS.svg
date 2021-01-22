@@ -29,7 +29,7 @@
       />
   <rect
       id="runway"
-      style="fill:none;stroke:#1000b0;stroke-width:4;stroke-opacity:1"
+      style="fill:none;stroke:#1000b0;stroke-width:2;stroke-opacity:1"
       width="46"
       height="6"
       x="2"

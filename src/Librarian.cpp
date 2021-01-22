@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -235,8 +235,14 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 
     if (name == ":text/whatsnew.html") {
         return tr(R"MD(
-There are many small improvements, in particular for **flight route editing**
-and **flight route import**.
+To improve readability, map contrast is increased and the
+app is less colorful than it used to be.  There is now a
+**dark mode**, specifically designed for **night flight**.
+
+There are many small additional improvements, in particular
+for **flight route editing** and **flight route import**.
+It is now possible to assign names to the waypoints of your
+flight route.
 )MD");
     }
 

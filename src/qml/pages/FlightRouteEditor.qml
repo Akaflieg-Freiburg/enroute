@@ -432,6 +432,7 @@ Page {
                 }
                 ToolButton {
                     icon.source: "/icons/material/ic_clear.svg"
+                    Layout.alignment: Qt.AlignVCenter
                     enabled: windDirection.text !== ""
                     onClicked: {
                         wind.windDirectionInDEG = -1
@@ -468,6 +469,7 @@ Page {
                 }
                 ToolButton {
                     icon.source: "/icons/material/ic_clear.svg"
+                    Layout.alignment: Qt.AlignVCenter
                     enabled: windSpeed.text !== ""
                     onClicked: {
                         wind.windSpeedInKT = -1
@@ -536,6 +538,7 @@ Page {
                 }
                 ToolButton {
                     icon.source: "/icons/material/ic_clear.svg"
+                    Layout.alignment: Qt.AlignVCenter
                     enabled: cruiseSpeed.text !== ""
                     onClicked: {
                         aircraft.cruiseSpeedInKT = -1
@@ -576,6 +579,7 @@ Page {
                 }
                 ToolButton {
                     icon.source: "/icons/material/ic_clear.svg"
+                    Layout.alignment: Qt.AlignVCenter
                     enabled: descentSpeed.text !== ""
                     onClicked: {
                         aircraft.descentSpeedInKT = -1
@@ -623,6 +627,7 @@ Page {
                 }
                 ToolButton {
                     icon.source: "/icons/material/ic_clear.svg"
+                    Layout.alignment: Qt.AlignVCenter
                     enabled: fuelConsumption.text !== ""
                     onClicked: {
                         aircraft.fuelConsumptionInLPH = -1

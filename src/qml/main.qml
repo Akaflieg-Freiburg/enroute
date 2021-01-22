@@ -37,8 +37,8 @@ ApplicationWindow {
     height: 800
 
     Material.theme: globalSettings.nightMode ? Material.Dark : Material.Light
-    Material.primary: globalSettings.nightMode ? Qt.darker("teal") : "teal"
-    Material.accent: globalSettings.nightMode ? Qt.lighter("teal") : "teal"
+    Material.primary: Material.theme == Material.Dark ? Qt.darker("teal") : "teal"
+    Material.accent: Material.theme == Material.Dark ? Qt.lighter("teal") : "teal"
 
     Drawer {
         id: drawer

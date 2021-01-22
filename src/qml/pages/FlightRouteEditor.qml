@@ -46,7 +46,7 @@ Page {
             anchors.leftMargin: Qt.application.font.pixelSize
             anchors.right: parent.right
 
-            ItemDelegate {
+            WordWrappingItemDelegate {
                 visible: model.modelData instanceof Waypoint
                 icon.source: (model.modelData instanceof Waypoint) ? model.modelData.icon : ""
                 Layout.fillWidth: true

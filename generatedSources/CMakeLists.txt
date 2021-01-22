@@ -75,10 +75,10 @@ add_custom_target(flightMapSprites
 
 add_custom_target(waypointIcons
   COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-GLD.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-GLD.png -h 512 -w 512
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-GRASS.png -h 512 -w 512
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-MIL-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-MIL-GRASS.png -h 512 -w 512
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-UL.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-UL.png -h 512 -w 512
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-GLD.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-GLD.png -h 96 -w 96
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-GRASS.png -h 96 -w 96
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-MIL-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-MIL-GRASS.png -h 96 -w 96
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/AD-UL.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/src/icons/waypoints/AD-UL.png -h 96 -w 96
   COMMENT "Generated sources: waypoint icons"
   )
 

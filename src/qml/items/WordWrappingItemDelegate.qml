@@ -35,7 +35,8 @@ ItemDelegate {
         Image { // Icon
             id: a
             source: itemDelegate.icon.source
-            sourceSize.width: 25
+            Layout.preferredWidth: 24
+            Layout.preferredHeight: 24
 
             ColorOverlay {
                 anchors.fill: parent

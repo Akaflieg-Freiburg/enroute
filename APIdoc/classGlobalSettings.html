@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.2.4</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -81,6 +81,8 @@ Signals</h2></td></tr>
 <tr class="separator:a8174a8745ad813e6be972aaaf20df419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90cf3d822d2e7d292d791e977075bc0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a90cf3d822d2e7d292d791e977075bc0d">mapBearingPolicyChanged</a> ()</td></tr>
 <tr class="separator:a90cf3d822d2e7d292d791e977075bc0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee559f9cc4d03e3756f62ac33149344"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#adee559f9cc4d03e3756f62ac33149344">nightModeChanged</a> ()</td></tr>
+<tr class="separator:adee559f9cc4d03e3756f62ac33149344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd58677916111da8cd765725854753bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#acd58677916111da8cd765725854753bd">preferEnglishChanged</a> ()</td></tr>
 <tr class="separator:acd58677916111da8cd765725854753bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb1f236c680e715cf70bf46ed4a02f4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#acb1f236c680e715cf70bf46ed4a02f4c">useMetricUnitsChanged</a> ()</td></tr>
@@ -134,6 +136,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a321405b0fdaf236dbaf5c55e499dd126"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a321405b0fdaf236dbaf5c55e499dd126">setMapBearingPolicy</a> (<a class="el" href="classGlobalSettings.html#a01993a1813a51058e42d3a99d3e5a7b5">MapBearingPolicyValues</a> policy)</td></tr>
 <tr class="memdesc:a321405b0fdaf236dbaf5c55e499dd126"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="#a321405b0fdaf236dbaf5c55e499dd126">More...</a><br /></td></tr>
 <tr class="separator:a321405b0fdaf236dbaf5c55e499dd126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe75ec0b4a965b376396677f085b21a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#afe75ec0b4a965b376396677f085b21a4">nightMode</a> () const</td></tr>
+<tr class="memdesc:afe75ec0b4a965b376396677f085b21a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="#afe75ec0b4a965b376396677f085b21a4">More...</a><br /></td></tr>
+<tr class="separator:afe75ec0b4a965b376396677f085b21a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b7dd86382b442ea6188f58ddd93e9a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a6b7dd86382b442ea6188f58ddd93e9a2">setNightMode</a> (bool newNightMode)</td></tr>
+<tr class="memdesc:a6b7dd86382b442ea6188f58ddd93e9a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="#a6b7dd86382b442ea6188f58ddd93e9a2">More...</a><br /></td></tr>
+<tr class="separator:a6b7dd86382b442ea6188f58ddd93e9a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a884673971ff60375db942364a6f37501"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a884673971ff60375db942364a6f37501">useMetricUnits</a> () const</td></tr>
 <tr class="memdesc:a884673971ff60375db942364a6f37501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="#a884673971ff60375db942364a6f37501">More...</a><br /></td></tr>
 <tr class="separator:a884673971ff60375db942364a6f37501"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,6 +197,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a class="el" href="classGlobalSettings.html#a01993a1813a51058e42d3a99d3e5a7b5">MapBearingPolicyValues</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a9926af8efa4895ccc6be347099a23315">mapBearingPolicy</a></td></tr>
 <tr class="memdesc:a9926af8efa4895ccc6be347099a23315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map bearing policy. <br /></td></tr>
 <tr class="separator:a9926af8efa4895ccc6be347099a23315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2543839bc9eb4fedb1ac6d2b210c6a3e"><td class="memItemLeft" align="right" valign="top"><a id="a2543839bc9eb4fedb1ac6d2b210c6a3e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a2543839bc9eb4fedb1ac6d2b210c6a3e">nightMode</a></td></tr>
+<tr class="memdesc:a2543839bc9eb4fedb1ac6d2b210c6a3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Night mode. <br /></td></tr>
+<tr class="separator:a2543839bc9eb4fedb1ac6d2b210c6a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a982fd8c366ef832d105da64416d099d9"><td class="memItemLeft" align="right" valign="top"><a id="a982fd8c366ef832d105da64416d099d9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalSettings.html#a982fd8c366ef832d105da64416d099d9">useMetricUnits</a></td></tr>
 <tr class="memdesc:a982fd8c366ef832d105da64416d099d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true is app should be shown in English rather than the system language. <br /></td></tr>
@@ -711,6 +723,52 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="afe75ec0b4a965b376396677f085b21a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe75ec0b4a965b376396677f085b21a4">&#9670;&nbsp;</a></span>nightMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GlobalSettings::nightMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property night mode </dd></dl>
+
+</div>
+</div>
+<a id="adee559f9cc4d03e3756f62ac33149344"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee559f9cc4d03e3756f62ac33149344">&#9670;&nbsp;</a></span>nightModeChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GlobalSettings::nightModeChanged </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Notifier signal </p>
+
+</div>
+</div>
 <a id="af92a2ebcf5889b3e33f7437645415f73"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af92a2ebcf5889b3e33f7437645415f73">&#9670;&nbsp;</a></span>preferEnglish()</h2>
 
@@ -737,7 +795,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property preferEnglish </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00242">242</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00257">257</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -923,6 +981,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a6b7dd86382b442ea6188f58ddd93e9a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b7dd86382b442ea6188f58ddd93e9a2">&#9670;&nbsp;</a></span>setNightMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GlobalSettings::setNightMode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>newNightMode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter function for property of the same name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newNightMode</td><td>Property nightMode </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ab670eae544532cc3d1488390756c22e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab670eae544532cc3d1488390756c22e4">&#9670;&nbsp;</a></span>setPreferEnglish()</h2>
 
@@ -1003,7 +1087,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property useMetricUnits </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00215">215</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00230">230</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>

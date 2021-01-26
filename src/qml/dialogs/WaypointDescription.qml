@@ -293,20 +293,26 @@ Dialog {
             id: headX
             Layout.fillWidth: true
 
-            Image {
-                id: wpLblImg
-                fillMode: Image.PreserveAspectFit
-                source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
+            Item {
                 Layout.preferredWidth: 24
                 Layout.preferredHeight: 24
 
+                Image {
+                    id: wpLblImg
+                    anchors.fill: parent
+                    fillMode: Image.PreserveAspectFit
+                    visible: false
+                    source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
+                }
+
                 ColorOverlay {
                     id: colorOverlay
-                    anchors.fill: wpLblImg
+                    anchors.fill: parent
                     source: wpLblImg
                     color: Material.foreground
                 }
             }
+
 
             Label {
                 text: (waypoint !== null) ? waypoint.extendedName : ""

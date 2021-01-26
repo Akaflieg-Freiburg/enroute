@@ -26,6 +26,8 @@ import QtQuick.Layouts 1.15
 
 import enroute 1.0
 
+import "../items"
+
 /* This is a dialog with detailed information about a weather station. To use this dialog, all you have to do is to set a WeatherStation in the property "weatherStation" and call open(). */
 
 
@@ -56,18 +58,7 @@ Dialog {
             id: headX
             Layout.fillWidth: true
 
-            Image {
-                source: (weatherStation !== null) ? weatherStation.icon : "/icons/waypoints/WP.svg"
-                sourceSize.width: 25
-
-                ColorOverlay {
-                    id: colorOverlay
-                    anchors.fill: parent
-                    source: parent
-                    color: Material.foreground //"#000000"
-                }
-
-            }
+            Icon { source: (weatherStation !== null) ? weatherStation.icon : "/icons/waypoints/WP.svg" }
 
             Label {
                 text: (weatherStation !== null) ? weatherStation.extendedName : ""

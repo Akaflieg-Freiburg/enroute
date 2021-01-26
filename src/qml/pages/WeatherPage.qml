@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
@@ -309,14 +308,9 @@ Page {
             anchors.fill: parent
             columns: 2
 
-            Image {
-                visible: qnhLabel.text != ""                
+            Icon {
+                visible: qnhLabel.text != ""
                 source: "/icons/material/ic_speed.svg"
-                ColorOverlay {
-                    anchors.fill: parent
-                    source: parent
-                    color: Material.foreground
-                }
             }
             Label {
                 id: qnhLabel
@@ -324,14 +318,10 @@ Page {
                 Layout.fillWidth: true
                 text: weatherDownloadManager.QNHInfo
             }
-            Image {
+
+            Icon {
                 visible: sunLabel.text != ""
                 source: "/icons/material/ic_wb_sunny.svg"
-                ColorOverlay {
-                    anchors.fill: parent
-                    source: parent
-                    color: Material.foreground
-                }
             }
             Label {
                 id: sunLabel

@@ -40,6 +40,7 @@ Page {
             anchors.leftMargin: drawer.dragMargin
 
             icon.source: "/icons/material/ic_arrow_back.svg"
+            icon.color: "white"
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 if (stackView.depth > 1) {
@@ -57,6 +58,7 @@ Page {
             anchors.top: parent.top
 
             text: stackView.currentItem.title
+            color: "white"
             elide: Label.ElideRight
             font.bold: true
             horizontalAlignment: Qt.AlignHCenter
@@ -68,6 +70,7 @@ Page {
 
             anchors.right: parent.right
             icon.source: "/icons/material/ic_more_vert.svg"
+            icon.color: "white"
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 headerMenuX.popup()

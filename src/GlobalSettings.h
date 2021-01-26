@@ -215,7 +215,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param policy Property nightMode
+     * @param newNightMode Property nightMode
      */
     void setNightMode(bool newNightMode);
 

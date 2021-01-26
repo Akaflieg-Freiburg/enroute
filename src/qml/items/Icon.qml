@@ -18,33 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick.Controls.Material 2.15
 
-// This is a version of ItemDelegate that does word wrapping in the text
 
-ItemDelegate {
-    id: itemDelegate
+Item {
 
-    contentItem: RowLayout {
-        height: Math.max(a.height, b.height)
+    implicitHeight: 24
+    implicitWidth: 24
 
-        Icon { // Icon
-            id: a
-            source: itemDelegate.icon.source
-        }
+    /*! \brief Name of a graphics file */
+    property string source
 
-        Item { // Spacer
-            width: 5
-        }
 
-        Label { // Text
-            id: b
-            Layout.fillWidth: true
-            text: itemDelegate.text
-            wrapMode: Text.Wrap
-        }
+    Image {
+        id: wpLblImg
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+        visible: false
+        source: parent.source
     }
 
+    ColorOverlay {
+        id: colorOverlay
+        anchors.fill: parent
+        source: wpLblImg
+        color: Material.foreground
+    }
 }

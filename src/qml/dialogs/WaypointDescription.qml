@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtGraphicalEffects 1.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
@@ -293,19 +292,8 @@ Dialog {
             id: headX
             Layout.fillWidth: true
 
-            Image {
-                id: wpLblImg
-                fillMode: Image.PreserveAspectFit
+            Icon {
                 source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
-                Layout.preferredWidth: 24
-                Layout.preferredHeight: 24
-
-                ColorOverlay {
-                    id: colorOverlay
-                    anchors.fill: wpLblImg
-                    source: wpLblImg
-                    color: Material.foreground
-                }
             }
 
             Label {

@@ -173,7 +173,7 @@ Page {
 
             Connections {
                 target: model.modelData
-                function onError (message) {
+                function onError(objectName, message) {
                     dialogLoader.active = false
                     dialogLoader.title = qsTr("Download Error")
                     dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
@@ -196,6 +196,7 @@ Page {
             anchors.leftMargin: drawer.dragMargin
 
             icon.source: "/icons/material/ic_arrow_back.svg"
+            icon.color: "white"
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 stackView.pop()
@@ -209,6 +210,7 @@ Page {
             anchors.top: parent.top
 
             text: stackView.currentItem.title
+            color: "white"
             elide: Label.ElideRight
             font.bold: true
             horizontalAlignment: Qt.AlignHCenter
@@ -220,6 +222,7 @@ Page {
 
             id: headerMenuToolButton
             icon.source: "/icons/material/ic_more_vert.svg"
+            icon.color: "white"
             onClicked: {
                 mobileAdaptor.vibrateBrief()
                 headerMenuX.popup()

@@ -453,6 +453,9 @@ auto FlightRoute::suggestedFilename() const -> QString
     QString name = _waypoints.constFirst()->getPropery(QStringLiteral("NAM")).toString(); // Name of start point
     name.replace("(", "");
     name.replace(")", "");
+    // Pseudocode: while (name.find(".") name.replace(".", "_"));
+    // or just:
+    // Pseudocode: while (name.find(".") name.replace(".", ""));
     if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"_";
     }
@@ -471,6 +474,9 @@ auto FlightRoute::suggestedFilename() const -> QString
     name = _waypoints.constLast()->getPropery(QStringLiteral("NAM")).toString(); // Name of end point
     name.replace("(", "");
     name.replace(")", "");
+    // Pseudocode: while (name.find(".") name.replace(".", "_"));
+    // or just:
+    // Pseudocode: while (name.find(".") name.replace(".", ""));
     if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"_";
     }

@@ -305,7 +305,7 @@ auto Librarian::flightRoutes(const QString &filter) -> QStringList
 
     QStringList fileBaseNames;
     foreach(auto fileName, fileNames)
-        fileBaseNames << fileName.section('.', 0, 0);
+        fileBaseNames << fileName.section('.', 0, -2);
 
     return permissiveFilter(fileBaseNames, filter);
 }

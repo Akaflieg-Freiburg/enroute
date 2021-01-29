@@ -233,7 +233,7 @@ Page {
                             mobileAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = mobileAdaptor.exportContent(flightRoute.toGeoJSON(), "applicatin/geo+json", flightRoute.suggestedFilename())
+                            var errorString = mobileAdaptor.exportContent(flightRoute.toGeoJSON(), "application/geo+json", flightRoute.suggestedFilename())
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()

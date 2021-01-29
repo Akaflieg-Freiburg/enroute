@@ -55,7 +55,7 @@ void MobileAdaptor::importContent()
 
 auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-#warning Need to handle user abort!
+//#warning Need to handle user abort!
 
     Q_UNUSED(content)
     Q_UNUSED(mimeType)

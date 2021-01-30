@@ -18,11 +18,26 @@ to join our public beta-testing program.  Please have a look at Google's
 program](https://support.google.com/googleplay/answer/7003180?hl=en).
 
 
+#### Unofficial versions
+
+<figure style="width: 150px" class="align-right">
+  <a href="https://f-droid.org/packages/de.akaflieg_freiburg.enroute">
+    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="  80">
+  </a>
+</figure>
+
+Georg Küngemann published an unofficial version of the app at F-Droid. We
+endorse publication at F-Droid, but we have not tested the unofficial app for
+quality.
+
 <figure style="width: 130px" class="align-right">
   <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
   <a href='https://snapcraft.io/enroute-flight-navigation'><img  width='130px' alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg"/></a>
 </figure>
+
 
 ### Linux Desktop
 

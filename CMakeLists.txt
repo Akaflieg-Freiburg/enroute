@@ -2,7 +2,7 @@
 # Set up cmake
 #
 
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.17)
 include(ExternalProject)
 option(BUILD_DOC "Build developer documentation" OFF)
 

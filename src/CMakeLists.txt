@@ -51,26 +51,7 @@ configure_file(ressources.qrc.in ressources.qrc)
 #
 # Set up sources
 #
-
-set(SOURCES
-    # Ressources
-    ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
-    ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
-
-    # Translations
-    enroute_de.qm
-    enroute_fr.qm
-    enroute_it.qm
-    enroute_pl.qm
-
-    # Other files
-    AndroidManifest.xml.in
-    flightMap.qrc.in
-    icons.qrc.in
-    qml.qrc.in
-    README.md
-    ressources.qrc.in
-
+set(HEADERS
     # Header files
     Aircraft.h
     Airspace.h
@@ -97,6 +78,26 @@ set(SOURCES
     Weather_Station.h
     Weather_TAF.h
     Weather_Wind.h
+    )
+
+set(SOURCES
+    # Ressources
+    ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
+    ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
+
+    # Translations
+    enroute_de.qm
+    enroute_fr.qm
+    enroute_it.qm
+    enroute_pl.qm
+
+    # Other files
+    AndroidManifest.xml.in
+    flightMap.qrc.in
+    icons.qrc.in
+    qml.qrc.in
+    README.md
+    ressources.qrc.in
 
     # C++ files
     Aircraft.cpp
@@ -130,6 +131,8 @@ set(SOURCES
     Weather_Station.cpp
     Weather_TAF.cpp
     Weather_Wind.cpp
+
+    ${HEADERS}
     )
 
 # We use this macro here to avoid creating extremely large C++ files with binary content
@@ -230,12 +233,13 @@ if (NOT ANDROID)
     add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg qhttpengine kdsingleapplication sunset)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src)
+    target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADERS})
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
-# Enforde C++17 and no extensions  
+# Enforce C++17 and no extensions
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 

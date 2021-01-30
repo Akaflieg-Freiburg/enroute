@@ -11,10 +11,15 @@ apps:
     common-id: de.akaflieg_freiburg.enroute
     desktop: share/applications/de.akaflieg_freiburg.enroute.desktop
     plugs:
-      - opengl
+      - desktop
+      - desktop-legacy
       - network
       - network-bind
-      
+      - opengl
+      - process-control
+      - wayland
+      - x11      
+
 parts:
   qt5:
     plugin: make

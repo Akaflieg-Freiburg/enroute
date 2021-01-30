@@ -22,7 +22,7 @@ program](https://support.google.com/googleplay/answer/7003180?hl=en).
   <a href="https://f-droid.org/packages/de.akaflieg_freiburg.enroute">
     <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
-    height="  80">
+    height="80">
   </a>
 </figure>
 

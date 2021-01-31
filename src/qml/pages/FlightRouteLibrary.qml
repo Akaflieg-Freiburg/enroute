@@ -175,15 +175,19 @@ Page {
                                 parent.highlighted = false
 
                                 var errorString = mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", librarian.flightRouteGet(modelData).suggestedFilename())
+                                if (errorString === "abort") {
+                                    toast.doToast(qsTr("Aborted"))
+                                    return
+                                }
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
-                                } else {
-                                    if (Qt.platform.os === "android")
-                                        toast.doToast(qsTr("Flight route shared"))
-                                    else
-                                        toast.doToast(qsTr("Flight route exported"))
+                                    return
                                 }
+                                if (Qt.platform.os === "android")
+                                    toast.doToast(qsTr("Flight route shared"))
+                                else
+                                    toast.doToast(qsTr("Flight route exported"))
                             }
                         }
 
@@ -196,15 +200,19 @@ Page {
                                 parent.highlighted = false
 
                                 var errorString = mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", librarian.flightRouteGet(modelData).suggestedFilename())
+                                if (errorString === "abort") {
+                                    toast.doToast(qsTr("Aborted"))
+                                    return
+                                }
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
-                                } else {
-                                    if (Qt.platform.os === "android")
-                                        toast.doToast(qsTr("Flight route shared"))
-                                    else
-                                        toast.doToast(qsTr("Flight route exported"))
+                                    return
                                 }
+                                if (Qt.platform.os === "android")
+                                    toast.doToast(qsTr("Flight route shared"))
+                                else
+                                    toast.doToast(qsTr("Flight route exported"))
                             }
                         }
                     }

@@ -77,7 +77,7 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
                                                   tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix())
                                                   );
     if (fileNameX.isEmpty()) {
-        return QString();
+        return "abort";
     }
     QFile file(fileNameX);
     if (!file.open(QIODevice::WriteOnly)) {

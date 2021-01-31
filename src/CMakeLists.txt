@@ -51,7 +51,25 @@ configure_file(ressources.qrc.in ressources.qrc)
 #
 # Set up sources
 #
-set(HEADERS
+set(SOURCES
+    # Ressources
+    ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
+    ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
+
+    # Translations
+    enroute_de.qm
+    enroute_fr.qm
+    enroute_it.qm
+    enroute_pl.qm
+
+    # Other files
+    AndroidManifest.xml.in
+    flightMap.qrc.in
+    icons.qrc.in
+    qml.qrc.in
+    README.md
+    ressources.qrc.in
+
     # Header files
     Aircraft.h
     Airspace.h
@@ -75,26 +93,6 @@ set(HEADERS
     Weather_Station.h
     Weather_TAF.h
     Weather_Wind.h
-    )
-
-set(SOURCES
-    # Ressources
-    ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
-    ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
-
-    # Translations
-    enroute_de.qm
-    enroute_fr.qm
-    enroute_it.qm
-    enroute_pl.qm
-
-    # Other files
-    AndroidManifest.xml.in
-    flightMap.qrc.in
-    icons.qrc.in
-    qml.qrc.in
-    README.md
-    ressources.qrc.in
 
     # C++ files
     Aircraft.cpp
@@ -228,7 +226,10 @@ if (NOT ANDROID)
     add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg qhttpengine kdsingleapplication sunset)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src)
-    target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADERS})
+#    target_precompile_headers(${PROJECT_NAME} PRIVATE
+#        <QObject>
+#        <QPointer>
+#        )
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})

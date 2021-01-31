@@ -44,14 +44,16 @@ export ASAN_OPTIONS=detect_leaks=0
 export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 
+#    -DCMAKE_INSTALL_PREFIX=/ \
+#    -DCMAKE_C_FLAGS="-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer" \
+#    -DCMAKE_CXX_FLAGS="-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -Wall -Wextra" \
+#    -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address -fsanitize=undefined" \
+
 cmake \
     -G Ninja\
     -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_INSTALL_PREFIX=/ \
     -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_LINUX \
-    -DCMAKE_C_FLAGS="-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer" \
-    -DCMAKE_CXX_FLAGS="-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -Wall -Wextra" \
-    -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address -fsanitize=undefined" \
+    -DCMAKE_UNITY_BUILD:BOOL=ON \
     ..
 
 ninja

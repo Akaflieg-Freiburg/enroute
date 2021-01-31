@@ -88,7 +88,7 @@ public:
      * file name is visible to the user. It appears for instance as the name of
      * the attachment when sending files by e-mail.
      *
-     * @returns Empty string on success, a translated error message otherwise
+     * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
     Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 

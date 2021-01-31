@@ -60,7 +60,8 @@ cmake .. \
       -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
       -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_ANDROID \
       -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR_ANDROID \
-      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake
+      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
+      -DCMAKE_UNITY_BUILD:BOOL=ON
 
 # This is bizarrely necessary, or else 'android_deployment_settings.json'
 # will lack our custom AndroidManifest and the SSL libraries

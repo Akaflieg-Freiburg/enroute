@@ -28,9 +28,8 @@ program](https://support.google.com/googleplay/answer/7003180?hl=en).
 
 #### Unofficial versions
 
-Georg Küngemann published an unofficial version of the app at F-Droid. We
-endorse publication at F-Droid, but we have not tested the unofficial app for
-quality.
+An unofficial version of the app is also available at F-Droid.  We endorse
+publication at F-Droid, but we have not tested this unofficial app for quality.
 
 <figure style="width: 130px" class="align-right">
   <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>

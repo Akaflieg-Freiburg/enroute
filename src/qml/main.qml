@@ -164,16 +164,21 @@ ApplicationWindow {
                                 aboutMenu.close()
                                 drawer.close()
                             }
+                            background: Rectangle {
+                                anchors.fill: parent
+                                color: (satNav.status === SatNav.OK) ? "green" : "red"
+                                opacity: 0.2
+                            }
                         }
 
                         ItemDelegate { // FLARM Status
-                            text: qsTr("FLARM Status")
+                            Layout.fillWidth: true
+
+                            text: qsTr("Traffic Reveiver Status")
                                   +`<br><font color="#606060" size="2">`
                                   + qsTr("Current Status")
                                   + `: ${flarmAdaptor.statusString}</font>`
                             icon.source: "/icons/material/ic_satellite.svg"
-                            icon.color: Material.primary
-                            Layout.fillWidth: true
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
                                 dialogLoader.active = false
@@ -181,6 +186,11 @@ ApplicationWindow {
                                 dialogLoader.active = true
                                 aboutMenu.close()
                                 drawer.close()
+                            }
+                            background: Rectangle {
+                                anchors.fill: parent
+                                color: (flarmAdaptor.status === FLARMAdaptor.OK) ? "green" : "red"
+                                opacity: 0.2
                             }
                         }
 

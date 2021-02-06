@@ -62,15 +62,7 @@ Dialog {
                 Layout.fillWidth: true
                 font.weight: Font.Bold
                 text: flarmAdaptor.statusString
-                color: {
-                    console.log(flarmAdaptor.status)
-                    console.log(FLARMAdaptor.OK)
-                    if (flarmAdaptor.status === FLARMAdaptor.OK)
-                        return "green"
-                    if (flarmAdaptor.status === FLARMAdaptor.WaitingForData)
-                        return "yellow"
-                    return "red"
-                }
+                color: (flarmAdaptor.status === FLARMAdaptor.OK) ? "green" : "red"
                 wrapMode: Text.Wrap
             }
 

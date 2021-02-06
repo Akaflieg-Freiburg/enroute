@@ -45,6 +45,10 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     _trafficObjectWithoutPosition = new Navigation::Traffic(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
+    // Initialize values
+    setStatus();
+    setStatusString();
+
     // Connections
     connect(&_barometricAltitudeTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearBarometricAltitude);
     connect(&_positionInfoTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearPositionInfo);
@@ -81,11 +85,12 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
+//    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
     // setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
+
 
 auto Navigation::FLARMAdaptor::barometricAltitude() const -> AviationUnits::Distance
 {

@@ -54,7 +54,7 @@ Dialog {
 
             width: flarmStatusDialog.availableWidth
 
-            Text {
+            Text { // Status
                 Layout.alignment: Qt.AlignTop
                 text: qsTr("Status")
             }
@@ -63,6 +63,16 @@ Dialog {
                 font.weight: Font.Bold
                 text: flarmAdaptor.statusString
                 color: (flarmAdaptor.status === FLARMAdaptor.OK) ? "green" : "red"
+                wrapMode: Text.Wrap
+            }
+
+            Text { // Activity
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("Activity")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: flarmAdaptor.activity
                 wrapMode: Text.Wrap
             }
 

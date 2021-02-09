@@ -86,6 +86,22 @@ public:
     // Properties
     //
 
+    /*! \brief Activity
+     *
+     * This property contains a translated, human-readable string that explains what this class is currently
+     * doing.
+     */
+    Q_PROPERTY(QString activity READ activity NOTIFY activityChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property activity
+     */
+    QString activity() const
+    {
+        return _activity;
+    }
+
     /*! \brief Barometric altitude
      *
      * This property holds the barometric altitude, as reported by the NMEA source, or NaN if no barometric altitude is available.
@@ -211,6 +227,7 @@ public:
     void setSimulatorFile(const QString& fileName = QString() );
 
 signals:
+    void activityChanged();
     void barometricAltitudeChanged();
     void flarmSelfTestFailed();
     void FLARMSelfTestChanged();
@@ -251,6 +268,7 @@ private slots:
     // Sets the position info and emits the notifier signal when appropriate
     void setPositionInfo(const QGeoPositionInfo& newPositionInfo);
 
+    void setActivity();
     void setStatus();
     void setStatusString();
 
@@ -258,8 +276,11 @@ private:
     QTimer connectTimer;
     QTimer heartBeatTimer;
 
-    QTcpSocket socket;
+    QPointer<QTcpSocket> socket;
     QTextStream stream;
+
+    // Property activity. Should only been written to by setActivity()
+    QString _activity;
 
     // General status info. Should only been written to by setStatus()
     Status _status {InOp};

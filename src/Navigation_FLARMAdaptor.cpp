@@ -36,6 +36,9 @@ Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
 
 
 Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
+    // Create socket
+    socket = new QTcpSocket(this);
+
     // Create traffic objects
     for(int i = 0; i<20; i++) {
         auto *trafficObject = new Navigation::Traffic(this);
@@ -46,6 +49,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
     // Initialize values
+    setActivity();
     setStatus();
     setStatusString();
 
@@ -54,28 +58,31 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     connect(&_positionInfoTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearPositionInfo);
 
     // Wire up socket
-    connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::receiveSocketConnected);
-    connect(&socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::receiveSocketDisconnected);
-    connect(&socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::receiveSocketErrorOccurred);
-    connect(&socket, &QTcpSocket::readyRead, this, &Navigation::FLARMAdaptor::readFromStream);
+    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::receiveSocketConnected);
+    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::receiveSocketDisconnected);
+    connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::receiveSocketErrorOccurred);
+    connect(socket, &QTcpSocket::readyRead, this, &Navigation::FLARMAdaptor::readFromStream);
 
     // Wire up the connectTimer. Set it to attempt a FLARM connection every 5 Minutes
     connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToFLARM);
     connectTimer.start(5min);
 
+    // Wire up setActivity()
+    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::setActivity);
+
     // Wire up the setStatus()
     heartBeatTimer.setSingleShot(true);
     heartBeatTimer.setInterval(5s);
     connect(&heartBeatTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::setStatus);
-    connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatus);
-    connect(&socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatus);
-    connect(&socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatus);
+    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatus);
+    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatus);
+    connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatus);
 
     // Wire up setStatusString()
     connect(this, &Navigation::FLARMAdaptor::statusChanged, this, &Navigation::FLARMAdaptor::setStatusString);
-    connect(&socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatusString);
-    connect(&socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatusString);
-    connect(&socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatusString);
+    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatusString);
+    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatusString);
+    connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatusString);
 
     // Try our first connect 0sec after startup
     QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToFLARM);
@@ -90,6 +97,9 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
+
+
+#warning destructor causes segfault because it calls setActivity() when the class has ceased to exist!
 
 
 auto Navigation::FLARMAdaptor::barometricAltitude() const -> AviationUnits::Distance
@@ -124,14 +134,14 @@ void Navigation::FLARMAdaptor::connectToFLARM()
 {
     qWarning() << "Navigation::FLARMAdaptor::connectToFLARM()";
 
-    if (socket.state() != QAbstractSocket::UnconnectedState) {
+    if (socket->state() != QAbstractSocket::UnconnectedState) {
         qWarning() << "Navigation::FLARMAdaptor::connectToFLARM(): socket is not unconnected";
         return;
     }
 
-    // Expect a FLARM device at address 192.168.1.1, port 2000^
+    // Expect a FLARM device at address 192.168.1.1, port 2000
     qWarning() << "Navigation::FLARMAdaptor::connectToFLARM() initiate connection";
-    socket.connectToHost(QStringLiteral("192.168.1.1"), 2000);
+    socket->connectToHost(QStringLiteral("192.168.1.1"), 2000);
 }
 
 
@@ -670,7 +680,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 void Navigation::FLARMAdaptor::receiveSocketConnected()
 {
     qWarning() << "Navigation::FLARMAdaptor::receiveSocketConnected()";
-    stream.setDevice(&socket);
+    stream.setDevice(socket);
     stream << "$PFLAV,R*33\a\n";
 }
 
@@ -727,13 +737,42 @@ void Navigation::FLARMAdaptor::readFromSimulatorStream()
 }
 
 
+void Navigation::FLARMAdaptor::setActivity()
+{
+    QString newActivity = "Not Implemented";
+
+#warning Not implemented
+    switch(socket->state()) {
+    case QAbstractSocket::UnconnectedState:
+        newActivity = tr("Idle.");
+        break;
+    case QAbstractSocket::ConnectedState:
+        newActivity = tr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Listening for traffic data.");
+        break;
+    case QAbstractSocket::ClosingState:
+        newActivity = tr("Closing connection to traffic receiver.");
+        break;
+    default:
+        newActivity = tr("Trying to connecting to traffic receiver at IP address 192.168.1.1, port 2000.");
+        break;
+    }
+
+
+    if (newActivity == _activity) {
+        return;
+    }
+    _activity = newActivity;
+    emit activityChanged();
+}
+
+
 void Navigation::FLARMAdaptor::setStatus()
 {
     Status newStatus = Status::InOp;
     if (heartBeatTimer.isActive()) {
         newStatus = Status::OK;
     } else {
-        if (socket.state() == QAbstractSocket::ConnectedState) {
+        if (socket->state() == QAbstractSocket::ConnectedState) {
             newStatus = Status::WaitingForData;
         }
     }
@@ -762,10 +801,10 @@ void Navigation::FLARMAdaptor::setStatusString()
         if (status() == Status::OK) {
             return tr("OK");
         }
-        if (socket.state() == QAbstractSocket::ConnectedState) {
+        if (socket->state() == QAbstractSocket::ConnectedState) {
             return tr("Connected • Waiting for data");
         }
-        if (socket.state() == QAbstractSocket::ConnectingState) {
+        if (socket->state() == QAbstractSocket::ConnectingState) {
             return tr("Trying to connect…");
         }
         return tr("Not connected");

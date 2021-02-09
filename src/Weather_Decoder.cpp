@@ -1538,6 +1538,31 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
             continue;
         }
 
+        // SAND, LOW DRIFTING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::LOW_DRIFTING && weather == metaf::WeatherPhenomena::Weather::SAND) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("low drifting sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("low drifting sand in the vicinity");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light low drifting sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate low drifting sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy low drifting sand");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent low drifting sand");
+                break;
+            }
+            continue;
+        }
+
         // SNOW
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::NONE && weather == metaf::WeatherPhenomena::Weather::SNOW) {
             switch(wp.qualifier()) {

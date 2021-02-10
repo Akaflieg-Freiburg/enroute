@@ -116,6 +116,34 @@ public:
      */
     AviationUnits::Distance barometricAltitude() const;
 
+    /*! \brief Can connect
+     *
+     * This property holds a bool. If true, then it makes senss to try and initiate new connection to the
+     * traffic receiver. If false, then it makes sense to try and disconnect a traffic receiver.
+     */
+    Q_PROPERTY(bool canConnect READ canConnect NOTIFY canConnectChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property canConnect
+     */
+    bool canConnect() const;
+
+    /*! \brief lastError
+     *
+     * This property holds a translated, human-readable string that describes the last error.
+     */
+    Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property lastError
+     */
+    QString lastError() const
+    {
+        return _lastError;
+    }
+
     /*! \brief Position information for own aircraft
      *
      *  This property holds the own position, as reported by the NMEA source, or an invalid QGeoPositionInfo if no current data is available.
@@ -229,11 +257,13 @@ public:
 signals:
     void activityChanged();
     void barometricAltitudeChanged();
+    void canConnectChanged();
     void flarmSelfTestFailed();
     void FLARMSelfTestChanged();
     void FLARMHwVersionChanged();
     void FLARMSwVersionChanged();
     void FLARMObstVersionChanged();
+    void lastErrorChanged();
     void receivingChanged();
     void statusStringChanged();
     void statusChanged();
@@ -241,6 +271,7 @@ signals:
 
 public slots:
     void connectToFLARM();
+    void disconnectFromFLARM();
 
 private slots:
 
@@ -269,6 +300,7 @@ private slots:
     void setPositionInfo(const QGeoPositionInfo& newPositionInfo);
 
     void setActivity();
+    void setError(const QString &newError);
     void setStatus();
     void setStatusString();
 
@@ -281,6 +313,9 @@ private:
 
     // Property activity. Should only been written to by setActivity()
     QString _activity;
+
+    // Property lastError.
+    QString _lastError;
 
     // General status info. Should only been written to by setStatus()
     Status _status {InOp};

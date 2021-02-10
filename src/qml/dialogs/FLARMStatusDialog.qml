@@ -78,6 +78,16 @@ Dialog {
 
             Text {
                 Layout.alignment: Qt.AlignTop
+                text: qsTr("Last Error")
+            }
+            Text {
+                Layout.fillWidth: true
+                text: flarmAdaptor.lastError
+                wrapMode: Text.Wrap
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignTop
                 text: qsTr("Hardware")
             }
             Text {
@@ -118,8 +128,9 @@ Dialog {
 
             Button {
                 Layout.columnSpan: 2
-                text: qsTr("Connect")
-                onClicked: flarmAdaptor.connectToFLARM()
+                Layout.alignment: Qt.AlignHCenter
+                text: flarmAdaptor.canConnect ? qsTr("Manually Connect") :  qsTr("Manually Disconnect")
+                onClicked: flarmAdaptor.canConnect ? flarmAdaptor.connectToFLARM() : flarmAdaptor.disconnectFromFLARM()
             }
 
         } // GridLayout

@@ -150,7 +150,7 @@ ApplicationWindow {
                         id: aboutMenu
 
                         ItemDelegate { // Sat Status
-                            text: qsTr("Satellite Status")
+                            text: qsTr("Satellite Navigation")
                                   +`<br><font color="#606060" size="2">`
                                   + qsTr("Current Status")
                                   + `: ${satNav.statusAsString}</font>`
@@ -174,7 +174,7 @@ ApplicationWindow {
                         ItemDelegate { // FLARM Status
                             Layout.fillWidth: true
 
-                            text: qsTr("Traffic Reveiver Status")
+                            text: qsTr("Traffic Receiver")
                                   +`<br><font color="#606060" size="2">`
                                   + qsTr("Current Status")
                                   + `: ${flarmAdaptor.statusString}</font>`

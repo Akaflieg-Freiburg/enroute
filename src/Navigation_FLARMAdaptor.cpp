@@ -84,6 +84,9 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatusString);
     connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatusString);
 
+    // Wire up canConnect()
+    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::canConnectChanged);
+
     // Try our first connect 0sec after startup
     QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToFLARM);
 
@@ -92,22 +95,30 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-//    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
-    // setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
+    //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
+    setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
 }
-
-
-#warning destructor causes segfault because it calls setActivity() when the class has ceased to exist!
 
 
 auto Navigation::FLARMAdaptor::barometricAltitude() const -> AviationUnits::Distance
 {
     if (!_barometricAltitudeTimer.isActive()) {
         return AviationUnits::Distance();
-}
+    }
     return _barometricAltitude;
+}
+
+
+auto Navigation::FLARMAdaptor::canConnect() const -> bool
+{
+    // Paranoid safety checks
+    if (socket.isNull())  {
+        return false;
+    }
+
+    return (socket->state() == QAbstractSocket::UnconnectedState);
 }
 
 
@@ -142,6 +153,23 @@ void Navigation::FLARMAdaptor::connectToFLARM()
     // Expect a FLARM device at address 192.168.1.1, port 2000
     qWarning() << "Navigation::FLARMAdaptor::connectToFLARM() initiate connection";
     socket->connectToHost(QStringLiteral("192.168.1.1"), 2000);
+    setError(QString());
+}
+
+
+void Navigation::FLARMAdaptor::disconnectFromFLARM()
+{
+    qWarning() << "Navigation::FLARMAdaptor::disconnectFromFLARM()";
+
+#warning does not work!
+    setSimulatorFile();
+
+    // Paranoid safety checks
+    if (socket.isNull()) {
+        return;
+    }
+
+    socket->abort();
 }
 
 
@@ -695,6 +723,84 @@ void Navigation::FLARMAdaptor::receiveSocketDisconnected()
 void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError)
 {
     qWarning() << "Navigation::FLARMAdaptor::receiveSocketErrorOccurred()" << socketError;
+
+    QString errorText;
+    switch (socketError) {
+    case QAbstractSocket::ConnectionRefusedError:
+        errorText = tr("The connection was refused by the peer (or timed out).");
+        break;
+    case QAbstractSocket::RemoteHostClosedError:
+        errorText = tr("The remote host closed the connection.");
+        break;
+    case QAbstractSocket::HostNotFoundError:
+        errorText = tr("The host address was not found.");
+        break;
+    case QAbstractSocket::SocketAccessError:
+        errorText = tr("The socket operation failed because the application lacked the required privileges.");
+        break;
+    case QAbstractSocket::SocketResourceError:
+        errorText = tr("The local system ran out of resources.");
+        break;
+    case QAbstractSocket::SocketTimeoutError:
+        errorText = tr("The socket operation timed out.");
+        break;
+    case QAbstractSocket::DatagramTooLargeError:
+        errorText = tr("The datagram was larger than the operating system's limit.");
+        break;
+    case QAbstractSocket::NetworkError:
+        errorText = tr("An error occurred with the network.");
+        break;
+    case QAbstractSocket::AddressInUseError:
+        errorText = tr("The address specified to QAbstractSocket::bind() is already in use and was set to be exclusive.");
+        break;
+    case QAbstractSocket::SocketAddressNotAvailableError:
+        errorText = tr("The address specified to QAbstractSocket::bind() does not belong to the host.");
+        break;
+    case QAbstractSocket::UnsupportedSocketOperationError:
+        errorText = tr("The requested socket operation is not supported by the local operating system.");
+        break;
+    case QAbstractSocket::ProxyAuthenticationRequiredError:
+        errorText = tr("The socket is using a proxy, and the proxy requires authentication.");
+        break;
+    case QAbstractSocket::SslHandshakeFailedError:
+        errorText = tr("The SSL/TLS handshake failed, so the connection was closed.");
+        break;
+    case QAbstractSocket::UnfinishedSocketOperationError:
+        errorText = tr("The last operation attempted has not finished yet (still in progress in the background).");
+        break;
+    case QAbstractSocket::ProxyConnectionRefusedError:
+        errorText = tr("Could not contact the proxy server because the connection to that server was denied.");
+        break;
+    case QAbstractSocket::ProxyConnectionClosedError:
+        errorText = tr("The connection to the proxy server was closed unexpectedly (before the connection to the final peer was established).");
+        break;
+    case QAbstractSocket::ProxyConnectionTimeoutError:
+        errorText = tr("The connection to the proxy server timed out or the proxy server stopped responding in the authentication phase.");
+        break;
+    case QAbstractSocket::ProxyNotFoundError:
+        errorText = tr("The proxy address set with setProxy() (or the application proxy) was not found.");
+        break;
+    case QAbstractSocket::ProxyProtocolError:
+        errorText = tr("The connection negotiation with the proxy server failed, because the response from the proxy server could not be understood.");
+        break;
+    case QAbstractSocket::OperationError:
+        errorText = tr("An operation was attempted while the socket was in a state that did not permit it.");
+        break;
+    case QAbstractSocket::SslInternalError:
+        errorText = tr("The SSL library being used reported an internal error. This is probably the result of a bad installation or misconfiguration of the library.");
+        break;
+    case QAbstractSocket::SslInvalidUserDataError:
+        errorText = tr("Invalid data (certificate, key, cypher, etc.) was provided and its use resulted in an error in the SSL library.");
+        break;
+    case QAbstractSocket::TemporaryError:
+        errorText = tr("A temporary error occurred (e.g., operation would block and socket is non-blocking).");
+        break;
+    case QAbstractSocket::UnknownSocketError:
+        errorText = tr("An unidentified error occurred.");
+        break;
+    }
+    setError(errorText);
+
     clearFlarmDeviceInfo();
 }
 
@@ -709,7 +815,7 @@ void Navigation::FLARMAdaptor::readFromStream()
 
 void Navigation::FLARMAdaptor::readFromSimulatorStream()
 {
-    //    qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
+    qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
     if ((simulatorFile.error() != QFileDevice::NoError) || simulatorStream.atEnd()) {
         setSimulatorFile();
         return;
@@ -739,30 +845,48 @@ void Navigation::FLARMAdaptor::readFromSimulatorStream()
 
 void Navigation::FLARMAdaptor::setActivity()
 {
-    QString newActivity = "Not Implemented";
+    QString newActivity;
 
-#warning Not implemented
-    switch(socket->state()) {
-    case QAbstractSocket::UnconnectedState:
-        newActivity = tr("Idle.");
-        break;
-    case QAbstractSocket::ConnectedState:
-        newActivity = tr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Listening for traffic data.");
-        break;
-    case QAbstractSocket::ClosingState:
-        newActivity = tr("Closing connection to traffic receiver.");
-        break;
-    default:
-        newActivity = tr("Trying to connecting to traffic receiver at IP address 192.168.1.1, port 2000.");
-        break;
+    if (simulatorFile.isOpen()) {
+
+        // Simulation mode
+        newActivity = tr("Connected to simulation data source. Listening for data.");
+
+    } else {
+
+        // No simulation mode
+        switch(socket->state()) {
+        case QAbstractSocket::UnconnectedState:
+            newActivity = tr("Idle.");
+            break;
+        case QAbstractSocket::ConnectedState:
+            newActivity = tr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Listening for data.");
+            break;
+        case QAbstractSocket::ClosingState:
+            newActivity = tr("Closing connection to traffic receiver.");
+            break;
+        default:
+            newActivity = tr("Trying to connect to a traffic receiver at IP address 192.168.1.1, port 2000.");
+            break;
+        }
+
     }
 
-
+    // Update property if required
     if (newActivity == _activity) {
         return;
     }
     _activity = newActivity;
     emit activityChanged();
+}
+
+
+void Navigation::FLARMAdaptor::setError(const QString &newError)
+{
+    if (newError == _lastError)
+        return;
+    _lastError = newError;
+    emit lastErrorChanged();
 }
 
 
@@ -827,6 +951,8 @@ void Navigation::FLARMAdaptor::setSimulatorFile(const QString& fileName)
     simulatorFile.close();
 
     if (fileName.isEmpty()) {
+        simulatorTimer.stop();
+        setActivity();
         setStatus();
         setStatusString();
         return;
@@ -839,6 +965,7 @@ void Navigation::FLARMAdaptor::setSimulatorFile(const QString& fileName)
 
     simulatorStream.setDevice(&simulatorFile);
     readFromSimulatorStream();
+    setActivity();
     setStatus();
     setStatusString();
 }
@@ -883,6 +1010,7 @@ void Navigation::FLARMAdaptor::setPositionInfo(const QGeoPositionInfo& newPositi
     }
     emit positionInfoChanged();
 }
+
 
 void Navigation::FLARMAdaptor::clearPositionInfo()
 {

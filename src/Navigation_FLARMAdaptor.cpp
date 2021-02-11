@@ -40,7 +40,9 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     socket = new QTcpSocket(this);
 
     // Create traffic objects
-    for(int i = 0; i<20; i++) {
+    int numTrafficObjects = 20;
+    _trafficObjects.reserve(numTrafficObjects);
+    for(int i = 0; i<numTrafficObjects; i++) {
         auto *trafficObject = new Navigation::Traffic(this);
         QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
         _trafficObjects.append( trafficObject );
@@ -48,32 +50,36 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     _trafficObjectWithoutPosition = new Navigation::Traffic(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
-    // Initialize values
-    setActivity();
-    setStatus();
-    setStatusString();
+
+    // Wire up setConnected
+    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::setConnected);
+
 
     // Connections
     connect(&_barometricAltitudeTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearBarometricAltitude);
     connect(&_positionInfoTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearPositionInfo);
 
     // Wire up socket
-    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::receiveSocketConnected);
-    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::receiveSocketDisconnected);
     connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::receiveSocketErrorOccurred);
     connect(socket, &QTcpSocket::readyRead, this, &Navigation::FLARMAdaptor::readFromStream);
 
     // Wire up the connectTimer. Set it to attempt a FLARM connection every 5 Minutes
-    connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToFLARM);
+    connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
     connectTimer.start(5min);
+
+    // Setup heartbeatTimer
+
+    // Setup receivingTimer
+    receivingTimer.setSingleShot(true);
+    receivingTimer.setInterval(5s);
+    connect(&receivingTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::setStatus);
+
 
     // Wire up setActivity()
     connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::setActivity);
+    connect(this, &Navigation::FLARMAdaptor::receivingChanged, this, &Navigation::FLARMAdaptor::setActivity);
 
     // Wire up the setStatus()
-    heartBeatTimer.setSingleShot(true);
-    heartBeatTimer.setInterval(5s);
-    connect(&heartBeatTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::setStatus);
     connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatus);
     connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatus);
     connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatus);
@@ -87,18 +93,34 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     // Wire up canConnect()
     connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::canConnectChanged);
 
+    //
+    // Property bindings
+    //
+
+    // Bind property "receiving"
+    connect(&receivingTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::receivingChanged);
+    connect(this, &Navigation::FLARMAdaptor::connectedChanged, this, &Navigation::FLARMAdaptor::receivingChanged);
+
+
     // Try our first connect 0sec after startup
-    QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToFLARM);
+    QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
 
     // Setup simulator
-    //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-hard.txt");
+    // setSimulatorFile("/home/kebekus/Software/standards/FLARM/expiry-hard.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
     connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-    //    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
-    setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
+    setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
+    // setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
 
+    //
+    // Initialize properties
+    //
+    setActivity();
+    setConnected();
+    setStatus();
+    setStatusString();
 }
 
 
@@ -108,6 +130,26 @@ auto Navigation::FLARMAdaptor::barometricAltitude() const -> AviationUnits::Dist
         return AviationUnits::Distance();
     }
     return _barometricAltitude;
+}
+
+
+void Navigation::FLARMAdaptor::setConnected()
+{
+    // Compute connectedness status
+    bool newConnected = false;
+    if (!socket.isNull() && (socket->state() == QAbstractSocket::ConnectedState))  {
+        newConnected = true;
+    }
+    if (simulatorFile.isOpen()) {
+        newConnected = true;
+    }
+
+    // Update property and emit signal if necessary
+    if (_connected == newConnected) {
+        return;
+    }
+    _connected = newConnected;
+    emit connectedChanged(_connected);
 }
 
 
@@ -128,48 +170,32 @@ auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
 }
 
 
-void Navigation::FLARMAdaptor::clearFlarmDeviceInfo()
+void Navigation::FLARMAdaptor::connectToTrafficReceiver()
 {
-    _FLARMHwVersion = QString();
-    _FLARMSwVersion = QString();
-    _FLARMObstVersion = QString();
-
-    if (!_FLARMSelfTest.isEmpty()) {
-        _FLARMSelfTest = QString();
-        emit FLARMSelfTestChanged();
-    }
-}
-
-
-void Navigation::FLARMAdaptor::connectToFLARM()
-{
-    qWarning() << "Navigation::FLARMAdaptor::connectToFLARM()";
-
-    if (socket->state() != QAbstractSocket::UnconnectedState) {
-        qWarning() << "Navigation::FLARMAdaptor::connectToFLARM(): socket is not unconnected";
+    // Do not do anything if we are connected!
+    if (_connected) {
         return;
     }
 
-    // Expect a FLARM device at address 192.168.1.1, port 2000
-    qWarning() << "Navigation::FLARMAdaptor::connectToFLARM() initiate connection";
-    socket->connectToHost(QStringLiteral("192.168.1.1"), 2000);
+    // Disconnect simulator
+    if (simulatorFile.isOpen()) {
+        simulatorFile.close();
+        simulatorTimer.stop();
+    }
+
+    // Disconnect socket and re-connect. Expect a FLARM device at address 192.168.1.1, port 2000
+    if (!socket.isNull()) {
+        socket->abort();
+        socket->connectToHost(QStringLiteral("192.168.1.1"), 2000);
+    }
+
+    // Update properties
+    setActivity();
+    setConnected();
     setError(QString());
-}
+    setStatus();
+    setStatusString();
 
-
-void Navigation::FLARMAdaptor::disconnectFromFLARM()
-{
-    qWarning() << "Navigation::FLARMAdaptor::disconnectFromFLARM()";
-
-#warning does not work!
-    setSimulatorFile();
-
-    // Paranoid safety checks
-    if (socket.isNull()) {
-        return;
-    }
-
-    socket->abort();
 }
 
 
@@ -228,13 +254,19 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
     }
     msg = pieces[0];
     auto checksum = pieces[1].toInt(nullptr, 16);
-    int myChecksum = 0;
+    quint8 myChecksum = 0;
     for(auto && i : msg) {
-        myChecksum ^= i.toLatin1();
+        myChecksum ^= static_cast<quint8>(i.toLatin1());
     }
     if (checksum != myChecksum) {
         return;
     }
+
+    // Valid NMEA data received.
+    auto wasActive = receivingTimer.isActive();
+    receivingTimer.start();
+    if (!wasActive)
+        emit receivingChanged();
 
     // Split the message into pieces
     auto arguments = msg.split(QStringLiteral(","));
@@ -472,7 +504,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
                 return;
             }
 
-        auto *lowestPriObject = _trafficObjects[0];
+        auto *lowestPriObject = _trafficObjects.at(0);
         foreach(auto target, _trafficObjects)
             if (lowestPriObject->hasHigherPriorityThan(*target)) {
                 lowestPriObject = target;
@@ -630,13 +662,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         auto result = results.join(QStringLiteral(" • "));
 
         // Emit results of self-test
-        if (result != _FLARMSelfTest) {
-            _FLARMSelfTest = result;
-            emit FLARMSelfTestChanged();
-            if ((severity == u"2") || (severity == u"3")) {
-                emit flarmSelfTestFailed();
-            }
-        }
+        emit trafficReceiverSelfTest(result);
         return;
     }
 
@@ -647,7 +673,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // FLARM Heartbeat
     if (messageType == u"PFLAU") {
-        heartBeatTimer.start();
         setStatus();
         return;
     }
@@ -658,20 +683,11 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         }
 
-        if (_FLARMHwVersion != arguments[1]) {
-            _FLARMHwVersion = arguments[1];
-            emit FLARMHwVersionChanged();
-        }
+        emit trafficReceiverHwVersion(arguments[1]);
+        emit trafficReceiverSwVersion(arguments[2]);
+        emit trafficReceiverObVersion(arguments[3]);
 
-        if (_FLARMSwVersion != arguments[2]) {
-            _FLARMSwVersion = arguments[2];
-            emit FLARMSwVersionChanged();
-        }
 
-        if (_FLARMObstVersion != arguments[3]) {
-            _FLARMObstVersion = arguments[3];
-            emit FLARMObstVersionChanged();
-        }
         return;
     }
 
@@ -702,21 +718,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
     // ===============0
 
     qWarning() << "FLARM Sentence not understood" << pieces[0];
-}
-
-
-void Navigation::FLARMAdaptor::receiveSocketConnected()
-{
-    qWarning() << "Navigation::FLARMAdaptor::receiveSocketConnected()";
-    stream.setDevice(socket);
-    stream << "$PFLAV,R*33\a\n";
-}
-
-
-void Navigation::FLARMAdaptor::receiveSocketDisconnected()
-{
-    qWarning() << "Navigation::FLARMAdaptor::receiveSocketDisconnected()";
-    clearFlarmDeviceInfo();
 }
 
 
@@ -800,8 +801,6 @@ void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::Socke
         break;
     }
     setError(errorText);
-
-    clearFlarmDeviceInfo();
 }
 
 
@@ -815,7 +814,7 @@ void Navigation::FLARMAdaptor::readFromStream()
 
 void Navigation::FLARMAdaptor::readFromSimulatorStream()
 {
-    qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
+    //    qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
     if ((simulatorFile.error() != QFileDevice::NoError) || simulatorStream.atEnd()) {
         setSimulatorFile();
         return;
@@ -846,11 +845,16 @@ void Navigation::FLARMAdaptor::readFromSimulatorStream()
 void Navigation::FLARMAdaptor::setActivity()
 {
     QString newActivity;
-
     if (simulatorFile.isOpen()) {
 
         // Simulation mode
-        newActivity = tr("Connected to simulation data source. Listening for data.");
+        newActivity = tr("Connected to simulation data source.");
+        newActivity += " • ";
+        if (receivingTimer.isActive()) {
+            newActivity += tr("Receiving data.");
+        } else {
+            newActivity += tr("Waiting for data.");
+        }
 
     } else {
 
@@ -860,7 +864,13 @@ void Navigation::FLARMAdaptor::setActivity()
             newActivity = tr("Idle.");
             break;
         case QAbstractSocket::ConnectedState:
-            newActivity = tr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Listening for data.");
+            newActivity = tr("Connected to traffic receiver at IP address 192.168.1.1, port 2000.");
+            newActivity += " • ";
+            if (receivingTimer.isActive()) {
+                newActivity += tr("Receiving data.");
+            } else {
+                newActivity += tr("Waiting for data.");
+            }
             break;
         case QAbstractSocket::ClosingState:
             newActivity = tr("Closing connection to traffic receiver.");
@@ -883,8 +893,9 @@ void Navigation::FLARMAdaptor::setActivity()
 
 void Navigation::FLARMAdaptor::setError(const QString &newError)
 {
-    if (newError == _lastError)
+    if (newError == _lastError) {
         return;
+    }
     _lastError = newError;
     emit lastErrorChanged();
 }
@@ -893,7 +904,7 @@ void Navigation::FLARMAdaptor::setError(const QString &newError)
 void Navigation::FLARMAdaptor::setStatus()
 {
     Status newStatus = Status::InOp;
-    if (heartBeatTimer.isActive()) {
+    if (receivingTimer.isActive()) {
         newStatus = Status::OK;
     } else {
         if (socket->state() == QAbstractSocket::ConnectedState) {
@@ -953,6 +964,7 @@ void Navigation::FLARMAdaptor::setSimulatorFile(const QString& fileName)
     if (fileName.isEmpty()) {
         simulatorTimer.stop();
         setActivity();
+        setConnected();
         setStatus();
         setStatusString();
         return;
@@ -966,6 +978,7 @@ void Navigation::FLARMAdaptor::setSimulatorFile(const QString& fileName)
     simulatorStream.setDevice(&simulatorFile);
     readFromSimulatorStream();
     setActivity();
+    setConnected();
     setStatus();
     setStatusString();
 }

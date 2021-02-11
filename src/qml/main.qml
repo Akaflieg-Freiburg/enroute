@@ -404,6 +404,17 @@ ApplicationWindow {
             toast.text = string
             seqA.start()
         }
+
+        Connections { // Traffic receiver
+            target: flarmAdaptor
+            function onConnectedChanged(isConnected) {
+                if (isConnected)
+                    toast.doToast(qsTr("Connected to traffic receiver."))
+                else
+                    toast.doToast(qsTr("Lost connection to traffic receiver."))
+            }
+        }
+
     }
 
     Loader {
@@ -448,20 +459,6 @@ ApplicationWindow {
         title: qsTr("What's new …?")
         text: librarian.getStringFromRessource(":text/whatsnew.html")
         onOpened: globalSettings.lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
-    }
-
-    LongTextDialog {
-        id: flarmErrorDialog
-        standardButtons: Dialog.Ok
-        anchors.centerIn: parent
-
-        title: qsTr("FLARM Error")
-        text: qsTr("<p>This app successfully connected to a FLARM device, but the device reported the following error.</p>")+"<p><strong>"+flarmAdaptor.FLARMSelfTest+"</strong></p>"
-
-        Connections {
-            target: flarmAdaptor
-            function onFlarmSelfTestFailed() {flarmErrorDialog.open()}
-        }
     }
 
     Shortcut {

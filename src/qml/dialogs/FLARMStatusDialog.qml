@@ -86,51 +86,21 @@ Dialog {
                 wrapMode: Text.Wrap
             }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Hardware")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: flarmAdaptor.FLARMHwVersion
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Software")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: flarmAdaptor.FLARMSwVersion
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Obstacle DB")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: flarmAdaptor.FLARMObstVersion
-                wrapMode: Text.Wrap
-            }
-
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Self test")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: flarmAdaptor.FLARMSelfTest
-                wrapMode: Text.Wrap
-            }
-
             Button {
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignHCenter
-                text: flarmAdaptor.canConnect ? qsTr("Manually Connect") :  qsTr("Manually Disconnect")
-                onClicked: flarmAdaptor.canConnect ? flarmAdaptor.connectToFLARM() : flarmAdaptor.disconnectFromFLARM()
+                text: qsTr("(Re)connect to Traffic Receiver")
+                enabled: !flarmAdaptor.connected && !timer.running
+                onClicked: {
+                    flarmAdaptor.connectToTrafficReceiver()
+                    timer.running = true;
+                }
+
+                Timer {
+                    id: timer
+                    interval: 4000
+                }
+
             }
 
         } // GridLayout

@@ -34,7 +34,12 @@ namespace Navigation {
 
 /*! \brief Traffic receiver
  *
- *  This class connects via WIFI to a traffic receiver. Once connected, it exposes position and traffic information.
+ *  This class connects to a traffic receiver via the network. It expects to find a receiver at the IP-Address
+ *  192.168.1.1, port 2000.  Once connected, it continuously reads data from the device, and exposes
+ *  position and traffic information to the user, as well as barometric altitude.
+ *
+ *  By modifying the source code, developers can also start the class in a mode where it connects
+ *  to a file with simulator data.
  */
 class FLARMAdaptor : public QObject {
     Q_OBJECT
@@ -49,6 +54,60 @@ public:
     // Standard destructor
     ~FLARMAdaptor() override = default;
 
+    //
+    // Methods
+    //
+
+    /*! \brief Pointer to static instance of this class
+     *
+     *  @returns Pointer to global instance
+     */
+    static FLARMAdaptor *globalInstance();
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Connectivity status
+     *
+     * This property contains a bool that indicates if the class is currently connected
+     * to a traffic receiver. A connection might either exists to a real traffic receiver
+     * via the IP-Address 192.168.1.1, port 2000, or a connection could exist to a file
+     * containing synthetic simulator data.
+     *
+     * Being connected to a device does not imply that data is actually flowing.
+     * Use the propery receiving for this.
+     */
+    Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connected
+     */
+    bool connected() const
+    {
+        return _connected;
+    }
+
+    /*! \brief Traffic receiver heatbeat
+     *
+     * This property contains a bool that indicates if the class has received valid NMEA sentences in the last 5 seconds.
+     */
+    Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property heartbeat
+     */
+    bool receiving() const
+    {
+        return connected() && receivingTimer.isActive();
+    }
+
+
+    // =================================================
+
     /*! \brief Status codes */
     enum Status
     {
@@ -62,12 +121,6 @@ public:
     //
     // Methods
     //
-
-    /*! \brief Pointer to static instance of this class
-     *
-     *  @returns Pointer to global instance
-     */
-    static FLARMAdaptor *globalInstance();
 
     /*! \brief Last position information
      *
@@ -209,34 +262,6 @@ public:
         return _statusString;
     }
 
-    Q_PROPERTY(QString FLARMHwVersion READ FLARMHwVersion NOTIFY FLARMHwVersionChanged)
-
-    QString FLARMHwVersion() const
-    {
-        return _FLARMHwVersion;
-    }
-
-    Q_PROPERTY(QString FLARMSwVersion READ FLARMSwVersion NOTIFY FLARMSwVersionChanged)
-
-    QString FLARMSwVersion() const
-    {
-        return _FLARMSwVersion;
-    }
-
-    Q_PROPERTY(QString FLARMObstVersion READ FLARMObstVersion NOTIFY FLARMObstVersionChanged)
-
-    QString FLARMObstVersion() const
-    {
-        return _FLARMObstVersion;
-    }
-
-    Q_PROPERTY(QString FLARMSelfTest READ FLARMSelfTest NOTIFY FLARMSelfTestChanged)
-
-    QString FLARMSelfTest() const
-    {
-        return _FLARMSelfTest;
-    }
-
     /*! \brief Status of the FLARM adaptor
 
     This property holds the status of the FLARM adaptor class.
@@ -255,28 +280,45 @@ public:
     void setSimulatorFile(const QString& fileName = QString() );
 
 signals:
+    /*! \brief Notifier signal */
+    void connectedChanged(bool);
+
+    /*! \brief Notifier signal */
+    void receivingChanged();
+
     void activityChanged();
     void barometricAltitudeChanged();
     void canConnectChanged();
-    void flarmSelfTestFailed();
-    void FLARMSelfTestChanged();
-    void FLARMHwVersionChanged();
-    void FLARMSwVersionChanged();
-    void FLARMObstVersionChanged();
     void lastErrorChanged();
-    void receivingChanged();
     void statusStringChanged();
     void statusChanged();
     void positionInfoChanged();
 
+    /*! \brief Result of traffic receiver self test
+     *
+     * If this class receives self-test information from a connected
+     * traffic receiver, this information is emitted here.
+     *
+     * @param message Result of self-test as a human-readable, translated error message
+     */
+    void trafficReceiverSelfTest(QString message);
+
+    void trafficReceiverHwVersion(QString result);
+    void trafficReceiverSwVersion(QString result);
+    void trafficReceiverObVersion(QString result);
+
+
 public slots:
-    void connectToFLARM();
-    void disconnectFromFLARM();
+    /*! \brief Start attempt to connect to device
+     *
+     * If this class is connected to a traffic receiver, this method does nothing.
+     * Otherwise, it stops any ongoing connection attempt and starts a new attempt
+     * to connect to a potential receiver.
+     */
+    void connectToTrafficReceiver();
 
 private slots:
 
-    void receiveSocketConnected();
-    void receiveSocketDisconnected();
     void receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError);
 
     void readFromStream();
@@ -285,8 +327,6 @@ private slots:
 
     void processFLARMMessage(QString msg);
 
-    void clearFlarmDeviceInfo();
-
     // Sets the barometric altitude to NaN and emits the notifier signal when appropriate
     void clearBarometricAltitude();
 
@@ -294,33 +334,39 @@ private slots:
     void clearPositionInfo();
 
     // Sets the barometric altitude and emits the notifier signal when appropriate
-    void setBarometricAltitude(AviationUnits::Distance alt);
+    void setBarometricAltitude(AviationUnits::Distance newBarometricAltitude);
 
     // Sets the position info and emits the notifier signal when appropriate
     void setPositionInfo(const QGeoPositionInfo& newPositionInfo);
 
     void setActivity();
     void setError(const QString &newError);
+    void setConnected();
     void setStatus();
     void setStatusString();
 
 private:
+    // Property connected. Should only be written to by setConnected()
+    bool _connected {false};
+
+    // ==========================
+
     QTimer connectTimer;
-    QTimer heartBeatTimer;
+    QTimer receivingTimer;
 
     QPointer<QTcpSocket> socket;
     QTextStream stream;
 
-    // Property activity. Should only been written to by setActivity()
+    // Property activity. Should only be written to by setActivity()
     QString _activity;
 
     // Property lastError.
     QString _lastError;
 
-    // General status info. Should only been written to by setStatus()
+    // General status info. Should only be written to by setStatus()
     Status _status {InOp};
 
-    // Detailed status info. Should only been written to by setStatusString()
+    // Detailed status info. Should only be written to by setStatusString()
     QString _statusString;
 
     // Barometric height information
@@ -330,12 +376,6 @@ private:
     // PositionInfo
     QGeoPositionInfo _positionInfo;
     QTimer _positionInfoTimer;
-
-    // FLARM information
-    QString _FLARMHwVersion; // Hardware version
-    QString _FLARMSwVersion; // Software version
-    QString _FLARMObstVersion; // Name of obstacle database
-    QString _FLARMSelfTest;
 
     // GPS altitude and position information
     AviationUnits::Distance _altitude;
@@ -349,6 +389,7 @@ private:
     QString lastPayload;
 
     // Targets
+#warning should use QPointer here
     QList<Navigation::Traffic *> _trafficObjects;
     Navigation::Traffic * _trafficObjectWithoutPosition;
 };

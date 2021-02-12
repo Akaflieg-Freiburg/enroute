@@ -51,14 +51,6 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
 
-    // Wire up setConnected
-    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::setConnected);
-
-
-    // Connections
-    connect(&_barometricAltitudeTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearBarometricAltitude);
-    connect(&_positionInfoTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::clearPositionInfo);
-
     // Wire up socket
     connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::receiveSocketErrorOccurred);
     connect(socket, &QTcpSocket::readyRead, this, &Navigation::FLARMAdaptor::readFromStream);
@@ -67,49 +59,41 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
     connectTimer.start(5min);
 
-    // Setup heartbeatTimer
 
     // Setup receivingTimer
     receivingTimer.setSingleShot(true);
     receivingTimer.setInterval(5s);
-    connect(&receivingTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::setStatus);
 
 
     // Wire up setActivity()
     connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::setActivity);
-    connect(this, &Navigation::FLARMAdaptor::receivingChanged, this, &Navigation::FLARMAdaptor::setActivity);
-
-    // Wire up the setStatus()
-    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatus);
-    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatus);
-    connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatus);
+    connect(this, &Navigation::FLARMAdaptor::statusChanged, this, &Navigation::FLARMAdaptor::setActivity);
 
     // Wire up setStatusString()
-    connect(this, &Navigation::FLARMAdaptor::statusChanged, this, &Navigation::FLARMAdaptor::setStatusString);
-    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::setStatusString);
-    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::setStatusString);
-    connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::setStatusString);
-
-    // Wire up canConnect()
-    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::canConnectChanged);
+    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::updateStatusString);
+    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::updateStatusString);
+    connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::updateStatusString);
 
     //
     // Property bindings
     //
 
-    // Bind property "receiving"
-    connect(&receivingTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::receivingChanged);
-    connect(this, &Navigation::FLARMAdaptor::connectedChanged, this, &Navigation::FLARMAdaptor::receivingChanged);
+    // Bind property "status"
+    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::updateStatus);
+    connect(&receivingTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::updateStatus);
+
+    // Bind property "statusString"
+    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::updateStatusString);
 
 
     // Try our first connect 0sec after startup
     QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
 
     // Setup simulator
+    connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/expiry-hard.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/expiry-soft.txt");
     //    auto simulatorFile = new QFile("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt");
-    connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
     setSimulatorFile("/home/kebekus/Software/standards/FLARM/single_opponent.txt");
     // setSimulatorFile(QStringLiteral("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt"));
     // setSimulatorFile("/home/kebekus/Software/standards/FLARM/many_opponents.txt");
@@ -118,49 +102,39 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     // Initialize properties
     //
     setActivity();
-    setConnected();
-    setStatus();
-    setStatusString();
+    updateStatus();
+    updateStatusString();
 }
 
 
-auto Navigation::FLARMAdaptor::barometricAltitude() const -> AviationUnits::Distance
-{
-    if (!_barometricAltitudeTimer.isActive()) {
-        return AviationUnits::Distance();
-    }
-    return _barometricAltitude;
-}
 
-
-void Navigation::FLARMAdaptor::setConnected()
+void Navigation::FLARMAdaptor::updateStatus()
 {
-    // Compute connectedness status
-    bool newConnected = false;
-    if (!socket.isNull() && (socket->state() == QAbstractSocket::ConnectedState))  {
-        newConnected = true;
+    // Paranoid safety check
+    if (socket.isNull())
+        return;
+
+    // Compute new status
+    Status newStatus = Disconnected;
+    if (socket->state() != QAbstractSocket::UnconnectedState) {
+        newStatus = Connecting;
     }
     if (simulatorFile.isOpen()) {
-        newConnected = true;
+        newStatus = Connected;
+    }
+    if (socket->state() == QAbstractSocket::ConnectedState) {
+        newStatus = Connected;
+    }
+    if (receivingTimer.isActive()) {
+        newStatus = Receiving;
     }
 
     // Update property and emit signal if necessary
-    if (_connected == newConnected) {
+    if (_status == newStatus) {
         return;
     }
-    _connected = newConnected;
-    emit connectedChanged(_connected);
-}
-
-
-auto Navigation::FLARMAdaptor::canConnect() const -> bool
-{
-    // Paranoid safety checks
-    if (socket.isNull())  {
-        return false;
-    }
-
-    return (socket->state() == QAbstractSocket::UnconnectedState);
+    _status = newStatus;
+    emit statusChanged(_status);
 }
 
 
@@ -172,15 +146,14 @@ auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
 
 void Navigation::FLARMAdaptor::connectToTrafficReceiver()
 {
-    // Do not do anything if we are connected!
-    if (_connected) {
+    // Paranoid safety check
+    if (socket.isNull()) {
         return;
     }
 
-    // Disconnect simulator
-    if (simulatorFile.isOpen()) {
-        simulatorFile.close();
-        simulatorTimer.stop();
+    // Do not do anything if we are connected to an honest device
+    if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
+        return;
     }
 
     // Disconnect socket and re-connect. Expect a FLARM device at address 192.168.1.1, port 2000
@@ -191,10 +164,9 @@ void Navigation::FLARMAdaptor::connectToTrafficReceiver()
 
     // Update properties
     setActivity();
-    setConnected();
     setError(QString());
-    setStatus();
-    setStatusString();
+    updateStatusString();
+    updateStatus();
 
 }
 
@@ -233,7 +205,6 @@ auto interpretNMEATime(const QString& timeString) -> QDateTime
 
 void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 {
-    //    qWarning() << "Navigation::FLARMAdaptor::processFLARMMessage()" << msg;
     if (msg.isEmpty()) {
         return;
     }
@@ -263,10 +234,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
     }
 
     // Valid NMEA data received.
-    auto wasActive = receivingTimer.isActive();
     receivingTimer.start();
-    if (!wasActive)
-        emit receivingChanged();
+    updateStatus();
 
     // Split the message into pieces
     auto arguments = msg.split(QStringLiteral(","));
@@ -351,7 +320,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (TT != qQNaN()) {
             pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
         }
-        setPositionInfo(pInfo);
+        emit positionInfo(pInfo);
         return;
     }
 
@@ -673,7 +642,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // FLARM Heartbeat
     if (messageType == u"PFLAU") {
-        setStatus();
         return;
     }
 
@@ -711,7 +679,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         }
 
-        setBarometricAltitude(barometricAlt);
+        emit barometricAltitude(barometricAlt);
         return;
     }
 
@@ -814,7 +782,7 @@ void Navigation::FLARMAdaptor::readFromStream()
 
 void Navigation::FLARMAdaptor::readFromSimulatorStream()
 {
-    //    qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
+    qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
     if ((simulatorFile.error() != QFileDevice::NoError) || simulatorStream.atEnd()) {
         setSimulatorFile();
         return;
@@ -838,6 +806,7 @@ void Navigation::FLARMAdaptor::readFromSimulatorStream()
         simulatorTimer.setInterval(time-lastTime);
     }
     simulatorTimer.start();
+    qWarning() << "A" << lastTime << time-lastTime;
     lastTime = time;
 }
 
@@ -901,56 +870,28 @@ void Navigation::FLARMAdaptor::setError(const QString &newError)
 }
 
 
-void Navigation::FLARMAdaptor::setStatus()
+void Navigation::FLARMAdaptor::updateStatusString()
 {
-    Status newStatus = Status::InOp;
-    if (receivingTimer.isActive()) {
-        newStatus = Status::OK;
-    } else {
-        if (socket->state() == QAbstractSocket::ConnectedState) {
-            newStatus = Status::WaitingForData;
-        }
+    auto result = tr("Not connected");
+    if (socket->state() == QAbstractSocket::ConnectingState) {
+        result = tr("Trying to connect…");
+    }
+    if (socket->state() == QAbstractSocket::ConnectedState) {
+        result = tr("Connected • Waiting for data");
+    }
+/*
+ *     if (receiving()) {
+        result = tr("OK");
+    }
+    */
+    if (simulatorFile.isOpen()) {
+        result = tr("Simulation") + " • " + result;
     }
 
-    if (newStatus == _status) {
-        return;
-    }
-    _status = newStatus;
-    qWarning() << "status" << _status;
-    emit statusChanged();
-}
-
-
-void Navigation::FLARMAdaptor::setStatusString()
-{
-    auto computeString = [=, this]()
-    {
-        // Simulator mode
-        if (simulatorFile.isOpen()) {
-            if (status() == Status::OK) {
-                return tr("Simulation • OK");
-            }
-            return tr("Simulation • Waiting for data");
-        }
-
-        if (status() == Status::OK) {
-            return tr("OK");
-        }
-        if (socket->state() == QAbstractSocket::ConnectedState) {
-            return tr("Connected • Waiting for data");
-        }
-        if (socket->state() == QAbstractSocket::ConnectingState) {
-            return tr("Trying to connect…");
-        }
-        return tr("Not connected");
-    };
-
-
-    auto result = computeString();
+    // Update property
     if  (result == _statusString) {
         return;
     }
-
     _statusString = result;
     emit statusStringChanged();
 }
@@ -964,9 +905,8 @@ void Navigation::FLARMAdaptor::setSimulatorFile(const QString& fileName)
     if (fileName.isEmpty()) {
         simulatorTimer.stop();
         setActivity();
-        setConnected();
-        setStatus();
-        setStatusString();
+        updateStatus();
+        updateStatusString();
         return;
     }
 
@@ -978,56 +918,6 @@ void Navigation::FLARMAdaptor::setSimulatorFile(const QString& fileName)
     simulatorStream.setDevice(&simulatorFile);
     readFromSimulatorStream();
     setActivity();
-    setConnected();
-    setStatus();
-    setStatusString();
+    updateStatus();
+    updateStatusString();
 }
-
-
-void Navigation::FLARMAdaptor::clearBarometricAltitude()
-{
-    _barometricAltitudeTimer.stop();
-    if (!_barometricAltitude.isFinite()) {
-        return;
-    }
-    _barometricAltitude = AviationUnits::Distance();
-    emit barometricAltitudeChanged();
-}
-
-
-void Navigation::FLARMAdaptor::setBarometricAltitude(AviationUnits::Distance newBarometricAltitude)
-{
-    _barometricAltitudeTimer.start(3s);
-
-    if (newBarometricAltitude == _barometricAltitude) {
-        return;
-    }
-
-    _barometricAltitude = newBarometricAltitude;
-    emit barometricAltitudeChanged();
-}
-
-
-void Navigation::FLARMAdaptor::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
-{
-    if (_positionInfo == newPositionInfo) {
-        return;
-    }
-
-    _positionInfo = newPositionInfo;
-    _positionInfoTimer.stop();
-
-    auto delta = QDateTime::currentDateTimeUtc().msecsTo( _positionInfo.timestamp().addMSecs(3*1000) );
-    if (delta >= 0) {
-        _positionInfoTimer.start(delta);
-    }
-    emit positionInfoChanged();
-}
-
-
-void Navigation::FLARMAdaptor::clearPositionInfo()
-{
-    _positionInfoTimer.stop();
-    emit positionInfoChanged();
-}
-

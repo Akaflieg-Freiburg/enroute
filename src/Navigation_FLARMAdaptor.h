@@ -106,38 +106,11 @@ public:
     // Methods
     //
 
-    /*! \brief Last position information
-     *
-     *  This method differs from positionInfo() in that it always returns the last report, even
-     *  if the report is older than 3 seconds.
-     *
-     *  @returns Last position information
-     */
-    QGeoPositionInfo lastPositionInfo() const
-    {
-        return _positionInfo;
-    }
 
 
     //
     // Properties
     //
-
-    /*! \brief Activity
-     *
-     * This property contains a translated, human-readable string that explains what this class is currently
-     * doing.
-     */
-    Q_PROPERTY(QString activity READ activity NOTIFY activityChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property activity
-     */
-    QString activity() const
-    {
-        return _activity;
-    }
 
     /*! \brief lastError
      *
@@ -191,14 +164,6 @@ public:
 // =================
 
 
-
-    Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
-
-    QString statusString() const
-    {
-        return _statusString;
-    }
-
     void setSimulatorFile(const QString& fileName = QString() );
 
 signals:
@@ -211,11 +176,7 @@ signals:
     /*! \brief Notifier signal */
     void statusChanged(Status);
 
-    /*! \brief Notifier signal */
-    void statusStringChanged();
-
     // =========================
-    void activityChanged();
 
     /*! \brief Barometric altitude
      *
@@ -254,7 +215,15 @@ public slots:
      * Otherwise, it stops any ongoing connection attempt and starts a new attempt
      * to connect to a potential receiver.
      */
-    void connectToTrafficReceiver();
+    void connectToDevice();
+
+    /*! \brief Disconnect from traffic receiver
+     *
+     * If this class is connected to a traffic receiver, this method does nothing.
+     * Otherwise, it stops any ongoing connection attempt and starts a new attempt
+     * to connect to a potential receiver.
+     */
+    void disconnectFromDevice();
 
 private slots:
 
@@ -266,10 +235,8 @@ private slots:
 
     void processFLARMMessage(QString msg);
 
-    void setActivity();
     void setError(const QString &newError);
 
-    void updateStatusString();
     void updateStatus();
 
 private:
@@ -285,17 +252,8 @@ private:
     QPointer<QTcpSocket> socket;
     QTextStream stream;
 
-    // Property activity. Should only be written to by setActivity()
-    QString _activity;
-
     // Property lastError.
     QString _lastError;
-
-    // Detailed status info. Should only be written to by setStatusString()
-    QString _statusString;
-
-    // PositionInfo
-    QGeoPositionInfo _positionInfo;
 
     // GPS altitude and position information
     AviationUnits::Distance _altitude;

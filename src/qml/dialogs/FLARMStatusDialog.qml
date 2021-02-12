@@ -47,39 +47,46 @@ Dialog {
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
-        GridLayout {
+        ColumnLayout {
             id: gl
-            columnSpacing: 30
-            columns: 2
 
             width: flarmStatusDialog.availableWidth
 
-            Text { // Status
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Status")
-            }
-            Text {
+            Label {
+
+                text:  {
+                    if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
+                        return qsTr("Not connected")
+                    if (flarmAdaptor.status == FLARMAdaptor.Connecting)
+                        return qsTr("Trying to connect to traffic receiver at IP address 192.168.1.1, port 2000 …")
+                    if (flarmAdaptor.status == FLARMAdaptor.Connected)
+                        return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Waiting for data …")
+                    return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Receiving traffic information …")
+                }
+
                 Layout.fillWidth: true
-                font.weight: Font.Bold
-                text: flarmAdaptor.statusString
-                color: (flarmAdaptor.status === FLARMAdaptor.OK) ? "green" : "red"
-                wrapMode: Text.Wrap
+                Layout.leftMargin: 4
+                Layout.rightMargin: 4
+                wrapMode: Text.WordWrap
+
+                bottomPadding: 0.2*Qt.application.font.pixelSize
+                topPadding: 0.2*Qt.application.font.pixelSize
+                leftPadding: 0.2*Qt.application.font.pixelSize
+                rightPadding: 0.2*Qt.application.font.pixelSize
+
+                leftInset: -4
+                rightInset: -4
+
+                // Background color according to METAR/FAA flight category
+                background: Rectangle {
+                    border.color: "black"
+                    color: (flarmAdaptor.status === FLARMAdaptor.Receiving) ? "green" : "red"
+                    opacity: 0.2
+                    radius: 4
+                }
             }
 
-            Text { // Activity
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Activity")
-            }
-            Text {
-                Layout.fillWidth: true
-                text: flarmAdaptor.activity
-                wrapMode: Text.Wrap
-            }
 
-            Text {
-                Layout.alignment: Qt.AlignTop
-                text: qsTr("Last Error")
-            }
             Text {
                 Layout.fillWidth: true
                 text: flarmAdaptor.lastError
@@ -87,18 +94,26 @@ Dialog {
             }
 
             Button {
-                Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignHCenter
-                text: qsTr("(Re)connect to Traffic Receiver")
-                enabled: !flarmAdaptor.connected && !timer.running
+                text: {
+                    if (flarmAdaptor.status === FLARMAdaptor.Disconnected)
+                        return qsTr("Connect")
+                    if (flarmAdaptor.status === FLARMAdaptor.Connecting)
+                        return qsTr("Abort")
+                    qsTr("Disconnect")
+                }
+                enabled: !timer.running
                 onClicked: {
-                    flarmAdaptor.connectToTrafficReceiver()
+                    if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
+                        flarmAdaptor.connectToDevice()
+                    else
+                        flarmAdaptor.disconnectFromDevice()
                     timer.running = true;
                 }
 
                 Timer {
                     id: timer
-                    interval: 4000
+                    interval: 1000
                 }
 
             }

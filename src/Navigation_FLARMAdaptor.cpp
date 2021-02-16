@@ -687,8 +687,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
 void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError)
 {
-    qWarning() << "Navigation::FLARMAdaptor::receiveSocketErrorOccurred()" << socketError;
-
     QString errorText;
     switch (socketError) {
     case QAbstractSocket::ConnectionRefusedError:
@@ -764,7 +762,7 @@ void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::Socke
         errorText = tr("An unidentified error occurred.");
         break;
     }
-    setError(errorText);
+    setError(tr("Last error: %2 (Time: %1)").arg(QDateTime::currentDateTimeUtc().time().toString("H:mm"), errorText));
 }
 
 
@@ -812,7 +810,7 @@ void Navigation::FLARMAdaptor::setError(const QString &newError)
         return;
     }
     _lastError = newError;
-    emit lastErrorChanged();
+    emit errorStringChanged();
 }
 
 

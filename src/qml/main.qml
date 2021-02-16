@@ -187,12 +187,11 @@ ApplicationWindow {
                                 result = result + `</font>`
                                 return result
                             }
-                            icon.source: "/icons/material/ic_satellite.svg"
+                            icon.source: "/icons/material/ic_airplanemode_active.svg"
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
-                                dialogLoader.active = false
-                                dialogLoader.source = "dialogs/FLARMStatusDialog.qml"
-                                dialogLoader.active = true
+                                stackView.pop()
+                                stackView.push("pages/TrafficReceiver.qml")
                                 aboutMenu.close()
                                 drawer.close()
                             }

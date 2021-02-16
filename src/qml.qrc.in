@@ -37,6 +37,7 @@
         <file alias="pages/Nearby.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/Nearby.qml</file>
         <file alias="pages/ParticipatePage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/ParticipatePage.qml</file>
         <file alias="pages/SettingsPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/SettingsPage.qml</file>
+        <file alias="pages/TrafficReceiver.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/TrafficReceiver.qml</file>
         <file alias="pages/WeatherPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/WeatherPage.qml</file>
     </qresource>
 </RCC>

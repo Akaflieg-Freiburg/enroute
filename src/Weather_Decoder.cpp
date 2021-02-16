@@ -1663,6 +1663,31 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
             continue;
         }
 
+        // SNOW, LOW_DRIFTING
+        if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::FREEZING && weather == metaf::WeatherPhenomena::Weather::SNOW) {
+            switch(wp.qualifier()) {
+            case metaf::WeatherPhenomena::Qualifier::NONE:
+                results << tr("freezing snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::VICINITY:
+                results << tr("freezing snow in the vicinity");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::LIGHT:
+                results << tr("light freezing snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::MODERATE:
+                results << tr("moderate freezing snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::HEAVY:
+                results << tr("heavy freezing snow");
+                break;
+            case metaf::WeatherPhenomena::Qualifier::RECENT:
+                results << tr("recent freezing snow");
+                break;
+            }
+            continue;
+        }
+
         // SNOW SHOWERS
         if (wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS && weather == metaf::WeatherPhenomena::Weather::SNOW) {
             switch(wp.qualifier()) {
@@ -1745,7 +1770,7 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
                 results << tr("thunderstorm with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with small hail");
+                results << tr("thunderstorm with small hail in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
                 results << tr("light thunderstorm with small hail");

@@ -467,7 +467,7 @@ private slots:
     // Connected to timeoutCounter, in order to receive timeout after one minute
     void timeout();
 
-#warning
+
     void onPositionUpdated_Sat(const QGeoPositionInfo &info);
 
 private:

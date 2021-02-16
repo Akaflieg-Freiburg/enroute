@@ -9,6 +9,7 @@
         <file alias="icons/material/ic_speed.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_speed.svg</file>
 	
         <file alias="icons/material/ic_add_circle.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_add_circle_24px.svg</file>
+        <file alias="icons/material/ic_airplanemode_active.svg">${material-design-icons_SOURCE_DIR}/device/svg/production/ic_airplanemode_active_24px.svg</file>
 	<file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
         <file alias="icons/material/ic_brightness_3.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_brightness_3_24px.svg</file>
         <file alias="icons/material/ic_bug_report.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_bug_report_24px.svg</file>
@@ -43,6 +44,7 @@
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
 	<file alias="icons/material/ic_swap_horiz.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_horiz_24px.svg</file>
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>
+	<file alias="icons/material/ic_tap_and_play.svg">${material-design-icons_SOURCE_DIR}/notification/svg/production/ic_tap_and_play_24px.svg</file>
 	<file alias="icons/material/ic_translate.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_translate_24px.svg</file>
 	<file alias="icons/material/ic_wb_sunny.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_wb_sunny_24px.svg</file>
 

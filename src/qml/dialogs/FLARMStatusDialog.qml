@@ -25,76 +25,130 @@ import QtQuick.Layouts 1.15
 
 import enroute 1.0
 
+import "../items"
+
 Dialog {
     id: flarmStatusDialog
 
-    title: qsTr("Traffic Receiver")
+    //    title: qsTr("Traffic Receiver")
 
     // Size is chosen so that the dialog does not cover the parent in full
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
     height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
-    standardButtons: Dialog.Ok
+    standardButtons: Dialog.Close|Dialog.Help
 
-    ScrollView {
-        id: view
-        clip: true
+
+
+    ColumnLayout {
+        id: gl
+
+        width: flarmStatusDialog.availableWidth
         anchors.fill: parent
 
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
-        ColumnLayout {
-            id: gl
+        RowLayout { // Header with icon and name
+            id: headX
+            Layout.fillWidth: true
 
-            width: flarmStatusDialog.availableWidth
+            Icon {
+                source: "/icons/material/ic_airplanemode_active.svg"
+            }
 
             Label {
+                text: qsTr("Traffic Receiver")
+                font.bold: true
+                font.pixelSize: 1.2*Qt.application.font.pixelSize
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                wrapMode: Text.WordWrap
+            }
+        }
 
-                text:  {
-                    if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
-                        return qsTr("Not connected")
-                    if (flarmAdaptor.status == FLARMAdaptor.Connecting)
-                        return qsTr("Trying to connect to traffic receiver at IP address 192.168.1.1, port 2000 …")
-                    if (flarmAdaptor.status == FLARMAdaptor.Connected)
-                        return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Waiting for data …")
-                    return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Receiving traffic information …")
+        ScrollView {
+            id: view
+            clip: true
+
+            Layout.topMargin: Qt.application.font.pixelSize
+            Layout.bottomMargin: Qt.application.font.pixelSize
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            // The visibility behavior of the vertical scroll bar is a little complex.
+            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+
+            ColumnLayout {
+                width: flarmStatusDialog.availableWidth
+
+                Label {
+
+                    text:  {
+                        if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
+                            return qsTr("Not connected")
+                        if (flarmAdaptor.status == FLARMAdaptor.Connecting)
+                            return qsTr("Trying to connect to traffic receiver at IP address 192.168.1.1, port 2000 …")
+                        if (flarmAdaptor.status == FLARMAdaptor.Connected)
+                            return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Waiting for data …")
+                        return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Receiving traffic information …")
+                    }
+
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 4
+                    Layout.rightMargin: 4
+                    wrapMode: Text.WordWrap
+
+                    bottomPadding: 0.2*Qt.application.font.pixelSize
+                    topPadding: 0.2*Qt.application.font.pixelSize
+                    leftPadding: 0.2*Qt.application.font.pixelSize
+                    rightPadding: 0.2*Qt.application.font.pixelSize
+
+                    leftInset: -4
+                    rightInset: -4
+
+                    // Background color according to METAR/FAA flight category
+                    background: Rectangle {
+                        border.color: "black"
+                        color: (flarmAdaptor.status === FLARMAdaptor.Receiving) ? "green" : "red"
+                        opacity: 0.2
+                        radius: 4
+                    }
                 }
 
-                Layout.fillWidth: true
-                Layout.leftMargin: 4
-                Layout.rightMargin: 4
-                wrapMode: Text.WordWrap
+                Label {
 
-                bottomPadding: 0.2*Qt.application.font.pixelSize
-                topPadding: 0.2*Qt.application.font.pixelSize
-                leftPadding: 0.2*Qt.application.font.pixelSize
-                rightPadding: 0.2*Qt.application.font.pixelSize
+                    text:  flarmAdaptor.errorString
 
-                leftInset: -4
-                rightInset: -4
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 4
+                    Layout.rightMargin: 4
+                    wrapMode: Text.WordWrap
 
-                // Background color according to METAR/FAA flight category
-                background: Rectangle {
-                    border.color: "black"
-                    color: (flarmAdaptor.status === FLARMAdaptor.Receiving) ? "green" : "red"
-                    opacity: 0.2
-                    radius: 4
+                    bottomPadding: 0.2*Qt.application.font.pixelSize
+                    topPadding: 0.2*Qt.application.font.pixelSize
+                    leftPadding: 0.2*Qt.application.font.pixelSize
+                    rightPadding: 0.2*Qt.application.font.pixelSize
+
+                    leftInset: -4
+                    rightInset: -4
+
                 }
             }
 
+        } // Scrollview
 
-            Text {
-                Layout.fillWidth: true
-                text: flarmAdaptor.lastError
-                wrapMode: Text.Wrap
+        RowLayout { // Button
+            Layout.alignment: Qt.AlignHCenter
+
+            Button {
+                text: qsTr("Manual")
+                icon.source: "/icons/material/ic_help_outline.svg"
+//                onClicked:
             }
 
             Button {
-                Layout.alignment: Qt.AlignHCenter
                 text: {
                     if (flarmAdaptor.status === FLARMAdaptor.Disconnected)
                         return qsTr("Connect")
@@ -110,17 +164,15 @@ Dialog {
                         flarmAdaptor.disconnectFromDevice()
                     timer.running = true;
                 }
-
                 Timer {
                     id: timer
                     interval: 1000
                 }
 
             }
+        }
 
-        } // GridLayout
-
-    } // Scrollview
+    } // GridLayout
 
     onAccepted: {
         // Give feedback

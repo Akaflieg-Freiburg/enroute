@@ -116,13 +116,13 @@ public:
      *
      * This property holds a translated, human-readable string that describes the last error.
      */
-    Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
+    Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property lastError
      */
-    QString lastError() const
+    QString errorString() const
     {
         return _lastError;
     }
@@ -185,7 +185,7 @@ signals:
      */
     void barometricAltitude(AviationUnits::Distance);
 
-    void lastErrorChanged();
+    void errorStringChanged();
 
     /*! \brief Position info
      *
@@ -255,7 +255,7 @@ private:
     // Property lastError.
     QString _lastError;
 
-    // GPS altitude and position information
+    // GPS altitude information
     AviationUnits::Distance _altitude;
     QDateTime _altitudeTimeStamp;
 
@@ -267,9 +267,8 @@ private:
     QString lastPayload;
 
     // Targets
-#warning should use QPointer here
     QList<Navigation::Traffic *> _trafficObjects;
-    Navigation::Traffic * _trafficObjectWithoutPosition;
+    QPointer<Navigation::Traffic> _trafficObjectWithoutPosition;
 };
 
 }

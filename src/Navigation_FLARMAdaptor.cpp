@@ -95,8 +95,9 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 void Navigation::FLARMAdaptor::updateStatus()
 {
     // Paranoid safety check
-    if (socket.isNull())
+    if (socket.isNull()) {
         return;
+    }
 
     // Compute new status
     Status newStatus = Disconnected;
@@ -681,7 +682,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // ===============0
 
-  //  qWarning() << "FLARM Sentence not understood" << pieces[0];
+    //  qWarning() << "FLARM Sentence not understood" << pieces[0];
 }
 
 
@@ -769,16 +770,16 @@ void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::Socke
 void Navigation::FLARMAdaptor::readFromStream()
 {
     auto sentence = stream.readLine();
-//    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << sentence;
+    //    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << sentence;
     processFLARMMessage(sentence);
 }
 
 
 void Navigation::FLARMAdaptor::readFromSimulatorStream()
 {
- //   qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
+    //   qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
     if ((simulatorFile.error() != QFileDevice::NoError) || simulatorStream.atEnd()) {
-        setSimulatorFile();
+        disconnectFromDevice();
         return;
     }
 

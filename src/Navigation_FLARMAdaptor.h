@@ -164,7 +164,7 @@ public:
 // =================
 
 
-    void setSimulatorFile(const QString& fileName = QString() );
+    void setSimulatorFile(const QString& fileName );
 
 signals:
     /*! \brief Emitted whenever a connection to a device is established */
@@ -174,7 +174,7 @@ signals:
     void disconnected();
 
     /*! \brief Notifier signal */
-    void statusChanged(Status);
+    void statusChanged(Navigation::FLARMAdaptor::Status);
 
     // =========================
 

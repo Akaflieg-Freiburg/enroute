@@ -139,13 +139,12 @@ void Navigation::FLARMAdaptor::connectToDevice()
 
     socket->abort();
     socket->connectToHost(QStringLiteral("192.168.1.1"), 2000);
-
+    stream.setDevice(socket);
     // Update properties
     setError(QString());
     updateStatus();
 
 }
-
 
 
 void Navigation::FLARMAdaptor::disconnectFromDevice()
@@ -166,6 +165,7 @@ void Navigation::FLARMAdaptor::disconnectFromDevice()
     setError(QString());
     updateStatus();
 }
+
 
 auto interpretNMEALatLong(const QString& A, const QString& B) -> qreal
 {
@@ -322,7 +322,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // Data on other proximate aircraft
     if (messageType == u"PFLAA") {
-        //qWarning() << "Data on other proximate aircraft"  << arguments;
+        qWarning() << "Data on other proximate aircraft"  << arguments;
 
         auto *satNav = SatNav::globalInstance();
         if (satNav == nullptr) {
@@ -681,7 +681,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // ===============0
 
-    qWarning() << "FLARM Sentence not understood" << pieces[0];
+  //  qWarning() << "FLARM Sentence not understood" << pieces[0];
 }
 
 
@@ -769,7 +769,7 @@ void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::Socke
 void Navigation::FLARMAdaptor::readFromStream()
 {
     auto sentence = stream.readLine();
-    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << sentence;
+//    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << sentence;
     processFLARMMessage(sentence);
 }
 

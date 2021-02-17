@@ -132,6 +132,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
         connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
         simulatorFile.setFileName(simulatorFileName);
         simulatorTextStream.setDevice(&simulatorFile);
+        simulatorTextStream.setCodec("ISO 8859-1");
         if (simulatorFile.open(QIODevice::ReadOnly)) {
             readFromSimulatorStream();
             updateStatus();

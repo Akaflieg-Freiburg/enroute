@@ -185,7 +185,7 @@ signals:
      * If this class receives information about the hardware version of a
      * connected traffic receiver, this information is emitted here.
      *
-     * @param message String that identifies the hardware version
+     * @param result String that identifies the hardware version
      */
     void trafficReceiverHwVersion(QString result);
 
@@ -194,7 +194,7 @@ signals:
      * If this class receives information about the obstacle database version of a connected
      * traffic receiver, this information is emitted here.
      *
-     * @param message String that identifies the obstacle database version
+     * @param result String that identifies the obstacle database version
      */
     void trafficReceiverObVersion(QString result);
 
@@ -203,16 +203,16 @@ signals:
      * If this class receives self-test information from a connected
      * traffic receiver, this information is emitted here.
      *
-     * @param message Result of self-test as a human-readable, translated error message
+     * @param result Result of self-test as a human-readable, translated error message
      */
-    void trafficReceiverSelfTest(QString message);
+    void trafficReceiverSelfTest(QString result);
 
     /*! \brief Traffic receiver software version
      *
      * If this class receives information about the software version of a connected
      * traffic receiver, this information is emitted here.
      *
-     * @param message String that identifies the software version
+     * @param result String that identifies the software version
      */
     void trafficReceiverSwVersion(QString result);
 

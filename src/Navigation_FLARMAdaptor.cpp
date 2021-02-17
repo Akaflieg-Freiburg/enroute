@@ -18,22 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
-#include <QFile>
-#include <QGeoCoordinate>
-#include <QGeoPositionInfo>
 #include <QQmlEngine>
+#include <chrono>
 
 #include "Navigation_FLARMAdaptor.h"
 #include "Navigation_SatNav.h"
-#include "Navigation_Traffic.h"
-#include <chrono>
 
 using namespace std::chrono_literals;
 
-// Static instance of this class
-Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
 
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
+#endif
+
+
+// Static Helper functions
+
+auto interpretNMEALatLong(const QString& A, const QString& B) -> qreal
+{
+    bool ok1 = false;
+    bool ok2 = false;
+    qreal result = A.leftRef(2).toDouble(&ok1) + A.midRef(2).toDouble(&ok2)/60.0;
+    if (!ok1 || !ok2) {
+        return qQNaN();
+    }
+
+    if ((B == u"S") || (B == u"W")) {
+        result *= -1.0;
+    }
+    return result;
+}
+
+auto interpretNMEATime(const QString& timeString) -> QDateTime
+{
+    auto HH = timeString.mid(0,2);
+    auto MM = timeString.mid(2,2);
+    auto SS = timeString.mid(4,2);
+    auto MS = timeString.mid(6);
+    QTime time(HH.toInt(), MM.toInt(), SS.toInt());
+    if (MS.isEmpty()) {
+        time = time.addMSecs(qRound(MS.toDouble()*1000.0));
+    }
+    auto dateTime = QDateTime::currentDateTimeUtc();
+    dateTime.setTime(time);
+    return dateTime;
+}
+
+
+// Member functions
 
 Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 
@@ -93,7 +126,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
 //    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
-    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
+//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
 
     if (!simulatorFileName.isEmpty()) {
         connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
@@ -104,41 +137,6 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
             updateStatus();
         }
     }
-}
-
-// ======================================================
-
-void Navigation::FLARMAdaptor::updateStatus()
-{
-    // Paranoid safety check
-    if (socket.isNull()) {
-        return;
-    }
-
-    // Compute new status
-    Status newStatus = Disconnected;
-    if (socket->state() != QAbstractSocket::UnconnectedState) {
-        newStatus = Connecting;
-    }
-    if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
-        newStatus = Connected;
-    }
-    if ((newStatus == Connected) && receivingTimer.isActive()) {
-        newStatus = Receiving;
-    }
-
-    // Update property and emit signal if necessary
-    if (_status == newStatus) {
-        return;
-    }
-    _status = newStatus;
-    emit statusChanged(_status);
-}
-
-
-auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
-{
-    return FLARMAdaptorStatic;
 }
 
 
@@ -160,7 +158,6 @@ void Navigation::FLARMAdaptor::connectToTrafficReceiver()
     // Update properties
     setErrorString(QString());
     updateStatus();
-
 }
 
 
@@ -184,35 +181,9 @@ void Navigation::FLARMAdaptor::disconnectFromTrafficReceiver()
 }
 
 
-auto interpretNMEALatLong(const QString& A, const QString& B) -> qreal
+auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
 {
-    bool ok1 = false;
-    bool ok2 = false;
-    qreal result = A.leftRef(2).toDouble(&ok1) + A.midRef(2).toDouble(&ok2)/60.0;
-    if (!ok1 || !ok2) {
-        return qQNaN();
-    }
-
-    if ((B == u"S") || (B == u"W")) {
-        result *= -1.0;
-    }
-    return result;
-}
-
-
-auto interpretNMEATime(const QString& timeString) -> QDateTime
-{
-    auto HH = timeString.mid(0,2);
-    auto MM = timeString.mid(2,2);
-    auto SS = timeString.mid(4,2);
-    auto MS = timeString.mid(6);
-    QTime time(HH.toInt(), MM.toInt(), SS.toInt());
-    if (MS.isEmpty()) {
-        time = time.addMSecs(qRound(MS.toDouble()*1000.0));
-    }
-    auto dateTime = QDateTime::currentDateTimeUtc();
-    dateTime.setTime(time);
-    return dateTime;
+    return FLARMAdaptorStatic;
 }
 
 
@@ -339,7 +310,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // Data on other proximate aircraft
     if (messageType == u"PFLAA") {
-        qWarning() << "Data on other proximate aircraft"  << arguments;
 
         auto *satNav = SatNav::globalInstance();
         if (satNav == nullptr) {
@@ -695,10 +665,42 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         emit barometricAltitude(barometricAlt);
         return;
     }
+}
 
-    // ===============0
 
-    //  qWarning() << "FLARM Sentence not understood" << pieces[0];
+void Navigation::FLARMAdaptor::readFromSimulatorStream()
+{
+    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
+        disconnectFromTrafficReceiver();
+        return;
+    }
+
+    if (!lastPayload.isEmpty()) {
+        processFLARMMessage(lastPayload);
+    }
+
+    auto line = simulatorTextStream.readLine();
+    auto tuple = line.split(QStringLiteral(" "));
+    if (tuple.length() < 2) {
+        return;
+    }
+    auto time = tuple[0].toInt();
+    lastPayload = tuple[1];
+
+    if (lastTime == 0) {
+        simulatorTimer.setInterval(0);
+    } else {
+        simulatorTimer.setInterval(time-lastTime);
+    }
+    simulatorTimer.start();
+    lastTime = time;
+}
+
+
+void Navigation::FLARMAdaptor::readFromStream()
+{
+    auto sentence = textStream.readLine();
+    processFLARMMessage(sentence);
 }
 
 
@@ -779,54 +781,43 @@ void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::Socke
         errorText = tr("An unidentified error occurred.");
         break;
     }
-    setErrorString(tr("%2 (Time: %1)").arg(QDateTime::currentDateTimeUtc().time().toString("H:mm"), errorText));
+    setErrorString(tr("%2 (Time of error: %1)").arg(QDateTime::currentDateTimeUtc().time().toString("H:mm"), errorText));
 }
 
 
-void Navigation::FLARMAdaptor::readFromStream()
+void Navigation::FLARMAdaptor::setErrorString(const QString &newErrorString)
 {
-    auto sentence = textStream.readLine();
-    //    qWarning() << "Navigation::FLARMAdaptor::readFromStream()" << sentence;
-    processFLARMMessage(sentence);
-}
-
-
-void Navigation::FLARMAdaptor::readFromSimulatorStream()
-{
-    //   qWarning() << "Navigation::FLARMAdaptor::readFromSimulatorStream()";
-    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
-        disconnectFromTrafficReceiver();
+    if (newErrorString == _errorString) {
         return;
     }
-
-    if (!lastPayload.isEmpty()) {
-        processFLARMMessage(lastPayload);
-    }
-
-    auto line = simulatorTextStream.readLine();
-    auto tuple = line.split(QStringLiteral(" "));
-    if (tuple.length() < 2) {
-        return;
-    }
-    auto time = tuple[0].toInt();
-    lastPayload = tuple[1];
-
-    if (lastTime == 0) {
-        simulatorTimer.setInterval(0);
-    } else {
-        simulatorTimer.setInterval(time-lastTime);
-    }
-    simulatorTimer.start();
-    lastTime = time;
-}
-
-
-void Navigation::FLARMAdaptor::setErrorString(const QString &newError)
-{
-    if (newError == _errorString) {
-        return;
-    }
-    _errorString = newError;
+    _errorString = newErrorString;
     emit errorStringChanged();
 }
 
+
+void Navigation::FLARMAdaptor::updateStatus()
+{
+    // Paranoid safety check
+    if (socket.isNull()) {
+        return;
+    }
+
+    // Compute new status
+    Status newStatus = Disconnected;
+    if (socket->state() != QAbstractSocket::UnconnectedState) {
+        newStatus = Connecting;
+    }
+    if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
+        newStatus = Connected;
+    }
+    if ((newStatus == Connected) && receivingTimer.isActive()) {
+        newStatus = Receiving;
+    }
+
+    // Update property and emit signal if necessary
+    if (_status == newStatus) {
+        return;
+    }
+    _status = newStatus;
+    emit statusChanged(_status);
+}

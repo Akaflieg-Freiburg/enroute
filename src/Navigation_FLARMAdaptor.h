@@ -34,12 +34,13 @@ namespace Navigation {
 
 /*! \brief Traffic receiver
  *
- *  This class connects to a traffic receiver via the network. It expects to find a receiver at the IP-Address
- *  192.168.1.1, port 2000.  Once connected, it continuously reads data from the device, and exposes
- *  position and traffic information to the user, as well as barometric altitude.
+ *  This class connects to a traffic receiver via the network. It expects to
+ *  find a receiver at the IP-Address 192.168.1.1, port 2000.  Once connected,
+ *  it continuously reads data from the device, and exposes position and traffic
+ *  information to the user, as well as barometric altitude.
  *
- *  By modifying the source code, developers can also start the class in a mode where it connects
- *  to a file with simulator data.
+ *  By modifying the source code, developers can also start the class in a mode
+ *  where it connects to a file with simulator data.
  */
 class FLARMAdaptor : public QObject {
     Q_OBJECT
@@ -68,6 +69,23 @@ public:
     //
     // Properties
     //
+
+    /*! \brief String describin the last socket error
+     *
+     * This property holds a translated, human-readable string that describes
+     * the last error, or an empty string when there is not error.  The string
+     * is cleared when a new connection attempt is started.
+     */
+    Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    QString errorString() const
+    {
+        return _errorString;
+    }
 
     /*! \brief Status codes */
     enum Status
@@ -98,39 +116,13 @@ public:
         return _status;
     }
 
-
-    // =================================================
-
-
-    //
-    // Methods
-    //
-
-
-
-    //
-    // Properties
-    //
-
-    /*! \brief lastError
-     *
-     * This property holds a translated, human-readable string that describes the last error.
-     */
-    Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property lastError
-     */
-    QString errorString() const
-    {
-        return _lastError;
-    }
-
     /*! \brief Traffic objects whose position is known
      *
-     *  This property holds a list of the most relevant traffic objects, as a QQmlListProperty for better cooperation with QML. Note that only the valid items in this list pertain to actual
-     *  traffic. Invalid items should be ignored. The list is not sorted in any way. The items themselves are owned by this class.
+     *  This property holds a list of the most relevant traffic objects, as a
+     *  QQmlListProperty for better cooperation with QML. Note that only the
+     *  valid items in this list pertain to actual traffic. Invalid items should
+     *  be ignored. The list is not sorted in any way. The items themselves are
+     *  owned by this class.
      */
     Q_PROPERTY(QQmlListProperty<Navigation::Traffic> trafficObjects4QML READ trafficObjects4QML CONSTANT)
 
@@ -143,10 +135,11 @@ public:
         return QQmlListProperty(this, &_trafficObjects);
     }
 
-    /*! \brief Most relevant traffic objects whose position is not known
+    /*! \brief Most relevant traffic object whose position is not known
      *
-     *  This property holds a pointer to the most relevant traffic object whose position is not known.
-     *  This item should be ignored if invalid. The item is owned by this class.
+     *  This property holds a pointer to the most relevant traffic object whose
+     *  position is not known.  This item should be ignored if invalid. The item
+     *  is owned by this class.
      */
     Q_PROPERTY(Navigation::Traffic *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
 
@@ -160,24 +153,7 @@ public:
     }
 
 
-
-// =================
-
-
-    void setSimulatorFile(const QString& fileName );
-
 signals:
-    /*! \brief Emitted whenever a connection to a device is established */
-    void connected();
-
-    /*! \brief Emitted whenever a connection to a device is lost */
-    void disconnected();
-
-    /*! \brief Notifier signal */
-    void statusChanged(Navigation::FLARMAdaptor::Status);
-
-    // =========================
-
     /*! \brief Barometric altitude
      *
      * If this class received barometric altitude information from a connected
@@ -185,14 +161,42 @@ signals:
      */
     void barometricAltitude(AviationUnits::Distance);
 
+    /*! \brief Emitted whenever a connection to a device is established */
+    void connected();
+
+    /*! \brief Emitted whenever a connection to a device is lost */
+    void disconnected();
+
+    /*! \brief Notifier signal */
     void errorStringChanged();
 
     /*! \brief Position info
      *
-     * If this class received position information from a connected
-     * traffic receiver, this information is emitted here.
+     * If this class received position information from a connected traffic
+     * receiver, this information is emitted here.
      */
     void positionInfo(QGeoPositionInfo);
+
+    /*! \brief Notifier signal */
+    void statusChanged(Navigation::FLARMAdaptor::Status);
+
+    /*! \brief Traffic receiver hardware version
+     *
+     * If this class receives information about the hardware version of a
+     * connected traffic receiver, this information is emitted here.
+     *
+     * @param message String that identifies the hardware version
+     */
+    void trafficReceiverHwVersion(QString result);
+
+    /*! \brief Traffic receiver obstacle database version
+     *
+     * If this class receives information about the obstacle database version of a connected
+     * traffic receiver, this information is emitted here.
+     *
+     * @param message String that identifies the obstacle database version
+     */
+    void trafficReceiverObVersion(QString result);
 
     /*! \brief Result of traffic receiver self test
      *
@@ -203,40 +207,51 @@ signals:
      */
     void trafficReceiverSelfTest(QString message);
 
-    void trafficReceiverHwVersion(QString result);
+    /*! \brief Traffic receiver software version
+     *
+     * If this class receives information about the software version of a connected
+     * traffic receiver, this information is emitted here.
+     *
+     * @param message String that identifies the software version
+     */
     void trafficReceiverSwVersion(QString result);
-    void trafficReceiverObVersion(QString result);
 
 
 public slots:
-    /*! \brief Start attempt to connect to device
+    /*! \brief Start attempt to connect to traffic receiver
      *
      * If this class is connected to a traffic receiver, this method does nothing.
      * Otherwise, it stops any ongoing connection attempt and starts a new attempt
      * to connect to a potential receiver.
      */
-    void connectToDevice();
+    void connectToTrafficReceiver();
 
     /*! \brief Disconnect from traffic receiver
      *
-     * If this class is connected to a traffic receiver, this method does nothing.
-     * Otherwise, it stops any ongoing connection attempt and starts a new attempt
-     * to connect to a potential receiver.
+     * This method stops any ongoing connection or connection attempt.
      */
-    void disconnectFromDevice();
+    void disconnectFromTrafficReceiver();
 
 private slots:
-
+    // Handle socket errors.
     void receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError);
 
+    // Read one line from the socket's text stream and passes the string on to
+    // processFLARMMessage.
     void readFromStream();
 
+    // Read one line from the simulator file's text stream and passes the string
+    // on to processFLARMMessage.  Sets up times to read the next line in due
+    // time.
     void readFromSimulatorStream();
 
+    // Read, understand and process one NMEA sentence
     void processFLARMMessage(QString msg);
 
-    void setError(const QString &newError);
+    // Update the property "error" and emit notification signals
+    void setErrorString(const QString &newErrorString);
 
+    // Update the property "status" and emit notification signals
     void updateStatus();
 
 private:
@@ -246,14 +261,15 @@ private:
     // Try to connect every five minutes
     QTimer connectTimer;
 
-    // Timer: the property 'receiving' is updated when no new data is coming is for five seconds
+    // Timer: the property 'receiving' is updated when no new data is coming is
+    // for five seconds
     QTimer receivingTimer;
 
     QPointer<QTcpSocket> socket;
-    QTextStream stream;
+    QTextStream textStream;
 
     // Property lastError.
-    QString _lastError;
+    QString _errorString;
 
     // GPS altitude information
     AviationUnits::Distance _altitude;
@@ -261,7 +277,7 @@ private:
 
     // Simulator related members
     QFile simulatorFile;
-    QTextStream simulatorStream;
+    QTextStream simulatorTextStream;
     QTimer simulatorTimer;
     int lastTime {0};
     QString lastPayload;

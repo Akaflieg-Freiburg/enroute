@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,17 +19,13 @@
  ***************************************************************************/
 
 
-#include <chrono>
-
 #include "GlobalSettings.h"
 #include "Navigation_Traffic.h"
-
-using namespace std::chrono_literals;
 
 
 Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
 {  
-    timeOutCounter.setSingleShot(true);
+    timeoutCounter.setSingleShot(true);
 
     // Compute derived properties and set bindings
     connect(this, &Navigation::Traffic::alarmLevelChanged, this, &Navigation::Traffic::setColor);
@@ -45,7 +41,7 @@ Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
     setIcon();
 
     connect(this, &Navigation::Traffic::positionInfoChanged, this, &Navigation::Traffic::setValid);
-    connect(&timeOutCounter, &QTimer::timeout, this, &Navigation::Traffic::setValid);
+    connect(&timeoutCounter, &QTimer::timeout, this, &Navigation::Traffic::setValid);
     setValid();
 }
 
@@ -265,12 +261,12 @@ void Navigation::Traffic::setValid()
         newValid = false;
     } else {
         // If this traffic object it not invalid for trivial reasons, check the age and set the timer.
-        auto delta = QDateTime::currentDateTimeUtc().msecsTo( _positionInfo.timestamp().addMSecs(3*1000) );
+        auto delta = QDateTime::currentDateTimeUtc().msecsTo( _positionInfo.timestamp().addMSecs(timeoutMS) );
         if (delta <= 0) {
             newValid = false;
         } else {
             newValid = true;
-            timeOutCounter.start(delta);
+            timeoutCounter.start(delta);
         }
 
     }

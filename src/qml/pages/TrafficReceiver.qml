@@ -36,13 +36,16 @@ Page {
 
     ScrollView {
         id: view
-        clip: true
 
         anchors.fill: parent
+        clip: true
+
         anchors.topMargin: Qt.application.font.pixelSize
         anchors.bottomMargin: Qt.application.font.pixelSize
         anchors.leftMargin: Qt.application.font.pixelSize
         anchors.rightMargin: Qt.application.font.pixelSize
+
+        contentWidth: width
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -51,14 +54,20 @@ Page {
 
         ColumnLayout {
             width: view.width
+            implicitWidth: view.width
 
             Label {
+                Layout.fillWidth: true
+
                 text: qsTr("<h3>Status</h3>")
                 font.bold: true
                 textFormat: Text.MarkdownText
             }
 
             Label { // Status
+                Layout.fillWidth: true
+                Layout.leftMargin: 4
+                Layout.rightMargin: 4
 
                 text:  {
                     if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
@@ -70,9 +79,6 @@ Page {
                     return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Receiving traffic information …")
                 }
 
-                Layout.fillWidth: true
-                Layout.leftMargin: 4
-                Layout.rightMargin: 4
                 wrapMode: Text.WordWrap
 
                 bottomPadding: 0.2*Qt.application.font.pixelSize
@@ -93,11 +99,11 @@ Page {
             }
 
             Label { // Error string
+                Layout.fillWidth: true
 
                 text:  "<h3>" + qsTr("Last error") + "</h3><p>" + flarmAdaptor.errorString + "</p>"
                 visible: flarmAdaptor.errorString !== ""
 
-                Layout.fillWidth: true
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
 

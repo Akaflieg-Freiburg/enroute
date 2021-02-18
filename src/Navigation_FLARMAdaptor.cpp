@@ -74,6 +74,8 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     socket = new QTcpSocket(this);
     connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::receiveSocketErrorOccurred);
     connect(socket, &QTcpSocket::readyRead, this, &Navigation::FLARMAdaptor::readFromStream);
+    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::connected);
+    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::disconnected);
 
     // Set up text stream
     textStream.setDevice(socket);

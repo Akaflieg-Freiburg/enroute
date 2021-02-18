@@ -209,6 +209,113 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 <p>&#8212; Stefan Kebekus.</p>)html");
     }
 
+    if (name == ":text/flarmSetup.md") {
+        return tr(R"html(
+In order to display nearby traffic on the moving map, **Enroute Flight
+Navigation** can connect to your aircraft's traffic receiver (typically a FLARM
+device).
+
+**Enroute Flight Navigation** does not support all possible devices and all
+possible setup options. The author has tested the app with the following
+devices:
+
+- Air Avionics AT-1 ‘AIR Traffic’ with software version 5.
+
+
+### Technical Note
+
+**Enroute Flight Navigation** expects that the traffic receiver deploys a WLAN
+network via Wi-Fi and publishes a stream of NMEA sentences at the IP address
+192.168.1.1, port 2000 of that network. The NMEA sentences must conform to the
+specification outlined in in the document FTD-012 'Data Port Interface Control
+Document (ICD)', Version 7.13, as published by FLARM Technology Ltd.
+
+
+## Checklist
+
+Before you try to connect, make sure that the following conditions are met.
+
+- Your traffic receiver has an integrated Wi-Fi interface that acts as a
+  wireless access point. Bluetooth devices are currently not supported.
+
+- You know the network name (=SSID) of the WLAN network deployed by your traffic
+  receiver. If the network is encrypted, you also need to know the WLAN
+  password.
+
+- Some devices require an additional password in order to access traffic
+  data. This is currently not supported. Set up your device so that no
+  additional password is required.
+
+**Enroute Flight Navigation** checks the IP address 192.168.1.1, port 2000 at
+regular intervals and whenever the network configuration of your device
+changes. If a data stream is found, it will automatically connect to the stream,
+parse the data and display the traffic on its moving map.
+
+
+## Connect to the traffic receiver
+
+It takes a two steps to connect **Enroute Flight Navigation** to the traffic
+receiver for the first time. Do not despair. Once things are set up properly,
+your device should automatically detect the traffic receiver's WLAN network,
+enter the network and connect to the traffic data stream whenever you go flying.
+
+### Step 1: Enter the traffic receiver's WLAN network
+
+- Make sure that the traffic is connected to power and switched on. In a typical
+  aircraft installation, the traffic receiver is connected to the 'Avionics'
+  switch and will automatically switch on. You may need to wait a minute before
+  the WLAN comes online and is visible to your device.
+
+- Enter the WLAN network deployed by your traffic receiver. This is usually done
+  in the "WLAN Settings" of your device. Enter the WLAN password if
+  required. Some devices will issue a warning that the WLAN is not connected to
+  the internet. In this case, you might need to confirm that you wish to enter
+  the WLAN network.
+
+Most operating systems will offer to remember the connection, so that your
+device will automatically connect to this WLAN in the future. We recommend to
+use this option.
+
+
+### Step 2: Connect to the traffic data stream
+
+- Open the app **Enroute Flight Navigation** on your device.
+
+- Open the main menu and navigate to the "Information" menu. If the entry
+  "Traffic Receiver" is highlighted in green, then **Enroute Flight Navigation**
+  has already found the traffic receiver in the network and has connected to
+  it. Congratulations, you are done!
+
+If the entry "Traffic Receiver" is not highlighted in green, then select the
+entry. The "Traffic Receiver Status" page will open. The page explains the
+connection status in detail, and explains how to establish a connection
+manually.
+
+
+## Troubleshooting
+
+
+### The app cannot connect to the traffic data stream
+
+- If check that your device is connected to the WLAN network deployed by your
+  traffic receiver.
+
+
+### The connection breaks down after a few seconds
+
+Most traffic receivers cannot serve more than one client and abort connections
+at random if more than one device tries to access.
+
+- Make sure that there no second device connected to the traffic receiver's WLAN
+  network. The other device might well be in your friend's pocket!
+
+- Make sure that there is no other app trying to connected to the traffic
+  receiver's data stream.
+
+- Many traffic receivers offer 'configuration panels' that can be accessed via a
+  web browser. Close all web browsers.)html");
+    }
+
     if (name == ":text/tooManyDownloads.html") {
       return tr(R"html(<h3>Too many maps</h3>
 
@@ -234,15 +341,19 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr(R"MD(
-To improve readability, map contrast is increased and the
-app is less colorful than it used to be.  There is now a
-**dark mode**, specifically designed for **night flight**.
+        return (R"MD(
+Technology preview: the app can now connect to your aircraft's
+traffic receiver (typically a FLARM device) and show nearby
+traffic on the moving map. Open the menu and go to
+**Information/Traffic Reveicer** to try it out.
 
-There are many small additional improvements, in particular
-for **flight route editing** and **flight route import**.
-It is now possible to assign names to the waypoints of your
-flight route.
+Please send me your feedback! Reach my by e-mail, GitHub or
+via any other chanel.
+
+- Does the feature work for you at all? Do you run into problems?
+- If it works, how do you like the map design?
+- What traffic receiver do you use?
+- Was the setup difficult? Did you find the help texts helpful? Did you even find the help texts?
 )MD");
     }
 

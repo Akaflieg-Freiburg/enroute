@@ -32,7 +32,54 @@ Page {
     id: trafficReceiverPage
     title: qsTr("Traffic Receiver")
 
-    header: StandardHeader { }
+    header: ToolBar {
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.leftMargin: drawer.dragMargin
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+            icon.color: "white"
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                if (stackView.depth > 1) {
+                    stackView.pop()
+                } else {
+                    drawer.open()
+                }
+            }
+        } // ToolButton
+
+        Label {
+            anchors.left: backButton.right
+            anchors.right: headerMenuToolButton.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            text: stackView.currentItem.title
+            color: "white"
+            elide: Label.ElideRight
+            font.bold: true
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            icon.source: "/icons/material/ic_help_outline.svg"
+            icon.color: "white"
+            onClicked: {
+                mobileAdaptor.vibrateBrief()
+                trafficHelp.open()
+            }
+
+        }
+
+    } // ToolBar
 
     ScrollView {
         id: view
@@ -192,5 +239,16 @@ Page {
 
         }
     }
+
+
+    LongTextDialogMD {
+        id: trafficHelp
+        standardButtons: Dialog.Ok
+        anchors.centerIn: parent
+
+        title: qsTr("Connect your traffic receiver")
+        text: librarian.getStringFromRessource(":text/flarmSetup.md")
+    }
+
 
 } // Page

@@ -37,8 +37,8 @@ ApplicationWindow {
     height: 800
 
     Material.theme: globalSettings.nightMode ? Material.Dark : Material.Light
-    Material.primary: Material.theme == Material.Dark ? Qt.darker("teal") : "teal"
-    Material.accent: Material.theme == Material.Dark ? Qt.lighter("teal") : "teal"
+    Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
+    Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
     Drawer {
         id: drawer
@@ -176,13 +176,13 @@ ApplicationWindow {
 
                             text: {
                                 var result = qsTr("Traffic Receiver") + `<br><font color="#606060" size="2">` + qsTr("Status") + ": "
-                                if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
+                                if (flarmAdaptor.status === FLARMAdaptor.Disconnected)
                                     result = result + qsTr("Not connected")
-                                if (flarmAdaptor.status == FLARMAdaptor.Connecting)
+                                if (flarmAdaptor.status === FLARMAdaptor.Connecting)
                                     result = result + qsTr("Trying to connect…")
-                                if (flarmAdaptor.status == FLARMAdaptor.Connected)
+                                if (flarmAdaptor.status === FLARMAdaptor.Connected)
                                     result = result + qsTr("Connected, waiting for data…")
-                                if (flarmAdaptor.status == FLARMAdaptor.Receiving)
+                                if (flarmAdaptor.status === FLARMAdaptor.Receiving)
                                     result = result + qsTr("Receiving traffic information")
                                 result = result + `</font>`
                                 return result
@@ -312,7 +312,7 @@ ApplicationWindow {
             }
         }
 
-    } // Drawer
+    }
 
     StackView {
         id: stackView
@@ -502,5 +502,5 @@ ApplicationWindow {
             close.accepted = false // prevent closing of the app
             stackView.pop(); // will close the stackView page
         }
-    } // onClosing
+    }
 }

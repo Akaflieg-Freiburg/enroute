@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.3.1</span>
+   &#160;<span id="projectnumber">2.4.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -68,6 +68,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a911a7dd314a81e2e855c8b3218be93e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAviationUnits_1_1Distance.html#a911a7dd314a81e2e855c8b3218be93e8">isNegative</a> () const</td></tr>
 <tr class="memdesc:a911a7dd314a81e2e855c8b3218be93e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the distance is negative.  <a href="#a911a7dd314a81e2e855c8b3218be93e8">More...</a><br /></td></tr>
 <tr class="separator:a911a7dd314a81e2e855c8b3218be93e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55687e2b5ac6f784a8a9727c6cc8a3b9"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAviationUnits_1_1Distance.html#a55687e2b5ac6f784a8a9727c6cc8a3b9">operator</a> (const <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> &amp;rhs) const =default</td></tr>
+<tr class="memdesc:a55687e2b5ac6f784a8a9727c6cc8a3b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison.  <a href="#a55687e2b5ac6f784a8a9727c6cc8a3b9">More...</a><br /></td></tr>
+<tr class="separator:a55687e2b5ac6f784a8a9727c6cc8a3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cd1d95efc178524a4004fdcef574d7a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAviationUnits_1_1Distance.html#a4cd1d95efc178524a4004fdcef574d7a">toNM</a> () const</td></tr>
 <tr class="memdesc:a4cd1d95efc178524a4004fdcef574d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to nautical miles.  <a href="#a4cd1d95efc178524a4004fdcef574d7a">More...</a><br /></td></tr>
 <tr class="separator:a4cd1d95efc178524a4004fdcef574d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -80,6 +83,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7f1113ef89b6d2bb2d273e5380df22d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAviationUnits_1_1Distance.html#ae7f1113ef89b6d2bb2d273e5380df22d">toFeet</a> () const</td></tr>
 <tr class="memdesc:ae7f1113ef89b6d2bb2d273e5380df22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to feet.  <a href="#ae7f1113ef89b6d2bb2d273e5380df22d">More...</a><br /></td></tr>
 <tr class="separator:ae7f1113ef89b6d2bb2d273e5380df22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aeb55c4c1e2a49aff5cd0a61712e54a"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAviationUnits_1_1Distance.html#a1aeb55c4c1e2a49aff5cd0a61712e54a">toString</a> (bool useMetric, bool vertical, bool forceSign=false) const</td></tr>
+<tr class="memdesc:a1aeb55c4c1e2a49aff5cd0a61712e54a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to string.  <a href="#a1aeb55c4c1e2a49aff5cd0a61712e54a">More...</a><br /></td></tr>
+<tr class="separator:a1aeb55c4c1e2a49aff5cd0a61712e54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -92,9 +98,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Convenience class for distance computations. </p>
-<p>This extremely simple class allows computation with distances, without the need to worry about units. </p>
+<p>This extremely simple class allows computation with distances, without the need to worry about units. On construction, the distance is set to NaN. </p>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00177">177</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00179">179</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a175c493da3490132873d26e06e287384"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a175c493da3490132873d26e06e287384">&#9670;&nbsp;</a></span>fromFT()</h2>
@@ -129,7 +135,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>distance </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00197">197</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00199">199</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -166,7 +172,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>distance </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00185">185</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00187">187</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -196,7 +202,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Checks if the distance is valid. </p>
 <dl class="section return"><dt>Returns</dt><dd>True is the distance is a finite number </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00218">218</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00220">220</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -226,7 +232,42 @@ Static Public Member Functions</h2></td></tr>
 <p>Checks if the distance is negative. </p>
 <dl class="section return"><dt>Returns</dt><dd>True is the distance is negative </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00224">224</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00226">226</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+
+</div>
+</div>
+<a id="a55687e2b5ac6f784a8a9727c6cc8a3b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55687e2b5ac6f784a8a9727c6cc8a3b9">&#9670;&nbsp;</a></span>operator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto AviationUnits::Distance::operator </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Comparison. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td>Right hand side of the comparison</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of the comparison </dd></dl>
 
 </div>
 </div>
@@ -240,7 +281,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classAviationUnits_1_1Distance.html">Distance</a>&amp; AviationUnits::Distance::operator+= </td>
+          <td class="memname"><a class="el" href="classAviationUnits_1_1Distance.html">Distance</a>&amp; <a class="el" href="classAviationUnits_1_1Distance.html#a55687e2b5ac6f784a8a9727c6cc8a3b9">AviationUnits::Distance::operator</a>+= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
@@ -263,7 +304,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>reference to this distance </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00209">209</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00211">211</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -293,7 +334,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to feet. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in feet </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00248">248</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00258">258</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -323,7 +364,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to meters. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in meters </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00242">242</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00252">252</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -353,7 +394,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to meters. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in meters </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00236">236</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00246">246</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +424,53 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to nautical miles. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in nautical miles </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00230">230</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00240">240</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+
+</div>
+</div>
+<a id="a1aeb55c4c1e2a49aff5cd0a61712e54a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1aeb55c4c1e2a49aff5cd0a61712e54a">&#9670;&nbsp;</a></span>toString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString AviationUnits::Distance::toString </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useMetric</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>vertical</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>forceSign</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert to string. </p>
+<p>This method converts the distance to string that is fit for human consumption, of the form "10.9 nm", "130 ft" or "3500 m". The distance is rounded to reasonable precision.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">useMetric</td><td>Determines whether metric or imperial units are used.</td></tr>
+    <tr><td class="paramname">vertical</td><td>If 'true', then meters or feet are used. Otherwise, the method uses kilometer, meters or feet.</td></tr>
+    <tr><td class="paramname">forceSign</td><td>If 'true', then positive distances are prepended by a "+" sign.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string that describes the distance, or an empty string if no reasonable distance is set. </dd></dl>
 
 </div>
 </div>

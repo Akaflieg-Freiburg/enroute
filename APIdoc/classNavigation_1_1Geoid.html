@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Enroute Flight Navigation: Geoid Class Reference</title>
+<title>Enroute Flight Navigation: Navigation::Geoid Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.3.1</span>
+   &#160;<span id="projectnumber">2.4.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -37,52 +37,51 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceNavigation.html">Navigation</a></li><li class="navelem"><a class="el" href="classNavigation_1_1Geoid.html">Geoid</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classGeoid-members.html">List of all members</a>  </div>
+<a href="classNavigation_1_1Geoid-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Geoid Class Reference</div>  </div>
+<div class="title">Navigation::Geoid Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>provide geoidal separation.  
- <a href="classGeoid.html#details">More...</a></p>
+<p>Provide geoidal separation according to <a href="https://en.wikipedia.org/wiki/Geoid">https://en.wikipedia.org/wiki/Geoid</a>.  
+ <a href="classNavigation_1_1Geoid.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="Geoid_8h_source.html">Geoid.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="Navigation__Geoid_8h_source.html">Navigation_Geoid.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a57228f90905fffe19e0fa2ca9a7b511e"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoid.html#a57228f90905fffe19e0fa2ca9a7b511e">operator()</a> (qreal latitude, qreal longitude)</td></tr>
-<tr class="memdesc:a57228f90905fffe19e0fa2ca9a7b511e"><td class="mdescLeft">&#160;</td><td class="mdescRight">return geoidal separation &ndash; the difference between AMSL and ellipsoidal height.  <a href="#a57228f90905fffe19e0fa2ca9a7b511e">More...</a><br /></td></tr>
-<tr class="separator:a57228f90905fffe19e0fa2ca9a7b511e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a312b5f5375e3f1d95da42708132467b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoid.html#a312b5f5375e3f1d95da42708132467b7">valid</a> () const</td></tr>
-<tr class="memdesc:a312b5f5375e3f1d95da42708132467b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if geoidal separation is available or false otherwise.  <a href="#a312b5f5375e3f1d95da42708132467b7">More...</a><br /></td></tr>
-<tr class="separator:a312b5f5375e3f1d95da42708132467b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e36d6b17267a7a9e5602af73df26443"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Geoid.html#a3e36d6b17267a7a9e5602af73df26443">operator()</a> (qreal latitude, qreal longitude)</td></tr>
+<tr class="memdesc:a3e36d6b17267a7a9e5602af73df26443"><td class="mdescLeft">&#160;</td><td class="mdescRight">return geoidal separation &ndash; the difference between AMSL and ellipsoidal height.  <a href="#a3e36d6b17267a7a9e5602af73df26443">More...</a><br /></td></tr>
+<tr class="separator:a3e36d6b17267a7a9e5602af73df26443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06af5015fd99919a69f7e0978ddcf992"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Geoid.html#a06af5015fd99919a69f7e0978ddcf992">valid</a> () const</td></tr>
+<tr class="memdesc:a06af5015fd99919a69f7e0978ddcf992"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if geoidal separation is available or false otherwise.  <a href="#a06af5015fd99919a69f7e0978ddcf992">More...</a><br /></td></tr>
+<tr class="separator:a06af5015fd99919a69f7e0978ddcf992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>provide geoidal separation. </p>
-<p>Copyright (C) 2020 by Johannes Zellner, <a href="#" onclick="location.href='mai'+'lto:'+'joh'+'an'+'nes'+'@z'+'ell'+'ne'+'r.o'+'rg'; return false;">johan<span style="display: none;">.nosp@m.</span>nes@<span style="display: none;">.nosp@m.</span>zelln<span style="display: none;">.nosp@m.</span>er.o<span style="display: none;">.nosp@m.</span>rg</a></p>
-<p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
-<p>You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.</p>
-<p>according to <a href="https://en.wikipedia.org/wiki/Geoid">https://en.wikipedia.org/wiki/Geoid</a></p>
+<div class="textblock"><p>Provide geoidal separation according to <a href="https://en.wikipedia.org/wiki/Geoid">https://en.wikipedia.org/wiki/Geoid</a>. </p>
 <p>In maps and common use (like VFR) the height over the mean sea level (such as orthometric height) is used to indicate the height of elevations while the ellipsoidal height results from the GPS system and similar GNSS.</p>
 <p>The deviation between the ellipsoidal height and the orthometric height is provided here.</p>
 <p>The implementation uses the data from <a href="https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html">https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html</a> and does a bilinear interpolation between the four neighboring data points of the requested location.</p>
 <p>The implementation was <em>very</em> carefully tested and compared with both a bilinear and a bicubic spline interpolation in python. The comparison of the method here with the python bilinear interpolation verified that both implementations yield the same numbers (within numerical precision). The comparison of the bilinear implementation here with the python's bicubic interpolation showed a worldwide max deviation of about 1 m. </p>
 
-<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00049">49</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Navigation__Geoid_8h_source.html#l00049">49</a> of file <a class="el" href="Navigation__Geoid_8h_source.html">Navigation_Geoid.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a57228f90905fffe19e0fa2ca9a7b511e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57228f90905fffe19e0fa2ca9a7b511e">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a3e36d6b17267a7a9e5602af73df26443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e36d6b17267a7a9e5602af73df26443">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">qreal Geoid::operator() </td>
+          <td class="memname">qreal Navigation::Geoid::operator() </td>
           <td>(</td>
           <td class="paramtype">qreal&#160;</td>
           <td class="paramname"><em>latitude</em>, </td>
@@ -113,8 +112,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a312b5f5375e3f1d95da42708132467b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a312b5f5375e3f1d95da42708132467b7">&#9670;&nbsp;</a></span>valid()</h2>
+<a id="a06af5015fd99919a69f7e0978ddcf992"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06af5015fd99919a69f7e0978ddcf992">&#9670;&nbsp;</a></span>valid()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -123,7 +122,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Geoid::valid </td>
+          <td class="memname">bool Navigation::Geoid::valid </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -139,12 +138,12 @@ Public Member Functions</h2></td></tr>
 <p>True if geoidal separation is available or false otherwise. </p>
 <dl class="section return"><dt>Returns</dt><dd>true or false </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00067">67</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Navigation__Geoid_8h_source.html#l00067">67</a> of file <a class="el" href="Navigation__Geoid_8h_source.html">Navigation_Geoid.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/enroute/enroute/src/<a class="el" href="Geoid_8h_source.html">Geoid.h</a></li>
+<li>/home/runner/work/enroute/enroute/src/<a class="el" href="Navigation__Geoid_8h_source.html">Navigation_Geoid.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.3.1</span>
+   &#160;<span id="projectnumber">2.4.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -43,7 +43,7 @@ $(function() {
 
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>SatNav()
-: <a class="el" href="classSatNav.html#a9d95fcd638ff80c7ba64325d798f78c0">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#ad44fa36e659065fbb4ef1a49d9acc377">Navigation::SatNav</a>
 </li>
 <li>save()
 : <a class="el" href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45">FlightRoute</a>
@@ -71,9 +71,6 @@ $(function() {
 </li>
 <li>setAcceptedWeatherTerms()
 : <a class="el" href="classGlobalSettings.html#ac6c25f01309bb50034660cd66a721a21">GlobalSettings</a>
-</li>
-<li>setAltitudeInFeet()
-: <a class="el" href="classSatNav.html#a8cfd35635b4615fadf760c1590f756fd">SatNav</a>
 </li>
 <li>setAutoFlightDetection()
 : <a class="el" href="classGlobalSettings.html#a8eedf70753e4e769d8519a6890d77ed0">GlobalSettings</a>
@@ -158,6 +155,9 @@ $(function() {
 <li>sin()
 : <a class="el" href="classAviationUnits_1_1Angle.html#aa315b6c3dccead24452bba1e7810a154">AviationUnits::Angle</a>
 </li>
+<li>Skydiver
+: <a class="el" href="classNavigation_1_1Traffic.html#a6cb9dc4086bbaa50da27017d0db8aed1a235720b7ff91fa6351113f7375b05d05">Navigation::Traffic</a>
+</li>
 <li>startFileDownload()
 : <a class="el" href="classDownloadable.html#a02470085ba6130314a0964d06a6aeac1">Downloadable</a>
 </li>
@@ -167,23 +167,33 @@ $(function() {
 <li>startReceiveOpenFileRequests()
 : <a class="el" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d">MobileAdaptor</a>
 </li>
+<li>StaticObstacle
+: <a class="el" href="classNavigation_1_1Traffic.html#a6cb9dc4086bbaa50da27017d0db8aed1adf79736e304af8fcf6a9a972ad14eb7b">Navigation::Traffic</a>
+</li>
 <li>Station()
 : <a class="el" href="classWeather_1_1Station.html#a63ccdb9be16c434b7389b3eb105a7f3c">Weather::Station</a>
 </li>
 <li>status
-: <a class="el" href="classSatNav.html#a2e18f98daa37c8d73dcbab25ae0a2f99">SatNav</a>
+: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#a1bef4c14d1820fe52bf3730bdae51101">Navigation::FLARMAdaptor</a>
 </li>
 <li>Status
-: <a class="el" href="classSatNav.html#a5046a81f5761b8a56c438ff252bbbae6">SatNav</a>
+: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#af660d543bdd3db773a888a84a11e9b03">Navigation::FLARMAdaptor</a>
 </li>
 <li>status()
-: <a class="el" href="classSatNav.html#a0da7eb341514ece972dc6e088c977ff2">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a2f2f7e507b17c385d943f72ef1829071">Navigation::SatNav</a>
+</li>
+<li>Status
+: <a class="el" href="classNavigation_1_1SatNav.html#a348e501dd1ea5e66440544de4289419f">Navigation::SatNav</a>
+</li>
+<li>status
+: <a class="el" href="classNavigation_1_1SatNav.html#ae8f103adf81dd61678f2ee8e58c5c870">Navigation::SatNav</a>
 </li>
 <li>statusAsString
-: <a class="el" href="classSatNav.html#a7ba419ebe7dee710850a693c8e7d2f6c">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a0f497cd50ad17508317c68b2eea151e3">Navigation::SatNav</a>
 </li>
 <li>statusChanged()
-: <a class="el" href="classSatNav.html#ab60ef0a2f6bc97af27c6a7553e972cc4">SatNav</a>
+: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#abb62707bf6c9606f61048ac14e38632f">Navigation::FLARMAdaptor</a>
+, <a class="el" href="classNavigation_1_1SatNav.html#af6e283c2358c242105a425ba75c65cc3">Navigation::SatNav</a>
 </li>
 <li>stopFileDownload()
 : <a class="el" href="classDownloadable.html#aa4d3230dd9b86756c3c5de89ed95b608">Downloadable</a>
@@ -200,8 +210,8 @@ $(function() {
 <li>suggestedFilename()
 : <a class="el" href="classFlightRoute.html#a973b956dfacb7c5411d5019d19826200">FlightRoute</a>
 </li>
-<li>summary
-: <a class="el" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">FlightRoute</a>
+<li>summary()
+: <a class="el" href="classFlightRoute.html#a54c00e981d11ed48714418cd633540cd">FlightRoute</a>
 , <a class="el" href="classWeather_1_1METAR.html#a64ee6087e0dc1a9142e39f056206490a">Weather::METAR</a>
 </li>
 <li>summaryChanged()

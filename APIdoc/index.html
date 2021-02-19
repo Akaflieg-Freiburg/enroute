@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.3.1</span>
+   &#160;<span id="projectnumber">2.4.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -43,7 +43,7 @@ $(function() {
 <div class="title">Architecture </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><b>Enroute Flight Navigation</b> is a fairly standard Qt application. The user interface is written in QML, the hard functionality is written in C++.</p>
+<div class="textblock"><p><b>Enroute Flight <a class="el" href="namespaceNavigation.html">Navigation</a></b> is a fairly standard Qt application. The user interface is written in QML, the hard functionality is written in C++.</p>
 <p>This document describes the C++ part of the program. The documentation is continuously generated from the master branch of the GIT repository.</p>
 <h3>A. Moving map</h3>
 <p>The moving map is a standard QML Map object that uses the <b>mapboxgl</b> plugin. As mapboxgl expects the map data to come over the internet, there is a <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> object that runs an internal http-server to provide the data.</p>
@@ -53,7 +53,7 @@ $(function() {
 <ul>
 <li>Instances of the classes <a class="el" href="classGeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. ">GeoMapProvider</a> and <a class="el" href="classMapManager.html" title="Manages the list of geographic maps. ">MapManager</a>, under the names "mapManager" and "geoMapProvider". These classes allow access to the library of geographic maps, and provide the map data in formats suitable for use by QML.</li>
 <li>An instance of the class <a class="el" href="classMobileAdaptor.html" title="Interface to platform-specific capabilities of mobile devices. ">MobileAdaptor</a>, under the name "MobileAdaptor". This class provides QML with access to platform-specific functionality, such as "vibrate device", "disable screen lock" and others</li>
-<li>An instance of the class <a class="el" href="classSatNav.html" title="Satellite Navigator. ">SatNav</a>, under the name "satNav". This class contains the satellite navigaton functionality and is really a thin wrapper around QGeoPositionInfoSource, that provides data in formats suitable for aviation purposes.</li>
+<li>An instance of the class SatNav, under the name "satNav". This class contains the satellite navigaton functionality and is really a thin wrapper around QGeoPositionInfoSource, that provides data in formats suitable for aviation purposes.</li>
 </ul>
 <h4>B.2 Other C++ classes</h4>
 <ul>

@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.3.1</span>
+   &#160;<span id="projectnumber">2.4.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -48,11 +48,17 @@ $(function() {
 <li>acceptedWeatherTerms
 : <a class="el" href="classGlobalSettings.html#af53f09f2300cbe950823fe32f4390776">GlobalSettings</a>
 </li>
+<li>alarmLevel
+: <a class="el" href="classNavigation_1_1Traffic.html#a718bc37cdef363d6c489e1ddf74be911">Navigation::Traffic</a>
+</li>
 <li>altitudeInFeet
-: <a class="el" href="classSatNav.html#a7489389d108e5eb8f830047e02f959ab">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a3bfc7e95fe6f55c5091b8fc2f2764b43">Navigation::SatNav</a>
 </li>
 <li>altitudeInFeetAsString
-: <a class="el" href="classSatNav.html#a20b33d6e20a5766236a4631d0418ea0f">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a9d7a66453731ca134860e45a618b5721">Navigation::SatNav</a>
+</li>
+<li>animate
+: <a class="el" href="classNavigation_1_1Traffic.html#a60a303285f95559853d06465d126e139">Navigation::Traffic</a>
 </li>
 <li>attribution
 : <a class="el" href="classTileHandler.html#aeff641117036675e36aa829574a0d469">TileHandler</a>
@@ -77,8 +83,12 @@ $(function() {
 
 
 <h3><a id="index_c"></a>- c -</h3><ul>
+<li>color
+: <a class="el" href="classNavigation_1_1Traffic.html#a0c2b535469d1dc55ac15085e8a288b5d">Navigation::Traffic</a>
+</li>
 <li>coordinate
-: <a class="el" href="classSatNav.html#a93e67477cdb479f652cfa3ee726d621f">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#abdcbc4737a87215bbea99964559fb723">Navigation::SatNav</a>
+, <a class="el" href="classNavigation_1_1Traffic.html#abfccd5bdd8becf0d5cf861b35c8ae3f4">Navigation::Traffic</a>
 , <a class="el" href="classWaypoint.html#a7b4b09e48657db8f50e25d2da776a04f">Waypoint</a>
 , <a class="el" href="classWeather_1_1METAR.html#acd6278e6a3b9d64813e6920258c91910">Weather::METAR</a>
 , <a class="el" href="classWeather_1_1Station.html#ae26bbee44189ebf75c76f9f0b76bd677">Weather::Station</a>
@@ -114,6 +124,7 @@ $(function() {
 </li>
 <li>description
 : <a class="el" href="classFlightRoute_1_1Leg.html#ab6ada640474199e9ab636ad82116d0aa">FlightRoute::Leg</a>
+, <a class="el" href="classNavigation_1_1Traffic.html#aec4d48617cdec7b4b44c57598ef22f67">Navigation::Traffic</a>
 , <a class="el" href="classTileHandler.html#a0344128805c5a2480191738deac7a640">TileHandler</a>
 </li>
 <li>descriptionMetric
@@ -140,6 +151,9 @@ $(function() {
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
+<li>errorString
+: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#af94dc49502630dd3b3de8e83587da1b3">Navigation::FLARMAdaptor</a>
+</li>
 <li>expiration
 : <a class="el" href="classWeather_1_1METAR.html#a90a708583dd6e8dde038160d519f63f5">Weather::METAR</a>
 , <a class="el" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">Weather::TAF</a>
@@ -183,12 +197,6 @@ $(function() {
 
 
 <h3><a id="index_g"></a>- g -</h3><ul>
-<li>geoidalSeparation
-: <a class="el" href="classSatNav.html#add6f6dcbc29df0076c6e53762d46b2cc">SatNav</a>
-</li>
-<li>geoidalSeparationAsString
-: <a class="el" href="classSatNav.html#ae858d47f019f895b0590b3e4d9e9f094">SatNav</a>
-</li>
 <li>geoJSON
 : <a class="el" href="classGeoMapProvider.html#a76f9c6e242dfcd8a673f961210d639a0">GeoMapProvider</a>
 </li>
@@ -199,16 +207,16 @@ $(function() {
 : <a class="el" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">FlightRoute</a>
 </li>
 <li>groundSpeedInKMHAsString
-: <a class="el" href="classSatNav.html#a5c94556b00c49e41eaa655bd2eaf1db2">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a331a990cd88cd0f0569b806dd48cf750">Navigation::SatNav</a>
 </li>
 <li>groundSpeedInKnots
-: <a class="el" href="classSatNav.html#a1b099ad530666074227cc7ef78a6e89a">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a2dc403836e6c228304c46607b92fdb60">Navigation::SatNav</a>
 </li>
 <li>groundSpeedInKnotsAsString
-: <a class="el" href="classSatNav.html#ab8c026b92ad2d04c656438f10cd282f8">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a9871ab6f1747765831b5a0167860b076">Navigation::SatNav</a>
 </li>
 <li>groundSpeedInMetersPerSecond
-: <a class="el" href="classSatNav.html#a8fd63ebdb0d4305167a27c23dabc6d4e">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#ad47e40e9faa93af02175cf0f80e40729">Navigation::SatNav</a>
 </li>
 <li>GS
 : <a class="el" href="classFlightRoute_1_1Leg.html#af89b1958af1d19eab4827057f894a853">FlightRoute::Leg</a>
@@ -218,7 +226,7 @@ $(function() {
 
 <h3><a id="index_h"></a>- h -</h3><ul>
 <li>hasAltitude
-: <a class="el" href="classSatNav.html#ac4459051c650a0191de514e39dd4b57f">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a08336575993401cebc8755afdddde4c1">Navigation::SatNav</a>
 </li>
 <li>hasFile
 : <a class="el" href="classDownloadable.html#adcb96f46d390518fb21da167f5e30bbf">Downloadable</a>
@@ -238,14 +246,20 @@ $(function() {
 <li>hasTranslation
 : <a class="el" href="classGlobalSettings.html#a931a17e17b5219b47d972c9060f57d8a">GlobalSettings</a>
 </li>
+<li>hDist
+: <a class="el" href="classNavigation_1_1Traffic.html#a52cbc4b9ff03bcd894f3713218f6c21f">Navigation::Traffic</a>
+</li>
+<li>hDistM
+: <a class="el" href="classNavigation_1_1Traffic.html#ab7e4689e4a952091a7257415ccca8907">Navigation::Traffic</a>
+</li>
 <li>hideUpperAirspaces
 : <a class="el" href="classGlobalSettings.html#a00c47e523f18c6ea7f003556897e9ef5">GlobalSettings</a>
 </li>
 <li>horizontalPrecisionInMeters
-: <a class="el" href="classSatNav.html#ac03fbca031f421e0edf839763d160624">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a1122ae3c8614f9a24d8ae154d0c984ed">Navigation::SatNav</a>
 </li>
 <li>horizontalPrecisionInMetersAsString
-: <a class="el" href="classSatNav.html#a0f5529b04f3114f9f508a8ffa7dd9b3f">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a005946aeda404cfde97c9b583044273f">Navigation::SatNav</a>
 </li>
 </ul>
 
@@ -257,9 +271,13 @@ $(function() {
 , <a class="el" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">Weather::TAF</a>
 </li>
 <li>icon
-: <a class="el" href="classSatNav.html#acc7acc0ebbdac730f6c5e49c4c88a16d">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a9bacec14eb54fa8887a87e7ea01bb6ca">Navigation::SatNav</a>
+, <a class="el" href="classNavigation_1_1Traffic.html#a8446bc245b0d623e1b0dc364cf63411a">Navigation::Traffic</a>
 , <a class="el" href="classWaypoint.html#af0397153dad986becbf2ad250159dd1f">Waypoint</a>
 , <a class="el" href="classWeather_1_1Station.html#aef58d2a5822040ac83898150c621bd45">Weather::Station</a>
+</li>
+<li>ID
+: <a class="el" href="classNavigation_1_1Traffic.html#ae06b8573b84f66b4d0e250ed0211daaa">Navigation::Traffic</a>
 </li>
 <li>infoText
 : <a class="el" href="classDownloadable.html#a9ad3aee556a85a882cdd2173e0ffc719">Downloadable</a>
@@ -268,7 +286,7 @@ $(function() {
 : <a class="el" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">FlightRoute</a>
 </li>
 <li>isInFlight
-: <a class="el" href="classSatNav.html#a317f007a4426bfe3669c0d96416c925a">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a43d37710bcedd3ec7f266eff2fdf234d">Navigation::SatNav</a>
 </li>
 <li>issueTime
 : <a class="el" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">Weather::TAF</a>
@@ -287,10 +305,10 @@ $(function() {
 
 <h3><a id="index_l"></a>- l -</h3><ul>
 <li>lastValidCoordinate
-: <a class="el" href="classSatNav.html#ab255756722d23b3213b7a64f15991da0">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a6d43b3315f0023fde43c5aebc8133405">Navigation::SatNav</a>
 </li>
 <li>lastValidTrack
-: <a class="el" href="classSatNav.html#acf4daea76ff81f686e472f24549bf764">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#ac3300145d8d197c565a20ba8fe504e5a">Navigation::SatNav</a>
 </li>
 <li>lastWaypointObject
 : <a class="el" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">FlightRoute</a>
@@ -299,10 +317,10 @@ $(function() {
 : <a class="el" href="classGlobalSettings.html#a5667350bf8f6c6489fa6e508040cc7af">GlobalSettings</a>
 </li>
 <li>latitudeAsString
-: <a class="el" href="classSatNav.html#a7853a47957dd1494261b4ad2db705b20">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#af0a18ec32dae7ddefa9f16074e86fb75">Navigation::SatNav</a>
 </li>
 <li>longitudeAsString
-: <a class="el" href="classSatNav.html#aca23c9112018486d726ef477a2372a34">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#ac2b8b31cabe7766edec7ccd6bf857f53">Navigation::SatNav</a>
 </li>
 <li>lowerBound
 : <a class="el" href="classAirspace.html#a4e93ab8a7fc04d4b7e205e81b61d7df2">Airspace</a>
@@ -412,12 +430,6 @@ $(function() {
 
 
 <h3><a id="index_r"></a>- r -</h3><ul>
-<li>rawAltitudeInFeet
-: <a class="el" href="classSatNav.html#a94afaae36b60aa36273bb477a833e6fb">SatNav</a>
-</li>
-<li>rawAltitudeInFeetAsString
-: <a class="el" href="classSatNav.html#a3c2c299ee005d3f89174e37a7d61a9fe">SatNav</a>
-</li>
 <li>rawText
 : <a class="el" href="classWeather_1_1Decoder.html#a4e7b2e9faa8813c76738ff62a81c03a4">Weather::Decoder</a>
 , <a class="el" href="classWeather_1_1METAR.html#a0b97842a08959fedd6f65f688a4961f0">Weather::METAR</a>
@@ -446,10 +458,11 @@ $(function() {
 : <a class="el" href="classDownloadable.html#a2d4718c5fa19529925930770cf4d7640">Downloadable</a>
 </li>
 <li>status
-: <a class="el" href="classSatNav.html#a2e18f98daa37c8d73dcbab25ae0a2f99">SatNav</a>
+: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#a1bef4c14d1820fe52bf3730bdae51101">Navigation::FLARMAdaptor</a>
+, <a class="el" href="classNavigation_1_1SatNav.html#ae8f103adf81dd61678f2ee8e58c5c870">Navigation::SatNav</a>
 </li>
 <li>statusAsString
-: <a class="el" href="classSatNav.html#a7ba419ebe7dee710850a693c8e7d2f6c">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a0f497cd50ad17508317c68b2eea151e3">Navigation::SatNav</a>
 </li>
 <li>styleFileURL
 : <a class="el" href="classGeoMapProvider.html#a4933bf08009d959eec9e79e626a10097">GeoMapProvider</a>
@@ -493,20 +506,32 @@ $(function() {
 : <a class="el" href="classClock.html#a527aac86ef071be66cbdcb4ea929ffba">Clock</a>
 </li>
 <li>timestamp
-: <a class="el" href="classSatNav.html#ad12c29cb1ac5f261168dac311a2b68f7">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#adb2f70cafe308a35832d970a155eca2f">Navigation::SatNav</a>
 </li>
 <li>timestampAsString
-: <a class="el" href="classSatNav.html#a07f7e00c4e6e75d7ce0a1b34053a479e">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#a21c17eb314caf27f42606b1c5418dc06">Navigation::SatNav</a>
 </li>
 <li>track
-: <a class="el" href="classSatNav.html#a756dfead0a3384ff919dc90aa775a6af">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#aa394d60945f3f474bfbffb42a6befa0c">Navigation::SatNav</a>
 </li>
 <li>trackAsString
-: <a class="el" href="classSatNav.html#aabbf6c40cb6f58662c4018f435753b26">SatNav</a>
+: <a class="el" href="classNavigation_1_1SatNav.html#ad0220efa41da999714555613b9c5aed3">Navigation::SatNav</a>
+</li>
+<li>trafficObjects4QML
+: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#a2893773a84f10ba0b9d50c7aeb996321">Navigation::FLARMAdaptor</a>
+</li>
+<li>trafficObjectWithoutPosition
+: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#a02404eabd3454341872827dc5641da03">Navigation::FLARMAdaptor</a>
+</li>
+<li>TT
+: <a class="el" href="classNavigation_1_1Traffic.html#ab681049f7cfba7b09fc2db70515aa1d3">Navigation::Traffic</a>
 </li>
 <li>twoLineTitle
 : <a class="el" href="classWaypoint.html#a48f630f15b046fe30cd0cf0742ce9b37">Waypoint</a>
 , <a class="el" href="classWeather_1_1Station.html#aba720eb9ddf734227ee0a1e7704e20d1">Weather::Station</a>
+</li>
+<li>type
+: <a class="el" href="classNavigation_1_1Traffic.html#aa30c1333e58afd8917d689b58561726c">Navigation::Traffic</a>
 </li>
 </ul>
 
@@ -533,6 +558,12 @@ $(function() {
 
 
 <h3><a id="index_v"></a>- v -</h3><ul>
+<li>valid
+: <a class="el" href="classNavigation_1_1Traffic.html#ae80c6fc5e3c0cad3afcd1c82396e6478">Navigation::Traffic</a>
+</li>
+<li>vDist
+: <a class="el" href="classNavigation_1_1Traffic.html#a828fdecd7d12e1822b41e458c98d8a1b">Navigation::Traffic</a>
+</li>
 <li>version
 : <a class="el" href="classTileHandler.html#a168da2e8ad8129186f8b13d05b31e440">TileHandler</a>
 </li>

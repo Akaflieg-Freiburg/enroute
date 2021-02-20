@@ -70,7 +70,7 @@ public:
      * @returns On Android, returns 'true' if not all required permissions have
      * been granted. On other systems, always returns 'false'
     */
-    Q_INVOKABLE bool missingPermissionsExist();
+    Q_INVOKABLE static bool missingPermissionsExist();
 
     /*! \brief Export content to file or to file sending app
      *
@@ -91,6 +91,13 @@ public:
      * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
     Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+
+    /*! \brief Get SSID of current Wi-Fi network
+     *
+     * @returns The SSID of the current Wi-Fi networks, or an empty of generic string
+     * if the device is not connected to a Wi-Fi or if the SSID could not be determined.
+     */
+    Q_INVOKABLE static QString getSSID();
 
     /*! \brief Import content from file
      *
@@ -140,7 +147,8 @@ public:
      * fully initialized.
      */
      Q_INVOKABLE void startReceiveOpenFileRequests();
-						 
+
+
 public slots:
     /*! \brief Hides the android splash screen.
      *
@@ -165,7 +173,7 @@ public slots:
      * @param show If set to 'true', a notification will be shown. If set to
      * 'false', any existing notification will be withdrawn
      */
-    void showDownloadNotification(bool show);
+    static void showDownloadNotification(bool show);
 
     /*! \brief Helper function, not for public consumption
      *

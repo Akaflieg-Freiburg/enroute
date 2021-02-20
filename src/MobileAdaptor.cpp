@@ -31,6 +31,8 @@
 
 const QStringList permissions({"android.permission.ACCESS_COARSE_LOCATION",
                                "android.permission.ACCESS_FINE_LOCATION",
+                               "android.permission.ACCESS_NETWORK_STATE",
+                               "android.permission.ACCESS_WIFI_STATE",
                                "android.permission.WRITE_EXTERNAL_STORAGE",
                                "android.permission.READ_EXTERNAL_STORAGE"});
 
@@ -84,6 +86,8 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
         }
     });
 #endif
+
+    getSSID();
 }
 
 
@@ -96,8 +100,9 @@ MobileAdaptor::~MobileAdaptor()
 
 void MobileAdaptor::hideSplashScreen()
 {
-    if (splashScreenHidden)
+    if (splashScreenHidden) {
         return;
+}
     splashScreenHidden = true;
 #if defined(Q_OS_ANDROID)
     QtAndroid::hideSplashScreen(200);
@@ -122,6 +127,17 @@ void MobileAdaptor::vibrateBrief()
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 #endif
+}
+
+
+auto MobileAdaptor::getSSID() -> QString
+{
+#if defined(Q_OS_ANDROID)
+    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                                                         "getSSID", "()Ljava/lang/String;");
+    return stringObject.toString();
+#endif
+    return "<unknown ssid>";
 }
 
 

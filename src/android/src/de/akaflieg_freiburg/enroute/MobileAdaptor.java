@@ -29,6 +29,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Vibrator;
 
 
@@ -41,6 +43,9 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 
     private static Vibrator             m_vibrator;
 
+    private static WifiManager          m_wifiManager;
+
+    
     public MobileAdaptor()
     {
         m_instance = this;
@@ -53,11 +58,20 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
             m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
         m_vibrator.vibrate(20);
     }
+
+    /* Get the SSID of the current WIFI network, if any.  Return a string like "<unknown SSID>" otherwise */
+    public static String getSSID()
+    {
+	if (m_wifiManager == null)
+	    m_wifiManager = (WifiManager) m_instance.getSystemService(Context.WIFI_SERVICE);
+	WifiInfo wifiInfo = m_wifiManager.getConnectionInfo();
+	return wifiInfo.getSSID();
+    }
     
     /* Show download notification */
     public static void notifyDownload(String text)
     {
-        m_notificationManager = (NotificationManager)m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
+        m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
 
 	// Cancel notification
 	if ("".equals(text)) {

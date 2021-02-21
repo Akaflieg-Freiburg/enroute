@@ -68,7 +68,8 @@ public class ShareActivity extends QtActivity {
      * Called when the activity is starting.
      *
      * This is where most initialization should go.
-     * We don't process any intent here as the app may* not be fully initialized yet.
+     * We don't process any intent here as the app may
+     * not be fully initialized yet.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {

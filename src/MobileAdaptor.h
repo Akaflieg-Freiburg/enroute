@@ -99,6 +99,15 @@ public:
      */
     Q_INVOKABLE static QString getSSID();
 
+    /*! \brief Pointer to static instance
+     *
+     * This method returns a pointer to a static instance of this class. In rare
+     * situations, during shutdown of the app, a nullptr might be returned.
+     *
+     * @returns A pointer to a static instance of this class
+     */
+    static MobileAdaptor *globalInstance();
+
     /*! \brief Import content from file
      *
      * On Android systems, this method does nothing.
@@ -127,12 +136,6 @@ public:
      */
     Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
-#if defined (Q_OS_ANDROID)
-    // Get single instance of the Share. This is used from the JNI "callback"
-    // setFileReceived(). It returns the single instance of the Share class.
-    static MobileAdaptor* getInstance();
-#endif
-
     /*! \brief Start receiving "open file" requests from platform
      *
      * This method should be called to indicate that the GUI is set up and ready
@@ -148,6 +151,12 @@ public:
      */
      Q_INVOKABLE void startReceiveOpenFileRequests();
 
+#if defined (Q_OS_ANDROID)
+    // Emits the signal "WifiConnected".
+    void emitWifiConnected() {
+        emit wifiConnected();
+    }
+#endif
 
 public slots:
     /*! \brief Hides the android splash screen.
@@ -211,6 +220,12 @@ signals:
      */
     void openFileRequest(QString fileName, MobileAdaptor::FileFunction fileFunction);
 
+    /*! \brief Emitted when a new WiFi connections becomes available
+     *
+     *  This signal is emitted when a new WiFi connection becomes available.
+     */
+    void wifiConnected();
+
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)
   
@@ -225,9 +240,6 @@ private:
 #if defined (Q_OS_ANDROID)
     // @returns True if an app could be started, false if no app was found
     bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
-
-    // Pointer to instance of this class, required for JNI calls
-    static MobileAdaptor* mInstance;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

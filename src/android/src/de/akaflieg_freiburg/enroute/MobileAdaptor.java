@@ -33,9 +33,18 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Vibrator;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
+import android.os.Bundle;
+import android.util.Log;
+
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 {
+    public static native void onWifiConnected();
+
     private static MobileAdaptor        m_instance;
 
     private static NotificationManager  m_notificationManager;
@@ -44,21 +53,53 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     private static Vibrator             m_vibrator;
 
     private static WifiManager          m_wifiManager;
+    private static WifiStateChangeReceiver m_wifiStateChangeReceiver;
 
+    /*
+      private BroadcastReceiver receiver = new BroadcastReceiver() {
+      
+      @Override
+      public void onReceive(Context context, Intent intent) {
+      NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+      Log.i("enroute Wi-Fi network changestate", info.getDetailedState().toString());
+      }
+      
+      };
+    */
     
     public MobileAdaptor()
     {
         m_instance = this;
+	m_wifiStateChangeReceiver = new WifiStateChangeReceiver();
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+	super.onCreate(savedInstanceState);
+
+	// Look for WiFi changes
+	IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+	m_instance.registerReceiver(m_wifiStateChangeReceiver, intentFilter);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
+        super.onDestroy();
+    }
+    
     /* Vibrate once, very briefly */
     public static void vibrateBrief()
     {
-        if (m_vibrator == null)
+        if (m_vibrator == null) {
             m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
+	}
         m_vibrator.vibrate(20);
     }
-
+    
     /* Get the SSID of the current WIFI network, if any.  Returns a string like "<unknown SSID>" otherwise */
     public static String getSSID()
     {
@@ -72,7 +113,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     public static void notifyDownload(String text)
     {
         m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
-
+	
 	// Cancel notification
 	if ("".equals(text)) {
 	    m_notificationManager.cancel(0);
@@ -102,5 +143,17 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	
 	m_notificationManager.notify(0, m_builder.build());
     }
-    
+
+    private class WifiStateChangeReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+	    NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+	    if (info.getState() == State.CONNECTED) {
+		onWifiConnected();
+	    }
+	}
+    }
+
 }

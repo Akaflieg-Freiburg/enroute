@@ -24,6 +24,10 @@
 #include <QDir>
 #include <QStandardPaths>
 
+// Static instance of this class
+Q_GLOBAL_STATIC(MobileAdaptor, MobileAdaptorStatic);
+
+
 #if defined(Q_OS_ANDROID)
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
@@ -35,8 +39,6 @@ const QStringList permissions({"android.permission.ACCESS_COARSE_LOCATION",
                                "android.permission.ACCESS_WIFI_STATE",
                                "android.permission.WRITE_EXTERNAL_STORAGE",
                                "android.permission.READ_EXTERNAL_STORAGE"});
-
-MobileAdaptor* MobileAdaptor::mInstance = nullptr;
 #endif
 
 
@@ -54,9 +56,6 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     exchangeDir.mkpath(fileExchangeDirectoryName);
 
 #if defined (Q_OS_ANDROID)
-    // we need the instance for the JNI Call
-    mInstance = this;
-
     // Ask for permissions
     QtAndroid::requestPermissionsSync(permissions);
 #endif
@@ -95,6 +94,12 @@ MobileAdaptor::~MobileAdaptor()
 {
   // Close all pending notifications
   showDownloadNotification(false);
+}
+
+
+auto MobileAdaptor::globalInstance() -> MobileAdaptor *
+{
+    return MobileAdaptorStatic;
 }
 
 
@@ -146,10 +151,28 @@ void MobileAdaptor::showDownloadNotification(bool show)
   Q_UNUSED(show)
     
 #if defined(Q_OS_ANDROID)
-    QString text;
+  QString text;
   if (show)
     text = tr("Downloading map data…");
   QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
   QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
 #endif
 }
+
+
+
+#if defined(Q_OS_ANDROID)
+
+extern "C" {
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv*, jobject)
+{
+    if (!MobileAdaptorStatic.exists())
+        return;
+    MobileAdaptorStatic->emitWifiConnected();
+}
+
+
+}
+#endif
+

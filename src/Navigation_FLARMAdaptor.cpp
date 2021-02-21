@@ -23,6 +23,7 @@
 
 #include "Navigation_FLARMAdaptor.h"
 #include "Navigation_SatNav.h"
+#include "MobileAdaptor.h"
 
 using namespace std::chrono_literals;
 
@@ -92,11 +93,12 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     _trafficObjectWithoutPosition = new Navigation::Traffic(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
-    // Wire up the connectTimer. Set it to attempt a FLARM connection every 5 Minutes
+    // Wire up the connectToTrafficReceiver. Set it to attempt a FLARM connection every 5 Minutes
     // Try our first connect right after startup
     connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
-    connectTimer.start(5min);
+    connect(MobileAdaptor::globalInstance(), &MobileAdaptor::wifiConnected, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
     QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
+    connectTimer.start(5min);
 
     // Setup receivingTimer
     receivingTimer.setSingleShot(true);

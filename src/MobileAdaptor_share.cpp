@@ -201,16 +201,6 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
 
 
 #if defined(Q_OS_ANDROID)
-MobileAdaptor* MobileAdaptor::getInstance()
-{
-    if (!mInstance) {
-        mInstance = new MobileAdaptor;
-    }
-
-    return mInstance;
-}
-
-
 bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
 {
     if (filePath == nullptr)
@@ -233,7 +223,7 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    MobileAdaptor::getInstance()->processFileOpenRequest(QString::fromUtf8(fname));
+    MobileAdaptor::globalInstance()->processFileOpenRequest(QString::fromUtf8(fname));
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

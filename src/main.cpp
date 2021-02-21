@@ -118,7 +118,7 @@ auto main(int argc, char *argv[]) -> int
 #endif
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
-    auto *adaptor = new MobileAdaptor();
+    auto *adaptor = MobileAdaptor::globalInstance();
     if (positionalArguments.length() == 1) {
         adaptor->processFileOpenRequest(positionalArguments[0]);
     }

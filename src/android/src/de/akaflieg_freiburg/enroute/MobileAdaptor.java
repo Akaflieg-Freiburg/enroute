@@ -59,7 +59,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
         m_vibrator.vibrate(20);
     }
 
-    /* Get the SSID of the current WIFI network, if any.  Return a string like "<unknown SSID>" otherwise */
+    /* Get the SSID of the current WIFI network, if any.  Returns a string like "<unknown SSID>" otherwise */
     public static String getSSID()
     {
 	if (m_wifiManager == null)

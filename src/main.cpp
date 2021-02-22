@@ -118,12 +118,11 @@ auto main(int argc, char *argv[]) -> int
 #endif
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
-    auto *adaptor = MobileAdaptor::globalInstance();
     if (positionalArguments.length() == 1) {
-        adaptor->processFileOpenRequest(positionalArguments[0]);
+        MobileAdaptor::globalInstance()->processFileOpenRequest(positionalArguments[0]);
     }
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(const QByteArray &)), adaptor, SLOT(processFileOpenRequest(const QByteArray &)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(const QByteArray &)), MobileAdaptor::globalInstance(), SLOT(processFileOpenRequest(const QByteArray &)));
 #endif
 
     /*
@@ -142,8 +141,8 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());
 
     // Make MobileAdaptor available to QML engine
-    QTimer::singleShot(4s, adaptor, &MobileAdaptor::hideSplashScreen);
-    engine->rootContext()->setContextProperty("mobileAdaptor", adaptor);
+    QTimer::singleShot(4s, MobileAdaptor::globalInstance(), &MobileAdaptor::hideSplashScreen);
+    engine->rootContext()->setContextProperty("mobileAdaptor", MobileAdaptor::globalInstance());
 
     // Attach library info
     auto *librarian = new Librarian(engine);
@@ -171,7 +170,7 @@ auto main(int argc, char *argv[]) -> int
     // Attach map manager
     auto *mapManager = new MapManager(networkAccessManager);
     engine->rootContext()->setContextProperty("mapManager", mapManager);
-    QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, adaptor, &MobileAdaptor::showDownloadNotification);
+    QObject::connect(mapManager->geoMaps(), &DownloadableGroup::downloadingChanged, MobileAdaptor::globalInstance(), &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
     auto *geoMapProvider = new GeoMapProvider(mapManager, librarian);

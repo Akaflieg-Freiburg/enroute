@@ -216,7 +216,6 @@ auto main(int argc, char *argv[]) -> int
     delete engine;
     delete mapManager; // This will also delete geoMapProvider
     delete networkAccessManager;
-    delete adaptor;
 
     return 0;
 }

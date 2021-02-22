@@ -221,6 +221,12 @@ devices:
 
 - Air Avionics AT-1 ‘AIR Traffic’ with software version 5.
 
+Users reported success with the following devices.
+
+- Stratux.
+
+- T-Beam.
+
 
 ### Technical Note
 

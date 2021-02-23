@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.4.0</span>
+   &#160;<span id="projectnumber">2.4.1</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -44,6 +44,7 @@ $(function() {
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classMobileAdaptor-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">MobileAdaptor Class Reference</div>  </div>
@@ -70,12 +71,12 @@ Public Slots</h2></td></tr>
 <tr class="memitem:a5edd413a1c2346b59ac7fb532cc9ff1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a5edd413a1c2346b59ac7fb532cc9ff1a">hideSplashScreen</a> ()</td></tr>
 <tr class="memdesc:a5edd413a1c2346b59ac7fb532cc9ff1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides the android splash screen.  <a href="#a5edd413a1c2346b59ac7fb532cc9ff1a">More...</a><br /></td></tr>
 <tr class="separator:a5edd413a1c2346b59ac7fb532cc9ff1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1a2ef9dbb21953a2554840c578c308d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#aa1a2ef9dbb21953a2554840c578c308d">vibrateBrief</a> ()</td></tr>
-<tr class="memdesc:aa1a2ef9dbb21953a2554840c578c308d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the device briefly vibrate.  <a href="#aa1a2ef9dbb21953a2554840c578c308d">More...</a><br /></td></tr>
-<tr class="separator:aa1a2ef9dbb21953a2554840c578c308d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a4496e52193c1509258b3742989a64b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a0a4496e52193c1509258b3742989a64b">showDownloadNotification</a> (bool show)</td></tr>
-<tr class="memdesc:a0a4496e52193c1509258b3742989a64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notifaction, indicating that a download is in progress.  <a href="#a0a4496e52193c1509258b3742989a64b">More...</a><br /></td></tr>
-<tr class="separator:a0a4496e52193c1509258b3742989a64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9aeebb931553a70f0432aa9d8f4491c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ac9aeebb931553a70f0432aa9d8f4491c">vibrateBrief</a> ()</td></tr>
+<tr class="memdesc:ac9aeebb931553a70f0432aa9d8f4491c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the device briefly vibrate.  <a href="#ac9aeebb931553a70f0432aa9d8f4491c">More...</a><br /></td></tr>
+<tr class="separator:ac9aeebb931553a70f0432aa9d8f4491c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae68a61cd067354ab343c91693818553f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ae68a61cd067354ab343c91693818553f">showDownloadNotification</a> (bool show)</td></tr>
+<tr class="memdesc:ae68a61cd067354ab343c91693818553f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notifaction, indicating that a download is in progress.  <a href="#ae68a61cd067354ab343c91693818553f">More...</a><br /></td></tr>
+<tr class="separator:ae68a61cd067354ab343c91693818553f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec045b31cb9780f701c4c00886e7bcec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">processFileOpenRequest</a> (const QString &amp;path)</td></tr>
 <tr class="memdesc:aec045b31cb9780f701c4c00886e7bcec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function, not for public consumption.  <a href="#aec045b31cb9780f701c4c00886e7bcec">More...</a><br /></td></tr>
 <tr class="separator:aec045b31cb9780f701c4c00886e7bcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -88,6 +89,9 @@ Signals</h2></td></tr>
 <tr class="memitem:abe1bf2a456b5e8a6b9f41d237401f89d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d">openFileRequest</a> (QString fileName, <a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a> fileFunction)</td></tr>
 <tr class="memdesc:abe1bf2a456b5e8a6b9f41d237401f89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when platform asks this app to open a file.  <a href="#abe1bf2a456b5e8a6b9f41d237401f89d">More...</a><br /></td></tr>
 <tr class="separator:abe1bf2a456b5e8a6b9f41d237401f89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcf4b5c5ea51cedec6ba52d3d7a23484"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#afcf4b5c5ea51cedec6ba52d3d7a23484">wifiConnected</a> ()</td></tr>
+<tr class="memdesc:afcf4b5c5ea51cedec6ba52d3d7a23484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a new WiFi connections becomes available.  <a href="#afcf4b5c5ea51cedec6ba52d3d7a23484">More...</a><br /></td></tr>
+<tr class="separator:afcf4b5c5ea51cedec6ba52d3d7a23484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -109,6 +113,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8c8a0a63217342abd1260f764af0535d"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d">startReceiveOpenFileRequests</a> ()</td></tr>
 <tr class="memdesc:a8c8a0a63217342abd1260f764af0535d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start receiving "open file" requests from platform.  <a href="#a8c8a0a63217342abd1260f764af0535d">More...</a><br /></td></tr>
 <tr class="separator:a8c8a0a63217342abd1260f764af0535d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a37277b7e33761b37eddd381a14950d27"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">getSSID</a> ()</td></tr>
+<tr class="memdesc:a37277b7e33761b37eddd381a14950d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get SSID of current Wi-Fi network.  <a href="#a37277b7e33761b37eddd381a14950d27">More...</a><br /></td></tr>
+<tr class="separator:a37277b7e33761b37eddd381a14950d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade4031bdd763bd2993417aab1f98f4e4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classMobileAdaptor.html">MobileAdaptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ade4031bdd763bd2993417aab1f98f4e4">globalInstance</a> ()</td></tr>
+<tr class="memdesc:ade4031bdd763bd2993417aab1f98f4e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance.  <a href="#ade4031bdd763bd2993417aab1f98f4e4">More...</a><br /></td></tr>
+<tr class="separator:ade4031bdd763bd2993417aab1f98f4e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to platform-specific capabilities of mobile devices. </p>
@@ -222,6 +235,63 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Empty string on success, the string "abort" on abort, and a translated error message otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a37277b7e33761b37eddd381a14950d27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37277b7e33761b37eddd381a14950d27">&#9670;&nbsp;</a></span>getSSID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE QString MobileAdaptor::getSSID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get SSID of current Wi-Fi network. </p>
+<dl class="section return"><dt>Returns</dt><dd>The SSID of the current Wi-Fi networks, or an empty of generic string if the device is not connected to a Wi-Fi or if the SSID could not be determined. </dd></dl>
+
+</div>
+</div>
+<a id="ade4031bdd763bd2993417aab1f98f4e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade4031bdd763bd2993417aab1f98f4e4">&#9670;&nbsp;</a></span>globalInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classMobileAdaptor.html">MobileAdaptor</a>* MobileAdaptor::globalInstance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to static instance. </p>
+<p>This method returns a pointer to a static instance of this class. In rare situations, during shutdown of the app, a nullptr might be returned.</p>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to a static instance of this class </dd></dl>
 
 </div>
 </div>
@@ -414,8 +484,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0a4496e52193c1509258b3742989a64b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a4496e52193c1509258b3742989a64b">&#9670;&nbsp;</a></span>showDownloadNotification</h2>
+<a id="ae68a61cd067354ab343c91693818553f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae68a61cd067354ab343c91693818553f">&#9670;&nbsp;</a></span>showDownloadNotification</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -424,7 +494,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void MobileAdaptor::showDownloadNotification </td>
+          <td class="memname">static void MobileAdaptor::showDownloadNotification </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>show</em></td><td>)</td>
@@ -433,7 +503,7 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">slot</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -469,8 +539,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa1a2ef9dbb21953a2554840c578c308d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1a2ef9dbb21953a2554840c578c308d">&#9670;&nbsp;</a></span>vibrateBrief</h2>
+<a id="ac9aeebb931553a70f0432aa9d8f4491c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9aeebb931553a70f0432aa9d8f4491c">&#9670;&nbsp;</a></span>vibrateBrief</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -479,7 +549,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void MobileAdaptor::vibrateBrief </td>
+          <td class="memname">static void MobileAdaptor::vibrateBrief </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -487,7 +557,7 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">slot</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -542,6 +612,34 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Empty string on success, a translated error message otherwise </dd></dl>
+
+</div>
+</div>
+<a id="afcf4b5c5ea51cedec6ba52d3d7a23484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcf4b5c5ea51cedec6ba52d3d7a23484">&#9670;&nbsp;</a></span>wifiConnected</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MobileAdaptor::wifiConnected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when a new WiFi connections becomes available. </p>
+<p>This signal is emitted when a new WiFi connection becomes available. </p>
 
 </div>
 </div>

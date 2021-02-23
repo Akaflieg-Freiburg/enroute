@@ -457,6 +457,7 @@ signals:
     /*! \brief Emitted whenever a new GS fix has arrived */
     void update();
 
+
 private slots:
     // Connected to source, in order to receive new data
     void statusUpdate(const QGeoPositionInfo &info);
@@ -469,6 +470,8 @@ private slots:
 
 
     void onPositionUpdated_Sat(const QGeoPositionInfo &info);
+
+    void initNavSource();
 
 private:
     Q_DISABLE_COPY_MOVE(SatNav)

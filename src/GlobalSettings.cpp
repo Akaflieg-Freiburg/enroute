@@ -210,6 +210,29 @@ auto GlobalSettings::useMetricUnitsStatic() -> bool
 }
 
 
+void GlobalSettings::setConnectToSim(bool useSim)
+{
+    if (useSim == connectToSim()) {
+        return;
+    }
+
+    settings.setValue("System/useSim", useSim);
+    emit connectToSimChanged();
+}
+
+
+auto GlobalSettings::connectToSimStatic() -> bool
+{
+    // Find out that unit system we should use
+    auto *globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings != nullptr) {
+        return globalSettings->connectToSim();
+    }
+    // Fallback in the very unlikely case that no global object exists
+    return false;
+}
+
+
 void GlobalSettings::installTranslators()
 {
     // Remove existing translators

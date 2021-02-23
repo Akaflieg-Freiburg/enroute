@@ -88,6 +88,8 @@ set(SOURCES
     Navigation_Geoid.h
     Navigation_SatNav.h
     Navigation_Traffic.h
+    SimGeoPositionInfoSource.h
+    SimInterface.h
     ScaleQuickItem.h
     Waypoint.h
     Weather_Decoder.h
@@ -119,6 +121,8 @@ set(SOURCES
     Navigation_Geoid.cpp
     Navigation_SatNav.cpp
     Navigation_Traffic.cpp
+    SimGeoPositionInfoSource.cpp
+    SimInterface.cpp
     ScaleQuickItem.cpp
     TileHandler.cpp
     TileServer.cpp

@@ -247,6 +247,14 @@ public:
      */
     void setUseMetricUnits(bool unitHorizKmh);
 
+    Q_PROPERTY(bool connectToSim READ connectToSim WRITE setConnectToSim NOTIFY connectToSimChanged)
+
+    bool connectToSim() const { return settings.value(QStringLiteral("System/useSim"), false).toBool(); }
+
+    static bool connectToSimStatic();
+
+    void setConnectToSim(bool useSim);
+
     /*! \brief Set to true is app should be shown in English rather than the system language */
     Q_PROPERTY(bool preferEnglish READ preferEnglish WRITE setPreferEnglish NOTIFY preferEnglishChanged)
 
@@ -276,6 +284,9 @@ signals:
 
     /*! Notifier signal */
     void hideUpperAirspacesChanged();
+
+    /*! Notifier signal */
+    void connectToSimChanged();
 
     /*! Notifier signal */
     void lastWhatsNewHashChanged();

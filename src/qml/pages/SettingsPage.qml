@@ -141,6 +141,30 @@ Page {
             }
 
             SwitchDelegate {
+                id: connectToSim
+                text: qsTr("Connect to simulation") + (
+                    globalSettings.connectToSim ? (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("Connecting to sim")
+                        +"</font>"
+                    ) : (
+                        `<br><font color="#606060" size="2">`
+                        + qsTr("Using internal GPS")
+                        + `</font>`
+                    )
+                )
+                icon.source: "/icons/self-withDirection.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    connectToSim.checked = globalSettings.connectToSim
+                }
+                onToggled: {
+                    mobileAdaptor.vibrateBrief()
+                    globalSettings.connectToSim = connectToSim.checked
+                }
+            }
+
+            SwitchDelegate {
                 id: useMetricUnits
                 text: qsTr("Use metric units")
                       + `<br><font color="#606060" size="2">`

@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include <compare>
-
 #include <QDataStream>
 #include <QGeoCoordinate>
 #include <QString>

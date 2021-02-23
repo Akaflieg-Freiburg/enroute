@@ -29,16 +29,10 @@ Q_GLOBAL_STATIC(MobileAdaptor, MobileAdaptorStatic);
 
 
 #if defined(Q_OS_ANDROID)
+#include <QAndroidJniEnvironment>
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
-#include <QAndroidJniEnvironment>
 
-const QStringList permissions({"android.permission.ACCESS_COARSE_LOCATION",
-                               "android.permission.ACCESS_FINE_LOCATION",
-                               "android.permission.ACCESS_NETWORK_STATE",
-                               "android.permission.ACCESS_WIFI_STATE",
-                               "android.permission.WRITE_EXTERNAL_STORAGE",
-                               "android.permission.READ_EXTERNAL_STORAGE"});
 #endif
 
 
@@ -57,6 +51,12 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 
 #if defined (Q_OS_ANDROID)
     // Ask for permissions
+    permissions << "android.permission.ACCESS_COARSE_LOCATION";
+    permissions << "android.permission.ACCESS_FINE_LOCATION";
+    permissions << "android.permission.ACCESS_NETWORK_STATE";
+    permissions << "android.permission.ACCESS_WIFI_STATE";
+    permissions << "android.permission.WRITE_EXTERNAL_STORAGE";
+    permissions << "android.permission.READ_EXTERNAL_STORAGE";
     QtAndroid::requestPermissionsSync(permissions);
 #endif
 
@@ -80,7 +80,7 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
             }
         }
         QAndroidJniEnvironment env;
-        if (env->ExceptionCheck()) {
+        if (env->ExceptionCheck() != 0u) {
             env->ExceptionClear();
         }
     });
@@ -119,9 +119,11 @@ Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 {
 #if defined (Q_OS_ANDROID)
     // Check is required permissions have been granted
-    for(const QString &permission : permissions)
-        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied)
+    foreach(auto permission, permissions) {
+        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied) {
             return true;
+}
+}
 #endif
     return false;
 }
@@ -152,8 +154,9 @@ void MobileAdaptor::showDownloadNotification(bool show)
     
 #if defined(Q_OS_ANDROID)
   QString text;
-  if (show)
+  if (show) {
     text = tr("Downloading map data…");
+}
   QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
   QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
 #endif
@@ -165,10 +168,11 @@ void MobileAdaptor::showDownloadNotification(bool show)
 
 extern "C" {
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv*, jobject)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-    if (!MobileAdaptorStatic.exists())
+    if (!MobileAdaptorStatic.exists()) {
         return;
+}
     MobileAdaptorStatic->emitWifiConnected();
 }
 

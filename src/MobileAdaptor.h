@@ -70,7 +70,7 @@ public:
      * @returns On Android, returns 'true' if not all required permissions have
      * been granted. On other systems, always returns 'false'
     */
-    Q_INVOKABLE static bool missingPermissionsExist();
+    Q_INVOKABLE bool missingPermissionsExist();
 
     /*! \brief Export content to file or to file sending app
      *
@@ -175,7 +175,7 @@ public slots:
      *
      * On other platforms, this does nothing.
     */
-    void vibrateBrief();
+    static void vibrateBrief();
 
     /*! \brief Shows a notifaction, indicating that a download is in progress
      *
@@ -239,7 +239,9 @@ private:
 
 #if defined (Q_OS_ANDROID)
     // @returns True if an app could be started, false if no app was found
-    bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
+    static bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
+
+    QStringList permissions;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

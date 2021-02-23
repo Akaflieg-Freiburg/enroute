@@ -225,13 +225,27 @@ public:
          */
         bool isNegative() const { return _distanceInM < 0.0; }
 
-        /*! \brief Comparison
+        /*! \brief Comparison: less than
          *
          *  @param rhs Right hand side of the comparison
          *
          *  @returns Result of the comparison
          */
-        auto operator<=>(const AviationUnits::Distance &rhs) const = default;
+        auto operator<(const AviationUnits::Distance &rhs) const
+        {
+            return _distanceInM < rhs._distanceInM;
+        }
+
+        /*! \brief Comparison: not equal
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        auto operator!=(const AviationUnits::Distance &rhs) const
+        {
+            return _distanceInM != rhs._distanceInM;
+        }
 
         /*! \brief Convert to nautical miles
          *

@@ -29,9 +29,9 @@
 #include <QUrl>
 
 #if defined(Q_OS_ANDROID)
+#include <QAndroidJniEnvironment>
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
-#include <QAndroidJniEnvironment>
 #else
 #include <QFileDialog>
 #include <QProcess>
@@ -55,7 +55,7 @@ void MobileAdaptor::importContent()
 
 auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-//#warning Need to handle user abort!
+    //#warning Need to handle user abort!
 
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
@@ -67,8 +67,9 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
 #if defined(Q_OS_ANDROID)
     auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1"+mime.preferredSuffix());
     bool success = outgoingIntent("sendFile", tmpPath, mimeType);
-    if (success)
+    if (success) {
         return QString();
+    }
     return tr("No suitable file sharing app could be found.");
 #else
     auto fileNameX = QFileDialog::getSaveFileName(nullptr,
@@ -102,8 +103,9 @@ auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeTy
     QString tmpPath = contentToTempFile(content, fileNameTemplate);
 #if defined(Q_OS_ANDROID)
     bool success = outgoingIntent("viewFile", tmpPath, mimeType);
-    if (success)
+    if (success) {
         return QString();
+    }
     return tr("No suitable app for viewing this data could be found.");
 #else
     bool success = QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
@@ -148,8 +150,9 @@ void MobileAdaptor::startReceiveOpenFileRequests()
 
     if (activity.isValid()) {
         QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
-        if (!jniTempDir.isValid())
+        if (!jniTempDir.isValid()) {
             return;
+        }
         activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
     }
 #endif
@@ -201,10 +204,11 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
 
 
 #if defined(Q_OS_ANDROID)
-bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
+auto MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
 {
-    if (filePath == nullptr)
+    if (filePath == nullptr) {
         return false;
+    }
 
     QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
     QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
@@ -214,13 +218,13 @@ bool MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
                 "(Ljava/lang/String;Ljava/lang/String;)Z",
                 jsPath.object<jstring>(),
                 jsMimeType.object<jstring>());
-    return ok;
+    return ok != 0U;
 }
 
 
 extern "C" {
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject, jstring jfname)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
     MobileAdaptor::globalInstance()->processFileOpenRequest(QString::fromUtf8(fname));

@@ -24,6 +24,7 @@
 
 #include "AviationUnits.h"
 #include "Navigation_SatNav.h"
+#include "SimGeoPositionInfoSource.h"
 
 
 // Static instance of this class
@@ -33,15 +34,6 @@ Q_GLOBAL_STATIC(Navigation::SatNav, satNavStatic);
 Navigation::SatNav::SatNav(QObject *parent)
     : QObject(parent)
 {
-    source = QGeoPositionInfoSource::createDefaultSource(this);
-
-    if (source != nullptr) {
-        sourceStatus = source->error();
-        connect(source,  SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
-        connect(source, &QGeoPositionInfoSource::updateTimeout, this, &SatNav::timeout);
-        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &SatNav::onPositionUpdated_Sat);
-    }
-
     QSettings settings;
     QGeoCoordinate tmp;
     tmp.setLatitude(settings.value(QStringLiteral("SatNav/lastValidLatitude"), _lastValidCoordinate.latitude()).toDouble());
@@ -52,16 +44,8 @@ Navigation::SatNav::SatNav(QObject *parent)
     }
     _lastValidTrack = qBound(0, settings.value(QStringLiteral("SatNav/lastValidTrack"), 0).toInt(), 359);
 
-    if (source != nullptr) {
-        source->startUpdates();
-        if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
-            _geoid = new Navigation::Geoid;
-        }
-    }
-
-    // Adjust and connect timeoutCounter
-    timeoutCounter.setSingleShot(true);
-    connect(&timeoutCounter, &QTimer::timeout, this, &SatNav::timeout);
+    connect(GlobalSettings::globalInstance(), &GlobalSettings::connectToSimChanged, this, &SatNav::initNavSource);
+    initNavSource();
 }
 
 
@@ -293,6 +277,42 @@ void Navigation::SatNav::onPositionUpdated_Sat(const QGeoPositionInfo &info)
     }
 
     statusUpdate(info);
+}
+
+void Navigation::SatNav::initNavSource()
+{
+    if (source) {
+        source->stopUpdates();
+    }
+    delete source;
+
+    if (GlobalSettings::globalInstance()->connectToSim()) {
+        source = new SimGeoPositionInfoSource(this);
+    }
+    else {
+        source = QGeoPositionInfoSource::createDefaultSource(this);
+    }
+
+    if (source != nullptr) {
+        sourceStatus = source->error();
+        connect(source,  SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
+        connect(source,  SIGNAL(updateTimeout), this, SLOT(timeout));
+        connect(source,  SIGNAL(positionUpdated(const QGeoPositionInfo &)), this, SLOT(onPositionUpdated_Sat(const QGeoPositionInfo &)));
+    }
+
+    if (source != nullptr) {
+        source->startUpdates();
+        if(_geoid == nullptr)
+        {
+            if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
+                _geoid = new Navigation::Geoid;
+            }
+        }
+    }
+
+    // Adjust and connect timeoutCounter
+    timeoutCounter.setSingleShot(true);
+    connect(&timeoutCounter, &QTimer::timeout, this, &SatNav::timeout);
 }
 
 

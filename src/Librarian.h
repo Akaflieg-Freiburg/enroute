@@ -59,7 +59,7 @@ public:
      *
      * @returns File content as a QString
      */
-    Q_INVOKABLE QString getStringFromRessource(const QString &name) const;
+    Q_INVOKABLE static QString getStringFromRessource(const QString &name) ;
 
     /*! \brief Exposes the hash of string stored in QRessource to QML
      *

@@ -31,7 +31,7 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 }
 
 
-auto Librarian::getStringFromRessource(const QString &name) const -> QString
+auto Librarian::getStringFromRessource(const QString &name) -> QString
 {
     if (name == ":text/authors.html") {
         return tr(R"html(<h3>Authors</h3>
@@ -115,7 +115,7 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 <p>Szymon Kocur (Polish translation)</p>
 
 <p></p>)html");
-     }
+    }
 
     if (name == ":text/aviationMapMissing.html") {
         return tr(R"html(
@@ -152,8 +152,9 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 
     if (name == ":text/info_enroute.html") {
         QString version(PROJECT_VERSION);
-        if (!QString(GIT_COMMIT).isEmpty())
+        if (!QString(GIT_COMMIT).isEmpty()) {
             version += QString(" • GIT #")+QString(GIT_COMMIT);
+        }
         return tr(R"html(<h3>Enroute Flight Navigation</h3>
 
 <p>Version %1</p>
@@ -179,10 +180,10 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 <p>This program builds on a number of open source libraries, including <a href="https://https://github.com/nnaumenko/metaf">Metaf</a>, <a href="https://www.openssl.org">OpenSSL</a>, <a href="https://www.qt.io">Qt</a>, <a href="https://github.com/nitroshare/qhttpengine">QHTTPEngine</a> and <a href="https://github.com/buelowp/sunset">sunset</a>.</p>
 
 <p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
-     }
+    }
 
     if (name == ":text/info_license.html") {
-      return tr(R"html(<h3>License</h3>
+        return tr(R"html(<h3>License</h3>
 
 <p>This program is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU General Public License V3</a> or, at your choice, any later version of this license.</p>
 
@@ -194,7 +195,7 @@ auto Librarian::getStringFromRessource(const QString &name) const -> QString
 
 <p>The style specification of the basemap is a modified version of the <a href="https://github.com/maputnik/osm-liberty">OSM liberty map design</a>, which is in turn originally derived from OSM Bright from Mapbox Open Styles. The code is licenses under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">BSD license</a>. The design is derived (although heavily altered) from OSM Bright from Mapbox Open Styles which is licensed under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">Creative Commons Attribution 3.0 license</a>. The map is displaying and styling modified data from <a href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a> with <a href="https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md">CC-BY 4.0 design license</a>.
 
-<p>The map is displaying and styling data from <a href="http://www.openaip.net">openAIP</a>, which is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</a>. The map is also displaying and styling data from <a href="https://www.openflightmaps.org/">open flightmaps</a>, which is licensed under the <a href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA General Users´ License</a>.</p>)html");
+                  <p>The map is displaying and styling data from <a href="http://www.openaip.net">openAIP</a>, which is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</a>. The map is also displaying and styling data from <a href="https://www.openflightmaps.org/">open flightmaps</a>, which is licensed under the <a href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA General Users´ License</a>.</p>)html");
     }
 
     if (name == ":text/missingPermissions.html") {
@@ -227,7 +228,7 @@ Users reported success with the following devices.
 
 - T-Beam.
 
-
+)html") + tr(R"html(
 ### Technical Note
 
 **Enroute Flight Navigation** expects that the traffic receiver deploys a WLAN
@@ -236,7 +237,12 @@ network via Wi-Fi and publishes a stream of NMEA sentences at the IP address
 specification outlined in in the document FTD-012 'Data Port Interface Control
 Document (ICD)', Version 7.13, as published by FLARM Technology Ltd.
 
+**Enroute Flight Navigation** checks the IP address 192.168.1.1, port 2000 at
+regular intervals and whenever the network configuration of your device
+changes. If a data stream is found, it will automatically connect to the stream,
+parse the data and display the traffic on its moving map.
 
+)html") + tr(R"html(
 ## Checklist
 
 Before you try to connect, make sure that the following conditions are met.
@@ -252,12 +258,7 @@ Before you try to connect, make sure that the following conditions are met.
   data. This is currently not supported. Set up your device so that no
   additional password is required.
 
-**Enroute Flight Navigation** checks the IP address 192.168.1.1, port 2000 at
-regular intervals and whenever the network configuration of your device
-changes. If a data stream is found, it will automatically connect to the stream,
-parse the data and display the traffic on its moving map.
-
-
+)html") + tr(R"html(
 ## Connect to the traffic receiver
 
 It takes a two steps to connect **Enroute Flight Navigation** to the traffic
@@ -265,6 +266,7 @@ receiver for the first time. Do not despair. Once things are set up properly,
 your device should automatically detect the traffic receiver's WLAN network,
 enter the network and connect to the traffic data stream whenever you go flying.
 
+)html") + tr(R"html(
 ### Step 1: Enter the traffic receiver's WLAN network
 
 - Make sure that the traffic is connected to power and switched on. In a typical
@@ -282,7 +284,7 @@ Most operating systems will offer to remember the connection, so that your
 device will automatically connect to this WLAN in the future. We recommend to
 use this option.
 
-
+)html") + tr(R"html(
 ### Step 2: Connect to the traffic data stream
 
 - Open the app **Enroute Flight Navigation** on your device.
@@ -297,15 +299,13 @@ entry. The "Traffic Receiver Status" page will open. The page explains the
 connection status in detail, and explains how to establish a connection
 manually.
 
-
+)html") + tr(R"html(
 ## Troubleshooting
-
 
 ### The app cannot connect to the traffic data stream
 
 - If check that your device is connected to the WLAN network deployed by your
   traffic receiver.
-
 
 ### The connection breaks down after a few seconds
 
@@ -319,11 +319,12 @@ at random if more than one device tries to access.
   receiver's data stream.
 
 - Many traffic receivers offer 'configuration panels' that can be accessed via a
-  web browser. Close all web browsers.)html");
+  web browser. Close all web browsers.
+)html");
     }
 
     if (name == ":text/tooManyDownloads.html") {
-      return tr(R"html(<h3>Too many maps</h3>
+        return tr(R"html(<h3>Too many maps</h3>
 
 <p>Thank you for using Enroute Flight Navigation, we appreciate your engagement very much.</p>
 
@@ -337,7 +338,7 @@ at random if more than one device tries to access.
     }
 
     if (name == ":text/weatherPermissions.html") {
-      return tr(R"html(<h3>Privacy Warning</h3>
+        return tr(R"html(<h3>Privacy Warning</h3>
       
 <p>Like most other programs, this app uses weather data provided by the <a href='https://www.aviationweather.gov'/>Aviation Weather Center</a>, a website of the United States government.</p>
 
@@ -378,18 +379,20 @@ auto Librarian::getStringHashFromRessource(const QString &name) const -> uint
 
 auto Librarian::flightRouteExists(const QString &baseName) const -> bool
 {
-  return QFile::exists(flightRouteFullPath(baseName));
+    return QFile::exists(flightRouteFullPath(baseName));
 }
 
 
 auto Librarian::flightRouteGet(const QString &baseName) const -> QObject *
 {
-    auto route = new FlightRoute(nullptr, nullptr);
-    if (!route)
+    auto *route = new FlightRoute(nullptr, nullptr);
+    if (route == nullptr) {
         return nullptr;
+    }
     auto error = route->loadFromGeoJSON(flightRouteFullPath(baseName));
-    if (error.isEmpty())
+    if (error.isEmpty()) {
         return route;
+    }
     delete route;
     return nullptr;
 }
@@ -434,8 +437,9 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 
     QStringList result;
     foreach(auto inputString, inputStrings)
-        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive))
+        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive)) {
             result << inputString;
+        }
 
     return result;
 }
@@ -444,8 +448,9 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 auto Librarian::simplifySpecialChars(const QString &string) -> QString
 {
     QString cacheString = simplifySpecialChars_cache[string];
-    if (!cacheString.isEmpty())
+    if (!cacheString.isEmpty()) {
         return cacheString;
+    }
 
     QString normalizedString = string.normalized(QString::NormalizationForm_KD);
     return normalizedString.remove(specialChars);

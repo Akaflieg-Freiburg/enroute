@@ -296,7 +296,7 @@ void Navigation::SatNav::initNavSource()
     if (source != nullptr) {
         sourceStatus = source->error();
         connect(source,  SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
-        connect(source,  SIGNAL(updateTimeout), this, SLOT(timeout));
+        connect(source, &QGeoPositionInfoSource::updateTimeout, this, &Navigation::SatNav::timeout);
         connect(source,  SIGNAL(positionUpdated(const QGeoPositionInfo &)), this, SLOT(onPositionUpdated_Sat(const QGeoPositionInfo &)));
     }
 

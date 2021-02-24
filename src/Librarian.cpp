@@ -237,6 +237,7 @@ network via Wi-Fi and publishes a stream of NMEA sentences at the IP address
 specification outlined in in the document FTD-012 'Data Port Interface Control
 Document (ICD)', Version 7.13, as published by FLARM Technology Ltd.
 
+)html") + tr(R"html(
 **Enroute Flight Navigation** checks the IP address 192.168.1.1, port 2000 at
 regular intervals and whenever the network configuration of your device
 changes. If a data stream is found, it will automatically connect to the stream,

@@ -87,6 +87,21 @@ public:
         return _errorString;
     }
 
+    /*! \brief Indicates that traffic receiver sends position data.
+     *
+     *  This property is set to true if position data has been received from the traffic receiver in the last five seconds.
+     */
+    Q_PROPERTY(bool receivingPositionData READ receivingPositionData NOTIFY receivingPositionDataChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property receivingPositionData
+     */
+    bool receivingPositionData() const
+    {
+        return _receivingPositionData;
+    }
+
     /*! \brief Status codes */
     enum Status
     {
@@ -99,7 +114,7 @@ public:
         /*! \brief Connected to a device, but no data flowing */
         Connected,
 
-        /*! \brief Connected to a device and receiving data */
+        /*! \brief Connected to a device and receiving FLARM heartbeat */
         Receiving
     };
     Q_ENUM(Status)
@@ -178,6 +193,9 @@ signals:
     void positionInfo(QGeoPositionInfo);
 
     /*! \brief Notifier signal */
+    void receivingPositionDataChanged(bool);
+
+    /*! \brief Notifier signal */
     void statusChanged(Navigation::FLARMAdaptor::Status);
 
     /*! \brief Traffic receiver hardware version
@@ -251,6 +269,9 @@ private slots:
     // Update the property "error" and emit notification signals
     void setErrorString(const QString &newErrorString);
 
+    // Update the property "receivingPositionData" and emit notification signals
+    void updateReceivingPositionData();
+
     // Update the property "status" and emit notification signals
     void updateStatus();
 
@@ -261,15 +282,16 @@ private:
     // Try to connect every five minutes
     QTimer connectTimer;
 
-    // Timer: the property 'receiving' is updated when no new data is coming is
-    // for five seconds
-    QTimer receivingTimer;
+    // Timers. Properties are reset when no new data comes in for five seconds.
+    QTimer heartbeatTimer;
+    QTimer receivingPositionDataTimer;
 
     QPointer<QTcpSocket> socket;
     QTextStream textStream;
 
-    // Property lastError.
+    // Property caches
     QString _errorString;
+    bool _receivingPositionData {false};
 
     // GPS altitude information
     AviationUnits::Distance _altitude;

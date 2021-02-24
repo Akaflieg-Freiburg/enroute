@@ -101,8 +101,8 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     connectTimer.start(5min);
 
     // Setup receivingTimer
-    receivingTimer.setSingleShot(true);
-    receivingTimer.setInterval(5s);
+    heartbeatTimer.setSingleShot(true);
+    heartbeatTimer.setInterval(5s);
 
     //
     // Property bindings
@@ -110,7 +110,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 
     // Bind property "status"
     connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::updateStatus);
-    connect(&receivingTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::updateStatus);
+    connect(&heartbeatTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::updateStatus);
 
 
     //
@@ -128,7 +128,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-hard.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
-//    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
+    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
 
@@ -222,10 +222,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         return;
     }
 
-    // Valid NMEA data received.
-    receivingTimer.start();
-    updateStatus();
-
     // Split the message into pieces
     auto arguments = msg.split(QStringLiteral(","));
     if (arguments.isEmpty()) {
@@ -309,6 +305,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (TT != qQNaN()) {
             pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
         }
+        qWarning() << "Position data";
         emit positionInfo(pInfo);
         return;
     }
@@ -630,6 +627,9 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
     // FLARM Heartbeat
     if (messageType == u"PFLAU") {
+        // Heartbeat received.
+        heartbeatTimer.start();
+        updateStatus();
         return;
     }
 
@@ -800,6 +800,21 @@ void Navigation::FLARMAdaptor::setErrorString(const QString &newErrorString)
 }
 
 
+void Navigation::FLARMAdaptor::updateReceivingPositionData()
+{
+#warning need to wire up
+
+    auto newReceivingPositionData = receivingPositionDataTimer.isActive();
+
+    // Update property and emit signal if necessary
+    if (_receivingPositionData == newReceivingPositionData) {
+        return;
+    }
+    _receivingPositionData = newReceivingPositionData;
+    emit receivingPositionDataChanged(_receivingPositionData);
+}
+
+
 void Navigation::FLARMAdaptor::updateStatus()
 {
     // Paranoid safety check
@@ -815,7 +830,7 @@ void Navigation::FLARMAdaptor::updateStatus()
     if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
         newStatus = Connected;
     }
-    if ((newStatus == Connected) && receivingTimer.isActive()) {
+    if ((newStatus == Connected) && heartbeatTimer.isActive()) {
         newStatus = Receiving;
     }
 

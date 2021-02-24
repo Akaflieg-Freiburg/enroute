@@ -123,7 +123,7 @@ Page {
                         return qsTr("Trying to connect to traffic receiver at IP address 192.168.1.1, port 2000 …")
                     if (flarmAdaptor.status == FLARMAdaptor.Connected)
                         return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Waiting for data …")
-                    return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Receiving traffic information …")
+                    return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Receiving FLARM heartbeat.")
                 }
 
                 wrapMode: Text.WordWrap

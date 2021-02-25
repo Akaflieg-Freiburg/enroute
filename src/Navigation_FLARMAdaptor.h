@@ -91,6 +91,21 @@ public:
      *
      *  This property is set to true if position data has been received from the traffic receiver in the last five seconds.
      */
+    Q_PROPERTY(bool receivingBarometricAltData READ receivingBarometricAltData NOTIFY receivingBarometricAltDataChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property receivingPositionData
+     */
+    bool receivingBarometricAltData() const
+    {
+        return _receivingBarometricAltData;
+    }
+
+    /*! \brief Indicates that traffic receiver sends position data.
+     *
+     *  This property is set to true if position data has been received from the traffic receiver in the last five seconds.
+     */
     Q_PROPERTY(bool receivingPositionData READ receivingPositionData NOTIFY receivingPositionDataChanged)
 
     /*! \brief Getter function for the property with the same name
@@ -196,6 +211,9 @@ signals:
     void receivingPositionDataChanged(bool);
 
     /*! \brief Notifier signal */
+    void receivingBarometricAltDataChanged(bool);
+
+    /*! \brief Notifier signal */
     void statusChanged(Navigation::FLARMAdaptor::Status);
 
     /*! \brief Traffic receiver hardware version
@@ -270,6 +288,9 @@ private slots:
     void setErrorString(const QString &newErrorString);
 
     // Update the property "receivingPositionData" and emit notification signals
+    void updateReceivingBarometricAltData();
+
+    // Update the property "receivingPositionData" and emit notification signals
     void updateReceivingPositionData();
 
     // Update the property "status" and emit notification signals
@@ -283,7 +304,8 @@ private:
     QTimer connectTimer;
 
     // Timers. Properties are reset when no new data comes in for five seconds.
-    QTimer heartbeatTimer;
+    QTimer receivingBarometricAltDataTimer;
+    QTimer receivingHeartbeatTimer;
     QTimer receivingPositionDataTimer;
 
     QPointer<QTcpSocket> socket;
@@ -291,6 +313,7 @@ private:
 
     // Property caches
     QString _errorString;
+    bool _receivingBarometricAltData {false};
     bool _receivingPositionData {false};
 
     // GPS altitude information

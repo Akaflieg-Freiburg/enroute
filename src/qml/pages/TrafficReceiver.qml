@@ -121,12 +121,23 @@ Page {
                         return qsTr("Not connected to a traffic receiver.")
                     if (flarmAdaptor.status == FLARMAdaptor.Connecting)
                         return qsTr("Trying to connect to traffic receiver at IP address 192.168.1.1, port 2000 …")
+                    var result = qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000.")
                     if (flarmAdaptor.status == FLARMAdaptor.Connected)
-                        return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Waiting for data …")
-                    return qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000. Receiving FLARM heartbeat.")
+                        return result + " " + qsTr("Waiting for data …")
+
+                    // Traffic receiver is connected and FLARM heartbeat is being received.
+                    result += "<ul style=\"margin-left:-25px;\">\n"
+                    result += "<li>" + qsTr("Receiving FLARM heartbeat.") + "</li>\n"
+                    if (flarmAdaptor.receivingBarometricAltData)
+                        result += "<li>" + qsTr("Receiving barometric altitude.") + "</li>\n"
+                    if (flarmAdaptor.receivingPositionData)
+                        result += "<li>" + qsTr("Receiving satnav position.") + "</li>\n"
+                    result += "</ul>\n"
+                    return result
                 }
 
                 wrapMode: Text.WordWrap
+                textFormat: Text.RichText
 
                 bottomPadding: 0.2*Qt.application.font.pixelSize
                 topPadding: 0.2*Qt.application.font.pixelSize
@@ -241,7 +252,7 @@ Page {
     }
 
 
-    LongTextDialogMD {
+    LongTextDialog {
         id: trafficHelp
         standardButtons: Dialog.Ok
         anchors.centerIn: parent

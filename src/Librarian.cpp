@@ -212,115 +212,119 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == ":text/flarmSetup.md") {
         return tr(R"html(
-In order to display nearby traffic on the moving map, **Enroute Flight
-Navigation** can connect to your aircraft's traffic receiver (typically a FLARM
-device).
+<p>In order to display nearby traffic on the moving map, <strong>Enroute Flight
+Navigation</strong> can connect to your aircraft's traffic receiver (typically a FLARM
+device).</p>
 
-**Enroute Flight Navigation** does not support all possible devices and all
-possible setup options. The author has tested the app with the following
-devices:
+<p>The author has tested the <strong>Enroute Flight Navigation</strong> with the
+following traffic receivers.</p>
 
-- Air Avionics AT-1 ‘AIR Traffic’ with software version 5.
+<ul style="margin-left:-25px;">
+  <li>Air Avionics AT-1 ‘AIR Traffic’ with software version 5.</li>
+</ul>
 
-Users reported success with the following devices.
+<p>Users reported success with the following traffic receivers.</p>
 
-- Stratux.
-
-- T-Beam.
-
+<ul style="margin-left:-25px;">
+  <li>Stratux</li>
+  <li>T-Beam</li>
+</ul>
 )html") + tr(R"html(
-### Technical Note
+<h3>Technical Note</h3>
 
-**Enroute Flight Navigation** expects that the traffic receiver deploys a WLAN
+<p><strong>Enroute Flight Navigation</strong> expects that the traffic receiver deploys a WLAN
 network via Wi-Fi and publishes a stream of NMEA sentences at the IP address
 192.168.1.1, port 2000 of that network. The NMEA sentences must conform to the
 specification outlined in in the document FTD-012 'Data Port Interface Control
-Document (ICD)', Version 7.13, as published by FLARM Technology Ltd.
+Document (ICD)', Version 7.13, as published by FLARM Technology Ltd.</p>
 
 )html") + tr(R"html(
-**Enroute Flight Navigation** checks the IP address 192.168.1.1, port 2000 at
-regular intervals and whenever the network configuration of your device
-changes. If a data stream is found, it will automatically connect to the stream,
-parse the data and display the traffic on its moving map.
+<h2>Before you connect</h2>
 
-)html") + tr(R"html(
-## Checklist
+<p>Before you try to connect this app to your traffic receiver, make sure
+that the following conditions are met.</p>
 
-Before you try to connect, make sure that the following conditions are met.
+<ul style="margin-left:-25px;">
+  <li>Your traffic receiver has an integrated Wi-Fi interface that acts as a
+  wireless access point. Bluetooth devices are currently not supported.</li>
 
-- Your traffic receiver has an integrated Wi-Fi interface that acts as a
-  wireless access point. Bluetooth devices are currently not supported.
-
-- You know the network name (=SSID) of the WLAN network deployed by your traffic
+  <li>You know the network name (=SSID) of the WLAN network deployed by your traffic
   receiver. If the network is encrypted, you also need to know the WLAN
-  password.
+  password.</li>
 
-- Some devices require an additional password in order to access traffic
+  <li>Some devices require an additional password in order to access traffic
   data. This is currently not supported. Set up your device so that no
-  additional password is required.
+  additional password is required.</li>
+</ul>
+)html") + tr(R"html(
+<h2>Connecting to the traffic receiver</h2>
+
+<p>It takes a two steps to connect <strong>Enroute Flight
+Navigation</strong> to the traffic receiver for the first time. Once things
+are set up properly, your device should automatically detect the traffic
+receiver's WLAN network, enter the network and connect to the traffic data
+stream whenever you go flying.</p>
 
 )html") + tr(R"html(
-## Connect to the traffic receiver
+<h3>Step 1: Enter the traffic receiver's WLAN network</h3>
 
-It takes a two steps to connect **Enroute Flight Navigation** to the traffic
-receiver for the first time. Do not despair. Once things are set up properly,
-your device should automatically detect the traffic receiver's WLAN network,
-enter the network and connect to the traffic data stream whenever you go flying.
-
-)html") + tr(R"html(
-### Step 1: Enter the traffic receiver's WLAN network
-
-- Make sure that the traffic is connected to power and switched on. In a typical
+<ul style="margin-left:-25px;">
+  <li>Make sure that the traffic receiver has power and is switched on. In a typical
   aircraft installation, the traffic receiver is connected to the 'Avionics'
   switch and will automatically switch on. You may need to wait a minute before
-  the WLAN comes online and is visible to your device.
+  the WLAN comes online and is visible to your device.</li>
 
-- Enter the WLAN network deployed by your traffic receiver. This is usually done
+  <li>Enter the WLAN network deployed by your traffic receiver. This is usually done
   in the "WLAN Settings" of your device. Enter the WLAN password if
   required. Some devices will issue a warning that the WLAN is not connected to
   the internet. In this case, you might need to confirm that you wish to enter
-  the WLAN network.
+  the WLAN network.</li>
+</ul>
 
-Most operating systems will offer to remember the connection, so that your
+<p>Most operating systems will offer to remember the connection, so that your
 device will automatically connect to this WLAN in the future. We recommend to
-use this option.
+use this option.</p>
 
 )html") + tr(R"html(
-### Step 2: Connect to the traffic data stream
+<h3>Step 2: Connect to the traffic data stream</h3>
 
-- Open the app **Enroute Flight Navigation** on your device.
+<p>Open the main menu and navigate to the "Information" menu.</p>
 
-- Open the main menu and navigate to the "Information" menu. If the entry
-  "Traffic Receiver" is highlighted in green, then **Enroute Flight Navigation**
-  has already found the traffic receiver in the network and has connected to
-  it. Congratulations, you are done!
+<ul style="margin-left:-25px;">
+  <li>If the entry "Traffic Receiver" is highlighted in green, then <strong>Enroute
+  Flight Navigation</strong> has already found the traffic receiver in the network
+  and has connected to it. Congratulations, you are done!</li>
 
-If the entry "Traffic Receiver" is not highlighted in green, then select the
-entry. The "Traffic Receiver Status" page will open. The page explains the
-connection status in detail, and explains how to establish a connection
-manually.
-
+  <li>If the entry "Traffic Receiver" is not highlighted in green, then select the
+  entry. The "Traffic Receiver Status" page will open. The page explains the
+  connection status in detail, and explains how to establish a connection
+  manually.</li>
+</ul>
 )html") + tr(R"html(
-## Troubleshooting
+<h2>Troubleshooting</h2>
 
-### The app cannot connect to the traffic data stream
+<h4>The app cannot connect to the traffic data stream</h4>
 
-- If check that your device is connected to the WLAN network deployed by your
-  traffic receiver.
+<ul style="margin-left:-25px;">
+  <li>If check that your device is connected to the WLAN network deployed by your
+  traffic receiver.</li>
+</ul>
 
-### The connection breaks down after a few seconds
+<h4>The connection breaks down after a few seconds</h4>
 
-Most traffic receivers cannot serve more than one client and abort connections
-at random if more than one device tries to access.
+<p>Most traffic receivers cannot serve more than one client and abort connections
+at random if more than one device tries to access.</p>
 
-- Make sure that there no second device connected to the traffic receiver's WLAN
-  network. The other device might well be in your friend's pocket!
+<ul style="margin-left:-25px;">
+  <li>Make sure that there no second device connected to the traffic receiver's WLAN
+  network. The other device might well be in your friend's pocket!</li>
 
-- Make sure that there is no other app trying to connected to the traffic
-  receiver's data stream.
+  <li>Make sure that there is no other app trying to connected to the traffic
+  receiver's data stream.</li>
 
-- Many traffic receivers offer 'configuration panels' that can be accessed via a
-  web browser. Close all web browsers.
+  <li>Many traffic receivers offer "configuration panels" that can be accessed via a
+  web browser. Close all web browsers.</li>
+</ul>
 )html");
     }
 

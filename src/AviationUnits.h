@@ -229,7 +229,7 @@ public:
          *
          *  @returns Result of the comparison
          */
-        auto operator<(const AviationUnits::Distance &rhs) const
+        auto operator<(AviationUnits::Distance rhs) const
         {
             return _distanceInM < rhs._distanceInM;
         }
@@ -240,7 +240,7 @@ public:
          *
          *  @returns Result of the comparison
          */
-        auto operator!=(const AviationUnits::Distance &rhs) const
+        auto operator!=(AviationUnits::Distance rhs) const
         {
             return _distanceInM != rhs._distanceInM;
         }

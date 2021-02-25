@@ -183,7 +183,7 @@ ApplicationWindow {
                                 if (flarmAdaptor.status === FLARMAdaptor.Connected)
                                     result = result + qsTr("Connected, waiting for data…")
                                 if (flarmAdaptor.status === FLARMAdaptor.Receiving)
-                                    result = result + qsTr("Receiving traffic information")
+                                    result = result + qsTr("Receiving FLARM heartbeat.")
                                 result = result + `</font>`
                                 return result
                             }

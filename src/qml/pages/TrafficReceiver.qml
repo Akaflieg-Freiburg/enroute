@@ -190,6 +190,7 @@ Page {
 
 <ul style=\"margin-left:-25px;\">
 <li>Make sure that your device has entered the WLAN network deployed by your traffic receiver.  If not, then use the button at the bottem of the screen to abort the connection attempt.</li>
+<li>Click on the question mark in the page title to open a more detailed help dialog.</li>
 </ul>
 ")
                     if (flarmAdaptor.status == FLARMAdaptor.Connected)

@@ -441,6 +441,10 @@ public:
    */
     Q_INVOKABLE QString wayTo(const QGeoCoordinate& position) const;
 
+    QString sourceName() const;
+
+    Q_PROPERTY(QString sourceName READ sourceName NOTIFY update)
+
 signals:
     /*! \brief Emitted whenever the suggested icon changes */
     void iconChanged();

@@ -19,6 +19,8 @@ public:
 
     QGeoPositionInfo lastKnownPosition() const;
 
+    QString simName() const { return _simName; };
+
 public slots:
     void readPendingDatagrams();
 
@@ -26,8 +28,6 @@ signals:
     void positionUpdated(const QGeoPositionInfo &update);
 
     void timeout();
-
-    void simNameChanged(const QString &simName);
 
 private:
     QUdpSocket *_udpSocket = nullptr;

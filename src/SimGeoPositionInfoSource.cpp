@@ -25,9 +25,9 @@ int SimGeoPositionInfoSource::minimumUpdateInterval() const
     return 1000;
 }
 
-QString SimGeoPositionInfoSource::sourceName() const
+QString SimGeoPositionInfoSource::simName() const
 {
-    return _sourceName;
+    return _simInterface->simName();
 }
 
 QGeoPositionInfoSource::Error SimGeoPositionInfoSource::error() const
@@ -41,7 +41,6 @@ void SimGeoPositionInfoSource::startUpdates()
         _simInterface = new SimInterface(this);
     }
 
-    connect(_simInterface, &SimInterface::simNameChanged, this, &SimGeoPositionInfoSource::setSourceName);
     connect(_simInterface, &SimInterface::positionUpdated, this, &SimGeoPositionInfoSource::positionUpdated);
     connect(_simInterface, &SimInterface::timeout, this, &SimGeoPositionInfoSource::updateTimeout);
 
@@ -55,9 +54,4 @@ void SimGeoPositionInfoSource::stopUpdates()
 
 void SimGeoPositionInfoSource::requestUpdate(int)
 {
-}
-
-void SimGeoPositionInfoSource::setSourceName(const QString &sourceName)
-{
-    _sourceName = sourceName;
 }

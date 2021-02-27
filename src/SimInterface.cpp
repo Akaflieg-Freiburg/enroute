@@ -48,12 +48,13 @@ void SimInterface::readPendingDatagrams()
 
         if (list[0].contains("XGPS")) {
             if (_simName != list[0].remove(0,4)) {
-                _simName = list[0];
-                if (_simName == "1") {
-                    emit simNameChanged("X-Plane");
+                if ("1" == list[0]) {
+                    if (_simName != "X-Plane") {
+                        _simName = "X-Plane";
+                    }
                 }
                 else {
-                    emit simNameChanged(_simName);
+                    _simName = list[0];
                 }
             }
 

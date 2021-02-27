@@ -150,16 +150,20 @@ ApplicationWindow {
                         id: aboutMenu
 
                         ItemDelegate { // Sat Status
-                            text: qsTr("Satellite Navigation")
-                                  +`<br><font color="#606060" size="2">`
-                                  + qsTr("Status")
-                                  + `: ${satNav.statusAsString}</font>`
-                            icon.source: "/icons/material/ic_satellite.svg"
+                            text: globalSettings.connectToSim ? qsTr("Connected to Sim: ") + satNav.sourceName
+                                                                +`<br><font color="#606060" size="2">`
+                                                                + qsTr("Status")
+                                                                + `: ${satNav.statusAsString}</font>`
+                                                              : qsTr("Satellite Navigation")
+                                                                +`<br><font color="#606060" size="2">`
+                                                                + qsTr("Status")
+                                                                + `: ${satNav.statusAsString}</font>`
+                            icon.source: globalSettings.connectToSim ? "/icons/material/ic_computer.svg" : "/icons/material/ic_satellite.svg"
                             Layout.fillWidth: true
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
                                 dialogLoader.active = false
-                                dialogLoader.source = "dialogs/SatNavStatusDialog.qml"
+                                dialogLoader.source = globalSettings.connectToSim ? "dialogs/SimInterfaceStatusDialog.qml" : "dialogs/SatNavStatusDialog.qml"
                                 dialogLoader.active = true
                                 aboutMenu.close()
                                 drawer.close()

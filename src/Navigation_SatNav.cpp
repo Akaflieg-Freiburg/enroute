@@ -296,7 +296,7 @@ void Navigation::SatNav::initNavSource()
     if (source != nullptr) {
         sourceStatus = source->error();
         connect(source,  SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
-        connect(source, &QGeoPositionInfoSource::updateTimeout, this, &Navigation::SatNav::timeout);
+        connect(source,  SIGNAL(updateTimeout()), this, SLOT(timeout()));
         connect(source,  SIGNAL(positionUpdated(const QGeoPositionInfo &)), this, SLOT(onPositionUpdated_Sat(const QGeoPositionInfo &)));
     }
 
@@ -421,6 +421,8 @@ void Navigation::SatNav::timeout()
     // Clear lastInfo, stop counter
     lastInfo = QGeoPositionInfo();
 
+    timeoutCounter.stop();
+
     emit iconChanged();
     emit statusChanged();
     emit update();
@@ -495,4 +497,16 @@ auto Navigation::SatNav::wayTo(const QGeoCoordinate& position) const -> QString
         return QStringLiteral("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     }
     return QStringLiteral("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+}
+
+
+QString Navigation::SatNav::sourceName() const
+{
+    if (source) {
+        if (dynamic_cast<SimGeoPositionInfoSource*>(source) != nullptr) {
+            return dynamic_cast<SimGeoPositionInfoSource*>(source)->simName();
+        }
+    }
+
+    return source->sourceName();
 }

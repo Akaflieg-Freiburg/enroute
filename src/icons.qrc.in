@@ -40,6 +40,7 @@
         <file alias="icons/material/ic_refresh.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_refresh_24px.svg</file>
         <file alias="icons/material/ic_remove_circle.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_remove_circle_24px.svg</file>
         <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
+        <file alias="icons/material/ic_computer.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_computer_24px.svg</file>
         <file alias="icons/material/ic_send.svg">${material-design-icons_SOURCE_DIR}/content/svg/design/ic_send_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
 	<file alias="icons/material/ic_swap_horiz.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_horiz_24px.svg</file>

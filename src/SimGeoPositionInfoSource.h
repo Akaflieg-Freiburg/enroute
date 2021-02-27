@@ -21,7 +21,7 @@ public:
 
     int minimumUpdateInterval() const;
 
-    QString sourceName() const;
+    QString simName() const;
 
     QGeoPositionInfoSource::Error error() const;
 
@@ -33,7 +33,6 @@ public slots:
     void requestUpdate(int timeout = 0);
 
 private slots:
-    void setSourceName(const QString &sourceName);
 
 Q_SIGNALS:
     void positionUpdated(const QGeoPositionInfo &update);
@@ -45,7 +44,7 @@ Q_SIGNALS:
     void supportedPositioningMethodsChanged();
 
 private:
-    QString _sourceName = "n/a";
+    QString _simName = "n/a";
     SimInterface *_simInterface = nullptr;
     QGeoPositionInfoSource::Error _error = QGeoPositionInfoSource::Error::NoError;
 };

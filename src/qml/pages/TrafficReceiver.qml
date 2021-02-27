@@ -50,7 +50,7 @@ Page {
                     drawer.open()
                 }
             }
-        } // ToolButton
+        }
 
         Label {
             anchors.left: backButton.right
@@ -79,7 +79,8 @@ Page {
 
         }
 
-    } // ToolBar
+    }
+
 
     ScrollView {
         id: view
@@ -210,7 +211,8 @@ Page {
             }
         }
 
-    } // Scrollview
+    }
+
 
     footer: Pane {
         width: parent.width
@@ -261,5 +263,4 @@ Page {
         text: librarian.getStringFromRessource(":text/flarmSetup.md")
     }
 
-
-} // Page
+}

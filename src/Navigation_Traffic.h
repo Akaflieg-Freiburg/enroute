@@ -413,7 +413,7 @@ private:
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for timeoutMS milliseconds
     QTimer timeoutCounter;
-    static constexpr qint64 timeoutMS = 6*1000;
+    static constexpr qint64 timeoutMS = 10*1000;
 };
 
 }

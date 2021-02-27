@@ -136,7 +136,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-hard.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
-    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
+//    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
 
@@ -407,6 +407,11 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
             if (!ok) {
                 vDist = AviationUnits::Distance::fromM(qQNaN());
+            } else {
+                // We ignore targets with large vertical distance
+                if (vDist.toM() > 500) {
+                    return;
+                }
             }
 
             auto trafficNP = Navigation::Traffic(this);

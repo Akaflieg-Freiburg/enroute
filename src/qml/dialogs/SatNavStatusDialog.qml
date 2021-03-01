@@ -31,7 +31,6 @@ Dialog {
     title: qsTr("Satellite Status")
 
     // Size is chosen so that the dialog does not cover the parent in full
-    // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
     height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 

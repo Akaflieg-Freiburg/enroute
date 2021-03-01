@@ -50,7 +50,7 @@ Page {
                     drawer.open()
                 }
             }
-        } // ToolButton
+        }
 
         Label {
             anchors.left: backButton.right
@@ -79,7 +79,8 @@ Page {
 
         }
 
-    } // ToolBar
+    }
+
 
     ScrollView {
         id: view
@@ -189,6 +190,7 @@ Page {
 
 <ul style=\"margin-left:-25px;\">
 <li>Make sure that your device has entered the WLAN network deployed by your traffic receiver.  If not, then use the button at the bottem of the screen to abort the connection attempt.</li>
+<li>Click on the question mark in the page title to open a more detailed help dialog.</li>
 </ul>
 ")
                     if (flarmAdaptor.status == FLARMAdaptor.Connected)
@@ -210,45 +212,45 @@ Page {
             }
         }
 
-    } // Scrollview
+    }
+
 
     footer: Pane {
         width: parent.width
         Material.elevation: 3
 
-        ColumnLayout {
-            width: parent.width
+        ToolButton {
+            anchors.centerIn: parent
+            width: Math.min(implicitWidth, parent.width-Qt.application.font.pixelSize)
 
-            ToolButton {
-                text: {
-                    if (flarmAdaptor.status === FLARMAdaptor.Disconnected)
-                        return qsTr("Connect to Traffic Receiver")
-                    if (flarmAdaptor.status === FLARMAdaptor.Connecting)
-                        return qsTr("Abort Connection")
-                    qsTr("Disconnect from Traffic Receiver")
-                }
+            text: {
+                if (flarmAdaptor.status === FLARMAdaptor.Disconnected)
+                    return qsTr("Connect to Traffic Receiver")
+                if (flarmAdaptor.status === FLARMAdaptor.Connecting)
+                    return qsTr("Abort Connection")
+                qsTr("Disconnect from Traffic Receiver")
+            }
 
-                icon.source: (flarmAdaptor.status === FLARMAdaptor.Disconnected) ? "/icons/material/ic_tap_and_play.svg" : "/icons/material/ic_cancel.svg"
+            icon.source: (flarmAdaptor.status === FLARMAdaptor.Disconnected) ? "/icons/material/ic_tap_and_play.svg" : "/icons/material/ic_cancel.svg"
 
-                Layout.alignment: Qt.AlignHCenter
-                Material.foreground: Material.accent
+            Layout.alignment: Qt.AlignHCenter
+            Material.foreground: Material.accent
 
-                enabled: !timer.running
-                onClicked: {
-                    if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
-                        flarmAdaptor.connectToTrafficReceiver()
-                    else
-                        flarmAdaptor.disconnectFromTrafficReceiver()
-                    timer.running = true;
-                }
-                Timer {
-                    id: timer
-                    interval: 1000
-                }
-
+            enabled: !timer.running
+            onClicked: {
+                if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
+                    flarmAdaptor.connectToTrafficReceiver()
+                else
+                    flarmAdaptor.disconnectFromTrafficReceiver()
+                timer.running = true;
+            }
+            Timer {
+                id: timer
+                interval: 1000
             }
 
         }
+
     }
 
 
@@ -261,5 +263,4 @@ Page {
         text: librarian.getStringFromRessource(":text/flarmSetup.md")
     }
 
-
-} // Page
+}

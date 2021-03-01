@@ -354,18 +354,12 @@ at random if more than one device tries to access.</p>
 
     if (name == ":text/whatsnew.html") {
         return (R"MD(
-Technology preview: the app can now connect to your aircraft's
-traffic receiver (typically a FLARM device) and show nearby
-traffic on the moving map. Open the menu and go to
-**Information/Traffic Reveicer** to try it out.
+The app can now connect to your aircraft's traffic receiver
+(typically a FLARM device) and show nearby traffic on the
+moving map. Open the menu and go to **Information/Traffic
+Reveicer** to try it out.
 
-Please send me your feedback! Reach my by e-mail, GitHub or
-via any other chanel.
-
-- Does the feature work for you at all? Do you run into problems?
-- If it works, how do you like the map design?
-- What traffic receiver do you use?
-- Was the setup difficult? Did you find the help texts helpful? Did you even find the help texts?
+This feature is new. Your feedback is very welcome!
 )MD");
     }
 

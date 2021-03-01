@@ -136,7 +136,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-hard.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
-    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
+//    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
 
@@ -344,9 +344,15 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         }
 
         // Relative vertical information is optional
-        auto relativeVertical = arguments[3].toDouble(&ok);
+        auto vDistInM = arguments[3].toDouble(&ok);
         if (!ok) {
-            relativeVertical = qQNaN();
+            vDistInM = qQNaN();
+        }
+
+        // Climb rate is optional
+        auto climbRateInMPS = arguments[9].toDouble(&ok);
+        if (!ok) {
+            climbRateInMPS = qQNaN();
         }
 
         // Target type is optional
@@ -407,10 +413,15 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
             if (!ok) {
                 vDist = AviationUnits::Distance::fromM(qQNaN());
+            } else {
+                // We ignore targets with large vertical distance
+                if (vDist.toM() > 500) {
+                    return;
+                }
             }
 
             auto trafficNP = Navigation::Traffic(this);
-            trafficNP.setData(alarmLevel, targetID, hDist, vDist, type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
+            trafficNP.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromKMH(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
             if ((trafficNP.ID() == _trafficObjectWithoutPosition->ID()) || trafficNP.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
                 _trafficObjectWithoutPosition->copyFrom(trafficNP);
             }
@@ -436,8 +447,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         }
         targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
-        if (qIsFinite(relativeVertical)) {
-            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, relativeVertical);
+        if (qIsFinite(vDistInM)) {
+            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, vDistInM);
         }
         auto hDist = AviationUnits::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
 
@@ -459,7 +470,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         // Construct a traffic object
         auto traffic = Navigation::Traffic(this);
 
-        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(relativeVertical), type, pInfo);
+        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
 
         foreach(auto target, _trafficObjects)
             if (targetID == target->ID()) {

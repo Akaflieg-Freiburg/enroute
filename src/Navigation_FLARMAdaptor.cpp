@@ -193,6 +193,26 @@ void Navigation::FLARMAdaptor::disconnectFromTrafficReceiver()
     updateStatus();
 }
 
+void Navigation::FLARMAdaptor::trafficUpdated(const Navigation::Traffic &traffic)
+{
+    foreach(auto target, _trafficObjects)
+        if (traffic.ID() == target->ID()) {
+            target->copyFrom(traffic);
+            return;
+        }
+
+    auto *lowestPriObject = _trafficObjects.at(0);
+    foreach(auto target, _trafficObjects)
+        if (lowestPriObject->hasHigherPriorityThan(*target)) {
+            lowestPriObject = target;
+        }
+    if (traffic.hasHigherPriorityThan(*lowestPriObject)) {
+        lowestPriObject->copyFrom(traffic);
+    }
+
+    return;
+
+}
 
 auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
 {

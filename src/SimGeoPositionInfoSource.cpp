@@ -44,6 +44,8 @@ void SimGeoPositionInfoSource::startUpdates()
     connect(_simInterface, &SimInterface::positionUpdated, this, &SimGeoPositionInfoSource::positionUpdated);
     connect(_simInterface, &SimInterface::timeout, this, &SimGeoPositionInfoSource::updateTimeout);
 
+    connect(_simInterface, &SimInterface::trafficUpdated, this, &SimGeoPositionInfoSource::trafficUpdated);
+
     _simInterface->start();
 }
 

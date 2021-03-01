@@ -46,7 +46,7 @@ Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
 }
 
 
-auto Navigation::Traffic::hasHigherPriorityThan(const Traffic &rhs) -> bool
+auto Navigation::Traffic::hasHigherPriorityThan(const Traffic &rhs) const -> bool
 {
     // Criterion 1: Valid instances have higher priority than invalid ones
     if (!rhs.valid()) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Navigation_Traffic.h"
 
 #include <QUdpSocket>
 #include <QTimer>
@@ -28,6 +29,8 @@ signals:
     void positionUpdated(const QGeoPositionInfo &update);
 
     void timeout();
+
+    void trafficUpdated(const Navigation::Traffic &traffic);
 
 private:
     QUdpSocket *_udpSocket = nullptr;

@@ -268,6 +268,8 @@ public slots:
      */
     void disconnectFromTrafficReceiver();
 
+    void trafficUpdated(const Navigation::Traffic &traffic);
+
 private slots:
     // Handle socket errors.
     void receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError);

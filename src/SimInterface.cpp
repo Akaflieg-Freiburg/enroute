@@ -69,5 +69,28 @@ void SimInterface::readPendingDatagrams()
             _timeoutPosUpdate.start(_timeoutThreshold);
             emit positionUpdated(_geoPos);
         }
+        else if (list[0].contains("XTRA")) {
+            QString targetID = list[1];
+            QGeoPositionInfo geoPositionInfo(QGeoCoordinate(list[2].toDouble(),
+                                                            list[3].toDouble(),
+                                                            list[4].toDouble()*0.3048),
+                                             QDateTime::currentDateTimeUtc());
+
+            geoPositionInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, list[5].toDouble()/0.3048/60.0);
+            geoPositionInfo.setAttribute(QGeoPositionInfo::Direction, list[7].toDouble());
+            geoPositionInfo.setAttribute(QGeoPositionInfo::GroundSpeed, list[8].toDouble()*1.852/3.6);
+
+            auto traffic = Navigation::Traffic();
+
+            traffic.setData(0,
+                            targetID,
+                            AviationUnits::Distance::fromM(_geoPos.coordinate().distanceTo(geoPositionInfo.coordinate())),
+                            AviationUnits::Distance::fromM(geoPositionInfo.coordinate().altitude() - _geoPos.coordinate().altitude()),
+                            AviationUnits::Speed::fromMPS(_geoPos.attribute(QGeoPositionInfo::VerticalSpeed)),
+                            Navigation::Traffic::unknown,
+                            geoPositionInfo );
+
+            emit trafficUpdated(traffic);
+        }
     }
 }

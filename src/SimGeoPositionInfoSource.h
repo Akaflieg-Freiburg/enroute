@@ -43,6 +43,8 @@ Q_SIGNALS:
 
     void supportedPositioningMethodsChanged();
 
+    void trafficUpdated(const Navigation::Traffic &traffic);
+
 private:
     QString _simName = "n/a";
     SimInterface *_simInterface = nullptr;

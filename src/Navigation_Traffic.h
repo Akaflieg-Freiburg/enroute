@@ -88,7 +88,7 @@ public:
      *
      * @returns Boolean with the result
      */
-    bool hasHigherPriorityThan(const Traffic &rhs);
+    bool hasHigherPriorityThan(const Traffic &rhs) const;
 
     //
     // PROPERTIES
@@ -424,6 +424,7 @@ private:
         setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._climbRate, other._type, other._positionInfo);
     }
 
+public:
     // Set data
     void setData(int newAlarmLevel, const QString & newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo & newPositionInfo);
 

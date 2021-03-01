@@ -25,6 +25,7 @@
 #include "AviationUnits.h"
 #include "Navigation_SatNav.h"
 #include "SimGeoPositionInfoSource.h"
+#include "Navigation_FLARMAdaptor.h"
 
 
 // Static instance of this class
@@ -298,6 +299,11 @@ void Navigation::SatNav::initNavSource()
         connect(source,  SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
         connect(source,  SIGNAL(updateTimeout()), this, SLOT(timeout()));
         connect(source,  SIGNAL(positionUpdated(const QGeoPositionInfo &)), this, SLOT(onPositionUpdated_Sat(const QGeoPositionInfo &)));
+
+        if (dynamic_cast<SimGeoPositionInfoSource*>(source) != nullptr) {
+            Navigation::FLARMAdaptor * flarmAdapter = Navigation::FLARMAdaptor::globalInstance();
+            connect(dynamic_cast<SimGeoPositionInfoSource*>(source), &SimGeoPositionInfoSource::trafficUpdated, flarmAdapter, &Navigation::FLARMAdaptor::trafficUpdated);
+        }
     }
 
     if (source != nullptr) {

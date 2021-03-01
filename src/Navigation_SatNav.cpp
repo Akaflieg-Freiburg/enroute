@@ -37,7 +37,7 @@ Navigation::SatNav::SatNav(QObject *parent)
 
     if (source != nullptr) {
         sourceStatus = source->error();
-        connect(source,  SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
+        connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
         connect(source, &QGeoPositionInfoSource::updateTimeout, this, &SatNav::timeout);
         connect(source, &QGeoPositionInfoSource::positionUpdated, this, &SatNav::onPositionUpdated_Sat);
     }

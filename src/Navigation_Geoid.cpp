@@ -99,7 +99,7 @@ auto Navigation::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
     auto geoid = [&] (int row, int col) -> qreal
     {
         int idx = row * egm96_cols + col;
-        return idx >=0 && idx < egm96_size ? egm[idx] * 0.01 : 0.0;
+        return idx >=0 && idx < egm96_size ? egm.at(idx) * 0.01 : 0.0;
     };
 
     // here we do a bilinear interpolation between the 4 neighbouring

@@ -101,7 +101,7 @@ void Navigation::Traffic::setColor()
 }
 
 
-void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
+void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
 {
     // Set properties
     bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
@@ -131,6 +131,9 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
     bool hasHDistChanged = (_hDist != newHDist);
     _hDist = newHDist;
 
+    bool hasClimbRateChanged = (_climbRate != newClimbRate);
+    _climbRate = newClimbRate;
+
     // If the ID changed, do not animate property changes in the GUI.
     if (hasIDChanged) {
        setAnimate(false);
@@ -155,6 +158,9 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
     }
     if (hasTTChanged) {
         emit ttChanged();
+    }
+    if (hasClimbRateChanged) {
+        emit climbRateChanged();
     }
     if (hasTypeChanged) {
         emit typeChanged();
@@ -217,7 +223,19 @@ void Navigation::Traffic::setDescription()
     }
 
     if (_vDist.isFinite()) {
-        results << _vDist.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
+        auto result = _vDist.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
+        if ( qIsFinite(_climbRate.toMPS())) {
+            if (_climbRate.toMPS() < -1.0) {
+                result += " ↘";
+            }
+            if ((_climbRate.toMPS() >= -1.0) && (_climbRate.toMPS() <= +1.0)) {
+                result += " →";
+            }
+            if (_climbRate.toMPS() > 1.0) {
+                result += " ↗";
+            }
+        }
+        results << result;
     }
 
     auto newDescription = results.join(u"<br>");

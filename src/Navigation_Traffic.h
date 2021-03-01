@@ -136,6 +136,39 @@ public:
         return _animate;
     }
 
+    /*! \brief Climb rate at the time of report
+     *
+     *  If known, this property holds the horizontal climb rate of the traffic
+     *  at the time of report.  Otherwise, it contains NaN.
+     */
+    Q_PROPERTY(AviationUnits::Speed climbRate READ climbRate NOTIFY climbRateChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property climbRate
+     */
+    AviationUnits::Speed climbRate() const
+    {
+        return _climbRate;
+    }
+
+    /*! \brief Climb rate at the time of report, in m/s
+     *
+     *  If known, this property holds the horizontal climb rate of the traffic
+     *  at the time of report, in m/s.  Otherwise, it contains NaN.
+     */
+
+    Q_PROPERTY(double climbRateInMPS READ climbRateInMPS NOTIFY hDistChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property climbRateInMPS
+     */
+    double climbRateInMPS() const
+    {
+        return _climbRate.toMPS();
+    }
+
     /*! \brief Suggested color for GUI representation of the traffic
      *
      *  This propery suggests a color, depending on the alarmLevel.
@@ -188,7 +221,7 @@ public:
         return _description;
     }
 
-    /*! \brief Horizontal distance from own position to the traffic in meters,
+    /*! \brief Horizontal distance from own position to the traffic,
      *  at the time of report
      *
      *  If known, this property holds the horizontal distance from the own
@@ -330,6 +363,9 @@ signals:
     void animateChanged();
 
     /*! \brief Notifier signal */
+    void climbRateChanged();
+
+    /*! \brief Notifier signal */
     void colorChanged();
 
     /*! \brief Notifier signal */
@@ -385,11 +421,11 @@ private:
     // Copy data from other object
     void copyFrom(const Traffic & other)
     {
-        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo);
+        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._climbRate, other._type, other._positionInfo);
     }
 
     // Set data
-    void setData(int newAlarmLevel, const QString & newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo & newPositionInfo);
+    void setData(int newAlarmLevel, const QString & newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo & newPositionInfo);
 
 private:
     // Setter function for property animate
@@ -409,6 +445,7 @@ private:
     bool _valid {false};
     AviationUnits::Distance _vDist;
     AviationUnits::Distance _hDist;
+    AviationUnits::Speed _climbRate;
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for timeoutMS milliseconds

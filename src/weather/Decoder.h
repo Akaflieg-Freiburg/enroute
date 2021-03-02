@@ -132,18 +132,18 @@ private slots:
 private:
     // Explanation functions
     static QString explainCloudType(const metaf::CloudType ct);
-    static QString explainDirection(const metaf::Direction & direction, bool trueCardinalDirections=true);
+    static QString explainDirection(metaf::Direction direction, bool trueCardinalDirections=true);
     static QString explainDirectionSector(const std::vector<metaf::Direction>& dir);
-    static QString explainDistance(const metaf::Distance & distance);
-    static QString explainDistance_FT(const metaf::Distance & distance);
-    QString explainMetafTime(const metaf::MetafTime & metafTime);
-    static QString explainPrecipitation(const metaf::Precipitation & precipitation);
-    static QString explainPressure(const metaf::Pressure & pressure);
-    static QString explainRunway(const metaf::Runway & runway);
-    static QString explainSpeed(const metaf::Speed & speed);
-    static QString explainSurfaceFriction(const metaf::SurfaceFriction & surfaceFriction);
-    static QString explainTemperature(const metaf::Temperature & temperature);
-    static QString explainWaveHeight(const metaf::WaveHeight & waveHeight);
+    static QString explainDistance(metaf::Distance distance);
+    static QString explainDistance_FT(metaf::Distance distance);
+    QString explainMetafTime(metaf::MetafTime metafTime);
+    static QString explainPrecipitation(metaf::Precipitation precipitation);
+    static QString explainPressure(metaf::Pressure pressure);
+    static QString explainRunway(metaf::Runway runway);
+    static QString explainSpeed(metaf::Speed speed);
+    static QString explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction);
+    static QString explainTemperature(metaf::Temperature temperature);
+    static QString explainWaveHeight(metaf::WaveHeight waveHeight);
     QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
     // … toString Methods

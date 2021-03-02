@@ -23,3 +23,6 @@
 [submodule "3rdParty/metaf"]
 	path = 3rdParty/metaf
 	url = https://gitlab.com/nnaumenko/metaf.git
+[submodule "3rdParty/GSL"]
+	path = 3rdParty/GSL
+	url = https://github.com/microsoft/GSL.git

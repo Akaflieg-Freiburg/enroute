@@ -23,12 +23,14 @@
  * Distributed under the terms of the MIT license.
  */
 
+
 #include <QDebug>
 #include <QTimeZone>
+#include <gsl/gsl>
 
 #include "Clock.h"
 #include "GlobalSettings.h"
-#include "weather/METAFDecoder.h"
+#include "weather/Decoder.h"
 
 
 Weather::Decoder::Decoder(QObject *parent)
@@ -77,6 +79,7 @@ void Weather::Decoder::parse()
 
     parseResult = metaf::Parser::parse(_rawText.toStdString());
     QStringList decodedStrings;
+    decodedStrings.reserve(64);
     QString listStart = "<ul style=\"margin-left:-25px;\">";
     QString listEnd = "</ul>";
     for (const auto &groupInfo : parseResult.groups) {
@@ -111,7 +114,7 @@ auto Weather::Decoder::explainCloudType(const metaf::CloudType ct) -> QString {
             .arg(cloudTypeToString(ct.type()));
 }
 
-auto Weather::Decoder::explainDirection(const metaf::Direction & direction, bool trueCardinalDirections) -> QString
+auto Weather::Decoder::explainDirection(metaf::Direction direction, bool trueCardinalDirections) -> QString
 {
     switch (direction.type()) {
     case metaf::Direction::Type::NOT_REPORTED:
@@ -130,7 +133,7 @@ auto Weather::Decoder::explainDirection(const metaf::Direction & direction, bool
         return tr("[unable to produce value in °]");
 
     case metaf::Direction::Type::VALUE_CARDINAL:
-        if (const auto c = cardinalDirectionToString(direction.cardinal(trueCardinalDirections)); !c.isEmpty()) {
+        if (auto c = cardinalDirectionToString(direction.cardinal(trueCardinalDirections)); !c.isEmpty()) {
             if (direction.type() == metaf::Direction::Type::VALUE_DEGREES) {
                 return QString("(%1)").arg(c);
             }
@@ -155,13 +158,14 @@ auto Weather::Decoder::explainDirectionSector(const std::vector<metaf::Direction
 {
     std::string result;
     for (auto i=0U; i<dir.size(); i++) {
-        if (i) result += ", ";
+        if (i != 0U) { result += ", ";
+}
         result += cardinalDirectionToString(dir[i].cardinal()).toStdString();
     }
     return QString::fromStdString(result);
 }
 
-auto Weather::Decoder::explainDistance(const metaf::Distance & distance) -> QString {
+auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
     if (!distance.isReported()) {
         return tr("not reported");
     }
@@ -208,7 +212,7 @@ auto Weather::Decoder::explainDistance(const metaf::Distance & distance) -> QStr
         }
         const auto integer = std::get<unsigned int>(d.value());
         const auto fraction = std::get<metaf::Distance::MilesFraction>(d.value());
-        if (integer || fraction == metaf::Distance::MilesFraction::NONE) {
+        if ((integer != 0U) || fraction == metaf::Distance::MilesFraction::NONE) {
             results << QString::number(integer);
         }
         if (fraction != metaf::Distance::MilesFraction::NONE) {
@@ -250,7 +254,7 @@ auto Weather::Decoder::explainDistance(const metaf::Distance & distance) -> QStr
     return results.join(" ");
 }
 
-auto Weather::Decoder::explainDistance_FT(const metaf::Distance & distance) -> QString {
+auto Weather::Decoder::explainDistance_FT(metaf::Distance distance) -> QString {
 
     if (!distance.isReported()) {
         return tr("not reported");
@@ -282,10 +286,10 @@ auto Weather::Decoder::explainDistance_FT(const metaf::Distance & distance) -> Q
     return "[unable to convert distance to feet]";
 }
 
-auto Weather::Decoder::explainMetafTime(const metaf::MetafTime & metafTime) -> QString
+auto Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime) -> QString
 {
     // QTime for result
-    auto metafQTime = QTime(metafTime.hour(), metafTime.minute());
+    auto metafQTime = QTime(gsl::narrow_cast<int>(metafTime.hour()), gsl::narrow_cast<int>(metafTime.minute()) );
 
     auto currentQDate = QDate::currentDate().addDays(5);
     auto currentDate = metaf::MetafTime::Date(currentQDate.year(), currentQDate.month(), currentQDate.day());
@@ -293,19 +297,19 @@ auto Weather::Decoder::explainMetafTime(const metaf::MetafTime & metafTime) -> Q
         currentDate = metaf::MetafTime::Date(_referenceDate.year(), _referenceDate.month(), _referenceDate.day());
     }
     auto metafDate = metafTime.dateBeforeRef(currentDate);
-    auto metafQDate = QDate(metafDate.year, metafDate.month, metafDate.day);
+    auto metafQDate = QDate(gsl::narrow_cast<int>(metafDate.year), gsl::narrow_cast<int>(metafDate.month), gsl::narrow_cast<int>(metafDate.day) );
 
     auto metafQDateTime = QDateTime(metafQDate, metafQTime, QTimeZone::utc());
     return Clock::describePointInTime(metafQDateTime);
 }
 
-auto Weather::Decoder::explainPrecipitation(const metaf::Precipitation & precipitation) -> QString
+auto Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation) -> QString
 {
     if (!precipitation.isReported()) {
         return "not reported";
     }
 
-    if (const auto p = precipitation.amount(); p.has_value() && !*p) {
+    if (const auto p = precipitation.amount(); p.has_value() && (*p == 0.0F)) {
         return tr("trace amount");
     }
 
@@ -316,7 +320,7 @@ auto Weather::Decoder::explainPrecipitation(const metaf::Precipitation & precipi
     return tr("[unable to convert precipitation to mm]");
 }
 
-auto Weather::Decoder::explainPressure(const metaf::Pressure & pressure) -> QString {
+auto Weather::Decoder::explainPressure(metaf::Pressure pressure) -> QString {
 
     if (!pressure.pressure().has_value()) {
         return tr("not reported");
@@ -329,7 +333,7 @@ auto Weather::Decoder::explainPressure(const metaf::Pressure & pressure) -> QStr
     return tr("[unable to convert pressure to hPa]");
 }
 
-auto Weather::Decoder::explainRunway(const metaf::Runway & runway) -> QString {
+auto Weather::Decoder::explainRunway(metaf::Runway runway) -> QString {
     if (runway.isAllRunways()) {
         return tr("all runways");
     }
@@ -354,15 +358,15 @@ auto Weather::Decoder::explainRunway(const metaf::Runway & runway) -> QString {
     return QString();
 }
 
-auto Weather::Decoder::explainSpeed(const metaf::Speed & speed) -> QString {
+auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString {
 
     if (const auto s = speed.speed(); !s.has_value()) {
         return tr("not reported");
     }
 
     bool useMetric = false;
-    auto globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings) {
+    auto *globalSettings = GlobalSettings::globalInstance();
+    if (globalSettings != nullptr) {
         useMetric = globalSettings->useMetricUnits();
     }
 
@@ -381,7 +385,7 @@ auto Weather::Decoder::explainSpeed(const metaf::Speed & speed) -> QString {
     return tr("[unable to convert speed to knots]");
 }
 
-auto Weather::Decoder::explainSurfaceFriction(const metaf::SurfaceFriction & surfaceFriction) -> QString
+auto Weather::Decoder::explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction) -> QString
 {
     const auto c = surfaceFriction.coefficient();
 
@@ -404,7 +408,7 @@ auto Weather::Decoder::explainSurfaceFriction(const metaf::SurfaceFriction & sur
     return QString();
 }
 
-auto Weather::Decoder::explainTemperature(const metaf::Temperature & temperature) -> QString
+auto Weather::Decoder::explainTemperature(metaf::Temperature temperature) -> QString
 {
     if (!temperature.temperature().has_value()) {
         return tr("not reported");
@@ -416,7 +420,7 @@ auto Weather::Decoder::explainTemperature(const metaf::Temperature & temperature
         temperatureString = QString("%1 °C").arg(qRound(*t));
     }
 
-    if (!(*temperature.temperature()) && !temperature.isPrecise()) {
+    if (((*temperature.temperature()) == 0.0F) && !temperature.isPrecise()) {
         if (temperature.isFreezing()) {
             return tr("slightly less than %1").arg(temperatureString);
         }
@@ -428,7 +432,7 @@ auto Weather::Decoder::explainTemperature(const metaf::Temperature & temperature
     return temperatureString;
 }
 
-auto Weather::Decoder::explainWaveHeight(const metaf::WaveHeight & waveHeight) -> QString
+auto Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight) -> QString
 {
     switch (waveHeight.type()) {
     case metaf::WaveHeight::Type::STATE_OF_SURFACE:
@@ -450,7 +454,7 @@ auto Weather::Decoder::explainWaveHeight(const metaf::WaveHeight & waveHeight) -
 auto Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp) -> QString
 {
     /* Handle special cases */
-    const auto weatherStr = Weather::Decoder::specialWeatherPhenomenaToString(wp);
+    auto weatherStr = Weather::Decoder::specialWeatherPhenomenaToString(wp);
     if (!weatherStr.isEmpty()) {
         return weatherStr;
     }
@@ -463,6 +467,7 @@ auto Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & w
     QString result;
 
     QStringList weatherPhenomena;
+    weatherPhenomena.reserve(8);
     for (const auto w : wp.weather()) {
         // This is a string such as "hail" or "rain"
         auto wpString = Weather::Decoder::weatherPhenomenaWeatherToString(w);
@@ -784,7 +789,7 @@ auto Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type) -> QString
 {
     switch(type) {
     case metaf::CloudType::Type::NOT_REPORTED:
-        return tr("cumulonimbus");
+        return tr("unknoen cloud type");
 
     case metaf::CloudType::Type::CUMULONIMBUS:
         return tr("cumulonimbus");
@@ -2073,16 +2078,16 @@ auto Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /*re
     case metaf::CloudGroup::Type::OBSCURATION:
         const auto h = group.height().distance();
         const auto ct = group.cloudType();
-        if (h.has_value() && !h.value() && ct.has_value()) {
+        if (h.has_value() && (h.value() == 0.0F) && ct.has_value()) {
             return tr("Ground-based obscuration, %1").arg(explainCloudType(ct.value()));
         }
-        if (h.has_value() && !h.value()) {
+        if (h.has_value() && (h.value() == 0.0F)) {
             return tr("Ground-based obscuration");
         }
-        if (h.has_value() && h.value() && ct.has_value()) {
+        if (h.has_value() && (h.value() != 0.0F) && ct.has_value()) {
             return tr("Aloft obscuration, %1").arg(explainCloudType(ct.value()));
         }
-        if (h.has_value() && h.value()) {
+        if (h.has_value() && (h.value() != 0.0F)) {
             return tr("Aloft obscuration");
         }
         return explainCloudType(ct.value());
@@ -2097,6 +2102,7 @@ auto Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, Repor
     }
 
     QStringList layers;
+    layers.reserve(5);
     const auto clouds = group.cloudTypes();
     for (const auto & cloud : clouds) {
         layers << explainCloudType(cloud);
@@ -2960,6 +2966,7 @@ auto Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart 
 
     // Gather string with list of phenomena
     QStringList phenomenaList;
+    phenomenaList.reserve(8);
     for (const auto p : group.weatherPhenomena()) {
         phenomenaList << Weather::Decoder::explainWeatherPhenomena(p);
     }

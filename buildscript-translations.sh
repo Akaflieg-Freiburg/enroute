@@ -3,7 +3,6 @@
 cd 3rdParty/enrouteText
 git pull origin master
 lupdate-qt5 ../../src -ts \
-	    assets/enroute_cz.ts \
 	    assets/enroute_de.ts \
 	    assets/enroute_fr.ts \
 	    assets/enroute_it.ts \

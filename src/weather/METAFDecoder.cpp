@@ -28,7 +28,7 @@
 
 #include "Clock.h"
 #include "GlobalSettings.h"
-#include "Weather_Decoder.h"
+#include "weather/METAFDecoder.h"
 
 
 Weather::Decoder::Decoder(QObject *parent)

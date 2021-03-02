@@ -24,7 +24,7 @@
 #include <QMap>
 #include <QJsonObject>
 
-#include "Weather_DownloadManager.h"
+#include "weather/DownloadManager.h"
 
 
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.

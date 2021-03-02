@@ -90,8 +90,8 @@ set(SOURCES
     Navigation_Traffic.h
     ScaleQuickItem.h
     Waypoint.h
-    Weather_Decoder.h
-    Weather_DownloadManager.h
+    weather/DownloadManager.h
+    weather/METAFDecoder.h
     weather/METAR.h
     weather/Station.h
     weather/TAF.h
@@ -123,8 +123,8 @@ set(SOURCES
     TileHandler.cpp
     TileServer.cpp
     Waypoint.cpp
-    Weather_Decoder.cpp
-    Weather_DownloadManager.cpp
+    weather/DownloadManager.cpp
+    weather/METAFDecoder.cpp
     weather/METAR.cpp
     weather/Station.cpp
     weather/TAF.cpp

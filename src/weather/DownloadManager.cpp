@@ -20,23 +20,26 @@
 
 #include <QDataStream>
 #include <QLockFile>
-#include <QStandardPaths>
-#include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QSaveFile>
-#include <QtGlobal>
+#include <QNetworkRequest>
 #include <QQmlEngine>
+#include <QSaveFile>
+#include <QStandardPaths>
 #include <QXmlStreamReader>
+#include <QtGlobal>
 
 #include "sunset.h"
 
 #include "Clock.h"
+#include "FlightRoute.h"
 #include "GeoMapProvider.h"
 #include "GlobalSettings.h"
-#include "FlightRoute.h"
 #include "Navigation_SatNav.h"
-#include "Weather_DownloadManager.h"
+#include "weather/DownloadManager.h"
 #include "weather/METAR.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 Weather::DownloadManager::DownloadManager(FlightRoute *route,
@@ -57,7 +60,7 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
 
     // Connect the timer to check for expired messages
     connect(&_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::DownloadManager::deleteExpiredMesages);
-    _deleteExiredMessagesTimer.setInterval(10*60*1000);
+    _deleteExiredMessagesTimer.setInterval(10min);
     _deleteExiredMessagesTimer.start();
 
     // Update the description text when needed
@@ -79,7 +82,7 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
 }
 
 
-void Weather::DownloadManager::setupConnections()
+void Weather::DownloadManager::setupConnections() const
 {
     connect(Navigation::SatNav::globalInstance(), &Navigation::SatNav::statusChanged, this, &Weather::DownloadManager::QNHInfoChanged);
     connect(Navigation::SatNav::globalInstance(), &Navigation::SatNav::statusChanged, this, &Weather::DownloadManager::sunInfoChanged);
@@ -175,13 +178,13 @@ void Weather::DownloadManager::downloadFinished() {
 
             // Read METAR
             if (xml.isStartElement() && (xml.name() == "METAR")) {
-                auto metar = new Weather::METAR(xml, this);
+                auto *metar = new Weather::METAR(xml, this);
                 findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             }
 
             // Read TAF
             if (xml.isStartElement() && (xml.name() == "TAF")) {
-                auto taf = new Weather::TAF(xml, this);
+                auto *taf = new Weather::TAF(xml, this);
                 findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             }
 
@@ -214,7 +217,7 @@ auto Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAO
         return weatherStationPtr;
     }
 
-    auto newWeatherStation = new Weather::Station(ICAOCode, _geoMapProvider, this);
+    auto *newWeatherStation = new Weather::Station(ICAOCode, _geoMapProvider, this);
     _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
     return newWeatherStation;
 }
@@ -241,15 +244,15 @@ auto Weather::DownloadManager::load() -> bool
     QDataStream inputStream(&inputFile);
     inputStream.setVersion(QDataStream::Qt_4_0);
     // Check magic number and version
-    quint32 magic;
+    quint32 magic = 0;
     inputStream >> magic;
-    if (magic != (quint32)0x31415) {
+    if (magic != static_cast<quint32>(0x31415)) {
         lockFile.unlock();
         return false;
     }
-    quint32 version;
+    quint32 version = 0;
     inputStream >> version;
-    if (version != (quint32)1) {
+    if (version != static_cast<quint32>(1)) {
         lockFile.unlock();
         return false;
     }
@@ -265,13 +268,13 @@ auto Weather::DownloadManager::load() -> bool
 
         if (type == 'M') {
             // Read METAR
-            auto metar = new Weather::METAR(inputStream, this);
+            auto *metar = new Weather::METAR(inputStream, this);
             findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             continue;
         }
         if (type == 'T') {
             // Read TAF
-            auto taf = new Weather::TAF(inputStream, this);
+            auto *taf = new Weather::TAF(inputStream, this);
             findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             continue;
         }
@@ -312,8 +315,8 @@ void Weather::DownloadManager::save()
     outputStream.setVersion(QDataStream::Qt_4_0);
 
     // Write magic number and version
-    outputStream << (quint32)0x31415;
-    outputStream << (quint32)1;
+    outputStream << static_cast<quint32>(0x31415);
+    outputStream << static_cast<quint32>(1);
     outputStream << _lastUpdate;
 
     // Write data
@@ -344,10 +347,10 @@ void Weather::DownloadManager::save()
 }
 
 
-auto Weather::DownloadManager::sunInfo() const -> QString
+auto Weather::DownloadManager::sunInfo() -> QString
 {
     // Paranoid safety checks
-    auto _satNav = Navigation::SatNav::globalInstance();
+    auto *_satNav = Navigation::SatNav::globalInstance();
     if (_satNav == nullptr) {
         return QString();
     }
@@ -414,7 +417,7 @@ auto Weather::DownloadManager::sunInfo() const -> QString
 auto Weather::DownloadManager::QNHInfo() const -> QString
 {
     // Paranoid safety checks
-    auto _satNav = Navigation::SatNav::globalInstance();
+    auto *_satNav = Navigation::SatNav::globalInstance();
     if (_satNav == nullptr) {
         return QString();
     }
@@ -446,7 +449,7 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
             closestReportWithQNH = weatherStationPtr;
         }
     }
-    if (closestReportWithQNH) {
+    if (closestReportWithQNH != nullptr) {
         return tr("QNH: %1 hPa in %2, %3").arg(QNH)
                 .arg(closestReportWithQNH->ICAOCode(),
                      Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));

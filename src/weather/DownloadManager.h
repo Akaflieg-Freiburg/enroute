@@ -159,7 +159,7 @@ public:
      *
      * @returns Property infoString
      */
-    QString sunInfo() const;
+    static QString sunInfo() ;
 
     /*! \brief Update method
      *
@@ -237,7 +237,7 @@ private slots:
     // Name says it all. This method is called from the constructor,
     // but with a little lag to avoid conflicts in the initialisation of
     // static objects.
-    void setupConnections();
+    void setupConnections() const;
 
 private:
     Q_DISABLE_COPY_MOVE(DownloadManager)

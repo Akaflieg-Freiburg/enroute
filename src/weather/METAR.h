@@ -24,7 +24,7 @@
 #include <QXmlStreamReader>
 
 #include "AviationUnits.h"
-#include "Weather_Decoder.h"
+#include "weather/METAFDecoder.h"
 
 
 namespace Weather {

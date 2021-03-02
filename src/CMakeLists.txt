@@ -92,10 +92,10 @@ set(SOURCES
     Waypoint.h
     Weather_Decoder.h
     Weather_DownloadManager.h
-    Weather_METAR.h
-    Weather_Station.h
-    Weather_TAF.h
-    Weather_Wind.h
+    weather/METAR.h
+    weather/Station.h
+    weather/TAF.h
+    weather/Wind.h
 
     # C++ files
     Aircraft.cpp
@@ -125,10 +125,10 @@ set(SOURCES
     Waypoint.cpp
     Weather_Decoder.cpp
     Weather_DownloadManager.cpp
-    Weather_METAR.cpp
-    Weather_Station.cpp
-    Weather_TAF.cpp
-    Weather_Wind.cpp
+    weather/METAR.cpp
+    weather/Station.cpp
+    weather/TAF.cpp
+    weather/Wind.cpp
 
     ${HEADERS}
     )

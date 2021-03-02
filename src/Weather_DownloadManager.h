@@ -28,7 +28,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 
 #include "Navigation_SatNav.h"
-#include "Weather_Station.h"
+#include "weather/Station.h"
 
 class Clock;
 class FlightRoute;

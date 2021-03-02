@@ -22,8 +22,8 @@
 
 #include <QPointer>
 
-#include "Weather_METAR.h"
-#include "Weather_TAF.h"
+#include "weather/METAR.h"
+#include "weather/TAF.h"
 
 class GeoMapProvider;
 

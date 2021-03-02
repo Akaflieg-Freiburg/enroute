@@ -251,7 +251,7 @@ protected:
 
 private:
     // Connects signals; this method is used internally from the constructor(s)
-    void setupSignals();
+    void setupSignals() const;
 
     // Writes the METAR report to a data stream
     void write(QDataStream &out);

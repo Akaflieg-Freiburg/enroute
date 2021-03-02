@@ -20,19 +20,21 @@
 
 #include <QtGlobal>
 
-#include "Weather_Wind.h"
+#include "weather/Wind.h"
 
 
 Weather::Wind::Wind(QObject *parent)
     : QObject(parent)
 {
     _windSpeedInKT = settings.value("Wind/windSpeedInKT", -1.0).toDouble();
-    if ((_windSpeedInKT < minWindSpeedInKT) || (_windSpeedInKT > maxWindSpeedInKT))
+    if ((_windSpeedInKT < minWindSpeedInKT) || (_windSpeedInKT > maxWindSpeedInKT)) {
         _windSpeedInKT = qQNaN();
+    }
 
     _windDirectionInDEG = settings.value("Wind/windDirectionInDEG", -1.0).toDouble();
-    if ((_windDirectionInDEG < minWindDirection) || (_windDirectionInDEG > maxWindDirection))
+    if ((_windDirectionInDEG < minWindDirection) || (_windDirectionInDEG > maxWindDirection)) {
         _windDirectionInDEG = qQNaN();
+    }
 }
 
 
@@ -44,8 +46,9 @@ auto Weather::Wind::windSpeedInKT() const -> double
 
 void Weather::Wind::setWindSpeedInKT(double speedInKT)
 {
-    if ((speedInKT < minWindSpeedInKT) || (speedInKT > maxWindSpeedInKT))
+    if ((speedInKT < minWindSpeedInKT) || (speedInKT > maxWindSpeedInKT)) {
         speedInKT = qQNaN();
+    }
 
     if (!qFuzzyCompare(speedInKT, _windSpeedInKT)) {
         _windSpeedInKT = speedInKT;
@@ -65,15 +68,16 @@ auto Weather::Wind::windSpeedInKMH() const -> double
 void Weather::Wind::setWindSpeedInKMH(double speedInKMH)
 {
     setWindSpeedInKT(
-        AviationUnits::Speed::fromKMH(speedInKMH).toKT()
-    );
+                AviationUnits::Speed::fromKMH(speedInKMH).toKT()
+                );
 }
 
 
 void Weather::Wind::setWindDirectionInDEG(double windDirection)
 {
-    if ((windDirection < minWindDirection) || (windDirection > maxWindDirection))
+    if ((windDirection < minWindDirection) || (windDirection > maxWindDirection)) {
         windDirection = qQNaN();
+    }
 
     if (!qFuzzyCompare(windDirection, _windDirectionInDEG)) {
         _windDirectionInDEG = windDirection;

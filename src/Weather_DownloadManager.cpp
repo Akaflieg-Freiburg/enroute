@@ -36,7 +36,7 @@
 #include "FlightRoute.h"
 #include "Navigation_SatNav.h"
 #include "Weather_DownloadManager.h"
-#include "Weather_METAR.h"
+#include "weather/METAR.h"
 
 
 Weather::DownloadManager::DownloadManager(FlightRoute *route,
@@ -71,10 +71,11 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
 
     // Compute time for next update
     int remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateIntervalNormal_ms) );
-    if (!success || !_lastUpdate.isValid() || (remainingTime < 0))
+    if (!success || !_lastUpdate.isValid() || (remainingTime < 0)) {
         update();
-    else
+    } else {
         _updateTimer.setInterval(remainingTime);
+    }
 }
 
 
@@ -98,12 +99,14 @@ void Weather::DownloadManager::deleteExpiredMesages()
 
     foreach(auto weatherStation, _weatherStationsByICAOCode) {
         if (weatherStation->hasMETAR()) {
-            if (weatherStation->metar()->expiration() < QDateTime::currentDateTime())
+            if (weatherStation->metar()->expiration() < QDateTime::currentDateTime()) {
                 weatherStation->setMETAR(nullptr);
+            }
         }
         if (weatherStation->hasTAF()) {
-            if (weatherStation->taf()->expiration() < QDateTime::currentDateTime())
+            if (weatherStation->taf()->expiration() < QDateTime::currentDateTime()) {
                 weatherStation->setTAF(nullptr);
+            }
         }
 
         if (!weatherStation->hasMETAR() && !weatherStation->hasTAF()) {
@@ -113,8 +116,9 @@ void Weather::DownloadManager::deleteExpiredMesages()
     }
 
     // If there is nothing to delete, wonderful
-    if (ICAOCodesToDelete.isEmpty())
+    if (ICAOCodesToDelete.isEmpty()) {
         return;
+    }
 
     // Otherwiese, remove the weather stations from the list, and let the world know
     foreach(auto ICAOCodeToDelete, ICAOCodesToDelete)
@@ -127,10 +131,12 @@ void Weather::DownloadManager::deleteExpiredMesages()
 auto Weather::DownloadManager::downloading() const -> bool
 {
     foreach(auto networkReply, _networkReplies) {
-        if (networkReply.isNull())
+        if (networkReply.isNull()) {
             continue;
-        if (networkReply->isRunning())
+        }
+        if (networkReply->isRunning()) {
             return true;
+        }
     }
 
     return false;
@@ -141,8 +147,9 @@ void Weather::DownloadManager::downloadFinished() {
 
     // Start to process the data only once ALL replies have been received. So, we check here if there are any running
     // download processes and abort if indeed there are some.
-    if (downloading())
+    if (downloading()) {
         return;
+    }
 
     // Update flag
     emit downloadingChanged();
@@ -151,8 +158,9 @@ void Weather::DownloadManager::downloadFinished() {
     bool hasError = false;
     foreach(auto networkReply, _networkReplies) {
         // Paranoid safety checks
-        if (networkReply.isNull())
+        if (networkReply.isNull()) {
             continue;
+        }
         if (networkReply->error() != QNetworkReply::NoError) {
             hasError = true;
             emit error(networkReply->errorString());
@@ -188,9 +196,9 @@ void Weather::DownloadManager::downloadFinished() {
     emit weatherStationsChanged();
     emit QNHInfoChanged();
 
-    if (hasError)
+    if (hasError) {
         _updateTimer.setInterval(updateIntervalOnError_ms);
-    else {
+    } else {
         _lastUpdate = QDateTime::currentDateTimeUtc();
         _updateTimer.setInterval(updateIntervalNormal_ms);
         save();
@@ -202,8 +210,9 @@ auto Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAO
 {
     auto weatherStationPtr = _weatherStationsByICAOCode.value(ICAOCode, nullptr);
 
-    if (!weatherStationPtr.isNull())
+    if (!weatherStationPtr.isNull()) {
         return weatherStationPtr;
+    }
 
     auto newWeatherStation = new Weather::Station(ICAOCode, _geoMapProvider, this);
     _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
@@ -217,8 +226,9 @@ auto Weather::DownloadManager::load() -> bool
 
     // Use LockFile. If lock could not be obtained, do nothing.
     QLockFile lockFile(stdFileName+".lock");
-    if (!lockFile.tryLock())
+    if (!lockFile.tryLock()) {
         return false;
+    }
 
     // Open file
     auto inputFile = QFile(stdFileName);
@@ -286,8 +296,9 @@ void Weather::DownloadManager::save()
 
     // Use LockFile. If lock could not be obtained, do nothing.
     QLockFile lockFile(stdFileName+".lock");
-    if (!lockFile.tryLock())
+    if (!lockFile.tryLock()) {
         return;
+    }
 
     // Open file
     auto outputFile = QSaveFile(stdFileName);
@@ -307,8 +318,9 @@ void Weather::DownloadManager::save()
 
     // Write data
     foreach(auto weatherStation, _weatherStationsByICAOCode) {
-        if (weatherStation.isNull())
+        if (weatherStation.isNull()) {
             continue;
+        }
 
         if (weatherStation->hasMETAR()) {
             // Save only valid METARs that are not yet expired
@@ -336,10 +348,12 @@ auto Weather::DownloadManager::sunInfo() const -> QString
 {
     // Paranoid safety checks
     auto _satNav = Navigation::SatNav::globalInstance();
-    if (_satNav == nullptr)
+    if (_satNav == nullptr) {
         return QString();
-    if (_satNav->status() != Navigation::SatNav::OK)
+    }
+    if (_satNav->status() != Navigation::SatNav::OK) {
         return tr("Waiting for precise position…");
+    }
 
     // Describe next sunset/sunrise
     QDateTime sunrise;
@@ -385,10 +399,12 @@ auto Weather::DownloadManager::sunInfo() const -> QString
     }
 
     if (sunrise.isValid() && sunset.isValid() && sunriseTomorrow.isValid()) {
-        if (currentTime < sunrise)
+        if (currentTime < sunrise) {
             return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise), Clock::describeTimeDifference(sunrise));
-        if (currentTime < sunset.addSecs(40*60))
+        }
+        if (currentTime < sunset.addSecs(40*60)) {
             return tr("SS %1, %2").arg(Clock::describePointInTime(sunset), Clock::describeTimeDifference(sunset));
+        }
         return tr("SR %1, %2").arg(Clock::describePointInTime(sunriseTomorrow), Clock::describeTimeDifference(sunriseTomorrow));
     }
     return QString();
@@ -399,30 +415,36 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
 {
     // Paranoid safety checks
     auto _satNav = Navigation::SatNav::globalInstance();
-    if (_satNav == nullptr)
+    if (_satNav == nullptr) {
         return QString();
+    }
 
     // Find QNH of nearest airfield
     Weather::Station *closestReportWithQNH = nullptr;
     int QNH = 0;
     foreach(auto weatherStationPtr, _weatherStationsByICAOCode) {
-        if (weatherStationPtr.isNull())
+        if (weatherStationPtr.isNull()) {
             continue;
-        if (weatherStationPtr->metar() == nullptr)
+        }
+        if (weatherStationPtr->metar() == nullptr) {
             continue;
+        }
         QNH = weatherStationPtr->metar()->QNH();
-        if (QNH == 0)
+        if (QNH == 0) {
             continue;
-        if (!weatherStationPtr->coordinate().isValid())
+        }
+        if (!weatherStationPtr->coordinate().isValid()) {
             continue;
+        }
         if (closestReportWithQNH == nullptr) {
             closestReportWithQNH = weatherStationPtr;
             continue;
         }
 
         QGeoCoordinate here = _satNav->lastValidCoordinate();
-        if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
+        if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate())) {
             closestReportWithQNH = weatherStationPtr;
+        }
     }
     if (closestReportWithQNH) {
         return tr("QNH: %1 hPa in %2, %3").arg(QNH)
@@ -435,12 +457,14 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
 
 void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     // Paranoid safety checks
-    if (_flightRoute.isNull())
+    if (_flightRoute.isNull()) {
         return;
+    }
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
-    if (!GlobalSettings::acceptedWeatherTermsStatic())
+    if (!GlobalSettings::acceptedWeatherTermsStatic()) {
         return;
+    }
 
     // If a request is currently running, then do not update
     if (downloading()) {
@@ -500,8 +524,9 @@ auto Weather::DownloadManager::weatherStations() const -> QList<Weather::Station
     // Produce a list of reports, without nullpointers
     QList<Weather::Station *> sortedReports;
     foreach(auto stations, _weatherStationsByICAOCode)
-        if (!stations.isNull())
+        if (!stations.isNull()) {
             sortedReports += stations;
+        }
 
     // Sort list
     auto compare = [&](const Weather::Station *a, const Weather::Station *b) {

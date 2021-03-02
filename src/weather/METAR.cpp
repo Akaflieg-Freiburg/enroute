@@ -20,9 +20,8 @@
 
 #include "Clock.h"
 #include "GlobalSettings.h"
-#include "Weather_METAR.h"
+#include "weather/METAR.h"
 
-using namespace Weather;
 
 Weather::METAR::METAR(QObject *parent)
     : Weather::Decoder(parent)
@@ -69,8 +68,9 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         if (xml.isStartElement() && name == "altim_in_hg") {
             auto content = xml.readElementText();
             _qnh = qRound(content.toDouble() * 33.86);
-            if ((_qnh < 800) || (_qnh > 1200))
+            if ((_qnh < 800) || (_qnh > 1200)) {
                 _qnh = 0;
+            }
             continue;
         }
 
@@ -92,8 +92,9 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         if (xml.isStartElement() && name == "altim_in_hg") {
             auto content = xml.readElementText();
             _qnh = qRound(content.toDouble() * 33.86);
-            if ((_qnh < 800) || (_qnh > 1200))
+            if ((_qnh < 800) || (_qnh > 1200)) {
                 _qnh = 0;
+            }
             continue;
         }
 
@@ -107,19 +108,24 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         // Flight category
         if (xml.isStartElement() && name == "flight_category") {
             auto content = xml.readElementText();
-            if (content == "VFR")
+            if (content == "VFR") {
                 _flightCategory = VFR;
-            if (content == "MVFR")
+            }
+            if (content == "MVFR") {
                 _flightCategory = MVFR;
-            if (content == "IFR")
+            }
+            if (content == "IFR") {
                 _flightCategory = IFR;
-            if (content == "LIFR")
+            }
+            if (content == "LIFR") {
                 _flightCategory = LIFR;
+            }
             continue;
         }
 
-        if (xml.isEndElement() && name == "METAR")
+        if (xml.isEndElement() && name == "METAR") {
             break;
+        }
 
         xml.skipCurrentElement();
     }
@@ -150,20 +156,24 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
 
 auto Weather::METAR::expiration() const -> QDateTime
 {
-    if (_raw_text.contains("NOSIG"))
+    if (_raw_text.contains("NOSIG")) {
         return _observationTime.addSecs(3*60*60);
+    }
     return _observationTime.addSecs(1.5*60*60);
 }
 
 
 auto Weather::METAR::flightCategoryColor() const -> QString
 {
-    if (_flightCategory == VFR)
+    if (_flightCategory == VFR) {
         return "green";
-    if (_flightCategory == MVFR)
+    }
+    if (_flightCategory == MVFR) {
         return "yellow";
-    if ((_flightCategory == IFR) || (_flightCategory == LIFR))
+    }
+    if ((_flightCategory == IFR) || (_flightCategory == LIFR)) {
         return "red";
+    }
     return "transparent";
 }
 
@@ -171,22 +181,27 @@ auto Weather::METAR::flightCategoryColor() const -> QString
 auto Weather::METAR::isExpired() const -> bool
 {
     auto exp = expiration();
-    if (!exp.isValid())
+    if (!exp.isValid()) {
         return false;
+    }
     return QDateTime::currentDateTime() > exp;
 }
 
 
 auto Weather::METAR::isValid() const -> bool
 {
-    if (!_location.isValid())
+    if (!_location.isValid()) {
         return false;
-    if (!_observationTime.isValid())
+    }
+    if (!_observationTime.isValid()) {
         return false;
-    if (_ICAOCode.isEmpty())
+    }
+    if (_ICAOCode.isEmpty()) {
         return false;
-    if (hasParseError())
+    }
+    if (hasParseError()) {
         return false;
+    }
 
     return true;
 }
@@ -194,14 +209,15 @@ auto Weather::METAR::isValid() const -> bool
 
 auto Weather::METAR::relativeObservationTime() const -> QString
 {
-    if (!_observationTime.isValid())
+    if (!_observationTime.isValid()) {
         return QString();
+    }
 
     return Clock::describeTimeDifference(_observationTime);
 }
 
 
-void Weather::METAR::setupSignals()
+void Weather::METAR::setupSignals() const
 {
     // Emit notifier signals whenever the time changes
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::METAR::summaryChanged);
@@ -217,10 +233,11 @@ auto Weather::METAR::summary() const -> QString {
 
     switch (_flightCategory) {
     case VFR:
-        if (_raw_text.contains("CAVOK"))
+        if (_raw_text.contains("CAVOK")) {
             resultList << tr("CAVOK");
-        else
+        } else {
             resultList << tr("VMC");
+        }
         break;
     case MVFR:
         resultList << tr("marginal VMC");
@@ -236,18 +253,21 @@ auto Weather::METAR::summary() const -> QString {
     }
 
     // Wind and Gusts
-    if (_gust.toKT() > 15)
+    if (_gust.toKT() > 15) {
         resultList << tr("gusts of %1").arg(_gust.toString() );
-    else if (_wind.toKT() > 10)
+    } else if (_wind.toKT() > 10) {
         resultList << tr("wind at %1").arg(_wind.toString());
+    }
 
     // Weather
     auto curWeather = currentWeather();
-    if (!curWeather.isEmpty())
+    if (!curWeather.isEmpty()) {
         resultList << curWeather;
+    }
 
-    if (resultList.isEmpty())
+    if (resultList.isEmpty()) {
         return QString();
+    }
 
     return tr("%1 %2: %3").arg(messageType(), Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
 }

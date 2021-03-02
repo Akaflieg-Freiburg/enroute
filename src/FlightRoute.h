@@ -30,7 +30,7 @@
 #include "Aircraft.h"
 
 #include "Waypoint.h"
-#include "Weather_Wind.h"
+#include "weather/Wind.h"
 
 class GeoMapProvider;
 class GlobalSettings;

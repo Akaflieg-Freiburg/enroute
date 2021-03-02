@@ -24,7 +24,7 @@
 
 #include "AviationUnits.h"
 #include "Waypoint.h"
-#include "Weather_Station.h"
+#include "weather/Station.h"
 
 
 Waypoint::Waypoint(QObject *parent)

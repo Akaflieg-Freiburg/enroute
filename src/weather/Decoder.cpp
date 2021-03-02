@@ -789,7 +789,7 @@ auto Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type) -> QString
 {
     switch(type) {
     case metaf::CloudType::Type::NOT_REPORTED:
-        return tr("unknoen cloud type");
+        return tr("unknown cloud type");
 
     case metaf::CloudType::Type::CUMULONIMBUS:
         return tr("cumulonimbus");

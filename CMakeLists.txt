@@ -11,7 +11,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.4.1)
+project(enroute VERSION 2.4.2)
 set(APP_ID de.akaflieg_freiburg.enroute)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")

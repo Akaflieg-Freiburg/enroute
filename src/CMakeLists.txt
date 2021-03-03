@@ -75,14 +75,16 @@ set(SOURCES
     Airspace.h
     AviationUnits.h
     Clock.h
-    Downloadable.h
-    DownloadableGroup.h
-    DownloadableGroupWatcher.h
     FlightRoute.h
-    GeoMapProvider.h
+    geomaps/Downloadable.h
+    geomaps/DownloadableGroup.h
+    geomaps/DownloadableGroupWatcher.h
+    geomaps/GeoMapProvider.h
+    geomaps/MapManager.h
+    geomaps/TileHandler.h
+    geomaps/TileServer.h
     GlobalSettings.h
     Librarian.h
-    MapManager.h
     MobileAdaptor.h
     Navigation_FLARMAdaptor.h
     Navigation_Geoid.h
@@ -102,17 +104,19 @@ set(SOURCES
     Airspace.cpp
     AviationUnits.cpp
     Clock.cpp
-    Downloadable.cpp
-    DownloadableGroup.cpp
-    DownloadableGroupWatcher.cpp
     FlightRoute.cpp
     FlightRoute_GPX.cpp
     FlightRoute_Leg.cpp
-    GeoMapProvider.cpp
+    geomaps/Downloadable.cpp
+    geomaps/DownloadableGroup.cpp
+    geomaps/DownloadableGroupWatcher.cpp
+    geomaps/GeoMapProvider.cpp
+    geomaps/MapManager.cpp
+    geomaps/TileHandler.cpp
+    geomaps/TileServer.cpp
     GlobalSettings.cpp
     Librarian.cpp
     main.cpp
-    MapManager.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     Navigation_FLARMAdaptor.cpp
@@ -120,8 +124,6 @@ set(SOURCES
     Navigation_SatNav.cpp
     Navigation_Traffic.cpp
     ScaleQuickItem.cpp
-    TileHandler.cpp
-    TileServer.cpp
     Waypoint.cpp
     weather/Decoder.cpp
     weather/DownloadManager.cpp

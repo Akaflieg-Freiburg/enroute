@@ -25,7 +25,10 @@
 #include "weather/METAR.h"
 #include "weather/TAF.h"
 
+namespace GeoMaps {
 class GeoMapProvider;
+}
+
 
 namespace Weather {
 
@@ -271,7 +274,7 @@ private:
 
     // This constructor is only meant to be called by instances of the
     // DownloadManager class
-    explicit Station(QString id, GeoMapProvider *geoMapProvider, QObject *parent);
+    explicit Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent);
 
     // If the metar is valid, not expired and newer than the existing metar,
     // this method sets the METAR message and deletes any existing METAR;
@@ -308,7 +311,7 @@ private:
     QString _twoLineTitle;
 
     // Pointer to GeoMapProvider, used in order to find matching waypoints
-    QPointer<GeoMapProvider> _geoMapProvider;
+    QPointer<GeoMaps::GeoMapProvider> _geoMapProvider;
 
     // Internal flag to indicate if data has been read from a matching waypoint
     // already

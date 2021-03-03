@@ -33,7 +33,7 @@ using namespace std::chrono_literals;
 #include "MapManager.h"
 
 
-MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
+GeoMaps::MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
     QObject(parent),
     _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
@@ -81,7 +81,7 @@ MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *par
 }
 
 
-MapManager::~MapManager()
+GeoMaps::MapManager::~MapManager()
 {
     // It might be possible for whatever reason that our download directory
     // contains files that we do not know whom they belong to. We hunt down those
@@ -113,19 +113,19 @@ MapManager::~MapManager()
 }
 
 
-void MapManager::updateGeoMapList()
+void GeoMaps::MapManager::updateGeoMapList()
 {
     QTimer::singleShot(0, &_maps_json, &Downloadable::startFileDownload);
 }
 
 
-void MapManager::errorReceiver(const QString& /*unused*/, QString message)
+void GeoMaps::MapManager::errorReceiver(const QString& /*unused*/, QString message)
 {
     emit error(std::move(message));
 }
 
 
-void MapManager::localFileOfGeoMapChanged()
+void GeoMaps::MapManager::localFileOfGeoMapChanged()
 {
     // Ok, a local file changed. First, we check if this means that the local file
     // of an unsupported map (=map with invalid URL) is gone. These maps are then
@@ -148,7 +148,7 @@ void MapManager::localFileOfGeoMapChanged()
 }
 
 
-void MapManager::readGeoMapListFromJSONFile()
+void GeoMaps::MapManager::readGeoMapListFromJSONFile()
 {
     if (!_maps_json.hasFile()) {
         return;
@@ -240,7 +240,7 @@ void MapManager::readGeoMapListFromJSONFile()
 }
 
 
-void MapManager::setTimeOfLastUpdateToNow()
+void GeoMaps::MapManager::setTimeOfLastUpdateToNow()
 {
     // Save timestamp, so that we know when an automatic update is due
     QSettings settings;
@@ -252,7 +252,7 @@ void MapManager::setTimeOfLastUpdateToNow()
 }
 
 
-void MapManager::autoUpdateGeoMapList()
+void GeoMaps::MapManager::autoUpdateGeoMapList()
 {
     // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
@@ -271,7 +271,7 @@ void MapManager::autoUpdateGeoMapList()
 }
 
 
-auto MapManager::unattachedFiles() const -> QList<QString>
+auto GeoMaps::MapManager::unattachedFiles() const -> QList<QString>
 {
     QList<QString> result;
 

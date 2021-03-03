@@ -22,7 +22,7 @@
 #include <QQmlEngine>
 
 #include "FlightRoute.h"
-#include "GeoMapProvider.h"
+#include "geomaps/GeoMapProvider.h"
 
 
 auto FlightRoute::toGpx() const -> QByteArray
@@ -142,7 +142,7 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
 }
 
 
-auto FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider) -> QString
+auto FlightRoute::loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -154,14 +154,14 @@ auto FlightRoute::loadFromGpx(const QString& fileName, GeoMapProvider *geoMapPro
 }
 
 
-auto FlightRoute::loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider) -> QString
+auto FlightRoute::loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
 {
     QXmlStreamReader xml(data);
     return loadFromGpx(xml, geoMapProvider);
 }
 
 
-auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider) -> QString
+auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
 {
 
     // collect all route points and track points and waypoints

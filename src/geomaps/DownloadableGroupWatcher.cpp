@@ -26,7 +26,7 @@
 using namespace std::chrono_literals;
 
 
-DownloadableGroupWatcher::DownloadableGroupWatcher(QObject *parent)
+GeoMaps::DownloadableGroupWatcher::DownloadableGroupWatcher(QObject *parent)
     : QObject(parent)
 {
     emitLocalFileContentChanged_delayedTimer.setInterval(2s);
@@ -35,7 +35,7 @@ DownloadableGroupWatcher::DownloadableGroupWatcher(QObject *parent)
 }
 
 
-void DownloadableGroupWatcher::emitLocalFileContentChanged_delayed()
+void GeoMaps::DownloadableGroupWatcher::emitLocalFileContentChanged_delayed()
 {
     if (downloading()) {
         return;
@@ -45,7 +45,7 @@ void DownloadableGroupWatcher::emitLocalFileContentChanged_delayed()
 }
 
 
-auto DownloadableGroupWatcher::hasFile() const -> bool
+auto GeoMaps::DownloadableGroupWatcher::hasFile() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull()) {
@@ -59,7 +59,7 @@ auto DownloadableGroupWatcher::hasFile() const -> bool
 }
 
 
-auto DownloadableGroupWatcher::downloading() const -> bool
+auto GeoMaps::DownloadableGroupWatcher::downloading() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull()) {
@@ -73,7 +73,7 @@ auto DownloadableGroupWatcher::downloading() const -> bool
 }
 
 
-auto DownloadableGroupWatcher::files() const -> QStringList
+auto GeoMaps::DownloadableGroupWatcher::files() const -> QStringList
 {
     QStringList result;
 
@@ -91,7 +91,7 @@ auto DownloadableGroupWatcher::files() const -> QStringList
 }
 
 
-auto DownloadableGroupWatcher::updatable() const -> bool
+auto GeoMaps::DownloadableGroupWatcher::updatable() const -> bool
 {
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull()) {
@@ -106,7 +106,7 @@ auto DownloadableGroupWatcher::updatable() const -> bool
 }
 
 
-void DownloadableGroupWatcher::cleanUp()
+void GeoMaps::DownloadableGroupWatcher::cleanUp()
 {
     auto idx = _downloadables.indexOf(nullptr);
     _downloadables.removeAll(nullptr);
@@ -116,7 +116,7 @@ void DownloadableGroupWatcher::cleanUp()
 }
 
 
-void DownloadableGroupWatcher::checkAndEmitSignals()
+void GeoMaps::DownloadableGroupWatcher::checkAndEmitSignals()
 {
     bool                          newDownloading           = downloading();
     QVector<QPointer<Downloadable>> newDownloadablesWithFile = downloadablesWithFile();
@@ -162,7 +162,7 @@ void DownloadableGroupWatcher::checkAndEmitSignals()
 }
 
 
-auto DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloadable>>
+auto GeoMaps::DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloadable>>
 {
     QVector<QPointer<Downloadable>> result;
     foreach(auto _downloadable, _downloadables) {
@@ -186,7 +186,7 @@ auto DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloa
 }
 
 
-auto DownloadableGroupWatcher::downloadablesWithFile() const -> QVector<QPointer<Downloadable>>
+auto GeoMaps::DownloadableGroupWatcher::downloadablesWithFile() const -> QVector<QPointer<Downloadable>>
 {
     QVector<QPointer<Downloadable>> result;
     foreach(auto _downloadable, _downloadables) {
@@ -213,7 +213,7 @@ auto DownloadableGroupWatcher::downloadablesWithFile() const -> QVector<QPointer
 }
 
 
-auto DownloadableGroupWatcher::downloadablesAsObjectList() const -> QVector<QObject*>
+auto GeoMaps::DownloadableGroupWatcher::downloadablesAsObjectList() const -> QVector<QObject*>
 {
     QVector<QObject*> result;
     foreach(auto downloadablePtr, downloadables())
@@ -222,7 +222,7 @@ auto DownloadableGroupWatcher::downloadablesAsObjectList() const -> QVector<QObj
 }
 
 
-void DownloadableGroupWatcher::updateAll()
+void GeoMaps::DownloadableGroupWatcher::updateAll()
 {
     foreach(auto downloadablePtr, _downloadables) {
         if (downloadablePtr.isNull()) {
@@ -235,7 +235,7 @@ void DownloadableGroupWatcher::updateAll()
 }
 
 
-auto DownloadableGroupWatcher::updateSize() const -> QString
+auto GeoMaps::DownloadableGroupWatcher::updateSize() const -> QString
 {
     qint64 downloadSize = 0;
     foreach(auto downloadable, _downloadables)
@@ -247,7 +247,7 @@ auto DownloadableGroupWatcher::updateSize() const -> QString
 }
 
 
-auto DownloadableGroupWatcher::numberOfFilesTotal() const -> int
+auto GeoMaps::DownloadableGroupWatcher::numberOfFilesTotal() const -> int
 {
     int nFilesTotal = 0;
     foreach(auto _downloadable, _downloadables) {

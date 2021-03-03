@@ -32,7 +32,10 @@
 #include "Waypoint.h"
 #include "weather/Wind.h"
 
+namespace GeoMaps {
 class GeoMapProvider;
+}
+
 class GlobalSettings;
 class Waypoint;
 
@@ -148,7 +151,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMapProvider *geoMapProvider);
+    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -161,7 +164,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    QString loadFromGpx(const QByteArray& data, GeoMapProvider *geoMapProvider);
+    QString loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -174,7 +177,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    QString loadFromGpx(QXmlStreamReader& xml, GeoMapProvider *geoMapProvider);
+    QString loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider);
 
     /*! \brief Saves flight route to a file
      *

@@ -26,6 +26,8 @@
 #include <QPointer>
 
 
+namespace GeoMaps {
+
 /*! \brief HTTP server for mapbox' MBTiles files
   
   This class features an HTTP server that is able to serve MBTiles, for use in
@@ -122,4 +124,6 @@ private:
   QMap<QString,QVector<QPointer<Downloadable>>> mbtileFileNameSets;
   
   QUrl _baseUrl;
+};
+
 };

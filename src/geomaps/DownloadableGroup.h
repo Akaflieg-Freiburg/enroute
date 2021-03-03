@@ -22,6 +22,7 @@
 
 #include "DownloadableGroupWatcher.h"
 
+namespace GeoMaps {
 
 /*! \brief Manages a set of downloadable objects
 
@@ -64,4 +65,6 @@ public:
 
 private:
     Q_DISABLE_COPY_MOVE(DownloadableGroup)
+};
+
 };

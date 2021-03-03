@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "GeoMapProvider.h"
+#include "geomaps/GeoMapProvider.h"
 #include "weather/Station.h"
 
 #include <utility>
@@ -30,7 +30,7 @@ Weather::Station::Station(QObject *parent)
 }
 
 
-Weather::Station::Station(QString id, GeoMapProvider *geoMapProvider, QObject *parent)
+Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent)
     : QObject(parent),
       _ICAOCode(std::move(id)),
       _geoMapProvider(geoMapProvider)
@@ -39,7 +39,7 @@ Weather::Station::Station(QString id, GeoMapProvider *geoMapProvider, QObject *p
     _twoLineTitle = _ICAOCode;
 
     // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
-    connect(_geoMapProvider, &GeoMapProvider::geoJSONChanged, this, &Weather::Station::readDataFromWaypoint);
+    connect(_geoMapProvider, &GeoMaps::GeoMapProvider::geoJSONChanged, this, &Weather::Station::readDataFromWaypoint);
     readDataFromWaypoint();
 }
 

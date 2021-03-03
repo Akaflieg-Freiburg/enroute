@@ -27,6 +27,8 @@
 #include <QPointer>
 #include <QSaveFile>
 
+namespace GeoMaps {
+
 /*! \brief Base class for all downloadable objects
 
   This class represents a downloadable item, such as an aviation map file.  The
@@ -468,4 +470,6 @@ private:
 
     // Section name
     QString _section {};
+};
+
 };

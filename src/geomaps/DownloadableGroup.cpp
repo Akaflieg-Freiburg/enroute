@@ -21,13 +21,13 @@
 #include "DownloadableGroup.h"
 
 
-DownloadableGroup::DownloadableGroup(QObject *parent)
+GeoMaps::DownloadableGroup::DownloadableGroup(QObject *parent)
     : DownloadableGroupWatcher(parent)
 {
 }
 
 
-void DownloadableGroup::addToGroup(Downloadable *downloadable)
+void GeoMaps::DownloadableGroup::addToGroup(Downloadable *downloadable)
 {
     // Avoid double entries
     if (_downloadables.contains(downloadable)) {
@@ -48,7 +48,7 @@ void DownloadableGroup::addToGroup(Downloadable *downloadable)
 }
 
 
-void DownloadableGroup::removeFromGroup(Downloadable *downloadable)
+void GeoMaps::DownloadableGroup::removeFromGroup(Downloadable *downloadable)
 {
     auto index = _downloadables.indexOf(downloadable);
 

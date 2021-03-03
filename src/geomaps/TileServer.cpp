@@ -21,19 +21,19 @@
 #include <QUrl>
 #include <utility>
 
-#include "Downloadable.h"
+#include "geomaps/Downloadable.h"
 #include "TileHandler.h"
 #include "TileServer.h"
 
 
-TileServer::TileServer(QUrl baseUrl, QObject *parent)
+GeoMaps::TileServer::TileServer(QUrl baseUrl, QObject *parent)
     : QHttpEngine::Server(parent), _baseUrl(std::move(baseUrl))
 {
     setUpTileHandlers();
 }
 
 
-auto TileServer::serverUrl() const -> QString
+auto GeoMaps::TileServer::serverUrl() const -> QString
 {
     if (isListening()) {
         return QString("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
@@ -42,21 +42,21 @@ auto TileServer::serverUrl() const -> QString
 }
 
 
-void TileServer::addMbtilesFileSet(const QVector<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName)
+void GeoMaps::TileServer::addMbtilesFileSet(const QVector<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName)
 {
     mbtileFileNameSets[baseName] = baseMapsWithFiles;
     setUpTileHandlers();
 }
 
 
-void TileServer::removeMbtilesFileSet(const QString& path)
+void GeoMaps::TileServer::removeMbtilesFileSet(const QString& path)
 {
     mbtileFileNameSets.remove(path);
     setUpTileHandlers();
 }
 
 
-void TileServer::setUpTileHandlers()
+void GeoMaps::TileServer::setUpTileHandlers()
 {
     // Create new file system handler and delete old one
     auto *newFileSystemHandler = new QHttpEngine::FilesystemHandler(":", this);

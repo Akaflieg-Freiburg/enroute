@@ -28,10 +28,10 @@
 
 #include <qhttpengine/socket.h>
 
-#include "Downloadable.h"
+#include "geomaps/Downloadable.h"
 #include "TileHandler.h"
 
-TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
+GeoMaps::TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
     // Initialize with default values
@@ -105,14 +105,14 @@ TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, con
 }
 
 
-TileHandler::~TileHandler()
+GeoMaps::TileHandler::~TileHandler()
 {
     foreach(auto databaseConnectionName, databaseConnections)
         QSqlDatabase::removeDatabase(databaseConnectionName);
 }
 
 
-void TileHandler::removeFile(const QString& localFileName)
+void GeoMaps::TileHandler::removeFile(const QString& localFileName)
 {
     QString connectionToRemove;
     foreach(auto databaseConnectionName, databaseConnections) {
@@ -128,7 +128,7 @@ void TileHandler::removeFile(const QString& localFileName)
 }
 
 
-void TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
+void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
 {
     // Serve tileJSON file, if requested
     if (path.isEmpty() || path.endsWith("json", Qt::CaseInsensitive)) {
@@ -181,7 +181,7 @@ void TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
 }
 
 
-auto TileHandler::tileJSON() const -> QByteArray
+auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
 {
     QJsonObject result;
     result.insert("tilejson", "2.2.0");

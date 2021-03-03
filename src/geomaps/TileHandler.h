@@ -26,6 +26,8 @@
 #include <qhttpengine/handler.h>
 
 
+namespace GeoMaps {
+
 /*! \brief Implementation of QHttpEngine::Handler that serves mbtile files
  
   This class is the core of the tileserver. It takes one or more mbtile files
@@ -204,4 +206,6 @@ private:
   int _minzoom {-1};
   
   bool hasDBError {false};
+};
+
 };

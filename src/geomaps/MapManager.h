@@ -22,7 +22,10 @@
 
 #include <QTimer> 
 
-#include "DownloadableGroup.h"
+#include "geomaps/DownloadableGroup.h"
+
+
+namespace GeoMaps {
 
 /*! \brief Manages the list of geographic maps
   
@@ -209,4 +212,6 @@ private:
   // Pointer the QNetworkAccessManager that will be used for all Downloadable
   // objects constructed by this class
   QPointer<QNetworkAccessManager> _networkAccessManager;
+};
+
 };

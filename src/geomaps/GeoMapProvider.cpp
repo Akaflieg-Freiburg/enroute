@@ -37,7 +37,7 @@
 using namespace std::chrono_literals;
 
 
-GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent)
+GeoMaps::GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent)
     : QObject(parent),
       _manager(manager),
       _librarian(librarian),
@@ -55,7 +55,7 @@ GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObjec
 }
 
 
-auto GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*>
+auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*>
 {
     // Lock data
     QMutexLocker lock(&_aviationDataMutex);
@@ -81,7 +81,7 @@ auto GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*
 }
 
 
-auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute) -> QObject*
+auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute) -> QObject*
 {
     position.setAltitude(qQNaN());
 
@@ -120,7 +120,7 @@ auto GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordina
 }
 
 
-auto GeoMapProvider::createWaypoint() -> Waypoint*
+auto GeoMaps::GeoMapProvider::createWaypoint() -> Waypoint*
 {
     auto *wp = new Waypoint();
     QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
@@ -128,7 +128,7 @@ auto GeoMapProvider::createWaypoint() -> Waypoint*
 }
 
 
-auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
+auto GeoMaps::GeoMapProvider::describeMapFile(const QString& fileName) -> QString
 {
     QFileInfo fi(fileName);
     if (!fi.exists()) {
@@ -191,7 +191,7 @@ auto GeoMapProvider::describeMapFile(const QString& fileName) -> QString
 }
 
 
-auto GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QObject*>
+auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QObject*>
 {
     auto wps = waypoints();
 
@@ -229,7 +229,7 @@ auto GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QOb
 }
 
 
-auto GeoMapProvider::findByID(const QString &id) -> Waypoint*
+auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint*
 {
     auto wps = waypoints();
 
@@ -245,7 +245,7 @@ auto GeoMapProvider::findByID(const QString &id) -> Waypoint*
 }
 
 
-auto GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<QObject*>
+auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<QObject*>
 {
     auto wps = waypoints();
 
@@ -276,7 +276,7 @@ auto GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QStri
 }
 
 
-auto GeoMapProvider::styleFileURL() const -> QString
+auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
 {
     if (_styleFile.isNull()) {
         return QStringLiteral(":/flightMap/empty.json");
@@ -285,7 +285,7 @@ auto GeoMapProvider::styleFileURL() const -> QString
 }
 
 
-void GeoMapProvider::aviationMapsChanged()
+void GeoMaps::GeoMapProvider::aviationMapsChanged()
 {
     // Paranoid safety checks
     if (_manager.isNull()) {
@@ -311,11 +311,11 @@ void GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalSettings::hideUpperAirspacesStatic());
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalSettings::hideUpperAirspacesStatic());
 }
 
 
-void GeoMapProvider::baseMapsChanged()
+void GeoMaps::GeoMapProvider::baseMapsChanged()
 {
     // Paranoid safety checks
     if (_manager.isNull()) {
@@ -345,7 +345,7 @@ void GeoMapProvider::baseMapsChanged()
 }
 
 
-void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces)
+void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces)
 {
     //
     // Generate new GeoJSON array and new list of waypoints
@@ -439,7 +439,7 @@ void GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, boo
 }
 
 
-void GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManager)
+void GeoMaps::GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManager)
 {
     if (downloadManager == nullptr) {
         return;
@@ -448,13 +448,13 @@ void GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManage
 
 
     // Connect the Downloadmanager, so aviation maps will be generated
-    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::aviationMapsChanged);
-    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMapProvider::baseMapsChanged);
-    connect(GlobalSettings::globalInstance(), &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMapProvider::aviationMapsChanged);
+    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
+    connect(GlobalSettings::globalInstance(), &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3s);
-    connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMapProvider::aviationMapsChanged);
+    connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
 
     aviationMapsChanged();
     baseMapsChanged();

@@ -28,20 +28,25 @@ Airspace::Airspace(QObject *parent) : QObject(parent) {}
 
 Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(parent) {
     // Paranoid safety checks
-    if (geoJSONObject["type"] != "Feature")
+    if (geoJSONObject["type"] != "Feature") {
         return;
+    }
 
     // Get geometry
-    if (!geoJSONObject.contains("geometry"))
+    if (!geoJSONObject.contains("geometry")) {
         return;
+    }
     auto geometry = geoJSONObject["geometry"].toObject();
-    if (geometry["type"] != "Polygon")
+    if (geometry["type"] != "Polygon") {
         return;
-    if (!geometry.contains("coordinates"))
+    }
+    if (!geometry.contains("coordinates")) {
         return;
+    }
     auto polygonArray = geometry["coordinates"].toArray();
-    if (polygonArray.size() != 1)
+    if (polygonArray.size() != 1) {
         return;
+    }
     auto polygonCoordinates = polygonArray[0].toArray();
     foreach (auto coordinate, polygonCoordinates) {
         auto coordinateArray = coordinate.toArray();
@@ -51,36 +56,42 @@ Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(
     }
 
     // Get properties
-    if (!geoJSONObject.contains("properties"))
+    if (!geoJSONObject.contains("properties")) {
         return;
+    }
     auto properties = geoJSONObject["properties"].toObject();
-    if (!properties.contains("CAT"))
+    if (!properties.contains("CAT")) {
         return;
+    }
     _CAT = properties["CAT"].toString();
 
-    if (!properties.contains("NAM"))
+    if (!properties.contains("NAM")) {
         return;
+    }
     _name = properties["NAM"].toString();
 
-    if (!properties.contains("TOP"))
+    if (!properties.contains("TOP")) {
         return;
+    }
     _upperBound = properties["TOP"].toString();
 
-    if (!properties.contains("BOT"))
+    if (!properties.contains("BOT")) {
         return;
+    }
     _lowerBound = properties["BOT"].toString();
 }
 
 auto Airspace::estimatedLowerBoundInFtMSL() const -> double {
     double result = 0.0;
-    bool ok;
+    bool ok = false;
 
     QString AL = _lowerBound.simplified();
 
     if (AL.startsWith("FL", Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
-        if (ok)
+        if (ok) {
             return 100 * result;
+        }
         return 0.0;
     }
 
@@ -98,21 +109,24 @@ auto Airspace::estimatedLowerBoundInFtMSL() const -> double {
     }
 
     result = AL.toDouble(&ok);
-    if (ok)
+    if (ok) {
         return result;
+    }
     return 0.0;
 }
 
 auto Airspace::isUpper() const -> bool {
     QString AL = _lowerBound.simplified();
 
-    if (!AL.startsWith("FL", Qt::CaseInsensitive))
+    if (!AL.startsWith("FL", Qt::CaseInsensitive)) {
         return false;
+    }
 
-    bool ok;
+    bool ok = false;
     double fl = AL.remove(0, 2).toDouble(&ok);
-    if (!ok)
+    if (!ok) {
         return false;
+    }
 
     return fl >= 100.0;
 }

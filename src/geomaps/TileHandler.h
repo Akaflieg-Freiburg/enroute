@@ -28,6 +28,9 @@
 
 namespace GeoMaps {
 
+class Downloadable;
+
+
 /*! \brief Implementation of QHttpEngine::Handler that serves mbtile files
  
   This class is the core of the tileserver. It takes one or more mbtile files
@@ -65,7 +68,7 @@ public:
     
     @param parent The standard QObject parent
   */
-  explicit TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
+  explicit TileHandler(const QVector<QPointer<GeoMaps::Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
   // Destructor
   ~TileHandler() override;

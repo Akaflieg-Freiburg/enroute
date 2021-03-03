@@ -21,9 +21,9 @@
 #include <QUrl>
 #include <utility>
 
-#include "geomaps/Downloadable.h"
 #include "TileHandler.h"
 #include "TileServer.h"
+#include "geomaps/Downloadable.h"
 
 
 GeoMaps::TileServer::TileServer(QUrl baseUrl, QObject *parent)

@@ -148,7 +148,7 @@ public slots:
 
 signals:
     /*! \brief Notifier signal for property downloading */
-    void downloadablesWithFileChanged(QVector<QPointer<Downloadable>>);
+    void downloadablesWithFileChanged(QVector<QPointer<GeoMaps::Downloadable>>);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged(bool);

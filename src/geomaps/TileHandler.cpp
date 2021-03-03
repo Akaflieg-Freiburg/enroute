@@ -28,8 +28,8 @@
 
 #include <qhttpengine/socket.h>
 
-#include "geomaps/Downloadable.h"
 #include "TileHandler.h"
+#include "geomaps/Downloadable.h"
 
 GeoMaps::TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
@@ -145,10 +145,10 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
     QRegularExpressionMatch match = tileQueryPattern.match(path);
     if (match.hasMatch()) {
         // Retrieve tile data from the database
-        qint32  z       = path.section('/', 1, 1).toInt();
+        quint32 z       = path.section('/', 1, 1).toInt();
         QString x       = path.section('/', 2, 2);
-        qint32  y       = path.section('/', 3, 3).section('.', 0, 0).toInt();
-        qint32 yflipped = ((1<<z)-1)-y;
+        quint32 y       = path.section('/', 3, 3).section('.', 0, 0).toInt();
+        quint32 yflipped = ((quint32(1) <<z)-1)-y;
         QString queryString = QString("select zoom_level, tile_column, tile_row, tile_data from tiles where zoom_level=%1 and tile_column=%2 and tile_row=%3;").arg(z).arg(x).arg(yflipped);
 
         foreach(auto databaseConnection, databaseConnections) {

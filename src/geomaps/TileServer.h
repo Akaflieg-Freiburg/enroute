@@ -106,7 +106,7 @@ public slots:
      
     @param baseName The path under which the tiles willconst be available.
   */
-  void addMbtilesFileSet(const QVector<QPointer<Downloadable>>& baseMapsWithFiles, const QString& baseName);
+  void addMbtilesFileSet(const QVector<QPointer<GeoMaps::Downloadable>>& baseMapsWithFiles, const QString& baseName);
 
   /*! \brief Removes a set of tile files
    

@@ -23,6 +23,8 @@
 #include <QGeoPolygon>
 #include <QJsonObject>
 
+namespace GeoMaps {
+
 /*! \brief A very simple class that describes an airspace */
 
 class Airspace : public QObject {
@@ -152,3 +154,5 @@ private:
     QString _lowerBound{};
     QGeoPolygon _polygon{};
 };
+
+}

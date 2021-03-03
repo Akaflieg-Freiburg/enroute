@@ -24,9 +24,9 @@
 
 #include "Airspace.h"
 
-Airspace::Airspace(QObject *parent) : QObject(parent) {}
+GeoMaps::Airspace::Airspace(QObject *parent) : QObject(parent) {}
 
-Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(parent) {
+GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(parent) {
     // Paranoid safety checks
     if (geoJSONObject["type"] != "Feature") {
         return;
@@ -81,7 +81,7 @@ Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(
     _lowerBound = properties["BOT"].toString();
 }
 
-auto Airspace::estimatedLowerBoundInFtMSL() const -> double {
+auto GeoMaps::Airspace::estimatedLowerBoundInFtMSL() const -> double {
     double result = 0.0;
     bool ok = false;
 
@@ -115,7 +115,7 @@ auto Airspace::estimatedLowerBoundInFtMSL() const -> double {
     return 0.0;
 }
 
-auto Airspace::isUpper() const -> bool {
+auto GeoMaps::Airspace::isUpper() const -> bool {
     QString AL = _lowerBound.simplified();
 
     if (!AL.startsWith("FL", Qt::CaseInsensitive)) {

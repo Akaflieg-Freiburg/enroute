@@ -27,6 +27,7 @@
 #include <QPointer>
 #include <QSaveFile>
 
+
 namespace GeoMaps {
 
 /*! \brief Base class for all downloadable objects

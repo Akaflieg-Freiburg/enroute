@@ -103,7 +103,7 @@ public:
      *
      * @returns Property time
      */
-    QString timeAsUTCString() const;
+    static QString timeAsUTCString() ;
 
     /*! \brief Current time
      *

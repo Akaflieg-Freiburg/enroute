@@ -147,7 +147,7 @@ public:
      *
      * @returns Pointer to a newly created waypoint object
      */
-    Q_INVOKABLE static Waypoint* createWaypoint() ;
+    Q_INVOKABLE static GeoMaps::Waypoint* createWaypoint() ;
 
     /*! \brief Describe installed map
      *

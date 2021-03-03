@@ -53,10 +53,10 @@ void FlightRoute::append(QObject *waypoint)
         return;
     }
 
-    auto* wp =  qobject_cast<Waypoint*>(waypoint);
-    auto* myWp = new Waypoint(*wp, this);
+    auto* wp =  qobject_cast<GeoMaps::Waypoint*>(waypoint);
+    auto* myWp = new GeoMaps::Waypoint(*wp, this);
     QQmlEngine::setObjectOwnership(myWp, QQmlEngine::CppOwnership);
-    connect(myWp, &Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
+    connect(myWp, &GeoMaps::Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
     _waypoints.append(myWp);
 
     updateLegs();
@@ -66,7 +66,7 @@ void FlightRoute::append(QObject *waypoint)
 
 void FlightRoute::append(const QGeoCoordinate& position)
 {
-    append(new Waypoint(position, this));
+    append(new GeoMaps::Waypoint(position, this));
 }
 
 
@@ -95,7 +95,7 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 }
 
 
-auto FlightRoute::canAppend(Waypoint *other) const -> bool
+auto FlightRoute::canAppend(GeoMaps::Waypoint *other) const -> bool
 {
     if (other == nullptr) {
         return true;
@@ -127,7 +127,7 @@ auto FlightRoute::contains(QObject * waypoint) const -> bool
         return false;
     }
 
-    auto *testWaypoint = qobject_cast<Waypoint *>(waypoint);
+    auto *testWaypoint = qobject_cast<GeoMaps::Waypoint *>(waypoint);
     // must loop over list in order to compare values (not pointers)
     foreach(auto _waypoint, _waypoints) {
         if (_waypoint.isNull()) {
@@ -204,15 +204,15 @@ auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
         return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
     }
 
-    QVector<QPointer<Waypoint>> newWaypoints;
+    QVector<QPointer<GeoMaps::Waypoint>> newWaypoints;
     foreach(auto value, document.object()["features"].toArray()) {
-        auto *wp = new Waypoint(value.toObject(), this);
+        auto *wp = new GeoMaps::Waypoint(value.toObject(), this);
         if (!wp->isValid()) {
             qDeleteAll(newWaypoints);
             return tr("Cannot parse content of file '%1'.").arg(fileName);
         }
         QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
-        connect(wp, &Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
+        connect(wp, &GeoMaps::Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
         newWaypoints.append(wp);
     }
 
@@ -320,7 +320,7 @@ void FlightRoute::moveDown(QObject *waypoint)
         return;
     }
 
-    auto *swp = qobject_cast<Waypoint*>(waypoint);
+    auto *swp = qobject_cast<GeoMaps::Waypoint*>(waypoint);
 
     auto idx = _waypoints.indexOf(swp);
     _waypoints.move(idx, idx+1);
@@ -343,7 +343,7 @@ void FlightRoute::moveUp(QObject *waypoint)
         return;
     }
 
-    auto *swp = qobject_cast<Waypoint*>(waypoint);
+    auto *swp = qobject_cast<GeoMaps::Waypoint*>(waypoint);
 
     auto idx = _waypoints.indexOf(swp);
     if (idx > 0) {
@@ -365,7 +365,7 @@ void FlightRoute::removeWaypoint(QObject *waypoint)
         return;
     }
 
-    auto *waypointPtr = qobject_cast<Waypoint*>(waypoint);
+    auto *waypointPtr = qobject_cast<GeoMaps::Waypoint*>(waypoint);
 
     // if called from the waypoint dialog, the waypoint is not the
     // same instance as the one in `_waypoints`

@@ -32,9 +32,9 @@
 
 #include "Clock.h"
 #include "FlightRoute.h"
-#include "geomaps/GeoMapProvider.h"
 #include "GlobalSettings.h"
 #include "Navigation_SatNav.h"
+#include "geomaps/GeoMapProvider.h"
 #include "weather/DownloadManager.h"
 #include "weather/METAR.h"
 #include <chrono>

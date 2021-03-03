@@ -27,6 +27,8 @@
 #include "weather/DownloadManager.h"
 
 
+namespace GeoMaps {
+
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
  *
  * This class represents a waypoint.  The relevant data that describes the
@@ -62,7 +64,7 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Waypoint(const Waypoint &other, QObject *parent = nullptr);
+    explicit Waypoint(const GeoMaps::Waypoint &other, QObject *parent = nullptr);
 
     /*! \brief Constructs a waypoint from a coordinate
      *
@@ -357,3 +359,5 @@ private:
     Weather::Station *_weatherStation_unguarded {nullptr};
     QPointer<Weather::Station> _weatherStation_guarded;
 };
+
+}

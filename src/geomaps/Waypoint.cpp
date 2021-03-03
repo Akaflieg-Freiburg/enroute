@@ -27,7 +27,7 @@
 #include "weather/Station.h"
 
 
-Waypoint::Waypoint(QObject *parent)
+GeoMaps::Waypoint::Waypoint(QObject *parent)
     : QObject(parent)
 {
     _properties.insert("CAT", QString("WP"));
@@ -36,7 +36,7 @@ Waypoint::Waypoint(QObject *parent)
 }
 
 
-Waypoint::Waypoint(const Waypoint &other, QObject *parent)
+GeoMaps::Waypoint::Waypoint(const Waypoint &other, QObject *parent)
     : QObject(parent),
 
       _coordinate(other._coordinate),
@@ -47,7 +47,7 @@ Waypoint::Waypoint(const Waypoint &other, QObject *parent)
 }
 
 
-Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
+GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
     : QObject(parent),
       _coordinate(coordinate)
 {
@@ -57,7 +57,7 @@ Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
 }
 
 
-Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
+GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
     : QObject(parent)
 {
     // Paranoid safety checks
@@ -99,7 +99,7 @@ Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
 // METHODS
 //
 
-auto Waypoint::isNear(const Waypoint *other) const -> bool
+auto GeoMaps::Waypoint::isNear(const Waypoint *other) const -> bool
 {
     if (other == nullptr) {
         return false;
@@ -119,7 +119,7 @@ auto Waypoint::isNear(const Waypoint *other) const -> bool
 // PROPERTIES
 //
 
-void Waypoint::setCoordinate(const QGeoCoordinate& newCoordinate)
+void GeoMaps::Waypoint::setCoordinate(const QGeoCoordinate& newCoordinate)
 {
     if (newCoordinate == _coordinate) {
         return;
@@ -129,7 +129,7 @@ void Waypoint::setCoordinate(const QGeoCoordinate& newCoordinate)
 }
 
 
-auto Waypoint::extendedName() const -> QString
+auto GeoMaps::Waypoint::extendedName() const -> QString
 {
     if (_properties.value("TYP").toString() == "NAV") {
         return QString("%1 (%2)").arg(_properties.value("NAM").toString(), _properties.value("CAT").toString());
@@ -139,7 +139,7 @@ auto Waypoint::extendedName() const -> QString
 }
 
 
-void Waypoint::setExtendedName(const QString &newExtendedName)
+void GeoMaps::Waypoint::setExtendedName(const QString &newExtendedName)
 {
     if (newExtendedName == _properties.value("NAM").toString()) {
         return;
@@ -149,7 +149,7 @@ void Waypoint::setExtendedName(const QString &newExtendedName)
 }
 
 
-auto Waypoint::hasMETAR() const -> bool
+auto GeoMaps::Waypoint::hasMETAR() const -> bool
 {
     auto *station = weatherStation();
     if (station == nullptr) {
@@ -159,7 +159,7 @@ auto Waypoint::hasMETAR() const -> bool
 }
 
 
-auto Waypoint::hasTAF() const -> bool
+auto GeoMaps::Waypoint::hasTAF() const -> bool
 {
     auto *station = weatherStation();
     if (station == nullptr) {
@@ -169,7 +169,7 @@ auto Waypoint::hasTAF() const -> bool
 }
 
 
-auto Waypoint::icon() const -> QString
+auto GeoMaps::Waypoint::icon() const -> QString
 {
     auto CAT = getPropery(QStringLiteral("CAT")).toString();
 
@@ -184,7 +184,7 @@ auto Waypoint::icon() const -> QString
 }
 
 
-void Waypoint::initializeWeatherStationConnections()
+void GeoMaps::Waypoint::initializeWeatherStationConnections()
 {
     // Get new weather station
     auto *newStationPtr = weatherStation();
@@ -226,7 +226,7 @@ void Waypoint::initializeWeatherStationConnections()
 }
 
 
-auto Waypoint::isValid() const -> bool
+auto GeoMaps::Waypoint::isValid() const -> bool
 {
     if (!_coordinate.isValid()) {
         return false;
@@ -341,7 +341,7 @@ auto Waypoint::isValid() const -> bool
 }
 
 
-auto Waypoint::operator==(const Waypoint &other) const -> bool {
+auto GeoMaps::Waypoint::operator==(const Waypoint &other) const -> bool {
     if (_coordinate != other._coordinate) {
         return false;
     }
@@ -352,7 +352,7 @@ auto Waypoint::operator==(const Waypoint &other) const -> bool {
 }
 
 
-void Waypoint::setDownloadManager(Weather::DownloadManager *downloadManager)
+void GeoMaps::Waypoint::setDownloadManager(Weather::DownloadManager *downloadManager)
 {
     // No DownloadManager? Then nothing to do.
     if (downloadManager == nullptr) {
@@ -381,7 +381,7 @@ void Waypoint::setDownloadManager(Weather::DownloadManager *downloadManager)
 }
 
 
-auto Waypoint::tabularDescription() const -> QList<QString>
+auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
 {
     QList<QString> result;
 
@@ -429,7 +429,7 @@ auto Waypoint::tabularDescription() const -> QList<QString>
 }
 
 
-auto Waypoint::toJSON() const -> QJsonObject
+auto GeoMaps::Waypoint::toJSON() const -> QJsonObject
 {
     QJsonArray coords;
     coords.insert(0, _coordinate.longitude());
@@ -446,7 +446,7 @@ auto Waypoint::toJSON() const -> QJsonObject
 }
 
 
-auto Waypoint::twoLineTitle() const -> QString
+auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 {
     QString codeName;
     if (_properties.contains("COD")) {
@@ -464,7 +464,7 @@ auto Waypoint::twoLineTitle() const -> QString
 }
 
 
-auto Waypoint::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetricUnits) const -> QString
+auto GeoMaps::Waypoint::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetricUnits) const -> QString
 {
     // Paranoid safety checks
     if (!fromCoordinate.isValid()) {
@@ -484,7 +484,7 @@ auto Waypoint::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetricUnits) 
 }
 
 
-auto Waypoint::weatherStation() const -> Weather::Station *
+auto GeoMaps::Waypoint::weatherStation() const -> Weather::Station *
 {
     if (_downloadManager.isNull()) {
         return nullptr;
@@ -495,4 +495,3 @@ auto Waypoint::weatherStation() const -> Weather::Station *
 
     return _downloadManager->findWeatherStation(_properties.value("COD").toString());
 }
-

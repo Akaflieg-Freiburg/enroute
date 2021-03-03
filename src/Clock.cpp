@@ -24,6 +24,9 @@
 #include <QDate>
 #include <QGuiApplication>
 #include <QTimer>
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 // Static instance of this class
@@ -36,9 +39,9 @@ Clock::Clock(QObject *parent) : QObject(parent)
     // want the signal to be emitted right after the full minute. So, I use a timer that once a minute set a single-shot time
     // that is set to fire up 500ms after the full minute. This design will also work reliably if "timer" get out of sync,
     // for instance because the app was sleeping for a while.
-    auto timer = new QTimer(this);
+    auto *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Clock::setSingleShotTimer);
-    timer->setInterval(60*1000);
+    timer->setInterval(1min);
     timer->start();
 
     // Start the single shot timer once manually
@@ -56,24 +59,27 @@ auto Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
     bool past = minutes < 0;
     minutes = qAbs(minutes);
 
-    if (minutes == 0)
+    if (minutes == 0) {
         return tr("just now");
+    }
 
     auto hours = minutes/60;
     minutes = minutes%60;
 
     QString result = "";
-    if ((hours != 0) && (minutes == 0))
+    if ((hours != 0) && (minutes == 0)) {
         result = tr("%1h").arg(hours);
-    else if ((hours == 0) && (minutes != 0))
+    } else if ((hours == 0) && (minutes != 0)) {
         result = tr("%1min").arg(minutes);
-    else
+    } else {
         result = tr("%1h and %2min").arg(hours).arg(minutes);
+    }
 
-    if (past)
+    if (past) {
         result = tr("%1 ago").arg(result);
-    else
+    } else {
         result = tr("in %1").arg(result);
+    }
 
     return result.simplified();
 }
@@ -114,12 +120,13 @@ void Clock::setSingleShotTimer()
     QTime current = QDateTime::currentDateTime().time();
     int msecsToNextMinute = 60*1000 - (current.msecsSinceStartOfDay() % (60*1000));
     QTimer::singleShot(msecsToNextMinute+500, this, &Clock::timeChanged);
-    if (current.msecsSinceStartOfDay() < 1000*60)
+    if (current.msecsSinceStartOfDay() < 1000*60) {
         emit dateChanged();
+    }
 }
 
 
-auto Clock::timeAsUTCString() const -> QString
+auto Clock::timeAsUTCString() -> QString
 {
     return QDateTime::currentDateTimeUtc().toString("H:mm");
 }

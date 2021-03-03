@@ -49,7 +49,7 @@ public:
    *
    * @param parent The standard QObject parent pointer.
    */
-  explicit Leg(const Waypoint* start, const Waypoint *end, Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
+  explicit Leg(const GeoMaps::Waypoint* start, const GeoMaps::Waypoint *end, Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
 
   // Standard destructor
   ~Leg() override = default;
@@ -174,8 +174,8 @@ private:
   // Minimum length of the leg in meters. If shorter, no courses are computed.
   static constexpr double minLegLength  =  100.0;
 
-  QPointer<Waypoint> _start {nullptr};
-  QPointer<Waypoint> _end {nullptr};
+  QPointer<GeoMaps::Waypoint> _start {nullptr};
+  QPointer<GeoMaps::Waypoint> _end {nullptr};
   QPointer<Aircraft> _aircraft {nullptr};
   QPointer<Weather::Wind> _wind {nullptr};
 };

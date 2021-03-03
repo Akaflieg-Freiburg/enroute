@@ -60,7 +60,7 @@ auto main(int argc, char *argv[]) -> int
 
     // Register types
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
-    qmlRegisterType<Airspace>("enroute", 1, 0, "Airspace");
+    qmlRegisterType<GeoMaps::Airspace>("enroute", 1, 0, "Airspace");
 
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<GeoMaps::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
@@ -74,7 +74,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
-    qmlRegisterType<Waypoint>("enroute", 1, 0, "Waypoint");
+    qmlRegisterType<GeoMaps::Waypoint>("enroute", 1, 0, "Waypoint");
 
     // Set up application
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

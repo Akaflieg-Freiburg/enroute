@@ -72,10 +72,10 @@ set(SOURCES
 
     # Header files
     Aircraft.h
-    Airspace.h
     AviationUnits.h
     Clock.h
     FlightRoute.h
+    geomaps/Airspace.h
     geomaps/Downloadable.h
     geomaps/DownloadableGroup.h
     geomaps/DownloadableGroupWatcher.h
@@ -83,6 +83,7 @@ set(SOURCES
     geomaps/MapManager.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
+    geomaps/Waypoint.h
     GlobalSettings.h
     Librarian.h
     MobileAdaptor.h
@@ -91,7 +92,6 @@ set(SOURCES
     Navigation_SatNav.h
     Navigation_Traffic.h
     ScaleQuickItem.h
-    Waypoint.h
     weather/Decoder.h
     weather/DownloadManager.h
     weather/METAR.h
@@ -101,12 +101,12 @@ set(SOURCES
 
     # C++ files
     Aircraft.cpp
-    Airspace.cpp
     AviationUnits.cpp
     Clock.cpp
     FlightRoute.cpp
     FlightRoute_GPX.cpp
     FlightRoute_Leg.cpp
+    geomaps/Airspace.cpp
     geomaps/Downloadable.cpp
     geomaps/DownloadableGroup.cpp
     geomaps/DownloadableGroupWatcher.cpp
@@ -114,6 +114,7 @@ set(SOURCES
     geomaps/MapManager.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
+    geomaps/Waypoint.cpp
     GlobalSettings.cpp
     Librarian.cpp
     main.cpp
@@ -124,7 +125,6 @@ set(SOURCES
     Navigation_SatNav.cpp
     Navigation_Traffic.cpp
     ScaleQuickItem.cpp
-    Waypoint.cpp
     weather/Decoder.cpp
     weather/DownloadManager.cpp
     weather/METAR.cpp

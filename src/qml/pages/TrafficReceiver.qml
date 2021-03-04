@@ -175,7 +175,7 @@ Page {
 
                 text:   {
                     if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
-                        return ("
+                        return qsTr("
 <h3>How to connect your device to the traffic receiver</h3>
 
 <ul style=\"margin-left:-25px;\">
@@ -185,7 +185,7 @@ Page {
 </ul>
 ")
                     if (flarmAdaptor.status == FLARMAdaptor.Connecting)
-                        return ("
+                        return qsTr("
 <p><strong>Enroute Flight Navigation</strong> is trying to connect to the traffic receiver's data stream. If no connection has been established after a few seconds, somthing has gone wrong.</p>
 
 <ul style=\"margin-left:-25px;\">
@@ -194,7 +194,7 @@ Page {
 </ul>
 ")
                     if (flarmAdaptor.status == FLARMAdaptor.Connected)
-                        return ("
+                        return qsTr("
 <p><strong>Enroute Flight Navigation</strong> is now set up to receive traffic data. If no data arrives after a few seconds, somthing has gone wrong.</p>
 
 <ul style=\"margin-left:-25px;\">
@@ -202,7 +202,7 @@ Page {
 <li>Some traffic receivers protect the data stream with an additional password. This is currently not supported.</li>
 </ul>
 ")
-                    return ("
+                    return qsTr("
 <p>Well done! Go flying. Give yourself a pat on the back.</p>")
                 }
 

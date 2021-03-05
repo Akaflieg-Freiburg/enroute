@@ -357,6 +357,7 @@ Dialog {
                 if (flightRoute.routeObjects.length > 0)
                     overwriteDialog.open()
                 else {
+                    console.log(flightRoute)
                     flightRoute.clear()
                     flightRoute.append(satNav.lastValidCoordinate)
                     flightRoute.append(waypoint)

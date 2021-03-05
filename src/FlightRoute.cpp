@@ -66,7 +66,6 @@ void FlightRoute::append(QObject *waypoint)
 
 void FlightRoute::append(const QGeoCoordinate& position)
 {
-    qWarning() << "Add" << position;
     append(new GeoMaps::Waypoint(position, this));
 }
 

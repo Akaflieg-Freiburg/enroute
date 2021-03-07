@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.WifiLock;
 import android.os.Vibrator;
 
 import android.content.BroadcastReceiver;
@@ -51,21 +52,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     private static Notification.Builder m_builder;
 
     private static Vibrator             m_vibrator;
-
-    private static WifiManager          m_wifiManager;
+   
+    private static WifiLock                m_wifiLock;
+    private static WifiManager             m_wifiManager;
     private static WifiStateChangeReceiver m_wifiStateChangeReceiver;
 
-    /*
-      private BroadcastReceiver receiver = new BroadcastReceiver() {
-      
-      @Override
-      public void onReceive(Context context, Intent intent) {
-      NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-      Log.i("enroute Wi-Fi network changestate", info.getDetailedState().toString());
-      }
-      
-      };
-    */
     
     public MobileAdaptor()
     {
@@ -77,19 +68,37 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     public void onCreate(Bundle savedInstanceState) {
 
 	super.onCreate(savedInstanceState);
-
+	
+	// Get WiFi manager
+	m_wifiManager = (WifiManager) m_instance.getSystemService(Context.WIFI_SERVICE);
+	
+	// Get WiFi lock w/o reference counting
+	m_wifiLock = m_wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL , "Traffic Receiver Wi-Fi Lock");
+	m_wifiLock.setReferenceCounted(false);
+	
 	// Look for WiFi changes
 	IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 	m_instance.registerReceiver(m_wifiStateChangeReceiver, intentFilter);
-
+	
     }
 
     @Override
     public void onDestroy() {
-        m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
+
+	// Release WiFi lock
+	if (m_wifiLock != null) {
+	    if (m_wifiLock.isHeld() == true) {
+		m_wifiLock.release();
+	    }
+	}
+	
+	// Unregister the WiFi state change receiver
+	m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
+	
         super.onDestroy();
     }
+    
     
     /* Vibrate once, very briefly */
     public static void vibrateBrief()
@@ -100,6 +109,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
         m_vibrator.vibrate(20);
     }
     
+    
     /* Get the SSID of the current WIFI network, if any.  Returns a string like "<unknown SSID>" otherwise */
     public static String getSSID()
     {
@@ -108,6 +118,27 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	WifiInfo wifiInfo = m_wifiManager.getConnectionInfo();
 	return wifiInfo.getSSID();
     }
+
+    
+    /* Acquire or release a WiFi lock */
+    public static void lockWiFi(boolean on)
+    {
+	// Paranoid safety checks
+	if (m_wifiLock == null) {
+	    return;
+	}
+
+	// Acquire lock
+	if (on == true) {
+	    m_wifiLock.acquire();
+	    return;
+	}
+
+	// Release lock
+	if (m_wifiLock.isHeld()==true) 
+	    m_wifiLock.release();
+    }
+
     
     /* Show download notification */
     public static void notifyDownload(String text)

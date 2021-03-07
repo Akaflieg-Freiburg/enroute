@@ -92,8 +92,8 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 
 MobileAdaptor::~MobileAdaptor()
 {
-  // Close all pending notifications
-  showDownloadNotification(false);
+    // Close all pending notifications
+    showDownloadNotification(false);
 }
 
 
@@ -107,11 +107,22 @@ void MobileAdaptor::hideSplashScreen()
 {
     if (splashScreenHidden) {
         return;
-}
+    }
     splashScreenHidden = true;
 #if defined(Q_OS_ANDROID)
     QtAndroid::hideSplashScreen(200);
 #endif
+}
+
+
+void MobileAdaptor::lockWifi(bool lock)
+{
+    Q_UNUSED(lock)
+
+#if defined(Q_OS_ANDROID)
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWifi", "(Z)V", lock);
+#endif
+
 }
 
 
@@ -122,8 +133,8 @@ Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
     foreach(auto permission, permissions) {
         if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied) {
             return true;
-}
-}
+        }
+    }
 #endif
     return false;
 }
@@ -141,7 +152,7 @@ auto MobileAdaptor::getSSID() -> QString
 {
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                         "getSSID", "()Ljava/lang/String;");
+                                                                               "getSSID", "()Ljava/lang/String;");
     return stringObject.toString();
 #endif
     return "<unknown ssid>";
@@ -150,15 +161,15 @@ auto MobileAdaptor::getSSID() -> QString
 
 void MobileAdaptor::showDownloadNotification(bool show)
 {
-  Q_UNUSED(show)
+    Q_UNUSED(show)
     
 #if defined(Q_OS_ANDROID)
-  QString text;
-  if (show) {
-    text = tr("Downloading map data…");
-}
-  QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
-  QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
+    QString text;
+    if (show) {
+        text = tr("Downloading map data…");
+    }
+    QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
 #endif
 }
 
@@ -172,7 +183,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
 {
     if (!MobileAdaptorStatic.exists()) {
         return;
-}
+    }
     MobileAdaptorStatic->emitWifiConnected();
 }
 

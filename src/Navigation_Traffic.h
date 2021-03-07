@@ -221,6 +221,22 @@ public:
         return _description;
     }
 
+    /*! \brief Ground speed the time of report
+     *
+     *  If known, this property holds the ground speed of the traffic
+     *  at the time of report.  Otherwise, it contains NaN.
+     */
+    Q_PROPERTY(AviationUnits::Speed groundSpeed READ groundSpeed NOTIFY groundSpeedChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property groundSpeed
+     */
+    AviationUnits::Speed groundSpeed() const
+    {
+        return _groundSpeed;
+    }
+
     /*! \brief Horizontal distance from own position to the traffic,
      *  at the time of report
      *
@@ -375,6 +391,9 @@ signals:
     void descriptionChanged();
 
     /*! \brief Notifier signal */
+    void groundSpeedChanged();
+
+    /*! \brief Notifier signal */
     void iconChanged();
 
     /*! \brief Notifier signal */
@@ -421,11 +440,18 @@ private:
     // Copy data from other object
     void copyFrom(const Traffic & other)
     {
-        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._climbRate, other._type, other._positionInfo);
+        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._groundSpeed, other._climbRate, other._type, other._positionInfo);
     }
 
     // Set data
-    void setData(int newAlarmLevel, const QString & newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo & newPositionInfo);
+    void setData(int newAlarmLevel,
+                 const QString & newID,
+                 AviationUnits::Distance newHDist,
+                 AviationUnits::Distance newVDist,
+                 AviationUnits::Speed newGroundSpeed,
+                 AviationUnits::Speed newClimbRate,
+                 AircraftType newType,
+                 const QGeoPositionInfo & newPositionInfo);
 
 private:
     // Setter function for property animate
@@ -436,16 +462,17 @@ private:
     //
     int _alarmLevel {0};
     bool _animate {true};
+    AviationUnits::Speed _climbRate;
     QString _color {QStringLiteral("red")};
     QString _description;
-    QGeoPositionInfo _positionInfo;
+    AviationUnits::Speed _groundSpeed;
+    AviationUnits::Distance _hDist;
     QString _icon;
     QString _ID;
+    QGeoPositionInfo _positionInfo;
     AircraftType _type {AircraftType::unknown};
     bool _valid {false};
     AviationUnits::Distance _vDist;
-    AviationUnits::Distance _hDist;
-    AviationUnits::Speed _climbRate;
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for timeoutMS milliseconds

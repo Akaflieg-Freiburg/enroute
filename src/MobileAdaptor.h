@@ -92,6 +92,15 @@ public:
      */
     Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
+    /*! \brief Lock connection to Wi-Fi network
+     *
+     * Under Android, this method can lock the Wi-Fi connection by acquiring a
+     * WifiManager.WifiLock. On other platforms, this method does nothing.
+     *
+     * @param lock If true, then lock the network. If false, then release the lock.
+     */
+    Q_INVOKABLE void lockWifi(bool lock);
+
     /*! \brief Get SSID of current Wi-Fi network
      *
      * @returns The SSID of the current Wi-Fi networks, or an empty of generic string

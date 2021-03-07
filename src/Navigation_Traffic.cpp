@@ -101,7 +101,7 @@ void Navigation::Traffic::setColor()
 }
 
 
-void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
+void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newGroundSpeed, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
 {
     // Set properties
     bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
@@ -134,6 +134,9 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
     bool hasClimbRateChanged = (_climbRate != newClimbRate);
     _climbRate = newClimbRate;
 
+    bool hasGroundSpeedChanged = (_groundSpeed != newGroundSpeed);
+    _groundSpeed = newGroundSpeed;
+
     // If the ID changed, do not animate property changes in the GUI.
     if (hasIDChanged) {
        setAnimate(false);
@@ -158,6 +161,9 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
     }
     if (hasTTChanged) {
         emit ttChanged();
+    }
+    if (hasGroundSpeedChanged) {
+       emit groundSpeedChanged();
     }
     if (hasClimbRateChanged) {
         emit climbRateChanged();

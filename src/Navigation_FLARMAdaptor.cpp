@@ -350,6 +350,16 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             vDistInM = qQNaN();
         }
 
+        // Ground speed it optimal. If ground speed is zero that means:
+        // target is on the ground. Ignore these targets!
+        auto groundSpeedInMPS = arguments[8].toDouble(&ok);
+        if (!ok) {
+            groundSpeedInMPS = qQNaN();
+        }
+        if (groundSpeedInMPS == 0.0) {
+            return;
+        }
+
         // Climb rate is optional
         auto climbRateInMPS = arguments[9].toDouble(&ok);
         if (!ok) {
@@ -422,7 +432,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             }
 
             auto trafficNP = Navigation::Traffic(this);
-            trafficNP.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromKMH(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
+            trafficNP.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
             if ((trafficNP.ID() == _trafficObjectWithoutPosition->ID()) || trafficNP.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
                 _trafficObjectWithoutPosition->copyFrom(trafficNP);
             }
@@ -471,7 +481,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         // Construct a traffic object
         auto traffic = Navigation::Traffic(this);
 
-        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
+        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
 
         foreach(auto target, _trafficObjects)
             if (targetID == target->ID()) {
@@ -876,4 +886,10 @@ void Navigation::FLARMAdaptor::updateStatus()
     }
     _status = newStatus;
     emit statusChanged(_status);
+
+    // Acquire or release WiFi lock as appropriate
+    auto* mobileAdaptor = MobileAdaptor::globalInstance();
+    if (mobileAdaptor != nullptr) {
+        mobileAdaptor->lockWifi(_status == Receiving);
+    }
 }

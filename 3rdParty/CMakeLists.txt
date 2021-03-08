@@ -41,10 +41,3 @@ add_subdirectory(KDSingleApplication ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplica
 #
 
 add_subdirectory(sunset ${CMAKE_CURRENT_BINARY_DIR}/sunset)
-
-
-#
-# Guideline support library
-#
-
-add_subdirectory(GSL ${CMAKE_CURRENT_SOURCE_DIR}/GSL)

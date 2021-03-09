@@ -426,7 +426,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
                 vDist = AviationUnits::Distance::fromM(qQNaN());
             } else {
                 // We ignore targets with large vertical distance
-                if (vDist.toM() > 500) {
+                if (qAbs(vDist.toM()) > 1500) {
                     return;
                 }
             }

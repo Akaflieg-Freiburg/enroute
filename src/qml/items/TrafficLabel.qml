@@ -47,6 +47,8 @@ MapQuickItem {
 
         text: trafficInfo.description
 
+        font.pixelSize: 0.8*Qt.application.font.pixelSize
+
         leftInset: -4
         rightInset: -4
         bottomInset: -1
@@ -56,6 +58,7 @@ MapQuickItem {
             border.color: "black"
             border.width: 1
             color: Qt.lighter(trafficInfo.color, 1.9)
+
             Behavior on color {
                 ColorAnimation { duration: 400 }
                 enabled: trafficInfo.animate

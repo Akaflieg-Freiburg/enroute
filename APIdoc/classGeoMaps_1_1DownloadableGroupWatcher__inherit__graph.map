@@ -1,0 +1,4 @@
+<map id="GeoMaps::DownloadableGroupWatcher" name="GeoMaps::DownloadableGroupWatcher">
+<area shape="rect" id="node1" title="Watches a group of Downloadable objects." alt="" coords="5,5,228,47"/>
+<area shape="rect" id="node2" href="$classGeoMaps_1_1DownloadableGroup.html" title="Manages a set of downloadable objects." alt="" coords="5,95,228,121"/>
+</map>

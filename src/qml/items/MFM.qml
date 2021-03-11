@@ -278,7 +278,11 @@ Item {
 
         MapItemView { // Traffic opponents
             model: flarmAdaptor.trafficObjects4QML
-            delegate: Component { Traffic { trafficInfo: model.modelData } }
+            delegate: Component {
+                Traffic {
+                    trafficInfo: model.modelData
+                }
+            }
         }
 
         MapItemView {

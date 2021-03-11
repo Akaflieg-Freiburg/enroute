@@ -222,6 +222,7 @@ void Navigation::Traffic::setDescription()
         break;
     default:
         results << tr("Traffic");
+        break;
     }
 
     if (!_positionInfo.coordinate().isValid()) {

@@ -133,6 +133,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 
     // Uncomment one of the lines below to start this class in simulation mode.
     QString simulatorFileName;
+//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-hard.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
@@ -350,16 +351,6 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             vDistInM = qQNaN();
         }
 
-        // Ground speed it optimal. If ground speed is zero that means:
-        // target is on the ground. Ignore these targets!
-        auto groundSpeedInMPS = arguments[8].toDouble(&ok);
-        if (!ok) {
-            groundSpeedInMPS = qQNaN();
-        }
-        if (groundSpeedInMPS == 0.0) {
-            return;
-        }
-
         // Climb rate is optional
         auto climbRateInMPS = arguments[9].toDouble(&ok);
         if (!ok) {
@@ -402,9 +393,24 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (targetType == u"C") {
             type = Navigation::Traffic::Airship;
         }
+        if (targetType == u"D") {
+            type = Navigation::Traffic::Drone;
+        }
         if (targetType == u"F") {
             type = Navigation::Traffic::StaticObstacle;
         }
+
+
+        // Ground speed it optimal. If ground speed is zero that means:
+        // target is on the ground. Ignore these targets, unless they are known static obstacles!
+        auto groundSpeedInMPS = arguments[8].toDouble(&ok);
+        if (!ok) {
+            groundSpeedInMPS = qQNaN();
+        }
+        if ((groundSpeedInMPS == 0.0) && (type != Navigation::Traffic::StaticObstacle)) {
+            return;
+        }
+
 
         // Target ID is optional
         auto targetID = arguments[5];

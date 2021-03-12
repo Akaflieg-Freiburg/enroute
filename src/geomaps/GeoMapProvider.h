@@ -86,8 +86,9 @@ public:
      */
     explicit GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent = nullptr);
 
-    // Standard destructor
-    ~GeoMapProvider() override = default;
+    /*! \brief Destructor
+     */
+    ~GeoMapProvider();
 
     /*! \brief List of airspaces at a given location
      *

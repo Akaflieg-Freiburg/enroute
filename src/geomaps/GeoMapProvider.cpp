@@ -55,6 +55,23 @@ GeoMaps::GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *libraria
 }
 
 
+GeoMaps::GeoMapProvider::~GeoMapProvider()
+{
+    QMutexLocker lock(&_aviationDataMutex);
+
+    foreach(auto airspace, _airspaces_) {
+        delete airspace;
+    }
+    _airspaces_.clear();
+
+    foreach(auto waypoint, _waypoints_) {
+        delete waypoint;
+    }
+    _waypoints_.clear();
+
+}
+
+
 auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*>
 {
     // Lock data
@@ -388,10 +405,9 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         auto *wp = new Waypoint(object);
-        wp->setDownloadManager(_downloadManager);
         if (wp->isValid()) {
             wp->moveToThread(QApplication::instance()->thread());
-            wp->setParent(this);
+            wp->setDownloadManager(_downloadManager);
             QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
             newWaypoints.append(wp);
             continue;
@@ -402,7 +418,6 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
         auto *as = new Airspace(object);
         if (as->isValid()) {
             as->moveToThread(QApplication::instance()->thread());
-            as->setParent(this);
             QQmlEngine::setObjectOwnership(as, QQmlEngine::CppOwnership);
             newAirspaces.append(as);
             continue;
@@ -419,16 +434,10 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 
     _aviationDataMutex.lock();
     foreach(auto airspace, _airspaces_) {
-        if (airspace.isNull()) {
-            continue;
-        }
-        airspace->deleteLater();
+        delete airspace;
     }
     foreach(auto waypoint, _waypoints_) {
-        if (waypoint.isNull()) {
-            continue;
-        }
-        waypoint->deleteLater();
+        delete waypoint;
     }
     _airspaces_ = newAirspaces;
     _waypoints_ = newWaypoints;

@@ -90,8 +90,8 @@ set(SOURCES
     Navigation_FLARMAdaptor.h
     Navigation_Geoid.h
     Navigation_SatNav.h
-    Navigation_Traffic.h
     ScaleQuickItem.h
+    traffic/Factor.h
     weather/Decoder.h
     weather/DownloadManager.h
     weather/METAR.h
@@ -123,9 +123,9 @@ set(SOURCES
     Navigation_FLARMAdaptor.cpp
     Navigation_Geoid.cpp
     Navigation_SatNav.cpp
-    Navigation_Traffic.cpp
     ScaleQuickItem.cpp
-    weather/Decoder.cpp
+    traffic/Factor.cpp
+    weather/Decoder.cpp    
     weather/DownloadManager.cpp
     weather/METAR.cpp
     weather/Station.cpp

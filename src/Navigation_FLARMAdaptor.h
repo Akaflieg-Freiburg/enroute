@@ -28,7 +28,7 @@
 
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
-#include "Navigation_Traffic.h"
+#include "traffic/Factor.h"
 
 namespace Navigation {
 
@@ -154,13 +154,13 @@ public:
      *  be ignored. The list is not sorted in any way. The items themselves are
      *  owned by this class.
      */
-    Q_PROPERTY(QQmlListProperty<Navigation::Traffic> trafficObjects4QML READ trafficObjects4QML CONSTANT)
+    Q_PROPERTY(QQmlListProperty<Traffic::Factor> trafficObjects4QML READ trafficObjects4QML CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property trafficObjects4QML
      */
-    QQmlListProperty<Navigation::Traffic> trafficObjects4QML()
+    QQmlListProperty<Traffic::Factor> trafficObjects4QML()
     {
         return QQmlListProperty(this, &_trafficObjects);
     }
@@ -171,13 +171,13 @@ public:
      *  position is not known.  This item should be ignored if invalid. The item
      *  is owned by this class.
      */
-    Q_PROPERTY(Navigation::Traffic *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
+    Q_PROPERTY(Traffic::Factor *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property trafficObjectWithoutPosition
      */
-    Navigation::Traffic *trafficObjectWithoutPosition()
+    Traffic::Factor *trafficObjectWithoutPosition()
     {
         return _trafficObjectWithoutPosition;
     }
@@ -328,8 +328,8 @@ private:
     QString lastPayload;
 
     // Targets
-    QList<Navigation::Traffic *> _trafficObjects;
-    QPointer<Navigation::Traffic> _trafficObjectWithoutPosition;
+    QList<Traffic::Factor *> _trafficObjects;
+    QPointer<Traffic::Factor> _trafficObjectWithoutPosition;
 };
 
 }

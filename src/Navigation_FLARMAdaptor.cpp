@@ -86,11 +86,11 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
     int numTrafficObjects = 20;
     _trafficObjects.reserve(numTrafficObjects);
     for(int i = 0; i<numTrafficObjects; i++) {
-        auto *trafficObject = new Navigation::Traffic(this);
+        auto *trafficObject = new Traffic::Factor(this);
         QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
         _trafficObjects.append( trafficObject );
     }
-    _trafficObjectWithoutPosition = new Navigation::Traffic(this);
+    _trafficObjectWithoutPosition = new Traffic::Factor(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
     // Wire up the connectToTrafficReceiver. Set it to attempt a FLARM connection every 5 Minutes
@@ -138,7 +138,7 @@ Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
 //    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
+    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
 //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
 
     if (!simulatorFileName.isEmpty()) {
@@ -359,45 +359,45 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
 
         // Target type is optional
         auto targetType = arguments[10];
-        Navigation::Traffic::AircraftType type = Navigation::Traffic::unknown;
+        Traffic::Factor::AircraftType type = Traffic::Factor::unknown;
         if (targetType == u"1") {
-            type = Navigation::Traffic::Glider;
+            type = Traffic::Factor::Glider;
         }
         if (targetType == u"2") {
-            type = Navigation::Traffic::TowPlane;
+            type = Traffic::Factor::TowPlane;
         }
         if (targetType == u"3") {
-            type = Navigation::Traffic::Copter;
+            type = Traffic::Factor::Copter;
         }
         if (targetType == u"4") {
-            type = Navigation::Traffic::Skydiver;
+            type = Traffic::Factor::Skydiver;
         }
         if (targetType == u"5") {
-            type = Navigation::Traffic::Aircraft;
+            type = Traffic::Factor::Aircraft;
         }
         if (targetType == u"6") {
-            type = Navigation::Traffic::HangGlider;
+            type = Traffic::Factor::HangGlider;
         }
         if (targetType == u"7") {
-            type = Navigation::Traffic::Paraglider;
+            type = Traffic::Factor::Paraglider;
         }
         if (targetType == u"8") {
-            type = Navigation::Traffic::Aircraft;
+            type = Traffic::Factor::Aircraft;
         }
         if (targetType == u"9") {
-            type = Navigation::Traffic::Jet;
+            type = Traffic::Factor::Jet;
         }
         if (targetType == u"B") {
-            type = Navigation::Traffic::Balloon;
+            type = Traffic::Factor::Balloon;
         }
         if (targetType == u"C") {
-            type = Navigation::Traffic::Airship;
+            type = Traffic::Factor::Airship;
         }
         if (targetType == u"D") {
-            type = Navigation::Traffic::Drone;
+            type = Traffic::Factor::Drone;
         }
         if (targetType == u"F") {
-            type = Navigation::Traffic::StaticObstacle;
+            type = Traffic::Factor::StaticObstacle;
         }
 
 
@@ -407,7 +407,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         if (!ok) {
             groundSpeedInMPS = qQNaN();
         }
-        if ((groundSpeedInMPS == 0.0) && (type != Navigation::Traffic::StaticObstacle)) {
+        if ((groundSpeedInMPS == 0.0) && (type != Traffic::Factor::StaticObstacle)) {
             return;
         }
 
@@ -437,7 +437,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
                 }
             }
 
-            auto trafficNP = Navigation::Traffic(this);
+            auto trafficNP = Traffic::Factor(this);
             trafficNP.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
             if ((trafficNP.ID() == _trafficObjectWithoutPosition->ID()) || trafficNP.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
                 _trafficObjectWithoutPosition->copyFrom(trafficNP);
@@ -485,7 +485,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         }
 
         // Construct a traffic object
-        auto traffic = Navigation::Traffic(this);
+        auto traffic = Traffic::Factor(this);
 
         traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
 

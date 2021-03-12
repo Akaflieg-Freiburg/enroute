@@ -20,33 +20,33 @@
 
 
 #include "GlobalSettings.h"
-#include "Navigation_Traffic.h"
+#include "traffic/Factor.h"
 
 
-Navigation::Traffic::Traffic(QObject *parent) : QObject(parent)
+Traffic::Factor::Factor(QObject *parent) : QObject(parent)
 {  
     timeoutCounter.setSingleShot(true);
 
     // Compute derived properties and set bindings
-    connect(this, &Navigation::Traffic::alarmLevelChanged, this, &Navigation::Traffic::setColor);
+    connect(this, &Traffic::Factor::alarmLevelChanged, this, &Traffic::Factor::setColor);
     setColor();
 
-    connect(this, &Navigation::Traffic::coordinateChanged, this, &Navigation::Traffic::setDescription);
-    connect(this, &Navigation::Traffic::typeChanged, this, &Navigation::Traffic::setDescription);
-    connect(this, &Navigation::Traffic::vDistChanged, this, &Navigation::Traffic::setDescription);
+    connect(this, &Traffic::Factor::coordinateChanged, this, &Traffic::Factor::setDescription);
+    connect(this, &Traffic::Factor::typeChanged, this, &Traffic::Factor::setDescription);
+    connect(this, &Traffic::Factor::vDistChanged, this, &Traffic::Factor::setDescription);
     setDescription();
 
-    connect(this, &Navigation::Traffic::colorChanged, this, &Navigation::Traffic::setIcon);
-    connect(this, &Navigation::Traffic::positionInfoChanged, this, &Navigation::Traffic::setIcon);
+    connect(this, &Traffic::Factor::colorChanged, this, &Traffic::Factor::setIcon);
+    connect(this, &Traffic::Factor::positionInfoChanged, this, &Traffic::Factor::setIcon);
     setIcon();
 
-    connect(this, &Navigation::Traffic::positionInfoChanged, this, &Navigation::Traffic::setValid);
-    connect(&timeoutCounter, &QTimer::timeout, this, &Navigation::Traffic::setValid);
+    connect(this, &Traffic::Factor::positionInfoChanged, this, &Traffic::Factor::setValid);
+    connect(&timeoutCounter, &QTimer::timeout, this, &Traffic::Factor::setValid);
     setValid();
 }
 
 
-auto Navigation::Traffic::hasHigherPriorityThan(const Traffic &rhs) -> bool
+auto Traffic::Factor::hasHigherPriorityThan(const Factor &rhs) -> bool
 {
     // Criterion 1: Valid instances have higher priority than invalid ones
     if (!rhs.valid()) {
@@ -71,7 +71,7 @@ auto Navigation::Traffic::hasHigherPriorityThan(const Traffic &rhs) -> bool
 }
 
 
-void Navigation::Traffic::setAnimate(bool a)
+void Traffic::Factor::setAnimate(bool a)
 {
     if (a == _animate) {
         return;
@@ -82,7 +82,7 @@ void Navigation::Traffic::setAnimate(bool a)
 }
 
 
-void Navigation::Traffic::setColor()
+void Traffic::Factor::setColor()
 {
     QString newColor = QStringLiteral("red");
     if (_alarmLevel == 0) {
@@ -101,7 +101,7 @@ void Navigation::Traffic::setColor()
 }
 
 
-void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newGroundSpeed, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
+void Traffic::Factor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newGroundSpeed, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
 {
     // Set properties
     bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
@@ -179,7 +179,7 @@ void Navigation::Traffic::setData(int newAlarmLevel, const QString& newID, Aviat
 }
 
 
-void Navigation::Traffic::setDescription()
+void Traffic::Factor::setDescription()
 {
     QStringList results;
 
@@ -256,7 +256,7 @@ void Navigation::Traffic::setDescription()
 }
 
 
-void Navigation::Traffic::setIcon()
+void Traffic::Factor::setIcon()
 {
     // BaseType
     QString baseType = QStringLiteral("noDirection");
@@ -278,7 +278,7 @@ void Navigation::Traffic::setIcon()
 }
 
 
-void Navigation::Traffic::setValid()
+void Traffic::Factor::setValid()
 {
     // Compute validity
     bool newValid = true;

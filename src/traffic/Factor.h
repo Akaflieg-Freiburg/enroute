@@ -25,8 +25,12 @@
 
 #include "AviationUnits.h"
 
+namespace Navigation{
+class FLARMAdaptor;
+}
 
-namespace Navigation {
+
+namespace Traffic {
 
 /*! \brief Traffic opponents
  *
@@ -36,11 +40,11 @@ namespace Navigation {
  *  set or construct instances of the class themselves
  */
 
-class Traffic : public QObject {
+class Factor : public QObject {
     Q_OBJECT
 
     // Only FLARMAdaptor can set properties
-    friend class FLARMAdaptor;
+    friend class Navigation::FLARMAdaptor;
 
 public:
     /*! \brief Aircraft type */
@@ -66,10 +70,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Traffic(QObject *parent = nullptr);
+    explicit Factor(QObject *parent = nullptr);
 
     // Standard destructor
-    ~Traffic() override = default;
+    ~Factor() override = default;
 
     //
     // Methods
@@ -88,7 +92,7 @@ public:
      *
      * @returns Boolean with the result
      */
-    bool hasHigherPriorityThan(const Traffic &rhs);
+    bool hasHigherPriorityThan(const Factor &rhs);
 
     //
     // PROPERTIES
@@ -438,7 +442,7 @@ private slots:
 
 private:
     // Copy data from other object
-    void copyFrom(const Traffic & other)
+    void copyFrom(const Factor & other)
     {
         setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._groundSpeed, other._climbRate, other._type, other._positionInfo);
     }

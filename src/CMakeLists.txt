@@ -92,6 +92,7 @@ set(SOURCES
     ScaleQuickItem.h
     traffic/AbstractTrafficDataSource.h
     traffic/Factor.h
+    traffic/FileTrafficDataSource.h
     traffic/TcpTrafficDataSource.h
     traffic/TrafficDataManager.h
     weather/Decoder.h
@@ -127,6 +128,7 @@ set(SOURCES
     ScaleQuickItem.cpp
     traffic/AbstractTrafficDataSource.cpp
     traffic/Factor.cpp
+    traffic/FileTrafficDataSource.cpp
     traffic/TcpTrafficDataSource.cpp
     traffic/TrafficDataManager.cpp
     weather/Decoder.cpp

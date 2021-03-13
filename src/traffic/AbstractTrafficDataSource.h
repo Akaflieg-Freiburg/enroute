@@ -70,7 +70,10 @@ public:
      *
      * @returns Property errorString
      */
-    virtual QString errorString() const = 0;
+    QString errorString()
+    {
+        return _errorString;
+    }
 
     /*! \brief Connectivity status codes */
     enum ConnectivityStatus
@@ -87,13 +90,41 @@ public:
     Q_ENUM(ConnectivityStatus)
 
     /*! \brief Connectivity status */
-    Q_PROPERTY(ConnectivityStatus connectivityStatus READ connectivityStatus NOTIFY connectivityStatusChanged)
+    Q_PROPERTY(ConnectivityStatus connectivityStatus READ connectivityStatus WRITE setConnectivityStatus NOTIFY connectivityStatusChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property connected
+     * @returns Property connectivityStatus
      */
-    virtual ConnectivityStatus connectivityStatus() const = 0;
+    ConnectivityStatus connectivityStatus()
+    {
+        return _connectivityStatus;
+    }
+
+    /*! \brief FLARM heartbeat
+     *
+     *  This properts is true if a FLARM heartbeat has been received within the last 5 seconds.
+     */
+    Q_PROPERTY(bool hasHeartbeat READ hasHeartbeat NOTIFY hasHeartbeatChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property hasHeartbeat
+     */
+    bool hasHeartbeat()
+    {
+        return heartbeatTimer.isActive();
+    }
+
+    /*! \brief Source name */
+    Q_PROPERTY(QString sourceName CONSTANT)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property sourceName
+     */
+    virtual QString sourceName() const = 0;
+
 
 signals:
     /*! \brief Barometric altitude
@@ -101,19 +132,19 @@ signals:
      * If this class received barometric altitude information from a connected
      * traffic receiver, this information is emitted here.
      */
-    void barometricAltitude(AviationUnits::Distance);
+    void barometricAltitudeUpdated(AviationUnits::Distance);
 
     /*! \brief Notifier signal */
-    void connectivityStatusChanged(Traffic::AbstractTrafficDataSource::ConnectivityStatus);
+    void connectivityStatusChanged();
 
     /*! \brief Notifier signal */
-    void errorStringChanged(QString);
+    void errorStringChanged();
 
     /*! \brief Traffic factor without position
      *
      * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
      */
-    void factorWithOutPosition(Traffic::Factor *factor);
+    void factorWithoutPosition(Traffic::Factor *factor);
 
     /*! \brief Traffic factor with position
      *
@@ -121,12 +152,15 @@ signals:
      */
     void factorWithPosition(Traffic::Factor *factor);
 
+    /*! \brief Notifier signal */
+    void hasHeartbeatChanged();
+
     /*! \brief Position info
      *
      * If this class received position information from a connected traffic
      * receiver, this information is emitted here.
      */
-    void positionInfo(QGeoPositionInfo);
+    void positionUpdated(QGeoPositionInfo);
 
     /*! \brief Traffic receiver hardware version
      *
@@ -176,21 +210,45 @@ public slots:
 
     /*! \brief Disconnect from traffic receiver
      *
-     * This method stops any ongoing connection or connection attempt.
+     * This method stops any ongoing connection or connection attempt. This method will not reset the property errorString,
+     * so that the error remains visible even after the class has been disconnected from the traffic receiver.
      */
     virtual void disconnectFromTrafficReceiver() = 0;
 
-private slots:
+
+protected:
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param newConnectivityStatus Property connectivityStatus
+     */
+    void setConnectivityStatus(Traffic::AbstractTrafficDataSource::ConnectivityStatus newConnectivityStatus);
+
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param newErrorString Property errorString
+     */
+    void setErrorString(const QString& newErrorString);
+
+    void stopHeartbeat();
+
     // Read, understand and process one NMEA sentence
     void processFLARMMessage(QString msg);
 
 private:
-    // Timers. Properties are reset when no new data comes in for five seconds.
-    QTimer receivingHeartbeatTimer;
+    // This slot is called whenever a heartbeat is reveived. If updates the property
+    // hasHeartbeat.
+    void onHeartbeat();
+
+    // Property caches
+    Traffic::AbstractTrafficDataSource::ConnectivityStatus _connectivityStatus {Traffic::AbstractTrafficDataSource::Disconnected};
+    QString _errorString {};
 
     // GPS altitude information
     AviationUnits::Distance _altitude;
     QDateTime _altitudeTimeStamp;
+
+    // Heartbeat timer
+    QTimer heartbeatTimer;
 
     // Targets
     Traffic::Factor factor;

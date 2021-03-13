@@ -21,7 +21,11 @@
 #include <QQmlEngine>
 #include <chrono>
 
-#include "MobileAdaptor.h"
+/*
+ * #include "MobileAdaptor.h"
+
+*
+*/
 #include "Navigation_SatNav.h"
 #include "traffic/AbstractTrafficDataSource.h"
 
@@ -67,9 +71,21 @@ Traffic::AbstractTrafficDataSource::AbstractTrafficDataSource(QObject *parent) :
 
     QQmlEngine::setObjectOwnership(&factor, QQmlEngine::CppOwnership);
 
-    // Setup timers for property updates
-    receivingHeartbeatTimer.setSingleShot(true);
-    receivingHeartbeatTimer.setInterval(5s);
+    // Setup heartbeat timer
+    heartbeatTimer.setSingleShot(true);
+    heartbeatTimer.setInterval(5s);
+    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged);
+}
+
+
+void Traffic::AbstractTrafficDataSource::onHeartbeat()
+{
+    bool oldHasHeartbeat = hasHeartbeat();
+
+    heartbeatTimer.start();
+    if (!oldHasHeartbeat) {
+        QTimer::singleShot(0, this, SIGNAL(hasHeartbeatChanged()));
+    }
 }
 
 
@@ -187,7 +203,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
             pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
         }
 
-        emit positionInfo(pInfo);
+        emit positionUpdated(pInfo);
         return;
     }
 
@@ -308,7 +324,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
             }
 
             factor.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
-            emit factorWithOutPosition(&factor);
+            emit factorWithoutPosition(&factor);
             return;
         }
 
@@ -515,8 +531,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
     // FLARM Heartbeat
     if (messageType == u"PFLAU") {
         // Heartbeat received.
-        receivingHeartbeatTimer.start();
-#warning
+        onHeartbeat();
         return;
     }
 
@@ -554,7 +569,40 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
             return;
         }
 
-        emit barometricAltitude(barometricAlt);
+        emit barometricAltitudeUpdated(barometricAlt);
         return;
     }
+}
+
+
+void Traffic::AbstractTrafficDataSource::setConnectivityStatus(Traffic::AbstractTrafficDataSource::ConnectivityStatus newConnectivityStatus)
+{
+    if (_connectivityStatus == newConnectivityStatus) {
+        return;
+    }
+
+    _connectivityStatus = newConnectivityStatus;
+    QTimer::singleShot(0, this, SIGNAL(connectivityStatusChanged()));
+}
+
+
+void Traffic::AbstractTrafficDataSource::setErrorString(const QString& newErrorString)
+{
+    if (_errorString == newErrorString) {
+        return;
+    }
+
+    _errorString = newErrorString;
+    QTimer::singleShot(0, this, SIGNAL(errorStringChanged()));
+}
+
+
+void Traffic::AbstractTrafficDataSource::stopHeartbeat()
+{
+    if (!heartbeatTimer.isActive()) {
+        return;
+    }
+
+    heartbeatTimer.stop();
+    QTimer::singleShot(0, this, SIGNAL(hasHeartbeatChanged()));
 }

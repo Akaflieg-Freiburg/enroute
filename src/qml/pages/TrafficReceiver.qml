@@ -117,25 +117,7 @@ Page {
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
 
-                text:  {
-                    if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
-                        return qsTr("Not connected to a traffic receiver.")
-                    if (flarmAdaptor.status == FLARMAdaptor.Connecting)
-                        return qsTr("Trying to connect to traffic receiver at IP address 192.168.1.1, port 2000 …")
-                    var result = qsTr("Connected to traffic receiver at IP address 192.168.1.1, port 2000.")
-                    if (flarmAdaptor.status == FLARMAdaptor.Connected)
-                        return result + " " + qsTr("Waiting for data …")
-
-                    // Traffic receiver is connected and FLARM heartbeat is being received.
-                    result += "<ul style=\"margin-left:-25px;\">\n"
-                    result += "<li>" + qsTr("Receiving FLARM heartbeat.") + "</li>\n"
-                    if (flarmAdaptor.receivingBarometricAltData)
-                        result += "<li>" + qsTr("Receiving barometric altitude.") + "</li>\n"
-                    if (flarmAdaptor.receivingPositionData)
-                        result += "<li>" + qsTr("Receiving satnav position.") + "</li>\n"
-                    result += "</ul>\n"
-                    return result
-                }
+                text: (flarmAdaptor.receiving) ? qsTr("Receiving traffic data.") : qsTr("Not receiving traffic data.")
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -151,17 +133,17 @@ Page {
                 // Background color according to METAR/FAA flight category
                 background: Rectangle {
                     border.color: "black"
-                    color: (flarmAdaptor.status === FLARMAdaptor.Receiving) ? "green" : "red"
+                    color: (flarmAdaptor.receiving) ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
             }
 
-            Label { // Error string
+
+            Label { // Status string
                 Layout.fillWidth: true
 
-                text:  "<h3>" + qsTr("Last error") + "</h3><p>" + flarmAdaptor.errorString + "</p>"
-                visible: flarmAdaptor.errorString !== ""
+                text:  flarmAdaptor.statusString
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -223,25 +205,19 @@ Page {
             anchors.centerIn: parent
             width: Math.min(implicitWidth, parent.width-Qt.application.font.pixelSize)
 
-            text: {
-                if (flarmAdaptor.status === FLARMAdaptor.Disconnected)
-                    return qsTr("Connect to Traffic Receiver")
-                if (flarmAdaptor.status === FLARMAdaptor.Connecting)
-                    return qsTr("Abort Connection")
-                qsTr("Disconnect from Traffic Receiver")
-            }
+            text: (flarmAdaptor.receiving) ? qsTr("Disconnect from Traffic Receiver") : qsTr("Connect to Traffic Receiver")
 
-            icon.source: (flarmAdaptor.status === FLARMAdaptor.Disconnected) ? "/icons/material/ic_tap_and_play.svg" : "/icons/material/ic_cancel.svg"
+            icon.source: (flarmAdaptor.receiving) ? "/icons/material/ic_cancel.svg" : "/icons/material/ic_tap_and_play.svg"
 
             Layout.alignment: Qt.AlignHCenter
             Material.foreground: Material.accent
 
             enabled: !timer.running
             onClicked: {
-                if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
-                    flarmAdaptor.connectToTrafficReceiver()
-                else
+                if (flarmAdaptor.receiving)
                     flarmAdaptor.disconnectFromTrafficReceiver()
+                else
+                    flarmAdaptor.connectToTrafficReceiver()
                 timer.running = true;
             }
             Timer {

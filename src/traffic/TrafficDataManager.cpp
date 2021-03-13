@@ -23,14 +23,20 @@
 
 #include "MobileAdaptor.h"
 #include "Navigation_SatNav.h"
+#include "traffic/FileTrafficDataSource.h"
 #include "traffic/TrafficDataManager.h"
 
 using namespace std::chrono_literals;
 
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+Q_GLOBAL_STATIC(Traffic::TrafficDataProvider, TrafficDataManagerStatic);
+#endif
+
 
 // Member functions
 
-Traffic::TrafficDataManager::TrafficDataManager(QObject *parent) : QObject(parent) {
+Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(parent) {
 
     // Create traffic objects
     int numTrafficObjects = 20;
@@ -43,50 +49,196 @@ Traffic::TrafficDataManager::TrafficDataManager(QObject *parent) : QObject(paren
     _trafficObjectWithoutPosition = new Traffic::Factor(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
-    // Setup timers for property updates
-    receivingHeartbeatTimer.setSingleShot(true);
-    receivingHeartbeatTimer.setInterval(5s);
-    receivingPositionDataTimer.setSingleShot(true);
-    receivingPositionDataTimer.setInterval(5s);
 
-    //
-    // Property bindings
-    //
+    // Setup Data Sources
 
-    // Bind property "receivingBarometricAltData"
-    connect(&receivingBarometricAltDataTimer, &QTimer::timeout, this, &Traffic::TrafficDataManager::updateReceivingBarometricAltData);
+    // Uncomment one of the lines below to start this class in simulation mode.
+    //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt";
+    //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-hard.txt";
+    //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
+    //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
+    //    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
+    //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
+    //    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
 
-    // Bind property "receivingPositionData"
-    connect(&receivingPositionDataTimer, &QTimer::timeout, this, &Traffic::TrafficDataManager::updateReceivingPositionData);
+
+    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
+    _dataSources << new Traffic::FileTrafficDataSource("inex.txt", this);
+
+    // Wire up data sources
+    foreach(auto dataSource, _dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingChanged);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::errorStringChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onFactorWithoutPosition);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithPosition, this, &Traffic::TrafficDataProvider::onFactorWithPosition);
+
+    }
 }
 
 
-void Traffic::TrafficDataManager::processFLARMMessage(const QString & /*unused*/)
+void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 {
+
+    foreach(auto dataSource, _dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        dataSource->connectToTrafficReceiver();
+    }
+
 }
 
 
-void Traffic::TrafficDataManager::updateReceivingBarometricAltData()
+void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
 {
-    auto newReceivingBarometricAltData = receivingBarometricAltDataTimer.isActive();
+    foreach(auto dataSource, _dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        dataSource->disconnectFromTrafficReceiver();
+    }
+}
 
-    // Update property and emit signal if necessary
-    if (_receivingBarometricAltData == newReceivingBarometricAltData) {
+
+auto Traffic::TrafficDataProvider::globalInstance() -> Traffic::TrafficDataProvider *
+{
+#ifndef __clang_analyzer__
+    return TrafficDataManagerStatic;
+#else
+    return nullptr;
+#endif
+}
+
+
+void Traffic::TrafficDataProvider::onFactorWithPosition(Traffic::Factor *factor)
+{
+    if (factor == nullptr) {
         return;
     }
-    _receivingBarometricAltData = newReceivingBarometricAltData;
-    emit receivingBarometricAltDataChanged(_receivingBarometricAltData);
+
+    foreach(auto target, _trafficObjects)
+        if (factor->ID() == target->ID()) {
+            target->copyFrom(*factor);
+            return;
+        }
+
+    auto *lowestPriObject = _trafficObjects.at(0);
+    foreach(auto target, _trafficObjects)
+        if (lowestPriObject->hasHigherPriorityThan(*target)) {
+            lowestPriObject = target;
+        }
+    if (factor->hasHigherPriorityThan(*lowestPriObject)) {
+        lowestPriObject->copyFrom(*factor);
+    }
+
 }
 
 
-void Traffic::TrafficDataManager::updateReceivingPositionData()
+void Traffic::TrafficDataProvider::onFactorWithoutPosition(Traffic::Factor *factor)
 {
-    auto newReceivingPositionData = receivingPositionDataTimer.isActive();
-
-    // Update property and emit signal if necessary
-    if (_receivingPositionData == newReceivingPositionData) {
+    if (factor == nullptr) {
         return;
     }
-    _receivingPositionData = newReceivingPositionData;
-    emit receivingPositionDataChanged(_receivingPositionData);
+
+    if ((factor->ID() == _trafficObjectWithoutPosition->ID()) || factor->hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
+        _trafficObjectWithoutPosition->copyFrom(*factor);
+    }
+
 }
+
+
+void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
+{
+
+    Traffic::AbstractTrafficDataSource *heartbeatDataSource = nullptr;
+    foreach(auto source, _dataSources) {
+        if (source.isNull()) {
+            continue;
+        }
+
+        if (source->hasHeartbeat()) {
+            heartbeatDataSource = source;
+            break;
+        }
+    }
+
+    if (heartbeatDataSource == nullptr) {
+        return;
+    }
+
+    foreach(auto source, _dataSources) {
+        if (source.isNull()) {
+            continue;
+        }
+
+        if (source != heartbeatDataSource) {
+            source->disconnectFromTrafficReceiver();
+        }
+
+    }
+
+}
+
+
+auto Traffic::TrafficDataProvider::receiving() const -> bool
+{
+
+    foreach(auto source, _dataSources) {
+        if (source.isNull()) {
+            continue;
+        }
+
+        if (source->hasHeartbeat()) {
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+
+auto Traffic::TrafficDataProvider::statusString() const -> QString
+{
+
+    QString result = "<ul>";
+    foreach(auto source, _dataSources) {
+        if (source.isNull()) {
+            continue;
+        }
+
+        result += "<li>";
+        result += source->sourceName() + ": ";
+        if (source->hasHeartbeat()) {
+            result += tr("Receiving traffic data.");
+        } else {
+            switch(source->connectivityStatus()) {
+            case Traffic::AbstractTrafficDataSource::Disconnected:
+                result += tr("Not connected.");
+                break;
+            case Traffic::AbstractTrafficDataSource::Connecting:
+                result += tr("Connecting.");
+                break;
+            case Traffic::AbstractTrafficDataSource::Connected:
+                result += tr("Connected, but not receiving traffic data.");
+                break;
+            }
+        }
+        if (!source->errorString().isEmpty()) {
+            result += " " + source->errorString();
+        }
+        result += "</li>";
+    }
+    result += "</ul>";
+    return result;
+
+}
+

@@ -87,7 +87,7 @@ Rectangle {
 
             color: "white"
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("ALT")
+            text: qsTr("T.ALT")
         } // Label
 
         Label {

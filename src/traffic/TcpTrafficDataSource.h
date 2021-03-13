@@ -30,7 +30,7 @@
 #include "GlobalSettings.h"
 #include "traffic/Factor.h"
 
-namespace Navigation {
+namespace Traffic {
 
 /*! \brief Traffic receiver
  *
@@ -42,7 +42,7 @@ namespace Navigation {
  *  By modifying the source code, developers can also start the class in a mode
  *  where it connects to a file with simulator data.
  */
-class FLARMAdaptor : public QObject {
+class TcpTrafficDataSource : public QObject {
     Q_OBJECT
 
 public:
@@ -50,10 +50,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit FLARMAdaptor(QObject *parent = nullptr);
+    explicit TcpTrafficDataSource(QObject *parent = nullptr);
 
     // Standard destructor
-    ~FLARMAdaptor() override = default;
+    ~TcpTrafficDataSource() override = default;
 
     //
     // Methods
@@ -63,7 +63,7 @@ public:
      *
      *  @returns Pointer to global instance
      */
-    static FLARMAdaptor *globalInstance();
+    static TcpTrafficDataSource *globalInstance();
 
 
     //
@@ -214,7 +214,7 @@ signals:
     void receivingBarometricAltDataChanged(bool);
 
     /*! \brief Notifier signal */
-    void statusChanged(Navigation::FLARMAdaptor::Status);
+    void statusChanged(Traffic::TcpTrafficDataSource::Status);
 
     /*! \brief Traffic receiver hardware version
      *

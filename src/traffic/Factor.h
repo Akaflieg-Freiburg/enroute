@@ -25,11 +25,6 @@
 
 #include "AviationUnits.h"
 
-namespace Navigation{
-class FLARMAdaptor;
-}
-
-
 namespace Traffic {
 
 /*! \brief Traffic opponents
@@ -44,7 +39,9 @@ class Factor : public QObject {
     Q_OBJECT
 
     // Only FLARMAdaptor can set properties
-    friend class Navigation::FLARMAdaptor;
+    friend class AbstractTrafficDataSource;
+    friend class TcpTrafficDataSource;
+    friend class TrafficDataManager;
 
 public:
     /*! \brief Aircraft type */

@@ -21,17 +21,11 @@
 #include <QQmlEngine>
 #include <chrono>
 
-#include "Navigation_FLARMAdaptor.h"
-#include "Navigation_SatNav.h"
 #include "MobileAdaptor.h"
+#include "Navigation_SatNav.h"
+#include "traffic/AbstractTrafficDataSource.h"
 
 using namespace std::chrono_literals;
-
-
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-Q_GLOBAL_STATIC(Navigation::FLARMAdaptor, FLARMAdaptorStatic);
-#endif
 
 
 // Static Helper functions
@@ -69,140 +63,17 @@ auto interpretNMEATime(const QString& timeString) -> QDateTime
 
 // Member functions
 
-Navigation::FLARMAdaptor::FLARMAdaptor(QObject *parent) : QObject(parent) {
+Traffic::AbstractTrafficDataSource::AbstractTrafficDataSource(QObject *parent) : QObject(parent) {
 
-    // Create socket
-    socket = new QTcpSocket(this);
-    connect(socket, &QTcpSocket::errorOccurred, this, &Navigation::FLARMAdaptor::receiveSocketErrorOccurred);
-    connect(socket, &QTcpSocket::readyRead, this, &Navigation::FLARMAdaptor::readFromStream);
-    connect(socket, &QTcpSocket::connected, this, &Navigation::FLARMAdaptor::connected);
-    connect(socket, &QTcpSocket::disconnected, this, &Navigation::FLARMAdaptor::disconnected);
-
-    // Set up text stream
-    textStream.setDevice(socket);
-    textStream.setCodec("ISO 8859-1");
-
-    // Create traffic objects
-    int numTrafficObjects = 20;
-    _trafficObjects.reserve(numTrafficObjects);
-    for(int i = 0; i<numTrafficObjects; i++) {
-        auto *trafficObject = new Traffic::Factor(this);
-        QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
-        _trafficObjects.append( trafficObject );
-    }
-    _trafficObjectWithoutPosition = new Traffic::Factor(this);
-    QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
-
-    // Wire up the connectToTrafficReceiver. Set it to attempt a FLARM connection every 5 Minutes
-    // Try our first connect right after startup
-    connect(&connectTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
-    connect(MobileAdaptor::globalInstance(), &MobileAdaptor::wifiConnected, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
-    QTimer::singleShot(0s, this, &Navigation::FLARMAdaptor::connectToTrafficReceiver);
-    connectTimer.start(5min);
+    QQmlEngine::setObjectOwnership(&factor, QQmlEngine::CppOwnership);
 
     // Setup timers for property updates
     receivingHeartbeatTimer.setSingleShot(true);
     receivingHeartbeatTimer.setInterval(5s);
-    receivingPositionDataTimer.setSingleShot(true);
-    receivingPositionDataTimer.setInterval(5s);
-
-    //
-    // Property bindings
-    //
-
-    // Bind property "receivingBarometricAltData"
-    connect(&receivingBarometricAltDataTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::updateReceivingBarometricAltData);
-
-    // Bind property "receivingPositionData"
-    connect(&receivingPositionDataTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::updateReceivingPositionData);
-
-    // Bind property "status"
-    connect(socket, &QTcpSocket::stateChanged, this, &Navigation::FLARMAdaptor::updateStatus);
-    connect(&receivingHeartbeatTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::updateStatus);
-
-
-    //
-    // Initialize properties
-    //
-    updateStatus();
-
-
-    //
-    // Setup simulator
-    //
-
-    // Uncomment one of the lines below to start this class in simulation mode.
-    QString simulatorFileName;
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-hard.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
-//    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
-    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
-
-    if (!simulatorFileName.isEmpty()) {
-        connect(&simulatorTimer, &QTimer::timeout, this, &Navigation::FLARMAdaptor::readFromSimulatorStream);
-        simulatorFile.setFileName(simulatorFileName);
-        simulatorTextStream.setDevice(&simulatorFile);
-        simulatorTextStream.setCodec("ISO 8859-1");
-        if (simulatorFile.open(QIODevice::ReadOnly)) {
-            readFromSimulatorStream();
-            updateStatus();
-        }
-    }
 }
 
 
-void Navigation::FLARMAdaptor::connectToTrafficReceiver()
-{
-    // Paranoid safety check
-    if (socket.isNull()) {
-        return;
-    }
-
-    // Do not do anything if we are connected to an honest device
-    if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
-        return;
-    }
-
-    socket->abort();
-    socket->connectToHost(QStringLiteral("192.168.1.1"), 2000);
-    textStream.setDevice(socket);
-
-    // Update properties
-    setErrorString(QString());
-    updateStatus();
-}
-
-
-void Navigation::FLARMAdaptor::disconnectFromTrafficReceiver()
-{
-    // Paranoid safety check
-    if (socket.isNull()) {
-        return;
-    }
-
-    // Stop any simulation that might be running
-    simulatorFile.close();
-    simulatorTimer.stop();
-
-    // Disconnect socket.
-    socket->abort();
-
-    // Update properties
-    setErrorString(QString());
-    updateStatus();
-}
-
-
-auto Navigation::FLARMAdaptor::globalInstance() -> Navigation::FLARMAdaptor *
-{
-    return FLARMAdaptorStatic;
-}
-
-
-void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
+void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
 {
     if (msg.isEmpty()) {
         return;
@@ -316,15 +187,14 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
         }
 
-        receivingPositionDataTimer.start();
-        updateReceivingPositionData();
+        emit positionInfo(pInfo);
         return;
     }
 
     // Data on other proximate aircraft
     if (messageType == u"PFLAA") {
 
-        auto *satNav = SatNav::globalInstance();
+        auto *satNav = Navigation::SatNav::globalInstance();
         if (satNav == nullptr) {
             return;
         }
@@ -437,11 +307,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
                 }
             }
 
-            auto trafficNP = Traffic::Factor(this);
-            trafficNP.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
-            if ((trafficNP.ID() == _trafficObjectWithoutPosition->ID()) || trafficNP.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
-                _trafficObjectWithoutPosition->copyFrom(trafficNP);
-            }
+            factor.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
+            emit factorWithOutPosition(&factor);
             return;
         }
 
@@ -485,25 +352,8 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
         }
 
         // Construct a traffic object
-        auto traffic = Traffic::Factor(this);
-
-        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
-
-        foreach(auto target, _trafficObjects)
-            if (targetID == target->ID()) {
-                target->copyFrom(traffic);
-                return;
-            }
-
-        auto *lowestPriObject = _trafficObjects.at(0);
-        foreach(auto target, _trafficObjects)
-            if (lowestPriObject->hasHigherPriorityThan(*target)) {
-                lowestPriObject = target;
-            }
-        if (traffic.hasHigherPriorityThan(*lowestPriObject)) {
-            lowestPriObject->copyFrom(traffic);
-        }
-
+        factor.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
+        emit factorWithPosition(&factor);
         return;
     }
 
@@ -666,7 +516,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
     if (messageType == u"PFLAU") {
         // Heartbeat received.
         receivingHeartbeatTimer.start();
-        updateStatus();
+#warning
         return;
     }
 
@@ -704,198 +554,7 @@ void Navigation::FLARMAdaptor::processFLARMMessage(QString msg)
             return;
         }
 
-        receivingBarometricAltDataTimer.start();
-        updateReceivingBarometricAltData();
         emit barometricAltitude(barometricAlt);
         return;
-    }
-}
-
-
-void Navigation::FLARMAdaptor::readFromSimulatorStream()
-{
-    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
-        disconnectFromTrafficReceiver();
-        return;
-    }
-
-    if (!lastPayload.isEmpty()) {
-        processFLARMMessage(lastPayload);
-    }
-
-    auto line = simulatorTextStream.readLine();
-    auto tuple = line.split(QStringLiteral(" "));
-    if (tuple.length() < 2) {
-        return;
-    }
-    auto time = tuple[0].toInt();
-    lastPayload = tuple[1];
-
-    if (lastTime == 0) {
-        simulatorTimer.setInterval(0);
-    } else {
-        simulatorTimer.setInterval(time-lastTime);
-    }
-    simulatorTimer.start();
-    lastTime = time;
-}
-
-
-void Navigation::FLARMAdaptor::readFromStream()
-{
-    QString sentence;
-    while( textStream.readLineInto(&sentence) ) {
-        processFLARMMessage(sentence);
-    }
-}
-
-
-void Navigation::FLARMAdaptor::receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError)
-{
-    QString errorText;
-    switch (socketError) {
-    case QAbstractSocket::ConnectionRefusedError:
-        errorText = tr("The connection was refused by the peer (or timed out).");
-        break;
-    case QAbstractSocket::RemoteHostClosedError:
-        errorText = tr("The remote host closed the connection.");
-        break;
-    case QAbstractSocket::HostNotFoundError:
-        errorText = tr("The host address was not found.");
-        break;
-    case QAbstractSocket::SocketAccessError:
-        errorText = tr("The socket operation failed because the application lacked the required privileges.");
-        break;
-    case QAbstractSocket::SocketResourceError:
-        errorText = tr("The local system ran out of resources.");
-        break;
-    case QAbstractSocket::SocketTimeoutError:
-        errorText = tr("The socket operation timed out.");
-        break;
-    case QAbstractSocket::DatagramTooLargeError:
-        errorText = tr("The datagram was larger than the operating system's limit.");
-        break;
-    case QAbstractSocket::NetworkError:
-        errorText = tr("An error occurred with the network.");
-        break;
-    case QAbstractSocket::AddressInUseError:
-        errorText = tr("The address specified to QAbstractSocket::bind() is already in use and was set to be exclusive.");
-        break;
-    case QAbstractSocket::SocketAddressNotAvailableError:
-        errorText = tr("The address specified to QAbstractSocket::bind() does not belong to the host.");
-        break;
-    case QAbstractSocket::UnsupportedSocketOperationError:
-        errorText = tr("The requested socket operation is not supported by the local operating system.");
-        break;
-    case QAbstractSocket::ProxyAuthenticationRequiredError:
-        errorText = tr("The socket is using a proxy, and the proxy requires authentication.");
-        break;
-    case QAbstractSocket::SslHandshakeFailedError:
-        errorText = tr("The SSL/TLS handshake failed, so the connection was closed.");
-        break;
-    case QAbstractSocket::UnfinishedSocketOperationError:
-        errorText = tr("The last operation attempted has not finished yet (still in progress in the background).");
-        break;
-    case QAbstractSocket::ProxyConnectionRefusedError:
-        errorText = tr("Could not contact the proxy server because the connection to that server was denied.");
-        break;
-    case QAbstractSocket::ProxyConnectionClosedError:
-        errorText = tr("The connection to the proxy server was closed unexpectedly (before the connection to the final peer was established).");
-        break;
-    case QAbstractSocket::ProxyConnectionTimeoutError:
-        errorText = tr("The connection to the proxy server timed out or the proxy server stopped responding in the authentication phase.");
-        break;
-    case QAbstractSocket::ProxyNotFoundError:
-        errorText = tr("The proxy address set with setProxy() (or the application proxy) was not found.");
-        break;
-    case QAbstractSocket::ProxyProtocolError:
-        errorText = tr("The connection negotiation with the proxy server failed, because the response from the proxy server could not be understood.");
-        break;
-    case QAbstractSocket::OperationError:
-        errorText = tr("An operation was attempted while the socket was in a state that did not permit it.");
-        break;
-    case QAbstractSocket::SslInternalError:
-        errorText = tr("The SSL library being used reported an internal error. This is probably the result of a bad installation or misconfiguration of the library.");
-        break;
-    case QAbstractSocket::SslInvalidUserDataError:
-        errorText = tr("Invalid data (certificate, key, cypher, etc.) was provided and its use resulted in an error in the SSL library.");
-        break;
-    case QAbstractSocket::TemporaryError:
-        errorText = tr("A temporary error occurred (e.g., operation would block and socket is non-blocking).");
-        break;
-    case QAbstractSocket::UnknownSocketError:
-        errorText = tr("An unidentified error occurred.");
-        break;
-    }
-    setErrorString(tr("%2 (Time of error: %1)").arg(QDateTime::currentDateTimeUtc().time().toString("H:mm"), errorText));
-}
-
-
-void Navigation::FLARMAdaptor::setErrorString(const QString &newErrorString)
-{
-    if (newErrorString == _errorString) {
-        return;
-    }
-    _errorString = newErrorString;
-    emit errorStringChanged();
-}
-
-
-void Navigation::FLARMAdaptor::updateReceivingBarometricAltData()
-{
-    auto newReceivingBarometricAltData = receivingBarometricAltDataTimer.isActive();
-
-    // Update property and emit signal if necessary
-    if (_receivingBarometricAltData == newReceivingBarometricAltData) {
-        return;
-    }
-    _receivingBarometricAltData = newReceivingBarometricAltData;
-    emit receivingBarometricAltDataChanged(_receivingBarometricAltData);
-}
-
-
-void Navigation::FLARMAdaptor::updateReceivingPositionData()
-{
-    auto newReceivingPositionData = receivingPositionDataTimer.isActive();
-
-    // Update property and emit signal if necessary
-    if (_receivingPositionData == newReceivingPositionData) {
-        return;
-    }
-    _receivingPositionData = newReceivingPositionData;
-    emit receivingPositionDataChanged(_receivingPositionData);
-}
-
-
-void Navigation::FLARMAdaptor::updateStatus()
-{
-    // Paranoid safety check
-    if (socket.isNull()) {
-        return;
-    }
-
-    // Compute new status
-    Status newStatus = Disconnected;
-    if (socket->state() != QAbstractSocket::UnconnectedState) {
-        newStatus = Connecting;
-    }
-    if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
-        newStatus = Connected;
-    }
-    if ((newStatus == Connected) && receivingHeartbeatTimer.isActive()) {
-        newStatus = Receiving;
-    }
-
-    // Update property and emit signal if necessary
-    if (_status == newStatus) {
-        return;
-    }
-    _status = newStatus;
-    emit statusChanged(_status);
-
-    // Acquire or release WiFi lock as appropriate
-    auto* mobileAdaptor = MobileAdaptor::globalInstance();
-    if (mobileAdaptor != nullptr) {
-        mobileAdaptor->lockWifi(_status == Receiving);
     }
 }

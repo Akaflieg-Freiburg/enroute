@@ -43,10 +43,10 @@
 #include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
-#include "Navigation_FLARMAdaptor.h"
 #include "Navigation_SatNav.h"
 #include "ScaleQuickItem.h"
 #include "traffic/Factor.h"
+#include "traffic/TcpTrafficDataSource.h"
 #include "weather/DownloadManager.h"
 #include "weather/Wind.h"
 #include <chrono>
@@ -68,7 +68,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
     qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
-    qmlRegisterUncreatableType<Navigation::FLARMAdaptor>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
+    qmlRegisterUncreatableType<Traffic::TcpTrafficDataSource>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::Factor>("enroute", 1, 0, "Factor", "Factor objects cannot be created in QML");
     qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
@@ -135,7 +135,7 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("satNav", Navigation::SatNav::globalInstance());
 
     // Make FLARM available to QML engine
-    engine->rootContext()->setContextProperty("flarmAdaptor", Navigation::FLARMAdaptor::globalInstance());
+    engine->rootContext()->setContextProperty("flarmAdaptor", Traffic::TcpTrafficDataSource::globalInstance());
 
     // Attach global settings object
     engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());

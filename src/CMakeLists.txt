@@ -87,11 +87,13 @@ set(SOURCES
     GlobalSettings.h
     Librarian.h
     MobileAdaptor.h
-    Navigation_FLARMAdaptor.h
     Navigation_Geoid.h
     Navigation_SatNav.h
     ScaleQuickItem.h
+    traffic/AbstractTrafficDataSource.h
     traffic/Factor.h
+    traffic/TcpTrafficDataSource.h
+    traffic/TrafficDataManager.h
     weather/Decoder.h
     weather/DownloadManager.h
     weather/METAR.h
@@ -120,12 +122,14 @@ set(SOURCES
     main.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
-    Navigation_FLARMAdaptor.cpp
     Navigation_Geoid.cpp
     Navigation_SatNav.cpp
     ScaleQuickItem.cpp
+    traffic/AbstractTrafficDataSource.cpp
     traffic/Factor.cpp
-    weather/Decoder.cpp    
+    traffic/TcpTrafficDataSource.cpp
+    traffic/TrafficDataManager.cpp
+    weather/Decoder.cpp
     weather/DownloadManager.cpp
     weather/METAR.cpp
     weather/Station.cpp

@@ -117,13 +117,13 @@ Page {
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
 
-                text: (flarmAdaptor.receiving) ? qsTr("Receiving traffic data.") : qsTr("Not receiving traffic data.")
+                text: flarmAdaptor.statusString
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
 
-                bottomPadding: 0.2*Qt.application.font.pixelSize
-                topPadding: 0.2*Qt.application.font.pixelSize
+                bottomPadding: 0.6*Qt.application.font.pixelSize
+                topPadding: 0.6*Qt.application.font.pixelSize
                 leftPadding: 0.2*Qt.application.font.pixelSize
                 rightPadding: 0.2*Qt.application.font.pixelSize
 
@@ -140,23 +140,13 @@ Page {
             }
 
 
-            Label { // Status string
-                Layout.fillWidth: true
-
-                text:  flarmAdaptor.statusString
-
-                wrapMode: Text.WordWrap
-                textFormat: Text.RichText
-
-                bottomPadding: 0.2*Qt.application.font.pixelSize
-                topPadding: 0.2*Qt.application.font.pixelSize
-            }
-
             Label {
                 Layout.fillWidth: true
 
                 text:   {
-                    if (flarmAdaptor.status == FLARMAdaptor.Disconnected)
+                    if (flarmAdaptor.receiving)
+                        return qsTr("<p>Well done! Go flying. Give yourself a pat on the back.</p>")
+                    else
                         return qsTr("
 <h3>How to connect your device to the traffic receiver</h3>
 
@@ -165,29 +155,16 @@ Page {
 <li>Use the 'WLAN Settings' of your device to enter the WLAN network deployed by your traffic receiver.</li>
 <li>Once your device has entered the WLAN network, use the button at the bottom of the page to connect the <strong>Enroute Flight Navigation</strong> to the traffic data stream.</li>
 </ul>
-")
-                    if (flarmAdaptor.status == FLARMAdaptor.Connecting)
-                        return qsTr("
-<p><strong>Enroute Flight Navigation</strong> is trying to connect to the traffic receiver's data stream. If no connection has been established after a few seconds, somthing has gone wrong.</p>
+") + qsTr("
+<p>If no traffic data has arrived after a few seconds, somthing has gone wrong.</p>
 
 <ul style=\"margin-left:-25px;\">
 <li>Make sure that your device has entered the WLAN network deployed by your traffic receiver.  If not, then use the button at the bottem of the screen to abort the connection attempt.</li>
+<li>Some traffic receivers protect the data stream with an additional password. This is currently not supported.</li>
 <li>Click on the question mark in the page title to open a more detailed help dialog.</li>
 </ul>
 ")
-                    if (flarmAdaptor.status == FLARMAdaptor.Connected)
-                        return qsTr("
-<p><strong>Enroute Flight Navigation</strong> is now set up to receive traffic data. If no data arrives after a few seconds, somthing has gone wrong.</p>
-
-<ul style=\"margin-left:-25px;\">
-<li>Make sure that the device at the IP address 192.168.1.1 is indeed a traffic receiver.</li>
-<li>Some traffic receivers protect the data stream with an additional password. This is currently not supported.</li>
-</ul>
-")
-                    return qsTr("
-<p>Well done! Go flying. Give yourself a pat on the back.</p>")
-                }
-
+}
                 textFormat: Text.RichText
                 wrapMode: Text.WordWrap
 

@@ -94,7 +94,7 @@ set(SOURCES
     traffic/Factor.h
     traffic/FileTrafficDataSource.h
     traffic/TcpTrafficDataSource.h
-    traffic/TrafficDataManager.h
+    traffic/TrafficDataProvider.h
     weather/Decoder.h
     weather/DownloadManager.h
     weather/METAR.h
@@ -130,7 +130,7 @@ set(SOURCES
     traffic/Factor.cpp
     traffic/FileTrafficDataSource.cpp
     traffic/TcpTrafficDataSource.cpp
-    traffic/TrafficDataManager.cpp
+    traffic/TrafficDataProvider.cpp
     weather/Decoder.cpp
     weather/DownloadManager.cpp
     weather/METAR.cpp

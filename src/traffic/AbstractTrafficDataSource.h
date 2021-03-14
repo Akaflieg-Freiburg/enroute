@@ -64,7 +64,7 @@ public:
      * the last error, or an empty string when there is not error.  The string
      * is cleared when a new connection attempt is started.
      */
-    Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
+    Q_PROPERTY(QString errorString READ errorString WRITE setErrorString NOTIFY errorStringChanged)
 
     /*! \brief Getter function for the property with the same name
      *
@@ -144,13 +144,13 @@ signals:
      *
      * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
      */
-    void factorWithoutPosition(Traffic::Factor *factor);
+    void factorWithoutPosition(const Traffic::Factor &factor);
 
     /*! \brief Traffic factor with position
      *
      * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
      */
-    void factorWithPosition(Traffic::Factor *factor);
+    void factorWithPosition(const Traffic::Factor &factor);
 
     /*! \brief Notifier signal */
     void hasHeartbeatChanged();

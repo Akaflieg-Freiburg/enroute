@@ -47,8 +47,8 @@ MapQuickItem {
 
             source: trafficInfo.icon
 
-            sourceSize.width: 40
-            sourceSize.height: 40
+            sourceSize.width: 30
+            sourceSize.height: 30
         }
     }
 }

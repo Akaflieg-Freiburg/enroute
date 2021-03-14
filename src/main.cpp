@@ -46,7 +46,7 @@
 #include "Navigation_SatNav.h"
 #include "ScaleQuickItem.h"
 #include "traffic/Factor.h"
-#include "traffic/TrafficDataManager.h"
+#include "traffic/TrafficDataProvider.h"
 #include "weather/DownloadManager.h"
 #include "weather/Wind.h"
 #include <chrono>

@@ -324,7 +324,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
             }
 
             factor.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
-            emit factorWithoutPosition(&factor);
+            emit factorWithoutPosition(factor);
             return;
         }
 
@@ -369,7 +369,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
 
         // Construct a traffic object
         factor.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
-        emit factorWithPosition(&factor);
+        emit factorWithPosition(factor);
         return;
     }
 

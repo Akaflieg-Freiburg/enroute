@@ -46,7 +46,7 @@ Traffic::Factor::Factor(QObject *parent) : QObject(parent)
 }
 
 
-auto Traffic::Factor::hasHigherPriorityThan(const Factor &rhs) -> bool
+auto Traffic::Factor::hasHigherPriorityThan(const Factor &rhs) const -> bool
 {
     // Criterion 1: Valid instances have higher priority than invalid ones
     if (!rhs.valid()) {

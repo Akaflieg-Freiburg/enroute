@@ -89,7 +89,7 @@ public:
      *
      * @returns Boolean with the result
      */
-    bool hasHigherPriorityThan(const Factor &rhs);
+    bool hasHigherPriorityThan(const Factor &rhs) const;
 
     //
     // PROPERTIES

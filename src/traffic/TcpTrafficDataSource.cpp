@@ -20,6 +20,7 @@
 
 #include <QQmlEngine>
 #include <chrono>
+#include <utility>
 
 #include "MobileAdaptor.h"
 #include "Navigation_SatNav.h"
@@ -28,103 +29,26 @@
 using namespace std::chrono_literals;
 
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-Q_GLOBAL_STATIC(Traffic::TcpTrafficDataSource, FLARMAdaptorStatic);
-#endif
-
-
-// Static Helper functions
-
-auto interpretNMEALatLong(const QString& A, const QString& B) -> qreal;
-
-auto interpretNMEATime(const QString& timeString) -> QDateTime;
-
-
 // Member functions
 
-Traffic::TcpTrafficDataSource::TcpTrafficDataSource(QObject *parent) : QObject(parent) {
+Traffic::TcpTrafficDataSource::TcpTrafficDataSource(QString hostName, quint16 port, QObject *parent) :
+    Traffic::AbstractTrafficDataSource(parent), _hostName(std::move(hostName)), _port(port) {
 
     // Create socket
     socket = new QTcpSocket(this);
-    connect(socket, &QTcpSocket::errorOccurred, this, &Traffic::TcpTrafficDataSource::receiveSocketErrorOccurred);
+    connect(socket, &QTcpSocket::errorOccurred, this, &Traffic::TcpTrafficDataSource::onErrorOccurred);
     connect(socket, &QTcpSocket::readyRead, this, &Traffic::TcpTrafficDataSource::readFromStream);
-    connect(socket, &QTcpSocket::connected, this, &Traffic::TcpTrafficDataSource::connected);
-    connect(socket, &QTcpSocket::disconnected, this, &Traffic::TcpTrafficDataSource::disconnected);
+    connect(socket, &QTcpSocket::stateChanged, this, &Traffic::TcpTrafficDataSource::onStateChanged);
 
     // Set up text stream
     textStream.setDevice(socket);
     textStream.setCodec("ISO 8859-1");
 
-    // Create traffic objects
-    int numTrafficObjects = 20;
-    _trafficObjects.reserve(numTrafficObjects);
-    for(int i = 0; i<numTrafficObjects; i++) {
-        auto *trafficObject = new Traffic::Factor(this);
-        QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
-        _trafficObjects.append( trafficObject );
-    }
-    _trafficObjectWithoutPosition = new Traffic::Factor(this);
-    QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
-
-    // Wire up the connectToTrafficReceiver. Set it to attempt a FLARM connection every 5 Minutes
-    // Try our first connect right after startup
-    connect(&connectTimer, &QTimer::timeout, this, &Traffic::TcpTrafficDataSource::connectToTrafficReceiver);
-    connect(MobileAdaptor::globalInstance(), &MobileAdaptor::wifiConnected, this, &Traffic::TcpTrafficDataSource::connectToTrafficReceiver);
-    QTimer::singleShot(0s, this, &Traffic::TcpTrafficDataSource::connectToTrafficReceiver);
-    connectTimer.start(5min);
-
-    // Setup timers for property updates
-    receivingHeartbeatTimer.setSingleShot(true);
-    receivingHeartbeatTimer.setInterval(5s);
-    receivingPositionDataTimer.setSingleShot(true);
-    receivingPositionDataTimer.setInterval(5s);
-
-    //
-    // Property bindings
-    //
-
-    // Bind property "receivingBarometricAltData"
-    connect(&receivingBarometricAltDataTimer, &QTimer::timeout, this, &Traffic::TcpTrafficDataSource::updateReceivingBarometricAltData);
-
-    // Bind property "receivingPositionData"
-    connect(&receivingPositionDataTimer, &QTimer::timeout, this, &Traffic::TcpTrafficDataSource::updateReceivingPositionData);
-
-    // Bind property "status"
-    connect(socket, &QTcpSocket::stateChanged, this, &Traffic::TcpTrafficDataSource::updateStatus);
-    connect(&receivingHeartbeatTimer, &QTimer::timeout, this, &Traffic::TcpTrafficDataSource::updateStatus);
-
-
     //
     // Initialize properties
     //
-    updateStatus();
+    onStateChanged();
 
-
-    //
-    // Setup simulator
-    //
-
-    // Uncomment one of the lines below to start this class in simulation mode.
-    QString simulatorFileName;
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-hard.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/expiry-soft.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/many_opponents.txt";
-//    simulatorFileName= "/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt";
-    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent.txt";
-//    simulatorFileName = "/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt";
-
-    if (!simulatorFileName.isEmpty()) {
-        connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::TcpTrafficDataSource::readFromSimulatorStream);
-        simulatorFile.setFileName(simulatorFileName);
-        simulatorTextStream.setDevice(&simulatorFile);
-        simulatorTextStream.setCodec("ISO 8859-1");
-        if (simulatorFile.open(QIODevice::ReadOnly)) {
-            readFromSimulatorStream();
-            updateStatus();
-        }
-    }
 }
 
 
@@ -135,18 +59,12 @@ void Traffic::TcpTrafficDataSource::connectToTrafficReceiver()
         return;
     }
 
-    // Do not do anything if we are connected to an honest device
-    if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
-        return;
-    }
-
     socket->abort();
-    socket->connectToHost(QStringLiteral("192.168.1.1"), 2000);
+    socket->connectToHost(_hostName, _port);
     textStream.setDevice(socket);
 
     // Update properties
-    setErrorString(QString());
-    updateStatus();
+    onStateChanged();
 }
 
 
@@ -157,565 +75,11 @@ void Traffic::TcpTrafficDataSource::disconnectFromTrafficReceiver()
         return;
     }
 
-    // Stop any simulation that might be running
-    simulatorFile.close();
-    simulatorTimer.stop();
-
     // Disconnect socket.
     socket->abort();
 
     // Update properties
-    setErrorString(QString());
-    updateStatus();
-}
-
-
-auto Traffic::TcpTrafficDataSource::globalInstance() -> Traffic::TcpTrafficDataSource *
-{
-#ifndef __clang_analyzer__
-    return FLARMAdaptorStatic;
-#else
-    return nullptr;
-#endif
-}
-
-
-void Traffic::TcpTrafficDataSource::processFLARMMessage(QString msg)
-{
-    if (msg.isEmpty()) {
-        return;
-    }
-
-    // Check that line starts with a dollar sign
-    if (msg.isEmpty()) {
-        return;
-    }
-    if (msg[0] != QStringLiteral("$")) {
-        return;
-    }
-    msg = msg.mid(1);
-
-    // Check the NMEA checksum
-    auto pieces = msg.split(QStringLiteral("*"));
-    if (pieces.length() != 2) {
-        return;
-    }
-    msg = pieces[0];
-    auto checksum = pieces[1].toInt(nullptr, 16);
-    quint8 myChecksum = 0;
-    for(auto && i : msg) {
-        myChecksum ^= static_cast<quint8>(i.toLatin1());
-    }
-    if (checksum != myChecksum) {
-        return;
-    }
-
-    // Split the message into pieces
-    auto arguments = msg.split(QStringLiteral(","));
-    if (arguments.isEmpty()) {
-        return;
-    }
-    auto messageType = arguments.takeFirst();
-
-    // NMEA GPS 3D-fix data
-    if (messageType == u"GPGGA") {
-        if (arguments.length() < 9) {
-            return;
-        }
-
-        // Quality check
-        if (arguments[5] == u"0") {
-            return;
-        }
-
-        // Get Time
-        auto dateTime = interpretNMEATime(arguments[0]);
-        if (!dateTime.isValid()) {
-            return;
-        }
-
-        // Get coordinate
-        bool ok = false;
-        auto alt = arguments[8].toDouble(&ok);
-        if (!ok) {
-            return;
-        }
-
-        _altitude = AviationUnits::Distance::fromM(alt);
-        _altitudeTimeStamp = dateTime;
-        return;
-    }
-
-    // Recommended minimum specific GPS/Transit data
-    if (messageType == u"GPRMC") {
-        if (arguments.length() < 8) {
-            return;
-        }
-
-        // Quality check
-        if (arguments[1] != u"A") {
-            return;
-        }
-
-        // Get Time
-        auto dateTime = interpretNMEATime(arguments[0]);
-        if (!dateTime.isValid()) {
-            return;
-        }
-
-        // Get coordinate
-        auto lat = interpretNMEALatLong(arguments[2], arguments[3]);
-        auto lon = interpretNMEALatLong(arguments[4], arguments[5]);
-        QGeoCoordinate coordinate(lat, lon);
-        if (!coordinate.isValid()) {
-            return;
-        }
-        if (_altitudeTimeStamp.secsTo(dateTime) < 5) {
-            coordinate.setAltitude(_altitude.toM());
-        }
-        QGeoPositionInfo pInfo(coordinate, dateTime);
-
-        // Ground speed
-        bool ok = false;
-        auto groundSpeed = AviationUnits::Speed::fromKT(arguments[6].toDouble(&ok));
-        if (!ok) {
-            return;
-        }
-        if (groundSpeed.isFinite()) {
-            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS() );
-        }
-
-        // Track
-        auto TT = arguments[7].toDouble(&ok);
-        if (!ok) {
-            return;
-        }
-        if (TT != qQNaN()) {
-            pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
-        }
-
-        receivingPositionDataTimer.start();
-        updateReceivingPositionData();
-        return;
-    }
-
-    // Data on other proximate aircraft
-    if (messageType == u"PFLAA") {
-
-        auto *satNav = Navigation::SatNav::globalInstance();
-        if (satNav == nullptr) {
-            return;
-        }
-
-        // Helper variable
-        bool ok = false;
-
-        //
-        // We begin by reading a few fields that are relevant both for directional and for non-directional targets
-        //
-
-        // Alarm level is mandatory
-        auto alarmLevel = arguments[0].toInt(&ok);
-        if (!ok) {
-            return;
-        }
-        if ((alarmLevel < 0)||(alarmLevel > 3)) {
-            return;
-        }
-
-        // Relative vertical information is optional
-        auto vDistInM = arguments[3].toDouble(&ok);
-        if (!ok) {
-            vDistInM = qQNaN();
-        }
-
-        // Climb rate is optional
-        auto climbRateInMPS = arguments[9].toDouble(&ok);
-        if (!ok) {
-            climbRateInMPS = qQNaN();
-        }
-
-        // Target type is optional
-        auto targetType = arguments[10];
-        Traffic::Factor::AircraftType type = Traffic::Factor::unknown;
-        if (targetType == u"1") {
-            type = Traffic::Factor::Glider;
-        }
-        if (targetType == u"2") {
-            type = Traffic::Factor::TowPlane;
-        }
-        if (targetType == u"3") {
-            type = Traffic::Factor::Copter;
-        }
-        if (targetType == u"4") {
-            type = Traffic::Factor::Skydiver;
-        }
-        if (targetType == u"5") {
-            type = Traffic::Factor::Aircraft;
-        }
-        if (targetType == u"6") {
-            type = Traffic::Factor::HangGlider;
-        }
-        if (targetType == u"7") {
-            type = Traffic::Factor::Paraglider;
-        }
-        if (targetType == u"8") {
-            type = Traffic::Factor::Aircraft;
-        }
-        if (targetType == u"9") {
-            type = Traffic::Factor::Jet;
-        }
-        if (targetType == u"B") {
-            type = Traffic::Factor::Balloon;
-        }
-        if (targetType == u"C") {
-            type = Traffic::Factor::Airship;
-        }
-        if (targetType == u"D") {
-            type = Traffic::Factor::Drone;
-        }
-        if (targetType == u"F") {
-            type = Traffic::Factor::StaticObstacle;
-        }
-
-
-        // Ground speed it optimal. If ground speed is zero that means:
-        // target is on the ground. Ignore these targets, unless they are known static obstacles!
-        auto groundSpeedInMPS = arguments[8].toDouble(&ok);
-        if (!ok) {
-            groundSpeedInMPS = qQNaN();
-        }
-        if ((groundSpeedInMPS == 0.0) && (type != Traffic::Factor::StaticObstacle)) {
-            return;
-        }
-
-
-        // Target ID is optional
-        auto targetID = arguments[5];
-
-
-        //
-        // Handle non-directional targets
-        //
-        if (arguments[2] == u"") {
-            // Horizontal distance is mandatory
-            auto hDist = AviationUnits::Distance::fromM(arguments[1].toDouble(&ok));
-            if (!ok) {
-                return;
-            }
-
-            // Vertical distance is optional
-            auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
-            if (!ok) {
-                vDist = AviationUnits::Distance::fromM(qQNaN());
-            } else {
-                // We ignore targets with large vertical distance
-                if (qAbs(vDist.toM()) > 1500) {
-                    return;
-                }
-            }
-
-            auto trafficNP = Traffic::Factor(this);
-            trafficNP.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
-            if ((trafficNP.ID() == _trafficObjectWithoutPosition->ID()) || trafficNP.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
-                _trafficObjectWithoutPosition->copyFrom(trafficNP);
-            }
-            return;
-        }
-
-        //
-        // From now on, we assume that we have a directional target
-        //
-
-        // As a first step, we obtain the target's coordinate. We take our own coordinate as a starting point.
-        auto targetCoordinate = satNav->lastValidCoordinate();
-        if (!targetCoordinate.isValid()) {
-            return;
-        }
-        auto relativeNorth = arguments[1].toDouble(&ok);
-        if (!ok) {
-            return;
-        }
-        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeNorth, 0);
-        auto relativeEast = arguments[2].toDouble(&ok);
-        if (!ok) {
-            return;
-        }
-        targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
-        if (qIsFinite(vDistInM)) {
-            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, vDistInM);
-        }
-        auto hDist = AviationUnits::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
-
-        // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
-        QGeoPositionInfo pInfo(targetCoordinate, QDateTime::currentDateTimeUtc());
-        auto targetTT = arguments[6].toInt(&ok);
-        if (ok) {
-            pInfo.setAttribute(QGeoPositionInfo::Direction, targetTT);
-        }
-        auto targetGS = arguments[8].toDouble(&ok);
-        if (ok) {
-            pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, targetGS);
-        }
-        auto targetVS = arguments[9].toDouble(&ok);
-        if (ok) {
-            pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
-        }
-
-        // Construct a traffic object
-        auto traffic = Traffic::Factor(this);
-
-        traffic.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
-
-        foreach(auto target, _trafficObjects)
-            if (targetID == target->ID()) {
-                target->copyFrom(traffic);
-                return;
-            }
-
-        auto *lowestPriObject = _trafficObjects.at(0);
-        foreach(auto target, _trafficObjects)
-            if (lowestPriObject->hasHigherPriorityThan(*target)) {
-                lowestPriObject = target;
-            }
-        if (traffic.hasHigherPriorityThan(*lowestPriObject)) {
-            lowestPriObject->copyFrom(traffic);
-        }
-
-        return;
-    }
-
-    // Self-test result and errors codes
-    if (messageType == u"PFLAE") {
-        if (arguments.length() < 3) {
-            return;
-        }
-
-        auto severity = arguments[1];
-        auto errorCode = arguments[2];
-
-        QStringList results;
-        if (severity == u"0") {
-            results << tr("No Error");
-        }
-        if (severity == u"1") {
-            results << tr("Normal Operation");
-        }
-        if (severity == u"2") {
-            results << tr("Reduced Functionality");
-        }
-        if (severity == u"3") {
-            results << tr("Device INOP");
-        }
-
-        if (!errorCode.isEmpty()) {
-            results << tr("Error code: %1").arg(errorCode);
-        }
-        if (errorCode == u"11") {
-            results << tr("Firmware expired");
-        }
-        if (errorCode == u"12") {
-            results << tr("Firmware update error");
-        }
-        if (errorCode == u"21") {
-            results << tr("Power (Voltage < 8V)");
-        }
-        if (errorCode == u"22") {
-            results << tr("UI error");
-        }
-        if (errorCode == u"23") {
-            results << tr("Audio error");
-        }
-        if (errorCode == u"24") {
-            results << tr("ADC error");
-        }
-        if (errorCode == u"25") {
-            results << tr("SD card error");
-        }
-        if (errorCode == u"26") {
-            results << tr("USB error");
-        }
-        if (errorCode == u"27") {
-            results << tr("LED error");
-        }
-        if (errorCode == u"28") {
-            results << tr("EEPROM error");
-        }
-        if (errorCode == u"29") {
-            results << tr("General hardware error");
-        }
-        if (errorCode == u"2A") {
-            results << tr("Transponder receiver Mode-C/S/ADS-B unserviceable");
-        }
-        if (errorCode == u"2B") {
-            results << tr("EEPROM error");
-        }
-        if (errorCode == u"2C") {
-            results << tr("GPIO error");
-        }
-        if (errorCode == u"31") {
-            results << tr("GPS communication");
-        }
-        if (errorCode == u"32") {
-            results << tr("Configuration of GPS module");
-        }
-        if (errorCode == u"33") {
-            results << tr("GPS antenna");
-        }
-        if (errorCode == u"41") {
-            results << tr("RF communication");
-        }
-        if (errorCode == u"42") {
-            results << tr("Another FLARM device with the same Radio ID is being received. Alarms are suppressed for the relevant device.");
-        }
-        if (errorCode == u"43") {
-            results << tr("Wrong ICAO 24-bit address or radio ID");
-        }
-        if (errorCode == u"51") {
-            results << tr("Communication");
-        }
-        if (errorCode == u"61") {
-            results << tr("Flash memory");
-        }
-        if (errorCode == u"71") {
-            results << tr("Pressure sensor");
-        }
-        if (errorCode == u"81") {
-            results << tr("Obstacle database (e.g. incorrect file type)");
-        }
-        if (errorCode == u"82") {
-            results << tr("Obstacle database expired.");
-        }
-        if (errorCode == u"91") {
-            results << tr("Flight recorder");
-        }
-        if (errorCode == u"93") {
-            results << tr("Engine-noise recording not possible");
-        }
-        if (errorCode == u"94") {
-            results << tr("Range analyzer");
-        }
-        if (errorCode == u"A1") {
-            results << tr("Configuration error, e.g. while reading flarmcfg.txt from SD/USB.");
-        }
-        if (errorCode == u"B1") {
-            results << tr("Invalid obstacle database license (e.g. wrong serial number)");
-        }
-        if (errorCode == u"B2") {
-            results << tr("Invalid IGC feature license");
-        }
-        if (errorCode == u"B3") {
-            results << tr("Invalid AUD feature license");
-        }
-        if (errorCode == u"B4") {
-            results << tr("Invalid ENL feature license");
-        }
-        if (errorCode == u"B5") {
-            results << tr("Invalid RFB feature license");
-        }
-        if (errorCode == u"B6") {
-            results << tr("Invalid TIS feature license");
-        }
-        if (errorCode == u"100") {
-            results << tr("Generic error");
-        }
-        if (errorCode == u"101") {
-            results << tr("Flash File System error");
-        }
-        if (errorCode == u"110") {
-            results << tr("Failure updating firmware of external display");
-        }
-        if (errorCode == u"120") {
-            results << tr("Device is operated outside the designated region. The device does not work.");
-        }
-        auto result = results.join(QStringLiteral(" • "));
-
-        // Emit results of self-test
-        emit trafficReceiverSelfTest(result);
-        return;
-    }
-
-    // Debug Information -- Ignore
-    if (messageType == u"PFLAS") {
-        return;
-    }
-
-    // FLARM Heartbeat
-    if (messageType == u"PFLAU") {
-        // Heartbeat received.
-        receivingHeartbeatTimer.start();
-        updateStatus();
-        return;
-    }
-
-    // Version information
-    if (messageType == u"PFLAV") {
-        if (arguments.length() < 4) {
-            return;
-        }
-
-        emit trafficReceiverHwVersion(arguments[1]);
-        emit trafficReceiverSwVersion(arguments[2]);
-        emit trafficReceiverObVersion(arguments[3]);
-
-
-        return;
-    }
-
-    // Garmin's barometric altitude
-    if (messageType == u"PGRMZ") {
-        if (arguments.length() < 2) {
-            return;
-        }
-
-        // Quality check
-        if (arguments[1] != u"F") {
-            return;
-        }
-
-        bool ok = false;
-        auto barometricAlt = AviationUnits::Distance::fromFT(arguments[0].toDouble(&ok));
-        if (!ok) {
-            return;
-        }
-        if (!barometricAlt.isFinite()) {
-            return;
-        }
-
-        receivingBarometricAltDataTimer.start();
-        updateReceivingBarometricAltData();
-        emit barometricAltitude(barometricAlt);
-        return;
-    }
-}
-
-
-void Traffic::TcpTrafficDataSource::readFromSimulatorStream()
-{
-    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
-        disconnectFromTrafficReceiver();
-        return;
-    }
-
-    if (!lastPayload.isEmpty()) {
-        processFLARMMessage(lastPayload);
-    }
-
-    auto line = simulatorTextStream.readLine();
-    auto tuple = line.split(QStringLiteral(" "));
-    if (tuple.length() < 2) {
-        return;
-    }
-    auto time = tuple[0].toInt();
-    lastPayload = tuple[1];
-
-    if (lastTime == 0) {
-        simulatorTimer.setInterval(0);
-    } else {
-        simulatorTimer.setInterval(time-lastTime);
-    }
-    simulatorTimer.start();
-    lastTime = time;
+    onStateChanged();
 }
 
 
@@ -728,124 +92,88 @@ void Traffic::TcpTrafficDataSource::readFromStream()
 }
 
 
-void Traffic::TcpTrafficDataSource::receiveSocketErrorOccurred(QAbstractSocket::SocketError socketError)
+void Traffic::TcpTrafficDataSource::onErrorOccurred(QAbstractSocket::SocketError socketError)
 {
-    QString errorText;
     switch (socketError) {
     case QAbstractSocket::ConnectionRefusedError:
-        errorText = tr("The connection was refused by the peer (or timed out).");
+        setErrorString( tr("The connection was refused by the peer (or timed out).") );
         break;
     case QAbstractSocket::RemoteHostClosedError:
-        errorText = tr("The remote host closed the connection.");
+        setErrorString( tr("The remote host closed the connection.") );
         break;
     case QAbstractSocket::HostNotFoundError:
-        errorText = tr("The host address was not found.");
+        setErrorString( tr("The host address was not found.") );
         break;
     case QAbstractSocket::SocketAccessError:
-        errorText = tr("The socket operation failed because the application lacked the required privileges.");
+        setErrorString( tr("The socket operation failed because the application lacked the required privileges.") );
         break;
     case QAbstractSocket::SocketResourceError:
-        errorText = tr("The local system ran out of resources.");
+        setErrorString( tr("The local system ran out of resources.") );
         break;
     case QAbstractSocket::SocketTimeoutError:
-        errorText = tr("The socket operation timed out.");
+        setErrorString( tr("The socket operation timed out.") );
         break;
     case QAbstractSocket::DatagramTooLargeError:
-        errorText = tr("The datagram was larger than the operating system's limit.");
+        setErrorString( tr("The datagram was larger than the operating system's limit.") );
         break;
     case QAbstractSocket::NetworkError:
-        errorText = tr("An error occurred with the network.");
+        setErrorString( tr("An error occurred with the network.") );
         break;
     case QAbstractSocket::AddressInUseError:
-        errorText = tr("The address specified to QAbstractSocket::bind() is already in use and was set to be exclusive.");
+        setErrorString( tr("The address specified to QAbstractSocket::bind() is already in use and was set to be exclusive.") );
         break;
     case QAbstractSocket::SocketAddressNotAvailableError:
-        errorText = tr("The address specified to QAbstractSocket::bind() does not belong to the host.");
+        setErrorString( tr("The address specified to QAbstractSocket::bind() does not belong to the host.") );
         break;
     case QAbstractSocket::UnsupportedSocketOperationError:
-        errorText = tr("The requested socket operation is not supported by the local operating system.");
+        setErrorString( tr("The requested socket operation is not supported by the local operating system.") );
         break;
     case QAbstractSocket::ProxyAuthenticationRequiredError:
-        errorText = tr("The socket is using a proxy, and the proxy requires authentication.");
+        setErrorString( tr("The socket is using a proxy, and the proxy requires authentication.") );
         break;
     case QAbstractSocket::SslHandshakeFailedError:
-        errorText = tr("The SSL/TLS handshake failed, so the connection was closed.");
+        setErrorString( tr("The SSL/TLS handshake failed, so the connection was closed.") );
         break;
     case QAbstractSocket::UnfinishedSocketOperationError:
-        errorText = tr("The last operation attempted has not finished yet (still in progress in the background).");
+        setErrorString( tr("The last operation attempted has not finished yet (still in progress in the background).") );
         break;
     case QAbstractSocket::ProxyConnectionRefusedError:
-        errorText = tr("Could not contact the proxy server because the connection to that server was denied.");
+        setErrorString( tr("Could not contact the proxy server because the connection to that server was denied.") );
         break;
     case QAbstractSocket::ProxyConnectionClosedError:
-        errorText = tr("The connection to the proxy server was closed unexpectedly (before the connection to the final peer was established).");
+        setErrorString( tr("The connection to the proxy server was closed unexpectedly (before the connection to the final peer was established).") );
         break;
     case QAbstractSocket::ProxyConnectionTimeoutError:
-        errorText = tr("The connection to the proxy server timed out or the proxy server stopped responding in the authentication phase.");
+        setErrorString( tr("The connection to the proxy server timed out or the proxy server stopped responding in the authentication phase.") );
         break;
     case QAbstractSocket::ProxyNotFoundError:
-        errorText = tr("The proxy address set with setProxy() (or the application proxy) was not found.");
+        setErrorString( tr("The proxy address set with setProxy() (or the application proxy) was not found.") );
         break;
     case QAbstractSocket::ProxyProtocolError:
-        errorText = tr("The connection negotiation with the proxy server failed, because the response from the proxy server could not be understood.");
+        setErrorString( tr("The connection negotiation with the proxy server failed, because the response from the proxy server could not be understood.") );
         break;
     case QAbstractSocket::OperationError:
-        errorText = tr("An operation was attempted while the socket was in a state that did not permit it.");
+        setErrorString( tr("An operation was attempted while the socket was in a state that did not permit it.") );
         break;
     case QAbstractSocket::SslInternalError:
-        errorText = tr("The SSL library being used reported an internal error. This is probably the result of a bad installation or misconfiguration of the library.");
+        setErrorString( tr("The SSL library being used reported an internal error. This is probably the result of a bad installation or misconfiguration of the library.") );
         break;
     case QAbstractSocket::SslInvalidUserDataError:
-        errorText = tr("Invalid data (certificate, key, cypher, etc.) was provided and its use resulted in an error in the SSL library.");
+        setErrorString( tr("Invalid data (certificate, key, cypher, etc.) was provided and its use resulted in an error in the SSL library.") );
         break;
     case QAbstractSocket::TemporaryError:
-        errorText = tr("A temporary error occurred (e.g., operation would block and socket is non-blocking).");
+        setErrorString( tr("A temporary error occurred (e.g., operation would block and socket is non-blocking).") );
         break;
     case QAbstractSocket::UnknownSocketError:
-        errorText = tr("An unidentified error occurred.");
+        setErrorString( tr("An unidentified error occurred.") );
         break;
     }
-    setErrorString(tr("%2 (Time of error: %1)").arg(QDateTime::currentDateTimeUtc().time().toString("H:mm"), errorText));
+
 }
 
 
-void Traffic::TcpTrafficDataSource::setErrorString(const QString &newErrorString)
-{
-    if (newErrorString == _errorString) {
-        return;
-    }
-    _errorString = newErrorString;
-    emit errorStringChanged();
-}
 
-
-void Traffic::TcpTrafficDataSource::updateReceivingBarometricAltData()
-{
-    auto newReceivingBarometricAltData = receivingBarometricAltDataTimer.isActive();
-
-    // Update property and emit signal if necessary
-    if (_receivingBarometricAltData == newReceivingBarometricAltData) {
-        return;
-    }
-    _receivingBarometricAltData = newReceivingBarometricAltData;
-    emit receivingBarometricAltDataChanged(_receivingBarometricAltData);
-}
-
-
-void Traffic::TcpTrafficDataSource::updateReceivingPositionData()
-{
-    auto newReceivingPositionData = receivingPositionDataTimer.isActive();
-
-    // Update property and emit signal if necessary
-    if (_receivingPositionData == newReceivingPositionData) {
-        return;
-    }
-    _receivingPositionData = newReceivingPositionData;
-    emit receivingPositionDataChanged(_receivingPositionData);
-}
-
-
-void Traffic::TcpTrafficDataSource::updateStatus()
+void Traffic::TcpTrafficDataSource::onStateChanged()
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -853,27 +181,20 @@ void Traffic::TcpTrafficDataSource::updateStatus()
     }
 
     // Compute new status
-    Status newStatus = Disconnected;
+    Traffic::AbstractTrafficDataSource::ConnectivityStatus newStatus = Traffic::AbstractTrafficDataSource::Disconnected;
     if (socket->state() != QAbstractSocket::UnconnectedState) {
         newStatus = Connecting;
     }
-    if (simulatorFile.isOpen() || (socket->state() == QAbstractSocket::ConnectedState)) {
+    if ( (socket->state() == QAbstractSocket::ConnectedState) ) {
         newStatus = Connected;
     }
-    if ((newStatus == Connected) && receivingHeartbeatTimer.isActive()) {
-        newStatus = Receiving;
-    }
-
-    // Update property and emit signal if necessary
-    if (_status == newStatus) {
-        return;
-    }
-    _status = newStatus;
-    emit statusChanged(_status);
+    setConnectivityStatus(newStatus);
 
     // Acquire or release WiFi lock as appropriate
-    auto* mobileAdaptor = MobileAdaptor::globalInstance();
+/*
+ *     auto* mobileAdaptor = MobileAdaptor::globalInstance();
     if (mobileAdaptor != nullptr) {
         mobileAdaptor->lockWifi(_status == Receiving);
     }
+    */
 }

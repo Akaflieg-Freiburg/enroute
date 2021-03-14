@@ -149,9 +149,9 @@ signals:
 private slots:
     void onSourceHeartbeatChanged();
 
-    void onFactorWithPosition(Traffic::Factor *factor);
+    void onFactorWithPosition(const Traffic::Factor &factor);
 
-    void onFactorWithoutPosition(Traffic::Factor *factor);
+    void onFactorWithoutPosition(const Traffic::Factor &factor);
 
 private:
     // Targets

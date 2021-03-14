@@ -27,13 +27,15 @@ GERMANY
 
 The Android app requires the following privileges.
 
-- WRITE_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE -- This priviege is required to store the flight map library in a globaly accessible directory. This ensures that the library persists when the app is uninstalled or reinstalled. It also ensures that other apps, such as file managers or file synchronisation software, can access the data.
+- ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION -- Accessing the device's location is clearly necessary for a navigation app.
 
-- ACCESS_NETWORK_STATE -- This priviege is required to update map data.
+- ACCESS_NETWORK_STATE and ACCESS_WIFI_STATE -- Required to automatically connect to traffic receivers.
 
-- ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION -- Accessing the device's location is clearly necessary for a navigation app.
+- INTERNET -- This priviege is required to download and update map data, and to download METAR/TAF reports.
 
 - VIBRATE -- The app vibrates your device, for instance to give haptic feedback for key presses.
+
+- WRITE_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE -- This priviege is required to store the flight map library in a globaly accessible directory. This ensures that the library persists when the app is uninstalled or reinstalled. It also ensures that other apps, such as file managers or file synchronisation software, can access the data.
 
 
 # Privacy Policies for This Web Site

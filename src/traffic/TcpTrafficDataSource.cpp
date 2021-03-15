@@ -23,7 +23,7 @@
 #include <utility>
 
 #include "MobileAdaptor.h"
-#include "Navigation_SatNav.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/TcpTrafficDataSource.h"
 
 using namespace std::chrono_literals;
@@ -44,11 +44,25 @@ Traffic::TcpTrafficDataSource::TcpTrafficDataSource(QString hostName, quint16 po
     textStream.setDevice(socket);
     textStream.setCodec("ISO 8859-1");
 
+    // Connect WiFi locker/unlocker
+    connect(this, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TcpTrafficDataSource::onHasHeartbeatChanged);
+
     //
     // Initialize properties
     //
     onStateChanged();
 
+}
+
+
+Traffic::TcpTrafficDataSource::~TcpTrafficDataSource()
+{
+    Traffic::TcpTrafficDataSource::disconnectFromTrafficReceiver();
+    stopHeartbeat();
+    auto* mobileAdaptor = MobileAdaptor::globalInstance();
+    if (mobileAdaptor != nullptr) {
+        mobileAdaptor->lockWifi(false);
+    }
 }
 
 
@@ -60,6 +74,7 @@ void Traffic::TcpTrafficDataSource::connectToTrafficReceiver()
     }
 
     socket->abort();
+    setErrorString();
     socket->connectToHost(_hostName, _port);
     textStream.setDevice(socket);
 
@@ -181,20 +196,38 @@ void Traffic::TcpTrafficDataSource::onStateChanged()
     }
 
     // Compute new status
-    Traffic::AbstractTrafficDataSource::ConnectivityStatus newStatus = Traffic::AbstractTrafficDataSource::Disconnected;
-    if (socket->state() != QAbstractSocket::UnconnectedState) {
-        newStatus = Connecting;
+    switch( socket->state() ) {
+    case QAbstractSocket::HostLookupState:
+        setConnectivityStatus( tr("Performing host name lookup.") );
+        break;
+    case QAbstractSocket::ConnectingState:
+        setConnectivityStatus( tr("Trying to establish a connection.") );
+        break;
+    case QAbstractSocket::ConnectedState:
+        setConnectivityStatus( tr("Connected.") );
+        break;
+    case QAbstractSocket::BoundState:
+        setConnectivityStatus( tr("Bound to an address and port, but not connected yet.") );
+        break;
+    case QAbstractSocket::ClosingState:
+        setConnectivityStatus( tr("Closing.") );
+        break;
+    default:
+        setConnectivityStatus( tr("Not connected.") );
+        break;
     }
-    if ( (socket->state() == QAbstractSocket::ConnectedState) ) {
-        newStatus = Connected;
-    }
-    setConnectivityStatus(newStatus);
 
+}
+
+
+void Traffic::TcpTrafficDataSource::onHasHeartbeatChanged()
+{
     // Acquire or release WiFi lock as appropriate
-/*
- *     auto* mobileAdaptor = MobileAdaptor::globalInstance();
+
+    auto* mobileAdaptor = MobileAdaptor::globalInstance();
     if (mobileAdaptor != nullptr) {
-        mobileAdaptor->lockWifi(_status == Receiving);
+        qWarning() << "WiFi Lock " << hasHeartbeat();
+        mobileAdaptor->lockWifi(hasHeartbeat());
     }
-    */
+
 }

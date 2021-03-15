@@ -75,28 +75,14 @@ public:
         return _errorString;
     }
 
-    /*! \brief Connectivity status codes */
-    enum ConnectivityStatus
-    {
-        /*! \brief Not connected to any device */
-        Disconnected,
-
-        /*! \brief Connecting to a device, but not connected yet */
-        Connecting,
-
-        /*! \brief Connected to a device */
-        Connected
-    };
-    Q_ENUM(ConnectivityStatus)
-
     /*! \brief Connectivity status */
-    Q_PROPERTY(ConnectivityStatus connectivityStatus READ connectivityStatus WRITE setConnectivityStatus NOTIFY connectivityStatusChanged)
+    Q_PROPERTY(QString connectivityStatus READ connectivityStatus WRITE setConnectivityStatus NOTIFY connectivityStatusChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property connectivityStatus
      */
-    ConnectivityStatus connectivityStatus()
+    QString connectivityStatus() const
     {
         return _connectivityStatus;
     }
@@ -221,13 +207,13 @@ protected:
      *
      * @param newConnectivityStatus Property connectivityStatus
      */
-    void setConnectivityStatus(Traffic::AbstractTrafficDataSource::ConnectivityStatus newConnectivityStatus);
+    void setConnectivityStatus(const QString& newConnectivityStatus);
 
     /*! \brief Setter function for the property with the same name
      *
      * @param newErrorString Property errorString
      */
-    void setErrorString(const QString& newErrorString);
+    void setErrorString(const QString& newErrorString = QString());
 
     void stopHeartbeat();
 
@@ -240,7 +226,7 @@ private:
     void onHeartbeat();
 
     // Property caches
-    Traffic::AbstractTrafficDataSource::ConnectivityStatus _connectivityStatus {Traffic::AbstractTrafficDataSource::Disconnected};
+    QString _connectivityStatus {};
     QString _errorString {};
 
     // GPS altitude information

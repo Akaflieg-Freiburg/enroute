@@ -71,6 +71,18 @@ public:
     //
 
     /*! \brief Receiving data from one data source*/
+    Q_PROPERTY(QGeoPositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    QGeoPositionInfo positionInfo() const
+    {
+        return _positionInfo;
+    }
+
+    /*! \brief Receiving data from one data source*/
     Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
 
     /*! \brief Getter method for property with the same name
@@ -146,12 +158,19 @@ signals:
     /*! \brief Notifier signal */
     void statusStringChanged();
 
+    /*! \brief Notifier signal */
+    void positionInfoChanged();
+
 private slots:
     void onSourceHeartbeatChanged();
 
     void onFactorWithPosition(const Traffic::Factor &factor);
 
     void onFactorWithoutPosition(const Traffic::Factor &factor);
+
+    void onPositionInfoUpdate(const QGeoPositionInfo& newGeoPositionInfo);
+
+    void onPositionInfoTimeout();
 
 private:
     // Targets
@@ -160,8 +179,13 @@ private:
 
     QList<QPointer<Traffic::AbstractTrafficDataSource>> _dataSources;
 
+    // Reconnect
+    QTimer reconnectionTimer;
+    QTimer positionInfoTimer;
+
     // Property Cache
     bool _receiving {false};
+    QGeoPositionInfo _positionInfo {};
 };
 
 }

@@ -23,14 +23,18 @@
 #include <QtMath>
 
 #include "AviationUnits.h"
-#include "Navigation_SatNav.h"
+#include "positioning/PositionProvider.h"
+#include "traffic/TrafficDataProvider.h"
 
 
 // Static instance of this class
-Q_GLOBAL_STATIC(Navigation::SatNav, satNavStatic);
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+Q_GLOBAL_STATIC(Positioning::PositionProvider, PositionProviderStatic);
+#endif
 
 
-Navigation::SatNav::SatNav(QObject *parent)
+Positioning::PositionProvider::PositionProvider(QObject *parent)
     : QObject(parent)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
@@ -38,19 +42,24 @@ Navigation::SatNav::SatNav(QObject *parent)
     if (source != nullptr) {
         sourceStatus = source->error();
         connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
-        connect(source, &QGeoPositionInfoSource::updateTimeout, this, &SatNav::timeout);
-        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &SatNav::onPositionUpdated_Sat);
+        connect(source, &QGeoPositionInfoSource::updateTimeout, this, &PositionProvider::timeout);
+        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionProvider::onPositionUpdated_Sat);
+    }
+
+    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    if (trafficDataProvider != nullptr) {
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated_TrafficDataProvider);
     }
 
     QSettings settings;
     QGeoCoordinate tmp;
-    tmp.setLatitude(settings.value(QStringLiteral("SatNav/lastValidLatitude"), _lastValidCoordinate.latitude()).toDouble());
-    tmp.setLongitude(settings.value(QStringLiteral("SatNav/lastValidLongitude"), _lastValidCoordinate.longitude()).toDouble());
-    tmp.setAltitude(settings.value(QStringLiteral("SatNav/lastValidAltitude"), _lastValidCoordinate.altitude()).toDouble());
+    tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), _lastValidCoordinate.latitude()).toDouble());
+    tmp.setLongitude(settings.value(QStringLiteral("PositionProvider/lastValidLongitude"), _lastValidCoordinate.longitude()).toDouble());
+    tmp.setAltitude(settings.value(QStringLiteral("PositionProvider/lastValidAltitude"), _lastValidCoordinate.altitude()).toDouble());
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         _lastValidCoordinate = tmp;
     }
-    _lastValidTrack = qBound(0, settings.value(QStringLiteral("SatNav/lastValidTrack"), 0).toInt(), 359);
+    _lastValidTrack = qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359);
 
     if (source != nullptr) {
         source->startUpdates();
@@ -61,24 +70,24 @@ Navigation::SatNav::SatNav(QObject *parent)
 
     // Adjust and connect timeoutCounter
     timeoutCounter.setSingleShot(true);
-    connect(&timeoutCounter, &QTimer::timeout, this, &SatNav::timeout);
+    connect(&timeoutCounter, &QTimer::timeout, this, &PositionProvider::timeout);
 }
 
 
-Navigation::SatNav::~SatNav()
+Positioning::PositionProvider::~PositionProvider()
 {
     QSettings settings;
 
-    settings.setValue(QStringLiteral("SatNav/lastValidLatitude"), _lastValidCoordinate.latitude());
-    settings.setValue(QStringLiteral("SatNav/lastValidLongitude"), _lastValidCoordinate.longitude());
-    settings.setValue(QStringLiteral("SatNav/lastValidAltitude"), _lastValidCoordinate.altitude());
-    settings.setValue(QStringLiteral("SatNav/lastValidTrack"), _lastValidTrack);
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), _lastValidCoordinate.latitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), _lastValidCoordinate.longitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), _lastValidCoordinate.altitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), _lastValidTrack);
     delete source;
     delete _geoid;
 }
 
 
-auto Navigation::SatNav::altitudeInFeet() const -> int
+auto Positioning::PositionProvider::altitudeInFeet() const -> int
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return 0;
@@ -89,7 +98,7 @@ auto Navigation::SatNav::altitudeInFeet() const -> int
 }
 
 
-auto Navigation::SatNav::altitudeInFeetAsString() const -> QString
+auto Positioning::PositionProvider::altitudeInFeetAsString() const -> QString
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return QStringLiteral("-");
@@ -99,7 +108,7 @@ auto Navigation::SatNav::altitudeInFeetAsString() const -> QString
 }
 
 
-void Navigation::SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
+void Positioning::PositionProvider::error(QGeoPositionInfoSource::Error newSourceStatus)
 {
     // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
     auto oldStatus = status();
@@ -119,13 +128,17 @@ void Navigation::SatNav::error(QGeoPositionInfoSource::Error newSourceStatus)
 }
 
 
-auto Navigation::SatNav::globalInstance() -> SatNav *
+auto Positioning::PositionProvider::globalInstance() -> PositionProvider *
 {
-    return satNavStatic;
+#ifndef __clang_analyzer__
+    return PositionProviderStatic;
+#else
+    return nullptr;
+#endif
 }
 
 
-auto Navigation::SatNav::groundSpeedInKnots() const -> int
+auto Positioning::PositionProvider::groundSpeedInKnots() const -> int
 {
     auto gsInMPS = groundSpeedInMetersPerSecond();
 
@@ -138,7 +151,7 @@ auto Navigation::SatNav::groundSpeedInKnots() const -> int
 }
 
 
-auto Navigation::SatNav::groundSpeedInKnotsAsString() const -> QString
+auto Positioning::PositionProvider::groundSpeedInKnotsAsString() const -> QString
 {
     auto gsInKnots = groundSpeedInKnots();
 
@@ -149,7 +162,7 @@ auto Navigation::SatNav::groundSpeedInKnotsAsString() const -> QString
 }
 
 
-auto Navigation::SatNav::groundSpeedInKMHAsString() const -> QString
+auto Positioning::PositionProvider::groundSpeedInKMHAsString() const -> QString
 {
     auto gsInMPS = groundSpeedInMetersPerSecond();
 
@@ -162,7 +175,7 @@ auto Navigation::SatNav::groundSpeedInKMHAsString() const -> QString
 }
 
 
-auto Navigation::SatNav::groundSpeedInMetersPerSecond() const -> qreal
+auto Positioning::PositionProvider::groundSpeedInMetersPerSecond() const -> qreal
 {
     if (!lastInfo.isValid()) {
         return -1.0;
@@ -183,7 +196,7 @@ auto Navigation::SatNav::groundSpeedInMetersPerSecond() const -> qreal
 }
 
 
-auto Navigation::SatNav::horizontalPrecisionInMeters() const -> int
+auto Positioning::PositionProvider::horizontalPrecisionInMeters() const -> int
 {
     if (!lastInfo.isValid()) {
         return -1;
@@ -204,7 +217,7 @@ auto Navigation::SatNav::horizontalPrecisionInMeters() const -> int
 }
 
 
-auto Navigation::SatNav::horizontalPrecisionInMetersAsString() const -> QString
+auto Positioning::PositionProvider::horizontalPrecisionInMetersAsString() const -> QString
 {
     auto _horizontalPrecisionInMeters = horizontalPrecisionInMeters();
 
@@ -215,10 +228,10 @@ auto Navigation::SatNav::horizontalPrecisionInMetersAsString() const -> QString
 }
 
 
-auto Navigation::SatNav::icon() const -> QString
+auto Positioning::PositionProvider::icon() const -> QString
 {
     if (status() != OK) {
-        return QStringLiteral("/icons/self-noSatNav.svg");
+        return QStringLiteral("/icons/self-noPositionProvider.svg");
     }
 
     if (track() < 0) {
@@ -229,25 +242,25 @@ auto Navigation::SatNav::icon() const -> QString
 }
 
 
-auto Navigation::SatNav::lastValidCoordinate() const -> QGeoCoordinate
+auto Positioning::PositionProvider::lastValidCoordinate() const -> QGeoCoordinate
 {
     return _lastValidCoordinate;
 }
 
 
-auto Navigation::SatNav::lastValidCoordinateStatic() -> QGeoCoordinate
+auto Positioning::PositionProvider::lastValidCoordinateStatic() -> QGeoCoordinate
 {
     // Find out that unit system we should use
-    auto *_satNav = SatNav::globalInstance();
-    if (_satNav != nullptr) {
-        return _satNav->lastValidCoordinate();
+    auto *PositionProvider = PositionProvider::globalInstance();
+    if (PositionProvider != nullptr) {
+        return PositionProvider->lastValidCoordinate();
     }
     // Fallback in the very unlikely case that no global object exists
     return QGeoCoordinate();
 }
 
 
-auto Navigation::SatNav::latitudeAsString() const -> QString
+auto Positioning::PositionProvider::latitudeAsString() const -> QString
 {
     if (!lastInfo.isValid()) {
         return QStringLiteral("-");
@@ -265,7 +278,7 @@ auto Navigation::SatNav::latitudeAsString() const -> QString
 }
 
 
-auto Navigation::SatNav::longitudeAsString() const -> QString
+auto Positioning::PositionProvider::longitudeAsString() const -> QString
 {
     if (!lastInfo.isValid()) {
         return QStringLiteral("-");
@@ -284,8 +297,16 @@ auto Navigation::SatNav::longitudeAsString() const -> QString
 }
 
 
-void Navigation::SatNav::onPositionUpdated_Sat(const QGeoPositionInfo &info)
+void Positioning::PositionProvider::onPositionUpdated_Sat(const QGeoPositionInfo &info)
 {
+    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    if (trafficDataProvider != nullptr) {
+        if (trafficDataProvider->positionInfo().isValid()) {
+            return;
+        }
+    }
+
+
     auto correctedInfo = info;
     if ((_geoid != nullptr) && (info.coordinate().type() == QGeoCoordinate::Coordinate3D)) {
         auto geoidCorrection = _geoid->operator()(static_cast<qreal>(info.coordinate().latitude()), static_cast<qreal>(info.coordinate().longitude()));
@@ -296,7 +317,18 @@ void Navigation::SatNav::onPositionUpdated_Sat(const QGeoPositionInfo &info)
 }
 
 
-auto Navigation::SatNav::status() const -> SatNav::Status
+void Positioning::PositionProvider::onPositionUpdated_TrafficDataProvider()
+{
+    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    if (trafficDataProvider == nullptr) {
+        return;
+    }
+
+    statusUpdate(trafficDataProvider->positionInfo());
+}
+
+
+auto Positioning::PositionProvider::status() const -> PositionProvider::Status
 {
     if (source == nullptr) {
         return Status::Error;
@@ -314,7 +346,7 @@ auto Navigation::SatNav::status() const -> SatNav::Status
 }
 
 
-auto Navigation::SatNav::statusAsString() const -> QString
+auto Positioning::PositionProvider::statusAsString() const -> QString
 {
     if (source == nullptr) {
         return tr("Not installed or access denied");
@@ -340,7 +372,7 @@ auto Navigation::SatNav::statusAsString() const -> QString
 }
 
 
-void Navigation::SatNav::statusUpdate(const QGeoPositionInfo &info)
+void Positioning::PositionProvider::statusUpdate(const QGeoPositionInfo &info)
 {
     // Ignore invalid infos
     if (!info.isValid()) {
@@ -396,7 +428,7 @@ void Navigation::SatNav::statusUpdate(const QGeoPositionInfo &info)
 }
 
 
-void Navigation::SatNav::timeout()
+void Positioning::PositionProvider::timeout()
 {
     // Clear lastInfo, stop counter
     lastInfo = QGeoPositionInfo();
@@ -407,7 +439,7 @@ void Navigation::SatNav::timeout()
 }
 
 
-auto Navigation::SatNav::timestampAsString() const -> QString
+auto Positioning::PositionProvider::timestampAsString() const -> QString
 {
     if (!lastInfo.isValid()) {
         return QStringLiteral("-");
@@ -421,7 +453,7 @@ auto Navigation::SatNav::timestampAsString() const -> QString
 }
 
 
-auto Navigation::SatNav::track() const -> int
+auto Positioning::PositionProvider::track() const -> int
 {
     if (groundSpeedInKnots() < 4) {
         return -1;
@@ -444,7 +476,7 @@ auto Navigation::SatNav::track() const -> int
 }
 
 
-auto Navigation::SatNav::trackAsString() const -> QString
+auto Positioning::PositionProvider::trackAsString() const -> QString
 {
     auto _track = track();
 
@@ -455,10 +487,10 @@ auto Navigation::SatNav::trackAsString() const -> QString
 }
 
 
-auto Navigation::SatNav::wayTo(const QGeoCoordinate& position) const -> QString
+auto Positioning::PositionProvider::wayTo(const QGeoCoordinate& position) const -> QString
 {
     // Paranoid safety checks
-    if (status() != SatNav::OK) {
+    if (status() != PositionProvider::OK) {
         return QString();
     }
     if (!position.isValid()) {

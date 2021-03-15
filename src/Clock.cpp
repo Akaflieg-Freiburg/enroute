@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "Clock.h"
-#include "Navigation_SatNav.h"
+#include "positioning/PositionProvider.h"
 
 #include <QDate>
 #include <QGuiApplication>

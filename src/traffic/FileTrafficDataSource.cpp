@@ -22,7 +22,7 @@
 #include <chrono>
 
 #include "MobileAdaptor.h"
-#include "Navigation_SatNav.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/FileTrafficDataSource.h"
 
 using namespace std::chrono_literals;
@@ -34,6 +34,9 @@ Traffic::FileTrafficDataSource::FileTrafficDataSource(const QString& fileName, Q
     AbstractTrafficDataSource(parent), simulatorFile(fileName) {
 
     connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::FileTrafficDataSource::readFromSimulatorStream);
+
+    // Initially, set properties
+    updateProperties();
 }
 
 
@@ -115,9 +118,9 @@ void Traffic::FileTrafficDataSource::updateProperties()
 {
     // Set new value: connectivityStatus
     if ( simulatorFile.isOpen() && (simulatorFile.error() == QFileDevice::NoError)) {
-        setConnectivityStatus(Traffic::FileTrafficDataSource::Connected);
+        setConnectivityStatus( tr("Connected.") );
     } else {
-        setConnectivityStatus(Traffic::FileTrafficDataSource::Disconnected);
+        setConnectivityStatus( tr("Not connected.") );
     }
 
     // Set new value: errorString

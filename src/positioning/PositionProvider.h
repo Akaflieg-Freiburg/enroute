@@ -27,7 +27,7 @@
 #include "GlobalSettings.h"
 #include "Navigation_Geoid.h"
 
-namespace Navigation {
+namespace Positioning {
 
 /*! \brief Satellite Navigator
 
@@ -49,7 +49,7 @@ namespace Navigation {
   QGeoPositionInfo object, and the signal 'update' is emitted.  The
   QGeoPositionInfo is considered valid for one minute, and can be accessed via
   the method lastFix(), or via a multitude of properties that present the data
-  in formats suitable for GUI applications.  If no new SatNav fixes come in for
+  in formats suitable for GUI applications.  If no new PositionProvider fixes come in for
   one minute, the QGeoPositionInfo will cleared, and the status is set to
   Timeout until new data arrives.
 
@@ -59,7 +59,7 @@ namespace Navigation {
   The methods in this class are reentrant, but not thread safe.
 */
 
-class SatNav : public QObject
+class PositionProvider : public QObject
 {
     Q_OBJECT
 
@@ -68,16 +68,16 @@ public:
    *
    * @param parent The standard QObject parent pointer
    */
-    explicit SatNav(QObject *parent = nullptr);
+    explicit PositionProvider(QObject *parent = nullptr);
 
     /*! \brief Standard deconstructor */
-    ~SatNav() override;
+    ~PositionProvider() override;
 
 
     /*! \brief Status codes */
     enum Status
     {
-        OK, /*!< The SatNav class works and received data. */
+        OK, /*!< The PositionProvider class works and received data. */
         Timeout, /*!< No error has been reported, but no data has been received for
         more than one minute.  */
         Error /*!< The underlying QGeoPositionInfoSource has reported an error. A
@@ -93,13 +93,13 @@ public:
      *
      * @returns A pointer to a static instance of this class
      */
-    static SatNav *globalInstance();
+    static PositionProvider *globalInstance();
 
     /*! \brief Altitude
 
     This property holds the altitude, defined as
     rawAltitude()+altitudeCorrection, in feet above sea level.  Negative
-    altitudes are possible.  In case no valid SatNav fix exists, or in case
+    altitudes are possible.  In case no valid PositionProvider fix exists, or in case
     where no altitude information is reported, the property is set to the value
     "0".
   */
@@ -111,11 +111,11 @@ public:
    */
     int altitudeInFeet() const;
 
-    /*! \brief Altitude reading from the last SatNav fix
+    /*! \brief Altitude reading from the last PositionProvider fix
 
     This property holds the altitude, defined as
     rawAltitude()+altitudeCorrection, as a string of the form "2.943 ft".  In
-    case no valid SatNav fix exists, or in case where no altitude information is
+    case no valid PositionProvider fix exists, or in case where no altitude information is
     reported, the property is set to the value "-".
 
     \sa altitudeInFeet
@@ -128,9 +128,9 @@ public:
   */
     QString altitudeInFeetAsString() const;
 
-    /*! \brief True if the last SatNav fix contains altitude information
+    /*! \brief True if the last PositionProvider fix contains altitude information
 
-    This property is set to "true" if the last SatNav fix contains altitude
+    This property is set to "true" if the last PositionProvider fix contains altitude
     information.
 
     \sa altitudeInFeet
@@ -143,10 +143,10 @@ public:
   */
     bool hasAltitude() const { return (lastInfo.coordinate().type() == QGeoCoordinate::Coordinate3D); }
 
-    /*! \brief Coordinate reading from the last SatNav fix
+    /*! \brief Coordinate reading from the last PositionProvider fix
 
-    This property holds the coordinate found in the last SatNav fix.  In case no
-    valid SatNav fix exists, the property is set an invalid coordinate.
+    This property holds the coordinate found in the last PositionProvider fix.  In case no
+    valid PositionProvider fix exists, the property is set an invalid coordinate.
   */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate NOTIFY update)
 
@@ -156,10 +156,10 @@ public:
   */
     QGeoCoordinate coordinate() {return lastInfo.coordinate();}
 
-    /*! \brief Ground speed reading from the last SatNav fix
+    /*! \brief Ground speed reading from the last PositionProvider fix
 
-    This property holds the ground speed found in the last SatNav fix, in knots.
-    In case no valid SatNav fix exists, the property is set to the value "-1",
+    This property holds the ground speed found in the last PositionProvider fix, in knots.
+    In case no valid PositionProvider fix exists, the property is set to the value "-1",
     otherwise the number returned is never negative
   */
     Q_PROPERTY(int groundSpeedInKnots READ groundSpeedInKnots NOTIFY update)
@@ -170,10 +170,10 @@ public:
   */
     int groundSpeedInKnots() const;
 
-    /*! \brief Ground speed reading from the last SatNav fix
+    /*! \brief Ground speed reading from the last PositionProvider fix
 
-    This property holds the ground speed found in the last SatNav fix, in meters
-    per second.  In case no valid SatNav fix exists, the property is set to the
+    This property holds the ground speed found in the last PositionProvider fix, in meters
+    per second.  In case no valid PositionProvider fix exists, the property is set to the
     value "-1.0", otherwise the number returned is never negative
   */
     Q_PROPERTY(qreal groundSpeedInMetersPerSecond READ groundSpeedInMetersPerSecond NOTIFY update)
@@ -184,10 +184,10 @@ public:
   */
     qreal groundSpeedInMetersPerSecond() const;
 
-    /*! \brief Ground speed reading from the last SatNav fix in knots
+    /*! \brief Ground speed reading from the last PositionProvider fix in knots
 
-    This property holds the ground speed found in the last SatNav fix, as a string
-    of the form "97 kn".  In case no valid SatNav fix exists, the property is set
+    This property holds the ground speed found in the last PositionProvider fix, as a string
+    of the form "97 kn".  In case no valid PositionProvider fix exists, the property is set
     to the value "-", otherwise the number returned is never negative
   */
     Q_PROPERTY(QString groundSpeedInKnotsAsString READ groundSpeedInKnotsAsString NOTIFY update)
@@ -198,10 +198,10 @@ public:
   */
     QString groundSpeedInKnotsAsString() const;
 
-    /*! \brief Ground speed reading from the last SatNav fix in km/h
+    /*! \brief Ground speed reading from the last PositionProvider fix in km/h
 
-    This property holds the ground speed found in the last SatNav fix, as a string
-    of the form "132 km/h".  In case no valid SatNav fix exists, the property is set
+    This property holds the ground speed found in the last PositionProvider fix, as a string
+    of the form "132 km/h".  In case no valid PositionProvider fix exists, the property is set
     to the value "-", otherwise the number returned is never negative
   */
     Q_PROPERTY(QString groundSpeedInKMHAsString READ groundSpeedInKMHAsString NOTIFY update)
@@ -212,7 +212,7 @@ public:
   */
     QString groundSpeedInKMHAsString() const;
 
-    /*! \brief Horizontal precision estimate for last SatNav fix
+    /*! \brief Horizontal precision estimate for last PositionProvider fix
 
     This property holds an estimate for the precision of the horizontal position
     info, in meters.  If no estimate or no data exists, the property is set to
@@ -226,7 +226,7 @@ public:
   */
     int horizontalPrecisionInMeters() const;
 
-    /*! \brief Horizontal precision estimate for last SatNav fix
+    /*! \brief Horizontal precision estimate for last PositionProvider fix
 
     This property holds an estimate for the precision of the horizontal position
     info, as a string of the form "±5 m".  If no estimate or no data exists, the
@@ -243,7 +243,7 @@ public:
     /*! \brief Suggested icon
 
     This property suggests an icon, to be used for the own position.  This is
-    always one of "/icons/self-noSatNav.svg", "/icons/self-noDirection.svg" and
+    always one of "/icons/self-noPositionProvider.svg", "/icons/self-noDirection.svg" and
     "/icons/self-withDirection.svg"
   */
     Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
@@ -268,9 +268,9 @@ public:
   */
     bool isInFlight() const { return _isInFlight; }
 
-    /*! \brief Last valid coordinate reading from the last SatNav fix
+    /*! \brief Last valid coordinate reading from the last PositionProvider fix
 
-    This property holds the last valid coordinate found in a SatNav fix.  At
+    This property holds the last valid coordinate found in a PositionProvider fix.  At
     the first start, this property is set to the location Freiburg Airport,
     EDTF.  The value is stored in a QSetting at destruction, and restored in the
     construction.
@@ -294,9 +294,9 @@ public:
      */
     static QGeoCoordinate lastValidCoordinateStatic();
 
-    /*! \brief Last valid track reading from the last SatNav fix
+    /*! \brief Last valid track reading from the last PositionProvider fix
 
-    This property holds the last valid track found in the last SatNav fix.  This
+    This property holds the last valid track found in the last PositionProvider fix.  This
     property differs from track, in that it remains unchanged when no track
     information can be found or when an error occurs. At the first start, this
     property is set to 0.  The property always satisfies 0 <= track < 360. The
@@ -313,9 +313,9 @@ public:
   */
     int lastValidTrack() const { return _lastValidTrack; }
 
-    /*! \brief Latitude in last SatNav fix
+    /*! \brief Latitude in last PositionProvider fix
 
-    This property holds the latitude of the last SatNav fix, as a string of the
+    This property holds the latitude of the last PositionProvider fix, as a string of the
     form "37° 52' 57.36'' N".  If no latitude is available, the property is set
     to "-".
   */
@@ -327,9 +327,9 @@ public:
   */
     QString latitudeAsString() const;
 
-    /*! \brief Longitude in last SatNav fix
+    /*! \brief Longitude in last PositionProvider fix
 
-    This property holds the longitude of the last SatNav fix, as a string of the
+    This property holds the longitude of the last PositionProvider fix, as a string of the
     form "122° 16' 1.93'' W".  If no longitude is available, the property is set
     to "-".
   */
@@ -341,7 +341,7 @@ public:
   */
     QString longitudeAsString() const;
 
-    /*! \brief Time and date of last SatNav fix
+    /*! \brief Time and date of last PositionProvider fix
 
     This property holds the date and time at which the position was reported
     last, in UTC time. The QDateTime is invalid if no time and date has been
@@ -355,7 +355,7 @@ public:
   */
     QDateTime timestamp() const {return lastInfo.timestamp();}
 
-    /*! \brief Time of last SatNav fix
+    /*! \brief Time of last PositionProvider fix
 
     This property holds the time at which the position was reported last as a
     string of the form "13:42:32 UTC".  If no time has been set, the property is
@@ -369,9 +369,9 @@ public:
   */
     QString timestampAsString() const;
 
-    /*! \brief Track found in last SatNav fix
+    /*! \brief Track found in last PositionProvider fix
 
-    This property holds the track (= true course) found in the last SatNav fix, in
+    This property holds the track (= true course) found in the last PositionProvider fix, in
     degrees.  If no track is available, the property is set to "-1", otherwise
     the track is an integer satisfying 0 <= track < 360.
   */
@@ -383,9 +383,9 @@ public:
   */
     int track() const;
 
-    /*! \brief Track found in last SatNav fix
+    /*! \brief Track found in last PositionProvider fix
 
-    This property holds the track (= true course) found in the last SatNav fix, as
+    This property holds the track (= true course) found in the last PositionProvider fix, as
     a string of the form "127°".  If no track is available, the property is set
     to "-".
   */
@@ -397,9 +397,9 @@ public:
   */
     QString trackAsString() const;
 
-    /*! \brief Status of the SatNav class
+    /*! \brief Status of the PositionProvider class
 
-    This property holds the status of the SatNav class.
+    This property holds the status of the PositionProvider class.
   */
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
 
@@ -409,10 +409,10 @@ public:
   */
     Status status() const;
 
-    /*! \brief Status of the SatNav class
+    /*! \brief Status of the PositionProvider class
 
     This property holds a localized string that describes the status of the
-    SatNav class.  A typical string is of the form "Connection to SatNav
+    PositionProvider class.  A typical string is of the form "Connection to PositionProvider
     subsystem lost".
   */
     Q_PROPERTY(QString statusAsString READ statusAsString NOTIFY statusChanged)
@@ -423,9 +423,9 @@ public:
   */
     QString statusAsString() const;
 
-    /*! \brief Last SatNav fix received
+    /*! \brief Last PositionProvider fix received
 
-    @returns the last SatNav fix received.  If no SatNav has been received for
+    @returns the last PositionProvider fix received.  If no PositionProvider has been received for
     more than one minute, this method return an empty QGeoPositionInfo.
   */
     QGeoPositionInfo lastFix() const { return lastInfo; }
@@ -448,7 +448,7 @@ signals:
     /*! \brief Emitted whenever the suggested icon changes */
     void isInFlightChanged();
 
-    /*! \brief Emitted whenever the SatNav status changes */
+    /*! \brief Emitted whenever the PositionProvider status changes */
     void statusChanged();
 
     /*! \brief Emitted whenever the property lastValidTrack changes */
@@ -470,8 +470,10 @@ private slots:
 
     void onPositionUpdated_Sat(const QGeoPositionInfo &info);
 
+    void onPositionUpdated_TrafficDataProvider();
+
 private:
-    Q_DISABLE_COPY_MOVE(SatNav)
+    Q_DISABLE_COPY_MOVE(PositionProvider)
 
     // Aircraft is considered flying if speed is at least this high
     static constexpr double minFlightSpeedInKT = 30.0;
@@ -490,7 +492,7 @@ private:
     int _lastValidTrack {0};
     bool _isInFlight {false};
 
-    Geoid* _geoid {nullptr};
+    Navigation::Geoid* _geoid {nullptr};
 
     // Constant: timeout occurs after one minute without receiving new data
     const int timeoutThreshold = 60*1000;

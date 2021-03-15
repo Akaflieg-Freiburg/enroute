@@ -54,7 +54,7 @@ public:
     explicit TcpTrafficDataSource(QString hostName, quint16 port, QObject *parent = nullptr);
 
     // Standard destructor
-    ~TcpTrafficDataSource() override = default;
+    ~TcpTrafficDataSource() override;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -90,6 +90,8 @@ private slots:
 
     // Update the property "errorString" and "connectivityStatus" and emit notification signals
     void onStateChanged();
+
+    void onHasHeartbeatChanged();
 
 private:
     QPointer<QTcpSocket> socket;

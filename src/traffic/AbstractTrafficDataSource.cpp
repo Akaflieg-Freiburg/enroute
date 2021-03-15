@@ -26,7 +26,7 @@
 
 *
 */
-#include "Navigation_SatNav.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/AbstractTrafficDataSource.h"
 
 using namespace std::chrono_literals;
@@ -210,7 +210,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
     // Data on other proximate aircraft
     if (messageType == u"PFLAA") {
 
-        auto *satNav = Navigation::SatNav::globalInstance();
+        auto *satNav = Positioning::PositionProvider::globalInstance();
         if (satNav == nullptr) {
             return;
         }
@@ -575,7 +575,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
 }
 
 
-void Traffic::AbstractTrafficDataSource::setConnectivityStatus(Traffic::AbstractTrafficDataSource::ConnectivityStatus newConnectivityStatus)
+void Traffic::AbstractTrafficDataSource::setConnectivityStatus(const QString& newConnectivityStatus)
 {
     if (_connectivityStatus == newConnectivityStatus) {
         return;

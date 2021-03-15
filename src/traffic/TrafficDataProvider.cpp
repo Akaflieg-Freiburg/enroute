@@ -22,7 +22,7 @@
 #include <chrono>
 
 #include "MobileAdaptor.h"
-#include "Navigation_SatNav.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/FileTrafficDataSource.h"
 #include "traffic/TcpTrafficDataSource.h"
 #include "traffic/TrafficDataProvider.h"
@@ -51,6 +51,12 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
 
+    // Position Info Timer
+    positionInfoTimer.setInterval(5s);
+    positionInfoTimer.setSingleShot(true);
+    connect(&positionInfoTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::onPositionInfoTimeout);
+
+
     // Setup Data Sources
 
     // Uncomment one of the lines below to start this class in simulation mode.
@@ -58,8 +64,8 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
 //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
 //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
 //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
-    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
+//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
 //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
 //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     _dataSources << new Traffic::TcpTrafficDataSource("192.168.1.1", 2000, this);
@@ -78,7 +84,21 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
         connect(dataSource, &Traffic::AbstractTrafficDataSource::errorStringChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onFactorWithoutPosition);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithPosition, this, &Traffic::TrafficDataProvider::onFactorWithPosition);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::onPositionInfoUpdate);
 
+    }
+
+    // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
+    QTimer::singleShot(2s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+    connect(&reconnectionTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+    reconnectionTimer.setInterval(5min);
+    reconnectionTimer.setSingleShot(false);
+    reconnectionTimer.start();
+
+    // Try to (re)connect whenever the network situation changes
+    auto* mobileAdaptor = MobileAdaptor::globalInstance();
+    if (mobileAdaptor != nullptr) {
+        connect(mobileAdaptor, &MobileAdaptor::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
     }
 }
 
@@ -217,18 +237,7 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
         }
 
         result += "<li>";
-        result += source->sourceName() + ": ";
-        switch(source->connectivityStatus()) {
-        case Traffic::AbstractTrafficDataSource::Disconnected:
-            result += tr("Not connected.");
-            break;
-        case Traffic::AbstractTrafficDataSource::Connecting:
-            result += tr("Connecting.");
-            break;
-        case Traffic::AbstractTrafficDataSource::Connected:
-            result += tr("Connected, but not receiving traffic data.");
-            break;
-        }
+        result += source->sourceName() + ": " + source->connectivityStatus();
         if (!source->errorString().isEmpty()) {
             result += " " + source->errorString();
         }
@@ -237,5 +246,32 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
     result += "</ul>";
     return result;
 
+}
+
+
+void Traffic::TrafficDataProvider::onPositionInfoUpdate(const QGeoPositionInfo& newGeoPositionInfo)
+{
+    bool positionInfoDidChange = true;
+    if (!_positionInfo.isValid() && !newGeoPositionInfo.isValid()) {
+        positionInfoDidChange = false;
+}
+    if (_positionInfo == newGeoPositionInfo) {
+        positionInfoDidChange = false;
+}
+
+    if (_positionInfo.isValid()) {
+        positionInfoTimer.start();
+}
+
+    if (positionInfoDidChange) {
+        _positionInfo = newGeoPositionInfo;
+        emit positionInfoChanged();
+    }
+}
+
+
+void Traffic::TrafficDataProvider::onPositionInfoTimeout()
+{
+    onPositionInfoUpdate(QGeoPositionInfo());
 }
 

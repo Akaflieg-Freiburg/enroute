@@ -87,7 +87,7 @@ set(SOURCES
     GlobalSettings.h
     Librarian.h
     MobileAdaptor.h
-    Navigation_Geoid.h
+    positioning/Geoid.h
     positioning/PositionProvider.h
     ScaleQuickItem.h
     traffic/AbstractTrafficDataSource.h
@@ -123,7 +123,7 @@ set(SOURCES
     main.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
-    Navigation_Geoid.cpp
+    positioning/Geoid.cpp
     positioning/PositionProvider.cpp
     ScaleQuickItem.cpp
     traffic/AbstractTrafficDataSource.cpp

@@ -25,7 +25,7 @@
 #include <QTimer>
 
 #include "GlobalSettings.h"
-#include "Navigation_Geoid.h"
+#include "positioning/Geoid.h"
 
 namespace Positioning {
 
@@ -492,7 +492,7 @@ private:
     int _lastValidTrack {0};
     bool _isInFlight {false};
 
-    Navigation::Geoid* _geoid {nullptr};
+    Positioning::Geoid* _geoid {nullptr};
 
     // Constant: timeout occurs after one minute without receiving new data
     const int timeoutThreshold = 60*1000;

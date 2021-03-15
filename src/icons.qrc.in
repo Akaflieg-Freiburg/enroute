@@ -55,7 +55,7 @@
         <file alias="icons/nav_participate.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/nav_participate.svg</file>
         <file alias="icons/NorthArrow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/NorthArrow.svg</file>
         <file alias="icons/self-noDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noDirection.svg</file>
-        <file alias="icons/self-noSatNav.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noSatNav.svg</file>
+        <file alias="icons/self-noPosition.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noPosition.svg</file>
         <file alias="icons/self-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-withDirection.svg</file>
         <file alias="icons/tholen.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/tholen.jpg</file>
         <file alias="icons/traffic-noDirection-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection-green.svg</file>

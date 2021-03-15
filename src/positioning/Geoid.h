@@ -21,7 +21,7 @@
 
 #include <QObject>
 
-namespace Navigation {
+namespace Positioning {
 
 /*! \brief Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid
  *

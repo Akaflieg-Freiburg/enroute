@@ -64,7 +64,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent)
     if (source != nullptr) {
         source->startUpdates();
         if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
-            _geoid = new Navigation::Geoid;
+            _geoid = new Positioning::Geoid;
         }
     }
 
@@ -231,7 +231,7 @@ auto Positioning::PositionProvider::horizontalPrecisionInMetersAsString() const 
 auto Positioning::PositionProvider::icon() const -> QString
 {
     if (status() != OK) {
-        return QStringLiteral("/icons/self-noPositionProvider.svg");
+        return QStringLiteral("/icons/self-noPosition.svg");
     }
 
     if (track() < 0) {

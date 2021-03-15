@@ -17,7 +17,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "Navigation_Geoid.h"
+#include "positioning/Geoid.h"
 #include <QDataStream>
 #include <QDebug>
 #include <QFile>
@@ -33,7 +33,7 @@
 // with setByteOrder(QDataStream::BigEndian) and reading the shorts one
 // after the other with the QDataStream >> operator.
 //
-Navigation::Geoid::Geoid()
+Positioning::Geoid::Geoid()
 {
     QFile file(QStringLiteral(":/WW15MGH.DAC"));
 
@@ -61,6 +61,7 @@ Navigation::Geoid::Geoid()
     if (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
         qFromBigEndian<qint16>(egm.data(), egm96_size, egm.data());
     }
+
 }
 
 
@@ -69,7 +70,7 @@ Navigation::Geoid::Geoid()
 // we do a simple bilinear interpolation between the four surrounding data points
 // according to Numerical Recipies in C++ 3.6 "Interpolation in Two or More Dimensions".
 //
-auto Navigation::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
+auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
 {
     if (egm.empty()) {
         return 0.0;

@@ -86,6 +86,8 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithPosition, this, &Traffic::TrafficDataProvider::onFactorWithPosition);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::onPositionInfoUpdate);
 
+        connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+
     }
 
     // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
@@ -225,11 +227,18 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
             continue;
         }
         if (source->hasHeartbeat()) {
-            return QString("<p>%1</p>").arg(source->sourceName())
-                    + QString("<ul style='margin-left:-25px;'><li>%1</li></ul>").arg(tr("Receiving traffic data."));
+            QString result = QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(source->sourceName());
+            result += QString("<li>%1</li>").arg(tr("Receiving traffic data."));
+            if (_positionInfo.isValid()) {
+                result += QString("<li>%1</li>").arg(tr("Receiving position info."));
+            }
+            result += "</ul>";
+            return result;
         }
     }
 
+#warning Might receive baro alt
+#warning might receive position info
     QString result = "<p>" + tr("Not receiving traffic data.") + "<p><ul style='margin-left:-25px;'>";
     foreach(auto source, _dataSources) {
         if (source.isNull()) {

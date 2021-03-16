@@ -245,6 +245,17 @@ public:
             return _distanceInM != rhs._distanceInM;
         }
 
+        /*! \brief Comparison: equal
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        auto operator==(AviationUnits::Distance rhs) const
+        {
+            return _distanceInM == rhs._distanceInM;
+        }
+
         /*! \brief Convert to nautical miles
          *
          * @returns distance in nautical miles

@@ -51,23 +51,27 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
 
+    // barometric altitude timer
+    barometricAltitudeTimer.setInterval(5s);
+    barometricAltitudeTimer.setSingleShot(true);
+    connect(&barometricAltitudeTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::onBarometricAltitudeTimeout);
+
     // Position Info Timer
     positionInfoTimer.setInterval(5s);
     positionInfoTimer.setSingleShot(true);
     connect(&positionInfoTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::onPositionInfoTimeout);
 
-
     // Setup Data Sources
 
     // Uncomment one of the lines below to start this class in simulation mode.
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-hard.txt", this);
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
-    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
-//    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-hard.txt", this);
+    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
+    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
+    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
+    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
+        _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
+    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     _dataSources << new Traffic::TcpTrafficDataSource("192.168.1.1", 2000, this);
     _dataSources << new Traffic::TcpTrafficDataSource("192.168.10.1", 2000, this);
 
@@ -77,6 +81,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
             continue;
         }
 
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::onBarometricAltitudeUpdate);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
@@ -87,6 +92,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
         connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::onPositionInfoUpdate);
 
         connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+        connect(this, &Traffic::TrafficDataProvider::barometricAltitudeChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
 
     }
 
@@ -232,13 +238,14 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
             if (_positionInfo.isValid()) {
                 result += QString("<li>%1</li>").arg(tr("Receiving position info."));
             }
+            if (_barometricAltitude.isFinite()) {
+                result += QString("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
+            }
             result += "</ul>";
             return result;
         }
     }
 
-#warning Might receive baro alt
-#warning might receive position info
     QString result = "<p>" + tr("Not receiving traffic data.") + "<p><ul style='margin-left:-25px;'>";
     foreach(auto source, _dataSources) {
         if (source.isNull()) {
@@ -263,18 +270,19 @@ void Traffic::TrafficDataProvider::onPositionInfoUpdate(const QGeoPositionInfo& 
     bool positionInfoDidChange = true;
     if (!_positionInfo.isValid() && !newGeoPositionInfo.isValid()) {
         positionInfoDidChange = false;
-}
+    }
     if (_positionInfo == newGeoPositionInfo) {
         positionInfoDidChange = false;
-}
+    }
 
-    if (_positionInfo.isValid()) {
-        positionInfoTimer.start();
-}
 
     if (positionInfoDidChange) {
         _positionInfo = newGeoPositionInfo;
         emit positionInfoChanged();
+    }
+
+    if (_positionInfo.isValid()) {
+        positionInfoTimer.start();
     }
 }
 
@@ -284,3 +292,22 @@ void Traffic::TrafficDataProvider::onPositionInfoTimeout()
     onPositionInfoUpdate(QGeoPositionInfo());
 }
 
+
+void Traffic::TrafficDataProvider::onBarometricAltitudeUpdate(AviationUnits::Distance newBarometricAltidude)
+{
+    bool barometricAltitudeDidChange = (_barometricAltitude != newBarometricAltidude);
+
+    if (barometricAltitudeDidChange) {
+        _barometricAltitude = newBarometricAltidude;
+        emit barometricAltitudeChanged();
+    }
+
+    if (_barometricAltitude.isFinite()) {
+        barometricAltitudeTimer.start();
+    }
+}
+
+void Traffic::TrafficDataProvider::onBarometricAltitudeTimeout()
+{
+    onBarometricAltitudeUpdate( AviationUnits::Distance() );
+}

@@ -36,7 +36,7 @@ Rectangle {
         
         anchors.fill: parent
         rows: 2
-        columns: 4
+        columns: 5
         rowSpacing: 0
 
         Label {
@@ -48,7 +48,18 @@ Rectangle {
             font.pixelSize: Qt.application.font.pixelSize*1.3
             color: "white"
         } // Label
-        
+
+
+        Label {
+            Layout.fillWidth: true
+
+            text: satNav.flightLevel
+            horizontalAlignment: Text.AlignHCenter
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
+            color: "white"
+        } // Label
+
         Label {
             Layout.fillWidth: true
 
@@ -88,6 +99,14 @@ Rectangle {
             color: "white"
             horizontalAlignment: Text.AlignHCenter
             text: qsTr("T.ALT")
+        } // Label
+
+        Label {
+            Layout.fillWidth: true
+
+            color: "white"
+            horizontalAlignment: Text.AlignHCenter
+            text: qsTr("Flight Level")
         } // Label
 
         Label {

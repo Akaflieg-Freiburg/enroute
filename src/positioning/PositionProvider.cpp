@@ -27,7 +27,6 @@
 #include "traffic/TrafficDataProvider.h"
 
 
-// Static instance of this class
 // Static instance of this class. Do not analyze, because of many unwanted warnings.
 #ifndef __clang_analyzer__
 Q_GLOBAL_STATIC(Positioning::PositionProvider, PositionProviderStatic);
@@ -49,6 +48,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent)
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider != nullptr) {
         connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated_TrafficDataProvider);
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::barometricAltitudeChanged, this, &PositionProvider::barometricAltitudeChanged);
     }
 
     QSettings settings;
@@ -507,4 +507,26 @@ auto Positioning::PositionProvider::wayTo(const QGeoCoordinate& position) const 
         return QStringLiteral("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     }
     return QStringLiteral("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+}
+
+
+auto Positioning::PositionProvider::barometricAltitude()  -> AviationUnits::Distance
+{
+    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    if (trafficDataProvider == nullptr) {
+        return AviationUnits::Distance();
+    }
+
+    return trafficDataProvider->barometricAltitude();
+}
+
+
+auto Positioning::PositionProvider::flightLevel() -> QString
+{
+    auto baroAlt = barometricAltitude();
+    if (!baroAlt.isFinite()) {
+        return "-";
+    }
+
+    return QString("FL %1").arg(qRound(baroAlt.toFeet() / 100.0));
 }

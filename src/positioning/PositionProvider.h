@@ -24,6 +24,7 @@
 #include <QLocale>
 #include <QTimer>
 
+#include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "positioning/Geoid.h"
 
@@ -127,6 +128,14 @@ public:
     @returns altitudeInFeetAsString
   */
     QString altitudeInFeetAsString() const;
+
+    Q_PROPERTY(AviationUnits::Distance barometricAltitude READ barometricAltitude NOTIFY barometricAltitudeChanged)
+
+    static AviationUnits::Distance barometricAltitude() ;
+
+    Q_PROPERTY(QString flightLevel READ flightLevel NOTIFY barometricAltitudeChanged)
+
+    static QString flightLevel() ;
 
     /*! \brief True if the last PositionProvider fix contains altitude information
 
@@ -442,6 +451,8 @@ public:
     Q_INVOKABLE QString wayTo(const QGeoCoordinate& position) const;
 
 signals:
+    void barometricAltitudeChanged();
+
     /*! \brief Emitted whenever the suggested icon changes */
     void iconChanged();
 

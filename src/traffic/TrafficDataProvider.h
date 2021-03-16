@@ -83,6 +83,18 @@ public:
     }
 
     /*! \brief Receiving data from one data source*/
+    Q_PROPERTY(AviationUnits::Distance barometricAltitude READ barometricAltitude NOTIFY barometricAltitudeChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    AviationUnits::Distance barometricAltitude() const
+    {
+        return _barometricAltitude;
+    }
+
+    /*! \brief Receiving data from one data source*/
     Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
 
     /*! \brief Getter method for property with the same name
@@ -153,6 +165,9 @@ public slots:
 
 signals:
     /*! \brief Notifier signal */
+    void barometricAltitudeChanged();
+
+    /*! \brief Notifier signal */
     void receivingChanged();
 
     /*! \brief Notifier signal */
@@ -172,6 +187,10 @@ private slots:
 
     void onPositionInfoTimeout();
 
+    void onBarometricAltitudeUpdate(AviationUnits::Distance newBarometricAltidude);
+
+    void onBarometricAltitudeTimeout();
+
 private:
     // Targets
     QList<Traffic::Factor *> _trafficObjects;
@@ -182,8 +201,10 @@ private:
     // Reconnect
     QTimer reconnectionTimer;
     QTimer positionInfoTimer;
+    QTimer barometricAltitudeTimer;
 
     // Property Cache
+    AviationUnits::Distance _barometricAltitude {};
     bool _receiving {false};
     QGeoPositionInfo _positionInfo {};
 };

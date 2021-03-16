@@ -52,6 +52,7 @@ Item {
       }
     } // Connections
 
+
     Dialog {
         id: importDialog
 
@@ -88,7 +89,6 @@ Item {
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJSON)
                 errorString = flightRoute.loadFromGeoJSON(importManager.filePath)
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GPX) {
-                console.log(geoMapProvider)
                 errorString = flightRoute.loadFromGpx(importManager.filePath, geoMapProvider)
             }
 
@@ -101,6 +101,7 @@ Item {
                 stackView.pop()
                 stackView.push("../pages/FlightRouteEditor.qml")
             }
+            toast.doToast( qsTr("Flight route imported") )
         }
 
     } // importDialog

@@ -394,11 +394,34 @@ Item {
         }
     }
 
+    FLARMWarning {
+        id: flarmWarning
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+    }
+
+    Button {
+        id: menuButton
+        icon.source: "/icons/material/ic_menu.svg"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0.5*Qt.application.font.pixelSize
+        anchors.top: flarmWarning.bottom
+        anchors.topMargin: 0.5*Qt.application.font.pixelSize
+
+        onClicked: {
+            mobileAdaptor.vibrateBrief()
+            drawer.open()
+        }
+    }
+
     Button {
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
-        anchors.top: parent.top
+        anchors.top: flarmWarning.bottom
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
         contentItem: ColumnLayout {

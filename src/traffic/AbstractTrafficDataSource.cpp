@@ -21,11 +21,6 @@
 #include <QQmlEngine>
 #include <chrono>
 
-/*
- * #include "MobileAdaptor.h"
-
-*
-*/
 #include "positioning/PositionProvider.h"
 #include "traffic/AbstractTrafficDataSource.h"
 
@@ -532,6 +527,24 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
     if (messageType == u"PFLAU") {
         // Heartbeat received.
         onHeartbeat();
+
+        if (arguments.length() < 9) {
+            return;
+        }
+
+        auto RX = arguments[0];
+        auto TX = arguments[1];
+        auto GPS = arguments[2];
+        auto Power = arguments[3];
+        auto AlarmLevel = arguments[4];
+        auto RelativeBearing = arguments[5];
+        auto AlarmType = arguments[6];
+        auto RelativeVertical = arguments[7];
+        auto RelativeDistance = arguments[8];
+
+        auto warning = FLARMWarning(RX, TX, GPS, Power, AlarmLevel, RelativeBearing, AlarmType, RelativeVertical, RelativeDistance, this);
+        emit flarmWarning(warning);
+
         return;
     }
 

@@ -28,6 +28,7 @@
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "traffic/Factor.h"
+#include "traffic/FLARMWarning.h"
 
 namespace Traffic {
 
@@ -137,6 +138,9 @@ signals:
      * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
      */
     void factorWithPosition(const Traffic::Factor &factor);
+
+#warning need to document
+    void flarmWarning(const Traffic::FLARMWarning &warning);
 
     /*! \brief Notifier signal */
     void hasHeartbeatChanged();

@@ -106,7 +106,7 @@ Rectangle {
 
             color: "white"
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Flight Level")
+            text: "FL"
         } // Label
 
         Label {
@@ -114,7 +114,7 @@ Rectangle {
 
             color: "white"
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("GS")
+            text: "GS"
         } // Label
 
         Label {
@@ -122,7 +122,7 @@ Rectangle {
 
             color: "white"
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("TT")
+            text: "TT"
         } // Label
 
         Label {
@@ -130,7 +130,7 @@ Rectangle {
 
             color: "white"
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Time")
+            text: "UTC"
         } // Label
 
         Rectangle {

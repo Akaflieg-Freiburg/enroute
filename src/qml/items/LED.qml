@@ -18,37 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtLocation 5.15
-import QtPositioning 5.15
 import QtQuick 2.15
-import QtQuick.Controls 2.15
 
-import enroute 1.0
+Rectangle {
+    id: led
 
-import "../items"
+    property bool blinking: true
+    radius: width/2.0
 
-Page {
-    id: page
+    SequentialAnimation on color {
+        running: led.blinking
 
-    title: qsTr("Moving Map")
-
-    Loader {
-        id: mapLoader
-
-        anchors.fill: parent
-    }
-
-    Component.onCompleted: {
-        mapLoader.source = "../items/MFM.qml"
-    }
-
-    Connections {
-        target: geoMapProvider
-
-        function onStyleFileURLChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
+        loops: Animation.Infinite
+        ColorAnimation {
+            to: "black"
+            duration: 200
+        }
+        ColorAnimation {
+            to: "red"
+            duration: 200
         }
     }
 }

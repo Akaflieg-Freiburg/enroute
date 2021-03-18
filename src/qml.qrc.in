@@ -17,9 +17,11 @@
         <file alias="dialogs/WaypointEditor.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointEditor.qml</file>
         <file alias="dialogs/WeatherReport.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WeatherReport.qml</file>
         <file alias="items/AutoSizingMenu.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/AutoSizingMenu.qml</file>
+        <file alias="items/FLARMWarning.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/FLARMWarning.qml</file>
         <file alias="items/FlightMap.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/FlightMap.qml</file>
         <file alias="items/Icon.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/Icon.qml</file>
         <file alias="items/ImportManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/ImportManager.qml</file>
+        <file alias="items/LED.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/LED.qml</file>
         <file alias="items/MFM.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/MFM.qml</file>
         <file alias="items/NavBar.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/NavBar.qml</file>
         <file alias="items/StandardHeader.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/StandardHeader.qml</file>	

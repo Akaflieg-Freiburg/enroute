@@ -23,6 +23,12 @@
 #include "traffic/FLARMWarning.h"
 
 
+Traffic::FLARMWarning::FLARMWarning(QObject *parent) : QObject(parent)
+{
+    updateDescription();
+}
+
+
 Traffic::FLARMWarning::FLARMWarning(
         const QString&  /*RX*/,
         const QString&  /*TX*/,
@@ -84,6 +90,8 @@ Traffic::FLARMWarning::FLARMWarning(
         _hDist = AviationUnits::Distance::fromM(qQNaN());
     }
 
+    updateDescription();
+
 }
 
 
@@ -122,3 +130,107 @@ auto Traffic::FLARMWarning::hDistString() const -> QString
 #warning not implemented
     return QString("%1 m").arg(_hDist.toM());
 }
+
+#include <QDebug>
+
+void Traffic::FLARMWarning::copyFrom(const FLARMWarning &other)
+{
+    auto _alarmLevelChanged = (_alarmLevel != other._alarmLevel);
+    auto _alarmTypeChanged = (_alarmType != other._alarmType);
+    auto _hDistChanged = (_hDist != other._hDist);
+    auto _relativeBearingChanged = (_relativeBearing != other._relativeBearing);
+    auto _vDistChanged = (_vDist != other._vDist);
+
+    _alarmLevel = other._alarmLevel;
+    _alarmType = other._alarmType;
+    _hDist = other._hDist;
+    _relativeBearing = other._relativeBearing;
+    _vDist = other._vDist;
+    updateDescription();
+
+    if (_alarmLevelChanged) {
+        emit alarmLevelChanged();
+    }
+    if (_alarmTypeChanged) {
+        emit alarmTypeChanged();
+    }
+    if (_hDistChanged) {
+        emit hDistChanged();
+    }
+    if (_relativeBearingChanged) {
+        emit relativeBearingChanged();
+    }
+    if (_vDistChanged) {
+        emit vDistChanged();
+    }
+
+}
+
+void Traffic::FLARMWarning::updateDescription()
+{
+    qWarning() << "Update" << _alarmType;
+    QStringList result;
+
+    if ((_alarmType == 2) || (_alarmType == 3) || (_alarmType == 4)) {
+
+        // Alarm type
+        if (_alarmType == 2) {
+            result << tr("Traffic");
+        }
+        if (_alarmType == 3) {
+            result << tr("Obstacle");
+        }
+        if (_alarmType == 4) {
+            result << tr("Traffic advisory");
+        }
+
+
+        // Relative bearing
+        if (qIsFinite(_relativeBearing) && (_relativeBearing >= -180.0) && (_relativeBearing <= 180.0)) {
+            auto clockTime = qRound(_relativeBearing/30.0);
+            if (clockTime <= 0) {
+                clockTime += 12;
+            }
+            result << tr("%1 o'clock position").arg(clockTime);
+        }
+
+
+        // Horizontal distance
+        if (_hDist.isFinite() && !_hDist.isNegative()) {
+
+            if (GlobalSettings::useMetricUnitsStatic()) {
+                auto hDistKM = qRound(_hDist.toKM()*10.0)/10.0;
+                result << tr("Distance %1 KM").arg(hDistKM);
+            } else {
+                auto hDistNM = qRound(_hDist.toNM()*10.0)/10.0;
+                result << tr("Distance %1 NM").arg(hDistNM);
+            }
+
+        }
+
+        // Vertical distance
+        if (_vDist.isFinite()) {
+
+            auto vDistFT = qRound(qAbs(_vDist.toFeet())/10.0)*10.0;
+
+            if (vDistFT < 100) {
+                result << tr("Same altitude");
+            } else {
+                if (_vDist.isNegative()) {
+                    result << tr("%1 FT below").arg(vDistFT);
+                } else {
+                    result << tr("%1 FT above").arg(vDistFT);
+                }
+            }
+        }
+    }
+
+    auto newDescription = result.join(" · ");
+    if (newDescription == _description) {
+        return;
+    }
+    _description = newDescription;
+    emit descriptionChanged();
+}
+
+

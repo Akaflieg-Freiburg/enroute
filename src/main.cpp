@@ -61,7 +61,6 @@ auto main(int argc, char *argv[]) -> int
     // Register types
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<GeoMaps::Airspace>("enroute", 1, 0, "Airspace");
-
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<GeoMaps::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<GeoMaps::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");

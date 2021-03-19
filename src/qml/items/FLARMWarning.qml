@@ -28,7 +28,7 @@ import QtQml 2.15
 
 
 Rectangle {
-    id: flarmWarning
+    id: flarmWarningIndicator
     
     color: "#FF000000"
 
@@ -44,33 +44,34 @@ Rectangle {
 
         Item { // Spacer
             Layout.fillWidth: true
-            height: 2.0*flarmWarning.radius + 1.5*flarmWarning.ledRadius
+            height: 2.0*flarmWarningIndicator.radius + 1.5*flarmWarningIndicator.ledRadius
         }
 
         Item { // Traffic height indicator
             id: heightIndicator
-            width: 2.0*flarmWarning.radius
-            height: 2.0*flarmWarning.radius
+            width: 2.0*flarmWarningIndicator.radius
+            height: 2.0*flarmWarningIndicator.radius
 
             LED {
-                width: flarmWarning.ledRadius
-                height: flarmWarning.ledRadius
-                x: flarmWarning.radius - width/2.0
-                y: 0.5*flarmWarning.radius - width/2.0
+//                visible: flarmAdaptor.flarmWarning.vDist.toM > 0
+                width: flarmWarningIndicator.ledRadius
+                height: flarmWarningIndicator.ledRadius
+                x: flarmWarningIndicator.radius - width/2.0
+                y: 0.5*flarmWarningIndicator.radius - width/2.0
             }
 
             LED {
-                width: flarmWarning.ledRadius
-                height: flarmWarning.ledRadius
-                x: flarmWarning.radius - width/2.0
-                y: 1.5*flarmWarning.radius - width/2.0
+                width: flarmWarningIndicator.ledRadius
+                height: flarmWarningIndicator.ledRadius
+                x: flarmWarningIndicator.radius - width/2.0
+                y: 1.5*flarmWarningIndicator.radius - width/2.0
             }
 
             Rectangle {
-                width: 2.0*flarmWarning.radius
+                width: 2.0*flarmWarningIndicator.radius
                 height: 4
                 x: 0
-                y: flarmWarning.radius - height/2.0
+                y: flarmWarningIndicator.radius - height/2.0
 
                 color: "gray"
             }
@@ -85,13 +86,21 @@ Rectangle {
             Layout.maximumWidth: implicitWidth + 24
             Layout.fillWidth: true
 
-            text: "Obstacle at 2 o'clock, in 1.200 m, 300 ft below."
+            text: flarmAdaptor.flarmWarning.description
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.Wrap
+            color: {
+                if (flarmAdaptor.flarmWarning.alarmLevel === 0) {
+                    return "green"
+                }
+                if (flarmAdaptor.flarmWarning.alarmLevel === 1) {
+                    return "yellow"
+                }
+                return "red"
+            }
 
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
-            color: "red"
         }
 
         Item { // Spacer
@@ -100,40 +109,26 @@ Rectangle {
 
         Item { // Traffic direction indicator
             id: flarmClock
-            width: 2.0*flarmWarning.radius
-            height: 2.0*flarmWarning.radius
+            width: 2.0*flarmWarningIndicator.radius
+            height: 2.0*flarmWarningIndicator.radius
 
             Rectangle { // Gray clockface
-                width: 2.0*flarmWarning.radius
-                height: 2.0*flarmWarning.radius
-                x: flarmWarning.radius - width/2.0
-                y: flarmWarning.radius - height/2.0
+                width: 2.0*flarmWarningIndicator.radius
+                height: 2.0*flarmWarningIndicator.radius
+                x: flarmWarningIndicator.radius - width/2.0
+                y: flarmWarningIndicator.radius - height/2.0
 
                 radius: width/2.0
 
                 color: "gray"
             }
 
-            Rectangle { // LED
-                width: flarmWarning.ledRadius
-                height: flarmWarning.ledRadius
-                x: flarmWarning.radius - width/2.0
-                y: flarmWarning.radius - width/2.0 - flarmWarning.radius
-
-                radius: width/2.0
-
-                SequentialAnimation on color {
-                       loops: Animation.Infinite
-                       ColorAnimation {
-                           to: "black"
-                           duration: 200
-                       }
-                       ColorAnimation {
-                           to: "red"
-                           duration: 200
-                       }
-                   }
-
+            LED { // LED
+                width: flarmWarningIndicator.ledRadius
+                height: flarmWarningIndicator.ledRadius
+                x: flarmWarningIndicator.radius*(1 + Math.sin(2*Math.PI*(flarmAdaptor.flarmWarning.relativeBearing)/360.0)) - width/2.0
+                y: flarmWarningIndicator.radius*(1 - Math.cos(2*Math.PI*(flarmAdaptor.flarmWarning.relativeBearing)/360.0)) - width/2.0
+                visible: !isNaN(flarmAdaptor.flarmWarning.relativeBearing)
             }
 
             Image {
@@ -142,8 +137,8 @@ Rectangle {
                 width: 24
                 height: 24
 
-                x: flarmWarning.radius - width/2.0
-                y: flarmWarning.radius - height/2.0
+                x: flarmWarningIndicator.radius - width/2.0
+                y: flarmWarningIndicator.radius - height/2.0
 
                 source: satNav.icon
             }

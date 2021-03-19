@@ -48,6 +48,8 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
+    explicit FLARMWarning(QObject *parent = nullptr);
+
     explicit FLARMWarning(const QString& RX,
                           const QString& TX,
                           const QString& GPS,
@@ -61,7 +63,6 @@ public:
 
     // Standard destructor
     ~FLARMWarning() override = default;
-
 
     //
     // PROPERTIES
@@ -130,15 +131,11 @@ public:
 
     QString hDistString() const;
 
-    Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
+    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
 
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property valid
-     */
-    bool valid() const
+    QString description() const
     {
-        return _valid;
+        return _description;
     }
 
 
@@ -161,6 +158,14 @@ signals:
     /*! \brief Notifier signal */
     void relativeBearingChanged();
 
+    void descriptionChanged();
+
+public slots:
+
+    void copyFrom(const FLARMWarning &other);
+
+private:
+    void updateDescription();
 
 private:
     //
@@ -168,11 +173,11 @@ private:
     //
     int _alarmLevel {-1};
     int _alarmType {-1};
-
     AviationUnits::Distance _hDist;
     double _relativeBearing { qQNaN() };
-    bool _valid {false};
     AviationUnits::Distance _vDist;
+
+    QString _description {};
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for timeoutMS milliseconds

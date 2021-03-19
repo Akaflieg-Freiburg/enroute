@@ -50,6 +50,11 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
     _trafficObjectWithoutPosition = new Traffic::Factor(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
+    // Create warning object
+    _flarmWarning = new Traffic::FLARMWarning(this);
+    QQmlEngine::setObjectOwnership(_flarmWarning, QQmlEngine::CppOwnership);
+
+
 
     // barometric altitude timer
     barometricAltitudeTimer.setInterval(5s);
@@ -68,8 +73,8 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
-    // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
+    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     _dataSources << new Traffic::TcpTrafficDataSource("192.168.1.1", 2000, this);
@@ -90,11 +95,13 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onFactorWithoutPosition);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithPosition, this, &Traffic::TrafficDataProvider::onFactorWithPosition);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::onPositionInfoUpdate);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::flarmWarning, _flarmWarning, &Traffic::FLARMWarning::copyFrom);
 
-        connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
-        connect(this, &Traffic::TrafficDataProvider::barometricAltitudeChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
 
     }
+
+    connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+    connect(this, &Traffic::TrafficDataProvider::barometricAltitudeChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
 
     // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
     QTimer::singleShot(2s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
@@ -311,3 +318,4 @@ void Traffic::TrafficDataProvider::onBarometricAltitudeTimeout()
 {
     onBarometricAltitudeUpdate( AviationUnits::Distance() );
 }
+

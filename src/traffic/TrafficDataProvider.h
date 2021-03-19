@@ -28,6 +28,7 @@
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "traffic/Factor.h"
+#include "traffic/FLARMWarning.h"
 #include "traffic/AbstractTrafficDataSource.h"
 
 
@@ -69,6 +70,14 @@ public:
     //
     // Properties
     //
+
+
+    Q_PROPERTY(Traffic::FLARMWarning* flarmWarning READ flarmWarning CONSTANT)
+
+    Traffic::FLARMWarning* flarmWarning() const
+    {
+        return _flarmWarning;
+    }
 
     /*! \brief Receiving data from one data source*/
     Q_PROPERTY(QGeoPositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
@@ -195,6 +204,9 @@ private:
     // Targets
     QList<Traffic::Factor *> _trafficObjects;
     QPointer<Traffic::Factor> _trafficObjectWithoutPosition;
+
+    // Warnings
+    QPointer<Traffic::FLARMWarning> _flarmWarning;
 
     QList<QPointer<Traffic::AbstractTrafficDataSource>> _dataSources;
 

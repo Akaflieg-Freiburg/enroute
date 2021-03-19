@@ -175,6 +175,7 @@ public:
      * need to worry about units. On construction, the distance is set to NaN.
      */
     class Distance {
+
     public:
         /*! \brief Constructs a distance
          *

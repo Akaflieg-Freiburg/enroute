@@ -387,6 +387,8 @@ ApplicationWindow {
         y: parent.height*(3.0/4.0)-height/2.0
 
         text: "Lirum Larum, Löffelstiel"
+        wrapMode: Text.Wrap
+
         color: "white"
         bottomInset: -5
         topInset: -5

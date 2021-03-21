@@ -32,8 +32,8 @@
  * with angles, speeds, distances, etc, without the need to worry about units.
  */
 
-class AviationUnits {
-public:
+namespace AviationUnits {
+
     /*! \brief Converts string representation of a geographical coordinate into
      * QGeoCoordinate
      *
@@ -45,7 +45,7 @@ public:
      *
      * @returns A (possibly invalid) QGeoCoordinate
      */
-    static QGeoCoordinate stringToCoordinate(const QString &geoLat, const QString &geoLong);
+//    static QGeoCoordinate stringToCoordinate(const QString &geoLat, const QString &geoLong);
 
     /*! \brief Convenience class for angle computations
      *
@@ -175,8 +175,11 @@ public:
      * need to worry about units. On construction, the distance is set to NaN.
      */
     class Distance {
+        Q_GADGET
 
     public:
+        Q_PROPERTY(double toM READ toM)
+
         /*! \brief Constructs a distance
          *
          * @param distanceInM distance in meters
@@ -261,7 +264,7 @@ public:
          *
          * @returns distance in nautical miles
          */
-        double toNM() const { return _distanceInM / MetersPerNauticalMile; }
+        Q_INVOKABLE double toNM() const { return _distanceInM / MetersPerNauticalMile; }
 
         /*! \brief Convert to meters
          *
@@ -547,3 +550,6 @@ QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed);
         return {};
     return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());
 }
+
+Q_DECLARE_METATYPE(AviationUnits::Distance)
+

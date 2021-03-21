@@ -223,10 +223,8 @@ void Traffic::TcpTrafficDataSource::onStateChanged()
 void Traffic::TcpTrafficDataSource::onHasHeartbeatChanged()
 {
     // Acquire or release WiFi lock as appropriate
-
     auto* mobileAdaptor = MobileAdaptor::globalInstance();
     if (mobileAdaptor != nullptr) {
-        qWarning() << "WiFi Lock " << hasHeartbeat();
         mobileAdaptor->lockWifi(hasHeartbeat());
     }
 

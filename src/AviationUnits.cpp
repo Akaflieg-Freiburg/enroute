@@ -45,7 +45,7 @@ auto AviationUnits::Angle::toNormalizedDEG() const -> double {
     return 360.0 * (a - qFloor(a));
 }
 
-
+/*
 auto AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geoLong) -> QGeoCoordinate {
     // Interpret coordinates.
     auto lat = geoLat.chopped(1).toDouble();
@@ -58,7 +58,7 @@ auto AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geo
 
     return QGeoCoordinate(lat, lon);
 }
-
+*/
 
 QString AviationUnits::Distance::toString(bool useMetric, bool vertical, bool forceSign) const
 {

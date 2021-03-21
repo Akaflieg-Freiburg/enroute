@@ -161,8 +161,7 @@ signals:
     void descriptionChanged();
 
 public slots:
-
-    void copyFrom(const FLARMWarning &other);
+    void copyFrom(const Traffic::FLARMWarning &other);
 
 private:
     void updateDescription();

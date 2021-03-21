@@ -167,9 +167,25 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
             return;
         }
 
-        // Get coordinate
-        auto lat = interpretNMEALatLong(arguments[2], arguments[3]);
-        auto lon = interpretNMEALatLong(arguments[4], arguments[5]);
+        // Get coordinate       
+        bool ok1 = false;
+        bool ok2 = false;
+        auto lat = arguments[2].leftRef(2).toDouble(&ok1) + arguments[2].midRef(2).toDouble(&ok2)/60.0;
+        if (!ok1 || !ok2) {
+            return;
+        }
+        if (arguments[3] == u"S") {
+            lat *= -1.0;
+        }
+
+        auto lon = arguments[4].leftRef(3).toDouble(&ok1) + arguments[4].midRef(3).toDouble(&ok2)/60.0;
+        if (!ok1 || !ok2) {
+            return;
+        }
+        if (arguments[5] == u"W") {
+            lon *= -1.0;
+        }
+
         QGeoCoordinate coordinate(lat, lon);
         if (!coordinate.isValid()) {
             return;
@@ -183,7 +199,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
         bool ok = false;
         auto groundSpeed = AviationUnits::Speed::fromKT(arguments[6].toDouble(&ok));
         if (!ok) {
-            return;
+            groundSpeed = AviationUnits::Speed::fromKT(qQNaN());
         }
         if (groundSpeed.isFinite()) {
             pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS() );
@@ -192,7 +208,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
         // Track
         auto TT = arguments[7].toDouble(&ok);
         if (!ok) {
-            return;
+            TT = qQNaN();
         }
         if (TT != qQNaN()) {
             pInfo.setAttribute(QGeoPositionInfo::Direction, TT );

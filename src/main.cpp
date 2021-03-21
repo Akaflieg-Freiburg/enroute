@@ -35,6 +35,7 @@
 #include <kdsingleapplication.h>
 #endif
 
+#include "AviationUnits.h"
 #include "Aircraft.h"
 #include "Clock.h"
 #include "FlightRoute.h"

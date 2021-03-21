@@ -139,7 +139,7 @@ signals:
      */
     void factorWithPosition(const Traffic::Factor &factor);
 
-#warning need to document
+//#warning need to document
     void flarmWarning(const Traffic::FLARMWarning &warning);
 
     /*! \brief Notifier signal */

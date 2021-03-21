@@ -116,7 +116,7 @@ auto Traffic::FLARMWarning::vDistString() const -> QString
         return {};
     }
 
-#warning not implemented
+//#warning not implemented
     return QString("%1 m").arg(_vDist.toM());
 }
 
@@ -127,7 +127,7 @@ auto Traffic::FLARMWarning::hDistString() const -> QString
         return {};
     }
 
-#warning not implemented
+//#warning not implemented
     return QString("%1 m").arg(_hDist.toM());
 }
 
@@ -168,7 +168,6 @@ void Traffic::FLARMWarning::copyFrom(const FLARMWarning &other)
 
 void Traffic::FLARMWarning::updateDescription()
 {
-    qWarning() << "Update" << _alarmType;
     QStringList result;
 
     if ((_alarmType == 2) || (_alarmType == 3) || (_alarmType == 4)) {

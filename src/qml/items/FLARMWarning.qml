@@ -32,10 +32,12 @@ Rectangle {
     
     color: "#FF000000"
 
-    height: gl.implicitHeight
+    height: (flarmAdaptor.flarmWarning.alarmLevel > 0) ? gl.implicitHeight : 0
 
     property var radius: 30
     property var ledRadius: 16
+
+    visible: flarmAdaptor.flarmWarning.alarmLevel > 0
 
     RowLayout {
         id: gl
@@ -53,7 +55,7 @@ Rectangle {
             height: 2.0*flarmWarningIndicator.radius
 
             LED {
-//                visible: flarmAdaptor.flarmWarning.vDist.toM > 0
+                visible: flarmAdaptor.flarmWarning.vDist.toM > -50
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius
                 x: flarmWarningIndicator.radius - width/2.0
@@ -61,6 +63,7 @@ Rectangle {
             }
 
             LED {
+                visible: flarmAdaptor.flarmWarning.vDist.toM < 50
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius
                 x: flarmWarningIndicator.radius - width/2.0

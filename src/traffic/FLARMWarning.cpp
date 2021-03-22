@@ -170,7 +170,7 @@ void Traffic::FLARMWarning::updateDescription()
 {
     QStringList result;
 
-    if ((_alarmType == 2) || (_alarmType == 3) || (_alarmType == 4)) {
+ //   if ((_alarmType == 2) || (_alarmType == 3) || (_alarmType == 4)) {
 
         // Alarm type
         if (_alarmType == 2) {
@@ -222,7 +222,7 @@ void Traffic::FLARMWarning::updateDescription()
                 }
             }
         }
-    }
+   // }
 
     auto newDescription = result.join(" · ");
     if (newDescription == _description) {

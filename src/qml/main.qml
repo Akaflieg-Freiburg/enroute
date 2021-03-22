@@ -40,6 +40,17 @@ ApplicationWindow {
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
+
+    FLARMWarning {
+        id: flarmWarning
+
+        y : 0 // visible ? 0 : -height
+        Behavior on y { NumberAnimation { duration: 100 } }
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+    }
+
     Drawer {
         id: drawer
 
@@ -308,7 +319,11 @@ ApplicationWindow {
     StackView {
         id: stackView
         initialItem: "pages/MapPage.qml"
-        anchors.fill: parent
+
+        anchors.top: flarmWarning.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         focus: true
 
@@ -344,7 +359,7 @@ ApplicationWindow {
                 dialogLoader.active = true
                 return
             }
-        } // Component.onCompleted
+        }
 
         Keys.onReleased: {
             if (event.key === Qt.Key_Back) {

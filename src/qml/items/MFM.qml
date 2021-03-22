@@ -394,21 +394,13 @@ Item {
         }
     }
 
-    FLARMWarning {
-        id: flarmWarning
-
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-    }
-
     Button {
         id: menuButton
         icon.source: "/icons/material/ic_menu.svg"
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*Qt.application.font.pixelSize
-        anchors.top: flarmWarning.bottom
+        anchors.top: page.top
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
         onClicked: {
@@ -421,7 +413,7 @@ Item {
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
-        anchors.top: flarmWarning.bottom
+        anchors.top: page.top
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
         contentItem: ColumnLayout {
@@ -577,7 +569,7 @@ Item {
         anchors.right: parent.right
         anchors.left: parent.left
 
-        y: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? view.height - height : view.height
+        y: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? parent.height - height : parent.height
     }
 
     WaypointDescription {

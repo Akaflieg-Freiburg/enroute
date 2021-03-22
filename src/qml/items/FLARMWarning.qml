@@ -32,12 +32,12 @@ Rectangle {
     
     color: "#FF000000"
 
-    height: (flarmAdaptor.flarmWarning.alarmLevel > 0) ? gl.implicitHeight : 0
+    height: gl.implicitHeight
 
     property var radius: 30
     property var ledRadius: 16
 
-    visible: flarmAdaptor.flarmWarning.alarmLevel > 0
+    // visible: flarmAdaptor.flarmWarning.alarmLevel > 0
 
     RowLayout {
         id: gl
@@ -46,29 +46,14 @@ Rectangle {
 
         Item { // Spacer
             Layout.fillWidth: true
-            height: 2.0*flarmWarningIndicator.radius + 1.5*flarmWarningIndicator.ledRadius
         }
 
         Item { // Traffic height indicator
             id: heightIndicator
             width: 2.0*flarmWarningIndicator.radius
             height: 2.0*flarmWarningIndicator.radius
+            visible: flarmAdaptor.flarmWarning.alarmLevel > 0
 
-            LED {
-                visible: flarmAdaptor.flarmWarning.vDist.toM > -50
-                width: flarmWarningIndicator.ledRadius
-                height: flarmWarningIndicator.ledRadius
-                x: flarmWarningIndicator.radius - width/2.0
-                y: 0.5*flarmWarningIndicator.radius - width/2.0
-            }
-
-            LED {
-                visible: flarmAdaptor.flarmWarning.vDist.toM < 50
-                width: flarmWarningIndicator.ledRadius
-                height: flarmWarningIndicator.ledRadius
-                x: flarmWarningIndicator.radius - width/2.0
-                y: 1.5*flarmWarningIndicator.radius - width/2.0
-            }
 
             Rectangle {
                 width: 2.0*flarmWarningIndicator.radius
@@ -77,6 +62,33 @@ Rectangle {
                 y: flarmWarningIndicator.radius - height/2.0
 
                 color: "gray"
+            }
+
+            LED {
+                visible: flarmAdaptor.flarmWarning.vDist.toM >= 100
+                blinking: visible
+                width: flarmWarningIndicator.ledRadius
+                height: flarmWarningIndicator.ledRadius
+                x: flarmWarningIndicator.radius - width/2.0
+                y: 0.5*flarmWarningIndicator.radius - width/2.0
+            }
+
+            LED {
+                visible: (flarmAdaptor.flarmWarning.vDist.toM > -100) && (flarmAdaptor.flarmWarning.vDist.toM < 100)
+                blinking: visible
+                width: 1.5*flarmWarningIndicator.ledRadius
+                height: 1.5*flarmWarningIndicator.ledRadius
+                x: flarmWarningIndicator.radius - width/2.0
+                y: flarmWarningIndicator.radius - width/2.0
+            }
+
+            LED {
+                visible: flarmAdaptor.flarmWarning.vDist.toM < -100
+                blinking: visible
+                width: flarmWarningIndicator.ledRadius
+                height: flarmWarningIndicator.ledRadius
+                x: flarmWarningIndicator.radius - width/2.0
+                y: 1.5*flarmWarningIndicator.radius - width/2.0
             }
 
         }
@@ -94,7 +106,7 @@ Rectangle {
             wrapMode: Text.Wrap
             color: {
                 if (flarmAdaptor.flarmWarning.alarmLevel === 0) {
-                    return "green"
+                    return "white"
                 }
                 if (flarmAdaptor.flarmWarning.alarmLevel === 1) {
                     return "yellow"
@@ -102,8 +114,8 @@ Rectangle {
                 return "red"
             }
 
-            font.weight: Font.Bold
-            font.pixelSize: Qt.application.font.pixelSize*1.3
+            font.weight: flarmAdaptor.flarmWarning.alarmLevel > 0 ? Font.Bold : Font.Normal
+            font.pixelSize: flarmAdaptor.flarmWarning.alarmLevel > 0 ? Qt.application.font.pixelSize*1.3 : Qt.application.font.pixelSize
         }
 
         Item { // Spacer
@@ -114,6 +126,7 @@ Rectangle {
             id: flarmClock
             width: 2.0*flarmWarningIndicator.radius
             height: 2.0*flarmWarningIndicator.radius
+            visible: flarmAdaptor.flarmWarning.alarmLevel > 0
 
             Rectangle { // Gray clockface
                 width: 2.0*flarmWarningIndicator.radius
@@ -132,6 +145,7 @@ Rectangle {
                 x: flarmWarningIndicator.radius*(1 + Math.sin(2*Math.PI*(flarmAdaptor.flarmWarning.relativeBearing)/360.0)) - width/2.0
                 y: flarmWarningIndicator.radius*(1 - Math.cos(2*Math.PI*(flarmAdaptor.flarmWarning.relativeBearing)/360.0)) - width/2.0
                 visible: !isNaN(flarmAdaptor.flarmWarning.relativeBearing)
+                blinking: visible
             }
 
             Image {

@@ -45,10 +45,12 @@ Rectangle {
     RowLayout {
         anchors.fill: parent
 
+        Item { Layout.fillWidth: true }
+
         ColumnLayout {
             id: trueAltitude
 
-            Layout.preferredWidth: grid.width/grid.level()
+            Layout.preferredWidth: m_implicitWidth
             property var m_implicitWidth: Math.max(trueAltitude_1.contentWidth, trueAltitude_2.contentWidth)
 
             Label {
@@ -71,11 +73,13 @@ Rectangle {
             }
         }
 
+        Item { Layout.fillWidth: true }
+
         ColumnLayout {
             id: flightLevel
 
             visible: grid.level() >= 5
-            Layout.preferredWidth: visible ? grid.width/grid.level() : 0
+            Layout.preferredWidth: visible ? m_implicitWidth : 0
             property var m_implicitWidth: Math.max(flightLevel_1.contentWidth, flightLevel_2.contentWidth)
 
             Label {
@@ -98,10 +102,12 @@ Rectangle {
             }
         }
 
+        Item { Layout.fillWidth: flightLevel.visible }
+
         ColumnLayout {
             id: groundSpeed
 
-            Layout.preferredWidth: grid.width/grid.level()
+            Layout.preferredWidth: m_implicitWidth
             property var m_implicitWidth: Math.max(groundSpeed_1.contentWidth, groundSpeed_2.contentWidth)
 
             Label {
@@ -123,10 +129,12 @@ Rectangle {
             }
         }
 
+        Item { Layout.fillWidth: true }
+
         ColumnLayout {
             id: trueTrack
 
-            Layout.preferredWidth: grid.width/grid.level()
+            Layout.preferredWidth: m_implicitWidth
             property var m_implicitWidth: Math.max(trueTrack_1.contentWidth, trueTrack_2.contentWidth)
 
             Label {
@@ -149,11 +157,13 @@ Rectangle {
             }
         }
 
+        Item { Layout.fillWidth: true }
+
         ColumnLayout {
             id: utc
 
             visible: grid.level() >= 4
-            Layout.preferredWidth: grid.width/grid.level()
+            Layout.preferredWidth: m_implicitWidth
             property var m_implicitWidth: Math.max(utc_1.contentWidth, utc_2.contentWidth)
 
             Label {
@@ -173,6 +183,8 @@ Rectangle {
                 color: "white"
             }
         }
+
+        Item { Layout.fillWidth: utc.visible }
 
     }
 

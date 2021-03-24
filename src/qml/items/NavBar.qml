@@ -29,113 +29,151 @@ Rectangle {
     
     color: "#AA000000"
 
-    height: gl.implicitHeight
+    height: trueAltitude.implicitHeight
     
-    GridLayout {
-        id: gl
-        
-        anchors.fill: parent
-        rows: 2
-        columns: 5
-        rowSpacing: 0
+
+    function level() {
+        var w = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + utc.m_implicitWidth + 4*Qt.application.font.pixelSize
+        if (w > grid.width)
+            return 3
+        w = w + flightLevel.m_implicitWidth + Qt.application.font.pixelSize
+        if (w > grid.width)
+            return 4
+        return 5
+    }
+
+    ColumnLayout {
+        id: trueAltitude
+
+        width: grid.width/grid.level()
+        property var m_implicitWidth: Math.max(trueAltitude_1.contentWidth, trueAltitude_2.contentWidth)
 
         Label {
-            Layout.fillWidth: true
+            id: trueAltitude_1
+
+            Layout.alignment: Qt.AlignHCenter
 
             text: satNav.altitudeInFeetAsString
-            horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
             color: "white"
-        } // Label
+        }
+        Label {
+            id: trueAltitude_2
 
+            Layout.alignment: Qt.AlignHCenter
+
+            color: "white"
+            text: "T.ALT"
+        }
+    }
+
+    ColumnLayout {
+        id: flightLevel
+
+        anchors.left: trueAltitude.right
+        visible: grid.level() >= 5
+        width: visible ? grid.width/grid.level() : 0
+        property var m_implicitWidth: Math.max(flightLevel_1.contentWidth, flightLevel_2.contentWidth)
 
         Label {
-            Layout.fillWidth: true
+            id: flightLevel_1
+
+            Layout.alignment: Qt.AlignHCenter
 
             text: satNav.flightLevel
-            horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
             color: "white"
-        } // Label
+        }
+        Label {
+            id: flightLevel_2
+
+            Layout.alignment: Qt.AlignHCenter
+
+            color: "white"
+            text: "FL"
+        }
+    }
+
+    ColumnLayout {
+        id: groundSpeed
+
+        anchors.left: flightLevel.right
+        width: grid.width/grid.level()
+        property var m_implicitWidth: Math.max(groundSpeed_1.contentWidth, groundSpeed_2.contentWidth)
 
         Label {
-            Layout.fillWidth: true
+            id: groundSpeed_1
+
+            Layout.alignment: Qt.AlignHCenter
 
             text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
-
-            horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
             color: "white"
-        } // Button
+        }
+        Label {
+            id: groundSpeed_2
+            Layout.alignment: Qt.AlignHCenter
+
+            text: "GS"
+            color: "white"
+        }
+    }
+
+    ColumnLayout {
+        id: trueTrack
+
+        anchors.left: groundSpeed.right
+        width: grid.width/grid.level()
+        property var m_implicitWidth: Math.max(trueTrack_1.contentWidth, trueTrack_2.contentWidth)
 
         Label {
-            Layout.fillWidth: true
+            id: trueTrack_1
+
+            Layout.alignment: Qt.AlignHCenter
 
             text: satNav.trackAsString
-
-            horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
             color: "white"
-        } // Label
+        }
+        Label {
+            id: trueTrack_2
+
+            Layout.alignment: Qt.AlignHCenter
+
+            text: "TT"
+            color: "white"
+        }
+    }
+
+    ColumnLayout {
+        id: utc
+
+        anchors.left: trueTrack.right
+        visible: grid.level() >= 4
+        width: grid.width/grid.level()
+        property var m_implicitWidth: Math.max(utc_1.contentWidth, utc_2.contentWidth)
 
         Label {
-            Layout.fillWidth: true
+            id: utc_1
+            Layout.alignment: Qt.AlignHCenter
 
             text: clock.timeAsUTCString
-
-            horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Bold
             font.pixelSize: Qt.application.font.pixelSize*1.3
             color: "white"
         } // Label
-
         Label {
-            Layout.fillWidth: true
+            id: utc_2
+            Layout.alignment: Qt.AlignHCenter
 
-            color: "white"
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("T.ALT")
-        } // Label
-
-        Label {
-            Layout.fillWidth: true
-
-            color: "white"
-            horizontalAlignment: Text.AlignHCenter
-            text: "FL"
-        } // Label
-
-        Label {
-            Layout.fillWidth: true
-
-            color: "white"
-            horizontalAlignment: Text.AlignHCenter
-            text: "GS"
-        } // Label
-
-        Label {
-            Layout.fillWidth: true
-
-            color: "white"
-            horizontalAlignment: Text.AlignHCenter
-            text: "TT"
-        } // Label
-
-        Label {
-            Layout.fillWidth: true
-
-            color: "white"
-            horizontalAlignment: Text.AlignHCenter
             text: "UTC"
-        } // Label
-
-        Rectangle {
-            height: Qt.application.font.pixelSize*0.2
+            color: "white"
         }
+    }
 
-    } // Grid
+
 } // Rectangle

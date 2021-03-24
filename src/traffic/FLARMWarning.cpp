@@ -30,10 +30,6 @@ Traffic::FLARMWarning::FLARMWarning(QObject *parent) : QObject(parent)
 
 
 Traffic::FLARMWarning::FLARMWarning(
-        const QString&  /*RX*/,
-        const QString&  /*TX*/,
-        const QString&  /*GPS*/,
-        const QString&  /*Power*/,
         const QString& AlarmLevel,
         const QString& RelativeBearing,
         const QString& AlarmType,

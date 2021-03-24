@@ -528,5 +528,5 @@ auto Positioning::PositionProvider::flightLevel() -> QString
         return "-";
     }
 
-    return QString("%1").arg(qRound(baroAlt.toFeet() / 100.0), 3, 10, QChar('0') );
+    return QString("FL%1").arg(qRound(baroAlt.toFeet() / 100.0), 3, 10, QChar('0') );
 }

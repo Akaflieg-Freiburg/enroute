@@ -32,16 +32,18 @@ Rectangle {
     
     color: "#FF000000"
 
-    height: gl.implicitHeight
+    implicitHeight: gl.implicitHeight+1.2*ledRadius
 
     property var radius: 30
     property var ledRadius: 16
 
-    // visible: flarmAdaptor.flarmWarning.alarmLevel > 0
+    visible: flarmAdaptor.flarmWarning.alarmLevel > 0
 
     RowLayout {
         id: gl
         
+        anchors.bottomMargin: 0.6*ledRadius
+        anchors.topMargin: 0.6*ledRadius
         anchors.fill: parent
 
         Item { // Spacer
@@ -53,7 +55,6 @@ Rectangle {
             width: 2.0*flarmWarningIndicator.radius
             height: 2.0*flarmWarningIndicator.radius
             visible: flarmAdaptor.flarmWarning.alarmLevel > 0
-
 
             Rectangle {
                 width: 2.0*flarmWarningIndicator.radius
@@ -113,6 +114,7 @@ Rectangle {
                 }
                 return "red"
             }
+            Behavior on color { ColorAnimation { duration: 100 } }
 
             font.weight: flarmAdaptor.flarmWarning.alarmLevel > 0 ? Font.Bold : Font.Normal
             font.pixelSize: flarmAdaptor.flarmWarning.alarmLevel > 0 ? Qt.application.font.pixelSize*1.3 : Qt.application.font.pixelSize

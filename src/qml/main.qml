@@ -44,9 +44,10 @@ ApplicationWindow {
     FLARMWarning {
         id: flarmWarning
 
-        y : 0 // visible ? 0 : -height
-        Behavior on y { NumberAnimation { duration: 100 } }
+        height: visible ? implicitHeight : 0
+        Behavior on height { NumberAnimation { duration: 100 } }
 
+        anchors.top: view.top
         anchors.left: parent.left
         anchors.right: parent.right
     }

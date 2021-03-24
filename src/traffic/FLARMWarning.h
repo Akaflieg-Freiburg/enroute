@@ -50,11 +50,7 @@ public:
      */
     explicit FLARMWarning(QObject *parent = nullptr);
 
-    explicit FLARMWarning(const QString& RX,
-                          const QString& TX,
-                          const QString& GPS,
-                          const QString& Power,
-                          const QString& AlarmLevel,
+    explicit FLARMWarning(const QString& AlarmLevel,
                           const QString& RelativeBearing,
                           const QString& AlarmType,
                           const QString& RelativeVertical,

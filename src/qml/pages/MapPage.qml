@@ -38,7 +38,7 @@ Page {
         anchors.fill: parent
     }
 
-    Button {
+    RoundButton {
         id: menuButton
         icon.source: "/icons/material/ic_menu.svg"
 

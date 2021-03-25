@@ -394,47 +394,37 @@ Item {
         }
     }
 
-    Button {
+    RoundButton {
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
-        contentItem: ColumnLayout {
-            Image {
-                Layout.alignment: Qt.AlignHCenter
-                id: northArrow
+        contentItem: Image {
+            Layout.alignment: Qt.AlignHCenter
+            id: northArrow
 
-                opacity: globalSettings.nightMode ? 0.3 : 1.0
-                rotation: -flightMap.bearing
+            opacity: globalSettings.nightMode ? 0.3 : 1.0
+            rotation: -flightMap.bearing
 
-                source: "/icons/NorthArrow.svg"
-                sourceSize.width: 44
-                sourceSize.height: 44
-            }
-            Label {
-                Layout.alignment: Qt.AlignHCenter
-                text: {
-                    if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
-                        return "TT ↑"
-                    if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
-                        return "N ↑"
-                    return Math.round(flightMap.bearing)+"° ↑"
-                }
-
-            }
+            source: "/icons/NorthArrow.svg"
+            sourceSize.width: 44
+            sourceSize.height: 44
         }
 
         onClicked: {
-            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
+            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp) {
                 globalSettings.mapBearingPolicy = GlobalSettings.TTUp
-            else
+                toast.doToast(qsTr("Map Mode: Track Up"))
+            } else {
                 globalSettings.mapBearingPolicy = GlobalSettings.NUp
+                toast.doToast(qsTr("Map Mode: North Up"))
+            }
         }
     }
 
-    Button {
+    RoundButton {
         id: followGPSButton
 
         opacity: 0.9
@@ -449,10 +439,11 @@ Item {
         onClicked: {
             mobileAdaptor.vibrateBrief()
             flightMap.followGPS = true
+            toast.doToast(qsTr("Map Mode: Autopan"))
         }
     }
 
-    Button {
+    RoundButton {
         id: zoomIn
 
         visible: flightMap.zoomLevel < flightMap.maximumZoomLevel
@@ -478,7 +469,7 @@ Item {
         }
     }
 
-    Button {
+    RoundButton {
         id: zoomOut
 
         visible: flightMap.zoomLevel > flightMap.minimumZoomLevel

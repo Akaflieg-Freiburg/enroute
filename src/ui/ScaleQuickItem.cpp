@@ -62,7 +62,7 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
         font.setPixelSize(qRound(font.pixelSize()*0.8));
     }
     painter->setFont(font);
-    QString text = QString(_useMetricUnits ? QString("%1 km") : QString("%1 NM")).arg(sizeOfScaleInUnit);
+    QString text = QString(_useMetricUnits ? QString("%1 km") : QString("%1 nm")).arg(sizeOfScaleInUnit);
     int textWidth  = painter->fontMetrics().horizontalAdvance(text);
     int textHeight = painter->fontMetrics().height();
 

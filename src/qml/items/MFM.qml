@@ -514,12 +514,12 @@ Item {
         anchors.horizontalCenter: followGPSButton.horizontalCenter
 
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+        visible: !scale.visible
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: true
         width: 30
     }
-
 
     Scale {
         id: scale
@@ -531,6 +531,7 @@ Item {
         anchors.verticalCenter: followGPSButton.verticalCenter
 
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+        visible: parent.height > parent.width
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: false

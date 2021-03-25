@@ -22,16 +22,17 @@
 
 #include <QtQuick/QQuickPaintedItem>
 
+namespace Ui {
 
 /*! \brief QML Class implementing a scale for a Map
-
-  This class implements a QML item that draws a scale, to be added to a map.  To
-  work, the property pixelPer10km needs to be set, according to the scale of the
-  map.  To use this class, export it to QML, add it to your view and make sure
-  that the property pixelPer10km get set accordingly.
-
-  The methods of this class are re-entrant, but not thread safe.
-*/
+ *
+ *  This class implements a QML item that draws a scale, to be added to a map.  To
+ *  work, the property pixelPer10km needs to be set, according to the scale of the
+ *  map.  To use this class, export it to QML, add it to your view and make sure
+ *  that the property pixelPer10km get set accordingly.
+ *
+ *  The methods of this class are re-entrant, but not thread safe.
+ */
 
 class ScaleQuickItem : public QQuickPaintedItem
 {
@@ -39,9 +40,9 @@ class ScaleQuickItem : public QQuickPaintedItem
 
 public:
   /*! \brief Standard constructor
-
-    @param parent The standard QObject parent pointer
-  */
+   *
+   *  @param parent The standard QObject parent pointer
+   */
   explicit ScaleQuickItem(QQuickItem *parent = nullptr);
 
   /*! \brief Number of pixel that represent a distance of 10km on the map */
@@ -60,25 +61,30 @@ public:
   void setPixelPer10km(qreal _pxp10k);
 
   /*! \brief Determines whether the scale should use km or nm */
-  Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits NOTIFY useMetricUnitsChanged)
-
-  /*! \brief Getter function for the property with the same name
-
-    @returns Property useMetricUnits
-  */
-  bool useMetricUnits() const {return _useMetricUnits;}
-
-  /*! \brief Setter function for the property with the same name
-
-    @param useMetricUnits Property useMetricUnits
-  */
-  void setUseMetricUnits(bool useMetricUnits);
 
   /*! \brief Re-implemented from QQuickPaintedItem to implement painting
-
-    @param painter Pointer to the QPainter used for painting
-  */
+   *
+   *  @param painter Pointer to the QPainter used for painting
+   */
   void paint(QPainter *painter) override;
+
+  /*! \brief Determines whether the scale should be drawn vertically or horizontally
+   *
+   *  This property defaults to 'false'.
+   */
+  Q_PROPERTY(bool vertical READ vertical WRITE setVertical NOTIFY verticalChanged)
+
+  /*! \brief Getter function for the property with the same name
+   *
+   *  @returns Property vertical
+   */
+  bool vertical() const {return _vertical;}
+
+  /*! \brief Setter function for the property with the same name
+   *
+   *  @param newVertical Property vertical
+   */
+  void setVertical(bool newVertical);
 
 signals:
   /*! \brief Notification signal for property with the same name */
@@ -87,9 +93,14 @@ signals:
   /*! \brief Notification signal for property with the same name */
   void useMetricUnitsChanged();
 
+  /*! \brief Notification signal for property with the same name */
+  void verticalChanged();
+
 private:
   Q_DISABLE_COPY_MOVE(ScaleQuickItem)
 
   qreal _pixelPer10km {0.0};
-  bool _useMetricUnits {false};
+  bool _vertical {false};
 };
+
+}

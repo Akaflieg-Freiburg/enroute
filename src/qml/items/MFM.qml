@@ -505,6 +505,23 @@ Item {
     }
 
     Scale {
+        id: leftScale
+
+        anchors.top: northButton.bottom
+        anchors.topMargin: 0.5*Qt.application.font.pixelSize
+        anchors.bottom: followGPSButton.top
+        anchors.bottomMargin: 0.5*Qt.application.font.pixelSize
+        anchors.horizontalCenter: followGPSButton.horizontalCenter
+
+        opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+
+        pixelPer10km: flightMap.pixelPer10km
+        vertical: true
+        width: 30
+    }
+
+
+    Scale {
         id: scale
 
         anchors.left: followGPSButton.right
@@ -515,8 +532,8 @@ Item {
 
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
 
-        useMetricUnits: globalSettings.useMetricUnits
         pixelPer10km: flightMap.pixelPer10km
+        vertical: false
         height: 30
     }
 

@@ -91,7 +91,7 @@ set(SOURCES
     Navigation_Geoid.h
     Navigation_SatNav.h
     Navigation_Traffic.h
-    ScaleQuickItem.h
+    ui/ScaleQuickItem.h
     weather/Decoder.h
     weather/DownloadManager.h
     weather/METAR.h
@@ -124,7 +124,7 @@ set(SOURCES
     Navigation_Geoid.cpp
     Navigation_SatNav.cpp
     Navigation_Traffic.cpp
-    ScaleQuickItem.cpp
+    ui/ScaleQuickItem.cpp
     weather/Decoder.cpp
     weather/DownloadManager.cpp
     weather/METAR.cpp

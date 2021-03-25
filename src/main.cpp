@@ -46,7 +46,7 @@
 #include "Navigation_FLARMAdaptor.h"
 #include "Navigation_SatNav.h"
 #include "Navigation_Traffic.h"
-#include "ScaleQuickItem.h"
+#include "ui/ScaleQuickItem.h"
 #include "weather/DownloadManager.h"
 #include "weather/Wind.h"
 #include <chrono>
@@ -71,7 +71,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Navigation::FLARMAdaptor>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::SatNav>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::Traffic>("enroute", 1, 0, "Traffic", "Traffic objects cannot be created in QML");
-    qmlRegisterType<ScaleQuickItem>("enroute", 1, 0, "Scale");
+    qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
     qmlRegisterType<GeoMaps::Waypoint>("enroute", 1, 0, "Waypoint");

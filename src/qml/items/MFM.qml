@@ -66,7 +66,7 @@ Item {
 
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
         gesture.enabled: true
-        gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture|MapGestureArea.RotationGesture
+        gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture
         gesture.onPanStarted: {flightMap.followGPS = false}
         gesture.onPinchStarted: {flightMap.followGPS = false}
         gesture.onRotationStarted: {
@@ -185,7 +185,6 @@ Item {
 
         TrafficLabel { // Label for nondirectional traffic warning
             trafficInfo: flarmAdaptor.trafficObjectWithoutPosition
-            track: satNav.lastValidTrack
         }
 
         MapItemView { // Labels for traffic opponents
@@ -193,7 +192,6 @@ Item {
             delegate: Component {
                 TrafficLabel {
                     trafficInfo: model.modelData
-                    track: model.modelData.TT
                 }
             }
         }
@@ -394,89 +392,75 @@ Item {
         }
     }
 
-    Button {
-        id: menuButton
-        icon.source: "/icons/material/ic_menu.svg"
-
-        anchors.left: parent.left
-        anchors.leftMargin: 0.5*Qt.application.font.pixelSize
-        anchors.top: page.top
-        anchors.topMargin: 0.5*Qt.application.font.pixelSize
-
-        onClicked: {
-            mobileAdaptor.vibrateBrief()
-            drawer.open()
-        }
-    }
-
-    Button {
+    RoundButton {
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
         anchors.top: page.top
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
-        contentItem: ColumnLayout {
-            Image {
-                Layout.alignment: Qt.AlignHCenter
-                id: northArrow
+        height: 66
+        width:  66
 
-                opacity: globalSettings.nightMode ? 0.3 : 1.0
-                rotation: -flightMap.bearing
+        icon.source: "/icons/NorthArrow.svg"
 
-                source: "/icons/NorthArrow.svg"
-                sourceSize.width: 44
-                sourceSize.height: 44
-            }
-            Label {
-                Layout.alignment: Qt.AlignHCenter
-                text: {
-                    if (globalSettings.mapBearingPolicy === GlobalSettings.TTUp)
-                        return "TT ↑"
-                    if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
-                        return "N ↑"
-                    return Math.round(flightMap.bearing)+"° ↑"
-                }
 
-            }
+        contentItem: Image {
+            Layout.alignment: Qt.AlignHCenter
+            id: northArrow
+
+            opacity: globalSettings.nightMode ? 0.3 : 1.0
+            rotation: -flightMap.bearing
+
+            source: "/icons/NorthArrow.svg"
         }
 
         onClicked: {
-            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp)
+            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp) {
                 globalSettings.mapBearingPolicy = GlobalSettings.TTUp
-            else
+                toast.doToast(qsTr("Map Mode: Track Up"))
+            } else {
                 globalSettings.mapBearingPolicy = GlobalSettings.NUp
+                toast.doToast(qsTr("Map Mode: North Up"))
+            }
         }
     }
 
-    Button {
+    RoundButton {
         id: followGPSButton
 
         opacity: 0.9
         icon.source: "/icons/material/ic_my_location.svg"
-        visible: !flightMap.followGPS
+        enabled: !flightMap.followGPS
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*Qt.application.font.pixelSize
         anchors.bottom: navBar.top
         anchors.bottomMargin: 1.5*Qt.application.font.pixelSize
 
+        height: 66
+        width:  66
+
         onClicked: {
             mobileAdaptor.vibrateBrief()
             flightMap.followGPS = true
+            toast.doToast(qsTr("Map Mode: Autopan"))
         }
     }
 
-    Button {
+    RoundButton {
         id: zoomIn
 
-        visible: flightMap.zoomLevel < flightMap.maximumZoomLevel
+        enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
         anchors.rightMargin: 0.5*Qt.application.font.pixelSize
         anchors.bottom: zoomOut.top
         anchors.bottomMargin: 0.5*Qt.application.font.pixelSize
+
+        height: 66
+        width:  66
 
         contentItem: Label {
             text: "+"
@@ -493,10 +477,10 @@ Item {
         }
     }
 
-    Button {
+    RoundButton {
         id: zoomOut
 
-        visible: flightMap.zoomLevel > flightMap.minimumZoomLevel
+        enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
@@ -504,8 +488,11 @@ Item {
         anchors.bottom: navBar.top
         anchors.bottomMargin: 1.5*Qt.application.font.pixelSize
 
+        height: 66
+        width:  66
+
         contentItem: Label {
-            text: "-"
+            text: "–"
             font.bold: true
             font.pixelSize: Qt.application.font.pixelSize*1.2
             verticalAlignment: Text.AlignVCenter
@@ -520,6 +507,23 @@ Item {
     }
 
     Scale {
+        id: leftScale
+
+        anchors.top: northButton.bottom
+        anchors.topMargin: 0.5*Qt.application.font.pixelSize
+        anchors.bottom: followGPSButton.top
+        anchors.bottomMargin: 0.5*Qt.application.font.pixelSize
+        anchors.horizontalCenter: followGPSButton.horizontalCenter
+
+        opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+        visible: !scale.visible
+
+        pixelPer10km: flightMap.pixelPer10km
+        vertical: true
+        width: 30
+    }
+
+    Scale {
         id: scale
 
         anchors.left: followGPSButton.right
@@ -529,9 +533,10 @@ Item {
         anchors.verticalCenter: followGPSButton.verticalCenter
 
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+        visible: parent.height > parent.width
 
-        useMetricUnits: globalSettings.useMetricUnits
         pixelPer10km: flightMap.pixelPer10km
+        vertical: false
         height: 30
     }
 

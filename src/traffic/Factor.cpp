@@ -260,7 +260,7 @@ void Traffic::Factor::setIcon()
 {
     // BaseType
     QString baseType = QStringLiteral("noDirection");
-    if (_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
+    if (_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed) && _positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
         auto GS = AviationUnits::Speed::fromMPS( _positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
         if (GS.isFinite() && (GS.toKT() > 4)) {
             baseType = QStringLiteral("withDirection");

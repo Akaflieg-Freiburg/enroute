@@ -89,13 +89,13 @@ set(SOURCES
     MobileAdaptor.h
     positioning/Geoid.h
     positioning/PositionProvider.h
-    ScaleQuickItem.h
     traffic/AbstractTrafficDataSource.h
     traffic/Factor.h
     traffic/FileTrafficDataSource.h
     traffic/FLARMWarning.h
     traffic/TcpTrafficDataSource.h
     traffic/TrafficDataProvider.h
+    ui/ScaleQuickItem.h
     weather/Decoder.h
     weather/DownloadManager.h
     weather/METAR.h
@@ -126,13 +126,13 @@ set(SOURCES
     MobileAdaptor_share.cpp
     positioning/Geoid.cpp
     positioning/PositionProvider.cpp
-    ScaleQuickItem.cpp
     traffic/AbstractTrafficDataSource.cpp
     traffic/Factor.cpp
     traffic/FLARMWarning.cpp
     traffic/FileTrafficDataSource.cpp
     traffic/TcpTrafficDataSource.cpp
     traffic/TrafficDataProvider.cpp
+    ui/ScaleQuickItem.cpp
     weather/Decoder.cpp
     weather/DownloadManager.cpp
     weather/METAR.cpp

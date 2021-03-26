@@ -26,10 +26,9 @@ import QtQuick.Controls 2.15
 
 MapQuickItem {
     property var trafficInfo: ({})
-    property real track: 0
 
     property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
-    property real t: isFinite(track) ? 2*Math.PI*(track-flightMap.bearing)/360.0 : 0
+    property real t: isFinite(trafficInfo.TT) ? 2*Math.PI*(trafficInfo.TT-flightMap.bearing)/360.0 : 0
 
     coordinate: trafficInfo.coordinate.isValid ? trafficInfo.coordinate : satNav.lastValidCoordinate
     Behavior on coordinate {

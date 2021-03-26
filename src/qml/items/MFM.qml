@@ -66,7 +66,7 @@ Item {
 
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
         gesture.enabled: true
-        gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture|MapGestureArea.RotationGesture
+        gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture
         gesture.onPanStarted: {flightMap.followGPS = false}
         gesture.onPinchStarted: {flightMap.followGPS = false}
         gesture.onRotationStarted: {
@@ -185,7 +185,6 @@ Item {
 
         TrafficLabel { // Label for nondirectional traffic warning
             trafficInfo: flarmAdaptor.trafficObjectWithoutPosition
-            track: satNav.lastValidTrack
         }
 
         MapItemView { // Labels for traffic opponents
@@ -193,7 +192,6 @@ Item {
             delegate: Component {
                 TrafficLabel {
                     trafficInfo: model.modelData
-                    track: model.modelData.TT
                 }
             }
         }
@@ -401,6 +399,12 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
+        height: 66
+        width:  66
+
+        icon.source: "/icons/NorthArrow.svg"
+
+
         contentItem: Image {
             Layout.alignment: Qt.AlignHCenter
             id: northArrow
@@ -409,8 +413,6 @@ Item {
             rotation: -flightMap.bearing
 
             source: "/icons/NorthArrow.svg"
-            sourceSize.width: 44
-            sourceSize.height: 44
         }
 
         onClicked: {
@@ -429,12 +431,15 @@ Item {
 
         opacity: 0.9
         icon.source: "/icons/material/ic_my_location.svg"
-        visible: !flightMap.followGPS
+        enabled: !flightMap.followGPS
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*Qt.application.font.pixelSize
         anchors.bottom: navBar.top
         anchors.bottomMargin: 1.5*Qt.application.font.pixelSize
+
+        height: 66
+        width:  66
 
         onClicked: {
             mobileAdaptor.vibrateBrief()
@@ -446,13 +451,16 @@ Item {
     RoundButton {
         id: zoomIn
 
-        visible: flightMap.zoomLevel < flightMap.maximumZoomLevel
+        enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
         anchors.rightMargin: 0.5*Qt.application.font.pixelSize
         anchors.bottom: zoomOut.top
         anchors.bottomMargin: 0.5*Qt.application.font.pixelSize
+
+        height: 66
+        width:  66
 
         contentItem: Label {
             text: "+"
@@ -472,7 +480,7 @@ Item {
     RoundButton {
         id: zoomOut
 
-        visible: flightMap.zoomLevel > flightMap.minimumZoomLevel
+        enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
@@ -480,8 +488,11 @@ Item {
         anchors.bottom: navBar.top
         anchors.bottomMargin: 1.5*Qt.application.font.pixelSize
 
+        height: 66
+        width:  66
+
         contentItem: Label {
-            text: "-"
+            text: "–"
             font.bold: true
             font.pixelSize: Qt.application.font.pixelSize*1.2
             verticalAlignment: Text.AlignVCenter

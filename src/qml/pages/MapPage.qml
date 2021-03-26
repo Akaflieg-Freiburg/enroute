@@ -47,6 +47,9 @@ Page {
         anchors.top: parent.top
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
+        height: 66
+        width: 66
+
         onClicked: {
             mobileAdaptor.vibrateBrief()
             drawer.open()

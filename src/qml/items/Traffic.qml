@@ -43,7 +43,7 @@ MapQuickItem {
         Image {
             id: image
 
-            rotation: trafficInfo.TT-flightMap.bearing
+            rotation: isFinite(trafficInfo.TT) ? trafficInfo.TT-flightMap.bearing : 0
 
             source: trafficInfo.icon
 

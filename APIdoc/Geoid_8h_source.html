@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/Navigation_Geoid.h Source File</title>
+<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/positioning/Geoid.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -40,12 +40,12 @@ $(function() {
 <div id="main-nav"></div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8c12c52a72d5740bad448d635351014e.html">positioning</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Navigation_Geoid.h</div>  </div>
+<div class="title">Geoid.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
@@ -53,16 +53,16 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceNavigation.html">Navigation</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="namespacePositioning.html">   24</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a> {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classNavigation_1_1Geoid.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNavigation_1_1Geoid.html">Geoid</a></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classPositioning_1_1Geoid.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPositioning_1_1Geoid.html">Geoid</a></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classNavigation_1_1Geoid.html">Geoid</a>();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classPositioning_1_1Geoid.html">Geoid</a>();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    qreal <a class="code" href="classNavigation_1_1Geoid.html#a3e36d6b17267a7a9e5602af73df26443">operator()</a>(qreal latitude, qreal longitude);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    qreal <a class="code" href="classPositioning_1_1Geoid.html#a80a00f555538214ce8861eeab2f0a2a6">operator()</a>(qreal latitude, qreal longitude);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classNavigation_1_1Geoid.html#a06af5015fd99919a69f7e0978ddcf992">   67</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNavigation_1_1Geoid.html#a06af5015fd99919a69f7e0978ddcf992">valid</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (egm.size() != 0); }</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">   67</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">valid</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (egm.size() != 0); }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    QVector&lt;qint16&gt; egm; <span class="comment">// holds the data read from the binaray data file WW15MGH.DAC</span></div>
@@ -77,10 +77,10 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassNavigation_1_1Geoid_html"><div class="ttname"><a href="classNavigation_1_1Geoid.html">Navigation::Geoid</a></div><div class="ttdoc">Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid.</div><div class="ttdef"><b>Definition:</b> <a href="Navigation__Geoid_8h_source.html#l00049">Navigation_Geoid.h:49</a></div></div>
-<div class="ttc" id="anamespaceNavigation_html"><div class="ttname"><a href="namespaceNavigation.html">Navigation</a></div><div class="ttdef"><b>Definition:</b> <a href="Navigation__FLARMAdaptor_8h_source.html#l00033">Navigation_FLARMAdaptor.h:33</a></div></div>
-<div class="ttc" id="aclassNavigation_1_1Geoid_html_a3e36d6b17267a7a9e5602af73df26443"><div class="ttname"><a href="classNavigation_1_1Geoid.html#a3e36d6b17267a7a9e5602af73df26443">Navigation::Geoid::operator()</a></div><div class="ttdeci">qreal operator()(qreal latitude, qreal longitude)</div><div class="ttdoc">return geoidal separation – the difference between AMSL and ellipsoidal height.</div></div>
-<div class="ttc" id="aclassNavigation_1_1Geoid_html_a06af5015fd99919a69f7e0978ddcf992"><div class="ttname"><a href="classNavigation_1_1Geoid.html#a06af5015fd99919a69f7e0978ddcf992">Navigation::Geoid::valid</a></div><div class="ttdeci">bool valid() const</div><div class="ttdoc">True if geoidal separation is available or false otherwise.</div><div class="ttdef"><b>Definition:</b> <a href="Navigation__Geoid_8h_source.html#l00067">Navigation_Geoid.h:67</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1Geoid_html_a80a00f555538214ce8861eeab2f0a2a6"><div class="ttname"><a href="classPositioning_1_1Geoid.html#a80a00f555538214ce8861eeab2f0a2a6">Positioning::Geoid::operator()</a></div><div class="ttdeci">qreal operator()(qreal latitude, qreal longitude)</div><div class="ttdoc">return geoidal separation – the difference between AMSL and ellipsoidal height.</div></div>
+<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00024">Geoid.h:24</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1Geoid_html"><div class="ttname"><a href="classPositioning_1_1Geoid.html">Positioning::Geoid</a></div><div class="ttdoc">Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid.</div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00049">Geoid.h:49</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1Geoid_html_aa885b3293514051af2688d0a5c260e00"><div class="ttname"><a href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">Positioning::Geoid::valid</a></div><div class="ttdeci">bool valid() const</div><div class="ttdoc">True if geoidal separation is available or false otherwise.</div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00067">Geoid.h:67</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

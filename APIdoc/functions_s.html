@@ -43,9 +43,6 @@ $(function() {
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
 <h3><a id="index_s"></a>- s -</h3><ul>
-<li>SatNav()
-: <a class="el" href="classNavigation_1_1SatNav.html#ad44fa36e659065fbb4ef1a49d9acc377">Navigation::SatNav</a>
-</li>
 <li>save()
 : <a class="el" href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45">FlightRoute</a>
 </li>
@@ -76,6 +73,9 @@ $(function() {
 <li>setAutoFlightDetection()
 : <a class="el" href="classGlobalSettings.html#a8eedf70753e4e769d8519a6890d77ed0">GlobalSettings</a>
 </li>
+<li>setConnectivityStatus()
+: <a class="el" href="classTraffic_1_1AbstractTrafficDataSource.html#ab65171b183f2c9505885b7eaff5ee13a">Traffic::AbstractTrafficDataSource</a>
+</li>
 <li>setCoordinate()
 : <a class="el" href="classGeoMaps_1_1Waypoint.html#aed15231057ecf21ff9f3b842ba3b051e">GeoMaps::Waypoint</a>
 </li>
@@ -94,6 +94,9 @@ $(function() {
 <li>setDownloadManager()
 : <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a0133a628c35d551dc5c45a45be80f715">GeoMaps::GeoMapProvider</a>
 , <a class="el" href="classGeoMaps_1_1Waypoint.html#a742a64ffd7c9fed96d92799bf50f3df8">GeoMaps::Waypoint</a>
+</li>
+<li>setErrorString()
+: <a class="el" href="classTraffic_1_1AbstractTrafficDataSource.html#abbd52d4d719250867bd457ce8c2ec30d">Traffic::AbstractTrafficDataSource</a>
 </li>
 <li>setExtendedName()
 : <a class="el" href="classGeoMaps_1_1Waypoint.html#a87c10eb6362db250aa281e217a6226a2">GeoMaps::Waypoint</a>
@@ -159,7 +162,12 @@ $(function() {
 : <a class="el" href="classAviationUnits_1_1Angle.html#aa315b6c3dccead24452bba1e7810a154">AviationUnits::Angle</a>
 </li>
 <li>Skydiver
-: <a class="el" href="classNavigation_1_1Traffic.html#a6cb9dc4086bbaa50da27017d0db8aed1a235720b7ff91fa6351113f7375b05d05">Navigation::Traffic</a>
+: <a class="el" href="classTraffic_1_1Factor.html#ab6786ddd025996b49350ce33ab341bb9a7f5eeb512591348fde26903e52024a11">Traffic::Factor</a>
+</li>
+<li>sourceName
+: <a class="el" href="classTraffic_1_1AbstractTrafficDataSource.html#a9f7d2e4e44ff979a3553d11af9b1292b">Traffic::AbstractTrafficDataSource</a>
+, <a class="el" href="classTraffic_1_1FileTrafficDataSource.html#a69dd04e3b9d9f73def388d379406a393">Traffic::FileTrafficDataSource</a>
+, <a class="el" href="classTraffic_1_1TcpTrafficDataSource.html#aa9420c1cb40f455da6e804bfb762cb15">Traffic::TcpTrafficDataSource</a>
 </li>
 <li>startFileDownload()
 : <a class="el" href="classGeoMaps_1_1Downloadable.html#a5550dee514ccdd5af786d38016965c97">GeoMaps::Downloadable</a>
@@ -171,38 +179,31 @@ $(function() {
 : <a class="el" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d">MobileAdaptor</a>
 </li>
 <li>StaticObstacle
-: <a class="el" href="classNavigation_1_1Traffic.html#a6cb9dc4086bbaa50da27017d0db8aed1adf79736e304af8fcf6a9a972ad14eb7b">Navigation::Traffic</a>
+: <a class="el" href="classTraffic_1_1Factor.html#ab6786ddd025996b49350ce33ab341bb9a76bba37569ee3d3284a21424cb410c38">Traffic::Factor</a>
 </li>
 <li>Station()
 : <a class="el" href="classWeather_1_1Station.html#a63ccdb9be16c434b7389b3eb105a7f3c">Weather::Station</a>
 </li>
+<li>Status
+: <a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">Positioning::PositionProvider</a>
+</li>
 <li>status()
-: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#a3bb4489dd738c9c4b0797816fb21fb94">Navigation::FLARMAdaptor</a>
-</li>
-<li>Status
-: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#af660d543bdd3db773a888a84a11e9b03">Navigation::FLARMAdaptor</a>
-</li>
-<li>status
-: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#a1bef4c14d1820fe52bf3730bdae51101">Navigation::FLARMAdaptor</a>
-</li>
-<li>Status
-: <a class="el" href="classNavigation_1_1SatNav.html#a348e501dd1ea5e66440544de4289419f">Navigation::SatNav</a>
-</li>
-<li>status
-: <a class="el" href="classNavigation_1_1SatNav.html#ae8f103adf81dd61678f2ee8e58c5c870">Navigation::SatNav</a>
+: <a class="el" href="classPositioning_1_1PositionProvider.html#a45c319d7dde0bf08950bb851cf148d97">Positioning::PositionProvider</a>
 </li>
 <li>statusAsString
-: <a class="el" href="classNavigation_1_1SatNav.html#a0f497cd50ad17508317c68b2eea151e3">Navigation::SatNav</a>
+: <a class="el" href="classPositioning_1_1PositionProvider.html#a2f617d5ca92ef39c69c275cc3a06b3ba">Positioning::PositionProvider</a>
 </li>
 <li>statusChanged()
-: <a class="el" href="classNavigation_1_1FLARMAdaptor.html#abb62707bf6c9606f61048ac14e38632f">Navigation::FLARMAdaptor</a>
-, <a class="el" href="classNavigation_1_1SatNav.html#af6e283c2358c242105a425ba75c65cc3">Navigation::SatNav</a>
+: <a class="el" href="classPositioning_1_1PositionProvider.html#ab0b26b258d612b62cdb759d873057e66">Positioning::PositionProvider</a>
+</li>
+<li>statusString()
+: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#aa976cd5c7ac9f1cefe6c68fd5ca2b63e">Traffic::TrafficDataProvider</a>
+</li>
+<li>statusStringChanged()
+: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a306402d2554b07c4a04eb72d58173bb2">Traffic::TrafficDataProvider</a>
 </li>
 <li>stopFileDownload()
 : <a class="el" href="classGeoMaps_1_1Downloadable.html#a85800beb295e19f41bf216eb7473d7b2">GeoMaps::Downloadable</a>
-</li>
-<li>stringToCoordinate()
-: <a class="el" href="classAviationUnits.html#a1fbbba496d8db398657e2a906ddc85fc">AviationUnits</a>
 </li>
 <li>styleFileURL
 : <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">GeoMaps::GeoMapProvider</a>
@@ -215,7 +216,7 @@ $(function() {
 </li>
 <li>summary()
 : <a class="el" href="classFlightRoute.html#a54c00e981d11ed48714418cd633540cd">FlightRoute</a>
-, <a class="el" href="classWeather_1_1METAR.html#a64ee6087e0dc1a9142e39f056206490a">Weather::METAR</a>
+, <a class="el" href="classWeather_1_1METAR.html#aacc664be5a6c128dcd0d1ac49d6994f0">Weather::METAR</a>
 </li>
 <li>summaryChanged()
 : <a class="el" href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">FlightRoute</a>

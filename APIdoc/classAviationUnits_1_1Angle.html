@@ -40,7 +40,7 @@ $(function() {
 <div id="main-nav"></div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="classAviationUnits.html">AviationUnits</a></li><li class="navelem"><a class="el" href="classAviationUnits_1_1Angle.html">Angle</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespaceAviationUnits.html">AviationUnits</a></li><li class="navelem"><a class="el" href="classAviationUnits_1_1Angle.html">Angle</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -53,7 +53,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Convenience class for angle computations.  
+<p>Converts string representation of a geographical coordinate into QGeoCoordinate.  
  <a href="classAviationUnits_1_1Angle.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>&gt;</code></p>
@@ -101,7 +101,16 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a157eda82a7a4255a21808423b05a8f36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Convenience class for angle computations. </p>
+<div class="textblock"><p>Converts string representation of a geographical coordinate into QGeoCoordinate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">geoLat</td><td>Geographical latitude, as a string of the form "49.00864900N".</td></tr>
+    <tr><td class="paramname">geoLong</td><td>Geographical longitude, as a string of the form "7.22559722E".</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A (possibly invalid) QGeoCoordinate</dd></dl>
+<p>Convenience class for angle computations</p>
 <p>This extremely simple class allows computation with angles, without the need to worry about units. </p>
 
 <p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00073">73</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
@@ -137,9 +146,9 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a> computed </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a> computed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00151">151</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00169">169</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -170,13 +179,13 @@ Static Public Member Functions</h2></td></tr>
 <p>Cosine of an angle, as a dimension-less number. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">arg</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a> whose cosine is computed</td></tr>
+    <tr><td class="paramname">arg</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a> whose cosine is computed</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Cosine of the angle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00135">135</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00153">153</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -207,13 +216,13 @@ Static Public Member Functions</h2></td></tr>
 <p>Constructs an angle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">angleInDEG</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a> in degrees</td></tr>
+    <tr><td class="paramname">angleInDEG</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a> in degrees</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00093">93</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00111">111</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -244,13 +253,13 @@ Static Public Member Functions</h2></td></tr>
 <p>Constructs an angle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">angleInRAD</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a> in radian</td></tr>
+    <tr><td class="paramname">angleInRAD</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a> in radian</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00081">81</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00099">99</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -280,7 +289,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Checks if the angle is valid. </p>
 <dl class="section return"><dt>Returns</dt><dd>True is the angle is a finite number </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00103">103</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00121">121</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -317,7 +326,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Sum of the two angles </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00111">111</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00129">129</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +363,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Difference of the two angles </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00123">123</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00141">141</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -385,13 +394,13 @@ Static Public Member Functions</h2></td></tr>
 <p>Sine of an angle, as a dimension-less number. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">arg</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a> whose sine is computed</td></tr>
+    <tr><td class="paramname">arg</td><td><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a> whose sine is computed</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Sine of the angle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00143">143</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00161">161</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -419,9 +428,9 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Convert angle to degrees. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a>, as a number in degrees </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a>, as a number in degrees </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00167">167</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00185">185</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>
@@ -441,7 +450,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns angle in degrees, normalized to lie in the interval [0.0, 360.0]. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a>, as a number in degrees. The result is NaN, or lies in the interval [0.0, 360.0] </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a>, as a number in degrees. The result is NaN, or lies in the interval [0.0, 360.0] </dd></dl>
 
 </div>
 </div>
@@ -469,9 +478,9 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Convert angle to radian. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Convenience class for angle computations.">Angle</a>, as a number in radian </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAviationUnits_1_1Angle.html" title="Converts string representation of a geographical coordinate into QGeoCoordinate.">Angle</a>, as a number in radian </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00161">161</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AviationUnits_8h_source.html#l00179">179</a> of file <a class="el" href="AviationUnits_8h_source.html">AviationUnits.h</a>.</p>
 
 </div>
 </div>

@@ -25,6 +25,8 @@ import QtQuick.Controls 2.15
 
 
 MapQuickItem {
+    id: trafficLabel
+
     property var trafficInfo: ({})
 
     property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
@@ -37,6 +39,14 @@ MapQuickItem {
     }
 
     visible: trafficInfo.valid
+
+    Connections {
+        // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+        // is not updated when the height of the map changes. It does get updated when the
+        // width of the map changes. We use the undocumented method polishAndUpdate() here.
+        target: flightMap
+        function onHeightChanged() { trafficLabel.polishAndUpdate() }
+    }
 
     sourceItem: Label {
         id: lbl

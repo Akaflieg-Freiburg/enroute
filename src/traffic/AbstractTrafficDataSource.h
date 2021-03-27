@@ -104,7 +104,7 @@ public:
     }
 
     /*! \brief Source name */
-    Q_PROPERTY(QString sourceName CONSTANT)
+    Q_PROPERTY(QString sourceName READ sourceName CONSTANT)
 
     /*! \brief Getter function for the property with the same name
      *

@@ -39,6 +39,14 @@ MapQuickItem {
 
     visible: trafficInfo.valid
 
+    Connections {
+        // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+        // is not updated when the height of the map changes. It does get updated when the
+        // width of the map changes. We use the undocumented method polishAndUpdate() here.
+        target: flightMap
+        function onHeightChanged() { traffic1MapItem.polishAndUpdate() }
+    }
+
     sourceItem: Item {
         Image {
             id: image

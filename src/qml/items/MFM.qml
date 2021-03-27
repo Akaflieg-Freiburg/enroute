@@ -204,6 +204,14 @@ Item {
             coordinate: satNav.lastValidCoordinate
             visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.track >= 0)
 
+            Connections {
+                // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+                // is not updated when the height of the map changes. It does get updated when the
+                // width of the map changes. We use the undocumented method polishAndUpdate() here.
+                target: flightMap
+                function onHeightChanged() { fiveMinuteBar.polishAndUpdate() }
+            }
+
             sourceItem: Item{
                 Rectangle {
                     id: fiveMinuteBarBaseRect
@@ -252,16 +260,22 @@ Item {
             anchorPoint.y: image.height/2
             coordinate: satNav.lastValidCoordinate
 
-            sourceItem: Item{
-                Image {
-                    id: image
+            Connections {
+                // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+                // is not updated when the height of the map changes. It does get updated when the
+                // width of the map changes. We use the undocumented method polishAndUpdate() here.
+                target: flightMap
+                function onHeightChanged() { ownPosition.polishAndUpdate() }
+            }
 
-                    rotation: flightMap.animatedTrack-flightMap.bearing
+            sourceItem: Image {
+                id: image
 
-                    source:  satNav.icon
-                    sourceSize.width: 50
-                    sourceSize.height: 50
-                }
+                rotation: flightMap.animatedTrack-flightMap.bearing
+
+                source:  satNav.icon
+                sourceSize.width: 50
+                sourceSize.height: 50
             }
         }
 
@@ -289,10 +303,19 @@ Item {
             delegate: Component {
 
                 MapQuickItem {
+                    id: midFieldWP
 
                     anchorPoint.x: image.width/2
                     anchorPoint.y: image.height/2
                     coordinate: model.modelData.coordinate
+
+                    Connections {
+                        // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+                        // is not updated when the height of the map changes. It does get updated when the
+                        // width of the map changes. We use the undocumented method polishAndUpdate() here.
+                        target: flightMap
+                        function onHeightChanged() { midFieldWP.polishAndUpdate() }
+                    }
 
                     sourceItem: Item{
                         Image {

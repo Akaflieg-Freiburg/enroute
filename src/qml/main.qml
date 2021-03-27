@@ -170,9 +170,8 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()
-                                dialogLoader.active = false
-                                dialogLoader.source = "dialogs/SatNavStatusDialog.qml"
-                                dialogLoader.active = true
+                                stackView.pop()
+                                stackView.push("pages/Positioning.qml")
                                 aboutMenu.close()
                                 drawer.close()
                             }
@@ -215,7 +214,6 @@ ApplicationWindow {
                             text: qsTr("Manual")
                             icon.source: "/icons/material/ic_help_outline.svg"
                             Layout.fillWidth: true
-                            visible: !satNav.isInFlight
 
                             onClicked: {
                                 mobileAdaptor.vibrateBrief()

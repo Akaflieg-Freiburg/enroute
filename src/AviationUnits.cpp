@@ -106,7 +106,7 @@ QString AviationUnits::Distance::toString(bool useMetric, bool vertical, bool fo
 auto AviationUnits::Speed::toString() const -> QString {
     if (GlobalSettings::useMetricUnitsStatic())
         return QString("%1 km/h").arg( qRound(toKMH()) );
-    return QString("%1 kt").arg( qRound(toKT()) );
+    return QString("%1 kn").arg( qRound(toKN()) );
 }
 
 

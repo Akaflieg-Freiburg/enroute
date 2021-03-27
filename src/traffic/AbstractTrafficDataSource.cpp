@@ -197,9 +197,9 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
 
         // Ground speed
         bool ok = false;
-        auto groundSpeed = AviationUnits::Speed::fromKT(arguments[6].toDouble(&ok));
+        auto groundSpeed = AviationUnits::Speed::fromKN(arguments[6].toDouble(&ok));
         if (!ok) {
-            groundSpeed = AviationUnits::Speed::fromKT(qQNaN());
+            groundSpeed = AviationUnits::Speed::fromKN(qQNaN());
         }
         if (groundSpeed.isFinite()) {
             pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS() );

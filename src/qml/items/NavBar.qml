@@ -58,7 +58,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: satNav.altitudeInFeetAsString
+                text: satNav.trueAltitude.isFinite() ? Math.round(satNav.trueAltitude.toFeet()) + " ft" : "-"
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"
@@ -87,7 +87,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: satNav.flightLevel
+                text: satNav.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(satNav.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"
@@ -115,7 +115,11 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: globalSettings.useMetricUnits ? satNav.groundSpeedInKMHAsString : satNav.groundSpeedInKnotsAsString
+                text: {
+                    if (!satNav.GS.isFinite())
+                        return "-"
+                    return globalSettings.useMetricUnits ? Math.round(satNav.GS.toKMH()) + " km/h" : Math.round(satNav.GS.toKN()) + " kn"
+                }
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"
@@ -142,7 +146,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: satNav.trackAsString
+                text: satNav.TT.isFinite() ? satNav.TT.toDEG() + "°" : "-"
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"

@@ -53,6 +53,8 @@ namespace AviationUnits {
      * need to worry about units.
      */
     class Angle {
+        Q_GADGET
+
     public:
         /*! \brief Constructs an angle
          *
@@ -82,7 +84,7 @@ namespace AviationUnits {
          *
          * @returns True is the angle is a finite number
          */
-        bool isFinite() const { return std::isfinite(_angleInRAD); }
+        Q_INVOKABLE bool isFinite() const { return std::isfinite(_angleInRAD); }
 
         /*! \brief Sum of two angles
          *
@@ -106,6 +108,17 @@ namespace AviationUnits {
             Angle result;
             result._angleInRAD = _angleInRAD - rhs._angleInRAD;
             return result;
+        }
+
+        /*! \brief Comparison: not equal
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        auto operator!=(AviationUnits::Angle rhs) const
+        {
+            return _angleInRAD != rhs._angleInRAD;
         }
 
         /*! \brief Cosine of an angle, as a dimension-less number
@@ -140,13 +153,13 @@ namespace AviationUnits {
          *
          * @returns Angle, as a number in radian
          */
-        double toRAD() const { return _angleInRAD; }
+        Q_INVOKABLE double toRAD() const { return _angleInRAD; }
 
         /*! \brief Convert angle to degrees
          *
          * @returns Angle, as a number in degrees
          */
-        double toDEG() const { return _angleInRAD / RAD_per_DEG; }
+        Q_INVOKABLE double toDEG() const { return _angleInRAD / RAD_per_DEG; }
 
         /*! \brief Returns angle in degrees, normalized to lie in the interval
          * [0.0, 360.0]
@@ -178,8 +191,6 @@ namespace AviationUnits {
         Q_GADGET
 
     public:
-        Q_PROPERTY(double toM READ toM)
-
         /*! \brief Constructs a distance
          *
          * @param distanceInM distance in meters
@@ -219,7 +230,7 @@ namespace AviationUnits {
          *
          * @returns True is the distance is a finite number
          */
-        bool isFinite() const { return std::isfinite(_distanceInM); }
+        Q_INVOKABLE bool isFinite() const { return std::isfinite(_distanceInM); }
 
         /*! \brief Checks if the distance is negative
          *
@@ -270,19 +281,19 @@ namespace AviationUnits {
          *
          * @returns distance in meters
          */
-        double toM() const { return _distanceInM; }
+        Q_INVOKABLE double toM() const { return _distanceInM; }
 
         /*! \brief Convert to meters
          *
          * @returns distance in meters
          */
-        double toKM() const { return _distanceInM / 1000.; }
+        Q_INVOKABLE double toKM() const { return _distanceInM / 1000.; }
 
         /*! \brief Convert to feet
          *
          * @returns distance in feet
          */
-        double toFeet() const { return _distanceInM / MetersPerFeet; }
+        Q_INVOKABLE double toFeet() const { return _distanceInM / MetersPerFeet; }
 
         /*! \brief Convert to string
          *
@@ -301,7 +312,7 @@ namespace AviationUnits {
          *  @returns A string that describes the distance, or an empty string if
          *  no reasonable distance is set.
          */
-        QString toString(bool useMetric, bool vertical, bool forceSign=false) const;
+        Q_INVOKABLE QString toString(bool useMetric, bool vertical, bool forceSign=false) const;
 
     private:
         static constexpr double MetersPerFeet = 0.3048;
@@ -317,6 +328,8 @@ namespace AviationUnits {
      * need to worry about units.
      */
     class Speed {
+        Q_GADGET
+
     public:
         /*! \brief Constructs a speed
          *
@@ -336,9 +349,9 @@ namespace AviationUnits {
          *
          * @returns speed
          */
-        static Speed fromKT(double speedInKT) {
+        static Speed fromKN(double speedInKT) {
             Speed result;
-            result._speedInMPS = speedInKT / KT_per_MPS;
+            result._speedInMPS = speedInKT / KN_per_MPS;
             return result;
         }
 
@@ -358,7 +371,7 @@ namespace AviationUnits {
          *
          * @returns True is the distance is a finite number
          */
-        bool isFinite() const { return std::isfinite(_speedInMPS); }
+        Q_INVOKABLE bool isFinite() const { return std::isfinite(_speedInMPS); }
 
         /*! \brief Checks if the speed is negative
          *
@@ -398,19 +411,19 @@ namespace AviationUnits {
          *
          * @returns speed in meters per second
          */
-        double toMPS() const { return _speedInMPS; }
+        Q_INVOKABLE double toMPS() const { return _speedInMPS; }
 
         /*! \brief Convert to knots
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        double toKT() const { return _speedInMPS * KT_per_MPS; }
+        Q_INVOKABLE double toKN() const { return _speedInMPS * KN_per_MPS; }
 
-        /*! \brief Convert to knots
+        /*! \brief Convert to km/h
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        double toKMH() const { return _speedInMPS * KMH_per_MPS; }
+        Q_INVOKABLE double toKMH() const { return _speedInMPS * KMH_per_MPS; }
 
         /*! \brief Print speed as a string
          *
@@ -423,7 +436,7 @@ namespace AviationUnits {
 
         /*! \brief Unitless constant: one knot / meters per second
          */
-        static constexpr double KT_per_MPS = 1.943844;
+        static constexpr double KN_per_MPS = 1.943844;
 
         /*! \brief Unitless constant: one km/h / meters per second
          */
@@ -431,7 +444,7 @@ namespace AviationUnits {
 
         /*! \brief Unitless constant: one km/h / knot
          */
-        static constexpr double KMH_per_KT = KMH_per_MPS / KT_per_MPS;
+        static constexpr double KMH_per_KT = KMH_per_MPS / KN_per_MPS;
 
     private:
         // Speed in meters per second
@@ -551,5 +564,7 @@ QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed);
     return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());
 }
 
+Q_DECLARE_METATYPE(AviationUnits::Angle)
 Q_DECLARE_METATYPE(AviationUnits::Distance)
+Q_DECLARE_METATYPE(AviationUnits::Speed)
 

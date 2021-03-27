@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,7 +48,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent)
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider != nullptr) {
         connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated_TrafficDataProvider);
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::barometricAltitudeChanged, this, &PositionProvider::barometricAltitudeChanged);
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::barometricAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
     }
 
     QSettings settings;
@@ -59,7 +59,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent)
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         _lastValidCoordinate = tmp;
     }
-    _lastValidTrack = qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359);
+    _lastValidTT = AviationUnits::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
 
     if (source != nullptr) {
         source->startUpdates();
@@ -81,30 +81,20 @@ Positioning::PositionProvider::~PositionProvider()
     settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), _lastValidCoordinate.latitude());
     settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), _lastValidCoordinate.longitude());
     settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), _lastValidCoordinate.altitude());
-    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), _lastValidTrack);
+    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), _lastValidTT.toDEG());
     delete source;
     delete _geoid;
 }
 
 
-auto Positioning::PositionProvider::altitudeInFeet() const -> int
+auto Positioning::PositionProvider::trueAltitude() const -> AviationUnits::Distance
 {
     if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
-        return 0;
+        return {};
     }
 
-    auto alt = AviationUnits::Distance::fromM(lastInfo.coordinate().altitude());
-    return qRound(alt.toFeet());
-}
+    return AviationUnits::Distance::fromM(lastInfo.coordinate().altitude());
 
-
-auto Positioning::PositionProvider::altitudeInFeetAsString() const -> QString
-{
-    if (lastInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
-        return QStringLiteral("-");
-    }
-
-    return myLocale.toString(altitudeInFeet()) + " ft";
 }
 
 
@@ -138,93 +128,66 @@ auto Positioning::PositionProvider::globalInstance() -> PositionProvider *
 }
 
 
-auto Positioning::PositionProvider::groundSpeedInKnots() const -> int
-{
-    auto gsInMPS = groundSpeedInMetersPerSecond();
-
-    if (gsInMPS < 0.0) {
-        return -1;
-    }
-
-    auto groundSpeed = AviationUnits::Speed::fromMPS(gsInMPS);
-    return qRound(groundSpeed.toKT());
-}
-
-
-auto Positioning::PositionProvider::groundSpeedInKnotsAsString() const -> QString
-{
-    auto gsInKnots = groundSpeedInKnots();
-
-    if (gsInKnots < 0) {
-        return QStringLiteral("-");
-    }
-    return myLocale.toString(gsInKnots) + " kt";
-}
-
-
-auto Positioning::PositionProvider::groundSpeedInKMHAsString() const -> QString
-{
-    auto gsInMPS = groundSpeedInMetersPerSecond();
-
-    if (gsInMPS < 0.0) {
-        return QStringLiteral("-");
-    }
-
-    auto gsInKMH = qRound(AviationUnits::Speed::fromMPS(gsInMPS).toKMH());
-    return myLocale.toString(gsInKMH) + " km/h";
-}
-
-
-auto Positioning::PositionProvider::groundSpeedInMetersPerSecond() const -> qreal
+auto Positioning::PositionProvider::GS() const -> AviationUnits::Speed
 {
     if (!lastInfo.isValid()) {
-        return -1.0;
+        return {};
     }
     if (!lastInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
-        return -1.0;
+        return {};
     }
 
-    auto groundSpeed = lastInfo.attribute(QGeoPositionInfo::GroundSpeed);
-    if (!qIsFinite(groundSpeed)) {
-        return -1.0;
+    auto groundSpeedMPS = lastInfo.attribute(QGeoPositionInfo::GroundSpeed);
+    if (!qIsFinite(groundSpeedMPS)) {
+        return {};
     }
-    if (groundSpeed < 0.0) {
-        return -1.0;
+    if (groundSpeedMPS < 0.0) {
+        return {};
     }
 
-    return groundSpeed;
+    return AviationUnits::Speed::fromMPS(groundSpeedMPS);
 }
 
 
-auto Positioning::PositionProvider::horizontalPrecisionInMeters() const -> int
+auto Positioning::PositionProvider::trueAltitudeErrorEstimate() const -> AviationUnits::Distance
 {
     if (!lastInfo.isValid()) {
-        return -1;
+        return {};
+    }
+    if (!lastInfo.hasAttribute(QGeoPositionInfo::VerticalAccuracy)) {
+        return {};
+    }
+
+    auto errorEstimate = lastInfo.attribute(QGeoPositionInfo::VerticalAccuracy);
+    if (!qIsFinite(errorEstimate)) {
+        return {};
+    }
+    if (errorEstimate <= 0.0) {
+        return {};
+    }
+
+    return AviationUnits::Distance::fromM(errorEstimate);
+}
+
+
+auto Positioning::PositionProvider::positionErrorEstimate() const -> AviationUnits::Distance
+{
+    if (!lastInfo.isValid()) {
+        return {};
     }
     if (!lastInfo.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
-        return -1;
+        return {};
     }
 
     auto horizontalPrecision = lastInfo.attribute(QGeoPositionInfo::HorizontalAccuracy);
     if (!qIsFinite(horizontalPrecision)) {
-        return -1;
+        return {};
     }
     if (horizontalPrecision <= 0.0) {
-        return -1;
+        return {};
     }
 
-    return static_cast<int>(qFloor(horizontalPrecision+0.5));
-}
-
-
-auto Positioning::PositionProvider::horizontalPrecisionInMetersAsString() const -> QString
-{
-    auto _horizontalPrecisionInMeters = horizontalPrecisionInMeters();
-
-    if (_horizontalPrecisionInMeters < 0) {
-        return QStringLiteral("-");
-    }
-    return QStringLiteral("±%1 m").arg(_horizontalPrecisionInMeters);
+    return AviationUnits::Distance::fromM(horizontalPrecision);
 }
 
 
@@ -234,7 +197,7 @@ auto Positioning::PositionProvider::icon() const -> QString
         return QStringLiteral("/icons/self-noPosition.svg");
     }
 
-    if (track() < 0) {
+    if (!TT().isFinite()) {
         return QStringLiteral("/icons/self-noDirection.svg");
     }
 
@@ -401,14 +364,16 @@ void Positioning::PositionProvider::statusUpdate(const QGeoPositionInfo &info)
 
     // Change _isInFlight if appropriate.
     if (_isInFlight) {
+#warning could be qNaN
         // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
-        if (groundSpeedInKnots() < minFlightSpeedInKT-flightSpeedHysteresis) {
+        if (GS().toKN() < minFlightSpeedInKT-flightSpeedHysteresis) {
             _isInFlight = false;
             emit isInFlightChanged();
         }
     } else {
+#warning could be qNaN
         // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
-        if (groundSpeedInKnots() > minFlightSpeedInKT) {
+        if (GS().toKN() > minFlightSpeedInKT) {
             _isInFlight = true;
             emit isInFlightChanged();
         }
@@ -420,10 +385,11 @@ void Positioning::PositionProvider::statusUpdate(const QGeoPositionInfo &info)
     }
 
     // emit lastValidTrackChanged if appropriate
-    auto newTrack = track();
-    if ((newTrack >= 0) && (newTrack != _lastValidTrack)) {
-        _lastValidTrack = newTrack;
-        emit lastValidTrackChanged();
+#warning could be qNaN
+    auto newTT = TT();
+    if (newTT.isFinite() && (newTT != _lastValidTT)) {
+        _lastValidTT = newTT;
+        emit lastValidTTChanged(_lastValidTT);
     }
 }
 
@@ -453,37 +419,63 @@ auto Positioning::PositionProvider::timestampAsString() const -> QString
 }
 
 
-auto Positioning::PositionProvider::track() const -> int
+auto Positioning::PositionProvider::TT() const -> AviationUnits::Angle
 {
-    if (groundSpeedInKnots() < 4) {
-        return -1;
+#warning Could be qNaN
+    if (GS().toKN() < 4) {
+        return {};
     }
     if (!lastInfo.hasAttribute(QGeoPositionInfo::Direction)) {
-        return -1;
+        return {};
     }
 
     auto track = lastInfo.attribute(QGeoPositionInfo::Direction);
     if (!qIsFinite(track)) {
-        return -1;
+        return {};
     }
-
-    auto intTrack = static_cast<int>(qFloor(track+0.5));
-    if ((intTrack < 0) || (intTrack > 360)) {
-        return -1;
-    }
-
-    return intTrack % 360;
+    return AviationUnits::Angle::fromDEG(track);
 }
 
 
-auto Positioning::PositionProvider::trackAsString() const -> QString
+auto Positioning::PositionProvider::verticalSpeed() const -> AviationUnits::Speed
 {
-    auto _track = track();
-
-    if (_track < 0) {
-        return QStringLiteral("-");
+    if (!lastInfo.isValid()) {
+        return {};
     }
-    return QStringLiteral("%1°").arg(_track);
+    if (!lastInfo.hasAttribute(QGeoPositionInfo::VerticalSpeed)) {
+        return {};
+    }
+
+    auto vSpeedMPS = lastInfo.attribute(QGeoPositionInfo::VerticalSpeed);
+    if (!qIsFinite(vSpeedMPS)) {
+        return {};
+    }
+    if (vSpeedMPS <= 0.0) {
+        return {};
+    }
+
+    return AviationUnits::Speed::fromMPS(vSpeedMPS);
+}
+
+
+auto Positioning::PositionProvider::VAR() const -> AviationUnits::Angle
+{
+    if (!lastInfo.isValid()) {
+        return {};
+    }
+    if (!lastInfo.hasAttribute(QGeoPositionInfo::MagneticVariation)) {
+        return {};
+    }
+
+    auto varDEG = lastInfo.attribute(QGeoPositionInfo::MagneticVariation);
+    if (!qIsFinite(varDEG)) {
+        return {};
+    }
+    if (varDEG <= 0.0) {
+        return {};
+    }
+
+    return AviationUnits::Angle::fromDEG(varDEG);
 }
 
 
@@ -510,7 +502,7 @@ auto Positioning::PositionProvider::wayTo(const QGeoCoordinate& position) const 
 }
 
 
-auto Positioning::PositionProvider::barometricAltitude()  -> AviationUnits::Distance
+auto Positioning::PositionProvider::pressureAltitude()  -> AviationUnits::Distance
 {
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider == nullptr) {
@@ -520,13 +512,3 @@ auto Positioning::PositionProvider::barometricAltitude()  -> AviationUnits::Dist
     return trafficDataProvider->barometricAltitude();
 }
 
-
-auto Positioning::PositionProvider::flightLevel() -> QString
-{
-    auto baroAlt = barometricAltitude();
-    if (!baroAlt.isFinite()) {
-        return "-";
-    }
-
-    return QString("FL%1").arg(qRound(baroAlt.toFeet() / 100.0), 3, 10, QChar('0') );
-}

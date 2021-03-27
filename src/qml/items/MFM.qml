@@ -58,7 +58,7 @@ Item {
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
-        property real animatedTrack: satNav.lastValidTrack
+        property real animatedTrack: satNav.lastValidTT.isFinite() ? satNav.lastValidTT.toDEG() : 0
         Behavior on animatedTrack { RotationAnimation {duration: 400; direction: RotationAnimation.Shortest } }
 
 
@@ -86,7 +86,7 @@ Item {
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
             when: globalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: globalSettings.mapBearingPolicy === GlobalSettings.TTUp ? satNav.lastValidTrack : 0
+            value: globalSettings.mapBearingPolicy === GlobalSettings.TTUp ? satNav.lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -111,6 +111,8 @@ Item {
                 // If not in flight, then aircraft stays in center of display
                 if (!satNav.isInFlight)
                     return satNav.lastValidCoordinate
+                if (!satNav.lastValidTT.isFinite())
+                    return satNav.lastValidCoordinate
 
                 // Otherwise, we position the aircraft someplace on a circle around the
                 // center, so that the map shows a larger portion of the airspace ahead
@@ -127,7 +129,7 @@ Item {
                                         )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
-                return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, satNav.lastValidTrack)
+                return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, satNav.lastValidTT.toDEG())
             }
         }
 
@@ -202,7 +204,7 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: satNav.lastValidCoordinate
-            visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.track >= 0)
+            visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.TT.isFinite())
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -216,8 +218,7 @@ Item {
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || satNav.isInFlight) ?
-                                                                            satNav.groundSpeedInMetersPerSecond : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? satNav.GS.toMPS() : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing

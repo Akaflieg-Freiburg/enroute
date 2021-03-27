@@ -74,7 +74,7 @@ auto FlightRoute::Leg::GS() const -> AviationUnits::Speed
     // Law of cosine for wind triangle
     auto GSInKT = qSqrt( TASInKT*TASInKT + WSInKT*WSInKT - 2.0*TASInKT*WSInKT*AviationUnits::Angle::cos(WD-TH()));
 
-    return AviationUnits::Speed::fromKT(GSInKT);
+    return AviationUnits::Speed::fromKN(GSInKT);
 }
 
 
@@ -99,8 +99,8 @@ auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
         return {};
     }
 
-    AviationUnits::Speed TAS = AviationUnits::Speed::fromKT( _aircraft->cruiseSpeedInKT() );
-    AviationUnits::Speed WS  = AviationUnits::Speed::fromKT( _wind->windSpeedInKT() );
+    AviationUnits::Speed TAS = AviationUnits::Speed::fromKN( _aircraft->cruiseSpeedInKT() );
+    AviationUnits::Speed WS  = AviationUnits::Speed::fromKN( _wind->windSpeedInKT() );
     AviationUnits::Angle WD  = AviationUnits::Angle::fromDEG( _wind->windDirectionInDEG() );
 
     // Law of sine for wind triangle

@@ -66,7 +66,7 @@ Rectangle {
             }
 
             LED {
-                visible: flarmAdaptor.flarmWarning.vDist.toM >= 100
+                visible: flarmAdaptor.flarmWarning.vDist.toM() >= 100
                 blinking: visible
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius
@@ -75,7 +75,7 @@ Rectangle {
             }
 
             LED {
-                visible: (flarmAdaptor.flarmWarning.vDist.toM > -100) && (flarmAdaptor.flarmWarning.vDist.toM < 100)
+                visible: (flarmAdaptor.flarmWarning.vDist.toM() > -100) && (flarmAdaptor.flarmWarning.vDist.toM() < 100)
                 blinking: visible
                 width: 1.5*flarmWarningIndicator.ledRadius
                 height: 1.5*flarmWarningIndicator.ledRadius
@@ -84,7 +84,7 @@ Rectangle {
             }
 
             LED {
-                visible: flarmAdaptor.flarmWarning.vDist.toM < -100
+                visible: flarmAdaptor.flarmWarning.vDist.toM() < -100
                 blinking: visible
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius

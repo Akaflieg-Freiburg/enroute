@@ -77,14 +77,14 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         // Wind
         if (xml.isStartElement() && name == "wind_speed_kt") {
             auto content = xml.readElementText();
-            _wind = AviationUnits::Speed::fromKT(content.toDouble());
+            _wind = AviationUnits::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Gust
         if (xml.isStartElement() && name == "wind_gust_kt") {
             auto content = xml.readElementText();
-            _gust = AviationUnits::Speed::fromKT(content.toDouble());
+            _gust = AviationUnits::Speed::fromKN(content.toDouble());
             continue;
         }
 
@@ -253,9 +253,9 @@ auto Weather::METAR::summary() const -> QString {
     }
 
     // Wind and Gusts
-    if (_gust.toKT() > 15) {
+    if (_gust.toKN() > 15) {
         resultList << tr("gusts of %1").arg(_gust.toString() );
-    } else if (_wind.toKT() > 10) {
+    } else if (_wind.toKN() > 10) {
         resultList << tr("wind at %1").arg(_wind.toString());
     }
 

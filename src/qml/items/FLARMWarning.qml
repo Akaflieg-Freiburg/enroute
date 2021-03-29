@@ -159,7 +159,7 @@ Rectangle {
                 x: flarmWarningIndicator.radius - width/2.0
                 y: flarmWarningIndicator.radius - height/2.0
 
-                source: satNav.icon
+                source: "/icons/self-withDirection.svg"
             }
 
         }

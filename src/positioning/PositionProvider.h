@@ -119,6 +119,7 @@ public:
      *
      *  @returns Property lastValidTrack
      */
+    Q_PROPERTY(AviationUnits::Angle lastValidTT READ lastValidTT NOTIFY update)
     AviationUnits::Angle lastValidTT() const { return _lastValidTT; }
 
 

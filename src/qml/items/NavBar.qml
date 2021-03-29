@@ -150,7 +150,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
-                    const tt = satNav.positionInfo.trueTrack();
+                    var tt = satNav.positionInfo.trueTrack();
                     return tt.isFinite() ? tt.toDEG() + "°" : "-"
                 }
 

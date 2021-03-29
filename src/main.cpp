@@ -60,6 +60,10 @@ auto main(int argc, char *argv[]) -> int
     qputenv("QSG_RENDER_LOOP", "basic");
 
     // Register types
+    qRegisterMetaType<AviationUnits::Angle>();
+    qRegisterMetaType<AviationUnits::Distance>();
+    qRegisterMetaType<AviationUnits::Speed>();
+
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<GeoMaps::Airspace>("enroute", 1, 0, "Airspace");
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");

@@ -204,7 +204,7 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: satNav.lastValidCoordinate
-            visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.TT.isFinite())
+            visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.positionInfo.trueTrack().isFinite())
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -275,7 +275,7 @@ Item {
                 rotation: flightMap.animatedTrack-flightMap.bearing
 
                 source: {
-                    const pInfo = satNav.positionInfo
+                    var pInfo = satNav.positionInfo
 
                     if (!pInfo.isValid()) {
                         return "/icons/self-noPosition.svg"

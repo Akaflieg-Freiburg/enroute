@@ -84,8 +84,8 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
 
 void Weather::DownloadManager::setupConnections() const
 {
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::statusChanged, this, &Weather::DownloadManager::QNHInfoChanged);
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::statusChanged, this, &Weather::DownloadManager::sunInfoChanged);
+    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingChanged, this, &Weather::DownloadManager::sunInfoChanged);
 
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::QNHInfoChanged);
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::sunInfoChanged);
@@ -354,7 +354,7 @@ auto Weather::DownloadManager::sunInfo() -> QString
     if (_PositionProvider == nullptr) {
         return QString();
     }
-    if (_PositionProvider->status() != Positioning::PositionProvider::OK) {
+    if (!_PositionProvider->receiving()) {
         return tr("Waiting for precise position…");
     }
 
@@ -364,7 +364,7 @@ auto Weather::DownloadManager::sunInfo() -> QString
     QDateTime sunriseTomorrow;
 
     SunSet sun;
-    auto coord = _PositionProvider->coordinate();
+    auto coord = _PositionProvider->positionInfo().coordinate();
     auto timeZone = qRound(coord.longitude()/15.0);
 
     auto currentTime = QDateTime::currentDateTimeUtc();
@@ -450,7 +450,7 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
         }
     }
     if (closestReportWithQNH != nullptr) {
-        return tr("QNH: %1 hPa in %2, %3").arg(QNH)
+        return tr("QNH: %1 hPa in %2, %3").arg(closestReportWithQNH->metar()->QNH())
                 .arg(closestReportWithQNH->ICAOCode(),
                      Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }

@@ -164,8 +164,8 @@ ApplicationWindow {
                         ItemDelegate { // Sat Status
                             text: qsTr("Satellite Navigation")
                                   +`<br><font color="#606060" size="2">`
-                                  + qsTr("Status")
-                                  + `: ${satNav.statusAsString}</font>`
+                                  + (satNav.receiving ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
+                                  + `</font>`
                             icon.source: "/icons/material/ic_satellite.svg"
                             Layout.fillWidth: true
                             onClicked: {
@@ -177,7 +177,7 @@ ApplicationWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: (satNav.status === SatNav.OK) ? "green" : "red"
+                                color: satNav.positionInfo.isValid() ? "green" : "red"
                                 opacity: 0.2
                             }
                         }

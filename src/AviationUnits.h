@@ -24,6 +24,7 @@
 #include <QGeoCoordinate>
 #include <QString>
 #include <QtMath>
+#include <QObject>
 
 /*! \brief Conversion between units used in aviation
  *
@@ -33,19 +34,6 @@
  */
 
 namespace AviationUnits {
-
-    /*! \brief Converts string representation of a geographical coordinate into
-     * QGeoCoordinate
-     *
-     * @param geoLat Geographical latitude, as a string of the form
-     * "49.00864900N".
-     *
-     * @param geoLong Geographical longitude, as a string of the form
-     * "7.22559722E".
-     *
-     * @returns A (possibly invalid) QGeoCoordinate
-     */
-//    static QGeoCoordinate stringToCoordinate(const QString &geoLat, const QString &geoLong);
 
     /*! \brief Convenience class for angle computations
      *
@@ -535,7 +523,7 @@ namespace AviationUnits {
  *
  * @returns Reference to the QDataStream
  */
-QDataStream &operator<<(QDataStream &out, const AviationUnits::Speed &speed);
+QDataStream &operator<<(QDataStream &out, AviationUnits::Speed speed);
 
 
 /*! \brief Deserialization of a speed object into a QDataStream
@@ -564,7 +552,7 @@ QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed);
     return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());
 }
 
+// Declare meta types
 Q_DECLARE_METATYPE(AviationUnits::Angle)
 Q_DECLARE_METATYPE(AviationUnits::Distance)
 Q_DECLARE_METATYPE(AviationUnits::Speed)
-

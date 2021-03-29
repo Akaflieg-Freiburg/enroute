@@ -218,7 +218,7 @@ Item {
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? satNav.GS.toMPS() : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? satNav.positionInfo.groundSpeed().toMPS() : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -274,7 +274,19 @@ Item {
 
                 rotation: flightMap.animatedTrack-flightMap.bearing
 
-                source:  satNav.icon
+                source: {
+                    const pInfo = satNav.positionInfo
+
+                    if (!pInfo.isValid()) {
+                        return "/icons/self-noPosition.svg"
+                    }
+                    if (!pInfo.trueTrack().isFinite()) {
+                        return "/icons/self-noDirection.svg"
+                    }
+
+                    return "/icons/self-withDirection.svg"
+                }
+
                 sourceSize.width: 50
                 sourceSize.height: 50
             }

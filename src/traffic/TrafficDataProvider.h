@@ -183,7 +183,7 @@ signals:
     void statusStringChanged();
 
     /*! \brief Notifier signal */
-    void positionInfoChanged();
+    void positionInfoChanged(const QGeoPositionInfo &);
 
 private slots:
     void onSourceHeartbeatChanged();

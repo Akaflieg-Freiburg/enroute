@@ -20,9 +20,8 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
-import QtQml 2.15
+
 
 Rectangle {
     id: grid
@@ -32,7 +31,7 @@ Rectangle {
     height: trueAltitude.implicitHeight
     
 
-    function level() {
+    function numVisibleItems() {
         var w = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + utc.m_implicitWidth + 4*Qt.application.font.pixelSize
         if (w > grid.width)
             return 3
@@ -58,7 +57,10 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: satNav.trueAltitude.isFinite() ? Math.round(satNav.trueAltitude.toFeet()) + " ft" : "-"
+                text: {
+                    const talt= satNav.positionInfo.trueAltitude();
+                    return talt.isFinite() ? Math.round(talt.toFeet()) + " ft" : "-"
+                }
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"
@@ -78,7 +80,7 @@ Rectangle {
         ColumnLayout {
             id: flightLevel
 
-            visible: grid.level() >= 5
+            visible: grid.numVisibleItems() >= 5
             Layout.preferredWidth: visible ? m_implicitWidth : 0
             property var m_implicitWidth: Math.max(flightLevel_1.contentWidth, flightLevel_2.contentWidth)
 
@@ -116,9 +118,10 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
-                    if (!satNav.GS.isFinite())
+                    const gs = satNav.positionInfo.groundSpeed();
+                    if (!gs.isFinite())
                         return "-"
-                    return globalSettings.useMetricUnits ? Math.round(satNav.GS.toKMH()) + " km/h" : Math.round(satNav.GS.toKN()) + " kn"
+                    return globalSettings.useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
                 }
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
@@ -146,7 +149,11 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: satNav.TT.isFinite() ? satNav.TT.toDEG() + "°" : "-"
+                text: {
+                    const tt = satNav.positionInfo.trueTrack();
+                    return tt.isFinite() ? tt.toDEG() + "°" : "-"
+                }
+
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"
@@ -166,7 +173,7 @@ Rectangle {
         ColumnLayout {
             id: utc
 
-            visible: grid.level() >= 4
+            visible: grid.numVisibleItems() >= 4
             Layout.preferredWidth: m_implicitWidth
             property var m_implicitWidth: Math.max(utc_1.contentWidth, utc_2.contentWidth)
 

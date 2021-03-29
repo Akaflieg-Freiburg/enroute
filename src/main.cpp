@@ -35,15 +35,15 @@
 #include <kdsingleapplication.h>
 #endif
 
-#include "AviationUnits.h"
 #include "Aircraft.h"
+#include "AviationUnits.h"
 #include "Clock.h"
 #include "FlightRoute.h"
-#include "geomaps/GeoMapProvider.h"
-#include "geomaps/MapManager.h"
 #include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
+#include "geomaps/GeoMapProvider.h"
+#include "geomaps/MapManager.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/Factor.h"
 #include "traffic/TrafficDataProvider.h"

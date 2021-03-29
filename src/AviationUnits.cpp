@@ -22,6 +22,7 @@
 
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
+#include "math.h"
 
 auto AviationUnits::Angle::toString() const -> QString {
     double angleInDegrees = toDEG();
@@ -38,8 +39,9 @@ auto AviationUnits::Angle::toString() const -> QString {
 
 auto AviationUnits::Angle::toNormalizedDEG() const -> double {
     double angle = toDEG();
-    if (!std::isfinite(angle))
+    if (!std::isfinite(angle)) {
         return qQNaN();
+}
 
     double a = angle / 360.0;
     return 360.0 * (a - qFloor(a));
@@ -60,12 +62,13 @@ auto AviationUnits::stringToCoordinate(const QString &geoLat, const QString &geo
 }
 */
 
-QString AviationUnits::Distance::toString(bool useMetric, bool vertical, bool forceSign) const
+auto AviationUnits::Distance::toString(bool useMetric, bool vertical, bool forceSign) const -> QString
 {
-    if (!isFinite())
+    if (!isFinite()) {
         return QString();
+}
 
-    double roundedDist;
+    double roundedDist = NAN;
     QString unit;
 
     if (vertical && useMetric) {
@@ -91,26 +94,29 @@ QString AviationUnits::Distance::toString(bool useMetric, bool vertical, bool fo
     }
 
     // Round value to reasonable numbers
-    if (qAbs(roundedDist) > 1000.0)
+    if (qAbs(roundedDist) > 1000.0) {
         roundedDist = qRound(roundedDist/100.0)*100.0;
-    else if (qAbs(roundedDist) > 100.0)
+    } else if (qAbs(roundedDist) > 100.0) {
         roundedDist = qRound(roundedDist/10.0)*10.0;
+}
 
     QString signString;
-    if (forceSign && roundedDist > 0.0)
+    if (forceSign && roundedDist > 0.0) {
         signString += "+";
+}
     return signString + QString::number(roundedDist) + " " + unit;
 }
 
 
 auto AviationUnits::Speed::toString() const -> QString {
-    if (GlobalSettings::useMetricUnitsStatic())
+    if (GlobalSettings::useMetricUnitsStatic()) {
         return QString("%1 km/h").arg( qRound(toKMH()) );
+}
     return QString("%1 kn").arg( qRound(toKN()) );
 }
 
 
-auto operator<<(QDataStream &out, const AviationUnits::Speed &speed) -> QDataStream &
+auto operator<<(QDataStream &out, AviationUnits::Speed speed) -> QDataStream &
 {
     out << speed.toMPS();
     return out;
@@ -119,7 +125,7 @@ auto operator<<(QDataStream &out, const AviationUnits::Speed &speed) -> QDataStr
 
 auto operator>>(QDataStream &in, AviationUnits::Speed &speed) -> QDataStream &
 {
-    double buffer;
+    double buffer = NAN;
     in >> buffer;
     speed = AviationUnits::Speed::fromMPS(buffer);
     return in;
@@ -128,16 +134,18 @@ auto operator>>(QDataStream &in, AviationUnits::Speed &speed) -> QDataStream &
 
 auto AviationUnits::Time::toHoursAndMinutes() const -> QString {
     // Paranoid safety checks
-    if (!isFinite())
+    if (!isFinite()) {
         return "-:--";
+}
 
     auto minutes = qRound(qAbs(toM()));
     auto hours = minutes / 60;
     minutes = minutes % 60;
 
     QString result;
-    if (isNegative())
+    if (isNegative()) {
         result += "-";
+}
     result +=
         QString("%1:%2").arg(hours, 1, 10, QLatin1Char('0')).arg(minutes, 2, 10, QLatin1Char('0'));
     return result;

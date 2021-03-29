@@ -38,6 +38,10 @@ Page {
         id: view
         clip: true
         anchors.fill: parent
+        anchors.topMargin: Qt.application.font.pixelSize
+        anchors.bottomMargin: Qt.application.font.pixelSize
+        anchors.leftMargin: Qt.application.font.pixelSize
+        anchors.rightMargin: Qt.application.font.pixelSize
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -49,16 +53,39 @@ Page {
             columnSpacing: 30
             columns: 2
 
-            Label { text: qsTr("Satellite Status") }
+            width: view.width
+
             Label {
-                font.weight: Font.Bold
-                text: satNav.statusAsString
-                color: (satNav.status === SatNav.OK) ? "green" : "red"
-                wrapMode: Text.Wrap
+                text: qsTr("<h3>Status</h3>")
+                Layout.columnSpan: 2
             }
 
-            Label { text: qsTr("Last Fix") }
-            Label { text: satNav.timestampAsString }
+            Label { // Status
+                Layout.fillWidth: true
+                Layout.leftMargin: 4
+                Layout.rightMargin: 4
+                Layout.columnSpan: 2
+
+                text: satNav.statusString
+
+                wrapMode: Text.WordWrap
+                textFormat: Text.RichText
+
+                bottomPadding: 0.6*Qt.application.font.pixelSize
+                topPadding: 0.6*Qt.application.font.pixelSize
+                leftPadding: 0.2*Qt.application.font.pixelSize
+                rightPadding: 0.2*Qt.application.font.pixelSize
+
+                leftInset: -4
+                rightInset: -4
+
+                background: Rectangle {
+                    border.color: "black"
+                    color: satNav.positionInfo.isValid() ? "green" : "red"
+                    opacity: 0.2
+                    radius: 4
+                }
+            }
 
             Label { text: qsTr("Mode") }
             Label { text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground") }
@@ -69,57 +96,92 @@ Page {
             }
 
             Label {
-                text: qsTr("Horizontal")
-                font.weight: Font.Bold
+                text: qsTr("<h3>Horizontal</h3>")
                 Layout.columnSpan: 2
             }
 
             Label { text: qsTr("Latitude") }
-            Label { text: satNav.latitudeAsString }
+            Label {
+                Layout.fillWidth: true
+                text: {
+                    const lat = satNav.positionInfo.coordinate().toString().split(",")[0]
+                    if (lat === "")
+                        return "-"
+                    return lat
+                }
+            }
 
             Label { text: qsTr("Longitude") }
-            Label { text: satNav.longitudeAsString }
+            Label {
+                text: {
+                    const lon = satNav.positionInfo.coordinate().toString().split(",")[1]
+                    if (lon === "")
+                        return "-"
+                    return lon
+                }
+            }
 
-            Label { text: qsTr("Error") }
-            Label { text: satNav.positionErrorEstimate.isFinite() ? "±" + Math.round(satNav.positionErrorEstimate.toFeet()) + " ft" : "-" }
+            Label { text: qsTr("True Alt") }
+            Label {
+                text: {
+                    const talt = satNav.positionInfo.trueAltitude();
+                    return talt.isFinite() ? Math.round(talt.toFeet()) + " ft" : "-"
+                }
+            }
 
-            Label { text: "VAR" }
-            Label { text: satNav.VAR.isFinite() ? Math.round(satNav.VAR.toDEG()) + "°" : "-" }
+            Label { text: qsTr("Error (horizontal)") }
+            Label {
+                text: {
+                    const posError = satNav.positionInfo.positionErrorEstimate();
+                    return posError.isFinite() ? "±" + Math.round(posError.toM()) + " m" : "-"
+                }
+            }
+
+            Label { text: qsTr("Error (vertical)") }
+            Label {
+                text: {
+                    const taltError = satNav.positionInfo.trueAltitudeErrorEstimate();
+                    return taltError.isFinite() ? "±" + Math.round(taltError.toFeet()) + " ft" : "-"
+                }
+
+            }
+
+            Label { text: "Mag. var." }
+            Label { text: {
+                    const magVar = satNav.positionInfo.variation();
+                    return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
+                }
+            }
 
             Label { text: "GS" }
             Label {
                 text: {
-                    if (!satNav.GS.isFinite())
+                    const gs = satNav.positionInfo.groundSpeed();
+                    if (!gs.isFinite())
                         return "-"
-                    return globalSettings.useMetricUnits ? Math.round(satNav.GS.toKMH()) + " km/h" : Math.round(satNav.GS.toKN()) + " kn"
+                    return globalSettings.useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
                 }
             }
 
             Label { text: "TT" }
-            Label { text: satNav.TT.isFinite() ? satNav.TT.toDEG() + "°" : "-" }
-
             Label {
-                font.pixelSize: Qt.application.font.pixelSize*0.5
-                Layout.columnSpan: 2
+                text: {
+                    const tt = satNav.positionInfo.trueTrack();
+                    return tt.isFinite() ? tt.toDEG() + "°" : "-"
+                }
             }
 
+            Label { text: "Vert. Speed" }
             Label {
-                text: qsTr("Vertical")
-                font.weight: Font.Bold
-                Layout.columnSpan: 2
+                text: {
+                    const vs = satNav.positionInfo.verticalSpeed();
+                    return vs.isFinite() ? Math.round(vs.toMPS()) + " m/s" : "-"
+                }
             }
-
-            Label { text: "T.ALT" }
-            Label { text: satNav.trueAltitude.isFinite() ? Math.round(satNav.trueAltitude.toFeet()) + " ft" : "-" }
-
-            Label { text: "T.ALT Error" }
-            Label { text: satNav.trueAltitudeErrorEstimate.isFinite() ? "±" + Math.round(satNav.trueAltitudeErrorEstimate.toFeet()) + " ft" : "-" }
 
             Label { text: "Pressure ALT" }
             Label { text: satNav.pressureAltitude.isFinite() ? Math.round(satNav.pressureAltitude.toFeet()) + " ft" : "-" }
 
-            Label { text: "Vert. Speed" }
-            Label { text: satNav.verticalSpeed.isFinite() ? Math.round(satNav.verticalSpeed.toMPS()) + " m/s" : "-" }
 
         } // GridLayout
 

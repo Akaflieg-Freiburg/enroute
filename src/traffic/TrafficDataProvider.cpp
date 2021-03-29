@@ -285,7 +285,7 @@ void Traffic::TrafficDataProvider::onPositionInfoUpdate(const QGeoPositionInfo& 
 
     if (positionInfoDidChange) {
         _positionInfo = newGeoPositionInfo;
-        emit positionInfoChanged();
+        emit positionInfoChanged(_positionInfo);
     }
 
     if (_positionInfo.isValid()) {

@@ -88,6 +88,7 @@ set(SOURCES
     Librarian.h
     MobileAdaptor.h
     positioning/Geoid.h
+    positioning/PositionInfo.h
     positioning/PositionProvider.h
     traffic/AbstractTrafficDataSource.h
     traffic/Factor.h
@@ -125,6 +126,7 @@ set(SOURCES
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
     positioning/Geoid.cpp
+    positioning/PositionInfo.cpp
     positioning/PositionProvider.cpp
     traffic/AbstractTrafficDataSource.cpp
     traffic/Factor.cpp

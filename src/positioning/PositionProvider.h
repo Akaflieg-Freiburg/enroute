@@ -27,6 +27,7 @@
 #include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "positioning/Geoid.h"
+#include "positioning/PositionInfo.h"
 
 namespace Positioning {
 
@@ -74,19 +75,6 @@ public:
     /*! \brief Standard deconstructor */
     ~PositionProvider() override;
 
-
-    /*! \brief Status codes */
-    enum Status
-    {
-        OK, /*!< The PositionProvider class works and received data. */
-        Timeout, /*!< No error has been reported, but no data has been received for
-        more than one minute.  */
-        Error /*!< The underlying QGeoPositionInfoSource has reported an error. A
-         human-readable error message can be accessed with the property
-         statusAsString */
-    };
-    Q_ENUM(Status)
-
     /*! \brief Pointer to static instance
      *
      * This method returns a pointer to a static instance of this class. In rare
@@ -96,127 +84,17 @@ public:
      */
     static PositionProvider *globalInstance();
 
-    /*! \brief True Altitude
-     *
-     *  This is the true altitude, as reported by the satellite navigation system,
-     *  with geoid correction taken into account
-     *
-     *  In case no valid altitude is reported, the property is set to NaN.
-     */
-    Q_PROPERTY(AviationUnits::Distance trueAltitude READ trueAltitude NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property trueAltitude
-     */
-    AviationUnits::Distance trueAltitude() const;
-
-    /*! \brief Vertical speed
-     *
-     *  In case no valid altitude is reported, the property is set to NaN.
-     */
-    Q_PROPERTY(AviationUnits::Speed verticalSpeed READ verticalSpeed NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property verticalSpeed
-     */
-    AviationUnits::Speed verticalSpeed() const;
-
-    /*! \brief VAR
-     *
-     *  In case no valid altitude is reported, the property is set to NaN.
-     */
-    Q_PROPERTY(AviationUnits::Angle VAR READ VAR NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property VAR
-     */
-    AviationUnits::Angle VAR() const;
-
-    /*! \brief True altitude error estimate
-     *
-     *  In case no valid altitude error estimate is reported, the property is set to NaN.
-     */
-    Q_PROPERTY(AviationUnits::Distance trueAltitudeErrorEstimate READ trueAltitudeErrorEstimate NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property trueAltitudeErrorEstimate
-     */
-    AviationUnits::Distance trueAltitudeErrorEstimate() const;
-
-    Q_PROPERTY(AviationUnits::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
-
-#warning documentation
-    static AviationUnits::Distance pressureAltitude();
-
-    /*! \brief Coordinate reading from the last PositionProvider fix
-
-    This property holds the coordinate found in the last PositionProvider fix.  In case no
-    valid PositionProvider fix exists, the property is set an invalid coordinate.
-  */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property coordinate
-  */
-    QGeoCoordinate coordinate() {return lastInfo.coordinate();}
-
-    /*! \brief Ground speed reading from the last position fix
-     *
-     * If the ground speed is unknown, NaN is returned
-     */
-    Q_PROPERTY(AviationUnits::Speed GS READ GS NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property GS
-     */
-    AviationUnits::Speed GS() const;
-
-    /*! \brief Horizontal precision estimate for last PositionProvider fix
-     *
-     *  This property holds an estimate for the precision of the horizontal position
-     *  info, in meters.  If no estimate or no data exists, the property is set to
-     *  NaN. Otherwise, the estimate is always non-negative.
-     */
-    Q_PROPERTY(AviationUnits::Distance positionErrorEstimate READ positionErrorEstimate NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property positionErrorEstimate
-     */
-    AviationUnits::Distance positionErrorEstimate() const;
-
-    /*! \brief Suggested icon
-
-    This property suggests an icon, to be used for the own position.  This is
-    always one of "/icons/self-noPositionProvider.svg", "/icons/self-noDirection.svg" and
-    "/icons/self-withDirection.svg"
-  */
-    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property icon
-  */
-    QString icon() const;
-
     /*! \brief Estimate whether the device is flying or on the ground
-
-    This property holds an estimate, as to whether the device is flying or on
-    the ground.  The current implementation considers the device is flying if
-    the groundspeed can be read and is greater then 30 knots.
-  */
+     *  This property holds an estimate, as to whether the device is flying or on
+     *  the ground.  The current implementation considers the device is flying if
+     *  the groundspeed can be read and is greater then 30 knots.
+     */
     Q_PROPERTY(bool isInFlight READ isInFlight NOTIFY isInFlightChanged)
 
     /*! \brief Getter function for the property with the same name
-
-    @returns Property isInFlight
-  */
+     *
+     *  @returns Property isInFlight
+     */
     bool isInFlight() const { return _isInFlight; }
 
     /*! \brief Last valid coordinate reading
@@ -236,6 +114,33 @@ public:
   */
     QGeoCoordinate lastValidCoordinate() const;
 
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property lastValidTrack
+     */
+    AviationUnits::Angle lastValidTT() const { return _lastValidTT; }
+
+
+    Q_PROPERTY(AviationUnits::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
+
+#warning documentation
+    static AviationUnits::Distance pressureAltitude();
+
+    /*! \brief Status of the PositionProvider class
+
+    This property holds a localized string that describes the status of the
+    PositionProvider class.  A typical string is of the form "Connection to PositionProvider
+    subsystem lost".
+  */
+    Q_PROPERTY(QString statusString READ statusString NOTIFY receivingChanged)
+
+    /*! \brief Getter function for the property with the same name
+
+    @returns Property statusAsString
+  */
+    QString statusString() const;
+
     /*! \brief Getter function for property of the same name
      *
      * This function differs from lastValidCoordinate() only in that it is static.
@@ -245,124 +150,24 @@ public:
      */
     static QGeoCoordinate lastValidCoordinateStatic();
 
-    /*! \brief Last valid track reading from the last PositionProvider fix
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY update)
+
+    /*! \brief Current position info
      *
-     *  This property holds the last valid track known.  This
-     *  property differs from TT in that it remains unchanged when no track
-     *  information can be found or when an error occurs. At the first start, this
-     *  property is set to NaN.  The value is stored in a QSetting at destruction,
-     *  and restored in the construction.
+     *  If no PositionProvider has been received for more than ten seconds, this method
+     *  return an invalid QGeoPositionInfo.
      *
-     *  \sa TT
+     *  @returns The current position info
      */
-    Q_PROPERTY(AviationUnits::Angle lastValidTT READ lastValidTT NOTIFY lastValidTTChanged)
+    Positioning::PositionInfo positionInfo() const
+    {
+        return PositionInfo(_positionInfo);
+    }
 
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property lastValidTrack
-     */
-    AviationUnits::Angle lastValidTT() const { return _lastValidTT; }
-
-    /*! \brief Latitude in last PositionProvider fix
-
-    This property holds the latitude of the last PositionProvider fix, as a string of the
-    form "37° 52' 57.36'' N".  If no latitude is available, the property is set
-    to "-".
-  */
-    Q_PROPERTY(QString latitudeAsString READ latitudeAsString NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property latitudeAsString
-  */
-    QString latitudeAsString() const;
-
-    /*! \brief Longitude in last PositionProvider fix
-
-    This property holds the longitude of the last PositionProvider fix, as a string of the
-    form "122° 16' 1.93'' W".  If no longitude is available, the property is set
-    to "-".
-  */
-    Q_PROPERTY(QString longitudeAsString READ longitudeAsString NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns longitudeAsString
-  */
-    QString longitudeAsString() const;
-
-    /*! \brief Time and date of last PositionProvider fix
-
-    This property holds the date and time at which the position was reported
-    last, in UTC time. The QDateTime is invalid if no time and date has been
-    set.
-  */
-    Q_PROPERTY(QDateTime timestamp READ timestamp NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property timestamp
-  */
-    QDateTime timestamp() const {return lastInfo.timestamp();}
-
-    /*! \brief Time of last PositionProvider fix
-
-    This property holds the time at which the position was reported last as a
-    string of the form "13:42:32 UTC".  If no time has been set, the property is
-    set to "-".
-  */
-    Q_PROPERTY(QString timestampAsString READ timestampAsString NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property timestampAsString
-  */
-    QString timestampAsString() const;
-
-    /*! \brief True track
-     *
-     *  If TT is not available, the property is set to NaN.
-    */
-    Q_PROPERTY(AviationUnits::Angle TT READ TT NOTIFY update)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property TT
-     */
-    AviationUnits::Angle TT() const;
-
-    /*! \brief Status of the PositionProvider class
-
-    This property holds the status of the PositionProvider class.
-  */
-    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property status
-  */
-    Status status() const;
-
-    /*! \brief Status of the PositionProvider class
-
-    This property holds a localized string that describes the status of the
-    PositionProvider class.  A typical string is of the form "Connection to PositionProvider
-    subsystem lost".
-  */
-    Q_PROPERTY(QString statusAsString READ statusAsString NOTIFY statusChanged)
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property statusAsString
-  */
-    QString statusAsString() const;
-
-    /*! \brief Last PositionProvider fix received
-
-    @returns the last PositionProvider fix received.  If no PositionProvider has been received for
-    more than one minute, this method return an empty QGeoPositionInfo.
-  */
-    QGeoPositionInfo lastFix() const { return lastInfo; }
+    Q_INVOKABLE bool receiving() const
+    {
+        return _positionInfo.isValid();
+    }
 
     /*! \brief Description of the way from the current position to the given position
    *
@@ -379,13 +184,7 @@ signals:
     void pressureAltitudeChanged();
 
     /*! \brief Emitted whenever the suggested icon changes */
-    void iconChanged();
-
-    /*! \brief Emitted whenever the suggested icon changes */
     void isInFlightChanged();
-
-    /*! \brief Emitted whenever the PositionProvider status changes */
-    void statusChanged();
 
     /*! \brief Emitted whenever the property lastValidTrack changes */
     void lastValidTTChanged(AviationUnits::Angle);
@@ -393,9 +192,10 @@ signals:
     /*! \brief Emitted whenever a new GS fix has arrived */
     void update();
 
+    void receivingChanged();
 private slots:
     // Connected to source, in order to receive new data
-    void statusUpdate(const QGeoPositionInfo &info);
+    void onPositionUpdated(const QGeoPositionInfo &info);
 
     // Connected to source, in order to receive error information
     void error(QGeoPositionInfoSource::Error newSourceStatus);
@@ -403,10 +203,7 @@ private slots:
     // Connected to timeoutCounter, in order to receive timeout after one minute
     void timeout();
 
-
     void onPositionUpdated_Sat(const QGeoPositionInfo &info);
-
-    void onPositionUpdated_TrafficDataProvider();
 
 private:
     Q_DISABLE_COPY_MOVE(PositionProvider)
@@ -423,7 +220,7 @@ private:
 
     QLocale myLocale;
     QGeoPositionInfoSource *source;
-    QGeoPositionInfo lastInfo;
+    QGeoPositionInfo _positionInfo;
     QGeoCoordinate _lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};
     AviationUnits::Angle _lastValidTT {};
     bool _isInFlight {false};
@@ -431,7 +228,7 @@ private:
     Positioning::Geoid* _geoid {nullptr};
 
     // Constant: timeout occurs after one minute without receiving new data
-    const int timeoutThreshold = 60*1000;
+    const int timeoutThreshold = 10*1000;
 
     // Set according to the status of *source. We need to replicate the
     // information stored in source because the status of the source can change

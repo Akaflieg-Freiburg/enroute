@@ -45,7 +45,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -63,33 +62,16 @@ $(function() {
 
 <p>Inherits QObject.</p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a5ae9de69b36a25bea8f66bd17c6fba60"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">Status</a> { <a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60a383fb859718f609c60c1de1997e39c20">OK</a>, 
-<a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60aff7ed95fc60935d1f6207ea8df3b479b">Timeout</a>, 
-<a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60a42857fe3a77212b450e7de4ee7ff640a">Error</a>
- }</td></tr>
-<tr class="memdesc:a5ae9de69b36a25bea8f66bd17c6fba60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status codes.  <a href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">More...</a><br /></td></tr>
-<tr class="separator:a5ae9de69b36a25bea8f66bd17c6fba60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a35fdfc0735711376a365778a83e31100"><td class="memItemLeft" align="right" valign="top"><a id="a35fdfc0735711376a365778a83e31100"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a35fdfc0735711376a365778a83e31100">iconChanged</a> ()</td></tr>
-<tr class="memdesc:a35fdfc0735711376a365778a83e31100"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted whenever the suggested icon changes. <br /></td></tr>
-<tr class="separator:a35fdfc0735711376a365778a83e31100"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e7717baf22942272e6cc8381c7af2a"><td class="memItemLeft" align="right" valign="top"><a id="a96e7717baf22942272e6cc8381c7af2a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a96e7717baf22942272e6cc8381c7af2a">isInFlightChanged</a> ()</td></tr>
 <tr class="memdesc:a96e7717baf22942272e6cc8381c7af2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted whenever the suggested icon changes. <br /></td></tr>
 <tr class="separator:a96e7717baf22942272e6cc8381c7af2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0b26b258d612b62cdb759d873057e66"><td class="memItemLeft" align="right" valign="top"><a id="ab0b26b258d612b62cdb759d873057e66"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#ab0b26b258d612b62cdb759d873057e66">statusChanged</a> ()</td></tr>
-<tr class="memdesc:ab0b26b258d612b62cdb759d873057e66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted whenever the <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> status changes. <br /></td></tr>
-<tr class="separator:ab0b26b258d612b62cdb759d873057e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea4c3a7bc6bc65fb9870828a707e4bfa"><td class="memItemLeft" align="right" valign="top"><a id="aea4c3a7bc6bc65fb9870828a707e4bfa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#aea4c3a7bc6bc65fb9870828a707e4bfa">lastValidTrackChanged</a> ()</td></tr>
-<tr class="memdesc:aea4c3a7bc6bc65fb9870828a707e4bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted whenever the property lastValidTrack changes. <br /></td></tr>
-<tr class="separator:aea4c3a7bc6bc65fb9870828a707e4bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5dc4844cbec47e3dc16a2133f3d969b"><td class="memItemLeft" align="right" valign="top"><a id="ac5dc4844cbec47e3dc16a2133f3d969b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#ac5dc4844cbec47e3dc16a2133f3d969b">lastValidTTChanged</a> (<a class="el" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a>)</td></tr>
+<tr class="memdesc:ac5dc4844cbec47e3dc16a2133f3d969b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted whenever the property lastValidTrack changes. <br /></td></tr>
+<tr class="separator:ac5dc4844cbec47e3dc16a2133f3d969b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb6b37755ae9368d84981c3d848fdbe0"><td class="memItemLeft" align="right" valign="top"><a id="abb6b37755ae9368d84981c3d848fdbe0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#abb6b37755ae9368d84981c3d848fdbe0">update</a> ()</td></tr>
 <tr class="memdesc:abb6b37755ae9368d84981c3d848fdbe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted whenever a new GS fix has arrived. <br /></td></tr>
@@ -104,75 +86,21 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#af108b316b3d53df68bfab8cade8e5c6c">~PositionProvider</a> () override</td></tr>
 <tr class="memdesc:af108b316b3d53df68bfab8cade8e5c6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard deconstructor. <br /></td></tr>
 <tr class="separator:af108b316b3d53df68bfab8cade8e5c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a365c4d1cedd9a7df34444d2a08832892"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a365c4d1cedd9a7df34444d2a08832892">altitudeInFeet</a> () const</td></tr>
-<tr class="memdesc:a365c4d1cedd9a7df34444d2a08832892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a365c4d1cedd9a7df34444d2a08832892">More...</a><br /></td></tr>
-<tr class="separator:a365c4d1cedd9a7df34444d2a08832892"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef48b3b3d7a3afba8ae9c9b0bd5c958e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#aef48b3b3d7a3afba8ae9c9b0bd5c958e">altitudeInFeetAsString</a> () const</td></tr>
-<tr class="memdesc:aef48b3b3d7a3afba8ae9c9b0bd5c958e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#aef48b3b3d7a3afba8ae9c9b0bd5c958e">More...</a><br /></td></tr>
-<tr class="separator:aef48b3b3d7a3afba8ae9c9b0bd5c958e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec5aae2104f4f023a0f86a53b3d47fdd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#aec5aae2104f4f023a0f86a53b3d47fdd">hasAltitude</a> () const</td></tr>
-<tr class="memdesc:aec5aae2104f4f023a0f86a53b3d47fdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#aec5aae2104f4f023a0f86a53b3d47fdd">More...</a><br /></td></tr>
-<tr class="separator:aec5aae2104f4f023a0f86a53b3d47fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b77cdde8708356a20fae2ced8d6dda"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#ab5b77cdde8708356a20fae2ced8d6dda">coordinate</a> ()</td></tr>
-<tr class="memdesc:ab5b77cdde8708356a20fae2ced8d6dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#ab5b77cdde8708356a20fae2ced8d6dda">More...</a><br /></td></tr>
-<tr class="separator:ab5b77cdde8708356a20fae2ced8d6dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11515a2f0b36135fecddf21df2a5b111"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a11515a2f0b36135fecddf21df2a5b111">groundSpeedInKnots</a> () const</td></tr>
-<tr class="memdesc:a11515a2f0b36135fecddf21df2a5b111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a11515a2f0b36135fecddf21df2a5b111">More...</a><br /></td></tr>
-<tr class="separator:a11515a2f0b36135fecddf21df2a5b111"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1123abdb5a3b8409792e266126cc4e7c"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a1123abdb5a3b8409792e266126cc4e7c">groundSpeedInMetersPerSecond</a> () const</td></tr>
-<tr class="memdesc:a1123abdb5a3b8409792e266126cc4e7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a1123abdb5a3b8409792e266126cc4e7c">More...</a><br /></td></tr>
-<tr class="separator:a1123abdb5a3b8409792e266126cc4e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f9b9114bae4b9c3edcbc8512e289ee5"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a0f9b9114bae4b9c3edcbc8512e289ee5">groundSpeedInKnotsAsString</a> () const</td></tr>
-<tr class="memdesc:a0f9b9114bae4b9c3edcbc8512e289ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a0f9b9114bae4b9c3edcbc8512e289ee5">More...</a><br /></td></tr>
-<tr class="separator:a0f9b9114bae4b9c3edcbc8512e289ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dee035eac5691d6527812f4a8514898"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a9dee035eac5691d6527812f4a8514898">groundSpeedInKMHAsString</a> () const</td></tr>
-<tr class="memdesc:a9dee035eac5691d6527812f4a8514898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a9dee035eac5691d6527812f4a8514898">More...</a><br /></td></tr>
-<tr class="separator:a9dee035eac5691d6527812f4a8514898"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad26f724700312f6eb4bdd4877d60badc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#ad26f724700312f6eb4bdd4877d60badc">horizontalPrecisionInMeters</a> () const</td></tr>
-<tr class="memdesc:ad26f724700312f6eb4bdd4877d60badc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#ad26f724700312f6eb4bdd4877d60badc">More...</a><br /></td></tr>
-<tr class="separator:ad26f724700312f6eb4bdd4877d60badc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8db8426f2c6bef43ec84eb2d536b87cd"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a8db8426f2c6bef43ec84eb2d536b87cd">horizontalPrecisionInMetersAsString</a> () const</td></tr>
-<tr class="memdesc:a8db8426f2c6bef43ec84eb2d536b87cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a8db8426f2c6bef43ec84eb2d536b87cd">More...</a><br /></td></tr>
-<tr class="separator:a8db8426f2c6bef43ec84eb2d536b87cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4f9474d08ebec02fb137bd6d8491116"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#ad4f9474d08ebec02fb137bd6d8491116">icon</a> () const</td></tr>
-<tr class="memdesc:ad4f9474d08ebec02fb137bd6d8491116"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#ad4f9474d08ebec02fb137bd6d8491116">More...</a><br /></td></tr>
-<tr class="separator:ad4f9474d08ebec02fb137bd6d8491116"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0610871c4eb25e3ce1f144569b914a14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a0610871c4eb25e3ce1f144569b914a14">isInFlight</a> () const</td></tr>
 <tr class="memdesc:a0610871c4eb25e3ce1f144569b914a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a0610871c4eb25e3ce1f144569b914a14">More...</a><br /></td></tr>
 <tr class="separator:a0610871c4eb25e3ce1f144569b914a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07d2bb7f7cb408e7c544050026531fd5"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a07d2bb7f7cb408e7c544050026531fd5">lastValidCoordinate</a> () const</td></tr>
 <tr class="memdesc:a07d2bb7f7cb408e7c544050026531fd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a07d2bb7f7cb408e7c544050026531fd5">More...</a><br /></td></tr>
 <tr class="separator:a07d2bb7f7cb408e7c544050026531fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38a4776bd50efed8831496d103097b8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a38a4776bd50efed8831496d103097b8d">lastValidTrack</a> () const</td></tr>
-<tr class="memdesc:a38a4776bd50efed8831496d103097b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a38a4776bd50efed8831496d103097b8d">More...</a><br /></td></tr>
-<tr class="separator:a38a4776bd50efed8831496d103097b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14b1bef54a693c3086ebdf958dfc88ea"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a14b1bef54a693c3086ebdf958dfc88ea">latitudeAsString</a> () const</td></tr>
-<tr class="memdesc:a14b1bef54a693c3086ebdf958dfc88ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a14b1bef54a693c3086ebdf958dfc88ea">More...</a><br /></td></tr>
-<tr class="separator:a14b1bef54a693c3086ebdf958dfc88ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33222afc10ab32b2d1c4357963076986"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a33222afc10ab32b2d1c4357963076986">longitudeAsString</a> () const</td></tr>
-<tr class="memdesc:a33222afc10ab32b2d1c4357963076986"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a33222afc10ab32b2d1c4357963076986">More...</a><br /></td></tr>
-<tr class="separator:a33222afc10ab32b2d1c4357963076986"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6142712bd3bd169238d554ba4d030fb"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#aa6142712bd3bd169238d554ba4d030fb">timestamp</a> () const</td></tr>
-<tr class="memdesc:aa6142712bd3bd169238d554ba4d030fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#aa6142712bd3bd169238d554ba4d030fb">More...</a><br /></td></tr>
-<tr class="separator:aa6142712bd3bd169238d554ba4d030fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc1a7ee4ed5b43841c65d630e1cc99a8"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#afc1a7ee4ed5b43841c65d630e1cc99a8">timestampAsString</a> () const</td></tr>
-<tr class="memdesc:afc1a7ee4ed5b43841c65d630e1cc99a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#afc1a7ee4ed5b43841c65d630e1cc99a8">More...</a><br /></td></tr>
-<tr class="separator:afc1a7ee4ed5b43841c65d630e1cc99a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b6df1c1013bb77181249f87cf5f556c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a2b6df1c1013bb77181249f87cf5f556c">track</a> () const</td></tr>
-<tr class="memdesc:a2b6df1c1013bb77181249f87cf5f556c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a2b6df1c1013bb77181249f87cf5f556c">More...</a><br /></td></tr>
-<tr class="separator:a2b6df1c1013bb77181249f87cf5f556c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a313354cc975bf55ce6eb6309fa8dcd80"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a313354cc975bf55ce6eb6309fa8dcd80">trackAsString</a> () const</td></tr>
-<tr class="memdesc:a313354cc975bf55ce6eb6309fa8dcd80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a313354cc975bf55ce6eb6309fa8dcd80">More...</a><br /></td></tr>
-<tr class="separator:a313354cc975bf55ce6eb6309fa8dcd80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45c319d7dde0bf08950bb851cf148d97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a45c319d7dde0bf08950bb851cf148d97">status</a> () const</td></tr>
-<tr class="memdesc:a45c319d7dde0bf08950bb851cf148d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a45c319d7dde0bf08950bb851cf148d97">More...</a><br /></td></tr>
-<tr class="separator:a45c319d7dde0bf08950bb851cf148d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f9532c8bf9254f523c9b139f574dfe7"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a7f9532c8bf9254f523c9b139f574dfe7">statusAsString</a> () const</td></tr>
-<tr class="memdesc:a7f9532c8bf9254f523c9b139f574dfe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a7f9532c8bf9254f523c9b139f574dfe7">More...</a><br /></td></tr>
-<tr class="separator:a7f9532c8bf9254f523c9b139f574dfe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa075dbbd74c55f9998e34da2d6c867a8"><td class="memItemLeft" align="right" valign="top">QGeoPositionInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#aa075dbbd74c55f9998e34da2d6c867a8">lastFix</a> () const</td></tr>
-<tr class="memdesc:aa075dbbd74c55f9998e34da2d6c867a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix received.  <a href="classPositioning_1_1PositionProvider.html#aa075dbbd74c55f9998e34da2d6c867a8">More...</a><br /></td></tr>
-<tr class="separator:aa075dbbd74c55f9998e34da2d6c867a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51d17c4db52b060583ddf23f47647907"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a51d17c4db52b060583ddf23f47647907">lastValidTT</a> () const</td></tr>
+<tr class="memdesc:a51d17c4db52b060583ddf23f47647907"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a51d17c4db52b060583ddf23f47647907">More...</a><br /></td></tr>
+<tr class="separator:a51d17c4db52b060583ddf23f47647907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bf58cdb029a3539ba49024117e81d22"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a2bf58cdb029a3539ba49024117e81d22">statusString</a> () const</td></tr>
+<tr class="memdesc:a2bf58cdb029a3539ba49024117e81d22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a2bf58cdb029a3539ba49024117e81d22">More...</a><br /></td></tr>
+<tr class="separator:a2bf58cdb029a3539ba49024117e81d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bcf9d6a11dce853cfbc88602eb01c24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a2bcf9d6a11dce853cfbc88602eb01c24">positionInfo</a> () const</td></tr>
+<tr class="memdesc:a2bcf9d6a11dce853cfbc88602eb01c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current position info.  <a href="classPositioning_1_1PositionProvider.html#a2bcf9d6a11dce853cfbc88602eb01c24">More...</a><br /></td></tr>
+<tr class="separator:a2bcf9d6a11dce853cfbc88602eb01c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb064fa9b3793250b93674b927b6890f"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#acb064fa9b3793250b93674b927b6890f">wayTo</a> (const QGeoCoordinate &amp;position) const</td></tr>
 <tr class="memdesc:acb064fa9b3793250b93674b927b6890f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from the current position to the given position.  <a href="classPositioning_1_1PositionProvider.html#acb064fa9b3793250b93674b927b6890f">More...</a><br /></td></tr>
 <tr class="separator:acb064fa9b3793250b93674b927b6890f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,72 +116,16 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a0f1ec5e1ab3b9534900d9ce4803d4397"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a0f1ec5e1ab3b9534900d9ce4803d4397">altitudeInFeet</a></td></tr>
-<tr class="memdesc:a0f1ec5e1ab3b9534900d9ce4803d4397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Altitude.  <a href="classPositioning_1_1PositionProvider.html#a0f1ec5e1ab3b9534900d9ce4803d4397">More...</a><br /></td></tr>
-<tr class="separator:a0f1ec5e1ab3b9534900d9ce4803d4397"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb24bf171c6eb18a1553273574d3a93b"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#acb24bf171c6eb18a1553273574d3a93b">altitudeInFeetAsString</a></td></tr>
-<tr class="memdesc:acb24bf171c6eb18a1553273574d3a93b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Altitude reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#acb24bf171c6eb18a1553273574d3a93b">More...</a><br /></td></tr>
-<tr class="separator:acb24bf171c6eb18a1553273574d3a93b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1488c61a0e34892fd65a2391f57117c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#ac1488c61a0e34892fd65a2391f57117c">hasAltitude</a></td></tr>
-<tr class="memdesc:ac1488c61a0e34892fd65a2391f57117c"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix contains altitude information.  <a href="classPositioning_1_1PositionProvider.html#ac1488c61a0e34892fd65a2391f57117c">More...</a><br /></td></tr>
-<tr class="separator:ac1488c61a0e34892fd65a2391f57117c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20714b069d927a137bf985501d6fbe74"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a20714b069d927a137bf985501d6fbe74">coordinate</a></td></tr>
-<tr class="memdesc:a20714b069d927a137bf985501d6fbe74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinate reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a20714b069d927a137bf985501d6fbe74">More...</a><br /></td></tr>
-<tr class="separator:a20714b069d927a137bf985501d6fbe74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb1b0416d8240561ebd6ccf098ff364b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#adb1b0416d8240561ebd6ccf098ff364b">groundSpeedInKnots</a></td></tr>
-<tr class="memdesc:adb1b0416d8240561ebd6ccf098ff364b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#adb1b0416d8240561ebd6ccf098ff364b">More...</a><br /></td></tr>
-<tr class="separator:adb1b0416d8240561ebd6ccf098ff364b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6950651be9a812c2373096e6bfdc12bd"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a6950651be9a812c2373096e6bfdc12bd">groundSpeedInMetersPerSecond</a></td></tr>
-<tr class="memdesc:a6950651be9a812c2373096e6bfdc12bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a6950651be9a812c2373096e6bfdc12bd">More...</a><br /></td></tr>
-<tr class="separator:a6950651be9a812c2373096e6bfdc12bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cb8907a39af0fd348c1fe76918d6514"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a2cb8907a39af0fd348c1fe76918d6514">groundSpeedInKnotsAsString</a></td></tr>
-<tr class="memdesc:a2cb8907a39af0fd348c1fe76918d6514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix in knots.  <a href="classPositioning_1_1PositionProvider.html#a2cb8907a39af0fd348c1fe76918d6514">More...</a><br /></td></tr>
-<tr class="separator:a2cb8907a39af0fd348c1fe76918d6514"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01f106c4bfddd3f477f8972f675c338d"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a01f106c4bfddd3f477f8972f675c338d">groundSpeedInKMHAsString</a></td></tr>
-<tr class="memdesc:a01f106c4bfddd3f477f8972f675c338d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix in km/h.  <a href="classPositioning_1_1PositionProvider.html#a01f106c4bfddd3f477f8972f675c338d">More...</a><br /></td></tr>
-<tr class="separator:a01f106c4bfddd3f477f8972f675c338d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0516b4db02f29adf384bf616740be4f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a0516b4db02f29adf384bf616740be4f9">horizontalPrecisionInMeters</a></td></tr>
-<tr class="memdesc:a0516b4db02f29adf384bf616740be4f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal precision estimate for last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a0516b4db02f29adf384bf616740be4f9">More...</a><br /></td></tr>
-<tr class="separator:a0516b4db02f29adf384bf616740be4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ce6ce3c34fd16274f3e78574894b247"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a4ce6ce3c34fd16274f3e78574894b247">horizontalPrecisionInMetersAsString</a></td></tr>
-<tr class="memdesc:a4ce6ce3c34fd16274f3e78574894b247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal precision estimate for last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a4ce6ce3c34fd16274f3e78574894b247">More...</a><br /></td></tr>
-<tr class="separator:a4ce6ce3c34fd16274f3e78574894b247"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a861ad8c40cdb5ba7926f034db6c7b6c8"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a861ad8c40cdb5ba7926f034db6c7b6c8">icon</a></td></tr>
-<tr class="memdesc:a861ad8c40cdb5ba7926f034db6c7b6c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggested icon.  <a href="classPositioning_1_1PositionProvider.html#a861ad8c40cdb5ba7926f034db6c7b6c8">More...</a><br /></td></tr>
-<tr class="separator:a861ad8c40cdb5ba7926f034db6c7b6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f9de92fbce69223aa63d018d0024998"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a7f9de92fbce69223aa63d018d0024998">isInFlight</a></td></tr>
-<tr class="memdesc:a7f9de92fbce69223aa63d018d0024998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate whether the device is flying or on the ground.  <a href="classPositioning_1_1PositionProvider.html#a7f9de92fbce69223aa63d018d0024998">More...</a><br /></td></tr>
+<tr class="memitem:a7f9de92fbce69223aa63d018d0024998"><td class="memItemLeft" align="right" valign="top"><a id="a7f9de92fbce69223aa63d018d0024998"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a7f9de92fbce69223aa63d018d0024998">isInFlight</a></td></tr>
+<tr class="memdesc:a7f9de92fbce69223aa63d018d0024998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate whether the device is flying or on the ground This property holds an estimate, as to whether the device is flying or on the ground. The current implementation considers the device is flying if the groundspeed can be read and is greater then 30 knots. <br /></td></tr>
 <tr class="separator:a7f9de92fbce69223aa63d018d0024998"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78215c078c1adea9698b7aed7a88a6cb"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb">lastValidCoordinate</a></td></tr>
-<tr class="memdesc:a78215c078c1adea9698b7aed7a88a6cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last valid coordinate reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb">More...</a><br /></td></tr>
+<tr class="memdesc:a78215c078c1adea9698b7aed7a88a6cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last valid coordinate reading.  <a href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb">More...</a><br /></td></tr>
 <tr class="separator:a78215c078c1adea9698b7aed7a88a6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7da9ad72afbf1d830ce2ce0b31a53912"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a7da9ad72afbf1d830ce2ce0b31a53912">lastValidTrack</a></td></tr>
-<tr class="memdesc:a7da9ad72afbf1d830ce2ce0b31a53912"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last valid track reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a7da9ad72afbf1d830ce2ce0b31a53912">More...</a><br /></td></tr>
-<tr class="separator:a7da9ad72afbf1d830ce2ce0b31a53912"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a808a586fc781a56a2e46186e9e99d4be"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a808a586fc781a56a2e46186e9e99d4be">latitudeAsString</a></td></tr>
-<tr class="memdesc:a808a586fc781a56a2e46186e9e99d4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitude in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a808a586fc781a56a2e46186e9e99d4be">More...</a><br /></td></tr>
-<tr class="separator:a808a586fc781a56a2e46186e9e99d4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05830d075942a4eb620527b11040c121"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a05830d075942a4eb620527b11040c121">longitudeAsString</a></td></tr>
-<tr class="memdesc:a05830d075942a4eb620527b11040c121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a05830d075942a4eb620527b11040c121">More...</a><br /></td></tr>
-<tr class="separator:a05830d075942a4eb620527b11040c121"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae250e1d55e9e5592392d0b64cb163811"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#ae250e1d55e9e5592392d0b64cb163811">timestamp</a></td></tr>
-<tr class="memdesc:ae250e1d55e9e5592392d0b64cb163811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time and date of last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#ae250e1d55e9e5592392d0b64cb163811">More...</a><br /></td></tr>
-<tr class="separator:ae250e1d55e9e5592392d0b64cb163811"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a910506d19a47f790c526d5a989fca2fa"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a910506d19a47f790c526d5a989fca2fa">timestampAsString</a></td></tr>
-<tr class="memdesc:a910506d19a47f790c526d5a989fca2fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time of last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a910506d19a47f790c526d5a989fca2fa">More...</a><br /></td></tr>
-<tr class="separator:a910506d19a47f790c526d5a989fca2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adefd4c7106ccd0177cf748c53415628b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#adefd4c7106ccd0177cf748c53415628b">track</a></td></tr>
-<tr class="memdesc:adefd4c7106ccd0177cf748c53415628b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track found in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#adefd4c7106ccd0177cf748c53415628b">More...</a><br /></td></tr>
-<tr class="separator:adefd4c7106ccd0177cf748c53415628b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f38df5773b220f3939715620dd9c8ce"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a5f38df5773b220f3939715620dd9c8ce">trackAsString</a></td></tr>
-<tr class="memdesc:a5f38df5773b220f3939715620dd9c8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track found in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix.  <a href="classPositioning_1_1PositionProvider.html#a5f38df5773b220f3939715620dd9c8ce">More...</a><br /></td></tr>
-<tr class="separator:a5f38df5773b220f3939715620dd9c8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3437a170f436be46a82912221eabe026"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a3437a170f436be46a82912221eabe026">status</a></td></tr>
-<tr class="memdesc:a3437a170f436be46a82912221eabe026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status of the <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> class.  <a href="classPositioning_1_1PositionProvider.html#a3437a170f436be46a82912221eabe026">More...</a><br /></td></tr>
-<tr class="separator:a3437a170f436be46a82912221eabe026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f617d5ca92ef39c69c275cc3a06b3ba"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a2f617d5ca92ef39c69c275cc3a06b3ba">statusAsString</a></td></tr>
-<tr class="memdesc:a2f617d5ca92ef39c69c275cc3a06b3ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status of the <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> class.  <a href="classPositioning_1_1PositionProvider.html#a2f617d5ca92ef39c69c275cc3a06b3ba">More...</a><br /></td></tr>
-<tr class="separator:a2f617d5ca92ef39c69c275cc3a06b3ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae01a01aa2d6b04b6c5b09d685c72bf7"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">statusString</a></td></tr>
+<tr class="memdesc:aae01a01aa2d6b04b6c5b09d685c72bf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status of the <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> class.  <a href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">More...</a><br /></td></tr>
+<tr class="separator:aae01a01aa2d6b04b6c5b09d685c72bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Satellite Navigator. </p>
@@ -261,42 +133,14 @@ Properties</h2></td></tr>
 <ul>
 <li>This class the data in formats suitable for aviation purposes.</li>
 <li>This class has a well-defined timeout if no data has been received for more than two minutes.</li>
-<li>The signal <a class="el" href="classPositioning_1_1PositionProvider.html#ab0b26b258d612b62cdb759d873057e66" title="Emitted whenever the PositionProvider status changes.">statusChanged()</a> reliably lets you know if the status changes. The QGeoPositionInfoSource, in contrast, only reports errors. It does not report explicitly when error conditions are lifted.</li>
+<li>The signal statusChanged() reliably lets you know if the status changes. The QGeoPositionInfoSource, in contrast, only reports errors. It does not report explicitly when error conditions are lifted.</li>
 </ul>
-<p>Once constructed, the health status of the satellite navigation subsystem can be queried using the status property. If all is well, the class receives regular satellite navigation data packets (aka 'fixes'), in the form a QGeoPositionInfo object, and the signal 'update' is emitted. The QGeoPositionInfo is considered valid for one minute, and can be accessed via the method <a class="el" href="classPositioning_1_1PositionProvider.html#aa075dbbd74c55f9998e34da2d6c867a8" title="Last PositionProvider fix received.">lastFix()</a>, or via a multitude of properties that present the data in formats suitable for GUI applications. If no new <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fixes come in for one minute, the QGeoPositionInfo will cleared, and the status is set to Timeout until new data arrives.</p>
+<p>Once constructed, the health status of the satellite navigation subsystem can be queried using the status property. If all is well, the class receives regular satellite navigation data packets (aka 'fixes'), in the form a QGeoPositionInfo object, and the signal 'update' is emitted. The QGeoPositionInfo is considered valid for one minute, and can be accessed via the method lastFix(), or via a multitude of properties that present the data in formats suitable for GUI applications. If no new <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fixes come in for one minute, the QGeoPositionInfo will cleared, and the status is set to Timeout until new data arrives.</p>
 <p>There exists one static instance of this class, which can be accessed via the method <a class="el" href="classPositioning_1_1PositionProvider.html#a5da03727e664686eb8e9c0ccddabbff3" title="Pointer to static instance.">globalInstance()</a>. No other instance of this class should be used.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00081">81</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a5ae9de69b36a25bea8f66bd17c6fba60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ae9de69b36a25bea8f66bd17c6fba60">&#9670;&nbsp;</a></span>Status</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">Positioning::PositionProvider::Status</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Status codes. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5ae9de69b36a25bea8f66bd17c6fba60a383fb859718f609c60c1de1997e39c20"></a>OK&#160;</td><td class="fielddoc"><p>The <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> class works and received data. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a5ae9de69b36a25bea8f66bd17c6fba60aff7ed95fc60935d1f6207ea8df3b479b"></a>Timeout&#160;</td><td class="fielddoc"><p>No error has been reported, but no data has been received for more than one minute. <br  />
- </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a5ae9de69b36a25bea8f66bd17c6fba60a42857fe3a77212b450e7de4ee7ff640a"></a>Error&#160;</td><td class="fielddoc"><p>The underlying QGeoPositionInfoSource has reported an error. A human-readable error message can be accessed with the property statusAsString </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00115">115</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00082">82</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0bbbee546e3454b183f431020e0d0a65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bbbee546e3454b183f431020e0d0a65">&#9670;&nbsp;</a></span>PositionProvider()</h2>
 
@@ -332,76 +176,6 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a365c4d1cedd9a7df34444d2a08832892"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a365c4d1cedd9a7df34444d2a08832892">&#9670;&nbsp;</a></span>altitudeInFeet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::altitudeInFeet </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property altitudeInFeet </dd></dl>
-
-</div>
-</div>
-<a id="aef48b3b3d7a3afba8ae9c9b0bd5c958e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef48b3b3d7a3afba8ae9c9b0bd5c958e">&#9670;&nbsp;</a></span>altitudeInFeetAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::altitudeInFeetAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>altitudeInFeetAsString </dd></dl>
-
-</div>
-</div>
-<a id="ab5b77cdde8708356a20fae2ced8d6dda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5b77cdde8708356a20fae2ced8d6dda">&#9670;&nbsp;</a></span>coordinate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QGeoCoordinate Positioning::PositionProvider::coordinate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property coordinate </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00202">202</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
 <a id="a5da03727e664686eb8e9c0ccddabbff3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5da03727e664686eb8e9c0ccddabbff3">&#9670;&nbsp;</a></span>globalInstance()</h2>
 
@@ -431,176 +205,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a9dee035eac5691d6527812f4a8514898"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9dee035eac5691d6527812f4a8514898">&#9670;&nbsp;</a></span>groundSpeedInKMHAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::groundSpeedInKMHAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property groundSpeedInKMHAsString </dd></dl>
-
-</div>
-</div>
-<a id="a11515a2f0b36135fecddf21df2a5b111"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11515a2f0b36135fecddf21df2a5b111">&#9670;&nbsp;</a></span>groundSpeedInKnots()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::groundSpeedInKnots </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property groundSpeedInKnots </dd></dl>
-
-</div>
-</div>
-<a id="a0f9b9114bae4b9c3edcbc8512e289ee5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f9b9114bae4b9c3edcbc8512e289ee5">&#9670;&nbsp;</a></span>groundSpeedInKnotsAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::groundSpeedInKnotsAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property groundSpeedInKnotsAsString </dd></dl>
-
-</div>
-</div>
-<a id="a1123abdb5a3b8409792e266126cc4e7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1123abdb5a3b8409792e266126cc4e7c">&#9670;&nbsp;</a></span>groundSpeedInMetersPerSecond()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">qreal Positioning::PositionProvider::groundSpeedInMetersPerSecond </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>groundSpeedInMetersPerSecond </dd></dl>
-
-</div>
-</div>
-<a id="aec5aae2104f4f023a0f86a53b3d47fdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec5aae2104f4f023a0f86a53b3d47fdd">&#9670;&nbsp;</a></span>hasAltitude()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Positioning::PositionProvider::hasAltitude </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property hasAltitude </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00189">189</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="ad26f724700312f6eb4bdd4877d60badc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad26f724700312f6eb4bdd4877d60badc">&#9670;&nbsp;</a></span>horizontalPrecisionInMeters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::horizontalPrecisionInMeters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property horizontalPrecisionInMeters </dd></dl>
-
-</div>
-</div>
-<a id="a8db8426f2c6bef43ec84eb2d536b87cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8db8426f2c6bef43ec84eb2d536b87cd">&#9670;&nbsp;</a></span>horizontalPrecisionInMetersAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::horizontalPrecisionInMetersAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>horizontalPrecisionInMetersAsString </dd></dl>
-
-</div>
-</div>
-<a id="ad4f9474d08ebec02fb137bd6d8491116"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4f9474d08ebec02fb137bd6d8491116">&#9670;&nbsp;</a></span>icon()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::icon </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property icon </dd></dl>
-
-</div>
-</div>
 <a id="a0610871c4eb25e3ce1f144569b914a14"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0610871c4eb25e3ce1f144569b914a14">&#9670;&nbsp;</a></span>isInFlight()</h2>
 
@@ -627,37 +231,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property isInFlight </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00314">314</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="aa075dbbd74c55f9998e34da2d6c867a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa075dbbd74c55f9998e34da2d6c867a8">&#9670;&nbsp;</a></span>lastFix()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QGeoPositionInfo Positioning::PositionProvider::lastFix </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix received. </p>
-<dl class="section return"><dt>Returns</dt><dd>the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix received. If no <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> has been received for more than one minute, this method return an empty QGeoPositionInfo. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00476">476</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00134">134</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>
@@ -705,13 +279,13 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter function for property of the same name. </p>
-<p>This function differs from <a class="el" href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb" title="Last valid coordinate reading from the last PositionProvider fix.">lastValidCoordinate()</a> only in that it is static. It uses the <a class="el" href="classPositioning_1_1PositionProvider.html#a5da03727e664686eb8e9c0ccddabbff3" title="Pointer to static instance.">globalInstance()</a> to retrieve data.</p>
+<p>This function differs from <a class="el" href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb" title="Last valid coordinate reading.">lastValidCoordinate()</a> only in that it is static. It uses the <a class="el" href="classPositioning_1_1PositionProvider.html#a5da03727e664686eb8e9c0ccddabbff3" title="Pointer to static instance.">globalInstance()</a> to retrieve data.</p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastValidCoordinate </dd></dl>
 
 </div>
 </div>
-<a id="a38a4776bd50efed8831496d103097b8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38a4776bd50efed8831496d103097b8d">&#9670;&nbsp;</a></span>lastValidTrack()</h2>
+<a id="a51d17c4db52b060583ddf23f47647907"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51d17c4db52b060583ddf23f47647907">&#9670;&nbsp;</a></span>lastValidTT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -720,7 +294,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Positioning::PositionProvider::lastValidTrack </td>
+          <td class="memname"><a class="el" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> Positioning::PositionProvider::lastValidTT </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -736,92 +310,12 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastValidTrack </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00359">359</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00158">158</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a14b1bef54a693c3086ebdf958dfc88ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14b1bef54a693c3086ebdf958dfc88ea">&#9670;&nbsp;</a></span>latitudeAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::latitudeAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property latitudeAsString </dd></dl>
-
-</div>
-</div>
-<a id="a33222afc10ab32b2d1c4357963076986"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33222afc10ab32b2d1c4357963076986">&#9670;&nbsp;</a></span>longitudeAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::longitudeAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>longitudeAsString </dd></dl>
-
-</div>
-</div>
-<a id="a45c319d7dde0bf08950bb851cf148d97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45c319d7dde0bf08950bb851cf148d97">&#9670;&nbsp;</a></span>status()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">Status</a> Positioning::PositionProvider::status </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property status </dd></dl>
-
-</div>
-</div>
-<a id="a7f9532c8bf9254f523c9b139f574dfe7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f9532c8bf9254f523c9b139f574dfe7">&#9670;&nbsp;</a></span>statusAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::statusAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property statusAsString </dd></dl>
-
-</div>
-</div>
-<a id="aa6142712bd3bd169238d554ba4d030fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6142712bd3bd169238d554ba4d030fb">&#9670;&nbsp;</a></span>timestamp()</h2>
+<a id="a2bcf9d6a11dce853cfbc88602eb01c24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bcf9d6a11dce853cfbc88602eb01c24">&#9670;&nbsp;</a></span>positionInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -830,7 +324,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QDateTime Positioning::PositionProvider::timestamp </td>
+          <td class="memname"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> Positioning::PositionProvider::positionInfo </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -843,21 +337,22 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property timestamp </dd></dl>
+<p>Current position info. </p>
+<p>If no <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> has been received for more than ten seconds, this method return an invalid QGeoPositionInfo.</p>
+<dl class="section return"><dt>Returns</dt><dd>The current position info </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00401">401</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00198">198</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="afc1a7ee4ed5b43841c65d630e1cc99a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc1a7ee4ed5b43841c65d630e1cc99a8">&#9670;&nbsp;</a></span>timestampAsString()</h2>
+<a id="a2bf58cdb029a3539ba49024117e81d22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bf58cdb029a3539ba49024117e81d22">&#9670;&nbsp;</a></span>statusString()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QString Positioning::PositionProvider::timestampAsString </td>
+          <td class="memname">QString Positioning::PositionProvider::statusString </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -866,47 +361,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property timestampAsString </dd></dl>
-
-</div>
-</div>
-<a id="a2b6df1c1013bb77181249f87cf5f556c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b6df1c1013bb77181249f87cf5f556c">&#9670;&nbsp;</a></span>track()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::track </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property track </dd></dl>
-
-</div>
-</div>
-<a id="a313354cc975bf55ce6eb6309fa8dcd80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a313354cc975bf55ce6eb6309fa8dcd80">&#9670;&nbsp;</a></span>trackAsString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::trackAsString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property trackAsString </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property statusAsString </dd></dl>
 
 </div>
 </div>
@@ -939,332 +394,6 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a0f1ec5e1ab3b9534900d9ce4803d4397"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f1ec5e1ab3b9534900d9ce4803d4397">&#9670;&nbsp;</a></span>altitudeInFeet</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::altitudeInFeet</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Altitude. </p>
-<p>This property holds the altitude, defined as rawAltitude()+altitudeCorrection, in feet above sea level. Negative altitudes are possible. In case no valid <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix exists, or in case where no altitude information is reported, the property is set to the value "0". </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00143">143</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="acb24bf171c6eb18a1553273574d3a93b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb24bf171c6eb18a1553273574d3a93b">&#9670;&nbsp;</a></span>altitudeInFeetAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::altitudeInFeetAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Altitude reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the altitude, defined as rawAltitude()+altitudeCorrection, as a string of the form "2.943 ft". In case no valid <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix exists, or in case where no altitude information is reported, the property is set to the value "-".</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPositioning_1_1PositionProvider.html#a0f1ec5e1ab3b9534900d9ce4803d4397" title="Altitude.">altitudeInFeet</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00160">160</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a20714b069d927a137bf985501d6fbe74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20714b069d927a137bf985501d6fbe74">&#9670;&nbsp;</a></span>coordinate</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QGeoCoordinate Positioning::PositionProvider::coordinate</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Coordinate reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the coordinate found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. In case no valid <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix exists, the property is set an invalid coordinate. </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00196">196</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a01f106c4bfddd3f477f8972f675c338d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01f106c4bfddd3f477f8972f675c338d">&#9670;&nbsp;</a></span>groundSpeedInKMHAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::groundSpeedInKMHAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix in km/h. </p>
-<p>This property holds the ground speed found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, as a string of the form "132 km/h". In case no valid <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix exists, the property is set to the value "-", otherwise the number returned is never negative </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00252">252</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="adb1b0416d8240561ebd6ccf098ff364b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb1b0416d8240561ebd6ccf098ff364b">&#9670;&nbsp;</a></span>groundSpeedInKnots</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::groundSpeedInKnots</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the ground speed found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, in knots. In case no valid <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix exists, the property is set to the value "-1", otherwise the number returned is never negative </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00210">210</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a2cb8907a39af0fd348c1fe76918d6514"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cb8907a39af0fd348c1fe76918d6514">&#9670;&nbsp;</a></span>groundSpeedInKnotsAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::groundSpeedInKnotsAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix in knots. </p>
-<p>This property holds the ground speed found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, as a string of the form "97 kn". In case no valid <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix exists, the property is set to the value "-", otherwise the number returned is never negative </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00238">238</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a6950651be9a812c2373096e6bfdc12bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6950651be9a812c2373096e6bfdc12bd">&#9670;&nbsp;</a></span>groundSpeedInMetersPerSecond</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">qreal Positioning::PositionProvider::groundSpeedInMetersPerSecond</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Ground speed reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the ground speed found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, in meters per second. In case no valid <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix exists, the property is set to the value "-1.0", otherwise the number returned is never negative </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00224">224</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="ac1488c61a0e34892fd65a2391f57117c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1488c61a0e34892fd65a2391f57117c">&#9670;&nbsp;</a></span>hasAltitude</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Positioning::PositionProvider::hasAltitude</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>True if the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix contains altitude information. </p>
-<p>This property is set to "true" if the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix contains altitude information.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPositioning_1_1PositionProvider.html#a0f1ec5e1ab3b9534900d9ce4803d4397" title="Altitude.">altitudeInFeet</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00183">183</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a0516b4db02f29adf384bf616740be4f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0516b4db02f29adf384bf616740be4f9">&#9670;&nbsp;</a></span>horizontalPrecisionInMeters</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::horizontalPrecisionInMeters</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Horizontal precision estimate for last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds an estimate for the precision of the horizontal position info, in meters. If no estimate or no data exists, the property is set to "-1". Otherwise, the estimate is always non-negative. </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00266">266</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a4ce6ce3c34fd16274f3e78574894b247"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ce6ce3c34fd16274f3e78574894b247">&#9670;&nbsp;</a></span>horizontalPrecisionInMetersAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::horizontalPrecisionInMetersAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Horizontal precision estimate for last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds an estimate for the precision of the horizontal position info, as a string of the form "±5 m". If no estimate or no data exists, the property is set to "-". </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00280">280</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a861ad8c40cdb5ba7926f034db6c7b6c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a861ad8c40cdb5ba7926f034db6c7b6c8">&#9670;&nbsp;</a></span>icon</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::icon</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Suggested icon. </p>
-<p>This property suggests an icon, to be used for the own position. This is always one of "/icons/self-noPositionProvider.svg", "/icons/self-noDirection.svg" and "/icons/self-withDirection.svg" </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00294">294</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a7f9de92fbce69223aa63d018d0024998"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f9de92fbce69223aa63d018d0024998">&#9670;&nbsp;</a></span>isInFlight</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Positioning::PositionProvider::isInFlight</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Estimate whether the device is flying or on the ground. </p>
-<p>This property holds an estimate, as to whether the device is flying or on the ground. The current implementation considers the device is flying if the groundspeed can be read and is greater then 30 knots. </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00308">308</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
 <a id="a78215c078c1adea9698b7aed7a88a6cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a78215c078c1adea9698b7aed7a88a6cb">&#9670;&nbsp;</a></span>lastValidCoordinate</h2>
 
@@ -1285,16 +414,16 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Last valid coordinate reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
+<p>Last valid coordinate reading. </p>
 <p>This property holds the last valid coordinate found in a <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. At the first start, this property is set to the location Freiburg Airport, EDTF. The value is stored in a QSetting at destruction, and restored in the construction.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb" title="Last valid coordinate reading from the last PositionProvider fix.">lastValidCoordinate</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb" title="Last valid coordinate reading.">lastValidCoordinate</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00325">325</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00145">145</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a7da9ad72afbf1d830ce2ce0b31a53912"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7da9ad72afbf1d830ce2ce0b31a53912">&#9670;&nbsp;</a></span>lastValidTrack</h2>
+<a id="aae01a01aa2d6b04b6c5b09d685c72bf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae01a01aa2d6b04b6c5b09d685c72bf7">&#9670;&nbsp;</a></span>statusString</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1303,116 +432,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Positioning::PositionProvider::lastValidTrack</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Last valid track reading from the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the last valid track found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. This property differs from track, in that it remains unchanged when no track information can be found or when an error occurs. At the first start, this property is set to 0. The property always satisfies 0 &lt;= track &lt; 360. The value is stored in a QSetting at destruction, and restored in the construction.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPositioning_1_1PositionProvider.html#a7da9ad72afbf1d830ce2ce0b31a53912" title="Last valid track reading from the last PositionProvider fix.">lastValidTrack</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00353">353</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a808a586fc781a56a2e46186e9e99d4be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a808a586fc781a56a2e46186e9e99d4be">&#9670;&nbsp;</a></span>latitudeAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::latitudeAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Latitude in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the latitude of the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, as a string of the form "37° 52' 57.36'' N". If no latitude is available, the property is set to "-". </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00367">367</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a05830d075942a4eb620527b11040c121"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05830d075942a4eb620527b11040c121">&#9670;&nbsp;</a></span>longitudeAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::longitudeAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Longitude in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the longitude of the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, as a string of the form "122° 16' 1.93'' W". If no longitude is available, the property is set to "-". </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00381">381</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a3437a170f436be46a82912221eabe026"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3437a170f436be46a82912221eabe026">&#9670;&nbsp;</a></span>status</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classPositioning_1_1PositionProvider.html#a5ae9de69b36a25bea8f66bd17c6fba60">Status</a> Positioning::PositionProvider::status</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Status of the <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> class. </p>
-<p>This property holds the status of the <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> class. </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00449">449</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a2f617d5ca92ef39c69c275cc3a06b3ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f617d5ca92ef39c69c275cc3a06b3ba">&#9670;&nbsp;</a></span>statusAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::statusAsString</td>
+          <td class="memname">QString Positioning::PositionProvider::statusString</td>
         </tr>
       </table>
   </td>
@@ -1426,115 +446,7 @@ Properties</h2></td></tr>
 <p>This property holds a localized string that describes the status of the <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> class. A typical string is of the form "Connection to PositionProvider
 subsystem lost". </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00463">463</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="ae250e1d55e9e5592392d0b64cb163811"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae250e1d55e9e5592392d0b64cb163811">&#9670;&nbsp;</a></span>timestamp</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QDateTime Positioning::PositionProvider::timestamp</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Time and date of last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the date and time at which the position was reported last, in UTC time. The QDateTime is invalid if no time and date has been set. </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00395">395</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a910506d19a47f790c526d5a989fca2fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a910506d19a47f790c526d5a989fca2fa">&#9670;&nbsp;</a></span>timestampAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::timestampAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Time of last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the time at which the position was reported last as a string of the form "13:42:32 UTC". If no time has been set, the property is set to "-". </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00409">409</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="adefd4c7106ccd0177cf748c53415628b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adefd4c7106ccd0177cf748c53415628b">&#9670;&nbsp;</a></span>track</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Positioning::PositionProvider::track</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Track found in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the track (= true course) found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, in degrees. If no track is available, the property is set to "-1", otherwise the track is an integer satisfying 0 &lt;= track &lt; 360. </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00423">423</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a5f38df5773b220f3939715620dd9c8ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f38df5773b220f3939715620dd9c8ce">&#9670;&nbsp;</a></span>trackAsString</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Positioning::PositionProvider::trackAsString</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Track found in last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix. </p>
-<p>This property holds the track (= true course) found in the last <a class="el" href="classPositioning_1_1PositionProvider.html" title="Satellite Navigator.">PositionProvider</a> fix, as a string of the form "127°". If no track is available, the property is set to "-". </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00437">437</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00172">172</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>

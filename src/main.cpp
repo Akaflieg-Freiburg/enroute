@@ -36,7 +36,6 @@
 #endif
 
 #include "Aircraft.h"
-#include "AviationUnits.h"
 #include "Clock.h"
 #include "FlightRoute.h"
 #include "GlobalSettings.h"
@@ -48,6 +47,10 @@
 #include "traffic/Factor.h"
 #include "traffic/TrafficDataProvider.h"
 #include "ui/ScaleQuickItem.h"
+#include "units/Angle.h"
+#include "units/Distance.h"
+#include "units/Speed.h"
+#include "units/Time.h"
 #include "weather/DownloadManager.h"
 #include "weather/Wind.h"
 #include <chrono>
@@ -63,6 +66,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<AviationUnits::Angle>();
     qRegisterMetaType<AviationUnits::Distance>();
     qRegisterMetaType<AviationUnits::Speed>();
+    qRegisterMetaType<AviationUnits::Time>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<GeoMaps::Airspace>("enroute", 1, 0, "Airspace");

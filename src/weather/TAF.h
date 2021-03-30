@@ -23,7 +23,7 @@
 #include <QDataStream>
 #include <QXmlStreamReader>
 
-#include "AviationUnits.h"
+//#include "AviationUnits.h"
 #include "weather/Decoder.h"
 
 

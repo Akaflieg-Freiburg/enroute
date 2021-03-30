@@ -72,7 +72,6 @@ set(SOURCES
 
     # Header files
     Aircraft.h
-    AviationUnits.h
     Clock.h
     FlightRoute.h
     geomaps/Airspace.h
@@ -97,6 +96,10 @@ set(SOURCES
     traffic/TcpTrafficDataSource.h
     traffic/TrafficDataProvider.h
     ui/ScaleQuickItem.h
+    units/Angle.h
+    units/Distance.h
+    units/Speed.h
+    units/Time.h
     weather/Decoder.h
     weather/DownloadManager.h
     weather/METAR.h
@@ -106,7 +109,6 @@ set(SOURCES
 
     # C++ files
     Aircraft.cpp
-    AviationUnits.cpp
     Clock.cpp
     FlightRoute.cpp
     FlightRoute_GPX.cpp
@@ -135,6 +137,10 @@ set(SOURCES
     traffic/TcpTrafficDataSource.cpp
     traffic/TrafficDataProvider.cpp
     ui/ScaleQuickItem.cpp
+    units/Angle.cpp
+    units/Distance.cpp
+    units/Speed.cpp
+    units/Time.cpp
     weather/Decoder.cpp
     weather/DownloadManager.cpp
     weather/METAR.cpp

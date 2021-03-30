@@ -72,7 +72,7 @@ auto FlightRoute::Leg::GS() const -> AviationUnits::Speed
     auto WD      = AviationUnits::Angle::fromDEG( _wind->windDirectionInDEG() );
 
     // Law of cosine for wind triangle
-    auto GSInKT = qSqrt( TASInKT*TASInKT + WSInKT*WSInKT - 2.0*TASInKT*WSInKT*AviationUnits::Angle::cos(WD-TH()));
+    auto GSInKT = qSqrt( TASInKT*TASInKT + WSInKT*WSInKT - 2.0*TASInKT*WSInKT*(WD-TH()).cos() );
 
     return AviationUnits::Speed::fromKN(GSInKT);
 }
@@ -104,7 +104,7 @@ auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
     AviationUnits::Angle WD  = AviationUnits::Angle::fromDEG( _wind->windDirectionInDEG() );
 
     // Law of sine for wind triangle
-    return AviationUnits::Angle::asin(-AviationUnits::Angle::sin(TC()-WD)*(WS/TAS));
+    return AviationUnits::Angle::asin(-(TC()-WD).sin() *(WS/TAS));
 }
 
 
@@ -154,11 +154,11 @@ auto FlightRoute::Leg::makeDescription(bool useMetricUnits) const -> QString
     if (_time.isFinite()) {
         result += QString(" • %1 h").arg(_time.toHoursAndMinutes());
     }
-    auto TCInDEG = TC().toNormalizedDEG();
+    auto TCInDEG = TC().toDEG();
     if (qIsFinite(TCInDEG)) {
         result += QString(" • TC %1°").arg(qRound(TCInDEG));
     }
-    double THInDEG = TH().toNormalizedDEG();
+    double THInDEG = TH().toDEG();
     if (qIsFinite(THInDEG)) {
         result += QString(" • TH %1°").arg(qRound(THInDEG));
     }

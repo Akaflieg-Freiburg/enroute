@@ -22,7 +22,7 @@
 #include <QJsonArray>
 #include <QVariant>
 
-#include "AviationUnits.h"
+//#include "AviationUnits.h"
 #include "Waypoint.h"
 #include "weather/Station.h"
 

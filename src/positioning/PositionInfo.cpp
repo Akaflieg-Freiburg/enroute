@@ -21,59 +21,60 @@
 #include "positioning/PositionInfo.h"
 
 
-Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo &info)
+Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo &info, AviationUnits::Distance pressureAlt)
 {
-    _positionInfo = info;
+    m_positionInfo = info;
+    m_pressureAltitude = pressureAlt;
 }
 
 
 auto Positioning::PositionInfo::groundSpeed() const -> AviationUnits::Speed
 {
-    if (!_positionInfo.isValid()) {
+    if (!m_positionInfo.isValid()) {
         return {};
     }
-    if (!_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
         return {};
     }
 
-    return AviationUnits::Speed::fromMPS(_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
+    return AviationUnits::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
 }
 
 
 auto Positioning::PositionInfo::positionErrorEstimate() const -> AviationUnits::Distance
 {
-    if (!_positionInfo.isValid()) {
+    if (!m_positionInfo.isValid()) {
         return {};
     }
-    if (!_positionInfo.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
         return {};
     }
 
-    return AviationUnits::Distance::fromM(_positionInfo.attribute(QGeoPositionInfo::HorizontalAccuracy));
+    return AviationUnits::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::HorizontalAccuracy));
 }
 
 
 auto Positioning::PositionInfo::trueAltitude() const -> AviationUnits::Distance
 {
-    if (_positionInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
+    if (m_positionInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return {};
     }
 
-    return AviationUnits::Distance::fromM(_positionInfo.coordinate().altitude());
+    return AviationUnits::Distance::fromM(m_positionInfo.coordinate().altitude());
 
 }
 
 
 auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> AviationUnits::Distance
 {
-    if (!_positionInfo.isValid()) {
+    if (!m_positionInfo.isValid()) {
         return {};
     }
-    if (!_positionInfo.hasAttribute(QGeoPositionInfo::VerticalAccuracy)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::VerticalAccuracy)) {
         return {};
     }
 
-    return AviationUnits::Distance::fromM(_positionInfo.attribute(QGeoPositionInfo::VerticalAccuracy));
+    return AviationUnits::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::VerticalAccuracy));
 }
 
 
@@ -85,36 +86,36 @@ auto Positioning::PositionInfo::trueTrack() const -> AviationUnits::Angle
     if (groundSpeed().toKN() < 4) {
         return {};
     }
-    if (!_positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
         return {};
     }
 
-    return AviationUnits::Angle::fromDEG(_positionInfo.attribute(QGeoPositionInfo::Direction));
+    return AviationUnits::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::Direction));
 }
 
 
 auto Positioning::PositionInfo::variation() const -> AviationUnits::Angle
 {
-    if (!_positionInfo.isValid()) {
+    if (!m_positionInfo.isValid()) {
         return {};
     }
-    if (!_positionInfo.hasAttribute(QGeoPositionInfo::MagneticVariation)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::MagneticVariation)) {
         return {};
     }
 
-    return AviationUnits::Angle::fromDEG(_positionInfo.attribute(QGeoPositionInfo::MagneticVariation));
+    return AviationUnits::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::MagneticVariation));
 }
 
 
 auto Positioning::PositionInfo::verticalSpeed() const -> AviationUnits::Speed
 {
-    if (!_positionInfo.isValid()) {
+    if (!m_positionInfo.isValid()) {
         return {};
     }
-    if (!_positionInfo.hasAttribute(QGeoPositionInfo::VerticalSpeed)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::VerticalSpeed)) {
         return {};
     }
 
-    return AviationUnits::Speed::fromMPS(_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
+    return AviationUnits::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
 }
 

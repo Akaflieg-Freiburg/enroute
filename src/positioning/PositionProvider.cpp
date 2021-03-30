@@ -22,7 +22,7 @@
 #include <QVariant>
 #include <QtMath>
 
-#include "AviationUnits.h"
+//#include "AviationUnits.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 

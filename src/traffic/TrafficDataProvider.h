@@ -25,7 +25,6 @@
 #include <QObject>
 #include <QQmlListProperty>
 
-#include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "traffic/Factor.h"
 #include "traffic/FLARMWarning.h"

@@ -307,7 +307,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (waypoint !== null) ? waypoint.wayTo(satNav.coordinate, globalSettings.useMetricUnits) : ""
+            text: (waypoint !== null) ? waypoint.wayTo(satNav.positionInfo.coordinate(), globalSettings.useMetricUnits) : ""
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

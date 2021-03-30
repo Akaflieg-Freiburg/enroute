@@ -21,7 +21,8 @@
 #pragma once
 
 #include <QSettings>
-#include "AviationUnits.h"
+
+#include "units/Speed.h"
 
 namespace Weather {
 

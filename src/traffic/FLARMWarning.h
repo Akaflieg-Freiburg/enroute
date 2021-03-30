@@ -23,7 +23,7 @@
 #include <QGeoPositionInfo>
 #include <QTimer>
 
-#include "AviationUnits.h"
+#include "units/Distance.h"
 
 namespace Traffic {
 

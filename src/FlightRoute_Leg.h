@@ -22,8 +22,9 @@
 
 #include <QPointer>
 
-#include "AviationUnits.h"
 #include "FlightRoute.h"
+#include "units/Distance.h"
+#include "units/Time.h"
 
 
 /*! \brief Leg in a flight route */

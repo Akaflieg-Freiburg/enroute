@@ -20,7 +20,7 @@
 
 #include <QJsonArray>
 
-#include "AviationUnits.h"
+//#include "AviationUnits.h"
 
 #include "Airspace.h"
 

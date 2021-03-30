@@ -24,10 +24,10 @@
 #include <QLocale>
 #include <QTimer>
 
-#include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "positioning/Geoid.h"
 #include "positioning/PositionInfo.h"
+#include "units/Distance.h"
 
 namespace Positioning {
 
@@ -162,7 +162,7 @@ public:
      */
     Positioning::PositionInfo positionInfo() const
     {
-        return PositionInfo(_positionInfo);
+        return PositionInfo(_positionInfo, {});
     }
 
     Q_INVOKABLE bool receiving() const

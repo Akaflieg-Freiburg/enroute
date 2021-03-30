@@ -22,14 +22,16 @@
 
 #include <QGeoPositionInfo>
 
-#include "AviationUnits.h"
+#include "units/Angle.h"
+#include "units/Distance.h"
+#include "units/Speed.h"
 
 namespace Positioning {
 
 /*! \brief Geographic position
  *
  *  This class is a thin wrapper around QGeoPositionInfo. It exports the data from QGeoPositionInfo
- *  in a way that can be read from QML.
+ *  in a way that can be read from QML. In addition, the class also contains information about the pressure altitude
  */
 
 class PositionInfo
@@ -44,7 +46,7 @@ public:
      *
      * @param info QGeoPositionInfo this is copied into this class
      */
-    explicit PositionInfo(const QGeoPositionInfo &info);
+    explicit PositionInfo(const QGeoPositionInfo &info, AviationUnits::Distance pressureAlt);
 
     /*! \brief Coordinate
      *
@@ -55,7 +57,7 @@ public:
      */
     Q_INVOKABLE QGeoCoordinate coordinate() const
     {
-        return _positionInfo.coordinate();
+        return m_positionInfo.coordinate();
     }
 
     /*! \brief Ground speed
@@ -70,7 +72,7 @@ public:
      */
     Q_INVOKABLE bool isValid() const
     {
-        return _positionInfo.isValid();
+        return m_positionInfo.isValid();
     }
 
     /*! \brief Position error estimate
@@ -78,6 +80,17 @@ public:
      *  @returns Position error estimate or NaN if unknown.
      */
     Q_INVOKABLE AviationUnits::Distance positionErrorEstimate() const;
+
+    /*! \brief Pressure altitude
+     *
+     *  This is the altitude that your altimeter will show if set to 1013,2 hPa.
+     *
+     *  @returns Pressure altitude or NaN if unknown.
+     */
+    Q_INVOKABLE AviationUnits::Distance pressureAltitude() const
+    {
+        return m_pressureAltitude;
+    }
 
     /*! \brief True Altitude
      *
@@ -110,7 +123,8 @@ public:
     Q_INVOKABLE AviationUnits::Speed verticalSpeed() const;
 
 private:
-    QGeoPositionInfo _positionInfo {};
+    QGeoPositionInfo m_positionInfo {};
+    AviationUnits::Distance m_pressureAltitude {};
 };
 
 }

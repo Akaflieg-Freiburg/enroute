@@ -21,7 +21,8 @@
 #pragma once
 
 #include <QSettings>
-#include "AviationUnits.h"
+
+#include "units/Speed.h"
 
 
 /*! \brief This extremely simple class holds a few numbers that describe an

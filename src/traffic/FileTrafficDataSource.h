@@ -25,10 +25,10 @@
 #include <QObject>
 #include <QQmlListProperty>
 
-#include "AviationUnits.h"
 #include "GlobalSettings.h"
 #include "traffic/Factor.h"
 #include "traffic/AbstractTrafficDataSource.h"
+#include "units/Distance.h"
 
 namespace Traffic {
 

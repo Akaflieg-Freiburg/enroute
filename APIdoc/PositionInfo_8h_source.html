@@ -72,65 +72,74 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QGeoPositionInfo&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;AviationUnits.h&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a> {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;units/Angle.h&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;units/Distance.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;units/Speed.h&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>PositionInfo</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    Q_GADGET</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="classPositioning_1_1PositionInfo.html#a8265e136dc04440a224a87598073902c">PositionInfo</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPositioning_1_1PositionInfo.html#a8265e136dc04440a224a87598073902c">PositionInfo</a>(<span class="keyword">const</span> QGeoPositionInfo &amp;info);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Q_INVOKABLE QGeoCoordinate <a class="code" href="classPositioning_1_1PositionInfo.html#a67fca2f200c21ef40ced18f7cd46f7bc">coordinate</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">return</span> _positionInfo.coordinate();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Speed.html">AviationUnits::Speed</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a6c79a6aa6b72669acd6a766814356817">groundSpeed</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classPositioning_1_1PositionInfo.html#a6f7528068d6d1501edd49b0382865a38">isValid</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">return</span> _positionInfo.isValid();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1PositionInfo.html#abf96c0394c5942b24b4ac20d47d8db95">positionErrorEstimate</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a8f2340c2bd1fb2b014e05032e2c1bc9b">trueAltitude</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfo.html#a67fca2f200c21ef40ced18f7cd46f7bc">   92</a></span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1PositionInfo.html#af86a6a92dae29bcd5e3dfb040addc8f6">trueAltitudeErrorEstimate</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a4294d1f2c36919d886496a4254af190e">trueTrack</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a7e4575e43f414fb2f90387c3e600858e">variation</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Speed.html">AviationUnits::Speed</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a398de08874f0c5290d34c4d67f0a48ca">verticalSpeed</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    QGeoPositionInfo _positionInfo {};</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;};</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a> {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">class </span>PositionInfo</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    Q_GADGET</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classPositioning_1_1PositionInfo.html#a8265e136dc04440a224a87598073902c">PositionInfo</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPositioning_1_1PositionInfo.html#a8265e136dc04440a224a87598073902c">PositionInfo</a>(<span class="keyword">const</span> QGeoPositionInfo &amp;info, <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> pressureAlt);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    Q_INVOKABLE QGeoCoordinate <a class="code" href="classPositioning_1_1PositionInfo.html#a67fca2f200c21ef40ced18f7cd46f7bc">coordinate</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">return</span> m_positionInfo.coordinate();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Speed.html">AviationUnits::Speed</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a6c79a6aa6b72669acd6a766814356817">groundSpeed</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classPositioning_1_1PositionInfo.html#a6f7528068d6d1501edd49b0382865a38">isValid</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">return</span> m_positionInfo.isValid();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1PositionInfo.html#abf96c0394c5942b24b4ac20d47d8db95">positionErrorEstimate</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a7131e8fd8dc1971bf08f5babc212a5e9">pressureAltitude</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">return</span> m_pressureAltitude;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfo.html#a67fca2f200c21ef40ced18f7cd46f7bc">   94</a></span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a8f2340c2bd1fb2b014e05032e2c1bc9b">trueAltitude</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1PositionInfo.html#af86a6a92dae29bcd5e3dfb040addc8f6">trueAltitudeErrorEstimate</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a4294d1f2c36919d886496a4254af190e">trueTrack</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a7e4575e43f414fb2f90387c3e600858e">variation</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    Q_INVOKABLE <a class="code" href="classAviationUnits_1_1Speed.html">AviationUnits::Speed</a> <a class="code" href="classPositioning_1_1PositionInfo.html#a398de08874f0c5290d34c4d67f0a48ca">verticalSpeed</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfo.html#a7131e8fd8dc1971bf08f5babc212a5e9">  126</a></span>&#160;    QGeoPositionInfo m_positionInfo {};</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> m_pressureAltitude {};</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;};</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>)</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassAviationUnits_1_1Speed_html"><div class="ttname"><a href="classAviationUnits_1_1Speed.html">AviationUnits::Speed</a></div><div class="ttdoc">Convenience class for speed computations.</div><div class="ttdef"><b>Definition:</b> <a href="AviationUnits_8h_source.html#l00336">AviationUnits.h:336</a></div></div>
-<div class="ttc" id="aclassPositioning_1_1PositionInfo_html"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a></div><div class="ttdoc">Geographic position.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00053">PositionInfo.h:53</a></div></div>
+<div class="ttc" id="aclassAviationUnits_1_1Speed_html"><div class="ttname"><a href="classAviationUnits_1_1Speed.html">AviationUnits::Speed</a></div><div class="ttdoc">Convenience class for speed computations.</div><div class="ttdef"><b>Definition:</b> <a href="Speed_8h_source.html#l00052">Speed.h:52</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1PositionInfo_html"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a></div><div class="ttdoc">Geographic position.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00055">PositionInfo.h:55</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a398de08874f0c5290d34c4d67f0a48ca"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a398de08874f0c5290d34c4d67f0a48ca">Positioning::PositionInfo::verticalSpeed</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Speed verticalSpeed() const</div><div class="ttdoc">Vertical speed.</div></div>
+<div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a7131e8fd8dc1971bf08f5babc212a5e9"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a7131e8fd8dc1971bf08f5babc212a5e9">Positioning::PositionInfo::pressureAltitude</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Distance pressureAltitude() const</div><div class="ttdoc">Pressure altitude.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00126">PositionInfo.h:126</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a7e4575e43f414fb2f90387c3e600858e"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a7e4575e43f414fb2f90387c3e600858e">Positioning::PositionInfo::variation</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Angle variation() const</div><div class="ttdoc">Magnetic variation.</div></div>
-<div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a67fca2f200c21ef40ced18f7cd46f7bc"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a67fca2f200c21ef40ced18f7cd46f7bc">Positioning::PositionInfo::coordinate</a></div><div class="ttdeci">Q_INVOKABLE QGeoCoordinate coordinate() const</div><div class="ttdoc">Coordinate.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00092">PositionInfo.h:92</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a67fca2f200c21ef40ced18f7cd46f7bc"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a67fca2f200c21ef40ced18f7cd46f7bc">Positioning::PositionInfo::coordinate</a></div><div class="ttdeci">Q_INVOKABLE QGeoCoordinate coordinate() const</div><div class="ttdoc">Coordinate.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00094">PositionInfo.h:94</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_af86a6a92dae29bcd5e3dfb040addc8f6"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#af86a6a92dae29bcd5e3dfb040addc8f6">Positioning::PositionInfo::trueAltitudeErrorEstimate</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Distance trueAltitudeErrorEstimate() const</div><div class="ttdoc">True altitude error estimate.</div></div>
 <div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00024">Geoid.h:24</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a6c79a6aa6b72669acd6a766814356817"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a6c79a6aa6b72669acd6a766814356817">Positioning::PositionInfo::groundSpeed</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Speed groundSpeed() const</div><div class="ttdoc">Ground speed.</div></div>
-<div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a6f7528068d6d1501edd49b0382865a38"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a6f7528068d6d1501edd49b0382865a38">Positioning::PositionInfo::isValid</a></div><div class="ttdeci">Q_INVOKABLE bool isValid() const</div><div class="ttdoc">Validity.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00107">PositionInfo.h:107</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a6f7528068d6d1501edd49b0382865a38"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a6f7528068d6d1501edd49b0382865a38">Positioning::PositionInfo::isValid</a></div><div class="ttdeci">Q_INVOKABLE bool isValid() const</div><div class="ttdoc">Validity.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00109">PositionInfo.h:109</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a8265e136dc04440a224a87598073902c"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a8265e136dc04440a224a87598073902c">Positioning::PositionInfo::PositionInfo</a></div><div class="ttdeci">PositionInfo()=default</div><div class="ttdoc">Default Constructor.</div></div>
-<div class="ttc" id="aclassAviationUnits_1_1Distance_html"><div class="ttname"><a href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition:</b> <a href="AviationUnits_8h_source.html#l00196">AviationUnits.h:196</a></div></div>
+<div class="ttc" id="aclassAviationUnits_1_1Distance_html"><div class="ttname"><a href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition:</b> <a href="Distance_8h_source.html#l00052">Distance.h:52</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_abf96c0394c5942b24b4ac20d47d8db95"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#abf96c0394c5942b24b4ac20d47d8db95">Positioning::PositionInfo::positionErrorEstimate</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Distance positionErrorEstimate() const</div><div class="ttdoc">Position error estimate.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a8f2340c2bd1fb2b014e05032e2c1bc9b"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a8f2340c2bd1fb2b014e05032e2c1bc9b">Positioning::PositionInfo::trueAltitude</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Distance trueAltitude() const</div><div class="ttdoc">True Altitude.</div></div>
-<div class="ttc" id="aclassAviationUnits_1_1Angle_html"><div class="ttname"><a href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a></div><div class="ttdoc">Convenience class for angle computations.</div><div class="ttdef"><b>Definition:</b> <a href="AviationUnits_8h_source.html#l00061">AviationUnits.h:61</a></div></div>
+<div class="ttc" id="aclassAviationUnits_1_1Angle_html"><div class="ttname"><a href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a></div><div class="ttdoc">Convenience class for angle computations.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00058">Angle.h:58</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a4294d1f2c36919d886496a4254af190e"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a4294d1f2c36919d886496a4254af190e">Positioning::PositionInfo::trueTrack</a></div><div class="ttdeci">Q_INVOKABLE AviationUnits::Angle trueTrack() const</div><div class="ttdoc">True track.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

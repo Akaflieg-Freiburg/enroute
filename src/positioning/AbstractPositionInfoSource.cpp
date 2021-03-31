@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "positioning/AbstractPositionInfoSource.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 
@@ -27,21 +30,21 @@
 Positioning::AbstractPositionInfoSource::AbstractPositionInfoSource(QObject *parent) : QObject(parent)
 {
     // Setup timer
-    positionInfoTimer.setInterval(10*1000);
-    positionInfoTimer.setSingleShot(true);
-    connect(&positionInfoTimer, &QTimer::timeout, this, &Positioning::AbstractPositionInfoSource::resetPositionInfo);
+    m_positionInfoTimer.setInterval(10s);
+    m_positionInfoTimer.setSingleShot(true);
+    connect(&m_positionInfoTimer, &QTimer::timeout, this, &Positioning::AbstractPositionInfoSource::resetPositionInfo);
 
     // Setup timer
-    pressureAltitudeTimer.setInterval(10*1000);
-    pressureAltitudeTimer.setSingleShot(true);
-    connect(&pressureAltitudeTimer, &QTimer::timeout, this, &Positioning::AbstractPositionInfoSource::resetBarometricAltitude);
+    m_pressureAltitudeTimer.setInterval(10s);
+    m_pressureAltitudeTimer.setSingleShot(true);
+    connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, &Positioning::AbstractPositionInfoSource::resetPressureAltitude);
 }
 
 
 void Positioning::AbstractPositionInfoSource::setPositionInfo(const QGeoPositionInfo &info)
 {
     if (info.isValid()) {
-        positionInfoTimer.start();
+        m_positionInfoTimer.start();
     }
     if (info == m_positionInfo) {
         return;
@@ -57,10 +60,10 @@ void Positioning::AbstractPositionInfoSource::resetPositionInfo()
 }
 
 
-void Positioning::AbstractPositionInfoSource::setBarometricAltitude(AviationUnits::Distance newPressureAltitude)
+void Positioning::AbstractPositionInfoSource::setPressureAltitude(AviationUnits::Distance newPressureAltitude)
 {
     if (newPressureAltitude.isFinite()) {
-        pressureAltitudeTimer.start();
+        m_pressureAltitudeTimer.start();
     }
     if (newPressureAltitude == m_pressureAltitude) {
         return;
@@ -71,7 +74,7 @@ void Positioning::AbstractPositionInfoSource::setBarometricAltitude(AviationUnit
 }
 
 
-void Positioning::AbstractPositionInfoSource::resetBarometricAltitude()
+void Positioning::AbstractPositionInfoSource::resetPressureAltitude()
 {
-    setBarometricAltitude( {} );
+    setPressureAltitude( {} );
 }

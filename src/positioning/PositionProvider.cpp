@@ -254,6 +254,6 @@ auto Positioning::PositionProvider::pressureAltitude()  -> AviationUnits::Distan
         return AviationUnits::Distance();
     }
 
-    return trafficDataProvider->barometricAltitude();
+    return trafficDataProvider->pressureAltitude();
 }
 

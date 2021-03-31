@@ -75,7 +75,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
             continue;
         }
 
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::setBarometricAltitude);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
@@ -234,7 +234,7 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
             if (positionInfo().isValid()) {
                 result += QString("<li>%1</li>").arg(tr("Receiving position info."));
             }
-            if (barometricAltitude().isFinite()) {
+            if (pressureAltitude().isFinite()) {
                 result += QString("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
             }
             result += "</ul>";

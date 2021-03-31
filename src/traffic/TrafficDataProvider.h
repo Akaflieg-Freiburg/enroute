@@ -87,9 +87,6 @@ public:
      */
     bool receiving() const;
 
-    /*! \brief Receiving data from one data source*/
-    Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
-
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property statusString

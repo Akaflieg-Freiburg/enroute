@@ -55,13 +55,13 @@ public:
     }
 
     /*! \brief Receiving data from one data source*/
-    Q_PROPERTY(AviationUnits::Distance barometricAltitude READ barometricAltitude WRITE setBarometricAltitude RESET resetBarometricAltitude NOTIFY barometricAltitudeChanged)
+    Q_PROPERTY(AviationUnits::Distance pressureAltitude READ pressureAltitude WRITE setPressureAltitude RESET resetPressureAltitude NOTIFY barometricAltitudeChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property positionInfo
      */
-    AviationUnits::Distance barometricAltitude() const
+    AviationUnits::Distance pressureAltitude() const
     {
         return m_pressureAltitude;
     }
@@ -88,8 +88,8 @@ public:
     void setPositionInfo(const QGeoPositionInfo &info);
     void resetPositionInfo();
 
-    void setBarometricAltitude(AviationUnits::Distance newPressureAltitude);
-    void resetBarometricAltitude();
+    void setPressureAltitude(AviationUnits::Distance newPressureAltitude);
+    void resetPressureAltitude();
 
 signals:
     /*! \brief Notifier signal */
@@ -106,10 +106,10 @@ signals:
 
 private:
     AviationUnits::Distance m_pressureAltitude {};
-    QTimer pressureAltitudeTimer;
+    QTimer m_pressureAltitudeTimer;
 
     QGeoPositionInfo m_positionInfo;
-    QTimer positionInfoTimer;
+    QTimer m_positionInfoTimer;
 };
 
 }

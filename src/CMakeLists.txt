@@ -89,6 +89,7 @@ set(SOURCES
     positioning/AbstractPositionInfoSource.h
     positioning/Geoid.h
     positioning/PositionInfo.h
+    positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
     traffic/AbstractTrafficDataSource.h
     traffic/Factor.h
@@ -131,6 +132,7 @@ set(SOURCES
     positioning/AbstractPositionInfoSource.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp
+    positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
     traffic/AbstractTrafficDataSource.cpp
     traffic/Factor.cpp

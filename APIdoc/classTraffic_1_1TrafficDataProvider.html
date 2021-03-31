@@ -46,7 +46,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
-<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -61,7 +60,7 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>&gt;</code></p>
 
-<p>Inherits QObject.</p>
+<p>Inherits Positioning::AbstractPositionInfoSource.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
@@ -72,36 +71,11 @@ Public Slots</h2></td></tr>
 <tr class="memdesc:ac9544cf2977ec2df572e9c31ce11dd36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect from traffic receiver.  <a href="classTraffic_1_1TrafficDataProvider.html#ac9544cf2977ec2df572e9c31ce11dd36">More...</a><br /></td></tr>
 <tr class="separator:ac9544cf2977ec2df572e9c31ce11dd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
-Signals</h2></td></tr>
-<tr class="memitem:a85e0f24206d7fee2ec37934499571e0c"><td class="memItemLeft" align="right" valign="top"><a id="a85e0f24206d7fee2ec37934499571e0c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a85e0f24206d7fee2ec37934499571e0c">barometricAltitudeChanged</a> ()</td></tr>
-<tr class="memdesc:a85e0f24206d7fee2ec37934499571e0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a85e0f24206d7fee2ec37934499571e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a658418ebccd7bc22f1efb2a1c9b5af2b"><td class="memItemLeft" align="right" valign="top"><a id="a658418ebccd7bc22f1efb2a1c9b5af2b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a658418ebccd7bc22f1efb2a1c9b5af2b">receivingChanged</a> ()</td></tr>
-<tr class="memdesc:a658418ebccd7bc22f1efb2a1c9b5af2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a658418ebccd7bc22f1efb2a1c9b5af2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a306402d2554b07c4a04eb72d58173bb2"><td class="memItemLeft" align="right" valign="top"><a id="a306402d2554b07c4a04eb72d58173bb2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a306402d2554b07c4a04eb72d58173bb2">statusStringChanged</a> ()</td></tr>
-<tr class="memdesc:a306402d2554b07c4a04eb72d58173bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a306402d2554b07c4a04eb72d58173bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd28a4144e1537356fafb71f53bd7ccf"><td class="memItemLeft" align="right" valign="top"><a id="acd28a4144e1537356fafb71f53bd7ccf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#acd28a4144e1537356fafb71f53bd7ccf">positionInfoChanged</a> (const QGeoPositionInfo &amp;)</td></tr>
-<tr class="memdesc:acd28a4144e1537356fafb71f53bd7ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:acd28a4144e1537356fafb71f53bd7ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#ad08bfbab038fcc25fbe45af20b8e1e99">TrafficDataProvider</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classTraffic_1_1TrafficDataProvider.html#ad08bfbab038fcc25fbe45af20b8e1e99">More...</a><br /></td></tr>
 <tr class="separator:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9639fb6d459792f74f246ea38ae9212"><td class="memItemLeft" align="right" valign="top">QGeoPositionInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#ab9639fb6d459792f74f246ea38ae9212">positionInfo</a> () const</td></tr>
-<tr class="memdesc:ab9639fb6d459792f74f246ea38ae9212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#ab9639fb6d459792f74f246ea38ae9212">More...</a><br /></td></tr>
-<tr class="separator:ab9639fb6d459792f74f246ea38ae9212"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e8457516e5576acd9cf25c9590fcbc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a7e8457516e5576acd9cf25c9590fcbc7">barometricAltitude</a> () const</td></tr>
-<tr class="memdesc:a7e8457516e5576acd9cf25c9590fcbc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#a7e8457516e5576acd9cf25c9590fcbc7">More...</a><br /></td></tr>
-<tr class="separator:a7e8457516e5576acd9cf25c9590fcbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a698e8a5afcd6720837b0e07c38fcf49a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a698e8a5afcd6720837b0e07c38fcf49a">receiving</a> () const</td></tr>
 <tr class="memdesc:a698e8a5afcd6720837b0e07c38fcf49a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#a698e8a5afcd6720837b0e07c38fcf49a">More...</a><br /></td></tr>
 <tr class="separator:a698e8a5afcd6720837b0e07c38fcf49a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,22 +97,10 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a8f3ba5d19e7d6cc8c23c6998c15bb551"><td class="memItemLeft" align="right" valign="top"><a id="a8f3ba5d19e7d6cc8c23c6998c15bb551"></a>
-QGeoPositionInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a8f3ba5d19e7d6cc8c23c6998c15bb551">positionInfo</a></td></tr>
-<tr class="memdesc:a8f3ba5d19e7d6cc8c23c6998c15bb551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receiving data from one data source. <br /></td></tr>
-<tr class="separator:a8f3ba5d19e7d6cc8c23c6998c15bb551"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f8ac53584fd638c2ae135fdd21a422b"><td class="memItemLeft" align="right" valign="top"><a id="a3f8ac53584fd638c2ae135fdd21a422b"></a>
-<a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a3f8ac53584fd638c2ae135fdd21a422b">barometricAltitude</a></td></tr>
-<tr class="memdesc:a3f8ac53584fd638c2ae135fdd21a422b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receiving data from one data source. <br /></td></tr>
-<tr class="separator:a3f8ac53584fd638c2ae135fdd21a422b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf3810960192463debdef1178cf6f623"><td class="memItemLeft" align="right" valign="top"><a id="abf3810960192463debdef1178cf6f623"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">receiving</a></td></tr>
 <tr class="memdesc:abf3810960192463debdef1178cf6f623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receiving data from one data source. <br /></td></tr>
 <tr class="separator:abf3810960192463debdef1178cf6f623"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b92274c5d108afa1861b158a73cfd76"><td class="memItemLeft" align="right" valign="top"><a id="a7b92274c5d108afa1861b158a73cfd76"></a>
-QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a7b92274c5d108afa1861b158a73cfd76">statusString</a></td></tr>
-<tr class="memdesc:a7b92274c5d108afa1861b158a73cfd76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receiving data from one data source. <br /></td></tr>
-<tr class="separator:a7b92274c5d108afa1861b158a73cfd76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d9719e7ab6b4cbc330567bc86a3dd03"><td class="memItemLeft" align="right" valign="top">QQmlListProperty&lt; <a class="el" href="classTraffic_1_1Factor.html">Traffic::Factor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a9d9719e7ab6b4cbc330567bc86a3dd03">trafficObjects4QML</a></td></tr>
 <tr class="memdesc:a9d9719e7ab6b4cbc330567bc86a3dd03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic objects whose position is known.  <a href="classTraffic_1_1TrafficDataProvider.html#a9d9719e7ab6b4cbc330567bc86a3dd03">More...</a><br /></td></tr>
 <tr class="separator:a9d9719e7ab6b4cbc330567bc86a3dd03"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,36 +150,6 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7e8457516e5576acd9cf25c9590fcbc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e8457516e5576acd9cf25c9590fcbc7">&#9670;&nbsp;</a></span>barometricAltitude()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> Traffic::TrafficDataProvider::barometricAltitude </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter method for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00136">136</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
-
-</div>
-</div>
 <a id="a8a2aa6ad47cb97a7e78aabbe32dbc521"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a2aa6ad47cb97a7e78aabbe32dbc521">&#9670;&nbsp;</a></span>connectToTrafficReceiver</h2>
 
@@ -302,36 +234,6 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="ab9639fb6d459792f74f246ea38ae9212"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9639fb6d459792f74f246ea38ae9212">&#9670;&nbsp;</a></span>positionInfo()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QGeoPositionInfo Traffic::TrafficDataProvider::positionInfo </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter method for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00124">124</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
-
-</div>
-</div>
 <a id="a698e8a5afcd6720837b0e07c38fcf49a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a698e8a5afcd6720837b0e07c38fcf49a">&#9670;&nbsp;</a></span>receiving()</h2>
 
@@ -398,7 +300,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjects4QML </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00173">173</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00146">146</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -428,7 +330,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjectWithoutPosition </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00190">190</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00163">163</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -456,7 +358,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Traffic objects whose position is known. </p>
 <p>This property holds a list of the most relevant traffic objects, as a QQmlListProperty for better cooperation with QML. Note that only the valid items in this list pertain to actual traffic. Invalid items should be ignored. The list is not sorted in any way. The items themselves are owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00167">167</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00140">140</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -483,7 +385,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Most relevant traffic object whose position is not known. </p>
 <p>This property holds a pointer to the most relevant traffic object whose position is not known. This item should be ignored if invalid. The item is owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00184">184</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00157">157</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>

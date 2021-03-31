@@ -24,6 +24,7 @@
 #include <QLocale>
 #include <QTimer>
 
+#include "positioning/AbstractPositionInfoSource.h"
 #include "GlobalSettings.h"
 #include "positioning/Geoid.h"
 #include "positioning/PositionInfo.h"
@@ -160,9 +161,9 @@ public:
      *
      *  @returns The current position info
      */
-    Positioning::PositionInfo positionInfo() const
+    Positioning::PositionInfo positionInfo()
     {
-        return PositionInfo(_positionInfo, {});
+        return PositionInfo(_positionInfo, AviationUnits::Distance::fromM(qQNaN()));
     }
 
     Q_INVOKABLE bool receiving() const

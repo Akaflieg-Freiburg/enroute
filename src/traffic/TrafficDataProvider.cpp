@@ -37,7 +37,7 @@ Q_GLOBAL_STATIC(Traffic::TrafficDataProvider, TrafficDataManagerStatic);
 
 // Member functions
 
-Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(parent) {
+Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::AbstractPositionInfoSource(parent) {
 
     // Create traffic objects
     int numTrafficObjects = 20;
@@ -54,17 +54,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
     _flarmWarning = new Traffic::FLARMWarning(this);
     QQmlEngine::setObjectOwnership(_flarmWarning, QQmlEngine::CppOwnership);
 
-
-
-    // barometric altitude timer
-    barometricAltitudeTimer.setInterval(5s);
-    barometricAltitudeTimer.setSingleShot(true);
-    connect(&barometricAltitudeTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::onBarometricAltitudeTimeout);
-
-    // Position Info Timer
-    positionInfoTimer.setInterval(5s);
-    positionInfoTimer.setSingleShot(true);
-    connect(&positionInfoTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::onPositionInfoTimeout);
 
     // Setup Data Sources
 
@@ -86,7 +75,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
             continue;
         }
 
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::onBarometricAltitudeUpdate);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::setBarometricAltitude);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
@@ -94,7 +83,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : QObject(par
         connect(dataSource, &Traffic::AbstractTrafficDataSource::errorStringChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onFactorWithoutPosition);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithPosition, this, &Traffic::TrafficDataProvider::onFactorWithPosition);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::onPositionInfoUpdate);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::flarmWarning, _flarmWarning, &Traffic::FLARMWarning::copyFrom);
 
 
@@ -242,10 +231,10 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
         if (source->hasHeartbeat()) {
             QString result = QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(source->sourceName());
             result += QString("<li>%1</li>").arg(tr("Receiving traffic data."));
-            if (_positionInfo.isValid()) {
+            if (positionInfo().isValid()) {
                 result += QString("<li>%1</li>").arg(tr("Receiving position info."));
             }
-            if (_barometricAltitude.isFinite()) {
+            if (barometricAltitude().isFinite()) {
                 result += QString("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
             }
             result += "</ul>";
@@ -270,52 +259,3 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
     return result;
 
 }
-
-
-void Traffic::TrafficDataProvider::onPositionInfoUpdate(const QGeoPositionInfo& newGeoPositionInfo)
-{
-    bool positionInfoDidChange = true;
-    if (!_positionInfo.isValid() && !newGeoPositionInfo.isValid()) {
-        positionInfoDidChange = false;
-    }
-    if (_positionInfo == newGeoPositionInfo) {
-        positionInfoDidChange = false;
-    }
-
-
-    if (positionInfoDidChange) {
-        _positionInfo = newGeoPositionInfo;
-        emit positionInfoChanged(_positionInfo);
-    }
-
-    if (_positionInfo.isValid()) {
-        positionInfoTimer.start();
-    }
-}
-
-
-void Traffic::TrafficDataProvider::onPositionInfoTimeout()
-{
-    onPositionInfoUpdate(QGeoPositionInfo());
-}
-
-
-void Traffic::TrafficDataProvider::onBarometricAltitudeUpdate(AviationUnits::Distance newBarometricAltidude)
-{
-    bool barometricAltitudeDidChange = (_barometricAltitude != newBarometricAltidude);
-
-    if (barometricAltitudeDidChange) {
-        _barometricAltitude = newBarometricAltidude;
-        emit barometricAltitudeChanged();
-    }
-
-    if (_barometricAltitude.isFinite()) {
-        barometricAltitudeTimer.start();
-    }
-}
-
-void Traffic::TrafficDataProvider::onBarometricAltitudeTimeout()
-{
-    onBarometricAltitudeUpdate( AviationUnits::Distance() );
-}
-

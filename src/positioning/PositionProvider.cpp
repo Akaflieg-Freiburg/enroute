@@ -177,6 +177,8 @@ void Positioning::PositionProvider::onPositionUpdated_Sat(const QGeoPositionInfo
 
 void Positioning::PositionProvider::onPositionUpdated(const QGeoPositionInfo &info)
 {
+
+
     // Set new info
     _positionInfo = info;
     if (_positionInfo.isValid()) {

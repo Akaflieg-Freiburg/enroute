@@ -43,7 +43,7 @@ namespace Traffic {
  *  By modifying the source code, developers can also start the class in a mode
  *  where it connects to a file with simulator data.
  */
-class TrafficDataProvider : public QObject {
+class TrafficDataProvider : public Positioning::AbstractPositionInfoSource {
     Q_OBJECT
 
 public:
@@ -54,7 +54,7 @@ public:
     explicit TrafficDataProvider(QObject *parent = nullptr);
 
     // Standard destructor
-    ~TrafficDataProvider() override = default;
+    ~TrafficDataProvider() = default;
 
     //
     // Methods
@@ -76,30 +76,6 @@ public:
     Traffic::FLARMWarning* flarmWarning() const
     {
         return _flarmWarning;
-    }
-
-    /*! \brief Receiving data from one data source*/
-    Q_PROPERTY(QGeoPositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property positionInfo
-     */
-    QGeoPositionInfo positionInfo() const
-    {
-        return _positionInfo;
-    }
-
-    /*! \brief Receiving data from one data source*/
-    Q_PROPERTY(AviationUnits::Distance barometricAltitude READ barometricAltitude NOTIFY barometricAltitudeChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property positionInfo
-     */
-    AviationUnits::Distance barometricAltitude() const
-    {
-        return _barometricAltitude;
     }
 
     /*! \brief Receiving data from one data source*/
@@ -171,33 +147,12 @@ public slots:
      */
     void disconnectFromTrafficReceiver();
 
-signals:
-    /*! \brief Notifier signal */
-    void barometricAltitudeChanged();
-
-    /*! \brief Notifier signal */
-    void receivingChanged();
-
-    /*! \brief Notifier signal */
-    void statusStringChanged();
-
-    /*! \brief Notifier signal */
-    void positionInfoChanged(const QGeoPositionInfo &);
-
 private slots:
     void onSourceHeartbeatChanged();
 
     void onFactorWithPosition(const Traffic::Factor &factor);
 
     void onFactorWithoutPosition(const Traffic::Factor &factor);
-
-    void onPositionInfoUpdate(const QGeoPositionInfo& newGeoPositionInfo);
-
-    void onPositionInfoTimeout();
-
-    void onBarometricAltitudeUpdate(AviationUnits::Distance newBarometricAltidude);
-
-    void onBarometricAltitudeTimeout();
 
 private:
     // Targets
@@ -211,13 +166,9 @@ private:
 
     // Reconnect
     QTimer reconnectionTimer;
-    QTimer positionInfoTimer;
-    QTimer barometricAltitudeTimer;
 
     // Property Cache
-    AviationUnits::Distance _barometricAltitude {};
     bool _receiving {false};
-    QGeoPositionInfo _positionInfo {};
 };
 
 }

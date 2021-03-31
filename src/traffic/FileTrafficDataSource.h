@@ -24,6 +24,7 @@
 #include <QTimer>
 #include <QObject>
 #include <QQmlListProperty>
+#include <QTextStream>
 
 #include "GlobalSettings.h"
 #include "traffic/Factor.h"

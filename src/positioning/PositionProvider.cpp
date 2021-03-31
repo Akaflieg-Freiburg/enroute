@@ -35,19 +35,25 @@ Q_GLOBAL_STATIC(Positioning::PositionProvider, PositionProviderStatic);
 
 Positioning::PositionProvider::PositionProvider(QObject *parent) : QObject(parent)
 {
-    source = QGeoPositionInfoSource::createDefaultSource(this);
+//    source = QGeoPositionInfoSource::createDefaultSource(this);
 
+
+
+    /*
     if (source != nullptr) {
         sourceStatus = source->error();
         connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
         connect(source, &QGeoPositionInfoSource::updateTimeout, this, &PositionProvider::timeout);
         connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionProvider::onPositionUpdated_Sat);
     }
+    */
+    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
+    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
 
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider != nullptr) {
         connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::barometricAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
     }
 
     QSettings settings;
@@ -60,12 +66,14 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : QObject(paren
     }
     _lastValidTT = AviationUnits::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
 
+    /*
     if (source != nullptr) {
         source->startUpdates();
         if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
             _geoid = new Positioning::Geoid;
         }
     }
+    */
 
     // Adjust and connect timeoutCounter
     timeoutCounter.setSingleShot(true);
@@ -81,14 +89,13 @@ Positioning::PositionProvider::~PositionProvider()
     settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), _lastValidCoordinate.longitude());
     settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), _lastValidCoordinate.altitude());
     settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), _lastValidTT.toDEG());
-    delete source;
-    delete _geoid;
 }
 
 
 void Positioning::PositionProvider::error(QGeoPositionInfoSource::Error newSourceStatus)
 {
-    // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
+/*
+ *     // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
     sourceStatus = newSourceStatus;
 
     // If there really is an error, reset lastInfo and cancel all counters
@@ -98,6 +105,7 @@ void Positioning::PositionProvider::error(QGeoPositionInfoSource::Error newSourc
     }
 
     emit update();
+    */
 }
 
 
@@ -131,10 +139,10 @@ auto Positioning::PositionProvider::lastValidCoordinateStatic() -> QGeoCoordinat
 
 auto Positioning::PositionProvider::statusString() const -> QString
 {
-    if (source == nullptr) {
+/*
+ *     if (source == nullptr) {
         return tr("Not installed or access denied");
     }
-
     if (sourceStatus == QGeoPositionInfoSource::AccessError) {
         return tr("Access denied");
     }
@@ -150,33 +158,29 @@ auto Positioning::PositionProvider::statusString() const -> QString
     if (!timeoutCounter.isActive()) {
         return tr("Waiting for signal");
     }
-
-    return tr("%1 OK").arg(source->sourceName());
+*/
+    return "XX";
+//    return tr("%1 OK").arg(source->sourceName());
 }
 
 
-void Positioning::PositionProvider::onPositionUpdated_Sat(const QGeoPositionInfo &info)
+void Positioning::PositionProvider::onPositionUpdated(const QGeoPositionInfo &/* info */)
 {
+    // This method is called if one of our providers has a new position info.
+    // We go through the list of providers in order of preference, to find the first one
+    // that has a valid position info available for us.
+    QGeoPositionInfo info;
+
+    // Priority #1: Traffic data provider
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider != nullptr) {
-        if (trafficDataProvider->positionInfo().isValid()) {
-            return;
-        }
+        info = trafficDataProvider->positionInfo();
     }
 
-
-    auto correctedInfo = info;
-    if ((_geoid != nullptr) && (info.coordinate().type() == QGeoCoordinate::Coordinate3D)) {
-        auto geoidCorrection = _geoid->operator()(static_cast<qreal>(info.coordinate().latitude()), static_cast<qreal>(info.coordinate().longitude()));
-        correctedInfo.setCoordinate( correctedInfo.coordinate().atDistanceAndAzimuth(0, 0, -geoidCorrection) );
+    // Priority #2: Built-in sat receiver
+    if (!info.isValid()) {
+        info = satelliteSource.positionInfo();
     }
-
-    onPositionUpdated(correctedInfo);
-}
-
-
-void Positioning::PositionProvider::onPositionUpdated(const QGeoPositionInfo &info)
-{
 
 
     // Set new info

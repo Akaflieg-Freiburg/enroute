@@ -55,7 +55,7 @@ public:
     }
 
     /*! \brief Receiving data from one data source*/
-    Q_PROPERTY(AviationUnits::Distance pressureAltitude READ pressureAltitude WRITE setPressureAltitude RESET resetPressureAltitude NOTIFY barometricAltitudeChanged)
+    Q_PROPERTY(AviationUnits::Distance pressureAltitude READ pressureAltitude WRITE setPressureAltitude RESET resetPressureAltitude NOTIFY pressureAltitudeChanged)
 
     /*! \brief Getter method for property with the same name
      *
@@ -67,13 +67,13 @@ public:
     }
 
     /*! \brief Receiving data from one data source*/
-    Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
+//    Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property receiving
      */
-    virtual bool receiving() const = 0;
+//    virtual bool receiving() const = 0;
 
     /*! \brief Receiving data from one data source*/
     Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
@@ -93,7 +93,7 @@ public:
 
 signals:
     /*! \brief Notifier signal */
-    void barometricAltitudeChanged();
+    void pressureAltitudeChanged();
 
     /*! \brief Notifier signal */
     void receivingChanged();

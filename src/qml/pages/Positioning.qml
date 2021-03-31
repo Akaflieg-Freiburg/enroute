@@ -104,6 +104,8 @@ Page {
             Label {
                 Layout.fillWidth: true
                 text: {
+                    if (!satNav.positionInfo.isValid())
+                        return "-"
                     const lat = satNav.positionInfo.coordinate().toString().split(",")[0]
                     if (lat === "")
                         return "-"
@@ -114,6 +116,8 @@ Page {
             Label { text: qsTr("Longitude") }
             Label {
                 text: {
+                    if (!satNav.positionInfo.isValid())
+                        return "-"
                     const lon = satNav.positionInfo.coordinate().toString().split(",")[1]
                     if (lon === "")
                         return "-"

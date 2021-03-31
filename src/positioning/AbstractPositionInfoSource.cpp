@@ -70,7 +70,7 @@ void Positioning::AbstractPositionInfoSource::setPressureAltitude(AviationUnits:
     }
 
     m_pressureAltitude = newPressureAltitude;
-    emit barometricAltitudeChanged();
+    emit pressureAltitudeChanged();
 }
 
 

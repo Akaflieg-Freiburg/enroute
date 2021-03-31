@@ -25,6 +25,7 @@
 #include <QTimer>
 
 #include "positioning/AbstractPositionInfoSource.h"
+#include "positioning/PositionInfoSource_Satellite.h"
 #include "GlobalSettings.h"
 #include "positioning/Geoid.h"
 #include "positioning/PositionInfo.h"
@@ -96,7 +97,10 @@ public:
      *
      *  @returns Property isInFlight
      */
-    bool isInFlight() const { return _isInFlight; }
+    bool isInFlight() const
+    {
+        return _isInFlight;
+    }
 
     /*! \brief Last valid coordinate reading
 
@@ -195,6 +199,7 @@ signals:
     void update();
 
     void receivingChanged();
+
 private slots:
     // Connected to source, in order to receive new data
     void onPositionUpdated(const QGeoPositionInfo &info);
@@ -204,8 +209,6 @@ private slots:
 
     // Connected to timeoutCounter, in order to receive timeout after one minute
     void timeout();
-
-    void onPositionUpdated_Sat(const QGeoPositionInfo &info);
 
 private:
     Q_DISABLE_COPY_MOVE(PositionProvider)
@@ -221,23 +224,15 @@ private:
     static constexpr double EDTF_ele = 244;
 
     QLocale myLocale;
-    QGeoPositionInfoSource *source;
+    PositionInfoSource_Satellite satelliteSource;
+//    QGeoPositionInfoSource *source;
     QGeoPositionInfo _positionInfo;
     QGeoCoordinate _lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};
     AviationUnits::Angle _lastValidTT {};
     bool _isInFlight {false};
 
-    Positioning::Geoid* _geoid {nullptr};
-
     // Constant: timeout occurs after one minute without receiving new data
     const int timeoutThreshold = 10*1000;
-
-    // Set according to the status of *source. We need to replicate the
-    // information stored in source because the status of the source can change
-    // from "error" to "ok" without notification. This data field is then used to
-    // check if something changed, and to emit the signal "statusUpdate" when
-    // appropriate.
-    QGeoPositionInfoSource::Error sourceStatus {QGeoPositionInfoSource::AccessError};
 
     // QTimer used to measure time since last data packet was received.  Connected
     // to call timeout() after timeoutThreshold milliseconds of no data.

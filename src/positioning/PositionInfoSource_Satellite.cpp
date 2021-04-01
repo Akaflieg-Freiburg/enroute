@@ -28,7 +28,7 @@
 
 
 
-Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject *parent) : AbstractPositionInfoSource(parent)
+Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
 
@@ -106,5 +106,5 @@ void Positioning::PositionInfoSource_Satellite::onPositionUpdated_Sat(const QGeo
         correctedInfo.setCoordinate( correctedInfo.coordinate().atDistanceAndAzimuth(0, 0, -geoidCorrection) );
     }
 
-    setPositionInfo(correctedInfo);
+    setPositionInfo( Positioning::PositionInfo(correctedInfo) );
 }

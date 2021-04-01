@@ -86,9 +86,9 @@ set(SOURCES
     GlobalSettings.h
     Librarian.h
     MobileAdaptor.h
-    positioning/AbstractPositionInfoSource.h
     positioning/Geoid.h
     positioning/PositionInfo.h
+    positioning/PositionInfoSource_Abstract.h
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
     traffic/AbstractTrafficDataSource.h
@@ -129,9 +129,9 @@ set(SOURCES
     main.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
-    positioning/AbstractPositionInfoSource.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp
+    positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
     traffic/AbstractTrafficDataSource.cpp

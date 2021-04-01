@@ -214,7 +214,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
             pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
         }
 
-        emit positionUpdated(pInfo);
+        emit positionUpdated( Positioning::PositionInfo(pInfo));
         return;
     }
 

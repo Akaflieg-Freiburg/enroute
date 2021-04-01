@@ -33,7 +33,7 @@ Q_GLOBAL_STATIC(Positioning::PositionProvider, PositionProviderStatic);
 #endif
 
 
-Positioning::PositionProvider::PositionProvider(QObject *parent) : QObject(parent)
+Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
 //    source = QGeoPositionInfoSource::createDefaultSource(this);
 
@@ -164,12 +164,12 @@ auto Positioning::PositionProvider::statusString() const -> QString
 }
 
 
-void Positioning::PositionProvider::onPositionUpdated(const QGeoPositionInfo &/* info */)
+void Positioning::PositionProvider::onPositionUpdated()
 {
     // This method is called if one of our providers has a new position info.
     // We go through the list of providers in order of preference, to find the first one
     // that has a valid position info available for us.
-    QGeoPositionInfo info;
+    PositionInfo info;
 
     // Priority #1: Traffic data provider
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
@@ -182,18 +182,19 @@ void Positioning::PositionProvider::onPositionUpdated(const QGeoPositionInfo &/*
         info = satelliteSource.positionInfo();
     }
 
-
-    // Set new info
-    _positionInfo = info;
-    if (_positionInfo.isValid()) {
-        timeoutCounter.start(timeoutThreshold);
+    if (info.isValid()) {
         _lastValidCoordinate = info.coordinate();
     }
+
+
+    // Set new info
+    setPositionInfo(info);
 
     emit update();
 
     // Change _isInFlight if appropriate.
 #warning could be qNaN
+    /*
     if (_isInFlight) {
         // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
         if ( positionInfo().groundSpeed().toKN() < minFlightSpeedInKT-flightSpeedHysteresis ) {
@@ -208,14 +209,15 @@ void Positioning::PositionProvider::onPositionUpdated(const QGeoPositionInfo &/*
             emit isInFlightChanged();
         }
     }
-
+*/
     // emit lastValidTrackChanged if appropriate
 #warning could be qNaN
-    auto newTT = positionInfo().trueTrack();
+/*    auto newTT = positionInfo().trueTrack();
     if (newTT.isFinite() && (newTT != _lastValidTT)) {
         _lastValidTT = newTT;
         emit lastValidTTChanged(_lastValidTT);
     }
+    */
 }
 
 
@@ -249,15 +251,3 @@ auto Positioning::PositionProvider::wayTo(const QGeoCoordinate& position) const 
     }
     return QStringLiteral("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
-
-
-auto Positioning::PositionProvider::pressureAltitude()  -> AviationUnits::Distance
-{
-    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
-    if (trafficDataProvider == nullptr) {
-        return AviationUnits::Distance();
-    }
-
-    return trafficDataProvider->pressureAltitude();
-}
-

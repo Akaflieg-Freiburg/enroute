@@ -21,10 +21,9 @@
 #include "positioning/PositionInfo.h"
 
 
-Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo &info, AviationUnits::Distance pressureAlt)
+Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo &info)
 {
     m_positionInfo = info;
-    m_pressureAltitude = pressureAlt;
 }
 
 
@@ -38,6 +37,17 @@ auto Positioning::PositionInfo::groundSpeed() const -> AviationUnits::Speed
     }
 
     return AviationUnits::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
+}
+
+
+auto Positioning::PositionInfo::isValid() const -> bool
+{
+    if (!m_positionInfo.isValid()) {
+        return false;
+    }
+
+    auto expiry = m_positionInfo.timestamp().addMSecs( std::chrono::milliseconds(lifetime).count() );
+    return expiry >= QDateTime::currentDateTime();
 }
 
 

@@ -37,7 +37,7 @@ Q_GLOBAL_STATIC(Traffic::TrafficDataProvider, TrafficDataManagerStatic);
 
 // Member functions
 
-Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::AbstractPositionInfoSource(parent) {
+Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent) {
 
     // Create traffic objects
     int numTrafficObjects = 20;
@@ -62,7 +62,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-    // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
+     _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
     // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
     //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
@@ -76,11 +76,11 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
         }
 
         connect(dataSource, &Traffic::AbstractTrafficDataSource::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingChanged);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::errorStringChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+        connect(dataSource, &Traffic::AbstractTrafficDataSource::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onFactorWithoutPosition);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithPosition, this, &Traffic::TrafficDataProvider::onFactorWithPosition);
         connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
@@ -89,8 +89,8 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     }
 
-    connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
-    connect(this, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &Traffic::TrafficDataProvider::statusStringChanged);
+    connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(this, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
 
     // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
     QTimer::singleShot(2s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
@@ -221,7 +221,7 @@ auto Traffic::TrafficDataProvider::receiving() const -> bool
 }
 
 
-auto Traffic::TrafficDataProvider::statusString() const -> QString
+void Traffic::TrafficDataProvider::updateStatusString()
 {
 
     foreach(auto source, _dataSources) {
@@ -238,7 +238,8 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
                 result += QString("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
             }
             result += "</ul>";
-            return result;
+            setStatusString(result);
+            return;
         }
     }
 
@@ -256,6 +257,7 @@ auto Traffic::TrafficDataProvider::statusString() const -> QString
         result += "</li>";
     }
     result += "</ul>";
-    return result;
+
+    setStatusString(result);
 
 }

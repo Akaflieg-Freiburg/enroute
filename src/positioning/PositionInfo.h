@@ -20,18 +20,26 @@
 
 #pragma once
 
+#include <chrono>
 #include <QGeoPositionInfo>
 
 #include "units/Angle.h"
 #include "units/Distance.h"
 #include "units/Speed.h"
 
+#include <QDebug>
+
+using namespace std::chrono_literals;
+
+
 namespace Positioning {
 
 /*! \brief Geographic position
  *
- *  This class is a thin wrapper around QGeoPositionInfo. It exports the data from QGeoPositionInfo
- *  in a way that can be read from QML. In addition, the class also contains information about the pressure altitude
+ *  This class is a thin wrapper around QGeoPositionInfo. It exports the data
+ *  from QGeoPositionInfo in a way that can be read from QML. In addition to
+ *  QGeoPositionInfo, the class also contains information about the pressure
+ *  altitude.
  */
 
 class PositionInfo
@@ -46,7 +54,7 @@ public:
      *
      * @param info QGeoPositionInfo this is copied into this class
      */
-    explicit PositionInfo(const QGeoPositionInfo &info, AviationUnits::Distance pressureAlt);
+    explicit PositionInfo(const QGeoPositionInfo &info);
 
     /*! \brief Coordinate
      *
@@ -68,12 +76,10 @@ public:
 
     /*! \brief Validity
      *
-     *  @returns True if position info is valid
+     *  @returns True if the underlying QGeoPositionInfo is valid and if
+     *  its age is less then PositionInfo::lifetime.
      */
-    Q_INVOKABLE bool isValid() const
-    {
-        return m_positionInfo.isValid();
-    }
+    Q_INVOKABLE bool isValid() const;
 
     /*! \brief Position error estimate
      *
@@ -81,20 +87,10 @@ public:
      */
     Q_INVOKABLE AviationUnits::Distance positionErrorEstimate() const;
 
-    /*! \brief Pressure altitude
-     *
-     *  This is the altitude that your altimeter will show if set to 1013,2 hPa.
-     *
-     *  @returns Pressure altitude or NaN if unknown.
-     */
-    Q_INVOKABLE AviationUnits::Distance pressureAltitude() const
-    {
-        return m_pressureAltitude;
-    }
-
     /*! \brief True Altitude
      *
-     *  @returns True altitude with geoid correction taken into account or NaN if unknown.
+     *  @returns True altitude with geoid correction taken into account or NaN
+     *  if unknown.
      */
     Q_INVOKABLE AviationUnits::Distance trueAltitude() const;
 
@@ -122,9 +118,26 @@ public:
      */
     Q_INVOKABLE AviationUnits::Speed verticalSpeed() const;
 
+    /*! \brief Comparison: equal
+     *
+     *  @param rhs Right hand side of the comparison
+     *
+     *  @returns Result of the comparison
+     */
+    Q_INVOKABLE auto operator==(const Positioning::PositionInfo &rhs) const
+    {
+        return (m_positionInfo == rhs.m_positionInfo);
+    }
+
+    /*! \brief Liftetime of geographic positioning information
+     *
+     * Geographic position information is considered valid for 10 seconds
+     * after it has been received.
+     */
+    static constexpr auto lifetime = 10s;
+
 private:
     QGeoPositionInfo m_positionInfo {};
-    AviationUnits::Distance m_pressureAltitude {};
 };
 
 }

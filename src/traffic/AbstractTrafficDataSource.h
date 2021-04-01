@@ -26,6 +26,7 @@
 #include <QQmlListProperty>
 
 #include "GlobalSettings.h"
+#include "positioning/PositionInfo.h"
 #include "traffic/Factor.h"
 #include "traffic/FLARMWarning.h"
 #include "units/Distance.h"
@@ -150,7 +151,7 @@ signals:
      * If this class received position information from a connected traffic
      * receiver, this information is emitted here.
      */
-    void positionUpdated(QGeoPositionInfo);
+    void positionUpdated(Positioning::PositionInfo);
 
     /*! \brief Traffic receiver hardware version
      *

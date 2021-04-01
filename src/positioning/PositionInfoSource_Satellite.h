@@ -24,7 +24,7 @@
 #include <QLocale>
 #include <QTimer>
 
-#include "positioning/AbstractPositionInfoSource.h"
+#include "positioning/PositionInfoSource_Abstract.h"
 #include "GlobalSettings.h"
 #include "positioning/Geoid.h"
 #include "positioning/PositionInfo.h"
@@ -62,7 +62,7 @@ namespace Positioning {
   The methods in this class are reentrant, but not thread safe.
 */
 
-class PositionInfoSource_Satellite : public AbstractPositionInfoSource
+class PositionInfoSource_Satellite : public PositionInfoSource_Abstract
 {
     Q_OBJECT
 

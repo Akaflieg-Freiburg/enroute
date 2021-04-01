@@ -1,20 +1,19 @@
 /*!
  * Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the
- * Free Software Foundation, Inc.,
- * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
 #include "positioning/Geoid.h"
@@ -27,12 +26,12 @@
 #include <QtEndian>
 #include <QtMath>
 
-// reading binary geoid data was carefully optimized for speed. We read
-// the binary content at once and do the byte order conversion afterwards.
-// This turned out to be up to 60x faster compared to using QDataStream
-// with setByteOrder(QDataStream::BigEndian) and reading the shorts one
-// after the other with the QDataStream >> operator.
-//
+// reading binary geoid data was carefully optimized for speed. We read the
+// binary content at once and do the byte order conversion afterwards.  This
+// turned out to be up to 60x faster compared to using QDataStream with
+// setByteOrder(QDataStream::BigEndian) and reading the shorts one after the
+// other with the QDataStream >> operator.
+
 Positioning::Geoid::Geoid()
 {
     QFile file(QStringLiteral(":/WW15MGH.DAC"));
@@ -47,7 +46,12 @@ Positioning::Geoid::Geoid()
 
     egm.resize(egm96_size);
 
+#ifndef __clang_analyzer__
     qint64 nread = file.read(reinterpret_cast<char*>(egm.data()), egm96_size_2);
+#else
+    qint64 nread = 0;
+#endif
+
     file.close();
 
     if (nread != egm96_size_2)
@@ -58,17 +62,21 @@ Positioning::Geoid::Geoid()
         return;
     }
 
+    // Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
     if (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
         qFromBigEndian<qint16>(egm.data(), egm96_size, egm.data());
     }
+#endif
 
 }
 
 
 // 90 >= latitude >= -90
 //
-// we do a simple bilinear interpolation between the four surrounding data points
-// according to Numerical Recipies in C++ 3.6 "Interpolation in Two or More Dimensions".
+// we do a simple bilinear interpolation between the four surrounding data
+// points according to Numerical Recipies in C++ 3.6 "Interpolation in Two or
+// More Dimensions".
 //
 auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
 {
@@ -80,9 +88,9 @@ auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
         longitude += 360.;
     }
 
-    // coordinate transformation from lat/lon to the data file coordinate system.
-    // The returning row and col are still reals (_not_ data index integers).
-    // We do not care about cyclic overflows yet, col might > 1400.
+    // coordinate transformation from lat/lon to the data file coordinate
+    // system.  The returning row and col are still reals (_not_ data index
+    // integers).  We do not care about cyclic overflows yet, col might > 1400.
     //
     auto row = []  (qreal lat) -> qreal { return (90 - lat) * 4; }; // [0; 720] from north to south
     auto col = []  (qreal lon) -> qreal { return    lon     * 4; }; // [0; 1440[
@@ -103,8 +111,8 @@ auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
         return idx >=0 && idx < egm96_size ? egm.at(idx) * 0.01 : 0.0;
     };
 
-    // here we do a bilinear interpolation between the 4 neighbouring
-    // data points of the requested location.
+    // here we do a bilinear interpolation between the 4 neighbouring data
+    // points of the requested location.
     //
     qreal interpolated = 0;
     qreal row_dist = row(latitude) - north;

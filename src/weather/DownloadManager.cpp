@@ -354,7 +354,7 @@ auto Weather::DownloadManager::sunInfo() -> QString
     if (_PositionProvider == nullptr) {
         return QString();
     }
-    if (!_PositionProvider->receiving()) {
+    if (!_PositionProvider->positionInfo().isValid()) {
         return tr("Waiting for precise position…");
     }
 

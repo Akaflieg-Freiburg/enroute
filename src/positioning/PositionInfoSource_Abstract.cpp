@@ -18,30 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "positioning/AbstractPositionInfoSource.h"
-#include <chrono>
-
-using namespace std::chrono_literals;
+#include "positioning/PositionInfoSource_Abstract.h"
 
 
-
-// Member functions
-
-Positioning::AbstractPositionInfoSource::AbstractPositionInfoSource(QObject *parent) : QObject(parent)
+Positioning::PositionInfoSource_Abstract::PositionInfoSource_Abstract(QObject *parent) : QObject(parent)
 {
     // Setup timer
-    m_positionInfoTimer.setInterval(10s);
+    m_positionInfoTimer.setInterval( PositionInfo::lifetime );
     m_positionInfoTimer.setSingleShot(true);
-    connect(&m_positionInfoTimer, &QTimer::timeout, this, &Positioning::AbstractPositionInfoSource::resetPositionInfo);
+    connect(&m_positionInfoTimer, &QTimer::timeout, this, &Positioning::PositionInfoSource_Abstract::resetPositionInfo);
 
     // Setup timer
-    m_pressureAltitudeTimer.setInterval(10s);
+    m_pressureAltitudeTimer.setInterval( PositionInfo::lifetime );
     m_pressureAltitudeTimer.setSingleShot(true);
-    connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, &Positioning::AbstractPositionInfoSource::resetPressureAltitude);
+    connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, &Positioning::PositionInfoSource_Abstract::resetPressureAltitude);
 }
 
 
-void Positioning::AbstractPositionInfoSource::setPositionInfo(const QGeoPositionInfo &info)
+void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning::PositionInfo &info)
 {
     if (info.isValid()) {
         m_positionInfoTimer.start();
@@ -54,13 +48,36 @@ void Positioning::AbstractPositionInfoSource::setPositionInfo(const QGeoPosition
     emit positionInfoChanged(m_positionInfo);
 }
 
-void Positioning::AbstractPositionInfoSource::resetPositionInfo()
+
+void Positioning::PositionInfoSource_Abstract::setSourceName(const QString &name)
+{
+    if (m_sourceName == name) {
+        return;
+    }
+
+    m_sourceName = name;
+    emit sourceNameChanged(m_sourceName);
+}
+
+
+void Positioning::PositionInfoSource_Abstract::setStatusString(const QString &status)
+{
+    if (m_statusString == status) {
+        return;
+    }
+
+    m_statusString = status;
+    emit statusStringChanged(m_statusString);
+}
+
+
+void Positioning::PositionInfoSource_Abstract::resetPositionInfo()
 {
     setPositionInfo( {} );
 }
 
 
-void Positioning::AbstractPositionInfoSource::setPressureAltitude(AviationUnits::Distance newPressureAltitude)
+void Positioning::PositionInfoSource_Abstract::setPressureAltitude(AviationUnits::Distance newPressureAltitude)
 {
     if (newPressureAltitude.isFinite()) {
         m_pressureAltitudeTimer.start();
@@ -70,11 +87,11 @@ void Positioning::AbstractPositionInfoSource::setPressureAltitude(AviationUnits:
     }
 
     m_pressureAltitude = newPressureAltitude;
-    emit pressureAltitudeChanged();
+    emit pressureAltitudeChanged(m_pressureAltitude);
 }
 
 
-void Positioning::AbstractPositionInfoSource::resetPressureAltitude()
+void Positioning::PositionInfoSource_Abstract::resetPressureAltitude()
 {
     setPressureAltitude( {} );
 }

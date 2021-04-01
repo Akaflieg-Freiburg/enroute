@@ -43,7 +43,7 @@ namespace Traffic {
  *  By modifying the source code, developers can also start the class in a mode
  *  where it connects to a file with simulator data.
  */
-class TrafficDataProvider : public Positioning::AbstractPositionInfoSource {
+class TrafficDataProvider : public Positioning::PositionInfoSource_Abstract {
     Q_OBJECT
 
 public:
@@ -91,7 +91,7 @@ public:
      *
      *  @returns Property statusString
      */
-    QString statusString() const;
+    void updateStatusString();
 
     /*! \brief Traffic objects whose position is known
      *
@@ -128,6 +128,11 @@ public:
     {
         return _trafficObjectWithoutPosition;
     }
+
+signals:
+    /*! \brief Notifier signal */
+    void receivingChanged();
+
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver

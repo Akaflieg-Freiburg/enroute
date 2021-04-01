@@ -24,7 +24,7 @@
 #include <QLocale>
 #include <QTimer>
 
-#include "positioning/AbstractPositionInfoSource.h"
+#include "positioning/PositionInfoSource_Abstract.h"
 #include "positioning/PositionInfoSource_Satellite.h"
 #include "GlobalSettings.h"
 #include "positioning/Geoid.h"
@@ -63,7 +63,7 @@ namespace Positioning {
   The methods in this class are reentrant, but not thread safe.
 */
 
-class PositionProvider : public QObject
+class PositionProvider : public PositionInfoSource_Abstract
 {
     Q_OBJECT
 
@@ -128,11 +128,6 @@ public:
     AviationUnits::Angle lastValidTT() const { return _lastValidTT; }
 
 
-    Q_PROPERTY(AviationUnits::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
-
-#warning documentation
-    static AviationUnits::Distance pressureAltitude();
-
     /*! \brief Status of the PositionProvider class
 
     This property holds a localized string that describes the status of the
@@ -156,24 +151,6 @@ public:
      */
     static QGeoCoordinate lastValidCoordinateStatic();
 
-    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY update)
-
-    /*! \brief Current position info
-     *
-     *  If no PositionProvider has been received for more than ten seconds, this method
-     *  return an invalid QGeoPositionInfo.
-     *
-     *  @returns The current position info
-     */
-    Positioning::PositionInfo positionInfo()
-    {
-        return PositionInfo(_positionInfo, AviationUnits::Distance::fromM(qQNaN()));
-    }
-
-    Q_INVOKABLE bool receiving() const
-    {
-        return _positionInfo.isValid();
-    }
 
     /*! \brief Description of the way from the current position to the given position
    *
@@ -202,7 +179,7 @@ signals:
 
 private slots:
     // Connected to source, in order to receive new data
-    void onPositionUpdated(const QGeoPositionInfo &info);
+    void onPositionUpdated();
 
     // Connected to source, in order to receive error information
     void error(QGeoPositionInfoSource::Error newSourceStatus);

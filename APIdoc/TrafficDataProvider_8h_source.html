@@ -83,7 +83,7 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>Traffic {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">class </span>TrafficDataProvider : <span class="keyword">public</span> Positioning::AbstractPositionInfoSource {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">class </span>TrafficDataProvider : <span class="keyword">public</span> <a class="code" href="classPositioning_1_1PositionInfoSource__Abstract.html">Positioning::PositionInfoSource_Abstract</a> {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    Q_OBJECT</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
@@ -110,12 +110,12 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">return</span> _flarmWarning;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">receiving</a> READ <a class="code" href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">receiving</a> NOTIFY receivingChanged)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">receiving</a> READ <a class="code" href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">receiving</a> NOTIFY <a class="code" href="classTraffic_1_1TrafficDataProvider.html#a658418ebccd7bc22f1efb2a1c9b5af2b">receivingChanged</a>)</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    </div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">receiving</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataProvider.html#aa976cd5c7ac9f1cefe6c68fd5ca2b63e">statusString</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#a160e4df20015277f72e7d120569f11a2">updateStatusString</a>();</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    Q_PROPERTY(QQmlListProperty&lt;Traffic::Factor&gt; <a class="code" href="classTraffic_1_1TrafficDataProvider.html#a9d9719e7ab6b4cbc330567bc86a3dd03">trafficObjects4QML</a> READ <a class="code" href="classTraffic_1_1TrafficDataProvider.html#a9d9719e7ab6b4cbc330567bc86a3dd03">trafficObjects4QML</a> CONSTANT)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
@@ -133,42 +133,48 @@ $(function() {
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> _trafficObjectWithoutPosition;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    }</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#a8a2aa6ad47cb97a7e78aabbe32dbc521">connectToTrafficReceiver</a>();</div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataProvider.html#a9d9719e7ab6b4cbc330567bc86a3dd03">  140</a></span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#ac9544cf2977ec2df572e9c31ce11dd36">disconnectFromTrafficReceiver</a>();</div>
-<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataProvider.html#a431152338cffe8be16037cfcc0970593">  146</a></span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">void</span> onSourceHeartbeatChanged();</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">void</span> onFactorWithPosition(<span class="keyword">const</span> <a class="code" href="classTraffic_1_1Factor.html">Traffic::Factor</a> &amp;factor);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;signals:</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#a658418ebccd7bc22f1efb2a1c9b5af2b">receivingChanged</a>();</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#a8a2aa6ad47cb97a7e78aabbe32dbc521">connectToTrafficReceiver</a>();</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html#ac9544cf2977ec2df572e9c31ce11dd36">disconnectFromTrafficReceiver</a>();</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordtype">void</span> onFactorWithoutPosition(<span class="keyword">const</span> <a class="code" href="classTraffic_1_1Factor.html">Traffic::Factor</a> &amp;factor);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">// Targets</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    QList&lt;Traffic::Factor *&gt; _trafficObjects;</div>
-<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataProvider.html#a8d2ab67c16e95dca9f7ca67dfa9e7122">  157</a></span>&#160;    QPointer&lt;Traffic::Factor&gt; _trafficObjectWithoutPosition;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">void</span> onSourceHeartbeatChanged();</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">void</span> onFactorWithPosition(<span class="keyword">const</span> <a class="code" href="classTraffic_1_1Factor.html">Traffic::Factor</a> &amp;factor);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataProvider.html#a8d2ab67c16e95dca9f7ca67dfa9e7122">  157</a></span>&#160;    <span class="keywordtype">void</span> onFactorWithoutPosition(<span class="keyword">const</span> <a class="code" href="classTraffic_1_1Factor.html">Traffic::Factor</a> &amp;factor);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="comment">// Warnings</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    QPointer&lt;Traffic::FLARMWarning&gt; _flarmWarning;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    QList&lt;QPointer&lt;Traffic::AbstractTrafficDataSource&gt;&gt; _dataSources;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// Targets</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    QList&lt;Traffic::Factor *&gt; _trafficObjects;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    QPointer&lt;Traffic::Factor&gt; _trafficObjectWithoutPosition;</div>
 <div class="line"><a name="l00163"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataProvider.html#a1cf65d87fac8863d4f40cffdecd5dff6">  163</a></span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">// Reconnect</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    QTimer reconnectionTimer;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">// Warnings</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    QPointer&lt;Traffic::FLARMWarning&gt; _flarmWarning;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">// Property Cache</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordtype">bool</span> _receiving {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;};</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;}</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    QList&lt;QPointer&lt;Traffic::AbstractTrafficDataSource&gt;&gt; _dataSources;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment">// Reconnect</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    QTimer reconnectionTimer;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="comment">// Property Cache</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordtype">bool</span> _receiving {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;};</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_aa976cd5c7ac9f1cefe6c68fd5ca2b63e"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#aa976cd5c7ac9f1cefe6c68fd5ca2b63e">Traffic::TrafficDataProvider::statusString</a></div><div class="ttdeci">QString statusString() const</div><div class="ttdoc">Getter method for property with the same name.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_a8d2ab67c16e95dca9f7ca67dfa9e7122"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#a8d2ab67c16e95dca9f7ca67dfa9e7122">Traffic::TrafficDataProvider::trafficObjectWithoutPosition</a></div><div class="ttdeci">Traffic::Factor trafficObjectWithoutPosition</div><div class="ttdoc">Most relevant traffic object whose position is not known.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataProvider_8h_source.html#l00157">TrafficDataProvider.h:157</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Abstract_html"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Abstract.html">Positioning::PositionInfoSource_Abstract</a></div><div class="ttdoc">Abstract base class for all classes that provide geographic position information.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfoSource__Abstract_8h_source.html#l00061">PositionInfoSource_Abstract.h:61</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_a160e4df20015277f72e7d120569f11a2"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#a160e4df20015277f72e7d120569f11a2">Traffic::TrafficDataProvider::updateStatusString</a></div><div class="ttdeci">void updateStatusString()</div><div class="ttdoc">Getter method for property with the same name.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_ae5b5472505f13124c2506a4105da72e4"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#ae5b5472505f13124c2506a4105da72e4">Traffic::TrafficDataProvider::globalInstance</a></div><div class="ttdeci">static TrafficDataProvider * globalInstance()</div><div class="ttdoc">Pointer to static instance of this class.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_a9d9719e7ab6b4cbc330567bc86a3dd03"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#a9d9719e7ab6b4cbc330567bc86a3dd03">Traffic::TrafficDataProvider::trafficObjects4QML</a></div><div class="ttdeci">QQmlListProperty&lt; Traffic::Factor &gt; trafficObjects4QML</div><div class="ttdoc">Traffic objects whose position is known.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataProvider_8h_source.html#l00140">TrafficDataProvider.h:140</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_a8a2aa6ad47cb97a7e78aabbe32dbc521"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#a8a2aa6ad47cb97a7e78aabbe32dbc521">Traffic::TrafficDataProvider::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver()</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_a658418ebccd7bc22f1efb2a1c9b5af2b"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#a658418ebccd7bc22f1efb2a1c9b5af2b">Traffic::TrafficDataProvider::receivingChanged</a></div><div class="ttdeci">void receivingChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassTraffic_1_1FLARMWarning_html"><div class="ttname"><a href="classTraffic_1_1FLARMWarning.html">Traffic::FLARMWarning</a></div><div class="ttdoc">Traffic opponents.</div><div class="ttdef"><b>Definition:</b> <a href="FLARMWarning_8h_source.html#l00056">FLARMWarning.h:56</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_abf3810960192463debdef1178cf6f623"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">Traffic::TrafficDataProvider::receiving</a></div><div class="ttdeci">bool receiving</div><div class="ttdoc">Receiving data from one data source.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataProvider_8h_source.html#l00118">TrafficDataProvider.h:118</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html_ad08bfbab038fcc25fbe45af20b8e1e99"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html#ad08bfbab038fcc25fbe45af20b8e1e99">Traffic::TrafficDataProvider::TrafficDataProvider</a></div><div class="ttdeci">TrafficDataProvider(QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>

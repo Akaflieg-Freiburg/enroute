@@ -1,0 +1,4 @@
+<map id="Positioning::PositionInfoSource_Satellite" name="Positioning::PositionInfoSource_Satellite">
+<area shape="rect" id="node1" title="Satellite Navigator." alt="" coords="5,95,184,136"/>
+<area shape="rect" id="node2" href="$classPositioning_1_1PositionInfoSource__Abstract.html" title="Abstract base class for all classes that provide geographic position information." alt="" coords="5,5,184,47"/>
+</map>

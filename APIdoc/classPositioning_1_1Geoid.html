@@ -73,7 +73,7 @@ Public Member Functions</h2></td></tr>
 <p>The implementation uses the data from <a href="https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html">https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html</a> and does a bilinear interpolation between the four neighboring data points of the requested location.</p>
 <p>The implementation was <em>very</em> carefully tested and compared with both a bilinear and a bicubic spline interpolation in python. The comparison of the method here with the python bilinear interpolation verified that both implementations yield the same numbers (within numerical precision). The comparison of the bilinear implementation here with the python's bicubic interpolation showed a worldwide max deviation of about 1 m. </p>
 
-<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00049">49</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00047">47</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a80a00f555538214ce8861eeab2f0a2a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a80a00f555538214ce8861eeab2f0a2a6">&#9670;&nbsp;</a></span>operator()()</h2>
@@ -104,7 +104,7 @@ Public Member Functions</h2></td></tr>
 <p>return geoidal separation &ndash; the difference between AMSL and ellipsoidal height. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">latitude</td><td>the latitude [90; -90] of the location for which the geoidal separation should be calculated. </td></tr>
+    <tr><td class="paramname">latitude</td><td>the latitude [90; -90] of the location for which the geoidal separation should be calculated.</td></tr>
     <tr><td class="paramname">longitude</td><td>the longitude of the location for which the geoidal separation should be calculated.</td></tr>
   </table>
   </dd>
@@ -139,7 +139,7 @@ Public Member Functions</h2></td></tr>
 <p>True if geoidal separation is available or false otherwise. </p>
 <dl class="section return"><dt>Returns</dt><dd>true or false </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00067">67</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00068">68</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
 
 </div>
 </div>

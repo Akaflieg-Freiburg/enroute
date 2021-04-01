@@ -74,7 +74,7 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QLocale&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QTimer&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;positioning/AbstractPositionInfoSource.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;positioning/PositionInfoSource_Abstract.h&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;positioning/PositionInfoSource_Satellite.h&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;GlobalSettings.h&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;positioning/Geoid.h&quot;</span></div>
@@ -83,7 +83,7 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a> {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">class </span>PositionProvider : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">class </span>PositionProvider : <span class="keyword">public</span> PositionInfoSource_Abstract</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    Q_OBJECT</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
@@ -112,100 +112,80 @@ $(function() {
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> <a class="code" href="classPositioning_1_1PositionProvider.html#ac33379109bab3e92e0357d182a1d9846">lastValidTT</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _lastValidTT; }</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
 <div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionProvider.html#a7f9de92fbce69223aa63d018d0024998">  130</a></span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    Q_PROPERTY(<a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#warning documentation</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keyword">static</span> <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> pressureAltitude();</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    Q_PROPERTY(QString <a class="code" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">statusString</a> READ <a class="code" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">statusString</a> NOTIFY receivingChanged)</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    QString <a class="code" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">statusString</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">static</span> QGeoCoordinate <a class="code" href="classPositioning_1_1PositionProvider.html#a8ac8926cd99297b4480b2e720af2f05c">lastValidCoordinateStatic</a>();</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    Q_PROPERTY(<a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> positionInfo READ positionInfo NOTIFY <a class="code" href="classPositioning_1_1PositionProvider.html#abb6b37755ae9368d84981c3d848fdbe0">update</a>)</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> positionInfo()</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classPositioning_1_1PositionInfo.html">PositionInfo</a>(_positionInfo, <a class="code" href="classAviationUnits_1_1Distance.html#ae5915700e189a8ee0c188b70282eacc2">AviationUnits::Distance::fromM</a>(qQNaN()));</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> receiving()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <span class="keywordflow">return</span> _positionInfo.isValid();</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    Q_PROPERTY(QString <a class="code" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">statusString</a> READ <a class="code" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">statusString</a> NOTIFY receivingChanged)</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    </div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    QString <a class="code" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">statusString</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">static</span> QGeoCoordinate <a class="code" href="classPositioning_1_1PositionProvider.html#a8ac8926cd99297b4480b2e720af2f05c">lastValidCoordinateStatic</a>();</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPositioning_1_1PositionProvider.html#acb064fa9b3793250b93674b927b6890f">wayTo</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;signals:</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">void</span> pressureAltitudeChanged();</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPositioning_1_1PositionProvider.html#a96e7717baf22942272e6cc8381c7af2a">isInFlightChanged</a>();</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">  173</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPositioning_1_1PositionProvider.html#ac5dc4844cbec47e3dc16a2133f3d969b">lastValidTTChanged</a>(<a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a>);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPositioning_1_1PositionProvider.html#abb6b37755ae9368d84981c3d848fdbe0">update</a>();</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPositioning_1_1PositionProvider.html#acb064fa9b3793250b93674b927b6890f">wayTo</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;signals:</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordtype">void</span> pressureAltitudeChanged();</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPositioning_1_1PositionProvider.html#a96e7717baf22942272e6cc8381c7af2a">isInFlightChanged</a>();</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPositioning_1_1PositionProvider.html#ac5dc4844cbec47e3dc16a2133f3d969b">lastValidTTChanged</a>(<a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a>);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">void</span> receivingChanged();</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">// Connected to source, in order to receive new data</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">void</span> onPositionUpdated();</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="comment">// Connected to source, in order to receive error information</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">void</span> error(QGeoPositionInfoSource::Error newSourceStatus);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">// Connected to timeoutCounter, in order to receive timeout after one minute</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">void</span> timeout();</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPositioning_1_1PositionProvider.html">PositionProvider</a>)</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">// Aircraft is considered flying if speed is at least this high</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> minFlightSpeedInKT = 30.0;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">// Hysteresis for flight speed</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> flightSpeedHysteresis = 5.0;</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPositioning_1_1PositionProvider.html#abb6b37755ae9368d84981c3d848fdbe0">update</a>();</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordtype">void</span> receivingChanged();</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="comment">// Coordinates of EDTF airfield</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> EDTF_lat = 48.022653;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> EDTF_lon = 7.832583;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> EDTF_ele = 244;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00204"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionProvider.html#a490dec673133cc4cf4459404a708f430">  204</a></span>&#160;    <span class="comment">// Connected to source, in order to receive new data</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordtype">void</span> onPositionUpdated(<span class="keyword">const</span> QGeoPositionInfo &amp;info);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="comment">// Connected to source, in order to receive error information</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordtype">void</span> error(QGeoPositionInfoSource::Error newSourceStatus);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="comment">// Connected to timeoutCounter, in order to receive timeout after one minute</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">void</span> timeout();</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPositioning_1_1PositionProvider.html">PositionProvider</a>)</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="comment">// Aircraft is considered flying if speed is at least this high</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> minFlightSpeedInKT = 30.0;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="comment">// Hysteresis for flight speed</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> flightSpeedHysteresis = 5.0;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="comment">// Coordinates of EDTF airfield</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> EDTF_lat = 48.022653;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> EDTF_lon = 7.832583;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> EDTF_ele = 244;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    QLocale myLocale;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="classPositioning_1_1PositionInfoSource__Satellite.html">PositionInfoSource_Satellite</a> satelliteSource;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">//    QGeoPositionInfoSource *source;</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    QGeoPositionInfo _positionInfo;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    QGeoCoordinate _lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> _lastValidTT {};</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordtype">bool</span> _isInFlight {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="comment">// Constant: timeout occurs after one minute without receiving new data</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> timeoutThreshold = 10*1000;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="comment">// QTimer used to measure time since last data packet was received.  Connected</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment">// to call timeout() after timeoutThreshold milliseconds of no data.</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    QTimer timeoutCounter;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;};</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;}</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    QLocale myLocale;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="classPositioning_1_1PositionInfoSource__Satellite.html">PositionInfoSource_Satellite</a> satelliteSource;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">//    QGeoPositionInfoSource *source;</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    QGeoPositionInfo _positionInfo;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    QGeoCoordinate _lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <a class="code" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> _lastValidTT {};</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordtype">bool</span> _isInFlight {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="comment">// Constant: timeout occurs after one minute without receiving new data</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> timeoutThreshold = 10*1000;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// QTimer used to measure time since last data packet was received.  Connected</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">// to call timeout() after timeoutThreshold milliseconds of no data.</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    QTimer timeoutCounter;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;};</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_a0bbbee546e3454b183f431020e0d0a65"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#a0bbbee546e3454b183f431020e0d0a65">Positioning::PositionProvider::PositionProvider</a></div><div class="ttdeci">PositionProvider(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_a96e7717baf22942272e6cc8381c7af2a"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#a96e7717baf22942272e6cc8381c7af2a">Positioning::PositionProvider::isInFlightChanged</a></div><div class="ttdeci">void isInFlightChanged()</div><div class="ttdoc">Emitted whenever the suggested icon changes.</div></div>
-<div class="ttc" id="aclassPositioning_1_1PositionInfo_html"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a></div><div class="ttdoc">Geographic position.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00055">PositionInfo.h:55</a></div></div>
-<div class="ttc" id="aclassAviationUnits_1_1Distance_html_ae5915700e189a8ee0c188b70282eacc2"><div class="ttname"><a href="classAviationUnits_1_1Distance.html#ae5915700e189a8ee0c188b70282eacc2">AviationUnits::Distance::fromM</a></div><div class="ttdeci">static Distance fromM(double distanceInM)</div><div class="ttdoc">Constructs a distance.</div><div class="ttdef"><b>Definition:</b> <a href="Distance_8h_source.html#l00080">Distance.h:80</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_af108b316b3d53df68bfab8cade8e5c6c"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#af108b316b3d53df68bfab8cade8e5c6c">Positioning::PositionProvider::~PositionProvider</a></div><div class="ttdeci">~PositionProvider() override</div><div class="ttdoc">Standard deconstructor.</div></div>
-<div class="ttc" id="aclassPositioning_1_1PositionProvider_html_aae01a01aa2d6b04b6c5b09d685c72bf7"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">Positioning::PositionProvider::statusString</a></div><div class="ttdeci">QString statusString</div><div class="ttdoc">Status of the PositionProvider class.</div><div class="ttdef"><b>Definition:</b> <a href="PositionProvider_8h_source.html#l00178">PositionProvider.h:178</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1PositionProvider_html_aae01a01aa2d6b04b6c5b09d685c72bf7"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#aae01a01aa2d6b04b6c5b09d685c72bf7">Positioning::PositionProvider::statusString</a></div><div class="ttdeci">QString statusString</div><div class="ttdoc">Status of the PositionProvider class.</div><div class="ttdef"><b>Definition:</b> <a href="PositionProvider_8h_source.html#l00173">PositionProvider.h:173</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_a5da03727e664686eb8e9c0ccddabbff3"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#a5da03727e664686eb8e9c0ccddabbff3">Positioning::PositionProvider::globalInstance</a></div><div class="ttdeci">static PositionProvider * globalInstance()</div><div class="ttdoc">Pointer to static instance.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_ac5dc4844cbec47e3dc16a2133f3d969b"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#ac5dc4844cbec47e3dc16a2133f3d969b">Positioning::PositionProvider::lastValidTTChanged</a></div><div class="ttdeci">void lastValidTTChanged(AviationUnits::Angle)</div><div class="ttdoc">Emitted whenever the property lastValidTrack changes.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a></div><div class="ttdoc">Satellite Navigator.</div><div class="ttdef"><b>Definition:</b> <a href="PositionProvider_8h_source.html#l00084">PositionProvider.h:84</a></div></div>
-<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="AbstractPositionInfoSource_8h_source.html#l00029">AbstractPositionInfoSource.h:29</a></div></div>
+<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00023">Geoid.h:23</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_ac33379109bab3e92e0357d182a1d9846"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#ac33379109bab3e92e0357d182a1d9846">Positioning::PositionProvider::lastValidTT</a></div><div class="ttdeci">AviationUnits::Angle lastValidTT</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="PositionProvider_8h_source.html#l00163">PositionProvider.h:163</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_a78215c078c1adea9698b7aed7a88a6cb"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#a78215c078c1adea9698b7aed7a88a6cb">Positioning::PositionProvider::lastValidCoordinate</a></div><div class="ttdeci">QGeoCoordinate lastValidCoordinate</div><div class="ttdoc">Last valid coordinate reading.</div><div class="ttdef"><b>Definition:</b> <a href="PositionProvider_8h_source.html#l00150">PositionProvider.h:150</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Satellite_html"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Satellite.html">Positioning::PositionInfoSource_Satellite</a></div><div class="ttdoc">Satellite Navigator.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfoSource__Satellite_8h_source.html#l00083">PositionInfoSource_Satellite.h:83</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_a7f9de92fbce69223aa63d018d0024998"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#a7f9de92fbce69223aa63d018d0024998">Positioning::PositionProvider::isInFlight</a></div><div class="ttdeci">bool isInFlight</div><div class="ttdoc">Estimate whether the device is flying or on the ground This property holds an estimate,...</div><div class="ttdef"><b>Definition:</b> <a href="PositionProvider_8h_source.html#l00130">PositionProvider.h:130</a></div></div>
-<div class="ttc" id="aclassAviationUnits_1_1Distance_html"><div class="ttname"><a href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition:</b> <a href="Distance_8h_source.html#l00052">Distance.h:52</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_abb6b37755ae9368d84981c3d848fdbe0"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#abb6b37755ae9368d84981c3d848fdbe0">Positioning::PositionProvider::update</a></div><div class="ttdeci">void update()</div><div class="ttdoc">Emitted whenever a new GS fix has arrived.</div></div>
 <div class="ttc" id="aclassAviationUnits_1_1Angle_html"><div class="ttname"><a href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a></div><div class="ttdoc">Convenience class for angle computations.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00058">Angle.h:58</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html_a8ac8926cd99297b4480b2e720af2f05c"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html#a8ac8926cd99297b4480b2e720af2f05c">Positioning::PositionProvider::lastValidCoordinateStatic</a></div><div class="ttdeci">static QGeoCoordinate lastValidCoordinateStatic()</div><div class="ttdoc">Getter function for property of the same name.</div></div>

@@ -74,7 +74,7 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QLocale&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QTimer&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;positioning/AbstractPositionInfoSource.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;positioning/PositionInfoSource_Abstract.h&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;GlobalSettings.h&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;positioning/Geoid.h&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;positioning/PositionInfo.h&quot;</span></div>
@@ -82,7 +82,7 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a> {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">class </span>PositionInfoSource_Satellite : <span class="keyword">public</span> AbstractPositionInfoSource</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">class </span>PositionInfoSource_Satellite : <span class="keyword">public</span> PositionInfoSource_Abstract</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    Q_OBJECT</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
@@ -118,8 +118,8 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Satellite_html_afd5d2d74cfaf6a27cb152e1e1d382541"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Satellite.html#afd5d2d74cfaf6a27cb152e1e1d382541">Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite</a></div><div class="ttdeci">PositionInfoSource_Satellite(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Satellite_html_a73af600c954b37cbbdcba4e2f82d2b8d"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Satellite.html#a73af600c954b37cbbdcba4e2f82d2b8d">Positioning::PositionInfoSource_Satellite::statusString</a></div><div class="ttdeci">QString statusString() const</div><div class="ttdoc">Getter function for the property with the same name.</div></div>
-<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="AbstractPositionInfoSource_8h_source.html#l00029">AbstractPositionInfoSource.h:29</a></div></div>
-<div class="ttc" id="aclassPositioning_1_1Geoid_html"><div class="ttname"><a href="classPositioning_1_1Geoid.html">Positioning::Geoid</a></div><div class="ttdoc">Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid.</div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00049">Geoid.h:49</a></div></div>
+<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00023">Geoid.h:23</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1Geoid_html"><div class="ttname"><a href="classPositioning_1_1Geoid.html">Positioning::Geoid</a></div><div class="ttdoc">Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid.</div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00047">Geoid.h:47</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Satellite_html"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Satellite.html">Positioning::PositionInfoSource_Satellite</a></div><div class="ttdoc">Satellite Navigator.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfoSource__Satellite_8h_source.html#l00083">PositionInfoSource_Satellite.h:83</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Satellite_html_a8ea55220c72ac1e77252675756a799c3"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Satellite.html#a8ea55220c72ac1e77252675756a799c3">Positioning::PositionInfoSource_Satellite::~PositionInfoSource_Satellite</a></div><div class="ttdeci">~PositionInfoSource_Satellite() override</div><div class="ttdoc">Standard deconstructor.</div></div>
 <!-- start footer part -->

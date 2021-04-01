@@ -46,6 +46,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-slots">Public Slots</a> &#124;
+<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -59,8 +60,24 @@ $(function() {
  <a href="classTraffic_1_1TrafficDataProvider.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>&gt;</code></p>
-
-<p>Inherits Positioning::AbstractPositionInfoSource.</p>
+<div class="dynheader">
+Inheritance diagram for Traffic::TrafficDataProvider:</div>
+<div class="dyncontent">
+<div class="center"><img src="classTraffic_1_1TrafficDataProvider__inherit__graph.png" border="0" usemap="#Traffic_1_1TrafficDataProvider_inherit__map" alt="Inheritance graph"/></div>
+<map name="Traffic_1_1TrafficDataProvider_inherit__map" id="Traffic_1_1TrafficDataProvider_inherit__map">
+<area shape="rect" title="Traffic receiver." alt="" coords="5,95,199,121"/>
+<area shape="rect" href="classPositioning_1_1PositionInfoSource__Abstract.html" title="Abstract base class for all classes that provide geographic position information." alt="" coords="13,5,191,47"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for Traffic::TrafficDataProvider:</div>
+<div class="dyncontent">
+<div class="center"><img src="classTraffic_1_1TrafficDataProvider__coll__graph.png" border="0" usemap="#Traffic_1_1TrafficDataProvider_coll__map" alt="Collaboration graph"/></div>
+<map name="Traffic_1_1TrafficDataProvider_coll__map" id="Traffic_1_1TrafficDataProvider_coll__map">
+<area shape="rect" title="Traffic receiver." alt="" coords="5,95,199,121"/>
+<area shape="rect" href="classPositioning_1_1PositionInfoSource__Abstract.html" title="Abstract base class for all classes that provide geographic position information." alt="" coords="13,5,191,47"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
@@ -71,6 +88,30 @@ Public Slots</h2></td></tr>
 <tr class="memdesc:ac9544cf2977ec2df572e9c31ce11dd36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect from traffic receiver.  <a href="classTraffic_1_1TrafficDataProvider.html#ac9544cf2977ec2df572e9c31ce11dd36">More...</a><br /></td></tr>
 <tr class="separator:ac9544cf2977ec2df572e9c31ce11dd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
+Signals</h2></td></tr>
+<tr class="memitem:a658418ebccd7bc22f1efb2a1c9b5af2b"><td class="memItemLeft" align="right" valign="top"><a id="a658418ebccd7bc22f1efb2a1c9b5af2b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a658418ebccd7bc22f1efb2a1c9b5af2b">receivingChanged</a> ()</td></tr>
+<tr class="memdesc:a658418ebccd7bc22f1efb2a1c9b5af2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a658418ebccd7bc22f1efb2a1c9b5af2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header signals_classPositioning_1_1PositionInfoSource__Abstract"><td colspan="2" onclick="javascript:toggleInherit('signals_classPositioning_1_1PositionInfoSource__Abstract')"><img src="closed.png" alt="-"/>&#160;Signals inherited from <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html">Positioning::PositionInfoSource_Abstract</a></td></tr>
+<tr class="memitem:ac0ff7d67d9d7159df1e896e18345b24f inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="ac0ff7d67d9d7159df1e896e18345b24f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#ac0ff7d67d9d7159df1e896e18345b24f">positionInfoChanged</a> (const <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &amp;info)</td></tr>
+<tr class="memdesc:ac0ff7d67d9d7159df1e896e18345b24f inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:ac0ff7d67d9d7159df1e896e18345b24f inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0627231d41a9854b264f8d6c410576c inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="ad0627231d41a9854b264f8d6c410576c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#ad0627231d41a9854b264f8d6c410576c">pressureAltitudeChanged</a> (<a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> pAlt)</td></tr>
+<tr class="memdesc:ad0627231d41a9854b264f8d6c410576c inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:ad0627231d41a9854b264f8d6c410576c inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdcbd66052a6ab8c35cd16ab238716c9 inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="afdcbd66052a6ab8c35cd16ab238716c9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#afdcbd66052a6ab8c35cd16ab238716c9">sourceNameChanged</a> (const QString &amp;name)</td></tr>
+<tr class="memdesc:afdcbd66052a6ab8c35cd16ab238716c9 inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:afdcbd66052a6ab8c35cd16ab238716c9 inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67c3b0c193e0daea9e843401d0a4f059 inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="a67c3b0c193e0daea9e843401d0a4f059"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a67c3b0c193e0daea9e843401d0a4f059">statusStringChanged</a> (const QString &amp;status)</td></tr>
+<tr class="memdesc:a67c3b0c193e0daea9e843401d0a4f059 inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a67c3b0c193e0daea9e843401d0a4f059 inherit signals_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#ad08bfbab038fcc25fbe45af20b8e1e99">TrafficDataProvider</a> (QObject *parent=nullptr)</td></tr>
@@ -79,15 +120,31 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a698e8a5afcd6720837b0e07c38fcf49a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a698e8a5afcd6720837b0e07c38fcf49a">receiving</a> () const</td></tr>
 <tr class="memdesc:a698e8a5afcd6720837b0e07c38fcf49a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#a698e8a5afcd6720837b0e07c38fcf49a">More...</a><br /></td></tr>
 <tr class="separator:a698e8a5afcd6720837b0e07c38fcf49a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa976cd5c7ac9f1cefe6c68fd5ca2b63e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#aa976cd5c7ac9f1cefe6c68fd5ca2b63e">statusString</a> () const</td></tr>
-<tr class="memdesc:aa976cd5c7ac9f1cefe6c68fd5ca2b63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#aa976cd5c7ac9f1cefe6c68fd5ca2b63e">More...</a><br /></td></tr>
-<tr class="separator:aa976cd5c7ac9f1cefe6c68fd5ca2b63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a160e4df20015277f72e7d120569f11a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a160e4df20015277f72e7d120569f11a2">updateStatusString</a> ()</td></tr>
+<tr class="memdesc:a160e4df20015277f72e7d120569f11a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#a160e4df20015277f72e7d120569f11a2">More...</a><br /></td></tr>
+<tr class="separator:a160e4df20015277f72e7d120569f11a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a431152338cffe8be16037cfcc0970593"><td class="memItemLeft" align="right" valign="top">QQmlListProperty&lt; <a class="el" href="classTraffic_1_1Factor.html">Traffic::Factor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a431152338cffe8be16037cfcc0970593">trafficObjects4QML</a> ()</td></tr>
 <tr class="memdesc:a431152338cffe8be16037cfcc0970593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#a431152338cffe8be16037cfcc0970593">More...</a><br /></td></tr>
 <tr class="separator:a431152338cffe8be16037cfcc0970593"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf65d87fac8863d4f40cffdecd5dff6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTraffic_1_1Factor.html">Traffic::Factor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a1cf65d87fac8863d4f40cffdecd5dff6">trafficObjectWithoutPosition</a> ()</td></tr>
 <tr class="memdesc:a1cf65d87fac8863d4f40cffdecd5dff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#a1cf65d87fac8863d4f40cffdecd5dff6">More...</a><br /></td></tr>
 <tr class="separator:a1cf65d87fac8863d4f40cffdecd5dff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPositioning_1_1PositionInfoSource__Abstract')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html">Positioning::PositionInfoSource_Abstract</a></td></tr>
+<tr class="memitem:a22f11fe8e1e439022f3771c3e9154b21 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a22f11fe8e1e439022f3771c3e9154b21">PositionInfoSource_Abstract</a> (QObject *parent=nullptr)</td></tr>
+<tr class="memdesc:a22f11fe8e1e439022f3771c3e9154b21 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#a22f11fe8e1e439022f3771c3e9154b21">More...</a><br /></td></tr>
+<tr class="separator:a22f11fe8e1e439022f3771c3e9154b21 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44339b6ab11a1baf23bfe6696ba4ae82 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a44339b6ab11a1baf23bfe6696ba4ae82">positionInfo</a> () const</td></tr>
+<tr class="memdesc:a44339b6ab11a1baf23bfe6696ba4ae82 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#a44339b6ab11a1baf23bfe6696ba4ae82">More...</a><br /></td></tr>
+<tr class="separator:a44339b6ab11a1baf23bfe6696ba4ae82 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ac84c34dd2e1e394be2c1dbd45584f1 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a9ac84c34dd2e1e394be2c1dbd45584f1">pressureAltitude</a> () const</td></tr>
+<tr class="memdesc:a9ac84c34dd2e1e394be2c1dbd45584f1 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#a9ac84c34dd2e1e394be2c1dbd45584f1">More...</a><br /></td></tr>
+<tr class="separator:a9ac84c34dd2e1e394be2c1dbd45584f1 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a562530b32e8cdc4bb390fad13bb654a6 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a562530b32e8cdc4bb390fad13bb654a6">sourceName</a> () const</td></tr>
+<tr class="memdesc:a562530b32e8cdc4bb390fad13bb654a6 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#a562530b32e8cdc4bb390fad13bb654a6">More...</a><br /></td></tr>
+<tr class="separator:a562530b32e8cdc4bb390fad13bb654a6 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47094963629bd1b65dbe7d30b2d22e5 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#ab47094963629bd1b65dbe7d30b2d22e5">statusString</a> () const</td></tr>
+<tr class="memdesc:ab47094963629bd1b65dbe7d30b2d22e5 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#ab47094963629bd1b65dbe7d30b2d22e5">More...</a><br /></td></tr>
+<tr class="separator:ab47094963629bd1b65dbe7d30b2d22e5 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -107,6 +164,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a8d2ab67c16e95dca9f7ca67dfa9e7122"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTraffic_1_1Factor.html">Traffic::Factor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a8d2ab67c16e95dca9f7ca67dfa9e7122">trafficObjectWithoutPosition</a></td></tr>
 <tr class="memdesc:a8d2ab67c16e95dca9f7ca67dfa9e7122"><td class="mdescLeft">&#160;</td><td class="mdescRight">Most relevant traffic object whose position is not known.  <a href="classTraffic_1_1TrafficDataProvider.html#a8d2ab67c16e95dca9f7ca67dfa9e7122">More...</a><br /></td></tr>
 <tr class="separator:a8d2ab67c16e95dca9f7ca67dfa9e7122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_classPositioning_1_1PositionInfoSource__Abstract"><td colspan="2" onclick="javascript:toggleInherit('properties_classPositioning_1_1PositionInfoSource__Abstract')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html">Positioning::PositionInfoSource_Abstract</a></td></tr>
+<tr class="memitem:a0645ccfe2da4a9dfeeaa390cfdd985c2 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a0645ccfe2da4a9dfeeaa390cfdd985c2">positionInfo</a></td></tr>
+<tr class="memdesc:a0645ccfe2da4a9dfeeaa390cfdd985c2 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position information.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#a0645ccfe2da4a9dfeeaa390cfdd985c2">More...</a><br /></td></tr>
+<tr class="separator:a0645ccfe2da4a9dfeeaa390cfdd985c2 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac46e97497ce16547e40090526cd40727 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#ac46e97497ce16547e40090526cd40727">pressureAltitude</a></td></tr>
+<tr class="memdesc:ac46e97497ce16547e40090526cd40727 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pressure altitude.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#ac46e97497ce16547e40090526cd40727">More...</a><br /></td></tr>
+<tr class="separator:ac46e97497ce16547e40090526cd40727 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b3568f22138342e895400c56be5ec49 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a3b3568f22138342e895400c56be5ec49">sourceName</a></td></tr>
+<tr class="memdesc:a3b3568f22138342e895400c56be5ec49 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source name.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#a3b3568f22138342e895400c56be5ec49">More...</a><br /></td></tr>
+<tr class="separator:a3b3568f22138342e895400c56be5ec49 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ae4cb194907fe0a3f66e79d4ea0ebc9 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a3ae4cb194907fe0a3f66e79d4ea0ebc9">statusString</a></td></tr>
+<tr class="memdesc:a3ae4cb194907fe0a3f66e79d4ea0ebc9 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source status.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#a3ae4cb194907fe0a3f66e79d4ea0ebc9">More...</a><br /></td></tr>
+<tr class="separator:a3ae4cb194907fe0a3f66e79d4ea0ebc9 inherit properties_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Traffic receiver. </p>
@@ -254,26 +324,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aa976cd5c7ac9f1cefe6c68fd5ca2b63e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa976cd5c7ac9f1cefe6c68fd5ca2b63e">&#9670;&nbsp;</a></span>statusString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QString Traffic::TrafficDataProvider::statusString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter method for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
-
-</div>
-</div>
 <a id="a431152338cffe8be16037cfcc0970593"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a431152338cffe8be16037cfcc0970593">&#9670;&nbsp;</a></span>trafficObjects4QML()</h2>
 
@@ -331,6 +381,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjectWithoutPosition </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00163">163</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a160e4df20015277f72e7d120569f11a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a160e4df20015277f72e7d120569f11a2">&#9670;&nbsp;</a></span>updateStatusString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataProvider::updateStatusString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter method for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
 
 </div>
 </div>

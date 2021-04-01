@@ -18,93 +18,66 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QSettings>
-#include <QVariant>
-#include <QtMath>
-
-//#include "AviationUnits.h"
 #include "positioning/PositionInfoSource_Satellite.h"
-#include "traffic/TrafficDataProvider.h"
-
 
 
 Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
-
     if (source != nullptr) {
-        sourceStatus = source->error();
-        connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
-//        connect(source, &QGeoPositionInfoSource::updateTimeout, this, &PositionInfoSource_Satellite::timeout);
-        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionInfoSource_Satellite::onPositionUpdated_Sat);
-    }
-
-    if (source != nullptr) {
+        setSourceName( tr("Built-in (%1)").arg(source->sourceName()) );
+        connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(updateStatusString()));
+        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionInfoSource_Satellite::onPositionUpdated);
         source->startUpdates();
-        if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
-            _geoid = new Positioning::Geoid;
-        }
-    }
-}
-
-
-Positioning::PositionInfoSource_Satellite::~PositionInfoSource_Satellite()
-{
-    delete source;
-    delete _geoid;
-}
-
-
-void Positioning::PositionInfoSource_Satellite::error(QGeoPositionInfoSource::Error newSourceStatus)
-{
-    // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
-    sourceStatus = newSourceStatus;
-
-    // If there really is an error, reset lastInfo and cancel all counters
-    if (newSourceStatus != QGeoPositionInfoSource::NoError) {
-/*
- *         _positionInfo = QGeoPositionInfo();
-        timeoutCounter.stop();
-        */
+    } else {
+        setSourceName( tr("Built-in receiver not available") );
     }
 
-
+    updateStatusString();
 }
 
 
-auto Positioning::PositionInfoSource_Satellite::statusString() const -> QString
+void Positioning::PositionInfoSource_Satellite::updateStatusString()
 {
     if (source == nullptr) {
-        return tr("Not installed or access denied");
+        setStatusString( tr("Not installed or access denied") );
+        return;
     }
 
+    auto sourceStatus = source->error();
+
     if (sourceStatus == QGeoPositionInfoSource::AccessError) {
-        return tr("Access denied");
+        setStatusString( tr("Access denied") );
+        return;
     }
 
     if (sourceStatus == QGeoPositionInfoSource::ClosedError) {
-        return tr("Connection to satellite system lost");
+        setStatusString( tr("Connection to satellite system lost") );
+        return;
     }
 
-    if (sourceStatus != QGeoPositionInfoSource::NoError) {
-        return tr("Unknown error");
+    if (sourceStatus != QGeoPositionInfoSource::UnknownSourceError) {
+        setStatusString( tr("Unknown error") );
+        return;
     }
-/*
-    if (!timeoutCounter.isActive()) {
-        return tr("Waiting for signal");
+
+    if (!positionInfo().isValid()) {
+        setStatusString( tr("Waiting for signal") );
+        return;
     }
-*/
-    return tr("%1 OK").arg(source->sourceName());
+
+    setStatusString( tr("Receiving data") );
 }
 
 
-void Positioning::PositionInfoSource_Satellite::onPositionUpdated_Sat(const QGeoPositionInfo &info)
+void Positioning::PositionInfoSource_Satellite::onPositionUpdated(const QGeoPositionInfo &info)
 {
     auto correctedInfo = info;
-    if ((_geoid != nullptr) && (info.coordinate().type() == QGeoCoordinate::Coordinate3D)) {
-        auto geoidCorrection = _geoid->operator()(static_cast<qreal>(info.coordinate().latitude()), static_cast<qreal>(info.coordinate().longitude()));
+    if (info.coordinate().type() == QGeoCoordinate::Coordinate3D) {
+        auto geoidCorrection = geoid.operator()(static_cast<qreal>(info.coordinate().latitude()), static_cast<qreal>(info.coordinate().longitude()));
         correctedInfo.setCoordinate( correctedInfo.coordinate().atDistanceAndAzimuth(0, 0, -geoidCorrection) );
     }
 
     setPositionInfo( Positioning::PositionInfo(correctedInfo) );
+    updateStatusString();
 }

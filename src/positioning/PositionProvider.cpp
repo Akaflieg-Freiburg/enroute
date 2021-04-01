@@ -35,27 +35,7 @@ Q_GLOBAL_STATIC(Positioning::PositionProvider, PositionProviderStatic);
 
 Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
-//    source = QGeoPositionInfoSource::createDefaultSource(this);
-
-
-
-    /*
-    if (source != nullptr) {
-        sourceStatus = source->error();
-        connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(error(QGeoPositionInfoSource::Error)));
-        connect(source, &QGeoPositionInfoSource::updateTimeout, this, &PositionProvider::timeout);
-        connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionProvider::onPositionUpdated_Sat);
-    }
-    */
-    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
-
-    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
-    if (trafficDataProvider != nullptr) {
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
-    }
-
+    // Restore the last valid coordiante
     QSettings settings;
     QGeoCoordinate tmp;
     tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), _lastValidCoordinate.latitude()).toDouble());
@@ -64,48 +44,33 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         _lastValidCoordinate = tmp;
     }
+
+    // Restore the last valid track
     _lastValidTT = AviationUnits::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
 
-    /*
-    if (source != nullptr) {
-        source->startUpdates();
-        if ((source->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) == QGeoPositionInfoSource::SatellitePositioningMethods) {
-            _geoid = new Positioning::Geoid;
-        }
-    }
-    */
+    // Wire up satellite source
+    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
+    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
 
-    // Adjust and connect timeoutCounter
-    timeoutCounter.setSingleShot(true);
-    connect(&timeoutCounter, &QTimer::timeout, this, &PositionProvider::timeout);
+    // Wire up traffic data provider source
+    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    if (trafficDataProvider != nullptr) {
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
+    }
 }
 
 
 Positioning::PositionProvider::~PositionProvider()
 {
+    // Save the last valid coordinate
     QSettings settings;
-
     settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), _lastValidCoordinate.latitude());
     settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), _lastValidCoordinate.longitude());
     settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), _lastValidCoordinate.altitude());
+
+    // Save the last valid track
     settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), _lastValidTT.toDEG());
-}
-
-
-void Positioning::PositionProvider::error(QGeoPositionInfoSource::Error newSourceStatus)
-{
-/*
- *     // Save old status and set sourceStatus to QGeoPositionInfoSource::NoError
-    sourceStatus = newSourceStatus;
-
-    // If there really is an error, reset lastInfo and cancel all counters
-    if (newSourceStatus != QGeoPositionInfoSource::NoError) {
-        _positionInfo = QGeoPositionInfo();
-        timeoutCounter.stop();
-    }
-
-    emit update();
-    */
 }
 
 
@@ -116,12 +81,6 @@ auto Positioning::PositionProvider::globalInstance() -> PositionProvider *
 #else
     return nullptr;
 #endif
-}
-
-
-auto Positioning::PositionProvider::lastValidCoordinate() const -> QGeoCoordinate
-{
-    return _lastValidCoordinate;
 }
 
 
@@ -163,6 +122,7 @@ auto Positioning::PositionProvider::statusString() const -> QString
 //    return tr("%1 OK").arg(source->sourceName());
 }
 
+#include <qdebug.h>
 
 void Positioning::PositionProvider::onPositionUpdated()
 {
@@ -218,15 +178,6 @@ void Positioning::PositionProvider::onPositionUpdated()
         emit lastValidTTChanged(_lastValidTT);
     }
     */
-}
-
-
-void Positioning::PositionProvider::timeout()
-{
-    // Clear lastInfo, stop counter
-    _positionInfo = QGeoPositionInfo();
-
-    emit update();
 }
 
 

@@ -117,7 +117,10 @@ public:
 
     @returns Property lastValidCoordinate
   */
-    QGeoCoordinate lastValidCoordinate() const;
+    QGeoCoordinate lastValidCoordinate() const
+    {
+        return _lastValidCoordinate;
+    }
 
 
     /*! \brief Getter function for the property with the same name
@@ -125,7 +128,11 @@ public:
      *  @returns Property lastValidTrack
      */
     Q_PROPERTY(AviationUnits::Angle lastValidTT READ lastValidTT NOTIFY update)
-    AviationUnits::Angle lastValidTT() const { return _lastValidTT; }
+
+    AviationUnits::Angle lastValidTT() const
+    {
+        return _lastValidTT;
+    }
 
 
     /*! \brief Status of the PositionProvider class
@@ -181,12 +188,6 @@ private slots:
     // Connected to source, in order to receive new data
     void onPositionUpdated();
 
-    // Connected to source, in order to receive error information
-    void error(QGeoPositionInfoSource::Error newSourceStatus);
-
-    // Connected to timeoutCounter, in order to receive timeout after one minute
-    void timeout();
-
 private:
     Q_DISABLE_COPY_MOVE(PositionProvider)
 
@@ -202,18 +203,12 @@ private:
 
     QLocale myLocale;
     PositionInfoSource_Satellite satelliteSource;
-//    QGeoPositionInfoSource *source;
+
     QGeoPositionInfo _positionInfo;
+
     QGeoCoordinate _lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};
     AviationUnits::Angle _lastValidTT {};
     bool _isInFlight {false};
-
-    // Constant: timeout occurs after one minute without receiving new data
-    const int timeoutThreshold = 10*1000;
-
-    // QTimer used to measure time since last data packet was received.  Connected
-    // to call timeout() after timeoutThreshold milliseconds of no data.
-    QTimer timeoutCounter;
 };
 
 }

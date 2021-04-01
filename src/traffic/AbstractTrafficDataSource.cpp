@@ -193,7 +193,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
         if (_altitudeTimeStamp.secsTo(dateTime) < 5) {
             coordinate.setAltitude(_altitude.toM());
         }
-        QGeoPositionInfo pInfo(coordinate, dateTime);
+        QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
 
         // Ground speed
         bool ok = false;

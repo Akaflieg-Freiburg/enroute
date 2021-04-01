@@ -21,46 +21,19 @@
 #pragma once
 
 #include <QGeoPositionInfoSource>
-#include <QLocale>
-#include <QTimer>
 
-#include "positioning/PositionInfoSource_Abstract.h"
-#include "GlobalSettings.h"
 #include "positioning/Geoid.h"
-#include "positioning/PositionInfo.h"
-#include "units/Distance.h"
+#include "positioning/PositionInfoSource_Abstract.h"
+
 
 namespace Positioning {
 
 /*! \brief Satellite Navigator
-
-  This class is a thin wrapper around QGeoPositionInfoSource.  The main
-  differences to QGeoPositionInfoSource are the following.
-
-  - This class the data in formats suitable for aviation purposes.
-
-  - This class has a well-defined timeout if no data has been received for more
-    than two minutes.
-
-  - The signal statusChanged() reliably lets you know if the status changes. The
-    QGeoPositionInfoSource, in contrast, only reports errors. It does not report
-    explicitly when error conditions are lifted.
-
-  Once constructed, the health status of the satellite navigation subsystem can
-  be queried using the status property. If all is well, the class receives
-  regular satellite navigation data packets (aka 'fixes'), in the form a
-  QGeoPositionInfo object, and the signal 'update' is emitted.  The
-  QGeoPositionInfo is considered valid for one minute, and can be accessed via
-  the method lastFix(), or via a multitude of properties that present the data
-  in formats suitable for GUI applications.  If no new PositionInfoSource_Satellite fixes come in for
-  one minute, the QGeoPositionInfo will cleared, and the status is set to
-  Timeout until new data arrives.
-
-  There exists one static instance of this class, which can be accessed via the
-  method globalInstance().  No other instance of this class should be used.
-
-  The methods in this class are reentrant, but not thread safe.
-*/
+ *
+ *  This class is a thin wrapper around QGeoPositionInfoSource. It constructs a
+ *  default QGeoPositionInfoSource and forwards the data provided by that source
+ *  via the PositionInfoSource_Abstract interface that it implements.
+ */
 
 class PositionInfoSource_Satellite : public PositionInfoSource_Abstract
 {
@@ -68,39 +41,22 @@ class PositionInfoSource_Satellite : public PositionInfoSource_Abstract
 
 public:
     /*! \brief Standard constructor
-   *
-   * @param parent The standard QObject parent pointer
-   */
+     *
+     * @param parent The standard QObject parent pointer
+     */
     explicit PositionInfoSource_Satellite(QObject *parent = nullptr);
 
-    /*! \brief Standard deconstructor */
-    ~PositionInfoSource_Satellite() override;
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property statusAsString
-     */
-    QString statusString() const;
-
 private slots:
-    // Connected to source, in order to receive error information
-    void error(QGeoPositionInfoSource::Error newSourceStatus);
+    void onPositionUpdated(const QGeoPositionInfo &info);
 
-    void onPositionUpdated_Sat(const QGeoPositionInfo &info);
+    void updateStatusString();
 
 private:
     Q_DISABLE_COPY_MOVE(PositionInfoSource_Satellite)
 
-    Positioning::Geoid* _geoid {nullptr};
+    Positioning::Geoid geoid;
 
-    // Set according to the status of *source. We need to replicate the
-    // information stored in source because the status of the source can change
-    // from "error" to "ok" without notification. This data field is then used to
-    // check if something changed, and to emit the signal "statusUpdate" when
-    // appropriate.
-    QGeoPositionInfoSource::Error sourceStatus {QGeoPositionInfoSource::AccessError};
-
-    QGeoPositionInfoSource *source;
+    QPointer<QGeoPositionInfoSource> source {nullptr};
 };
 
 }

@@ -198,3 +198,24 @@ void Positioning::PositionProvider::setLastValidTT(AviationUnits::Angle newTT)
     m_lastValidTT = newTT;
     emit lastValidTTChanged(m_lastValidTT);
 }
+
+
+auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
+{
+    auto *positionProvider = globalInstance();
+    if (positionProvider == nullptr) {
+        return {};
+    }
+    return positionProvider->m_lastValidCoordinate;
+}
+
+
+auto Positioning::PositionProvider::lastValidTT() -> AviationUnits::Angle
+{
+    auto *positionProvider = globalInstance();
+    if (positionProvider == nullptr) {
+        return {};
+    }
+    return positionProvider->m_lastValidTT;
+}
+

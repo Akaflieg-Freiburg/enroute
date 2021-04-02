@@ -444,7 +444,7 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
             continue;
         }
 
-        QGeoCoordinate here = positionProvider->lastValidCoordinate();
+        QGeoCoordinate here = Positioning::PositionProvider::lastValidCoordinate();
         if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate())) {
             closestReportWithQNH = weatherStationPtr;
         }
@@ -489,12 +489,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     _networkReplies.clear();
 
     // Generate queries
-    QGeoCoordinate position;
-    auto *positionProvider = Positioning::PositionProvider::globalInstance();
-    if (positionProvider != nullptr) {
-        position = positionProvider->lastValidCoordinate();
-    }
-
+    const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
     const QVariantList& steerpts = _flightRoute->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
@@ -538,12 +533,7 @@ auto Weather::DownloadManager::weatherStations() const -> QList<Weather::Station
 
     // Sort list
     auto compare = [&](const Weather::Station *a, const Weather::Station *b) {
-        QGeoCoordinate here;
-        auto *positionProvider = Positioning::PositionProvider::globalInstance();
-        if (positionProvider != nullptr) {
-            here = positionProvider->lastValidCoordinate();
-        }
-
+        QGeoCoordinate here = Positioning::PositionProvider::lastValidCoordinate();
         return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);

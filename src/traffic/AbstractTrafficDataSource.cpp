@@ -221,11 +221,6 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
     // Data on other proximate aircraft
     if (messageType == u"PFLAA") {
 
-        auto *satNav = Positioning::PositionProvider::globalInstance();
-        if (satNav == nullptr) {
-            return;
-        }
-
         // Helper variable
         bool ok = false;
 
@@ -344,7 +339,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
         //
 
         // As a first step, we obtain the target's coordinate. We take our own coordinate as a starting point.
-        auto targetCoordinate = satNav->lastValidCoordinate();
+        auto targetCoordinate = Positioning::PositionProvider::lastValidCoordinate();
         if (!targetCoordinate.isValid()) {
             return;
         }

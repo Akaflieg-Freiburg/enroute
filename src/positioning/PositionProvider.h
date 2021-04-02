@@ -92,10 +92,7 @@ public:
      *
      *  @returns Property lastValidCoordinate
      */
-    QGeoCoordinate lastValidCoordinate() const
-    {
-        return m_lastValidCoordinate;
-    }
+    static QGeoCoordinate lastValidCoordinate();
 
     /*! \brief Last valid true track
      *
@@ -109,10 +106,7 @@ public:
      *
      *  @returns Property lastValidTrack
      */
-    AviationUnits::Angle lastValidTT() const
-    {
-        return m_lastValidTT;
-    }
+    static AviationUnits::Angle lastValidTT();
 
     /*! \brief Description of the way from the current position to the given position
      *

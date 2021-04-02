@@ -58,7 +58,7 @@ Item {
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
-        property real animatedTrack: satNav.lastValidTT.isFinite() ? satNav.lastValidTT.toDEG() : 0
+        property real animatedTrack: positionProvider.lastValidTT.isFinite() ? positionProvider.lastValidTT.toDEG() : 0
         Behavior on animatedTrack { RotationAnimation {duration: 400; direction: RotationAnimation.Shortest } }
 
 
@@ -86,7 +86,7 @@ Item {
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
             when: globalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: globalSettings.mapBearingPolicy === GlobalSettings.TTUp ? satNav.lastValidTT.toDEG() : 0
+            value: globalSettings.mapBearingPolicy === GlobalSettings.TTUp ? positionProvider.lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -109,10 +109,10 @@ Item {
             when: flightMap.followGPS === true
             value: {
                 // If not in flight, then aircraft stays in center of display
-                if (!satNav.isInFlight)
-                    return satNav.lastValidCoordinate
-                if (!satNav.lastValidTT.isFinite())
-                    return satNav.lastValidCoordinate
+                if (!positionProvider.isInFlight)
+                    return positionProvider.lastValidCoordinate
+                if (!positionProvider.lastValidTT.isFinite())
+                    return positionProvider.lastValidCoordinate
 
                 // Otherwise, we position the aircraft someplace on a circle around the
                 // center, so that the map shows a larger portion of the airspace ahead
@@ -129,7 +129,7 @@ Item {
                                         )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
-                return satNav.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, satNav.lastValidTT.toDEG())
+                return positionProvider.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, positionProvider.lastValidTT.toDEG())
             }
         }
 
@@ -166,7 +166,7 @@ Item {
 
         // ADDITINAL MAP ITEMS
         MapCircle { // Circle for nondirectional traffic warning
-            center: satNav.lastValidCoordinate
+            center: positionProvider.lastValidCoordinate
             Behavior on center {
                 CoordinateAnimation { duration: 1000 }
                 enabled: flarmAdaptor.trafficObjectWithoutPosition.animate
@@ -203,8 +203,8 @@ Item {
 
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
-            coordinate: satNav.lastValidCoordinate
-            visible: (!globalSettings.autoFlightDetection || satNav.isInFlight) && (satNav.positionInfo.trueTrack().isFinite())
+            coordinate: positionProvider.lastValidCoordinate
+            visible: (!globalSettings.autoFlightDetection || positionProvider.isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -218,7 +218,7 @@ Item {
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? satNav.positionInfo.groundSpeed().toMPS() : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || positionProvider.isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -259,7 +259,7 @@ Item {
 
             anchorPoint.x: image.width/2
             anchorPoint.y: image.height/2
-            coordinate: satNav.lastValidCoordinate
+            coordinate: positionProvider.lastValidCoordinate
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -275,7 +275,7 @@ Item {
                 rotation: flightMap.animatedTrack-flightMap.bearing
 
                 source: {
-                    var pInfo = satNav.positionInfo
+                    var pInfo = positionProvider.positionInfo
 
                     if (!pInfo.isValid()) {
                         return "/icons/self-noPosition.svg"
@@ -610,7 +610,7 @@ Item {
         anchors.right: parent.right
         anchors.left: parent.left
 
-        y: (!globalSettings.autoFlightDetection || satNav.isInFlight) ? parent.height - height : parent.height
+        y: (!globalSettings.autoFlightDetection || positionProvider.isInFlight) ? parent.height - height : parent.height
     }
 
     WaypointDescription {

@@ -307,7 +307,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (waypoint !== null) ? waypoint.wayTo(satNav.positionInfo.coordinate(), globalSettings.useMetricUnits) : ""
+            text: (waypoint !== null) ? waypoint.wayTo(positionProvider.positionInfo.coordinate(), globalSettings.useMetricUnits) : ""
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -350,7 +350,7 @@ Dialog {
             text: qsTr("Direct")
             icon.source: "/icons/material/ic_keyboard_tab.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: (satNav.status === SatNav.OK) && (dialogLoader.text !== "noRouteButton")
+            enabled: positionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
 
             onClicked: {
                 mobileAdaptor.vibrateBrief()
@@ -358,7 +358,7 @@ Dialog {
                     overwriteDialog.open()
                 else {
                     flightRoute.clear()
-                    flightRoute.append(satNav.lastValidCoordinate)
+                    flightRoute.append(positionProvider.lastValidCoordinate)
                     flightRoute.append(waypoint)
                     toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
                 }
@@ -428,7 +428,7 @@ Dialog {
         onAccepted: {
             mobileAdaptor.vibrateBrief()
             flightRoute.clear()
-            flightRoute.append(satNav.lastValidCoordinate)
+            flightRoute.append(positionProvider.lastValidCoordinate)
             flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))

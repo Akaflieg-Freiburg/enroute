@@ -164,7 +164,7 @@ ApplicationWindow {
                         ItemDelegate { // Sat Status
                             text: qsTr("Satellite Navigation")
                                   +`<br><font color="#606060" size="2">`
-                                  + (satNav.receiving ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
+                                  + (positionProvider.receiving ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_satellite.svg"
                             Layout.fillWidth: true
@@ -177,7 +177,7 @@ ApplicationWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: satNav.positionInfo.isValid() ? "green" : "red"
+                                color: positionProvider.positionInfo.isValid() ? "green" : "red"
                                 opacity: 0.2
                             }
                         }
@@ -288,7 +288,7 @@ ApplicationWindow {
                     height: 1
                     Layout.fillWidth: true
                     color: Material.primary
-                    visible: !satNav.isInFlight
+                    visible: !positionProvider.isInFlight
                 }
 
                 ItemDelegate { // Exit
@@ -299,7 +299,7 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         drawer.close()
-                        if (!globalSettings.autoFlightDetection || satNav.isInFlight)
+                        if (!globalSettings.autoFlightDetection || positionProvider.isInFlight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -347,12 +347,12 @@ ApplicationWindow {
             // Start accepting files
             mobileAdaptor.startReceiveOpenFileRequests()
 
-            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !satNav.isInFlight) {
+            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !positionProvider.isInFlight) {
                 whatsNewDialog.open()
                 return
             }
 
-            if (mapManager.geoMaps.updatable && !satNav.isInFlight) {
+            if (mapManager.geoMaps.updatable && !positionProvider.isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
                 dialogLoader.active = true
@@ -365,7 +365,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (!globalSettings.autoFlightDetection || satNav.isInFlight)
+                    if (!globalSettings.autoFlightDetection || positionProvider.isInFlight)
                         exitDialog.open()
                     else
                         Qt.quit()

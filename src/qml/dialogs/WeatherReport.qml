@@ -71,8 +71,8 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (weatherStation !== null) ? weatherStation.wayTo(satNav.positionInfo.coordinate(), globalSettings.useMetricUnits) : ""
-            visible: satNav.status === SatNav.OK
+            text: (weatherStation !== null) ? weatherStation.wayTo(positionProvider.positionInfo.coordinate(), globalSettings.useMetricUnits) : ""
+            visible: positionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
             wrapMode: Text.WordWrap

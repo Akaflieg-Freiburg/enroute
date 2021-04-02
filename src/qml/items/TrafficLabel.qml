@@ -32,7 +32,7 @@ MapQuickItem {
     property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
     property real t: isFinite(trafficInfo.TT) ? 2*Math.PI*(trafficInfo.TT-flightMap.bearing)/360.0 : 0
 
-    coordinate: trafficInfo.coordinate.isValid ? trafficInfo.coordinate : satNav.lastValidCoordinate
+    coordinate: trafficInfo.coordinate.isValid ? trafficInfo.coordinate : positionProvider.lastValidCoordinate
     Behavior on coordinate {
         CoordinateAnimation { duration: 1000 }
         enabled: trafficInfo.animate

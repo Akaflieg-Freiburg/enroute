@@ -66,7 +66,7 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 2
 
-                text: satNav.statusString
+                text: positionProvider.statusString
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -81,14 +81,14 @@ Page {
 
                 background: Rectangle {
                     border.color: "black"
-                    color: satNav.positionInfo.isValid() ? "green" : "red"
+                    color: positionProvider.positionInfo.isValid() ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
             }
 
             Label { text: qsTr("Mode") }
-            Label { text: satNav.isInFlight ? qsTr("Flight") : qsTr("Ground") }
+            Label { text: positionProvider.isInFlight ? qsTr("Flight") : qsTr("Ground") }
 
             Label {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
@@ -104,9 +104,9 @@ Page {
             Label {
                 Layout.fillWidth: true
                 text: {
-                    if (!satNav.positionInfo.isValid())
+                    if (!positionProvider.positionInfo.isValid())
                         return "-"
-                    const lat = satNav.positionInfo.coordinate().toString().split(",")[0]
+                    const lat = positionProvider.positionInfo.coordinate().toString().split(",")[0]
                     if (lat === "")
                         return "-"
                     return lat
@@ -116,9 +116,9 @@ Page {
             Label { text: qsTr("Longitude") }
             Label {
                 text: {
-                    if (!satNav.positionInfo.isValid())
+                    if (!positionProvider.positionInfo.isValid())
                         return "-"
-                    const lon = satNav.positionInfo.coordinate().toString().split(",")[1]
+                    const lon = positionProvider.positionInfo.coordinate().toString().split(",")[1]
                     if (lon === "")
                         return "-"
                     return lon
@@ -128,7 +128,7 @@ Page {
             Label { text: qsTr("True Alt") }
             Label {
                 text: {
-                    const talt = satNav.positionInfo.trueAltitude();
+                    const talt = positionProvider.positionInfo.trueAltitude();
                     return talt.isFinite() ? Math.round(talt.toFeet()) + " ft" : "-"
                 }
             }
@@ -136,7 +136,7 @@ Page {
             Label { text: qsTr("Error (horizontal)") }
             Label {
                 text: {
-                    const posError = satNav.positionInfo.positionErrorEstimate();
+                    const posError = positionProvider.positionInfo.positionErrorEstimate();
                     return posError.isFinite() ? "±" + Math.round(posError.toM()) + " m" : "-"
                 }
             }
@@ -144,7 +144,7 @@ Page {
             Label { text: qsTr("Error (vertical)") }
             Label {
                 text: {
-                    const taltError = satNav.positionInfo.trueAltitudeErrorEstimate();
+                    const taltError = positionProvider.positionInfo.trueAltitudeErrorEstimate();
                     return taltError.isFinite() ? "±" + Math.round(taltError.toFeet()) + " ft" : "-"
                 }
 
@@ -152,7 +152,7 @@ Page {
 
             Label { text: "Mag. var." }
             Label { text: {
-                    const magVar = satNav.positionInfo.variation();
+                    const magVar = positionProvider.positionInfo.variation();
                     return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
                 }
             }
@@ -160,7 +160,7 @@ Page {
             Label { text: "GS" }
             Label {
                 text: {
-                    const gs = satNav.positionInfo.groundSpeed();
+                    const gs = positionProvider.positionInfo.groundSpeed();
                     if (!gs.isFinite())
                         return "-"
                     return globalSettings.useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
@@ -170,7 +170,7 @@ Page {
             Label { text: "TT" }
             Label {
                 text: {
-                    const tt = satNav.positionInfo.trueTrack();
+                    const tt = positionProvider.positionInfo.trueTrack();
                     return tt.isFinite() ? tt.toDEG() + "°" : "-"
                 }
             }
@@ -178,13 +178,13 @@ Page {
             Label { text: "Vert. Speed" }
             Label {
                 text: {
-                    const vs = satNav.positionInfo.verticalSpeed();
+                    const vs = positionProvider.positionInfo.verticalSpeed();
                     return vs.isFinite() ? Math.round(vs.toMPS()) + " m/s" : "-"
                 }
             }
 
             Label { text: "Pressure ALT" }
-            Label { text: satNav.pressureAltitude.isFinite() ? Math.round(satNav.pressureAltitude.toFeet()) + " ft" : "-" }
+            Label { text: positionProvider.pressureAltitude.isFinite() ? Math.round(positionProvider.pressureAltitude.toFeet()) + " ft" : "-" }
 
 
         } // GridLayout

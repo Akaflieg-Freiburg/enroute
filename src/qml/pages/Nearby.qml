@@ -82,7 +82,7 @@ Page {
                     text: {
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = model.modelData.wayTo(satNav.positionInfo.coordinate(), globalSettings.useMetricUnits)
+                        var wayTo  = model.modelData.wayTo(positionProvider.positionInfo.coordinate(), globalSettings.useMetricUnits)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
@@ -108,7 +108,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: adList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "AD")
+            Component.onCompleted: adList.model = geoMapProvider.nearbyWaypoints(positionProvider.lastValidCoordinate, "AD")
 
             Label {
                 anchors.fill: parent
@@ -130,7 +130,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: naList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "NAV")
+            Component.onCompleted: naList.model = geoMapProvider.nearbyWaypoints(positionProvider.lastValidCoordinate, "NAV")
 
             Label {
                 anchors.fill: parent
@@ -152,7 +152,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: rpList.model = geoMapProvider.nearbyWaypoints(satNav.lastValidCoordinate, "WP")
+            Component.onCompleted: rpList.model = geoMapProvider.nearbyWaypoints(positionProvider.lastValidCoordinate, "WP")
             
             Label {
                 anchors.fill: parent

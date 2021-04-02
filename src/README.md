@@ -18,7 +18,7 @@ The main() function constructs a number of C++ objects and exposes them to QML.
 
 - An instance of the class MobileAdaptor, under the name "MobileAdaptor". This class provides QML with access to platform-specific functionality, such as "vibrate device", "disable screen lock" and others
 
-- An instance of the class SatNav, under the name "satNav". This class contains the satellite navigaton functionality and is really a thin wrapper around QGeoPositionInfoSource, that provides data in formats suitable for aviation purposes.
+- An instance of the class PositionProvider, under the name "positionProvider". This class contains the satellite navigaton functionality and is really a thin wrapper around QGeoPositionInfoSource, that provides data in formats suitable for aviation purposes.
 
 #### B.2 Other C++ classes
 

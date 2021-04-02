@@ -140,7 +140,7 @@ auto main(int argc, char *argv[]) -> int
     QObject::connect(GlobalSettings::globalInstance(), &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
-    engine->rootContext()->setContextProperty("satNav", Positioning::PositionProvider::globalInstance());
+    engine->rootContext()->setContextProperty("positionProvider", Positioning::PositionProvider::globalInstance());
 
     // Make FLARM available to QML engine
     engine->rootContext()->setContextProperty("flarmAdaptor", Traffic::TrafficDataProvider::globalInstance());

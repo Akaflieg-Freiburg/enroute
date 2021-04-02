@@ -370,7 +370,7 @@ This feature is new. Your feedback is very welcome!
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) const -> uint
+auto Librarian::getStringHashFromRessource(const QString &name) -> uint
 {
     return qHash(getStringFromRessource(name), 0);
 }

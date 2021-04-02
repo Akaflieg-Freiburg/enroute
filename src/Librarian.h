@@ -71,7 +71,7 @@ public:
      *
      * @returns Hash of file content
      */
-    Q_INVOKABLE uint getStringHashFromRessource(const QString &name) const;
+    Q_INVOKABLE static uint getStringHashFromRessource(const QString &name) ;
 
     /*! \brief Name of the directory containing the flight route library
      *

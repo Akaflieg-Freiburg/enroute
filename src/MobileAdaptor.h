@@ -70,7 +70,7 @@ public:
      * @returns On Android, returns 'true' if not all required permissions have
      * been granted. On other systems, always returns 'false'
     */
-    Q_INVOKABLE bool missingPermissionsExist();
+    Q_INVOKABLE static bool missingPermissionsExist();
 
     /*! \brief Export content to file or to file sending app
      *
@@ -90,7 +90,7 @@ public:
      *
      * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
-    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE static QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
     /*! \brief Lock connection to Wi-Fi network
      *
@@ -99,7 +99,7 @@ public:
      *
      * @param lock If true, then lock the network. If false, then release the lock.
      */
-    Q_INVOKABLE void lockWifi(bool lock);
+    Q_INVOKABLE static void lockWifi(bool lock);
 
     /*! \brief Get SSID of current Wi-Fi network
      *

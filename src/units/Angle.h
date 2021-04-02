@@ -102,6 +102,17 @@ namespace AviationUnits {
             return result;
         }
 
+        /*! \brief Comparison: equal
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        Q_INVOKABLE auto operator==(AviationUnits::Angle rhs) const
+        {
+            return m_angleInRAD == rhs.m_angleInRAD;
+        }
+
         /*! \brief Comparison: not equal
          *
          *  @param rhs Right hand side of the comparison

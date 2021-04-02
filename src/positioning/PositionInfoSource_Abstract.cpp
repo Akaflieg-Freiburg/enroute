@@ -46,6 +46,14 @@ void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning
 
     m_positionInfo = info;
     emit positionInfoChanged(m_positionInfo);
+
+    auto newReceiving = m_positionInfo.isValid();
+    if (_receivingPositionInfo == newReceiving) {
+        return;
+    }
+
+    _receivingPositionInfo = newReceiving;
+    emit receivingPositionInfoChanged(_receivingPositionInfo);
 }
 
 
@@ -71,12 +79,6 @@ void Positioning::PositionInfoSource_Abstract::setStatusString(const QString &st
 }
 
 
-void Positioning::PositionInfoSource_Abstract::resetPositionInfo()
-{
-    setPositionInfo( {} );
-}
-
-
 void Positioning::PositionInfoSource_Abstract::setPressureAltitude(AviationUnits::Distance newPressureAltitude)
 {
     if (newPressureAltitude.isFinite()) {
@@ -94,4 +96,10 @@ void Positioning::PositionInfoSource_Abstract::setPressureAltitude(AviationUnits
 void Positioning::PositionInfoSource_Abstract::resetPressureAltitude()
 {
     setPressureAltitude( {} );
+}
+
+
+void Positioning::PositionInfoSource_Abstract::resetPositionInfo()
+{
+    setPositionInfo( {} );
 }

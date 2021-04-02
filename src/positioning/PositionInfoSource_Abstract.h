@@ -94,6 +94,21 @@ public:
         return m_pressureAltitude;
     }
 
+    /*! \brief Indicator that position information is being received
+     *
+     *  Use this property to tell if position information is being received.
+     */
+    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo NOTIFY receivingPositionInfoChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receivingPositionInfo
+     */
+    bool receivingPositionInfo() const
+    {
+        return _receivingPositionInfo;
+    }
+
     /*! \brief Source name
      *
      *  This property holds a translated, human-readable string that describes
@@ -136,6 +151,9 @@ signals:
     void pressureAltitudeChanged(AviationUnits::Distance pAlt);
 
     /*! \brief Notifier signal */
+    void receivingPositionInfoChanged(bool);
+
+    /*! \brief Notifier signal */
     void sourceNameChanged(const QString &name);
 
     /*! \brief Notifier signal */
@@ -144,7 +162,9 @@ signals:
 protected:
     // This method must be used by child classes to update the position info.
     // The class uses a timer internally to reset the position info to "invalid"
-    // after the time specified in PositionInfo::lifetime seconds.
+    // after the time specified in PositionInfo::lifetime seconds. It also
+    // updates the property receivingPositionInfo.
+    //
     void setPositionInfo(const Positioning::PositionInfo &info);
 
     // This method must be used by child classes to update the pressure altitude
@@ -173,6 +193,8 @@ private:
 
     QString m_sourceName {};
     QString m_statusString {};
+
+    bool _receivingPositionInfo {false};
 };
 
 }

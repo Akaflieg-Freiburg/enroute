@@ -84,8 +84,8 @@ Weather::DownloadManager::DownloadManager(FlightRoute *route,
 
 void Weather::DownloadManager::setupConnections() const
 {
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingChanged, this, &Weather::DownloadManager::QNHInfoChanged);
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingChanged, this, &Weather::DownloadManager::sunInfoChanged);
+    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::DownloadManager::sunInfoChanged);
 
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::QNHInfoChanged);
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::sunInfoChanged);
@@ -350,11 +350,11 @@ void Weather::DownloadManager::save()
 auto Weather::DownloadManager::sunInfo() -> QString
 {
     // Paranoid safety checks
-    auto *_PositionProvider = Positioning::PositionProvider::globalInstance();
-    if (_PositionProvider == nullptr) {
+    auto *positionProvider = Positioning::PositionProvider::globalInstance();
+    if (positionProvider == nullptr) {
         return QString();
     }
-    if (!_PositionProvider->positionInfo().isValid()) {
+    if (!positionProvider->positionInfo().isValid()) {
         return tr("Waiting for precise position…");
     }
 
@@ -364,7 +364,7 @@ auto Weather::DownloadManager::sunInfo() -> QString
     QDateTime sunriseTomorrow;
 
     SunSet sun;
-    auto coord = _PositionProvider->positionInfo().coordinate();
+    auto coord = positionProvider->positionInfo().coordinate();
     auto timeZone = qRound(coord.longitude()/15.0);
 
     auto currentTime = QDateTime::currentDateTimeUtc();
@@ -417,8 +417,8 @@ auto Weather::DownloadManager::sunInfo() -> QString
 auto Weather::DownloadManager::QNHInfo() const -> QString
 {
     // Paranoid safety checks
-    auto *_PositionProvider = Positioning::PositionProvider::globalInstance();
-    if (_PositionProvider == nullptr) {
+    auto *positionProvider = Positioning::PositionProvider::globalInstance();
+    if (positionProvider == nullptr) {
         return QString();
     }
 
@@ -444,7 +444,7 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
             continue;
         }
 
-        QGeoCoordinate here = _PositionProvider->lastValidCoordinate();
+        QGeoCoordinate here = positionProvider->lastValidCoordinate();
         if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate())) {
             closestReportWithQNH = weatherStationPtr;
         }
@@ -489,7 +489,12 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     _networkReplies.clear();
 
     // Generate queries
-    const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinateStatic();
+    QGeoCoordinate position;
+    auto *positionProvider = Positioning::PositionProvider::globalInstance();
+    if (positionProvider != nullptr) {
+        position = positionProvider->lastValidCoordinate();
+    }
+
     const QVariantList& steerpts = _flightRoute->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
@@ -533,7 +538,12 @@ auto Weather::DownloadManager::weatherStations() const -> QList<Weather::Station
 
     // Sort list
     auto compare = [&](const Weather::Station *a, const Weather::Station *b) {
-        auto here = Positioning::PositionProvider::lastValidCoordinateStatic();
+        QGeoCoordinate here;
+        auto *positionProvider = Positioning::PositionProvider::globalInstance();
+        if (positionProvider != nullptr) {
+            here = positionProvider->lastValidCoordinate();
+        }
+
         return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);

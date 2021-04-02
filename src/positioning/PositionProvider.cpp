@@ -19,10 +19,7 @@
  ***************************************************************************/
 
 #include <QSettings>
-#include <QVariant>
-#include <QtMath>
 
-//#include "AviationUnits.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 
@@ -38,25 +35,25 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     // Restore the last valid coordiante
     QSettings settings;
     QGeoCoordinate tmp;
-    tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), _lastValidCoordinate.latitude()).toDouble());
-    tmp.setLongitude(settings.value(QStringLiteral("PositionProvider/lastValidLongitude"), _lastValidCoordinate.longitude()).toDouble());
-    tmp.setAltitude(settings.value(QStringLiteral("PositionProvider/lastValidAltitude"), _lastValidCoordinate.altitude()).toDouble());
+    tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.latitude()).toDouble());
+    tmp.setLongitude(settings.value(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.longitude()).toDouble());
+    tmp.setAltitude(settings.value(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.altitude()).toDouble());
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
-        _lastValidCoordinate = tmp;
+        m_lastValidCoordinate = tmp;
     }
 
     // Restore the last valid track
-    _lastValidTT = AviationUnits::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
+    m_lastValidTT = AviationUnits::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
 
     // Wire up satellite source
     connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
+    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 
     // Wire up traffic data provider source
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider != nullptr) {
         connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::pressureAltitudeChanged);
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
     }
 }
 
@@ -65,12 +62,12 @@ Positioning::PositionProvider::~PositionProvider()
 {
     // Save the last valid coordinate
     QSettings settings;
-    settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), _lastValidCoordinate.latitude());
-    settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), _lastValidCoordinate.longitude());
-    settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), _lastValidCoordinate.altitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.latitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.longitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.altitude());
 
     // Save the last valid track
-    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), _lastValidTT.toDEG());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.toDEG());
 }
 
 
@@ -83,46 +80,6 @@ auto Positioning::PositionProvider::globalInstance() -> PositionProvider *
 #endif
 }
 
-
-auto Positioning::PositionProvider::lastValidCoordinateStatic() -> QGeoCoordinate
-{
-    // Find out that unit system we should use
-    auto *PositionProvider = PositionProvider::globalInstance();
-    if (PositionProvider != nullptr) {
-        return PositionProvider->lastValidCoordinate();
-    }
-    // Fallback in the very unlikely case that no global object exists
-    return {};
-}
-
-
-auto Positioning::PositionProvider::statusString() const -> QString
-{
-/*
- *     if (source == nullptr) {
-        return tr("Not installed or access denied");
-    }
-    if (sourceStatus == QGeoPositionInfoSource::AccessError) {
-        return tr("Access denied");
-    }
-
-    if (sourceStatus == QGeoPositionInfoSource::ClosedError) {
-        return tr("Connection to satellite system lost");
-    }
-
-    if (sourceStatus != QGeoPositionInfoSource::NoError) {
-        return tr("Unknown error");
-    }
-
-    if (!timeoutCounter.isActive()) {
-        return tr("Waiting for signal");
-    }
-*/
-    return "XX";
-//    return tr("%1 OK").arg(source->sourceName());
-}
-
-#include <qdebug.h>
 
 void Positioning::PositionProvider::onPositionUpdated()
 {
@@ -142,63 +99,102 @@ void Positioning::PositionProvider::onPositionUpdated()
         info = satelliteSource.positionInfo();
     }
 
-    if (info.isValid()) {
-        _lastValidCoordinate = info.coordinate();
-    }
-
-
     // Set new info
     setPositionInfo(info);
-
-    emit update();
+    setLastValidCoordinate(info.coordinate());
+    setLastValidTT(info.trueTrack());
 
     // Change _isInFlight if appropriate.
-#warning could be qNaN
-    /*
-    if (_isInFlight) {
-        // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
-        if ( positionInfo().groundSpeed().toKN() < minFlightSpeedInKT-flightSpeedHysteresis ) {
-            _isInFlight = false;
-            emit isInFlightChanged();
+    auto GS = info.groundSpeed();
+    if (GS.isFinite()) {
+
+        if (m_isInFlight) {
+            // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
+            if ( GS.toKN() < minFlightSpeedInKT-flightSpeedHysteresis ) {
+                m_isInFlight = false;
+                emit isInFlightChanged();
+            }
+        } else {
+            // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
+            if ( GS.toKN() > minFlightSpeedInKT ) {
+                m_isInFlight = true;
+                emit isInFlightChanged();
+            }
         }
-    } else {
-#warning could be qNaN
-        // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
-        if ( positionInfo().groundSpeed().toKN() > minFlightSpeedInKT ) {
-            _isInFlight = true;
-            emit isInFlightChanged();
-        }
+
     }
-*/
-    // emit lastValidTrackChanged if appropriate
-#warning could be qNaN
-/*    auto newTT = positionInfo().trueTrack();
-    if (newTT.isFinite() && (newTT != _lastValidTT)) {
-        _lastValidTT = newTT;
-        emit lastValidTTChanged(_lastValidTT);
+
+}
+
+
+void Positioning::PositionProvider::onPressureAltitudeUpdated()
+{
+    // This method is called if one of our providers has a new pressure altitude.
+    // We go through the list of providers in order of preference, to find the first one
+    // that has valid data for us.
+    AviationUnits::Distance pAlt;
+
+    // Priority #1: Traffic data provider
+    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    if (trafficDataProvider != nullptr) {
+        pAlt = trafficDataProvider->pressureAltitude();
     }
-    */
+
+    // Priority #2: Built-in sat receiver
+    if (!pAlt.isFinite()) {
+        pAlt = satelliteSource.pressureAltitude();
+    }
+
+    // Set new info
+    setPressureAltitude(pAlt);
+
 }
 
 
 auto Positioning::PositionProvider::wayTo(const QGeoCoordinate& position) const -> QString
 {
     // Paranoid safety checks
-    if (!_positionInfo.isValid()) {
+    if (!positionInfo().isValid()) {
         return QString();
     }
     if (!position.isValid()) {
         return QString();
     }
-    if (!_lastValidCoordinate.isValid()) {
+    if (!m_lastValidCoordinate.isValid()) {
         return QString();
     }
 
-    auto dist = AviationUnits::Distance::fromM(_lastValidCoordinate.distanceTo(position));
-    auto QUJ = qRound(_lastValidCoordinate.azimuthTo(position));
+    auto dist = AviationUnits::Distance::fromM(m_lastValidCoordinate.distanceTo(position));
+    auto QUJ = qRound(m_lastValidCoordinate.azimuthTo(position));
 
     if (GlobalSettings::useMetricUnitsStatic()) {
         return QStringLiteral("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     }
     return QStringLiteral("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+}
+
+
+void Positioning::PositionProvider::setLastValidCoordinate(const QGeoCoordinate &newCoordinate)
+{
+    if (!newCoordinate.isValid()) {
+        return;
+    }
+    if (newCoordinate == m_lastValidCoordinate) {
+        return;
+    }
+    m_lastValidCoordinate = newCoordinate;
+    emit lastValidCoordinateChanged(m_lastValidCoordinate);
+}
+
+
+void Positioning::PositionProvider::setLastValidTT(AviationUnits::Angle newTT)
+{
+    if (!newTT.isFinite()) {
+        return;
+    }
+    if (newTT == m_lastValidTT) {
+        return;
+    }
+    m_lastValidTT = newTT;
+    emit lastValidTTChanged(m_lastValidTT);
 }

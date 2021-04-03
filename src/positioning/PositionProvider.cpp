@@ -111,29 +111,6 @@ void Positioning::PositionProvider::onPositionUpdated()
     setLastValidCoordinate(info.coordinate());
     setLastValidTT(info.trueTrack());
     setSourceName(source);
-
-    // Change _isInFlight if appropriate.
-    auto GS = info.groundSpeed();
-    if (GS.isFinite()) {
-
-        if (m_isInFlight) {
-            // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
-            if ( GS.toKN() < minFlightSpeedInKT-flightSpeedHysteresis ) {
-                m_isInFlight = false;
-                emit isInFlightChanged();
-            }
-        } else {
-            // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
-            if ( GS.toKN() > minFlightSpeedInKT ) {
-                m_isInFlight = true;
-                emit isInFlightChanged();
-            }
-        }
-
-    }
-
-    // Set status string
-    updateStatusString();
 }
 
 
@@ -158,29 +135,6 @@ void Positioning::PositionProvider::onPressureAltitudeUpdated()
     // Set new info
     setPressureAltitude(pAlt);
 
-}
-
-
-auto Positioning::PositionProvider::wayTo(const QGeoCoordinate& position) const -> QString
-{
-    // Paranoid safety checks
-    if (!positionInfo().isValid()) {
-        return QString();
-    }
-    if (!position.isValid()) {
-        return QString();
-    }
-    if (!m_lastValidCoordinate.isValid()) {
-        return QString();
-    }
-
-    auto dist = AviationUnits::Distance::fromM(m_lastValidCoordinate.distanceTo(position));
-    auto QUJ = qRound(m_lastValidCoordinate.azimuthTo(position));
-
-    if (GlobalSettings::useMetricUnitsStatic()) {
-        return QStringLiteral("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    }
-    return QStringLiteral("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
 
 

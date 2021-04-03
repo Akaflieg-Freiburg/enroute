@@ -288,7 +288,7 @@ ApplicationWindow {
                     height: 1
                     Layout.fillWidth: true
                     color: Material.primary
-                    visible: !positionProvider.isInFlight
+                    visible: !navigator.isInFlight
                 }
 
                 ItemDelegate { // Exit
@@ -299,7 +299,7 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         drawer.close()
-                        if (!globalSettings.autoFlightDetection || positionProvider.isInFlight)
+                        if (!globalSettings.autoFlightDetection || navigator.isInFlight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -347,12 +347,12 @@ ApplicationWindow {
             // Start accepting files
             mobileAdaptor.startReceiveOpenFileRequests()
 
-            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !positionProvider.isInFlight) {
+            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !navigator.isInFlight) {
                 whatsNewDialog.open()
                 return
             }
 
-            if (mapManager.geoMaps.updatable && !positionProvider.isInFlight) {
+            if (mapManager.geoMaps.updatable && !navigator.isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
                 dialogLoader.active = true
@@ -365,7 +365,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (!globalSettings.autoFlightDetection || positionProvider.isInFlight)
+                    if (!globalSettings.autoFlightDetection || navigator.isInFlight)
                         exitDialog.open()
                     else
                         Qt.quit()

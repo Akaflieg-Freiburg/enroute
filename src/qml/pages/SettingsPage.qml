@@ -96,11 +96,11 @@ Page {
             ItemDelegate {
                 text: qsTr("Maps")
                       + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
-                      + (positionProvider.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
+                      + (navigator.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
 
-                enabled: !positionProvider.isInFlight
+                enabled: !navigator.isInFlight
                 onClicked: {
                     mobileAdaptor.vibrateBrief()
                     stackView.push("MapManager.qml")
@@ -146,7 +146,7 @@ Page {
                       + `<br><font color="#606060" size="2">`
                       + ( globalSettings.useMetricUnits ?
                             qsTr("Speed in km/h, distance in km") :
-                            qsTr("Speed in kt, distance in NM")
+                            qsTr("Speed in kn, distance in nm")
                         )
                       + "</font>"
                 icon.source: "/icons/material/ic_speed.svg"

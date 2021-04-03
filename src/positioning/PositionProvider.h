@@ -62,23 +62,6 @@ public:
      */
     static PositionProvider *globalInstance();
 
-    /*! \brief Estimate whether the device is flying or on the ground
-     *
-     *  This property holds an estimate, as to whether the device is flying or
-     *  on the ground.  The current implementation considers the device is
-     *  flying if the groundspeed can be read and is greater then 30 knots.
-     */
-    Q_PROPERTY(bool isInFlight READ isInFlight NOTIFY isInFlightChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property isInFlight
-     */
-    bool isInFlight() const
-    {
-        return m_isInFlight;
-    }
-
     /*! \brief Last valid coordinate reading
      *
      *  This property holds the last valid coordinate known.  At the first
@@ -108,21 +91,7 @@ public:
      */
     static AviationUnits::Angle lastValidTT();
 
-    /*! \brief Description of the way from the current position to the given position
-     *
-     * This method uses the unit system preferred by the user.
-     *
-     * @param position Position
-     *
-     * @returns A string of the form "DIST 65.2 NM • QUJ 276°" or an empty string if the
-     * current position is not known.
-     */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& position) const;
-
 signals:
-    /*! \brief Notifier signal */
-    void isInFlightChanged();
-
     /*! \brief Notifier signal */
     void lastValidTTChanged(AviationUnits::Angle);
 
@@ -162,7 +131,6 @@ private:
 
     QGeoCoordinate m_lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};
     AviationUnits::Angle m_lastValidTT {};
-    bool m_isInFlight {false};
 };
 
 }

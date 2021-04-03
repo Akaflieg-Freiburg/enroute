@@ -32,6 +32,7 @@ The main() function constructs a number of C++ objects and exposes them to QML.
 
 - An instance of the class Weather::DownloadManager, under the name "weatherDownloadManager".  This class provides weather info.
 
+- An instance of the class Navigation::Navigator, under the name "navigator".  This class provides navigation info.
 
 
 

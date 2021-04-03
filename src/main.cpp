@@ -43,6 +43,7 @@
 #include "MobileAdaptor.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MapManager.h"
+#include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/Factor.h"
 #include "traffic/TrafficDataProvider.h"
@@ -188,6 +189,9 @@ auto main(int argc, char *argv[]) -> int
     auto *downloadManager = new Weather::DownloadManager(flightroute, geoMapProvider, networkAccessManager, engine);
     engine->rootContext()->setContextProperty("weatherDownloadManager", downloadManager);
     geoMapProvider->setDownloadManager(downloadManager);
+
+    // Attach Navigation::Navigator
+    engine->rootContext()->setContextProperty("navigator", Navigation::Navigator::globalInstance());
 
     // Restore saved settings and make them available to QML
     QSettings settings;

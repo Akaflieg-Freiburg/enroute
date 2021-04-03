@@ -1,0 +1,5 @@
+<map id="Traffic::TrafficDataSource_Abstract" name="Traffic::TrafficDataSource_Abstract">
+<area shape="rect" id="node1" title="Traffic receiver." alt="" coords="138,5,321,47"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver." alt="" coords="5,95,219,121"/>
+<area shape="rect" id="node3" href="$classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver." alt="" coords="243,95,453,121"/>
+</map>

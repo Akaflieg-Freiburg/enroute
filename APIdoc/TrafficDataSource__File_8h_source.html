@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/traffic/FileTrafficDataSource.h Source File</title>
+<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/traffic/TrafficDataSource_File.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,7 +45,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">FileTrafficDataSource.h</div>  </div>
+<div class="title">TrafficDataSource_File.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
@@ -77,32 +77,32 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QTextStream&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;GlobalSettings.h&quot;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;traffic/Factor.h&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;traffic/AbstractTrafficDataSource.h&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;traffic/TrafficFactor.h&quot;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;traffic/TrafficDataSource_Abstract.h&quot;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;units/Distance.h&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>Traffic {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">class </span>FileTrafficDataSource : <span class="keyword">public</span> AbstractTrafficDataSource {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">class </span>TrafficDataSource_File : <span class="keyword">public</span> TrafficDataSource_Abstract {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    Q_OBJECT</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classTraffic_1_1FileTrafficDataSource.html#afbe515f4589c8eabe220ac800d2b0d3f">FileTrafficDataSource</a>(<span class="keyword">const</span> QString&amp; fileName, QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a91623b1e7fda4afdbb8e4c53985ac4d9">TrafficDataSource_File</a>(<span class="keyword">const</span> QString&amp; fileName, QObject *parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    ~<a class="code" href="classTraffic_1_1FileTrafficDataSource.html#afbe515f4589c8eabe220ac800d2b0d3f">FileTrafficDataSource</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    ~<a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a91623b1e7fda4afdbb8e4c53985ac4d9">TrafficDataSource_File</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classTraffic_1_1FileTrafficDataSource.html">   64</a></span>&#160;    QString <a class="code" href="classTraffic_1_1FileTrafficDataSource.html#a69dd04e3b9d9f73def388d379406a393">sourceName</a>()<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__File.html">   64</a></span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">sourceName</a>()<span class="keyword"> const override</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;Simulator file %1&quot;</span>).arg(simulatorFile.fileName());</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1FileTrafficDataSource.html#a21e4e182c5296734d1d62cd5ffb7f3e9">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#aebff0f62f13269c098faa64f11a19be1">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1FileTrafficDataSource.html#a0b9efa47bd6f7352fadef2b15e309be2">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a33dbbbc0cc638310d92f3dc0481d6b9f">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">private</span> slots:</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Read one line from the simulator file&#39;s text stream and passes the string</span></div>
@@ -119,17 +119,17 @@ $(function() {
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// Simulator related members</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    QFile simulatorFile;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    QTextStream simulatorTextStream;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classTraffic_1_1FileTrafficDataSource.html#a69dd04e3b9d9f73def388d379406a393">  100</a></span>&#160;    QTimer simulatorTimer;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">  100</a></span>&#160;    QTimer simulatorTimer;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">int</span> lastTime {0};</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    QString lastPayload;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassTraffic_1_1FileTrafficDataSource_html_a69dd04e3b9d9f73def388d379406a393"><div class="ttname"><a href="classTraffic_1_1FileTrafficDataSource.html#a69dd04e3b9d9f73def388d379406a393">Traffic::FileTrafficDataSource::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="FileTrafficDataSource_8h_source.html#l00100">FileTrafficDataSource.h:100</a></div></div>
-<div class="ttc" id="aclassTraffic_1_1FileTrafficDataSource_html_a21e4e182c5296734d1d62cd5ffb7f3e9"><div class="ttname"><a href="classTraffic_1_1FileTrafficDataSource.html#a21e4e182c5296734d1d62cd5ffb7f3e9">Traffic::FileTrafficDataSource::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver() override</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
-<div class="ttc" id="aclassTraffic_1_1FileTrafficDataSource_html_afbe515f4589c8eabe220ac800d2b0d3f"><div class="ttname"><a href="classTraffic_1_1FileTrafficDataSource.html#afbe515f4589c8eabe220ac800d2b0d3f">Traffic::FileTrafficDataSource::FileTrafficDataSource</a></div><div class="ttdeci">FileTrafficDataSource(const QString &amp;fileName, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
-<div class="ttc" id="aclassTraffic_1_1FileTrafficDataSource_html_a0b9efa47bd6f7352fadef2b15e309be2"><div class="ttname"><a href="classTraffic_1_1FileTrafficDataSource.html#a0b9efa47bd6f7352fadef2b15e309be2">Traffic::FileTrafficDataSource::disconnectFromTrafficReceiver</a></div><div class="ttdeci">void disconnectFromTrafficReceiver() override</div><div class="ttdoc">Disconnect from traffic receiver.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a547c442589e2fdd7872996c5f159650b"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__File_8h_source.html#l00100">TrafficDataSource_File.h:100</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_aebff0f62f13269c098faa64f11a19be1"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#aebff0f62f13269c098faa64f11a19be1">Traffic::TrafficDataSource_File::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver() override</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a33dbbbc0cc638310d92f3dc0481d6b9f"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a33dbbbc0cc638310d92f3dc0481d6b9f">Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver</a></div><div class="ttdeci">void disconnectFromTrafficReceiver() override</div><div class="ttdoc">Disconnect from traffic receiver.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a91623b1e7fda4afdbb8e4c53985ac4d9"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a91623b1e7fda4afdbb8e4c53985ac4d9">Traffic::TrafficDataSource_File::TrafficDataSource_File</a></div><div class="ttdeci">TrafficDataSource_File(const QString &amp;fileName, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

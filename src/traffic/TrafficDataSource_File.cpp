@@ -23,24 +23,24 @@
 
 #include "MobileAdaptor.h"
 #include "positioning/PositionProvider.h"
-#include "traffic/FileTrafficDataSource.h"
+#include "traffic/TrafficDataSource_File.h"
 
 using namespace std::chrono_literals;
 
 
 // Member functions
 
-Traffic::FileTrafficDataSource::FileTrafficDataSource(const QString& fileName, QObject *parent) :
-    AbstractTrafficDataSource(parent), simulatorFile(fileName) {
+Traffic::TrafficDataSource_File::TrafficDataSource_File(const QString& fileName, QObject *parent) :
+    TrafficDataSource_Abstract(parent), simulatorFile(fileName) {
 
-    connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::FileTrafficDataSource::readFromSimulatorStream);
+    connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_File::readFromSimulatorStream);
 
     // Initially, set properties
     updateProperties();
 }
 
 
-void Traffic::FileTrafficDataSource::connectToTrafficReceiver()
+void Traffic::TrafficDataSource_File::connectToTrafficReceiver()
 {
     // Do not do anything if the file is open and there are no errors
     if ( hasHeartbeat() ) {
@@ -65,7 +65,7 @@ void Traffic::FileTrafficDataSource::connectToTrafficReceiver()
 }
 
 
-void Traffic::FileTrafficDataSource::disconnectFromTrafficReceiver()
+void Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver()
 {
     // Stop any simulation that might be running
     simulatorFile.close();
@@ -77,7 +77,7 @@ void Traffic::FileTrafficDataSource::disconnectFromTrafficReceiver()
 }
 
 
-void Traffic::FileTrafficDataSource::readFromSimulatorStream()
+void Traffic::TrafficDataSource_File::readFromSimulatorStream()
 {
     if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
         disconnectFromTrafficReceiver();
@@ -114,7 +114,7 @@ void Traffic::FileTrafficDataSource::readFromSimulatorStream()
 
 
 
-void Traffic::FileTrafficDataSource::updateProperties()
+void Traffic::TrafficDataSource_File::updateProperties()
 {
     // Set new value: connectivityStatus
     if ( simulatorFile.isOpen() && (simulatorFile.error() == QFileDevice::NoError)) {

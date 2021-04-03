@@ -27,7 +27,7 @@
 
 #include "GlobalSettings.h"
 #include "positioning/PositionInfo.h"
-#include "traffic/Factor.h"
+#include "traffic/TrafficFactor.h"
 #include "traffic/FLARMWarning.h"
 #include "units/Distance.h"
 
@@ -43,7 +43,7 @@ namespace Traffic {
  *  By modifying the source code, developers can also start the class in a mode
  *  where it connects to a file with simulator data.
  */
-class AbstractTrafficDataSource : public QObject {
+class TrafficDataSource_Abstract : public QObject {
     Q_OBJECT
 
 public:
@@ -51,10 +51,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit AbstractTrafficDataSource(QObject *parent = nullptr);
+    explicit TrafficDataSource_Abstract(QObject *parent = nullptr);
 
     // Standard destructor
-    ~AbstractTrafficDataSource() override = default;
+    ~TrafficDataSource_Abstract() override = default;
 
     //
     // Properties
@@ -132,13 +132,13 @@ signals:
      *
      * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
      */
-    void factorWithoutPosition(const Traffic::Factor &factor);
+    void factorWithoutPosition(const Traffic::TrafficFactor &factor);
 
     /*! \brief Traffic factor with position
      *
      * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
      */
-    void factorWithPosition(const Traffic::Factor &factor);
+    void factorWithPosition(const Traffic::TrafficFactor &factor);
 
 //#warning need to document
     void flarmWarning(const Traffic::FLARMWarning &warning);
@@ -242,7 +242,7 @@ private:
     QTimer heartbeatTimer;
 
     // Targets
-    Traffic::Factor factor;
+    Traffic::TrafficFactor factor;
 };
 
 }

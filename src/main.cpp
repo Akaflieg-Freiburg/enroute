@@ -45,7 +45,7 @@
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
-#include "traffic/Factor.h"
+#include "traffic/TrafficFactor.h"
 #include "traffic/TrafficDataProvider.h"
 #include "ui/ScaleQuickItem.h"
 #include "units/Angle.h"
@@ -79,7 +79,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
-    qmlRegisterUncreatableType<Traffic::Factor>("enroute", 1, 0, "Factor", "Factor objects cannot be created in QML");
+    qmlRegisterUncreatableType<Traffic::TrafficFactor>("enroute", 1, 0, "TrafficFactor", "TrafficFactor objects cannot be created in QML");
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");

@@ -21,14 +21,15 @@
 #pragma once
 
 #include <QGeoPositionInfo>
-#include <QTcpSocket>
 #include <QTimer>
 #include <QObject>
 #include <QQmlListProperty>
+#include <QTextStream>
 
 #include "GlobalSettings.h"
-#include "traffic/Factor.h"
-#include "traffic/AbstractTrafficDataSource.h"
+#include "traffic/TrafficFactor.h"
+#include "traffic/TrafficDataSource_Abstract.h"
+#include "units/Distance.h"
 
 namespace Traffic {
 
@@ -42,7 +43,7 @@ namespace Traffic {
  *  By modifying the source code, developers can also start the class in a mode
  *  where it connects to a file with simulator data.
  */
-class TcpTrafficDataSource : public AbstractTrafficDataSource {
+class TrafficDataSource_File : public TrafficDataSource_Abstract {
     Q_OBJECT
 
 public:
@@ -50,10 +51,11 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit TcpTrafficDataSource(QString hostName, quint16 port, QObject *parent = nullptr);
+    explicit TrafficDataSource_File(const QString& fileName, QObject *parent = nullptr);
 
     // Standard destructor
-    ~TcpTrafficDataSource() override;
+    ~TrafficDataSource_File() override = default;
+
 
     /*! \brief Getter function for the property with the same name
      *
@@ -61,8 +63,9 @@ public:
      */
     QString sourceName() const override
     {
-        return tr("TCP connection to %1 port %2").arg(_hostName).arg(_port);
+        return tr("Simulator file %1").arg(simulatorFile.fileName());
     }
+
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
@@ -80,23 +83,23 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Handle socket errors.
-    void onErrorOccurred(QAbstractSocket::SocketError socketError);
-
-    // Read one line from the socket's text stream and passes the string on to
-    // processFLARMMessage.
-    void readFromStream();
+    // Read one line from the simulator file's text stream and passes the string
+    // on to processFLARMMessage.  Sets up times to read the next line in due
+    // time.
+    void readFromSimulatorStream();
 
     // Update the property "errorString" and "connectivityStatus" and emit notification signals
-    void onStateChanged();
-
-    void onHasHeartbeatChanged();
+    void updateProperties();
 
 private:
-    QPointer<QTcpSocket> socket;
     QTextStream textStream;
-    QString _hostName;
-    quint16 _port;
+
+    // Simulator related members
+    QFile simulatorFile;
+    QTextStream simulatorTextStream;
+    QTimer simulatorTimer;
+    int lastTime {0};
+    QString lastPayload;
 };
 
 }

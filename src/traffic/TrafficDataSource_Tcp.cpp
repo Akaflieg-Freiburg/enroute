@@ -24,28 +24,28 @@
 
 #include "MobileAdaptor.h"
 #include "positioning/PositionProvider.h"
-#include "traffic/TcpTrafficDataSource.h"
+#include "traffic/TrafficDataSource_Tcp.h"
 
 using namespace std::chrono_literals;
 
 
 // Member functions
 
-Traffic::TcpTrafficDataSource::TcpTrafficDataSource(QString hostName, quint16 port, QObject *parent) :
-    Traffic::AbstractTrafficDataSource(parent), _hostName(std::move(hostName)), _port(port) {
+Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 port, QObject *parent) :
+    Traffic::TrafficDataSource_Abstract(parent), _hostName(std::move(hostName)), _port(port) {
 
     // Create socket
     socket = new QTcpSocket(this);
-    connect(socket, &QTcpSocket::errorOccurred, this, &Traffic::TcpTrafficDataSource::onErrorOccurred);
-    connect(socket, &QTcpSocket::readyRead, this, &Traffic::TcpTrafficDataSource::readFromStream);
-    connect(socket, &QTcpSocket::stateChanged, this, &Traffic::TcpTrafficDataSource::onStateChanged);
+    connect(socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
+    connect(socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::readFromStream);
+    connect(socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Tcp::onStateChanged);
 
     // Set up text stream
     textStream.setDevice(socket);
     textStream.setCodec("ISO 8859-1");
 
     // Connect WiFi locker/unlocker
-    connect(this, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TcpTrafficDataSource::onHasHeartbeatChanged);
+    connect(this, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataSource_Tcp::onHasHeartbeatChanged);
 
     //
     // Initialize properties
@@ -55,9 +55,9 @@ Traffic::TcpTrafficDataSource::TcpTrafficDataSource(QString hostName, quint16 po
 }
 
 
-Traffic::TcpTrafficDataSource::~TcpTrafficDataSource()
+Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 {
-    Traffic::TcpTrafficDataSource::disconnectFromTrafficReceiver();
+    Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver();
     stopHeartbeat();
     auto* mobileAdaptor = MobileAdaptor::globalInstance();
     if (mobileAdaptor != nullptr) {
@@ -66,7 +66,7 @@ Traffic::TcpTrafficDataSource::~TcpTrafficDataSource()
 }
 
 
-void Traffic::TcpTrafficDataSource::connectToTrafficReceiver()
+void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -83,7 +83,7 @@ void Traffic::TcpTrafficDataSource::connectToTrafficReceiver()
 }
 
 
-void Traffic::TcpTrafficDataSource::disconnectFromTrafficReceiver()
+void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -98,7 +98,7 @@ void Traffic::TcpTrafficDataSource::disconnectFromTrafficReceiver()
 }
 
 
-void Traffic::TcpTrafficDataSource::readFromStream()
+void Traffic::TrafficDataSource_Tcp::readFromStream()
 {
     QString sentence;
     while( textStream.readLineInto(&sentence) ) {
@@ -107,7 +107,7 @@ void Traffic::TcpTrafficDataSource::readFromStream()
 }
 
 
-void Traffic::TcpTrafficDataSource::onErrorOccurred(QAbstractSocket::SocketError socketError)
+void Traffic::TrafficDataSource_Tcp::onErrorOccurred(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
     case QAbstractSocket::ConnectionRefusedError:
@@ -188,7 +188,7 @@ void Traffic::TcpTrafficDataSource::onErrorOccurred(QAbstractSocket::SocketError
 
 
 
-void Traffic::TcpTrafficDataSource::onStateChanged()
+void Traffic::TrafficDataSource_Tcp::onStateChanged()
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -220,7 +220,7 @@ void Traffic::TcpTrafficDataSource::onStateChanged()
 }
 
 
-void Traffic::TcpTrafficDataSource::onHasHeartbeatChanged()
+void Traffic::TrafficDataSource_Tcp::onHasHeartbeatChanged()
 {
     // Acquire or release WiFi lock as appropriate
     auto* mobileAdaptor = MobileAdaptor::globalInstance();

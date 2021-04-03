@@ -23,8 +23,8 @@
 
 #include "MobileAdaptor.h"
 #include "positioning/PositionProvider.h"
-#include "traffic/FileTrafficDataSource.h"
-#include "traffic/TcpTrafficDataSource.h"
+#include "traffic/TrafficDataSource_File.h"
+#include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataProvider.h"
 
 using namespace std::chrono_literals;
@@ -43,11 +43,11 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     int numTrafficObjects = 20;
     _trafficObjects.reserve(numTrafficObjects);
     for(int i = 0; i<numTrafficObjects; i++) {
-        auto *trafficObject = new Traffic::Factor(this);
+        auto *trafficObject = new Traffic::TrafficFactor(this);
         QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
         _trafficObjects.append( trafficObject );
     }
-    _trafficObjectWithoutPosition = new Traffic::Factor(this);
+    _trafficObjectWithoutPosition = new Traffic::TrafficFactor(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
     // Create warning object
@@ -60,16 +60,16 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     // Setup Data Sources
 
     // Uncomment one of the lines below to start this class in simulation mode.
-    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-hard.txt", this);
-    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
-    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
-    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-    // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
-    // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
-    // _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
-    //    _dataSources << new Traffic::FileTrafficDataSource("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
-    _dataSources << new Traffic::TcpTrafficDataSource("192.168.1.1", 2000, this);
-    _dataSources << new Traffic::TcpTrafficDataSource("192.168.10.1", 2000, this);
+    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-hard.txt", this);
+    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
+    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
+    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
+    // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
+    // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
+    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    _dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
+    _dataSources << new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this);
 
     // Wire up data sources
     foreach(auto dataSource, _dataSources) {
@@ -77,16 +77,16 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
             continue;
         }
 
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingChanged);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onFactorWithoutPosition);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::factorWithPosition, this, &Traffic::TrafficDataProvider::onFactorWithPosition);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-        connect(dataSource, &Traffic::AbstractTrafficDataSource::flarmWarning, _flarmWarning, &Traffic::FLARMWarning::copyFrom);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingChanged);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::flarmWarning, _flarmWarning, &Traffic::FLARMWarning::copyFrom);
 
 
     }
@@ -143,7 +143,7 @@ auto Traffic::TrafficDataProvider::globalInstance() -> Traffic::TrafficDataProvi
 }
 
 
-void Traffic::TrafficDataProvider::onFactorWithPosition(const Traffic::Factor &factor)
+void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
 {
     foreach(auto target, _trafficObjects)
         if (factor.ID() == target->ID()) {
@@ -163,7 +163,7 @@ void Traffic::TrafficDataProvider::onFactorWithPosition(const Traffic::Factor &f
 }
 
 
-void Traffic::TrafficDataProvider::onFactorWithoutPosition(const Traffic::Factor &factor)
+void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor)
 {
     if ((factor.ID() == _trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
         _trafficObjectWithoutPosition->copyFrom(factor);
@@ -175,7 +175,7 @@ void Traffic::TrafficDataProvider::onFactorWithoutPosition(const Traffic::Factor
 void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 {
 
-    Traffic::AbstractTrafficDataSource *heartbeatDataSource = nullptr;
+    Traffic::TrafficDataSource_Abstract *heartbeatDataSource = nullptr;
     foreach(auto source, _dataSources) {
         if (source.isNull()) {
             continue;

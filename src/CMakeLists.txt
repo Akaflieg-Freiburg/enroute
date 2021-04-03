@@ -92,12 +92,12 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.h
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
-    traffic/AbstractTrafficDataSource.h
-    traffic/Factor.h
-    traffic/FileTrafficDataSource.h
-    traffic/FLARMWarning.h
-    traffic/TcpTrafficDataSource.h
+    traffic/TrafficDataSource_Abstract.h
+    traffic/TrafficDataSource_File.h
+    traffic/TrafficDataSource_Tcp.h
     traffic/TrafficDataProvider.h
+    traffic/TrafficFactor.h
+    traffic/FLARMWarning.h
     ui/ScaleQuickItem.h
     units/Angle.h
     units/Distance.h
@@ -136,12 +136,12 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
-    traffic/AbstractTrafficDataSource.cpp
-    traffic/Factor.cpp
     traffic/FLARMWarning.cpp
-    traffic/FileTrafficDataSource.cpp
-    traffic/TcpTrafficDataSource.cpp
+    traffic/TrafficDataSource_Abstract.cpp
+    traffic/TrafficDataSource_File.cpp
+    traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataProvider.cpp
+    traffic/TrafficFactor.cpp
     ui/ScaleQuickItem.cpp
     units/Angle.cpp
     units/Distance.cpp

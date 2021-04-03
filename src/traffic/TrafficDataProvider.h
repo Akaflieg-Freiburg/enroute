@@ -26,9 +26,9 @@
 #include <QQmlListProperty>
 
 #include "GlobalSettings.h"
-#include "traffic/Factor.h"
+#include "traffic/TrafficFactor.h"
 #include "traffic/FLARMWarning.h"
-#include "traffic/AbstractTrafficDataSource.h"
+#include "traffic/TrafficDataSource_Abstract.h"
 
 
 namespace Traffic {
@@ -101,13 +101,13 @@ public:
      *  be ignored. The list is not sorted in any way. The items themselves are
      *  owned by this class.
      */
-    Q_PROPERTY(QQmlListProperty<Traffic::Factor> trafficObjects4QML READ trafficObjects4QML CONSTANT)
+    Q_PROPERTY(QQmlListProperty<Traffic::TrafficFactor> trafficObjects4QML READ trafficObjects4QML CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property trafficObjects4QML
      */
-    QQmlListProperty<Traffic::Factor> trafficObjects4QML()
+    QQmlListProperty<Traffic::TrafficFactor> trafficObjects4QML()
     {
         return QQmlListProperty(this, &_trafficObjects);
     }
@@ -118,13 +118,13 @@ public:
      *  position is not known.  This item should be ignored if invalid. The item
      *  is owned by this class.
      */
-    Q_PROPERTY(Traffic::Factor *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
+    Q_PROPERTY(Traffic::TrafficFactor *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property trafficObjectWithoutPosition
      */
-    Traffic::Factor *trafficObjectWithoutPosition()
+    Traffic::TrafficFactor *trafficObjectWithoutPosition()
     {
         return _trafficObjectWithoutPosition;
     }
@@ -152,19 +152,19 @@ public slots:
 private slots:
     void onSourceHeartbeatChanged();
 
-    void onFactorWithPosition(const Traffic::Factor &factor);
+    void onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor);
 
-    void onFactorWithoutPosition(const Traffic::Factor &factor);
+    void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor);
 
 private:
     // Targets
-    QList<Traffic::Factor *> _trafficObjects;
-    QPointer<Traffic::Factor> _trafficObjectWithoutPosition;
+    QList<Traffic::TrafficFactor *> _trafficObjects;
+    QPointer<Traffic::TrafficFactor> _trafficObjectWithoutPosition;
 
     // Warnings
     QPointer<Traffic::FLARMWarning> _flarmWarning;
 
-    QList<QPointer<Traffic::AbstractTrafficDataSource>> _dataSources;
+    QList<QPointer<Traffic::TrafficDataSource_Abstract>> _dataSources;
 
     // Reconnect
     QTimer reconnectionTimer;

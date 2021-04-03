@@ -36,13 +36,12 @@ namespace Traffic {
  *  set or construct instances of the class themselves
  */
 
-class Factor : public QObject {
+class TrafficFactor : public QObject {
     Q_OBJECT
 
     // Only FLARMAdaptor can set properties
-    friend class AbstractTrafficDataSource;
-    friend class TcpTrafficDataSource;
     friend class TrafficDataProvider;
+    friend class TrafficDataSource_Abstract;
 
 public:
     /*! \brief Aircraft type */
@@ -68,10 +67,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Factor(QObject *parent = nullptr);
+    explicit TrafficFactor(QObject *parent = nullptr);
 
     // Standard destructor
-    ~Factor() override = default;
+    ~TrafficFactor() override = default;
 
     //
     // Methods
@@ -90,7 +89,7 @@ public:
      *
      * @returns Boolean with the result
      */
-    bool hasHigherPriorityThan(const Factor &rhs) const;
+    bool hasHigherPriorityThan(const TrafficFactor &rhs) const;
 
     //
     // PROPERTIES
@@ -440,7 +439,7 @@ private slots:
 
 private:
     // Copy data from other object
-    void copyFrom(const Factor & other)
+    void copyFrom(const TrafficFactor & other)
     {
         setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._groundSpeed, other._climbRate, other._type, other._positionInfo);
     }

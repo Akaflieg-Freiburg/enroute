@@ -22,7 +22,7 @@
 #include <chrono>
 
 #include "positioning/PositionProvider.h"
-#include "traffic/AbstractTrafficDataSource.h"
+#include "traffic/TrafficDataSource_Abstract.h"
 
 using namespace std::chrono_literals;
 
@@ -62,18 +62,18 @@ auto interpretNMEATime(const QString& timeString) -> QDateTime
 
 // Member functions
 
-Traffic::AbstractTrafficDataSource::AbstractTrafficDataSource(QObject *parent) : QObject(parent) {
+Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(QObject *parent) : QObject(parent) {
 
     QQmlEngine::setObjectOwnership(&factor, QQmlEngine::CppOwnership);
 
     // Setup heartbeat timer
     heartbeatTimer.setSingleShot(true);
     heartbeatTimer.setInterval(5s);
-    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::AbstractTrafficDataSource::hasHeartbeatChanged);
+    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged);
 }
 
 
-void Traffic::AbstractTrafficDataSource::onHeartbeat()
+void Traffic::TrafficDataSource_Abstract::onHeartbeat()
 {
     bool oldHasHeartbeat = hasHeartbeat();
 
@@ -84,7 +84,7 @@ void Traffic::AbstractTrafficDataSource::onHeartbeat()
 }
 
 
-void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
+void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
 {
     if (msg.isEmpty()) {
         return;
@@ -251,45 +251,45 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
 
         // Target type is optional
         auto targetType = arguments[10];
-        Traffic::Factor::AircraftType type = Traffic::Factor::unknown;
+        Traffic::TrafficFactor::AircraftType type = Traffic::TrafficFactor::unknown;
         if (targetType == u"1") {
-            type = Traffic::Factor::Glider;
+            type = Traffic::TrafficFactor::Glider;
         }
         if (targetType == u"2") {
-            type = Traffic::Factor::TowPlane;
+            type = Traffic::TrafficFactor::TowPlane;
         }
         if (targetType == u"3") {
-            type = Traffic::Factor::Copter;
+            type = Traffic::TrafficFactor::Copter;
         }
         if (targetType == u"4") {
-            type = Traffic::Factor::Skydiver;
+            type = Traffic::TrafficFactor::Skydiver;
         }
         if (targetType == u"5") {
-            type = Traffic::Factor::Aircraft;
+            type = Traffic::TrafficFactor::Aircraft;
         }
         if (targetType == u"6") {
-            type = Traffic::Factor::HangGlider;
+            type = Traffic::TrafficFactor::HangGlider;
         }
         if (targetType == u"7") {
-            type = Traffic::Factor::Paraglider;
+            type = Traffic::TrafficFactor::Paraglider;
         }
         if (targetType == u"8") {
-            type = Traffic::Factor::Aircraft;
+            type = Traffic::TrafficFactor::Aircraft;
         }
         if (targetType == u"9") {
-            type = Traffic::Factor::Jet;
+            type = Traffic::TrafficFactor::Jet;
         }
         if (targetType == u"B") {
-            type = Traffic::Factor::Balloon;
+            type = Traffic::TrafficFactor::Balloon;
         }
         if (targetType == u"C") {
-            type = Traffic::Factor::Airship;
+            type = Traffic::TrafficFactor::Airship;
         }
         if (targetType == u"D") {
-            type = Traffic::Factor::Drone;
+            type = Traffic::TrafficFactor::Drone;
         }
         if (targetType == u"F") {
-            type = Traffic::Factor::StaticObstacle;
+            type = Traffic::TrafficFactor::StaticObstacle;
         }
 
 
@@ -299,7 +299,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
         if (!ok) {
             groundSpeedInMPS = qQNaN();
         }
-        if ((groundSpeedInMPS == 0.0) && (type != Traffic::Factor::StaticObstacle)) {
+        if ((groundSpeedInMPS == 0.0) && (type != Traffic::TrafficFactor::StaticObstacle)) {
             return;
         }
 
@@ -599,7 +599,7 @@ void Traffic::AbstractTrafficDataSource::processFLARMMessage(QString msg)
 }
 
 
-void Traffic::AbstractTrafficDataSource::setConnectivityStatus(const QString& newConnectivityStatus)
+void Traffic::TrafficDataSource_Abstract::setConnectivityStatus(const QString& newConnectivityStatus)
 {
     if (_connectivityStatus == newConnectivityStatus) {
         return;
@@ -610,7 +610,7 @@ void Traffic::AbstractTrafficDataSource::setConnectivityStatus(const QString& ne
 }
 
 
-void Traffic::AbstractTrafficDataSource::setErrorString(const QString& newErrorString)
+void Traffic::TrafficDataSource_Abstract::setErrorString(const QString& newErrorString)
 {
     if (_errorString == newErrorString) {
         return;
@@ -621,7 +621,7 @@ void Traffic::AbstractTrafficDataSource::setErrorString(const QString& newErrorS
 }
 
 
-void Traffic::AbstractTrafficDataSource::stopHeartbeat()
+void Traffic::TrafficDataSource_Abstract::stopHeartbeat()
 {
     if (!heartbeatTimer.isActive()) {
         return;

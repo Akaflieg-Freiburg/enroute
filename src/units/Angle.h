@@ -137,7 +137,7 @@ namespace AviationUnits {
          *
          * @returns Sine of the angle
          */
-        Q_INVOKABLE double sin()
+        Q_INVOKABLE double sin() const
         {
             return std::sin(m_angleInRAD);
         }
@@ -154,14 +154,11 @@ namespace AviationUnits {
             return result;
         }
 
-        /*! \brief Convert angle to radian
+        /*! \brief Convert angle to clock position
          *
-         * @returns Angle, as a number in radian
+         * @returns Translated, human-readable string of of the form "12 o'clock", or "-" if the angle is not finite.
          */
-        Q_INVOKABLE double toRAD() const
-        {
-            return m_angleInRAD;
-        }
+        Q_INVOKABLE QString toClock() const;
 
         /*! \brief Convert angle to degrees
          *
@@ -177,6 +174,15 @@ namespace AviationUnits {
             if (d > 0)
                 return d;
             return d+360.0;
+        }
+
+        /*! \brief Convert angle to radian
+         *
+         * @returns Angle, as a number in radian
+         */
+        Q_INVOKABLE double toRAD() const
+        {
+            return m_angleInRAD;
         }
 
     private:

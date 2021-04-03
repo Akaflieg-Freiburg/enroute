@@ -543,10 +543,12 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
             return;
         }
 
+        /*
         auto RX = arguments[0];
         auto TX = arguments[1];
         auto GPS = arguments[2];
         auto Power = arguments[3];
+        */
         auto AlarmLevel = arguments[4];
         auto RelativeBearing = arguments[5];
         auto AlarmType = arguments[6];

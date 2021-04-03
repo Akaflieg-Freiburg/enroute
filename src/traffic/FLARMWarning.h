@@ -23,6 +23,7 @@
 #include <QGeoPositionInfo>
 #include <QTimer>
 
+#include "units/Angle.h"
 #include "units/Distance.h"
 
 namespace Traffic {
@@ -38,11 +39,6 @@ namespace Traffic {
 class FLARMWarning : public QObject {
     Q_OBJECT
 
-    // Only FLARMAdaptor can set properties
-    friend class AbstractTrafficDataSource;
-    friend class TcpTrafficDataSource;
-    friend class TrafficDataProvider;
-
 public:
     /*! \brief Default constructor
      *
@@ -50,12 +46,14 @@ public:
      */
     explicit FLARMWarning(QObject *parent = nullptr);
 
+
     explicit FLARMWarning(const QString& AlarmLevel,
                           const QString& RelativeBearing,
                           const QString& AlarmType,
                           const QString& RelativeVertical,
                           const QString& RelativeDistance,
                           QObject *parent = nullptr);
+
 
     // Standard destructor
     ~FLARMWarning() override = default;
@@ -87,16 +85,12 @@ public:
         return _alarmLevel;
     }
 
-    Q_PROPERTY(double relativeBearing READ relativeBearing NOTIFY relativeBearingChanged)
+    Q_PROPERTY(AviationUnits::Angle relativeBearing READ relativeBearing NOTIFY relativeBearingChanged)
 
-    double relativeBearing() const
+    AviationUnits::Angle relativeBearing() const
     {
-        return _relativeBearing;
+        return m_relativeBearing;
     }
-
-    Q_PROPERTY(QString relativeBearingClock READ relativeBearingClock NOTIFY relativeBearingChanged)
-
-    QString relativeBearingClock() const;
 
     Q_PROPERTY(int alarmType READ alarmType NOTIFY alarmTypeChanged)
 
@@ -112,20 +106,12 @@ public:
         return _vDist;
     }
 
-    Q_PROPERTY(QString vDistString READ vDistString NOTIFY vDistChanged)
-
-    QString vDistString() const;
-
     Q_PROPERTY(AviationUnits::Distance hDist READ hDist NOTIFY hDistChanged)
 
     AviationUnits::Distance hDist() const
     {
         return _hDist;
     }
-
-    Q_PROPERTY(QString hDistString READ hDistString NOTIFY hDistChanged)
-
-    QString hDistString() const;
 
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
 
@@ -169,7 +155,7 @@ private:
     int _alarmLevel {-1};
     int _alarmType {-1};
     AviationUnits::Distance _hDist;
-    double _relativeBearing { qQNaN() };
+    AviationUnits::Angle m_relativeBearing;
     AviationUnits::Distance _vDist;
 
     QString _description {};

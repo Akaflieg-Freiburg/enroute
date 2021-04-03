@@ -61,7 +61,7 @@ Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
     stopHeartbeat();
     auto* mobileAdaptor = MobileAdaptor::globalInstance();
     if (mobileAdaptor != nullptr) {
-        mobileAdaptor->lockWifi(false);
+        MobileAdaptor::lockWifi(false);
     }
 }
 
@@ -225,7 +225,7 @@ void Traffic::TrafficDataSource_Tcp::onHasHeartbeatChanged()
     // Acquire or release WiFi lock as appropriate
     auto* mobileAdaptor = MobileAdaptor::globalInstance();
     if (mobileAdaptor != nullptr) {
-        mobileAdaptor->lockWifi(hasHeartbeat());
+        MobileAdaptor::lockWifi(hasHeartbeat());
     }
 
 }

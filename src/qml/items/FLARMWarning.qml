@@ -144,9 +144,9 @@ Rectangle {
             LED { // LED
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius
-                x: flarmWarningIndicator.radius*(1 + Math.sin(2*Math.PI*(flarmAdaptor.flarmWarning.relativeBearing)/360.0)) - width/2.0
-                y: flarmWarningIndicator.radius*(1 - Math.cos(2*Math.PI*(flarmAdaptor.flarmWarning.relativeBearing)/360.0)) - width/2.0
-                visible: !isNaN(flarmAdaptor.flarmWarning.relativeBearing)
+                x: flarmWarningIndicator.radius*(1 + flarmAdaptor.flarmWarning.relativeBearing.sin()) - width/2.0
+                y: flarmWarningIndicator.radius*(1 - flarmAdaptor.flarmWarning.relativeBearing.cos()) - width/2.0
+                visible: flarmAdaptor.flarmWarning.relativeBearing.isFinite()
                 blinking: visible
             }
 

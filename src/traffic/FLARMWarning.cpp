@@ -54,9 +54,12 @@ Traffic::FLARMWarning::FLARMWarning(
 
     // Relative Bearing
     bool ok = false;
-    _relativeBearing = RelativeBearing.toDouble(&ok);
-    if (!ok || (_relativeBearing < -180.0)  || (_relativeBearing > 180.0)) {
-        _relativeBearing = qQNaN();
+
+    auto rb = RelativeBearing.toDouble(&ok);
+    if (!ok) {
+        m_relativeBearing = AviationUnits::Angle::fromRAD(qQNaN());
+    } else {
+        m_relativeBearing = AviationUnits::Angle::fromDEG(rb);
     }
 
     // Alarm Type
@@ -91,42 +94,6 @@ Traffic::FLARMWarning::FLARMWarning(
 }
 
 
-auto Traffic::FLARMWarning::relativeBearingClock() const -> QString
-{
-    if (!qIsFinite(_relativeBearing) || (_relativeBearing < -180.0) || (_relativeBearing > 180.0)) {
-        return {};
-    }
-
-    auto clockTime = qRound(_relativeBearing/30.0);
-    if (clockTime < 0) {
-        clockTime += 12;
-    }
-
-    return tr("%1 o'clock").arg(clockTime);
-}
-
-
-auto Traffic::FLARMWarning::vDistString() const -> QString
-{
-    if (!_vDist.isFinite()) {
-        return {};
-    }
-
-//#warning not implemented
-    return QString("%1 m").arg(_vDist.toM());
-}
-
-
-auto Traffic::FLARMWarning::hDistString() const -> QString
-{
-    if (!_hDist.isFinite()) {
-        return {};
-    }
-
-//#warning not implemented
-    return QString("%1 m").arg(_hDist.toM());
-}
-
 #include <QDebug>
 
 void Traffic::FLARMWarning::copyFrom(const FLARMWarning &other)
@@ -134,13 +101,13 @@ void Traffic::FLARMWarning::copyFrom(const FLARMWarning &other)
     auto _alarmLevelChanged = (_alarmLevel != other._alarmLevel);
     auto _alarmTypeChanged = (_alarmType != other._alarmType);
     auto _hDistChanged = (_hDist != other._hDist);
-    auto _relativeBearingChanged = (_relativeBearing != other._relativeBearing);
+    auto _relativeBearingChanged = (m_relativeBearing != other.m_relativeBearing);
     auto _vDistChanged = (_vDist != other._vDist);
 
     _alarmLevel = other._alarmLevel;
     _alarmType = other._alarmType;
     _hDist = other._hDist;
-    _relativeBearing = other._relativeBearing;
+    m_relativeBearing = other.m_relativeBearing;
     _vDist = other._vDist;
     updateDescription();
 
@@ -162,6 +129,7 @@ void Traffic::FLARMWarning::copyFrom(const FLARMWarning &other)
 
 }
 
+
 void Traffic::FLARMWarning::updateDescription()
 {
     QStringList result;
@@ -181,12 +149,8 @@ void Traffic::FLARMWarning::updateDescription()
 
 
         // Relative bearing
-        if (qIsFinite(_relativeBearing) && (_relativeBearing >= -180.0) && (_relativeBearing <= 180.0)) {
-            auto clockTime = qRound(_relativeBearing/30.0);
-            if (clockTime <= 0) {
-                clockTime += 12;
-            }
-            result << tr("%1 o'clock position").arg(clockTime);
+        if (m_relativeBearing.isFinite()) {
+            result << tr("%1 position").arg(m_relativeBearing.toClock());
         }
 
 
@@ -195,10 +159,10 @@ void Traffic::FLARMWarning::updateDescription()
 
             if (GlobalSettings::useMetricUnitsStatic()) {
                 auto hDistKM = qRound(_hDist.toKM()*10.0)/10.0;
-                result << tr("Distance %1 KM").arg(hDistKM);
+                result << tr("Distance %1 km").arg(hDistKM);
             } else {
                 auto hDistNM = qRound(_hDist.toNM()*10.0)/10.0;
-                result << tr("Distance %1 NM").arg(hDistNM);
+                result << tr("Distance %1 nmNM").arg(hDistNM);
             }
 
         }
@@ -212,9 +176,9 @@ void Traffic::FLARMWarning::updateDescription()
                 result << tr("Same altitude");
             } else {
                 if (_vDist.isNegative()) {
-                    result << tr("%1 FT below").arg(vDistFT);
+                    result << tr("%1 ft below").arg(vDistFT);
                 } else {
-                    result << tr("%1 FT above").arg(vDistFT);
+                    result << tr("%1 ft above").arg(vDistFT);
                 }
             }
         }

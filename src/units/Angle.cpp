@@ -18,18 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 
 #include "units/Angle.h"
 
-/*
-auto AviationUnits::Angle::toNormalizedDEG() const -> double {
-    double angle = toDEG();
-    if (!std::isfinite(angle)) {
-        return qQNaN();
+
+auto AviationUnits::Angle::toClock() const -> QString
+{
+    if (!isFinite()) {
+        return "-";
     }
 
-    double a = angle / 360.0;
-    return 360.0 * (a - qFloor(a));
-}
+    int result = qRound(toDEG()/30.0);
+    if (result == 0) {
+        result = 12;
+    }
 
-*/
+    return QCoreApplication::translate("AviationUnits::Angle", "%1 o'clock").arg(result);
+}

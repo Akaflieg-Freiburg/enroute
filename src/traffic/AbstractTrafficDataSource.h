@@ -60,7 +60,7 @@ public:
     // Properties
     //
 
-    /*! \brief String describin the last socket error
+    /*! \brief String describing the last socket error
      *
      * This property holds a translated, human-readable string that describes
      * the last error, or an empty string when there is not error.  The string

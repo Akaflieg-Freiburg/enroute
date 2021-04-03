@@ -131,10 +131,10 @@ public:
 
     /*! \brief Liftetime of geographic positioning information
      *
-     * Geographic position information is considered valid for 10 seconds
-     * after it has been received.
+     * Geographic position information is considered valid only for
+     * this amount of time after it has been received.
      */
-    static constexpr auto lifetime = 10s;
+    static constexpr auto lifetime = 20s;
 
 private:
     QGeoPositionInfo m_positionInfo {};

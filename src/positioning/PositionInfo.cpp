@@ -66,6 +66,9 @@ auto Positioning::PositionInfo::positionErrorEstimate() const -> AviationUnits::
 
 auto Positioning::PositionInfo::trueAltitude() const -> AviationUnits::Distance
 {
+    if (!m_positionInfo.isValid()) {
+        return {};
+    }
     if (m_positionInfo.coordinate().type() != QGeoCoordinate::Coordinate3D) {
         return {};
     }
@@ -90,6 +93,9 @@ auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> AviationUni
 
 auto Positioning::PositionInfo::trueTrack() const -> AviationUnits::Angle
 {
+    if (!m_positionInfo.isValid()) {
+        return {};
+    }
     if (!groundSpeed().isFinite()) {
         return {};
     }

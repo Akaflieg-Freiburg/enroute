@@ -25,12 +25,21 @@ Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject 
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
     if (source != nullptr) {
-        setSourceName( tr("Built-in (%1)").arg(source->sourceName()) );
+        source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
+        source->setUpdateInterval(1000);
+
+        QString sName = source->sourceName();
+        if (sName.isEmpty()) {
+            setSourceName( tr("Built-in receiver") );
+        } else {
+            setSourceName( tr("Built-in receiver/%1").arg( sName.at(0).toUpper()+sName.mid(1) ) );
+        }
+
         connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(updateStatusString()));
         connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionInfoSource_Satellite::onPositionUpdated);
         source->startUpdates();
     } else {
-        setSourceName( tr("Built-in receiver not available") );
+        setSourceName( tr("None") );
     }
 
     updateStatusString();
@@ -56,12 +65,7 @@ void Positioning::PositionInfoSource_Satellite::updateStatusString()
         return;
     }
 
-    if (sourceStatus != QGeoPositionInfoSource::UnknownSourceError) {
-        setStatusString( tr("Unknown error") );
-        return;
-    }
-
-    if (!positionInfo().isValid()) {
+    if (!receivingPositionInfo()) {
         setStatusString( tr("Waiting for signal") );
         return;
     }

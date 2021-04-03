@@ -87,9 +87,6 @@ Page {
                 }
             }
 
-            Label { text: qsTr("Mode") }
-            Label { text: positionProvider.isInFlight ? qsTr("Flight") : qsTr("Ground") }
-
             Label {
                 font.pixelSize: Qt.application.font.pixelSize*0.5
                 Layout.columnSpan: 2

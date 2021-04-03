@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoPositionInfoSource>
+#include <QPointer>
 
 #include "positioning/Geoid.h"
 #include "positioning/PositionInfoSource_Abstract.h"

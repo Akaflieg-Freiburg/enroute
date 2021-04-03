@@ -49,6 +49,10 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
     connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 
+    // Binding for updateStatusString
+    connect(this, &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Positioning::PositionProvider::updateStatusString);
+    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::statusStringChanged, this, &Positioning::PositionProvider::updateStatusString);
+
     // Wire up traffic data provider source
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider != nullptr) {
@@ -87,22 +91,26 @@ void Positioning::PositionProvider::onPositionUpdated()
     // We go through the list of providers in order of preference, to find the first one
     // that has a valid position info available for us.
     PositionInfo info;
+    QString source;
 
     // Priority #1: Traffic data provider
     auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
     if (trafficDataProvider != nullptr) {
         info = trafficDataProvider->positionInfo();
+        source = trafficDataProvider->sourceName();
     }
 
     // Priority #2: Built-in sat receiver
     if (!info.isValid()) {
         info = satelliteSource.positionInfo();
+        source = satelliteSource.sourceName();
     }
 
     // Set new info
     setPositionInfo(info);
     setLastValidCoordinate(info.coordinate());
     setLastValidTT(info.trueTrack());
+    setSourceName(source);
 
     // Change _isInFlight if appropriate.
     auto GS = info.groundSpeed();
@@ -124,6 +132,8 @@ void Positioning::PositionProvider::onPositionUpdated()
 
     }
 
+    // Set status string
+    updateStatusString();
 }
 
 
@@ -219,3 +229,23 @@ auto Positioning::PositionProvider::lastValidTT() -> AviationUnits::Angle
     return positionProvider->m_lastValidTT;
 }
 
+
+void Positioning::PositionProvider::updateStatusString()
+{
+    if (receivingPositionInfo()) {
+        QString result = QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(sourceName());
+        result += QString("<li>%1</li>").arg(tr("Receiving position information."));
+        if (pressureAltitude().isFinite()) {
+            result += QString("<li>%1</li>").arg(tr("Receiving pressure altitude."));
+        }
+        result += "</ul>";
+        setStatusString(result);
+        return;
+    }
+
+    QString result = QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(tr("Not receiving position information"));
+    result += QString("<li>%1: %2</li>").arg( satelliteSource.sourceName(), satelliteSource.statusString());
+    result += QString("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
+    result += "</ul>";
+    setStatusString(result);
+}

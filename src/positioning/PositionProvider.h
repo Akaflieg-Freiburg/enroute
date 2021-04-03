@@ -120,23 +120,30 @@ public:
     Q_INVOKABLE QString wayTo(const QGeoCoordinate& position) const;
 
 signals:
-    /*! \brief Emitted whenever the suggested icon changes */
+    /*! \brief Notifier signal */
     void isInFlightChanged();
 
-    /*! \brief Emitted whenever the property lastValidTrack changes */
+    /*! \brief Notifier signal */
     void lastValidTTChanged(AviationUnits::Angle);
 
+    /*! \brief Notifier signal */
     void lastValidCoordinateChanged(QGeoCoordinate);
 
 private slots:
-    // Connected to source, in order to receive new data
+    // Connected to sources, in order to receive new data
     void onPositionUpdated();
 
+    // Connected to sources, in order to receive new data
     void onPressureAltitudeUpdated();
 
+    // Setter method for property with the same name
     void setLastValidCoordinate(const QGeoCoordinate &newCoordinate);
 
+    // Setter method for property with the same name
     void setLastValidTT(AviationUnits::Angle newTT);
+
+    // Setter method for property with the same name
+    void updateStatusString();
 
 private:
     Q_DISABLE_COPY_MOVE(PositionProvider)

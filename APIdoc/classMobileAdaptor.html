@@ -105,9 +105,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbd615337a5fe83f6a3dca3d6b6f4d51"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#afbd615337a5fe83f6a3dca3d6b6f4d51">exportContent</a> (const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)</td></tr>
 <tr class="memdesc:afbd615337a5fe83f6a3dca3d6b6f4d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export content to file or to file sending app.  <a href="classMobileAdaptor.html#afbd615337a5fe83f6a3dca3d6b6f4d51">More...</a><br /></td></tr>
 <tr class="separator:afbd615337a5fe83f6a3dca3d6b6f4d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06c74428e309d910939a3aaa41027b76"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a06c74428e309d910939a3aaa41027b76">lockWifi</a> (bool lock)</td></tr>
-<tr class="memdesc:a06c74428e309d910939a3aaa41027b76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock connection to Wi-Fi network.  <a href="classMobileAdaptor.html#a06c74428e309d910939a3aaa41027b76">More...</a><br /></td></tr>
-<tr class="separator:a06c74428e309d910939a3aaa41027b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4156c8abd391d141ffc6fdac41c75f5"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ab4156c8abd391d141ffc6fdac41c75f5">importContent</a> ()</td></tr>
 <tr class="memdesc:ab4156c8abd391d141ffc6fdac41c75f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import content from file.  <a href="classMobileAdaptor.html#ab4156c8abd391d141ffc6fdac41c75f5">More...</a><br /></td></tr>
 <tr class="separator:ab4156c8abd391d141ffc6fdac41c75f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,6 +117,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a3ad8589f3cb29aa284c7e52af490ed1d"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a3ad8589f3cb29aa284c7e52af490ed1d">lockWifi</a> (bool lock)</td></tr>
+<tr class="memdesc:a3ad8589f3cb29aa284c7e52af490ed1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock connection to Wi-Fi network.  <a href="classMobileAdaptor.html#a3ad8589f3cb29aa284c7e52af490ed1d">More...</a><br /></td></tr>
+<tr class="separator:a3ad8589f3cb29aa284c7e52af490ed1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37277b7e33761b37eddd381a14950d27"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">getSSID</a> ()</td></tr>
 <tr class="memdesc:a37277b7e33761b37eddd381a14950d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get SSID of current Wi-Fi network.  <a href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">More...</a><br /></td></tr>
 <tr class="separator:a37277b7e33761b37eddd381a14950d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -349,20 +349,28 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a06c74428e309d910939a3aaa41027b76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06c74428e309d910939a3aaa41027b76">&#9670;&nbsp;</a></span>lockWifi()</h2>
+<a id="a3ad8589f3cb29aa284c7e52af490ed1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ad8589f3cb29aa284c7e52af490ed1d">&#9670;&nbsp;</a></span>lockWifi()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE void MobileAdaptor::lockWifi </td>
+          <td class="memname">static Q_INVOKABLE void MobileAdaptor::lockWifi </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>lock</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Lock connection to Wi-Fi network. </p>

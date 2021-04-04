@@ -52,7 +52,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Traffic opponents.  
+<p>Traffic warning.  
  <a href="classTraffic_1_1FLARMWarning.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>&gt;</code></p>
@@ -63,14 +63,32 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5d6da37bc1be2877a1e7af0ccd56d602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classTraffic_1_1FLARMWarning.html#a5d6da37bc1be2877a1e7af0ccd56d602">More...</a><br /></td></tr>
 <tr class="separator:a5d6da37bc1be2877a1e7af0ccd56d602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae41d6c18b1e6f733e75d015580e33bdd"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1FLARMWarning.html#ae41d6c18b1e6f733e75d015580e33bdd">alarmLevel</a> () const</td></tr>
-<tr class="memdesc:ae41d6c18b1e6f733e75d015580e33bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alarm Level, as reported by FLARM.  <a href="classTraffic_1_1FLARMWarning.html#ae41d6c18b1e6f733e75d015580e33bdd">More...</a><br /></td></tr>
+<tr class="memdesc:ae41d6c18b1e6f733e75d015580e33bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alarm level, as reported by FLARM.  <a href="classTraffic_1_1FLARMWarning.html#ae41d6c18b1e6f733e75d015580e33bdd">More...</a><br /></td></tr>
 <tr class="separator:ae41d6c18b1e6f733e75d015580e33bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17a572b6c1ffd8d20d58682025d53c6f"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1FLARMWarning.html#a17a572b6c1ffd8d20d58682025d53c6f">alarmType</a> () const</td></tr>
+<tr class="memdesc:a17a572b6c1ffd8d20d58682025d53c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alarm type, as reported by FLARM.  <a href="classTraffic_1_1FLARMWarning.html#a17a572b6c1ffd8d20d58682025d53c6f">More...</a><br /></td></tr>
+<tr class="separator:a17a572b6c1ffd8d20d58682025d53c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29d7cba6ad0caa992d2689b39bb9beb9"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1FLARMWarning.html#a29d7cba6ad0caa992d2689b39bb9beb9">description</a> () const</td></tr>
+<tr class="memdesc:a29d7cba6ad0caa992d2689b39bb9beb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translated, human-readable alarm message.  <a href="classTraffic_1_1FLARMWarning.html#a29d7cba6ad0caa992d2689b39bb9beb9">More...</a><br /></td></tr>
+<tr class="separator:a29d7cba6ad0caa992d2689b39bb9beb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268f755da80966eb7d375a7a46793972"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1FLARMWarning.html#a268f755da80966eb7d375a7a46793972">hDist</a> () const</td></tr>
+<tr class="memdesc:a268f755da80966eb7d375a7a46793972"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal distance to obstacle or aircraft.  <a href="classTraffic_1_1FLARMWarning.html#a268f755da80966eb7d375a7a46793972">More...</a><br /></td></tr>
+<tr class="separator:a268f755da80966eb7d375a7a46793972"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dae783739046f206bbb8f7302c2df62"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1FLARMWarning.html#a6dae783739046f206bbb8f7302c2df62">operator==</a> (const <a class="el" href="classTraffic_1_1FLARMWarning.html">Traffic::FLARMWarning</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a6dae783739046f206bbb8f7302c2df62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison.  <a href="classTraffic_1_1FLARMWarning.html#a6dae783739046f206bbb8f7302c2df62">More...</a><br /></td></tr>
+<tr class="separator:a6dae783739046f206bbb8f7302c2df62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c078de56e0db74ad52135bcc0ffe0ae"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1FLARMWarning.html#a2c078de56e0db74ad52135bcc0ffe0ae">relativeBearing</a> () const</td></tr>
+<tr class="memdesc:a2c078de56e0db74ad52135bcc0ffe0ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction to obstacle or aircraft.  <a href="classTraffic_1_1FLARMWarning.html#a2c078de56e0db74ad52135bcc0ffe0ae">More...</a><br /></td></tr>
+<tr class="separator:a2c078de56e0db74ad52135bcc0ffe0ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab432085a2fed89cf22e50c06d54b90e3"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1FLARMWarning.html#ab432085a2fed89cf22e50c06d54b90e3">vDist</a> () const</td></tr>
+<tr class="memdesc:ab432085a2fed89cf22e50c06d54b90e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertical distance to obstacle or aircraft.  <a href="classTraffic_1_1FLARMWarning.html#ab432085a2fed89cf22e50c06d54b90e3">More...</a><br /></td></tr>
+<tr class="separator:ab432085a2fed89cf22e50c06d54b90e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Traffic opponents. </p>
-<p>Objects of this class represent traffic opponents, as detected by FLARM and similar devices. Instances of this class will be generated by the Navigation::FLARMAdaptor class. Consumers of this class will never have to set or construct instances of the class themselves </p>
+<div class="textblock"><p>Traffic warning. </p>
+<p>Objects of this class represent traffic warnings, as detected by FLARM and similar devices. The data fields correspond to the data fields sent out by FLARM devices with their PFLAU NMEA-sentences. Instances of this class will be generated by the Navigation::TrafficDataSource_* classes. Consumers of this class will never have to set or construct instances of the class themselves </p>
 
-<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00054">54</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00059">59</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5d6da37bc1be2877a1e7af0ccd56d602"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d6da37bc1be2877a1e7af0ccd56d602">&#9670;&nbsp;</a></span>FLARMWarning()</h2>
@@ -129,16 +147,196 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Alarm Level, as reported by FLARM. </p>
-<p>This is the alarm level associated with the traffic object. Alarm levels are not computed by this class, but by the FLARM device that reports the traffic. This is an integer in the range 0, …, 3 with the following meaning.</p>
+<p>Alarm level, as reported by FLARM. </p>
+<p>This is an integer in the range -1, …, 3 with the following meaning.</p>
 <ul>
+<li>-1 = invalid data</li>
 <li>0 = no alarm (also used for no-alarm traffic information)</li>
 <li>1 = alarm, 13-18 seconds to impact</li>
 <li>2 = alarm, 9-12 seconds to impact</li>
-<li>3 = alarm, 0-8 seconds to impact </li>
+<li>3 = alarm, 0-8 seconds to impact</li>
 </ul>
+<dl class="section return"><dt>Returns</dt><dd>alarm level</dd></dl>
+<p>See the FLARM "Data Port Interface Control Document" for a further description. </p>
 
-<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00105">105</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00091">91</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
+
+</div>
+</div>
+<a id="a17a572b6c1ffd8d20d58682025d53c6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17a572b6c1ffd8d20d58682025d53c6f">&#9670;&nbsp;</a></span>alarmType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE int Traffic::FLARMWarning::alarmType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Alarm type, as reported by FLARM. </p>
+<p>This is an integer from the set {-1, 2, 3, 4} with the following meaning.</p>
+<ul>
+<li>-1 = invalid data</li>
+<li>2 = aircraft alarm</li>
+<li>3 = obstacle alarm</li>
+<li>4 = traffic advisory</li>
+</ul>
+<p>Alert zone alarms are currently not supported.</p>
+<dl class="section return"><dt>Returns</dt><dd>alarm type</dd></dl>
+<p>See the FLARM "Data Port Interface Control Document" for a further description. </p>
+
+<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00112">112</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
+
+</div>
+</div>
+<a id="a29d7cba6ad0caa992d2689b39bb9beb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29d7cba6ad0caa992d2689b39bb9beb9">&#9670;&nbsp;</a></span>description()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Traffic::FLARMWarning::description </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Translated, human-readable alarm message. </p>
+<dl class="section return"><dt>Returns</dt><dd>A string of the form "Traffic • 10 o'clock position • 
+Distance 0.4 nm • 700 ft below." </dd></dl>
+
+</div>
+</div>
+<a id="a268f755da80966eb7d375a7a46793972"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a268f755da80966eb7d375a7a46793972">&#9670;&nbsp;</a></span>hDist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> Traffic::FLARMWarning::hDist </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Horizontal distance to obstacle or aircraft. </p>
+<dl class="section return"><dt>Returns</dt><dd>Horizontal distance, might be NaN </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00128">128</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
+
+</div>
+</div>
+<a id="a6dae783739046f206bbb8f7302c2df62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dae783739046f206bbb8f7302c2df62">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Traffic::FLARMWarning::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classTraffic_1_1FLARMWarning.html">Traffic::FLARMWarning</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Comparison. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td>Right hand side of the comparison</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if equal </dd></dl>
+
+</div>
+</div>
+<a id="a2c078de56e0db74ad52135bcc0ffe0ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c078de56e0db74ad52135bcc0ffe0ae">&#9670;&nbsp;</a></span>relativeBearing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classAviationUnits_1_1Angle.html">AviationUnits::Angle</a> Traffic::FLARMWarning::relativeBearing </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Direction to obstacle or aircraft. </p>
+<dl class="section return"><dt>Returns</dt><dd>Relative bearing, might be NaN </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00145">145</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
+
+</div>
+</div>
+<a id="ab432085a2fed89cf22e50c06d54b90e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab432085a2fed89cf22e50c06d54b90e3">&#9670;&nbsp;</a></span>vDist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> Traffic::FLARMWarning::vDist </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vertical distance to obstacle or aircraft. </p>
+<dl class="section return"><dt>Returns</dt><dd>Vertical distance, might be NaN </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="FLARMWarning_8h_source.html#l00154">154</a> of file <a class="el" href="FLARMWarning_8h_source.html">FLARMWarning.h</a>.</p>
 
 </div>
 </div>

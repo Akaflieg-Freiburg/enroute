@@ -87,13 +87,8 @@ Page {
                 }
             }
 
-            Label {
-                font.pixelSize: Qt.application.font.pixelSize*0.5
-                Layout.columnSpan: 2
-            }
-
-            Label {
-                text: qsTr("<h3>Horizontal</h3>")
+            Item {
+                height: Qt.application.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
@@ -122,7 +117,7 @@ Page {
                 }
             }
 
-            Label { text: qsTr("True Alt") }
+            Label { text: qsTr("True Altitude") }
             Label {
                 text: {
                     const talt = positionProvider.positionInfo.trueAltitude();
@@ -147,14 +142,14 @@ Page {
 
             }
 
-            Label { text: "Mag. var." }
+            Label { text: qsTr("Magnetic Variation") }
             Label { text: {
                     const magVar = positionProvider.positionInfo.variation();
                     return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
                 }
             }
 
-            Label { text: "GS" }
+            Label { text: qsTr("Ground Speed") }
             Label {
                 text: {
                     const gs = positionProvider.positionInfo.groundSpeed();
@@ -164,7 +159,7 @@ Page {
                 }
             }
 
-            Label { text: "TT" }
+            Label { text: qsTr("True Track") }
             Label {
                 text: {
                     const tt = positionProvider.positionInfo.trueTrack();
@@ -172,7 +167,7 @@ Page {
                 }
             }
 
-            Label { text: "Vert. Speed" }
+            Label { text: qsTr("Vertical Speed") }
             Label {
                 text: {
                     const vs = positionProvider.positionInfo.verticalSpeed();
@@ -180,7 +175,7 @@ Page {
                 }
             }
 
-            Label { text: "Pressure ALT" }
+            Label { text: qsTr("Pressure Altitude") }
             Label { text: positionProvider.pressureAltitude.isFinite() ? Math.round(positionProvider.pressureAltitude.toFeet()) + " ft" : "-" }
 
 

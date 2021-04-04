@@ -70,7 +70,7 @@ public:
     // Properties
     //
 
-    /*! \brief Receiving data from one data source*/
+    /*! \brief Receiving data from one data source */
     Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
 
     /*! \brief Getter method for property with the same name

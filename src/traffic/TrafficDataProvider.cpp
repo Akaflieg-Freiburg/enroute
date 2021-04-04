@@ -41,14 +41,14 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Create traffic objects
     int numTrafficObjects = 20;
-    _trafficObjects.reserve(numTrafficObjects);
+    m_trafficObjects.reserve(numTrafficObjects);
     for(int i = 0; i<numTrafficObjects; i++) {
         auto *trafficObject = new Traffic::TrafficFactor(this);
         QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
-        _trafficObjects.append( trafficObject );
+        m_trafficObjects.append( trafficObject );
     }
-    _trafficObjectWithoutPosition = new Traffic::TrafficFactor(this);
-    QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
+    m_trafficObjectWithoutPosition = new Traffic::TrafficFactor(this);
+    QQmlEngine::setObjectOwnership(m_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
     setSourceName(tr("Traffic data receiver"));
 
@@ -60,14 +60,14 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
     //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
     // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
-    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
     //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
-    _dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
-    _dataSources << new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this);
+    m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
+    m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this);
 
     // Wire up data sources
-    foreach(auto dataSource, _dataSources) {
+    foreach(auto dataSource, m_dataSources) {
         if (dataSource.isNull()) {
             continue;
         }
@@ -107,7 +107,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 {
 
-    foreach(auto dataSource, _dataSources) {
+    foreach(auto dataSource, m_dataSources) {
         if (dataSource.isNull()) {
             continue;
         }
@@ -119,7 +119,7 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 
 void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
 {
-    foreach(auto dataSource, _dataSources) {
+    foreach(auto dataSource, m_dataSources) {
         if (dataSource.isNull()) {
             continue;
         }
@@ -140,14 +140,14 @@ auto Traffic::TrafficDataProvider::globalInstance() -> Traffic::TrafficDataProvi
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
 {
-    foreach(auto target, _trafficObjects)
+    foreach(auto target, m_trafficObjects)
         if (factor.ID() == target->ID()) {
             target->copyFrom(factor);
             return;
         }
 
-    auto *lowestPriObject = _trafficObjects.at(0);
-    foreach(auto target, _trafficObjects)
+    auto *lowestPriObject = m_trafficObjects.at(0);
+    foreach(auto target, m_trafficObjects)
         if (lowestPriObject->hasHigherPriorityThan(*target)) {
             lowestPriObject = target;
         }
@@ -160,8 +160,8 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor)
 {
-    if ((factor.ID() == _trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*_trafficObjectWithoutPosition)) {
-        _trafficObjectWithoutPosition->copyFrom(factor);
+    if ((factor.ID() == m_trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
+        m_trafficObjectWithoutPosition->copyFrom(factor);
     }
 
 }
@@ -171,7 +171,7 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 {
 
     Traffic::TrafficDataSource_Abstract *heartbeatDataSource = nullptr;
-    foreach(auto source, _dataSources) {
+    foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }
@@ -186,7 +186,7 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
         return;
     }
 
-    foreach(auto source, _dataSources) {
+    foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }
@@ -203,7 +203,7 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 auto Traffic::TrafficDataProvider::receiving() const -> bool
 {
 
-    foreach(auto source, _dataSources) {
+    foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }
@@ -221,7 +221,7 @@ auto Traffic::TrafficDataProvider::receiving() const -> bool
 void Traffic::TrafficDataProvider::updateStatusString()
 {
 
-    foreach(auto source, _dataSources) {
+    foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }
@@ -241,7 +241,7 @@ void Traffic::TrafficDataProvider::updateStatusString()
     }
 
     QString result = "<p>" + tr("Not receiving traffic data.") + "<p><ul style='margin-left:-25px;'>";
-    foreach(auto source, _dataSources) {
+    foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }

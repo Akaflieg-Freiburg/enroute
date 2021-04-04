@@ -101,7 +101,7 @@ public:
      */
     QQmlListProperty<Traffic::TrafficFactor> trafficObjects4QML()
     {
-        return QQmlListProperty(this, &_trafficObjects);
+        return QQmlListProperty(this, &m_trafficObjects);
     }
 
     /*! \brief Most relevant traffic object whose position is not known
@@ -118,7 +118,7 @@ public:
      */
     Traffic::TrafficFactor *trafficObjectWithoutPosition()
     {
-        return _trafficObjectWithoutPosition;
+        return m_trafficObjectWithoutPosition;
     }
 
     Q_PROPERTY(Traffic::FLARMWarning flarmWarning READ flarmWarning NOTIFY flarmWarningChanged)
@@ -164,10 +164,10 @@ private slots:
 
 private:
     // Targets
-    QList<Traffic::TrafficFactor *> _trafficObjects;
-    QPointer<Traffic::TrafficFactor> _trafficObjectWithoutPosition;
+    QList<Traffic::TrafficFactor *> m_trafficObjects;
+    QPointer<Traffic::TrafficFactor> m_trafficObjectWithoutPosition;
 
-    QList<QPointer<Traffic::TrafficDataSource_Abstract>> _dataSources;
+    QList<QPointer<Traffic::TrafficDataSource_Abstract>> m_dataSources;
 
     FLARMWarning m_FLARMWarning;
 
@@ -175,7 +175,7 @@ private:
     QTimer reconnectionTimer;
 
     // Property Cache
-    bool _receiving {false};
+    bool m_receiving {false};
 };
 
 }

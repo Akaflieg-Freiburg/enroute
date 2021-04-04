@@ -85,7 +85,6 @@ Traffic::FLARMWarning::FLARMWarning(
 }
 
 
-
 auto Traffic::FLARMWarning::description() const -> QString
 {
     QStringList result;
@@ -139,7 +138,6 @@ auto Traffic::FLARMWarning::description() const -> QString
 
     return result.join(" • ");
 }
-
 
 
 auto Traffic::FLARMWarning::operator==(const Traffic::FLARMWarning &rhs) -> bool

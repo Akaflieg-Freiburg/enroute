@@ -141,7 +141,7 @@ signals:
     void factorWithPosition(const Traffic::TrafficFactor &factor);
 
 //#warning need to document
-    void flarmWarning(const Traffic::FLARMWarning &warning);
+    void flarmWarning(const Traffic::FLARMWarning& warning);
 
     /*! \brief Notifier signal */
     void hasHeartbeatChanged();

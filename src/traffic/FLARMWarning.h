@@ -20,9 +20,6 @@
 
 #pragma once
 
-#include <QGeoPositionInfo>
-#include <QTimer>
-
 #include "units/Angle.h"
 #include "units/Distance.h"
 
@@ -36,27 +33,22 @@ namespace Traffic {
  *  set or construct instances of the class themselves
  */
 
-class FLARMWarning : public QObject {
-    Q_OBJECT
+class FLARMWarning {
+    Q_GADGET
 
 public:
     /*! \brief Default constructor
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit FLARMWarning(QObject *parent = nullptr);
+    explicit FLARMWarning() = default;
 
 
     explicit FLARMWarning(const QString& AlarmLevel,
                           const QString& RelativeBearing,
                           const QString& AlarmType,
                           const QString& RelativeVertical,
-                          const QString& RelativeDistance,
-                          QObject *parent = nullptr);
-
-
-    // Standard destructor
-    ~FLARMWarning() override = default;
+                          const QString& RelativeDistance);
 
     //
     // PROPERTIES
@@ -74,96 +66,46 @@ public:
      *  - 2 = alarm, 9-12 seconds to impact
      *  - 3 = alarm, 0-8 seconds to impact
      */
-    Q_PROPERTY(int alarmLevel READ alarmLevel NOTIFY alarmLevelChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property alarmLevel
-     */
-    int alarmLevel() const
+    Q_INVOKABLE int alarmLevel() const
     {
-        return _alarmLevel;
+        return m_alarmLevel;
     }
 
-    Q_PROPERTY(AviationUnits::Angle relativeBearing READ relativeBearing NOTIFY relativeBearingChanged)
+    Q_INVOKABLE int alarmType() const
+    {
+        return m_alarmType;
+    }
 
-    AviationUnits::Angle relativeBearing() const
+    Q_INVOKABLE QString description() const;
+
+    Q_INVOKABLE AviationUnits::Distance hDist() const
+    {
+        return m_hDist;
+    }
+
+    Q_INVOKABLE bool operator==(const Traffic::FLARMWarning &rhs);
+
+    Q_INVOKABLE AviationUnits::Angle relativeBearing() const
     {
         return m_relativeBearing;
     }
 
-    Q_PROPERTY(int alarmType READ alarmType NOTIFY alarmTypeChanged)
-
-    int alarmType() const
+    Q_INVOKABLE AviationUnits::Distance vDist() const
     {
-        return _alarmType;
+        return m_vDist;
     }
-
-    Q_PROPERTY(AviationUnits::Distance vDist READ vDist NOTIFY vDistChanged)
-
-    AviationUnits::Distance vDist() const
-    {
-        return _vDist;
-    }
-
-    Q_PROPERTY(AviationUnits::Distance hDist READ hDist NOTIFY hDistChanged)
-
-    AviationUnits::Distance hDist() const
-    {
-        return _hDist;
-    }
-
-    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
-
-    QString description() const
-    {
-        return _description;
-    }
-
-
-signals:
-    /*! \brief Notifier signal */
-    void alarmLevelChanged();
-
-    /*! \brief Notifier signal */
-    void alarmTypeChanged();
-
-    /*! \brief Notifier signal */
-    void hDistChanged();
-
-    /*! \brief Notifier signal */
-    void vDistChanged();
-
-    /*! \brief Notifier signal */
-    void validChanged();
-
-    /*! \brief Notifier signal */
-    void relativeBearingChanged();
-
-    void descriptionChanged();
-
-public slots:
-    void copyFrom(const Traffic::FLARMWarning &other);
 
 private:
-    void updateDescription();
 
-private:
-    //
     // Property values
-    //
-    int _alarmLevel {-1};
-    int _alarmType {-1};
-    AviationUnits::Distance _hDist;
+    int m_alarmLevel {-1};
+    int m_alarmType {-1};
+    AviationUnits::Distance m_hDist;
     AviationUnits::Angle m_relativeBearing;
-    AviationUnits::Distance _vDist;
-
-    QString _description {};
-
-    // Timer for timeout. Traffic objects become invalid if their data has not been
-    // refreshed for timeoutMS milliseconds
-    QTimer timeoutCounter;
-    static constexpr qint64 timeoutMS = 10*1000;
+    AviationUnits::Distance m_vDist;
 };
 
 }
+
+// Declare meta types
+Q_DECLARE_METATYPE(Traffic::FLARMWarning)

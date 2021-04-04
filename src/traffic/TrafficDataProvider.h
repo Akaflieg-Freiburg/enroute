@@ -70,14 +70,6 @@ public:
     // Properties
     //
 
-
-    Q_PROPERTY(Traffic::FLARMWarning* flarmWarning READ flarmWarning CONSTANT)
-
-    Traffic::FLARMWarning* flarmWarning() const
-    {
-        return _flarmWarning;
-    }
-
     /*! \brief Receiving data from one data source*/
     Q_PROPERTY(bool receiving READ receiving NOTIFY receivingChanged)
 
@@ -129,10 +121,22 @@ public:
         return _trafficObjectWithoutPosition;
     }
 
+    Q_PROPERTY(Traffic::FLARMWarning flarmWarning READ flarmWarning NOTIFY flarmWarningChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property trafficObjectWithoutPosition
+     */
+    Traffic::FLARMWarning flarmWarning() const
+    {
+        return m_FLARMWarning;
+    }
+
 signals:
     /*! \brief Notifier signal */
     void receivingChanged();
 
+    void flarmWarningChanged(const Traffic::FLARMWarning &warning);
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
@@ -156,15 +160,16 @@ private slots:
 
     void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor);
 
+    void onFLARMWarning(const Traffic::FLARMWarning& warning);
+
 private:
     // Targets
     QList<Traffic::TrafficFactor *> _trafficObjects;
     QPointer<Traffic::TrafficFactor> _trafficObjectWithoutPosition;
 
-    // Warnings
-    QPointer<Traffic::FLARMWarning> _flarmWarning;
-
     QList<QPointer<Traffic::TrafficDataSource_Abstract>> _dataSources;
+
+    FLARMWarning m_FLARMWarning;
 
     // Reconnect
     QTimer reconnectionTimer;

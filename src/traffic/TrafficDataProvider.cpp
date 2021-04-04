@@ -23,9 +23,9 @@
 
 #include "MobileAdaptor.h"
 #include "positioning/PositionProvider.h"
+#include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
 #include "traffic/TrafficDataSource_Tcp.h"
-#include "traffic/TrafficDataProvider.h"
 
 using namespace std::chrono_literals;
 
@@ -50,11 +50,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     _trafficObjectWithoutPosition = new Traffic::TrafficFactor(this);
     QQmlEngine::setObjectOwnership(_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
-    // Create warning object
-    _flarmWarning = new Traffic::FLARMWarning(this);
-    QQmlEngine::setObjectOwnership(_flarmWarning, QQmlEngine::CppOwnership);
-
-
     setSourceName(tr("Traffic data receiver"));
 
     // Setup Data Sources
@@ -64,8 +59,8 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
     //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
     //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
-    // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
+    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
     //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
     _dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
@@ -86,7 +81,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::flarmWarning, _flarmWarning, &Traffic::FLARMWarning::copyFrom);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::flarmWarning, this, &Traffic::TrafficDataProvider::onFLARMWarning);
 
 
     }
@@ -262,4 +257,14 @@ void Traffic::TrafficDataProvider::updateStatusString()
 
     setStatusString(result);
 
+}
+
+void Traffic::TrafficDataProvider::onFLARMWarning(const Traffic::FLARMWarning& warning)
+{
+    if (m_FLARMWarning == warning) {
+        return;
+    }
+
+    m_FLARMWarning = warning;
+    emit flarmWarningChanged(m_FLARMWarning);
 }

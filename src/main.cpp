@@ -68,6 +68,8 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<AviationUnits::Distance>();
     qRegisterMetaType<AviationUnits::Speed>();
     qRegisterMetaType<AviationUnits::Time>();
+    qRegisterMetaType<Positioning::PositionInfo>();
+    qRegisterMetaType<Traffic::FLARMWarning>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qmlRegisterType<GeoMaps::Airspace>("enroute", 1, 0, "Airspace");

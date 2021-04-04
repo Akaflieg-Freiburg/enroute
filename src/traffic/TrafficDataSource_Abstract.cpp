@@ -555,7 +555,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
         auto RelativeVertical = arguments[7];
         auto RelativeDistance = arguments[8];
 
-        auto warning = FLARMWarning(AlarmLevel, RelativeBearing, AlarmType, RelativeVertical, RelativeDistance, this);
+        auto warning = FLARMWarning(AlarmLevel, RelativeBearing, AlarmType, RelativeVertical, RelativeDistance);
         emit flarmWarning(warning);
 
         return;

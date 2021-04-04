@@ -18,15 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 
 #include "GlobalSettings.h"
 #include "traffic/FLARMWarning.h"
-
-
-Traffic::FLARMWarning::FLARMWarning(QObject *parent) : QObject(parent)
-{
-    updateDescription();
-}
 
 
 Traffic::FLARMWarning::FLARMWarning(
@@ -34,162 +29,136 @@ Traffic::FLARMWarning::FLARMWarning(
         const QString& RelativeBearing,
         const QString& AlarmType,
         const QString& RelativeVertical,
-        const QString& RelativeDistance,
-        QObject *parent) : QObject(parent)
+        const QString& RelativeDistance)
 {  
 
     // Alarm level
     if (AlarmLevel == "0") {
-        _alarmLevel = 0;
+        m_alarmLevel = 0;
     }
     if (AlarmLevel == "1") {
-        _alarmLevel = 1;
+        m_alarmLevel = 1;
     }
     if (AlarmLevel == "2") {
-        _alarmLevel = 2;
+        m_alarmLevel = 2;
     }
     if (AlarmLevel == "3") {
-        _alarmLevel = 3;
-    }
-
-    // Relative Bearing
-    bool ok = false;
-
-    auto rb = RelativeBearing.toDouble(&ok);
-    if (!ok) {
-        m_relativeBearing = AviationUnits::Angle::fromRAD(qQNaN());
-    } else {
-        m_relativeBearing = AviationUnits::Angle::fromDEG(rb);
+        m_alarmLevel = 3;
     }
 
     // Alarm Type
     if (AlarmType == "2") {
-        _alarmType = 2;
+        m_alarmType = 2;
     }
     if (AlarmType == "3") {
-        _alarmType = 3;
+        m_alarmType = 3;
     }
     if (AlarmType == "4") {
-        _alarmType = 4;
+        m_alarmType = 4;
+    }
+
+    // hDist
+    bool ok = false;
+    auto hDistM = RelativeDistance.toDouble(&ok);
+    if (ok) {
+        m_hDist = AviationUnits::Distance::fromM(hDistM);
+    } else {
+        m_hDist = AviationUnits::Distance::fromM(qQNaN());
+    }
+
+    // Relative Bearing
+    auto rb = RelativeBearing.toDouble(&ok);
+    if (ok) {
+        m_relativeBearing = AviationUnits::Angle::fromDEG(rb);
+    } else {
+        m_relativeBearing = AviationUnits::Angle::fromRAD(qQNaN());
     }
 
     // vDist
     auto vDistM = RelativeVertical.toDouble(&ok);
     if (ok) {
-        _vDist = AviationUnits::Distance::fromM(vDistM);
+        m_vDist = AviationUnits::Distance::fromM(vDistM);
     } else {
-        _vDist = AviationUnits::Distance::fromM(qQNaN());
-    }
-
-    // hDist
-    auto hDistM = RelativeDistance.toDouble(&ok);
-    if (ok) {
-        _hDist = AviationUnits::Distance::fromM(hDistM);
-    } else {
-        _hDist = AviationUnits::Distance::fromM(qQNaN());
-    }
-
-    updateDescription();
-
-}
-
-
-#include <QDebug>
-
-void Traffic::FLARMWarning::copyFrom(const FLARMWarning &other)
-{
-    auto _alarmLevelChanged = (_alarmLevel != other._alarmLevel);
-    auto _alarmTypeChanged = (_alarmType != other._alarmType);
-    auto _hDistChanged = (_hDist != other._hDist);
-    auto _relativeBearingChanged = (m_relativeBearing != other.m_relativeBearing);
-    auto _vDistChanged = (_vDist != other._vDist);
-
-    _alarmLevel = other._alarmLevel;
-    _alarmType = other._alarmType;
-    _hDist = other._hDist;
-    m_relativeBearing = other.m_relativeBearing;
-    _vDist = other._vDist;
-    updateDescription();
-
-    if (_alarmLevelChanged) {
-        emit alarmLevelChanged();
-    }
-    if (_alarmTypeChanged) {
-        emit alarmTypeChanged();
-    }
-    if (_hDistChanged) {
-        emit hDistChanged();
-    }
-    if (_relativeBearingChanged) {
-        emit relativeBearingChanged();
-    }
-    if (_vDistChanged) {
-        emit vDistChanged();
+        m_vDist = AviationUnits::Distance::fromM(qQNaN());
     }
 
 }
 
 
-void Traffic::FLARMWarning::updateDescription()
+
+auto Traffic::FLARMWarning::description() const -> QString
 {
     QStringList result;
 
- //   if ((_alarmType == 2) || (_alarmType == 3) || (_alarmType == 4)) {
-
-        // Alarm type
-        if (_alarmType == 2) {
-            result << tr("Traffic");
-        }
-        if (_alarmType == 3) {
-            result << tr("Obstacle");
-        }
-        if (_alarmType == 4) {
-            result << tr("Traffic advisory");
-        }
-
-
-        // Relative bearing
-        if (m_relativeBearing.isFinite()) {
-            result << tr("%1 position").arg(m_relativeBearing.toClock());
-        }
-
-
-        // Horizontal distance
-        if (_hDist.isFinite() && !_hDist.isNegative()) {
-
-            if (GlobalSettings::useMetricUnitsStatic()) {
-                auto hDistKM = qRound(_hDist.toKM()*10.0)/10.0;
-                result << tr("Distance %1 km").arg(hDistKM);
-            } else {
-                auto hDistNM = qRound(_hDist.toNM()*10.0)/10.0;
-                result << tr("Distance %1 nmNM").arg(hDistNM);
-            }
-
-        }
-
-        // Vertical distance
-        if (_vDist.isFinite()) {
-
-            auto vDistFT = qRound(qAbs(_vDist.toFeet())/10.0)*10.0;
-
-            if (vDistFT < 100) {
-                result << tr("Same altitude");
-            } else {
-                if (_vDist.isNegative()) {
-                    result << tr("%1 ft below").arg(vDistFT);
-                } else {
-                    result << tr("%1 ft above").arg(vDistFT);
-                }
-            }
-        }
-   // }
-
-    auto newDescription = result.join(" · ");
-    if (newDescription == _description) {
-        return;
+    // Alarm type
+    if (m_alarmType == 2) {
+        result << QCoreApplication::translate("Traffic::FLARMWarning", "Traffic");
     }
-    _description = newDescription;
-    emit descriptionChanged();
+    if (m_alarmType == 3) {
+        result << QCoreApplication::translate("Traffic::FLARMWarning", "Obstacle");
+    }
+    if (m_alarmType == 4) {
+        result << QCoreApplication::translate("Traffic::FLARMWarning", "Traffic advisory");
+    }
+
+
+    // Relative bearing
+    if (m_relativeBearing.isFinite()) {
+        result << QCoreApplication::translate("Traffic::FLARMWarning", "%1 position").arg(m_relativeBearing.toClock());
+    }
+
+
+    // Horizontal distance
+    if (m_hDist.isFinite() && !m_hDist.isNegative()) {
+
+        if (GlobalSettings::useMetricUnitsStatic()) {
+            auto hDistKM = qRound(m_hDist.toKM()*10.0)/10.0;
+            result << QCoreApplication::translate("Traffic::FLARMWarning", "Distance %1 km").arg(hDistKM);
+        } else {
+            auto hDistNM = qRound(m_hDist.toNM()*10.0)/10.0;
+            result << QCoreApplication::translate("Traffic::FLARMWarning", "Distance %1 nm").arg(hDistNM);
+        }
+
+    }
+
+    // Vertical distance
+    if (m_vDist.isFinite()) {
+
+        auto vDistFT = qRound(qAbs(m_vDist.toFeet())/10.0)*10.0;
+
+        if (vDistFT < 100) {
+            result << QCoreApplication::translate("Traffic::FLARMWarning", "Same altitude");
+        } else {
+            if (m_vDist.isNegative()) {
+                result << QCoreApplication::translate("Traffic::FLARMWarning", "%1 ft below").arg(vDistFT);
+            } else {
+                result << QCoreApplication::translate("Traffic::FLARMWarning", "%1 ft above").arg(vDistFT);
+            }
+        }
+    }
+
+    return result.join(" • ");
 }
 
+
+
+auto Traffic::FLARMWarning::operator==(const Traffic::FLARMWarning &rhs) -> bool
+{
+    if (m_alarmLevel != rhs.m_alarmLevel) {
+        return false;
+    }
+    if (m_alarmType!= rhs.m_alarmType) {
+        return false;
+    }
+    if (m_hDist != rhs.m_hDist) {
+        return false;
+    }
+    if (m_relativeBearing != rhs.m_relativeBearing) {
+        return false;
+    }
+    if (m_vDist != rhs.m_vDist) {
+        return false;
+    }
+    return true;
+}
 

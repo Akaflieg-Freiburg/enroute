@@ -111,6 +111,7 @@ void Positioning::PositionProvider::onPositionUpdated()
     setLastValidCoordinate(info.coordinate());
     setLastValidTT(info.trueTrack());
     setSourceName(source);
+    updateStatusString();
 }
 
 

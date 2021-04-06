@@ -72,7 +72,7 @@ void Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver()
     simulatorTimer.stop();
 
     // Update properties
-    stopHeartbeat();
+    setHasHeartbeat(false);
     updateProperties();
 }
 

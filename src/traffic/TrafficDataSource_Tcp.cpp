@@ -58,7 +58,7 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 
 Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 {
     Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver();
-    stopHeartbeat();
+    setHasHeartbeat(false);
     auto* mobileAdaptor = MobileAdaptor::globalInstance();
     if (mobileAdaptor != nullptr) {
         MobileAdaptor::lockWifi(false);

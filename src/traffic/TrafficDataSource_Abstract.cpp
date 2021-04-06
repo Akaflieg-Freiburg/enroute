@@ -69,18 +69,7 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(QObject *parent)
     // Setup heartbeat timer
     heartbeatTimer.setSingleShot(true);
     heartbeatTimer.setInterval(5s);
-    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged);
-}
-
-
-void Traffic::TrafficDataSource_Abstract::onHeartbeat()
-{
-    bool oldHasHeartbeat = hasHeartbeat();
-
-    heartbeatTimer.start();
-    if (!oldHasHeartbeat) {
-        QTimer::singleShot(0, this, SIGNAL(hasHeartbeatChanged()));
-    }
+    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetHasHeartbeat);
 }
 
 
@@ -537,7 +526,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
     // FLARM Heartbeat
     if (messageType == u"PFLAU") {
         // Heartbeat received.
-        onHeartbeat();
+        setHasHeartbeat(true);
 
         if (arguments.length() < 9) {
             return;
@@ -623,12 +612,23 @@ void Traffic::TrafficDataSource_Abstract::setErrorString(const QString& newError
 }
 
 
-void Traffic::TrafficDataSource_Abstract::stopHeartbeat()
+void Traffic::TrafficDataSource_Abstract::setHasHeartbeat(bool hb)
 {
-    if (!heartbeatTimer.isActive()) {
-        return;
+    if (hb == true) {
+        heartbeatTimer.start();
+    } else {
+        heartbeatTimer.stop();
     }
 
-    heartbeatTimer.stop();
-    QTimer::singleShot(0, this, SIGNAL(hasHeartbeatChanged()));
+    if (m_hasHeartbeat == hb) {
+        return;
+    }
+    m_hasHeartbeat = hb;
+    emit hasHeartbeatChanged(m_hasHeartbeat);
+}
+
+
+void Traffic::TrafficDataSource_Abstract::resetHasHeartbeat()
+{
+    setHasHeartbeat(true);
 }

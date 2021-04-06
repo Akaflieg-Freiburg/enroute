@@ -133,7 +133,7 @@ Page {
                 // Background color according to METAR/FAA flight category
                 background: Rectangle {
                     border.color: "black"
-                    color: (flarmAdaptor.receiving) ? "green" : "red"
+                    color: (flarmAdaptor.receivingHeartbeat) ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
@@ -144,7 +144,7 @@ Page {
                 Layout.fillWidth: true
 
                 text:   {
-                    if (flarmAdaptor.receiving)
+                    if (flarmAdaptor.receivingHeartbeat)
                         return qsTr("<p>Well done! Go flying. Give yourself a pat on the back.</p>")
                     else
                         return qsTr("
@@ -182,16 +182,16 @@ Page {
             anchors.centerIn: parent
             width: Math.min(implicitWidth, parent.width-Qt.application.font.pixelSize)
 
-            text: (flarmAdaptor.receiving) ? qsTr("Disconnect from Traffic Receiver") : qsTr("Connect to Traffic Receiver")
+            text: (flarmAdaptor.receivingHeartbeat) ? qsTr("Disconnect from Traffic Receiver") : qsTr("Connect to Traffic Receiver")
 
-            icon.source: (flarmAdaptor.receiving) ? "/icons/material/ic_cancel.svg" : "/icons/material/ic_tap_and_play.svg"
+            icon.source: (flarmAdaptor.receivingHeartbeat) ? "/icons/material/ic_cancel.svg" : "/icons/material/ic_tap_and_play.svg"
 
             Layout.alignment: Qt.AlignHCenter
             Material.foreground: Material.accent
 
             enabled: !timer.running
             onClicked: {
-                if (flarmAdaptor.receiving)
+                if (flarmAdaptor.receivingHeartbeat)
                     flarmAdaptor.disconnectFromTrafficReceiver()
                 else
                     flarmAdaptor.connectToTrafficReceiver()

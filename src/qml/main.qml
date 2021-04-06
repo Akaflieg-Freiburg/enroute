@@ -187,7 +187,7 @@ ApplicationWindow {
 
                             text: qsTr("Traffic Receiver")
                                   + `<br><font color="#606060" size="2">`
-                                  + ((flarmAdaptor.receiving) ? qsTr("Receiving traffic data.") : qsTr("Not receiving traffic data."))
+                                  + ((flarmAdaptor.receivingHeartbeatHeartbeat) ? qsTr("Receiving traffic data.") : qsTr("Not receiving traffic data."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_airplanemode_active.svg"
                             onClicked: {
@@ -199,7 +199,7 @@ ApplicationWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: (flarmAdaptor.receiving) ? "green" : "red"
+                                color: (flarmAdaptor.receivingHeartbeat) ? "green" : "red"
                                 opacity: 0.2
                             }
                         }
@@ -422,8 +422,8 @@ ApplicationWindow {
 
         Connections { // Traffic receiver
             target: flarmAdaptor
-            function onReceivingChanged() {
-                if (flarmAdaptor.receiving)
+            function onReceivingHeartbeatChanged() {
+                if (flarmAdaptor.receivingHeartbeat)
                     toast.doToast(qsTr("Connected to traffic receiver."))
                 else
                     toast.doToast(qsTr("Lost connection to traffic receiver."))

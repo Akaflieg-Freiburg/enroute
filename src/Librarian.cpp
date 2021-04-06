@@ -354,12 +354,10 @@ at random if more than one device tries to access.</p>
 
     if (name == ":text/whatsnew.html") {
         return (R"MD(
-The app can now connect to your aircraft's traffic receiver
-(typically a FLARM device) and show nearby traffic on the
-moving map. Open the menu and go to **Information/Traffic
-Reveicer** to try it out.
+Users of Stratus traffic receivers can now connect to their
+devices without changing the Stratux' IP address.
 
-This feature is new. Your feedback is very welcome!
+There are many small improvements in the user interface.
 )MD");
     }
 

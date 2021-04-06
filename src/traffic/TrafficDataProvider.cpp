@@ -52,17 +52,26 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     setSourceName(tr("Traffic data receiver"));
 
+    // Setup FLARM warning
+    m_FLARMWarningTimer.setInterval( Positioning::PositionInfo::lifetime );
+    m_FLARMWarningTimer.setSingleShot(true);
+    connect(&m_FLARMWarningTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::resetFLARMWarning);
+
+
+
     // Setup Data Sources
 
     // Uncomment one of the lines below to start this class in simulation mode.
-    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-hard.txt", this);
-    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
-    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
-    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-    // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
+    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-hard.txt", this);
+    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
+    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
+    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
+    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance.txt", this);
     m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
-    // _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
-    //    _dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
+    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
+
+    // Real data sources
     m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
     m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this);
 
@@ -76,16 +85,15 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingChanged);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingHeartbeatChanged);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::flarmWarning, this, &Traffic::TrafficDataProvider::onFLARMWarning);
-
-
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::flarmWarning, this, &Traffic::TrafficDataProvider::setFLARMWarning);
     }
 
+    // Bindings for status string
     connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(this, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
 
@@ -106,14 +114,12 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
 void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 {
-
     foreach(auto dataSource, m_dataSources) {
         if (dataSource.isNull()) {
             continue;
         }
         dataSource->connectToTrafficReceiver();
     }
-
 }
 
 
@@ -138,32 +144,18 @@ auto Traffic::TrafficDataProvider::globalInstance() -> Traffic::TrafficDataProvi
 }
 
 
-void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
+void Traffic::TrafficDataProvider::setFLARMWarning(const Traffic::FLARMWarning& warning)
 {
-    foreach(auto target, m_trafficObjects)
-        if (factor.ID() == target->ID()) {
-            target->copyFrom(factor);
-            return;
-        }
-
-    auto *lowestPriObject = m_trafficObjects.at(0);
-    foreach(auto target, m_trafficObjects)
-        if (lowestPriObject->hasHigherPriorityThan(*target)) {
-            lowestPriObject = target;
-        }
-    if (factor.hasHigherPriorityThan(*lowestPriObject)) {
-        lowestPriObject->copyFrom(factor);
+    if (warning.alarmLevel() > -1) {
+        m_FLARMWarningTimer.start();
     }
 
-}
-
-
-void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor)
-{
-    if ((factor.ID() == m_trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
-        m_trafficObjectWithoutPosition->copyFrom(factor);
+    if (m_FLARMWarning == warning) {
+        return;
     }
 
+    m_FLARMWarning = warning;
+    emit flarmWarningChanged(m_FLARMWarning);
 }
 
 
@@ -200,7 +192,36 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 }
 
 
-auto Traffic::TrafficDataProvider::receiving() const -> bool
+void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor)
+{
+    if ((factor.ID() == m_trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
+        m_trafficObjectWithoutPosition->copyFrom(factor);
+    }
+
+}
+
+
+void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
+{
+    foreach(auto target, m_trafficObjects)
+        if (factor.ID() == target->ID()) {
+            target->copyFrom(factor);
+            return;
+        }
+
+    auto *lowestPriObject = m_trafficObjects.at(0);
+    foreach(auto target, m_trafficObjects)
+        if (lowestPriObject->hasHigherPriorityThan(*target)) {
+            lowestPriObject = target;
+        }
+    if (factor.hasHigherPriorityThan(*lowestPriObject)) {
+        lowestPriObject->copyFrom(factor);
+    }
+
+}
+
+
+auto Traffic::TrafficDataProvider::receivingHeartbeat() const -> bool
 {
 
     foreach(auto source, m_dataSources) {
@@ -215,6 +236,12 @@ auto Traffic::TrafficDataProvider::receiving() const -> bool
 
     return false;
 
+}
+
+
+void Traffic::TrafficDataProvider::resetFLARMWarning()
+{
+    setFLARMWarning( FLARMWarning() );
 }
 
 
@@ -257,14 +284,4 @@ void Traffic::TrafficDataProvider::updateStatusString()
 
     setStatusString(result);
 
-}
-
-void Traffic::TrafficDataProvider::onFLARMWarning(const Traffic::FLARMWarning& warning)
-{
-    if (m_FLARMWarning == warning) {
-        return;
-    }
-
-    m_FLARMWarning = warning;
-    emit flarmWarningChanged(m_FLARMWarning);
 }

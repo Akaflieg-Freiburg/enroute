@@ -144,7 +144,7 @@ signals:
     void flarmWarning(const Traffic::FLARMWarning& warning);
 
     /*! \brief Notifier signal */
-    void hasHeartbeatChanged();
+    void hasHeartbeatChanged(bool);
 
     /*! \brief Position info
      *
@@ -225,11 +225,11 @@ protected:
     // Read, understand and process one NMEA sentence
     void processFLARMMessage(QString msg);
 
-private:
-    // This slot is called whenever a heartbeat is reveived. If updates the property
-    // hasHeartbeat.
-    void onHeartbeat();
+    void setHasHeartbeat(bool hb);
+    void resetHasHeartbeat();
 
+
+private:
     // Property caches
     QString _connectivityStatus {};
     QString _errorString {};
@@ -240,6 +240,7 @@ private:
 
     // Heartbeat timer
     QTimer heartbeatTimer;
+    bool m_hasHeartbeat {false};
 
     // Targets
     Traffic::TrafficFactor factor;

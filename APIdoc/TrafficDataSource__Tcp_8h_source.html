@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.5.1</span>
+   &#160;<span id="projectnumber">2.5.100</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -70,61 +70,58 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QGeoPositionInfo&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QPointer&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QTcpSocket&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QTimer&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QQmlListProperty&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;traffic/TrafficDataSource_Abstract.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;GlobalSettings.h&quot;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;traffic/TrafficFactor.h&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;traffic/TrafficDataSource_Abstract.h&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>Traffic {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">class </span>TrafficDataSource_Tcp : <span class="keyword">public</span> TrafficDataSource_Abstract {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#ac51f15b462599ec031445ed98181b6dd">TrafficDataSource_Tcp</a>(QString hostName, quint16 port, QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    ~<a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#ac51f15b462599ec031445ed98181b6dd">TrafficDataSource_Tcp</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">sourceName</a>()<span class="keyword"> const override</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Tcp.html">   63</a></span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;TCP connection to %1 port %2&quot;</span>).arg(_hostName).arg(_port);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#abac4b492e1744ff4380bcd596a710d91">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#a301e9c64c9279c362657db7f81bfc0f9">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// Handle socket errors.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> onErrorOccurred(QAbstractSocket::SocketError socketError);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Read one line from the socket&#39;s text stream and passes the string on to</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// processFLARMMessage.</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span> readFromStream();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">// Update the property &quot;errorString&quot; and &quot;connectivityStatus&quot; and emit notification signals</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span> onStateChanged();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span> onHasHeartbeatChanged();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>Traffic {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span>TrafficDataSource_Tcp : <span class="keyword">public</span> TrafficDataSource_Abstract {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#ac51f15b462599ec031445ed98181b6dd">TrafficDataSource_Tcp</a>(QString hostName, quint16 port, QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// Standard destructor</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    ~<a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#ac51f15b462599ec031445ed98181b6dd">TrafficDataSource_Tcp</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">sourceName</a>()<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;TCP connection to %1 port %2&quot;</span>).arg(m_hostName).arg(m_port);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#abac4b492e1744ff4380bcd596a710d91">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Tcp.html#a301e9c64c9279c362657db7f81bfc0f9">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Handle socket errors.</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> onErrorOccurred(QAbstractSocket::SocketError socketError);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// Read one line from the socket&#39;s text stream and passes the string on to</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// processFLARMMessage.</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> readFromStream();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Update the property &quot;errorString&quot; and &quot;connectivityStatus&quot; and emit notification signals</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span> onStateChanged(QAbstractSocket::SocketState socketState);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// Acquire or release WiFi lock</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> onReceivingHeartbeatChanged(<span class="keywordtype">bool</span> receivingHB);</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    QPointer&lt;QTcpSocket&gt; socket;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    QTextStream textStream;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">   98</a></span>&#160;    QString _hostName;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    quint16 _port;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    QString m_hostName;</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">   99</a></span>&#160;    quint16 m_port;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Tcp_html_a301e9c64c9279c362657db7f81bfc0f9"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Tcp.html#a301e9c64c9279c362657db7f81bfc0f9">Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver</a></div><div class="ttdeci">void disconnectFromTrafficReceiver() override</div><div class="ttdoc">Disconnect from traffic receiver.</div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Tcp_html_aa3a7fb686181353c34affd23b51640d2"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">Traffic::TrafficDataSource_Tcp::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__Tcp_8h_source.html#l00098">TrafficDataSource_Tcp.h:98</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Tcp_html_aa3a7fb686181353c34affd23b51640d2"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">Traffic::TrafficDataSource_Tcp::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__Tcp_8h_source.html#l00099">TrafficDataSource_Tcp.h:99</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Tcp_html_abac4b492e1744ff4380bcd596a710d91"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Tcp.html#abac4b492e1744ff4380bcd596a710d91">Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver() override</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Tcp_html_ac51f15b462599ec031445ed98181b6dd"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Tcp.html#ac51f15b462599ec031445ed98181b6dd">Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp</a></div><div class="ttdeci">TrafficDataSource_Tcp(QString hostName, quint16 port, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
 <!-- start footer part -->

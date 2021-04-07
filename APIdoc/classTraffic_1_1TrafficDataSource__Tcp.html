@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.5.1</span>
+   &#160;<span id="projectnumber">2.5.100</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -53,7 +53,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Traffic receiver.  
+<p>Traffic receiver: TCP connection to FLARM/NMEA source.  
  <a href="classTraffic_1_1TrafficDataSource__Tcp.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TrafficDataSource__Tcp_8h_source.html">TrafficDataSource_Tcp.h</a>&gt;</code></p>
@@ -62,7 +62,7 @@ Inheritance diagram for Traffic::TrafficDataSource_Tcp:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTraffic_1_1TrafficDataSource__Tcp__inherit__graph.png" border="0" usemap="#Traffic_1_1TrafficDataSource__Tcp_inherit__map" alt="Inheritance graph"/></div>
 <map name="Traffic_1_1TrafficDataSource__Tcp_inherit__map" id="Traffic_1_1TrafficDataSource__Tcp_inherit__map">
-<area shape="rect" title="Traffic receiver." alt="" coords="5,95,216,121"/>
+<area shape="rect" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="5,95,216,121"/>
 <area shape="rect" href="classTraffic_1_1TrafficDataSource__Abstract.html" title="Traffic receiver." alt="" coords="19,5,202,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -71,7 +71,7 @@ Collaboration diagram for Traffic::TrafficDataSource_Tcp:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTraffic_1_1TrafficDataSource__Tcp__coll__graph.png" border="0" usemap="#Traffic_1_1TrafficDataSource__Tcp_coll__map" alt="Collaboration graph"/></div>
 <map name="Traffic_1_1TrafficDataSource__Tcp_coll__map" id="Traffic_1_1TrafficDataSource__Tcp_coll__map">
-<area shape="rect" title="Traffic receiver." alt="" coords="5,95,216,121"/>
+<area shape="rect" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="5,95,216,121"/>
 <area shape="rect" href="classTraffic_1_1TrafficDataSource__Abstract.html" title="Traffic receiver." alt="" coords="19,5,202,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -110,37 +110,40 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a3eb47fb6ebab35c8931547027d1eadf2">connectivityStatus</a> () const</td></tr>
 <tr class="memdesc:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a3eb47fb6ebab35c8931547027d1eadf2">More...</a><br /></td></tr>
 <tr class="separator:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96cc09ab60864c3b7b6ff14c5c605cca inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a96cc09ab60864c3b7b6ff14c5c605cca">hasHeartbeat</a> ()</td></tr>
-<tr class="memdesc:a96cc09ab60864c3b7b6ff14c5c605cca inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a96cc09ab60864c3b7b6ff14c5c605cca">More...</a><br /></td></tr>
-<tr class="separator:a96cc09ab60864c3b7b6ff14c5c605cca inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4a3e8d63be6f3b6a95b543529c36e89 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab4a3e8d63be6f3b6a95b543529c36e89">receivingHeartbeat</a> ()</td></tr>
+<tr class="memdesc:ab4a3e8d63be6f3b6a95b543529c36e89 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ab4a3e8d63be6f3b6a95b543529c36e89">More...</a><br /></td></tr>
+<tr class="separator:ab4a3e8d63be6f3b6a95b543529c36e89 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header signals_classTraffic_1_1TrafficDataSource__Abstract"><td colspan="2" onclick="javascript:toggleInherit('signals_classTraffic_1_1TrafficDataSource__Abstract')"><img src="closed.png" alt="-"/>&#160;Signals inherited from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a></td></tr>
-<tr class="memitem:a9277ce2bec68563bef6ed1074bb82fd0 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a9277ce2bec68563bef6ed1074bb82fd0">barometricAltitudeUpdated</a> (<a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>)</td></tr>
-<tr class="memdesc:a9277ce2bec68563bef6ed1074bb82fd0 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Barometric altitude.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a9277ce2bec68563bef6ed1074bb82fd0">More...</a><br /></td></tr>
-<tr class="separator:a9277ce2bec68563bef6ed1074bb82fd0 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a794bd39ad17b4240b36ed7491bd78088 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="a794bd39ad17b4240b36ed7491bd78088"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a794bd39ad17b4240b36ed7491bd78088">connectivityStatusChanged</a> ()</td></tr>
-<tr class="memdesc:a794bd39ad17b4240b36ed7491bd78088 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a794bd39ad17b4240b36ed7491bd78088 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab132b52711fc05a640a216ed8dcd20e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="ab132b52711fc05a640a216ed8dcd20e4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab132b52711fc05a640a216ed8dcd20e4">errorStringChanged</a> ()</td></tr>
-<tr class="memdesc:ab132b52711fc05a640a216ed8dcd20e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:ab132b52711fc05a640a216ed8dcd20e4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa235268a49fc8ad27b07830ad238037a inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#aa235268a49fc8ad27b07830ad238037a">pressureAltitudeUpdated</a> (<a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>)</td></tr>
+<tr class="memdesc:aa235268a49fc8ad27b07830ad238037a inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pressure altitude.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#aa235268a49fc8ad27b07830ad238037a">More...</a><br /></td></tr>
+<tr class="separator:aa235268a49fc8ad27b07830ad238037a inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="a29175a0a6310a645e7ba34e26fcf42ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a29175a0a6310a645e7ba34e26fcf42ca">connectivityStatusChanged</a> (QString newStatus)</td></tr>
+<tr class="memdesc:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a29175a0a6310a645e7ba34e26fcf42ca inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="a287d4c6523682facee4e2ef8a3f703db"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a287d4c6523682facee4e2ef8a3f703db">errorStringChanged</a> (QString newError)</td></tr>
+<tr class="memdesc:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a287d4c6523682facee4e2ef8a3f703db inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c534eb6826cdf6e9509cbe7a23a2a1e inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c534eb6826cdf6e9509cbe7a23a2a1e">factorWithoutPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;factor)</td></tr>
 <tr class="memdesc:a5c534eb6826cdf6e9509cbe7a23a2a1e inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor without position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c534eb6826cdf6e9509cbe7a23a2a1e">More...</a><br /></td></tr>
 <tr class="separator:a5c534eb6826cdf6e9509cbe7a23a2a1e inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae78d16fa4a55ff06ffef4b3b4eb6ad70 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae78d16fa4a55ff06ffef4b3b4eb6ad70">factorWithPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;factor)</td></tr>
 <tr class="memdesc:ae78d16fa4a55ff06ffef4b3b4eb6ad70 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ae78d16fa4a55ff06ffef4b3b4eb6ad70">More...</a><br /></td></tr>
 <tr class="separator:ae78d16fa4a55ff06ffef4b3b4eb6ad70 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7eeddc5ef2ea5d55cff098f64c7ead2 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="ae7eeddc5ef2ea5d55cff098f64c7ead2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae7eeddc5ef2ea5d55cff098f64c7ead2">hasHeartbeatChanged</a> ()</td></tr>
-<tr class="memdesc:ae7eeddc5ef2ea5d55cff098f64c7ead2 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:ae7eeddc5ef2ea5d55cff098f64c7ead2 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e4c80e33dedaed51ce98e86114094cb inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5e4c80e33dedaed51ce98e86114094cb">positionUpdated</a> (<a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>)</td></tr>
-<tr class="memdesc:a5e4c80e33dedaed51ce98e86114094cb inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position info.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5e4c80e33dedaed51ce98e86114094cb">More...</a><br /></td></tr>
-<tr class="separator:a5e4c80e33dedaed51ce98e86114094cb inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c183f3d353775394079a77761dc1fc6 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c183f3d353775394079a77761dc1fc6">warning</a> (const <a class="el" href="classTraffic_1_1Warning.html">Traffic::Warning</a> &amp;warning)</td></tr>
+<tr class="memdesc:a5c183f3d353775394079a77761dc1fc6 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c183f3d353775394079a77761dc1fc6">More...</a><br /></td></tr>
+<tr class="separator:a5c183f3d353775394079a77761dc1fc6 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91a00e00db640da40c1eb40887b7d82b inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="a91a00e00db640da40c1eb40887b7d82b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a91a00e00db640da40c1eb40887b7d82b">receivingHeartbeatChanged</a> (bool)</td></tr>
+<tr class="memdesc:a91a00e00db640da40c1eb40887b7d82b inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a91a00e00db640da40c1eb40887b7d82b inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6badc04c773060708920464471afee4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae6badc04c773060708920464471afee4">positionUpdated</a> (<a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> pInfo)</td></tr>
+<tr class="memdesc:ae6badc04c773060708920464471afee4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position info.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ae6badc04c773060708920464471afee4">More...</a><br /></td></tr>
+<tr class="separator:ae6badc04c773060708920464471afee4 inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e08c56143cd22a1fe5f750ff43c0b0c inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e08c56143cd22a1fe5f750ff43c0b0c">trafficReceiverHwVersion</a> (QString result)</td></tr>
 <tr class="memdesc:a6e08c56143cd22a1fe5f750ff43c0b0c inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic receiver hardware version.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e08c56143cd22a1fe5f750ff43c0b0c">More...</a><br /></td></tr>
 <tr class="separator:a6e08c56143cd22a1fe5f750ff43c0b0c inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,34 +157,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:acaa3da4d838e22ff511f0828a34bd7aa inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic receiver software version.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#acaa3da4d838e22ff511f0828a34bd7aa">More...</a><br /></td></tr>
 <tr class="separator:acaa3da4d838e22ff511f0828a34bd7aa inherit signals_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classTraffic_1_1TrafficDataSource__Abstract')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a></td></tr>
+<tr class="memitem:ac4859eac42e9268fba7ed9e30b47dcbb inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac4859eac42e9268fba7ed9e30b47dcbb">processFLARMSentence</a> (QString sentence)</td></tr>
+<tr class="memdesc:ac4859eac42e9268fba7ed9e30b47dcbb inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process one FLARM/NMEA sentence.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ac4859eac42e9268fba7ed9e30b47dcbb">More...</a><br /></td></tr>
+<tr class="separator:ac4859eac42e9268fba7ed9e30b47dcbb inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5edbc4d5d739e95eff16c39358b10c6e inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">resetReceivingHeartbeat</a> ()</td></tr>
+<tr class="memdesc:a5edbc4d5d739e95eff16c39358b10c6e inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resetter method for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">More...</a><br /></td></tr>
+<tr class="separator:a5edbc4d5d739e95eff16c39358b10c6e inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac88a41ad7a4268a53f6d416effbdffb7 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">setConnectivityStatus</a> (const QString &amp;newConnectivityStatus)</td></tr>
 <tr class="memdesc:ac88a41ad7a4268a53f6d416effbdffb7 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">More...</a><br /></td></tr>
 <tr class="separator:ac88a41ad7a4268a53f6d416effbdffb7 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a571c20201fb3a902e8a5df99efab1377 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">setErrorString</a> (const QString &amp;newErrorString=QString())</td></tr>
 <tr class="memdesc:a571c20201fb3a902e8a5df99efab1377 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">More...</a><br /></td></tr>
 <tr class="separator:a571c20201fb3a902e8a5df99efab1377 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53d634de1067eddc68df8a43f0898fc5 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">setReceivingHeartbeat</a> (bool newReceivingHeartbeat)</td></tr>
+<tr class="memdesc:a53d634de1067eddc68df8a43f0898fc5 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter method for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">More...</a><br /></td></tr>
+<tr class="separator:a53d634de1067eddc68df8a43f0898fc5 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_classTraffic_1_1TrafficDataSource__Abstract"><td colspan="2" onclick="javascript:toggleInherit('properties_classTraffic_1_1TrafficDataSource__Abstract')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a></td></tr>
 <tr class="memitem:ad5c337d3284f03c1beaaf0da7e494618 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">errorString</a></td></tr>
 <tr class="memdesc:ad5c337d3284f03c1beaaf0da7e494618 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">String describing the last socket error.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">More...</a><br /></td></tr>
 <tr class="separator:ad5c337d3284f03c1beaaf0da7e494618 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab81961d198aa8f53cf1d6935394a6a6f inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="ab81961d198aa8f53cf1d6935394a6a6f"></a>
-QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a></td></tr>
-<tr class="memdesc:ab81961d198aa8f53cf1d6935394a6a6f inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connectivity status. <br /></td></tr>
+<tr class="memitem:ab81961d198aa8f53cf1d6935394a6a6f inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a></td></tr>
+<tr class="memdesc:ab81961d198aa8f53cf1d6935394a6a6f inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connectivity status.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">More...</a><br /></td></tr>
 <tr class="separator:ab81961d198aa8f53cf1d6935394a6a6f inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90dbf7921c7d7f659d68b3438496365e inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a90dbf7921c7d7f659d68b3438496365e">hasHeartbeat</a></td></tr>
-<tr class="memdesc:a90dbf7921c7d7f659d68b3438496365e inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">FLARM heartbeat.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a90dbf7921c7d7f659d68b3438496365e">More...</a><br /></td></tr>
-<tr class="separator:a90dbf7921c7d7f659d68b3438496365e inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6b13feeee5bd9ea1011eaeed6fb2a2 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top"><a id="afc6b13feeee5bd9ea1011eaeed6fb2a2"></a>
-QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a></td></tr>
-<tr class="memdesc:afc6b13feeee5bd9ea1011eaeed6fb2a2 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source name. <br /></td></tr>
+<tr class="memitem:a13a3c0bfa4d3819adea943c564018e55 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">receivingHeartbeat</a></td></tr>
+<tr class="memdesc:a13a3c0bfa4d3819adea943c564018e55 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heartbeat indicator.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">More...</a><br /></td></tr>
+<tr class="separator:a13a3c0bfa4d3819adea943c564018e55 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc6b13feeee5bd9ea1011eaeed6fb2a2 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a></td></tr>
+<tr class="memdesc:afc6b13feeee5bd9ea1011eaeed6fb2a2 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">More...</a><br /></td></tr>
 <tr class="separator:afc6b13feeee5bd9ea1011eaeed6fb2a2 inherit properties_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Traffic receiver. </p>
-<p>This class connects to a traffic receiver via the network. It expects to find a receiver at the IP-Address 192.168.1.1, port 2000. Once connected, it continuously reads data from the device, and exposes position and traffic information to the user, as well as barometric altitude.</p>
-<p>By modifying the source code, developers can also start the class in a mode where it connects to a file with simulator data. </p>
+<div class="textblock"><p>Traffic receiver: TCP connection to FLARM/NMEA source. </p>
+<p>This class connects to a traffic receiver via a TCP connection. It expects to find a receiver at the specifed IP-Address and port.</p>
+<p>In most use cases, the connection will be established via the device's WiFi interface. The class will therefore try to lock the WiFi once a heartbeat has been detected, and release the WiFi at the appropriate time. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Tcp_8h_source.html#l00063">63</a> of file <a class="el" href="TrafficDataSource__Tcp_8h_source.html">TrafficDataSource_Tcp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Tcp_8h_source.html#l00058">58</a> of file <a class="el" href="TrafficDataSource__Tcp_8h_source.html">TrafficDataSource_Tcp.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac51f15b462599ec031445ed98181b6dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac51f15b462599ec031445ed98181b6dd">&#9670;&nbsp;</a></span>TrafficDataSource_Tcp()</h2>
@@ -226,6 +236,8 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">hostName</td><td>Name of the host where the traffic receiver is expected</td></tr>
+    <tr><td class="paramname">port</td><td>Port at the host where the traffic receiver is expected</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
   </table>
   </dd>
@@ -258,7 +270,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Start attempt to connect to traffic receiver. </p>
-<p>If this class is connected to a traffic receiver, this method does nothing. Otherwise, it stops any ongoing connection attempt and starts a new attempt to connect to a potential receiver. </p>
+<p>This method implements the pure virtual method declared by its superclass. </p>
 
 </div>
 </div>
@@ -286,7 +298,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Disconnect from traffic receiver. </p>
-<p>This method stops any ongoing connection or connection attempt. </p>
+<p>This method implements the pure virtual method declared by its superclass. </p>
 
 </div>
 </div>
@@ -314,11 +326,12 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Getter function for the property with the same name. </p>
+<p>This method implements the pure virtual method declared by its superclass.</p>
 <dl class="section return"><dt>Returns</dt><dd>Property sourceName </dd></dl>
 
 <p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#af3a0ebcb9bf2719f8ade8d4ff6f8468d">Traffic::TrafficDataSource_Abstract</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Tcp_8h_source.html#l00098">98</a> of file <a class="el" href="TrafficDataSource__Tcp_8h_source.html">TrafficDataSource_Tcp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Tcp_8h_source.html#l00099">99</a> of file <a class="el" href="TrafficDataSource__Tcp_8h_source.html">TrafficDataSource_Tcp.h</a>.</p>
 
 </div>
 </div>

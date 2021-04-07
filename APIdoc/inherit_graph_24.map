@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classTraffic_1_1FLARMWarning.html" title="Traffic warning." alt="" coords="5,5,173,32"/>
+<area shape="rect" id="node1" href="$classTraffic_1_1TrafficDataSource__Abstract.html" title="Traffic receiver." alt="" coords="5,23,188,65"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="" coords="236,5,449,32"/>
+<area shape="rect" id="node3" href="$classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="237,56,448,83"/>
 </map>

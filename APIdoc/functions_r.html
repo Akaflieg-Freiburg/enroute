@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.5.1</span>
+   &#160;<span id="projectnumber">2.5.100</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -51,11 +51,13 @@ $(function() {
 <li>rawTextChanged()
 : <a class="el" href="classWeather_1_1Decoder.html#aa33e09254c3edc4e7db1629aa7dcd854">Weather::Decoder</a>
 </li>
-<li>receiving
-: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#abf3810960192463debdef1178cf6f623">Traffic::TrafficDataProvider</a>
+<li>receivingHeartbeat
+: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a78b7069d101ff87a403be82a1510c09e">Traffic::TrafficDataProvider</a>
+, <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">Traffic::TrafficDataSource_Abstract</a>
 </li>
-<li>receivingChanged()
-: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a658418ebccd7bc22f1efb2a1c9b5af2b">Traffic::TrafficDataProvider</a>
+<li>receivingHeartbeatChanged()
+: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a3eace63d69cd00b4a828c45bd2069818">Traffic::TrafficDataProvider</a>
+, <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a91a00e00db640da40c1eb40887b7d82b">Traffic::TrafficDataSource_Abstract</a>
 </li>
 <li>receivingPositionInfo
 : <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a126dedddd4ca8d55a2f8ac6107f38de9">Positioning::PositionInfoSource_Abstract</a>
@@ -64,16 +66,16 @@ $(function() {
 : <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a3adaed71cedc697e83c7eb8464fc1f91">Positioning::PositionInfoSource_Abstract</a>
 </li>
 <li>relativeBearing()
-: <a class="el" href="classTraffic_1_1FLARMWarning.html#a2c078de56e0db74ad52135bcc0ffe0ae">Traffic::FLARMWarning</a>
+: <a class="el" href="classTraffic_1_1Warning.html#a170015de34cd71167a54210be731c98b">Traffic::Warning</a>
 </li>
-<li>relativeIssueTime()
-: <a class="el" href="classWeather_1_1TAF.html#a19fc65491f016c34478aab69654cf631">Weather::TAF</a>
+<li>relativeIssueTime
+: <a class="el" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">Weather::TAF</a>
 </li>
 <li>relativeIssueTimeChanged()
 : <a class="el" href="classWeather_1_1TAF.html#a5a563ecc3240ebdfcaa1f26e6cea63df">Weather::TAF</a>
 </li>
-<li>relativeObservationTime()
-: <a class="el" href="classWeather_1_1METAR.html#a1567312f2b68c7bae8b5d42bf421e588">Weather::METAR</a>
+<li>relativeObservationTime
+: <a class="el" href="classWeather_1_1METAR.html#ace9ce9c086873899a5dde6ba7df9a8a8">Weather::METAR</a>
 </li>
 <li>relativeObservationTimeChanged()
 : <a class="el" href="classWeather_1_1METAR.html#a4ae28cee32d69ad6587b4126fc9e5da9">Weather::METAR</a>
@@ -84,8 +86,8 @@ $(function() {
 <li>remoteFileDateChanged()
 : <a class="el" href="classGeoMaps_1_1Downloadable.html#a4919da77ec67a14b6ae51e9cd347e731">GeoMaps::Downloadable</a>
 </li>
-<li>remoteFileSize()
-: <a class="el" href="classGeoMaps_1_1Downloadable.html#af9132f4e907d28aa942d60c674528d8f">GeoMaps::Downloadable</a>
+<li>remoteFileSize
+: <a class="el" href="classGeoMaps_1_1Downloadable.html#a147d7dd9ed4cdffa9e37888d9fef7feb">GeoMaps::Downloadable</a>
 </li>
 <li>remoteFileSizeChanged()
 : <a class="el" href="classGeoMaps_1_1Downloadable.html#a856ffff545ca40089dd9fabb906edbf9">GeoMaps::Downloadable</a>
@@ -99,11 +101,14 @@ $(function() {
 <li>removeWaypoint()
 : <a class="el" href="classFlightRoute.html#a8ba3fdbcb3fa1dcac7d6278a463c486e">FlightRoute</a>
 </li>
+<li>resetReceivingHeartbeat()
+: <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">Traffic::TrafficDataSource_Abstract</a>
+</li>
 <li>reverse()
 : <a class="el" href="classFlightRoute.html#a46cfd0c57362a488960b4ff2ce4573b7">FlightRoute</a>
 </li>
-<li>routeObjects
-: <a class="el" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">FlightRoute</a>
+<li>routeObjects()
+: <a class="el" href="classFlightRoute.html#a57b396e168af0d4a7db16367a16fef00">FlightRoute</a>
 </li>
 </ul>
 </div><!-- contents -->

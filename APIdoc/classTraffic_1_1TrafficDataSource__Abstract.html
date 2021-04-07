@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.5.1</span>
+   &#160;<span id="projectnumber">2.5.100</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -66,8 +66,8 @@ Inheritance diagram for Traffic::TrafficDataSource_Abstract:</div>
 <div class="center"><img src="classTraffic_1_1TrafficDataSource__Abstract__inherit__graph.png" border="0" usemap="#Traffic_1_1TrafficDataSource__Abstract_inherit__map" alt="Inheritance graph"/></div>
 <map name="Traffic_1_1TrafficDataSource__Abstract_inherit__map" id="Traffic_1_1TrafficDataSource__Abstract_inherit__map">
 <area shape="rect" title="Traffic receiver." alt="" coords="138,5,321,47"/>
-<area shape="rect" href="classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver." alt="" coords="5,95,219,121"/>
-<area shape="rect" href="classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver." alt="" coords="243,95,453,121"/>
+<area shape="rect" href="classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="" coords="5,95,219,121"/>
+<area shape="rect" href="classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="243,95,453,121"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -82,30 +82,33 @@ Public Slots</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a9277ce2bec68563bef6ed1074bb82fd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a9277ce2bec68563bef6ed1074bb82fd0">barometricAltitudeUpdated</a> (<a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>)</td></tr>
-<tr class="memdesc:a9277ce2bec68563bef6ed1074bb82fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Barometric altitude.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a9277ce2bec68563bef6ed1074bb82fd0">More...</a><br /></td></tr>
-<tr class="separator:a9277ce2bec68563bef6ed1074bb82fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a794bd39ad17b4240b36ed7491bd78088"><td class="memItemLeft" align="right" valign="top"><a id="a794bd39ad17b4240b36ed7491bd78088"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a794bd39ad17b4240b36ed7491bd78088">connectivityStatusChanged</a> ()</td></tr>
-<tr class="memdesc:a794bd39ad17b4240b36ed7491bd78088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a794bd39ad17b4240b36ed7491bd78088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab132b52711fc05a640a216ed8dcd20e4"><td class="memItemLeft" align="right" valign="top"><a id="ab132b52711fc05a640a216ed8dcd20e4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab132b52711fc05a640a216ed8dcd20e4">errorStringChanged</a> ()</td></tr>
-<tr class="memdesc:ab132b52711fc05a640a216ed8dcd20e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:ab132b52711fc05a640a216ed8dcd20e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa235268a49fc8ad27b07830ad238037a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#aa235268a49fc8ad27b07830ad238037a">pressureAltitudeUpdated</a> (<a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>)</td></tr>
+<tr class="memdesc:aa235268a49fc8ad27b07830ad238037a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pressure altitude.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#aa235268a49fc8ad27b07830ad238037a">More...</a><br /></td></tr>
+<tr class="separator:aa235268a49fc8ad27b07830ad238037a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29175a0a6310a645e7ba34e26fcf42ca"><td class="memItemLeft" align="right" valign="top"><a id="a29175a0a6310a645e7ba34e26fcf42ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a29175a0a6310a645e7ba34e26fcf42ca">connectivityStatusChanged</a> (QString newStatus)</td></tr>
+<tr class="memdesc:a29175a0a6310a645e7ba34e26fcf42ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a29175a0a6310a645e7ba34e26fcf42ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a287d4c6523682facee4e2ef8a3f703db"><td class="memItemLeft" align="right" valign="top"><a id="a287d4c6523682facee4e2ef8a3f703db"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a287d4c6523682facee4e2ef8a3f703db">errorStringChanged</a> (QString newError)</td></tr>
+<tr class="memdesc:a287d4c6523682facee4e2ef8a3f703db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a287d4c6523682facee4e2ef8a3f703db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c534eb6826cdf6e9509cbe7a23a2a1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c534eb6826cdf6e9509cbe7a23a2a1e">factorWithoutPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;factor)</td></tr>
 <tr class="memdesc:a5c534eb6826cdf6e9509cbe7a23a2a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor without position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c534eb6826cdf6e9509cbe7a23a2a1e">More...</a><br /></td></tr>
 <tr class="separator:a5c534eb6826cdf6e9509cbe7a23a2a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae78d16fa4a55ff06ffef4b3b4eb6ad70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae78d16fa4a55ff06ffef4b3b4eb6ad70">factorWithPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;factor)</td></tr>
 <tr class="memdesc:ae78d16fa4a55ff06ffef4b3b4eb6ad70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ae78d16fa4a55ff06ffef4b3b4eb6ad70">More...</a><br /></td></tr>
 <tr class="separator:ae78d16fa4a55ff06ffef4b3b4eb6ad70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7eeddc5ef2ea5d55cff098f64c7ead2"><td class="memItemLeft" align="right" valign="top"><a id="ae7eeddc5ef2ea5d55cff098f64c7ead2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae7eeddc5ef2ea5d55cff098f64c7ead2">hasHeartbeatChanged</a> ()</td></tr>
-<tr class="memdesc:ae7eeddc5ef2ea5d55cff098f64c7ead2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:ae7eeddc5ef2ea5d55cff098f64c7ead2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e4c80e33dedaed51ce98e86114094cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5e4c80e33dedaed51ce98e86114094cb">positionUpdated</a> (<a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>)</td></tr>
-<tr class="memdesc:a5e4c80e33dedaed51ce98e86114094cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position info.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5e4c80e33dedaed51ce98e86114094cb">More...</a><br /></td></tr>
-<tr class="separator:a5e4c80e33dedaed51ce98e86114094cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c183f3d353775394079a77761dc1fc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c183f3d353775394079a77761dc1fc6">warning</a> (const <a class="el" href="classTraffic_1_1Warning.html">Traffic::Warning</a> &amp;warning)</td></tr>
+<tr class="memdesc:a5c183f3d353775394079a77761dc1fc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c183f3d353775394079a77761dc1fc6">More...</a><br /></td></tr>
+<tr class="separator:a5c183f3d353775394079a77761dc1fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91a00e00db640da40c1eb40887b7d82b"><td class="memItemLeft" align="right" valign="top"><a id="a91a00e00db640da40c1eb40887b7d82b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a91a00e00db640da40c1eb40887b7d82b">receivingHeartbeatChanged</a> (bool)</td></tr>
+<tr class="memdesc:a91a00e00db640da40c1eb40887b7d82b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a91a00e00db640da40c1eb40887b7d82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6badc04c773060708920464471afee4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae6badc04c773060708920464471afee4">positionUpdated</a> (<a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> pInfo)</td></tr>
+<tr class="memdesc:ae6badc04c773060708920464471afee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position info.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ae6badc04c773060708920464471afee4">More...</a><br /></td></tr>
+<tr class="separator:ae6badc04c773060708920464471afee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e08c56143cd22a1fe5f750ff43c0b0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e08c56143cd22a1fe5f750ff43c0b0c">trafficReceiverHwVersion</a> (QString result)</td></tr>
 <tr class="memdesc:a6e08c56143cd22a1fe5f750ff43c0b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic receiver hardware version.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e08c56143cd22a1fe5f750ff43c0b0c">More...</a><br /></td></tr>
 <tr class="separator:a6e08c56143cd22a1fe5f750ff43c0b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,45 +133,51 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3eb47fb6ebab35c8931547027d1eadf2"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a3eb47fb6ebab35c8931547027d1eadf2">connectivityStatus</a> () const</td></tr>
 <tr class="memdesc:a3eb47fb6ebab35c8931547027d1eadf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a3eb47fb6ebab35c8931547027d1eadf2">More...</a><br /></td></tr>
 <tr class="separator:a3eb47fb6ebab35c8931547027d1eadf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96cc09ab60864c3b7b6ff14c5c605cca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a96cc09ab60864c3b7b6ff14c5c605cca">hasHeartbeat</a> ()</td></tr>
-<tr class="memdesc:a96cc09ab60864c3b7b6ff14c5c605cca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a96cc09ab60864c3b7b6ff14c5c605cca">More...</a><br /></td></tr>
-<tr class="separator:a96cc09ab60864c3b7b6ff14c5c605cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4a3e8d63be6f3b6a95b543529c36e89"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab4a3e8d63be6f3b6a95b543529c36e89">receivingHeartbeat</a> ()</td></tr>
+<tr class="memdesc:ab4a3e8d63be6f3b6a95b543529c36e89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ab4a3e8d63be6f3b6a95b543529c36e89">More...</a><br /></td></tr>
+<tr class="separator:ab4a3e8d63be6f3b6a95b543529c36e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3a0ebcb9bf2719f8ade8d4ff6f8468d"><td class="memItemLeft" align="right" valign="top">virtual QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#af3a0ebcb9bf2719f8ade8d4ff6f8468d">sourceName</a> () const =0</td></tr>
 <tr class="memdesc:af3a0ebcb9bf2719f8ade8d4ff6f8468d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#af3a0ebcb9bf2719f8ade8d4ff6f8468d">More...</a><br /></td></tr>
 <tr class="separator:af3a0ebcb9bf2719f8ade8d4ff6f8468d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ac4859eac42e9268fba7ed9e30b47dcbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac4859eac42e9268fba7ed9e30b47dcbb">processFLARMSentence</a> (QString sentence)</td></tr>
+<tr class="memdesc:ac4859eac42e9268fba7ed9e30b47dcbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process one FLARM/NMEA sentence.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ac4859eac42e9268fba7ed9e30b47dcbb">More...</a><br /></td></tr>
+<tr class="separator:ac4859eac42e9268fba7ed9e30b47dcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5edbc4d5d739e95eff16c39358b10c6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">resetReceivingHeartbeat</a> ()</td></tr>
+<tr class="memdesc:a5edbc4d5d739e95eff16c39358b10c6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resetter method for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">More...</a><br /></td></tr>
+<tr class="separator:a5edbc4d5d739e95eff16c39358b10c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac88a41ad7a4268a53f6d416effbdffb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">setConnectivityStatus</a> (const QString &amp;newConnectivityStatus)</td></tr>
 <tr class="memdesc:ac88a41ad7a4268a53f6d416effbdffb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">More...</a><br /></td></tr>
 <tr class="separator:ac88a41ad7a4268a53f6d416effbdffb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a571c20201fb3a902e8a5df99efab1377"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">setErrorString</a> (const QString &amp;newErrorString=QString())</td></tr>
 <tr class="memdesc:a571c20201fb3a902e8a5df99efab1377"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">More...</a><br /></td></tr>
 <tr class="separator:a571c20201fb3a902e8a5df99efab1377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53d634de1067eddc68df8a43f0898fc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">setReceivingHeartbeat</a> (bool newReceivingHeartbeat)</td></tr>
+<tr class="memdesc:a53d634de1067eddc68df8a43f0898fc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter method for the property with the same name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">More...</a><br /></td></tr>
+<tr class="separator:a53d634de1067eddc68df8a43f0898fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:ad5c337d3284f03c1beaaf0da7e494618"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">errorString</a></td></tr>
 <tr class="memdesc:ad5c337d3284f03c1beaaf0da7e494618"><td class="mdescLeft">&#160;</td><td class="mdescRight">String describing the last socket error.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">More...</a><br /></td></tr>
 <tr class="separator:ad5c337d3284f03c1beaaf0da7e494618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab81961d198aa8f53cf1d6935394a6a6f"><td class="memItemLeft" align="right" valign="top"><a id="ab81961d198aa8f53cf1d6935394a6a6f"></a>
-QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a></td></tr>
-<tr class="memdesc:ab81961d198aa8f53cf1d6935394a6a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connectivity status. <br /></td></tr>
+<tr class="memitem:ab81961d198aa8f53cf1d6935394a6a6f"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a></td></tr>
+<tr class="memdesc:ab81961d198aa8f53cf1d6935394a6a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connectivity status.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">More...</a><br /></td></tr>
 <tr class="separator:ab81961d198aa8f53cf1d6935394a6a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90dbf7921c7d7f659d68b3438496365e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a90dbf7921c7d7f659d68b3438496365e">hasHeartbeat</a></td></tr>
-<tr class="memdesc:a90dbf7921c7d7f659d68b3438496365e"><td class="mdescLeft">&#160;</td><td class="mdescRight">FLARM heartbeat.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a90dbf7921c7d7f659d68b3438496365e">More...</a><br /></td></tr>
-<tr class="separator:a90dbf7921c7d7f659d68b3438496365e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6b13feeee5bd9ea1011eaeed6fb2a2"><td class="memItemLeft" align="right" valign="top"><a id="afc6b13feeee5bd9ea1011eaeed6fb2a2"></a>
-QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a></td></tr>
-<tr class="memdesc:afc6b13feeee5bd9ea1011eaeed6fb2a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source name. <br /></td></tr>
+<tr class="memitem:a13a3c0bfa4d3819adea943c564018e55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">receivingHeartbeat</a></td></tr>
+<tr class="memdesc:a13a3c0bfa4d3819adea943c564018e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heartbeat indicator.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">More...</a><br /></td></tr>
+<tr class="separator:a13a3c0bfa4d3819adea943c564018e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc6b13feeee5bd9ea1011eaeed6fb2a2"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a></td></tr>
+<tr class="memdesc:afc6b13feeee5bd9ea1011eaeed6fb2a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source name.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">More...</a><br /></td></tr>
 <tr class="separator:afc6b13feeee5bd9ea1011eaeed6fb2a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Traffic receiver. </p>
-<p>This class connects to a traffic receiver via the network. It expects to find a receiver at the IP-Address 192.168.1.1, port 2000. Once connected, it continuously reads data from the device, and exposes position and traffic information to the user, as well as barometric altitude.</p>
-<p>By modifying the source code, developers can also start the class in a mode where it connects to a file with simulator data. </p>
+<p>This is an abstract base class for all classes that connect to a traffic receiver. In addition to the properties listed below, the class also emits imporant data via the signals barometricAltitudeUpdated, factorWithoutPosition, factorWithPosition and warning. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00064">64</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00055">55</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa00f8a63b0ee164611f8ee234ba44a64"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa00f8a63b0ee164611f8ee234ba44a64">&#9670;&nbsp;</a></span>TrafficDataSource_Abstract()</h2>
@@ -205,35 +214,6 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9277ce2bec68563bef6ed1074bb82fd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9277ce2bec68563bef6ed1074bb82fd0">&#9670;&nbsp;</a></span>barometricAltitudeUpdated</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Traffic::TrafficDataSource_Abstract::barometricAltitudeUpdated </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Barometric altitude. </p>
-<p>If this class received barometric altitude information from a connected traffic receiver, this information is emitted here. </p>
-
-</div>
-</div>
 <a id="a3eb47fb6ebab35c8931547027d1eadf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3eb47fb6ebab35c8931547027d1eadf2">&#9670;&nbsp;</a></span>connectivityStatus()</h2>
 
@@ -260,7 +240,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property connectivityStatus </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00123">123</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00124">124</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -346,7 +326,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property errorString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00111">111</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00102">102</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -375,9 +355,10 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Traffic factor without position. </p>
+<p>This signal is emitted when the traffic receiver informs this class about traffic whose position is not known.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">factor</td><td>Pointer to traffic factor. This element is owned by this class and might change without notice. </td></tr>
+    <tr><td class="paramname">factor</td><td>Traffic factor. </td></tr>
   </table>
   </dd>
 </dl>
@@ -409,17 +390,18 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Traffic factor with position. </p>
+<p>This signal is emitted when the traffic receiver informs this class about traffic whose position is known.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">factor</td><td>Pointer to traffic factor. This element is owned by this class and might change without notice. </td></tr>
+    <tr><td class="paramname">factor</td><td>Traffic factor. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a96cc09ab60864c3b7b6ff14c5c605cca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96cc09ab60864c3b7b6ff14c5c605cca">&#9670;&nbsp;</a></span>hasHeartbeat()</h2>
+<a id="ae6badc04c773060708920464471afee4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6badc04c773060708920464471afee4">&#9670;&nbsp;</a></span>positionUpdated</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -428,7 +410,100 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Traffic::TrafficDataSource_Abstract::hasHeartbeat </td>
+          <td class="memname">void Traffic::TrafficDataSource_Abstract::positionUpdated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td>
+          <td class="paramname"><em>pInfo</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Position info. </p>
+<p>If this class received position information from a connected traffic receiver, this information is emitted here. </p>
+
+</div>
+</div>
+<a id="aa235268a49fc8ad27b07830ad238037a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa235268a49fc8ad27b07830ad238037a">&#9670;&nbsp;</a></span>pressureAltitudeUpdated</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataSource_Abstract::pressureAltitudeUpdated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pressure altitude. </p>
+<p>If this class received pressure altitude information from a connected traffic receiver, this information is emitted here. Pressure altitude is the altitude shown by your altimeter if the altimeter is set to 1013.2 hPa. </p>
+
+</div>
+</div>
+<a id="ac4859eac42e9268fba7ed9e30b47dcbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4859eac42e9268fba7ed9e30b47dcbb">&#9670;&nbsp;</a></span>processFLARMSentence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataSource_Abstract::processFLARMSentence </td>
+          <td>(</td>
+          <td class="paramtype">QString&#160;</td>
+          <td class="paramname"><em>sentence</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Process one FLARM/NMEA sentence. </p>
+<p>This method expects exactly one line containing a valid FLARM/NMEA sentence. This is a string typically looks like "$PFLAA,0,1587,1588,40,1,AA1237,225,,37,-1.6,1*7F". The method interprets the string and updates the properties and emits signals as appropriate. Invalid strings are silently ignored.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sentence</td><td>A QString containing a FLARM/NMEA sentence. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab4a3e8d63be6f3b6a95b543529c36e89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4a3e8d63be6f3b6a95b543529c36e89">&#9670;&nbsp;</a></span>receivingHeartbeat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Traffic::TrafficDataSource_Abstract::receivingHeartbeat </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -442,14 +517,14 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property hasHeartbeat </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property receivingHeartbeat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00138">138</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00145">145</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
-<a id="a5e4c80e33dedaed51ce98e86114094cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e4c80e33dedaed51ce98e86114094cb">&#9670;&nbsp;</a></span>positionUpdated</h2>
+<a id="a5edbc4d5d739e95eff16c39358b10c6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5edbc4d5d739e95eff16c39358b10c6e">&#9670;&nbsp;</a></span>resetReceivingHeartbeat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -458,22 +533,21 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Traffic::TrafficDataSource_Abstract::positionUpdated </td>
+          <td class="memname">void Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Position info. </p>
-<p>If this class received position information from a connected traffic receiver, this information is emitted here. </p>
+<p>Resetter method for the property with the same name. </p>
+<p>This is equivalent to calling setReceivingHeartbeat(false) </p>
 
 </div>
 </div>
@@ -545,6 +619,41 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
+<a id="a53d634de1067eddc68df8a43f0898fc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53d634de1067eddc68df8a43f0898fc5">&#9670;&nbsp;</a></span>setReceivingHeartbeat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataSource_Abstract::setReceivingHeartbeat </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>newReceivingHeartbeat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Setter method for the property with the same name. </p>
+<p>When set to 'true' a timer is stated that will automatically reset the property to 'false' after 5 seconds of inactivity.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newReceivingHeartbeat</td><td>Property receivingHeartbeat </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="af3a0ebcb9bf2719f8ade8d4ff6f8468d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3a0ebcb9bf2719f8ade8d4ff6f8468d">&#9670;&nbsp;</a></span>sourceName()</h2>
 
@@ -571,7 +680,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property sourceName </dd></dl>
 
-<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">Traffic::TrafficDataSource_Tcp</a>.</p>
+<p>Implemented in <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#aa3a7fb686181353c34affd23b51640d2">Traffic::TrafficDataSource_Tcp</a>, and <a class="el" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File</a>.</p>
 
 </div>
 </div>
@@ -715,7 +824,71 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
+<a id="a5c183f3d353775394079a77761dc1fc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c183f3d353775394079a77761dc1fc6">&#9670;&nbsp;</a></span>warning</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataSource_Abstract::warning </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classTraffic_1_1Warning.html">Traffic::Warning</a> &amp;&#160;</td>
+          <td class="paramname"><em>warning</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Traffic factor with position. </p>
+<p>This signal is emitted when the traffic receiver issues a traffic warning. An invalid warning (i.e. a warning with alarm level = -1) is emitted to indicate that the last warning is no longer active and should be disregarded.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">warning</td><td>Traffic warning. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="ab81961d198aa8f53cf1d6935394a6a6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab81961d198aa8f53cf1d6935394a6a6f">&#9670;&nbsp;</a></span>connectivityStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Traffic::TrafficDataSource_Abstract::connectivityStatus</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Connectivity status. </p>
+<p>This property contains a human-readable, translated string that describes if the class has established a connection to a traffic receiver. A typical string could be "Bound to an address and port, but
+not connected yet.". Subclasses shall use the setter function to set the property content.</p>
+<p>The setter method is protected and can be used by subclasses to update the property content. </p>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00118">118</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+
+</div>
+</div>
 <a id="ad5c337d3284f03c1beaaf0da7e494618"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5c337d3284f03c1beaaf0da7e494618">&#9670;&nbsp;</a></span>errorString</h2>
 
@@ -739,12 +912,12 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>String describing the last socket error. </p>
 <p>This property holds a translated, human-readable string that describes the last error, or an empty string when there is not error. The string is cleared when a new connection attempt is started. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00105">105</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00096">96</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
-<a id="a90dbf7921c7d7f659d68b3438496365e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90dbf7921c7d7f659d68b3438496365e">&#9670;&nbsp;</a></span>hasHeartbeat</h2>
+<a id="a13a3c0bfa4d3819adea943c564018e55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13a3c0bfa4d3819adea943c564018e55">&#9670;&nbsp;</a></span>receivingHeartbeat</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -753,7 +926,35 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Traffic::TrafficDataSource_Abstract::hasHeartbeat</td>
+          <td class="memname">bool Traffic::TrafficDataSource_Abstract::receivingHeartbeat</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Heartbeat indicator. </p>
+<p>When active, traffic receivers send regular heartbeat messages. These can be used to verify that the connection to the receiver works, even in times when no traffic is reported. This property indicates if the class receives heartbeat messages from at least one of the known receivers.</p>
+<p>The setter and resetter methods are protected and can be used by subclasses to update the property content. </p>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00139">139</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+
+</div>
+</div>
+<a id="afc6b13feeee5bd9ea1011eaeed6fb2a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc6b13feeee5bd9ea1011eaeed6fb2a2">&#9670;&nbsp;</a></span>sourceName</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Traffic::TrafficDataSource_Abstract::sourceName</td>
         </tr>
       </table>
   </td>
@@ -763,10 +964,10 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </table>
 </div><div class="memdoc">
 
-<p>FLARM heartbeat. </p>
-<p>This properts is true if a FLARM heartbeat has been received within the last 5 seconds. </p>
+<p>Source name. </p>
+<p>This property contains a short, human-readable and translated description of the source. A typical string is "TCP connection to 132.168.1.1 port 2000". </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00132">132</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00154">154</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>

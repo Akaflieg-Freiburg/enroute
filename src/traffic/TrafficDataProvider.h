@@ -22,7 +22,8 @@
 
 #include <QQmlListProperty>
 
-#include "traffic/FLARMWarning.h"
+#include "positioning/PositionInfoSource_Abstract.h"
+#include "traffic/Warning.h"
 #include "traffic/TrafficFactor.h"
 
 
@@ -30,9 +31,9 @@ namespace Traffic {
 
 /*! \brief Traffic receiver
  *
- *  This class manages multiple TrafficDataSources. It combines the data streams,
- *  and passes data from the most relevant (if any) traffic data source on to the
- *  consumers of this class.
+ *  This class manages multiple TrafficDataSources. It combines the data
+ *  streams, and passes data from the most relevant (if any) traffic data source
+ *  on to the consumers of this class.
  *
  *  By default, it watches the following data channels:
  *
@@ -69,7 +70,13 @@ public:
     // Properties
     //
 
-    /*! \brief Receiving data from one data source */
+    /*! \brief Heartbeat indicator
+     *
+     *  When active, traffic receivers send regular heartbeat messages. These
+     *  can be used to verify that the connection to the receiver works, even in
+     *  times when no traffic is reported. This property indicates if the class
+     *  receives heartbeat messages from at least one of the known receivers.
+     */
     Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
     /*! \brief Getter method for property with the same name
@@ -77,12 +84,6 @@ public:
      *  @returns Property receiving
      */
     bool receivingHeartbeat() const;
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property statusString
-     */
-    void updateStatusString();
 
     /*! \brief Traffic objects whose position is known
      *
@@ -122,18 +123,19 @@ public:
 
     /*! \brief Current traffic warning
      *
-     *  This property holds the current traffic warning.  The traffic warning is updated regularly and set
-     *  to an invalid warning (i.e. one with alarmLevel == -1) after a certain period.
+     *  This property holds the current traffic warning.  The traffic warning is
+     *  updated regularly and set to an invalid warning (i.e. one with
+     *  alarmLevel == -1) after a certain period.
      */
-    Q_PROPERTY(Traffic::FLARMWarning flarmWarning READ flarmWarning NOTIFY flarmWarningChanged)
+    Q_PROPERTY(Traffic::Warning warning READ warning NOTIFY warningChanged)
 
     /*! \brief Getter method for property with the same name
      *
-     *  @returns Property flarmWarning
+     *  @returns Property Warning
      */
-    Traffic::FLARMWarning flarmWarning() const
+    Traffic::Warning warning() const
     {
-        return m_FLARMWarning;
+        return m_Warning;
     }
 
 signals:
@@ -141,14 +143,15 @@ signals:
     void receivingHeartbeatChanged(bool);
 
     /*! \brief Notifier signal */
-    void flarmWarningChanged(const Traffic::FLARMWarning &warning);
+    void warningChanged(const Traffic::Warning&);
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
      *
-     * If this class is connected to a traffic receiver, this method does nothing.
-     * Otherwise, it stops any ongoing connection attempt and starts a new attempt
-     * to connect to a potential receiver.
+     * If this class is connected to a traffic receiver, this method does
+     * nothing.  Otherwise, it stops any ongoing connection attempt and starts a
+     * new attempt to connect to a potential receiver, via all available
+     * channels simultaneously.
      */
     void connectToTrafficReceiver();
 
@@ -169,10 +172,14 @@ private slots:
     void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor);
 
     // Resetter method
-    void resetFLARMWarning();
+    void resetWarning();
 
     // Setter method
-    void setFLARMWarning(const Traffic::FLARMWarning& warning);
+    void setWarning(const Traffic::Warning& warning);
+
+    // Updates the property statusString that is inherited from
+    // Positioning::PositionInfoSource_Abstract
+    void updateStatusString();
 
 private:
     // Targets
@@ -182,8 +189,8 @@ private:
     QList<QPointer<Traffic::TrafficDataSource_Abstract>> m_dataSources;
 
     // Property cache
-    FLARMWarning m_FLARMWarning;
-    QTimer m_FLARMWarningTimer;
+    Traffic::Warning m_Warning;
+    QTimer m_WarningTimer;
 
     // Reconnect
     QTimer reconnectionTimer;

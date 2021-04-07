@@ -19,12 +19,9 @@
  ***************************************************************************/
 
 #include <QQmlEngine>
-#include <chrono>
 
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Abstract.h"
-
-using namespace std::chrono_literals;
 
 
 // Static Helper functions
@@ -69,34 +66,34 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(QObject *parent)
     // Setup heartbeat timer
     heartbeatTimer.setSingleShot(true);
     heartbeatTimer.setInterval(5s);
-    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetHasHeartbeat);
+    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat);
 }
 
 
-void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
+void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
 {
-    if (msg.isEmpty()) {
+    if (sentence.isEmpty()) {
         return;
     }
 
     // Check that line starts with a dollar sign
-    if (msg.isEmpty()) {
+    if (sentence.isEmpty()) {
         return;
     }
-    if (msg[0] != QStringLiteral("$")) {
+    if (sentence[0] != QStringLiteral("$")) {
         return;
     }
-    msg = msg.mid(1);
+    sentence = sentence.mid(1);
 
     // Check the NMEA checksum
-    auto pieces = msg.split(QStringLiteral("*"));
+    auto pieces = sentence.split(QStringLiteral("*"));
     if (pieces.length() != 2) {
         return;
     }
-    msg = pieces[0];
+    sentence = pieces[0];
     auto checksum = pieces[1].toInt(nullptr, 16);
     quint8 myChecksum = 0;
-    for(auto && i : msg) {
+    for(auto && i : sentence) {
         myChecksum ^= static_cast<quint8>(i.toLatin1());
     }
     if (checksum != myChecksum) {
@@ -104,7 +101,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
     }
 
     // Split the message into pieces
-    auto arguments = msg.split(QStringLiteral(","));
+    auto arguments = sentence.split(QStringLiteral(","));
     if (arguments.isEmpty()) {
         return;
     }
@@ -134,8 +131,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
             return;
         }
 
-        _altitude = AviationUnits::Distance::fromM(alt);
-        _altitudeTimeStamp = dateTime;
+        m_trueAltitude = AviationUnits::Distance::fromM(alt);
+        m_trueAltitudeTimeStamp = dateTime;
         return;
     }
 
@@ -179,8 +176,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
         if (!coordinate.isValid()) {
             return;
         }
-        if (_altitudeTimeStamp.secsTo(dateTime) < 5) {
-            coordinate.setAltitude(_altitude.toM());
+        if (m_trueAltitudeTimeStamp.secsTo(dateTime) < 5) {
+            coordinate.setAltitude(m_trueAltitude.toM());
         }
         QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
 
@@ -526,7 +523,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
     // FLARM Heartbeat
     if (messageType == u"PFLAU") {
         // Heartbeat received.
-        setHasHeartbeat(true);
+        setReceivingHeartbeat(true);
 
         if (arguments.length() < 9) {
             return;
@@ -544,8 +541,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
         auto RelativeVertical = arguments[7];
         auto RelativeDistance = arguments[8];
 
-        auto warning = FLARMWarning(AlarmLevel, RelativeBearing, AlarmType, RelativeVertical, RelativeDistance);
-        emit flarmWarning(warning);
+        auto wrning = Traffic::Warning(AlarmLevel, RelativeBearing, AlarmType, RelativeVertical, RelativeDistance);
+        emit warning(wrning);
 
         return;
     }
@@ -584,7 +581,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
             return;
         }
 
-        emit barometricAltitudeUpdated(barometricAlt);
+        emit pressureAltitudeUpdated(barometricAlt);
         return;
     }
 }
@@ -592,43 +589,43 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessage(QString msg)
 
 void Traffic::TrafficDataSource_Abstract::setConnectivityStatus(const QString& newConnectivityStatus)
 {
-    if (_connectivityStatus == newConnectivityStatus) {
+    if (m_connectivityStatus == newConnectivityStatus) {
         return;
     }
 
-    _connectivityStatus = newConnectivityStatus;
-    QTimer::singleShot(0, this, SIGNAL(connectivityStatusChanged()));
+    m_connectivityStatus = newConnectivityStatus;
+    emit connectivityStatusChanged(m_connectivityStatus);
 }
 
 
 void Traffic::TrafficDataSource_Abstract::setErrorString(const QString& newErrorString)
 {
-    if (_errorString == newErrorString) {
+    if (m_errorString == newErrorString) {
         return;
     }
 
-    _errorString = newErrorString;
-    QTimer::singleShot(0, this, SIGNAL(errorStringChanged()));
+    m_errorString = newErrorString;
+    emit errorStringChanged(m_errorString);
 }
 
 
-void Traffic::TrafficDataSource_Abstract::setHasHeartbeat(bool hb)
+void Traffic::TrafficDataSource_Abstract::setReceivingHeartbeat(bool newReceivingHeartbeat)
 {
-    if (hb == true) {
+    if (newReceivingHeartbeat) {
         heartbeatTimer.start();
     } else {
         heartbeatTimer.stop();
     }
 
-    if (m_hasHeartbeat == hb) {
+    if (m_hasHeartbeat == newReceivingHeartbeat) {
         return;
     }
-    m_hasHeartbeat = hb;
-    emit hasHeartbeatChanged(m_hasHeartbeat);
+    m_hasHeartbeat = newReceivingHeartbeat;
+    emit receivingHeartbeatChanged(m_hasHeartbeat);
 }
 
 
-void Traffic::TrafficDataSource_Abstract::resetHasHeartbeat()
+void Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat()
 {
-    setHasHeartbeat(true);
+    setReceivingHeartbeat(true);
 }

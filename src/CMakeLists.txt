@@ -97,7 +97,7 @@ set(SOURCES
     traffic/TrafficDataSource_Tcp.h
     traffic/TrafficDataProvider.h
     traffic/TrafficFactor.h
-    traffic/FLARMWarning.h
+    traffic/Warning.h
     ui/ScaleQuickItem.h
     units/Angle.h
     units/Distance.h
@@ -136,12 +136,12 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
-    traffic/FLARMWarning.cpp
     traffic/TrafficDataSource_Abstract.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataProvider.cpp
     traffic/TrafficFactor.cpp
+    traffic/Warning.cpp
     ui/ScaleQuickItem.cpp
     units/Angle.cpp
     units/Distance.cpp

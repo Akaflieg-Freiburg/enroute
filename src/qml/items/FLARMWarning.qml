@@ -37,7 +37,7 @@ Rectangle {
     property var radius: 30
     property var ledRadius: 16
 
-    visible: flarmAdaptor.flarmWarning.alarmLevel() > 0
+    visible: flarmAdaptor.warning.alarmLevel() > 0
 
     RowLayout {
         id: gl
@@ -54,7 +54,7 @@ Rectangle {
             id: heightIndicator
             width: 2.0*flarmWarningIndicator.radius
             height: 2.0*flarmWarningIndicator.radius
-            visible: flarmAdaptor.flarmWarning.alarmLevel() > 0
+            visible: flarmAdaptor.warning.alarmLevel() > 0
 
             Rectangle {
                 width: 2.0*flarmWarningIndicator.radius
@@ -66,7 +66,7 @@ Rectangle {
             }
 
             LED {
-                visible: flarmAdaptor.flarmWarning.vDist().toM() >= 100
+                visible: flarmAdaptor.warning.vDist().toM() >= 100
                 blinking: visible
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius
@@ -75,7 +75,7 @@ Rectangle {
             }
 
             LED {
-                visible: (flarmAdaptor.flarmWarning.vDist().toM() > -100) && (flarmAdaptor.flarmWarning.vDist().toM() < 100)
+                visible: (flarmAdaptor.warning.vDist().toM() > -100) && (flarmAdaptor.warning.vDist().toM() < 100)
                 blinking: visible
                 width: 1.5*flarmWarningIndicator.ledRadius
                 height: 1.5*flarmWarningIndicator.ledRadius
@@ -84,7 +84,7 @@ Rectangle {
             }
 
             LED {
-                visible: flarmAdaptor.flarmWarning.vDist().toM() < -100
+                visible: flarmAdaptor.warning.vDist().toM() < -100
                 blinking: visible
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius
@@ -102,22 +102,22 @@ Rectangle {
             Layout.maximumWidth: implicitWidth + 24
             Layout.fillWidth: true
 
-            text: flarmAdaptor.flarmWarning.description()
+            text: flarmAdaptor.warning.description()
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.Wrap
             color: {
-                if (flarmAdaptor.flarmWarning.alarmLevel === 0) {
+                if (flarmAdaptor.warning.alarmLevel === 0) {
                     return "white"
                 }
-                if (flarmAdaptor.flarmWarning.alarmLevel === 1) {
+                if (flarmAdaptor.warning.alarmLevel === 1) {
                     return "yellow"
                 }
                 return "red"
             }
             Behavior on color { ColorAnimation { duration: 100 } }
 
-            font.weight: flarmAdaptor.flarmWarning.alarmLevel > 0 ? Font.Bold : Font.Normal
-            font.pixelSize: flarmAdaptor.flarmWarning.alarmLevel > 0 ? Qt.application.font.pixelSize*1.3 : Qt.application.font.pixelSize
+            font.weight: flarmAdaptor.warning.alarmLevel > 0 ? Font.Bold : Font.Normal
+            font.pixelSize: flarmAdaptor.warning.alarmLevel > 0 ? Qt.application.font.pixelSize*1.3 : Qt.application.font.pixelSize
         }
 
         Item { // Spacer
@@ -128,7 +128,7 @@ Rectangle {
             id: flarmClock
             width: 2.0*flarmWarningIndicator.radius
             height: 2.0*flarmWarningIndicator.radius
-            visible: flarmAdaptor.flarmWarning.alarmLevel() > 0
+            visible: flarmAdaptor.warning.alarmLevel() > 0
 
             Rectangle { // Gray clockface
                 width: 2.0*flarmWarningIndicator.radius
@@ -144,9 +144,9 @@ Rectangle {
             LED { // LED
                 width: flarmWarningIndicator.ledRadius
                 height: flarmWarningIndicator.ledRadius
-                x: flarmWarningIndicator.radius*(1 + flarmAdaptor.flarmWarning.relativeBearing().sin()) - width/2.0
-                y: flarmWarningIndicator.radius*(1 - flarmAdaptor.flarmWarning.relativeBearing().cos()) - width/2.0
-                visible: flarmAdaptor.flarmWarning.relativeBearing().isFinite()
+                x: flarmWarningIndicator.radius*(1 + flarmAdaptor.warning.relativeBearing().sin()) - width/2.0
+                y: flarmWarningIndicator.radius*(1 - flarmAdaptor.warning.relativeBearing().cos()) - width/2.0
+                visible: flarmAdaptor.warning.relativeBearing().isFinite()
                 blinking: visible
             }
 

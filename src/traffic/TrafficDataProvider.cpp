@@ -22,7 +22,6 @@
 #include <chrono>
 
 #include "MobileAdaptor.h"
-#include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
 #include "traffic/TrafficDataSource_Tcp.h"
@@ -53,9 +52,9 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     setSourceName(tr("Traffic data receiver"));
 
     // Setup FLARM warning
-    m_FLARMWarningTimer.setInterval( Positioning::PositionInfo::lifetime );
-    m_FLARMWarningTimer.setSingleShot(true);
-    connect(&m_FLARMWarningTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::resetFLARMWarning);
+    m_WarningTimer.setInterval( Positioning::PositionInfo::lifetime );
+    m_WarningTimer.setSingleShot(true);
+    connect(&m_WarningTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::resetWarning);
 
 
 
@@ -81,16 +80,16 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
             continue;
         }
 
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::barometricAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::pressureAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingHeartbeatChanged);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::receivingHeartbeatChanged);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
         connect(dataSource, &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::flarmWarning, this, &Traffic::TrafficDataProvider::setFLARMWarning);
+        connect(dataSource, &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
     }
 
     // Bindings for status string
@@ -144,31 +143,15 @@ auto Traffic::TrafficDataProvider::globalInstance() -> Traffic::TrafficDataProvi
 }
 
 
-void Traffic::TrafficDataProvider::setFLARMWarning(const Traffic::FLARMWarning& warning)
-{
-    if (warning.alarmLevel() > -1) {
-        m_FLARMWarningTimer.start();
-    }
-
-    if (m_FLARMWarning == warning) {
-        return;
-    }
-
-    m_FLARMWarning = warning;
-    emit flarmWarningChanged(m_FLARMWarning);
-}
-
-
 void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 {
-
     Traffic::TrafficDataSource_Abstract *heartbeatDataSource = nullptr;
     foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }
 
-        if (source->hasHeartbeat()) {
+        if (source->receivingHeartbeat()) {
             heartbeatDataSource = source;
             break;
         }
@@ -188,7 +171,6 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
         }
 
     }
-
 }
 
 
@@ -197,62 +179,74 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
     if ((factor.ID() == m_trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
         m_trafficObjectWithoutPosition->copyFrom(factor);
     }
-
 }
 
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
 {
-    foreach(auto target, m_trafficObjects)
+    foreach(auto target, m_trafficObjects) {
         if (factor.ID() == target->ID()) {
             target->copyFrom(factor);
             return;
         }
+    }
 
     auto *lowestPriObject = m_trafficObjects.at(0);
-    foreach(auto target, m_trafficObjects)
+    foreach(auto target, m_trafficObjects) {
         if (lowestPriObject->hasHigherPriorityThan(*target)) {
             lowestPriObject = target;
         }
+    }
     if (factor.hasHigherPriorityThan(*lowestPriObject)) {
         lowestPriObject->copyFrom(factor);
     }
-
 }
 
 
 auto Traffic::TrafficDataProvider::receivingHeartbeat() const -> bool
 {
-
     foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }
 
-        if (source->hasHeartbeat()) {
+        if (source->receivingHeartbeat()) {
             return true;
         }
     }
 
     return false;
-
 }
 
 
-void Traffic::TrafficDataProvider::resetFLARMWarning()
+void Traffic::TrafficDataProvider::resetWarning()
 {
-    setFLARMWarning( FLARMWarning() );
+    setWarning( Traffic::Warning() );
+}
+
+
+void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
+{
+    if (warning.alarmLevel() > -1) {
+        m_WarningTimer.start();
+    }
+
+    if (m_Warning == warning) {
+        return;
+    }
+
+    m_Warning = warning;
+    emit warningChanged(m_Warning);
 }
 
 
 void Traffic::TrafficDataProvider::updateStatusString()
 {
-
     foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;
         }
-        if (source->hasHeartbeat()) {
+        if (source->receivingHeartbeat()) {
             QString result = QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(source->sourceName());
             result += QString("<li>%1</li>").arg(tr("Receiving traffic data."));
             if (positionInfo().isValid()) {
@@ -283,5 +277,4 @@ void Traffic::TrafficDataProvider::updateStatusString()
     result += "</ul>";
 
     setStatusString(result);
-
 }

@@ -38,7 +38,7 @@ class TrafficDataSource_Abstract;
  *  themselves
  */
 
-class FLARMWarning {
+class Warning {
     Q_GADGET
 
     friend Traffic::TrafficDataSource_Abstract;
@@ -48,7 +48,7 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit FLARMWarning() = default;
+    explicit Warning() = default;
 
     //
     // PROPERTIES
@@ -118,7 +118,7 @@ public:
      *
      *  @returns True if equal
      */
-    Q_INVOKABLE bool operator==(const Traffic::FLARMWarning &rhs);
+    Q_INVOKABLE bool operator==(const Traffic::Warning &rhs);
 
     /*! \brief Direction to obstacle or aircraft
      *
@@ -140,7 +140,7 @@ public:
 
 private:
     // Private constructor, only to be used by TrafficDataSource_Abstract
-    explicit FLARMWarning(const QString& AlarmLevel,
+    explicit Warning(const QString& AlarmLevel,
                           const QString& RelativeBearing,
                           const QString& AlarmType,
                           const QString& RelativeVertical,
@@ -157,4 +157,4 @@ private:
 }
 
 // Declare meta types
-Q_DECLARE_METATYPE(Traffic::FLARMWarning)
+Q_DECLARE_METATYPE(Traffic::Warning)

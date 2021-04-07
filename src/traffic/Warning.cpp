@@ -21,10 +21,10 @@
 #include <QCoreApplication>
 
 #include "GlobalSettings.h"
-#include "traffic/FLARMWarning.h"
+#include "traffic/Warning.h"
 
 
-Traffic::FLARMWarning::FLARMWarning(
+Traffic::Warning::Warning(
         const QString& AlarmLevel,
         const QString& RelativeBearing,
         const QString& AlarmType,
@@ -85,25 +85,25 @@ Traffic::FLARMWarning::FLARMWarning(
 }
 
 
-auto Traffic::FLARMWarning::description() const -> QString
+auto Traffic::Warning::description() const -> QString
 {
     QStringList result;
 
     // Alarm type
     if (m_alarmType == 2) {
-        result << QCoreApplication::translate("Traffic::FLARMWarning", "Traffic");
+        result << QCoreApplication::translate("Traffic::Warning", "Traffic");
     }
     if (m_alarmType == 3) {
-        result << QCoreApplication::translate("Traffic::FLARMWarning", "Obstacle");
+        result << QCoreApplication::translate("Traffic::Warning", "Obstacle");
     }
     if (m_alarmType == 4) {
-        result << QCoreApplication::translate("Traffic::FLARMWarning", "Traffic advisory");
+        result << QCoreApplication::translate("Traffic::Warning", "Traffic advisory");
     }
 
 
     // Relative bearing
     if (m_relativeBearing.isFinite()) {
-        result << QCoreApplication::translate("Traffic::FLARMWarning", "%1 position").arg(m_relativeBearing.toClock());
+        result << QCoreApplication::translate("Traffic::Warning", "%1 position").arg(m_relativeBearing.toClock());
     }
 
 
@@ -112,10 +112,10 @@ auto Traffic::FLARMWarning::description() const -> QString
 
         if (GlobalSettings::useMetricUnitsStatic()) {
             auto hDistKM = qRound(m_hDist.toKM()*10.0)/10.0;
-            result << QCoreApplication::translate("Traffic::FLARMWarning", "Distance %1 km").arg(hDistKM);
+            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 km").arg(hDistKM);
         } else {
             auto hDistNM = qRound(m_hDist.toNM()*10.0)/10.0;
-            result << QCoreApplication::translate("Traffic::FLARMWarning", "Distance %1 nm").arg(hDistNM);
+            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 nm").arg(hDistNM);
         }
 
     }
@@ -126,12 +126,12 @@ auto Traffic::FLARMWarning::description() const -> QString
         auto vDistFT = qRound(qAbs(m_vDist.toFeet())/10.0)*10.0;
 
         if (vDistFT < 100) {
-            result << QCoreApplication::translate("Traffic::FLARMWarning", "Same altitude");
+            result << QCoreApplication::translate("Traffic::Warning", "Same altitude");
         } else {
             if (m_vDist.isNegative()) {
-                result << QCoreApplication::translate("Traffic::FLARMWarning", "%1 ft below").arg(vDistFT);
+                result << QCoreApplication::translate("Traffic::Warning", "%1 ft below").arg(vDistFT);
             } else {
-                result << QCoreApplication::translate("Traffic::FLARMWarning", "%1 ft above").arg(vDistFT);
+                result << QCoreApplication::translate("Traffic::Warning", "%1 ft above").arg(vDistFT);
             }
         }
     }
@@ -140,7 +140,7 @@ auto Traffic::FLARMWarning::description() const -> QString
 }
 
 
-auto Traffic::FLARMWarning::operator==(const Traffic::FLARMWarning &rhs) -> bool
+auto Traffic::Warning::operator==(const Traffic::Warning &rhs) -> bool
 {
     if (m_alarmLevel != rhs.m_alarmLevel) {
         return false;

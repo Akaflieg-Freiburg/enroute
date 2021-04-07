@@ -20,28 +20,19 @@
 
 #pragma once
 
-#include <QGeoPositionInfo>
-#include <QTimer>
-#include <QObject>
-#include <QQmlListProperty>
-
-#include "GlobalSettings.h"
 #include "positioning/PositionInfo.h"
 #include "traffic/TrafficFactor.h"
-#include "traffic/FLARMWarning.h"
-#include "units/Distance.h"
+#include "traffic/Warning.h"
+
 
 namespace Traffic {
 
 /*! \brief Traffic receiver
  *
- *  This class connects to a traffic receiver via the network. It expects to
- *  find a receiver at the IP-Address 192.168.1.1, port 2000.  Once connected,
- *  it continuously reads data from the device, and exposes position and traffic
- *  information to the user, as well as barometric altitude.
- *
- *  By modifying the source code, developers can also start the class in a mode
- *  where it connects to a file with simulator data.
+ *  This is an abstract base class for all classes that connect to a traffic
+ *  receiver.  In addition to the properties listed below, the class also emits
+ *  imporant data via the signals barometricAltitudeUpdated,
+ *  factorWithoutPosition, factorWithPosition and warning.
  */
 class TrafficDataSource_Abstract : public QObject {
     Q_OBJECT
@@ -62,9 +53,9 @@ public:
 
     /*! \brief String describing the last socket error
      *
-     * This property holds a translated, human-readable string that describes
-     * the last error, or an empty string when there is not error.  The string
-     * is cleared when a new connection attempt is started.
+     *  This property holds a translated, human-readable string that describes
+     *  the last error, or an empty string when there is not error.  The string
+     *  is cleared when a new connection attempt is started.
      */
     Q_PROPERTY(QString errorString READ errorString WRITE setErrorString NOTIFY errorStringChanged)
 
@@ -74,10 +65,20 @@ public:
      */
     QString errorString()
     {
-        return _errorString;
+        return m_errorString;
     }
 
-    /*! \brief Connectivity status */
+    /*! \brief Connectivity status
+     *
+     *  This property contains a human-readable, translated string that
+     *  describes if the class has established a connection to a traffic
+     *  receiver. A typical string could be "Bound to an address and port, but
+     *  not connected yet.".  Subclasses shall use the setter function to set
+     *  the property content.
+     *
+     *  The setter method is protected and can be used by subclasses to update
+     *  the property content.
+     */
     Q_PROPERTY(QString connectivityStatus READ connectivityStatus WRITE setConnectivityStatus NOTIFY connectivityStatusChanged)
 
     /*! \brief Getter function for the property with the same name
@@ -86,25 +87,34 @@ public:
      */
     QString connectivityStatus() const
     {
-        return _connectivityStatus;
+        return m_connectivityStatus;
     }
 
-    /*! \brief FLARM heartbeat
+    /*! \brief Heartbeat indicator
      *
-     *  This properts is true if a FLARM heartbeat has been received within the last 5 seconds.
+     *  When active, traffic receivers send regular heartbeat messages. These
+     *  can be used to verify that the connection to the receiver works, even in
+     *  times when no traffic is reported. This property indicates if the class
+     *  receives heartbeat messages from at least one of the known receivers.
+     *
+     *  The setter and resetter methods are protected and can be used by
+     *  subclasses to update the property content.
      */
-    Q_PROPERTY(bool hasHeartbeat READ hasHeartbeat NOTIFY hasHeartbeatChanged)
+    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat RESET resetReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property hasHeartbeat
+     * @returns Property receivingHeartbeat
      */
-    bool hasHeartbeat()
+    bool receivingHeartbeat()
     {
         return heartbeatTimer.isActive();
     }
 
-    /*! \brief Source name */
+    /*! \brief Source name
+     *
+     *  This property contains a short, human-readable and translated description of the source. A typical string is "TCP connection to 132.168.1.1 port 2000".
+     */
     Q_PROPERTY(QString sourceName READ sourceName CONSTANT)
 
     /*! \brief Getter function for the property with the same name
@@ -113,79 +123,95 @@ public:
      */
     virtual QString sourceName() const = 0;
 
-
 signals:
-    /*! \brief Barometric altitude
+    /*! \brief Pressure altitude
      *
-     * If this class received barometric altitude information from a connected
-     * traffic receiver, this information is emitted here.
+     *  If this class received pressure altitude information from a connected
+     *  traffic receiver, this information is emitted here. Pressure altitude is
+     *  the altitude shown by your altimeter if the altimeter is set to 1013.2
+     *  hPa.
      */
-    void barometricAltitudeUpdated(AviationUnits::Distance);
+    void pressureAltitudeUpdated(AviationUnits::Distance);
 
     /*! \brief Notifier signal */
-    void connectivityStatusChanged();
+    void connectivityStatusChanged(QString newStatus);
 
     /*! \brief Notifier signal */
-    void errorStringChanged();
+    void errorStringChanged(QString newError);
 
     /*! \brief Traffic factor without position
      *
-     * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
+     *  This signal is emitted when the traffic receiver informs this class
+     *  about traffic whose position is not known.
+     *
+     *  \param factor Traffic factor.
      */
     void factorWithoutPosition(const Traffic::TrafficFactor &factor);
 
     /*! \brief Traffic factor with position
      *
-     * \param factor Pointer to traffic factor. This element is owned by this class and might change without notice.
+     *  This signal is emitted when the traffic receiver informs this class
+     *  about traffic whose position is known.
+     *
+     *  \param factor Traffic factor.
      */
     void factorWithPosition(const Traffic::TrafficFactor &factor);
 
-//#warning need to document
-    void flarmWarning(const Traffic::FLARMWarning& warning);
+    /*! \brief Traffic factor with position
+     *
+     *  This signal is emitted when the traffic receiver issues a traffic
+     *  warning. An invalid warning (i.e. a warning with alarm level = -1) is
+     *  emitted to indicate that the last warning is no longer active and should
+     *  be disregarded.
+     *
+     *  \param warning Traffic warning.
+     */
+    void warning(const Traffic::Warning& warning);
 
     /*! \brief Notifier signal */
-    void hasHeartbeatChanged(bool);
+    void receivingHeartbeatChanged(bool);
 
     /*! \brief Position info
      *
-     * If this class received position information from a connected traffic
-     * receiver, this information is emitted here.
+     *  If this class received position information from a connected traffic
+     *  receiver, this information is emitted here.
      */
-    void positionUpdated(Positioning::PositionInfo);
+    void positionUpdated(Positioning::PositionInfo pInfo);
 
     /*! \brief Traffic receiver hardware version
      *
-     * If this class receives information about the hardware version of a
-     * connected traffic receiver, this information is emitted here.
+     *  If this class receives information about the hardware version of a
+     *  connected traffic receiver, this information is emitted here.
      *
-     * @param result String that identifies the hardware version
+     *  @param result String that identifies the hardware version
      */
     void trafficReceiverHwVersion(QString result);
 
     /*! \brief Traffic receiver obstacle database version
      *
-     * If this class receives information about the obstacle database version of a connected
-     * traffic receiver, this information is emitted here.
+     *  If this class receives information about the obstacle database version
+     *  of a connected traffic receiver, this information is emitted here.
      *
-     * @param result String that identifies the obstacle database version
+     *  @param result String that identifies the obstacle database version
      */
     void trafficReceiverObVersion(QString result);
 
     /*! \brief Result of traffic receiver self test
      *
-     * If this class receives self-test information from a connected
-     * traffic receiver, this information is emitted here.
+     *  If this class receives self-test information from a connected traffic
+     *  receiver, this information is emitted here.
      *
-     * @param result Result of self-test as a human-readable, translated error message
+     *  @param result Result of self-test as a human-readable, translated error
+     *  message
      */
     void trafficReceiverSelfTest(QString result);
 
     /*! \brief Traffic receiver software version
      *
-     * If this class receives information about the software version of a connected
-     * traffic receiver, this information is emitted here.
+     *  If this class receives information about the software version of a
+     *  connected traffic receiver, this information is emitted here.
      *
-     * @param result String that identifies the software version
+     *  @param result String that identifies the software version
      */
     void trafficReceiverSwVersion(QString result);
 
@@ -193,50 +219,71 @@ signals:
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
      *
-     * If this class is connected to a traffic receiver, this method does nothing.
-     * Otherwise, it stops any ongoing connection attempt and starts a new attempt
-     * to connect to a potential receiver.
+     *  If this class is connected to a traffic receiver, this method does
+     *  nothing.  Otherwise, it stops any ongoing connection attempt and starts
+     *  a new attempt to connect to a potential receiver.
      */
     virtual void connectToTrafficReceiver() = 0;
 
     /*! \brief Disconnect from traffic receiver
      *
-     * This method stops any ongoing connection or connection attempt. This method will not reset the property errorString,
-     * so that the error remains visible even after the class has been disconnected from the traffic receiver.
+     *  This method stops any ongoing connection or connection attempt. This
+     *  method will not reset the property errorString, so that the error
+     *  remains visible even after the class has been disconnected from the
+     *  traffic receiver.
      */
     virtual void disconnectFromTrafficReceiver() = 0;
 
 
 protected:
+    /*! \brief Process one FLARM/NMEA sentence
+     *
+     *  This method expects exactly one line containing a valid FLARM/NMEA
+     *  sentence. This is a string typically looks like
+     *  "$PFLAA,0,1587,1588,40,1,AA1237,225,,37,-1.6,1*7F".  The method
+     *  interprets the string and updates the properties and emits signals as
+     *  appropriate. Invalid strings are silently ignored.
+     *
+     *  @param sentence A QString containing a FLARM/NMEA sentence.
+     */
+    void processFLARMSentence(QString sentence);
+
+    /*! \brief Resetter method for the property with the same name
+     *
+     *  This is equivalent to calling setReceivingHeartbeat(false)
+     */
+    void resetReceivingHeartbeat();
+
     /*! \brief Setter function for the property with the same name
      *
-     * @param newConnectivityStatus Property connectivityStatus
+     *  @param newConnectivityStatus Property connectivityStatus
      */
     void setConnectivityStatus(const QString& newConnectivityStatus);
 
     /*! \brief Setter function for the property with the same name
      *
-     * @param newErrorString Property errorString
+     *  @param newErrorString Property errorString
      */
     void setErrorString(const QString& newErrorString = QString());
 
-    void stopHeartbeat();
-
-    // Read, understand and process one NMEA sentence
-    void processFLARMMessage(QString msg);
-
-    void setHasHeartbeat(bool hb);
-    void resetHasHeartbeat();
+    /*! \brief Setter method for the property with the same name
+     *
+     *  When set to 'true' a timer is stated that will automatically
+     *  reset the property to 'false' after 5 seconds of inactivity.
+     *
+     *  @param newReceivingHeartbeat Property receivingHeartbeat
+     */
+    void setReceivingHeartbeat(bool newReceivingHeartbeat);
 
 
 private:
     // Property caches
-    QString _connectivityStatus {};
-    QString _errorString {};
+    QString m_connectivityStatus {};
+    QString m_errorString {};
 
     // GPS altitude information
-    AviationUnits::Distance _altitude;
-    QDateTime _altitudeTimeStamp;
+    AviationUnits::Distance m_trueAltitude;
+    QDateTime m_trueAltitudeTimeStamp;
 
     // Heartbeat timer
     QTimer heartbeatTimer;

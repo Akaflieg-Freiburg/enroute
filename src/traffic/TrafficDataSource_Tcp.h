@@ -20,33 +20,32 @@
 
 #pragma once
 
-#include <QGeoPositionInfo>
+#include <QPointer>
 #include <QTcpSocket>
-#include <QTimer>
-#include <QObject>
-#include <QQmlListProperty>
 
-#include "GlobalSettings.h"
-#include "traffic/TrafficFactor.h"
 #include "traffic/TrafficDataSource_Abstract.h"
+
 
 namespace Traffic {
 
-/*! \brief Traffic receiver
+/*! \brief Traffic receiver: TCP connection to FLARM/NMEA source
  *
- *  This class connects to a traffic receiver via the network. It expects to
- *  find a receiver at the IP-Address 192.168.1.1, port 2000.  Once connected,
- *  it continuously reads data from the device, and exposes position and traffic
- *  information to the user, as well as barometric altitude.
+ *  This class connects to a traffic receiver via a TCP connection. It expects to
+ *  find a receiver at the specifed IP-Address and port.
  *
- *  By modifying the source code, developers can also start the class in a mode
- *  where it connects to a file with simulator data.
+ *  In most use cases, the
+ *  connection will be established via the device's WiFi interface.  The class will
+ *  therefore try to lock the WiFi once a heartbeat has been detected, and release the WiFi at the appropriate time.
  */
 class TrafficDataSource_Tcp : public TrafficDataSource_Abstract {
     Q_OBJECT
 
 public:
     /*! \brief Default constructor
+     *
+     *  @param hostName Name of the host where the traffic receiver is expected
+     *
+     *  @param port Port at the host where the traffic receiver is expected
      *
      * @param parent The standard QObject parent pointer
      */
@@ -57,25 +56,25 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property sourceName
+     *  This method implements the pure virtual method declared by its superclass.
+     *
+     *  @returns Property sourceName
      */
     QString sourceName() const override
     {
-        return tr("TCP connection to %1 port %2").arg(_hostName).arg(_port);
+        return tr("TCP connection to %1 port %2").arg(m_hostName).arg(m_port);
     }
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
      *
-     * If this class is connected to a traffic receiver, this method does nothing.
-     * Otherwise, it stops any ongoing connection attempt and starts a new attempt
-     * to connect to a potential receiver.
+     *  This method implements the pure virtual method declared by its superclass.
      */
     void connectToTrafficReceiver() override;
 
     /*! \brief Disconnect from traffic receiver
      *
-     * This method stops any ongoing connection or connection attempt.
+     *  This method implements the pure virtual method declared by its superclass.
      */
     void disconnectFromTrafficReceiver() override;
 
@@ -88,15 +87,16 @@ private slots:
     void readFromStream();
 
     // Update the property "errorString" and "connectivityStatus" and emit notification signals
-    void onStateChanged();
+    void onStateChanged(QAbstractSocket::SocketState socketState);
 
-    void onHasHeartbeatChanged();
+    // Acquire or release WiFi lock
+    static void onReceivingHeartbeatChanged(bool receivingHB);
 
 private:
     QPointer<QTcpSocket> socket;
     QTextStream textStream;
-    QString _hostName;
-    quint16 _port;
+    QString m_hostName;
+    quint16 m_port;
 };
 
 }

@@ -18,14 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QQmlEngine>
-#include <chrono>
-
-#include "MobileAdaptor.h"
-#include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_File.h"
-
-using namespace std::chrono_literals;
 
 
 // Member functions
@@ -43,7 +36,7 @@ Traffic::TrafficDataSource_File::TrafficDataSource_File(const QString& fileName,
 void Traffic::TrafficDataSource_File::connectToTrafficReceiver()
 {
     // Do not do anything if the file is open and there are no errors
-    if ( hasHeartbeat() ) {
+    if ( receivingHeartbeat() ) {
         return;
     }
 
@@ -72,7 +65,7 @@ void Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver()
     simulatorTimer.stop();
 
     // Update properties
-    setHasHeartbeat(false);
+    setReceivingHeartbeat(false);
     updateProperties();
 }
 
@@ -85,7 +78,7 @@ void Traffic::TrafficDataSource_File::readFromSimulatorStream()
     }
 
     if (!lastPayload.isEmpty()) {
-        processFLARMMessage(lastPayload);
+        processFLARMSentence(lastPayload);
     }
 
     // Read line
@@ -111,7 +104,6 @@ void Traffic::TrafficDataSource_File::readFromSimulatorStream()
     simulatorTimer.start();
     lastTime = time;
 }
-
 
 
 void Traffic::TrafficDataSource_File::updateProperties()

@@ -18,21 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QQmlEngine>
-#include <chrono>
-#include <utility>
-
 #include "MobileAdaptor.h"
-#include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Tcp.h"
-
-using namespace std::chrono_literals;
 
 
 // Member functions
 
 Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 port, QObject *parent) :
-    Traffic::TrafficDataSource_Abstract(parent), _hostName(std::move(hostName)), _port(port) {
+    Traffic::TrafficDataSource_Abstract(parent), m_hostName(std::move(hostName)), m_port(port) {
 
     // Create socket
     socket = new QTcpSocket(this);
@@ -45,12 +38,12 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 
     textStream.setCodec("ISO 8859-1");
 
     // Connect WiFi locker/unlocker
-    connect(this, &Traffic::TrafficDataSource_Abstract::hasHeartbeatChanged, this, &Traffic::TrafficDataSource_Tcp::onHasHeartbeatChanged);
+    connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_Tcp::onReceivingHeartbeatChanged);
 
     //
     // Initialize properties
     //
-    onStateChanged();
+    onStateChanged(socket->state());
 
 }
 
@@ -58,11 +51,7 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 
 Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 {
     Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver();
-    setHasHeartbeat(false);
-    auto* mobileAdaptor = MobileAdaptor::globalInstance();
-    if (mobileAdaptor != nullptr) {
-        MobileAdaptor::lockWifi(false);
-    }
+    setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
 }
 
 
@@ -75,11 +64,11 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 
     socket->abort();
     setErrorString();
-    socket->connectToHost(_hostName, _port);
+    socket->connectToHost(m_hostName, m_port);
     textStream.setDevice(socket);
 
     // Update properties
-    onStateChanged();
+    onStateChanged(socket->state());
 }
 
 
@@ -94,16 +83,7 @@ void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
     socket->abort();
 
     // Update properties
-    onStateChanged();
-}
-
-
-void Traffic::TrafficDataSource_Tcp::readFromStream()
-{
-    QString sentence;
-    while( textStream.readLineInto(&sentence) ) {
-        processFLARMMessage(sentence);
-    }
+    onStateChanged(socket->state());
 }
 
 
@@ -187,8 +167,18 @@ void Traffic::TrafficDataSource_Tcp::onErrorOccurred(QAbstractSocket::SocketErro
 }
 
 
+void Traffic::TrafficDataSource_Tcp::onReceivingHeartbeatChanged(bool receivingHB)
+{
+    // Acquire or release WiFi lock as appropriate
+    auto* mobileAdaptor = MobileAdaptor::globalInstance();
+    if (mobileAdaptor != nullptr) {
+        MobileAdaptor::lockWifi(receivingHB);
+    }
 
-void Traffic::TrafficDataSource_Tcp::onStateChanged()
+}
+
+
+void Traffic::TrafficDataSource_Tcp::onStateChanged(QAbstractSocket::SocketState socketState)
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -196,7 +186,7 @@ void Traffic::TrafficDataSource_Tcp::onStateChanged()
     }
 
     // Compute new status
-    switch( socket->state() ) {
+    switch( socketState ) {
     case QAbstractSocket::HostLookupState:
         setConnectivityStatus( tr("Performing host name lookup.") );
         break;
@@ -220,12 +210,11 @@ void Traffic::TrafficDataSource_Tcp::onStateChanged()
 }
 
 
-void Traffic::TrafficDataSource_Tcp::onHasHeartbeatChanged()
+void Traffic::TrafficDataSource_Tcp::readFromStream()
 {
-    // Acquire or release WiFi lock as appropriate
-    auto* mobileAdaptor = MobileAdaptor::globalInstance();
-    if (mobileAdaptor != nullptr) {
-        MobileAdaptor::lockWifi(hasHeartbeat());
+    QString sentence;
+    while( textStream.readLineInto(&sentence) ) {
+        processFLARMSentence(sentence);
     }
-
 }
+

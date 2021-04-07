@@ -353,12 +353,9 @@ at random if more than one device tries to access.</p>
     }
 
     if (name == ":text/whatsnew.html") {
-        return (R"MD(
-Users of Stratus traffic receivers can now connect to their
-devices without changing the Stratux' IP address.
-
-There are many small improvements in the user interface.
-)MD");
+        return tr("Users of Stratus traffic receivers can now connect to their devices without changing the Stratux' IP address.") + "\n\n"
++ tr("The app now shows FLARM traffic warnings.") + "\n\n"
++ tr("There are many small improvements in the user interface.");
     }
 
     QFile file(name);

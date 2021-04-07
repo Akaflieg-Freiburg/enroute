@@ -41,6 +41,7 @@
 #include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
+#include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
@@ -68,11 +69,11 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<AviationUnits::Distance>();
     qRegisterMetaType<AviationUnits::Speed>();
     qRegisterMetaType<AviationUnits::Time>();
+    qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
-    qmlRegisterType<GeoMaps::Airspace>("enroute", 1, 0, "Airspace");
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<GeoMaps::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<GeoMaps::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");

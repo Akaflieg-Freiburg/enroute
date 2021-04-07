@@ -98,7 +98,7 @@ public:
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    Q_INVOKABLE QList<QObject*> airspaces(const QGeoCoordinate& position);
+    Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate& position);
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -317,7 +317,7 @@ private:
     QMutex           _aviationDataMutex;
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
     QVector<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
-    QVector<QPointer<Airspace>> _airspaces_;       // Cache: Airspaces
+    QVector<Airspace> _airspaces_;       // Cache: Airspaces
 };
 
 };

@@ -24,9 +24,8 @@
 
 #include "Airspace.h"
 
-GeoMaps::Airspace::Airspace(QObject *parent) : QObject(parent) {}
 
-GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject, QObject *parent) : QObject(parent) {
+GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     // Paranoid safety checks
     if (geoJSONObject["type"] != "Feature") {
         return;

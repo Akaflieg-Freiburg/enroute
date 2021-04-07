@@ -59,9 +59,6 @@ GeoMaps::GeoMapProvider::~GeoMapProvider()
 {
     QMutexLocker lock(&_aviationDataMutex);
 
-    foreach(auto airspace, _airspaces_) {
-        delete airspace;
-    }
     _airspaces_.clear();
 
     foreach(auto waypoint, _waypoints_) {
@@ -72,27 +69,24 @@ GeoMaps::GeoMapProvider::~GeoMapProvider()
 }
 
 
-auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QList<QObject*>
+auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVariantList
 {
     // Lock data
     QMutexLocker lock(&_aviationDataMutex);
 
-    QList<Airspace*> result;
+    QList<Airspace> result;
     foreach(auto airspace, _airspaces_) {
-        if (airspace.isNull()) { // Paranoid safety
-            continue;
-        }
-        if (airspace->polygon().contains(position)) {
+        if (airspace.polygon().contains(position)) {
             result.append(airspace);
         }
     }
 
     // Sort airspaces according to lower boundary
-    std::sort(result.begin(), result.end(), [](Airspace* a, Airspace* b) {return (a->estimatedLowerBoundInFtMSL() > b->estimatedLowerBoundInFtMSL()); });
+    std::sort(result.begin(), result.end(), [](Airspace a, Airspace b) {return (a.estimatedLowerBoundInFtMSL() > b.estimatedLowerBoundInFtMSL()); });
 
-    QList<QObject*> final;
+    QVariantList final;
     foreach(auto airspace, result)
-        final.append(airspace);
+        final.append( QVariant::fromValue(airspace) );
 
     return final;
 }
@@ -398,7 +392,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
-    QVector<QPointer<Airspace>> newAirspaces;
+    QVector<Airspace> newAirspaces;
     QVector<QPointer<Waypoint>> newWaypoints;
     foreach(auto object, objectSet) {
         newFeatures += object;
@@ -415,14 +409,11 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
         delete wp;
 
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
-        auto *as = new Airspace(object);
-        if (as->isValid()) {
-            as->moveToThread(QApplication::instance()->thread());
-            QQmlEngine::setObjectOwnership(as, QQmlEngine::CppOwnership);
+        Airspace as(object);
+        if (as.isValid()) {
             newAirspaces.append(as);
             continue;
         }
-        delete as;
     }
     QJsonObject resultObject;
     resultObject.insert(QStringLiteral("type"), "FeatureCollection");
@@ -433,9 +424,6 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->getPropery(QStringLiteral("NAM")).toString() < b->getPropery(QStringLiteral("NAM")).toString(); });
 
     _aviationDataMutex.lock();
-    foreach(auto airspace, _airspaces_) {
-        delete airspace;
-    }
     foreach(auto waypoint, _waypoints_) {
         delete waypoint;
     }

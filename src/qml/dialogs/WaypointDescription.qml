@@ -146,7 +146,7 @@ Dialog {
 
             Layout.preferredWidth: sv.width
 
-            property Airspace airspace: ({});
+            property var airspace: ({});
 
 
             Item {

@@ -27,15 +27,12 @@ namespace GeoMaps {
 
 /*! \brief A very simple class that describes an airspace */
 
-class Airspace : public QObject {
-    Q_OBJECT
+class Airspace {
+    Q_GADGET
 
 public:
-    /*! \brief Constructs an invalid airspace
-     *
-     * @param parent The standard QObject parent pointer
-     */
-    explicit Airspace(QObject *parent = nullptr);
+    /*! \brief Constructs an invalid airspace */
+    Airspace() = default;
 
     /*! \brief Constructs an airspace from a GeoJSON object
      *
@@ -44,13 +41,8 @@ public:
      * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
      *
      * @param geoJSONObject GeoJSON Object that describes the airspace.
-     *
-     * @param parent The standard QObject parent pointer
      */
-    explicit Airspace(const QJsonObject &geoJSONObject, QObject *parent = nullptr);
-
-    // Standard destructor
-    ~Airspace() override = default;
+    explicit Airspace(const QJsonObject &geoJSONObject);
 
     /*! \brief Estimates the lower limit of the airspace, in feet above MSL
      *
@@ -146,8 +138,6 @@ public:
     QString upperBound() const { return _upperBound; }
 
 private:
-    Q_DISABLE_COPY_MOVE(Airspace)
-
     QString _name{};
     QString _CAT{};
     QString _upperBound{};
@@ -156,3 +146,8 @@ private:
 };
 
 }
+
+
+
+// Declare meta types
+Q_DECLARE_METATYPE(GeoMaps::Airspace)

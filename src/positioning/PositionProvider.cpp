@@ -59,6 +59,9 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
         connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
         connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
     }
+
+    // Update properties
+    updateStatusString();
 }
 
 

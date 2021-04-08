@@ -324,7 +324,7 @@ Map {
         type: "paint"
         property var layer: "natureReserveAreas"
         property var lineColor: "green"
-        property var lineOpacity: 0.2
+        property var lineOpacity: 0.15
         property var lineWidth: airspaceLineWidth
         property var lineOffset: airspaceLineWidth/2.0
     }
@@ -342,6 +342,7 @@ Map {
         type: "paint"
         property var layer: "natureReserveAreaOutlines"
         property var lineColor: "green"
+        property var lineOpacity: 0.3
         property var lineWidth: 2.0
     }
 

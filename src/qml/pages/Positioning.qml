@@ -163,7 +163,7 @@ Page {
             Label {
                 text: {
                     const tt = positionProvider.positionInfo.trueTrack();
-                    return tt.isFinite() ? tt.toDEG() + "°" : "-"
+                    return tt.isFinite() ? Math.rount(tt.toDEG()) + "°" : "-"
                 }
             }
 
@@ -171,7 +171,7 @@ Page {
             Label {
                 text: {
                     const vs = positionProvider.positionInfo.verticalSpeed();
-                    return vs.isFinite() ? Math.round(vs.toMPS()) + " m/s" : "-"
+                    return vs.isFinite() ? Math.round(vs.toFPM()) + " ft/min" : "-"
                 }
             }
 

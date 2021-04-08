@@ -148,6 +148,5 @@ private:
 }
 
 
-
 // Declare meta types
 Q_DECLARE_METATYPE(GeoMaps::Airspace)

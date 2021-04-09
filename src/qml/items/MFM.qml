@@ -257,8 +257,8 @@ Item {
         MapQuickItem {
             id: ownPosition
 
-            anchorPoint.x: image.width/2
-            anchorPoint.y: image.height/2
+            anchorPoint.x: imageOP.width/2
+            anchorPoint.y: imageOP.height/2
             coordinate: positionProvider.lastValidCoordinate
 
             Connections {
@@ -269,26 +269,28 @@ Item {
                 function onHeightChanged() { ownPosition.polishAndUpdate() }
             }
 
-            sourceItem: Image {
-                id: image
+            sourceItem: Item {
+                Image {
+                    id: imageOP
 
-                rotation: flightMap.animatedTrack-flightMap.bearing
+                    rotation: flightMap.animatedTrack-flightMap.bearing
 
-                source: {
-                    var pInfo = positionProvider.positionInfo
+                    source: {
+                        var pInfo = positionProvider.positionInfo
 
-                    if (!pInfo.isValid()) {
-                        return "/icons/self-noPosition.svg"
+                        if (!pInfo.isValid()) {
+                            return "/icons/self-noPosition.svg"
+                        }
+                        if (!pInfo.trueTrack().isFinite()) {
+                            return "/icons/self-noDirection.svg"
+                        }
+
+                        return "/icons/self-withDirection.svg"
                     }
-                    if (!pInfo.trueTrack().isFinite()) {
-                        return "/icons/self-noDirection.svg"
-                    }
 
-                    return "/icons/self-withDirection.svg"
+                    sourceSize.width: 50
+                    sourceSize.height: 50
                 }
-
-                sourceSize.width: 50
-                sourceSize.height: 50
             }
         }
 

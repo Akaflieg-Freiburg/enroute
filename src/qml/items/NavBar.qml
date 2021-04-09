@@ -151,7 +151,7 @@ Rectangle {
 
                 text: {
                     var tt = positionProvider.positionInfo.trueTrack();
-                    return tt.isFinite() ? tt.toDEG() + "°" : "-"
+                    return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
 
                 font.weight: Font.Bold

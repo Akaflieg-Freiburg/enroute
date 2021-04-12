@@ -156,7 +156,7 @@ Page {
 <li>Once your device has entered the WLAN network, use the button at the bottom of the page to connect the <strong>Enroute Flight Navigation</strong> to the traffic data stream.</li>
 </ul>
 ") + qsTr("
-<p>If no traffic data has arrived after a few seconds, somthing has gone wrong.</p>
+<p>If no traffic data has arrived after a few seconds, something has gone wrong.</p>
 
 <ul style=\"margin-left:-25px;\">
 <li>Make sure that your device has entered the WLAN network deployed by your traffic receiver.  If not, then use the button at the bottem of the screen to abort the connection attempt.</li>

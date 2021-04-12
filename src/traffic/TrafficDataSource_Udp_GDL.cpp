@@ -218,10 +218,10 @@ void Traffic::TrafficDataSource_Udp_GDL::onStateChanged(QAbstractSocket::SocketS
 
 void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
 {
-    qWarning() << "Datagram Arrived";
+//    qWarning() << "Datagram Arrived";
     while (socket->hasPendingDatagrams()) {
         QByteArray data = socket->receiveDatagram().data();
-        qWarning() << data.toHex();
+//        qWarning() << data.toHex();
 
         //
         // Check if this datagram contains a valid GDL90 Message
@@ -263,19 +263,21 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
             continue;
         }
         //        qWarning() << "Escape char decoding correct";
-        qWarning() << decodedData.toHex();
+//        qWarning() << decodedData.toHex();
 
         // CRC Checksum verification
         quint16 crc = 0;
         foreach(auto byte, decodedData.chopped(2)) {
             crc = Crc16Table.at(crc >> 8U) ^ (crc << 8U) ^ static_cast<quint8>(byte);
         }
-        qWarning() << "MyCRC     " << QString::number(crc, 16);
+//        qWarning() << "MyCRC     " << QString::number(crc, 16);
 
         quint16 savedCRC = 0;
         savedCRC += static_cast<quint8>( decodedData.at(decodedData.size()-1) );
         savedCRC = (savedCRC << 8U) + static_cast<quint8>( decodedData.at(decodedData.size()-2) );
-        qWarning() << "Saved CRC " << QString::number(savedCRC, 16);
+//        qWarning() << "Saved CRC " << QString::number(savedCRC, 16);
+
+        decodedData.chop(2);
 
         switch(decodedData.at(0)) {
         case 0:
@@ -288,15 +290,48 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
             break;
         case 10:
             qWarning() << "Ownship";
+            decodedData = decodedData.mid(1);
+            if (decodedData.length() != 27) {
+                qWarning() << "Message size not right" << decodedData.length();
+            }
+        {
+            auto la0 = static_cast<quint8>(decodedData.at(4));
+            auto la1 = static_cast<quint8>(decodedData.at(5));
+            auto la2 = static_cast<quint8>(decodedData.at(6));
+            qint32 laInt = (la0 << 16) + (la1 << 8) + la2;
+            if (laInt > 8388607) {
+                laInt -= 16777216;
+            }
+            double lat = (180.0/0x800000)*laInt;
+            qWarning() << "lat" << lat;
+
+            auto ln0 = static_cast<quint8>(decodedData.at(7));
+            auto ln1 = static_cast<quint8>(decodedData.at(8));
+            auto ln2 = static_cast<quint8>(decodedData.at(9));
+            qint32 lnInt = (ln0 << 16) + (ln1 << 8) + ln2;
+            if (lnInt > 8388607) {
+                lnInt -= 16777216;
+            }
+            double lon = (180.0/0x800000)*lnInt;
+            qWarning() << "lon" << lon;
+
+            QGeoCoordinate coordinate(lat, lon);
+            if (!coordinate.isValid()) {
+                return;
+            }
+            QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
+            emit positionUpdated( Positioning::PositionInfo(pInfo) );
+        }
+
             break;
         case 11:
-            qWarning() << "Ownship geo alt";
+//            qWarning() << "Ownship geo alt";
             break;
         case 20:
-            qWarning() << "Traffic report";
+//            qWarning() << "Traffic report";
             break;
         case 0x65:
-            qWarning() << "ID Message or AHRS Message";
+//            qWarning() << "ID Message or AHRS Message";
             break;
         default:
             qWarning() << "Unknown" << static_cast<quint16>(decodedData.at(0));

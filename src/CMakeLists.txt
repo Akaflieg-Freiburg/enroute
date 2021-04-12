@@ -95,6 +95,7 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_File.h
     traffic/TrafficDataSource_Tcp.h
+    traffic/TrafficDataSource_Udp_GDL.h
     traffic/TrafficDataProvider.h
     traffic/TrafficFactor.h
     traffic/Warning.h
@@ -139,6 +140,7 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Tcp.cpp
+    traffic/TrafficDataSource_Udp_GDL.cpp
     traffic/TrafficDataProvider.cpp
     traffic/TrafficFactor.cpp
     traffic/Warning.cpp

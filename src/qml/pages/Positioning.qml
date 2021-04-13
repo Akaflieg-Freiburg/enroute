@@ -163,7 +163,7 @@ Page {
             Label {
                 text: {
                     const tt = positionProvider.positionInfo.trueTrack();
-                    return tt.isFinite() ? Math.rount(tt.toDEG()) + "°" : "-"
+                    return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
 

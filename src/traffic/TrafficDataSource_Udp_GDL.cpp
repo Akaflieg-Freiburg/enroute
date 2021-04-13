@@ -218,10 +218,10 @@ void Traffic::TrafficDataSource_Udp_GDL::onStateChanged(QAbstractSocket::SocketS
 
 void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
 {
-//    qWarning() << "Datagram Arrived";
+    //    qWarning() << "Datagram Arrived";
     while (socket->hasPendingDatagrams()) {
         QByteArray data = socket->receiveDatagram().data();
-//        qWarning() << data.toHex();
+        //        qWarning() << data.toHex();
 
         //
         // Check if this datagram contains a valid GDL90 Message
@@ -263,38 +263,42 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
             continue;
         }
         //        qWarning() << "Escape char decoding correct";
-//        qWarning() << decodedData.toHex();
+        //        qWarning() << decodedData.toHex();
 
         // CRC Checksum verification
         quint16 crc = 0;
         foreach(auto byte, decodedData.chopped(2)) {
             crc = Crc16Table.at(crc >> 8U) ^ (crc << 8U) ^ static_cast<quint8>(byte);
         }
-//        qWarning() << "MyCRC     " << QString::number(crc, 16);
+        //        qWarning() << "MyCRC     " << QString::number(crc, 16);
 
         quint16 savedCRC = 0;
         savedCRC += static_cast<quint8>( decodedData.at(decodedData.size()-1) );
         savedCRC = (savedCRC << 8U) + static_cast<quint8>( decodedData.at(decodedData.size()-2) );
-//        qWarning() << "Saved CRC " << QString::number(savedCRC, 16);
+        //        qWarning() << "Saved CRC " << QString::number(savedCRC, 16);
 
         decodedData.chop(2);
 
-        switch(decodedData.at(0)) {
-        case 0:
-            qWarning() << "Heartbeat";
-            // Heartbeat received.
+        // Heartbeat message
+        if (decodedData.at(0) == 0) {
             setReceivingHeartbeat(true);
-            break;
-        case 7:
-            qWarning() << "UAT Uplink";
-            break;
-        case 10:
+            return;
+        }
+
+        // Ownship report
+        if (decodedData.at(0) == 10) {
             qWarning() << "Ownship";
+
+            // Cut off Message ID
             decodedData = decodedData.mid(1);
+
+            // Check message size
             if (decodedData.length() != 27) {
                 qWarning() << "Message size not right" << decodedData.length();
+                return;
             }
-        {
+
+            // Find latitude
             auto la0 = static_cast<quint8>(decodedData.at(4));
             auto la1 = static_cast<quint8>(decodedData.at(5));
             auto la2 = static_cast<quint8>(decodedData.at(6));
@@ -303,8 +307,8 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
                 laInt -= 16777216;
             }
             double lat = (180.0/0x800000)*laInt;
-            qWarning() << "lat" << lat;
 
+            // Find longitude
             auto ln0 = static_cast<quint8>(decodedData.at(7));
             auto ln1 = static_cast<quint8>(decodedData.at(8));
             auto ln2 = static_cast<quint8>(decodedData.at(9));
@@ -313,15 +317,15 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
                 lnInt -= 16777216;
             }
             double lon = (180.0/0x800000)*lnInt;
-            qWarning() << "lon" << lon;
 
+            // Construct coordinate, generate position info
             QGeoCoordinate coordinate(lat, lon);
             if (!coordinate.isValid()) {
                 return;
             }
             QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
 
-            // Pressure altitude
+            // Find pressure altitude
             auto dd0 = static_cast<quint8>(decodedData.at(10));
             auto dd1 = static_cast<quint8>(decodedData.at(11));
             quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
@@ -330,7 +334,51 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
                 emit pressureAltitudeUpdated(pAlt);
             }
 
-            // Horizontal speed
+            // Find Navigation Accuracy Category for Position
+            auto a = static_cast<quint8>(decodedData.at(12)) & 0x0FU;
+            qWarning() << "A" << a;
+            switch (a) {
+            case 1:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(10.0).toM() );
+                break;
+            case 2:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(4.0).toM() );
+                break;
+            case 3:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(2.0).toM() );
+                break;
+            case 4:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(1.0).toM() );
+                break;
+            case 5:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.5).toM() );
+                break;
+            case 6:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.3).toM() );
+                break;
+            case 7:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.1).toM() );
+                break;
+            case 8:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.05).toM() );
+                break;
+            case 9:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 30.0 );
+                pInfo.setAttribute(QGeoPositionInfo::VerticalAccuracy, 45.0 );
+                break;
+            case 10:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 10.0 );
+                pInfo.setAttribute(QGeoPositionInfo::VerticalAccuracy, 15.0 );
+                break;
+            case 11:
+                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 3.0 );
+                pInfo.setAttribute(QGeoPositionInfo::VerticalAccuracy, 4.0 );
+                break;
+            default:
+                break;
+            }
+
+            // Find horizontal speed if available
             auto hh0 = static_cast<quint8>(decodedData.at(13));
             auto hh1 = static_cast<quint8>(decodedData.at(14));
             quint32 hhTmp = (hh0 << 4) + (hh1 >> 4);
@@ -339,23 +387,32 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
                 pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
             }
 
-            // True Track
-            auto tt = static_cast<quint8>(decodedData.at(16));
-            qWarning() << "TT" << tt;
-            pInfo.setAttribute(QGeoPositionInfo::Direction, tt*360.0/256.0 );
+            // Find true track if available
+            auto mm0 = static_cast<quint8>(decodedData.at(11)) & 0x03U;
+            if (mm0 == 1)  {
+                auto tt = static_cast<quint8>(decodedData.at(16));
+                pInfo.setAttribute(QGeoPositionInfo::Direction, tt*360.0/256.0 );
+            }
 
+            // Update position information and return
             emit positionUpdated( Positioning::PositionInfo(pInfo) );
+            return;
         }
 
+        switch(decodedData.at(0)) {
+        case 7:
+            qWarning() << "UAT Uplink";
+            break;
+        case 10:
             break;
         case 11:
-//            qWarning() << "Ownship geo alt";
+            //            qWarning() << "Ownship geo alt";
             break;
         case 20:
-//            qWarning() << "Traffic report";
+            //            qWarning() << "Traffic report";
             break;
         case 0x65:
-//            qWarning() << "ID Message or AHRS Message";
+            //            qWarning() << "ID Message or AHRS Message";
             break;
         default:
             qWarning() << "Unknown" << static_cast<quint16>(decodedData.at(0));

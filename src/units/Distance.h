@@ -50,6 +50,19 @@ namespace AviationUnits {
 
         /*! \brief Constructs a distance
          *
+         * @param distanceInM distance in nautical miles
+         *
+         * @returns distance
+         */
+        static Distance fromNM(double distanceInNM)
+        {
+            Distance result;
+            result.m_distanceInM = distanceInNM*MetersPerNauticalMile;
+            return result;
+        }
+
+        /*! \brief Constructs a distance
+         *
          * @param distanceInFT distance in feet
          *
          * @returns distance

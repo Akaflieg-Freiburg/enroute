@@ -37,6 +37,19 @@ namespace AviationUnits {
     public:
         /*! \brief Constructs a speed
          *
+         * @param speedInFPM speed in feet per minute
+         *
+         * @returns speed
+         */
+        static Speed fromFPM(double speedInFPM)
+        {
+            Speed result;
+            result._speedInMPS = speedInFPM/FPM_per_MPS;
+            return result;
+        }
+
+        /*! \brief Constructs a speed
+         *
          * @param speedInMPS speed in meters per second
          *
          * @returns speed

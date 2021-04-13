@@ -336,7 +336,6 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
 
             // Find Navigation Accuracy Category for Position
             auto a = static_cast<quint8>(decodedData.at(12)) & 0x0FU;
-            qWarning() << "A" << a;
             switch (a) {
             case 1:
                 pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(10.0).toM() );
@@ -385,6 +384,16 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
             if (hhTmp != 0xFFF) {
                 AviationUnits::Speed hSpeed = AviationUnits::Speed::fromKN(hhTmp);
                 pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
+            }
+
+            // Find vertical speed if available
+            auto vv0 = static_cast<quint8>(decodedData.at(14)) & 0x0FU;
+            auto vv1 = static_cast<quint8>(decodedData.at(15));
+            quint32 vvTmp = (vv0 << 8) + vv1;
+            qWarning() << "vvTmp" << vvTmp;
+            if (vvTmp != 0xFFF) {
+                AviationUnits::Speed vSpeed = AviationUnits::Speed::fromFPM(vvTmp*64.0);
+                pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS() );
             }
 
             // Find true track if available

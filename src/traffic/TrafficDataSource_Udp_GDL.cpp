@@ -320,6 +320,30 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
                 return;
             }
             QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
+
+            // Pressure altitude
+            auto dd0 = static_cast<quint8>(decodedData.at(10));
+            auto dd1 = static_cast<quint8>(decodedData.at(11));
+            quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
+            if (ddTmp != 0xFFF) {
+                AviationUnits::Distance pAlt = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
+                emit pressureAltitudeUpdated(pAlt);
+            }
+
+            // Horizontal speed
+            auto hh0 = static_cast<quint8>(decodedData.at(13));
+            auto hh1 = static_cast<quint8>(decodedData.at(14));
+            quint32 hhTmp = (hh0 << 4) + (hh1 >> 4);
+            if (hhTmp != 0xFFF) {
+                AviationUnits::Speed hSpeed = AviationUnits::Speed::fromKN(hhTmp);
+                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
+            }
+
+            // True Track
+            auto tt = static_cast<quint8>(decodedData.at(16));
+            qWarning() << "TT" << tt;
+            pInfo.setAttribute(QGeoPositionInfo::Direction, tt*360.0/256.0 );
+
             emit positionUpdated( Positioning::PositionInfo(pInfo) );
         }
 

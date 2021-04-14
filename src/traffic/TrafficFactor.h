@@ -150,24 +150,7 @@ public:
      */
     AviationUnits::Speed climbRate() const
     {
-        return _climbRate;
-    }
-
-    /*! \brief Climb rate at the time of report, in m/s
-     *
-     *  If known, this property holds the horizontal climb rate of the traffic
-     *  at the time of report, in m/s.  Otherwise, it contains NaN.
-     */
-
-    Q_PROPERTY(double climbRateInMPS READ climbRateInMPS NOTIFY hDistChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property climbRateInMPS
-     */
-    double climbRateInMPS() const
-    {
-        return _climbRate.toMPS();
+        return AviationUnits::Speed::fromMPS(_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
     }
 
     /*! \brief Suggested color for GUI representation of the traffic
@@ -235,7 +218,7 @@ public:
      */
     AviationUnits::Speed groundSpeed() const
     {
-        return _groundSpeed;
+        return AviationUnits::Speed::fromMPS(_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
     }
 
     /*! \brief Horizontal distance from own position to the traffic,
@@ -441,7 +424,7 @@ private:
     // Copy data from other object
     void copyFrom(const TrafficFactor & other)
     {
-        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._groundSpeed, other._climbRate, other._type, other._positionInfo);
+        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo);
     }
 
     // Set data
@@ -449,8 +432,6 @@ private:
                  const QString & newID,
                  AviationUnits::Distance newHDist,
                  AviationUnits::Distance newVDist,
-                 AviationUnits::Speed newGroundSpeed,
-                 AviationUnits::Speed newClimbRate,
                  AircraftType newType,
                  const QGeoPositionInfo & newPositionInfo);
 
@@ -463,10 +444,8 @@ private:
     //
     int _alarmLevel {0};
     bool _animate {true};
-    AviationUnits::Speed _climbRate;
     QString _color {QStringLiteral("red")};
     QString _description;
-    AviationUnits::Speed _groundSpeed;
     AviationUnits::Distance _hDist;
     QString _icon;
     QString _ID;

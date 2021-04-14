@@ -315,7 +315,18 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
                 }
             }
 
-            factor.setData(alarmLevel, targetID, hDist, vDist, AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, QGeoPositionInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc()));
+            // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
+            QGeoPositionInfo pInfo(QGeoCoordinate(), QDateTime::currentDateTimeUtc());
+            auto targetGS = arguments[8].toDouble(&ok);
+            if (ok) {
+                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, targetGS);
+            }
+            auto targetVS = arguments[9].toDouble(&ok);
+            if (ok) {
+                pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
+            }
+
+            factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo);
             emit factorWithoutPosition(factor);
             return;
         }
@@ -360,7 +371,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         }
 
         // Construct a traffic object
-        factor.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), AviationUnits::Speed::fromMPS(groundSpeedInMPS), AviationUnits::Speed::fromMPS(climbRateInMPS), type, pInfo);
+        factor.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), type, pInfo);
         emit factorWithPosition(factor);
         return;
     }

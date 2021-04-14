@@ -101,7 +101,7 @@ void Traffic::TrafficFactor::setColor()
 }
 
 
-void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AviationUnits::Speed newGroundSpeed, AviationUnits::Speed newClimbRate, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
+void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
 {
     // Set properties
     bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
@@ -131,11 +131,9 @@ void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, Av
     bool hasHDistChanged = (_hDist != newHDist);
     _hDist = newHDist;
 
-    bool hasClimbRateChanged = (_climbRate != newClimbRate);
-    _climbRate = newClimbRate;
+    bool hasClimbRateChanged = (_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed) != newPositionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
 
-    bool hasGroundSpeedChanged = (_groundSpeed != newGroundSpeed);
-    _groundSpeed = newGroundSpeed;
+    bool hasGroundSpeedChanged = (_positionInfo.attribute(QGeoPositionInfo::GroundSpeed) != newPositionInfo.attribute(QGeoPositionInfo::GroundSpeed));
 
     // If the ID changed, do not animate property changes in the GUI.
     if (hasIDChanged) {
@@ -231,14 +229,15 @@ void Traffic::TrafficFactor::setDescription()
 
     if (_vDist.isFinite()) {
         auto result = _vDist.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
-        if ( qIsFinite(_climbRate.toMPS())) {
-            if (_climbRate.toMPS() < -1.0) {
+        auto climbRateMPS = climbRate().toMPS();
+        if ( qIsFinite(climbRateMPS) ) {
+            if (climbRateMPS < -1.0) {
                 result += " ↘";
             }
-            if ((_climbRate.toMPS() >= -1.0) && (_climbRate.toMPS() <= +1.0)) {
+            if ((climbRateMPS >= -1.0) && (climbRateMPS <= +1.0)) {
                 result += " →";
             }
-            if (_climbRate.toMPS() > 1.0) {
+            if (climbRateMPS > 1.0) {
                 result += " ↗";
             }
         }

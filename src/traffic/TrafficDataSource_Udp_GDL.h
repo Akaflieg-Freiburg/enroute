@@ -77,6 +77,12 @@ private:
     QPointer<QUdpSocket> socket;
     quint16 m_port;
 
+    // GPS altitude information
+    AviationUnits::Distance m_trueAltitude;
+    AviationUnits::Distance m_trueAltitude_FOM;
+    QTimer m_trueAltitudeTimer;
+
+
     QVector<quint16> Crc16Table;
 };
 

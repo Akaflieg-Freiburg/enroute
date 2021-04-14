@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QQmlEngine>
+
 #include "MobileAdaptor.h"
 #include "traffic/TrafficDataSource_Udp_GDL.h"
 
@@ -26,6 +28,8 @@
 
 Traffic::TrafficDataSource_Udp_GDL::TrafficDataSource_Udp_GDL(quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_Abstract(parent), m_port(port), Crc16Table(256) {
+
+    QQmlEngine::setObjectOwnership(&factor, QQmlEngine::CppOwnership);
 
     // Initialize CRC16 table
     for(quint16 i = 0; i < 256; i++) {
@@ -217,6 +221,108 @@ void Traffic::TrafficDataSource_Udp_GDL::onStateChanged(QAbstractSocket::SocketS
 }
 
 
+auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
+{
+    // Check message size
+    if (decodedData.length() != 27) {
+        return {};
+    }
+
+    // Find latitude
+    auto la0 = static_cast<quint8>(decodedData.at(4));
+    auto la1 = static_cast<quint8>(decodedData.at(5));
+    auto la2 = static_cast<quint8>(decodedData.at(6));
+    qint32 laInt = (la0 << 16) + (la1 << 8) + la2;
+    if (laInt > 8388607) {
+        laInt -= 16777216;
+    }
+    double lat = (180.0/0x800000)*laInt;
+
+    // Find longitude
+    auto ln0 = static_cast<quint8>(decodedData.at(7));
+    auto ln1 = static_cast<quint8>(decodedData.at(8));
+    auto ln2 = static_cast<quint8>(decodedData.at(9));
+    qint32 lnInt = (ln0 << 16) + (ln1 << 8) + ln2;
+    if (lnInt > 8388607) {
+        lnInt -= 16777216;
+    }
+    double lon = (180.0/0x800000)*lnInt;
+
+    // Construct coordinate, generate position info
+    QGeoCoordinate coordinate(lat, lon);
+    if (!coordinate.isValid()) {
+        return {};
+    }
+    QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
+
+    // Find Navigation Accuracy Category for Position
+    auto a = static_cast<quint8>(decodedData.at(12)) & 0x0FU;
+    switch (a) {
+    case 1:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(10.0).toM() );
+        break;
+    case 2:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(4.0).toM() );
+        break;
+    case 3:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(2.0).toM() );
+        break;
+    case 4:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(1.0).toM() );
+        break;
+    case 5:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.5).toM() );
+        break;
+    case 6:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.3).toM() );
+        break;
+    case 7:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.1).toM() );
+        break;
+    case 8:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.05).toM() );
+        break;
+    case 9:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 30.0 );
+        break;
+    case 10:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 10.0 );
+        break;
+    case 11:
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 3.0 );
+        break;
+    default:
+        break;
+    }
+
+    // Find horizontal speed if available
+    auto hh0 = static_cast<quint8>(decodedData.at(13));
+    auto hh1 = static_cast<quint8>(decodedData.at(14));
+    quint32 hhTmp = (hh0 << 4) + (hh1 >> 4);
+    if (hhTmp != 0xFFF) {
+        AviationUnits::Speed hSpeed = AviationUnits::Speed::fromKN(hhTmp);
+        pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
+    }
+
+    // Find vertical speed if available
+    auto vv0 = static_cast<quint8>(decodedData.at(14)) & 0x0FU;
+    auto vv1 = static_cast<quint8>(decodedData.at(15));
+    quint32 vvTmp = (vv0 << 8) + vv1;
+    if (vvTmp != 0xFFF) {
+        AviationUnits::Speed vSpeed = AviationUnits::Speed::fromFPM(vvTmp*64.0);
+        pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS() );
+    }
+
+    // Find true track if available
+    auto mm0 = static_cast<quint8>(decodedData.at(11)) & 0x03U;
+    if (mm0 == 1)  {
+        auto tt = static_cast<quint8>(decodedData.at(16));
+        pInfo.setAttribute(QGeoPositionInfo::Direction, tt*360.0/256.0 );
+    }
+
+    return pInfo;
+}
+
 #include <QNetworkDatagram>
 
 void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
@@ -295,43 +401,18 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
         // Ownship report
         if (messageID == 10) {
 
-            // Check message size
-            if (decodedData.length() != 27) {
-                return;
+            // Get position info w/o altitude information
+            auto pInfo = pInfoFromOwnshipReport(decodedData);
+            if (!pInfo.isValid()) {
+                continue;
             }
 
-            // Find latitude
-            auto la0 = static_cast<quint8>(decodedData.at(4));
-            auto la1 = static_cast<quint8>(decodedData.at(5));
-            auto la2 = static_cast<quint8>(decodedData.at(6));
-            qint32 laInt = (la0 << 16) + (la1 << 8) + la2;
-            if (laInt > 8388607) {
-                laInt -= 16777216;
-            }
-            double lat = (180.0/0x800000)*laInt;
-
-            // Find longitude
-            auto ln0 = static_cast<quint8>(decodedData.at(7));
-            auto ln1 = static_cast<quint8>(decodedData.at(8));
-            auto ln2 = static_cast<quint8>(decodedData.at(9));
-            qint32 lnInt = (ln0 << 16) + (ln1 << 8) + ln2;
-            if (lnInt > 8388607) {
-                lnInt -= 16777216;
-            }
-            double lon = (180.0/0x800000)*lnInt;
-
-            // Construct coordinate, generate position info
-            QGeoCoordinate coordinate(lat, lon);
-            if (!coordinate.isValid()) {
-                return;
-            }
+            // Copy true altitude into pInfo, if known
             if (m_trueAltitudeTimer.isActive()) {
+                auto coordinate = pInfo.coordinate();
                 coordinate.setAltitude(m_trueAltitude.toM());
-            }
-            QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
-            if (m_trueAltitudeTimer.isActive()) {
+                pInfo.setCoordinate(coordinate);
                 pInfo.setAttribute(QGeoPositionInfo::VerticalAccuracy, m_trueAltitude_FOM.toM() );
-
             }
 
             // Find pressure altitude
@@ -343,74 +424,9 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
                 emit pressureAltitudeUpdated(pAlt);
             }
 
-            // Find Navigation Accuracy Category for Position
-            auto a = static_cast<quint8>(decodedData.at(12)) & 0x0FU;
-            switch (a) {
-            case 1:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(10.0).toM() );
-                break;
-            case 2:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(4.0).toM() );
-                break;
-            case 3:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(2.0).toM() );
-                break;
-            case 4:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(1.0).toM() );
-                break;
-            case 5:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.5).toM() );
-                break;
-            case 6:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.3).toM() );
-                break;
-            case 7:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.1).toM() );
-                break;
-            case 8:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.05).toM() );
-                break;
-            case 9:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 30.0 );
-                break;
-            case 10:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 10.0 );
-                break;
-            case 11:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 3.0 );
-                break;
-            default:
-                break;
-            }
-
-            // Find horizontal speed if available
-            auto hh0 = static_cast<quint8>(decodedData.at(13));
-            auto hh1 = static_cast<quint8>(decodedData.at(14));
-            quint32 hhTmp = (hh0 << 4) + (hh1 >> 4);
-            if (hhTmp != 0xFFF) {
-                AviationUnits::Speed hSpeed = AviationUnits::Speed::fromKN(hhTmp);
-                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
-            }
-
-            // Find vertical speed if available
-            auto vv0 = static_cast<quint8>(decodedData.at(14)) & 0x0FU;
-            auto vv1 = static_cast<quint8>(decodedData.at(15));
-            quint32 vvTmp = (vv0 << 8) + vv1;
-            if (vvTmp != 0xFFF) {
-                AviationUnits::Speed vSpeed = AviationUnits::Speed::fromFPM(vvTmp*64.0);
-                pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS() );
-            }
-
-            // Find true track if available
-            auto mm0 = static_cast<quint8>(decodedData.at(11)) & 0x03U;
-            if (mm0 == 1)  {
-                auto tt = static_cast<quint8>(decodedData.at(16));
-                pInfo.setAttribute(QGeoPositionInfo::Direction, tt*360.0/256.0 );
-            }
-
-            // Update position information and return
+            // Update position information and continue
             emit positionUpdated( Positioning::PositionInfo(pInfo) );
-            return;
+            continue;
         }
 
         // Ownship geometric altitude
@@ -436,44 +452,31 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
         // Traffic report
         if (messageID == 20) {
 
-            // Check message size
-            if (decodedData.length() != 27) {
-                return;
+            // Get position info w/o altitude information
+            auto pInfo = pInfoFromOwnshipReport(decodedData);
+            if (!pInfo.isValid()) {
+                continue;
             }
 
-            // Find latitude
-            auto la0 = static_cast<quint8>(decodedData.at(4));
-            auto la1 = static_cast<quint8>(decodedData.at(5));
-            auto la2 = static_cast<quint8>(decodedData.at(6));
-            qint32 laInt = (la0 << 16) + (la1 << 8) + la2;
-            if (laInt > 8388607) {
-                laInt -= 16777216;
-            }
-            double lat = (180.0/0x800000)*laInt;
+            // Get ID
+            auto id0 = static_cast<quint8>(decodedData.at(0)) & 0x0FU;
+            auto id1 = static_cast<quint8>(decodedData.at(1));
+            auto id2 = static_cast<quint8>(decodedData.at(2));
+            auto id3 = static_cast<quint8>(decodedData.at(3));
+            auto id = QString::number(id0, 16) + QString::number(id1, 16) + QString::number(id2, 16) + QString::number(id3, 16);
 
-            // Find longitude
-            auto ln0 = static_cast<quint8>(decodedData.at(7));
-            auto ln1 = static_cast<quint8>(decodedData.at(8));
-            auto ln2 = static_cast<quint8>(decodedData.at(9));
-            qint32 lnInt = (ln0 << 16) + (ln1 << 8) + ln2;
-            if (lnInt > 8388607) {
-                lnInt -= 16777216;
-            }
-            double lon = (180.0/0x800000)*lnInt;
+            // Alert
+            auto s0 = static_cast<quint8>(decodedData.at(0)) >> 4;
+            auto alert = (s0 == 1) ? 1 : 0;
+            qWarning() << "id" << id << s0;
 
-            // Construct coordinate, generate position info
-            QGeoCoordinate coordinate(lat, lon);
-            if (!coordinate.isValid()) {
-                return;
-            }
-            if (m_trueAltitudeTimer.isActive()) {
-                coordinate.setAltitude(m_trueAltitude.toM());
-            }
-            QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
-            if (m_trueAltitudeTimer.isActive()) {
-                pInfo.setAttribute(QGeoPositionInfo::VerticalAccuracy, m_trueAltitude_FOM.toM() );
+#warning Still need: altitude, distances, traffic type
 
-            }
+            factor.setData(alert, id, {}, {}, Traffic::TrafficFactor::Aircraft, pInfo);
+            emit factorWithPosition(factor);
+
+
+/*
 
             // Find pressure altitude
             auto dd0 = static_cast<quint8>(decodedData.at(10));
@@ -481,77 +484,14 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
             quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
             if (ddTmp != 0xFFF) {
                 AviationUnits::Distance pAlt = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
-                emit pressureAltitudeUpdated(pAlt);
+//                emit pressureAltitudeUpdated(pAlt);
             }
 
-            // Find Navigation Accuracy Category for Position
-            auto a = static_cast<quint8>(decodedData.at(12)) & 0x0FU;
-            switch (a) {
-            case 1:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(10.0).toM() );
-                break;
-            case 2:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(4.0).toM() );
-                break;
-            case 3:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(2.0).toM() );
-                break;
-            case 4:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(1.0).toM() );
-                break;
-            case 5:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.5).toM() );
-                break;
-            case 6:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.3).toM() );
-                break;
-            case 7:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.1).toM() );
-                break;
-            case 8:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.05).toM() );
-                break;
-            case 9:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 30.0 );
-                break;
-            case 10:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 10.0 );
-                break;
-            case 11:
-                pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 3.0 );
-                break;
-            default:
-                break;
-            }
-
-            // Find horizontal speed if available
-            auto hh0 = static_cast<quint8>(decodedData.at(13));
-            auto hh1 = static_cast<quint8>(decodedData.at(14));
-            quint32 hhTmp = (hh0 << 4) + (hh1 >> 4);
-            if (hhTmp != 0xFFF) {
-                AviationUnits::Speed hSpeed = AviationUnits::Speed::fromKN(hhTmp);
-                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
-            }
-
-            // Find vertical speed if available
-            auto vv0 = static_cast<quint8>(decodedData.at(14)) & 0x0FU;
-            auto vv1 = static_cast<quint8>(decodedData.at(15));
-            quint32 vvTmp = (vv0 << 8) + vv1;
-            if (vvTmp != 0xFFF) {
-                AviationUnits::Speed vSpeed = AviationUnits::Speed::fromFPM(vvTmp*64.0);
-                pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS() );
-            }
-
-            // Find true track if available
-            auto mm0 = static_cast<quint8>(decodedData.at(11)) & 0x03U;
-            if (mm0 == 1)  {
-                auto tt = static_cast<quint8>(decodedData.at(16));
-                pInfo.setAttribute(QGeoPositionInfo::Direction, tt*360.0/256.0 );
-            }
 
             // Update position information and return
-            emit positionUpdated( Positioning::PositionInfo(pInfo) );
+//            emit positionUpdated( Positioning::PositionInfo(pInfo) );
             return;
+            */
         }
 
 

@@ -82,6 +82,8 @@ private:
     AviationUnits::Distance m_trueAltitude_FOM;
     QTimer m_trueAltitudeTimer;
 
+    // Targets
+    Traffic::TrafficFactor factor;
 
     QVector<quint16> Crc16Table;
 };

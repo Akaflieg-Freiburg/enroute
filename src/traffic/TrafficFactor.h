@@ -42,6 +42,7 @@ class TrafficFactor : public QObject {
     // Only FLARMAdaptor can set properties
     friend class TrafficDataProvider;
     friend class TrafficDataSource_Abstract;
+    friend class TrafficDataSource_Udp_GDL;
 
 public:
     /*! \brief Aircraft type */

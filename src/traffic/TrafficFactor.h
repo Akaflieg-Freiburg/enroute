@@ -28,6 +28,8 @@
 
 namespace Traffic {
 
+#warning need to add property callsign
+
 /*! \brief Traffic opponents
  *
  *  Objects of this class represent traffic opponents, as detected by FLARM and
@@ -39,6 +41,7 @@ namespace Traffic {
 class TrafficFactor : public QObject {
     Q_OBJECT
 
+#warning Update comment
     // Only FLARMAdaptor can set properties
     friend class TrafficDataProvider;
     friend class TrafficDataSource_Abstract;

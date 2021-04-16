@@ -77,10 +77,14 @@ private:
     QPointer<QUdpSocket> socket;
     quint16 m_port;
 
-    // GPS altitude information
+    // GPS altitude of owncraft
     AviationUnits::Distance m_trueAltitude;
     AviationUnits::Distance m_trueAltitude_FOM;
     QTimer m_trueAltitudeTimer;
+
+    // Pressure altitude of owncraft
+    AviationUnits::Distance m_pressureAltitude;
+    QTimer m_pressureAltitudeTimer;
 
     // Targets
     Traffic::TrafficFactor factor;

@@ -104,6 +104,28 @@ namespace AviationUnits {
             return m_distanceInM < 0.0;
         }
 
+        /*! \brief Addition
+         *
+         *  @param rhs Right hand side of the addition
+         *
+         *  @returns Result of the addition
+         */
+        Q_INVOKABLE auto operator+(AviationUnits::Distance rhs) const
+        {
+            return fromM(m_distanceInM + rhs.m_distanceInM);
+        }
+
+        /*! \brief Subtraction
+         *
+         *  @param rhs Right hand side of the subtraction
+         *
+         *  @returns Result of the subtraction
+         */
+        Q_INVOKABLE auto operator-(AviationUnits::Distance rhs) const
+        {
+            return fromM(m_distanceInM - rhs.m_distanceInM);
+        }
+
         /*! \brief Comparison: less than
          *
          *  @param rhs Right hand side of the comparison

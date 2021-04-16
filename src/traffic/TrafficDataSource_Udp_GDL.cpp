@@ -21,6 +21,7 @@
 #include <QQmlEngine>
 
 #include "MobileAdaptor.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Udp_GDL.h"
 
 
@@ -40,7 +41,9 @@ Traffic::TrafficDataSource_Udp_GDL::TrafficDataSource_Udp_GDL(quint16 port, QObj
         Crc16Table[i] = crc;
     }
 
-    // Initialize timer
+    // Initialize timers
+    m_pressureAltitudeTimer.setInterval(5s);
+    m_pressureAltitudeTimer.setSingleShot(true);
     m_trueAltitudeTimer.setInterval(5s);
     m_trueAltitudeTimer.setSingleShot(true);
 
@@ -415,14 +418,17 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
                 pInfo.setAttribute(QGeoPositionInfo::VerticalAccuracy, m_trueAltitude_FOM.toM() );
             }
 
-            // Find pressure altitude
+            // Find pressure altitude and update information if need be
             auto dd0 = static_cast<quint8>(decodedData.at(10));
             auto dd1 = static_cast<quint8>(decodedData.at(11));
             quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
             if (ddTmp != 0xFFF) {
-                AviationUnits::Distance pAlt = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
-                emit pressureAltitudeUpdated(pAlt);
+                m_pressureAltitude = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
+                m_pressureAltitudeTimer.start();
+            } else {
+                m_pressureAltitude = AviationUnits::Distance::fromM( qQNaN() );
             }
+            emit pressureAltitudeUpdated(m_pressureAltitude);
 
             // Update position information and continue
             emit positionUpdated( Positioning::PositionInfo(pInfo) );
@@ -470,9 +476,81 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
             auto alert = (s0 == 1) ? 1 : 0;
             qWarning() << "id" << id << s0;
 
-#warning Still need: altitude, distances, traffic type
+            // Traffic type
+            auto ee = static_cast<quint8>(decodedData.at(17));
+            auto type = Traffic::TrafficFactor::unknown;
+            switch(ee) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                type = Traffic::TrafficFactor::Aircraft;
+                break;
+            case 6:
+                type = Traffic::TrafficFactor::Jet;
+                break;
+            case 7:
+                type = Traffic::TrafficFactor::Copter;
+                break;
+            case 9:
+                type = Traffic::TrafficFactor::Glider;
+                break;
+            case 10:
+                type = Traffic::TrafficFactor::Balloon;
+                break;
+            case 11:
+                type = Traffic::TrafficFactor::Skydiver;
+                break;
+            case 14:
+                type = Traffic::TrafficFactor::Drone;
+                break;
+            case 19:
+                type = Traffic::TrafficFactor::StaticObstacle;
+                break;
+            default:
+                break;
+            }
 
-            factor.setData(alert, id, {}, {}, Traffic::TrafficFactor::Aircraft, pInfo);
+            // Compute true altitude and altitude distance of traffic if
+            // a recent pressure altitude reading for owncraft exists.
+            AviationUnits::Distance vDist {};
+            if (m_pressureAltitudeTimer.isActive()) {
+                auto dd0 = static_cast<quint8>(decodedData.at(10));
+                auto dd1 = static_cast<quint8>(decodedData.at(11));
+                quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
+                if (ddTmp != 0xFFF) {
+                    auto trafficPressureAltitude = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
+                    vDist = trafficPressureAltitude - m_pressureAltitude;
+
+                    // Compute true altitude of traffic if possible
+                    if (m_trueAltitudeTimer.isActive()) {
+                        auto trafficTrueAltitude = m_trueAltitude + vDist;
+                        auto coordinate = pInfo.coordinate();
+                        coordinate.setAltitude(trafficTrueAltitude.toM());
+                        pInfo.setCoordinate(coordinate);
+                    }
+                }
+            }
+
+            // Compute horizontal distance to traffic if our own position
+            // is known.
+            AviationUnits::Distance hDist {};
+            auto* positionProviderPtr = Positioning::PositionProvider::globalInstance();
+            if (positionProviderPtr != nullptr) {
+                auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
+                auto trafficCorrdinate = pInfo.coordinate();
+                if (ownShipCoordinate.isValid() && trafficCorrdinate.isValid()) {
+                    hDist = AviationUnits::Distance::fromM( ownShipCoordinate.distanceTo(trafficCorrdinate) );
+                }
+            }
+
+            // Callsign of traffic
+            auto callSignBytes = QString::fromLatin1(decodedData.mid(18,8)).simplified();
+            qWarning() << "Traffic callsign" << callSignBytes;
+
+
+            factor.setData(alert, id, hDist, vDist, type, pInfo);
             emit factorWithPosition(factor);
 
 

@@ -25,7 +25,7 @@ Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject 
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
     if (source != nullptr) {
-        source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
+        source->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
         source->setUpdateInterval(1000);
 
         QString sName = source->sourceName();

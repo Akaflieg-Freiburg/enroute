@@ -26,7 +26,3 @@
 [submodule "3rdParty/GSL"]
 	path = 3rdParty/GSL
 	url = https://github.com/microsoft/GSL.git
-[submodule "./qhttpengine"]
-	url = ../qhttpengine.git
-[submodule "3rdParty/enrouteText/"]
-	url = ../enrouteText.git

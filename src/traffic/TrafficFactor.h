@@ -28,8 +28,6 @@
 
 namespace Traffic {
 
-#warning need to add property callsign
-
 /*! \brief Traffic opponents
  *
  *  Objects of this class represent traffic opponents, as detected by FLARM and
@@ -41,8 +39,7 @@ namespace Traffic {
 class TrafficFactor : public QObject {
     Q_OBJECT
 
-#warning Update comment
-    // Only FLARMAdaptor can set properties
+    // Only friends can set properties
     friend class TrafficDataProvider;
     friend class TrafficDataSource_Abstract;
     friend class TrafficDataSource_Udp_GDL;
@@ -139,6 +136,22 @@ public:
     bool animate() const
     {
         return _animate;
+    }
+
+    /*! \brief Climb rate at the time of report
+     *
+     *  If known, this property holds the horizontal climb rate of the traffic
+     *  at the time of report.  Otherwise, it contains NaN.
+     */
+    Q_PROPERTY(QString callSign READ callSign NOTIFY callSignChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property climbRate
+     */
+    QString callSign() const
+    {
+        return m_callSign;
     }
 
     /*! \brief Climb rate at the time of report
@@ -367,6 +380,9 @@ signals:
     void animateChanged();
 
     /*! \brief Notifier signal */
+    void callSignChanged();
+
+    /*! \brief Notifier signal */
     void climbRateChanged();
 
     /*! \brief Notifier signal */
@@ -428,7 +444,7 @@ private:
     // Copy data from other object
     void copyFrom(const TrafficFactor & other)
     {
-        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo);
+        setData(other._alarmLevel, other._ID, other._hDist, other._vDist, other._type, other._positionInfo, other.m_callSign);
     }
 
     // Set data
@@ -437,7 +453,8 @@ private:
                  AviationUnits::Distance newHDist,
                  AviationUnits::Distance newVDist,
                  AircraftType newType,
-                 const QGeoPositionInfo & newPositionInfo);
+                 const QGeoPositionInfo & newPositionInfo,
+                 const QString & newCallSign);
 
 private:
     // Setter function for property animate
@@ -448,6 +465,7 @@ private:
     //
     int _alarmLevel {0};
     bool _animate {true};
+    QString m_callSign {};
     QString _color {QStringLiteral("red")};
     QString _description;
     AviationUnits::Distance _hDist;

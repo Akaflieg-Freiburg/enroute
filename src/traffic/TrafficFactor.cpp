@@ -101,7 +101,7 @@ void Traffic::TrafficFactor::setColor()
 }
 
 
-void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo)
+void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo, const QString & newCallSign)
 {
     // Set properties
     bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
@@ -140,6 +140,9 @@ void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, Av
        setAnimate(false);
     }
 
+    bool hasCallSignChanged = (m_callSign != newCallSign);
+    m_callSign = newCallSign;
+
     // Emit notifier signals as appropriate
     if (hasAlarmLevelChanged) {
         emit alarmLevelChanged();
@@ -152,7 +155,7 @@ void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, Av
     }
     if (hasIDChanged) {
         emit IDChanged();
-       setAnimate(false);
+        setAnimate(false);
     }
     if (_positionInfoChanged)  {
         emit positionInfoChanged();
@@ -161,7 +164,7 @@ void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, Av
         emit ttChanged();
     }
     if (hasGroundSpeedChanged) {
-       emit groundSpeedChanged();
+        emit groundSpeedChanged();
     }
     if (hasClimbRateChanged) {
         emit climbRateChanged();
@@ -171,6 +174,9 @@ void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, Av
     }
     if (hasVDistChanged) {
         emit vDistChanged();
+    }
+    if (hasCallSignChanged) {
+        emit callSignChanged();
     }
 
     setAnimate(true);

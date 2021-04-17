@@ -546,11 +546,11 @@ void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
             }
 
             // Callsign of traffic
-            auto callSignBytes = QString::fromLatin1(decodedData.mid(18,8)).simplified();
-            qWarning() << "Traffic callsign" << callSignBytes;
+            auto callSign = QString::fromLatin1(decodedData.mid(18,8)).simplified();
+            qWarning() << "Traffic callsign" << callSign;
 
 
-            factor.setData(alert, id, hDist, vDist, type, pInfo);
+            factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);
             emit factorWithPosition(factor);
 
 

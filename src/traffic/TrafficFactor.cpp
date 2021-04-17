@@ -187,6 +187,10 @@ void Traffic::TrafficFactor::setDescription()
 {
     QStringList results;
 
+    if (!m_callSign.isEmpty()) {
+        results << m_callSign;
+    }
+
     switch(_type) {
     case Aircraft:
         results << tr("Aircraft");

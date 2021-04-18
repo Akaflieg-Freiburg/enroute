@@ -1,3 +1,23 @@
+/***************************************************************************
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   stefan.kebekus@gmail.com                                              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #pragma once
 
 
@@ -9,10 +29,10 @@
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: TCP connection to FLARM/NMEA source
+/*! \brief Traffic receiver: UDP connection to GDL90 source
  *
- *  This class connects to a traffic receiver via a TCP connection. It expects to
- *  find a receiver at the specifed IP-Address and port.
+ *  This class connects to a traffic receiver via a GDL90 connection. It expects to
+ *  find a receiver at the specifed IP-Address and port that emits GDL90 messages.
  *
  *  In most use cases, the
  *  connection will be established via the device's WiFi interface.  The class will
@@ -88,45 +108,3 @@ private:
 };
 
 }
-
-/*
-#include "Navigation_Traffic.h"
-
-#include <QUdpSocket>
-#include <QTimer>
-#include <QGeoPositionInfo>
-
-class SimInterface : public QObject
-{
-    Q_OBJECT
-public:
-    SimInterface(QObject *parent);
-
-    ~SimInterface();
-
-    bool start();
-
-    void stop();
-
-    QGeoPositionInfo lastKnownPosition() const;
-
-    QString simName() const { return _simName; };
-
-public slots:
-    void readPendingDatagrams();
-
-signals:
-    void positionUpdated(const QGeoPositionInfo &update);
-
-    void timeout();
-
-    void trafficUpdated(const Navigation::Traffic &traffic);
-
-private:
-    QUdpSocket *_udpSocket = nullptr;
-    QTimer _timeoutPosUpdate;
-    const int _timeoutThreshold = 60*1000;
-    QGeoPositionInfo _geoPos;
-    QString _simName;
-};
-*/

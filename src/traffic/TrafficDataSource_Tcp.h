@@ -31,7 +31,7 @@ namespace Traffic {
 /*! \brief Traffic receiver: TCP connection to FLARM/NMEA source
  *
  *  This class connects to a traffic receiver via a TCP connection. It expects to
- *  find a receiver at the specifed IP-Address and port.
+ *  find a receiver at the specifed IP-Address and port that emits FLARM/NMEA sentences.
  *
  *  In most use cases, the
  *  connection will be established via the device's WiFi interface.  The class will

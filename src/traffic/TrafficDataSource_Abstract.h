@@ -248,7 +248,15 @@ protected:
      */
     void processFLARMSentence(QString sentence);
 
-#warning
+    /*! \brief Process one FLARM/NMEA sentence
+     *
+     *  This method expects exactly one GDL90 message, including starting
+     *  and trailing 0x7e bytes.  The methodinterprets the string and updates
+     *  the properties and emits signals as appropriate. Invalid messages
+     *  are silently ignored.
+     *
+     *  @param sentence A QByteArray containing a FLARM/NMEA sentence.
+     */
     void processGDLMessage(const QByteArray& message);
 
     /*! \brief Resetter method for the property with the same name

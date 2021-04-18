@@ -25,7 +25,7 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
 #include "traffic/TrafficDataSource_Tcp.h"
-#include "traffic/TrafficDataSource_Udp_GDL.h"
+#include "traffic/TrafficDataSource_Udp.h"
 
 using namespace std::chrono_literals;
 
@@ -74,7 +74,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     // Real data sources
     m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
     m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this);
-    m_dataSources << new Traffic::TrafficDataSource_Udp_GDL(4000, this);
+    m_dataSources << new Traffic::TrafficDataSource_Udp(4000, this);
 
     // Wire up data sources
     foreach(auto dataSource, m_dataSources) {

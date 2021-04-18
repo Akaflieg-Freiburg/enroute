@@ -169,15 +169,12 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
     //
 
     if (!message.startsWith(0x7e)) {
-        qWarning() << "Start incorrect";
         return;
     }
     if (!message.endsWith(0x7e)) {
-        qWarning() << "Ending incorrect";
         return;
     }
     if (message.size() < 5) {
-        qWarning() << "Message too short";
         return;
     }
 
@@ -193,7 +190,6 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         bool isEscaped = false;
         foreach(auto byte, message.mid(1,message.size()-2) ) {
             if (byte == 0x7d) {
-                qWarning() << "is escaped";
                 isEscaped = true;
                 continue;
             }
@@ -205,7 +201,6 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
             decodedData.append(byte);
         }
         if (isEscaped) {
-            qWarning() << "Issue with escape decoding";
             return;
         }
     }
@@ -227,8 +222,6 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         savedCRC = (savedCRC << 8U) + static_cast<quint8>( decodedData.at(decodedData.size()-2) );
 
         if (crc != savedCRC) {
-            qWarning() << "MyCRC     " << QString::number(crc, 16);
-            qWarning() << "Saved CRC " << QString::number(savedCRC, 16);
             return;
         }
     }
@@ -324,7 +317,6 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         // Alert
         auto s0 = static_cast<quint8>(decodedData.at(0)) >> 4;
         auto alert = (s0 == 1) ? 1 : 0;
-        qWarning() << "id" << id << s0;
 
         // Traffic type
         auto ee = static_cast<quint8>(decodedData.at(17));
@@ -397,9 +389,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
 
         // Callsign of traffic
         auto callSign = QString::fromLatin1(decodedData.mid(18,8)).simplified();
-        qWarning() << "Traffic callsign" << callSign;
 
-
+        // Expose dats
         factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);
         emit factorWithPosition(factor);
     }

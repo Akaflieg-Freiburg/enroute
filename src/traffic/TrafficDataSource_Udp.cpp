@@ -18,16 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QNetworkDatagram>
 #include <QQmlEngine>
 
 #include "MobileAdaptor.h"
 #include "positioning/PositionProvider.h"
-#include "traffic/TrafficDataSource_Udp_GDL.h"
+#include "traffic/TrafficDataSource_Udp.h"
 
 
 // Member functions
 
-Traffic::TrafficDataSource_Udp_GDL::TrafficDataSource_Udp_GDL(quint16 port, QObject *parent) :
+Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_Abstract(parent), m_port(port) {
 
     QQmlEngine::setObjectOwnership(&factor, QQmlEngine::CppOwnership);
@@ -38,12 +39,12 @@ Traffic::TrafficDataSource_Udp_GDL::TrafficDataSource_Udp_GDL(quint16 port, QObj
 
     // Create socket
     socket = new QUdpSocket(this);
-    connect(socket, &QUdpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Udp_GDL::onErrorOccurred);
-    connect(socket, &QUdpSocket::readyRead, this, &Traffic::TrafficDataSource_Udp_GDL::onReadyRead);
-    connect(socket, &QUdpSocket::stateChanged, this, &Traffic::TrafficDataSource_Udp_GDL::onStateChanged);
+    connect(socket, &QUdpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Udp::onErrorOccurred);
+    connect(socket, &QUdpSocket::readyRead, this, &Traffic::TrafficDataSource_Udp::onReadyRead);
+    connect(socket, &QUdpSocket::stateChanged, this, &Traffic::TrafficDataSource_Udp::onStateChanged);
 
     // Connect WiFi locker/unlocker
-    connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_Udp_GDL::onReceivingHeartbeatChanged);
+    connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_Udp::onReceivingHeartbeatChanged);
 
     //
     // Initialize properties
@@ -52,14 +53,14 @@ Traffic::TrafficDataSource_Udp_GDL::TrafficDataSource_Udp_GDL(quint16 port, QObj
 }
 
 
-Traffic::TrafficDataSource_Udp_GDL::~TrafficDataSource_Udp_GDL()
+Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 {
-    Traffic::TrafficDataSource_Udp_GDL::disconnectFromTrafficReceiver();
+    Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
 }
 
 
-void Traffic::TrafficDataSource_Udp_GDL::connectToTrafficReceiver()
+void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -75,7 +76,7 @@ void Traffic::TrafficDataSource_Udp_GDL::connectToTrafficReceiver()
 }
 
 
-void Traffic::TrafficDataSource_Udp_GDL::disconnectFromTrafficReceiver()
+void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -90,7 +91,7 @@ void Traffic::TrafficDataSource_Udp_GDL::disconnectFromTrafficReceiver()
 }
 
 
-void Traffic::TrafficDataSource_Udp_GDL::onErrorOccurred(QAbstractSocket::SocketError socketError)
+void Traffic::TrafficDataSource_Udp::onErrorOccurred(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
     case QAbstractSocket::ConnectionRefusedError:
@@ -170,7 +171,7 @@ void Traffic::TrafficDataSource_Udp_GDL::onErrorOccurred(QAbstractSocket::Socket
 }
 
 
-void Traffic::TrafficDataSource_Udp_GDL::onReceivingHeartbeatChanged(bool receivingHB)
+void Traffic::TrafficDataSource_Udp::onReceivingHeartbeatChanged(bool receivingHB)
 {
     // Acquire or release WiFi lock as appropriate
     auto* mobileAdaptor = MobileAdaptor::globalInstance();
@@ -181,7 +182,7 @@ void Traffic::TrafficDataSource_Udp_GDL::onReceivingHeartbeatChanged(bool receiv
 }
 
 
-void Traffic::TrafficDataSource_Udp_GDL::onStateChanged(QAbstractSocket::SocketState socketState)
+void Traffic::TrafficDataSource_Udp::onStateChanged(QAbstractSocket::SocketState socketState)
 {
     // Paranoid safety check
     if (socket.isNull()) {
@@ -213,9 +214,7 @@ void Traffic::TrafficDataSource_Udp_GDL::onStateChanged(QAbstractSocket::SocketS
 }
 
 
-#include <QNetworkDatagram>
-
-void Traffic::TrafficDataSource_Udp_GDL::onReadyRead()
+void Traffic::TrafficDataSource_Udp::onReadyRead()
 {
     //    qWarning() << "Datagram Arrived";
     while (socket->hasPendingDatagrams()) {

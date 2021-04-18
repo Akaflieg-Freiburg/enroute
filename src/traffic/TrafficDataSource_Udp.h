@@ -18,7 +18,7 @@ namespace Traffic {
  *  connection will be established via the device's WiFi interface.  The class will
  *  therefore try to lock the WiFi once a heartbeat has been detected, and release the WiFi at the appropriate time.
  */
-class TrafficDataSource_Udp_GDL : public TrafficDataSource_Abstract {
+class TrafficDataSource_Udp : public TrafficDataSource_Abstract {
     Q_OBJECT
 
 public:
@@ -30,10 +30,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Udp_GDL(quint16 port, QObject *parent = nullptr);
+    explicit TrafficDataSource_Udp(quint16 port, QObject *parent = nullptr);
 
     // Standard destructor
-    ~TrafficDataSource_Udp_GDL() override;
+    ~TrafficDataSource_Udp() override;
 
     /*! \brief Getter function for the property with the same name
      *

@@ -115,11 +115,15 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         bool ok = false;
         auto alt = arguments[8].toDouble(&ok);
         if (!ok) {
+            m_trueAltitude = {};
+            m_trueAltitudeFOM = {};
+            m_trueAltitudeTimer.stop();
             return;
         }
 
         m_trueAltitude = AviationUnits::Distance::fromM(alt);
-        m_trueAltitudeTimeStamp = dateTime;
+        m_trueAltitudeFOM = {};
+        m_trueAltitudeTimer.start();
         return;
     }
 
@@ -163,7 +167,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         if (!coordinate.isValid()) {
             return;
         }
-        if (m_trueAltitudeTimeStamp.secsTo(dateTime) < 5) {
+        if (m_trueAltitudeTimer.isActive()) {
             coordinate.setAltitude(m_trueAltitude.toM());
         }
         QGeoPositionInfo pInfo(coordinate, QDateTime::currentDateTimeUtc());
@@ -214,12 +218,6 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         auto vDistInM = arguments[3].toDouble(&ok);
         if (!ok) {
             vDistInM = qQNaN();
-        }
-
-        // Climb rate is optional
-        auto climbRateInMPS = arguments[9].toDouble(&ok);
-        if (!ok) {
-            climbRateInMPS = qQNaN();
         }
 
         // Target type is optional

@@ -139,6 +139,7 @@ set(SOURCES
     positioning/PositionProvider.cpp
     traffic/TrafficDataSource_Abstract.cpp
     traffic/TrafficDataSource_Abstract_FLARM.cpp
+    traffic/TrafficDataSource_Abstract_GDL90.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp_GDL.cpp

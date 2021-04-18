@@ -33,6 +33,13 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(QObject *parent)
     heartbeatTimer.setSingleShot(true);
     heartbeatTimer.setInterval(5s);
     connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat);
+
+    // Setup other times
+    m_pressureAltitudeTimer.setInterval(5s);
+    m_pressureAltitudeTimer.setSingleShot(true);
+    m_trueAltitudeTimer.setInterval(5s);
+    m_trueAltitudeTimer.setSingleShot(true);
+
 }
 
 

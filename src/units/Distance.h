@@ -110,7 +110,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the addition
          */
-        Q_INVOKABLE auto operator+(AviationUnits::Distance rhs) const
+        Q_INVOKABLE auto operator+(AviationUnits::Distance rhs) const -> AviationUnits::Distance
         {
             return fromM(m_distanceInM + rhs.m_distanceInM);
         }
@@ -121,7 +121,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the subtraction
          */
-        Q_INVOKABLE auto operator-(AviationUnits::Distance rhs) const
+        Q_INVOKABLE auto operator-(AviationUnits::Distance rhs) const -> AviationUnits::Distance
         {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }

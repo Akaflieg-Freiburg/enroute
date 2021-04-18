@@ -248,6 +248,9 @@ protected:
      */
     void processFLARMSentence(QString sentence);
 
+#warning
+    void processGDLMessage(const QByteArray& message);
+
     /*! \brief Resetter method for the property with the same name
      *
      *  This is equivalent to calling setReceivingHeartbeat(false)
@@ -281,9 +284,20 @@ private:
     QString m_connectivityStatus {};
     QString m_errorString {};
 
-    // GPS altitude information
+    // True altitude of own aircraft. We store these values because
+    // the necessary information to compile a PositionInfo class does
+    // not always come in one piece.  Whenever a valid altitude is set, the
+    // timer should be started. The timer can then be used to check if
+    // the altitude information is recent enough to be used. Whenever
+    // an invalid altitude is set, the timer should be stopped.
     AviationUnits::Distance m_trueAltitude;
-    QDateTime m_trueAltitudeTimeStamp;
+    AviationUnits::Distance m_trueAltitudeFOM; // Fig. of Merit
+    QTimer m_trueAltitudeTimer;
+
+    // Pressure altitude of own aircraft. See the member m_trueAltitude*
+    // for a description how the timer should be used.
+    AviationUnits::Distance m_pressureAltitude;
+    QTimer m_pressureAltitudeTimer;
 
     // Heartbeat timer
     QTimer heartbeatTimer;

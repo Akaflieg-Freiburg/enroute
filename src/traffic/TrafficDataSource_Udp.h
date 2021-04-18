@@ -24,7 +24,7 @@
 #include <QPointer>
 #include <QUdpSocket>
 
-#include "traffic/TrafficDataSource_Abstract.h"
+#include "traffic/TrafficDataSource_AbstractSocket.h"
 
 
 namespace Traffic {
@@ -38,7 +38,7 @@ namespace Traffic {
  *  connection will be established via the device's WiFi interface.  The class will
  *  therefore try to lock the WiFi once a heartbeat has been detected, and release the WiFi at the appropriate time.
  */
-class TrafficDataSource_Udp : public TrafficDataSource_Abstract {
+class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
@@ -80,28 +80,20 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Handle socket errors.
-    void onErrorOccurred(QAbstractSocket::SocketError socketError);
-
-    // Update the property "errorString" and "connectivityStatus" and emit notification signals
-    void onStateChanged(QAbstractSocket::SocketState socketState);
-
-    // Acquire or release WiFi lock
-    static void onReceivingHeartbeatChanged(bool receivingHB);
-
+    // Read messages from the socket datagrams and passes the messages on to
+    // processGDLMessage
     void onReadyRead();
 
 private:
     quint16 crcCompute(char *block, int length);
 
-    QPointer<QUdpSocket> socket;
+    QUdpSocket socket;
     quint16 m_port;
 
     // GPS altitude of owncraft
     AviationUnits::Distance m_trueAltitude;
     AviationUnits::Distance m_trueAltitude_FOM;
     QTimer m_trueAltitudeTimer;
-
 
     // Targets
     Traffic::TrafficFactor factor;

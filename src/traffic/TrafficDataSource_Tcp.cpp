@@ -18,203 +18,73 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "MobileAdaptor.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 
 
 // Member functions
 
 Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 port, QObject *parent) :
-    Traffic::TrafficDataSource_Abstract(parent), m_hostName(std::move(hostName)), m_port(port) {
+    Traffic::TrafficDataSource_AbstractSocket(parent), m_hostName(std::move(hostName)), m_port(port) {
 
     // Create socket
-    socket = new QTcpSocket(this);
-    connect(socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
-    connect(socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::readFromStream);
-    connect(socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Tcp::onStateChanged);
+    connect(&socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
+    connect(&socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::onReadyRead);
+    connect(&socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Tcp::onStateChanged);
 
     // Set up text stream
-    textStream.setDevice(socket);
+    textStream.setDevice(&socket);
     textStream.setCodec("ISO 8859-1");
-
-    // Connect WiFi locker/unlocker
-    connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_Tcp::onReceivingHeartbeatChanged);
 
     //
     // Initialize properties
     //
-    onStateChanged(socket->state());
+    onStateChanged(socket.state());
 
 }
 
 
 Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 {
+
     Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
+
 }
 
 
 void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 {
-    // Paranoid safety check
-    if (socket.isNull()) {
-        return;
-    }
 
-    socket->abort();
+    socket.abort();
     setErrorString();
-    socket->connectToHost(m_hostName, m_port);
-    textStream.setDevice(socket);
+    socket.connectToHost(m_hostName, m_port);
+    textStream.setDevice(&socket);
 
     // Update properties
-    onStateChanged(socket->state());
+    onStateChanged(socket.state());
+
 }
 
 
 void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
-    // Paranoid safety check
-    if (socket.isNull()) {
-        return;
-    }
 
     // Disconnect socket.
-    socket->abort();
+    socket.abort();
 
     // Update properties
-    onStateChanged(socket->state());
-}
-
-
-void Traffic::TrafficDataSource_Tcp::onErrorOccurred(QAbstractSocket::SocketError socketError)
-{
-    switch (socketError) {
-    case QAbstractSocket::ConnectionRefusedError:
-        setErrorString( tr("The connection was refused by the peer (or timed out).") );
-        break;
-    case QAbstractSocket::RemoteHostClosedError:
-        setErrorString( tr("The remote host closed the connection.") );
-        break;
-    case QAbstractSocket::HostNotFoundError:
-        setErrorString( tr("The host address was not found.") );
-        break;
-    case QAbstractSocket::SocketAccessError:
-        setErrorString( tr("The socket operation failed because the application lacked the required privileges.") );
-        break;
-    case QAbstractSocket::SocketResourceError:
-        setErrorString( tr("The local system ran out of resources.") );
-        break;
-    case QAbstractSocket::SocketTimeoutError:
-        setErrorString( tr("The socket operation timed out.") );
-        break;
-    case QAbstractSocket::DatagramTooLargeError:
-        setErrorString( tr("The datagram was larger than the operating system's limit.") );
-        break;
-    case QAbstractSocket::NetworkError:
-        setErrorString( tr("An error occurred with the network.") );
-        break;
-    case QAbstractSocket::AddressInUseError:
-        setErrorString( tr("The address specified to QAbstractSocket::bind() is already in use and was set to be exclusive.") );
-        break;
-    case QAbstractSocket::SocketAddressNotAvailableError:
-        setErrorString( tr("The address specified to QAbstractSocket::bind() does not belong to the host.") );
-        break;
-    case QAbstractSocket::UnsupportedSocketOperationError:
-        setErrorString( tr("The requested socket operation is not supported by the local operating system.") );
-        break;
-    case QAbstractSocket::ProxyAuthenticationRequiredError:
-        setErrorString( tr("The socket is using a proxy, and the proxy requires authentication.") );
-        break;
-    case QAbstractSocket::SslHandshakeFailedError:
-        setErrorString( tr("The SSL/TLS handshake failed, so the connection was closed.") );
-        break;
-    case QAbstractSocket::UnfinishedSocketOperationError:
-        setErrorString( tr("The last operation attempted has not finished yet (still in progress in the background).") );
-        break;
-    case QAbstractSocket::ProxyConnectionRefusedError:
-        setErrorString( tr("Could not contact the proxy server because the connection to that server was denied.") );
-        break;
-    case QAbstractSocket::ProxyConnectionClosedError:
-        setErrorString( tr("The connection to the proxy server was closed unexpectedly (before the connection to the final peer was established).") );
-        break;
-    case QAbstractSocket::ProxyConnectionTimeoutError:
-        setErrorString( tr("The connection to the proxy server timed out or the proxy server stopped responding in the authentication phase.") );
-        break;
-    case QAbstractSocket::ProxyNotFoundError:
-        setErrorString( tr("The proxy address set with setProxy() (or the application proxy) was not found.") );
-        break;
-    case QAbstractSocket::ProxyProtocolError:
-        setErrorString( tr("The connection negotiation with the proxy server failed, because the response from the proxy server could not be understood.") );
-        break;
-    case QAbstractSocket::OperationError:
-        setErrorString( tr("An operation was attempted while the socket was in a state that did not permit it.") );
-        break;
-    case QAbstractSocket::SslInternalError:
-        setErrorString( tr("The SSL library being used reported an internal error. This is probably the result of a bad installation or misconfiguration of the library.") );
-        break;
-    case QAbstractSocket::SslInvalidUserDataError:
-        setErrorString( tr("Invalid data (certificate, key, cypher, etc.) was provided and its use resulted in an error in the SSL library.") );
-        break;
-    case QAbstractSocket::TemporaryError:
-        setErrorString( tr("A temporary error occurred (e.g., operation would block and socket is non-blocking).") );
-        break;
-    case QAbstractSocket::UnknownSocketError:
-        setErrorString( tr("An unidentified error occurred.") );
-        break;
-    }
+    onStateChanged(socket.state());
 
 }
 
 
-void Traffic::TrafficDataSource_Tcp::onReceivingHeartbeatChanged(bool receivingHB)
+void Traffic::TrafficDataSource_Tcp::onReadyRead()
 {
-    // Acquire or release WiFi lock as appropriate
-    auto* mobileAdaptor = MobileAdaptor::globalInstance();
-    if (mobileAdaptor != nullptr) {
-        MobileAdaptor::lockWifi(receivingHB);
-    }
 
-}
-
-
-void Traffic::TrafficDataSource_Tcp::onStateChanged(QAbstractSocket::SocketState socketState)
-{
-    // Paranoid safety check
-    if (socket.isNull()) {
-        return;
-    }
-
-    // Compute new status
-    switch( socketState ) {
-    case QAbstractSocket::HostLookupState:
-        setConnectivityStatus( tr("Performing host name lookup.") );
-        break;
-    case QAbstractSocket::ConnectingState:
-        setConnectivityStatus( tr("Trying to establish a connection.") );
-        break;
-    case QAbstractSocket::ConnectedState:
-        setConnectivityStatus( tr("Connected.") );
-        break;
-    case QAbstractSocket::BoundState:
-        setConnectivityStatus( tr("Bound to an address and port, but not connected yet.") );
-        break;
-    case QAbstractSocket::ClosingState:
-        setConnectivityStatus( tr("Closing.") );
-        break;
-    default:
-        setConnectivityStatus( tr("Not connected.") );
-        break;
-    }
-
-}
-
-
-void Traffic::TrafficDataSource_Tcp::readFromStream()
-{
     QString sentence;
     while( textStream.readLineInto(&sentence) ) {
         processFLARMSentence(sentence);
     }
+
 }
 

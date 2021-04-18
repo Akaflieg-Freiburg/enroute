@@ -23,7 +23,7 @@
 #include <QPointer>
 #include <QTcpSocket>
 
-#include "traffic/TrafficDataSource_Abstract.h"
+#include "traffic/TrafficDataSource_AbstractSocket.h"
 
 
 namespace Traffic {
@@ -37,7 +37,8 @@ namespace Traffic {
  *  connection will be established via the device's WiFi interface.  The class will
  *  therefore try to lock the WiFi once a heartbeat has been detected, and release the WiFi at the appropriate time.
  */
-class TrafficDataSource_Tcp : public TrafficDataSource_Abstract {
+
+class TrafficDataSource_Tcp : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
@@ -79,21 +80,12 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Handle socket errors.
-    void onErrorOccurred(QAbstractSocket::SocketError socketError);
-
-    // Read one line from the socket's text stream and passes the string on to
+    // Read lines from the socket's text stream and passes the string on to
     // processFLARMMessage.
-    void readFromStream();
-
-    // Update the property "errorString" and "connectivityStatus" and emit notification signals
-    void onStateChanged(QAbstractSocket::SocketState socketState);
-
-    // Acquire or release WiFi lock
-    static void onReceivingHeartbeatChanged(bool receivingHB);
+    void onReadyRead();
 
 private:
-    QPointer<QTcpSocket> socket;
+    QTcpSocket socket;
     QTextStream textStream;
     QString m_hostName;
     quint16 m_port;

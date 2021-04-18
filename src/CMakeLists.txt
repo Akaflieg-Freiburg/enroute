@@ -93,6 +93,7 @@ set(SOURCES
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
     traffic/TrafficDataSource_Abstract.h
+    traffic/TrafficDataSource_AbstractSocket.h
     traffic/TrafficDataSource_File.h
     traffic/TrafficDataSource_Tcp.h
     traffic/TrafficDataSource_Udp.h
@@ -140,6 +141,7 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract.cpp
     traffic/TrafficDataSource_Abstract_FLARM.cpp
     traffic/TrafficDataSource_Abstract_GDL90.cpp
+    traffic/TrafficDataSource_AbstractSocket.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp

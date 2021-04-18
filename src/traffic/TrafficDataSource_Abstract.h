@@ -27,12 +27,13 @@
 
 namespace Traffic {
 
-/*! \brief Traffic receiver
+/*! \brief Base class for all traffic receiver data sources
  *
  *  This is an abstract base class for all classes that connect to a traffic
  *  receiver.  In addition to the properties listed below, the class also emits
  *  imporant data via the signals barometricAltitudeUpdated,
- *  factorWithoutPosition, factorWithPosition and warning.
+ *  factorWithoutPosition, factorWithPosition and warning. It contains methods
+ *  to interpret FLARM and GDL90 data streams.
  */
 class TrafficDataSource_Abstract : public QObject {
     Q_OBJECT

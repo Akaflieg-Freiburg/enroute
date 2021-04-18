@@ -31,12 +31,13 @@ namespace Traffic {
 
 /*! \brief Traffic receiver: UDP connection to GDL90 source
  *
- *  This class connects to a traffic receiver via a GDL90 connection. It expects to
- *  find a receiver at the specifed IP-Address and port that emits GDL90 messages.
+ *  This class connects to a traffic receiver via a GDL90 connection. It expects
+ *  to find a receiver at the specifed IP-Address and port that emits GDL90
+ *  messages.
  *
- *  In most use cases, the
- *  connection will be established via the device's WiFi interface.  The class will
- *  therefore try to lock the WiFi once a heartbeat has been detected, and release the WiFi at the appropriate time.
+ *  In most use cases, the connection will be established via the device's WiFi
+ *  interface.  The class will therefore try to lock the WiFi once a heartbeat
+ *  has been detected, and release the WiFi at the appropriate time.
  */
 class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
@@ -44,11 +45,9 @@ class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
-     *  @param hostName Name of the host where the traffic receiver is expected
-     *
      *  @param port Port at the host where the traffic receiver is expected
      *
-     * @param parent The standard QObject parent pointer
+     *  @param parent The standard QObject parent pointer
      */
     explicit TrafficDataSource_Udp(quint16 port, QObject *parent = nullptr);
 
@@ -57,7 +56,8 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  This method implements the pure virtual method declared by its superclass.
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
      *
      *  @returns Property sourceName
      */
@@ -69,13 +69,15 @@ public:
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
      *
-     *  This method implements the pure virtual method declared by its superclass.
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
      */
     void connectToTrafficReceiver() override;
 
     /*! \brief Disconnect from traffic receiver
      *
-     *  This method implements the pure virtual method declared by its superclass.
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
      */
     void disconnectFromTrafficReceiver() override;
 
@@ -85,9 +87,7 @@ private slots:
     void onReadyRead();
 
 private:
-    quint16 crcCompute(char *block, int length);
-
-    QUdpSocket socket;
+    QUdpSocket m_socket;
     quint16 m_port;
 
     // GPS altitude of owncraft
@@ -95,8 +95,6 @@ private:
     AviationUnits::Distance m_trueAltitude_FOM;
     QTimer m_trueAltitudeTimer;
 
-    // Targets
-    Traffic::TrafficFactor factor;
 };
 
 }

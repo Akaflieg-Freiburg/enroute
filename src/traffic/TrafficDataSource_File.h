@@ -29,8 +29,8 @@ namespace Traffic {
 
 /*! \brief Traffic receiver: Simulator file with FLARM/NMEA sentences
  *
- *  For testing purposes, this class connects to a simulator file with time stamps
- *  and FLARM/NMEA sentences, as provided by FLARM Inc.
+ *  For testing purposes, this class connects to a simulator file with time
+ *  stamps and FLARM/NMEA sentences, as provided by FLARM Inc.
  */
 class TrafficDataSource_File : public TrafficDataSource_Abstract {
     Q_OBJECT
@@ -50,7 +50,8 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  This method implements the pure virtual method declared by its superclass.
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
      *
      *  @returns Property sourceName
      */
@@ -63,13 +64,15 @@ public:
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
      *
-     *  This method implements the pure virtual method declared by its superclass.
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
      */
     void connectToTrafficReceiver() override;
 
     /*! \brief Disconnect from traffic receiver
      *
-     *  This method implements the pure virtual method declared by its superclass.
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
      */
     void disconnectFromTrafficReceiver() override;
 

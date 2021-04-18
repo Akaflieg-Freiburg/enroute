@@ -30,12 +30,13 @@ namespace Traffic {
 
 /*! \brief Traffic receiver: TCP connection to FLARM/NMEA source
  *
- *  This class connects to a traffic receiver via a TCP connection. It expects to
- *  find a receiver at the specifed IP-Address and port that emits FLARM/NMEA sentences.
+ *  This class connects to a traffic receiver via a TCP connection. It expects
+ *  to find a receiver at the specifed IP-Address and port that emits FLARM/NMEA
+ *  sentences.
  *
- *  In most use cases, the
- *  connection will be established via the device's WiFi interface.  The class will
- *  therefore try to lock the WiFi once a heartbeat has been detected, and release the WiFi at the appropriate time.
+ *  In most use cases, the connection will be established via the device's WiFi
+ *  interface.  The class will therefore try to lock the WiFi once a heartbeat
+ *  has been detected, and release the WiFi at the appropriate time.
  */
 
 class TrafficDataSource_Tcp : public TrafficDataSource_AbstractSocket {
@@ -85,8 +86,8 @@ private slots:
     void onReadyRead();
 
 private:
-    QTcpSocket socket;
-    QTextStream textStream;
+    QTcpSocket m_socket;
+    QTextStream m_textStream;
     QString m_hostName;
     quint16 m_port;
 };

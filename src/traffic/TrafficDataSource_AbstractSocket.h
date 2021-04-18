@@ -27,14 +27,17 @@
 
 namespace Traffic {
 
-/*! \brief Base class for all traffic receiver data sources that receive data via network sockets
+/*! \brief Base class for all traffic receiver data sources that receive data
+    via network sockets
  *
  *  This is an abstract base class for all classes that connect to a traffic
- *  receiver via network sockets.  In addition to TrafficDataSource_Abstract, it contains a few protected methods
- *  that will might be useful for Tcp and Udp connections.
+ *  receiver via network sockets.  In addition to TrafficDataSource_Abstract, it
+ *  contains a few protected methods that will might be useful for Tcp and Udp
+ *  connections.
  *
- *  It is assume that most users will connect to their traffic receicers via the WiFi network.  On Android, this
- *  class will therefore acquire/relase a WiFi whenever traffic receiver heartbeat messages are detected or lost.
+ *  It is assume that most users will connect to their traffic receicers via the
+ *  WiFi network.  On Android, this class will therefore acquire/relase a WiFi
+ *  whenever traffic receiver heartbeat messages are detected or lost.
  */
 
 class TrafficDataSource_AbstractSocket : public TrafficDataSource_Abstract {
@@ -47,22 +50,20 @@ public:
      */
     explicit TrafficDataSource_AbstractSocket(QObject *parent = nullptr);
 
-    // Standard destructor
-    ~TrafficDataSource_AbstractSocket() override;
-
 protected slots:
-    // Handle socket errors. This method will call TrafficDataSource_Abstract::setErrorString() with a suitable,
+    // Handle socket errors. This method will call
+    // TrafficDataSource_Abstract::setErrorString() with a suitable,
     // human-readable, translated error message.
     void onErrorOccurred(QAbstractSocket::SocketError socketError);
 
-    // Handle socket state changes. This method will call TrafficDataSource_Abstract::setConnectivityStatus() with a suitable,
+    // Handle socket state changes. This method will call
+    // TrafficDataSource_Abstract::setConnectivityStatus() with a suitable,
     // human-readable, translated message.
     void onStateChanged(QAbstractSocket::SocketState socketState);
 
 private slots:
     // Acquire or release WiFi lock
     static void onReceivingHeartbeatChanged(bool receivingHB);
-
 
 };
 

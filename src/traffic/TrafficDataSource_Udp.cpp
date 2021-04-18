@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include <QNetworkDatagram>
-#include <QQmlEngine>
 
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Udp.h"
@@ -30,21 +29,19 @@
 Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_AbstractSocket(parent), m_port(port) {
 
-    QQmlEngine::setObjectOwnership(&factor, QQmlEngine::CppOwnership);
-
     // Initialize timers
     m_trueAltitudeTimer.setInterval(5s);
     m_trueAltitudeTimer.setSingleShot(true);
 
     // Create socket
-    connect(&socket, &QUdpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Udp::onErrorOccurred);
-    connect(&socket, &QUdpSocket::readyRead, this, &Traffic::TrafficDataSource_Udp::onReadyRead);
-    connect(&socket, &QUdpSocket::stateChanged, this, &Traffic::TrafficDataSource_Udp::onStateChanged);
+    connect(&m_socket, &QUdpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Udp::onErrorOccurred);
+    connect(&m_socket, &QUdpSocket::readyRead, this, &Traffic::TrafficDataSource_Udp::onReadyRead);
+    connect(&m_socket, &QUdpSocket::stateChanged, this, &Traffic::TrafficDataSource_Udp::onStateChanged);
 
     //
     // Initialize properties
     //
-    onStateChanged(socket.state());
+    onStateChanged(m_socket.state());
 }
 
 
@@ -58,12 +55,12 @@ Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
 {
 
-    socket.abort();
+    m_socket.abort();
     setErrorString();
-    socket.bind(m_port);
+    m_socket.bind(m_port);
 
     // Update properties
-    onStateChanged(socket.state());
+    onStateChanged(m_socket.state());
 }
 
 
@@ -71,10 +68,10 @@ void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 {
 
     // Disconnect socket.
-    socket.abort();
+    m_socket.abort();
 
     // Update properties
-    onStateChanged(socket.state());
+    onStateChanged(m_socket.state());
 
 }
 
@@ -82,8 +79,8 @@ void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 void Traffic::TrafficDataSource_Udp::onReadyRead()
 {
 
-    while (socket.hasPendingDatagrams()) {
-        QByteArray data = socket.receiveDatagram().data();
+    while (m_socket.hasPendingDatagrams()) {
+        QByteArray data = m_socket.receiveDatagram().data();
         processGDLMessage(data);
     }
 

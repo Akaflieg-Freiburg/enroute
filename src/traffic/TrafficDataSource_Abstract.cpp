@@ -27,12 +27,12 @@
 
 Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(QObject *parent) : QObject(parent) {
 
-    QQmlEngine::setObjectOwnership(&factor, QQmlEngine::CppOwnership);
+    QQmlEngine::setObjectOwnership(&m_factor, QQmlEngine::CppOwnership);
 
     // Setup heartbeat timer
-    heartbeatTimer.setSingleShot(true);
-    heartbeatTimer.setInterval(5s);
-    connect(&heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat);
+    m_heartbeatTimer.setSingleShot(true);
+    m_heartbeatTimer.setInterval(5s);
+    connect(&m_heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat);
 
     // Setup other times
     m_pressureAltitudeTimer.setInterval(5s);
@@ -68,9 +68,9 @@ void Traffic::TrafficDataSource_Abstract::setErrorString(const QString& newError
 void Traffic::TrafficDataSource_Abstract::setReceivingHeartbeat(bool newReceivingHeartbeat)
 {
     if (newReceivingHeartbeat) {
-        heartbeatTimer.start();
+        m_heartbeatTimer.start();
     } else {
-        heartbeatTimer.stop();
+        m_heartbeatTimer.stop();
     }
 
     if (m_hasHeartbeat == newReceivingHeartbeat) {

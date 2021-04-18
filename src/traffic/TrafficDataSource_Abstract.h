@@ -109,12 +109,14 @@ public:
      */
     bool receivingHeartbeat()
     {
-        return heartbeatTimer.isActive();
+        return m_heartbeatTimer.isActive();
     }
 
     /*! \brief Source name
      *
-     *  This property contains a short, human-readable and translated description of the source. A typical string is "TCP connection to 132.168.1.1 port 2000".
+     *  This property contains a short, human-readable and translated
+     *  description of the source. A typical string is "TCP connection to
+     *  132.168.1.1 port 2000".
      */
     Q_PROPERTY(QString sourceName READ sourceName CONSTANT)
 
@@ -249,14 +251,14 @@ protected:
      */
     void processFLARMSentence(QString sentence);
 
-    /*! \brief Process one FLARM/NMEA sentence
+    /*! \brief Process one GDL90 message
      *
      *  This method expects exactly one GDL90 message, including starting
      *  and trailing 0x7e bytes.  The methodinterprets the string and updates
      *  the properties and emits signals as appropriate. Invalid messages
      *  are silently ignored.
      *
-     *  @param sentence A QByteArray containing a FLARM/NMEA sentence.
+     *  @param message A QByteArray containing a GDL90 message.
      */
     void processGDLMessage(const QByteArray& message);
 
@@ -293,27 +295,27 @@ private:
     QString m_connectivityStatus {};
     QString m_errorString {};
 
-    // True altitude of own aircraft. We store these values because
-    // the necessary information to compile a PositionInfo class does
-    // not always come in one piece.  Whenever a valid altitude is set, the
-    // timer should be started. The timer can then be used to check if
-    // the altitude information is recent enough to be used. Whenever
-    // an invalid altitude is set, the timer should be stopped.
+    // True altitude of own aircraft. We store these values because the
+    // necessary information to compile a PositionInfo class does not always
+    // come in one piece.  Whenever a valid altitude is set, the timer should be
+    // started. The timer can then be used to check if the altitude information
+    // is recent enough to be used. Whenever an invalid altitude is set, the
+    // timer should be stopped.
     AviationUnits::Distance m_trueAltitude;
     AviationUnits::Distance m_trueAltitudeFOM; // Fig. of Merit
     QTimer m_trueAltitudeTimer;
 
-    // Pressure altitude of own aircraft. See the member m_trueAltitude*
-    // for a description how the timer should be used.
+    // Pressure altitude of own aircraft. See the member m_trueAltitude for a
+    // description how the timer should be used.
     AviationUnits::Distance m_pressureAltitude;
     QTimer m_pressureAltitudeTimer;
 
     // Heartbeat timer
-    QTimer heartbeatTimer;
+    QTimer m_heartbeatTimer;
     bool m_hasHeartbeat {false};
 
     // Targets
-    Traffic::TrafficFactor factor;
+    Traffic::TrafficFactor m_factor;
 };
 
 }

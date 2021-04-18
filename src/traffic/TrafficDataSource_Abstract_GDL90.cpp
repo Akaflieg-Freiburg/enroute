@@ -391,8 +391,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         auto callSign = QString::fromLatin1(decodedData.mid(18,8)).simplified();
 
         // Expose dats
-        factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);
-        emit factorWithPosition(factor);
+        m_factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);
+        emit factorWithPosition(m_factor);
     }
 
 }

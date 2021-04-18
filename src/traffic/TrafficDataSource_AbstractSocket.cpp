@@ -33,11 +33,6 @@ Traffic::TrafficDataSource_AbstractSocket::TrafficDataSource_AbstractSocket(QObj
 }
 
 
-Traffic::TrafficDataSource_AbstractSocket::~TrafficDataSource_AbstractSocket()
-{
-}
-
-
 void Traffic::TrafficDataSource_AbstractSocket::onErrorOccurred(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {

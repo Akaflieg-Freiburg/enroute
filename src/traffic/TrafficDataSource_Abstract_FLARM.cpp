@@ -311,8 +311,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
                 pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
             }
 
-            factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo, {});
-            emit factorWithoutPosition(factor);
+            m_factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo, {});
+            emit factorWithoutPosition(m_factor);
             return;
         }
 
@@ -356,8 +356,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         }
 
         // Construct a traffic object
-        factor.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), type, pInfo, {});
-        emit factorWithPosition(factor);
+        m_factor.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), type, pInfo, {});
+        emit factorWithPosition(m_factor);
         return;
     }
 

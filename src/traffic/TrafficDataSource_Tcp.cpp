@@ -27,18 +27,18 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 
     Traffic::TrafficDataSource_AbstractSocket(parent), m_hostName(std::move(hostName)), m_port(port) {
 
     // Create socket
-    connect(&socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
-    connect(&socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::onReadyRead);
-    connect(&socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Tcp::onStateChanged);
+    connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
+    connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::onReadyRead);
+    connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Tcp::onStateChanged);
 
     // Set up text stream
-    textStream.setDevice(&socket);
-    textStream.setCodec("ISO 8859-1");
+    m_textStream.setDevice(&m_socket);
+    m_textStream.setCodec("ISO 8859-1");
 
     //
     // Initialize properties
     //
-    onStateChanged(socket.state());
+    onStateChanged(m_socket.state());
 
 }
 
@@ -55,13 +55,13 @@ Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 {
 
-    socket.abort();
+    m_socket.abort();
     setErrorString();
-    socket.connectToHost(m_hostName, m_port);
-    textStream.setDevice(&socket);
+    m_socket.connectToHost(m_hostName, m_port);
+    m_textStream.setDevice(&m_socket);
 
     // Update properties
-    onStateChanged(socket.state());
+    onStateChanged(m_socket.state());
 
 }
 
@@ -70,10 +70,10 @@ void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
 
     // Disconnect socket.
-    socket.abort();
+    m_socket.abort();
 
     // Update properties
-    onStateChanged(socket.state());
+    onStateChanged(m_socket.state());
 
 }
 
@@ -82,7 +82,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
 {
 
     QString sentence;
-    while( textStream.readLineInto(&sentence) ) {
+    while( m_textStream.readLineInto(&sentence) ) {
         processFLARMSentence(sentence);
     }
 

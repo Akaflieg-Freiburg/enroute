@@ -50,7 +50,7 @@ namespace AviationUnits {
 
         /*! \brief Constructs a distance
          *
-         * @param distanceInM distance in nautical miles
+         * @param distanceInNM distance in nautical miles
          *
          * @returns distance
          */

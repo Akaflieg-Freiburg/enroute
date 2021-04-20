@@ -117,30 +117,6 @@ Page {
             }
 
             SwitchDelegate {
-                id: autoFlightDetection
-                text: qsTr("Automatic flight detection") + (
-                    globalSettings.autoFlightDetection ? (
-                        `<br><font color="#606060" size="2">`
-                        + qsTr("Switching to flight-mode at 30 kt")
-                        +"</font>"
-                    ) : (
-                        `<br><font color="#606060" size="2">`
-                        + qsTr("Always in flight-mode")
-                        + `</font>`
-                    )
-                )
-                icon.source: "/icons/material/ic_flight.svg"
-                Layout.fillWidth: true
-                Component.onCompleted: {
-                    autoFlightDetection.checked = globalSettings.autoFlightDetection
-                }
-                onToggled: {
-                    mobileAdaptor.vibrateBrief()
-                    globalSettings.autoFlightDetection = autoFlightDetection.checked
-                }
-            }
-
-            SwitchDelegate {
                 id: useMetricUnits
                 text: qsTr("Use metric units")
                       + `<br><font color="#606060" size="2">`
@@ -169,19 +145,6 @@ Page {
                 onToggled: {
                     mobileAdaptor.vibrateBrief()
                     globalSettings.nightMode = nightMode.checked
-                }
-            }
-
-            SwitchDelegate {
-                id: preferEnglish
-                text: qsTr("Use English")
-                icon.source: "/icons/material/ic_translate.svg"
-                visible: globalSettings.hasTranslation
-                Layout.fillWidth: true
-                Component.onCompleted: preferEnglish.checked = globalSettings.preferEnglish
-                onCheckedChanged: {
-                    mobileAdaptor.vibrateBrief()
-                    globalSettings.preferEnglish = preferEnglish.checked
                 }
             }
 

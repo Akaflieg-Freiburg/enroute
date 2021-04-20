@@ -113,21 +113,6 @@ public:
      */
     void setAcceptedWeatherTerms(bool terms);
 
-    /*! \brief Hide airspaces with lower bound FL100 or above */
-    Q_PROPERTY(bool autoFlightDetection READ autoFlightDetection WRITE setAutoFlightDetection NOTIFY autoFlightDetectionChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property autoFlightDetection
-     */
-    bool autoFlightDetection() const { return settings.value(QStringLiteral("Map/autoFlightDetection"), true).toBool(); }
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param autoDetect Property autoFlightDetection
-     */
-    void setAutoFlightDetection(bool autoDetect);
-
     /*! \brief True if translation files exist for the system language */
     Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
 
@@ -247,32 +232,12 @@ public:
      */
     void setUseMetricUnits(bool unitHorizKmh);
 
-    /*! \brief Set to true is app should be shown in English rather than the system language */
-    Q_PROPERTY(bool preferEnglish READ preferEnglish WRITE setPreferEnglish NOTIFY preferEnglishChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property preferEnglish
-     */
-    bool preferEnglish() const { return settings.value(QStringLiteral("System/preferEnglish"), false).toBool(); }
-
-    /*! \brief Setter function for property of the same name
-     *
-     * Setting this property will install/remove system-wide translators.
-     *
-     * @param preferEng Property preferEng
-     */
-    void setPreferEnglish(bool preferEng);
-
 signals:
     /*! Notifier signal */
     void acceptedTermsChanged();
 
     /*! Notifier signal */
     void acceptedWeatherTermsChanged();
-
-    /*! Notifier signal */
-    void autoFlightDetectionChanged();
 
     /*! Notifier signal */
     void hideUpperAirspacesChanged();
@@ -285,9 +250,6 @@ signals:
 
     /*! Notifier signal */
     void nightModeChanged();
-
-    /*! Notifier signal */
-    void preferEnglishChanged();
 
     /*! Notifier signal */
     void useMetricUnitsChanged();

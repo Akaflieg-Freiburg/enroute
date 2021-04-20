@@ -204,7 +204,7 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: positionProvider.lastValidCoordinate
-            visible: (!globalSettings.autoFlightDetection || navigator.isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
+            visible: (navigator.isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -218,7 +218,7 @@ Item {
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || navigator.isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (navigator.isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -612,7 +612,7 @@ Item {
         anchors.right: parent.right
         anchors.left: parent.left
 
-        y: (!globalSettings.autoFlightDetection || navigator.isInFlight) ? parent.height - height : parent.height
+        y: parent.height - height
     }
 
     WaypointDescription {

@@ -141,7 +141,6 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
     auto *engine = new QQmlApplicationEngine();
-    QObject::connect(GlobalSettings::globalInstance(), &GlobalSettings::preferEnglishChanged, engine, &QQmlApplicationEngine::retranslate);
 
     // Make GPS available to QML engine
     engine->rootContext()->setContextProperty("positionProvider", Positioning::PositionProvider::globalInstance());

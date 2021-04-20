@@ -299,7 +299,7 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         drawer.close()
-                        if (!globalSettings.autoFlightDetection || navigator.isInFlight)
+                        if (navigator.isInFlight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -365,7 +365,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (!globalSettings.autoFlightDetection || navigator.isInFlight)
+                    if (navigator.isInFlight)
                         exitDialog.open()
                     else
                         Qt.quit()

@@ -297,7 +297,6 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         m_trueAltitudeTimer.start();
     }
 
-
     // Traffic report
     if (messageID == 20) {
 
@@ -381,9 +380,9 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         auto* positionProviderPtr = Positioning::PositionProvider::globalInstance();
         if (positionProviderPtr != nullptr) {
             auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
-            auto trafficCorrdinate = pInfo.coordinate();
-            if (ownShipCoordinate.isValid() && trafficCorrdinate.isValid()) {
-                hDist = AviationUnits::Distance::fromM( ownShipCoordinate.distanceTo(trafficCorrdinate) );
+            auto trafficCoordinate = pInfo.coordinate();
+            if (ownShipCoordinate.isValid() && trafficCoordinate.isValid()) {
+                hDist = AviationUnits::Distance::fromM( ownShipCoordinate.distanceTo(trafficCoordinate) );
             }
         }
 

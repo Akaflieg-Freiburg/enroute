@@ -254,13 +254,27 @@ protected:
     /*! \brief Process one GDL90 message
      *
      *  This method expects exactly one GDL90 message, including starting
-     *  and trailing 0x7e bytes.  The methodinterprets the string and updates
+     *  and trailing 0x7e bytes.  The method interprets the string and updates
      *  the properties and emits signals as appropriate. Invalid messages
      *  are silently ignored.
      *
      *  @param message A QByteArray containing a GDL90 message.
      */
     void processGDLMessage(const QByteArray& message);
+
+    /*! \brief Process one XGPS string
+     *
+     *  This method expects exactly XGPS/XTRAFFIC string, as specified in
+     *
+     *  https://www.foreflight.com/support/network-gps/
+     *
+     *  The method interprets the string and updates
+     *  the properties and emits signals as appropriate. Invalid messages
+     *  are silently ignored.
+     *
+     *  @param data A QByteArray containing an XGPS string.
+     */
+    void processXGPSString(const QByteArray& data);
 
     /*! \brief Resetter method for the property with the same name
      *

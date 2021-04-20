@@ -47,8 +47,10 @@ Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *par
 
 Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 {
+
     Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
+
 }
 
 
@@ -81,7 +83,12 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
 
     while (m_socket.hasPendingDatagrams()) {
         QByteArray data = m_socket.receiveDatagram().data();
-        processGDLMessage(data);
+
+        if (data.startsWith("XGPS") || data.startsWith("XTRAFFIC")) {
+            processXGPSString(data);
+        } else {
+            processGDLMessage(data);
+        }
     }
 
 }

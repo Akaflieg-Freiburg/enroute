@@ -75,6 +75,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
     m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this);
     m_dataSources << new Traffic::TrafficDataSource_Udp(4000, this);
+    m_dataSources << new Traffic::TrafficDataSource_Udp(49002, this);
 
     // Wire up data sources
     foreach(auto dataSource, m_dataSources) {

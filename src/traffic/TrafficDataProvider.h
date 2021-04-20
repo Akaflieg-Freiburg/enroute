@@ -161,7 +161,11 @@ public slots:
      */
     void disconnectFromTrafficReceiver();
 
-private slots:
+private slots:   
+    // Intializations that are moved out of the constructor, in order to avoid
+    // nested uses of globalInstance().
+    void deferredInitialization() const;
+
     // Called if one of the sources indicates a heartbeat change
     void onSourceHeartbeatChanged();
 

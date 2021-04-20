@@ -77,6 +77,9 @@ private slots:
     // Connected to sources, in order to receive new data
     void onPositionUpdated(const Positioning::PositionInfo& info);
 
+    // Intializations that are moved out of the constructor, in order to avoid
+    // nested uses of globalInstance().
+    void deferredInitialization() const;
 
 private:
     Q_DISABLE_COPY_MOVE(Navigator)

@@ -22,17 +22,18 @@
 #include "MobileAdaptor.h"
 
 #include <QDir>
+#include <QPointer>
 #include <QStandardPaths>
 
-// Static instance of this class
-Q_GLOBAL_STATIC(MobileAdaptor, MobileAdaptorStatic);
-
+// Static instance of this class.
+#ifndef __clang_analyzer__
+QPointer<MobileAdaptor> mobileAdaptorStatic {};
+#endif
 
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniEnvironment>
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
-
 #endif
 
 
@@ -99,7 +100,14 @@ MobileAdaptor::~MobileAdaptor()
 
 auto MobileAdaptor::globalInstance() -> MobileAdaptor *
 {
-    return MobileAdaptorStatic;
+#ifndef __clang_analyzer__
+    if (mobileAdaptorStatic.isNull()) {
+        mobileAdaptorStatic = new MobileAdaptor();
+    }
+    return mobileAdaptorStatic;
+#else
+    return nullptr;
+#endif
 }
 
 
@@ -181,10 +189,12 @@ extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
-    if (!MobileAdaptorStatic.exists()) {
+
+    if (mobileAdaptorStatic.isNull()) {
         return;
     }
-    MobileAdaptorStatic->emitWifiConnected();
+    mobileAdaptorStatic->emitWifiConnected();
+
 }
 
 

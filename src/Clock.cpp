@@ -29,8 +29,10 @@
 using namespace std::chrono_literals;
 
 
-// Static instance of this class
-Q_GLOBAL_STATIC(Clock, clockStatic);
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<Clock> clockStatic {};
+#endif
 
 
 Clock::Clock(QObject *parent) : QObject(parent)
@@ -111,7 +113,14 @@ auto Clock::describePointInTime(QDateTime pointInTime) -> QString
 
 auto Clock::globalInstance() -> Clock *
 {
+#ifndef __clang_analyzer__
+    if (clockStatic.isNull()) {
+        clockStatic = new Clock();
+    }
     return clockStatic;
+#else
+    return nullptr;
+#endif
 }
 
 

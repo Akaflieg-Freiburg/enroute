@@ -23,11 +23,17 @@
 
 // Static instance of this class. Do not analyze, because of many unwanted warnings.
 #ifndef __clang_analyzer__
-Q_GLOBAL_STATIC(Navigation::Navigator, NavigatorStatic);
+QPointer<Navigation::Navigator> navigatorStatic {};
 #endif
 
 
 Navigation::Navigator::Navigator(QObject *parent) : QObject(parent)
+{
+    QTimer::singleShot(0, this, &Navigation::Navigator::deferredInitialization);
+}
+
+
+void Navigation::Navigator::deferredInitialization() const
 {
     connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::onPositionUpdated);
 }
@@ -36,7 +42,10 @@ Navigation::Navigator::Navigator(QObject *parent) : QObject(parent)
 auto Navigation::Navigator::globalInstance() -> Navigator *
 {
 #ifndef __clang_analyzer__
-    return NavigatorStatic;
+    if (navigatorStatic.isNull()) {
+        navigatorStatic = new Navigator();
+    }
+    return navigatorStatic;
 #else
     return nullptr;
 #endif

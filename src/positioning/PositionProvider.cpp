@@ -26,7 +26,7 @@
 
 // Static instance of this class. Do not analyze, because of many unwanted warnings.
 #ifndef __clang_analyzer__
-Q_GLOBAL_STATIC(Positioning::PositionProvider, PositionProviderStatic);
+QPointer<Positioning::PositionProvider> positionProviderStatic {};
 #endif
 
 
@@ -54,11 +54,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::statusStringChanged, this, &Positioning::PositionProvider::updateStatusString);
 
     // Wire up traffic data provider source
-    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
-    if (trafficDataProvider != nullptr) {
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
-    }
+    QTimer::singleShot(0, this, &Positioning::PositionProvider::deferredInitialization);
 
     // Update properties
     updateStatusString();
@@ -78,10 +74,25 @@ Positioning::PositionProvider::~PositionProvider()
 }
 
 
+void Positioning::PositionProvider::deferredInitialization() const
+{
+    // Wire up traffic data provider source
+    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    if (trafficDataProvider != nullptr) {
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
+        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
+    }
+
+}
+
+
 auto Positioning::PositionProvider::globalInstance() -> PositionProvider *
 {
 #ifndef __clang_analyzer__
-    return PositionProviderStatic;
+    if (positionProviderStatic.isNull()) {
+        positionProviderStatic = new PositionProvider();
+    }
+    return positionProviderStatic;
 #else
     return nullptr;
 #endif

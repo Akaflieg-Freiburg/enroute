@@ -230,15 +230,6 @@ following traffic receivers.</p>
   <li>T-Beam</li>
 </ul>
 )html") + tr(R"html(
-<h3>Technical Note</h3>
-
-<p><strong>Enroute Flight Navigation</strong> expects that the traffic receiver deploys a WLAN
-network via Wi-Fi and publishes a stream of NMEA sentences at the IP address
-192.168.1.1, port 2000 of that network. The NMEA sentences must conform to the
-specification outlined in in the document FTD-012 'Data Port Interface Control
-Document (ICD)', Version 7.13, as published by FLARM Technology Ltd.</p>
-
-)html") + tr(R"html(
 <h2>Before you connect</h2>
 
 <p>Before you try to connect this app to your traffic receiver, make sure

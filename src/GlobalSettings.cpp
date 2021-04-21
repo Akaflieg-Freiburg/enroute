@@ -26,8 +26,10 @@
 #include "GlobalSettings.h"
 
 
-// Static instance of this class
-Q_GLOBAL_STATIC(GlobalSettings, globalSettingsStatic);
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<GlobalSettings> globalSettingsStatic {};
+#endif
 
 
 GlobalSettings::GlobalSettings(QObject *parent)
@@ -58,7 +60,14 @@ auto GlobalSettings::acceptedWeatherTermsStatic() -> bool
 
 auto GlobalSettings::globalInstance() -> GlobalSettings *
 {
+#ifndef __clang_analyzer__
+    if (globalSettingsStatic.isNull()) {
+        globalSettingsStatic = new GlobalSettings();
+    }
     return globalSettingsStatic;
+#else
+    return nullptr;
+#endif
 }
 
 

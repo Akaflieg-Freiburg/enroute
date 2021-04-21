@@ -98,7 +98,11 @@ signals:
     /*! \brief Notifier signal */
     void lastValidCoordinateChanged(QGeoCoordinate);
 
-private slots:
+private slots:   
+    // Intializations that are moved out of the constructor, in order to avoid
+    // nested uses of globalInstance().
+    void deferredInitialization() const;
+
     // Connected to sources, in order to receive new data
     void onPositionUpdated();
 

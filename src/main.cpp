@@ -134,7 +134,7 @@ auto main(int argc, char *argv[]) -> int
         MobileAdaptor::globalInstance()->processFileOpenRequest(positionalArguments[0]);
     }
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(const QByteArray &)), MobileAdaptor::globalInstance(), SLOT(processFileOpenRequest(const QByteArray &)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), MobileAdaptor::globalInstance(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*

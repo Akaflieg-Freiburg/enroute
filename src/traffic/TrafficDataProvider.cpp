@@ -31,7 +31,7 @@ using namespace std::chrono_literals;
 
 // Static instance of this class. Do not analyze, because of many unwanted warnings.
 #ifndef __clang_analyzer__
-Q_GLOBAL_STATIC(Traffic::TrafficDataProvider, TrafficDataManagerStatic);
+QPointer<Traffic::TrafficDataProvider> trafficDataProviderStatic {};
 #endif
 
 
@@ -107,10 +107,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     reconnectionTimer.start();
 
     // Try to (re)connect whenever the network situation changes
-    auto* mobileAdaptor = MobileAdaptor::globalInstance();
-    if (mobileAdaptor != nullptr) {
-        connect(mobileAdaptor, &MobileAdaptor::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
-    }
+    QTimer::singleShot(0, this, &Traffic::TrafficDataProvider::deferredInitialization);
 }
 
 
@@ -121,6 +118,16 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
             continue;
         }
         dataSource->connectToTrafficReceiver();
+    }
+}
+
+
+void Traffic::TrafficDataProvider::deferredInitialization() const
+{
+    // Try to (re)connect whenever the network situation changes
+    auto* mobileAdaptor = MobileAdaptor::globalInstance();
+    if (mobileAdaptor != nullptr) {
+        connect(mobileAdaptor, &MobileAdaptor::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
     }
 }
 
@@ -139,7 +146,10 @@ void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
 auto Traffic::TrafficDataProvider::globalInstance() -> Traffic::TrafficDataProvider *
 {
 #ifndef __clang_analyzer__
-    return TrafficDataManagerStatic;
+    if (trafficDataProviderStatic.isNull()) {
+        trafficDataProviderStatic = new Traffic::TrafficDataProvider();
+    }
+    return trafficDataProviderStatic;
 #else
     return nullptr;
 #endif

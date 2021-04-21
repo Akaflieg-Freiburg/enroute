@@ -77,7 +77,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& st
 
 
     // Traffic report
-    else if (stringArray.startsWith("XTRA")) {
+    if (stringArray.startsWith("XTRA")) {
 
         QString str = QString::fromLatin1(stringArray);
         QStringList list = str.split(QLatin1Char(','));

@@ -84,7 +84,7 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
     while (m_socket.hasPendingDatagrams()) {
         QByteArray data = m_socket.receiveDatagram().data();
 
-        if (data.startsWith("XGPS") || data.startsWith("XTRAFFIC")) {
+        if (data.startsWith("XGPS") || data.startsWith("XTRA")) {
             processXGPSString(data);
         } else {
             processGDLMessage(data);

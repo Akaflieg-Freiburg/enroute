@@ -77,7 +77,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& st
 
 
     // Traffic report
-    if (stringArray.startsWith("XTRAFFIC")) {
+    else if (stringArray.startsWith("XTRA")) {
 
         QString str = QString::fromLatin1(stringArray);
         QStringList list = str.split(QLatin1Char(','));
@@ -134,7 +134,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& st
             auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
             if (ownShipCoordinate.isValid()) {
                 hDist = AviationUnits::Distance::fromM( ownShipCoordinate.distanceTo(trafficCoordinate) );
-                vDist = AviationUnits::Distance::fromM(trafficCoordinate.altitude()) - alt;
+                vDist = alt - AviationUnits::Distance::fromM(ownShipCoordinate.altitude());
             }
         }
 

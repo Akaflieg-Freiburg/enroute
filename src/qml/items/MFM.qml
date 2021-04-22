@@ -424,7 +424,9 @@ Item {
             width: parent.width-20
             wrapMode: Text.WordWrap
 
-            text: qsTr("<p><strong>There is no aviation map installed.</strong></p><p>Please open the menu and go to <strong>Settings/Library/Maps</strong>.</p>")
+            text: qsTr("<p><strong>There is no aviation map installed.</strong></p>
+<p>In order to install a map, please open the menu using the button ☰ in the upper left corner of this screen.
+Choose <strong>Library/Maps</strong> to open the map management page.</p>")
             textFormat: Text.StyledText
             color: "red"
         }

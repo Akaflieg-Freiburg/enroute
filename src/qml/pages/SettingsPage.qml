@@ -23,6 +23,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
+import "../dialogs"
 import "../items"
 
 Page {
@@ -52,16 +53,16 @@ Page {
             SwitchDelegate {
                 id: hideUpperAsp
                 text: qsTr("Hide Airspaces ≥ FL100") + (
-                    globalSettings.hideUpperAirspaces ? (
-                        `<br><font color="#606060" size="2">`
-                        + qsTr("Upper airspaces hidden")
-                        +"</font>"
-                    ) : (
-                        `<br><font color="#606060" size="2">`
-                        + qsTr("All airspaces shown")
-                        + `</font>`
-                    )
-                )
+                          globalSettings.hideUpperAirspaces ? (
+                                                                  `<br><font color="#606060" size="2">`
+                                                                  + qsTr("Upper airspaces hidden")
+                                                                  +"</font>"
+                                                                  ) : (
+                                                                  `<br><font color="#606060" size="2">`
+                                                                  + qsTr("All airspaces shown")
+                                                                  + `</font>`
+                                                                  )
+                          )
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
@@ -70,41 +71,6 @@ Page {
                 onToggled: {
                     mobileAdaptor.vibrateBrief()
                     globalSettings.hideUpperAirspaces = hideUpperAsp.checked
-                }
-            }
-
-            Label {
-                Layout.leftMargin: Qt.application.font.pixelSize
-                text: qsTr("Libraries")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
-                font.bold: true
-                color: Material.accent
-            }
-
-            ItemDelegate {
-                text: qsTr("Flight Routes")
-                icon.source: "/icons/material/ic_directions.svg"
-                Layout.fillWidth: true
-
-                onClicked: {
-                    mobileAdaptor.vibrateBrief()
-                    stackView.push("FlightRouteLibrary.qml")
-                    drawer.close()
-                }
-            }
-
-            ItemDelegate {
-                text: qsTr("Maps")
-                      + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
-                      + (navigator.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
-                icon.source: "/icons/material/ic_map.svg"
-                Layout.fillWidth: true
-
-                enabled: !navigator.isInFlight
-                onClicked: {
-                    mobileAdaptor.vibrateBrief()
-                    stackView.push("MapManager.qml")
-                    drawer.close()
                 }
             }
 
@@ -121,9 +87,9 @@ Page {
                 text: qsTr("Use metric units")
                       + `<br><font color="#606060" size="2">`
                       + ( globalSettings.useMetricUnits ?
-                            qsTr("Speed in km/h, distance in km") :
-                            qsTr("Speed in kn, distance in nm")
-                        )
+                             qsTr("Speed in km/h, distance in km") :
+                             qsTr("Speed in kn, distance in nm")
+                         )
                       + "</font>"
                 icon.source: "/icons/material/ic_speed.svg"
                 Layout.fillWidth: true
@@ -148,7 +114,37 @@ Page {
                 }
             }
 
+            Label {
+                Layout.leftMargin: Qt.application.font.pixelSize
+                text: qsTr("Help")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
+            }
+
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                icon.source: "/icons/material/ic_info_outline.svg"
+                text: qsTr("How to connect your traffic receiver…")
+                onClicked: trafficHelp.open()
+
+                LongTextDialog {
+                    id: trafficHelp
+                    standardButtons: Dialog.Ok
+                    anchors.centerIn: parent
+
+                    title: qsTr("Connect your traffic receiver")
+                    text: librarian.getStringFromRessource(":text/flarmSetup.md")
+                }
+
+            }
+
+            Item { // Spacer
+                height: 3
+            }
+
         } // ColumnLayout
     } // Scrollview
+
 
 } // Page

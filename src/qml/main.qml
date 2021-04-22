@@ -162,7 +162,7 @@ ApplicationWindow {
                         id: aboutMenu
 
                         ItemDelegate { // Sat Status
-                            text: qsTr("Satellite Navigation")
+                            text: qsTr("Positioning")
                                   +`<br><font color="#606060" size="2">`
                                   + (positionProvider.receivingPositionInfo ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
                                   + `</font>`

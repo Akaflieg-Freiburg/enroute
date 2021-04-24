@@ -33,8 +33,8 @@ ApplicationWindow {
     id: view
     visible: true
     title: qsTr("Enroute Flight Navigation")
-    width: 1000
-    height: 800
+    width: 500
+    height: 600
 
     Material.theme: globalSettings.nightMode ? Material.Dark : Material.Light
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"

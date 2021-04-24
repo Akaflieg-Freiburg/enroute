@@ -204,7 +204,7 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: positionProvider.lastValidCoordinate
-            visible: (!globalSettings.autoFlightDetection || navigator.isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
+            visible: (navigator.isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -218,7 +218,7 @@ Item {
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: (!globalSettings.autoFlightDetection || navigator.isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (navigator.isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -424,7 +424,9 @@ Item {
             width: parent.width-20
             wrapMode: Text.WordWrap
 
-            text: qsTr("<p><strong>There is no aviation map installed.</strong></p><p>Please open the menu and go to <strong>Settings/Library/Maps</strong>.</p>")
+            text: qsTr("<p><strong>There is no aviation map installed.</strong></p>
+<p>In order to install a map, please open the menu using the button ☰ in the upper left corner of this screen.
+Choose <strong>Library/Maps</strong> to open the map management page.</p>")
             textFormat: Text.StyledText
             color: "red"
         }
@@ -612,7 +614,7 @@ Item {
         anchors.right: parent.right
         anchors.left: parent.left
 
-        y: (!globalSettings.autoFlightDetection || navigator.isInFlight) ? parent.height - height : parent.height
+        y: parent.height - height
     }
 
     WaypointDescription {

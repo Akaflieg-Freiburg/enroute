@@ -127,6 +127,51 @@ ApplicationWindow {
                     color: Material.primary
                 }
 
+                ItemDelegate { // Library
+                    text: qsTr("Library")
+                    icon.source: "/icons/material/ic_library_books.svg"
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        mobileAdaptor.vibrateBrief()
+                        libraryMenu.popup()
+                    }
+
+                    AutoSizingMenu {
+                        id: libraryMenu
+
+                        ItemDelegate {
+                            text: qsTr("Flight Routes")
+                            icon.source: "/icons/material/ic_directions.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                stackView.push("pages/FlightRouteLibrary.qml")
+                                libraryMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                        ItemDelegate {
+                            text: qsTr("Maps")
+                                  + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + (navigator.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
+                            icon.source: "/icons/material/ic_map.svg"
+                            Layout.fillWidth: true
+
+                            enabled: !navigator.isInFlight
+                            onClicked: {
+                                mobileAdaptor.vibrateBrief()
+                                stackView.push("pages/MapManager.qml")
+                                libraryMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                    }
+                }
+
                 ItemDelegate {
                     id: menuItemSettings
 
@@ -162,7 +207,7 @@ ApplicationWindow {
                         id: aboutMenu
 
                         ItemDelegate { // Sat Status
-                            text: qsTr("Satellite Navigation")
+                            text: qsTr("Positioning")
                                   +`<br><font color="#606060" size="2">`
                                   + (positionProvider.receivingPositionInfo ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
                                   + `</font>`
@@ -267,7 +312,7 @@ ApplicationWindow {
                                 drawer.close()
                             }
                         }
-                    } // Menu
+                    }
                 }
 
                 ItemDelegate { // Bug report
@@ -299,7 +344,7 @@ ApplicationWindow {
                     onClicked: {
                         mobileAdaptor.vibrateBrief()
                         drawer.close()
-                        if (!globalSettings.autoFlightDetection || navigator.isInFlight)
+                        if (navigator.isInFlight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -365,7 +410,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (!globalSettings.autoFlightDetection || navigator.isInFlight)
+                    if (navigator.isInFlight)
                         exitDialog.open()
                     else
                         Qt.quit()

@@ -52,7 +52,7 @@ auto GlobalSettings::acceptedWeatherTermsStatic() -> bool
     auto *globalSettings = GlobalSettings::globalInstance();
     if (globalSettings != nullptr) {
         return globalSettings->acceptedWeatherTerms();
-}
+    }
     // Fallback in the very unlikely case that no global object exists
     return false;
 }
@@ -77,7 +77,7 @@ auto GlobalSettings::hideUpperAirspacesStatic() -> bool
     auto *globalSettings = GlobalSettings::globalInstance();
     if (globalSettings != nullptr) {
         return globalSettings->hideUpperAirspaces();
-}
+    }
     // Fallback in the very unlikely case that no global object exists
     return false;
 }
@@ -87,7 +87,7 @@ void GlobalSettings::setAcceptedTerms(int terms)
 {
     if (terms == acceptedTerms()) {
         return;
-}
+    }
     settings.setValue("acceptedTerms", terms);
     emit acceptedTermsChanged();
 }
@@ -97,19 +97,9 @@ void GlobalSettings::setAcceptedWeatherTerms(bool terms)
 {
     if (terms == acceptedWeatherTerms()) {
         return;
-}
+    }
     settings.setValue("acceptedWeatherTerms", terms);
     emit acceptedWeatherTermsChanged();
-}
-
-
-void GlobalSettings::setAutoFlightDetection(bool autoDetect)
-{
-    if (autoDetect == autoFlightDetection()) {
-        return;
-}
-    settings.setValue("Map/autoFlightDetection", autoDetect);
-    emit autoFlightDetectionChanged();
 }
 
 
@@ -117,7 +107,7 @@ void GlobalSettings::setHideUpperAirspaces(bool hide)
 {
     if (hide == hideUpperAirspaces()) {
         return;
-}
+    }
     settings.setValue("Map/hideUpperAirspaces", hide);
     emit hideUpperAirspacesChanged();
 }
@@ -127,7 +117,7 @@ void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 {
     if (lwnh == lastWhatsNewHash()) {
         return;
-}
+    }
     settings.setValue("lastWhatsNewHash", lwnh);
     emit lastWhatsNewHashChanged();
 }
@@ -138,10 +128,10 @@ auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolic
     auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
     if (intVal == 0) {
         return NUp;
-}
+    }
     if (intVal == 1) {
         return TTUp;
-}
+    }
     return UserDefinedBearingUp;
 }
 
@@ -150,7 +140,7 @@ void GlobalSettings::setMapBearingPolicy(MapBearingPolicyValues policy)
 {
     if (policy == mapBearingPolicy()) {
         return;
-}
+    }
 
     switch(policy){
     case NUp:
@@ -177,7 +167,7 @@ void GlobalSettings::setNightMode(bool newNightMode)
 {
     if (newNightMode == nightMode()) {
         return;
-}
+    }
 
     settings.setValue("Map/nightMode", newNightMode);
     emit nightModeChanged();
@@ -188,22 +178,10 @@ void GlobalSettings::setUseMetricUnits(bool unitHorizKmh)
 {
     if (unitHorizKmh == useMetricUnits()) {
         return;
-}
+    }
 
     settings.setValue("System/useMetricUnits", unitHorizKmh);
     emit useMetricUnitsChanged();
-}
-
-
-void GlobalSettings::setPreferEnglish(bool preferEng)
-{
-    if (preferEng == preferEnglish()) {
-        return;
-}
-
-    settings.setValue("System/preferEnglish", preferEng);
-    installTranslators();
-    emit preferEnglishChanged();
 }
 
 
@@ -213,7 +191,7 @@ auto GlobalSettings::useMetricUnitsStatic() -> bool
     auto *globalSettings = GlobalSettings::globalInstance();
     if (globalSettings != nullptr) {
         return globalSettings->useMetricUnits();
-}
+    }
     // Fallback in the very unlikely case that no global object exists
     return false;
 }
@@ -228,14 +206,9 @@ void GlobalSettings::installTranslators()
     }
 
     // If desired, install new translators
-    if (preferEnglish()) {
-        QLocale::setDefault(QLocale::English);
-    } else {
-        QLocale::setDefault(QLocale::system());
+    QLocale::setDefault(QLocale::system());
 
-        enrouteTranslator = new QTranslator(this);
-        enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
-        QCoreApplication::installTranslator(enrouteTranslator);
-    }
-
+    enrouteTranslator = new QTranslator(this);
+    enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
+    QCoreApplication::installTranslator(enrouteTranslator);
 }

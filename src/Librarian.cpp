@@ -25,9 +25,23 @@
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
 {
-    auto libraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
+    auto libraryPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
     flightRouteLibraryDir.setPath(libraryPath);
     flightRouteLibraryDir.mkpath(libraryPath);
+
+    // This app used to store flight routes in QStandardPaths::GenericDataLocation. However, Android 11
+    // no longer allows this "Scoped Storage". We will therefore move our files from
+    // QStandardPaths::GenericDataLocation to QStandardPaths::AppDataLocation, which is still writable
+    // since we set "requestlegacystorage" in the manifest file and target Android 10. See
+    // https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app
+    auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
+    QDir d(oldlibraryPath);
+    foreach(auto elt, d.entryList( QStringList(), QDir::Files)) {
+        if (QFile::copy(oldlibraryPath+"/"+elt, libraryPath+"/"+elt)) {
+            QFile::remove(oldlibraryPath+"/"+elt);
+        }
+    }
+    d.rmdir(oldlibraryPath);
 }
 
 

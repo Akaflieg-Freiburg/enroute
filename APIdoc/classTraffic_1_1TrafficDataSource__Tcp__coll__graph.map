@@ -1,4 +1,5 @@
 <map id="Traffic::TrafficDataSource_Tcp" name="Traffic::TrafficDataSource_Tcp">
-<area shape="rect" id="node1" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="5,95,216,121"/>
-<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__Abstract.html" title="Traffic receiver." alt="" coords="19,5,202,47"/>
+<area shape="rect" id="node1" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="5,184,216,211"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="" coords="19,95,202,136"/>
+<area shape="rect" id="node3" href="$classTraffic_1_1TrafficDataSource__Abstract.html" title="Base class for all traffic receiver data sources." alt="" coords="19,5,202,47"/>
 </map>

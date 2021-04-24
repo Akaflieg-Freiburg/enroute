@@ -1,5 +1,7 @@
 <map id="Traffic::TrafficDataSource_Abstract" name="Traffic::TrafficDataSource_Abstract">
-<area shape="rect" id="node1" title="Traffic receiver." alt="" coords="138,5,321,47"/>
-<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="" coords="5,95,219,121"/>
-<area shape="rect" id="node3" href="$classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="243,95,453,121"/>
+<area shape="rect" id="node1" title="Base class for all traffic receiver data sources." alt="" coords="249,5,431,47"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="" coords="138,95,321,136"/>
+<area shape="rect" id="node5" href="$classTraffic_1_1TrafficDataSource__File.html" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="" coords="345,102,559,129"/>
+<area shape="rect" id="node3" href="$classTraffic_1_1TrafficDataSource__Tcp.html" title="Traffic receiver: TCP connection to FLARM/NMEA source." alt="" coords="5,184,216,211"/>
+<area shape="rect" id="node4" href="$classTraffic_1_1TrafficDataSource__Udp.html" title="Traffic receiver: UDP connection to GDL90 source." alt="" coords="240,184,456,211"/>
 </map>

@@ -1,0 +1,4 @@
+<map id="Traffic::TrafficDataSource_AbstractSocket" name="Traffic::TrafficDataSource_AbstractSocket">
+<area shape="rect" id="node1" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="" coords="5,95,188,136"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__Abstract.html" title="Base class for all traffic receiver data sources." alt="" coords="5,5,188,47"/>
+</map>

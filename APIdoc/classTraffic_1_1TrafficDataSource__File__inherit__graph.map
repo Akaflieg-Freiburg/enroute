@@ -1,4 +1,4 @@
 <map id="Traffic::TrafficDataSource_File" name="Traffic::TrafficDataSource_File">
 <area shape="rect" id="node1" title="Traffic receiver: Simulator file with FLARM/NMEA sentences." alt="" coords="5,95,219,121"/>
-<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__Abstract.html" title="Traffic receiver." alt="" coords="21,5,203,47"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__Abstract.html" title="Base class for all traffic receiver data sources." alt="" coords="21,5,203,47"/>
 </map>

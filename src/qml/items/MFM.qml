@@ -491,6 +491,8 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
     RoundButton {
         id: zoomIn
 
+        opacity: 0.9
+        icon.source: "/icons/material/ic_add.svg"
         enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
         autoRepeat: true
 
@@ -502,14 +504,6 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
         height: 66
         width:  66
 
-        contentItem: Label {
-            text: "+"
-            font.bold: true
-            font.pixelSize: Qt.application.font.pixelSize*1.2
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-        }
-
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
             mobileAdaptor.vibrateBrief()
@@ -520,6 +514,8 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
     RoundButton {
         id: zoomOut
 
+        opacity: 0.9
+        icon.source: "/icons/material/ic_remove.svg"
         enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
         autoRepeat: true
 
@@ -530,14 +526,6 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
 
         height: 66
         width:  66
-
-        contentItem: Label {
-            text: "–"
-            font.bold: true
-            font.pixelSize: Qt.application.font.pixelSize*1.2
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-        }
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()

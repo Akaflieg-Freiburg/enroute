@@ -358,9 +358,8 @@ at random if more than one device tries to access.</p>
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("Users of Stratux traffic receivers can now connect to their devices without changing the Stratux' IP address.") + "\n\n"
-+ tr("The app now shows FLARM traffic warnings.") + "\n\n"
-+ tr("There are many small improvements in the user interface.");
+        return tr("The app now supports traffic receivers such as the popular [SkyEcho](https://uavionix.com/products/skyecho/) that send traffic data in GDL90 format.") + "\n\n"
++ tr("The app now can now be used together with flight simulators such as [XPlane](https://www.x-plane.com/) or the popular [MS Flight Simulator](https://www.microsoft.com/en-us/p/microsoft-flight-simulator-standard/9nxn8gf8n9ht?activetab=pivot:overviewtab).  Open the main menu and go to the 'Settings' page to learn more.");
     }
 
     QFile file(name);

@@ -40,6 +40,7 @@ Continent | Country | Class
 --- | --- | ---
 Africa | Namibia | Class 1
 Africa | South Africa | Class 1
+Asia | Japan | Class 2
 Australia Oceanica | Australia | Class 2
 Australia Oceanica | New Zealand | Class 2
 Europe | Austria | Class 1

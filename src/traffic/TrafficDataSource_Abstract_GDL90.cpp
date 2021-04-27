@@ -161,20 +161,14 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
 
 // Member functions
 
-void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& message)
+void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& rawMessage)
 {
 
     //
     // Do some trivial consistency checks
     //
 
-    if (!message.startsWith(0x7e)) {
-        return;
-    }
-    if (!message.endsWith(0x7e)) {
-        return;
-    }
-    if (message.size() < 5) {
+    if (rawMessage.size() < 3) {
         return;
     }
 
@@ -182,54 +176,51 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
     //
     // Escape character decoding.
     //
-
-    // 'decodedData' will contain the escape-decoded data, excluding the first and last 0x7E bytes
-    QByteArray decodedData;
+    QByteArray message;
     {
-        decodedData.reserve(message.size());
+        message.reserve(rawMessage.size());
         bool isEscaped = false;
-        foreach(auto byte, message.mid(1,message.size()-2) ) {
+        foreach(auto byte, rawMessage) {
             if (byte == 0x7d) {
                 isEscaped = true;
                 continue;
             }
             if (isEscaped) {
-                decodedData.append( static_cast<char>(static_cast<quint8>(byte) ^ static_cast<quint8>('\x20')) );
+                message.append( static_cast<char>(static_cast<quint8>(byte) ^ static_cast<quint8>('\x20')) );
                 isEscaped = false;
                 continue;
             }
-            decodedData.append(byte);
+            message.append(byte);
         }
         if (isEscaped) {
             return;
         }
     }
 
+
     //
     // CRC Checksum verification
     //
-
-    // Compute CRC checksum
     {
         quint16 crc = 0;
-        foreach(auto byte, decodedData.chopped(2)) {
+        foreach(auto byte, message.chopped(2)) {
             crc = Crc16Table.at(crc >> 8U) ^ (crc << 8U) ^ static_cast<quint8>(byte);
         }
 
         // Extract CRC checksum from data
         quint16 savedCRC = 0;
-        savedCRC += static_cast<quint8>( decodedData.at(decodedData.size()-1) );
-        savedCRC = (savedCRC << 8U) + static_cast<quint8>( decodedData.at(decodedData.size()-2) );
-
+        savedCRC += static_cast<quint8>( message.at(message.size()-1) );
+        savedCRC = (savedCRC << 8U) + static_cast<quint8>( message.at(message.size()-2) );
         if (crc != savedCRC) {
             return;
         }
     }
 
+
     // Extract Message ID, cut off Message ID and checksum from decodedData
-    auto messageID = static_cast<quint8>( decodedData.at(0) );
-    decodedData.chop(2);
-    decodedData = decodedData.mid(1);
+    auto messageID = static_cast<quint8>( message.at(0) );
+    message.chop(2);
+    message = message.mid(1);
 
 
     //
@@ -246,7 +237,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
     if (messageID == 10) {
 
         // Get position info w/o altitude information
-        auto pInfo = pInfoFromOwnshipReport(decodedData);
+        auto pInfo = pInfoFromOwnshipReport(message);
         if (!pInfo.isValid()) {
             return;
         }
@@ -260,8 +251,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         }
 
         // Find pressure altitude and update information if need be
-        auto dd0 = static_cast<quint8>(decodedData.at(10));
-        auto dd1 = static_cast<quint8>(decodedData.at(11));
+        auto dd0 = static_cast<quint8>(message.at(10));
+        auto dd1 = static_cast<quint8>(message.at(11));
         quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
         if (ddTmp != 0xFFF) {
             m_pressureAltitude = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
@@ -280,17 +271,19 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
     // Ownship geometric altitude
     if (messageID == 11) {
         // Find geometric alt
-        auto dd0 = static_cast<quint8>(decodedData.at(0));
-        auto dd1 = static_cast<quint8>(decodedData.at(1));
+        auto dd0 = static_cast<quint8>(message.at(0));
+        auto dd1 = static_cast<quint8>(message.at(1));
         qint32 ddInt = (dd0 << 8) + dd1;
         if (ddInt > 32767) {
             ddInt -= 65536;
         }
 
         // Find geometric figure of merit
-        auto vm0 = static_cast<quint8>(decodedData.at(2)) & 0x7FU;
-        auto vm1 = static_cast<quint8>(decodedData.at(3));
+        auto vm0 = static_cast<quint8>(message.at(2)) & 0x7FU;
+        auto vm1 = static_cast<quint8>(message.at(3));
         auto vmInt = (vm0 << 8) + vm1;
+
+#warning Need to do geoid correction
 
         m_trueAltitude = AviationUnits::Distance::fromFT(ddInt*5.0);
         m_trueAltitudeFOM = AviationUnits::Distance::fromM(vmInt);
@@ -301,24 +294,24 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
     if (messageID == 20) {
 
         // Get position info w/o altitude information
-        auto pInfo = pInfoFromOwnshipReport(decodedData);
+        auto pInfo = pInfoFromOwnshipReport(message);
         if (!pInfo.isValid()) {
             return;
         }
 
         // Get ID
-        auto id0 = static_cast<quint8>(decodedData.at(0)) & 0x0FU;
-        auto id1 = static_cast<quint8>(decodedData.at(1));
-        auto id2 = static_cast<quint8>(decodedData.at(2));
-        auto id3 = static_cast<quint8>(decodedData.at(3));
+        auto id0 = static_cast<quint8>(message.at(0)) & 0x0FU;
+        auto id1 = static_cast<quint8>(message.at(1));
+        auto id2 = static_cast<quint8>(message.at(2));
+        auto id3 = static_cast<quint8>(message.at(3));
         auto id = QString::number(id0, 16) + QString::number(id1, 16) + QString::number(id2, 16) + QString::number(id3, 16);
 
         // Alert
-        auto s0 = static_cast<quint8>(decodedData.at(0)) >> 4;
+        auto s0 = static_cast<quint8>(message.at(0)) >> 4;
         auto alert = (s0 == 1) ? 1 : 0;
 
         // Traffic type
-        auto ee = static_cast<quint8>(decodedData.at(17));
+        auto ee = static_cast<quint8>(message.at(17));
         auto type = Traffic::TrafficFactor::unknown;
         switch(ee) {
         case 1:
@@ -357,8 +350,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         // a recent pressure altitude reading for owncraft exists.
         AviationUnits::Distance vDist {};
         if (m_pressureAltitudeTimer.isActive()) {
-            auto dd0 = static_cast<quint8>(decodedData.at(10));
-            auto dd1 = static_cast<quint8>(decodedData.at(11));
+            auto dd0 = static_cast<quint8>(message.at(10));
+            auto dd1 = static_cast<quint8>(message.at(11));
             quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
             if (ddTmp != 0xFFF) {
                 auto trafficPressureAltitude = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
@@ -387,7 +380,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& me
         }
 
         // Callsign of traffic
-        auto callSign = QString::fromLatin1(decodedData.mid(18,8)).simplified();
+        auto callSign = QString::fromLatin1(message.mid(18,8)).simplified();
 
         // Expose dats
         m_factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);

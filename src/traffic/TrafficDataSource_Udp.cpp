@@ -33,15 +33,10 @@ Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *par
     m_trueAltitudeTimer.setInterval(5s);
     m_trueAltitudeTimer.setSingleShot(true);
 
-    // Create socket
-    connect(&m_socket, &QUdpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Udp::onErrorOccurred);
-    connect(&m_socket, &QUdpSocket::readyRead, this, &Traffic::TrafficDataSource_Udp::onReadyRead);
-    connect(&m_socket, &QUdpSocket::stateChanged, this, &Traffic::TrafficDataSource_Udp::onStateChanged);
-
     //
     // Initialize properties
     //
-    onStateChanged(m_socket.state());
+    TrafficDataSource_Udp::disconnectFromTrafficReceiver();
 }
 
 
@@ -56,13 +51,21 @@ Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 
 void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
 {
+    // Paranoid safety checks
+    if (!m_socket.isNull()) {
+        delete m_socket;
+    }
 
-    m_socket.abort();
-    setErrorString();
-    m_socket.bind(m_port);
+    // Create socket
+    m_socket = new QUdpSocket(this);
+    connect(m_socket, &QUdpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Udp::onErrorOccurred);
+    connect(m_socket, &QUdpSocket::readyRead, this, &Traffic::TrafficDataSource_Udp::onReadyRead);
+    connect(m_socket, &QUdpSocket::stateChanged, this, &Traffic::TrafficDataSource_Udp::onStateChanged);
+    m_socket->bind(m_port);
 
     // Update properties
-    onStateChanged(m_socket.state());
+    setErrorString();
+    onStateChanged(m_socket->state());
 }
 
 
@@ -70,24 +73,49 @@ void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 {
 
     // Disconnect socket.
-    m_socket.abort();
+    if (!m_socket.isNull()) {
+        m_socket->abort();
+    }
+    delete m_socket;
 
     // Update properties
-    onStateChanged(m_socket.state());
+    onStateChanged(QAbstractSocket::UnconnectedState);
 
 }
 
 
 void Traffic::TrafficDataSource_Udp::onReadyRead()
 {
+    // Paranoid safety checks
+    if (m_socket.isNull()) {
+        return;
+    }
 
-    while (m_socket.hasPendingDatagrams()) {
-        QByteArray data = m_socket.receiveDatagram().data();
+    // Read datagrams
+    while (m_socket->hasPendingDatagrams()) {
+        QByteArray data = m_socket->receiveDatagram().data();
 
+        // Return immediately if the datagram has already been received.
+        auto currentDatagramHash = qHash(data);
+        foreach(auto hash, receivedDatagramHashes) {
+            if (hash == currentDatagramHash) {
+                return;
+            }
+        }
+        receivedDatagramHashes[nextHashIndex] = currentDatagramHash;
+        nextHashIndex = (nextHashIndex++) % receivedDatagramHashes.size();
+
+        // Process datagrams, depending on content type
         if (data.startsWith("XGPS") || data.startsWith("XTRA")) {
             processXGPSString(data);
         } else {
-            processGDLMessage(data);
+            // Split data into raw messages
+            foreach(auto rawMessage, data.split(0x7e)) {
+                if (!rawMessage.isEmpty()) {
+                    processGDLMessage(rawMessage);
+                }
+            }
+
         }
     }
 

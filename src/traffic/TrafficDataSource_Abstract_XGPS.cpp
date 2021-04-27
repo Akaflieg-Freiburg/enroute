@@ -24,7 +24,7 @@
 
 // Member functions
 
-void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& stringArray)
+void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& data)
 {
 
     //
@@ -32,9 +32,9 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& st
     //
 
     // Ownship report, serves also as heartbeat message
-    if (stringArray.startsWith("XGPS")) {
+    if (data.startsWith("XGPS")) {
 
-        QString str = QString::fromLatin1(stringArray);
+        QString str = QString::fromLatin1(data);
         QStringList list = str.split(QLatin1Char(','));
         if (list.size() != 6) {
             return;
@@ -77,9 +77,9 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& st
 
 
     // Traffic report
-    if (stringArray.startsWith("XTRA")) {
+    if (data.startsWith("XTRA")) {
 
-        QString str = QString::fromLatin1(stringArray);
+        QString str = QString::fromLatin1(data);
         QStringList list = str.split(QLatin1Char(','));
         if (list.size() != 10) {
             return;
@@ -111,7 +111,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& st
         if (!ok) {
             return;
         }
-        auto callsign = list[9];
+        auto callsign = list[9].simplified();
 
         auto trafficCoordinate = QGeoCoordinate(lat, lon, alt.toM());
         if (!trafficCoordinate.isValid()) {

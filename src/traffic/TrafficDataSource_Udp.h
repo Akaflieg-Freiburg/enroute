@@ -87,8 +87,14 @@ private slots:
     void onReadyRead();
 
 private:
-    QUdpSocket m_socket;
+    QPointer<QUdpSocket> m_socket;
     quint16 m_port;
+
+    // We use this vector to store the last 512 datatgram hashes in a circular array.
+    // This is used to sort out doubly sent datagrams. The nextHashIndex points to
+    // the next vector entry that will be re-written.
+    QVector<uint> receivedDatagramHashes {512, 0};
+    int nextHashIndex {0};
 
     // GPS altitude of owncraft
     AviationUnits::Distance m_trueAltitude;

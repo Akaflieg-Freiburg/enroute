@@ -137,7 +137,7 @@ void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, Av
 
     // If the ID changed, do not animate property changes in the GUI.
     if (hasIDChanged) {
-       setAnimate(false);
+        setAnimate(false);
     }
 
     bool hasCallSignChanged = (m_callSign != newCallSign);
@@ -289,9 +289,10 @@ void Traffic::TrafficFactor::setIcon()
 
 void Traffic::TrafficFactor::setValid()
 {
+
     // Compute validity
     bool newValid = true;
-    if (!_positionInfo.timestamp().isValid()) {
+    if (!_positionInfo.isValid()) {
         newValid = false;
     } else {
         // If this traffic object it not invalid for trivial reasons, check the age and set the timer.
@@ -311,4 +312,5 @@ void Traffic::TrafficFactor::setValid()
     }
     _valid = newValid;
     emit validChanged();
+
 }

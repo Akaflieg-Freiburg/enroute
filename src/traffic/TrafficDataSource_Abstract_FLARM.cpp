@@ -144,7 +144,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             return;
         }
 
-        // Get coordinate       
+        // Get coordinate
         bool ok1 = false;
         bool ok2 = false;
         auto lat = arguments[2].leftRef(2).toDouble(&ok1) + arguments[2].midRef(2).toDouble(&ok2)/60.0;
@@ -215,54 +215,56 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         }
 
         // Relative vertical information is optional
-        auto vDistInM = arguments[3].toDouble(&ok);
+        // Vertical distance is optional
+        auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
         if (!ok) {
-            vDistInM = qQNaN();
+            vDist = AviationUnits::Distance::fromM(qQNaN());
         }
 
         // Target type is optional
-        auto targetType = arguments[10];
         Traffic::TrafficFactor::AircraftType type = Traffic::TrafficFactor::unknown;
-        if (targetType == u"1") {
-            type = Traffic::TrafficFactor::Glider;
+        {
+            auto targetType = arguments[10];
+            if (targetType == u"1") {
+                type = Traffic::TrafficFactor::Glider;
+            }
+            if (targetType == u"2") {
+                type = Traffic::TrafficFactor::TowPlane;
+            }
+            if (targetType == u"3") {
+                type = Traffic::TrafficFactor::Copter;
+            }
+            if (targetType == u"4") {
+                type = Traffic::TrafficFactor::Skydiver;
+            }
+            if (targetType == u"5") {
+                type = Traffic::TrafficFactor::Aircraft;
+            }
+            if (targetType == u"6") {
+                type = Traffic::TrafficFactor::HangGlider;
+            }
+            if (targetType == u"7") {
+                type = Traffic::TrafficFactor::Paraglider;
+            }
+            if (targetType == u"8") {
+                type = Traffic::TrafficFactor::Aircraft;
+            }
+            if (targetType == u"9") {
+                type = Traffic::TrafficFactor::Jet;
+            }
+            if (targetType == u"B") {
+                type = Traffic::TrafficFactor::Balloon;
+            }
+            if (targetType == u"C") {
+                type = Traffic::TrafficFactor::Airship;
+            }
+            if (targetType == u"D") {
+                type = Traffic::TrafficFactor::Drone;
+            }
+            if (targetType == u"F") {
+                type = Traffic::TrafficFactor::StaticObstacle;
+            }
         }
-        if (targetType == u"2") {
-            type = Traffic::TrafficFactor::TowPlane;
-        }
-        if (targetType == u"3") {
-            type = Traffic::TrafficFactor::Copter;
-        }
-        if (targetType == u"4") {
-            type = Traffic::TrafficFactor::Skydiver;
-        }
-        if (targetType == u"5") {
-            type = Traffic::TrafficFactor::Aircraft;
-        }
-        if (targetType == u"6") {
-            type = Traffic::TrafficFactor::HangGlider;
-        }
-        if (targetType == u"7") {
-            type = Traffic::TrafficFactor::Paraglider;
-        }
-        if (targetType == u"8") {
-            type = Traffic::TrafficFactor::Aircraft;
-        }
-        if (targetType == u"9") {
-            type = Traffic::TrafficFactor::Jet;
-        }
-        if (targetType == u"B") {
-            type = Traffic::TrafficFactor::Balloon;
-        }
-        if (targetType == u"C") {
-            type = Traffic::TrafficFactor::Airship;
-        }
-        if (targetType == u"D") {
-            type = Traffic::TrafficFactor::Drone;
-        }
-        if (targetType == u"F") {
-            type = Traffic::TrafficFactor::StaticObstacle;
-        }
-
 
         // Ground speed it optimal. If ground speed is zero that means:
         // target is on the ground. Ignore these targets, unless they are known static obstacles!
@@ -287,17 +289,6 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             auto hDist = AviationUnits::Distance::fromM(arguments[1].toDouble(&ok));
             if (!ok) {
                 return;
-            }
-
-            // Vertical distance is optional
-            auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
-            if (!ok) {
-                vDist = AviationUnits::Distance::fromM(qQNaN());
-            } else {
-                // We ignore targets with large vertical distance
-                if (qAbs(vDist.toM()) > 1500) {
-                    return;
-                }
             }
 
             // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
@@ -335,8 +326,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             return;
         }
         targetCoordinate = targetCoordinate.atDistanceAndAzimuth(relativeEast, 90);
-        if (qIsFinite(vDistInM)) {
-            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, vDistInM);
+        if (vDist.isFinite()) {
+            targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, vDist.toM());
         }
         auto hDist = AviationUnits::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
 
@@ -356,7 +347,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         }
 
         // Construct a traffic object
-        m_factor.setData(alarmLevel, targetID, hDist, AviationUnits::Distance::fromM(vDistInM), type, pInfo, {});
+        m_factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo, {});
         emit factorWithPosition(m_factor);
         return;
     }

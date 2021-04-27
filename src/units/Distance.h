@@ -41,10 +41,23 @@ namespace AviationUnits {
          *
          * @returns distance
          */
-        static Distance fromM(double distanceInM)
+        static constexpr Distance fromM(double distanceInM)
         {
             Distance result;
             result.m_distanceInM = distanceInM;
+            return result;
+        }
+
+        /*! \brief Constructs a distance
+         *
+         * @param distanceInKM distance in kilometers
+         *
+         * @returns distance
+         */
+        static constexpr Distance fromKM(double distanceInKM)
+        {
+            Distance result;
+            result.m_distanceInM = 1000.0*distanceInKM;
             return result;
         }
 
@@ -137,6 +150,17 @@ namespace AviationUnits {
             return m_distanceInM < rhs.m_distanceInM;
         }
 
+        /*! \brief Comparison: larger equal
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        Q_INVOKABLE auto operator>(AviationUnits::Distance rhs) const
+        {
+            return m_distanceInM > rhs.m_distanceInM;
+        }
+
         /*! \brief Comparison: not equal
          *
          *  @param rhs Right hand side of the comparison
@@ -219,7 +243,7 @@ namespace AviationUnits {
         static constexpr double MetersPerNauticalMile = 1852;
 
         // Speed in meters per second
-        double m_distanceInM{qQNaN()};
+        double m_distanceInM{ NAN };
     };
 };
 

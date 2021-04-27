@@ -108,6 +108,9 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Try to (re)connect whenever the network situation changes
     QTimer::singleShot(0, this, &Traffic::TrafficDataProvider::deferredInitialization);
+
+#warning Need to send out ForeFlight Broadcasts, https://www.foreflight.com/connect/spec/
+
 }
 
 
@@ -197,11 +200,32 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
 {
+    // Check if traffic is too far away to be shown
+    bool farAway = false;
+    if (factor.vDist().isFinite() && (factor.vDist() > maxVerticalDistance)) {
+        farAway = true;
+    }
+    if (factor.hDist().isFinite() && (factor.hDist() > maxHorizontalDistance)) {
+        farAway = true;
+    }
+
+
+    // Check if the traffic is one of the known factors.
     foreach(auto target, m_trafficObjects) {
         if (factor.ID() == target->ID()) {
-            target->copyFrom(factor);
+            // If traffic is too far away, delete the entry. Otherwise, replace the entry by the factor.
+            if (farAway) {
+                target->copyFrom( TrafficFactor() );
+            } else {
+                target->copyFrom(factor);
+            }
             return;
         }
+    }
+
+    // If traffic is too far away, ignore the factor.
+    if (farAway) {
+        return;
     }
 
     auto *lowestPriObject = m_trafficObjects.at(0);
@@ -213,6 +237,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     if (factor.hasHigherPriorityThan(*lowestPriObject)) {
         lowestPriObject->copyFrom(factor);
     }
+
 }
 
 

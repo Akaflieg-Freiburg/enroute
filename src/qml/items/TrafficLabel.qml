@@ -55,6 +55,7 @@ MapQuickItem {
         y: distFromCenter*Math.cos(t) - height/2
 
         text: trafficInfo.description
+        textFormat: Text.RichText
 
         font.pixelSize: 0.8*Qt.application.font.pixelSize
 

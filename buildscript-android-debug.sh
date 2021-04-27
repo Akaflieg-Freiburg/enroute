@@ -56,7 +56,7 @@ cmake .. \
       -DANDROID_STL:STRING=c++_shared \
       -DCMAKE_BUILD_TYPE:STRING=Debug \
       -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-      -DCMAKE_CXX_FLAGS="-Werror -Wall -Wextra" \
+      -DCMAKE_CXX_FLAGS="-Wall -Wextra" \
       -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
       -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_ANDROID \
       -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR_ANDROID \

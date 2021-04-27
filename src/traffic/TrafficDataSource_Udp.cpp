@@ -103,7 +103,7 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
             }
         }
         receivedDatagramHashes[nextHashIndex] = currentDatagramHash;
-        nextHashIndex = (nextHashIndex++) % receivedDatagramHashes.size();
+        nextHashIndex = (nextHashIndex+1) % receivedDatagramHashes.size();
 
         // Process datagrams, depending on content type
         if (data.startsWith("XGPS") || data.startsWith("XTRA")) {

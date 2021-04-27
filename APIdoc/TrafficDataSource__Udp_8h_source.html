@@ -104,17 +104,23 @@ $(function() {
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> onReadyRead();</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    QUdpSocket m_socket;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    QPointer&lt;QUdpSocket&gt; m_socket;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    quint16 m_port;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// GPS altitude of owncraft</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> m_trueAltitude;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> m_trueAltitude_FOM;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    QTimer m_trueAltitudeTimer;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#aff3ba7d4cf09c65e3280b241977bd39f">  100</a></span>&#160;}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// We use this vector to store the last 512 datatgram hashes in a circular array.</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// This is used to sort out doubly sent datagrams. The nextHashIndex points to</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="comment">// the next vector entry that will be re-written.</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    QVector&lt;uint&gt; receivedDatagramHashes {512, 0};</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">int</span> nextHashIndex {0};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">// GPS altitude of owncraft</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#aff3ba7d4cf09c65e3280b241977bd39f">  100</a></span>&#160;    <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> m_trueAltitude;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> m_trueAltitude_FOM;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    QTimer m_trueAltitudeTimer;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_af27cac20b02e31c6f84f93d781cb25d7"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#af27cac20b02e31c6f84f93d781cb25d7">Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp</a></div><div class="ttdeci">TrafficDataSource_Udp(quint16 port, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_aff3ba7d4cf09c65e3280b241977bd39f"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#aff3ba7d4cf09c65e3280b241977bd39f">Traffic::TrafficDataSource_Udp::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__Udp_8h_source.html#l00100">TrafficDataSource_Udp.h:100</a></div></div>

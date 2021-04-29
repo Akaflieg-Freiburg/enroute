@@ -13,7 +13,7 @@
 	url = https://github.com/maputnik/osm-liberty.git
 [submodule "3rdParty/enrouteText"]
 	path = 3rdParty/enrouteText
-	url = https://github.com/Akaflieg-Freiburg/enrouteText.git
+	url = ../enrouteText
 [submodule "3rdParty/KDSingleApplication"]
 	path = 3rdParty/KDSingleApplication
 	url = https://github.com/KDAB/KDSingleApplication.git

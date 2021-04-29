@@ -18,7 +18,9 @@
 
 #pragma once
 
-#include <QObject>
+#include <QGeoCoordinate>
+
+#include "units/Distance.h"
 
 namespace Positioning {
 
@@ -47,28 +49,25 @@ namespace Positioning {
 class Geoid
 {
 public:
-    Geoid();
+    Geoid() = delete;
+
+    //
+    // Methods
+    //
 
     /*! \brief return geoidal separation -- the difference between AMSL and ellipsoidal height.
      *
-     * @param latitude the latitude [90; -90] of the location for which the
-     * geoidal separation should be calculated.
+     * @param coord location for which the geoidal separation should be calculated.
      *
-     * @param longitude the longitude of the location for which the geoidal
-     * separation should be calculated.
-     *
-     * @returns geoidal separation
+     * @returns Geoidal separation. In case that the method fails, NAN is returned
      */
-    qreal operator()(qreal latitude, qreal longitude);
-
-    /*! \brief True if geoidal separation is available or false otherwise.
-     *
-     * @returns true or false
-     */
-    bool valid() const { return (egm.size() != 0); }
+    static AviationUnits::Distance separation(const QGeoCoordinate& coord);
 
 private:
-    QVector<qint16> egm; // holds the data read from the binaray data file WW15MGH.DAC
+    // Reads data into the vector egm
+    static void readEGM();
+
+    static QVector<qint16> egm; // holds the data read from the binaray data file WW15MGH.DAC
 
     // https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/readme.txt
     // https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html

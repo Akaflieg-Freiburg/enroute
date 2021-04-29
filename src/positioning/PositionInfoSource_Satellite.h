@@ -23,7 +23,6 @@
 #include <QGeoPositionInfoSource>
 #include <QPointer>
 
-#include "positioning/Geoid.h"
 #include "positioning/PositionInfoSource_Abstract.h"
 
 
@@ -54,8 +53,6 @@ private slots:
 
 private:
     Q_DISABLE_COPY_MOVE(PositionInfoSource_Satellite)
-
-    Positioning::Geoid geoid;
 
     QPointer<QGeoPositionInfoSource> source {nullptr};
 };

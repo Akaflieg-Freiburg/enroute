@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "positioning/Geoid.h"
 #include "positioning/PositionInfoSource_Satellite.h"
 
 
@@ -78,8 +79,10 @@ void Positioning::PositionInfoSource_Satellite::onPositionUpdated(const QGeoPosi
 {
     auto correctedInfo = info;
     if (info.coordinate().type() == QGeoCoordinate::Coordinate3D) {
-        auto geoidCorrection = geoid.operator()(static_cast<qreal>(info.coordinate().latitude()), static_cast<qreal>(info.coordinate().longitude()));
-        correctedInfo.setCoordinate( correctedInfo.coordinate().atDistanceAndAzimuth(0, 0, -geoidCorrection) );
+        auto geoidCorrection = Geoid::separation(info.coordinate());
+        if (geoidCorrection.isFinite()) {
+            correctedInfo.setCoordinate( correctedInfo.coordinate().atDistanceAndAzimuth(0, 0, -geoidCorrection.toM()) );
+        }
     }
 
     setPositionInfo( Positioning::PositionInfo(correctedInfo) );

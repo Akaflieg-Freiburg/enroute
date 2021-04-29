@@ -358,7 +358,8 @@ at random if more than one device tries to access.</p>
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("Test-release for GDL90 and XGPS support");
+        return tr("Test-release for GDL90 and XGPS support") + "\n\n" +
+                tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.");
 //                + tr("The app now supports traffic receivers such as the popular [SkyEcho](https://uavionix.com/products/skyecho/) that send traffic data in GDL90 format.") + "\n\n"
 //+ tr("The app now can now be used together with flight simulators such as [XPlane](https://www.x-plane.com/) or the popular [MS Flight Simulator](https://www.microsoft.com/en-us/p/microsoft-flight-simulator-standard/9nxn8gf8n9ht?activetab=pivot:overviewtab).  Open the main menu and go to the 'Settings' page to learn more.");
     }

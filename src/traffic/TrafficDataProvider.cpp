@@ -57,7 +57,10 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     m_WarningTimer.setSingleShot(true);
     connect(&m_WarningTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::resetWarning);
 
-
+    // Setup ForeFlight Broadcases
+    foreFlightBroadcastTimer.setInterval(5s);
+    connect(&foreFlightBroadcastTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::foreFlightBroadcast);
+    foreFlightBroadcastTimer.start();
 
     // Setup Data Sources
 
@@ -108,9 +111,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Try to (re)connect whenever the network situation changes
     QTimer::singleShot(0, this, &Traffic::TrafficDataProvider::deferredInitialization);
-
-#warning Need to send out ForeFlight Broadcasts, https://www.foreflight.com/connect/spec/
-
 }
 
 
@@ -143,6 +143,12 @@ void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
         }
         dataSource->disconnectFromTrafficReceiver();
     }
+}
+
+
+void Traffic::TrafficDataProvider::foreFlightBroadcast()
+{
+    foreFlightBroadcastSocket.writeDatagram(foreFlightBroadcastDatagram);
 }
 
 

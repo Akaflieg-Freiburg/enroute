@@ -16,15 +16,17 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "positioning/Geoid.h"
-#include <QDataStream>
 #include <QDebug>
 #include <QFile>
-#include <QIODevice>
-
-#include <QSysInfo>
 #include <QtEndian>
 #include <QtMath>
+
+#include "positioning/Geoid.h"
+
+// Static member variable
+
+QVector<qint16> Positioning::Geoid::egm {};
+
 
 // reading binary geoid data was carefully optimized for speed. We read the
 // binary content at once and do the byte order conversion afterwards.  This
@@ -32,7 +34,8 @@
 // setByteOrder(QDataStream::BigEndian) and reading the shorts one after the
 // other with the QDataStream >> operator.
 
-Positioning::Geoid::Geoid()
+
+void Positioning::Geoid::readEGM()
 {
     QFile file(QStringLiteral(":/WW15MGH.DAC"));
 
@@ -46,11 +49,7 @@ Positioning::Geoid::Geoid()
 
     egm.resize(egm96_size);
 
-#ifndef __clang_analyzer__
-    qint64 nread = file.read(reinterpret_cast<char*>(egm.data()), egm96_size_2);
-#else
-    qint64 nread = 0;
-#endif
+    qint64 nread = file.read(static_cast<char*>(static_cast<void*>(egm.data())), egm96_size_2);
 
     file.close();
 
@@ -62,15 +61,11 @@ Positioning::Geoid::Geoid()
         return;
     }
 
-    // Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
     if (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
         qFromBigEndian<qint16>(egm.data(), egm96_size, egm.data());
     }
-#endif
 
 }
-
 
 // 90 >= latitude >= -90
 //
@@ -78,12 +73,24 @@ Positioning::Geoid::Geoid()
 // points according to Numerical Recipies in C++ 3.6 "Interpolation in Two or
 // More Dimensions".
 //
-auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
+auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> AviationUnits::Distance
 {
-    if (egm.empty()) {
-        return 0.0;
+    // Paranoid safety checks
+    if (!coord.isValid()) {
+        return AviationUnits::Distance::fromM( qQNaN() );
     }
 
+    // Read EGM vector if this has not been done already
+    if (egm.empty()) {
+        readEGM();
+        if (egm.empty()) {
+            return AviationUnits::Distance::fromM( qQNaN() );
+        }
+    }
+
+    // Get lat/long
+    auto latitude = coord.latitude();
+    auto longitude = coord.longitude();
     while (longitude < 0) {
         longitude += 360.;
     }
@@ -92,8 +99,8 @@ auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
     // system.  The returning row and col are still reals (_not_ data index
     // integers).  We do not care about cyclic overflows yet, col might > 1400.
     //
-    auto row = []  (qreal lat) -> qreal { return (90 - lat) * 4; }; // [0; 720] from north to south
-    auto col = []  (qreal lon) -> qreal { return    lon     * 4; }; // [0; 1440[
+    auto row = []  (double lat) -> double { return (90 - lat) * 4; }; // [0; 720] from north to south
+    auto col = []  (double lon) -> double { return    lon     * 4; }; // [0; 1440[
 
     // integer row north and south of latitude
     //
@@ -114,9 +121,9 @@ auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
     // here we do a bilinear interpolation between the 4 neighbouring data
     // points of the requested location.
     //
-    qreal interpolated = 0;
-    qreal row_dist = row(latitude) - north;
-    qreal col_dist = col(longitude) - qFloor(col(longitude));
+    double interpolated = 0;
+    double row_dist = row(latitude) - north;
+    double col_dist = col(longitude) - qFloor(col(longitude));
     for (int irow : {north, south})
     {
         for (int icol : {west, east})
@@ -127,5 +134,5 @@ auto Positioning::Geoid::operator()(qreal latitude, qreal longitude) -> qreal
         row_dist = 1 - row_dist;
     }
 
-    return interpolated;
+    return AviationUnits::Distance::fromM( interpolated );
 }

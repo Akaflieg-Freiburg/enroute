@@ -20,7 +20,9 @@
 
 #pragma once
 
+#include <QNetworkDatagram>
 #include <QQmlListProperty>
+#include <QUdpSocket>
 
 #include "positioning/PositionInfoSource_Abstract.h"
 #include "traffic/Warning.h"
@@ -42,6 +44,11 @@ namespace Traffic {
  *
  *  This class also acts as a PositionInfoSource, and passes position data (that
  *  some traffic receivers provide) on to the the consumers of this class.
+ *
+ *  Following the standards established by the app ForeFlight, this classEnroute
+ *  broadcasts a UDP message on port 63093 every 5 seconds while the app is
+ *  running in the foreground. This message allows devices to discover
+ *  Enroute’s IP address, which can be used as the target of UDP unicast messages.
  */
 class TrafficDataProvider : public Positioning::PositionInfoSource_Abstract {
     Q_OBJECT
@@ -178,6 +185,10 @@ private slots:
     // nested uses of globalInstance().
     void deferredInitialization() const;
 
+    // Sends out foreflight broadcast message
+    // See https://www.foreflight.com/connect/spec/
+    void foreFlightBroadcast();
+
     // Called if one of the sources indicates a heartbeat change
     void onSourceHeartbeatChanged();
 
@@ -198,6 +209,12 @@ private slots:
     void updateStatusString();
 
 private:
+    // UDP Socket for ForeFlight Broadcast messages.
+    // See https://www.foreflight.com/connect/spec/
+    QNetworkDatagram foreFlightBroadcastDatagram {R"({"App":"Enroute Flight Navigation","GDL90":{"port":4000}})", QHostAddress::Broadcast, 63093};
+    QUdpSocket foreFlightBroadcastSocket;
+    QTimer foreFlightBroadcastTimer;
+
     // Targets
     QList<Traffic::TrafficFactor *> m_trafficObjects;
     QPointer<Traffic::TrafficFactor> m_trafficObjectWithoutPosition;

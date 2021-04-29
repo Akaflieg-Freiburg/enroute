@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.6.7</span>
+   &#160;<span id="projectnumber">2.6.8</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -45,7 +45,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classPositioning_1_1Geoid-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Positioning::Geoid Class Reference</div>  </div>
@@ -57,14 +57,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="Geoid_8h_source.html">Geoid.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a80a00f555538214ce8861eeab2f0a2a6"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1Geoid.html#a80a00f555538214ce8861eeab2f0a2a6">operator()</a> (qreal latitude, qreal longitude)</td></tr>
-<tr class="memdesc:a80a00f555538214ce8861eeab2f0a2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">return geoidal separation &ndash; the difference between AMSL and ellipsoidal height.  <a href="classPositioning_1_1Geoid.html#a80a00f555538214ce8861eeab2f0a2a6">More...</a><br /></td></tr>
-<tr class="separator:a80a00f555538214ce8861eeab2f0a2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa885b3293514051af2688d0a5c260e00"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">valid</a> () const</td></tr>
-<tr class="memdesc:aa885b3293514051af2688d0a5c260e00"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if geoidal separation is available or false otherwise.  <a href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">More...</a><br /></td></tr>
-<tr class="separator:aa885b3293514051af2688d0a5c260e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a81562b2eb3723a72da0f4b7263d59ce7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1Geoid.html#a81562b2eb3723a72da0f4b7263d59ce7">separation</a> (const QGeoCoordinate &amp;coord)</td></tr>
+<tr class="memdesc:a81562b2eb3723a72da0f4b7263d59ce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">return geoidal separation &ndash; the difference between AMSL and ellipsoidal height.  <a href="classPositioning_1_1Geoid.html#a81562b2eb3723a72da0f4b7263d59ce7">More...</a><br /></td></tr>
+<tr class="separator:a81562b2eb3723a72da0f4b7263d59ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provide geoidal separation according to <a href="https://en.wikipedia.org/wiki/Geoid">https://en.wikipedia.org/wiki/Geoid</a>. </p>
@@ -73,48 +70,10 @@ Public Member Functions</h2></td></tr>
 <p>The implementation uses the data from <a href="https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html">https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html</a> and does a bilinear interpolation between the four neighboring data points of the requested location.</p>
 <p>The implementation was <em>very</em> carefully tested and compared with both a bilinear and a bicubic spline interpolation in python. The comparison of the method here with the python bilinear interpolation verified that both implementations yield the same numbers (within numerical precision). The comparison of the bilinear implementation here with the python's bicubic interpolation showed a worldwide max deviation of about 1 m. </p>
 
-<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00047">47</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00049">49</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a80a00f555538214ce8861eeab2f0a2a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80a00f555538214ce8861eeab2f0a2a6">&#9670;&nbsp;</a></span>operator()()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">qreal Positioning::Geoid::operator() </td>
-          <td>(</td>
-          <td class="paramtype">qreal&#160;</td>
-          <td class="paramname"><em>latitude</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">qreal&#160;</td>
-          <td class="paramname"><em>longitude</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>return geoidal separation &ndash; the difference between AMSL and ellipsoidal height. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">latitude</td><td>the latitude [90; -90] of the location for which the geoidal separation should be calculated.</td></tr>
-    <tr><td class="paramname">longitude</td><td>the longitude of the location for which the geoidal separation should be calculated.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>geoidal separation </dd></dl>
-
-</div>
-</div>
-<a id="aa885b3293514051af2688d0a5c260e00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa885b3293514051af2688d0a5c260e00">&#9670;&nbsp;</a></span>valid()</h2>
+<a id="a81562b2eb3723a72da0f4b7263d59ce7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81562b2eb3723a72da0f4b7263d59ce7">&#9670;&nbsp;</a></span>separation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -123,23 +82,28 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Positioning::Geoid::valid </td>
+          <td class="memname">static <a class="el" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> Positioning::Geoid::separation </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
+          <td class="paramname"><em>coord</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>True if geoidal separation is available or false otherwise. </p>
-<dl class="section return"><dt>Returns</dt><dd>true or false </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Geoid_8h_source.html#l00068">68</a> of file <a class="el" href="Geoid_8h_source.html">Geoid.h</a>.</p>
+<p>return geoidal separation &ndash; the difference between AMSL and ellipsoidal height. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coord</td><td>location for which the geoidal separation should be calculated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Geoidal separation. In case that the method fails, NAN is returned </dd></dl>
 
 </div>
 </div>

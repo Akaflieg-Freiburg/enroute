@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.6.7</span>
+   &#160;<span id="projectnumber">2.6.8</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -51,36 +51,43 @@ $(function() {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;QGeoCoordinate&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="namespacePositioning.html">   23</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a> {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;units/Distance.h&quot;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classPositioning_1_1Geoid.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPositioning_1_1Geoid.html">Geoid</a></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="classPositioning_1_1Geoid.html">Geoid</a>();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    qreal <a class="code" href="classPositioning_1_1Geoid.html#a80a00f555538214ce8861eeab2f0a2a6">operator()</a>(qreal latitude, qreal longitude);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">   68</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">valid</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (egm.size() != 0); }</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="namespacePositioning.html">   25</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a> {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classPositioning_1_1Geoid.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classPositioning_1_1Geoid.html">Geoid</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classPositioning_1_1Geoid.html">Geoid</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// Methods</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">static</span> <a class="code" href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a> <a class="code" href="classPositioning_1_1Geoid.html#a81562b2eb3723a72da0f4b7263d59ce7">separation</a>(<span class="keyword">const</span> QGeoCoordinate&amp; coord);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// Reads data into the vector egm</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> readEGM();</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    QVector&lt;qint16&gt; egm; <span class="comment">// holds the data read from the binaray data file WW15MGH.DAC</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/readme.txt</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> qint32 egm96_rows = 721;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> qint32 egm96_cols = 1440;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> qint32 egm96_size = egm96_rows * egm96_cols;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">static</span> QVector&lt;qint16&gt; egm; <span class="comment">// holds the data read from the binaray data file WW15MGH.DAC</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/readme.txt</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> qint32 egm96_rows = 721;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> qint32 egm96_cols = 1440;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> qint32 egm96_size = egm96_rows * egm96_cols;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassPositioning_1_1Geoid_html_a80a00f555538214ce8861eeab2f0a2a6"><div class="ttname"><a href="classPositioning_1_1Geoid.html#a80a00f555538214ce8861eeab2f0a2a6">Positioning::Geoid::operator()</a></div><div class="ttdeci">qreal operator()(qreal latitude, qreal longitude)</div><div class="ttdoc">return geoidal separation – the difference between AMSL and ellipsoidal height.</div></div>
-<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00023">Geoid.h:23</a></div></div>
-<div class="ttc" id="aclassPositioning_1_1Geoid_html"><div class="ttname"><a href="classPositioning_1_1Geoid.html">Positioning::Geoid</a></div><div class="ttdoc">Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid.</div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00047">Geoid.h:47</a></div></div>
-<div class="ttc" id="aclassPositioning_1_1Geoid_html_aa885b3293514051af2688d0a5c260e00"><div class="ttname"><a href="classPositioning_1_1Geoid.html#aa885b3293514051af2688d0a5c260e00">Positioning::Geoid::valid</a></div><div class="ttdeci">bool valid() const</div><div class="ttdoc">True if geoidal separation is available or false otherwise.</div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00068">Geoid.h:68</a></div></div>
+<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00025">Geoid.h:25</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1Geoid_html"><div class="ttname"><a href="classPositioning_1_1Geoid.html">Positioning::Geoid</a></div><div class="ttdoc">Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid.</div><div class="ttdef"><b>Definition:</b> <a href="Geoid_8h_source.html#l00049">Geoid.h:49</a></div></div>
+<div class="ttc" id="aclassPositioning_1_1Geoid_html_a81562b2eb3723a72da0f4b7263d59ce7"><div class="ttname"><a href="classPositioning_1_1Geoid.html#a81562b2eb3723a72da0f4b7263d59ce7">Positioning::Geoid::separation</a></div><div class="ttdeci">static AviationUnits::Distance separation(const QGeoCoordinate &amp;coord)</div><div class="ttdoc">return geoidal separation – the difference between AMSL and ellipsoidal height.</div></div>
+<div class="ttc" id="aclassAviationUnits_1_1Distance_html"><div class="ttname"><a href="classAviationUnits_1_1Distance.html">AviationUnits::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition:</b> <a href="Distance_8h_source.html#l00052">Distance.h:52</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.6.7</span>
+   &#160;<span id="projectnumber">2.6.8</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -213,9 +213,10 @@ Properties</h2></td></tr>
 <li>TCP connection to 192.168.1.1, port 2000</li>
 <li>TCP connection to 192.168.10.1, port 2000</li>
 </ul>
-<p>This class also acts as a PositionInfoSource, and passes position data (that some traffic receivers provide) on to the the consumers of this class. </p>
+<p>This class also acts as a PositionInfoSource, and passes position data (that some traffic receivers provide) on to the the consumers of this class.</p>
+<p>Following the standards established by the app ForeFlight, this classEnroute broadcasts a UDP message on port 63093 every 5 seconds while the app is running in the foreground. This message allows devices to discover Enroute’s IP address, which can be used as the target of UDP unicast messages. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00064">64</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00071">71</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad08bfbab038fcc25fbe45af20b8e1e99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad08bfbab038fcc25fbe45af20b8e1e99">&#9670;&nbsp;</a></span>TrafficDataProvider()</h2>
@@ -382,7 +383,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjects4QML </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00138">138</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00145">145</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -412,7 +413,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjectWithoutPosition </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00155">155</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00162">162</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -442,7 +443,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property <a class="el" href="classTraffic_1_1Warning.html" title="Traffic warning.">Warning</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00172">172</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00179">179</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -470,7 +471,7 @@ Properties</h2></td></tr>
 <p>Maximal horizontal distance for traffic to be shown. </p>
 <p>Traffic whose horizontal distance to the own aircraft is large than this number will be ignored. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00187">187</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00194">194</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -497,7 +498,7 @@ Properties</h2></td></tr>
 <p>Maximal vertical distance for traffic to be shown. </p>
 <p>Traffic whose vertical distance to the own aircraft is large than this number will be ignored. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00181">181</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00188">188</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -525,7 +526,7 @@ Properties</h2></td></tr>
 <p>Heartbeat indicator. </p>
 <p>When active, traffic receivers send regular heartbeat messages. These can be used to verify that the connection to the receiver works, even in times when no traffic is reported. This property indicates if the class receives heartbeat messages from at least one of the known receivers. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00116">116</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00123">123</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +553,7 @@ Properties</h2></td></tr>
 <p>Traffic objects whose position is known. </p>
 <p>This property holds a list of the most relevant traffic objects, as a QQmlListProperty for better cooperation with QML. Note that only the valid items in this list pertain to actual traffic. Invalid items should be ignored. The list is not sorted in any way. The items themselves are owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00132">132</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00139">139</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -579,7 +580,7 @@ Properties</h2></td></tr>
 <p>Most relevant traffic object whose position is not known. </p>
 <p>This property holds a pointer to the most relevant traffic object whose position is not known. This item should be ignored if invalid. The item is owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00149">149</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00156">156</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -606,7 +607,7 @@ Properties</h2></td></tr>
 <p>Current traffic warning. </p>
 <p>This property holds the current traffic warning. The traffic warning is updated regularly and set to an invalid warning (i.e. one with alarmLevel == -1) after a certain period. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00166">166</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00173">173</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>

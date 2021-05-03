@@ -1,0 +1,2 @@
+v2.5.0 Feature release
+The app can now connect to your aircraft's traffic receiver (typically a FLARM device) and show nearby traffic on the moving map. Open the menu and go to Information/Traffic Reveicer to try it out.

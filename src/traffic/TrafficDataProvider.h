@@ -84,13 +84,16 @@ public:
      *  times when no traffic is reported. This property indicates if the class
      *  receives heartbeat messages from at least one of the known receivers.
      */
-    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat NOTIFY receivingHeartbeatChanged)
+    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property receiving
      */
-    bool receivingHeartbeat() const;
+    bool receivingHeartbeat() const
+    {
+        return m_receivingHeartbeat;
+    }
 
     /*! \brief Traffic objects whose position is known
      *
@@ -202,6 +205,9 @@ private slots:
     void resetWarning();
 
     // Setter method
+    void setReceivingHeartbeat(bool newReceivingHeartbeat);
+
+    // Setter method
     void setWarning(const Traffic::Warning& warning);
 
     // Updates the property statusString that is inherited from
@@ -219,7 +225,9 @@ private:
     QList<Traffic::TrafficFactor *> m_trafficObjects;
     QPointer<Traffic::TrafficFactor> m_trafficObjectWithoutPosition;
 
+    // TrafficData Sources
     QList<QPointer<Traffic::TrafficDataSource_Abstract>> m_dataSources;
+    QPointer<Traffic::TrafficDataSource_Abstract> m_currentSource;
 
     // Property cache
     Traffic::Warning m_Warning;
@@ -229,7 +237,7 @@ private:
     QTimer reconnectionTimer;
 
     // Property Cache
-    bool m_receiving {false};
+    bool m_receivingHeartbeat {false};
 };
 
 }

@@ -83,5 +83,5 @@ void Traffic::TrafficDataSource_Abstract::setReceivingHeartbeat(bool newReceivin
 
 void Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat()
 {
-    setReceivingHeartbeat(true);
+    setReceivingHeartbeat(false);
 }

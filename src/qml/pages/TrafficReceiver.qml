@@ -177,24 +177,22 @@ Page {
     footer: Pane {
         width: parent.width
         Material.elevation: 3
+        visible: !flarmAdaptor.receivingHeartbeat
 
         ToolButton {
             anchors.centerIn: parent
             width: Math.min(implicitWidth, parent.width-Qt.application.font.pixelSize)
 
-            text: (flarmAdaptor.receivingHeartbeat) ? qsTr("Disconnect from Traffic Receiver") : qsTr("Connect to Traffic Receiver")
+            text: qsTr("Connect to Traffic Receiver")
 
-            icon.source: (flarmAdaptor.receivingHeartbeat) ? "/icons/material/ic_cancel.svg" : "/icons/material/ic_tap_and_play.svg"
+            icon.source: "/icons/material/ic_tap_and_play.svg"
 
             Layout.alignment: Qt.AlignHCenter
             Material.foreground: Material.accent
 
             enabled: !timer.running
             onClicked: {
-                if (flarmAdaptor.receivingHeartbeat)
-                    flarmAdaptor.disconnectFromTrafficReceiver()
-                else
-                    flarmAdaptor.connectToTrafficReceiver()
+                flarmAdaptor.connectToTrafficReceiver()
                 timer.running = true;
             }
             Timer {

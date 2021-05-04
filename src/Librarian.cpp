@@ -47,6 +47,7 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 
 auto Librarian::getStringFromRessource(const QString &name) -> QString
 {
+
     if (name == ":text/authors.html") {
         return tr(R"html(<h3>Authors</h3>
 
@@ -109,7 +110,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     </td>
   </tr>
 </table>
-
+)html") + tr(R"html(
 <h3>Manual</h3>
 
 <p>The manual has kindly been provided by Michael Horbaschk.</p>
@@ -120,11 +121,13 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
 <p><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
 
-<p><strong>Italian:</strong> Ivan Battistella and Luca Bertoncello. Luca flies ultralight planes since 2014 and has become a flight instructor in 2019. He programs since 1988 and works as a systems administrator in Dresden, Germany.  Ivan Battistella has recently started to fly ultralight aircraft. He works freelance as a software consultant.</p>
+<p><strong>Italian:</strong> Ivan Battistella.</p>
 
 <p><strong>Polish:</strong> Sławek Mikuła.</p>
 
 <h3>Alumni</h3>
+
+<p>Luca Bertoncello (Italian translation)</p>
 
 <p>Szymon Kocur (Polish translation)</p>
 
@@ -333,6 +336,76 @@ at random if more than one device tries to access.</p>
 )html");
     }
 
+    if (name == ":text/simulatorSetup.md") {
+        return tr(R"html(
+<p><strong>Enroute Flight Navigation</strong> can connect to flight simulator software.  The app
+has been tested with the following programs.</p>
+
+<ul style="margin-left:-25px;">
+  <li>X-Plane 11.</li>
+</ul>
+
+<p>Please contact us if you are aware of other programs that also work.</p>
+)html") + tr(R"html(
+<h2>Before you connect</h2>
+
+<p>This manual assumes a typical home setup, where both the computer that runs the
+flight simulator and the device that runs <strong>Enroute Flight Navigation</strong> are
+connected to a Wi-Fi network deployed by a home router.  Make sure that the
+following conditions are met.</p>
+
+<ul style="margin-left:-25px;">
+  <li>The computer that runs the flight simulator and the device that runs <strong>Enroute
+  Flight Navigation</strong> are connected to the same Wi-Fi network.  Some routers
+  deploy two networks, often called "main network" and a "guest network".</li>
+
+  <li>Make sure that the router allows data transfer between the devices in the
+  Wi-Fi network.  Some routers have "security settings" that disallow data
+  transfer between the devices in the "guest network"</li>
+</ul>
+)html") + tr(R"html(
+<h2>Set up your flight simulator</h2>
+
+<p>Your flight simulation software needs to broadcast position and traffic
+information over the Wi-Fi network.  Once this is done, there is no further
+setup required.  As soon as the flight simulator starts to broadcast information
+over the Wi-Fi network, the moving map of <strong>Enroute Flight Navigation</strong> will
+adjust accordingly.  To end the connection to the flight simulator, simply leave
+the flight simulator's Wi-Fi network.</p>
+
+)html") + tr(R"html(
+<h3>X-Plane 11</h3>
+
+<p>Open the "Settings" window and choose the "Network" tab.  Locate the settings
+group "This machine's role" on the right-hand side of the tab. Open the section
+"iPHONE, iPAD, and EXTERNAL APPS" and select the item "Broadcast to all mapping
+apps on the network" under the headline "OTHER MAPPING APPS".</p>
+)html") + tr(R"html(
+<h3>MS Flight Simulator</h3>
+
+<p>Unknown as of now, as the author does not have access to this program.
+If the MS Flight Simulator works for you, please be in touch.  The article
+<a href="https://support.foreflight.com/hc/en-us/articles/204115275-How-do-I-connect-Microsoft-Flight-Simulator-FS-X-or-FS-2004-to-ForeFlight-">How
+do I connect Microsoft Flight Simulator 2020 (MSFS2020) to ForeFlight?</a>
+might be helpful.</p>
+)html") + tr(R"html(
+<h3>Other programs</h3>
+
+<p>The flight simulator needs to be set up to send UDP datagrams in one of the
+standard formats "GDL90" or "XGPS" to ports 4000 or 49002.  Given the choice,
+GDL90 is generally the preferred format.</p>
+)html") + tr(R"html(
+<h2>Troubleshooting</h2>
+
+<p><strong>Enroute Flight Navigation</strong> treats flight simulators as traffic receivers.  To
+see the connection status, open the main menu and navigate to the "Information"
+menu.  If the entry "Traffic Receiver" is highlighted in green, then <strong>Enroute
+Flight Navigation</strong> has already found the program in the network and has
+connected to it.  If not, then select the entry. The "Traffic Receiver Status"
+page will open, which explains the connection status in more detail.</p>
+)html");
+    }
+
     if (name == ":text/tooManyDownloads.html") {
         return tr(R"html(<h3>Too many maps</h3>
 
@@ -358,16 +431,17 @@ at random if more than one device tries to access.</p>
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("Test-release for GDL90 and XGPS support") + "\n\n" +
-                tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.");
-//                + tr("The app now supports traffic receivers such as the popular [SkyEcho](https://uavionix.com/products/skyecho/) that send traffic data in GDL90 format.") + "\n\n"
-//+ tr("The app now can now be used together with flight simulators such as [XPlane](https://www.x-plane.com/) or the popular [MS Flight Simulator](https://www.microsoft.com/en-us/p/microsoft-flight-simulator-standard/9nxn8gf8n9ht?activetab=pivot:overviewtab).  Open the main menu and go to the 'Settings' page to learn more.");
+        return tr("Test-release for GDL90 and XGPS support") + "\n\n"
+// + tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.") + "\n\n"
++ tr("In addition to FLARM, the app now supports traffic receivers that send traffic data in GDL90 format, such as the popular [SkyEcho](https://uavionix.com/products/skyecho/).") + "\n\n"
++ tr("The app now can now be used together with flight simulators such as [XPlane](https://www.x-plane.com/) or the popular [MS Flight Simulator](https://www.microsoft.com/en-us/p/microsoft-flight-simulator-standard/9nxn8gf8n9ht?activetab=pivot:overviewtab).  Open the main menu and go to the **Settings** page to learn more. Please contact us if you own an MS Flight Simulator and if you would like to help with the testing.");
     }
 
     QFile file(name);
     file.open(QIODevice::ReadOnly);
     auto content = file.readAll();
     return QString::fromUtf8(content);
+
 }
 
 

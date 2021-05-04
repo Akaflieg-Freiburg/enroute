@@ -131,12 +131,25 @@ Page {
                 LongTextDialog {
                     id: trafficHelp
                     standardButtons: Dialog.Ok
-                    anchors.centerIn: parent
 
                     title: qsTr("Connect your traffic receiver")
                     text: librarian.getStringFromRessource(":text/flarmSetup.md")
                 }
+            }
 
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                icon.source: "/icons/material/ic_info_outline.svg"
+                text: qsTr("How to connect your flight simulator…")
+                onClicked: simulatorHelp.open()
+
+                LongTextDialog {
+                    id: simulatorHelp
+                    standardButtons: Dialog.Ok
+
+                    title: qsTr("Connect your flight simulator")
+                    text: librarian.getStringFromRessource(":text/simulatorSetup.md")
+                }
             }
 
             Item { // Spacer

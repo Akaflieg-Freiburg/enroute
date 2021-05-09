@@ -1,0 +1,10 @@
+{
+    "Id": "googleFonts",
+    "Name": "Google Fonts",
+    "Description": "Font files available from Google Fonts",
+    "Homepage": "https://github.com/google/fonts",
+    "License": "Apache 2 License",
+    "LicenseId": "Apache 2",
+    "LicenseFile": "Google-Fonts/LICENSE.txt",
+    "Copyright": "Copyright 2011 The Roboto Project Authors (https://github.com/google/roboto)"
+}

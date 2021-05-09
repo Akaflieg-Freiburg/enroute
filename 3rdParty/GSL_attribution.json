@@ -1,0 +1,10 @@
+{
+    "Id": "GSL",
+    "Name": "Guidelines Support Library",
+    "Description": "Functions and types that are suggested for use by the C++ Core Guidelines maintained by the Standard C++ Foundation.",
+    "Homepage": "https://github.com/microsoft/GSL",
+    "License": "MIT License",
+    "LicenseId": "MIT",
+    "LicenseFile": "GSL/LICENSE",
+    "Copyright": "Copyright (c) 2015 Microsoft Corporation. All rights reserved."
+}

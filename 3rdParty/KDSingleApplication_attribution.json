@@ -1,0 +1,10 @@
+{
+    "Id": "KDSingleApplication",
+    "Name": "KDAB's helper class for single-instance policy applications",
+    "Description": "HTTP server for Qt applications",
+    "Homepage": "https://github.com/KDAB/KDSingleApplication",
+    "License": "MIT License",
+    "LicenseId": "MIT",
+    "LicenseFile": "MIT License",
+    "Copyright": "Copyright (C) 2019-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com"
+}

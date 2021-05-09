@@ -1,0 +1,10 @@
+{
+    "Id": "openSSL",
+    "Name": "openSSL library",
+    "Description": "Cryptography and SSL/TLS Toolkit",
+    "Homepage": "https://www.openssl.org",
+    "License": "Apache 2 License",
+    "LicenseId": "Apache 2",
+    "LicenseFile": "android_openssl/LICENSE",
+    "Copyright": "Copyright (c) 1998-2021 The OpenSSL Project, Copyright (c) 1995-1998 Eric A. Young"
+}

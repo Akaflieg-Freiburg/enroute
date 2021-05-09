@@ -1,0 +1,10 @@
+{
+    "Id": "qhttpengine",
+    "Name": "QHttpEngine",
+    "Description": "HTTP server for Qt applications",
+    "Homepage": "https://github.com/nitroshare/qhttpengine",
+    "License": "MIT License",
+    "LicenseId": "MIT",
+    "LicenseFile": "MIT License",
+    "Copyright": "Copyright (c) 2015 Nathan Osman"
+}

@@ -74,7 +74,8 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
     // Lock data
     QMutexLocker lock(&_aviationDataMutex);
 
-    QList<Airspace> result;
+    QVector<Airspace> result;
+    result.reserve(10);
     foreach(auto airspace, _airspaces_) {
         if (airspace.polygon().contains(position)) {
             result.append(airspace);
@@ -82,7 +83,7 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
     }
 
     // Sort airspaces according to lower boundary
-    std::sort(result.begin(), result.end(), [](Airspace a, Airspace b) {return (a.estimatedLowerBoundInFtMSL() > b.estimatedLowerBoundInFtMSL()); });
+    std::sort(result.begin(), result.end(), [](const Airspace& a, const Airspace& b) {return (a.estimatedLowerBoundInFtMSL() > b.estimatedLowerBoundInFtMSL()); });
 
     QVariantList final;
     foreach(auto airspace, result)

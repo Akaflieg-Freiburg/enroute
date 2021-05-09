@@ -1,0 +1,10 @@
+{
+    "Id": "metaf",
+    "Name": "Metaf library",
+    "Description": "Modern C++ library for parsing METAR and TAF",
+    "Homepage": "https://github.com/nnaumenko/metaf",
+    "License": "MIT License",
+    "LicenseId": "MIT",
+    "LicenseFile": "metaf/LICENSE",
+    "Copyright": "Copyright (c) 2018-2020 Nick Naumenko"
+}

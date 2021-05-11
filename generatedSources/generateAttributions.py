@@ -19,18 +19,20 @@ def get_name(employee):
 data = []
 
 # Include data from all the Qt modules that we use
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtandroidextras")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtbase")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtdeclarative")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtlocation")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtquickcontrols2")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtsvg")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qttranslations")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtx11extras")
+data += qtattributionsscanner("3rdParty/qt5/qtandroidextras")
+data += qtattributionsscanner("3rdParty/qt5/qtbase")
+data += qtattributionsscanner("3rdParty/qt5/qtdeclarative")
+data += qtattributionsscanner("3rdParty/qt5/qtlocation")
+data += qtattributionsscanner("3rdParty/qt5/qtquickcontrols2")
+data += qtattributionsscanner("3rdParty/qt5/qtsvg")
+data += qtattributionsscanner("3rdParty/qt5/qttranslations")
+data += qtattributionsscanner("3rdParty/qt5/qtx11extras")
 
 # Include data from modules in 3rdParty
 for root,directors,files in os.walk("3rdParty"):
     for file in files:
+        if file == "qt_attribution.json":
+            continue
         if file.endswith("_attribution.json"):
             with open(root+"/"+file) as json_file:
                 data.append(json.load(json_file))

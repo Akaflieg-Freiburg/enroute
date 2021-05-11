@@ -101,10 +101,23 @@ set(flightMapFontsQRC ${CMAKE_CURRENT_BINARY_DIR}/flightMap-fonts.qrc CACHE INTE
 
 
 #
+# Attributions
+#
+
+add_custom_target(attributions
+  COMMAND pwd
+  COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/generateAttributions.py
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMENT "Generated sources: attributions"
+  )
+
+
+#
 # Target 'generatedSources' that combines all of the above
 #
 
 add_custom_target(generatedSources
+  DEPENDS attributions
   DEPENDS flightMapFonts
   DEPENDS flightMapSprites
   DEPENDS mainIcons

@@ -29,7 +29,7 @@ data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qttranslation
 data += qtattributionsscanner("/home/kebekus/Software/projects/qt5/qtx11extras")
 
 # Include data from modules in 3rdParty
-for root,directors,files in os.walk("/home/kebekus/Software/projects/enroute/3rdParty"):
+for root,directors,files in os.walk("3rdParty"):
     for file in files:
         if file.endswith("_attribution.json"):
             with open(root+"/"+file) as json_file:

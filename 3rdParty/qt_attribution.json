@@ -1,0 +1,10 @@
+{
+    "Id": "qt",
+    "Name": "Qt Toolkit, Libraries and Modules",
+    "Description": "Qt Toolkit for cross-platform application development",
+    "Homepage": "https://qt.io",
+    "License": "GNU General Public License v3.0",
+    "LicenseId": "GPLv3",
+    "LicenseFile": "/home/kebekus/Software/projects/qt5/LICENSE.GPLv3",
+    "Copyright": "Copyright (C) 2020 The Qt Company Ltd and other contributors."
+}

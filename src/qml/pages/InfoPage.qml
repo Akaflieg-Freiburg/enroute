@@ -117,8 +117,8 @@ Page {
 
                 Label {
                     id: lbl3
-                    text: librarian.getStringFromRessource(":text/info_license.html")
-                    textFormat: Text.StyledText
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/info_license.html")
+                    textFormat: Text.RichText
                     linkColor: Material.accent
                     width: pg.width
                     wrapMode: Text.Wrap

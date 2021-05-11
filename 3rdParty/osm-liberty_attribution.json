@@ -1,0 +1,10 @@
+{
+    "Id": "osm-liberty",
+    "Name": "OSM Liberty",
+    "Description": "A free Mapbox GL basemap style for everyone",
+    "Homepage": "https://github.com/maputnik/osm-liberty",
+    "License": "BSD License",
+    "LicenseId": "BSD",
+    "LicenseFile": "osm-liberty/LICENSE.md",
+    "Copyright": "Copyright holder unknown"
+}

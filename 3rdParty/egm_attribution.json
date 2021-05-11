@@ -1,0 +1,10 @@
+{
+    "Id": "egm",
+    "Name": "Earth Gravitational Model",
+    "Description": "Earth Gravitational Model",
+    "Homepage": "https://earth-info.nga.mil",
+    "License": "Public Domain",
+    "LicenseId": "Public Domain",
+    "LicenseFile": "Public Domain",
+    "Copyright": "unspecified"
+}

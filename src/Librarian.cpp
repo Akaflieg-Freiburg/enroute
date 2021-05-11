@@ -200,19 +200,69 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == ":text/info_license.html") {
-        return tr(R"html(<h3>License</h3>
+        QFile file(":license_overview.html");
+        file.open(QIODevice::ReadOnly);
+        auto content = QString::fromUtf8(file.readAll());
 
-<p>This program is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU General Public License V3</a> or, at your choice, any later version of this license.</p>
+        return tr(R"html(
+<h3>License</h3>
 
-<h4>Third-Party software and data included in this program</h4>
+<p>
+  The program <strong>Enroute Flight Navigation</strong>
+  is licensed under the <a
+  href="https://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU
+  General Public License V3</a> or, at your choice, any later
+  version of this license.
+</p>
+)html") + tr(R"html(
+<h4>Geographic maps</h4>
 
-<p>This program includes several libraries from the <a href="https://qt.io">Qt</a> project, licensed under the <a href="https://www.qt.io/download-open-source">GNU General Public License V3</a>. This program includes the library <a href="https://github.com/nitroshare/qhttpengine">qhttpengine</a>, which is licensed under the <a href="https://github.com/nitroshare/qhttpengine/blob/master/LICENSE.txt">MIT license</a>. This program includes the library <a href="https://openssl.org">OpenSSL</a>, licensed under the <a href="https://www.openssl.org/source/license.html">Apache License 2.0</a>.</p>
+<p>
+  As a flight navigation program, <strong>Enroute Flight
+  Navigation</strong> heavily relies on geographic map
+  data. The geographic maps are not included in the
+  program, but are downloaded at runtime. They are compiled
+  from the following sources.
+</p>
 
-<p>This program includes versions of the <a href="https://github.com/google/roboto">Google Roboto Fonts</a>, which are licensed under the <a href="https://github.com/google/roboto/blob/master/LICENSE">Apache License 2.0</a> license. This program includes several <a href="https://github.com/google/material-design-icons">Google Material Design Icons</a>, which are licensed under the <a href="https://github.com/google/material-design-icons/blob/master/LICENSE">Apache License 2.0</a> license.</p>
+<ul style="margin-left:-25px;">
+  <li>
+    The base maps are modified data from <a
+    href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a>,
+    published under a
+    <a href="https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md">CC-BY
+    4.0 design license</a>.
+  </li>
 
-<p>The style specification of the basemap is a modified version of the <a href="https://github.com/maputnik/osm-liberty">OSM liberty map design</a>, which is in turn originally derived from OSM Bright from Mapbox Open Styles. The code is licenses under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">BSD license</a>. The design is derived (although heavily altered) from OSM Bright from Mapbox Open Styles which is licensed under the <a href="https://github.com/maputnik/osm-liberty/blob/gh-pages/LICENSE.md">Creative Commons Attribution 3.0 license</a>. The map is displaying and styling modified data from <a href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a> with <a href="https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md">CC-BY 4.0 design license</a>.
+  <li>
+    The aviation maps contain data from <a
+    href="http://www.openaip.net">openAIP</a>, licensed
+    under a <a
+    href="https://creativecommons.org/licenses/by-nc-sa/3.0">CC
+    BY-NC-SA license</a>.
+  </li>
 
-                  <p>The map is displaying and styling data from <a href="http://www.openaip.net">openAIP</a>, which is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA license</a>. The map is also displaying and styling data from <a href="https://www.openflightmaps.org/">open flightmaps</a>, which is licensed under the <a href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA General Users´ License</a>.</p>)html");
+  <li>
+    The aviation maps contain data from <a
+    href="https://www.openflightmaps.org">open
+    flightmaps</a>, licensed under the <a
+    href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA
+    General Users License</a>.
+  </li>
+</ul>
+)html") + tr(R"html(
+<h4>Software and data included in the program</h4>
+
+<p>
+  Depending on platform and configuration, the following
+  components might be included in the installation of
+  <strong>Enroute Flight Navigation</strong>.
+</p>
+
+<ul style="margin-left:-25px;">
+%1
+</ul>
+)html").arg(content);
     }
 
     if (name == ":text/missingPermissions.html") {

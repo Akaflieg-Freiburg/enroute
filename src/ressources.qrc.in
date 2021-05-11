@@ -11,9 +11,14 @@
         <file>enroute_it.qm</file>
         <file>enroute_pl.qm</file>
     </qresource>
-    
+
+    <!-- Text -->
+    <qresource>
+        <file alias="license_overview.html">${CMAKE_SOURCE_DIR}/generatedSources/licenses_overview.html</file>
+    </qresource>
+
     <!-- Geoid correction data -->
     <qresource>
-        <file alias="WW15MGH.DAC">${CMAKE_CURRENT_SOURCE_DIR}/res/WW15MGH.DAC</file>
+        <file alias="WW15MGH.DAC">${CMAKE_SOURCE_DIR}/3rdParty/egm/WW15MGH.DAC</file>
     </qresource>
 </RCC>

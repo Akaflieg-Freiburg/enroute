@@ -21,7 +21,9 @@
 
 #pragma once
 
-#if not defined (Q_OS_ANDROID)
+#include <QtGlobal>
+
+#ifndef Q_OS_ANDROID
 #include <KNotification>
 #endif
 

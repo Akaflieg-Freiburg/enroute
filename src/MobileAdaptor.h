@@ -21,6 +21,10 @@
 
 #pragma once
 
+#if not defined (Q_OS_ANDROID)
+#include <KNotification>
+#endif
+
 #include <QObject>
 
 /*! \brief Interface to platform-specific capabilities of mobile devices
@@ -191,7 +195,7 @@ public slots:
      * @param show If set to 'true', a notification will be shown. If set to
      * 'false', any existing notification will be withdrawn
      */
-    static void showDownloadNotification(bool show);
+    void showDownloadNotification(bool show);
 
     /*! \brief Helper function, not for public consumption
      *
@@ -251,6 +255,8 @@ private:
     static bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     QStringList permissions;
+#else
+    QPointer<KNotification> downloadNotification;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

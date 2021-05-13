@@ -13,7 +13,7 @@ cd build-qt5-android-release
              -opensource \
 	     -confirm-license \
 	     -xplatform android-clang \
-	     -prefix $HOME/Software/buildsystems/qt5-android-release \
+	     -prefix qt5-android-release \
 	     -android-ndk $ANDROID_NDK_ROOT \
 	     -android-sdk $ANDROID_SDK_ROOT \
 	     -nomake tests \

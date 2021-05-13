@@ -46,6 +46,7 @@ configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qr
 configure_file(icons.qrc.in icons.qrc)
 configure_file(qml.qrc.in qml.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/knotifications5/enroute\ flight\ navigation.notifyrc.in enroute\ flight\ navigation.notifyrc)
 
 
 #
@@ -260,7 +261,7 @@ if (NOT ANDROID)
 
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg qhttpengine kdsingleapplication sunset)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg KF5::Notifications qhttpengine kdsingleapplication sunset)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
     target_precompile_headers(${PROJECT_NAME} PRIVATE
         <QObject>
@@ -269,6 +270,7 @@ if (NOT ANDROID)
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(FILES ${CMAKE_BINARY_DIR}/enroute\ flight\ navigation.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
 endif()
 
 # Enforce C++17 and no extensions

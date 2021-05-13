@@ -11,7 +11,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.6.9)
+project(enroute VERSION 2.7.0)
 set(APP_ID de.akaflieg_freiburg.enroute)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
@@ -48,7 +48,12 @@ if( ANDROID )
     find_package(Qt5 5.15 COMPONENTS AndroidExtras REQUIRED)
     find_package(Qt5QuickCompiler)
 else()
-    find_package(Qt5 5.15 COMPONENTS Widgets REQUIRED)
+    find_package(ECM REQUIRED NO_MODULE)
+    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+    include(KDEInstallDirs)
+
+    find_package(KF5Notifications REQUIRED)
+    find_package(Qt5 5.15 COMPONENTS DBus Widgets REQUIRED)
 endif()
 
 

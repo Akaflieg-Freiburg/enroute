@@ -481,10 +481,9 @@ page will open, which explains the connection status in more detail.</p>
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("Test-release for GDL90 and XGPS support") + "\n\n"
-+ tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.") + "\n\n"
-+ tr("In addition to FLARM, the app now supports traffic receivers that send traffic data in GDL90 format, such as the popular [SkyEcho](https://uavionix.com/products/skyecho/).") + "\n\n"
-+ tr("The app now can now be used together with flight simulators such as [XPlane](https://www.x-plane.com/) or the popular [MS Flight Simulator](https://www.microsoft.com/en-us/p/microsoft-flight-simulator-standard/9nxn8gf8n9ht?activetab=pivot:overviewtab).  Open the main menu and go to the **Settings** page to learn more. Please contact us if you own an MS Flight Simulator and if you would like to help with the testing.");
+        return tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.") + "\n\n"
++ tr("In addition to FLARM, the app now supports traffic receivers that send traffic data in GDL90 format.") + "\n\n"
++ tr("The app now can now be used together with flight simulators such as [XPlane](https://www.x-plane.com/) and potentially others.  Open the main menu and go to the **Settings** page to learn more. Please contact us if you own an MS Flight Simulator and if you would like to help with the testing.");
     }
 
     QFile file(name);

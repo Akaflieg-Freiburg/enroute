@@ -37,9 +37,12 @@ QPointer<MobileAdaptor> mobileAdaptorStatic {};
 #endif
 
 
+
 MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
 {
+
+
     // Do all the set-up required for sharing files
     // Android requires you to use a subdirectory within the AppDataLocation for
     // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
@@ -169,8 +172,7 @@ auto MobileAdaptor::getSSID() -> QString
 
 void MobileAdaptor::showDownloadNotification(bool show)
 {
-    Q_UNUSED(show)
-    
+
 #if defined(Q_OS_ANDROID)
     QString text;
     if (show) {
@@ -178,6 +180,19 @@ void MobileAdaptor::showDownloadNotification(bool show)
     }
     QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
+#else
+    if (show) {
+        if (downloadNotification.isNull()) {
+            downloadNotification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
+            downloadNotification->setPixmap( {":/icons/appIcon.png"} );
+            downloadNotification->setText(tr("Downloading map data…"));
+        }
+        downloadNotification->sendEvent();
+    } else {
+        if (!downloadNotification.isNull()) {
+            downloadNotification->close();
+        }
+    }
 #endif
 }
 

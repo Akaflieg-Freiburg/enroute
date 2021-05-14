@@ -2,7 +2,7 @@
     <!-- Global QML configuration files -->
     <qresource>
         <file alias="qtquickcontrols2.conf">${CMAKE_CURRENT_SOURCE_DIR}/qtquickcontrols2.conf</file>
-        <file alias="knotifications5/enroute.notifyrc">enroute.notifyrc</file>
+        <file alias="knotifications5/enroute flight navigation.notifyrc">enroute flight navigation.notifyrc</file>
     </qresource>
 
     <!-- Translations -->

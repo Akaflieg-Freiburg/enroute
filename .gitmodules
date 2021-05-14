@@ -26,6 +26,3 @@
 [submodule "3rdParty/GSL"]
 	path = 3rdParty/GSL
 	url = https://github.com/microsoft/GSL.git
-[submodule "3rdParty/qt5"]
-	path = 3rdParty/qt5
-	url = https://invent.kde.org/qt/qt/qt5.git

@@ -270,7 +270,7 @@ if (NOT ANDROID)
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-    install(FILES ${CMAKE_BINARY_DIR}/enroute.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
+    install(FILES enroute.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
 endif()
 
 # Enforce C++17 and no extensions

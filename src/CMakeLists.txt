@@ -46,7 +46,7 @@ configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qr
 configure_file(icons.qrc.in icons.qrc)
 configure_file(qml.qrc.in qml.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/knotifications5/enroute\ flight\ navigation.notifyrc.in enroute.notifyrc)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/knotifications5/enroute\ flight\ navigation.notifyrc.in enroute\ flight\ navigation.notifyrc)
 
 
 #
@@ -270,7 +270,7 @@ if (NOT ANDROID)
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-    install(FILES enroute.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
+    install(FILES enroute\ flight\ navigation.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
 endif()
 
 # Enforce C++17 and no extensions

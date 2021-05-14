@@ -184,7 +184,6 @@ void MobileAdaptor::showDownloadNotification(bool show)
     if (show) {
         if (downloadNotification.isNull()) {
             downloadNotification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
-            downloadNotification->setComponentName("enroute");
             downloadNotification->setPixmap( {":/icons/appIcon.png"} );
             downloadNotification->setText(tr("Downloading map data…"));
         }

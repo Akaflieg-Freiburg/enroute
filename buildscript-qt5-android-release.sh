@@ -12,6 +12,7 @@ cd build-qt5-android-release
 $Qt5_DIR_SOURCE/configure \
     -opensource \
     -confirm-license \
+    -c++std c++2a \
     -xplatform android-clang \
     -prefix $Qt5_DIR_ANDROID \
     -android-ndk $ANDROID_NDK_ROOT \
@@ -38,7 +39,6 @@ $Qt5_DIR_SOURCE/configure \
     -skip qtscxml \
     -skip qtserialbus \
     -skip qtserialport \
-    -skip qttools \
     -skip qtvirtualkeyboard \
     -skip qtwayland \
     -skip qtwebchannel \

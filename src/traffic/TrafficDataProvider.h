@@ -71,7 +71,7 @@ public:
      *
      *  @returns Pointer to global instance
      */
-    static TrafficDataProvider *globalInstance();
+    static TrafficDataProvider* globalInstance();
 
     //
     // Properties

@@ -84,11 +84,15 @@ public:
      *
      * @param parent The standard QObject parent
      */
-    explicit GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent = nullptr);
+    explicit GeoMapProvider(QObject *parent = nullptr);
 
     /*! \brief Destructor
      */
     ~GeoMapProvider();
+
+    //
+    // Properties
+    //
 
     /*! \brief List of airspaces at a given location
      *
@@ -176,6 +180,17 @@ public:
      */
     Q_INVOKABLE QList<QObject*> filteredWaypointObjects(const QString &filter);
 
+    /*! Find a waypoint by its ICAO code
+     *
+     * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
+     *
+     * @returns a nullpointer if no waypoint has been found, or else a pointer
+     * to the waypoint. For better cooperation with QML is not a pointer of type
+     * Waypoint, but ratherof type QObject. The object is owned by this class
+     * and must not be deleted.
+     */
+    Waypoint* findByID(const QString& id);
+
     /*! \brief Union of all aviation maps in GeoJSON format
      *
      * This property holds all installed aviation maps in GeoJSON format,
@@ -192,16 +207,11 @@ public:
         return _combinedGeoJSON_;
     }
 
-    /*! Find a waypoint by its ICAO code
+    /*! \brief Pointer to static instance of this class
      *
-     * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
-     *
-     * @returns a nullpointer if no waypoint has been found, or else a pointer
-     * to the waypoint. For better cooperation with QML is not a pointer of type
-     * Waypoint, but ratherof type QObject. The object is owned by this class
-     * and must not be deleted.
+     *  @returns Pointer to global instance
      */
-    Waypoint* findByID(const QString& id);
+    static GeoMapProvider* globalInstance();
 
     /*! List of nearby waypoints
      *
@@ -292,12 +302,6 @@ private:
     // _tileServer. This is set to a random number that changes every time the
     // set of MBTile files changes
     QString _currentPath;
-
-    // Pointer to the MapManager
-    QPointer<MapManager> _manager;
-
-    // Pointer to library
-    QPointer<Librarian> _librarian;
 
     // Tile Server
     TileServer _tileServer;

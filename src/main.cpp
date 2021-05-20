@@ -179,18 +179,15 @@ auto main(int argc, char *argv[]) -> int
     networkAccessManager->setTransferTimeout();
 
     // Attach map manager
-    auto *mapManager = new GeoMaps::MapManager(networkAccessManager);
-    engine->rootContext()->setContextProperty("mapManager", mapManager);
-    QObject::connect(mapManager->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, MobileAdaptor::globalInstance(), &MobileAdaptor::showDownloadNotification);
+    engine->rootContext()->setContextProperty("mapManager", GeoMaps::MapManager::globalInstance());
+    QObject::connect(GeoMaps::MapManager::globalInstance()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, MobileAdaptor::globalInstance(), &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
-    auto *geoMapProvider = new GeoMaps::GeoMapProvider(mapManager, librarian);
-    engine->rootContext()->setContextProperty("geoMapProvider", geoMapProvider);
+    engine->rootContext()->setContextProperty("geoMapProvider", GeoMaps::GeoMapProvider::globalInstance());
 
     // Attach Weather::DownloadManager
-    auto *downloadManager = new Weather::DownloadManager(flightroute, geoMapProvider, networkAccessManager, engine);
-    engine->rootContext()->setContextProperty("weatherDownloadManager", downloadManager);
-    geoMapProvider->setDownloadManager(downloadManager);
+    engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::DownloadManager::globalInstance());
+    GeoMaps::GeoMapProvider::globalInstance()->setDownloadManager(Weather::DownloadManager::globalInstance());
 
     // Attach Navigation::Navigator
     engine->rootContext()->setContextProperty("navigator", Navigation::Navigator::globalInstance());
@@ -227,7 +224,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Ensure that things get deleted in the right order
     delete engine;
-    delete mapManager; // This will also delete geoMapProvider
     delete networkAccessManager;
 
     return 0;

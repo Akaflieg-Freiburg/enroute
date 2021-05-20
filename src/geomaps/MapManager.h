@@ -124,6 +124,12 @@ public:
   */
   DownloadableGroupWatcher *geoMaps() { return &_geoMaps; }
 
+  /*! \brief Pointer to static instance of this class
+   *
+   *  @returns Pointer to global instance
+   */
+  static MapManager* globalInstance();
+
   /*! \brief True if the list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
   

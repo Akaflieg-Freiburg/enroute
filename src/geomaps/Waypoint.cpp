@@ -18,11 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDataStream>
 #include <QJsonArray>
-#include <QVariant>
 
-//#include "AviationUnits.h"
 #include "Waypoint.h"
 #include "weather/Station.h"
 

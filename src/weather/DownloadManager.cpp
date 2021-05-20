@@ -42,13 +42,17 @@
 using namespace std::chrono_literals;
 
 
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<Weather::DownloadManager> downloadManagerStatic {};
+#endif
+
+
 Weather::DownloadManager::DownloadManager(FlightRoute *route,
-                                          GeoMaps::GeoMapProvider *geoMapProvider,
                                           QNetworkAccessManager *networkAccessManager,
                                           QObject *parent) :
     QObject(parent),
     _flightRoute(route),
-    _geoMapProvider(geoMapProvider),
     _networkAccessManager(networkAccessManager)
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
@@ -217,9 +221,22 @@ auto Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAO
         return weatherStationPtr;
     }
 
-    auto *newWeatherStation = new Weather::Station(ICAOCode, _geoMapProvider, this);
+    auto *newWeatherStation = new Weather::Station(ICAOCode, GeoMaps::GeoMapProvider::globalInstance(), this);
     _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
     return newWeatherStation;
+}
+
+
+auto Weather::DownloadManager::globalInstance() -> Weather::DownloadManager*
+{
+#ifndef __clang_analyzer__
+    if (downloadManagerStatic.isNull()) {
+        downloadManagerStatic = new Weather::DownloadManager();
+    }
+    return downloadManagerStatic;
+#else
+    return nullptr;
+#endif
 }
 
 

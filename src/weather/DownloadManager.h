@@ -79,13 +79,25 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit DownloadManager(FlightRoute *route,
-                           GeoMaps::GeoMapProvider *geoMapProvider,
                            QNetworkAccessManager *networkAccessManager,
                            QObject *parent = nullptr);
 
     /*! \brief Destructor */
     ~DownloadManager() override;
 
+    //
+    // Methods
+    //
+
+    /*! \brief Pointer to static instance of this class
+     *
+     *  @returns Pointer to global instance
+     */
+    static DownloadManager* globalInstance();
+
+    //
+    // Properties
+    //
 
     /*! \brief Background update flag
      *
@@ -264,9 +276,6 @@ private:
 
     // Pointer to the flight route
     QPointer<FlightRoute> _flightRoute;
-
-    // Pointer to global settings
-    QPointer<GeoMaps::GeoMapProvider> _geoMapProvider;
 
     // Pointer to the network access manager
     QPointer<QNetworkAccessManager> _networkAccessManager;

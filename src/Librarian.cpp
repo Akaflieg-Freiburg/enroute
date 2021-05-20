@@ -23,6 +23,7 @@
 #include <QStandardPaths>
 #include <QtGlobal>
 
+
 Librarian::Librarian(QObject *parent) : QObject(parent)
 {
     auto libraryPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";

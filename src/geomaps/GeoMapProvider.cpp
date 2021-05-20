@@ -36,11 +36,14 @@
 
 using namespace std::chrono_literals;
 
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<GeoMaps::GeoMapProvider> geoMapProviderStatic {};
+#endif
 
-GeoMaps::GeoMapProvider::GeoMapProvider(MapManager *manager, Librarian *librarian, QObject *parent)
+
+GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : QObject(parent),
-      _manager(manager),
-      _librarian(librarian),
       _tileServer(QUrl()),
       _styleFile(nullptr)
 {
@@ -209,7 +212,7 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
 
     QStringList filterWords;
     foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
-        QString simplifiedWord = _librarian->simplifySpecialChars(word);
+        QString simplifiedWord = Librarian::globalInstance()->simplifySpecialChars(word);
         if (simplifiedWord.isEmpty()) {
             continue;
         }
@@ -223,9 +226,9 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
         }
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = _librarian->simplifySpecialChars(wp->getPropery(QStringLiteral("NAM")).toString());
-            QString codeName = _librarian->simplifySpecialChars(wp->getPropery(QStringLiteral("COD")).toString());
-            QString wordx = _librarian->simplifySpecialChars(word);
+            QString fullName = Librarian::globalInstance()->simplifySpecialChars(wp->getPropery(QStringLiteral("NAM")).toString());
+            QString codeName = Librarian::globalInstance()->simplifySpecialChars(wp->getPropery(QStringLiteral("COD")).toString());
+            QString wordx = Librarian::globalInstance()->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
                 allWordsFound = false;
@@ -254,6 +257,19 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint*
         }
     }
     return nullptr;
+}
+
+
+auto GeoMaps::GeoMapProvider::globalInstance() -> GeoMaps::GeoMapProvider*
+{
+#ifndef __clang_analyzer__
+    if (geoMapProviderStatic.isNull()) {
+        geoMapProviderStatic = new GeoMaps::GeoMapProvider();
+    }
+    return geoMapProviderStatic;
+#else
+    return nullptr;
+#endif
 }
 
 
@@ -300,9 +316,6 @@ auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
 void GeoMaps::GeoMapProvider::aviationMapsChanged()
 {
     // Paranoid safety checks
-    if (_manager.isNull()) {
-        return;
-    }
     if (_aviationDataCacheFuture.isRunning()) {
         _aviationDataCacheTimer.start();
         return;
@@ -312,7 +325,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
     // Generate new GeoJSON array and new list of waypoints
     //
     QStringList JSONFileNames;
-    foreach(auto geoMapPtr, _manager->aviationMaps()->downloadables()) {
+    foreach(auto geoMapPtr, MapManager::globalInstance()->aviationMaps()->downloadables()) {
         // Ignore everything but geojson files
         if (!geoMapPtr->fileName().endsWith(u".geojson", Qt::CaseInsensitive)) {
             continue;
@@ -329,10 +342,6 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
 
 void GeoMaps::GeoMapProvider::baseMapsChanged()
 {
-    // Paranoid safety checks
-    if (_manager.isNull()) {
-        return;
-    }
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
@@ -340,7 +349,7 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
     // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(_manager->baseMaps()->downloadablesWithFile(), _currentPath);
+    _tileServer.addMbtilesFileSet(MapManager::globalInstance()->baseMaps()->downloadablesWithFile(), _currentPath);
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);
@@ -354,6 +363,7 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
     _styleFile->close();
 
     emit styleFileURLChanged();
+
 }
 
 
@@ -446,8 +456,8 @@ void GeoMaps::GeoMapProvider::setDownloadManager(Weather::DownloadManager *downl
 
 
     // Connect the Downloadmanager, so aviation maps will be generated
-    connect(_manager->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
-    connect(_manager->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
+    connect(MapManager::globalInstance()->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(MapManager::globalInstance()->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
     connect(GlobalSettings::globalInstance(), &GlobalSettings::hideUpperAirspacesChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);

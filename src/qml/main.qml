@@ -397,8 +397,6 @@ ApplicationWindow {
                 return
             }
 
-            console.log(global)
-            console.log(global.mapManager)
             if (global.mapManager.geoMaps.updatable && !navigator.isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"

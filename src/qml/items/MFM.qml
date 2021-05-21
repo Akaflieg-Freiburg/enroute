@@ -417,7 +417,7 @@ Item {
         width: parent.width*0.6
         height: noMapWarning.height+20
         border.color: "black"
-        visible: !mapManager.aviationMaps.hasFile
+        visible: !global.mapManager.aviationMaps.hasFile
         Label {
             id: noMapWarning
             anchors.centerIn: parent

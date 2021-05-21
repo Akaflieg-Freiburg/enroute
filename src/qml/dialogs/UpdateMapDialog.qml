@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +25,7 @@ LongTextDialog {
     id: mud
 
     title: qsTr("Map updates available")
-    text: qsTr("<p>One or several of your installed maps can be updated. The estimated download size is %1.</p>").arg(mapManager.geoMaps.updateSize)
+    text: qsTr("<p>One or several of your installed maps can be updated. The estimated download size is %1.</p>").arg(global.mapManager.geoMaps.updateSize)
 
     footer: DialogButtonBox {
         ToolButton {
@@ -37,6 +37,6 @@ LongTextDialog {
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
         }
 
-        onAccepted: mapManager.geoMaps.updateAll()
+        onAccepted: global.mapManager.geoMaps.updateAll()
     } // DialogButtonBox
 }

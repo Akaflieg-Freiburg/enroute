@@ -179,7 +179,8 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("flightRoute", FlightRoute::globalInstance());
 
     // Attach map manager
-    engine->rootContext()->setContextProperty("mapManager", Global::mapManager());
+#warning
+    //engine->rootContext()->setContextProperty("mapManager", Global::mapManager());
     QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, MobileAdaptor::globalInstance(), &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider

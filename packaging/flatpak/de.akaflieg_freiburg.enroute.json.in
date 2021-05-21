@@ -10,8 +10,7 @@
         "--socket=x11",
         "--socket=wayland",
         "--system-talk-name=org.freedesktop.GeoClue2",
-        "--talk-name=org.freedesktop.Notification",
-        "--device=dri"
+        "--talk-name=org.freedesktop.Notifications"
     ],
     "modules": [
         {

@@ -221,8 +221,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
   As a flight navigation program, <strong>Enroute Flight
   Navigation</strong> heavily relies on geographic map
   data. The geographic maps are not included in the
-  program, but are downloaded at runtime. They are compiled
-  from the following sources.
+  program, but are downloaded by the user from the map
+  management page. The maps are compiled from the following
+  sources.
 </p>
 
 <ul style="margin-left:-25px;">

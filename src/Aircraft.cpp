@@ -22,22 +22,42 @@
 
 #include <QtGlobal>
 
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<Aircraft> aircraftStatic {};
+#endif
+
+
 Aircraft::Aircraft(QObject *parent) : QObject(parent) {
     _cruiseSpeedInKT = settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble();
     if ((_cruiseSpeedInKT < minAircraftSpeedInKT) || (_cruiseSpeedInKT > maxAircraftSpeedInKT)) {
         _cruiseSpeedInKT = qQNaN();
-}
+    }
 
     _descentSpeedInKT = settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble();
     if ((_descentSpeedInKT < minAircraftSpeedInKT) || (_descentSpeedInKT > maxAircraftSpeedInKT)) {
         _descentSpeedInKT = qQNaN();
-}
+    }
 
     _fuelConsumptionInLPH = settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble();
     if ((_fuelConsumptionInLPH < minFuelConsuption) || (_fuelConsumptionInLPH > maxFuelConsuption)) {
         _fuelConsumptionInLPH = qQNaN();
+    }
 }
+
+
+auto Aircraft::globalInstance() -> Aircraft*
+{
+#ifndef __clang_analyzer__
+    if (aircraftStatic.isNull()) {
+        aircraftStatic = new Aircraft();
+    }
+    return aircraftStatic;
+#else
+    return nullptr;
+#endif
 }
+
 
 auto Aircraft::cruiseSpeedInKT() const -> double {
     return _cruiseSpeedInKT;
@@ -46,7 +66,7 @@ auto Aircraft::cruiseSpeedInKT() const -> double {
 void Aircraft::setCruiseSpeedInKT(double speedInKT) {
     if ((speedInKT < minAircraftSpeedInKT) || (speedInKT > maxAircraftSpeedInKT)) {
         speedInKT = qQNaN();
-}
+    }
 
     if (!qFuzzyCompare(speedInKT, _cruiseSpeedInKT)) {
         _cruiseSpeedInKT = speedInKT;
@@ -72,7 +92,7 @@ auto Aircraft::descentSpeedInKT() const -> double {
 void Aircraft::setDescentSpeedInKT(double speedInKT) {
     if ((speedInKT < minAircraftSpeedInKT) || (speedInKT > maxAircraftSpeedInKT)) {
         speedInKT = qQNaN();
-}
+    }
 
     if (!qFuzzyCompare(speedInKT, _descentSpeedInKT)) {
         _descentSpeedInKT = speedInKT;
@@ -94,7 +114,7 @@ void Aircraft::setDescentSpeedInKMH(double speedInKMH) {
 void Aircraft::setFuelConsumptionInLPH(double fuelConsumptionInLPH) {
     if ((fuelConsumptionInLPH < minFuelConsuption) || (fuelConsumptionInLPH > maxFuelConsuption)) {
         fuelConsumptionInLPH = qQNaN();
-}
+    }
 
     if (!qFuzzyCompare(fuelConsumptionInLPH, _fuelConsumptionInLPH)) {
         _fuelConsumptionInLPH = fuelConsumptionInLPH;

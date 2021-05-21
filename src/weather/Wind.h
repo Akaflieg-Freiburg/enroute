@@ -46,6 +46,12 @@ public:
   // Standard destructor
   ~Wind() override = default;
 
+    /*! \brief Pointer to static instance of this class
+     *
+     *  @returns Pointer to global instance
+     */
+    static Wind* globalInstance();
+
   /*! \brief Wind Speed in knots
 
     This property holds the wind speed. This is a number that lies in the

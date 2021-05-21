@@ -25,9 +25,15 @@
 
 #include "FlightRoute.h"
 
-FlightRoute::FlightRoute(Aircraft *aircraft, Weather::Wind *wind, QObject *parent)
-    : QObject(parent), _aircraft(aircraft), _wind(wind)
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<FlightRoute> flightRouteStatic {};
+#endif
+
+FlightRoute::FlightRoute(QObject *parent)
+    : QObject(parent)
 {
+
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
     // Load last flightRoute
@@ -35,12 +41,9 @@ FlightRoute::FlightRoute(Aircraft *aircraft, Weather::Wind *wind, QObject *paren
 
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
-    if (!_aircraft.isNull()) {
-        connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::summaryChanged);
-    }
-    if (!_wind.isNull()) {
-        connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::summaryChanged);
-    }
+    connect(Aircraft::globalInstance(), &Aircraft::valChanged, this, &FlightRoute::summaryChanged);
+    connect(Weather::Wind::globalInstance(), &Weather::Wind::valChanged, this, &FlightRoute::summaryChanged);
+
 }
 
 
@@ -172,6 +175,21 @@ auto FlightRoute::geoPath() const -> QVariantList
 }
 
 
+auto FlightRoute::globalInstance() -> FlightRoute*
+{
+
+#ifndef __clang_analyzer__
+    if (flightRouteStatic.isNull()) {
+        flightRouteStatic = new FlightRoute();
+    }
+    return flightRouteStatic;
+#else
+    return nullptr;
+#endif
+
+}
+
+
 auto FlightRoute::lastWaypointObject() const -> QObject*
 {
     if (_waypoints.isEmpty()) {
@@ -259,22 +277,18 @@ auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
 
 
     QStringList complaints;
-    if (!_aircraft.isNull()) {
-        if (!qIsFinite(_aircraft->cruiseSpeedInKT())) {
-            complaints += tr("Cruise speed not specified.");
-        }
-        if (!qIsFinite(_aircraft->fuelConsumptionInLPH())) {
-            complaints += tr("Fuel consumption not specified.");
-        }
+    if (!qIsFinite(Aircraft::globalInstance()->cruiseSpeedInKT())) {
+        complaints += tr("Cruise speed not specified.");
     }
-    if (!_wind.isNull()) {
-        if (!qIsFinite(_wind->windSpeedInKT())) {
-            complaints += tr("Wind speed not specified.");
-        }
-        if (!qIsFinite(_wind->windDirectionInDEG())) {
-            if (!qIsFinite(_wind->windDirectionInDEG())) {
-                complaints += tr("Wind direction not specified.");
-            }
+    if (!qIsFinite(Aircraft::globalInstance()->fuelConsumptionInLPH())) {
+        complaints += tr("Fuel consumption not specified.");
+    }
+    if (!qIsFinite(Weather::Wind::globalInstance()->windSpeedInKT())) {
+        complaints += tr("Wind speed not specified.");
+    }
+    if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
+        if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
+            complaints += tr("Wind direction not specified.");
         }
     }
 
@@ -537,6 +551,6 @@ void FlightRoute::updateLegs()
     _legs.clear();
 
     for(int i=0; i<_waypoints.size()-1; i++) {
-        _legs.append(new Leg(_waypoints.at(i), _waypoints.at(i+1), _aircraft, _wind, this));
+        _legs.append(new Leg(_waypoints.at(i), _waypoints.at(i+1), Aircraft::globalInstance(), Weather::Wind::globalInstance(), this));
     }
 }

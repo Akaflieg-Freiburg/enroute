@@ -69,18 +69,9 @@ public:
 
     /*! \brief Standard constructor
      *
-     * @param route A pointer to a FlightRoute object. This is used to find
-     * WeatherStations near the planned route.
-     *
-     * @param geoMapProvider Pointer to GeoMapProvider
-     * 
-     * @param networkAccessManager The manager for network requests
-     * 
      * @param parent The standard QObject parent pointer
      */
-    explicit DownloadManager(FlightRoute *route,
-                           QNetworkAccessManager *networkAccessManager,
-                           QObject *parent = nullptr);
+    explicit DownloadManager(QObject *parent = nullptr);
 
     /*! \brief Destructor */
     ~DownloadManager() override;
@@ -273,12 +264,6 @@ private:
     // to ensure that no two processes access the file. The method will fail
     // silently on error.
     void save();
-
-    // Pointer to the flight route
-    QPointer<FlightRoute> _flightRoute;
-
-    // Pointer to the network access manager
-    QPointer<QNetworkAccessManager> _networkAccessManager;
 
     // List of replies from aviationweather.com
     QList<QPointer<QNetworkReply>> _networkReplies;

@@ -45,6 +45,12 @@ public:
     // Standard destructor
     ~Aircraft() override = default;
 
+    /*! \brief Pointer to static instance of this class
+     *
+     *  @returns Pointer to global instance
+     */
+    static Aircraft* globalInstance();
+
     /*! \brief Cruise Speed
      *
      * This property holds the cruise speed of the aircraft. This is a

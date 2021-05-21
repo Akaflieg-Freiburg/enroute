@@ -22,6 +22,11 @@
 
 #include "weather/Wind.h"
 
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<Weather::Wind> windStatic {};
+#endif
+
 
 Weather::Wind::Wind(QObject *parent)
     : QObject(parent)
@@ -35,6 +40,19 @@ Weather::Wind::Wind(QObject *parent)
     if ((_windDirectionInDEG < minWindDirection) || (_windDirectionInDEG > maxWindDirection)) {
         _windDirectionInDEG = qQNaN();
     }
+}
+
+
+auto Weather::Wind::globalInstance() -> Weather::Wind*
+{
+#ifndef __clang_analyzer__
+    if (windStatic.isNull()) {
+        windStatic = new Weather::Wind();
+    }
+    return windStatic;
+#else
+    return nullptr;
+#endif
 }
 
 

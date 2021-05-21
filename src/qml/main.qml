@@ -155,7 +155,7 @@ ApplicationWindow {
 
                         ItemDelegate {
                             text: qsTr("Maps")
-                                  + (MapManager.aviationMapUpdatesAvailable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + (global.mapManager.geoMaps.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
                                   + (navigator.isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
@@ -397,7 +397,9 @@ ApplicationWindow {
                 return
             }
 
-            if (mapManager.geoMaps.updatable && !navigator.isInFlight) {
+            console.log(global)
+            console.log(global.mapManager)
+            if (global.mapManager.geoMaps.updatable && !navigator.isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
                 dialogLoader.active = true

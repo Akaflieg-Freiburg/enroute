@@ -149,6 +149,12 @@ public:
      */
     static Librarian* globalInstance();
 
+    /*! \brief Pointer to a global network access manager
+     *
+     *  @returns Pointer to global network access manager, guaranteed to be non-zero
+     */
+    static QNetworkAccessManager* globalNetworkAccessManager();
+
     /*! \brief Filters a QStringList in a fuzzy way
      *
      * This helper method filters a QStringList. It returns a sublist of those

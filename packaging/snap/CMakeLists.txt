@@ -9,7 +9,7 @@
 
 add_custom_target(snap-binary
   COMMAND snapcraft clean --enable-experimental-extensions
-  COMMAND rm -r enroute-flight-navigation_${PROJECT_VERSION}_amd64.snap
+  COMMAND rm -f enroute-flight-navigation_${PROJECT_VERSION}_amd64.snap
   COMMAND snapcraft --enable-experimental-extensions
   COMMAND mv enroute-flight-navigation_${PROJECT_VERSION}_amd64.snap ${CMAKE_CURRENT_BINARY_DIR}
   COMMAND echo ""

@@ -48,12 +48,7 @@ QPointer<Weather::DownloadManager> downloadManagerStatic {};
 #endif
 
 
-Weather::DownloadManager::DownloadManager(FlightRoute *route,
-                                          QNetworkAccessManager *networkAccessManager,
-                                          QObject *parent) :
-    QObject(parent),
-    _flightRoute(route),
-    _networkAccessManager(networkAccessManager)
+Weather::DownloadManager::DownloadManager(QObject *parent) : QObject(parent)
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
@@ -476,10 +471,6 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
 
 
 void Weather::DownloadManager::update(bool isBackgroundUpdate) {
-    // Paranoid safety checks
-    if (_flightRoute.isNull()) {
-        return;
-    }
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
     if (!GlobalSettings::acceptedWeatherTermsStatic()) {
@@ -507,7 +498,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
 
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
-    const QVariantList& steerpts = _flightRoute->geoPath();
+    const QVariantList& steerpts = FlightRoute::globalInstance()->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
         queries.push_back(QString("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
@@ -527,7 +518,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     foreach(auto query, queries) {
         QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
         QNetworkRequest request(url);
-        QPointer<QNetworkReply> reply = _networkAccessManager->get(request);
+        QPointer<QNetworkReply> reply = Librarian::globalNetworkAccessManager()->get(request);
         _networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::DownloadManager::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::DownloadManager::downloadFinished);

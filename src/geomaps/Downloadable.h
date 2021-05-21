@@ -61,10 +61,6 @@ public:
      * contains a previously downloaded version of the item, and that the
      * modification time of the file is the download time.
      *
-     * @param networkAccessManager Pointer to a QNetworkAccessManager that will
-     * be used for network access. The QNetworkAccessManager needs to survive
-     * the lifetime of this object.
-     *
      * @param parent The standard QObject parent pointer.
      *
      * After construction, size and modification time of the file on the server
@@ -76,8 +72,7 @@ public:
      *
      * Use the method startFileDownload() to initiate the download process.
      */
-    explicit Downloadable(QUrl url, const QString &localFileName,
-                          QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
+    explicit Downloadable(QUrl url, const QString &localFileName, QObject *parent = nullptr);
 
     /*! \brief Standard destructor
      *
@@ -435,10 +430,6 @@ private slots:
 
 private:
      Q_DISABLE_COPY_MOVE(Downloadable)
-
-    // Pointer the QNetworkAccessManager that will be used for all the
-    // downloading
-    QPointer<QNetworkAccessManager> _networkAccessManager;
 
     // This member holds the download progress.
     int _downloadProgress{0};

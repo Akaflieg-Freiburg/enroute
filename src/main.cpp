@@ -44,6 +44,7 @@
 #include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MapManager.h"
+#include "Global.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
@@ -78,6 +79,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<GeoMaps::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<GeoMaps::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
+    qmlRegisterUncreatableType<GeoMaps::MapManager>("enroute", 1, 0, "MapManager", "MapManager objects cannot be created in QML");
     qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
@@ -142,6 +144,10 @@ auto main(int argc, char *argv[]) -> int
      */
     auto *engine = new QQmlApplicationEngine();
 
+    // Make global objects available to QML engine
+    Global globalObjectStorage;
+    engine->rootContext()->setContextProperty("global", &globalObjectStorage);
+
     // Make GPS available to QML engine
     engine->rootContext()->setContextProperty("positionProvider", Positioning::PositionProvider::globalInstance());
 
@@ -156,8 +162,7 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("mobileAdaptor", MobileAdaptor::globalInstance());
 
     // Attach library info
-    auto *librarian = new Librarian(engine);
-    engine->rootContext()->setContextProperty("librarian", librarian);
+    engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
 
     // Attach aircraft info
     auto *aircraft = new Aircraft(engine);
@@ -171,16 +176,11 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
 
     // Attach flight route
-    auto *flightroute = new FlightRoute(aircraft, wind, engine);
-    engine->rootContext()->setContextProperty("flightRoute", flightroute);
-
-    // Create NetwortAccessManager
-    auto *networkAccessManager = new QNetworkAccessManager();
-    networkAccessManager->setTransferTimeout();
+    engine->rootContext()->setContextProperty("flightRoute", FlightRoute::globalInstance());
 
     // Attach map manager
-    engine->rootContext()->setContextProperty("mapManager", GeoMaps::MapManager::globalInstance());
-    QObject::connect(GeoMaps::MapManager::globalInstance()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, MobileAdaptor::globalInstance(), &MobileAdaptor::showDownloadNotification);
+    engine->rootContext()->setContextProperty("mapManager", Global::mapManager());
+    QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, MobileAdaptor::globalInstance(), &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
     engine->rootContext()->setContextProperty("geoMapProvider", GeoMaps::GeoMapProvider::globalInstance());
@@ -224,7 +224,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Ensure that things get deleted in the right order
     delete engine;
-    delete networkAccessManager;
 
     return 0;
 }

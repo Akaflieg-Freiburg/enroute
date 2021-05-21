@@ -20,8 +20,15 @@
 
 #include "Librarian.h"
 
+#include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QtGlobal>
+
+// Static instance of this class. Do not analyze, because of many unwanted warnings.
+#ifndef __clang_analyzer__
+QPointer<QNetworkAccessManager> networkAccessManagerStatic {};
+QPointer<Librarian> librarianStatic {};
+#endif
 
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
@@ -286,18 +293,19 @@ device).</p>
 
 <p>The author has tested the <strong>Enroute Flight Navigation</strong> with the
 following traffic receivers.</p>
-
+)html") + R"html(
 <ul style="margin-left:-25px;">
   <li>Air Avionics AT-1 ‘AIR Traffic’ with software version 5.</li>
 </ul>
-
+)html" + tr(R"html(
 <p>Users reported success with the following traffic receivers.</p>
-
+)html") + R"html(
 <ul style="margin-left:-25px;">
+  <li>SkyEcho2</li>
   <li>Stratux</li>
   <li>T-Beam</li>
 </ul>
-)html") + tr(R"html(
+)html" + tr(R"html(
 <h2>Before you connect</h2>
 
 <p>Before you try to connect this app to your traffic receiver, make sure
@@ -509,7 +517,7 @@ auto Librarian::flightRouteExists(const QString &baseName) const -> bool
 
 auto Librarian::flightRouteGet(const QString &baseName) const -> QObject *
 {
-    auto *route = new FlightRoute(nullptr, nullptr);
+    auto *route = new FlightRoute();
     if (route == nullptr) {
         return nullptr;
     }
@@ -552,6 +560,34 @@ auto Librarian::flightRoutes(const QString &filter) -> QStringList
         fileBaseNames << fileName.section('.', 0, -2);
 
     return permissiveFilter(fileBaseNames, filter);
+}
+
+
+auto Librarian::globalInstance() -> Librarian*
+{
+#ifndef __clang_analyzer__
+    if (librarianStatic.isNull()) {
+        librarianStatic = new Librarian();
+    }
+    return librarianStatic;
+#else
+    return nullptr;
+#endif
+}
+
+
+auto Librarian::globalNetworkAccessManager() -> QNetworkAccessManager*
+{
+#ifndef __clang_analyzer__
+    if (networkAccessManagerStatic.isNull()) {
+        networkAccessManagerStatic = new QNetworkAccessManager();
+        networkAccessManagerStatic->setTransferTimeout();
+    }
+    return networkAccessManagerStatic;
+#else
+    return nullptr;
+#endif
+
 }
 
 

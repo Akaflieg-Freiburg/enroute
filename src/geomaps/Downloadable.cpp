@@ -25,12 +25,11 @@
 #include <utility>
 
 #include "Downloadable.h"
+#include "Librarian.h"
 
-GeoMaps::Downloadable::Downloadable(QUrl url, const QString &fileName,
-                           QNetworkAccessManager *networkAccessManager, QObject *parent)
-    : QObject(parent), _networkAccessManager(networkAccessManager), _url(std::move(url)) {
+GeoMaps::Downloadable::Downloadable(QUrl url, const QString &fileName, QObject *parent)
+    : QObject(parent), _url(std::move(url)) {
     // Paranoid safety checks
-    Q_ASSERT(networkAccessManager != nullptr);
     Q_ASSERT(!fileName.isEmpty());
 
     QFileInfo info(fileName);
@@ -196,11 +195,6 @@ void GeoMaps::Downloadable::deleteFile() {
 
 
 void GeoMaps::Downloadable::startInfoDownload() {
-    // Paranoid safety checks
-    Q_ASSERT(!_networkAccessManager.isNull());
-    if (_networkAccessManager.isNull()) {
-        return;
-    }
 
     // Do not start a new check if an old one is still running
     if (!_networkReplyDownloadHeader.isNull()) {
@@ -208,18 +202,14 @@ void GeoMaps::Downloadable::startInfoDownload() {
     }
 
     // Start the download process for the remote file info
-    _networkReplyDownloadHeader = _networkAccessManager->head(QNetworkRequest(_url));
+    _networkReplyDownloadHeader = Librarian::globalNetworkAccessManager()->head(QNetworkRequest(_url));
     connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
             &Downloadable::downloadHeaderFinished);
+
 }
 
 
 void GeoMaps::Downloadable::startFileDownload() {
-    // Paranoid safety checks
-    Q_ASSERT(!_networkAccessManager.isNull());
-    if (_networkAccessManager.isNull()) {
-        return;
-    }
 
     // Do not begin a new download if one is already running
     if (downloading()) {
@@ -246,7 +236,7 @@ void GeoMaps::Downloadable::startFileDownload() {
 
     // Start download
     QNetworkRequest request(_url);
-    _networkReplyDownloadFile = _networkAccessManager->get(request);
+    _networkReplyDownloadFile = Librarian::globalNetworkAccessManager()->get(request);
     connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable::downloadFileFinished);
     connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable::downloadFilePartialDataReceiver);
     connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable::downloadFileProgressReceiver);
@@ -271,11 +261,6 @@ void GeoMaps::Downloadable::startFileDownload() {
 
 
 void GeoMaps::Downloadable::stopFileDownload() {
-    // Paranoid safety checks
-    Q_ASSERT(!_networkAccessManager.isNull());
-    if (_networkAccessManager.isNull()) {
-        return;
-    }
 
     // Do stop a new download if none is already running
     if (!downloading()) {
@@ -295,10 +280,12 @@ void GeoMaps::Downloadable::stopFileDownload() {
         emit updatableChanged();
     }
     emit downloadingChanged();
+
 }
 
 
 void GeoMaps::Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
+
     // Do nothing if there is no error
     if (code == QNetworkReply::NoError) {
         return;

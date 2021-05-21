@@ -84,6 +84,7 @@ set(SOURCES
     geomaps/TileHandler.h
     geomaps/TileServer.h
     geomaps/Waypoint.h
+    Global.h
     GlobalSettings.h
     Librarian.h
     MobileAdaptor.h
@@ -128,6 +129,7 @@ set(SOURCES
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
+    Global.cpp
     GlobalSettings.cpp
     Librarian.cpp
     main.cpp

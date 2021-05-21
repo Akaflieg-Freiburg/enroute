@@ -61,13 +61,9 @@ public:
     file if no file is available or if the last download is more than one week
     old.
     
-    @param networkAccessManager Pointer to a QNetworkAccessManager that will be
-    used for network access. The QNetworkAccessManager must not be deleted while
-    this object exists.
-    
     @param parent The standard QObject parent pointer.
   */
-  explicit MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent=nullptr);
+  explicit MapManager(QObject *parent=nullptr);
   
   /*! \brief Destructor
     
@@ -123,12 +119,6 @@ public:
     @returns Property geoMaps
   */
   DownloadableGroupWatcher *geoMaps() { return &_geoMaps; }
-
-  /*! \brief Pointer to static instance of this class
-   *
-   *  @returns Pointer to global instance
-   */
-  static MapManager* globalInstance();
 
   /*! \brief True if the list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
@@ -214,10 +204,6 @@ private:
   DownloadableGroup _geoMaps;
   DownloadableGroup _baseMaps;
   DownloadableGroup _aviationMaps;
-
-  // Pointer the QNetworkAccessManager that will be used for all Downloadable
-  // objects constructed by this class
-  QPointer<QNetworkAccessManager> _networkAccessManager;
 };
 
 };

@@ -65,17 +65,9 @@ public:
      * The route is saved to a standard location whenever it changes, so that
      * the route survives when the app is closed unexpectantly.
      *
-     * @param aircraft Pointer to aircraft info that is used in route
-     * computations. You can set this to nullptr or delete the aircraft, but
-     * then wind computations will no longer work.
-     *
-     * @param wind Pointer to wind info that is used in route computations.  You
-     * can set this to nullptr or delete the aircraft, but then wind
-     * computations will no longer work.
-     *
      * @param parent The standard QObject parent pointer.
      */
-    explicit FlightRoute(Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
+    explicit FlightRoute(QObject *parent = nullptr);
 
     // Standard destructor
     ~FlightRoute() override = default;
@@ -127,6 +119,12 @@ public:
      * @returns bool true if waypoint in route
      */
     Q_INVOKABLE bool contains(QObject * waypoint) const;
+
+    /*! \brief Pointer to static instance of this class
+     *
+     *  @returns Pointer to global instance
+     */
+    static FlightRoute* globalInstance();
 
     /*! \brief Loads the route from a GeoJSON document
      *
@@ -395,9 +393,6 @@ private:
     QVector<QPointer<GeoMaps::Waypoint>> _waypoints;
 
     QVector<Leg*> _legs;
-
-    QPointer<Aircraft> _aircraft {nullptr};
-    QPointer<Weather::Wind> _wind {nullptr};
 
     QLocale myLocale;
 };

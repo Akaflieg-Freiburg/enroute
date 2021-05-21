@@ -30,15 +30,15 @@
 
 using namespace std::chrono_literals;
 
+#include "Librarian.h"
 #include "MapManager.h"
 
 
-GeoMaps::MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QObject *parent) :
+GeoMaps::MapManager::MapManager(QObject *parent) :
     QObject(parent),
     _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
-               networkAccessManager),
-    _networkAccessManager(networkAccessManager)
+               Librarian::globalNetworkAccessManager())
 {
     // Earlier versions of this program constructed files with names ending in ".geojson.geojson"
     // or ".mbtiles.mbtiles". We correct those file names here.
@@ -83,6 +83,9 @@ GeoMaps::MapManager::MapManager(QNetworkAccessManager *networkAccessManager, QOb
 
 GeoMaps::MapManager::~MapManager()
 {
+    qDebug() << "MapManager destructed";
+#warning With global instances, this is never called!
+
     // It might be possible for whatever reason that our download directory
     // contains files that we do not know whom they belong to. We hunt down those
     // files and silently delete them.
@@ -111,7 +114,6 @@ GeoMaps::MapManager::~MapManager()
     foreach(auto geoMapPtr, _geoMaps.downloadables())
         delete geoMapPtr;
 }
-
 
 void GeoMaps::MapManager::updateGeoMapList()
 {
@@ -196,7 +198,7 @@ void GeoMaps::MapManager::readGeoMapListFromJSONFile()
             auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps/"+mapFileName;
 
             // Construct a new downloadable object.
-            auto *downloadable = new Downloadable(QUrl(mapUrlName), localFileName, _networkAccessManager, this);
+            auto *downloadable = new Downloadable(QUrl(mapUrlName), localFileName, this);
             downloadable->setObjectName(mapName.section("/", -1, -1));
             downloadable->setSection(mapName.section("/", -2, -2));
             downloadable->setRemoteFileDate(fileModificationDateTime);
@@ -232,7 +234,7 @@ void GeoMaps::MapManager::readGeoMapListFromJSONFile()
         objectName = objectName.remove(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
                                        "/aviation_maps/").section('.', 0, 0);
 
-        auto *downloadable = new Downloadable(QUrl(), path, _networkAccessManager, this);
+        auto *downloadable = new Downloadable(QUrl(), path, this);
         downloadable->setSection("Unsupported Maps");
         downloadable->setObjectName(objectName);
         _geoMaps.addToGroup(downloadable);

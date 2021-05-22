@@ -154,12 +154,6 @@ auto main(int argc, char *argv[]) -> int
     // Make FLARM available to QML engine
     engine->rootContext()->setContextProperty("flarmAdaptor", Traffic::TrafficDataProvider::globalInstance());
 
-    // Attach global settings object
-#warning need to remove
-    engine->rootContext()->setContextProperty("globalSettings", Global::settings());
-
-    // Make MobileAdaptor available to QML engine
-
     // Attach library info
     engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
 

@@ -93,7 +93,7 @@ Page {
 
                     MenuItem {
                         text: qsTr("Update METAR/TAF data")
-                        enabled: (!weatherDownloadManager.downloading) && (globalSettings.acceptedWeatherTerms)
+                        enabled: (!weatherDownloadManager.downloading) && (global.settings().acceptedWeatherTerms)
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             if (!weatherDownloadManager.downloading)
@@ -103,10 +103,10 @@ Page {
 
                     MenuItem {
                         text: qsTr("Disallow internet connection")
-                        enabled: globalSettings.acceptedWeatherTerms
+                        enabled: global.settings().acceptedWeatherTerms
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            globalSettings.acceptedWeatherTerms = false
+                            global.settings().acceptedWeatherTerms = false
                         }
                     } // MenuItem
 
@@ -135,7 +135,7 @@ Page {
                 text: {
                     var result = model.modelData.twoLineTitle
 
-                    var wayTo  = model.modelData.wayTo(positionProvider.positionInfo.coordinate(), globalSettings.useMetricUnits)
+                    var wayTo  = model.modelData.wayTo(positionProvider.positionInfo.coordinate(), global.settings().useMetricUnits)
                     if (wayTo !== "")
                         result = result + "<br>" + wayTo
 
@@ -160,7 +160,7 @@ Page {
 
     ColumnLayout {
         anchors.fill: parent
-        visible: globalSettings.acceptedWeatherTerms
+        visible: global.settings().acceptedWeatherTerms
 
         // List of weather stations
         ListView {
@@ -262,7 +262,7 @@ Page {
     ScrollView { // Privacy Warning
         anchors.fill: parent
         clip: true
-        visible: !globalSettings.acceptedWeatherTerms
+        visible: !global.settings().acceptedWeatherTerms
 
         Item {
             width: parent.width
@@ -289,7 +289,7 @@ Page {
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    globalSettings.acceptedWeatherTerms = true
+                    global.settings().acceptedWeatherTerms = true
                     weatherDownloadManager.update()
                 }
             }

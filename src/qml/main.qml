@@ -36,7 +36,7 @@ ApplicationWindow {
     width: 800
     height: 800
 
-    Material.theme: globalSettings.nightMode ? Material.Dark : Material.Light
+    Material.theme: global.settings().nightMode ? Material.Dark : Material.Light
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
@@ -382,7 +382,7 @@ ApplicationWindow {
                 return;
             }
 
-            if (globalSettings.acceptedTerms === 0) {
+            if (global.settings().acceptedTerms === 0) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/FirstRunDialog.qml"
                 dialogLoader.active = true
@@ -392,7 +392,7 @@ ApplicationWindow {
             // Start accepting files
             global.mobileAdaptor().startReceiveOpenFileRequests()
 
-            if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !navigator.isInFlight) {
+            if ((global.settings().lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !navigator.isInFlight) {
                 whatsNewDialog.open()
                 return
             }
@@ -518,7 +518,7 @@ ApplicationWindow {
         
         title: qsTr("What's new …?")
         text: librarian.getStringFromRessource(":text/whatsnew.html")
-        onOpened: globalSettings.lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
+        onOpened: global.settings().lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
 
     Shortcut {

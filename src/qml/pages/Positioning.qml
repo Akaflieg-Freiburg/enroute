@@ -155,7 +155,7 @@ Page {
                     const gs = positionProvider.positionInfo.groundSpeed();
                     if (!gs.isFinite())
                         return "-"
-                    return globalSettings.useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
+                    return global.settings().useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
                 }
             }
 

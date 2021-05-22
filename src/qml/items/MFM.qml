@@ -71,7 +71,7 @@ Item {
         gesture.onPinchStarted: {flightMap.followGPS = false}
         gesture.onRotationStarted: {
             flightMap.followGPS = false
-            globalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+            global.settings().mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
         }
 
 
@@ -85,8 +85,8 @@ Item {
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
-            when: globalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: globalSettings.mapBearingPolicy === GlobalSettings.TTUp ? positionProvider.lastValidTT.toDEG() : 0
+            when: global.settings().mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
+            value: global.settings().mapBearingPolicy === GlobalSettings.TTUp ? positionProvider.lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -449,18 +449,18 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
             Layout.alignment: Qt.AlignHCenter
             id: northArrow
 
-            opacity: globalSettings.nightMode ? 0.3 : 1.0
+            opacity: global.settings().nightMode ? 0.3 : 1.0
             rotation: -flightMap.bearing
 
             source: "/icons/NorthArrow.svg"
         }
 
         onClicked: {
-            if (globalSettings.mapBearingPolicy === GlobalSettings.NUp) {
-                globalSettings.mapBearingPolicy = GlobalSettings.TTUp
+            if (global.settings().mapBearingPolicy === GlobalSettings.NUp) {
+                global.settings().mapBearingPolicy = GlobalSettings.TTUp
                 toast.doToast(qsTr("Map Mode: Track Up"))
             } else {
-                globalSettings.mapBearingPolicy = GlobalSettings.NUp
+                global.settings().mapBearingPolicy = GlobalSettings.NUp
                 toast.doToast(qsTr("Map Mode: North Up"))
             }
         }

@@ -33,11 +33,9 @@ Settings::Settings(QObject *parent)
     installTranslators();
 }
 
-#warning destructor not called
-#include <QDebug>
+
 Settings::~Settings()
 {
-qWarning() << "GlobalSettings::~GlobalSettings()";
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
 }

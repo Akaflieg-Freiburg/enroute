@@ -64,7 +64,7 @@ Page {
                 icon.source: "/icons/vertLine.svg"
                 Layout.fillWidth: true
                 enabled: false
-                text: globalSettings.useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
+                text: global.settings().useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
             }
 
             ToolButton {
@@ -466,21 +466,21 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
-                        bottom: globalSettings.useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
-                        top: globalSettings.useMetricUnits ? wind.maxWindSpeedInKMH : wind.maxWindSpeedInKT
+                        bottom: global.settings().useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
+                        top: global.settings().useMetricUnits ? wind.maxWindSpeedInKMH : wind.maxWindSpeedInKT
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        globalSettings.useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
+                        global.settings().useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
                         focus = false
                     }
                     color: (acceptableInput ? Material.foreground : "red")
-                    text: isFinite(wind.windSpeedInKT) ? Math.round(globalSettings.useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
+                    text: isFinite(wind.windSpeedInKT) ? Math.round(global.settings().useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
                     placeholderText: qsTr("undefined")
                 }
                 Label {
-                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    text: global.settings().useMetricUnits ? "km/h" : "kt"
                     Layout.alignment: Qt.AlignBaseline
                 }
                 ToolButton {
@@ -531,25 +531,25 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
-                        bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
-                        top: globalSettings.useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
+                        bottom: global.settings().useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
+                        top: global.settings().useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        globalSettings.useMetricUnits ? aircraft.cruiseSpeedInKMH = text : aircraft.cruiseSpeedInKT = text
+                        global.settings().useMetricUnits ? aircraft.cruiseSpeedInKMH = text : aircraft.cruiseSpeedInKT = text
                         descentSpeed.focus = true
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: descentSpeed
                     KeyNavigation.backtab: windSpeed
-                    text: isFinite(aircraft.cruiseSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
+                    text: isFinite(aircraft.cruiseSpeedInKT) ? Math.round(global.settings().useMetricUnits ?
                                                                               aircraft.cruiseSpeedInKMH.toString() :
                                                                               aircraft.cruiseSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
                 Label {
-                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    text: global.settings().useMetricUnits ? "km/h" : "kt"
                     Layout.alignment: Qt.AlignBaseline
                 }
                 ToolButton {
@@ -572,25 +572,25 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
-                        bottom: globalSettings.useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
-                        top: globalSettings.useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
+                        bottom: global.settings().useMetricUnits ? aircraft.minAircraftSpeedInKMH : aircraft.minAircraftSpeedInKT
+                        top: global.settings().useMetricUnits ? aircraft.maxAircraftSpeedInKMH : aircraft.maxAircraftSpeedInKT
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        globalSettings.useMetricUnits ? aircraft.descentSpeedInKMH = text : aircraft.descentSpeedInKT = text
+                        global.settings().useMetricUnits ? aircraft.descentSpeedInKMH = text : aircraft.descentSpeedInKT = text
                         fuelConsumption.focus = true
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: fuelConsumption
                     KeyNavigation.backtab: cruiseSpeed
-                    text: isFinite(aircraft.descentSpeedInKT) ? Math.round(globalSettings.useMetricUnits ?
+                    text: isFinite(aircraft.descentSpeedInKT) ? Math.round(global.settings().useMetricUnits ?
                                                                                aircraft.descentSpeedInKMH.toString() :
                                                                                aircraft.descentSpeedInKT.toString() ) : ""
                     placeholderText: qsTr("undefined")
                 }
                 Label {
-                    text: globalSettings.useMetricUnits ? "km/h" : "kt"
+                    text: global.settings().useMetricUnits ? "km/h" : "kt"
                     Layout.alignment: Qt.AlignBaseline
                 }
                 ToolButton {
@@ -668,7 +668,7 @@ Page {
                 id: summary
 
                 Layout.fillWidth: true
-                text: globalSettings.useMetricUnits ? flightRoute.summaryMetric : flightRoute.summary
+                text: global.settings().useMetricUnits ? flightRoute.summaryMetric : flightRoute.summary
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText

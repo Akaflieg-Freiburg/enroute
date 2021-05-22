@@ -53,7 +53,7 @@ Page {
             SwitchDelegate {
                 id: hideUpperAsp
                 text: qsTr("Hide Airspaces ≥ FL100") + (
-                          globalSettings.hideUpperAirspaces ? (
+                          global.settings().hideUpperAirspaces ? (
                                                                   `<br><font color="#606060" size="2">`
                                                                   + qsTr("Upper airspaces hidden")
                                                                   +"</font>"
@@ -66,11 +66,11 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    hideUpperAsp.checked = globalSettings.hideUpperAirspaces
+                    hideUpperAsp.checked = global.settings().hideUpperAirspaces
                 }
                 onToggled: {
                     global.mobileAdaptor().vibrateBrief()
-                    globalSettings.hideUpperAirspaces = hideUpperAsp.checked
+                    global.settings().hideUpperAirspaces = hideUpperAsp.checked
                 }
             }
 
@@ -86,17 +86,17 @@ Page {
                 id: useMetricUnits
                 text: qsTr("Use metric units")
                       + `<br><font color="#606060" size="2">`
-                      + ( globalSettings.useMetricUnits ?
+                      + ( global.settings().useMetricUnits ?
                              qsTr("Speed in km/h, distance in km") :
                              qsTr("Speed in kn, distance in nm")
                          )
                       + "</font>"
                 icon.source: "/icons/material/ic_speed.svg"
                 Layout.fillWidth: true
-                Component.onCompleted: useMetricUnits.checked = globalSettings.useMetricUnits
+                Component.onCompleted: useMetricUnits.checked = global.settings().useMetricUnits
                 onCheckedChanged: {
                     global.mobileAdaptor().vibrateBrief()
-                    globalSettings.useMetricUnits = useMetricUnits.checked
+                    global.settings().useMetricUnits = useMetricUnits.checked
                 }
             }
 
@@ -106,11 +106,11 @@ Page {
                 icon.source: "/icons/material/ic_brightness_3.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    nightMode.checked = globalSettings.nightMode
+                    nightMode.checked = global.settings().nightMode
                 }
                 onToggled: {
                     global.mobileAdaptor().vibrateBrief()
-                    globalSettings.nightMode = nightMode.checked
+                    global.settings().nightMode = nightMode.checked
                 }
             }
 

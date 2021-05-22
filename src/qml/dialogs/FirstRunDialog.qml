@@ -38,7 +38,7 @@ LongTextDialog {
         }
 
         onAccepted: {
-            globalSettings.acceptedTerms = 1
+            global.settings().acceptedTerms = 1
 
             // Start accepting files
             global.mobileAdaptor().startReceiveOpenFileRequests()

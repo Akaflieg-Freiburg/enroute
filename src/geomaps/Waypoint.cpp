@@ -116,15 +116,6 @@ auto GeoMaps::Waypoint::isNear(const Waypoint *other) const -> bool
 // PROPERTIES
 //
 
-void GeoMaps::Waypoint::setCoordinate(const QGeoCoordinate& newCoordinate)
-{
-    if (newCoordinate == _coordinate) {
-        return;
-    }
-    _coordinate = newCoordinate;
-    emit coordinateChanged();
-}
-
 
 auto GeoMaps::Waypoint::extendedName() const -> QString
 {

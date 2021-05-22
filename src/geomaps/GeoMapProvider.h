@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -75,12 +75,6 @@ public:
      * This constructor creates a new GeoMapProvider instance. Note that the
      * instance will only start to work once the method setDownloadManager() has
      * been called.
-     *
-     * @param manager Pointer to a MapManager whose files will be served. The
-     * manager shall exist for the lifetime of this object.
-     *
-     * @param librarian Global Librarian object. The librarian shall exist for
-     * the lifetime of this object.
      *
      * @param parent The standard QObject parent
      */

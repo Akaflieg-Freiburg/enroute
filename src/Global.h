@@ -41,6 +41,10 @@ class MapManager;
  * Although all relevant methods are static, it is possible to construct an
  * instance of this class, which allows to use this class from QML.
  *
+ * The static methods return pointers to application-wide static objects. These
+ * pointer is guaranteed to be valid.  The instances are owned by this class and
+ * must not be deleted. QML ownership has been set to QQmlEngine::CppOwnership.
+ *
  * @note This method must only be called while a global QCoreApplication exists.
  * If Global manages an instance of your class, then none of the static methods
  * must not be called in the constructor of your class, or else an inite loop
@@ -69,21 +73,11 @@ public:
 
     /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
      *
-     * This method returns a pointer to an application-wide static object. The
-     * pointer is guaranteed to be valid.  The object is owned by this class and
-     * must not be deleted. QML ownership has been set to
-     * QQmlEngine::CppOwnership.
-     *
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static GeoMaps::MapManager* mapManager();
 
     /*! \brief Pointer to appplication-wide static MobileAdaptor instance
-     *
-     * This method returns a pointer to an application-wide static object. The
-     * pointer is guaranteed to be valid.  The object is owned by this class and
-     * must not be deleted. QML ownership has been set to
-     * QQmlEngine::CppOwnership.
      *
      * @returns Pointer to appplication-wide static instance.
      */
@@ -91,21 +85,11 @@ public:
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *
-     * This method returns a pointer to an application-wide static object. The
-     * pointer is guaranteed to be valid.  The object is owned by this class and
-     * must not be deleted. QML ownership has been set to
-     * QQmlEngine::CppOwnership.
-     *
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static QNetworkAccessManager* networkAccessManager();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
-     *
-     * This method returns a pointer to an application-wide static object. The
-     * pointer is guaranteed to be valid.  The object is owned by this class and
-     * must not be deleted. QML ownership has been set to
-     * QQmlEngine::CppOwnership.
      *
      * @returns Pointer to appplication-wide static instance.
      */
@@ -113,4 +97,6 @@ public:
 
 private:
     Q_DISABLE_COPY_MOVE(Global)
+
+    template<typename T> static T* allocateInternal(QPointer<T>& pointer);
 };

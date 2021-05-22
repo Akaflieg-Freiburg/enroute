@@ -14,6 +14,8 @@ The main() function constructs a number of C++ objects and exposes them to QML.
 
 #### B.1 C++ classes providing core functionality
 
+- An instance of the class Global, under the name "global". This class allows access to other application-wide class instances. Eventually, all application-wide instances should be handled by this class.
+
 - Instances of the classes GeoMapProvider and MapManager, under the names "mapManager" and "geoMapProvider". These classes allow access to the library of geographic maps, and provide the map data in formats suitable for use by QML.
 
 - An instance of the class MobileAdaptor, under the name "MobileAdaptor". This class provides QML with access to platform-specific functionality, such as "vibrate device", "disable screen lock" and others

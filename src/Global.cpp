@@ -24,8 +24,8 @@
 
 #include "Global.h"
 #include "MobileAdaptor.h"
-#include "geomaps/MapManager.h"
 #include "Settings.h"
+#include "geomaps/MapManager.h"
 
 
 bool isConstructing {false};
@@ -36,6 +36,22 @@ QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Settings> g_settings {};
 
 
+template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
+{
+    Q_ASSERT( QCoreApplication::instance() != nullptr );
+    Q_ASSERT( !isConstructing );
+
+    if (pointer.isNull()) {
+        isConstructing = true;
+        pointer = new T( QCoreApplication::instance() );
+        isConstructing = false;
+        QQmlEngine::setObjectOwnership(pointer, QQmlEngine::CppOwnership);
+    }
+    return pointer;
+}
+
+
+
 Global::Global(QObject *parent) : QObject(parent)
 {
 }
@@ -43,58 +59,23 @@ Global::Global(QObject *parent) : QObject(parent)
 
 auto Global::mapManager() -> GeoMaps::MapManager*
 {
-    Q_ASSERT( QCoreApplication::instance() != nullptr );
-    Q_ASSERT( !isConstructing );
-
-    if (g_mapManager.isNull()) {
-        isConstructing = true;
-        g_mapManager = new GeoMaps::MapManager( QCoreApplication::instance() );
-        isConstructing = false;
-        QQmlEngine::setObjectOwnership(g_mapManager, QQmlEngine::CppOwnership);
-    }
-    return g_mapManager;
+    return allocateInternal<GeoMaps::MapManager>(g_mapManager);
 }
+
 
 auto Global::mobileAdaptor() -> MobileAdaptor*
 {
-    Q_ASSERT( QCoreApplication::instance() != nullptr );
-    Q_ASSERT( !isConstructing );
-
-    if (g_mobileAdaptor.isNull()) {
-        isConstructing = true;
-        g_mobileAdaptor = new MobileAdaptor( QCoreApplication::instance() );
-        isConstructing = false;
-        QQmlEngine::setObjectOwnership(g_mobileAdaptor, QQmlEngine::CppOwnership);
-    }
-    return g_mobileAdaptor;
+    return allocateInternal<MobileAdaptor>(g_mobileAdaptor);
 }
 
 
 auto Global::networkAccessManager() -> QNetworkAccessManager*
 {
-    Q_ASSERT( QCoreApplication::instance() != nullptr );
-    Q_ASSERT( !isConstructing );
-
-    if (g_networkAccessManager.isNull()) {
-        isConstructing = true;
-        g_networkAccessManager = new QNetworkAccessManager( QCoreApplication::instance() );
-        isConstructing = false;
-        QQmlEngine::setObjectOwnership(g_networkAccessManager, QQmlEngine::CppOwnership);
-    }
-    return g_networkAccessManager;
+    return allocateInternal<QNetworkAccessManager>(g_networkAccessManager);
 }
 
 
 auto Global::settings() -> Settings*
 {
-    Q_ASSERT( QCoreApplication::instance() != nullptr );
-    Q_ASSERT( !isConstructing );
-
-    if (g_settings.isNull()) {
-        isConstructing = true;
-        g_settings = new Settings( QCoreApplication::instance() );
-        isConstructing = false;
-        QQmlEngine::setObjectOwnership(g_settings, QQmlEngine::CppOwnership);
-    }
-    return g_settings;
+    return allocateInternal<Settings>(g_settings);
 }

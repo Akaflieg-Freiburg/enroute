@@ -196,19 +196,13 @@ public:
      *
      * If the coordinate is invalid, this waypoint should not be used
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property coordinate
      */
     QGeoCoordinate coordinate() const { return _coordinate; }
-
-    /*! \brief Setter function for property with the same name
-     *
-     * @param newCoordinate Property coordinate
-     */
-    void setCoordinate(const QGeoCoordinate& newCoordinate);
 
     /*! \brief Extended name of the waypoint
      *
@@ -323,9 +317,6 @@ public:
 
 
 signals:
-    /*! \brief Notifier signal */
-    void coordinateChanged();
-
     /*! \brief Notifier signal */
     void extendedNameChanged();
 

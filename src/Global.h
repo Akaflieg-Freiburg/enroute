@@ -22,6 +22,8 @@
 
 #include <QObject>
 
+class MobileAdaptor;
+
 namespace GeoMaps {
 class MapManager;
 };
@@ -46,11 +48,19 @@ public:
     explicit Global(QObject *parent = nullptr);
 
     /*! \brief Standard deconstructor */
+#warning docu
     ~Global() override;
 
-    Q_PROPERTY(GeoMaps::MapManager* mapManager READ mapManager CONSTANT)
+    /*! \brief Pointer to appplication-wide static GeoMaps::MapManager object
+     *
+     *  This property holds a pointer to an application-wide static object.
+     *  The pointer is guaranteed to be valid.
+     *  The object is owned by this class and must not be deleted.
+     *  The property will never change, unless an instance of Global gets destructed.
+     */
+    Q_INVOKABLE static GeoMaps::MapManager* mapManager();
 
-    static GeoMaps::MapManager* mapManager();
+    Q_INVOKABLE static MobileAdaptor* mobileAdaptor();
 
 private:
     Q_DISABLE_COPY_MOVE(Global)

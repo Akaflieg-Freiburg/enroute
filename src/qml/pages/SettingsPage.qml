@@ -69,7 +69,7 @@ Page {
                     hideUpperAsp.checked = globalSettings.hideUpperAirspaces
                 }
                 onToggled: {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     globalSettings.hideUpperAirspaces = hideUpperAsp.checked
                 }
             }
@@ -95,7 +95,7 @@ Page {
                 Layout.fillWidth: true
                 Component.onCompleted: useMetricUnits.checked = globalSettings.useMetricUnits
                 onCheckedChanged: {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     globalSettings.useMetricUnits = useMetricUnits.checked
                 }
             }
@@ -109,7 +109,7 @@ Page {
                     nightMode.checked = globalSettings.nightMode
                 }
                 onToggled: {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     globalSettings.nightMode = nightMode.checked
                 }
             }

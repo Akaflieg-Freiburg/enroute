@@ -57,7 +57,7 @@ Page {
                 icon.source: "/icons/material/ic_arrow_back.svg"
                 icon.color: "white"
                 onClicked: {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     if (stackView.depth > 1) {
                         stackView.pop()
                     } else {
@@ -84,7 +84,7 @@ Page {
                 icon.color: "white"
 
                 onClicked: {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     headerMenuX.popup()
                 }
 
@@ -95,7 +95,7 @@ Page {
                         text: qsTr("Update METAR/TAF data")
                         enabled: (!weatherDownloadManager.downloading) && (globalSettings.acceptedWeatherTerms)
                         onTriggered: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             if (!weatherDownloadManager.downloading)
                                 weatherDownloadManager.update(false)
                         }
@@ -105,7 +105,7 @@ Page {
                         text: qsTr("Disallow internet connection")
                         enabled: globalSettings.acceptedWeatherTerms
                         onTriggered: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             globalSettings.acceptedWeatherTerms = false
                         }
                     } // MenuItem
@@ -150,7 +150,7 @@ Page {
                 width: parent.width
 
                 onClicked: {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     weatherReport.weatherStation = model.modelData
                     weatherReport.open()
                 }
@@ -202,7 +202,7 @@ Page {
 
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     weatherDownloadManager.update(false)
                 }
             }
@@ -288,7 +288,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter
 
                 onClicked: {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     globalSettings.acceptedWeatherTerms = true
                     weatherDownloadManager.update()
                 }

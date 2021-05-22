@@ -23,9 +23,11 @@
 
 #include "Global.h"
 #include "geomaps/MapManager.h"
+#include "MobileAdaptor.h"
 
 
 QPointer<GeoMaps::MapManager> g_mapManager {};
+QPointer<MobileAdaptor> g_mobileAdaptor {};
 
 
 Global::Global(QObject *parent) : QObject(parent)
@@ -39,6 +41,7 @@ Global::~Global()
     // Delete global objects
     qWarning() << "Global destructed";
     delete g_mapManager;
+    delete g_mobileAdaptor;
 }
 
 
@@ -51,3 +54,12 @@ auto Global::mapManager() -> GeoMaps::MapManager*
     return g_mapManager;
 }
 
+
+auto Global::mobileAdaptor() -> MobileAdaptor*
+{
+    if (g_mobileAdaptor.isNull()) {
+        g_mobileAdaptor = new MobileAdaptor();
+        QQmlEngine::setObjectOwnership(g_mobileAdaptor, QQmlEngine::CppOwnership);
+    }
+    return g_mobileAdaptor;
+}

@@ -24,11 +24,11 @@
 #include <QDir>
 #include <QPointer>
 #include <QStandardPaths>
+#include <QTimer>
 
-// Static instance of this class.
-#ifndef __clang_analyzer__
-QPointer<MobileAdaptor> mobileAdaptorStatic {};
-#endif
+#include "Global.h"
+#include "geomaps/GeoMapProvider.h"
+
 
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniEnvironment>
@@ -41,7 +41,6 @@ QPointer<MobileAdaptor> mobileAdaptorStatic {};
 MobileAdaptor::MobileAdaptor(QObject *parent)
     : QObject(parent)
 {
-
 
     // Do all the set-up required for sharing files
     // Android requires you to use a subdirectory within the AppDataLocation for
@@ -91,6 +90,16 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 #endif
 
     getSSID();
+
+    // Don't forget the deferred initialization
+    QTimer::singleShot(0, this, &MobileAdaptor::deferredInitialization);
+
+}
+
+
+void MobileAdaptor::deferredInitialization() const
+{
+    QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this, &MobileAdaptor::showDownloadNotification);
 }
 
 
@@ -98,19 +107,6 @@ MobileAdaptor::~MobileAdaptor()
 {
     // Close all pending notifications
     showDownloadNotification(false);
-}
-
-
-auto MobileAdaptor::globalInstance() -> MobileAdaptor *
-{
-#ifndef __clang_analyzer__
-    if (mobileAdaptorStatic.isNull()) {
-        mobileAdaptorStatic = new MobileAdaptor();
-    }
-    return mobileAdaptorStatic;
-#else
-    return nullptr;
-#endif
 }
 
 

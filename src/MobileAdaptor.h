@@ -114,15 +114,6 @@ public:
      */
     Q_INVOKABLE static QString getSSID();
 
-    /*! \brief Pointer to static instance
-     *
-     * This method returns a pointer to a static instance of this class. In rare
-     * situations, during shutdown of the app, a nullptr might be returned.
-     *
-     * @returns A pointer to a static instance of this class
-     */
-    static MobileAdaptor *globalInstance();
-
     /*! \brief Import content from file
      *
      * On Android systems, this method does nothing.
@@ -240,6 +231,11 @@ signals:
      *  This signal is emitted when a new WiFi connection becomes available.
      */
     void wifiConnected();
+
+private slots:
+    // Intializations that are moved out of the constructor, in order to avoid
+    // nested uses of globalInstance().
+    void deferredInitialization() const;
 
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)

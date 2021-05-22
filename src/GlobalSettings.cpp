@@ -38,7 +38,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
     installTranslators();
 }
 
-
+#warning destructor not called
 GlobalSettings::~GlobalSettings()
 {
     // Save some values

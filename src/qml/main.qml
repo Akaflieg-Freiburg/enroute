@@ -84,7 +84,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/FlightRouteEditor.qml")
                         drawer.close()
@@ -99,7 +99,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/Nearby.qml")
                         drawer.close()
@@ -114,7 +114,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/WeatherPage.qml")
                         drawer.close()
@@ -133,7 +133,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         libraryMenu.popup()
                     }
 
@@ -146,7 +146,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.push("pages/FlightRouteLibrary.qml")
                                 libraryMenu.close()
                                 drawer.close()
@@ -162,7 +162,7 @@ ApplicationWindow {
 
                             enabled: !navigator.isInFlight
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.push("pages/MapManager.qml")
                                 libraryMenu.close()
                                 drawer.close()
@@ -180,7 +180,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/SettingsPage.qml")
                         drawer.close()
@@ -199,7 +199,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         aboutMenu.popup()
                     }
 
@@ -214,7 +214,7 @@ ApplicationWindow {
                             icon.source: "/icons/material/ic_satellite.svg"
                             Layout.fillWidth: true
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/Positioning.qml")
                                 aboutMenu.close()
@@ -236,7 +236,7 @@ ApplicationWindow {
                                   + `</font>`
                             icon.source: "/icons/material/ic_airplanemode_active.svg"
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/TrafficReceiver.qml")
                                 aboutMenu.close()
@@ -261,7 +261,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.pop()
                                 Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enroute/manual");
                                 drawer.close()
@@ -279,7 +279,7 @@ ApplicationWindow {
                             icon.source: "/icons/material/ic_info_outline.svg"
 
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/InfoPage.qml")
                                 aboutMenu.close()
@@ -292,7 +292,7 @@ ApplicationWindow {
                             icon.source: "/icons/nav_participate.svg"
 
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/ParticipatePage.qml")
                                 aboutMenu.close()
@@ -305,7 +305,7 @@ ApplicationWindow {
                             icon.source: "/icons/material/ic_attach_money.svg"
 
                             onClicked: {
-                                mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/DonatePage.qml")
                                 aboutMenu.close()
@@ -321,7 +321,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/BugReportPage.qml")
                         aboutMenu.close()
@@ -342,7 +342,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         drawer.close()
                         if (navigator.isInFlight)
                             exitDialog.open()
@@ -375,7 +375,7 @@ ApplicationWindow {
             // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
             // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
             // Otherwise, if the maps need updating, show the "update map" dialog.
-            if (mobileAdaptor.missingPermissionsExist()) {
+            if (global.mobileAdaptor.missingPermissionsExist()) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/MissingPermissionsDialog.qml"
                 dialogLoader.active = true
@@ -390,7 +390,7 @@ ApplicationWindow {
             }
 
             // Start accepting files
-            mobileAdaptor.startReceiveOpenFileRequests()
+            global.mobileAdaptor.startReceiveOpenFileRequests()
 
             if ((globalSettings.lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !navigator.isInFlight) {
                 whatsNewDialog.open()
@@ -425,7 +425,7 @@ ApplicationWindow {
     DropArea {
         anchors.fill: stackView
         onDropped: {
-            mobileAdaptor.processFileOpenRequest(drop.text)
+            global.mobileAdaptor.processFileOpenRequest(drop.text)
         }
     }
 

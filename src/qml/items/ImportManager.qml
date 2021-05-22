@@ -31,7 +31,7 @@ Item {
     property int fileFunction: MobileAdaptor.UnknownFunction
 
     Connections {
-        target: mobileAdaptor
+        target: global.mobileAdaptor
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
             view.requestActivate()
@@ -82,7 +82,7 @@ Item {
         modal: true
 
         onAccepted: {
-            mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor.vibrateBrief()
 
             var errorString = ""
 

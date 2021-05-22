@@ -38,13 +38,13 @@
 #include "Aircraft.h"
 #include "Clock.h"
 #include "FlightRoute.h"
+#include "Global.h"
 #include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
 #include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MapManager.h"
-#include "Global.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
@@ -133,10 +133,11 @@ auto main(int argc, char *argv[]) -> int
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     if (positionalArguments.length() == 1) {
-        MobileAdaptor::globalInstance()->processFileOpenRequest(positionalArguments[0]);
+        Global::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);
     }
+    QTimer::singleShot(4s, Global::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), MobileAdaptor::globalInstance(), SLOT(processFileOpenRequest(QByteArray)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), Global::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*
@@ -158,8 +159,6 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());
 
     // Make MobileAdaptor available to QML engine
-    QTimer::singleShot(4s, MobileAdaptor::globalInstance(), &MobileAdaptor::hideSplashScreen);
-    engine->rootContext()->setContextProperty("mobileAdaptor", MobileAdaptor::globalInstance());
 
     // Attach library info
     engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
@@ -177,11 +176,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Attach flight route
     engine->rootContext()->setContextProperty("flightRoute", FlightRoute::globalInstance());
-
-    // Attach map manager
-#warning
-    //engine->rootContext()->setContextProperty("mapManager", Global::mapManager());
-    QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, MobileAdaptor::globalInstance(), &MobileAdaptor::showDownloadNotification);
 
     // Attach geo map provider
     engine->rootContext()->setContextProperty("geoMapProvider", GeoMaps::GeoMapProvider::globalInstance());

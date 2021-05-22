@@ -49,7 +49,7 @@ Page {
             text: qsTr("Go back in bug report")
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked:  {
-                mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor.vibrateBrief()
                 stack.pop()
             }
         }
@@ -115,7 +115,7 @@ application.</p>
                     text: qsTr("Main application")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(mainAppPage)
                     }
                 }
@@ -137,7 +137,7 @@ application.</p>
                     text: qsTr("Flight Information Regions")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -146,7 +146,7 @@ application.</p>
                     text: qsTr("Nature Reserve Areas")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -155,7 +155,7 @@ application.</p>
                     text: qsTr("All Other Airspaces")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(openAIPAirspace)
                     }
                 }
@@ -178,7 +178,7 @@ below.</p>
                     text: qsTr("Airfields")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(openAIPNNonAirspace)
                     }
                 }
@@ -187,7 +187,7 @@ below.</p>
                     text: qsTr("NavAids")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(openAIPNNonAirspace)
                     }
                 }
@@ -196,7 +196,7 @@ below.</p>
                     text: qsTr("Procedures/Traffic circuits")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -205,7 +205,7 @@ below.</p>
                     text: qsTr("Reporting points")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -287,7 +287,7 @@ GitHub by e-mail.</p>
                         text: qsTr("Open GitHub Issue Page")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             Qt.openUrlExternally("https://github.com/Akaflieg-Freiburg/enroute/issues")
                         }
                     }
@@ -296,7 +296,7 @@ GitHub by e-mail.</p>
                         text: qsTr("Send link by e-mail")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to GitHub: https://github.com/Akaflieg-Freiburg/enroute/issues"))
                         }
                     }
@@ -391,7 +391,7 @@ week.</p>
                         text: qsTr("Open openAIP web site")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             Qt.openUrlExternally("https://openaip.net")
                         }
                     }
@@ -400,7 +400,7 @@ week.</p>
                         text: qsTr("Send link by e-mail")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to openAIP: https//openaip.net"))
                         }
 
@@ -572,7 +572,7 @@ following countries?</p>
                         text: qsTr("Yes")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked:  {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             stack.push(ofm)
                         }
                     }
@@ -581,7 +581,7 @@ following countries?</p>
                         text: qsTr("No")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             stack.push(nixofm)
                         }
                     }
@@ -656,7 +656,7 @@ computer, you can also send yourself a link by e-mail.</p>
                         text: qsTr("Open error report form")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             Qt.openUrlExternally("https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform")
                         }
                     }
@@ -665,7 +665,7 @@ computer, you can also send yourself a link by e-mail.</p>
                         text: qsTr("Send link by e-mail")
                         icon.source: "/icons/material/ic_bug_report.svg"
                         onClicked: {
-                            mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor.vibrateBrief()
                             Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to open flightmaps error report form: https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform"))
                         }
                     }

@@ -48,7 +48,7 @@ Dialog {
             width: wpList.width
 
             onClicked: {
-                mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor.vibrateBrief()
                 flightRoute.append(model.modelData)
                 close()
             }
@@ -79,7 +79,7 @@ Dialog {
 
             onAccepted: {
                 if (wpList.model.length > 0) {
-                    mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor.vibrateBrief()
                     flightRoute.append(wpList.model[0])
                     close()
                 }

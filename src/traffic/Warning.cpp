@@ -20,7 +20,7 @@
 
 #include <QCoreApplication>
 
-#include "GlobalSettings.h"
+#include "Settings.h"
 #include "traffic/Warning.h"
 
 
@@ -110,7 +110,7 @@ auto Traffic::Warning::description() const -> QString
     // Horizontal distance
     if (m_hDist.isFinite() && !m_hDist.isNegative()) {
 
-        if (GlobalSettings::useMetricUnitsStatic()) {
+        if (Settings::useMetricUnitsStatic()) {
             auto hDistKM = qRound(m_hDist.toKM()*10.0)/10.0;
             result << QCoreApplication::translate("Traffic::Warning", "Distance %1 km").arg(hDistKM);
         } else {

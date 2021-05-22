@@ -41,7 +41,7 @@ LongTextDialog {
             globalSettings.acceptedTerms = 1
 
             // Start accepting files
-            global.mobileAdaptor.startReceiveOpenFileRequests()
+            global.mobileAdaptor().startReceiveOpenFileRequests()
         }
         onRejected: Qt.quit()
     } // DialogButtonBox

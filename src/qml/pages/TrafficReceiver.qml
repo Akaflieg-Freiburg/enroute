@@ -43,7 +43,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
             icon.color: "white"
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
@@ -73,7 +73,7 @@ Page {
             icon.source: "/icons/material/ic_help_outline.svg"
             icon.color: "white"
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 trafficHelp.open()
             }
 

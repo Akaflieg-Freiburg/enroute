@@ -376,7 +376,7 @@ Item {
             onPressAndHold: onDoubleClicked(mouse)
 
             onDoubleClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 var wp = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
                                                         flightRoute)
@@ -417,7 +417,7 @@ Item {
         width: parent.width*0.6
         height: noMapWarning.height+20
         border.color: "black"
-        visible: !global.mapManager.aviationMaps.hasFile
+        visible: !global.mapManager().aviationMaps.hasFile
         Label {
             id: noMapWarning
             anchors.centerIn: parent
@@ -482,7 +482,7 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
         width:  66
 
         onClicked: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             flightMap.followGPS = true
             toast.doToast(qsTr("Map Mode: Autopan"))
         }
@@ -506,7 +506,7 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             flightMap.zoomLevel += 1
         }
     }
@@ -529,7 +529,7 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             flightMap.zoomLevel -= 1
         }
     }

@@ -55,10 +55,10 @@ Page {
                 var nFilesTotal;
                 var mapTypeString;
                 if (sv.currentIndex == 0) {  // swipe view shows aviation maps
-                    nFilesTotal = global.mapManager.aviationMaps.numberOfFilesTotal();
+                    nFilesTotal = global.mapManager().aviationMaps.numberOfFilesTotal();
                     mapTypeString = qsTr("aviation maps")
                 } else {  // swipe view shows base maps
-                    nFilesTotal = global.mapManager.baseMaps.numberOfFilesTotal();
+                    nFilesTotal = global.mapManager().baseMaps.numberOfFilesTotal();
                     mapTypeString = qsTr("base maps")
                 }
 
@@ -95,7 +95,7 @@ Page {
                     enabled: !model.modelData.hasFile
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
-                            global.mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor().vibrateBrief()
                             startFileDownload()
                         }
                     }
@@ -106,7 +106,7 @@ Page {
                     icon.source: "/icons/material/ic_file_download.svg"
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         startFileDownload()
                     }
                 }
@@ -116,7 +116,7 @@ Page {
                     icon.source: "/icons/material/ic_refresh.svg"
                     visible: model.modelData.updatable
                     onClicked: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         startFileDownload()
                     }
                 }
@@ -126,7 +126,7 @@ Page {
                     icon.source: "/icons/material/ic_cancel.svg"
                     visible: model.modelData.downloading
                     onClicked: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         model.modelData.stopFileDownload()
                     }
                 }
@@ -137,7 +137,7 @@ Page {
 
                     visible: model.modelData.hasFile & !model.modelData.downloading
                     onClicked: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         removeMenu.popup()
                     }
 
@@ -150,7 +150,7 @@ Page {
                             text: qsTr("Map Info")
 
                             onTriggered: {
-                                global.mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = qsTr("Map Info: ") + model.modelData.objectName
                                 infoDialog.text = geoMapProvider.describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
@@ -162,7 +162,7 @@ Page {
                             text: qsTr("Uninstall")
 
                             onTriggered: {
-                                global.mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor().vibrateBrief()
                                 model.modelData.deleteFile()
                             }
                         }
@@ -198,7 +198,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
             icon.color: "white"
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 stackView.pop()
             }
         } // ToolButton
@@ -224,7 +224,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             icon.color: "white"
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -237,9 +237,9 @@ Page {
                     text: qsTr("Update list of maps")
 
                     onTriggered: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-                        global.mapManager.updateGeoMapList()
+                        global.mapManager().updateGeoMapList()
                     }
                 }
 
@@ -247,12 +247,12 @@ Page {
                     id: downloadUpdatesMenu
 
                     text: qsTr("Download all updates…")
-                    enabled: global.mapManager.geoMaps.updatable
+                    enabled: global.mapManager().geoMaps.updatable
 
                     onTriggered: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-                        global.mapManager.geoMaps.updateAll()
+                        global.mapManager().geoMaps.updateAll()
                     }
                 }
 
@@ -296,7 +296,7 @@ Page {
 
             ListView {
                 clip: true
-                model: global.mapManager.aviationMaps.downloadablesAsObjectList
+                model: global.mapManager().aviationMaps.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -341,8 +341,8 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        global.mobileAdaptor.vibrateBrief()
-                        global.mapManager.updateGeoMapList()
+                        global.mobileAdaptor().vibrateBrief()
+                        global.mapManager().updateGeoMapList()
                     }
                 }
             } // ListView
@@ -351,7 +351,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.mapManager.baseMaps.downloadablesAsObjectList
+                model: global.mapManager().baseMaps.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -365,8 +365,8 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        global.mobileAdaptor.vibrateBrief()
-                        global.mapManager.updateGeoMapList()
+                        global.mobileAdaptor().vibrateBrief()
+                        global.mapManager().updateGeoMapList()
                     }
                 }
             } // ListView
@@ -385,7 +385,7 @@ Page {
         anchors.bottom: parent.bottom
 
         color: "white"
-        visible: !global.mapManager.downloadingGeoMapList && !global.mapManager.hasGeoMapList
+        visible: !global.mapManager().downloadingGeoMapList && !global.mapManager().hasGeoMapList
 
         Label {
             anchors.left: parent.left
@@ -409,7 +409,7 @@ Page {
         anchors.bottom: parent.bottom
 
         color: "white"
-        visible: global.mapManager.downloadingGeoMapList
+        visible: global.mapManager().downloadingGeoMapList
 
         Label {
             id: downloadIndicatorLabel
@@ -435,9 +435,9 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: global.mapManager
+            target: global.mapManager()
             function onDownloadingGeoMapListChanged () {
-                if (global.mapManager.downloadingGeoMapList) {
+                if (global.mapManager().downloadingGeoMapList) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -456,7 +456,7 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: !global.mapManager.geoMaps.downloading && global.mapManager.geoMaps.updatable
+        visible: !global.mapManager().geoMaps.downloading && global.mapManager().geoMaps.updatable
 
         ToolButton {
             id: downloadUpdatesActionButton
@@ -465,15 +465,15 @@ Page {
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
-                global.mapManager.geoMaps.updateAll()
+                global.mobileAdaptor().vibrateBrief()
+                global.mapManager().geoMaps.updateAll()
             }
         }
     } // Pane (footer)
 
     // Show error when list of maps cannot be downloaded
     Connections {
-        target: global.mapManager
+        target: global.mapManager()
         function onError (message) {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")

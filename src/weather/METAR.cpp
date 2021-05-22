@@ -19,7 +19,8 @@
  ***************************************************************************/
 
 #include "Clock.h"
-#include "GlobalSettings.h"
+#include "Global.h"
+#include "Settings.h"
 #include "weather/METAR.h"
 
 
@@ -223,7 +224,7 @@ void Weather::METAR::setupSignals() const
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::METAR::summaryChanged);
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
 
-    connect(GlobalSettings::globalInstance(), &GlobalSettings::useMetricUnitsChanged, this, &Weather::METAR::summaryChanged);
+    connect(Global::settings(), &Settings::useMetricUnitsChanged, this, &Weather::METAR::summaryChanged);
 }
 
 

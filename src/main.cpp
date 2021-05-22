@@ -39,7 +39,6 @@
 #include "Clock.h"
 #include "FlightRoute.h"
 #include "Global.h"
-#include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
 #include "geomaps/Airspace.h"
@@ -47,6 +46,7 @@
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
+#include "Settings.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficFactor.h"
 #include "ui/ScaleQuickItem.h"
@@ -80,7 +80,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<GeoMaps::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
     qmlRegisterUncreatableType<GeoMaps::MapManager>("enroute", 1, 0, "MapManager", "MapManager objects cannot be created in QML");
-    qmlRegisterType<GlobalSettings>("enroute", 1, 0, "GlobalSettings");
+    qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
@@ -146,8 +146,7 @@ auto main(int argc, char *argv[]) -> int
     auto *engine = new QQmlApplicationEngine();
 
     // Make global objects available to QML engine
-    Global globalObjectStorage;
-    engine->rootContext()->setContextProperty("global", &globalObjectStorage);
+    engine->rootContext()->setContextProperty("global", new Global(engine) );
 
     // Make GPS available to QML engine
     engine->rootContext()->setContextProperty("positionProvider", Positioning::PositionProvider::globalInstance());
@@ -156,7 +155,8 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("flarmAdaptor", Traffic::TrafficDataProvider::globalInstance());
 
     // Attach global settings object
-    engine->rootContext()->setContextProperty("globalSettings", GlobalSettings::globalInstance());
+#warning need to remove
+    engine->rootContext()->setContextProperty("globalSettings", Global::settings());
 
     // Make MobileAdaptor available to QML engine
 

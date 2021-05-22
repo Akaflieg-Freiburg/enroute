@@ -92,7 +92,7 @@ Dialog {
             leftPadding: 0.2*Qt.application.font.pixelSize
             rightPadding: 0.2*Qt.application.font.pixelSize
             onLinkActivated: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 weatherReport.open()
             }
 
@@ -353,7 +353,7 @@ Dialog {
             enabled: positionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
 
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 if (flightRoute.routeObjects.length > 0)
                     overwriteDialog.open()
                 else {
@@ -375,7 +375,7 @@ Dialog {
             }
             icon.source: "/icons/material/ic_add_circle.svg"
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 flightRoute.append(waypoint)
                 close()
                 toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
@@ -392,7 +392,7 @@ Dialog {
                 return flightRoute.contains(waypoint)
             }
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 close()
                 toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
                 flightRoute.removeWaypoint(waypoint)
@@ -426,7 +426,7 @@ Dialog {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             flightRoute.clear()
             flightRoute.append(positionProvider.lastValidCoordinate)
             flightRoute.append(waypoint)
@@ -434,7 +434,7 @@ Dialog {
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }
         onRejected: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             close()
             waypointDescriptionDialog.open()
         }

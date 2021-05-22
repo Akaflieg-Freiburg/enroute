@@ -51,7 +51,7 @@ Page {
         width: 66
 
         onClicked: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             drawer.open()
         }
     }

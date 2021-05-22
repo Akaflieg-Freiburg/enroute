@@ -33,7 +33,7 @@ class QNetworkReply;
 class Clock;
 class FlightRoute;
 class GeoMapProvider;
-class GlobalSettings;
+class Settings;
 
 namespace Weather {
 

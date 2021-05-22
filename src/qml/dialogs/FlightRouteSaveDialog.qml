@@ -58,7 +58,7 @@ Dialog {
             anchors.right: parent.right
 
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 finalFileName = modelData
                 dlg.close()
                 overwriteDialog.open()
@@ -117,12 +117,12 @@ Dialog {
     }
 
     onRejected: {
-        global.mobileAdaptor.vibrateBrief()
+        global.mobileAdaptor().vibrateBrief()
         close()
     }
 
     onAccepted: {
-        global.mobileAdaptor.vibrateBrief()
+        global.mobileAdaptor().vibrateBrief()
         if (fileName.text === "")
             return
         finalFileName = fileName.text
@@ -208,12 +208,12 @@ Dialog {
         }
 
         onAccepted: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             dlg.saveToLibrary()
         }
 
         onRejected: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             close()
             dlg.open()
         }

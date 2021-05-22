@@ -30,15 +30,14 @@
 
 using namespace std::chrono_literals;
 
-#include "Librarian.h"
+#include "Global.h"
 #include "MapManager.h"
 
 
 GeoMaps::MapManager::MapManager(QObject *parent) :
     QObject(parent),
     _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
-               QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json",
-               Librarian::globalNetworkAccessManager())
+               QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json", this)
 {
     // Earlier versions of this program constructed files with names ending in ".geojson.geojson"
     // or ".mbtiles.mbtiles". We correct those file names here.
@@ -83,8 +82,6 @@ GeoMaps::MapManager::MapManager(QObject *parent) :
 
 GeoMaps::MapManager::~MapManager()
 {
-    qDebug() << "MapManager destructed";
-#warning With global instances, this is never called!
 
     // It might be possible for whatever reason that our download directory
     // contains files that we do not know whom they belong to. We hunt down those

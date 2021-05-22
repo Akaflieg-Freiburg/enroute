@@ -40,7 +40,7 @@
  * The methods in this class are reentrant, but not thread safe.
  */
 
-class GlobalSettings : public QObject
+class Settings : public QObject
 {
     Q_OBJECT
 
@@ -49,10 +49,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit GlobalSettings(QObject *parent = nullptr);
+    explicit Settings(QObject *parent = nullptr);
 
     /*! \brief Standard deconstructor */
-    ~GlobalSettings() override;
+    ~Settings() override;
 
     /*! \brief Possible map bearing policies */
     enum MapBearingPolicyValues
@@ -145,15 +145,6 @@ public:
      * @param hide Property hideUpperAirspaces
      */
     void setHideUpperAirspaces(bool hide);
-
-    /*! \brief Pointer to static instance
-     *
-     * This method returns a pointer to a static instance of this class. In rare
-     * situations, during shutdown of the app, a nullptr might be returned.
-     *
-     * @returns A pointer to a static instance of this class
-     */
-    static GlobalSettings *globalInstance();
 
     /*! \brief Hash of the last "what's new message that was shown to the user
      *
@@ -255,7 +246,7 @@ signals:
     void useMetricUnitsChanged();
 
 private:
-    Q_DISABLE_COPY_MOVE(GlobalSettings)
+    Q_DISABLE_COPY_MOVE(Settings)
 
     // Removes/Installs global application translators, according to the
     // settings value "System/preferEnglish"

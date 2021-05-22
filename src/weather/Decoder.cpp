@@ -29,7 +29,8 @@
 #include <gsl/gsl>
 
 #include "Clock.h"
-#include "GlobalSettings.h"
+#include "Global.h"
+#include "Settings.h"
 #include "weather/Decoder.h"
 
 
@@ -40,7 +41,7 @@ Weather::Decoder::Decoder(QObject *parent)
     connect(Clock::globalInstance(), &Clock::dateChanged, this, &Weather::Decoder::parse);
 
     // Re-parse whenever the preferred unit system changes
-    connect(GlobalSettings::globalInstance(), &GlobalSettings::useMetricUnitsChanged, this, &Weather::Decoder::parse);
+    connect(Global::settings(), &Settings::useMetricUnitsChanged, this, &Weather::Decoder::parse);
 }
 
 
@@ -184,7 +185,7 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         break;
 
     case metaf::Distance::Modifier::DISTANT:
-        if (GlobalSettings::useMetricUnitsStatic()) {
+        if (Settings::useMetricUnitsStatic()) {
             results << tr("19 to 55 km");
         } else {
             results << tr("10 to 30 NM");
@@ -192,7 +193,7 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         break;
 
     case metaf::Distance::Modifier::VICINITY:
-        if (GlobalSettings::useMetricUnitsStatic()) {
+        if (Settings::useMetricUnitsStatic()) {
             results << tr("9 to 19 km");
         } else {
             results << tr("5 to 10 NM");
@@ -239,7 +240,7 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         results << distanceUnitToString(distance.unit());
     }
 
-    if (GlobalSettings::useMetricUnitsStatic() && (distance.unit() != metaf::Distance::Unit::METERS)) {
+    if (Settings::useMetricUnitsStatic() && (distance.unit() != metaf::Distance::Unit::METERS)) {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
         if (d.has_value()) {
             if ((*d) < 5000) {
@@ -364,13 +365,7 @@ auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString {
         return tr("not reported");
     }
 
-    bool useMetric = false;
-    auto *globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings != nullptr) {
-        useMetric = globalSettings->useMetricUnits();
-    }
-
-    if (useMetric) {
+    if (Global::settings()->useMetricUnits()) {
         const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
         if (s.has_value()) {
             return QString("%1 km/h").arg(qRound(*s));

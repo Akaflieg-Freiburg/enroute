@@ -42,7 +42,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
             icon.color: "white"
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
@@ -72,7 +72,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             icon.color: "white"
             onClicked: {
-                global.mobileAdaptor.vibrateBrief()
+                global.mobileAdaptor().vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -82,7 +82,7 @@ Page {
                 MenuItem {
                     text: qsTr("Info …")
                     onTriggered: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         infoDialog.open()
                     }
 
@@ -93,9 +93,9 @@ Page {
                     enabled: Qt.platform.os !== "android"
 
                     onTriggered: {
-                        global.mobileAdaptor.vibrateBrief()
+                        global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-                        global.mobileAdaptor.importContent()
+                        global.mobileAdaptor().importContent()
                     }
                 }
 
@@ -140,7 +140,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.mobileAdaptor.vibrateBrief()
+                    global.mobileAdaptor().vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -151,7 +151,7 @@ Page {
                         id: openAction
                         text: qsTr("Open …")
                         onTriggered: {
-                            global.mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
                             if (flightRoute.routeObjects.length > 0)
                                 overwriteDialog.open()
@@ -170,11 +170,11 @@ Page {
                             text: qsTr("… to GeoJSON file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", librarian.flightRouteGet(modelData).suggestedFilename())
+                                var errorString = global.mobileAdaptor().exportContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", librarian.flightRouteGet(modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -195,11 +195,11 @@ Page {
                             text: qsTr("… to GPX file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor.exportContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", librarian.flightRouteGet(modelData).suggestedFilename())
+                                var errorString = global.mobileAdaptor().exportContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", librarian.flightRouteGet(modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -224,11 +224,11 @@ Page {
                             text: qsTr("… in GeoJSON format")
 
                             onTriggered: {
-                                global.mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                                var errorString = global.mobileAdaptor().viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -241,11 +241,11 @@ Page {
                             text: qsTr("… in GPX format")
 
                             onTriggered: {
-                                global.mobileAdaptor.vibrateBrief()
+                                global.mobileAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor.viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                                var errorString = global.mobileAdaptor().viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -262,7 +262,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename …")
                         onTriggered: {
-                            global.mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
                             renameName.text = ""
                             renameDialog.open()
@@ -274,7 +274,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove …")
                         onTriggered: {
-                            global.mobileAdaptor.vibrateBrief()
+                            global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -420,11 +420,11 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             close()
         }
 
@@ -454,13 +454,13 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             librarian.flightRouteRemove(page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Flight route removed from device"))
         }
         onRejected: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             close()
         }
 
@@ -520,7 +520,7 @@ Page {
         }
 
         onAccepted: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             if ((renameName.text !== "") && !librarian.flightRouteExists(renameName.text)) {
                 librarian.flightRouteRename(finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -529,7 +529,7 @@ Page {
             }
         }
         onRejected: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             close()
         }
 

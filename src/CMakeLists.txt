@@ -85,7 +85,6 @@ set(SOURCES
     geomaps/TileServer.h
     geomaps/Waypoint.h
     Global.h
-    GlobalSettings.h
     Librarian.h
     MobileAdaptor.h
     navigation/Navigator.h
@@ -94,6 +93,7 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.h
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
+    Settings.h
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_AbstractSocket.h
     traffic/TrafficDataSource_File.h
@@ -130,7 +130,6 @@ set(SOURCES
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
     Global.cpp
-    GlobalSettings.cpp
     Librarian.cpp
     main.cpp
     MobileAdaptor.cpp
@@ -141,6 +140,7 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
+    Settings.cpp
     traffic/TrafficDataSource_Abstract.cpp
     traffic/TrafficDataSource_Abstract_FLARM.cpp
     traffic/TrafficDataSource_Abstract_GDL90.cpp

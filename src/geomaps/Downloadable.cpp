@@ -25,7 +25,7 @@
 #include <utility>
 
 #include "Downloadable.h"
-#include "Librarian.h"
+#include "Global.h"
 
 GeoMaps::Downloadable::Downloadable(QUrl url, const QString &fileName, QObject *parent)
     : QObject(parent), _url(std::move(url)) {
@@ -202,7 +202,7 @@ void GeoMaps::Downloadable::startInfoDownload() {
     }
 
     // Start the download process for the remote file info
-    _networkReplyDownloadHeader = Librarian::globalNetworkAccessManager()->head(QNetworkRequest(_url));
+    _networkReplyDownloadHeader = Global::networkAccessManager()->head(QNetworkRequest(_url));
     connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
             &Downloadable::downloadHeaderFinished);
 
@@ -236,7 +236,7 @@ void GeoMaps::Downloadable::startFileDownload() {
 
     // Start download
     QNetworkRequest request(_url);
-    _networkReplyDownloadFile = Librarian::globalNetworkAccessManager()->get(request);
+    _networkReplyDownloadFile = Global::networkAccessManager()->get(request);
     connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable::downloadFileFinished);
     connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable::downloadFilePartialDataReceiver);
     connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable::downloadFileProgressReceiver);

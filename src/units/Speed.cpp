@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "GlobalSettings.h"
+#include "Settings.h"
 #include "units/Speed.h"
 
 
 auto AviationUnits::Speed::toString() const -> QString {
-    if (GlobalSettings::useMetricUnitsStatic()) {
+    if (Settings::useMetricUnitsStatic()) {
         return QString("%1 km/h").arg( qRound(toKMH()) );
 }
     return QString("%1 kn").arg( qRound(toKN()) );

@@ -21,20 +21,18 @@
 #include <QPainter>
 #include <cmath>
 
-#include "GlobalSettings.h"
+#include "Global.h"
 #include "ScaleQuickItem.h"
+#include "Settings.h"
 
 
 Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
 
-    auto *globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings != nullptr) {
-        connect(globalSettings, &GlobalSettings::useMetricUnitsChanged, this, &QQuickItem::update);
-    }
-
+    connect(Global::settings(), &Settings::useMetricUnitsChanged, this, &QQuickItem::update);
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
+
 }
 
 
@@ -46,7 +44,7 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
     }
 
     // Pre-compute a few numbers that will be used when drawing
-    auto _useMetricUnits = GlobalSettings::useMetricUnitsStatic();
+    auto _useMetricUnits = Settings::useMetricUnitsStatic();
     qreal pixelPerUnit        = _useMetricUnits ? _pixelPer10km * 0.1 : _pixelPer10km * 0.1852;
     qreal scaleSizeInUnit     = _vertical ? (height()-10.0)/pixelPerUnit : (width()-10.0)/pixelPerUnit;
     qreal ScaleUnitInUnit     = pow(10.0, floor(log10(scaleSizeInUnit)));

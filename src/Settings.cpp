@@ -23,67 +23,39 @@
 #include <QLocale>
 #include <QSettings>
 
-#include "GlobalSettings.h"
+#include "Global.h"
+#include "Settings.h"
 
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<GlobalSettings> globalSettingsStatic {};
-#endif
-
-
-GlobalSettings::GlobalSettings(QObject *parent)
+Settings::Settings(QObject *parent)
     : QObject(parent)
 {
     installTranslators();
 }
 
 #warning destructor not called
-GlobalSettings::~GlobalSettings()
+#include <QDebug>
+Settings::~Settings()
 {
+qWarning() << "GlobalSettings::~GlobalSettings()";
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
 }
 
 
-auto GlobalSettings::acceptedWeatherTermsStatic() -> bool
+auto Settings::acceptedWeatherTermsStatic() -> bool
 {
-    // Find out that unit system we should use
-    auto *globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings != nullptr) {
-        return globalSettings->acceptedWeatherTerms();
-    }
-    // Fallback in the very unlikely case that no global object exists
-    return false;
+    return Global::settings()->acceptedWeatherTerms();
 }
 
 
-auto GlobalSettings::globalInstance() -> GlobalSettings *
+auto Settings::hideUpperAirspacesStatic() -> bool
 {
-#ifndef __clang_analyzer__
-    if (globalSettingsStatic.isNull()) {
-        globalSettingsStatic = new GlobalSettings();
-    }
-    return globalSettingsStatic;
-#else
-    return nullptr;
-#endif
+    return Global::settings()->hideUpperAirspaces();
 }
 
 
-auto GlobalSettings::hideUpperAirspacesStatic() -> bool
-{
-    // Find out that unit system we should use
-    auto *globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings != nullptr) {
-        return globalSettings->hideUpperAirspaces();
-    }
-    // Fallback in the very unlikely case that no global object exists
-    return false;
-}
-
-
-void GlobalSettings::setAcceptedTerms(int terms)
+void Settings::setAcceptedTerms(int terms)
 {
     if (terms == acceptedTerms()) {
         return;
@@ -93,7 +65,7 @@ void GlobalSettings::setAcceptedTerms(int terms)
 }
 
 
-void GlobalSettings::setAcceptedWeatherTerms(bool terms)
+void Settings::setAcceptedWeatherTerms(bool terms)
 {
     if (terms == acceptedWeatherTerms()) {
         return;
@@ -103,7 +75,7 @@ void GlobalSettings::setAcceptedWeatherTerms(bool terms)
 }
 
 
-void GlobalSettings::setHideUpperAirspaces(bool hide)
+void Settings::setHideUpperAirspaces(bool hide)
 {
     if (hide == hideUpperAirspaces()) {
         return;
@@ -113,7 +85,7 @@ void GlobalSettings::setHideUpperAirspaces(bool hide)
 }
 
 
-void GlobalSettings::setLastWhatsNewHash(uint lwnh)
+void Settings::setLastWhatsNewHash(uint lwnh)
 {
     if (lwnh == lastWhatsNewHash()) {
         return;
@@ -123,7 +95,7 @@ void GlobalSettings::setLastWhatsNewHash(uint lwnh)
 }
 
 
-auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolicyValues
+auto Settings::mapBearingPolicy() const -> Settings::MapBearingPolicyValues
 {
     auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
     if (intVal == 0) {
@@ -136,7 +108,7 @@ auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolic
 }
 
 
-void GlobalSettings::setMapBearingPolicy(MapBearingPolicyValues policy)
+void Settings::setMapBearingPolicy(MapBearingPolicyValues policy)
 {
     if (policy == mapBearingPolicy()) {
         return;
@@ -157,13 +129,13 @@ void GlobalSettings::setMapBearingPolicy(MapBearingPolicyValues policy)
 }
 
 
-auto GlobalSettings::nightMode() const -> bool
+auto Settings::nightMode() const -> bool
 {
     return settings.value("Map/nightMode", false).toBool();
 }
 
 
-void GlobalSettings::setNightMode(bool newNightMode)
+void Settings::setNightMode(bool newNightMode)
 {
     if (newNightMode == nightMode()) {
         return;
@@ -174,7 +146,7 @@ void GlobalSettings::setNightMode(bool newNightMode)
 }
 
 
-void GlobalSettings::setUseMetricUnits(bool unitHorizKmh)
+void Settings::setUseMetricUnits(bool unitHorizKmh)
 {
     if (unitHorizKmh == useMetricUnits()) {
         return;
@@ -185,19 +157,13 @@ void GlobalSettings::setUseMetricUnits(bool unitHorizKmh)
 }
 
 
-auto GlobalSettings::useMetricUnitsStatic() -> bool
+auto Settings::useMetricUnitsStatic() -> bool
 {
-    // Find out that unit system we should use
-    auto *globalSettings = GlobalSettings::globalInstance();
-    if (globalSettings != nullptr) {
-        return globalSettings->useMetricUnits();
-    }
-    // Fallback in the very unlikely case that no global object exists
-    return false;
+    return Global::settings()->useMetricUnits();
 }
 
 
-void GlobalSettings::installTranslators()
+void Settings::installTranslators()
 {
     // Remove existing translators
     if (enrouteTranslator != nullptr) {

@@ -576,21 +576,6 @@ auto Librarian::globalInstance() -> Librarian*
 }
 
 
-auto Librarian::globalNetworkAccessManager() -> QNetworkAccessManager*
-{
-#ifndef __clang_analyzer__
-    if (networkAccessManagerStatic.isNull()) {
-        networkAccessManagerStatic = new QNetworkAccessManager();
-        networkAccessManagerStatic->setTransferTimeout();
-    }
-    return networkAccessManagerStatic;
-#else
-    return nullptr;
-#endif
-
-}
-
-
 auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter) -> QStringList
 {
     QString simplifiedFilter = simplifySpecialChars(filter);

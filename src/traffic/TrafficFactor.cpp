@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 
-#include "GlobalSettings.h"
+#include "Settings.h"
 #include "traffic/TrafficFactor.h"
 
 
@@ -238,7 +238,7 @@ void Traffic::TrafficFactor::setDescription()
     }
 
     if (_vDist.isFinite()) {
-        auto result = _vDist.toString(GlobalSettings::useMetricUnitsStatic(), true, true);
+        auto result = _vDist.toString(Settings::useMetricUnitsStatic(), true, true);
         auto climbRateMPS = climbRate().toMPS();
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {

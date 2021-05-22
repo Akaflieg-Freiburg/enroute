@@ -37,7 +37,7 @@ class GeoMapProvider;
 class Waypoint;
 }
 
-class GlobalSettings;
+class Settings;
 
 /*! \brief Intended flight route
  *

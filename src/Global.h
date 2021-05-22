@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,15 +23,28 @@
 #include <QObject>
 
 class MobileAdaptor;
+class QNetworkAccessManager;
+class Settings;
 
 namespace GeoMaps {
 class MapManager;
 };
 
 
-/*! \brief Global Objects Storage
+/*! \brief Global instance storage
  *
- * This class holds objects that are defined application-globally.
+ * This class manages a collection of static instances of classes that are used
+ * throughout the application.  The instances are constructed lazily at runtime,
+ * whenever the appropriate methods are called.  They are children of the global
+ * QCoreApplication object and deleted along with this object.
+ *
+ * Although all relevant methods are static, it is possible to construct an
+ * instance of this class, which allows to use this class from QML.
+ *
+ * @note This method must only be called while a global QCoreApplication exists.
+ * If Global manages an instance of your class, then none of the static methods
+ * must not be called in the constructor of your class, or else an inite loop
+ * may result.
  *
  * The methods in this class are reentrant, but not thread safe.
  */
@@ -47,20 +60,56 @@ public:
      */
     explicit Global(QObject *parent = nullptr);
 
-    /*! \brief Standard deconstructor */
-#warning docu
-    ~Global() override;
-
-    /*! \brief Pointer to appplication-wide static GeoMaps::MapManager object
+    /*! \brief Standard deconstructor
      *
-     *  This property holds a pointer to an application-wide static object.
-     *  The pointer is guaranteed to be valid.
-     *  The object is owned by this class and must not be deleted.
-     *  The property will never change, unless an instance of Global gets destructed.
+     * This destructor will destruct all application-wide static instances
+     * managed by this class.
+     */
+    ~Global() = default;
+
+    /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
+     *
+     * This method returns a pointer to an application-wide static object. The
+     * pointer is guaranteed to be valid.  The object is owned by this class and
+     * must not be deleted. QML ownership has been set to
+     * QQmlEngine::CppOwnership.
+     *
+     * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static GeoMaps::MapManager* mapManager();
 
+    /*! \brief Pointer to appplication-wide static MobileAdaptor instance
+     *
+     * This method returns a pointer to an application-wide static object. The
+     * pointer is guaranteed to be valid.  The object is owned by this class and
+     * must not be deleted. QML ownership has been set to
+     * QQmlEngine::CppOwnership.
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
     Q_INVOKABLE static MobileAdaptor* mobileAdaptor();
+
+    /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
+     *
+     * This method returns a pointer to an application-wide static object. The
+     * pointer is guaranteed to be valid.  The object is owned by this class and
+     * must not be deleted. QML ownership has been set to
+     * QQmlEngine::CppOwnership.
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static QNetworkAccessManager* networkAccessManager();
+
+    /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
+     *
+     * This method returns a pointer to an application-wide static object. The
+     * pointer is guaranteed to be valid.  The object is owned by this class and
+     * must not be deleted. QML ownership has been set to
+     * QQmlEngine::CppOwnership.
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Settings* settings();
 
 private:
     Q_DISABLE_COPY_MOVE(Global)

@@ -30,9 +30,9 @@
 #include <QTemporaryFile>
 
 #include "Airspace.h"
-#include "GlobalSettings.h"
 #include "Librarian.h"
 #include "MapManager.h"
+#include "Settings.h"
 #include "TileServer.h"
 #include "Waypoint.h"
 

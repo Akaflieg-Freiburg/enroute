@@ -32,9 +32,10 @@
 
 #include "Clock.h"
 #include "FlightRoute.h"
-#include "GlobalSettings.h"
+#include "Global.h"
 #include "geomaps/GeoMapProvider.h"
 #include "positioning/PositionProvider.h"
+#include "Settings.h"
 #include "weather/DownloadManager.h"
 #include "weather/METAR.h"
 #include <chrono>
@@ -473,7 +474,7 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
 void Weather::DownloadManager::update(bool isBackgroundUpdate) {
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
-    if (!GlobalSettings::acceptedWeatherTermsStatic()) {
+    if (!Settings::acceptedWeatherTermsStatic()) {
         return;
     }
 
@@ -518,7 +519,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
     foreach(auto query, queries) {
         QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
         QNetworkRequest request(url);
-        QPointer<QNetworkReply> reply = Librarian::globalNetworkAccessManager()->get(request);
+        QPointer<QNetworkReply> reply = Global::networkAccessManager()->get(request);
         _networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::DownloadManager::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::DownloadManager::downloadFinished);

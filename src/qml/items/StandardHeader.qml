@@ -35,7 +35,7 @@ ToolBar {
         icon.source: "/icons/material/ic_arrow_back.svg"
 
         onClicked: {
-            global.mobileAdaptor.vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
             stackView.pop()
         }
     }

@@ -123,9 +123,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a37277b7e33761b37eddd381a14950d27"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">getSSID</a> ()</td></tr>
 <tr class="memdesc:a37277b7e33761b37eddd381a14950d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get SSID of current Wi-Fi network.  <a href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">More...</a><br /></td></tr>
 <tr class="separator:a37277b7e33761b37eddd381a14950d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade4031bdd763bd2993417aab1f98f4e4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classMobileAdaptor.html">MobileAdaptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ade4031bdd763bd2993417aab1f98f4e4">globalInstance</a> ()</td></tr>
-<tr class="memdesc:ade4031bdd763bd2993417aab1f98f4e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance.  <a href="classMobileAdaptor.html#ade4031bdd763bd2993417aab1f98f4e4">More...</a><br /></td></tr>
-<tr class="separator:ade4031bdd763bd2993417aab1f98f4e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to platform-specific capabilities of mobile devices. </p>
@@ -267,35 +264,6 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Get SSID of current Wi-Fi network. </p>
 <dl class="section return"><dt>Returns</dt><dd>The SSID of the current Wi-Fi networks, or an empty of generic string if the device is not connected to a Wi-Fi or if the SSID could not be determined. </dd></dl>
-
-</div>
-</div>
-<a id="ade4031bdd763bd2993417aab1f98f4e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade4031bdd763bd2993417aab1f98f4e4">&#9670;&nbsp;</a></span>globalInstance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="classMobileAdaptor.html">MobileAdaptor</a>* MobileAdaptor::globalInstance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pointer to static instance. </p>
-<p>This method returns a pointer to a static instance of this class. In rare situations, during shutdown of the app, a nullptr might be returned.</p>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to a static instance of this class </dd></dl>
 
 </div>
 </div>

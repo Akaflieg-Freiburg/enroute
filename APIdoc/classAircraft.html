@@ -43,6 +43,7 @@ $(function() {
   <div class="summary">
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classAircraft-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -99,6 +100,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad936b67a975a06e8570d740cbc9c6835"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAircraft.html#ad936b67a975a06e8570d740cbc9c6835">setFuelConsumptionInLPH</a> (double <a class="el" href="classAircraft.html#a6a814da51f9d05a120ecb76e0dd3ba2d">fuelConsumptionInLPH</a>)</td></tr>
 <tr class="memdesc:ad936b67a975a06e8570d740cbc9c6835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classAircraft.html#ad936b67a975a06e8570d740cbc9c6835">More...</a><br /></td></tr>
 <tr class="separator:ad936b67a975a06e8570d740cbc9c6835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:afc86e741e93cc59c331ad91acc1daafd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classAircraft.html">Aircraft</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAircraft.html#afc86e741e93cc59c331ad91acc1daafd">globalInstance</a> ()</td></tr>
+<tr class="memdesc:afc86e741e93cc59c331ad91acc1daafd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance of this class.  <a href="classAircraft.html#afc86e741e93cc59c331ad91acc1daafd">More...</a><br /></td></tr>
+<tr class="separator:afc86e741e93cc59c331ad91acc1daafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -289,7 +296,35 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property fuelConsumptionInLPH </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00174">174</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00180">180</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+
+</div>
+</div>
+<a id="afc86e741e93cc59c331ad91acc1daafd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc86e741e93cc59c331ad91acc1daafd">&#9670;&nbsp;</a></span>globalInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classAircraft.html">Aircraft</a>* Aircraft::globalInstance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to static instance of this class. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to global instance </dd></dl>
 
 </div>
 </div>
@@ -452,7 +487,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Cruise Speed. </p>
 <p>This property holds the cruise speed of the aircraft. This is a double number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if the cruise speed has not been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00096">96</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00102">102</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -479,7 +514,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Cruise Speed. </p>
 <p>This property holds the cruise speed of the aircraft. This is a double number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if the cruise speed has not been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00072">72</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00078">78</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -506,7 +541,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Decent Speed. </p>
 <p>This property holds the descent speed of the aircraft. This is a number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if the cruise speed has not been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00144">144</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00150">150</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -533,7 +568,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Decent Speed. </p>
 <p>This property holds the descent speed of the aircraft. This is a number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if the cruise speed has not been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00120">120</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00126">126</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -560,7 +595,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Fuel Consumption. </p>
 <p>This property holds the fuel consumption of the aircraft. This is a number that lies in the interval [minFuelConsumption, maxFuelConsumption] or NaN if no value has been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00168">168</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00174">174</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>

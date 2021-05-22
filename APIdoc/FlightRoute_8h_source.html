@@ -87,7 +87,7 @@ $(function() {
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">class </span>Waypoint;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span><a class="code" href="classGlobalSettings.html">GlobalSettings</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span><a class="code" href="classSettings.html">Settings</a>;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classFlightRoute.html">   55</a></span>&#160;<span class="keyword">class </span><a class="code" href="classFlightRoute.html">FlightRoute</a> : <span class="keyword">public</span> QObject</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
@@ -96,171 +96,169 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">class </span><a class="code" href="classFlightRoute_1_1Leg.html">Leg</a>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classFlightRoute.html#a22be34debf6ff6315399b81f1a3c6f4d">FlightRoute</a>(<a class="code" href="classAircraft.html">Aircraft</a> *aircraft, <a class="code" href="classWeather_1_1Wind.html">Weather::Wind</a> *wind, QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classFlightRoute.html#a18aeefd302a3790d109e799afc749acf">FlightRoute</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// Standard destructor</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    ~<a class="code" href="classFlightRoute.html">FlightRoute</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// METHODS</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    ~<a class="code" href="classFlightRoute.html">FlightRoute</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// METHODS</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#aca548abdc9040b896c87a510e157dfe9">append</a>(QObject *waypoint);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#aca548abdc9040b896c87a510e157dfe9">append</a>(QObject *waypoint);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#aca548abdc9040b896c87a510e157dfe9">append</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#aca548abdc9040b896c87a510e157dfe9">append</a>(<span class="keyword">const</span> QGeoCoordinate&amp; position);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    QGeoRectangle <a class="code" href="classFlightRoute.html#a6b38548aea0afde11992299295539a4e">boundingRectangle</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    QGeoRectangle <a class="code" href="classFlightRoute.html#a6b38548aea0afde11992299295539a4e">boundingRectangle</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classFlightRoute.html#a6c42132d3b221a280085c885604636a9">canAppend</a>(<a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> *other) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classFlightRoute.html#a6c42132d3b221a280085c885604636a9">canAppend</a>(<a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> *other) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classFlightRoute.html#a0d956b2cdac3b3d7ab442224b4994833">contains</a>(QObject * waypoint) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#aa5c5d4cd6c553a7c87cb2247024bb8d3">loadFromGeoJSON</a>(QString fileName);</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#aa579646d7ae5be93327f0eab6722b609">loadFromGpx</a>(<span class="keyword">const</span> QString&amp; fileName, <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *geoMapProvider);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    QString <a class="code" href="classFlightRoute.html#aa579646d7ae5be93327f0eab6722b609">loadFromGpx</a>(<span class="keyword">const</span> QByteArray&amp; data, <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *geoMapProvider);</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    QString <a class="code" href="classFlightRoute.html#aa579646d7ae5be93327f0eab6722b609">loadFromGpx</a>(QXmlStreamReader&amp; xml, <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *geoMapProvider);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45">save</a>(<span class="keyword">const</span> QString&amp; fileName=QString()) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#a973b956dfacb7c5411d5019d19826200">suggestedFilename</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    Q_INVOKABLE QByteArray <a class="code" href="classFlightRoute.html#aeb30c437232364e41707e25e0aa13f1c">toGeoJSON</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    Q_INVOKABLE QByteArray <a class="code" href="classFlightRoute.html#a067023180a536d6fced08c68b077e202">toGpx</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classFlightRoute.html#a0d956b2cdac3b3d7ab442224b4994833">contains</a>(QObject * waypoint) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keyword">static</span> <a class="code" href="classFlightRoute.html">FlightRoute</a>* <a class="code" href="classFlightRoute.html#ad8e54be355f1db825ee51baf831231cc">globalInstance</a>();</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#aa5c5d4cd6c553a7c87cb2247024bb8d3">loadFromGeoJSON</a>(QString fileName);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#aa579646d7ae5be93327f0eab6722b609">loadFromGpx</a>(<span class="keyword">const</span> QString&amp; fileName, <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *geoMapProvider);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    QString <a class="code" href="classFlightRoute.html#aa579646d7ae5be93327f0eab6722b609">loadFromGpx</a>(<span class="keyword">const</span> QByteArray&amp; data, <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *geoMapProvider);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    QString <a class="code" href="classFlightRoute.html#aa579646d7ae5be93327f0eab6722b609">loadFromGpx</a>(QXmlStreamReader&amp; xml, <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *geoMapProvider);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45">save</a>(<span class="keyword">const</span> QString&amp; fileName=QString()) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    Q_INVOKABLE QString <a class="code" href="classFlightRoute.html#a973b956dfacb7c5411d5019d19826200">suggestedFilename</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    Q_INVOKABLE QByteArray <a class="code" href="classFlightRoute.html#aeb30c437232364e41707e25e0aa13f1c">toGeoJSON</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    Q_INVOKABLE QByteArray <a class="code" href="classFlightRoute.html#a067023180a536d6fced08c68b077e202">toGpx</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="comment">// PROPERTIES</span></div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// PROPERTIES</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">  239</a></span>&#160;    Q_PROPERTY(QObject* <a class="code" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">firstWaypointObject</a> READ <a class="code" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">firstWaypointObject</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    QObject* <a class="code" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">firstWaypointObject</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">  254</a></span>&#160;    Q_PROPERTY(QVariantList <a class="code" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">geoPath</a> READ <a class="code" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">geoPath</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    QVariantList <a class="code" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">geoPath</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">  263</a></span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">isEmpty</a> READ <a class="code" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">isEmpty</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    </div>
-<div class="line"><a name="l00269"></a><span class="lineno"><a class="line" href="classFlightRoute.html#ae2e9f5e7c09514c6d2d23416fc0249c0">  269</a></span>&#160;    bool <a class="code" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">isEmpty</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _waypoints.isEmpty();}</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno"><a class="line" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">  280</a></span>&#160;    Q_PROPERTY(QObject* <a class="code" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">lastWaypointObject</a> READ <a class="code" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">lastWaypointObject</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    QObject* <a class="code" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">lastWaypointObject</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
-<div class="line"><a name="l00293"></a><span class="lineno"><a class="line" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">  293</a></span>&#160;    Q_PROPERTY(QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">midFieldWaypoints</a> READ <a class="code" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">midFieldWaypoints</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">midFieldWaypoints</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">  308</a></span>&#160;    Q_PROPERTY(QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">routeObjects</a> READ <a class="code" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">routeObjects</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    </div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">routeObjects</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">  317</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">summary</a> READ <a class="code" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">summary</a> NOTIFY <a class="code" href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">summaryChanged</a>)</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    QString <a class="code" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">summary</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">  326</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">summaryMetric</a> READ <a class="code" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">summaryMetric</a> NOTIFY <a class="code" href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">summaryChanged</a>)</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    QString <a class="code" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">summaryMetric</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a2f3a81f4bbeca5da03a967694b3d28b0">clear</a>();</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a721853b917836a6e19689422e492401d">moveDown</a>(QObject *waypoint);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#aed42ea2da68a461c35f03bdf88449790">moveUp</a>(QObject *waypoint);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160; </div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a8ba3fdbcb3fa1dcac7d6278a463c486e">removeWaypoint</a>(QObject *waypoint);</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a46cfd0c57362a488960b4ff2ce4573b7">reverse</a>();</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;signals:</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>();</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">summaryChanged</a>();</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="comment">// Saves the route into the file stdFileName. This slot is called whenever</span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="comment">// the route changes, so that the file will always contain the current</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="comment">// route.</span></div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keywordtype">void</span> saveToStdLocation() { <a class="code" href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45">save</a>(stdFileName); };</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">  237</a></span>&#160;    Q_PROPERTY(QObject* <a class="code" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">firstWaypointObject</a> READ <a class="code" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">firstWaypointObject</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    QObject* <a class="code" href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">firstWaypointObject</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">  252</a></span>&#160;    Q_PROPERTY(QVariantList <a class="code" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">geoPath</a> READ <a class="code" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">geoPath</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    QVariantList <a class="code" href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">geoPath</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">  261</a></span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">isEmpty</a> READ <a class="code" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">isEmpty</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    </div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classFlightRoute.html#ae2e9f5e7c09514c6d2d23416fc0249c0">  267</a></span>&#160;    bool <a class="code" href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">isEmpty</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _waypoints.isEmpty();}</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno"><a class="line" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">  278</a></span>&#160;    Q_PROPERTY(QObject* <a class="code" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">lastWaypointObject</a> READ <a class="code" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">lastWaypointObject</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    QObject* <a class="code" href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">lastWaypointObject</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
+<div class="line"><a name="l00291"></a><span class="lineno"><a class="line" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">  291</a></span>&#160;    Q_PROPERTY(QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">midFieldWaypoints</a> READ <a class="code" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">midFieldWaypoints</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">midFieldWaypoints</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">  306</a></span>&#160;    Q_PROPERTY(QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">routeObjects</a> READ <a class="code" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">routeObjects</a> NOTIFY <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>)</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    QList&lt;QObject*&gt; <a class="code" href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">routeObjects</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
+<div class="line"><a name="l00315"></a><span class="lineno"><a class="line" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">  315</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">summary</a> READ <a class="code" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">summary</a> NOTIFY <a class="code" href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">summaryChanged</a>)</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    QString <a class="code" href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">summary</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
+<div class="line"><a name="l00324"></a><span class="lineno"><a class="line" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">  324</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">summaryMetric</a> READ <a class="code" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">summaryMetric</a> NOTIFY <a class="code" href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">summaryChanged</a>)</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    QString <a class="code" href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">summaryMetric</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a2f3a81f4bbeca5da03a967694b3d28b0">clear</a>();</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a721853b917836a6e19689422e492401d">moveDown</a>(QObject *waypoint);</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#aed42ea2da68a461c35f03bdf88449790">moveUp</a>(QObject *waypoint);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a8ba3fdbcb3fa1dcac7d6278a463c486e">removeWaypoint</a>(QObject *waypoint);</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a46cfd0c57362a488960b4ff2ce4573b7">reverse</a>();</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;signals:</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">waypointsChanged</a>();</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">summaryChanged</a>();</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="comment">// Saves the route into the file stdFileName. This slot is called whenever</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="comment">// the route changes, so that the file will always contain the current</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="comment">// route.</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keywordtype">void</span> saveToStdLocation() { <a class="code" href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45">save</a>(stdFileName); };</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keywordtype">void</span> updateLegs();</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; </div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keywordtype">void</span> updateLegs();</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classFlightRoute.html">FlightRoute</a>)</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="comment">// Helper function for method toGPX</span></div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    QString gpxElements(<span class="keyword">const</span> QString&amp; indent, <span class="keyword">const</span> QString&amp; tag) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="comment">// Helper function for creating the flight route summary</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    QString makeSummary(<span class="keywordtype">bool</span> inMetricUnits) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="comment">// File name where the flight route is loaded upon startup are stored.  This</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">// member is filled in in the constructor to</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="comment">// QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +</span></div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="comment">// &quot;/flight route.geojson&quot;</span></div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    QString stdFileName;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classFlightRoute.html">FlightRoute</a>)</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="comment">// Helper function for method toGPX</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    QString gpxElements(<span class="keyword">const</span> QString&amp; indent, <span class="keyword">const</span> QString&amp; tag) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; </div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="comment">// Helper function for creating the flight route summary</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    QString makeSummary(<span class="keywordtype">bool</span> inMetricUnits) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="comment">// File name where the flight route is loaded upon startup are stored.  This</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="comment">// member is filled in in the constructor to</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="comment">// QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">// &quot;/flight route.geojson&quot;</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    QString stdFileName;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; </div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::Waypoint&gt;&gt; _waypoints;</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::Waypoint&gt;&gt; _waypoints;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    QVector&lt;Leg*&gt; _legs;</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    QVector&lt;Leg*&gt; _legs;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    QPointer&lt;Aircraft&gt; _aircraft {<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    QPointer&lt;Weather::Wind&gt; _wind {<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    QLocale myLocale;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;};</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="preprocessor">#include &quot;FlightRoute_Leg.h&quot;</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    QLocale myLocale;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;};</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160; </div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="preprocessor">#include &quot;FlightRoute_Leg.h&quot;</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassFlightRoute_html_a0d956b2cdac3b3d7ab442224b4994833"><div class="ttname"><a href="classFlightRoute.html#a0d956b2cdac3b3d7ab442224b4994833">FlightRoute::contains</a></div><div class="ttdeci">Q_INVOKABLE bool contains(QObject *waypoint) const</div><div class="ttdoc">Returns true if waypoint is in this route.</div></div>
+<div class="ttc" id="aclassSettings_html"><div class="ttname"><a href="classSettings.html">Settings</a></div><div class="ttdoc">Global Settings Manager.</div><div class="ttdef"><b>Definition:</b> <a href="Settings_8h_source.html#l00043">Settings.h:43</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_a067023180a536d6fced08c68b077e202"><div class="ttname"><a href="classFlightRoute.html#a067023180a536d6fced08c68b077e202">FlightRoute::toGpx</a></div><div class="ttdeci">Q_INVOKABLE QByteArray toGpx() const</div><div class="ttdoc">Exports to route to GPX.</div></div>
-<div class="ttc" id="aclassFlightRoute_html_a22be34debf6ff6315399b81f1a3c6f4d"><div class="ttname"><a href="classFlightRoute.html#a22be34debf6ff6315399b81f1a3c6f4d">FlightRoute::FlightRoute</a></div><div class="ttdeci">FlightRoute(Aircraft *aircraft, Weather::Wind *wind, QObject *parent=nullptr)</div><div class="ttdoc">Construct a flight route.</div></div>
-<div class="ttc" id="aclassFlightRoute_html_a12d7fd6da77bc28d09057aaad504911e"><div class="ttname"><a href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">FlightRoute::isEmpty</a></div><div class="ttdeci">bool isEmpty</div><div class="ttdoc">True if the list of waypoints is empty.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00263">FlightRoute.h:263</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_a18aeefd302a3790d109e799afc749acf"><div class="ttname"><a href="classFlightRoute.html#a18aeefd302a3790d109e799afc749acf">FlightRoute::FlightRoute</a></div><div class="ttdeci">FlightRoute(QObject *parent=nullptr)</div><div class="ttdoc">Construct a flight route.</div></div>
+<div class="ttc" id="aclassFlightRoute_html_a12d7fd6da77bc28d09057aaad504911e"><div class="ttname"><a href="classFlightRoute.html#a12d7fd6da77bc28d09057aaad504911e">FlightRoute::isEmpty</a></div><div class="ttdeci">bool isEmpty</div><div class="ttdoc">True if the list of waypoints is empty.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00261">FlightRoute.h:261</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_a6c42132d3b221a280085c885604636a9"><div class="ttname"><a href="classFlightRoute.html#a6c42132d3b221a280085c885604636a9">FlightRoute::canAppend</a></div><div class="ttdeci">Q_INVOKABLE bool canAppend(GeoMaps::Waypoint *other) const</div><div class="ttdoc">Checks if other waypoint can be added as the new end of this route.</div></div>
-<div class="ttc" id="aclassFlightRoute_html_ad04a462ef8756d6388d753960fab8d94"><div class="ttname"><a href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">FlightRoute::midFieldWaypoints</a></div><div class="ttdeci">QList&lt; QObject * &gt; midFieldWaypoints</div><div class="ttdoc">List of waypoints in the flight route that are not airfields.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00293">FlightRoute.h:293</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_ad04a462ef8756d6388d753960fab8d94"><div class="ttname"><a href="classFlightRoute.html#ad04a462ef8756d6388d753960fab8d94">FlightRoute::midFieldWaypoints</a></div><div class="ttdeci">QList&lt; QObject * &gt; midFieldWaypoints</div><div class="ttdoc">List of waypoints in the flight route that are not airfields.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00291">FlightRoute.h:291</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_a721853b917836a6e19689422e492401d"><div class="ttname"><a href="classFlightRoute.html#a721853b917836a6e19689422e492401d">FlightRoute::moveDown</a></div><div class="ttdeci">void moveDown(QObject *waypoint)</div><div class="ttdoc">Move waypoint one position down in the list of waypoints.</div></div>
-<div class="ttc" id="aclassFlightRoute_html_a0164ba356e6d88b57b42c877d98f09d1"><div class="ttname"><a href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">FlightRoute::routeObjects</a></div><div class="ttdeci">QList&lt; QObject * &gt; routeObjects</div><div class="ttdoc">List of waypoints and legs.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00308">FlightRoute.h:308</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_a0164ba356e6d88b57b42c877d98f09d1"><div class="ttname"><a href="classFlightRoute.html#a0164ba356e6d88b57b42c877d98f09d1">FlightRoute::routeObjects</a></div><div class="ttdeci">QList&lt; QObject * &gt; routeObjects</div><div class="ttdoc">List of waypoints and legs.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00306">FlightRoute.h:306</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html"><div class="ttname"><a href="classFlightRoute.html">FlightRoute</a></div><div class="ttdoc">Intended flight route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00055">FlightRoute.h:55</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_a93400741ed4414c8ab795042baec0564"><div class="ttname"><a href="classFlightRoute.html#a93400741ed4414c8ab795042baec0564">FlightRoute::waypointsChanged</a></div><div class="ttdeci">void waypointsChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
 <div class="ttc" id="aclassFlightRoute_1_1Leg_html"><div class="ttname"><a href="classFlightRoute_1_1Leg.html">FlightRoute::Leg</a></div><div class="ttdoc">Leg in a flight route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute__Leg_8h_source.html#l00032">FlightRoute_Leg.h:32</a></div></div>
-<div class="ttc" id="aclassFlightRoute_html_a600fedadad874336f46ecdf66100cabc"><div class="ttname"><a href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">FlightRoute::geoPath</a></div><div class="ttdeci">QVariantList geoPath</div><div class="ttdoc">List of coordinates for the waypoints.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00254">FlightRoute.h:254</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_a600fedadad874336f46ecdf66100cabc"><div class="ttname"><a href="classFlightRoute.html#a600fedadad874336f46ecdf66100cabc">FlightRoute::geoPath</a></div><div class="ttdeci">QVariantList geoPath</div><div class="ttdoc">List of coordinates for the waypoints.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00252">FlightRoute.h:252</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_aa579646d7ae5be93327f0eab6722b609"><div class="ttname"><a href="classFlightRoute.html#aa579646d7ae5be93327f0eab6722b609">FlightRoute::loadFromGpx</a></div><div class="ttdeci">Q_INVOKABLE QString loadFromGpx(const QString &amp;fileName, GeoMaps::GeoMapProvider *geoMapProvider)</div><div class="ttdoc">Loads the route from a GPX document.</div></div>
 <div class="ttc" id="aclassFlightRoute_html_a46cfd0c57362a488960b4ff2ce4573b7"><div class="ttname"><a href="classFlightRoute.html#a46cfd0c57362a488960b4ff2ce4573b7">FlightRoute::reverse</a></div><div class="ttdeci">void reverse()</div><div class="ttdoc">Reverse the route.</div></div>
 <div class="ttc" id="aclassFlightRoute_html_aa5c5d4cd6c553a7c87cb2247024bb8d3"><div class="ttname"><a href="classFlightRoute.html#aa5c5d4cd6c553a7c87cb2247024bb8d3">FlightRoute::loadFromGeoJSON</a></div><div class="ttdeci">Q_INVOKABLE QString loadFromGeoJSON(QString fileName)</div><div class="ttdoc">Loads the route from a GeoJSON document.</div></div>
 <div class="ttc" id="aclassFlightRoute_html_a973b956dfacb7c5411d5019d19826200"><div class="ttname"><a href="classFlightRoute.html#a973b956dfacb7c5411d5019d19826200">FlightRoute::suggestedFilename</a></div><div class="ttdeci">Q_INVOKABLE QString suggestedFilename() const</div><div class="ttdoc">Suggests a name for saving this route.</div></div>
-<div class="ttc" id="aclassFlightRoute_html_aca8ba682714c76bac9d3512ce0e8bb7d"><div class="ttname"><a href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">FlightRoute::summaryMetric</a></div><div class="ttdeci">QString summaryMetric</div><div class="ttdoc">Human-readable summary of the flight route in metric values.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00326">FlightRoute.h:326</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_aca8ba682714c76bac9d3512ce0e8bb7d"><div class="ttname"><a href="classFlightRoute.html#aca8ba682714c76bac9d3512ce0e8bb7d">FlightRoute::summaryMetric</a></div><div class="ttdeci">QString summaryMetric</div><div class="ttdoc">Human-readable summary of the flight route in metric values.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00324">FlightRoute.h:324</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_a2f3a81f4bbeca5da03a967694b3d28b0"><div class="ttname"><a href="classFlightRoute.html#a2f3a81f4bbeca5da03a967694b3d28b0">FlightRoute::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Deletes all waypoints in the current route.</div></div>
-<div class="ttc" id="aclassAircraft_html"><div class="ttname"><a href="classAircraft.html">Aircraft</a></div><div class="ttdoc">This extremely simple class holds a few numbers that describe an aircraft.</div><div class="ttdef"><b>Definition:</b> <a href="Aircraft_8h_source.html#l00031">Aircraft.h:31</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_a6b38548aea0afde11992299295539a4e"><div class="ttname"><a href="classFlightRoute.html#a6b38548aea0afde11992299295539a4e">FlightRoute::boundingRectangle</a></div><div class="ttdeci">QGeoRectangle boundingRectangle() const</div></div>
 <div class="ttc" id="aclassFlightRoute_html_a8ba3fdbcb3fa1dcac7d6278a463c486e"><div class="ttname"><a href="classFlightRoute.html#a8ba3fdbcb3fa1dcac7d6278a463c486e">FlightRoute::removeWaypoint</a></div><div class="ttdeci">void removeWaypoint(QObject *waypoint)</div><div class="ttdoc">Remove waypoint from the current route.</div></div>
 <div class="ttc" id="aclassFlightRoute_html_aeb30c437232364e41707e25e0aa13f1c"><div class="ttname"><a href="classFlightRoute.html#aeb30c437232364e41707e25e0aa13f1c">FlightRoute::toGeoJSON</a></div><div class="ttdeci">Q_INVOKABLE QByteArray toGeoJSON() const</div><div class="ttdoc">Exports to route to GeoJSON.</div></div>
-<div class="ttc" id="aclassFlightRoute_html_a68ec6f6145c92e8c8826f94b57b60d9e"><div class="ttname"><a href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">FlightRoute::firstWaypointObject</a></div><div class="ttdeci">QObject firstWaypointObject</div><div class="ttdoc">First waypoint in the route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00239">FlightRoute.h:239</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_a68ec6f6145c92e8c8826f94b57b60d9e"><div class="ttname"><a href="classFlightRoute.html#a68ec6f6145c92e8c8826f94b57b60d9e">FlightRoute::firstWaypointObject</a></div><div class="ttdeci">QObject firstWaypointObject</div><div class="ttdoc">First waypoint in the route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00237">FlightRoute.h:237</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_aca548abdc9040b896c87a510e157dfe9"><div class="ttname"><a href="classFlightRoute.html#aca548abdc9040b896c87a510e157dfe9">FlightRoute::append</a></div><div class="ttdeci">Q_INVOKABLE void append(QObject *waypoint)</div><div class="ttdoc">Adds a waypoint to the end of the route.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a></div><div class="ttdoc">Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00068">GeoMapProvider.h:68</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_aed42ea2da68a461c35f03bdf88449790"><div class="ttname"><a href="classFlightRoute.html#aed42ea2da68a461c35f03bdf88449790">FlightRoute::moveUp</a></div><div class="ttdeci">void moveUp(QObject *waypoint)</div><div class="ttdoc">Move waypoint one position up in the list of waypoints.</div></div>
-<div class="ttc" id="aclassGlobalSettings_html"><div class="ttname"><a href="classGlobalSettings.html">GlobalSettings</a></div><div class="ttdoc">Global Settings Manager.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalSettings_8h_source.html#l00043">GlobalSettings.h:43</a></div></div>
-<div class="ttc" id="aclassFlightRoute_html_a916a9b5b5aac80891bb04d85810c24f9"><div class="ttname"><a href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">FlightRoute::summary</a></div><div class="ttdeci">QString summary</div><div class="ttdoc">Human-readable summary of the flight route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00317">FlightRoute.h:317</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_a916a9b5b5aac80891bb04d85810c24f9"><div class="ttname"><a href="classFlightRoute.html#a916a9b5b5aac80891bb04d85810c24f9">FlightRoute::summary</a></div><div class="ttdeci">QString summary</div><div class="ttdoc">Human-readable summary of the flight route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00315">FlightRoute.h:315</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_abd18ca1069b865d47a25fe95741d0c45"><div class="ttname"><a href="classFlightRoute.html#abd18ca1069b865d47a25fe95741d0c45">FlightRoute::save</a></div><div class="ttdeci">Q_INVOKABLE QString save(const QString &amp;fileName=QString()) const</div><div class="ttdoc">Saves flight route to a file.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a></div><div class="ttdoc">Waypoint, such as an airfield, a navaid station or a reporting point.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00060">Waypoint.h:60</a></div></div>
-<div class="ttc" id="aclassFlightRoute_html_ade91f0b81b6223bfc046bc2d9a610507"><div class="ttname"><a href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">FlightRoute::lastWaypointObject</a></div><div class="ttdeci">QObject lastWaypointObject</div><div class="ttdoc">Last waypoint in the route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00280">FlightRoute.h:280</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_ade91f0b81b6223bfc046bc2d9a610507"><div class="ttname"><a href="classFlightRoute.html#ade91f0b81b6223bfc046bc2d9a610507">FlightRoute::lastWaypointObject</a></div><div class="ttdeci">QObject lastWaypointObject</div><div class="ttdoc">Last waypoint in the route.</div><div class="ttdef"><b>Definition:</b> <a href="FlightRoute_8h_source.html#l00278">FlightRoute.h:278</a></div></div>
 <div class="ttc" id="aclassFlightRoute_html_a9b58405293a3254f971e047d2c683b7f"><div class="ttname"><a href="classFlightRoute.html#a9b58405293a3254f971e047d2c683b7f">FlightRoute::summaryChanged</a></div><div class="ttdeci">void summaryChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html"><div class="ttname"><a href="classWeather_1_1Wind.html">Weather::Wind</a></div><div class="ttdoc">This extremely simple class holds the wind speed and direction.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00049">Wind.h:49</a></div></div>
+<div class="ttc" id="aclassFlightRoute_html_ad8e54be355f1db825ee51baf831231cc"><div class="ttname"><a href="classFlightRoute.html#ad8e54be355f1db825ee51baf831231cc">FlightRoute::globalInstance</a></div><div class="ttdeci">static FlightRoute * globalInstance()</div><div class="ttdoc">Pointer to static instance of this class.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

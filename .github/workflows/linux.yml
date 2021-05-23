@@ -19,7 +19,7 @@ jobs:
         version: '5.15.2'
     - name: Install Additional Software
       run: |
-        sudo apt install doxygen graphviz
+        sudo apt install doxygen  extra-cmake-modules graphviz libkf5notifications-dev
     - name: Configure
       run: |
         export CC=/usr/bin/clang

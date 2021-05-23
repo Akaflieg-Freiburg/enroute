@@ -64,12 +64,7 @@ GeoMaps::GeoMapProvider::~GeoMapProvider()
     QMutexLocker lock(&_aviationDataMutex);
 
     _airspaces_.clear();
-
-    foreach(auto waypoint, _waypoints_) {
-        delete waypoint;
-    }
     _waypoints_.clear();
-
 }
 
 

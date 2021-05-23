@@ -33,6 +33,7 @@
 #include "Librarian.h"
 #include "MapManager.h"
 #include "Settings.h"
+#include "SimpleWaypoint.h"
 #include "TileServer.h"
 #include "Waypoint.h"
 
@@ -241,7 +242,7 @@ public:
      * @returns a list of all waypoints known to this GeoMapProvider (that is,
      * the union of all waypoints in any of the installed maps)
      */
-    QVector<QPointer<Waypoint>> waypoints() {
+    QVector<SimpleWaypoint> waypoints() {
         QMutexLocker locker(&_aviationDataMutex);
         return _waypoints_;
     }
@@ -314,7 +315,7 @@ private:
     // protected by this mutex.
     QMutex           _aviationDataMutex;
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
-    QVector<QPointer<Waypoint>> _waypoints_;       // Cache: Waypoints
+    QVector<SimpleWaypoint> _waypoints_;       // Cache: Waypoints
     QVector<Airspace> _airspaces_;       // Cache: Airspaces
 };
 

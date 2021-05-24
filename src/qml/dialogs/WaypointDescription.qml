@@ -45,7 +45,7 @@ Dialog {
         co.children = {}
 
         // If no waypoint is given, then do nothing
-        if (!waypoint.isValid())
+        if (!waypoint.isValid)
             return
 
         // Create METAR info box
@@ -63,29 +63,6 @@ Dialog {
 
     }
 
-    /*
-    onWaypointChanged: {
-        // Delete old text items
-        co.children = {}
-
-        // If no waypoint is given, then do nothing
-        if (waypoint === null)
-            return
-
-        // Create METAR info box
-        metarInfo.createObject(co);
-
-        // Create waypoint description items
-        var pro = waypoint.tabularDescription
-        for (var j in pro)
-            waypointPropertyDelegate.createObject(co, {text: pro[j]});
-
-        // Create airspace description items
-        var asl = geoMapProvider.airspaces(waypoint.coordinate)
-        for (var i in asl)
-            airspaceDelegate.createObject(co, {airspace: asl[i]});
-    }
-*/
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(Overlay.overlay.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
@@ -105,10 +82,8 @@ Dialog {
         id: metarInfo
 
         Label { // METAR info
-            visible: (waypoint !== null) && (waypoint.hasMETAR || waypoint.hasTAF)
+            visible: waypoint.hasMETAR || waypoint.hasTAF
             text: {
-                if (waypoint === null)
-                    return ""
                 if (waypoint.hasMETAR)
                     return waypoint.weatherStation.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
@@ -128,7 +103,7 @@ Dialog {
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: ((waypoint !== null) && waypoint.hasMETAR) ? waypoint.weatherStation.metar.flightCategoryColor : "transparent"
+                color: waypoint.hasMETAR ? waypoint.weatherStation.metar.flightCategoryColor : "transparent"
                 opacity: 0.2
             }
 
@@ -322,11 +297,11 @@ Dialog {
             Layout.fillWidth: true
 
             Icon {
-                source: (waypoint !== null) ? waypoint.icon : "/icons/waypoints/WP.svg"
+                source: waypoint.icon
             }
 
             Label {
-                text: (waypoint !== null) ? waypoint.extendedName : ""
+                text: waypoint.extendedName
                 font.bold: true
                 font.pixelSize: 1.2*Qt.application.font.pixelSize
                 Layout.fillWidth: true
@@ -336,7 +311,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (waypoint !== null) ? waypoint.wayTo(positionProvider.positionInfo.coordinate(), global.settings().useMetricUnits) : ""
+            text: waypoint.wayTo(positionProvider.positionInfo.coordinate(), global.settings().useMetricUnits)
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -400,7 +375,7 @@ Dialog {
                 // when flight route changes
                 flightRoute.lastWaypointObject
 
-                return (waypoint !== null) && flightRoute.canAppend(waypoint)
+                return flightRoute.canAppend(waypoint)
             }
             icon.source: "/icons/material/ic_add_circle.svg"
             onClicked: {
@@ -472,6 +447,6 @@ Dialog {
 
     WeatherReport {
         id: weatherReport
-        weatherStation: (waypoint !== null) ? waypoint.weatherStation : null
+        weatherStation: waypoint.weatherStation
     }
 } // Dialog

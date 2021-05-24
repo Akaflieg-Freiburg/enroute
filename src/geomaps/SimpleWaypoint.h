@@ -121,7 +121,7 @@ public:
      *
      *  @returns True if distance can be computed and is less than 2km
      */
-    bool isNear(const SimpleWaypoint *other) const;
+    Q_INVOKABLE bool isNear(const SimpleWaypoint *other) const;
 
     /*! \brief Retrieve property by name
      *
@@ -228,7 +228,7 @@ public:
      */
     Q_INVOKABLE QString twoLineTitle() const;
 
-private:
+protected:
     QGeoCoordinate _coordinate;
     QMultiMap<QString, QVariant> _properties;
 };

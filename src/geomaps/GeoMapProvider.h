@@ -109,9 +109,10 @@ public:
      * flight route are also searched for nearby waypoints. (Note: This should be
      * of type "const FlightRoute*", but QML cannot handle const)
      *
-     * @returns the Waypoint that is closest to the given position, provided
+     * @returns The Waypoint that is closest to the given position, provided
      * that the distance is not bigger than that to distPosition. If no
-     * sufficiently close waypoint is found, an invalid SimpleWaypoint.
+     * sufficiently close waypoint is found, a generric SimpleWaypoint with the
+     * appropriate coordinate is returned.
      */
     Q_INVOKABLE GeoMaps::SimpleWaypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute=nullptr);
 
@@ -172,7 +173,7 @@ public:
      * in QML.
      */
 #warning maybe want qvector
-    Q_INVOKABLE QList<SimpleWaypoint> filteredWaypointObjects(const QString &filter);
+    Q_INVOKABLE QList<GeoMaps::SimpleWaypoint> filteredWaypointObjects(const QString &filter);
 
     /*! Find a waypoint by its ICAO code
      *
@@ -218,7 +219,7 @@ public:
      * elements of type Waypoint*, but elements of type QObject*
      */
 #warning want vector
-    Q_INVOKABLE QList<SimpleWaypoint> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
+    Q_INVOKABLE QList<GeoMaps::SimpleWaypoint> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
     /*! \brief URL where a style file for the base map can be retrieved
      *

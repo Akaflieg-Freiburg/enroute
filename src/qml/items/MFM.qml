@@ -380,14 +380,7 @@ Item {
                 var wp = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
                                                         flightRoute)
-                if (wp !== null) {
-                    waypointDescription.setWaypoint(wp)
-                } else {
-                    var waypointTemplate = geoMapProvider.createWaypoint()
-                    waypointTemplate.parent = flightMap
-                    waypointTemplate.coordinate = flightMap.toCoordinate(Qt.point(mouse.x,mouse.y))
-                    waypointDescription.waypoint = waypointTemplate
-                }
+                waypointDescription.setWaypoint(wp)
                 waypointDescription.open()
             }
         }

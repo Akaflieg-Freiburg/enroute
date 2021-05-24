@@ -98,35 +98,37 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
 
     // Make a list of all waypoints that can be relevant
     auto wps = waypoints();
-#warning Need to take flight route into account
-    /*
-    if (flightRoute != nullptr) {
-        foreach( auto objectPtr, flightRoute->midFieldWaypoints() ) {
-            auto *wp = qobject_cast<Waypoint*>(objectPtr);
-            if (wp != nullptr) {
-                wps << wp;
-            }
-        }
-    }
-    */
 
-    // No waypoints? Then return!
-    if (wps.isEmpty()) {
-        return {};
-    }
-
-    auto result = wps[0];
-    foreach(auto wp, wps) {
+    SimpleWaypoint result;
+    foreach(auto wp, waypoints()) {
         if (!wp.isValid()) {
             continue;
+        }
+        if (!result.isValid()) {
+            result = wp;
         }
         if (position.distanceTo(wp.coordinate()) < position.distanceTo(result.coordinate())) {
             result = wp;
         }
     }
 
+#warning
+/*
+    if (flightRoute != nullptr) {
+        foreach( auto objectPtr, flightRoute->midFieldWaypoints() ) {
+            auto *wp = qobject_cast<Waypoint*>(objectPtr);
+            if (wp == nullptr) {
+                continue;
+            }
+            if (!wp->isValid()) {
+                continue;
+            }
+
+        }
+    }
+*/
     if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
-        return {};
+        return SimpleWaypoint(position);
     }
 
     return result;

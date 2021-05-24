@@ -34,22 +34,22 @@ GeoMaps::Waypoint::Waypoint(QObject *parent)
 
 
 GeoMaps::Waypoint::Waypoint(const Waypoint &other, QObject *parent)
-    : QObject(parent),
-
-      _coordinate(other._coordinate),
-      _properties(other._properties)
+    : QObject(parent)
 {
+    _coordinate = other._coordinate;
+    _properties = other._properties;
+
     // Initialize connections
     setDownloadManager(other._downloadManager);
 }
 
 
 GeoMaps::Waypoint::Waypoint(const SimpleWaypoint &other, QObject *parent)
-    : QObject(parent),
-
-      _coordinate(other._coordinate),
-      _properties(other._properties)
+    : QObject(parent)
 {
+    _coordinate = other._coordinate;
+    _properties = other._properties;
+
 }
 
 void GeoMaps::Waypoint::copyFrom(const SimpleWaypoint &other)
@@ -66,9 +66,9 @@ void GeoMaps::Waypoint::copyFrom(const SimpleWaypoint &other)
 
 
 GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
-    : QObject(parent),
-      _coordinate(coordinate)
+    : QObject(parent)
 {
+    _coordinate = coordinate;
     _properties.insert("CAT", QString("WP"));
     _properties.insert("NAM", QString("Waypoint"));
     _properties.insert("TYP", QString("WP"));
@@ -113,39 +113,10 @@ GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject, QObject *parent)
 }
 
 
-//
-// METHODS
-//
-
-auto GeoMaps::Waypoint::isNear(const Waypoint *other) const -> bool
-{
-    if (other == nullptr) {
-        return false;
-    }
-    if (!_coordinate.isValid()) {
-        return false;
-    }
-    if (!other->coordinate().isValid()) {
-        return false;
-    }
-
-    return _coordinate.distanceTo(other->_coordinate) < 2000;
-}
-
 
 //
 // PROPERTIES
 //
-
-
-auto GeoMaps::Waypoint::extendedName() const -> QString
-{
-    if (_properties.value("TYP").toString() == "NAV") {
-        return QString("%1 (%2)").arg(_properties.value("NAM").toString(), _properties.value("CAT").toString());
-    }
-
-    return _properties.value("NAM").toString();
-}
 
 
 void GeoMaps::Waypoint::setExtendedName(const QString &newExtendedName)
@@ -175,21 +146,6 @@ auto GeoMaps::Waypoint::hasTAF() const -> bool
         return false;
     }
     return (station->taf() != nullptr);
-}
-
-
-auto GeoMaps::Waypoint::icon() const -> QString
-{
-    auto CAT = getPropery(QStringLiteral("CAT")).toString();
-
-    // We prefer SVG icons. There are, however, a few icons that cannot be
-    // rendered by Qt's tinySVG renderer. We have generated PNGs for those
-    // and treat them separately here.
-    if ((CAT == "AD-GLD") || (CAT == "AD-GRASS") || (CAT == "AD-MIL-GRASS") || (CAT == "AD-UL")) {
-        return QStringLiteral("/icons/waypoints/%1.png").arg(CAT);
-    }
-
-    return QStringLiteral("/icons/waypoints/%1.svg").arg(CAT);
 }
 
 
@@ -234,122 +190,6 @@ void GeoMaps::Waypoint::initializeWeatherStationConnections()
     emit weatherStationChanged();
 }
 
-#warning Empty waypoints -> no airspace shown
-
-auto GeoMaps::Waypoint::isValid() const -> bool
-{
-    if (!_coordinate.isValid()) {
-        return false;
-    }
-    if (!_properties.contains("TYP")) {
-        return false;
-    }
-    auto TYP = _properties.value("TYP").toString();
-
-    // Handle airfields
-    if (TYP == "AD") {
-        // Property CAT
-        if (!_properties.contains("CAT")) {
-            return false;
-        }
-        auto CAT = _properties.value("CAT").toString();
-        if ((CAT != "AD") && (CAT != "AD-GRASS") && (CAT != "AD-PAVED") &&
-                (CAT != "AD-INOP") && (CAT != "AD-GLD") && (CAT != "AD-MIL") &&
-                (CAT != "AD-MIL-GRASS") && (CAT != "AD-MIL-PAVED") && (CAT != "AD-UL") &&
-                (CAT != "AD-WATER")) {
-            return false;
-        }
-
-        // Property ELE
-        if (!_properties.contains("ELE")) {
-            return false;
-        }
-        bool ok = false;
-        _properties.value("ELE").toInt(&ok);
-        if (!ok) {
-            return false;
-        }
-
-        // Property NAM
-        if (!_properties.contains("NAM")) {
-            return false;
-        }
-        return true;
-    }
-
-    // Handle NavAids
-    if (TYP == "NAV") {
-        // Property CAT
-        if (!_properties.contains("CAT")) {
-            return false;
-        }
-        auto CAT = _properties.value("CAT").toString();
-        if ((CAT != "NDB") && (CAT != "VOR") && (CAT != "VOR-DME") &&
-                (CAT != "VORTAC") && (CAT != "DVOR") && (CAT != "DVOR-DME") &&
-                (CAT != "DVORTAC")) {
-            return false;
-        }
-
-        // Property COD
-        if (!_properties.contains("COD")) {
-            return false;
-        }
-
-        // Property NAM
-        if (!_properties.contains("NAM")) {
-            return false;
-        }
-
-        // Property NAV
-        if (!_properties.contains("NAV")) {
-            return false;
-        }
-
-        // Property MOR
-        if (!_properties.contains("MOR")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    // Handle waypoints
-    if (TYP == "WP") {
-        // Property CAT
-        if (!_properties.contains("CAT")) {
-            return false;
-        }
-        auto CAT = _properties.value("CAT").toString();
-        if ((CAT != "MRP") && (CAT != "RP") && (CAT != "WP")) {
-            return false;
-        }
-
-        // Property COD
-        if ((CAT == "MRP") || (CAT == "RP")) {
-            if (!_properties.contains("COD")) {
-                return false;
-            }
-        }
-
-        // Property NAM
-        if (!_properties.contains("NAM")) {
-            return false;
-        }
-
-        // Property SCO
-        if ((CAT == "MRP") || (CAT == "RP")) {
-            if (!_properties.contains("SCO")) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // Unknown TYP
-    return false;
-}
-
 
 auto GeoMaps::Waypoint::operator==(const Waypoint &other) const -> bool {
     if (_coordinate != other._coordinate) {
@@ -388,109 +228,6 @@ void GeoMaps::Waypoint::setDownloadManager(Weather::DownloadManager *downloadMan
     // Wire up the _downloadManager
     connect(_downloadManager, &Weather::DownloadManager::weatherStationsChanged, this, &Waypoint::initializeWeatherStationConnections);
     initializeWeatherStationConnections();
-}
-
-
-auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
-{
-    QList<QString> result;
-
-    if (_properties.value("TYP").toString() == "NAV") {
-        result.append("ID  " + _properties.value("COD").toString() + " " + _properties.value("MOR").toString());
-        result.append("NAV " + _properties.value("NAV").toString());
-        if (_properties.contains("ELE")) {
-            result.append(QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
-        }
-    }
-
-    if (_properties.value("TYP").toString() == "AD") {
-        if (_properties.contains("COD")) {
-            result.append("ID  " + _properties.value("COD").toString());
-        }
-        if (_properties.contains("INF")) {
-            result.append("INF " + _properties.value("INF").toString().replace("\n", "<br>"));
-        }
-        if (_properties.contains("COM")) {
-            result.append("COM " + _properties.value("COM").toString().replace("\n", "<br>"));
-        }
-        if (_properties.contains("NAV")) {
-            result.append("NAV " + _properties.value("NAV").toString().replace("\n", "<br>"));
-        }
-        if (_properties.contains("OTH")) {
-            result.append("OTH " + _properties.value("OTH").toString().replace("\n", "<br>"));
-        }
-        if (_properties.contains("RWY")) {
-            result.append("RWY " + _properties.value("RWY").toString().replace("\n", "<br>"));
-        }
-
-        result.append( QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
-    }
-
-    if (_properties.value("TYP").toString() == "WP") {
-        if (_properties.contains("ICA")) {
-            result.append("ID  " + _properties.value("COD").toString());
-        }
-        if (_properties.contains("COM")) {
-            result.append("COM " + _properties.value("COM").toString());
-        }
-    }
-
-    return result;
-}
-
-
-auto GeoMaps::Waypoint::toJSON() const -> QJsonObject
-{
-    QJsonArray coords;
-    coords.insert(0, _coordinate.longitude());
-    coords.insert(1, _coordinate.latitude());
-    QJsonObject geometry;
-    geometry.insert("type", "Point");
-    geometry.insert("coordinates", coords);
-    QJsonObject feature;
-    feature.insert("type", "Feature");
-    feature.insert("properties", QJsonObject::fromVariantMap(_properties));
-    feature.insert("geometry", geometry);
-
-    return feature;
-}
-
-
-auto GeoMaps::Waypoint::twoLineTitle() const -> QString
-{
-    QString codeName;
-    if (_properties.contains("COD")) {
-        codeName += _properties.value("COD").toString();
-    }
-    if (_properties.contains("MOR")) {
-        codeName += " " + _properties.value("MOR").toString();
-    }
-
-    if (!codeName.isEmpty()) {
-        return QString("<strong>%1</strong><br><font size='2'>%2</font>").arg(codeName, extendedName());
-    }
-
-    return extendedName();
-}
-
-
-auto GeoMaps::Waypoint::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetricUnits) const -> QString
-{
-    // Paranoid safety checks
-    if (!fromCoordinate.isValid()) {
-        return QString();
-    }
-    if (!_coordinate.isValid()) {
-        return QString();
-    }
-
-    auto dist = AviationUnits::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
-    auto QUJ = qRound(fromCoordinate.azimuthTo(_coordinate));
-
-    if (useMetricUnits) {
-        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    }
-    return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
 
 

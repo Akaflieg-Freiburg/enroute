@@ -40,7 +40,7 @@ namespace GeoMaps {
  * There are numerous helper methods.
  */
 
-class Waypoint : public QObject
+class Waypoint : public QObject, public SimpleWaypoint
 {
     Q_OBJECT
 
@@ -101,59 +101,6 @@ public:
     // METHODS
     //
 
-    /*! \brief Check existence of a given property
-     *
-     * Recall that the waypoint data is stored as a list of properties that
-     * correspond to waypoint feature of a GeoJSON file, as described in
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * This method allows to check for the existence of individual properties.
-     *
-     * @param propertyName The name of a property. This is a string such as
-     * "CAT", "TYP", "NAM", etc
-     *
-     * @returns True is property exists
-     */
-    Q_INVOKABLE bool containsProperty(const QString& propertyName) const
-    {
-        return _properties.contains(propertyName);
-    }
-
-    /*! \brief Check if other waypoint is geographically near *this
-     *
-     *  @param other Pointer to other waypoint (nullptr is allowed)
-     *
-     *  @returns True if distance can be computed and is less than 2km
-     */
-    bool isNear(const Waypoint *other) const;
-
-    /*! \brief Retrieve property by name
-     *
-     * Recall that the waypoint data is stored as a list of properties that
-     * correspond to waypoint feature of a GeoJSON file, as described in
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * This method allows to retrieve the individual properties by name.
-     *
-     * @param propertyName The name of the member. This is a string such as "CAT",
-     * "TYP", "NAM", etc
-     *
-     * @returns Value of the proerty
-     */
-    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
-    {
-        return _properties.value(propertyName);
-    }
-
-    /* \brief Check if the waypoint is valid
-     *
-     * This method checks if the waypoint has a valid coordinate and if the
-     * properties satisfy the specifications outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     *
-     * @returns True if the waypoint is valid.
-     */
-#warning Want this a property
-    Q_INVOKABLE bool isValid() const;
-
     /*! \brief Equality check
      *
      * @param other Right hand side of the equality check
@@ -161,17 +108,6 @@ public:
      * @returns True if the coordinates and all properties agree.
      */
     bool operator==(const Waypoint &other) const;
-
-    /*! \brief Serialization to GeoJSON object
-     *
-     * This method serialises the waypoint as a GeoJSON object. The object
-     * conforms to the specification outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * The waypoint can be restored with the obvious constructor
-     *
-     * @returns QJsonObject describing the waypoint
-     */
-    QJsonObject toJSON() const;
 
     /*! \brief Connects this waypoint with a DownloadManager instance
      *
@@ -182,16 +118,6 @@ public:
      * @param downloadManager Pointer to a download manager
      */
     void setDownloadManager(Weather::DownloadManager *downloadManager);
-
-    /*! \brief Description of the way from a given point to the waypoint
-     *
-     * @param from Starting point of the way
-     *
-     * @param useMetric If true, then description uses metric units. Otherwise, nautical units are used.
-     *
-     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
-     */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
 
 
     //
@@ -204,23 +130,11 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordinate
-     */
-    QGeoCoordinate coordinate() const { return _coordinate; }
-
     /*! \brief Extended name of the waypoint
      *
      * This property holds a string of the form "Karlsruhe (DVOR-DME)"
      */
     Q_PROPERTY(QString extendedName READ extendedName WRITE setExtendedName NOTIFY extendedNameChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property extendedName
-    */
-    QString extendedName() const;
 
     /*! \brief Setter function for property with the same name
      *
@@ -263,13 +177,9 @@ public:
      * This property holds the name of an icon file in SVG format that best
      * describes the waypoint.
      */
+#warning is this constant?
     Q_PROPERTY(QString icon READ icon CONSTANT)
 
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property icon
-     */
-    QString icon() const;
 
     /* \brief Description of waypoint properties
      *
@@ -282,12 +192,6 @@ public:
      */
     Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription  NOTIFY extendedNameChanged)
 
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property tabularDescription
-     */
-    QList<QString> tabularDescription() const;
-
     /*! \brief Two-line description of the waypoint name
      *
      * This property holds a one-line or two-line description of the
@@ -298,12 +202,6 @@ public:
      * @see threeLineTitle
      */
     Q_PROPERTY(QString twoLineTitle READ twoLineTitle NOTIFY extendedNameChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property twoLineTitle
-     */
-    QString twoLineTitle() const;
 
     /*! \brief Check if a WeatherStation exists at this point
      *
@@ -320,6 +218,11 @@ public:
      * @returns Property weatherStation
      */
     Weather::Station *weatherStation() const;
+
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const
+    {
+        return SimpleWaypoint::wayTo(from, useMetric);
+    }
 
 
 signals:
@@ -347,10 +250,8 @@ private:
     void initializeWeatherStationConnections();
 
     // Pointers to other classes that are used internally
+#warning Want this global
     QPointer<Weather::DownloadManager> _downloadManager {};
-
-    QGeoCoordinate _coordinate;
-    QMultiMap<QString, QVariant> _properties;
 
     // Guarded and unguarded pointers
     Weather::Station *_weatherStation_unguarded {nullptr};

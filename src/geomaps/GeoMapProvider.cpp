@@ -92,12 +92,14 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
 }
 
 
-auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute) -> QObject*
+auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute) -> SimpleWaypoint
 {
     position.setAltitude(qQNaN());
 
     // Make a list of all waypoints that can be relevant
     auto wps = waypoints();
+#warning Need to take flight route into account
+    /*
     if (flightRoute != nullptr) {
         foreach( auto objectPtr, flightRoute->midFieldWaypoints() ) {
             auto *wp = qobject_cast<Waypoint*>(objectPtr);
@@ -106,27 +108,27 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
             }
         }
     }
+    */
 
     // No waypoints? Then return!
     if (wps.isEmpty()) {
-        return nullptr;
+        return {};
     }
 
     auto result = wps[0];
     foreach(auto wp, wps) {
-        if (wp.isNull()) {
+        if (!wp.isValid()) {
             continue;
         }
-        if (position.distanceTo(wp->coordinate()) < position.distanceTo(result->coordinate())) {
+        if (position.distanceTo(wp.coordinate()) < position.distanceTo(result.coordinate())) {
             result = wp;
         }
     }
 
-    if (position.distanceTo(result->coordinate()) > position.distanceTo(distPosition)) {
-        return nullptr;
+    if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
+        return {};
     }
 
-    QQmlEngine::setObjectOwnership(result, QQmlEngine::CppOwnership);
     return result;
 }
 
@@ -202,7 +204,7 @@ auto GeoMaps::GeoMapProvider::describeMapFile(const QString& fileName) -> QStrin
 }
 
 
-auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<QObject*>
+auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<SimpleWaypoint>
 {
     auto wps = waypoints();
 
@@ -215,15 +217,15 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
         filterWords.append(simplifiedWord);
     }
 
-    QList<QObject*> result;
+    QList<SimpleWaypoint> result;
     foreach(auto wp, wps) {
-        if (wp.isNull()) {
+        if (!wp.isValid()) {
             continue;
         }
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = Librarian::globalInstance()->simplifySpecialChars(wp->getPropery(QStringLiteral("NAM")).toString());
-            QString codeName = Librarian::globalInstance()->simplifySpecialChars(wp->getPropery(QStringLiteral("COD")).toString());
+            QString fullName = Librarian::globalInstance()->simplifySpecialChars(wp.getPropery(QStringLiteral("NAM")).toString());
+            QString codeName = Librarian::globalInstance()->simplifySpecialChars(wp.getPropery(QStringLiteral("COD")).toString());
             QString wordx = Librarian::globalInstance()->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
@@ -240,19 +242,19 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
 }
 
 
-auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint*
+auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> SimpleWaypoint
 {
     auto wps = waypoints();
 
     foreach(auto wp, wps) {
-        if (wp.isNull()) {
+        if (!wp.isValid()) {
             continue;
         }
-        if (wp->getPropery(QStringLiteral("COD")).toString() == id) {
+        if (wp.getPropery(QStringLiteral("COD")).toString() == id) {
             return wp;
         }
     }
-    return nullptr;
+    return {};
 }
 
 
@@ -269,24 +271,24 @@ auto GeoMaps::GeoMapProvider::globalInstance() -> GeoMaps::GeoMapProvider*
 }
 
 
-auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<QObject*>
+auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<SimpleWaypoint>
 {
     auto wps = waypoints();
 
-    QList<Waypoint*> tWps;
+    QList<SimpleWaypoint> tWps;
     foreach(auto wp, wps) {
-        if (wp.isNull()) {
+        if (!wp.isValid()) {
             continue;
         }
-        if (wp->getPropery(QStringLiteral("TYP")).toString() != type) {
+        if (wp.getPropery(QStringLiteral("TYP")).toString() != type) {
             continue;
         }
         tWps.append(wp);
     }
 
-    std::sort(tWps.begin(), tWps.end(), [position](Waypoint* a, Waypoint* b) {return position.distanceTo(a->coordinate()) < position.distanceTo(b->coordinate()); });
+    std::sort(tWps.begin(), tWps.end(), [position](SimpleWaypoint a, SimpleWaypoint b) {return position.distanceTo(a.coordinate()) < position.distanceTo(b.coordinate()); });
 
-    QList<QObject*> result;
+    QList<SimpleWaypoint> result;
     int sz = 0;
     foreach(auto ad, tWps) {
         result.append(ad);
@@ -400,20 +402,16 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
     QVector<Airspace> newAirspaces;
-    QVector<QPointer<Waypoint>> newWaypoints;
+    QVector<SimpleWaypoint> newWaypoints;
     foreach(auto object, objectSet) {
         newFeatures += object;
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
-        auto *wp = new Waypoint(object);
-        if (wp->isValid()) {
-            wp->moveToThread(QApplication::instance()->thread());
-            wp->setDownloadManager(_downloadManager);
-            QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
+        SimpleWaypoint wp(object);
+        if (wp.isValid()) {
             newWaypoints.append(wp);
             continue;
         }
-        delete wp;
 
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
         Airspace as(object);
@@ -428,12 +426,9 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     QJsonDocument geoDoc(resultObject);
 
     // Sort waypoints by name
-    std::sort(newWaypoints.begin(), newWaypoints.end(), [](Waypoint* a, Waypoint* b) {return a->getPropery(QStringLiteral("NAM")).toString() < b->getPropery(QStringLiteral("NAM")).toString(); });
+    std::sort(newWaypoints.begin(), newWaypoints.end(), [](const SimpleWaypoint &a, const SimpleWaypoint &b) {return a.getPropery(QStringLiteral("NAM")).toString() < b.getPropery(QStringLiteral("NAM")).toString(); });
 
     _aviationDataMutex.lock();
-    foreach(auto waypoint, _waypoints_) {
-        delete waypoint;
-    }
     _airspaces_ = newAirspaces;
     _waypoints_ = newWaypoints;
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);

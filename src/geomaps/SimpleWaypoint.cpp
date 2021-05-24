@@ -32,13 +32,6 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint()
 }
 
 
-GeoMaps::SimpleWaypoint::SimpleWaypoint(const SimpleWaypoint &other)
-    : _coordinate(other._coordinate),
-      _properties(other._properties)
-{
-}
-
-
 GeoMaps::SimpleWaypoint::SimpleWaypoint(const QGeoCoordinate& coordinate)
     : _coordinate(coordinate)
 {
@@ -360,6 +353,6 @@ auto GeoMaps::SimpleWaypoint::wayTo(const QGeoCoordinate& fromCoordinate, bool u
     if (useMetricUnits) {
         return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     }
-    return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+    return QString("DIST %1 nm • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
 

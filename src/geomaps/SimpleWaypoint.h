@@ -29,6 +29,8 @@
 
 namespace GeoMaps {
 
+class Waypoint;
+
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
  *
  * This class represents a waypoint.  The relevant data that describes the
@@ -43,6 +45,8 @@ class SimpleWaypoint
 {
     Q_GADGET
 
+    friend Waypoint;
+
 public:
     /*! \brief Constructs an invalid way point
      *
@@ -56,15 +60,13 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    Q_INVOKABLE explicit SimpleWaypoint();
+    Q_INVOKABLE SimpleWaypoint();
 
-    /*! \brief Constructs a waypoint by copying data from another waypoint
+    /*! \brief Copy constructor
      *
      * @param other Waypoint whose data is copied
-     *
-     * @param parent The standard QObject parent pointer
      */
-    explicit SimpleWaypoint(const GeoMaps::SimpleWaypoint &other);
+    SimpleWaypoint(const GeoMaps::SimpleWaypoint &other) = default;
 
     /*! \brief Constructs a waypoint from a coordinate
      *
@@ -146,7 +148,7 @@ public:
      *
      * @returns True if the waypoint is valid.
      */
-    bool isValid() const;
+    Q_INVOKABLE bool isValid() const;
 
     /*! \brief Equality check
      *
@@ -167,16 +169,6 @@ public:
      */
     QJsonObject toJSON() const;
 
-    /*! \brief Connects this waypoint with a DownloadManager instance
-     *
-     * This method optionally connects the waypoint with an instance of the
-     * DownloadManager class.  Once connected, functions such has hasTAF can be
-     * used.
-     *
-     * @param downloadManager Pointer to a download manager
-     */
-    void setDownloadManager(Weather::DownloadManager *downloadManager);
-
     /*! \brief Description of the way from a given point to the waypoint
      *
      * @param from Starting point of the way
@@ -192,42 +184,23 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Coordinate of the waypoint
-     *
-     * If the coordinate is invalid, this waypoint should not be used
-     */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
-
     /*! \brief Getter function for property with the same name
      *
      * @returns Property coordinate
      */
-    QGeoCoordinate coordinate() const { return _coordinate; }
-
-    /*! \brief Extended name of the waypoint
-     *
-     * This property holds a string of the form "Karlsruhe (DVOR-DME)"
-     */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+    Q_INVOKABLE QGeoCoordinate coordinate() const { return _coordinate; }
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property extendedName
     */
-    QString extendedName() const;
-
-    /*! \brief Suggested icon file
-     *
-     * This property holds the name of an icon file in SVG format that best
-     * describes the waypoint.
-     */
-    Q_PROPERTY(QString icon READ icon CONSTANT)
+    Q_INVOKABLE QString extendedName() const;
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property icon
      */
-    QString icon() const;
+    Q_INVOKABLE QString icon() const;
 
     /* \brief Description of waypoint properties
      *
@@ -237,14 +210,10 @@ public:
      * first four letters of each string indicate the type of data with an
      * abbreviation that will be understood by pilots ("RWY ", "ELEV",
      * etc.). The rest of the string will then contain the actual data.
-     */
-    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription  NOTIFY extendedNameChanged)
-
-    /*! \brief Getter function for property with the same name
      *
      * @returns Property tabularDescription
      */
-    QList<QString> tabularDescription() const;
+    Q_INVOKABLE QList<QString> tabularDescription() const;
 
     /*! \brief Two-line description of the waypoint name
      *
@@ -254,14 +223,10 @@ public:
      * "KIRCHZARTEN"
      *
      * @see threeLineTitle
-     */
-    Q_PROPERTY(QString twoLineTitle READ twoLineTitle NOTIFY extendedNameChanged)
-
-    /*! \brief Getter function for property with the same name
      *
      * @returns Property twoLineTitle
      */
-    QString twoLineTitle() const;
+    Q_INVOKABLE QString twoLineTitle() const;
 
 private:
     QGeoCoordinate _coordinate;
@@ -269,3 +234,7 @@ private:
 };
 
 }
+
+// Declare meta types
+Q_DECLARE_METATYPE(GeoMaps::SimpleWaypoint)
+

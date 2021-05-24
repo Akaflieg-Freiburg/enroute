@@ -111,11 +111,9 @@ public:
      *
      * @returns the Waypoint that is closest to the given position, provided
      * that the distance is not bigger than that to distPosition. If no
-     * sufficiently close waypoint is found a nullptr is returned.  Ownership of
-     * the returned object is NOT transferred to the caller. For QML, ownership
-     * explicitly set to QQmlEngine::CppOwnership.
+     * sufficiently close waypoint is found, an invalid SimpleWaypoint.
      */
-    Q_INVOKABLE QObject* closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute=nullptr);
+    Q_INVOKABLE GeoMaps::SimpleWaypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute=nullptr);
 
     /*! \brief Copyright notice for the map
      *
@@ -173,7 +171,8 @@ public:
      * list is returned as QList<QObject*>. It can thus be used as a data model
      * in QML.
      */
-    Q_INVOKABLE QList<QObject*> filteredWaypointObjects(const QString &filter);
+#warning maybe want qvector
+    Q_INVOKABLE QList<SimpleWaypoint> filteredWaypointObjects(const QString &filter);
 
     /*! Find a waypoint by its ICAO code
      *
@@ -184,7 +183,7 @@ public:
      * Waypoint, but ratherof type QObject. The object is owned by this class
      * and must not be deleted.
      */
-    Waypoint* findByID(const QString& id);
+    SimpleWaypoint findByID(const QString& id);
 
     /*! \brief Union of all aviation maps in GeoJSON format
      *
@@ -218,7 +217,8 @@ public:
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE QList<QObject*> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
+#warning want vector
+    Q_INVOKABLE QList<SimpleWaypoint> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
     /*! \brief URL where a style file for the base map can be retrieved
      *

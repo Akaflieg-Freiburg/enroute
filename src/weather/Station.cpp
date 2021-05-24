@@ -55,33 +55,33 @@ void Weather::Station::readDataFromWaypoint()
         return;
 }
 
-    auto *waypoint = _geoMapProvider->findByID(_ICAOCode);
-    if (waypoint == nullptr) {
+    auto waypoint = _geoMapProvider->findByID(_ICAOCode);
+    if (!waypoint.isValid()) {
         return;
-}
+    }
     hasWaypointData = true;
 
     // Update data
     auto cacheCoordiante = _coordinate;
-    _coordinate = waypoint->coordinate();
+    _coordinate = waypoint.coordinate();
     if (_coordinate != cacheCoordiante) {
         emit coordinateChanged();
 }
 
     auto cacheExtendedName = _extendedName;
-    _extendedName = waypoint->extendedName();
+    _extendedName = waypoint.extendedName();
     if (_extendedName != cacheExtendedName) {
         emit extendedNameChanged();
 }
 
     auto cacheIcon = _icon;
-    _icon = waypoint->icon();
+    _icon = waypoint.icon();
     if (_icon != cacheIcon) {
         emit iconChanged();
 }
 
     auto cacheTwoLineTitle = _twoLineTitle;
-    _twoLineTitle = waypoint->twoLineTitle();
+    _twoLineTitle = waypoint.twoLineTitle();
     if (_twoLineTitle != cacheTwoLineTitle) {
         emit twoLineTitleChanged();
 }

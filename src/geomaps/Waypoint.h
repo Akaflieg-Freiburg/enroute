@@ -24,6 +24,7 @@
 #include <QMap>
 #include <QJsonObject>
 
+#include "geomaps/SimpleWaypoint.h"
 #include "weather/DownloadManager.h"
 
 
@@ -65,6 +66,10 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit Waypoint(const GeoMaps::Waypoint &other, QObject *parent = nullptr);
+
+#warning
+    explicit Waypoint(const GeoMaps::SimpleWaypoint &other, QObject *parent = nullptr);
+    Q_INVOKABLE void copyFrom(const GeoMaps::SimpleWaypoint &other);
 
     /*! \brief Constructs a waypoint from a coordinate
      *
@@ -146,7 +151,8 @@ public:
      *
      * @returns True if the waypoint is valid.
      */
-    bool isValid() const;
+#warning Want this a property
+    Q_INVOKABLE bool isValid() const;
 
     /*! \brief Equality check
      *

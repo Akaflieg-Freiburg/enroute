@@ -71,6 +71,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<AviationUnits::Speed>();
     qRegisterMetaType<AviationUnits::Time>();
     qRegisterMetaType<GeoMaps::Airspace>();
+    qRegisterMetaType<GeoMaps::SimpleWaypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
 

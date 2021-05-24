@@ -381,7 +381,7 @@ Item {
                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
                                                         flightRoute)
                 if (wp !== null) {
-                    waypointDescription.waypoint = wp
+                    waypointDescription.setWaypoint(wp)
                 } else {
                     var waypointTemplate = geoMapProvider.createWaypoint()
                     waypointTemplate.parent = flightMap

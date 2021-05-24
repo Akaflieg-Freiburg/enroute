@@ -245,7 +245,7 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
         QObject* nearest = nullptr;
         if (geoMapProvider != nullptr) {
             QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
-            nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
+            nearest = new GeoMaps::Waypoint(geoMapProvider->closestWaypoint(pos, distant_pos), this);
         }
 
         // Now create a waypoint, owned by this, and set its name

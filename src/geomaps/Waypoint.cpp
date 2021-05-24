@@ -44,6 +44,27 @@ GeoMaps::Waypoint::Waypoint(const Waypoint &other, QObject *parent)
 }
 
 
+GeoMaps::Waypoint::Waypoint(const SimpleWaypoint &other, QObject *parent)
+    : QObject(parent),
+
+      _coordinate(other._coordinate),
+      _properties(other._properties)
+{
+}
+
+void GeoMaps::Waypoint::copyFrom(const SimpleWaypoint &other)
+{
+    _coordinate = other._coordinate;
+    _properties = other._properties;
+
+#warning
+    emit extendedNameChanged();
+    emit hasMETARChanged();
+    emit hasTAFChanged();
+    emit weatherStationChanged();
+}
+
+
 GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate, QObject *parent)
     : QObject(parent),
       _coordinate(coordinate)
@@ -213,6 +234,7 @@ void GeoMaps::Waypoint::initializeWeatherStationConnections()
     emit weatherStationChanged();
 }
 
+#warning Empty waypoints -> no airspace shown
 
 auto GeoMaps::Waypoint::isValid() const -> bool
 {

@@ -34,8 +34,36 @@ Dialog {
     id: waypointDescriptionDialog
 
     // Property waypoint, and code to handle waypoint changes
-    property Waypoint waypoint
+    Waypoint {
+        id: waypoint
+    }
 
+    function setWaypoint(wp) {
+        waypoint.copyFrom(wp)
+
+        // Delete old text items
+        co.children = {}
+
+        // If no waypoint is given, then do nothing
+        if (!waypoint.isValid())
+            return
+
+        // Create METAR info box
+        metarInfo.createObject(co);
+
+        // Create waypoint description items
+        var pro = waypoint.tabularDescription
+        for (var j in pro)
+            waypointPropertyDelegate.createObject(co, {text: pro[j]});
+
+        // Create airspace description items
+        var asl = geoMapProvider.airspaces(waypoint.coordinate)
+        for (var i in asl)
+            airspaceDelegate.createObject(co, {airspace: asl[i]});
+
+    }
+
+    /*
     onWaypointChanged: {
         // Delete old text items
         co.children = {}
@@ -57,6 +85,7 @@ Dialog {
         for (var i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
     }
+*/
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(Overlay.overlay.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)

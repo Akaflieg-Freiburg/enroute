@@ -302,6 +302,7 @@ following traffic receivers.</p>
 <p>Users reported success with the following traffic receivers.</p>
 )html") + R"html(
 <ul style="margin-left:-25px;">
+  <li>PilotAware Rosetta</li>
   <li>SkyEcho2</li>
   <li>Stratux</li>
   <li>T-Beam</li>

@@ -175,6 +175,12 @@ public:
 #warning maybe want qvector
     Q_INVOKABLE QList<GeoMaps::SimpleWaypoint> filteredWaypointObjects(const QString &filter);
 
+#warning Need to explain
+    Q_INVOKABLE GeoMaps::SimpleWaypoint cre() const
+    {
+        return {};
+    }
+
     /*! Find a waypoint by its ICAO code
      *
      * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt

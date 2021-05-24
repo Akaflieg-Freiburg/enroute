@@ -33,6 +33,7 @@ import "../items"
 Dialog {
     id: waypointDescriptionDialog
 
+
     // Property waypoint, and code to handle waypoint changes
     Waypoint {
         id: waypoint

@@ -40,7 +40,7 @@ namespace GeoMaps {
  * There are numerous helper methods.
  */
 
-class Waypoint : public QObject, public SimpleWaypoint
+class Waypoint : public QObject
 {
     Q_OBJECT
 
@@ -129,6 +129,26 @@ public:
      * If the coordinate is invalid, this waypoint should not be used
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+
+#warning docu
+    QGeoCoordinate coordinate() const { return _coordinate; }
+
+#warning docu
+    Q_INVOKABLE bool isValid() const;
+    Q_INVOKABLE bool isNear(const Waypoint *other) const;
+    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
+    {
+        return _properties.value(propertyName);
+    }
+    QString extendedName() const;
+    QJsonObject toJSON() const;
+    Q_INVOKABLE bool containsProperty(const QString& propertyName) const
+    {
+        return _properties.contains(propertyName);
+    }
+    QString icon() const;
+    QList<QString> tabularDescription() const;
+    QString twoLineTitle() const;
 
     /*! \brief Extended name of the waypoint
      *
@@ -219,10 +239,8 @@ public:
      */
     Weather::Station *weatherStation() const;
 
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const
-    {
-        return SimpleWaypoint::wayTo(from, useMetric);
-    }
+#warning
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
 
 
 signals:
@@ -256,6 +274,10 @@ private:
     // Guarded and unguarded pointers
     Weather::Station *_weatherStation_unguarded {nullptr};
     QPointer<Weather::Station> _weatherStation_guarded;
+
+#warning explanation
+    QGeoCoordinate _coordinate;
+    QMultiMap<QString, QVariant> _properties;
 };
 
 }

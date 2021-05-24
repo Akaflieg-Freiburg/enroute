@@ -192,7 +192,7 @@ public:
 
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property extendedName
+     * @returns Property coordinate
     */
     Q_INVOKABLE QString extendedName() const;
 

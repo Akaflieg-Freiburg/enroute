@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QtGlobal>
+#include <QPointer>
 
 #include "weather/Wind.h"
 

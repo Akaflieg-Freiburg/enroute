@@ -21,6 +21,7 @@
 #include "Aircraft.h"
 
 #include <QtGlobal>
+#include <QPointer>
 
 // Static instance of this class. Do not analyze, because of many unwanted warnings.
 #ifndef __clang_analyzer__

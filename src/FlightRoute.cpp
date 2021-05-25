@@ -47,17 +47,9 @@ FlightRoute::FlightRoute(QObject *parent)
 }
 
 
-void FlightRoute::append(QObject *waypoint)
+void FlightRoute::append(const GeoMaps::SimpleWaypoint &waypoint)
 {
-    if (waypoint == nullptr) {
-        return;
-    }
-    if (!waypoint->inherits("GeoMaps::Waypoint")) {
-        return;
-    }
-
-    auto* wp =  qobject_cast<GeoMaps::Waypoint*>(waypoint);
-    auto* myWp = new GeoMaps::Waypoint(*wp, this);
+    auto* myWp = new GeoMaps::Waypoint(waypoint, this);
     QQmlEngine::setObjectOwnership(myWp, QQmlEngine::CppOwnership);
     connect(myWp, &GeoMaps::Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
     _waypoints.append(myWp);
@@ -69,7 +61,7 @@ void FlightRoute::append(QObject *waypoint)
 
 void FlightRoute::append(const QGeoCoordinate& position)
 {
-    append(new GeoMaps::Waypoint(position, this));
+    append( GeoMaps::SimpleWaypoint(position) );
 }
 
 
@@ -98,11 +90,8 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 }
 
 
-auto FlightRoute::canAppend(GeoMaps::Waypoint *other) const -> bool
+auto FlightRoute::canAppend(const GeoMaps::SimpleWaypoint &other) const -> bool
 {
-    if (other == nullptr) {
-        return true;
-    }
     if (_waypoints.isEmpty() ) {
         return true;
     }
@@ -121,17 +110,8 @@ void FlightRoute::clear()
 }
 
 
-auto FlightRoute::contains(QObject * waypoint) const -> bool
+auto FlightRoute::contains(const GeoMaps::SimpleWaypoint& waypoint) const -> bool
 {
-    if (waypoint == nullptr) {
-        return false;
-    }
-    if (!waypoint->inherits("GeoMaps::Waypoint")) {
-        return false;
-    }
-
-    auto *testWaypoint = qobject_cast<GeoMaps::Waypoint *>(waypoint);
-    // must loop over list in order to compare values (not pointers)
     foreach(auto _waypoint, _waypoints) {
         if (_waypoint.isNull()) {
             continue;
@@ -139,7 +119,7 @@ auto FlightRoute::contains(QObject * waypoint) const -> bool
         if (!_waypoint->isValid()) {
             continue;
         }
-        if (*_waypoint == *testWaypoint) {
+        if (_waypoint->isNear(waypoint)) {
             return true;
         }
     }
@@ -369,40 +349,26 @@ void FlightRoute::moveUp(QObject *waypoint)
 }
 
 
-void FlightRoute::removeWaypoint(QObject *waypoint)
+void FlightRoute::removeWaypoint(const GeoMaps::SimpleWaypoint& waypoint)
 {
-    // Paranoid safety checks
-    if (waypoint == nullptr) {
-        return;
-    }
-    if (!waypoint->inherits("GeoMaps::Waypoint")) {
-        return;
-    }
 
-    auto *waypointPtr = qobject_cast<GeoMaps::Waypoint*>(waypoint);
+    foreach(const auto &_waypoint, _waypoints) {
+        if (_waypoint.isNull()) {
+            continue;
+        }
+        if (!_waypoint->isValid()) {
+            continue;
+        }
 
-    // if called from the waypoint dialog, the waypoint is not the
-    // same instance as the one in `_waypoints`
-    if (!_waypoints.contains(waypointPtr)) {
-        foreach(const auto &_waypoint, _waypoints) {
-            if (_waypoint.isNull()) {
-                continue;
-            }
-            if (!_waypoint->isValid()) {
-                continue;
-            }
-            if (*_waypoint == *waypointPtr) {
-                waypointPtr = _waypoint;
-                break;
-            }
+        if (_waypoint->isNear(waypoint)) {
+            _waypoints.removeOne(_waypoint);
+            delete _waypoint;
+            updateLegs();
+            emit waypointsChanged();
+            return;
         }
     }
 
-    _waypoints.removeOne(waypointPtr);
-    delete waypointPtr;
-
-    updateLegs();
-    emit waypointsChanged();
 }
 
 

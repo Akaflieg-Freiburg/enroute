@@ -121,7 +121,7 @@ public:
      *
      *  @returns True if distance can be computed and is less than 2km
      */
-    Q_INVOKABLE bool isNear(const SimpleWaypoint *other) const;
+    Q_INVOKABLE bool isNear(const GeoMaps::SimpleWaypoint *other) const;
 
     /*! \brief Retrieve property by name
      *
@@ -138,6 +138,12 @@ public:
     Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
     {
         return _properties.value(propertyName);
+    }
+
+    Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
+    Q_INVOKABLE QString ICAOCode() const
+    {
+        return _properties.value("COD").toString();
     }
 
     /* \brief Check if the waypoint is valid
@@ -188,19 +194,22 @@ public:
      *
      * @returns Property coordinate
      */
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
     Q_INVOKABLE QGeoCoordinate coordinate() const { return _coordinate; }
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property coordinate
     */
-    Q_INVOKABLE QString extendedName() const;
+    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+    QString extendedName() const;
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property icon
      */
-    Q_INVOKABLE QString icon() const;
+    Q_PROPERTY(QString icon READ icon CONSTANT)
+    QString icon() const;
 
     /* \brief Description of waypoint properties
      *
@@ -226,7 +235,8 @@ public:
      *
      * @returns Property twoLineTitle
      */
-    Q_INVOKABLE QString twoLineTitle() const;
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
+    QString twoLineTitle() const;
 
 protected:
     QGeoCoordinate _coordinate;

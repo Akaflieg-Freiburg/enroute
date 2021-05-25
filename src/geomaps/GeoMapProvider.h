@@ -173,7 +173,8 @@ public:
      * in QML.
      */
 #warning maybe want qvector
-    Q_INVOKABLE QList<GeoMaps::SimpleWaypoint> filteredWaypointObjects(const QString &filter);
+
+    Q_INVOKABLE QVariantList filteredWaypointObjects(const QString &filter);
 
 #warning Need to explain
     Q_INVOKABLE GeoMaps::SimpleWaypoint cre() const
@@ -224,8 +225,7 @@ public:
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-#warning want vector
-    Q_INVOKABLE QList<GeoMaps::SimpleWaypoint> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
+    Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
     /*! \brief URL where a style file for the base map can be retrieved
      *

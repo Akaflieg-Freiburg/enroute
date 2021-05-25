@@ -33,15 +33,10 @@ import "../items"
 Dialog {
     id: waypointDescriptionDialog
 
+    property var waypoint : geoMapProvider.cre()
+    property var weatherStation : weatherDownloadManager.findWeatherStation( waypoint.ICAOCode )
 
-    // Property waypoint, and code to handle waypoint changes
-    Waypoint {
-        id: waypoint
-    }
-
-    function setWaypoint(wp) {
-        waypoint.copyFrom(wp)
-
+    onWaypointChanged : {
         // Delete old text items
         co.children = {}
 
@@ -61,7 +56,6 @@ Dialog {
         var asl = geoMapProvider.airspaces(waypoint.coordinate)
         for (var i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
-
     }
 
 
@@ -83,10 +77,12 @@ Dialog {
         id: metarInfo
 
         Label { // METAR info
-            visible: waypoint.hasMETAR || waypoint.hasTAF
+            visible: (weatherStation !== null) && (weatherStation.hasMETAR || weatherStation.hasTAF)
             text: {
-                if (waypoint.hasMETAR)
-                    return waypoint.weatherStation.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                if (weatherStation === null)
+                    return ""
+                if (weatherStation.hasMETAR)
+                    return weatherStation.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
             Layout.fillWidth: true
@@ -104,7 +100,7 @@ Dialog {
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: waypoint.hasMETAR ? waypoint.weatherStation.metar.flightCategoryColor : "transparent"
+                color: ((weatherStation !== null) && weatherStation.hasMETAR) ? weatherStation.metar.flightCategoryColor : "transparent"
                 opacity: 0.2
             }
 
@@ -443,11 +439,10 @@ Dialog {
             close()
             waypointDescriptionDialog.open()
         }
-
     }
 
     WeatherReport {
         id: weatherReport
-        weatherStation: waypoint.weatherStation
+        weatherStation: waypointDescriptionDialog.weatherStation
     }
 } // Dialog

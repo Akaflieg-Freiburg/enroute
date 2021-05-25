@@ -501,3 +501,15 @@ auto GeoMaps::Waypoint::isNear(const Waypoint *other) const -> bool
 
     return _coordinate.distanceTo(other->_coordinate) < 2000;
 }
+
+auto GeoMaps::Waypoint::isNear(const SimpleWaypoint& other) const -> bool
+{
+    if (!_coordinate.isValid()) {
+        return false;
+    }
+    if (!other.coordinate().isValid()) {
+        return false;
+    }
+
+    return _coordinate.distanceTo(other._coordinate) < 2000;
+}

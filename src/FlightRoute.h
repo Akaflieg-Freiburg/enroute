@@ -88,7 +88,7 @@ public:
      * Waypoint. This method makes a private copy of the argument, so no
      * assumptions are made about the lifetime of *waypoint.
      */
-    Q_INVOKABLE void append(QObject *waypoint);
+    Q_INVOKABLE void append(const GeoMaps::SimpleWaypoint &waypoint);
 
     /*! \brief Adds a waypoint to the end of the route
      *
@@ -111,14 +111,14 @@ public:
      *
      *  @returns True if route is emptry or if other waypoint is not near the current end of the route.
      */
-    Q_INVOKABLE bool canAppend(GeoMaps::Waypoint *other) const;
+    Q_INVOKABLE bool canAppend(const GeoMaps::SimpleWaypoint& other) const;
 
     /*! \brief Returns true if waypoint is in this route
      *
      * @param waypoint Pointer to a waypoint
      * @returns bool true if waypoint in route
      */
-    Q_INVOKABLE bool contains(QObject * waypoint) const;
+    Q_INVOKABLE bool contains(const GeoMaps::SimpleWaypoint& waypoint) const;
 
     /*! \brief Pointer to static instance of this class
      *
@@ -355,7 +355,7 @@ public slots:
      *
      * @param waypoint Pointer to the waypoint
      */
-    void removeWaypoint(QObject *waypoint);
+    void removeWaypoint(const GeoMaps::SimpleWaypoint& waypoint);
 
     /*! \brief Reverse the route */
     void reverse();

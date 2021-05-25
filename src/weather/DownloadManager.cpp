@@ -33,9 +33,9 @@
 #include "Clock.h"
 #include "FlightRoute.h"
 #include "Global.h"
+#include "Settings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "positioning/PositionProvider.h"
-#include "Settings.h"
 #include "weather/DownloadManager.h"
 #include "weather/METAR.h"
 #include <chrono>

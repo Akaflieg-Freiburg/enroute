@@ -54,7 +54,7 @@ Page {
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    waypointDescription.waypoint = model.modelData
+                    waypointDescription.setWaypoint(model.modelData.toSimpleWaypoint())
                     waypointDescription.open()
                 }
             }

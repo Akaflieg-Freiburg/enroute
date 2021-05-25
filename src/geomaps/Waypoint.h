@@ -135,7 +135,8 @@ public:
 
 #warning docu
     Q_INVOKABLE bool isValid() const;
-    Q_INVOKABLE bool isNear(const Waypoint *other) const;
+    Q_INVOKABLE bool isNear(const GeoMaps::Waypoint *other) const;
+    Q_INVOKABLE bool isNear(const GeoMaps::SimpleWaypoint& other) const;
     Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
     {
         return _properties.value(propertyName);
@@ -149,6 +150,13 @@ public:
     QString icon() const;
     QList<QString> tabularDescription() const;
     QString twoLineTitle() const;
+    Q_INVOKABLE GeoMaps::SimpleWaypoint toSimpleWaypoint() const
+    {
+        SimpleWaypoint swp;
+        swp._coordinate = _coordinate;
+        swp._properties = _properties;
+        return swp;
+    }
 
     /*! \brief Extended name of the waypoint
      *

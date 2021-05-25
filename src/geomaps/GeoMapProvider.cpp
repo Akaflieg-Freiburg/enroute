@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <chrono>
 #include <QApplication>
 #include <QGeoCoordinate>
 #include <QJsonArray>
@@ -29,6 +28,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QtConcurrent/QtConcurrent>
+#include <chrono>
 
 #include "Clock.h"
 #include "GeoMapProvider.h"
@@ -92,12 +92,9 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
 }
 
 
-auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute) -> SimpleWaypoint
+auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute * /*flightRoute*/) -> SimpleWaypoint
 {
     position.setAltitude(qQNaN());
-
-    // Make a list of all waypoints that can be relevant
-    auto wps = waypoints();
 
     SimpleWaypoint result;
     foreach(auto wp, waypoints()) {
@@ -206,7 +203,7 @@ auto GeoMaps::GeoMapProvider::describeMapFile(const QString& fileName) -> QStrin
 }
 
 
-auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QList<SimpleWaypoint>
+auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QVariantList
 {
     auto wps = waypoints();
 
@@ -219,7 +216,7 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
         filterWords.append(simplifiedWord);
     }
 
-    QList<SimpleWaypoint> result;
+    QVariantList result;
     foreach(auto wp, wps) {
         if (!wp.isValid()) {
             continue;
@@ -236,7 +233,7 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
             }
         }
         if (allWordsFound) {
-            result.append(wp);
+            result.append( QVariant::fromValue(wp) );
         }
     }
 
@@ -273,11 +270,11 @@ auto GeoMaps::GeoMapProvider::globalInstance() -> GeoMaps::GeoMapProvider*
 }
 
 
-auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<SimpleWaypoint>
+auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QVariantList
 {
     auto wps = waypoints();
 
-    QList<SimpleWaypoint> tWps;
+    QVector<SimpleWaypoint> tWps;
     foreach(auto wp, wps) {
         if (!wp.isValid()) {
             continue;
@@ -288,12 +285,12 @@ auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, co
         tWps.append(wp);
     }
 
-    std::sort(tWps.begin(), tWps.end(), [position](SimpleWaypoint a, SimpleWaypoint b) {return position.distanceTo(a.coordinate()) < position.distanceTo(b.coordinate()); });
+    std::sort(tWps.begin(), tWps.end(), [position](const SimpleWaypoint &a, const SimpleWaypoint &b) {return position.distanceTo(a.coordinate()) < position.distanceTo(b.coordinate()); });
 
-    QList<SimpleWaypoint> result;
+    QVariantList result;
     int sz = 0;
     foreach(auto ad, tWps) {
-        result.append(ad);
+        result.append( QVariant::fromValue(ad) );
         sz++;
         if (sz == 20) {
             break;

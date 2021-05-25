@@ -94,6 +94,7 @@ Dialog {
 
             clip: true
 
+
             model: geoMapProvider.filteredWaypointObjects(textInput.displayText)
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}

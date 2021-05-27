@@ -82,19 +82,16 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
 // METHODS
 //
 
-auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint *other) const -> bool
+auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
 {
-    if (other == nullptr) {
-        return false;
-    }
     if (!_coordinate.isValid()) {
         return false;
     }
-    if (!other->coordinate().isValid()) {
+    if (!other.coordinate().isValid()) {
         return false;
     }
 
-    return _coordinate.distanceTo(other->_coordinate) < 2000;
+    return _coordinate.distanceTo(other._coordinate) < 2000;
 }
 
 

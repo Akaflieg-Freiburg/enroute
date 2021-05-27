@@ -121,7 +121,7 @@ public:
      *
      *  @returns True if distance can be computed and is less than 2km
      */
-    Q_INVOKABLE bool isNear(const GeoMaps::SimpleWaypoint *other) const;
+    Q_INVOKABLE bool isNear(const GeoMaps::SimpleWaypoint& other) const;
 
     /*! \brief Retrieve property by name
      *
@@ -222,7 +222,8 @@ public:
      *
      * @returns Property tabularDescription
      */
-    Q_INVOKABLE QList<QString> tabularDescription() const;
+    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription)
+    QList<QString> tabularDescription() const;
 
     /*! \brief Two-line description of the waypoint name
      *

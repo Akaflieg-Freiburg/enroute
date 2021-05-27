@@ -234,13 +234,13 @@ public:
      *
      * @see lastWaypointObject
      */
-    Q_PROPERTY(QObject* firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
+    Q_PROPERTY(GeoMaps::SimpleWaypoint firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property firstWaypointObject
      */
-    QObject* firstWaypointObject() const;
+    GeoMaps::SimpleWaypoint firstWaypointObject() const;
 
     /*! \brief List of coordinates for the waypoints
      *
@@ -275,26 +275,26 @@ public:
      *
      * @see firstWaypointObject
      */
-    Q_PROPERTY(QObject* lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
+    Q_PROPERTY(GeoMaps::SimpleWaypoint lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property lastWaypointObject
      */
-    QObject* lastWaypointObject() const;
+    GeoMaps::SimpleWaypoint lastWaypointObject() const;
 
     /*! \brief List of waypoints in the flight route that are not airfields
      *
      * This property lists all the waypoints in the route that are not airfields,
      * navaids, reporting points, etc.
      */
-    Q_PROPERTY(QList<QObject*> midFieldWaypoints READ midFieldWaypoints NOTIFY waypointsChanged)
+    Q_PROPERTY(QVariantList midFieldWaypoints READ midFieldWaypoints NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property routeObjects
      */
-    QList<QObject*> midFieldWaypoints() const;
+    QVariantList midFieldWaypoints() const;
 
     /*! \brief List of waypoints and legs
      *
@@ -303,13 +303,15 @@ public:
      * one waypoint, then waypoints and legs alternate, following the pattern:
      * waypoint - leg - waypoint - … - leg - waypoint.
      */
-    Q_PROPERTY(QList<QObject*> routeObjects READ routeObjects NOTIFY waypointsChanged)
+#warning docu
+    Q_PROPERTY(QList<QObject*> legs READ legs NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property routeObjects
      */
-    QList<QObject*> routeObjects() const;
+#warning docu
+    QList<QObject*> legs() const;
 
     /*! \brief Human-readable summary of the flight route*/
     Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
@@ -339,7 +341,7 @@ public slots:
      *
      * @param waypoint Pointer to the waypoint
      */
-    void moveDown(QObject *waypoint);
+    void moveDown(const GeoMaps::SimpleWaypoint& waypoint);
 
     /*! \brief Move waypoint one position up in the list of waypoints
      *
@@ -347,7 +349,7 @@ public slots:
      *
      * @param waypoint Pointer to the waypoint
      */
-    void moveUp(QObject *waypoint);
+    void moveUp(const GeoMaps::SimpleWaypoint& waypoint);
 
     /*! \brief Remove waypoint from the current route
      *
@@ -390,7 +392,7 @@ private:
     // "/flight route.geojson"
     QString stdFileName;
 
-    QVector<QPointer<GeoMaps::Waypoint>> _waypoints;
+    QVector<GeoMaps::SimpleWaypoint> _waypoints;
 
     QVector<Leg*> _legs;
 

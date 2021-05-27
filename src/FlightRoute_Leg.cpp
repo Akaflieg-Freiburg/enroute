@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019,2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,11 +23,11 @@
 #include "FlightRoute_Leg.h"
 
 
-FlightRoute::Leg::Leg(const GeoMaps::Waypoint* start, const GeoMaps::Waypoint *end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
+FlightRoute::Leg::Leg(const GeoMaps::SimpleWaypoint& start, const GeoMaps::SimpleWaypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
     : QObject(parent), _aircraft(aircraft), _wind(wind)
 {
-    _start = new GeoMaps::Waypoint(*start, this);
-    _end   = new GeoMaps::Waypoint(*end, this);
+    _start = start;
+    _end   = end;
 
     if (!_aircraft.isNull()) {
         connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::Leg::valChanged);
@@ -45,7 +45,7 @@ auto FlightRoute::Leg::distance() const -> AviationUnits::Distance
         return {};
     }
 
-    return AviationUnits::Distance::fromM( _start->coordinate().distanceTo( _end->coordinate() ));
+    return AviationUnits::Distance::fromM( _start.coordinate().distanceTo( _end.coordinate() ));
 }
 
 
@@ -84,11 +84,11 @@ auto FlightRoute::Leg::TC() const -> AviationUnits::Angle
     if (!isValid()) {
         return {};
     }
-    if( _start->coordinate().distanceTo( _end->coordinate() ) < minLegLength ) {
+    if( _start.coordinate().distanceTo( _end.coordinate() ) < minLegLength ) {
         return {};
     }
 
-    return AviationUnits::Angle::fromDEG( _start->coordinate().azimuthTo(_end->coordinate()) );
+    return AviationUnits::Angle::fromDEG( _start.coordinate().azimuthTo(_end.coordinate()) );
 }
 
 
@@ -110,16 +110,10 @@ auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
 
 auto FlightRoute::Leg::isValid() const -> bool
 {
-    if (_start.isNull()) {
+    if (!_start.coordinate().isValid()) {
         return false;
     }
-    if (!_start->coordinate().isValid()) {
-        return false;
-    }
-    if (_end.isNull()) {
-        return false;
-    }
-    if (!_end->coordinate().isValid()) {
+    if (!_end.coordinate().isValid()) {
         return false;
     }
     return true;
@@ -148,7 +142,7 @@ auto FlightRoute::Leg::makeDescription(bool useMetricUnits) const -> QString
     if (useMetricUnits) {
         result += QString("%1 km").arg(distance().toKM(), 0, 'f', 1);
     } else {
-        result += QString("%1 NM").arg(distance().toNM(), 0, 'f', 1);
+        result += QString("%1 nm").arg(distance().toNM(), 0, 'f', 1);
     }
     auto _time = Time();
     if (_time.isFinite()) {

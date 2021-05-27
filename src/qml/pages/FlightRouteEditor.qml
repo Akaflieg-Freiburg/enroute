@@ -33,48 +33,33 @@ Page {
     title: qsTr("Flight Route")
 
     Component {
-        id: aiX
+        id: waypointComponent
 
-        GridLayout {
-            id: grid
-            columns: 3
+        RowLayout {
+            id: waypointLayout
 
-            columnSpacing: 0
-            rowSpacing: 0
-
-            anchors.left: parent.left
-            anchors.leftMargin: Qt.application.font.pixelSize
-            anchors.right: parent.right
+            property var waypoint: parent.waypoint
 
             WordWrappingItemDelegate {
-                visible: model.modelData instanceof Waypoint
-                icon.source: (model.modelData instanceof Waypoint) ? model.modelData.icon : ""
+                icon.source: waypointLayout.waypoint.icon
                 Layout.fillWidth: true
-                text: model.modelData.twoLineTitle
+                text: waypointLayout.waypoint.twoLineTitle
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    waypointDescription.setWaypoint(model.modelData.toSimpleWaypoint())
+                    waypointDescription.waypoint = waypointLayout.waypoint
                     waypointDescription.open()
                 }
-            }
-
-            ItemDelegate {
-                visible: !(model.modelData instanceof Waypoint)
-                icon.source: "/icons/vertLine.svg"
-                Layout.fillWidth: true
-                enabled: false
-                text: global.settings().useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
             }
 
             ToolButton {
                 id: editButton
 
-                visible: (model.modelData instanceof Waypoint) && (model.modelData.icon.indexOf("WP") !== -1)
+                visible: parent.parent.waypoint.icon.indexOf("WP") !== -1
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    wpEditor.waypoint = model.modelData
+                    wpEditor.waypoint = waypointLayout.waypoint
                     wpEditor.open()
                 }
             }
@@ -82,7 +67,6 @@ Page {
             ToolButton {
                 id: wpMenuTB
 
-                visible: model.modelData instanceof Waypoint
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
@@ -95,20 +79,20 @@ Page {
                     Action {
                         text: qsTr("Move Up")
 
-                        enabled: model.modelData !== flightRoute.firstWaypointObject
+                        enabled: waypointLayout.waypoint !== flightRoute.firstWaypointObject
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            flightRoute.moveUp(model.modelData)
+                            flightRoute.moveUp(waypointLayout.waypoint)
                         }
                     } // Action
 
                     Action {
                         text: qsTr("Move Down")
 
-                        enabled: model.modelData !== flightRoute.lastWaypointObject
+                        enabled: waypointLayout.waypoint !== flightRoute.lastWaypointObject
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            flightRoute.moveDown(model.modelData)
+                            flightRoute.moveDown(waypointLayout.waypoint)
                         }
                     } // Action
 
@@ -117,10 +101,43 @@ Page {
 
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            flightRoute.removeWaypoint(model.modelData)
+                            flightRoute.removeWaypoint(waypointLayout.waypoint)
                         }
                     } // Action
                 }
+            }
+
+        }
+    }
+
+    Component {
+        id: legComponent
+
+        ColumnLayout {
+            id: grid
+
+            anchors.left: parent.left
+            anchors.leftMargin: Qt.application.font.pixelSize
+            anchors.right: parent.right
+
+            Loader {
+                visible: model.modelData.startPoint === flightRoute.firstWaypointObject
+                Layout.fillWidth: true
+                sourceComponent: waypointComponent
+                property var waypoint: model.modelData.startPoint
+            }
+
+            ItemDelegate {
+                icon.source: "/icons/vertLine.svg"
+                Layout.fillWidth: true
+                enabled: false
+                text: global.settings().useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
+            }
+
+            Loader {
+                Layout.fillWidth: true
+                sourceComponent: waypointComponent
+                property var waypoint: model.modelData.endPoint
             }
 
         }
@@ -188,7 +205,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library …")
-                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
@@ -224,7 +241,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -277,7 +294,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in other app …")
-                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
@@ -319,7 +336,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear")
-                    enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
+// Warning                    enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -331,7 +348,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Reverse")
-                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -386,8 +403,8 @@ Page {
             ListView {
                 anchors.fill: parent
 
-                model: flightRoute.routeObjects
-                delegate: aiX
+                model: flightRoute.legs
+                delegate: legComponent
                 clip: true
                 ScrollIndicator.vertical: ScrollIndicator {}
             }

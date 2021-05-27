@@ -50,10 +50,25 @@ public:
    *
    * @param parent The standard QObject parent pointer.
    */
-  explicit Leg(const GeoMaps::Waypoint* start, const GeoMaps::Waypoint *end, Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
+  explicit Leg(const GeoMaps::SimpleWaypoint& start, const GeoMaps::SimpleWaypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
 
   // Standard destructor
   ~Leg() override = default;
+
+#warning
+    Q_PROPERTY(GeoMaps::SimpleWaypoint startPoint READ startPoint CONSTANT)
+    GeoMaps::SimpleWaypoint startPoint()  const
+    {
+        return _start;
+    }
+
+#warning
+    Q_PROPERTY(GeoMaps::SimpleWaypoint endPoint READ endPoint CONSTANT)
+    GeoMaps::SimpleWaypoint endPoint()  const
+    {
+        return _end;
+    }
+
 
   /*! \brief Length of the leg */
   Q_PROPERTY(AviationUnits::Distance distance READ distance CONSTANT)
@@ -175,8 +190,8 @@ private:
   // Minimum length of the leg in meters. If shorter, no courses are computed.
   static constexpr double minLegLength  =  100.0;
 
-  QPointer<GeoMaps::Waypoint> _start {nullptr};
-  QPointer<GeoMaps::Waypoint> _end {nullptr};
+  GeoMaps::SimpleWaypoint _start;
+  GeoMaps::SimpleWaypoint _end;
   QPointer<Aircraft> _aircraft {nullptr};
   QPointer<Weather::Wind> _wind {nullptr};
 };

@@ -108,10 +108,10 @@ set(SOURCES
     units/Speed.h
     units/Time.h
     weather/Decoder.h
-    weather/DownloadManager.h
     weather/METAR.h
     weather/Station.h
     weather/TAF.h
+    weather/WeatherProvider.h
     weather/Wind.h
 
     # C++ files
@@ -158,10 +158,10 @@ set(SOURCES
     units/Speed.cpp
     units/Time.cpp
     weather/Decoder.cpp
-    weather/DownloadManager.cpp
     weather/METAR.cpp
     weather/Station.cpp
     weather/TAF.cpp
+    weather/WeatherProvider.cpp
     weather/Wind.cpp
 
     ${HEADERS}

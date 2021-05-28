@@ -54,7 +54,7 @@
 #include "units/Distance.h"
 #include "units/Speed.h"
 #include "units/Time.h"
-#include "weather/DownloadManager.h"
+#include "weather/WeatherProvider.h"
 #include "weather/Wind.h"
 #include <chrono>
 
@@ -87,7 +87,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficFactor>("enroute", 1, 0, "TrafficFactor", "TrafficFactor objects cannot be created in QML");
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
-    qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
+    qmlRegisterUncreatableType<Weather::WeatherProvider>("enroute", 1, 0, "WeatherProvider", "Weather::WeatherProvider objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 
     // Set up application
@@ -174,9 +174,9 @@ auto main(int argc, char *argv[]) -> int
     // Attach geo map provider
     engine->rootContext()->setContextProperty("geoMapProvider", GeoMaps::GeoMapProvider::globalInstance());
 
-    // Attach Weather::DownloadManager
-    engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::DownloadManager::globalInstance());
-    GeoMaps::GeoMapProvider::globalInstance()->setDownloadManager(Weather::DownloadManager::globalInstance());
+    // Attach Weather::WeatherProvider
+    engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::WeatherProvider::globalInstance());
+    GeoMaps::GeoMapProvider::globalInstance()->setWeatherProvider(Weather::WeatherProvider::globalInstance());
 
     // Attach Navigation::Navigator
     engine->rootContext()->setContextProperty("navigator", Navigation::Navigator::globalInstance());

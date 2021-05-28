@@ -37,17 +37,17 @@ class Settings;
 
 namespace Weather {
 
-/*! \brief DownloadManager, weather service manager
+/*! \brief WeatherProvider, weather service manager
  *
  * This class retrieves METAR/TAF weather reports from the "Aviation Weather
  * Center" at aviationweather.com, for all weather stations that are within 75nm
  * from the last-known user position or current route.  The reports can then be
  * accessed via the property "weatherStations" and the method
- * findWeatherStation.  The DownloadManager class honors
+ * findWeatherStation.  The WeatherProvider class honors
  * GlobalSettings::acceptedWeatherTerms() and will initiate a download only if
  * the user agreed to the privacy warning.
  *
- * Once constructed, the DownloadManager class will regularly perform background
+ * Once constructed, the WeatherProvider class will regularly perform background
  * updates to retrieve up-to-date information. It will update the list of known
  * weather stations and also the METAR/TAF reports for the weather stations.
  * The class checks regularly for outdated METAR and TAF reports and deletes
@@ -61,7 +61,7 @@ namespace Weather {
  * This class also contains a number or convenience methods and properties
  * pertaining to sunrise/sunset
  */
-class DownloadManager : public QObject {
+class WeatherProvider : public QObject {
     Q_OBJECT
 
 public:
@@ -71,10 +71,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit DownloadManager(QObject *parent = nullptr);
+    explicit WeatherProvider(QObject *parent = nullptr);
 
     /*! \brief Destructor */
-    ~DownloadManager() override;
+    ~WeatherProvider() override;
 
     //
     // Methods
@@ -84,7 +84,7 @@ public:
      *
      *  @returns Pointer to global instance
      */
-    static DownloadManager* globalInstance();
+    static WeatherProvider* globalInstance();
 
     //
     // Properties
@@ -104,7 +104,7 @@ public:
 
     /*! \brief Downloading flag
      *
-     * Indicates that the DownloadManager is currently downloading METAR/TAF
+     * Indicates that the WeatherProvider is currently downloading METAR/TAF
      * information from the internet.
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
@@ -119,9 +119,9 @@ public:
      *
      * This method returns a pointer to the WeatherStation with the given ICAO
      * code, or a nullptr if no WeatherStation with the given code is known to
-     * the DownloadManager.
+     * the WeatherProvider.
      *
-     * @warning The WeatherStation objects are owned by the DownloadManager and
+     * @warning The WeatherStation objects are owned by the WeatherProvider and
      * can be deleted anytime.  Store it in a QPointer to avoid dangling
      * pointers.
      *
@@ -188,11 +188,11 @@ public:
     /*! \brief List of weather stations
      *
      * This property holds a list of all weather stations that are currently
-     * known to this instance of the DownloadManager class, sorted according to
+     * known to this instance of the WeatherProvider class, sorted according to
      * the distance to the last known position.  The list can change at any
      * time.
      *
-     * @warning The WeatherStation objects are owned by the DownloadManager and
+     * @warning The WeatherStation objects are owned by the WeatherProvider and
      * can be deleted anytime. Store it in a QPointer to avoid dangling
      * pointers.
      */
@@ -213,7 +213,7 @@ signals:
 
     /*! \brief Signal emitted when a network error occurs
      *
-     * This signal is emitted to indicate that the DownloadManager failed to
+     * This signal is emitted to indicate that the WeatherProvider failed to
      * download weather data.
      *
      * @param message A human-readable, translated error message
@@ -243,7 +243,7 @@ private slots:
     void setupConnections() const;
 
 private:
-    Q_DISABLE_COPY_MOVE(DownloadManager)
+    Q_DISABLE_COPY_MOVE(WeatherProvider)
 
     // Update interval is 30 mins, or 5 mins if update failed
     static const int updateIntervalNormal_ms  = 30*60*1000;

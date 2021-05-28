@@ -29,20 +29,20 @@
 
 namespace Weather {
 
-class DownloadManager;
+class WeatherProvider;
 
 
 /*! \brief TAF report
  *
  * This class contains the data of a TAF report and provided a few
  * methods to access the data. Instances of this class are provided by the
- * DownloadManager class; there is no way to construct valid instances yourself.
+ * WeatherProvider class; there is no way to construct valid instances yourself.
  */
 
 class TAF : public Decoder {
     Q_OBJECT
 
-    friend DownloadManager;
+    friend WeatherProvider;
 
 public:
     /*! \brief Default constructor

@@ -36,7 +36,7 @@
 #include "Settings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "positioning/PositionProvider.h"
-#include "weather/DownloadManager.h"
+#include "weather/WeatherProvider.h"
 #include "weather/METAR.h"
 #include <chrono>
 
@@ -45,11 +45,11 @@ using namespace std::chrono_literals;
 
 // Static instance of this class. Do not analyze, because of many unwanted warnings.
 #ifndef __clang_analyzer__
-QPointer<Weather::DownloadManager> downloadManagerStatic {};
+QPointer<Weather::WeatherProvider> WeatherProviderStatic {};
 #endif
 
 
-Weather::DownloadManager::DownloadManager(QObject *parent) : QObject(parent)
+Weather::WeatherProvider::WeatherProvider(QObject *parent) : QObject(parent)
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
@@ -59,15 +59,15 @@ Weather::DownloadManager::DownloadManager(QObject *parent) : QObject(parent)
     _updateTimer.start();
 
     // Connect the timer to check for expired messages
-    connect(&_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::DownloadManager::deleteExpiredMesages);
+    connect(&_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::WeatherProvider::deleteExpiredMesages);
     _deleteExiredMessagesTimer.setInterval(10min);
     _deleteExiredMessagesTimer.start();
 
     // Update the description text when needed
-    connect(this, &Weather::DownloadManager::weatherStationsChanged, this, &Weather::DownloadManager::QNHInfoChanged);
+    connect(this, &Weather::WeatherProvider::weatherStationsChanged, this, &Weather::WeatherProvider::QNHInfoChanged);
 
     // Set up connections to other static objects, but do so with a little lag to avoid conflicts in the initialisation
-    QTimer::singleShot(0, this, &Weather::DownloadManager::setupConnections);
+    QTimer::singleShot(0, this, &Weather::WeatherProvider::setupConnections);
 
     // Read METAR/TAF from "weather.dat"
     bool success = load();
@@ -82,21 +82,21 @@ Weather::DownloadManager::DownloadManager(QObject *parent) : QObject(parent)
 }
 
 
-void Weather::DownloadManager::setupConnections() const
+void Weather::WeatherProvider::setupConnections() const
 {
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::DownloadManager::QNHInfoChanged);
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::DownloadManager::sunInfoChanged);
+    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherProvider::QNHInfoChanged);
+    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherProvider::sunInfoChanged);
 
-    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::QNHInfoChanged);
-    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::DownloadManager::sunInfoChanged);
+    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherProvider::QNHInfoChanged);
+    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherProvider::sunInfoChanged);
 }
 
 
-Weather::DownloadManager::~DownloadManager()
+Weather::WeatherProvider::~WeatherProvider()
 = default;
 
 
-void Weather::DownloadManager::deleteExpiredMesages()
+void Weather::WeatherProvider::deleteExpiredMesages()
 {
     QVector<QString> ICAOCodesToDelete;
 
@@ -131,7 +131,7 @@ void Weather::DownloadManager::deleteExpiredMesages()
 }
 
 
-auto Weather::DownloadManager::downloading() const -> bool
+auto Weather::WeatherProvider::downloading() const -> bool
 {
     foreach(auto networkReply, _networkReplies) {
         if (networkReply.isNull()) {
@@ -146,7 +146,7 @@ auto Weather::DownloadManager::downloading() const -> bool
 }
 
 
-void Weather::DownloadManager::downloadFinished() {
+void Weather::WeatherProvider::downloadFinished() {
 
     // Start to process the data only once ALL replies have been received. So, we check here if there are any running
     // download processes and abort if indeed there are some.
@@ -209,7 +209,7 @@ void Weather::DownloadManager::downloadFinished() {
 }
 
 
-auto Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAOCode) -> Weather::Station *
+auto Weather::WeatherProvider::findOrConstructWeatherStation(const QString &ICAOCode) -> Weather::Station *
 {
     auto weatherStationPtr = _weatherStationsByICAOCode.value(ICAOCode, nullptr);
 
@@ -223,20 +223,20 @@ auto Weather::DownloadManager::findOrConstructWeatherStation(const QString &ICAO
 }
 
 
-auto Weather::DownloadManager::globalInstance() -> Weather::DownloadManager*
+auto Weather::WeatherProvider::globalInstance() -> Weather::WeatherProvider*
 {
 #ifndef __clang_analyzer__
-    if (downloadManagerStatic.isNull()) {
-        downloadManagerStatic = new Weather::DownloadManager();
+    if (WeatherProviderStatic.isNull()) {
+        WeatherProviderStatic = new Weather::WeatherProvider();
     }
-    return downloadManagerStatic;
+    return WeatherProviderStatic;
 #else
     return nullptr;
 #endif
 }
 
 
-auto Weather::DownloadManager::load() -> bool
+auto Weather::WeatherProvider::load() -> bool
 {
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
 
@@ -306,7 +306,7 @@ auto Weather::DownloadManager::load() -> bool
 }
 
 
-void Weather::DownloadManager::save()
+void Weather::WeatherProvider::save()
 {
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
 
@@ -360,7 +360,7 @@ void Weather::DownloadManager::save()
 }
 
 
-auto Weather::DownloadManager::sunInfo() -> QString
+auto Weather::WeatherProvider::sunInfo() -> QString
 {
     // Paranoid safety checks
     auto *positionProvider = Positioning::PositionProvider::globalInstance();
@@ -427,7 +427,7 @@ auto Weather::DownloadManager::sunInfo() -> QString
 }
 
 
-auto Weather::DownloadManager::QNHInfo() const -> QString
+auto Weather::WeatherProvider::QNHInfo() const -> QString
 {
     // Paranoid safety checks
     auto *positionProvider = Positioning::PositionProvider::globalInstance();
@@ -471,7 +471,7 @@ auto Weather::DownloadManager::QNHInfo() const -> QString
 }
 
 
-void Weather::DownloadManager::update(bool isBackgroundUpdate) {
+void Weather::WeatherProvider::update(bool isBackgroundUpdate) {
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
     if (!Settings::acceptedWeatherTermsStatic()) {
@@ -521,8 +521,8 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
         QNetworkRequest request(url);
         QPointer<QNetworkReply> reply = Global::networkAccessManager()->get(request);
         _networkReplies.push_back(reply);
-        connect(reply, &QNetworkReply::finished, this, &Weather::DownloadManager::downloadFinished);
-        connect(reply, &QNetworkReply::errorOccurred, this, &Weather::DownloadManager::downloadFinished);
+        connect(reply, &QNetworkReply::finished, this, &Weather::WeatherProvider::downloadFinished);
+        connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherProvider::downloadFinished);
     }
 
     // Emit "downloading" and handle the case if none of the requests have started (e.g. because
@@ -531,7 +531,7 @@ void Weather::DownloadManager::update(bool isBackgroundUpdate) {
 }
 
 
-auto Weather::DownloadManager::weatherStations() const -> QList<Weather::Station *> {
+auto Weather::WeatherProvider::weatherStations() const -> QList<Weather::Station *> {
 
     // Produce a list of reports, without nullpointers
     QList<Weather::Station *> sortedReports;

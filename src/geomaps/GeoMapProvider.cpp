@@ -426,15 +426,15 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 }
 
 #warning do not want this. use application-global static!
-void GeoMaps::GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManager)
+void GeoMaps::GeoMapProvider::setWeatherProvider(Weather::WeatherProvider *WeatherProvider)
 {
-    if (downloadManager == nullptr) {
+    if (WeatherProvider == nullptr) {
         return;
     }
-    _downloadManager = downloadManager;
+    _WeatherProvider = WeatherProvider;
 
 
-    // Connect the Downloadmanager, so aviation maps will be generated
+    // Connect the WeatherProvider, so aviation maps will be generated
     connect(Global::mapManager()->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
     connect(Global::mapManager()->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
     connect(Global::settings(), &Settings::hideUpperAirspacesChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);

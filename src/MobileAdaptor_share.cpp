@@ -20,6 +20,7 @@
 
 
 #include "MobileAdaptor.h"
+#include "Global.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -227,11 +228,10 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    MobileAdaptor::globalInstance()->processFileOpenRequest(QString::fromUtf8(fname));
+    Global::mobileAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
     env->ReleaseStringUTFChars(jfname, fname);
 }
 
 
 }
 #endif
-

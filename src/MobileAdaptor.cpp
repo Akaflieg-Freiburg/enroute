@@ -201,14 +201,13 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
 
-    if (mobileAdaptorStatic.isNull()) {
+    if (Global::mobileAdaptor() == nullptr) {
         return;
     }
-    mobileAdaptorStatic->emitWifiConnected();
+    Global::mobileAdaptor()->emitWifiConnected();
 
 }
 
 
 }
 #endif
-

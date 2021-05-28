@@ -96,7 +96,8 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     position.setAltitude(qQNaN());
 
     SimpleWaypoint result;
-    for(auto wp : waypoints()) {
+    const auto wpts = waypoints();
+    for(const auto& wp : wpts) {
         if (!wp.isValid()) {
             continue;
         }
@@ -110,7 +111,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
 
     if (flightRoute != nullptr) {
         for(auto& variant : flightRoute->midFieldWaypoints() ) {
-            GeoMaps::SimpleWaypoint wp = variant.value<GeoMaps::SimpleWaypoint>();
+            auto wp = variant.value<GeoMaps::SimpleWaypoint>();
             if (!wp.isValid()) {
                 continue;
             }

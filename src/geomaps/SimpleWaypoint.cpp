@@ -21,8 +21,8 @@
 #include <QJsonArray>
 
 #include "SimpleWaypoint.h"
-#include "weather/Station.h"
 #include "units/Distance.h"
+#include "weather/Station.h"
 
 
 GeoMaps::SimpleWaypoint::SimpleWaypoint()

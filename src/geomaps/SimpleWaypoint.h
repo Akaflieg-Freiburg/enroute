@@ -24,12 +24,8 @@
 #include <QMap>
 #include <QJsonObject>
 
-#include "weather/DownloadManager.h"
-
 
 namespace GeoMaps {
-
-class Waypoint;
 
 /*! \brief Waypoint, such as an airfield, a navaid station or a reporting point.
  *
@@ -44,8 +40,6 @@ class Waypoint;
 class SimpleWaypoint
 {
     Q_GADGET
-
-    friend Waypoint;
 
 public:
     /*! \brief Constructs an invalid way point
@@ -201,8 +195,10 @@ public:
      *
      * @returns Property coordinate
     */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+    Q_PROPERTY(QString extendedName READ extendedName WRITE setExtendedName)
+
     QString extendedName() const;
+    void setExtendedName(const QString &newExtendedName);
 
     /*! \brief Getter function for property with the same name
      *

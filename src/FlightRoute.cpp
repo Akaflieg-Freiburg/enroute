@@ -337,6 +337,18 @@ void FlightRoute::removeWaypoint(const GeoMaps::SimpleWaypoint& waypoint)
 }
 
 
+void FlightRoute::renameWaypoint(const GeoMaps::SimpleWaypoint& waypoint, const QString& newName)
+{
+    for(auto& wp : _waypoints) {
+        if (wp == waypoint) {
+            wp.setExtendedName(newName);
+        }
+    }
+    updateLegs();
+    emit waypointsChanged();
+}
+
+
 void FlightRoute::reverse()
 {
     std::reverse(_waypoints.begin(), _waypoints.end());

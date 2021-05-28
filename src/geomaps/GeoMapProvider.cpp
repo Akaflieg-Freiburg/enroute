@@ -33,7 +33,6 @@
 #include "Clock.h"
 #include "GeoMapProvider.h"
 #include "Global.h"
-#include "Waypoint.h"
 
 using namespace std::chrono_literals;
 
@@ -92,12 +91,12 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
 }
 
 
-auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute * /*flightRoute*/) -> SimpleWaypoint
+auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute* flightRoute) -> SimpleWaypoint
 {
     position.setAltitude(qQNaN());
 
     SimpleWaypoint result;
-    foreach(auto wp, waypoints()) {
+    for(auto wp : waypoints()) {
         if (!wp.isValid()) {
             continue;
         }
@@ -109,34 +108,23 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
         }
     }
 
-#warning
-/*
     if (flightRoute != nullptr) {
-        foreach( auto objectPtr, flightRoute->midFieldWaypoints() ) {
-            auto *wp = qobject_cast<Waypoint*>(objectPtr);
-            if (wp == nullptr) {
+        for(auto& variant : flightRoute->midFieldWaypoints() ) {
+            GeoMaps::SimpleWaypoint wp = variant.value<GeoMaps::SimpleWaypoint>();
+            if (!wp.isValid()) {
                 continue;
             }
-            if (!wp->isValid()) {
-                continue;
+            if (position.distanceTo(wp.coordinate()) < position.distanceTo(result.coordinate())) {
+                result = wp;
             }
-
         }
     }
-*/
+
     if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
         return SimpleWaypoint(position);
     }
 
     return result;
-}
-
-
-auto GeoMaps::GeoMapProvider::createWaypoint() -> Waypoint*
-{
-    auto *wp = new Waypoint();
-    QQmlEngine::setObjectOwnership(wp, QQmlEngine::CppOwnership);
-    return wp;
 }
 
 
@@ -436,7 +424,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     emit geoJSONChanged();
 }
 
-
+#warning do not want this. use application-global static!
 void GeoMaps::GeoMapProvider::setDownloadManager(Weather::DownloadManager *downloadManager)
 {
     if (downloadManager == nullptr) {

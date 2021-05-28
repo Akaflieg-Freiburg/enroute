@@ -22,6 +22,7 @@
 
 #include "SimpleWaypoint.h"
 #include "weather/Station.h"
+#include "units/Distance.h"
 
 
 GeoMaps::SimpleWaypoint::SimpleWaypoint()
@@ -107,6 +108,12 @@ auto GeoMaps::SimpleWaypoint::extendedName() const -> QString
     }
 
     return _properties.value("NAM").toString();
+}
+
+
+void GeoMaps::SimpleWaypoint::setExtendedName(const QString &newExtendedName)
+{
+    _properties.replace("NAM", newExtendedName);
 }
 
 

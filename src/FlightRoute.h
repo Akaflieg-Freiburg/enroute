@@ -29,7 +29,7 @@
 
 #include "Aircraft.h"
 
-#include "geomaps/Waypoint.h"
+#include "geomaps/SimpleWaypoint.h"
 #include "weather/Wind.h"
 
 namespace GeoMaps {
@@ -331,6 +331,8 @@ public:
      */
     QString summaryMetric() const;
 
+#warning docu
+    Q_INVOKABLE void renameWaypoint(const GeoMaps::SimpleWaypoint& waypoint, const QString& newName);
 public slots:
     /*! \brief Deletes all waypoints in the current route */
     void clear();

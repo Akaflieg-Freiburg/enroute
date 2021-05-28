@@ -29,7 +29,7 @@ Dialog {
     id: waypointEditorDialog
 
     // Property waypoint, and code to handle waypoint changes
-    property Waypoint waypoint
+    property var waypoint: geoMapProvider.cre()
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
@@ -52,7 +52,7 @@ Dialog {
 
         width: waypointEditorDialog.availableWidth
 
-        text: (waypoint === null) ? "" : waypoint.extendedName
+        text: waypoint.extendedName
         focus: true
 
         onEditingFinished: setName()
@@ -63,9 +63,7 @@ Dialog {
     onAccepted: setName()
 
     function setName() {
-        if (waypoint === null)
-            return;
-        waypoint.extendedName = wpNameField.text
+        flightRoute.renameWaypoint(waypoint, wpNameField.text)
         close()
     }
 

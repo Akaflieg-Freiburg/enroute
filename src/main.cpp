@@ -89,7 +89,6 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::DownloadManager>("enroute", 1, 0, "WeatherDownloadManager", "Weather::DownloadManager objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
-    qmlRegisterType<GeoMaps::Waypoint>("enroute", 1, 0, "Waypoint");
 
     // Set up application
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

@@ -167,6 +167,20 @@ public:
      */
     QString icon() const;
 
+    /* \brief Validity
+     *
+     * This property is set to true if the waypoint has a valid coordinate and if the
+     * properties satisfy the specifications outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     */
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property isValid
+     */
+    bool isValid() const;
+
     /*! \brief Name of the waypoint
      *
      *  This property holds the name of the waypoint.
@@ -233,26 +247,6 @@ public:
 
     // =============================================================
 
-    /*! \brief Description of the way from a given point to the waypoint
-     *
-     * @param from Starting point of the way
-     *
-     * @param useMetric If true, then description uses metric units. Otherwise, nautical units are used.
-     *
-     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
-     */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
-
-
-    /* \brief Check if the waypoint is valid
-     *
-     * This method checks if the waypoint has a valid coordinate and if the
-     * properties satisfy the specifications outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     *
-     * @returns True if the waypoint is valid.
-     */
-    Q_INVOKABLE bool isValid() const;
 
     /*! \brief Getter function for property with the same name
      *

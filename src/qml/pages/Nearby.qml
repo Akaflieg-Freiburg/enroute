@@ -80,9 +80,12 @@ Page {
                     icon.source: model.modelData.icon
 
                     text: {
+                        // Mention useMetricUnits
+                        global.settings().useMetricUnits
+
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = model.modelData.wayTo(positionProvider.positionInfo.coordinate(), global.settings().useMetricUnits)
+                        var wayTo  = global.navigator().describeWay(positionProvider.positionInfo.coordinate(), model.modelData.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 

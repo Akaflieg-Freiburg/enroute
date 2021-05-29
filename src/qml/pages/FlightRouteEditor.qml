@@ -751,7 +751,7 @@ Page {
 
         property string title
         property string text
-        property Waypoint waypoint
+        property var waypoint
 
         onLoaded: {
             item.anchors.centerIn = dialogLoader

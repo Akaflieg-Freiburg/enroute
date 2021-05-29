@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "Global.h"
+#include "Settings.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 
@@ -25,6 +27,26 @@
 Navigation::Navigator::Navigator(QObject *parent) : QObject(parent)
 {
     QTimer::singleShot(0, this, &Navigation::Navigator::deferredInitialization);
+}
+
+
+auto Navigation::Navigator::describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) -> QString
+{
+    // Paranoid safety checks
+    if (!from.isValid()) {
+        return QString();
+    }
+    if (!to.isValid()) {
+        return QString();
+    }
+
+    auto dist = AviationUnits::Distance::fromM(from.distanceTo(to));
+    auto QUJ = qRound(from.azimuthTo(to));
+
+    if (Global::settings()->useMetricUnits()) {
+        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
+    }
+    return QString("DIST %1 nm • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
 }
 
 

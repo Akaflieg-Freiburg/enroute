@@ -96,6 +96,23 @@ auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
 }
 
 
+auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
+{
+    QJsonArray coords;
+    coords.insert(0, m_coordinate.longitude());
+    coords.insert(1, m_coordinate.latitude());
+    QJsonObject geometry;
+    geometry.insert("type", "Point");
+    geometry.insert("coordinates", coords);
+    QJsonObject feature;
+    feature.insert("type", "Feature");
+    feature.insert("properties", QJsonObject::fromVariantMap(m_properties));
+    feature.insert("geometry", geometry);
+
+    return feature;
+}
+
+
 //
 // PROPERTIES
 //
@@ -295,23 +312,6 @@ auto GeoMaps::SimpleWaypoint::tabularDescription() const -> QList<QString>
 }
 
 
-auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
-{
-    QJsonArray coords;
-    coords.insert(0, m_coordinate.longitude());
-    coords.insert(1, m_coordinate.latitude());
-    QJsonObject geometry;
-    geometry.insert("type", "Point");
-    geometry.insert("coordinates", coords);
-    QJsonObject feature;
-    feature.insert("type", "Feature");
-    feature.insert("properties", QJsonObject::fromVariantMap(m_properties));
-    feature.insert("geometry", geometry);
-
-    return feature;
-}
-
-
 auto GeoMaps::SimpleWaypoint::twoLineTitle() const -> QString
 {
     QString codeName;
@@ -328,24 +328,3 @@ auto GeoMaps::SimpleWaypoint::twoLineTitle() const -> QString
 
     return extendedName();
 }
-
-
-auto GeoMaps::SimpleWaypoint::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetricUnits) const -> QString
-{
-    // Paranoid safety checks
-    if (!fromCoordinate.isValid()) {
-        return QString();
-    }
-    if (!m_coordinate.isValid()) {
-        return QString();
-    }
-
-    auto dist = AviationUnits::Distance::fromM(fromCoordinate.distanceTo(m_coordinate));
-    auto QUJ = qRound(fromCoordinate.azimuthTo(m_coordinate));
-
-    if (useMetricUnits) {
-        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    }
-    return QString("DIST %1 nm • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
-}
-

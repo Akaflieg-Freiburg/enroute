@@ -308,7 +308,12 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: waypoint.wayTo(positionProvider.positionInfo.coordinate(), global.settings().useMetricUnits)
+            text: {
+                // Mention useMetricUnits
+                global.settings().useMetricUnits
+
+                return global.navigator().describeWay(positionProvider.positionInfo.coordinate(), waypoint.coordinate)
+            }
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

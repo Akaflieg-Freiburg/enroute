@@ -47,7 +47,16 @@ public:
     // METHODS
     //
 
-#warning construction site
+    /*! \brief Description of the way between two points
+     *
+     * @param from Starting point of the way
+     *
+     * @param to Endpoint of the way
+     *
+     * @returns A string such as "DIST 65.2 nm • QUJ 276°" or (depending on the global settings) "DIST 65.2 km • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
+     */
+    Q_INVOKABLE static QString describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to);
+
 
     //
     // PROPERTIES

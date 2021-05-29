@@ -92,23 +92,6 @@ public:
     // METHODS
     //
 
-    /*! \brief Check existence of a given property
-     *
-     * Recall that the waypoint data is stored as a list of properties that
-     * correspond to waypoint feature of a GeoJSON file, as described in
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     * This method allows to check for the existence of individual properties.
-     *
-     * @param propertyName The name of a property. This is a string such as
-     * "CAT", "TYP", "NAM", etc
-     *
-     * @returns True is property exists
-     */
-    Q_INVOKABLE bool containsProperty(const QString& propertyName) const
-    {
-        return _properties.contains(propertyName);
-    }
-
     /*! \brief Check if other waypoint is geographically near *this
      *
      *  @param other Pointer to other waypoint (nullptr is allowed)
@@ -129,15 +112,33 @@ public:
      *
      * @returns Value of the proerty
      */
-    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
+/*    Q_INVOKABLE QVariant getPropery(const QString& propertyName) const
     {
         return _properties.value(propertyName);
     }
-
+*/
     Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
     Q_INVOKABLE QString ICAOCode() const
     {
         return _properties.value("COD").toString();
+    }
+
+    Q_PROPERTY(QString category READ category CONSTANT)
+    Q_INVOKABLE QString category() const
+    {
+        return _properties.value("CAT").toString();
+    }
+
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_INVOKABLE QString name() const
+    {
+        return _properties.value("NAM").toString();
+    }
+
+    Q_PROPERTY(QString type READ type CONSTANT)
+    Q_INVOKABLE QString type() const
+    {
+        return _properties.value("TYP").toString();
     }
 
     /* \brief Check if the waypoint is valid

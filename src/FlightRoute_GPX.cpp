@@ -113,7 +113,7 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
         }
 
         QGeoCoordinate position = _waypoint.coordinate();
-        auto code = _waypoint.getPropery("COD").toString();
+        auto code = _waypoint.ICAOCode();
         auto name = _waypoint.extendedName();
 
         if (code.isEmpty()) {
@@ -124,11 +124,11 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
         auto lon = QString::number(position.longitude(), 'f', 8);
         gpx += indent + "<" + tag + " lat='" + lat + "' lon='" + lon + "'>\n";
 
-        if (_waypoint.containsProperty("ELE")) {
+        if (_waypoint.coordinate().type() == QGeoCoordinate::Coordinate3D) {
 
             // elevation in meters always for gpx
             //
-            auto elevation = QString::number(_waypoint.getPropery("ELE").toDouble(), 'f', 2);
+            auto elevation = QString::number(_waypoint.coordinate().altitude(), 'f', 2);
             gpx += indent + "  <ele>" + elevation + "</ele>\n";
         }
 
@@ -259,7 +259,7 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
 #warning
         //connect(wpt, &GeoMaps::Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
 
-        if (wpt.getPropery("TYP") == "WP" && wpt.getPropery("CAT") == "WP" && name.length() > 0) {
+        if (wpt.type() == "WP" && wpt.category() == "WP" && name.length() > 0) {
 #warning
             //wpt.setExtendedName(name);
         }

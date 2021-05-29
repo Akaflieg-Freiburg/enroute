@@ -212,8 +212,8 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
         }
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = Librarian::globalInstance()->simplifySpecialChars(wp.getPropery(QStringLiteral("NAM")).toString());
-            QString codeName = Librarian::globalInstance()->simplifySpecialChars(wp.getPropery(QStringLiteral("COD")).toString());
+            QString fullName = Librarian::globalInstance()->simplifySpecialChars(wp.name());
+            QString codeName = Librarian::globalInstance()->simplifySpecialChars(wp.ICAOCode());
             QString wordx = Librarian::globalInstance()->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
@@ -238,7 +238,7 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> SimpleWaypoint
         if (!wp.isValid()) {
             continue;
         }
-        if (wp.getPropery(QStringLiteral("COD")).toString() == id) {
+        if (wp.ICAOCode() == id) {
             return wp;
         }
     }
@@ -268,7 +268,7 @@ auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, co
         if (!wp.isValid()) {
             continue;
         }
-        if (wp.getPropery(QStringLiteral("TYP")).toString() != type) {
+        if (wp.type() != type) {
             continue;
         }
         tWps.append(wp);
@@ -414,7 +414,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     QJsonDocument geoDoc(resultObject);
 
     // Sort waypoints by name
-    std::sort(newWaypoints.begin(), newWaypoints.end(), [](const SimpleWaypoint &a, const SimpleWaypoint &b) {return a.getPropery(QStringLiteral("NAM")).toString() < b.getPropery(QStringLiteral("NAM")).toString(); });
+    std::sort(newWaypoints.begin(), newWaypoints.end(), [](const SimpleWaypoint &a, const SimpleWaypoint &b) {return a.name() < b.name(); });
 
     _aviationDataMutex.lock();
     _airspaces_ = newAirspaces;

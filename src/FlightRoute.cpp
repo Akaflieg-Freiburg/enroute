@@ -277,7 +277,7 @@ auto FlightRoute::midFieldWaypoints() const -> QVariantList
     }
 
     foreach(auto wpt, _waypoints) {
-        if (wpt.getPropery("CAT") == "WP") {
+        if (wpt.category() == "WP") {
             result << QVariant::fromValue(wpt);
         }
     }
@@ -400,8 +400,8 @@ auto FlightRoute::suggestedFilename() const -> QString
     //
     // Get name for start point (e.g. "EDTL (LAHR)")
     //
-    QString start = _waypoints.constFirst().getPropery(QStringLiteral("COD")).toString(); // ICAO code of start point
-    QString name = _waypoints.constFirst().getPropery(QStringLiteral("NAM")).toString(); // Name of start point
+    QString start = _waypoints.constFirst().ICAOCode(); // ICAO code of start point
+    QString name = _waypoints.constFirst().name(); // Name of start point
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11) {  // Shorten name
@@ -418,8 +418,8 @@ auto FlightRoute::suggestedFilename() const -> QString
     //
     // Get name for end point (e.g. "EDTG (BREMGARTEN)")
     //
-    QString end = _waypoints.constLast().getPropery(QStringLiteral("COD")).toString(); // ICAO code of end point
-    name = _waypoints.constLast().getPropery(QStringLiteral("NAM")).toString(); // Name of end point
+    QString end = _waypoints.constLast().ICAOCode(); // ICAO code of end point
+    name = _waypoints.constLast().name(); // Name of end point
     name.replace("(", "");
     name.replace(")", "");
     if (name.length() > 11) {  // Shorten name

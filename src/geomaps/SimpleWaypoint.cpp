@@ -96,6 +96,17 @@ auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
 }
 
 
+auto GeoMaps::SimpleWaypoint::operator==(const SimpleWaypoint &other) const -> bool {
+    if (_coordinate != other._coordinate) {
+        return false;
+    }
+    if (_properties != other._properties) {
+        return false;
+    }
+    return true;
+}
+
+
 //
 // PROPERTIES
 //
@@ -119,7 +130,7 @@ void GeoMaps::SimpleWaypoint::setExtendedName(const QString &newExtendedName)
 
 auto GeoMaps::SimpleWaypoint::icon() const -> QString
 {
-    auto CAT = getPropery(QStringLiteral("CAT")).toString();
+    auto CAT = category();
 
     // We prefer SVG icons. There are, however, a few icons that cannot be
     // rendered by Qt's tinySVG renderer. We have generated PNGs for those
@@ -244,17 +255,6 @@ auto GeoMaps::SimpleWaypoint::isValid() const -> bool
 
     // Unknown TYP
     return false;
-}
-
-
-auto GeoMaps::SimpleWaypoint::operator==(const SimpleWaypoint &other) const -> bool {
-    if (_coordinate != other._coordinate) {
-        return false;
-    }
-    if (_properties != other._properties) {
-        return false;
-    }
-    return true;
 }
 
 

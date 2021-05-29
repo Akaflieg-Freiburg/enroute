@@ -97,7 +97,7 @@ public:
      *
      *  @returns Copy of the waypoints with name changed
      */
-    Q_INVOKABLE Waypoint renamed(const QString &newName) const;
+    Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint renamed(const QString &newName) const;
 
     /*! \brief Serialization to GeoJSON object
      *

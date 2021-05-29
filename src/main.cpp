@@ -83,6 +83,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::MapManager>("enroute", 1, 0, "MapManager", "MapManager objects cannot be created in QML");
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
+    qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", "Navigator objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficFactor>("enroute", 1, 0, "TrafficFactor", "TrafficFactor objects cannot be created in QML");
@@ -177,9 +178,6 @@ auto main(int argc, char *argv[]) -> int
     // Attach Weather::WeatherDataProvider
     engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::WeatherDataProvider::globalInstance());
     GeoMaps::GeoMapProvider::globalInstance()->setWeatherDataProvider(Weather::WeatherDataProvider::globalInstance());
-
-    // Attach Navigation::Navigator
-    engine->rootContext()->setContextProperty("navigator", Navigation::Navigator::globalInstance());
 
     // Restore saved settings and make them available to QML
     QSettings settings;

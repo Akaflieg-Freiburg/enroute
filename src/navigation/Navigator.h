@@ -43,14 +43,15 @@ public:
      */
     explicit Navigator(QObject *parent = nullptr);
 
-    /*! \brief Pointer to static instance
-     *
-     *  This method returns a pointer to a static instance of this class. In rare
-     *  situations, during shutdown of the app, a nullptr might be returned.
-     *
-     *  @returns A pointer to a static instance of this class
-     */
-    static Navigator *globalInstance();
+    //
+    // METHODS
+    //
+
+#warning construction site
+
+    //
+    // PROPERTIES
+    //
 
     /*! \brief Estimate whether the device is flying or on the ground
      *

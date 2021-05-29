@@ -26,12 +26,13 @@
 #include "MobileAdaptor.h"
 #include "Settings.h"
 #include "geomaps/MapManager.h"
-
+#include "navigation/Navigator.h"
 
 bool isConstructing {false};
 
 QPointer<GeoMaps::MapManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
+QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Settings> g_settings {};
 
@@ -66,6 +67,12 @@ auto Global::mapManager() -> GeoMaps::MapManager*
 auto Global::mobileAdaptor() -> MobileAdaptor*
 {
     return allocateInternal<MobileAdaptor>(g_mobileAdaptor);
+}
+
+
+auto Global::navigator() -> Navigation::Navigator*
+{
+    return allocateInternal<Navigation::Navigator>(g_navigator);
 }
 
 

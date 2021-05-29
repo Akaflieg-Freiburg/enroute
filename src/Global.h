@@ -30,6 +30,9 @@ namespace GeoMaps {
 class MapManager;
 };
 
+namespace Navigation {
+class Navigator;
+}
 
 /*! \brief Global instance storage
  *
@@ -83,13 +86,19 @@ public:
      */
     Q_INVOKABLE static MobileAdaptor* mobileAdaptor();
 
+    /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Navigation::Navigator* navigator();
+
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static QNetworkAccessManager* networkAccessManager();
 
-    /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
+    /*! \brief Pointer to appplication-wide static Settings instance
      *
      * @returns Pointer to appplication-wide static instance.
      */

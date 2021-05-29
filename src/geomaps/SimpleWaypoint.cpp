@@ -27,18 +27,18 @@
 
 GeoMaps::SimpleWaypoint::SimpleWaypoint()
 {
-    _properties.insert("CAT", QString("WP"));
-    _properties.insert("NAM", QString("Waypoint"));
-    _properties.insert("TYP", QString("WP"));
+    m_properties.insert("CAT", QString("WP"));
+    m_properties.insert("NAM", QString("Waypoint"));
+    m_properties.insert("TYP", QString("WP"));
 }
 
 
 GeoMaps::SimpleWaypoint::SimpleWaypoint(const QGeoCoordinate& coordinate)
-    : _coordinate(coordinate)
+    : m_coordinate(coordinate)
 {
-    _properties.insert("CAT", QString("WP"));
-    _properties.insert("NAM", QString("Waypoint"));
-    _properties.insert("TYP", QString("WP"));
+    m_properties.insert("CAT", QString("WP"));
+    m_properties.insert("NAM", QString("Waypoint"));
+    m_properties.insert("TYP", QString("WP"));
 }
 
 
@@ -55,7 +55,7 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
     }
     auto properties = geoJSONObject["properties"].toObject();
     foreach(auto propertyName, properties.keys())
-        _properties.insert(propertyName, properties[propertyName].toVariant());
+        m_properties.insert(propertyName, properties[propertyName].toVariant());
 
     // Get geometry
     if (!geoJSONObject.contains("geometry")) {
@@ -72,9 +72,9 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
     if (coordinateArray.size() != 2) {
         return;
     }
-    _coordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble() );
-    if (_properties.contains("ELE")) {
-        _coordinate.setAltitude(properties["ELE"].toDouble());
+    m_coordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble() );
+    if (m_properties.contains("ELE")) {
+        m_coordinate.setAltitude(properties["ELE"].toDouble());
     }
 }
 
@@ -85,25 +85,14 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
 
 auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
 {
-    if (!_coordinate.isValid()) {
+    if (!m_coordinate.isValid()) {
         return false;
     }
     if (!other.coordinate().isValid()) {
         return false;
     }
 
-    return _coordinate.distanceTo(other._coordinate) < 2000;
-}
-
-
-auto GeoMaps::SimpleWaypoint::operator==(const SimpleWaypoint &other) const -> bool {
-    if (_coordinate != other._coordinate) {
-        return false;
-    }
-    if (_properties != other._properties) {
-        return false;
-    }
-    return true;
+    return m_coordinate.distanceTo(other.m_coordinate) < 2000;
 }
 
 
@@ -114,17 +103,17 @@ auto GeoMaps::SimpleWaypoint::operator==(const SimpleWaypoint &other) const -> b
 
 auto GeoMaps::SimpleWaypoint::extendedName() const -> QString
 {
-    if (_properties.value("TYP").toString() == "NAV") {
-        return QString("%1 (%2)").arg(_properties.value("NAM").toString(), _properties.value("CAT").toString());
+    if (m_properties.value("TYP").toString() == "NAV") {
+        return QString("%1 (%2)").arg(m_properties.value("NAM").toString(), m_properties.value("CAT").toString());
     }
 
-    return _properties.value("NAM").toString();
+    return m_properties.value("NAM").toString();
 }
 
 
 void GeoMaps::SimpleWaypoint::setExtendedName(const QString &newExtendedName)
 {
-    _properties.replace("NAM", newExtendedName);
+    m_properties.replace("NAM", newExtendedName);
 }
 
 
@@ -145,21 +134,21 @@ auto GeoMaps::SimpleWaypoint::icon() const -> QString
 
 auto GeoMaps::SimpleWaypoint::isValid() const -> bool
 {
-    if (!_coordinate.isValid()) {
+    if (!m_coordinate.isValid()) {
         return false;
     }
-    if (!_properties.contains("TYP")) {
+    if (!m_properties.contains("TYP")) {
         return false;
     }
-    auto TYP = _properties.value("TYP").toString();
+    auto TYP = m_properties.value("TYP").toString();
 
     // Handle airfields
     if (TYP == "AD") {
         // Property CAT
-        if (!_properties.contains("CAT")) {
+        if (!m_properties.contains("CAT")) {
             return false;
         }
-        auto CAT = _properties.value("CAT").toString();
+        auto CAT = m_properties.value("CAT").toString();
         if ((CAT != "AD") && (CAT != "AD-GRASS") && (CAT != "AD-PAVED") &&
                 (CAT != "AD-INOP") && (CAT != "AD-GLD") && (CAT != "AD-MIL") &&
                 (CAT != "AD-MIL-GRASS") && (CAT != "AD-MIL-PAVED") && (CAT != "AD-UL") &&
@@ -168,17 +157,17 @@ auto GeoMaps::SimpleWaypoint::isValid() const -> bool
         }
 
         // Property ELE
-        if (!_properties.contains("ELE")) {
+        if (!m_properties.contains("ELE")) {
             return false;
         }
         bool ok = false;
-        _properties.value("ELE").toInt(&ok);
+        m_properties.value("ELE").toInt(&ok);
         if (!ok) {
             return false;
         }
 
         // Property NAM
-        if (!_properties.contains("NAM")) {
+        if (!m_properties.contains("NAM")) {
             return false;
         }
         return true;
@@ -187,10 +176,10 @@ auto GeoMaps::SimpleWaypoint::isValid() const -> bool
     // Handle NavAids
     if (TYP == "NAV") {
         // Property CAT
-        if (!_properties.contains("CAT")) {
+        if (!m_properties.contains("CAT")) {
             return false;
         }
-        auto CAT = _properties.value("CAT").toString();
+        auto CAT = m_properties.value("CAT").toString();
         if ((CAT != "NDB") && (CAT != "VOR") && (CAT != "VOR-DME") &&
                 (CAT != "VORTAC") && (CAT != "DVOR") && (CAT != "DVOR-DME") &&
                 (CAT != "DVORTAC")) {
@@ -198,22 +187,22 @@ auto GeoMaps::SimpleWaypoint::isValid() const -> bool
         }
 
         // Property COD
-        if (!_properties.contains("COD")) {
+        if (!m_properties.contains("COD")) {
             return false;
         }
 
         // Property NAM
-        if (!_properties.contains("NAM")) {
+        if (!m_properties.contains("NAM")) {
             return false;
         }
 
         // Property NAV
-        if (!_properties.contains("NAV")) {
+        if (!m_properties.contains("NAV")) {
             return false;
         }
 
         // Property MOR
-        if (!_properties.contains("MOR")) {
+        if (!m_properties.contains("MOR")) {
             return false;
         }
 
@@ -223,29 +212,29 @@ auto GeoMaps::SimpleWaypoint::isValid() const -> bool
     // Handle waypoints
     if (TYP == "WP") {
         // Property CAT
-        if (!_properties.contains("CAT")) {
+        if (!m_properties.contains("CAT")) {
             return false;
         }
-        auto CAT = _properties.value("CAT").toString();
+        auto CAT = m_properties.value("CAT").toString();
         if ((CAT != "MRP") && (CAT != "RP") && (CAT != "WP")) {
             return false;
         }
 
         // Property COD
         if ((CAT == "MRP") || (CAT == "RP")) {
-            if (!_properties.contains("COD")) {
+            if (!m_properties.contains("COD")) {
                 return false;
             }
         }
 
         // Property NAM
-        if (!_properties.contains("NAM")) {
+        if (!m_properties.contains("NAM")) {
             return false;
         }
 
         // Property SCO
         if ((CAT == "MRP") || (CAT == "RP")) {
-            if (!_properties.contains("SCO")) {
+            if (!m_properties.contains("SCO")) {
                 return false;
             }
         }
@@ -262,43 +251,43 @@ auto GeoMaps::SimpleWaypoint::tabularDescription() const -> QList<QString>
 {
     QList<QString> result;
 
-    if (_properties.value("TYP").toString() == "NAV") {
-        result.append("ID  " + _properties.value("COD").toString() + " " + _properties.value("MOR").toString());
-        result.append("NAV " + _properties.value("NAV").toString());
-        if (_properties.contains("ELE")) {
-            result.append(QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
+    if (m_properties.value("TYP").toString() == "NAV") {
+        result.append("ID  " + m_properties.value("COD").toString() + " " + m_properties.value("MOR").toString());
+        result.append("NAV " + m_properties.value("NAV").toString());
+        if (m_properties.contains("ELE")) {
+            result.append(QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(m_properties.value("ELE").toDouble()).toFeet())));
         }
     }
 
-    if (_properties.value("TYP").toString() == "AD") {
-        if (_properties.contains("COD")) {
-            result.append("ID  " + _properties.value("COD").toString());
+    if (m_properties.value("TYP").toString() == "AD") {
+        if (m_properties.contains("COD")) {
+            result.append("ID  " + m_properties.value("COD").toString());
         }
-        if (_properties.contains("INF")) {
-            result.append("INF " + _properties.value("INF").toString().replace("\n", "<br>"));
+        if (m_properties.contains("INF")) {
+            result.append("INF " + m_properties.value("INF").toString().replace("\n", "<br>"));
         }
-        if (_properties.contains("COM")) {
-            result.append("COM " + _properties.value("COM").toString().replace("\n", "<br>"));
+        if (m_properties.contains("COM")) {
+            result.append("COM " + m_properties.value("COM").toString().replace("\n", "<br>"));
         }
-        if (_properties.contains("NAV")) {
-            result.append("NAV " + _properties.value("NAV").toString().replace("\n", "<br>"));
+        if (m_properties.contains("NAV")) {
+            result.append("NAV " + m_properties.value("NAV").toString().replace("\n", "<br>"));
         }
-        if (_properties.contains("OTH")) {
-            result.append("OTH " + _properties.value("OTH").toString().replace("\n", "<br>"));
+        if (m_properties.contains("OTH")) {
+            result.append("OTH " + m_properties.value("OTH").toString().replace("\n", "<br>"));
         }
-        if (_properties.contains("RWY")) {
-            result.append("RWY " + _properties.value("RWY").toString().replace("\n", "<br>"));
+        if (m_properties.contains("RWY")) {
+            result.append("RWY " + m_properties.value("RWY").toString().replace("\n", "<br>"));
         }
 
-        result.append( QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(_properties.value("ELE").toDouble()).toFeet())));
+        result.append( QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(m_properties.value("ELE").toDouble()).toFeet())));
     }
 
-    if (_properties.value("TYP").toString() == "WP") {
-        if (_properties.contains("ICA")) {
-            result.append("ID  " + _properties.value("COD").toString());
+    if (m_properties.value("TYP").toString() == "WP") {
+        if (m_properties.contains("ICA")) {
+            result.append("ID  " + m_properties.value("COD").toString());
         }
-        if (_properties.contains("COM")) {
-            result.append("COM " + _properties.value("COM").toString());
+        if (m_properties.contains("COM")) {
+            result.append("COM " + m_properties.value("COM").toString());
         }
     }
 
@@ -309,14 +298,14 @@ auto GeoMaps::SimpleWaypoint::tabularDescription() const -> QList<QString>
 auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
 {
     QJsonArray coords;
-    coords.insert(0, _coordinate.longitude());
-    coords.insert(1, _coordinate.latitude());
+    coords.insert(0, m_coordinate.longitude());
+    coords.insert(1, m_coordinate.latitude());
     QJsonObject geometry;
     geometry.insert("type", "Point");
     geometry.insert("coordinates", coords);
     QJsonObject feature;
     feature.insert("type", "Feature");
-    feature.insert("properties", QJsonObject::fromVariantMap(_properties));
+    feature.insert("properties", QJsonObject::fromVariantMap(m_properties));
     feature.insert("geometry", geometry);
 
     return feature;
@@ -326,11 +315,11 @@ auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
 auto GeoMaps::SimpleWaypoint::twoLineTitle() const -> QString
 {
     QString codeName;
-    if (_properties.contains("COD")) {
-        codeName += _properties.value("COD").toString();
+    if (m_properties.contains("COD")) {
+        codeName += m_properties.value("COD").toString();
     }
-    if (_properties.contains("MOR")) {
-        codeName += " " + _properties.value("MOR").toString();
+    if (m_properties.contains("MOR")) {
+        codeName += " " + m_properties.value("MOR").toString();
     }
 
     if (!codeName.isEmpty()) {
@@ -347,12 +336,12 @@ auto GeoMaps::SimpleWaypoint::wayTo(const QGeoCoordinate& fromCoordinate, bool u
     if (!fromCoordinate.isValid()) {
         return QString();
     }
-    if (!_coordinate.isValid()) {
+    if (!m_coordinate.isValid()) {
         return QString();
     }
 
-    auto dist = AviationUnits::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
-    auto QUJ = qRound(fromCoordinate.azimuthTo(_coordinate));
+    auto dist = AviationUnits::Distance::fromM(fromCoordinate.distanceTo(m_coordinate));
+    auto QUJ = qRound(fromCoordinate.azimuthTo(m_coordinate));
 
     if (useMetricUnits) {
         return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);

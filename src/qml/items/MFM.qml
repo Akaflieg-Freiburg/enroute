@@ -109,7 +109,7 @@ Item {
             when: flightMap.followGPS === true
             value: {
                 // If not in flight, then aircraft stays in center of display
-                if (!navigator.isInFlight)
+                if (!global.navigator.isInFlight)
                     return positionProvider.lastValidCoordinate
                 if (!positionProvider.lastValidTT.isFinite())
                     return positionProvider.lastValidCoordinate
@@ -204,7 +204,7 @@ Item {
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
             coordinate: positionProvider.lastValidCoordinate
-            visible: (navigator.isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
+            visible: (global.navigator().isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -218,7 +218,7 @@ Item {
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: (navigator.isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (global.navigator().isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing

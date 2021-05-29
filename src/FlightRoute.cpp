@@ -341,7 +341,7 @@ void FlightRoute::renameWaypoint(const GeoMaps::SimpleWaypoint& waypoint, const 
 {
     for(auto& wp : _waypoints) {
         if (wp == waypoint) {
-            wp.setExtendedName(newName);
+            wp = wp.renamed(newName);
         }
     }
     updateLegs();

@@ -91,6 +91,14 @@ public:
      */
     Q_INVOKABLE bool operator==(const SimpleWaypoint &other) const = default;
 
+    /*! \brief Copy waypoint and change name
+     *
+     *  @param newName New name of the waypoint
+     *
+     *  @returns Copy of the waypoints with name changed
+     */
+    Q_INVOKABLE SimpleWaypoint renamed(const QString &newName) const;
+
     /*! \brief Serialization to GeoJSON object
      *
      * This method serialises the waypoint as a GeoJSON object. The object
@@ -139,6 +147,18 @@ public:
         return m_coordinate;
     }
 
+    /*! \brief Extended name of the waypoint
+     *
+     * This property holds an extended name string of the form "Karlsruhe (DVOR-DME)"
+     */
+    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property extendedName
+    */
+    QString extendedName() const;
+
     /*! \brief ICAO Code of the waypoint
      *
      *  This property holds the four-letter ICAO code of the waypoint, or an empty
@@ -179,7 +199,10 @@ public:
      *
      *  @returns Property isValid
      */
-    bool isValid() const;
+    bool isValid() const
+    {
+        return m_isValid;
+    }
 
     /*! \brief Name of the waypoint
      *
@@ -245,20 +268,12 @@ public:
         return m_properties.value("TYP").toString();
     }
 
-    // =============================================================
-
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordinate
-    */
-    Q_PROPERTY(QString extendedName READ extendedName WRITE setExtendedName)
-
-    QString extendedName() const;
-    void setExtendedName(const QString &newExtendedName);
-
+private:
+    // Computes the property isValid; this is used by the constructors to set the cached value
+    bool computeIsValid() const;
 
 protected:
+    bool m_isValid {false};
     QGeoCoordinate m_coordinate;
     QMultiMap<QString, QVariant> m_properties;
 };

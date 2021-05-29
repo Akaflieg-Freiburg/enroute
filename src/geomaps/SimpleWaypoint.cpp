@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+
 #include <QJsonArray>
 
 #include "SimpleWaypoint.h"
 #include "units/Distance.h"
-#include "weather/Station.h"
 
 
 GeoMaps::SimpleWaypoint::SimpleWaypoint()
@@ -30,6 +30,9 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint()
     m_properties.insert("CAT", QString("WP"));
     m_properties.insert("NAM", QString("Waypoint"));
     m_properties.insert("TYP", QString("WP"));
+
+    // Set cached property
+    m_isValid = computeIsValid();
 }
 
 
@@ -39,6 +42,9 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QGeoCoordinate& coordinate)
     m_properties.insert("CAT", QString("WP"));
     m_properties.insert("NAM", QString("Waypoint"));
     m_properties.insert("TYP", QString("WP"));
+
+    // Set cached property
+    m_isValid = computeIsValid();
 }
 
 
@@ -76,6 +82,9 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
     if (m_properties.contains("ELE")) {
         m_coordinate.setAltitude(properties["ELE"].toDouble());
     }
+
+    // Set cached property
+    m_isValid = computeIsValid();
 }
 
 
@@ -83,73 +92,7 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
 // METHODS
 //
 
-auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
-{
-    if (!m_coordinate.isValid()) {
-        return false;
-    }
-    if (!other.coordinate().isValid()) {
-        return false;
-    }
-
-    return m_coordinate.distanceTo(other.m_coordinate) < 2000;
-}
-
-
-auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
-{
-    QJsonArray coords;
-    coords.insert(0, m_coordinate.longitude());
-    coords.insert(1, m_coordinate.latitude());
-    QJsonObject geometry;
-    geometry.insert("type", "Point");
-    geometry.insert("coordinates", coords);
-    QJsonObject feature;
-    feature.insert("type", "Feature");
-    feature.insert("properties", QJsonObject::fromVariantMap(m_properties));
-    feature.insert("geometry", geometry);
-
-    return feature;
-}
-
-
-//
-// PROPERTIES
-//
-
-
-auto GeoMaps::SimpleWaypoint::extendedName() const -> QString
-{
-    if (m_properties.value("TYP").toString() == "NAV") {
-        return QString("%1 (%2)").arg(m_properties.value("NAM").toString(), m_properties.value("CAT").toString());
-    }
-
-    return m_properties.value("NAM").toString();
-}
-
-
-void GeoMaps::SimpleWaypoint::setExtendedName(const QString &newExtendedName)
-{
-    m_properties.replace("NAM", newExtendedName);
-}
-
-
-auto GeoMaps::SimpleWaypoint::icon() const -> QString
-{
-    auto CAT = category();
-
-    // We prefer SVG icons. There are, however, a few icons that cannot be
-    // rendered by Qt's tinySVG renderer. We have generated PNGs for those
-    // and treat them separately here.
-    if ((CAT == "AD-GLD") || (CAT == "AD-GRASS") || (CAT == "AD-MIL-GRASS") || (CAT == "AD-UL")) {
-        return QStringLiteral("/icons/waypoints/%1.png").arg(CAT);
-    }
-
-    return QStringLiteral("/icons/waypoints/%1.svg").arg(CAT);
-}
-
-
-auto GeoMaps::SimpleWaypoint::isValid() const -> bool
+auto GeoMaps::SimpleWaypoint::computeIsValid() const -> bool
 {
     if (!m_coordinate.isValid()) {
         return false;
@@ -261,6 +204,74 @@ auto GeoMaps::SimpleWaypoint::isValid() const -> bool
 
     // Unknown TYP
     return false;
+}
+
+
+auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
+{
+    if (!m_coordinate.isValid()) {
+        return false;
+    }
+    if (!other.coordinate().isValid()) {
+        return false;
+    }
+
+    return m_coordinate.distanceTo(other.m_coordinate) < 2000;
+}
+
+
+auto GeoMaps::SimpleWaypoint::renamed(const QString &newName) const -> GeoMaps::SimpleWaypoint
+{
+    SimpleWaypoint copy(*this);
+    copy.m_properties.replace("NAM", newName);
+    return copy;
+}
+
+
+auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
+{
+    QJsonArray coords;
+    coords.insert(0, m_coordinate.longitude());
+    coords.insert(1, m_coordinate.latitude());
+    QJsonObject geometry;
+    geometry.insert("type", "Point");
+    geometry.insert("coordinates", coords);
+    QJsonObject feature;
+    feature.insert("type", "Feature");
+    feature.insert("properties", QJsonObject::fromVariantMap(m_properties));
+    feature.insert("geometry", geometry);
+
+    return feature;
+}
+
+
+//
+// PROPERTIES
+//
+
+
+auto GeoMaps::SimpleWaypoint::extendedName() const -> QString
+{
+    if (m_properties.value("TYP").toString() == "NAV") {
+        return QString("%1 (%2)").arg(m_properties.value("NAM").toString(), m_properties.value("CAT").toString());
+    }
+
+    return m_properties.value("NAM").toString();
+}
+
+
+auto GeoMaps::SimpleWaypoint::icon() const -> QString
+{
+    auto CAT = category();
+
+    // We prefer SVG icons. There are, however, a few icons that cannot be
+    // rendered by Qt's tinySVG renderer. We have generated PNGs for those
+    // and treat them separately here.
+    if ((CAT == "AD-GLD") || (CAT == "AD-GRASS") || (CAT == "AD-MIL-GRASS") || (CAT == "AD-UL")) {
+        return QStringLiteral("/icons/waypoints/%1.png").arg(CAT);
+    }
+
+    return QStringLiteral("/icons/waypoints/%1.svg").arg(CAT);
 }
 
 

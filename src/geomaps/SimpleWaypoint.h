@@ -56,12 +56,6 @@ public:
      */
     Q_INVOKABLE SimpleWaypoint();
 
-    /*! \brief Copy constructor
-     *
-     * @param other Waypoint whose data is copied
-     */
-    SimpleWaypoint(const GeoMaps::SimpleWaypoint &other) = default;
-
     /*! \brief Constructs a waypoint from a coordinate
      *
      * The waypoint constructed will have property TYP="WP" and
@@ -84,9 +78,6 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit SimpleWaypoint(const QJsonObject &geoJSONObject);
-
-    // Standard destructor
-    ~SimpleWaypoint() = default;
 
     //
     // METHODS

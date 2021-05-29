@@ -29,19 +29,19 @@
 
 namespace Weather {
 
-class WeatherProvider;
+class WeatherDataProvider;
 
 /*! \brief METAR report
  *
  * This class contains the data of a METAR or SPECI report and provided a few
  * methods to access the data. Instances of this class are provided by the
- * WeatherProvider class; there is no way to construct valid instances yourself.
+ * WeatherDataProvider class; there is no way to construct valid instances yourself.
  */
 
 class METAR : public Decoder {
     Q_OBJECT
 
-    friend WeatherProvider;
+    friend WeatherDataProvider;
 
 public:
     /*! \brief Default constructor

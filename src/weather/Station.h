@@ -32,7 +32,7 @@ class GeoMapProvider;
 
 namespace Weather {
 
-class WeatherProvider;
+class WeatherDataProvider;
 
 /*! \brief This class represents a weather station that issues METAR or TAF report
  *
@@ -43,7 +43,7 @@ class WeatherProvider;
 class Station : public QObject {
     Q_OBJECT
 
-    friend WeatherProvider;
+    friend WeatherDataProvider;
     friend METAR;
     friend TAF;
 public:
@@ -51,7 +51,7 @@ public:
      *
      * This standard constructor creates an weather WeatherStation invalid.
      * Valid weather WeatherStations can only be created by instances of the
-     * WeatherProvider class.
+     * WeatherDataProvider class.
      *
      * @param parent The standard QObject parent pointer
      */
@@ -173,8 +173,8 @@ public:
      * 
      * This property holds a pointer to the last METAR provided by this
      * WeatherStation, which can be a nullptr if no data is available.  The
-     * METAR instance is owned by an instance of WeatherProvider, and can be
-     * deleted or updated by the WeatherProvider anytime.
+     * METAR instance is owned by an instance of WeatherDataProvider, and can be
+     * deleted or updated by the WeatherDataProvider anytime.
      */
     Q_PROPERTY(Weather::METAR *metar READ metar NOTIFY metarChanged)
 
@@ -211,8 +211,8 @@ public:
      * 
      * This property holds a pointer to the last TAF provided by this
      * WeatherStation, which can be a nullptr if no data is available.  The TAF
-     * instance is owned by an instance of WeatherProvider, and can be deleted or
-     * updated by the WeatherProvider anytime.
+     * instance is owned by an instance of WeatherDataProvider, and can be deleted or
+     * updated by the WeatherDataProvider anytime.
      */
     Q_PROPERTY(Weather::TAF *taf READ taf NOTIFY tafChanged)
 
@@ -273,7 +273,7 @@ private:
     Q_DISABLE_COPY_MOVE(Station)
 
     // This constructor is only meant to be called by instances of the
-    // WeatherProvider class
+    // WeatherDataProvider class
     explicit Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent);
 
     // If the metar is valid, not expired and newer than the existing metar,

@@ -35,14 +35,14 @@
 #include "Settings.h"
 #include "SimpleWaypoint.h"
 #include "TileServer.h"
-#include "weather/WeatherProvider.h"
+#include "weather/WeatherDataProvider.h"
 
 class Librarian;
 class SatNav;
 class Waypoint;
 
 namespace Weather {
-class WeatherProvider;
+class WeatherDataProvider;
 }
 
 
@@ -74,7 +74,7 @@ public:
     /*! \brief Create a new GeoMap provider
      *
      * This constructor creates a new GeoMapProvider instance. Note that the
-     * instance will only start to work once the method setWeatherProvider() has
+     * instance will only start to work once the method setWeatherDataProvider() has
      * been called.
      *
      * @param parent The standard QObject parent
@@ -252,7 +252,7 @@ public:
      *
      * @param WeatherProvider Pointer to a WeatherProvider object.
      */
-    void setWeatherProvider(Weather::WeatherProvider *WeatherProvider);
+    void setWeatherDataProvider(Weather::WeatherDataProvider *weatherDataProvider);
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -265,7 +265,7 @@ private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
 
     // Pointers to other classes that are used internally
-    QPointer<Weather::WeatherProvider> _WeatherProvider;
+    QPointer<Weather::WeatherDataProvider> _WeatherProvider;
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars {QStringLiteral("[^a-zA-Z0-9]")};

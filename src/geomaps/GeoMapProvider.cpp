@@ -426,12 +426,12 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 }
 
 #warning do not want this. use application-global static!
-void GeoMaps::GeoMapProvider::setWeatherProvider(Weather::WeatherProvider *WeatherProvider)
+void GeoMaps::GeoMapProvider::setWeatherDataProvider(Weather::WeatherDataProvider *WeatherDataProvider)
 {
-    if (WeatherProvider == nullptr) {
+    if (WeatherDataProvider == nullptr) {
         return;
     }
-    _WeatherProvider = WeatherProvider;
+    _WeatherProvider = WeatherDataProvider;
 
 
     // Connect the WeatherProvider, so aviation maps will be generated

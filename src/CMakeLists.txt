@@ -111,7 +111,7 @@ set(SOURCES
     weather/METAR.h
     weather/Station.h
     weather/TAF.h
-    weather/WeatherProvider.h
+    weather/WeatherDataProvider.h
     weather/Wind.h
 
     # C++ files
@@ -161,7 +161,7 @@ set(SOURCES
     weather/METAR.cpp
     weather/Station.cpp
     weather/TAF.cpp
-    weather/WeatherProvider.cpp
+    weather/WeatherDataProvider.cpp
     weather/Wind.cpp
 
     ${HEADERS}

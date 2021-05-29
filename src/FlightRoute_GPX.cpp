@@ -166,13 +166,13 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
 
     // collect all route points and track points and waypoints
     //
-    QList<GeoMaps::SimpleWaypoint> rtept;
-    QList<GeoMaps::SimpleWaypoint> trkpt;
-    QList<GeoMaps::SimpleWaypoint> wpt;
+    QList<GeoMaps::Waypoint> rtept;
+    QList<GeoMaps::Waypoint> trkpt;
+    QList<GeoMaps::Waypoint> wpt;
 
     // lambda function to read a single gpx rtept, trkpt or wpt
     //
-    auto addPoint = [&] (const QString& tag, QList<GeoMaps::SimpleWaypoint> &target) {
+    auto addPoint = [&] (const QString& tag, QList<GeoMaps::Waypoint> &target) {
 
         // capture rtept, trkpt or wpt
 
@@ -242,16 +242,16 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
         // If a GeoMapProvider is available, check if there's a known waypoint like for example an airfield nearby.
         // If we find a waypoint within the distance of 1/100° we use it instead
         // of the coordinate which was just imported from gpx.
-        GeoMaps::SimpleWaypoint nearest;
+        GeoMaps::Waypoint nearest;
         if (geoMapProvider != nullptr) {
             QGeoCoordinate distant_pos(lat + 0.01 /* about 1.11 km */, lon);
             nearest = geoMapProvider->closestWaypoint(pos, distant_pos);
         }
 
         // Now create a waypoint, owned by this, and set its name
-        GeoMaps::SimpleWaypoint wpt;
+        GeoMaps::Waypoint wpt;
         if (!nearest.isValid()) {
-            wpt = GeoMaps::SimpleWaypoint(pos);
+            wpt = GeoMaps::Waypoint(pos);
         } else {
             wpt = nearest;
         }
@@ -291,7 +291,7 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
     // this is a bit arbitrary but seems reasonable to me.
     // Could be made configurable.
     //
-    QList<GeoMaps::SimpleWaypoint> &source = (rtept.length() > 0) ? rtept :
+    QList<GeoMaps::Waypoint> &source = (rtept.length() > 0) ? rtept :
                                                                     (trkpt.length() > 0) ? trkpt :
                                                                                            wpt;
     if (source.length() == 0) {

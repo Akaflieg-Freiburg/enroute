@@ -34,7 +34,7 @@ namespace GeoMaps {
  * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
  */
 
-class SimpleWaypoint
+class Waypoint
 {
     Q_GADGET
 
@@ -49,7 +49,7 @@ public:
      *
      * The coordinate is invalid.
      */
-    SimpleWaypoint();
+    Waypoint();
 
     /*! \brief Constructs a waypoint from a coordinate
      *
@@ -59,7 +59,7 @@ public:
      *
      * @param coordinate Geographical position of the waypoint
      */
-    SimpleWaypoint(const QGeoCoordinate& coordinate);
+    Waypoint(const QGeoCoordinate& coordinate);
 
     /*! \brief Constructs a waypoint from a GeoJSON object
      *
@@ -69,7 +69,7 @@ public:
      *
      * @param geoJSONObject GeoJSON Object that describes the waypoint
      */
-    explicit SimpleWaypoint(const QJsonObject &geoJSONObject);
+    explicit Waypoint(const QJsonObject &geoJSONObject);
 
     //
     // METHODS
@@ -81,7 +81,7 @@ public:
      *
      *  @returns True if both waypoints are valid and if tge distance between them is less than 2km
      */
-    Q_INVOKABLE bool isNear(const GeoMaps::SimpleWaypoint& other) const;
+    Q_INVOKABLE bool isNear(const GeoMaps::Waypoint& other) const;
 
     /*! \brief Equality check
      *
@@ -89,7 +89,7 @@ public:
      *
      * @returns True if the coordinates and all properties agree.
      */
-    Q_INVOKABLE bool operator==(const SimpleWaypoint &other) const = default;
+    Q_INVOKABLE bool operator==(const Waypoint &other) const = default;
 
     /*! \brief Copy waypoint and change name
      *
@@ -97,7 +97,7 @@ public:
      *
      *  @returns Copy of the waypoints with name changed
      */
-    Q_INVOKABLE SimpleWaypoint renamed(const QString &newName) const;
+    Q_INVOKABLE Waypoint renamed(const QString &newName) const;
 
     /*! \brief Serialization to GeoJSON object
      *
@@ -281,4 +281,4 @@ protected:
 }
 
 // Declare meta types
-Q_DECLARE_METATYPE(GeoMaps::SimpleWaypoint)
+Q_DECLARE_METATYPE(GeoMaps::Waypoint)

@@ -29,7 +29,7 @@
 
 #include "Aircraft.h"
 
-#include "geomaps/SimpleWaypoint.h"
+#include "geomaps/Waypoint.h"
 #include "weather/Wind.h"
 
 namespace GeoMaps {
@@ -88,7 +88,7 @@ public:
      * Waypoint. This method makes a private copy of the argument, so no
      * assumptions are made about the lifetime of *waypoint.
      */
-    Q_INVOKABLE void append(const GeoMaps::SimpleWaypoint &waypoint);
+    Q_INVOKABLE void append(const GeoMaps::Waypoint &waypoint);
 
     /*! \brief Adds a waypoint to the end of the route
      *
@@ -111,14 +111,14 @@ public:
      *
      *  @returns True if route is emptry or if other waypoint is not near the current end of the route.
      */
-    Q_INVOKABLE bool canAppend(const GeoMaps::SimpleWaypoint& other) const;
+    Q_INVOKABLE bool canAppend(const GeoMaps::Waypoint& other) const;
 
     /*! \brief Returns true if waypoint is in this route
      *
      * @param waypoint Pointer to a waypoint
      * @returns bool true if waypoint in route
      */
-    Q_INVOKABLE bool contains(const GeoMaps::SimpleWaypoint& waypoint) const;
+    Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const;
 
     /*! \brief Pointer to static instance of this class
      *
@@ -234,13 +234,13 @@ public:
      *
      * @see lastWaypointObject
      */
-    Q_PROPERTY(GeoMaps::SimpleWaypoint firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
+    Q_PROPERTY(GeoMaps::Waypoint firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property firstWaypointObject
      */
-    GeoMaps::SimpleWaypoint firstWaypointObject() const;
+    GeoMaps::Waypoint firstWaypointObject() const;
 
     /*! \brief List of coordinates for the waypoints
      *
@@ -275,13 +275,13 @@ public:
      *
      * @see firstWaypointObject
      */
-    Q_PROPERTY(GeoMaps::SimpleWaypoint lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
+    Q_PROPERTY(GeoMaps::Waypoint lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property lastWaypointObject
      */
-    GeoMaps::SimpleWaypoint lastWaypointObject() const;
+    GeoMaps::Waypoint lastWaypointObject() const;
 
     /*! \brief List of waypoints in the flight route that are not airfields
      *
@@ -332,7 +332,7 @@ public:
     QString summaryMetric() const;
 
 #warning docu
-    Q_INVOKABLE void renameWaypoint(const GeoMaps::SimpleWaypoint& waypoint, const QString& newName);
+    Q_INVOKABLE void renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName);
 public slots:
     /*! \brief Deletes all waypoints in the current route */
     void clear();
@@ -343,7 +343,7 @@ public slots:
      *
      * @param waypoint Pointer to the waypoint
      */
-    void moveDown(const GeoMaps::SimpleWaypoint& waypoint);
+    void moveDown(const GeoMaps::Waypoint& waypoint);
 
     /*! \brief Move waypoint one position up in the list of waypoints
      *
@@ -351,7 +351,7 @@ public slots:
      *
      * @param waypoint Pointer to the waypoint
      */
-    void moveUp(const GeoMaps::SimpleWaypoint& waypoint);
+    void moveUp(const GeoMaps::Waypoint& waypoint);
 
     /*! \brief Remove waypoint from the current route
      *
@@ -359,7 +359,7 @@ public slots:
      *
      * @param waypoint Pointer to the waypoint
      */
-    void removeWaypoint(const GeoMaps::SimpleWaypoint& waypoint);
+    void removeWaypoint(const GeoMaps::Waypoint& waypoint);
 
     /*! \brief Reverse the route */
     void reverse();
@@ -394,7 +394,7 @@ private:
     // "/flight route.geojson"
     QString stdFileName;
 
-    QVector<GeoMaps::SimpleWaypoint> _waypoints;
+    QVector<GeoMaps::Waypoint> _waypoints;
 
     QVector<Leg*> _legs;
 

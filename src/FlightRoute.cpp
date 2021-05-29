@@ -47,7 +47,7 @@ FlightRoute::FlightRoute(QObject *parent)
 }
 
 
-void FlightRoute::append(const GeoMaps::SimpleWaypoint &waypoint)
+void FlightRoute::append(const GeoMaps::Waypoint &waypoint)
 {
     _waypoints.append(waypoint);
 
@@ -58,7 +58,7 @@ void FlightRoute::append(const GeoMaps::SimpleWaypoint &waypoint)
 
 void FlightRoute::append(const QGeoCoordinate& position)
 {
-    append( GeoMaps::SimpleWaypoint(position) );
+    append( GeoMaps::Waypoint(position) );
 }
 
 
@@ -84,7 +84,7 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 }
 
 
-auto FlightRoute::canAppend(const GeoMaps::SimpleWaypoint &other) const -> bool
+auto FlightRoute::canAppend(const GeoMaps::Waypoint &other) const -> bool
 {
     if (_waypoints.isEmpty() ) {
         return true;
@@ -103,7 +103,7 @@ void FlightRoute::clear()
 }
 
 
-auto FlightRoute::contains(const GeoMaps::SimpleWaypoint& waypoint) const -> bool
+auto FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const -> bool
 {
     foreach(auto _waypoint, _waypoints) {
         if (!_waypoint.isValid()) {
@@ -117,7 +117,7 @@ auto FlightRoute::contains(const GeoMaps::SimpleWaypoint& waypoint) const -> boo
 }
 
 
-auto FlightRoute::firstWaypointObject() const -> GeoMaps::SimpleWaypoint
+auto FlightRoute::firstWaypointObject() const -> GeoMaps::Waypoint
 {
     if (_waypoints.isEmpty()) {
         return {};
@@ -160,7 +160,7 @@ auto FlightRoute::globalInstance() -> FlightRoute*
 }
 
 
-auto FlightRoute::lastWaypointObject() const -> GeoMaps::SimpleWaypoint
+auto FlightRoute::lastWaypointObject() const -> GeoMaps::Waypoint
 {
     if (_waypoints.isEmpty()) {
         return {};
@@ -192,9 +192,9 @@ auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
         return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
     }
 
-    QVector<GeoMaps::SimpleWaypoint> newWaypoints;
+    QVector<GeoMaps::Waypoint> newWaypoints;
     foreach(auto value, document.object()["features"].toArray()) {
-        auto wp = GeoMaps::SimpleWaypoint(value.toObject());
+        auto wp = GeoMaps::Waypoint(value.toObject());
         if (!wp.isValid()) {
             return tr("Cannot parse content of file '%1'.").arg(fileName);
         }
@@ -286,7 +286,7 @@ auto FlightRoute::midFieldWaypoints() const -> QVariantList
 }
 
 
-void FlightRoute::moveDown(const GeoMaps::SimpleWaypoint& waypoint)
+void FlightRoute::moveDown(const GeoMaps::Waypoint& waypoint)
 {
     // Paranoid safety checks
     if (waypoint == lastWaypointObject()) {
@@ -301,7 +301,7 @@ void FlightRoute::moveDown(const GeoMaps::SimpleWaypoint& waypoint)
 }
 
 
-void FlightRoute::moveUp(const GeoMaps::SimpleWaypoint& waypoint)
+void FlightRoute::moveUp(const GeoMaps::Waypoint& waypoint)
 {
     // Paranoid safety checks
     if (waypoint == firstWaypointObject()) {
@@ -318,7 +318,7 @@ void FlightRoute::moveUp(const GeoMaps::SimpleWaypoint& waypoint)
 }
 
 
-void FlightRoute::removeWaypoint(const GeoMaps::SimpleWaypoint& waypoint)
+void FlightRoute::removeWaypoint(const GeoMaps::Waypoint& waypoint)
 {
 
     foreach(const auto &_waypoint, _waypoints) {
@@ -337,7 +337,7 @@ void FlightRoute::removeWaypoint(const GeoMaps::SimpleWaypoint& waypoint)
 }
 
 
-void FlightRoute::renameWaypoint(const GeoMaps::SimpleWaypoint& waypoint, const QString& newName)
+void FlightRoute::renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName)
 {
     for(auto& wp : _waypoints) {
         if (wp == waypoint) {

@@ -33,7 +33,7 @@
 #include "Librarian.h"
 #include "MapManager.h"
 #include "Settings.h"
-#include "SimpleWaypoint.h"
+#include "Waypoint.h"
 #include "TileServer.h"
 #include "weather/WeatherDataProvider.h"
 
@@ -111,10 +111,10 @@ public:
      *
      * @returns The Waypoint that is closest to the given position, provided
      * that the distance is not bigger than that to distPosition. If no
-     * sufficiently close waypoint is found, a generric SimpleWaypoint with the
+     * sufficiently close waypoint is found, a generric Waypoint with the
      * appropriate coordinate is returned.
      */
-    Q_INVOKABLE GeoMaps::SimpleWaypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute=nullptr);
+    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute=nullptr);
 
     /*! \brief Copyright notice for the map
      *
@@ -161,7 +161,7 @@ public:
     Q_INVOKABLE QVariantList filteredWaypointObjects(const QString &filter);
 
 #warning Need to explain
-    Q_INVOKABLE GeoMaps::SimpleWaypoint cre() const
+    Q_INVOKABLE GeoMaps::Waypoint cre() const
     {
         return {};
     }
@@ -175,7 +175,7 @@ public:
      * Waypoint, but ratherof type QObject. The object is owned by this class
      * and must not be deleted.
      */
-    SimpleWaypoint findByID(const QString& id);
+    Waypoint findByID(const QString& id);
 
     /*! \brief Union of all aviation maps in GeoJSON format
      *
@@ -233,7 +233,7 @@ public:
      * @returns a list of all waypoints known to this GeoMapProvider (that is,
      * the union of all waypoints in any of the installed maps)
      */
-    QVector<SimpleWaypoint> waypoints() {
+    QVector<Waypoint> waypoints() {
         QMutexLocker locker(&_aviationDataMutex);
         return _waypoints_;
     }
@@ -306,7 +306,7 @@ private:
     // protected by this mutex.
     QMutex           _aviationDataMutex;
     QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
-    QVector<SimpleWaypoint> _waypoints_;       // Cache: Waypoints
+    QVector<Waypoint> _waypoints_;       // Cache: Waypoints
     QVector<Airspace> _airspaces_;       // Cache: Airspaces
 };
 

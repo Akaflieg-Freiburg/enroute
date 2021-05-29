@@ -21,11 +21,11 @@
 
 #include <QJsonArray>
 
-#include "SimpleWaypoint.h"
+#include "Waypoint.h"
 #include "units/Distance.h"
 
 
-GeoMaps::SimpleWaypoint::SimpleWaypoint()
+GeoMaps::Waypoint::Waypoint()
 {
     m_properties.insert("CAT", QString("WP"));
     m_properties.insert("NAM", QString("Waypoint"));
@@ -36,7 +36,7 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint()
 }
 
 
-GeoMaps::SimpleWaypoint::SimpleWaypoint(const QGeoCoordinate& coordinate)
+GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate)
     : m_coordinate(coordinate)
 {
     m_properties.insert("CAT", QString("WP"));
@@ -48,7 +48,7 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QGeoCoordinate& coordinate)
 }
 
 
-GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
+GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject)
 {
     // Paranoid safety checks
     if (geoJSONObject["type"] != "Feature") {
@@ -92,7 +92,7 @@ GeoMaps::SimpleWaypoint::SimpleWaypoint(const QJsonObject &geoJSONObject)
 // METHODS
 //
 
-auto GeoMaps::SimpleWaypoint::computeIsValid() const -> bool
+auto GeoMaps::Waypoint::computeIsValid() const -> bool
 {
     if (!m_coordinate.isValid()) {
         return false;
@@ -207,7 +207,7 @@ auto GeoMaps::SimpleWaypoint::computeIsValid() const -> bool
 }
 
 
-auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
+auto GeoMaps::Waypoint::isNear(const Waypoint& other) const -> bool
 {
     if (!m_coordinate.isValid()) {
         return false;
@@ -220,15 +220,15 @@ auto GeoMaps::SimpleWaypoint::isNear(const SimpleWaypoint& other) const -> bool
 }
 
 
-auto GeoMaps::SimpleWaypoint::renamed(const QString &newName) const -> GeoMaps::SimpleWaypoint
+auto GeoMaps::Waypoint::renamed(const QString &newName) const -> GeoMaps::Waypoint
 {
-    SimpleWaypoint copy(*this);
+    Waypoint copy(*this);
     copy.m_properties.replace("NAM", newName);
     return copy;
 }
 
 
-auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
+auto GeoMaps::Waypoint::toJSON() const -> QJsonObject
 {
     QJsonArray coords;
     coords.insert(0, m_coordinate.longitude());
@@ -250,7 +250,7 @@ auto GeoMaps::SimpleWaypoint::toJSON() const -> QJsonObject
 //
 
 
-auto GeoMaps::SimpleWaypoint::extendedName() const -> QString
+auto GeoMaps::Waypoint::extendedName() const -> QString
 {
     if (m_properties.value("TYP").toString() == "NAV") {
         return QString("%1 (%2)").arg(m_properties.value("NAM").toString(), m_properties.value("CAT").toString());
@@ -260,7 +260,7 @@ auto GeoMaps::SimpleWaypoint::extendedName() const -> QString
 }
 
 
-auto GeoMaps::SimpleWaypoint::icon() const -> QString
+auto GeoMaps::Waypoint::icon() const -> QString
 {
     auto CAT = category();
 
@@ -275,7 +275,7 @@ auto GeoMaps::SimpleWaypoint::icon() const -> QString
 }
 
 
-auto GeoMaps::SimpleWaypoint::tabularDescription() const -> QList<QString>
+auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
 {
     QList<QString> result;
 
@@ -323,7 +323,7 @@ auto GeoMaps::SimpleWaypoint::tabularDescription() const -> QList<QString>
 }
 
 
-auto GeoMaps::SimpleWaypoint::twoLineTitle() const -> QString
+auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 {
     QString codeName;
     if (m_properties.contains("COD")) {

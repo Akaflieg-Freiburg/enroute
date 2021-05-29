@@ -23,7 +23,7 @@
 #include "FlightRoute_Leg.h"
 
 
-FlightRoute::Leg::Leg(const GeoMaps::SimpleWaypoint& start, const GeoMaps::SimpleWaypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
+FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
     : QObject(parent), _aircraft(aircraft), _wind(wind)
 {
     _start = start;

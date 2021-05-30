@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 
-#include "MobileAdaptor.h"
 #include "Global.h"
+#include "MobileAdaptor.h"
 
 #include <QDateTime>
 #include <QDebug>

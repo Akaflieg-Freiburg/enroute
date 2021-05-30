@@ -85,6 +85,21 @@ public:
      */
     ~GeoMapProvider();
 
+
+    //
+    // Methods
+    //
+
+    /*! \brief Create invalid waypoint
+     *
+     *  This is a helper method for QML, where creation of waypoint objects is difficult.
+     */
+    Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
+    {
+        return {};
+    }
+
+
     //
     // Properties
     //
@@ -156,15 +171,7 @@ public:
      * list is returned as QList<QObject*>. It can thus be used as a data model
      * in QML.
      */
-#warning maybe want qvector
-
     Q_INVOKABLE QVariantList filteredWaypointObjects(const QString &filter);
-
-#warning Need to explain
-    Q_INVOKABLE GeoMaps::Waypoint cre() const
-    {
-        return {};
-    }
 
     /*! Find a waypoint by its ICAO code
      *

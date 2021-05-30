@@ -71,9 +71,23 @@ public:
      */
     explicit Waypoint(const QJsonObject &geoJSONObject);
 
+
     //
     // METHODS
     //
+
+    /*! \brief Equality check
+     *
+     * This method overloads operator==. It exists for the benefit of QML, where comparison is difficult.
+     *
+     * @param other Right hand side of the equality check
+     *
+     * @returns True if the coordinates and all properties agree.
+     */
+    Q_INVOKABLE bool equals(const GeoMaps::Waypoint &other) const
+    {
+        return *this == other;
+    }
 
     /*! \brief Check if other waypoint is geographically near *this
      *
@@ -89,7 +103,7 @@ public:
      *
      * @returns True if the coordinates and all properties agree.
      */
-    Q_INVOKABLE bool operator==(const Waypoint &other) const = default;
+    bool operator==(const Waypoint &other) const = default;
 
     /*! \brief Copy waypoint and change name
      *

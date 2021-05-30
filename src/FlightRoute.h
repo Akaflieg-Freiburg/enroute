@@ -177,6 +177,17 @@ public:
      */
     QString loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider);
 
+    /*! \brief Rename waypoint(s)
+     *
+     *  Sets the names all waypoints in the route that equal "waypoint" to newName.
+     *  The signal "waypoint changed" is emitted as appropriate.
+     *
+     *  @param waypoint Specifies waypoints that are to be renamed.
+     *
+     *  @param newName New name for waypoint
+     */
+    Q_INVOKABLE void renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName);
+
     /*! \brief Saves flight route to a file
      *
      * This method saves the flight route as a GeoJSON file.  The file conforms
@@ -296,21 +307,16 @@ public:
      */
     QVariantList midFieldWaypoints() const;
 
-    /*! \brief List of waypoints and legs
+    /*! \brief List of legs
      *
-     * This property lists all the waypoints and legs contained in the route. It
-     * can be empty, and it can contain a single waypoint. If there is more than
-     * one waypoint, then waypoints and legs alternate, following the pattern:
-     * waypoint - leg - waypoint - … - leg - waypoint.
+     * This property returns a list of all legs in the route.
      */
-#warning docu
     Q_PROPERTY(QList<QObject*> legs READ legs NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property routeObjects
+     * @returns Property legs
      */
-#warning docu
     QList<QObject*> legs() const;
 
     /*! \brief Human-readable summary of the flight route*/
@@ -331,8 +337,6 @@ public:
      */
     QString summaryMetric() const;
 
-#warning docu
-    Q_INVOKABLE void renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName);
 public slots:
     /*! \brief Deletes all waypoints in the current route */
     void clear();

@@ -75,6 +75,7 @@ set(SOURCES
     Aircraft.h
     Clock.h
     FlightRoute.h
+    FlightRoute_Leg.h
     geomaps/Airspace.h
     geomaps/Downloadable.h
     geomaps/DownloadableGroup.h

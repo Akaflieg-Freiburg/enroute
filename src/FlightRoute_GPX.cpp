@@ -166,13 +166,13 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
 
     // collect all route points and track points and waypoints
     //
-    QList<GeoMaps::Waypoint> rtept;
-    QList<GeoMaps::Waypoint> trkpt;
-    QList<GeoMaps::Waypoint> wpt;
+    QVector<GeoMaps::Waypoint> rtept;
+    QVector<GeoMaps::Waypoint> trkpt;
+    QVector<GeoMaps::Waypoint> wpt;
 
     // lambda function to read a single gpx rtept, trkpt or wpt
     //
-    auto addPoint = [&] (const QString& tag, QList<GeoMaps::Waypoint> &target) {
+    auto addPoint = [&] (const QString& tag, QVector<GeoMaps::Waypoint> &target) {
 
         // capture rtept, trkpt or wpt
 
@@ -291,9 +291,9 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
     // this is a bit arbitrary but seems reasonable to me.
     // Could be made configurable.
     //
-    QList<GeoMaps::Waypoint> &source = (rtept.length() > 0) ? rtept :
-                                                                    (trkpt.length() > 0) ? trkpt :
-                                                                                           wpt;
+    QVector<GeoMaps::Waypoint> &source = (rtept.length() > 0) ? rtept :
+                                                                (trkpt.length() > 0) ? trkpt :
+                                                                                       wpt;
     if (source.length() == 0) {
         // don't have to delete lists rtept, trkpt, wpt as they're empty
         return tr("Error interpreting GPX file: no valid route found.");

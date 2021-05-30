@@ -21,6 +21,8 @@
 #include <QtGlobal>
 
 #include "FlightRoute_Leg.h"
+#include "Global.h"
+#include "Settings.h"
 
 
 FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
@@ -122,24 +124,12 @@ auto FlightRoute::Leg::isValid() const -> bool
 
 auto FlightRoute::Leg::description() const -> QString
 {
-    return makeDescription(false);
-}
-
-
-auto FlightRoute::Leg::descriptionMetric() const -> QString
-{
-    return makeDescription(true);
-}
-
-
-auto FlightRoute::Leg::makeDescription(bool useMetricUnits) const -> QString
-{
     if (!isValid()) {
         return QString();
     }
 
     QString result;
-    if (useMetricUnits) {
+    if (Global::settings()->useMetricUnits()) {
         result += QString("%1 km").arg(distance().toKM(), 0, 'f', 1);
     } else {
         result += QString("%1 nm").arg(distance().toNM(), 0, 'f', 1);

@@ -35,14 +35,11 @@ class FlightRoute::Leg : public QObject
     Q_OBJECT
 
 public:
-  /*! \brief Constructs a flight route with given start and end point
+    /*! \brief Constructs a flight route leg with given start and end point
    *
-   * The Waypoint start and end are copied, so that this class does not make any
-   * assumption about the lifetome of *start and *end
+   * @param start Start point
    *
-   * @param start Pointer to the starting point
-   *
-   * @param end Pointer to the end point
+   * @param end End point
    *
    * @param aircraft Pointer to aircraft info that is used in route
    * computations. It is possible to set a nullptr here or delete the object anytime, but then wind computations will no longer work.
@@ -51,148 +48,152 @@ public:
    *
    * @param parent The standard QObject parent pointer.
    */
-  explicit Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
+    explicit Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject *parent = nullptr);
 
-  // Standard destructor
-  ~Leg() override = default;
+    // Standard destructor
+    ~Leg() override = default;
 
-#warning
+    /*! \brief Start point of the leg */
     Q_PROPERTY(GeoMaps::Waypoint startPoint READ startPoint CONSTANT)
+
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property startPoint
+     */
     GeoMaps::Waypoint startPoint()  const
     {
         return _start;
     }
 
-#warning
+    /*! \brief End point of the leg */
     Q_PROPERTY(GeoMaps::Waypoint endPoint READ endPoint CONSTANT)
+
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property endPoint
+     */
     GeoMaps::Waypoint endPoint()  const
     {
         return _end;
     }
 
+    /*! \brief Length of the leg */
+    Q_PROPERTY(AviationUnits::Distance distance READ distance CONSTANT)
 
-  /*! \brief Length of the leg */
-  Q_PROPERTY(AviationUnits::Distance distance READ distance CONSTANT)
-
-  /*! \brief Getter function for property of the same name
+    /*! \brief Getter function for property of the same name
    *
    * @returns Property distance
    */
-  AviationUnits::Distance distance() const;
+    AviationUnits::Distance distance() const;
 
-  /*! \brief Fuel
+    /*! \brief Fuel
    *
    * This property holds the fuel consumption for the leg, in liters. It holds
    * NaN if the leg is invalid or if the fuel consumption cannot be computed.
    */
-  Q_PROPERTY(double Fuel READ Fuel NOTIFY valChanged)
+    Q_PROPERTY(double Fuel READ Fuel NOTIFY valChanged)
 
-  /*! \brief Getter function for property of the same name
+    /*! \brief Getter function for property of the same name
    *
    * @returns Property Fuel
    */
-  double Fuel() const;
+    double Fuel() const;
 
-  /*! \brief Ground speed
+    /*! \brief Ground speed
    *
    * This property holds the ground speed for the leg, in meters per second. It
    * holds NaN if the leg is invalid or if the ground speed cannot be computed.
    */
-  Q_PROPERTY(AviationUnits::Speed GS READ GS NOTIFY valChanged)
+    Q_PROPERTY(AviationUnits::Speed GS READ GS NOTIFY valChanged)
 
-  /*! \brief Getter function for property of the same name
+    /*! \brief Getter function for property of the same name
    *
    * @returns Property GS
    */
-  AviationUnits::Speed GS() const;
+    AviationUnits::Speed GS() const;
 
-  /*! \brief True course
+    /*! \brief True course
    *
    * This property holds the true course for the leg. It holds NaN if the leg is
    * invalid or shorter than 100m
    */
-  Q_PROPERTY(AviationUnits::Angle TC READ TC NOTIFY valChanged)
+    Q_PROPERTY(AviationUnits::Angle TC READ TC NOTIFY valChanged)
 
-  /*! \brief Getter function for property of the same name
+    /*! \brief Getter function for property of the same name
    *
    * @returns Property TC
    */
-  AviationUnits::Angle TC() const;
+    AviationUnits::Angle TC() const;
 
-  /*! \brief Time required for this leg.
+    /*! \brief Time required for this leg.
    *
    * Set to NaN if the time cannot be computed.
    */
-  Q_PROPERTY(AviationUnits::Time Time READ Time NOTIFY valChanged)
+    Q_PROPERTY(AviationUnits::Time Time READ Time NOTIFY valChanged)
 
-  /*! \brief Getter function for property of the same name
+    /*! \brief Getter function for property of the same name
    *
    * @returns Property Time
    */
-  AviationUnits::Time Time() const{ return distance()/GS(); }
+    AviationUnits::Time Time() const{ return distance()/GS(); }
 
-  /*! \brief True heading.
+    /*! \brief True heading.
    *
    * Set to NaN if a TH cannot be computed.
    */
-  Q_PROPERTY(AviationUnits::Angle TH READ TH CONSTANT)
+    Q_PROPERTY(AviationUnits::Angle TH READ TH CONSTANT)
 
-  /*! \brief Getter function for property of the same name
+    /*! \brief Getter function for property of the same name
    *
    * @returns Property TH
    */
-  AviationUnits::Angle TH() const { return TC()+WCA(); }
+    AviationUnits::Angle TH() const { return TC()+WCA(); }
 
-  /*! \brief Human-readable description of the leg */
-  Q_PROPERTY(QString description READ description NOTIFY valChanged)
+    /*! \brief Human-readable description of the leg
+   *
+   *  This method uses the global settings object to determine if metric or
+   *  aviation units shall be used.
+   */
+    Q_PROPERTY(QString description READ description NOTIFY valChanged)
 
-  /*! \brief Getter function for property of the same name
+    /*! \brief Getter function for property of the same name
    *
    * @returns Property description
    */
-  QString description() const;
+    QString description() const;
 
-  /*! \brief Human-readable description of the leg */
-  Q_PROPERTY(QString descriptionMetric READ descriptionMetric NOTIFY valChanged)
-
-  /*! \brief Getter function for property of the same name
-   *
-   * @returns Property descriptionMetric
-   */
-  QString descriptionMetric() const;
-
-  /*! \brief Validity
+    /*! \brief Validity
    *
    * A leg is considered invalid of either start or endpoint are invalid.
    *
    * @returns True if the leg is valid
    */
-  bool isValid() const;
+    bool isValid() const;
 
-  /*! \brief Wind correction angle.
+    /*! \brief Wind correction angle.
    *
    * @returns Wind correction angle, or NaN if a WCA cannot be computed
    */
-  AviationUnits::Angle WCA() const;
+    AviationUnits::Angle WCA() const;
 
 signals:
-  /*! \brief Notification signal */
-  void valChanged();
+    /*! \brief Notification signal */
+    void valChanged();
 
 private:
-  Q_DISABLE_COPY_MOVE(Leg)
+    Q_DISABLE_COPY_MOVE(Leg)
 
-  // Necessary data for computation of wind triangle?
-  bool hasDataForWindTriangle() const;
+    // Necessary data for computation of wind triangle?
+    bool hasDataForWindTriangle() const;
 
-  // Helper function for creating the text in the flight route
-  QString makeDescription(bool useMetricUnits) const;
+    // Helper function for creating the text in the flight route
+    QString makeDescription(bool useMetricUnits) const;
 
-  // Minimum length of the leg in meters. If shorter, no courses are computed.
-  static constexpr double minLegLength  =  100.0;
+    // Minimum length of the leg in meters. If shorter, no courses are computed.
+    static constexpr double minLegLength  =  100.0;
 
-  GeoMaps::Waypoint _start;
-  GeoMaps::Waypoint _end;
-  QPointer<Aircraft> _aircraft {nullptr};
-  QPointer<Weather::Wind> _wind {nullptr};
+    GeoMaps::Waypoint _start;
+    GeoMaps::Waypoint _end;
+    QPointer<Aircraft> _aircraft {nullptr};
+    QPointer<Weather::Wind> _wind {nullptr};
 };

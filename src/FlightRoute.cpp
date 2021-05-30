@@ -159,6 +159,7 @@ auto FlightRoute::globalInstance() -> FlightRoute*
 
 }
 
+#warning Want waypoint IDs
 
 auto FlightRoute::lastWaypointObject() const -> GeoMaps::Waypoint
 {
@@ -362,8 +363,8 @@ auto FlightRoute::legs() const -> QList<QObject*>
     QList<QObject*> result;
     result.reserve(_legs.size());
 
-    for(int i=0; i<_legs.size(); i++) {
-        result.append(_legs[i]);
+    for(auto *_leg : _legs) {
+        result.append(_leg);
     }
 
     return result;

@@ -38,16 +38,16 @@ Page {
         RowLayout {
             id: waypointLayout
 
-            property var waypoint: parent.waypoint
+            property var waypoint: ({})
 
             WordWrappingItemDelegate {
-                icon.source: waypointLayout.waypoint.icon
+                icon.source: waypoint.icon
                 Layout.fillWidth: true
-                text: waypointLayout.waypoint.twoLineTitle
+                text: waypoint.twoLineTitle
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    waypointDescription.waypoint = waypointLayout.waypoint
+                    waypointDescription.waypoint = waypoint
                     waypointDescription.open()
                 }
             }
@@ -55,11 +55,11 @@ Page {
             ToolButton {
                 id: editButton
 
-                visible: parent.parent.waypoint.icon.indexOf("WP") !== -1
+                visible: waypoint.icon.indexOf("WP") !== -1
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    wpEditor.waypoint = waypointLayout.waypoint
+                    wpEditor.waypoint = waypoint
                     wpEditor.open()
                 }
             }
@@ -79,7 +79,7 @@ Page {
                     Action {
                         text: qsTr("Move Up")
 
-                        enabled: waypointLayout.waypoint !== flightRoute.firstWaypointObject
+                        enabled: !waypoint.equals(flightRoute.firstWaypointObject)
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             flightRoute.moveUp(waypointLayout.waypoint)
@@ -89,7 +89,7 @@ Page {
                     Action {
                         text: qsTr("Move Down")
 
-                        enabled: waypointLayout.waypoint !== flightRoute.lastWaypointObject
+                        enabled: !waypoint.equals(flightRoute.lastWaypointObject)
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             flightRoute.moveDown(waypointLayout.waypoint)
@@ -116,28 +116,21 @@ Page {
         ColumnLayout {
             id: grid
 
-            anchors.left: parent.left
-            anchors.leftMargin: Qt.application.font.pixelSize
-            anchors.right: parent.right
+            property var leg: ({});
 
-            Loader {
-                visible: model.modelData.startPoint === flightRoute.firstWaypointObject
-                Layout.fillWidth: true
-                sourceComponent: waypointComponent
-                property var waypoint: model.modelData.startPoint
-            }
+            Layout.fillWidth: true
 
             ItemDelegate {
                 icon.source: "/icons/vertLine.svg"
                 Layout.fillWidth: true
                 enabled: false
-                text: global.settings().useMetricUnits ? model.modelData.descriptionMetric : model.modelData.description
-            }
-
-            Loader {
-                Layout.fillWidth: true
-                sourceComponent: waypointComponent
-                property var waypoint: model.modelData.endPoint
+                text: {
+                    // Mention useMetricUnits
+                    global.settings().useMetricUnits
+                    if (leg === null)
+                        return ""
+                    return leg.description
+                }
             }
 
         }
@@ -205,7 +198,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library …")
-// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
@@ -241,7 +234,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -294,7 +287,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in other app …")
-// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
@@ -336,7 +329,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear")
-// Warning                    enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
+                    // Warning                    enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -348,7 +341,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Reverse")
-// Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -400,6 +393,53 @@ Page {
                 text: qsTr("<h2>Empty Route</h2><p>Use the button <strong>Add Waypoint</strong> below.</p>")
             }
 
+            ScrollView {
+                anchors.fill: parent
+
+                contentHeight: co.height
+                contentWidth: parent.width
+
+                // The visibility behavior of the vertical scroll bar is a little complex.
+                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+
+                clip: true
+
+                ColumnLayout {
+                    id: co
+                    width: parent.width
+
+                    Connections {
+                        target: flightRoute
+                        function onWaypointsChanged() {
+                            co.createItems()
+                        }
+                    }
+
+                    Component.onCompleted: co.createItems()
+
+                    function createItems() {
+                        // Delete old text items
+                        co.children = {}
+
+                        if (!flightRoute.isEmpty) {
+                            // Create first waypointComponent
+                            waypointComponent.createObject(co, {waypoint: flightRoute.firstWaypointObject});
+
+                            // Create leg description items
+                            var legs = flightRoute.legs
+                            for (var j in legs) {
+                                legComponent.createObject(co, {leg: legs[j]});
+                                waypointComponent.createObject(co, {waypoint: legs[j].endPoint});
+                            }
+                        }
+                    }
+                } // ColumnLayout
+
+            }
+
+            /*
             ListView {
                 anchors.fill: parent
 
@@ -408,7 +448,7 @@ Page {
                 clip: true
                 ScrollIndicator.vertical: ScrollIndicator {}
             }
-
+*/
 
         }
 

@@ -36,8 +36,8 @@
 #include "Settings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "positioning/PositionProvider.h"
-#include "weather/WeatherDataProvider.h"
 #include "weather/METAR.h"
+#include "weather/WeatherDataProvider.h"
 #include <chrono>
 
 using namespace std::chrono_literals;

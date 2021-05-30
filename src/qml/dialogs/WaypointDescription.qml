@@ -33,7 +33,7 @@ import "../items"
 Dialog {
     id: waypointDescriptionDialog
 
-    property var waypoint : geoMapProvider.cre()
+    property var waypoint : geoMapProvider.createWaypoint()
     property var weatherStation : weatherDownloadManager.findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {
@@ -329,10 +329,9 @@ Dialog {
             contentHeight: co.height
             contentWidth: waypointDescriptionDialog.availableWidth
 
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
             // The visibility behavior of the vertical scroll bar is a little complex.
             // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
             clip: true

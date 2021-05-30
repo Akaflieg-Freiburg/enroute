@@ -41,7 +41,7 @@ class TrafficDataSource_Abstract;
 class Warning {
     Q_GADGET
 
-    friend Traffic::TrafficDataSource_Abstract;
+    friend TrafficDataSource_Abstract;
 
 public:
     /*! \brief Default constructor

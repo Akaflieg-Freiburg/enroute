@@ -92,6 +92,8 @@ public:
     /*! \brief Create invalid waypoint
      *
      *  This is a helper method for QML, where creation of waypoint objects is difficult.
+     *
+     *  @returns An invalid waypoint
      */
     Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
     {

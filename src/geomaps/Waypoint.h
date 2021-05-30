@@ -91,7 +91,7 @@ public:
 
     /*! \brief Check if other waypoint is geographically near *this
      *
-     *  @param Other waypoint
+     *  @param other Other waypoint
      *
      *  @returns True if both waypoints are valid and if tge distance between them is less than 2km
      */

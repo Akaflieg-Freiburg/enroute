@@ -56,8 +56,10 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
     _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
-}
 
+    // Deferred initializsation
+    QTimer::singleShot(0, this, &GeoMaps::GeoMapProvider::deferredInitialization);
+}
 
 
 auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVariantList
@@ -416,15 +418,9 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     emit geoJSONChanged();
 }
 
-#warning do not want this. use application-global static!
-void GeoMaps::GeoMapProvider::setWeatherDataProvider(Weather::WeatherDataProvider *WeatherDataProvider)
+
+void GeoMaps::GeoMapProvider::deferredInitialization()
 {
-    if (WeatherDataProvider == nullptr) {
-        return;
-    }
-    _WeatherProvider = WeatherDataProvider;
-
-
     // Connect the WeatherProvider, so aviation maps will be generated
     connect(Global::mapManager()->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
     connect(Global::mapManager()->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);

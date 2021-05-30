@@ -39,6 +39,7 @@ Page {
             id: waypointLayout
 
             property var waypoint: ({})
+            property int index: -1
 
             WordWrappingItemDelegate {
                 icon.source: waypoint.icon
@@ -79,20 +80,20 @@ Page {
                     Action {
                         text: qsTr("Move Up")
 
-                        enabled: !waypoint.equals(global.navigator().flightRoute.firstWaypointObject)
+                        enabled: index > 0
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.moveUp(waypointLayout.waypoint)
+                            global.navigator().flightRoute.moveUp(index)
                         }
                     } // Action
 
                     Action {
                         text: qsTr("Move Down")
 
-                        enabled: !waypoint.equals(global.navigator().flightRoute.lastWaypointObject)
+                        enabled: index < global.navigator().flightRoute.size-1
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.moveDown(waypointLayout.waypoint)
+                            global.navigator().flightRoute.moveDown(index)
                         }
                     } // Action
 
@@ -101,7 +102,7 @@ Page {
 
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.removeWaypoint(waypointLayout.waypoint)
+                            global.navigator().flightRoute.removeWaypoint(index)
                         }
                     } // Action
                 }
@@ -198,7 +199,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library …")
-                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
@@ -234,7 +235,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -287,7 +288,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in other app …")
-                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
@@ -329,7 +330,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear")
-                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -341,7 +342,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Reverse")
-                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -384,7 +385,7 @@ Page {
 
             Label {
                 anchors.fill: parent
-                visible: global.navigator().flightRoute.isEmpty
+                visible: global.navigator().flightRoute.size === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
@@ -423,15 +424,16 @@ Page {
                         // Delete old text items
                         co.children = {}
 
-                        if (!global.navigator().flightRoute.isEmpty) {
+                        if (global.navigator().flightRoute.size > 0) {
                             // Create first waypointComponent
-                            waypointComponent.createObject(co, {waypoint: global.navigator().flightRoute.firstWaypointObject});
+                            waypointComponent.createObject(co, {waypoint: global.navigator().flightRoute.waypoints[0], index: 0});
 
                             // Create leg description items
                             var legs = global.navigator().flightRoute.legs
-                            for (var j in legs) {
+                            var j
+                            for (j=0; j<legs.length; j++) {
                                 legComponent.createObject(co, {leg: legs[j]});
-                                waypointComponent.createObject(co, {waypoint: legs[j].endPoint});
+                                waypointComponent.createObject(co, {waypoint: legs[j].endPoint, index: j+1});
                             }
                         }
                     }
@@ -714,11 +716,16 @@ Page {
                 id: summary
 
                 Layout.fillWidth: true
-                text: global.settings().useMetricUnits ? global.navigator().flightRoute.summaryMetric : global.navigator().flightRoute.summary
+                text: {
+                    // Mention useMetricUnits
+                    global.settings().useMetricUnits
+
+                    return global.navigator().flightRoute.summary
+                }
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
-                visible: global.navigator().flightRoute.summary !== ""
+                visible: text !== ""
             }
 
             ToolButton {

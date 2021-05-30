@@ -65,6 +65,7 @@ auto Weather::Wind::windSpeedInKT() const -> double
 
 void Weather::Wind::setWindSpeedInKT(double speedInKT)
 {
+
     if ((speedInKT < minWindSpeedInKT) || (speedInKT > maxWindSpeedInKT)) {
         speedInKT = qQNaN();
     }

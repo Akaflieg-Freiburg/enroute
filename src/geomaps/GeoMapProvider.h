@@ -35,7 +35,7 @@
 #include "Settings.h"
 #include "Waypoint.h"
 #include "TileServer.h"
-#include "weather/WeatherDataProvider.h"
+
 
 class Librarian;
 class SatNav;
@@ -240,22 +240,6 @@ public:
         return _waypoints_;
     }
 
-    /*! \brief Connects this GeoMapProvider with a WeatherProvider instance
-     *
-     * To work right, the GeoMapProvider needs access to an instance of the
-     * WeatherProvider class. Because of cross-dependencies between the classes
-     * GeoMapProvider and WeatherProvider, the pointer to the WeatherProvider is not
-     * given as an argument in the constructor, but must be set as soon as
-     * possible after construction with the present method.
-     *
-     * The GeoMapProvider will not crash if the WeatherProvider is deleted at
-     * run-time, but several method will only work with reduced functionality,
-     * as newly generated waypoint will no longer contain weather information.
-     *
-     * @param WeatherProvider Pointer to a WeatherProvider object.
-     */
-    void setWeatherDataProvider(Weather::WeatherDataProvider *weatherDataProvider);
-
 signals:
     /*! \brief Notification signal for the property with the same name */
     void geoJSONChanged();
@@ -263,11 +247,14 @@ signals:
     /*! \brief Notification signal for the property with the same name */
     void styleFileURLChanged();
 
+private slots:
+    // Intializations that are moved out of the constructor, in order to avoid
+    // nested uses of globalInstance().
+    void deferredInitialization();
+
+
 private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
-
-    // Pointers to other classes that are used internally
-    QPointer<Weather::WeatherDataProvider> _WeatherProvider;
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars {QStringLiteral("[^a-zA-Z0-9]")};

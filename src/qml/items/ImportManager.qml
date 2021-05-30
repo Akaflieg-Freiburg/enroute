@@ -45,7 +45,7 @@ Item {
 
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
-            if (!global.navigator().flightRoute.isEmpty > 0)
+            if (global.navigator().flightRoute.size > 0)
                 importDialog.open()
             else
                 importDialog.onAccepted()

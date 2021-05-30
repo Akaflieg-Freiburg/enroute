@@ -24,6 +24,8 @@
 #include <QStandardPaths>
 
 #include "FlightRoute.h"
+#include "Global.h"
+#include "Settings.h"
 
 
 Navigation::FlightRoute::FlightRoute(QObject *parent)
@@ -35,11 +37,11 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     // Load last flightRoute
     loadFromGeoJSON(stdFileName);
 
-    connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::saveToStdLocation);
-    connect(this, &FlightRoute::waypointsChanged, this, &FlightRoute::summaryChanged);
-    connect(Aircraft::globalInstance(), &Aircraft::valChanged, this, &FlightRoute::summaryChanged);
-    connect(Weather::Wind::globalInstance(), &Weather::Wind::valChanged, this, &FlightRoute::summaryChanged);
+    connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
+    connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
 
+    connect(Aircraft::globalInstance(), &Aircraft::valChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(Weather::Wind::globalInstance(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
 }
 
 
@@ -113,15 +115,6 @@ auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const 
 }
 
 
-auto Navigation::FlightRoute::firstWaypointObject() const -> GeoMaps::Waypoint
-{
-    if (_waypoints.isEmpty()) {
-        return {};
-    }
-    return _waypoints.first();
-}
-
-
 auto Navigation::FlightRoute::geoPath() const -> QVariantList
 {
     // Paranoid safety checks
@@ -138,17 +131,6 @@ auto Navigation::FlightRoute::geoPath() const -> QVariantList
     }
 
     return result;
-}
-
-
-#warning Want waypoint IDs
-
-auto Navigation::FlightRoute::lastWaypointObject() const -> GeoMaps::Waypoint
-{
-    if (_waypoints.isEmpty()) {
-        return {};
-    }
-    return _waypoints.last();
 }
 
 
@@ -181,8 +163,7 @@ auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
         if (!wp.isValid()) {
             return tr("Cannot parse content of file '%1'.").arg(fileName);
         }
-#warning
-        // connect(wp, &GeoMaps::Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
+
         newWaypoints.append(wp);
     }
 
@@ -191,63 +172,6 @@ auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
     emit waypointsChanged();
 
     return QString();
-}
-
-
-auto Navigation::FlightRoute::makeSummary(bool inMetricUnits) const -> QString
-{
-    if (_legs.empty()) {
-        return {};
-    }
-
-    QString result;
-
-    auto dist = AviationUnits::Distance::fromM(0.0);
-    auto time = AviationUnits::Time::fromS(0.0);
-    double fuelInL = 0.0;
-
-    for(auto *_leg : _legs) {
-        dist += _leg->distance();
-        if (dist.toM() > 100) {
-            time += _leg->Time();
-            fuelInL += _leg->Fuel();
-        }
-    }
-
-    if (inMetricUnits) {
-        result += tr("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
-    } else {
-        result += tr("Total: %1&nbsp;nm").arg(dist.toNM(), 0, 'f', 1);
-    }
-    if (time.isFinite()) {
-        result += QStringLiteral(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
-    }
-    if (qIsFinite(fuelInL)) {
-        result += QStringLiteral(" • %1&nbsp;L").arg(qRound(fuelInL));
-    }
-
-
-    QStringList complaints;
-    if (!qIsFinite(Aircraft::globalInstance()->cruiseSpeedInKT())) {
-        complaints += tr("Cruise speed not specified.");
-    }
-    if (!qIsFinite(Aircraft::globalInstance()->fuelConsumptionInLPH())) {
-        complaints += tr("Fuel consumption not specified.");
-    }
-    if (!qIsFinite(Weather::Wind::globalInstance()->windSpeedInKT())) {
-        complaints += tr("Wind speed not specified.");
-    }
-    if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
-        if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
-            complaints += tr("Wind direction not specified.");
-        }
-    }
-
-    if (!complaints.isEmpty()) {
-        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(QStringLiteral(" ")));
-    }
-
-    return result;
 }
 
 
@@ -269,14 +193,13 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
 }
 
 
-void Navigation::FlightRoute::moveDown(const GeoMaps::Waypoint& waypoint)
+void Navigation::FlightRoute::moveDown(int idx)
 {
     // Paranoid safety checks
-    if (waypoint == lastWaypointObject()) {
+    if ((idx < 0) || (idx > _waypoints.size()-2)) {
         return;
     }
 
-    auto idx = _waypoints.indexOf(waypoint);
     _waypoints.move(idx, idx+1);
 
     updateLegs();
@@ -284,49 +207,41 @@ void Navigation::FlightRoute::moveDown(const GeoMaps::Waypoint& waypoint)
 }
 
 
-void Navigation::FlightRoute::moveUp(const GeoMaps::Waypoint& waypoint)
+void Navigation::FlightRoute::moveUp(int idx)
 {
     // Paranoid safety checks
-    if (waypoint == firstWaypointObject()) {
+    if ((idx < 1) || (idx >= _waypoints.size())) {
         return;
     }
 
-    auto idx = _waypoints.indexOf(waypoint);
-    if (idx > 0) {
-        _waypoints.move(idx, idx-1);
-    }
+    _waypoints.move(idx, idx-1);
 
     updateLegs();
     emit waypointsChanged();
 }
 
 
-void Navigation::FlightRoute::removeWaypoint(const GeoMaps::Waypoint& waypoint)
+void Navigation::FlightRoute::removeWaypoint(int idx)
 {
-
-    foreach(const auto &_waypoint, _waypoints) {
-        if (!_waypoint.isValid()) {
-            continue;
-        }
-
-        if (_waypoint.isNear(waypoint)) {
-            _waypoints.removeOne(_waypoint);
-            updateLegs();
-            emit waypointsChanged();
-            return;
-        }
+    // Paranoid safety checks
+    if ((idx < 0) || (idx >= _waypoints.size())) {
+        return;
     }
 
+    _waypoints.removeAt(idx);
+    updateLegs();
+    emit waypointsChanged();
 }
 
 
-void Navigation::FlightRoute::renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName)
+void Navigation::FlightRoute::renameWaypoint(int idx, const QString& newName)
 {
-    for(auto& wp : _waypoints) {
-        if (wp == waypoint) {
-            wp = wp.renamed(newName);
-        }
+    // Paranoid safety checks
+    if ((idx < 0) || (idx >= _waypoints.size())) {
+        return;
     }
+
+    _waypoints[idx] = _waypoints[idx].renamed(newName);
     updateLegs();
     emit waypointsChanged();
 }
@@ -439,14 +354,61 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
 }
 
 
-#warning
 auto Navigation::FlightRoute::summary() const -> QString {
-    return makeSummary(false);
-}
+
+    if (_legs.empty()) {
+        return {};
+    }
+
+    QString result;
+
+    auto dist = AviationUnits::Distance::fromM(0.0);
+    auto time = AviationUnits::Time::fromS(0.0);
+    double fuelInL = 0.0;
+
+    for(auto *_leg : _legs) {
+        dist += _leg->distance();
+        if (dist.toM() > 100) {
+            time += _leg->Time();
+            fuelInL += _leg->Fuel();
+        }
+    }
+
+    if (Global::settings()->useMetricUnits()) {
+        result += tr("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
+    } else {
+        result += tr("Total: %1&nbsp;nm").arg(dist.toNM(), 0, 'f', 1);
+    }
+    if (time.isFinite()) {
+        result += QStringLiteral(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
+    }
+    if (qIsFinite(fuelInL)) {
+        result += QStringLiteral(" • %1&nbsp;L").arg(qRound(fuelInL));
+    }
 
 
-auto Navigation::FlightRoute::summaryMetric() const -> QString {
-    return makeSummary(true);
+    QStringList complaints;
+    if (!qIsFinite(Aircraft::globalInstance()->cruiseSpeedInKT())) {
+        complaints += tr("Cruise speed not specified.");
+    }
+    if (!qIsFinite(Aircraft::globalInstance()->fuelConsumptionInLPH())) {
+        complaints += tr("Fuel consumption not specified.");
+    }
+    if (!qIsFinite(Weather::Wind::globalInstance()->windSpeedInKT())) {
+        complaints += tr("Wind speed not specified.");
+    }
+    if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
+        if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
+            complaints += tr("Wind direction not specified.");
+        }
+    }
+
+    if (!complaints.isEmpty()) {
+        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(QStringLiteral(" ")));
+    }
+
+    return result;
+
 }
 
 
@@ -475,3 +437,16 @@ void Navigation::FlightRoute::updateLegs()
         _legs.append(new Leg(_waypoints.at(i), _waypoints.at(i+1), Aircraft::globalInstance(), Weather::Wind::globalInstance(), this));
     }
 }
+
+
+auto Navigation::FlightRoute::waypoints() const -> QVariantList
+{
+    QVariantList result;
+
+    foreach(auto wpt, _waypoints) {
+            result << QVariant::fromValue(wpt);
+    }
+
+    return result;
+}
+

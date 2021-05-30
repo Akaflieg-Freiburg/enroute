@@ -359,7 +359,7 @@ Dialog {
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                if (!global.navigator().flightRoute.isEmpty)
+                if (global.navigator().flightRoute.size > 0)
                     overwriteDialog.open()
                 else {
                     global.navigator().flightRoute.clear()
@@ -372,9 +372,9 @@ Dialog {
 
         ToolButton {
             enabled: {
-                // Mention lastWaypointObject to ensure that property gets updated
+                // Mention Object to ensure that property gets updated
                 // when flight route changes
-                global.navigator().flightRoute.lastWaypointObject
+                global.navigator().flightRoute.size
 
                 return global.navigator().flightRoute.canAppend(waypoint)
             }
@@ -390,9 +390,9 @@ Dialog {
         ToolButton {
             icon.source: "/icons/material/ic_remove_circle.svg"
             enabled:  {
-                // Mention lastWaypointObject to ensure that property gets updated
+                // Mention to ensure that property gets updated
                 // when flight route changes
-                global.navigator().flightRoute.lastWaypointObject
+                global.navigator().flightRoute.size
 
                 return global.navigator().flightRoute.contains(waypoint)
             }

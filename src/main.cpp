@@ -158,12 +158,10 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
 
     // Attach aircraft info
-    auto *aircraft = new Aircraft(engine);
-    engine->rootContext()->setContextProperty("aircraft", aircraft);
+    engine->rootContext()->setContextProperty("aircraft", Aircraft::globalInstance());
 
     // Attach wind info
-    auto *wind = new Weather::Wind(engine);
-    engine->rootContext()->setContextProperty("wind", wind);
+    engine->rootContext()->setContextProperty("wind", Weather::Wind::globalInstance());
 
     // Attach clock
     engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
@@ -173,7 +171,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Attach Weather::WeatherDataProvider
     engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::WeatherDataProvider::globalInstance());
-    GeoMaps::GeoMapProvider::globalInstance()->setWeatherDataProvider(Weather::WeatherDataProvider::globalInstance());
 
     // Restore saved settings and make them available to QML
     QSettings settings;

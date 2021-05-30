@@ -178,11 +178,11 @@ public:
      *  Sets the names all waypoints in the route that equal "waypoint" to newName.
      *  The signal "waypoint changed" is emitted as appropriate.
      *
-     *  @param waypoint Specifies waypoints that are to be renamed.
+     *  @param idx Index of waypoint
      *
      *  @param newName New name for waypoint
      */
-    Q_INVOKABLE void renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName);
+    Q_INVOKABLE void renameWaypoint(int idx, const QString& newName);
 
     /*! \brief Saves flight route to a file
      *
@@ -232,23 +232,6 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief First waypoint in the route
-     *
-     * This property holds a pointer to the first waypoint in the route, or a
-     * nullptr if the route is empty. In order to make the waypoints accessible
-     * to QML, the pointers are returned as pointers to QObjects rather than
-     * Waypoints. The waypoints are owned by this route.
-     *
-     * @see lastWaypointObject
-     */
-    Q_PROPERTY(GeoMaps::Waypoint firstWaypointObject READ firstWaypointObject NOTIFY waypointsChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property firstWaypointObject
-     */
-    GeoMaps::Waypoint firstWaypointObject() const;
-
     /*! \brief List of coordinates for the waypoints
      *
      * This property holds a list of coordinates of the waypoints, suitable for
@@ -264,32 +247,6 @@ public:
      */
     QVariantList geoPath() const;
 
-    /*! \brief True if the list of waypoints is empty */
-    Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY waypointsChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property isEmpty
-     */
-    bool isEmpty() const {return _waypoints.isEmpty();}
-
-    /*! \brief Last waypoint in the route
-     *
-     * This property holds a pointer to the last waypoint in the route, or a
-     * nullptr if the route is empty. In order to make the waypoints accessible
-     * to QML, the pointers are returned as pointers to QObjects rather than
-     * Waypoints. The waypoints are owned by this route.
-     *
-     * @see firstWaypointObject
-     */
-    Q_PROPERTY(GeoMaps::Waypoint lastWaypointObject READ lastWaypointObject NOTIFY waypointsChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property lastWaypointObject
-     */
-    GeoMaps::Waypoint lastWaypointObject() const;
-
     /*! \brief List of waypoints in the flight route that are not airfields
      *
      * This property lists all the waypoints in the route that are not airfields,
@@ -299,7 +256,7 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property routeObjects
+     * @returns Property midFieldWaypoints
      */
     QVariantList midFieldWaypoints() const;
 
@@ -315,6 +272,18 @@ public:
      */
     QList<QObject*> legs() const;
 
+    /*! \brief Number of waypoints in the route */
+    Q_PROPERTY(int size READ size NOTIFY waypointsChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property size
+     */
+    int size() const
+    {
+        return _waypoints.size();
+    }
+
     /*! \brief Human-readable summary of the flight route*/
     Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
 
@@ -324,14 +293,18 @@ public:
      */
     QString summary() const;
 
-    /*! \brief Human-readable summary of the flight route in metric values */
-    Q_PROPERTY(QString summaryMetric READ summaryMetric NOTIFY summaryChanged)
+    /*! \brief List of waypoints in the flight route that are not airfields
+     *
+     * This property lists all the waypoints in the route that are not airfields,
+     * navaids, reporting points, etc.
+     */
+    Q_PROPERTY(QVariantList waypoints READ waypoints NOTIFY waypointsChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property summaryMetric
+     * @returns Property waypoints
      */
-    QString summaryMetric() const;
+    QVariantList waypoints() const;
 
 public slots:
     /*! \brief Deletes all waypoints in the current route */
@@ -341,25 +314,25 @@ public slots:
      *
      * If the waypoint is contained in the route, the method returns immediately
      *
-     * @param waypoint Pointer to the waypoint
+     * @param idx Index of the waypoint
      */
-    void moveDown(const GeoMaps::Waypoint& waypoint);
+    void moveDown(int idx);
 
     /*! \brief Move waypoint one position up in the list of waypoints
      *
      * If the waypoint is contained in the route, the method returns immediately
      *
-     * @param waypoint Pointer to the waypoint
+     * @param idx Index of the waypoint
      */
-    void moveUp(const GeoMaps::Waypoint& waypoint);
+    void moveUp(int idx);
 
     /*! \brief Remove waypoint from the current route
      *
      * If the waypoint is contained in the route, the method returns immediately
      *
-     * @param waypoint Pointer to the waypoint
+     * @param idx Index of the waypoint
      */
-    void removeWaypoint(const GeoMaps::Waypoint& waypoint);
+    void removeWaypoint(int idx);
 
     /*! \brief Reverse the route */
     void reverse();
@@ -384,9 +357,6 @@ private:
 
     // Helper function for method toGPX
     QString gpxElements(const QString& indent, const QString& tag) const;
-
-    // Helper function for creating the flight route summary
-    QString makeSummary(bool inMetricUnits) const;
 
     // File name where the flight route is loaded upon startup are stored.  This
     // member is filled in in the constructor to

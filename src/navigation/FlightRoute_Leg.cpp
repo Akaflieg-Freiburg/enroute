@@ -31,12 +31,8 @@ Navigation::FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps:
     _start = start;
     _end   = end;
 
-    if (!_aircraft.isNull()) {
-        connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::Leg::valChanged);
-    }
-    if (!_wind.isNull()) {
-        connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::Leg::valChanged);
-    }
+    connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::Leg::valChanged);
+    connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::Leg::valChanged);
 }
 
 

@@ -61,7 +61,7 @@ Dialog {
                 global.mobileAdaptor().vibrateBrief()
                 finalFileName = modelData
                 dlg.close()
-                if (!global.navigator().flightRoute.isEmpty > 0)
+                if (global.navigator().flightRoute.size > 0)
                     overwriteDialog.open()
                 else
                     openFromLibrary()
@@ -99,7 +99,7 @@ Dialog {
                 global.mobileAdaptor().vibrateBrief()
                 finalFileName = lView.model[0]
                 dlg.close()
-                if (!global.navigator().flightRoute.isEmpty)
+                if (global.navigator().flightRoute.size > 0)
                     overwriteDialog.open()
                 else
                     openFromLibrary()

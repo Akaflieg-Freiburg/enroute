@@ -37,7 +37,6 @@
 
 #include "Aircraft.h"
 #include "Clock.h"
-#include "FlightRoute.h"
 #include "Global.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
@@ -168,9 +167,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Attach clock
     engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
-
-    // Attach flight route
-    engine->rootContext()->setContextProperty("flightRoute", FlightRoute::globalInstance());
 
     // Attach geo map provider
     engine->rootContext()->setContextProperty("geoMapProvider", GeoMaps::GeoMapProvider::globalInstance());

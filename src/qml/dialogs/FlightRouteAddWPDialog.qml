@@ -49,7 +49,7 @@ Dialog {
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                flightRoute.append(model.modelData)
+                global.navigator().flightRoute.append(model.modelData)
                 close()
             }
         }
@@ -80,7 +80,7 @@ Dialog {
             onAccepted: {
                 if (wpList.model.length > 0) {
                     global.mobileAdaptor().vibrateBrief()
-                    flightRoute.append(wpList.model[0])
+                    global.navigator().flightRoute.append(wpList.model[0])
                     close()
                 }
             }

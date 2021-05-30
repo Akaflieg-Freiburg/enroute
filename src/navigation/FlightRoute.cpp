@@ -25,12 +25,8 @@
 
 #include "FlightRoute.h"
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<FlightRoute> flightRouteStatic {};
-#endif
 
-FlightRoute::FlightRoute(QObject *parent)
+Navigation::FlightRoute::FlightRoute(QObject *parent)
     : QObject(parent)
 {
 
@@ -47,7 +43,7 @@ FlightRoute::FlightRoute(QObject *parent)
 }
 
 
-void FlightRoute::append(const GeoMaps::Waypoint &waypoint)
+void Navigation::FlightRoute::append(const GeoMaps::Waypoint &waypoint)
 {
     _waypoints.append(waypoint);
 
@@ -56,13 +52,13 @@ void FlightRoute::append(const GeoMaps::Waypoint &waypoint)
 }
 
 
-void FlightRoute::append(const QGeoCoordinate& position)
+void Navigation::FlightRoute::append(const QGeoCoordinate& position)
 {
     append( GeoMaps::Waypoint(position) );
 }
 
 
-auto FlightRoute::boundingRectangle() const -> QGeoRectangle
+auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
 {
     QGeoRectangle bbox;
 
@@ -84,7 +80,7 @@ auto FlightRoute::boundingRectangle() const -> QGeoRectangle
 }
 
 
-auto FlightRoute::canAppend(const GeoMaps::Waypoint &other) const -> bool
+auto Navigation::FlightRoute::canAppend(const GeoMaps::Waypoint &other) const -> bool
 {
     if (_waypoints.isEmpty() ) {
         return true;
@@ -94,7 +90,7 @@ auto FlightRoute::canAppend(const GeoMaps::Waypoint &other) const -> bool
 }
 
 
-void FlightRoute::clear()
+void Navigation::FlightRoute::clear()
 {
     _waypoints.clear();
 
@@ -103,7 +99,7 @@ void FlightRoute::clear()
 }
 
 
-auto FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const -> bool
+auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const -> bool
 {
     foreach(auto _waypoint, _waypoints) {
         if (!_waypoint.isValid()) {
@@ -117,7 +113,7 @@ auto FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const -> bool
 }
 
 
-auto FlightRoute::firstWaypointObject() const -> GeoMaps::Waypoint
+auto Navigation::FlightRoute::firstWaypointObject() const -> GeoMaps::Waypoint
 {
     if (_waypoints.isEmpty()) {
         return {};
@@ -126,7 +122,7 @@ auto FlightRoute::firstWaypointObject() const -> GeoMaps::Waypoint
 }
 
 
-auto FlightRoute::geoPath() const -> QVariantList
+auto Navigation::FlightRoute::geoPath() const -> QVariantList
 {
     // Paranoid safety checks
     if (_waypoints.size() < 2) {
@@ -145,23 +141,9 @@ auto FlightRoute::geoPath() const -> QVariantList
 }
 
 
-auto FlightRoute::globalInstance() -> FlightRoute*
-{
-
-#ifndef __clang_analyzer__
-    if (flightRouteStatic.isNull()) {
-        flightRouteStatic = new FlightRoute();
-    }
-    return flightRouteStatic;
-#else
-    return nullptr;
-#endif
-
-}
-
 #warning Want waypoint IDs
 
-auto FlightRoute::lastWaypointObject() const -> GeoMaps::Waypoint
+auto Navigation::FlightRoute::lastWaypointObject() const -> GeoMaps::Waypoint
 {
     if (_waypoints.isEmpty()) {
         return {};
@@ -170,7 +152,7 @@ auto FlightRoute::lastWaypointObject() const -> GeoMaps::Waypoint
 }
 
 
-auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
+auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
 {
     if (fileName.isEmpty()) {
         fileName = stdFileName;
@@ -212,7 +194,7 @@ auto FlightRoute::loadFromGeoJSON(QString fileName) -> QString
 }
 
 
-auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
+auto Navigation::FlightRoute::makeSummary(bool inMetricUnits) const -> QString
 {
     if (_legs.empty()) {
         return {};
@@ -269,7 +251,7 @@ auto FlightRoute::makeSummary(bool inMetricUnits) const -> QString
 }
 
 
-auto FlightRoute::midFieldWaypoints() const -> QVariantList
+auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
 {
     QVariantList result;
 
@@ -287,7 +269,7 @@ auto FlightRoute::midFieldWaypoints() const -> QVariantList
 }
 
 
-void FlightRoute::moveDown(const GeoMaps::Waypoint& waypoint)
+void Navigation::FlightRoute::moveDown(const GeoMaps::Waypoint& waypoint)
 {
     // Paranoid safety checks
     if (waypoint == lastWaypointObject()) {
@@ -302,7 +284,7 @@ void FlightRoute::moveDown(const GeoMaps::Waypoint& waypoint)
 }
 
 
-void FlightRoute::moveUp(const GeoMaps::Waypoint& waypoint)
+void Navigation::FlightRoute::moveUp(const GeoMaps::Waypoint& waypoint)
 {
     // Paranoid safety checks
     if (waypoint == firstWaypointObject()) {
@@ -319,7 +301,7 @@ void FlightRoute::moveUp(const GeoMaps::Waypoint& waypoint)
 }
 
 
-void FlightRoute::removeWaypoint(const GeoMaps::Waypoint& waypoint)
+void Navigation::FlightRoute::removeWaypoint(const GeoMaps::Waypoint& waypoint)
 {
 
     foreach(const auto &_waypoint, _waypoints) {
@@ -338,7 +320,7 @@ void FlightRoute::removeWaypoint(const GeoMaps::Waypoint& waypoint)
 }
 
 
-void FlightRoute::renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName)
+void Navigation::FlightRoute::renameWaypoint(const GeoMaps::Waypoint& waypoint, const QString& newName)
 {
     for(auto& wp : _waypoints) {
         if (wp == waypoint) {
@@ -350,7 +332,7 @@ void FlightRoute::renameWaypoint(const GeoMaps::Waypoint& waypoint, const QStrin
 }
 
 
-void FlightRoute::reverse()
+void Navigation::FlightRoute::reverse()
 {
     std::reverse(_waypoints.begin(), _waypoints.end());
     updateLegs();
@@ -358,7 +340,7 @@ void FlightRoute::reverse()
 }
 
 
-auto FlightRoute::legs() const -> QList<QObject*>
+auto Navigation::FlightRoute::legs() const -> QList<QObject*>
 {
     QList<QObject*> result;
     result.reserve(_legs.size());
@@ -371,7 +353,7 @@ auto FlightRoute::legs() const -> QList<QObject*>
 }
 
 
-auto FlightRoute::save(const QString& fileName) const -> QString
+auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
 {
     QFile file(fileName);
     auto success = file.open(QIODevice::WriteOnly);
@@ -389,7 +371,7 @@ auto FlightRoute::save(const QString& fileName) const -> QString
 }
 
 
-auto FlightRoute::suggestedFilename() const -> QString
+auto Navigation::FlightRoute::suggestedFilename() const -> QString
 {
     if (_waypoints.size() < 2) {
         return tr("Flight Route");
@@ -457,17 +439,18 @@ auto FlightRoute::suggestedFilename() const -> QString
 }
 
 
-auto FlightRoute::summary() const -> QString {
+#warning
+auto Navigation::FlightRoute::summary() const -> QString {
     return makeSummary(false);
 }
 
 
-auto FlightRoute::summaryMetric() const -> QString {
+auto Navigation::FlightRoute::summaryMetric() const -> QString {
     return makeSummary(true);
 }
 
 
-auto FlightRoute::toGeoJSON() const -> QByteArray
+auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
     foreach(auto waypoint, _waypoints) {
@@ -482,7 +465,7 @@ auto FlightRoute::toGeoJSON() const -> QByteArray
 }
 
 
-void FlightRoute::updateLegs()
+void Navigation::FlightRoute::updateLegs()
 {
     foreach(auto _leg, _legs)
         _leg->deleteLater();

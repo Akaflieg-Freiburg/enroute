@@ -39,6 +39,8 @@ class Waypoint;
 
 class Settings;
 
+namespace Navigation {
+
 /*! \brief Intended flight route
  *
  * This class represents an intended flight route. In essence, this class is
@@ -119,12 +121,6 @@ public:
      * @returns bool true if waypoint in route
      */
     Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const;
-
-    /*! \brief Pointer to static instance of this class
-     *
-     *  @returns Pointer to global instance
-     */
-    static FlightRoute* globalInstance();
 
     /*! \brief Loads the route from a GeoJSON document
      *
@@ -405,4 +401,6 @@ private:
     QLocale myLocale;
 };
 
-#include "FlightRoute_Leg.h"
+}
+
+#include "navigation/FlightRoute_Leg.h"

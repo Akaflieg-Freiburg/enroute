@@ -81,9 +81,8 @@ public:
      */
     explicit GeoMapProvider(QObject *parent = nullptr);
 
-    /*! \brief Destructor
-     */
-    ~GeoMapProvider();
+    /*! \brief Destructor */
+    ~GeoMapProvider() = default;
 
 
     //
@@ -120,16 +119,12 @@ public:
      *
      * @param distPosition Reference position
      *
-     * @param flightRoute If not nullptr, then the mid-field waypoints of the
-     * flight route are also searched for nearby waypoints. (Note: This should be
-     * of type "const FlightRoute*", but QML cannot handle const)
-     *
      * @returns The Waypoint that is closest to the given position, provided
      * that the distance is not bigger than that to distPosition. If no
-     * sufficiently close waypoint is found, a generric Waypoint with the
+     * sufficiently close waypoint is found, a generic Waypoint with the
      * appropriate coordinate is returned.
      */
-    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute *flightRoute=nullptr);
+    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
 
     /*! \brief Copyright notice for the map
      *

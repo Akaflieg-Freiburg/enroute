@@ -27,6 +27,7 @@
 #include "units/Distance.h"
 #include "units/Time.h"
 
+namespace Navigation {
 
 /*! \brief Leg in a flight route */
 
@@ -197,3 +198,5 @@ private:
     QPointer<Aircraft> _aircraft {nullptr};
     QPointer<Weather::Wind> _wind {nullptr};
 };
+
+}

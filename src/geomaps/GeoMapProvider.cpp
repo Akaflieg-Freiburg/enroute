@@ -33,6 +33,7 @@
 #include "Clock.h"
 #include "GeoMapProvider.h"
 #include "Global.h"
+#include "navigation/Navigator.h"
 
 using namespace std::chrono_literals;
 
@@ -57,14 +58,6 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 }
 
-
-GeoMaps::GeoMapProvider::~GeoMapProvider()
-{
-    QMutexLocker lock(&_aviationDataMutex);
-
-    _airspaces_.clear();
-    _waypoints_.clear();
-}
 
 
 auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVariantList
@@ -91,7 +84,7 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
 }
 
 
-auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition, FlightRoute* flightRoute) -> Waypoint
+auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> Waypoint
 {
     position.setAltitude(qQNaN());
 
@@ -109,15 +102,13 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
         }
     }
 
-    if (flightRoute != nullptr) {
-        for(auto& variant : flightRoute->midFieldWaypoints() ) {
-            auto wp = variant.value<GeoMaps::Waypoint>();
-            if (!wp.isValid()) {
-                continue;
-            }
-            if (position.distanceTo(wp.coordinate()) < position.distanceTo(result.coordinate())) {
-                result = wp;
-            }
+    for(auto& variant : Global::navigator()->flightRoute()->midFieldWaypoints() ) {
+        auto wp = variant.value<GeoMaps::Waypoint>();
+        if (!wp.isValid()) {
+            continue;
+        }
+        if (position.distanceTo(wp.coordinate()) < position.distanceTo(result.coordinate())) {
+            result = wp;
         }
     }
 

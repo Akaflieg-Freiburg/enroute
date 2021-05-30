@@ -25,7 +25,7 @@
 #include "Settings.h"
 
 
-FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
+Navigation::FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end, Aircraft *aircraft, Weather::Wind *wind, QObject* parent)
     : QObject(parent), _aircraft(aircraft), _wind(wind)
 {
     _start = start;
@@ -40,7 +40,7 @@ FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& e
 }
 
 
-auto FlightRoute::Leg::distance() const -> AviationUnits::Distance
+auto Navigation::FlightRoute::Leg::distance() const -> AviationUnits::Distance
 {
     // Paranoid safety checks
     if (!isValid()) {
@@ -51,7 +51,7 @@ auto FlightRoute::Leg::distance() const -> AviationUnits::Distance
 }
 
 
-auto FlightRoute::Leg::Fuel() const -> double
+auto Navigation::FlightRoute::Leg::Fuel() const -> double
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle()) {
@@ -62,7 +62,7 @@ auto FlightRoute::Leg::Fuel() const -> double
 }
 
 
-auto FlightRoute::Leg::GS() const -> AviationUnits::Speed
+auto Navigation::FlightRoute::Leg::GS() const -> AviationUnits::Speed
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle()) {
@@ -80,7 +80,7 @@ auto FlightRoute::Leg::GS() const -> AviationUnits::Speed
 }
 
 
-auto FlightRoute::Leg::TC() const -> AviationUnits::Angle
+auto Navigation::FlightRoute::Leg::TC() const -> AviationUnits::Angle
 {
     // Paranoid safety checks
     if (!isValid()) {
@@ -94,7 +94,7 @@ auto FlightRoute::Leg::TC() const -> AviationUnits::Angle
 }
 
 
-auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
+auto Navigation::FlightRoute::Leg::WCA() const -> AviationUnits::Angle
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle()) {
@@ -110,7 +110,7 @@ auto FlightRoute::Leg::WCA() const -> AviationUnits::Angle
 }
 
 
-auto FlightRoute::Leg::isValid() const -> bool
+auto Navigation::FlightRoute::Leg::isValid() const -> bool
 {
     if (!_start.coordinate().isValid()) {
         return false;
@@ -122,7 +122,7 @@ auto FlightRoute::Leg::isValid() const -> bool
 }
 
 
-auto FlightRoute::Leg::description() const -> QString
+auto Navigation::FlightRoute::Leg::description() const -> QString
 {
     if (!isValid()) {
         return QString();
@@ -151,7 +151,7 @@ auto FlightRoute::Leg::description() const -> QString
 }
 
 
-auto FlightRoute::Leg::hasDataForWindTriangle() const -> bool
+auto Navigation::FlightRoute::Leg::hasDataForWindTriangle() const -> bool
 {
     if ( _aircraft.isNull() ) {
         return false;

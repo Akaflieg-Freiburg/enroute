@@ -299,7 +299,7 @@ Item {
 
             line.width: 3
             line.color: '#008000' //'green'
-            path: flightRoute.geoPath
+            path: global.navigator().flightRoute.geoPath
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
@@ -314,7 +314,7 @@ Item {
 
         MapItemView {
             id: midFieldWaypoints
-            model: flightRoute.midFieldWaypoints
+            model: global.navigator().flightRoute.midFieldWaypoints
             delegate: Component {
 
                 MapQuickItem {
@@ -379,7 +379,7 @@ Item {
                 global.mobileAdaptor().vibrateBrief()
                 var wp = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
-                                                        flightRoute)
+                                                        global.navigator().flightRoute)
                 waypointDescription.waypoint = wp
                 waypointDescription.open()
             }

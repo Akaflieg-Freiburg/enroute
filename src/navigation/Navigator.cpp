@@ -26,6 +26,8 @@
 
 Navigation::Navigator::Navigator(QObject *parent) : QObject(parent)
 {
+    m_flightRoute = new FlightRoute(this);
+
     QTimer::singleShot(0, this, &Navigation::Navigator::deferredInitialization);
 }
 

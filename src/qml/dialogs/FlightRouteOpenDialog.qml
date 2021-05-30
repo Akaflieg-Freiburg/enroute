@@ -61,7 +61,7 @@ Dialog {
                 global.mobileAdaptor().vibrateBrief()
                 finalFileName = modelData
                 dlg.close()
-                if (flightRoute.routeObjects.length > 0)
+                if (!global.navigator().flightRoute.isEmpty > 0)
                     overwriteDialog.open()
                 else
                     openFromLibrary()
@@ -99,7 +99,7 @@ Dialog {
                 global.mobileAdaptor().vibrateBrief()
                 finalFileName = lView.model[0]
                 dlg.close()
-                if (flightRoute.routeObjects.length > 0)
+                if (!global.navigator().flightRoute.isEmpty)
                     overwriteDialog.open()
                 else
                     openFromLibrary()
@@ -130,7 +130,7 @@ Dialog {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
+        var errorString = global.navigator().flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

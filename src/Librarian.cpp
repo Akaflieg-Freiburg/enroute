@@ -519,7 +519,7 @@ auto Librarian::flightRouteExists(const QString &baseName) const -> bool
 
 auto Librarian::flightRouteGet(const QString &baseName) const -> QObject *
 {
-    auto *route = new FlightRoute();
+    auto *route = new Navigation::FlightRoute();
     if (route == nullptr) {
         return nullptr;
     }

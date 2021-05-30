@@ -113,7 +113,7 @@ Dialog {
 
     onOpened: {
         dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
-        fileName.text = flightRoute.suggestedFilename()
+        fileName.text = global.navigator().flightRoute.suggestedFilename()
     }
 
     onRejected: {
@@ -138,7 +138,7 @@ Dialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = flightRoute.save(librarian.flightRouteFullPath(finalFileName))
+        var errorString = global.navigator().flightRoute.save(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

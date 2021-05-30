@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "FlightRoute.h"
 #include "positioning/PositionInfo.h"
 
 
@@ -62,6 +63,22 @@ public:
     // PROPERTIES
     //
 
+    /*! \brief Current flight route
+     *
+     *  This flight route returned here is owned by this class and must not be deleted.
+     *  QML ownership has been set to QQmlEngine::CppOwnership.
+     */
+    Q_PROPERTY(FlightRoute* flightRoute READ flightRoute CONSTANT)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property flightRoute
+     */
+    FlightRoute* flightRoute() const
+    {
+        return m_flightRoute;
+    }
+
     /*! \brief Estimate whether the device is flying or on the ground
      *
      *  This property holds an estimate, as to whether the device is flying or
@@ -100,6 +117,7 @@ private:
     static constexpr double flightSpeedHysteresisInKn = 5.0;
 
     bool m_isInFlight {false};
+    QPointer<FlightRoute> m_flightRoute {nullptr};
 };
 
 }

@@ -63,7 +63,7 @@ Dialog {
     onAccepted: setName()
 
     function setName() {
-        flightRoute.renameWaypoint(waypoint, wpNameField.text)
+        global.navigator().flightRoute.renameWaypoint(waypoint, wpNameField.text)
         close()
     }
 

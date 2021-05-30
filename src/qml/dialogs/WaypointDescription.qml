@@ -359,12 +359,12 @@ Dialog {
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                if (flightRoute.routeObjects.length > 0)
+                if (!global.navigator().flightRoute.isEmpty)
                     overwriteDialog.open()
                 else {
-                    flightRoute.clear()
-                    flightRoute.append(positionProvider.lastValidCoordinate)
-                    flightRoute.append(waypoint)
+                    global.navigator().flightRoute.clear()
+                    global.navigator().flightRoute.append(positionProvider.lastValidCoordinate)
+                    global.navigator().flightRoute.append(waypoint)
                     toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
                 }
             }
@@ -374,14 +374,14 @@ Dialog {
             enabled: {
                 // Mention lastWaypointObject to ensure that property gets updated
                 // when flight route changes
-                flightRoute.lastWaypointObject
+                global.navigator().flightRoute.lastWaypointObject
 
-                return flightRoute.canAppend(waypoint)
+                return global.navigator().flightRoute.canAppend(waypoint)
             }
             icon.source: "/icons/material/ic_add_circle.svg"
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                flightRoute.append(waypoint)
+                global.navigator().flightRoute.append(waypoint)
                 close()
                 toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
             }
@@ -392,15 +392,15 @@ Dialog {
             enabled:  {
                 // Mention lastWaypointObject to ensure that property gets updated
                 // when flight route changes
-                flightRoute.lastWaypointObject
+                global.navigator().flightRoute.lastWaypointObject
 
-                return flightRoute.contains(waypoint)
+                return global.navigator().flightRoute.contains(waypoint)
             }
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
                 close()
                 toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
-                flightRoute.removeWaypoint(waypoint)
+                global.navigator().flightRoute.removeWaypoint(waypoint)
             }
         }
 
@@ -432,9 +432,9 @@ Dialog {
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
-            flightRoute.clear()
-            flightRoute.append(positionProvider.lastValidCoordinate)
-            flightRoute.append(waypoint)
+            global.navigator().flightRoute.clear()
+            global.navigator().flightRoute.append(positionProvider.lastValidCoordinate)
+            global.navigator().flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }

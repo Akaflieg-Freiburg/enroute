@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,10 +31,11 @@
 #include "sunset.h"
 
 #include "Clock.h"
-#include "FlightRoute.h"
 #include "Global.h"
 #include "Settings.h"
 #include "geomaps/GeoMapProvider.h"
+#include "navigation/FlightRoute.h"
+#include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "weather/METAR.h"
 #include "weather/WeatherDataProvider.h"
@@ -498,7 +499,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
 
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
-    const QVariantList& steerpts = FlightRoute::globalInstance()->geoPath();
+    const QVariantList& steerpts = Global::navigator()->flightRoute()->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
         queries.push_back(QString("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));

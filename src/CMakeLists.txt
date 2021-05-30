@@ -74,8 +74,6 @@ set(SOURCES
     # Header files
     Aircraft.h
     Clock.h
-    FlightRoute.h
-    FlightRoute_Leg.h
     geomaps/Airspace.h
     geomaps/Downloadable.h
     geomaps/DownloadableGroup.h
@@ -88,6 +86,8 @@ set(SOURCES
     Global.h
     Librarian.h
     MobileAdaptor.h
+    navigation/FlightRoute.h
+    navigation/FlightRoute_Leg.h
     navigation/Navigator.h
     positioning/Geoid.h
     positioning/PositionInfo.h
@@ -118,9 +118,6 @@ set(SOURCES
     # C++ files
     Aircraft.cpp
     Clock.cpp
-    FlightRoute.cpp
-    FlightRoute_GPX.cpp
-    FlightRoute_Leg.cpp
     geomaps/Airspace.cpp
     geomaps/Downloadable.cpp
     geomaps/DownloadableGroup.cpp
@@ -135,6 +132,9 @@ set(SOURCES
     main.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
+    navigation/FlightRoute.cpp
+    navigation/FlightRoute_GPX.cpp
+    navigation/FlightRoute_Leg.cpp
     navigation/Navigator.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp

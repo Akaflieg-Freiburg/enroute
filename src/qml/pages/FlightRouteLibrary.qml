@@ -153,7 +153,7 @@ Page {
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
-                            if (flightRoute.routeObjects.length > 0)
+                            if (!global.navigator().flightRoute.isEmpty)
                                 overwriteDialog.open()
                             else
                                 openFromLibrary()

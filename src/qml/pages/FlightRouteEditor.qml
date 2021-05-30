@@ -79,20 +79,20 @@ Page {
                     Action {
                         text: qsTr("Move Up")
 
-                        enabled: !waypoint.equals(flightRoute.firstWaypointObject)
+                        enabled: !waypoint.equals(global.navigator().flightRoute.firstWaypointObject)
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            flightRoute.moveUp(waypointLayout.waypoint)
+                            global.navigator().flightRoute.moveUp(waypointLayout.waypoint)
                         }
                     } // Action
 
                     Action {
                         text: qsTr("Move Down")
 
-                        enabled: !waypoint.equals(flightRoute.lastWaypointObject)
+                        enabled: !waypoint.equals(global.navigator().flightRoute.lastWaypointObject)
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            flightRoute.moveDown(waypointLayout.waypoint)
+                            global.navigator().flightRoute.moveDown(waypointLayout.waypoint)
                         }
                     } // Action
 
@@ -101,7 +101,7 @@ Page {
 
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
-                            flightRoute.removeWaypoint(waypointLayout.waypoint)
+                            global.navigator().flightRoute.removeWaypoint(waypointLayout.waypoint)
                         }
                     } // Action
                 }
@@ -198,7 +198,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library …")
-                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
@@ -234,7 +234,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -243,7 +243,7 @@ Page {
                             global.mobileAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(flightRoute.toGeoJSON(), "application/geo+json", flightRoute.suggestedFilename())
+                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -267,7 +267,7 @@ Page {
                             global.mobileAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(flightRoute.toGpx(), "application/gpx+xml", flightRoute.suggestedFilename())
+                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -287,7 +287,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in other app …")
-                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
@@ -297,7 +297,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.mobileAdaptor().viewContent(flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -314,7 +314,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.mobileAdaptor().viewContent(flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -329,7 +329,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear")
-                    // Warning                    enabled: (flightRoute.routeObjects.length > 0) && (sv.currentIndex === 0)
+                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -341,12 +341,12 @@ Page {
 
                 MenuItem {
                     text: qsTr("Reverse")
-                    // Warning                    enabled: (flightRoute.routeObjects.length > 1) && (sv.currentIndex === 0)
+                    enabled: (!global.navigator().flightRoute.isEmpty) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-                        flightRoute.reverse()
+                        global.navigator().flightRoute.reverse()
                         toast.doToast(qsTr("Flight route reversed"))
                     }
                 }
@@ -384,7 +384,7 @@ Page {
 
             Label {
                 anchors.fill: parent
-                visible: flightRoute.isEmpty
+                visible: global.navigator().flightRoute.isEmpty
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
@@ -411,7 +411,7 @@ Page {
                     width: parent.width
 
                     Connections {
-                        target: flightRoute
+                        target: global.navigator().flightRoute
                         function onWaypointsChanged() {
                             co.createItems()
                         }
@@ -423,12 +423,12 @@ Page {
                         // Delete old text items
                         co.children = {}
 
-                        if (!flightRoute.isEmpty) {
+                        if (!global.navigator().flightRoute.isEmpty) {
                             // Create first waypointComponent
-                            waypointComponent.createObject(co, {waypoint: flightRoute.firstWaypointObject});
+                            waypointComponent.createObject(co, {waypoint: global.navigator().flightRoute.firstWaypointObject});
 
                             // Create leg description items
-                            var legs = flightRoute.legs
+                            var legs = global.navigator().flightRoute.legs
                             for (var j in legs) {
                                 legComponent.createObject(co, {leg: legs[j]});
                                 waypointComponent.createObject(co, {waypoint: legs[j].endPoint});
@@ -438,17 +438,6 @@ Page {
                 } // ColumnLayout
 
             }
-
-            /*
-            ListView {
-                anchors.fill: parent
-
-                model: flightRoute.legs
-                delegate: legComponent
-                clip: true
-                ScrollIndicator.vertical: ScrollIndicator {}
-            }
-*/
 
         }
 
@@ -725,11 +714,11 @@ Page {
                 id: summary
 
                 Layout.fillWidth: true
-                text: global.settings().useMetricUnits ? flightRoute.summaryMetric : flightRoute.summary
+                text: global.settings().useMetricUnits ? global.navigator().flightRoute.summaryMetric : global.navigator().flightRoute.summary
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
-                visible: flightRoute.summary !== ""
+                visible: global.navigator().flightRoute.summary !== ""
             }
 
             ToolButton {
@@ -776,7 +765,7 @@ Page {
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
-            flightRoute.clear()
+            global.navigator().flightRoute.clear()
             toast.doToast(qsTr("Flight route cleared"))
         }
         onRejected: {

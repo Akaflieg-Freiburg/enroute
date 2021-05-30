@@ -25,7 +25,7 @@
 #include "geomaps/GeoMapProvider.h"
 
 
-auto FlightRoute::toGpx() const -> QByteArray
+auto Navigation::FlightRoute::toGpx() const -> QByteArray
 {
     // now in UTC, ISO 8601 alike
     //
@@ -100,7 +100,7 @@ auto FlightRoute::toGpx() const -> QByteArray
 }
 
 
-auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -> QString
+auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& tag) const -> QString
 {
     QString gpx = "";
 
@@ -142,7 +142,7 @@ auto FlightRoute::gpxElements(const QString& indent, const QString& tag) const -
 }
 
 
-auto FlightRoute::loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
+auto Navigation::FlightRoute::loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -154,14 +154,14 @@ auto FlightRoute::loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *
 }
 
 
-auto FlightRoute::loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
+auto Navigation::FlightRoute::loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
 {
     QXmlStreamReader xml(data);
     return loadFromGpx(xml, geoMapProvider);
 }
 
 
-auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
+auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider) -> QString
 {
 
     // collect all route points and track points and waypoints
@@ -256,12 +256,8 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
             wpt = nearest;
         }
 
-#warning
-        //connect(wpt, &GeoMaps::Waypoint::extendedNameChanged, this, &FlightRoute::waypointsChanged);
-
         if (wpt.type() == "WP" && wpt.category() == "WP" && name.length() > 0) {
-#warning
-            //wpt.setExtendedName(name);
+            wpt = wpt.renamed(name);
         }
 
         target.append(wpt);
@@ -299,14 +295,7 @@ auto FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *ge
         return tr("Error interpreting GPX file: no valid route found.");
     }
 
-#warning too complicated
-    _waypoints.clear();
-
-    // make a deep copy
-    //
-    for(auto & wp : source) {
-        _waypoints.append(wp);
-    }
+    _waypoints = source;
 
     updateLegs();
     emit waypointsChanged();

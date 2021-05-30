@@ -45,7 +45,7 @@ Item {
 
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
-            if (flightRoute.routeObjects.length > 0)
+            if (!global.navigator().flightRoute.isEmpty > 0)
                 importDialog.open()
             else
                 importDialog.onAccepted()
@@ -87,9 +87,9 @@ Item {
             var errorString = ""
 
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJSON)
-                errorString = flightRoute.loadFromGeoJSON(importManager.filePath)
+                errorString = global.navigator().flightRoute.loadFromGeoJSON(importManager.filePath)
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GPX) {
-                errorString = flightRoute.loadFromGpx(importManager.filePath, geoMapProvider)
+                errorString = global.navigator().flightRoute.loadFromGpx(importManager.filePath, geoMapProvider)
             }
 
             if (errorString !== "") {

@@ -18,7 +18,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 
-#include "FlightRoute.h"
+#include "navigation/FlightRoute.h"
 
 /*! \brief Manage libraries of flight routes and text assets
 

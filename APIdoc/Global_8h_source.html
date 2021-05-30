@@ -80,40 +80,47 @@ $(function() {
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">class </span>MapManager;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;};</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classGlobal.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGlobal.html">Global</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGlobal.html#a7a2436b32bca56d1777c342b89fb77cc">Global</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="classGlobal.html#abb5265457673f4252c464d366966946b">~Global</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1MapManager.html">GeoMaps::MapManager</a>* <a class="code" href="classGlobal.html#aabad0b3e2bb8b83be7b6416fb49ec62f">mapManager</a>();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classMobileAdaptor.html">MobileAdaptor</a>* <a class="code" href="classGlobal.html#a3b103421be188c980b51af7d59ae7ccb">mobileAdaptor</a>();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QNetworkAccessManager* <a class="code" href="classGlobal.html#afc8c1c24cc9f699f8f65b761e91fcdf3">networkAccessManager</a>();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classSettings.html">Settings</a>* <a class="code" href="classGlobal.html#aba4b0b92d44c11026c675e2208d0003b">settings</a>();</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGlobal.html">Global</a>)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>Navigation {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>Navigator;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classGlobal.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGlobal.html">Global</a> : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGlobal.html#a7a2436b32bca56d1777c342b89fb77cc">Global</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classGlobal.html#abb5265457673f4252c464d366966946b">~Global</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1MapManager.html">GeoMaps::MapManager</a>* <a class="code" href="classGlobal.html#aabad0b3e2bb8b83be7b6416fb49ec62f">mapManager</a>();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classMobileAdaptor.html">MobileAdaptor</a>* <a class="code" href="classGlobal.html#a3b103421be188c980b51af7d59ae7ccb">mobileAdaptor</a>();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNavigation_1_1Navigator.html">Navigation::Navigator</a>* <a class="code" href="classGlobal.html#a63b36104daa49b20e17e142e3263f6e3">navigator</a>();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QNetworkAccessManager* <a class="code" href="classGlobal.html#afc8c1c24cc9f699f8f65b761e91fcdf3">networkAccessManager</a>();</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">static</span> T* allocateInternal(QPointer&lt;T&gt;&amp; pointer);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classSettings.html">Settings</a>* <a class="code" href="classGlobal.html#aba4b0b92d44c11026c675e2208d0003b">settings</a>();</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGlobal.html">Global</a>)</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">static</span> T* allocateInternal(QPointer&lt;T&gt;&amp; pointer);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassSettings_html"><div class="ttname"><a href="classSettings.html">Settings</a></div><div class="ttdoc">Global Settings Manager.</div><div class="ttdef"><b>Definition:</b> <a href="Settings_8h_source.html#l00043">Settings.h:43</a></div></div>
 <div class="ttc" id="aclassGlobal_html_a7a2436b32bca56d1777c342b89fb77cc"><div class="ttname"><a href="classGlobal.html#a7a2436b32bca56d1777c342b89fb77cc">Global::Global</a></div><div class="ttdeci">Global(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
-<div class="ttc" id="aclassGlobal_html_aba4b0b92d44c11026c675e2208d0003b"><div class="ttname"><a href="classGlobal.html#aba4b0b92d44c11026c675e2208d0003b">Global::settings</a></div><div class="ttdeci">static Q_INVOKABLE Settings * settings()</div><div class="ttdoc">Pointer to appplication-wide static GeoMaps::MapManager instance.</div></div>
+<div class="ttc" id="aclassGlobal_html_aba4b0b92d44c11026c675e2208d0003b"><div class="ttname"><a href="classGlobal.html#aba4b0b92d44c11026c675e2208d0003b">Global::settings</a></div><div class="ttdeci">static Q_INVOKABLE Settings * settings()</div><div class="ttdoc">Pointer to appplication-wide static Settings instance.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html"><div class="ttname"><a href="classMobileAdaptor.html">MobileAdaptor</a></div><div class="ttdoc">Interface to platform-specific capabilities of mobile devices.</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00045">MobileAdaptor.h:45</a></div></div>
 <div class="ttc" id="aclassGlobal_html_aabad0b3e2bb8b83be7b6416fb49ec62f"><div class="ttname"><a href="classGlobal.html#aabad0b3e2bb8b83be7b6416fb49ec62f">Global::mapManager</a></div><div class="ttdeci">static Q_INVOKABLE GeoMaps::MapManager * mapManager()</div><div class="ttdoc">Pointer to appplication-wide static GeoMaps::MapManager instance.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1MapManager_html"><div class="ttname"><a href="classGeoMaps_1_1MapManager.html">GeoMaps::MapManager</a></div><div class="ttdoc">Manages the list of geographic maps.</div><div class="ttdef"><b>Definition:</b> <a href="MapManager_8h_source.html#l00071">MapManager.h:71</a></div></div>
+<div class="ttc" id="aclassGlobal_html_a63b36104daa49b20e17e142e3263f6e3"><div class="ttname"><a href="classGlobal.html#a63b36104daa49b20e17e142e3263f6e3">Global::navigator</a></div><div class="ttdeci">static Q_INVOKABLE Navigation::Navigator * navigator()</div><div class="ttdoc">Pointer to appplication-wide static Navigation::Navigator instance.</div></div>
+<div class="ttc" id="aclassNavigation_1_1Navigator_html"><div class="ttname"><a href="classNavigation_1_1Navigator.html">Navigation::Navigator</a></div><div class="ttdoc">Main hub for navigation data.</div><div class="ttdef"><b>Definition:</b> <a href="Navigator_8h_source.html#l00054">Navigator.h:54</a></div></div>
 <div class="ttc" id="aclassGlobal_html_afc8c1c24cc9f699f8f65b761e91fcdf3"><div class="ttname"><a href="classGlobal.html#afc8c1c24cc9f699f8f65b761e91fcdf3">Global::networkAccessManager</a></div><div class="ttdeci">static Q_INVOKABLE QNetworkAccessManager * networkAccessManager()</div><div class="ttdoc">Pointer to appplication-wide static QNetworkAccessManager instance.</div></div>
 <div class="ttc" id="aclassGlobal_html_abb5265457673f4252c464d366966946b"><div class="ttname"><a href="classGlobal.html#abb5265457673f4252c464d366966946b">Global::~Global</a></div><div class="ttdeci">~Global()=default</div><div class="ttdoc">Standard deconstructor.</div></div>
 <div class="ttc" id="aclassGlobal_html_a3b103421be188c980b51af7d59ae7ccb"><div class="ttname"><a href="classGlobal.html#a3b103421be188c980b51af7d59ae7ccb">Global::mobileAdaptor</a></div><div class="ttdeci">static Q_INVOKABLE MobileAdaptor * mobileAdaptor()</div><div class="ttdoc">Pointer to appplication-wide static MobileAdaptor instance.</div></div>
-<div class="ttc" id="aclassGlobal_html"><div class="ttname"><a href="classGlobal.html">Global</a></div><div class="ttdoc">Global instance storage.</div><div class="ttdef"><b>Definition:</b> <a href="Global_8h_source.html#l00056">Global.h:56</a></div></div>
+<div class="ttc" id="aclassGlobal_html"><div class="ttname"><a href="classGlobal.html">Global</a></div><div class="ttdoc">Global instance storage.</div><div class="ttdef"><b>Definition:</b> <a href="Global_8h_source.html#l00059">Global.h:59</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

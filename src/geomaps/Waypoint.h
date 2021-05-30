@@ -103,7 +103,10 @@ public:
      *
      * @returns True if the coordinates and all properties agree.
      */
-    bool operator==(const Waypoint &other) const = default;
+    bool operator==(const Waypoint &other) const
+    {
+        return (m_coordinate == other.m_coordinate) && (m_properties == other.m_properties);
+    }
 
     /*! \brief Copy waypoint and change name
      *

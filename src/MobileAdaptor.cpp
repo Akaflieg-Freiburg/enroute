@@ -18,15 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include "MobileAdaptor.h"
-
+#include <QCoreApplication>
 #include <QDir>
 #include <QPointer>
 #include <QStandardPaths>
 #include <QTimer>
 
 #include "Global.h"
+#include "MobileAdaptor.h"
 #include "geomaps/GeoMapProvider.h"
 
 
@@ -201,9 +200,14 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
 
-    if (Global::mobileAdaptor() == nullptr) {
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (QCoreApplication::instance() == nullptr) {
         return;
     }
+
     Global::mobileAdaptor()->emitWifiConnected();
 
 }

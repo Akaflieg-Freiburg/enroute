@@ -21,6 +21,7 @@
 
 #include "Global.h"
 #include "MobileAdaptor.h"
+#include "navigation/FlightRoute.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -188,6 +189,7 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
 
     QMimeDatabase db;
     auto mimeType = db.mimeTypeForFile(myPath);
+
     if ((mimeType.inherits(QStringLiteral("application/xml")))
             || (mimeType.name() == u"application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format
@@ -200,6 +202,17 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         emit openFileRequest(myPath, FlightRoute_GeoJSON);
         return;
     }
+
+    // If no file type has been determined, check if this is a GeoJSON file in disguise by trying
+    // to load it
+    Navigation::FlightRoute testRoute;
+    auto errorMessage = testRoute.loadFromGeoJSON(myPath);
+    if (errorMessage.isEmpty()) {
+        // Ok, now that does look like a GeoJSON file to me.
+        emit openFileRequest(myPath, FlightRoute_GeoJSON);
+        return;
+    }
+
     emit openFileRequest(myPath, UnknownFunction);
 }
 
@@ -228,7 +241,7 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-//    Global::mobileAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
+    Global::mobileAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

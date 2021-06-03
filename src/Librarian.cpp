@@ -494,7 +494,7 @@ page will open, which explains the connection status in more detail.</p>
     if (name == ":text/whatsnew.html") {
         return "To prepare for future developments, much of the code concerning waypoints and routes has been rewritten. Please test and report any issues that you may find! -- Thanks.\n\n"
                 + tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.") + "\n\n"
-+ tr("**We need help with the Microsoft Flight Simulator.** This App should work well with the MS Flight Simulator, but the author does not access to a Windows machine. Please contact us if you know the Flight Simulator and if you would like to help with testing.") + "\n\n";
++ tr("**We need help with the Microsoft Flight Simulator.** This App should work well with the MS Flight Simulator, but the author does not have access to a Windows machine. Please contact us if you know the Flight Simulator and if you would like to help with testing.") + "\n\n";
     }
 
     QFile file(name);

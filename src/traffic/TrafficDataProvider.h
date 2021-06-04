@@ -73,6 +73,9 @@ public:
      */
     static TrafficDataProvider* globalInstance();
 
+#warning Documentation
+    void addDataSource(Traffic::TrafficDataSource_Abstract* source);
+
     //
     // Properties
     //

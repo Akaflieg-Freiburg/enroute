@@ -98,6 +98,7 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_AbstractSocket.h
     traffic/TrafficDataSource_File.h
+    traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
     traffic/TrafficDataSource_Udp.h
     traffic/TrafficDataProvider.h
@@ -148,6 +149,7 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract_XGPS.cpp
     traffic/TrafficDataSource_AbstractSocket.cpp
     traffic/TrafficDataSource_File.cpp
+    traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp
     traffic/TrafficDataProvider.cpp

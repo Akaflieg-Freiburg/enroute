@@ -32,7 +32,7 @@ QPointer<Positioning::PositionProvider> positionProviderStatic {};
 
 Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
-    // Restore the last valid coordiante
+    // Restore the last valid coordiante and track
     QSettings settings;
     QGeoCoordinate tmp;
     tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.latitude()).toDouble());
@@ -41,8 +41,6 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         m_lastValidCoordinate = tmp;
     }
-
-    // Restore the last valid track
     m_lastValidTT = AviationUnits::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
 
     // Wire up satellite source

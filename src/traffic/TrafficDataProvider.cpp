@@ -78,21 +78,10 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
 
     // Real data sources in order of preference, preferred sources first
-    m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this);
-    m_dataSources << new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this);
-    m_dataSources << new Traffic::TrafficDataSource_Udp(4000, this);
-    m_dataSources << new Traffic::TrafficDataSource_Udp(49002, this);
-
-    // Wire up data sources
-    foreach(auto dataSource, m_dataSources) {
-        if (dataSource.isNull()) {
-            continue;
-        }
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-        connect(dataSource, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
-    }
+    addDataSource( new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Udp(4000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Udp(49002, this));
 
     // Bindings for status string
     connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
@@ -108,6 +97,20 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Try to (re)connect whenever the network situation changes
     QTimer::singleShot(0, this, &Traffic::TrafficDataProvider::deferredInitialization);
+}
+
+
+void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abstract* source)
+{
+    Q_ASSERT( source != nullptr );
+
+    source->setParent(this);
+    m_dataSources << source;
+    connect(source, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(source, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
+
 }
 
 

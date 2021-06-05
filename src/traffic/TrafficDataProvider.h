@@ -67,12 +67,6 @@ public:
     // Methods
     //
 
-    /*! \brief Pointer to static instance of this class
-     *
-     *  @returns Pointer to global instance
-     */
-    static TrafficDataProvider* globalInstance();
-
 #warning Documentation
     void addDataSource(Traffic::TrafficDataSource_Abstract* source);
 

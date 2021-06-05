@@ -22,6 +22,8 @@
 #include "Global.h"
 #include "MobileAdaptor.h"
 #include "navigation/FlightRoute.h"
+#include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_File.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -168,7 +170,7 @@ void MobileAdaptor::startReceiveOpenFileRequests()
 
 void MobileAdaptor::processFileOpenRequest(const QByteArray &path)
 {
-    processFileOpenRequest(QString::fromUtf8(path));
+    processFileOpenRequest(QString::fromUtf8(path).simplified());
 }
 
 
@@ -190,21 +192,27 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     QMimeDatabase db;
     auto mimeType = db.mimeTypeForFile(myPath);
 
+    /*
+     * Check for various possible file formats/contents
+     */
+
+    // Flight Route in GPX format
     if ((mimeType.inherits(QStringLiteral("application/xml")))
             || (mimeType.name() == u"application/x-gpx+xml")) {
         // We assume that the file contains a flight route in GPX format
         emit openFileRequest(myPath, FlightRoute_GPX);
         return;
     }
+
+    // Flight Route in GeoJSON format
     if ((mimeType.name() == u"application/geo+json")
-            || path.endsWith(u".geojson", Qt::CaseInsensitive)) {
+            || myPath.endsWith(u".geojson", Qt::CaseInsensitive)) {
         // We assume that the file contains a flight route in GeoJSON format
         emit openFileRequest(myPath, FlightRoute_GeoJSON);
         return;
     }
 
-    // If no file type has been determined, check if this is a GeoJSON file in disguise by trying
-    // to load it
+    // Flight Route in GeoJSON format, without proper file name suffix
     Navigation::FlightRoute testRoute;
     auto errorMessage = testRoute.loadFromGeoJSON(myPath);
     if (errorMessage.isEmpty()) {
@@ -212,6 +220,16 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         emit openFileRequest(myPath, FlightRoute_GeoJSON);
         return;
     }
+
+#if !defined(Q_OS_ANDROID)
+    // FLARM Simulator file
+    if (myPath.endsWith(u".txt", Qt::CaseInsensitive)) {
+        auto *source = new Traffic::TrafficDataSource_File(myPath);
+        Global::trafficDataProvider()->addDataSource(source); // Will take ownership of source
+        source->connectToTrafficReceiver();
+        return;
+    }
+#endif
 
     emit openFileRequest(myPath, UnknownFunction);
 }

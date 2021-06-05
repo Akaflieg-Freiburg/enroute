@@ -20,6 +20,7 @@
 
 #include <QSettings>
 
+#include "Global.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 
@@ -74,12 +75,9 @@ Positioning::PositionProvider::~PositionProvider()
 
 void Positioning::PositionProvider::deferredInitialization() const
 {
-    // Wire up traffic data provider source
-    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
-    if (trafficDataProvider != nullptr) {
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-        connect(trafficDataProvider, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
-    }
+
+    connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
+    connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 
 }
 
@@ -106,7 +104,7 @@ void Positioning::PositionProvider::onPositionUpdated()
     QString source;
 
     // Priority #1: Traffic data provider
-    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    auto* trafficDataProvider = Global::trafficDataProvider();
     if (trafficDataProvider != nullptr) {
         info = trafficDataProvider->positionInfo();
         source = trafficDataProvider->sourceName();
@@ -135,7 +133,7 @@ void Positioning::PositionProvider::onPressureAltitudeUpdated()
     AviationUnits::Distance pAlt;
 
     // Priority #1: Traffic data provider
-    auto* trafficDataProvider = Traffic::TrafficDataProvider::globalInstance();
+    auto* trafficDataProvider = Global::trafficDataProvider();
     if (trafficDataProvider != nullptr) {
         pAlt = trafficDataProvider->pressureAltitude();
     }

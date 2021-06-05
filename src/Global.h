@@ -34,6 +34,11 @@ namespace Navigation {
 class Navigator;
 }
 
+namespace Traffic {
+class TrafficDataProvider;
+}
+
+
 /*! \brief Global instance storage
  *
  * This class manages a collection of static instances of classes that are used
@@ -103,6 +108,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Settings* settings();
+
+    /*! \brief Pointer to appplication-wide static TrafficDataProvider instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Traffic::TrafficDataProvider* trafficDataProvider();
 
 private:
     Q_DISABLE_COPY_MOVE(Global)

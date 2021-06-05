@@ -27,6 +27,7 @@
 #include "Settings.h"
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
+#include "traffic/TrafficDataProvider.h"
 
 bool isConstructing {false};
 
@@ -35,6 +36,7 @@ QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Settings> g_settings {};
+QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
 
 
 template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
@@ -85,4 +87,11 @@ auto Global::networkAccessManager() -> QNetworkAccessManager*
 auto Global::settings() -> Settings*
 {
     return allocateInternal<Settings>(g_settings);
+}
+
+
+auto Global::trafficDataProvider() -> Traffic::TrafficDataProvider*
+{
+    return allocateInternal<Traffic::TrafficDataProvider>(g_trafficDataProvider);
+
 }

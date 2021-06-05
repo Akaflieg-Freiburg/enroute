@@ -30,11 +30,6 @@
 
 using namespace std::chrono_literals;
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<Traffic::TrafficDataProvider> trafficDataProviderStatic {};
-#endif
-
 
 // Member functions
 
@@ -62,20 +57,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     foreFlightBroadcastTimer.setInterval(5s);
     connect(&foreFlightBroadcastTimer, &QTimer::timeout, this, &Traffic::TrafficDataProvider::foreFlightBroadcast);
     foreFlightBroadcastTimer.start();
-
-    // Setup Data Sources
-
-    // Uncomment one of the lines below to start this class in simulation mode.
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-hard.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/expiry-soft.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/groundstation_anz.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/helluva_lot_aircraft.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/many_opponents.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_from_gurtnellen_to_lake_constance_001.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/obstacles_single_antenna_drasenhofen.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent_mode_s.txt", this);
-    // m_dataSources << new Traffic::TrafficDataSource_File("/home/kebekus/Software/standards/FLARM/single_opponent.txt", this);
 
     // Real data sources in order of preference, preferred sources first
     addDataSource( new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this));
@@ -146,19 +127,6 @@ void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
 void Traffic::TrafficDataProvider::foreFlightBroadcast()
 {
     foreFlightBroadcastSocket.writeDatagram(foreFlightBroadcastDatagram);
-}
-
-
-auto Traffic::TrafficDataProvider::globalInstance() -> Traffic::TrafficDataProvider *
-{
-#ifndef __clang_analyzer__
-    if (trafficDataProviderStatic.isNull()) {
-        trafficDataProviderStatic = new Traffic::TrafficDataProvider();
-    }
-    return trafficDataProviderStatic;
-#else
-    return nullptr;
-#endif
 }
 
 

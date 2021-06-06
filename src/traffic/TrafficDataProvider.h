@@ -63,12 +63,20 @@ public:
     // Standard destructor
     ~TrafficDataProvider() = default;
 
+
     //
     // Methods
     //
 
-#warning Documentation
+    /*! \brief Add an additional data source
+     *
+     *  This method adds an additional data source to this
+     *  TrafficDataProvider, typically a simulator source used for debugging purposes. The TrafficDataProvider takes ownership of the source.
+     *
+     *  @param source New TrafficDataSource that is to be added.
+     */
     void addDataSource(Traffic::TrafficDataSource_Abstract* source);
+
 
     //
     // Properties

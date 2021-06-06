@@ -151,10 +151,6 @@ auto main(int argc, char *argv[]) -> int
     // Make GPS available to QML engine
     engine->rootContext()->setContextProperty("positionProvider", Positioning::PositionProvider::globalInstance());
 
-    // Make FLARM available to QML engine
-#warning
-    engine->rootContext()->setContextProperty("flarmAdaptor", Global::trafficDataProvider());
-
     // Attach library info
     engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
 

@@ -16,15 +16,11 @@ The main() function constructs a number of C++ objects and exposes them to QML.
 
 - An instance of the class Global, under the name "global". This class allows access to other application-wide class instances. Eventually, all application-wide instances should be handled by this class.
 
-- Instances of the classes GeoMapProvider and MapManager, under the names "mapManager" and "geoMapProvider". These classes allow access to the library of geographic maps, and provide the map data in formats suitable for use by QML.
-
-- An instance of the class MobileAdaptor, under the name "MobileAdaptor". This class provides QML with access to platform-specific functionality, such as "vibrate device", "disable screen lock" and others
+- Instances of the classes GeoMapProvider, under the name "geoMapProvider". This classes allow access to the library of geographic maps, and provide the map data in formats suitable for use by QML.
 
 - An instance of the class PositionProvider, under the name "positionProvider". This class contains the satellite navigaton functionality and is really a thin wrapper around QGeoPositionInfoSource, that provides data in formats suitable for aviation purposes.
 
 #### B.2 Other C++ classes
-
-- An instance of the class GlobalSettings, under the name "globalSettings". This simple wrapper around QSetting allows QML retrieve and store settings.
 
 - An instance of the class Library, under the name "library". This class helps to maintain a library of flight routes.
 
@@ -33,9 +29,6 @@ The main() function constructs a number of C++ objects and exposes them to QML.
 - An instance of the class Clock, under the name "clock".  This class provides time information, computation and description.
 
 - An instance of the class Weather::DownloadManager, under the name "weatherDownloadManager".  This class provides weather info.
-
-- An instance of the class Navigation::Navigator, under the name "navigator".  This class provides navigation info.
-
 
 
 

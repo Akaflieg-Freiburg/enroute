@@ -169,28 +169,28 @@ Item {
             center: positionProvider.lastValidCoordinate
             Behavior on center {
                 CoordinateAnimation { duration: 1000 }
-                enabled: flarmAdaptor.trafficObjectWithoutPosition.animate
+                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
             }
-            radius: Math.max(500, flarmAdaptor.trafficObjectWithoutPosition.hDistM)
+            radius: Math.max(500, global.trafficDataProvider().trafficObjectWithoutPosition.hDistM)
             Behavior on radius {
                 NumberAnimation { duration: 1000 }
-                enabled: flarmAdaptor.trafficObjectWithoutPosition.animate
+                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
             }
-            color: flarmAdaptor.trafficObjectWithoutPosition.color
+            color: global.trafficDataProvider().trafficObjectWithoutPosition.color
             Behavior on color {
                 ColorAnimation { duration: 400 }
-                enabled: flarmAdaptor.trafficObjectWithoutPosition.animate
+                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
             }
             opacity: 0.3
-            visible: flarmAdaptor.trafficObjectWithoutPosition.valid
+            visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
         }
 
         TrafficLabel { // Label for nondirectional traffic warning
-            trafficInfo: flarmAdaptor.trafficObjectWithoutPosition
+            trafficInfo: global.trafficDataProvider().trafficObjectWithoutPosition
         }
 
         MapItemView { // Labels for traffic opponents
-            model: flarmAdaptor.trafficObjects4QML
+            model: global.trafficDataProvider().trafficObjects4QML
             delegate: Component {
                 TrafficLabel {
                     trafficInfo: model.modelData
@@ -304,7 +304,7 @@ Item {
         }
 
         MapItemView { // Traffic opponents
-            model: flarmAdaptor.trafficObjects4QML
+            model: global.trafficDataProvider().trafficObjects4QML
             delegate: Component {
                 Traffic {
                     trafficInfo: model.modelData

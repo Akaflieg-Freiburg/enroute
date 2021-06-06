@@ -117,7 +117,7 @@ Page {
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
 
-                text: flarmAdaptor.statusString
+                text: global.trafficDataProvider().statusString
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -133,7 +133,7 @@ Page {
                 // Background color according to METAR/FAA flight category
                 background: Rectangle {
                     border.color: "black"
-                    color: (flarmAdaptor.receivingHeartbeat) ? "green" : "red"
+                    color: (global.trafficDataProvider().receivingHeartbeat) ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
@@ -144,7 +144,7 @@ Page {
                 Layout.fillWidth: true
 
                 text:   {
-                    if (flarmAdaptor.receivingHeartbeat)
+                    if (global.trafficDataProvider().receivingHeartbeat)
                         return qsTr("<p>Well done! Go flying. Give yourself a pat on the back.</p>")
                     else
                         return qsTr("
@@ -177,7 +177,7 @@ Page {
     footer: Pane {
         width: parent.width
         Material.elevation: 3
-        visible: !flarmAdaptor.receivingHeartbeat
+        visible: !global.trafficDataProvider().receivingHeartbeat
 
         ToolButton {
             anchors.centerIn: parent
@@ -192,7 +192,7 @@ Page {
 
             enabled: !timer.running
             onClicked: {
-                flarmAdaptor.connectToTrafficReceiver()
+                global.trafficDataProvider().connectToTrafficReceiver()
                 timer.running = true;
             }
             Timer {

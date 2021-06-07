@@ -22,6 +22,7 @@
 
 #include <QObject>
 
+class DemoRunner;
 class MobileAdaptor;
 class QNetworkAccessManager;
 class Settings;
@@ -78,6 +79,12 @@ public:
      * managed by this class.
      */
     ~Global() = default;
+
+    /*! \brief Pointer to appplication-wide static DemoRunner instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static DemoRunner* demoRunner();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
      *

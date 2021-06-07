@@ -74,6 +74,7 @@ set(SOURCES
     # Header files
     Aircraft.h
     Clock.h
+    DemoRunner.h
     geomaps/Airspace.h
     geomaps/Downloadable.h
     geomaps/DownloadableGroup.h
@@ -119,6 +120,7 @@ set(SOURCES
     # C++ files
     Aircraft.cpp
     Clock.cpp
+    DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/Downloadable.cpp
     geomaps/DownloadableGroup.cpp

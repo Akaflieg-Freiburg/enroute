@@ -37,6 +37,7 @@
 
 #include "Aircraft.h"
 #include "Clock.h"
+#include "DemoRunner.h"
 #include "Global.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
@@ -75,6 +76,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Traffic::Warning>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
+    qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<GeoMaps::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<GeoMaps::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");

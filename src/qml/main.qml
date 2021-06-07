@@ -531,6 +531,23 @@ ApplicationWindow {
         onActivated: Qt.quit()
     }
 
+    Connections {
+        target: global.demoRunner()
+
+        function onResizeMainWindow(w, h) {
+            view.width = w
+            view.height = h
+        }
+
+        function onSaveImage(fileName) {
+            stackView.grabToImage(function(imageResult) {
+                var ok = imageResult.saveToFile(fileName);
+                console.log("saving screenshot to file " + fileName + ". Result: " + ok);
+            })
+        }
+
+    }
+
     // Enroute closed unexpectedly if...
     // * the "route" page is open
     // * the route menu is opened

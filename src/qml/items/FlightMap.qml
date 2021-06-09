@@ -71,9 +71,9 @@ Map {
     MapParameter {
         type: "source"
         
-        property var name: "aviationData"
-        property var sourceType: "geojson"
-        property var data: flightMap.geoJSON
+        property string name: "aviationData"
+        property string sourceType: "geojson"
+        property string data: flightMap.geoJSON
     }
 
     /*************************************
@@ -83,8 +83,8 @@ Map {
     MapParameter {
         type: "image"
         
-        property var name: "WhiteBox"
-        property var sprite: ":flightMap/sprites/WhiteBox.png"
+        property string name: "WhiteBox"
+        property string sprite: ":flightMap/sprites/WhiteBox.png"
     }
     
 
@@ -95,18 +95,18 @@ Map {
     MapParameter {
         type: "layer"
 
-        property var name: "FIS"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "FIS"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "FIS"]
-        property var maxzoom: 10
+        property int maxzoom: 10
     }
 
     MapParameter {
         type: "paint"
-        property var layer: "FIS"
-        property var lineColor: "black"
-        property var lineWidth: 0.5
+        property string layer: "FIS"
+        property string lineColor: "black"
+        property real lineWidth: 0.5
     }
 
 
@@ -117,54 +117,54 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "RMZ"
-        property var layerType: "fill"
-        property var source: "aviationData"
+        property string name: "RMZ"
+        property string layerType: "fill"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "RMZ"]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "RMZ"
-        property var fillColor: "blue"
-        property var fillOpacity: 0.2
+        property string layer: "RMZ"
+        property string fillColor: "blue"
+        property real fillOpacity: 0.2
     }
     
     MapParameter {
         type: "layer"
         
-        property var name: "RMZoutline"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "RMZoutline"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "RMZ"]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "RMZoutline"
-        property var lineColor: "blue"
-        property var lineWidth: 2.0
+        property string layer: "RMZoutline"
+        property string lineColor: "blue"
+        property real lineWidth: 2.0
         property var lineDasharray: [3.0, 3.0]
     }
     
     MapParameter {
         type: "layer"
         
-        property var name: "RMZLabels"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "RMZLabels"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "RMZ"]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     
     MapParameter {
         type: "layout"
         
-        property var layer: "RMZLabels"
+        property string layer: "RMZLabels"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
-        property var iconImage: "WhiteBox"
-        property var iconTextFit: "both"
+        property real textSize: 12
+        property string iconImage: "WhiteBox"
+        property string iconTextFit: "both"
         property var iconTextFitPadding: [2,5,2,5]
     }
     
@@ -176,17 +176,17 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "TMZ"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "TMZ"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "TMZ"]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "TMZ"
-        property var lineColor: "black"
-        property var lineWidth: 2.0
+        property string layer: "TMZ"
+        property string lineColor: "black"
+        property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0, 0.5, 3.0]
     }
     
@@ -198,17 +198,17 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "PJE"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "PJE"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "PJE"]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "PJE"
-        property var lineColor: "red"
-        property var lineWidth: 2.0
+        property string layer: "PJE"
+        property string lineColor: "red"
+        property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
     }
     
@@ -220,35 +220,35 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "ABCDOutlines"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "ABCDOutlines"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "ABCDOutlines"
-        property var lineColor: "blue"
-        property var lineWidth: 2.0
+        property string layer: "ABCDOutlines"
+        property string lineColor: "blue"
+        property real lineWidth: 2.0
     }
     
     MapParameter {
         type: "layer"
         
-        property var name: "ABCDs"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "ABCDs"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "ABCDs"
-        property var lineColor: "blue"
-        property var lineOpacity: 0.2
-        property var lineWidth: airspaceLineWidth
-        property var lineOffset: airspaceLineWidth/2.0
+        property string layer: "ABCDs"
+        property string lineColor: "blue"
+        property real lineOpacity: 0.2
+        property real lineWidth: airspaceLineWidth
+        property real lineOffset: airspaceLineWidth/2.0
     }
     
     
@@ -259,50 +259,50 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "controlZones"
-        property var layerType: "fill"
-        property var source: "aviationData"
+        property string name: "controlZones"
+        property string layerType: "fill"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
     MapParameter {
         type: "paint"
-        property var layer: "controlZones"
-        property var fillColor: "red"
-        property var fillOpacity: 0.2
+        property string layer: "controlZones"
+        property string fillColor: "red"
+        property real fillOpacity: 0.2
     }
     
     MapParameter {
         type: "layer"
         
-        property var name: "controlZoneOutlines"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "controlZoneOutlines"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
     MapParameter {
         type: "paint"
-        property var layer: "controlZoneOutlines"
-        property var lineColor: "blue"
-        property var lineWidth: 2.0
+        property string layer: "controlZoneOutlines"
+        property string lineColor: "blue"
+        property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
     }
     MapParameter {
         type: "layer"
         
-        property var name: "controlZoneLabels"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "controlZoneLabels"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     MapParameter {
         type: "layout"
 
-        property var layer: "controlZoneLabels"
+        property string layer: "controlZoneLabels"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
-        property var iconImage: "WhiteBox"
-        property var iconTextFit: "both"
+        property real textSize: 12
+        property string iconImage: "WhiteBox"
+        property string iconTextFit: "both"
         property var iconTextFitPadding: [2,5,2,5]
     }
 
@@ -314,56 +314,56 @@ Map {
     MapParameter {
         type: "layer"
 
-        property var name: "natureReserveAreas"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "natureReserveAreas"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "NRA"]
     }
 
     MapParameter {
         type: "paint"
-        property var layer: "natureReserveAreas"
-        property var lineColor: "green"
-        property var lineOpacity: 0.15
-        property var lineWidth: airspaceLineWidth
-        property var lineOffset: airspaceLineWidth/2.0
+        property string layer: "natureReserveAreas"
+        property string lineColor: "green"
+        property real lineOpacity: 0.15
+        property real lineWidth: airspaceLineWidth
+        property real lineOffset: airspaceLineWidth/2.0
     }
 
     MapParameter {
         type: "layer"
 
-        property var name: "natureReserveAreaOutlines"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "natureReserveAreaOutlines"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "NRA"]
     }
 
     MapParameter {
         type: "paint"
-        property var layer: "natureReserveAreaOutlines"
-        property var lineColor: "green"
-        property var lineOpacity: 0.3
-        property var lineWidth: 2.0
+        property string layer: "natureReserveAreaOutlines"
+        property string lineColor: "green"
+        property real lineOpacity: 0.3
+        property real lineWidth: 2.0
     }
 
     MapParameter {
         type: "layer"
 
-        property var name: "natureReserveAreaLabels"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "natureReserveAreaLabels"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "NRA"]
-        property var minzoom: 10
+        property int minzoom: 10
     }
 
     MapParameter {
         type: "layout"
 
-        property var layer: "natureReserveAreaLabels"
+        property string layer: "natureReserveAreaLabels"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
-        property var iconImage: "WhiteBox"
-        property var iconTextFit: "both"
+        property real textSize: 12
+        property string iconImage: "WhiteBox"
+        property string iconTextFit: "both"
         property var iconTextFitPadding: [2,5,2,5]
     }
 
@@ -374,61 +374,61 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "dangerZones"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "dangerZones"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "dangerZones"
-        property var lineColor: "red"
-        property var lineOpacity: 0.2
-        property var lineWidth: airspaceLineWidth
-        property var lineOffset: airspaceLineWidth/2.0
+        property string layer: "dangerZones"
+        property string lineColor: "red"
+        property real lineOpacity: 0.2
+        property real lineWidth: airspaceLineWidth
+        property real lineOffset: airspaceLineWidth/2.0
     }
     
     MapParameter {
         type: "layer"
         
-        property var name: "dangerZoneOutlines"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "dangerZoneOutlines"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
     }
     
     MapParameter {
         type: "paint"
-        property var layer: "dangerZoneOutlines"
-        property var lineColor: "red"
-        property var lineWidth: 2.0
+        property string layer: "dangerZoneOutlines"
+        property string lineColor: "red"
+        property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
     }
     
     MapParameter {
         type: "layer"
         
-        property var name: "dangerZoneLabels"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "dangerZoneLabels"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     MapParameter {
         type: "paint"
-        property var layer: "dangerZoneLabels"
-        property var textHaloWidth: 2
+        property string layer: "dangerZoneLabels"
+        property real textHaloWidth: 2
         property var textHaloColor: "white"
     }
     MapParameter {
         type: "layout"
         
-        property var layer: "dangerZoneLabels"
+        property string layer: "dangerZoneLabels"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
-        property var iconImage: "WhiteBox"
-        property var iconTextFit: "both"
+        property real textSize: 12
+        property string iconImage: "WhiteBox"
+        property string iconTextFit: "both"
         property var iconTextFitPadding: [2,5,2,5]
     }
     
@@ -441,51 +441,51 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "PRC_DEP"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "PRC_DEP"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "DEP"]]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     MapParameter {
         type: "paint"
-        property var layer: "PRC_DEP"
+        property string layer: "PRC_DEP"
         property var lineColor: ["get", "GAC"]
-        property var lineWidth: 3.0
+        property real lineWidth: 3.0
         property var lineDasharray: [3.0, 3.0]
     }
 
     MapParameter {
         type: "layer"
 
-        property var name: "PRC_ARR"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "PRC_ARR"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "ARR"]]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     MapParameter {
         type: "paint"
-        property var layer: "PRC_ARR"
+        property string layer: "PRC_ARR"
         property var lineColor: ["get", "GAC"]
-        property var lineWidth: 3.0
+        property real lineWidth: 3.0
         property var lineDasharray: [9.0, 3.0]
     }
 
     MapParameter {
         type: "layer"
 
-        property var name: "PRC_OTH"
-        property var layerType: "line"
-        property var source: "aviationData"
+        property string name: "PRC_OTH"
+        property string layerType: "line"
+        property string source: "aviationData"
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "ARR"], ["!=", ["get", "USE"], "DEP"]]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     MapParameter {
         type: "paint"
-        property var layer: "PRC_OTH"
+        property string layer: "PRC_OTH"
         property var lineColor: ["get", "GAC"]
-        property var lineWidth: 3.0
+        property real lineWidth: 3.0
     }
 
     // We print PRC labels first and then label the traffic circuits. This way,
@@ -493,48 +493,48 @@ Map {
     MapParameter {
         type: "layer"
 
-        property var name: "PRCLabels"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "PRCLabels"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "TFC"]]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     MapParameter {
         type: "layout"
 
-        property var layer: "PRCLabels"
+        property string layer: "PRCLabels"
         property var symbolPlacement: "line"
         property var textField: ["get", "NAM"]
-        property var textSize: 16
+        property real textSize: 16
     }
     MapParameter {
         type: "paint"
-        property var layer: "PRCLabels"
-        property var textHaloWidth: 10
+        property string layer: "PRCLabels"
+        property real textHaloWidth: 10
         property var textHaloColor: "white"
     }
 
     MapParameter {
         type: "layer"
         
-        property var name: "TFCLabels"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "TFCLabels"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "TFC"]]
-        property var minzoom: 10
+        property int minzoom: 10
     }
     MapParameter {
         type: "layout"
         
-        property var layer: "TFCLabels"
+        property string layer: "TFCLabels"
         property var symbolPlacement: "line"
         property var textField: ["get", "NAM"]
-        property var textSize: 16
+        property real textSize: 16
     }
     MapParameter {
         type: "paint"
-        property var layer: "TFCLabels"
-        property var textHaloWidth: 10
+        property string layer: "TFCLabels"
+        property real textHaloWidth: 10
         property var textHaloColor: "white"
     }
 
@@ -547,116 +547,116 @@ Map {
     MapParameter {
         type: "image"
         
-        property var name: "AD"
-        property var sprite: ":flightMap/sprites/AD"
+        property string name: "AD"
+        property string sprite: ":flightMap/sprites/AD"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-GLD"
-        property var sprite: ":flightMap/sprites/AD-GLD"
+        property string name: "AD-GLD"
+        property string sprite: ":flightMap/sprites/AD-GLD"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-GRASS"
-        property var sprite: ":flightMap/sprites/AD-GRASS"
+        property string name: "AD-GRASS"
+        property string sprite: ":flightMap/sprites/AD-GRASS"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-INOP"
-        property var sprite: ":flightMap/sprites/AD-INOP"
+        property string name: "AD-INOP"
+        property string sprite: ":flightMap/sprites/AD-INOP"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-MIL"
-        property var sprite: ":flightMap/sprites/AD-MIL"
+        property string name: "AD-MIL"
+        property string sprite: ":flightMap/sprites/AD-MIL"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-MIL-GRASS"
-        property var sprite: ":flightMap/sprites/AD-MIL-GRASS"
+        property string name: "AD-MIL-GRASS"
+        property string sprite: ":flightMap/sprites/AD-MIL-GRASS"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-MIL-PAVED"
-        property var sprite: ":flightMap/sprites/AD-MIL-PAVED"
+        property string name: "AD-MIL-PAVED"
+        property string sprite: ":flightMap/sprites/AD-MIL-PAVED"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-PAVED"
-        property var sprite: ":flightMap/sprites/AD-PAVED"
+        property string name: "AD-PAVED"
+        property string sprite: ":flightMap/sprites/AD-PAVED"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-UL"
-        property var sprite: ":flightMap/sprites/AD-UL"
+        property string name: "AD-UL"
+        property string sprite: ":flightMap/sprites/AD-UL"
     }
     MapParameter {
         type: "image"
         
-        property var name: "AD-WATER"
-        property var sprite: ":flightMap/sprites/AD-WATER"
+        property string name: "AD-WATER"
+        property string sprite: ":flightMap/sprites/AD-WATER"
     }
     MapParameter {
         type: "image"
         
-        property var name: "MRP"
-        property var sprite: ":flightMap/sprites/MRP"
+        property string name: "MRP"
+        property string sprite: ":flightMap/sprites/MRP"
     }
     MapParameter {
         type: "image"
         
-        property var name: "NDB"
-        property var sprite: ":flightMap/sprites/NDB"
+        property string name: "NDB"
+        property string sprite: ":flightMap/sprites/NDB"
     }
     MapParameter {
         type: "image"
         
-        property var name: "RP"
-        property var sprite: ":flightMap/sprites/RP"
+        property string name: "RP"
+        property string sprite: ":flightMap/sprites/RP"
     }
     MapParameter {
         type: "image"
         
-        property var name: "VOR"
-        property var sprite: ":flightMap/sprites/VOR"
+        property string name: "VOR"
+        property string sprite: ":flightMap/sprites/VOR"
     }
     MapParameter {
         type: "image"
         
-        property var name: "VOR-DME"
-        property var sprite: ":flightMap/sprites/VORDME"
+        property string name: "VOR-DME"
+        property string sprite: ":flightMap/sprites/VORDME"
     }
     MapParameter {
         type: "image"
         
-        property var name: "VORTAC"
-        property var sprite: ":flightMap/sprites/VORTAC"
+        property string name: "VORTAC"
+        property string sprite: ":flightMap/sprites/VORTAC"
     }
     MapParameter {
         type: "image"
         
-        property var name: "DVOR"
-        property var sprite: ":flightMap/sprites/VOR"
+        property string name: "DVOR"
+        property string sprite: ":flightMap/sprites/VOR"
     }
     MapParameter {
         type: "image"
         
-        property var name: "DVOR-DME"
-        property var sprite: ":flightMap/sprites/VORDME"
+        property string name: "DVOR-DME"
+        property string sprite: ":flightMap/sprites/VORDME"
     }
     MapParameter {
         type: "image"
         
-        property var name: "DVORTAC"
-        property var sprite: ":flightMap/sprites/VORTAC"
+        property string name: "DVORTAC"
+        property string sprite: ":flightMap/sprites/VORTAC"
     }
     
     
@@ -665,18 +665,18 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "optionalText"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "optionalText"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "TYP"], "NAV"]
     }
     
     MapParameter {
         type: "layout"
 
-        property var layer: "optionalText"
+        property string layer: "optionalText"
         property var textField: ["get", "COD"]
-        property var textSize: 12
+        property real textSize: 12
         property var textAnchor: "top"
         property var textOffset: [0, 1]
         property var textOptional: true
@@ -684,8 +684,8 @@ Map {
     
     MapParameter {
         type: "paint"
-        property var layer: "optionalText"
-        property var textHaloWidth: 2
+        property string layer: "optionalText"
+        property real textHaloWidth: 2
         property var textHaloColor: "white"
     }
 
@@ -695,18 +695,18 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "WPs"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "WPs"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
     }
 
     MapParameter {
         type: "layout"
 
-        property var layer: "WPs"
+        property string layer: "WPs"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
+        property real textSize: 12
         property var textAnchor: "top"
         property var textOffset: [0, 1]
         property var textOptional: true
@@ -715,8 +715,8 @@ Map {
     
     MapParameter {
         type: "paint"
-        property var layer: "WPs"
-        property var textHaloWidth: 2
+        property string layer: "WPs"
+        property real textHaloWidth: 2
         property var textHaloColor: "white"
     }
 
@@ -726,19 +726,19 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "RPs"
-        property var layerType: "symbol"
-        property var source: "aviationData"
-        property var minzoom: 8
+        property string name: "RPs"
+        property string layerType: "symbol"
+        property string source: "aviationData"
+        property int minzoom: 8
         property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
     }
     
     MapParameter {
         type: "layout"
 
-        property var layer: "RPs"
+        property string layer: "RPs"
         property var textField: ["get", "SCO"]
-        property var textSize: 12
+        property real textSize: 12
         property var textAnchor: "top"
         property var textOffset: [0, 1]
         property var textOptional: true
@@ -747,8 +747,8 @@ Map {
     
     MapParameter {
         type: "paint"
-        property var layer: "RPs"
-        property var textHaloWidth: 2
+        property string layer: "RPs"
+        property real textHaloWidth: 2
         property var textHaloColor: "white"
     }
 
@@ -758,18 +758,18 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "AD-GRASS"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "AD-GRASS"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]]
     }
     
     MapParameter {
         type: "layout"
 
-        property var layer: "AD-GRASS"
+        property string layer: "AD-GRASS"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
+        property real textSize: 12
         property var textAnchor: "top"
         property var textOffset: [0, 1]
         property var textOptional: true
@@ -780,8 +780,8 @@ Map {
     
     MapParameter {
         type: "paint"
-        property var layer: "AD-GRASS"
-        property var textHaloWidth: 2
+        property string layer: "AD-GRASS"
+        property real textHaloWidth: 2
         property var textHaloColor: "white"
     }
 
@@ -791,16 +791,16 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "NavAidIcons"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "NavAidIcons"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["==", ["get", "TYP"], "NAV"]
     }
     
     MapParameter {
         type: "layout"
 
-        property var layer: "NavAidIcons"
+        property string layer: "NavAidIcons"
         property var iconImage: ["get", "CAT"]
         property var iconIgnorePlacement: true
         property var iconAllowOverlap: true
@@ -812,18 +812,18 @@ Map {
     MapParameter {
         type: "layer"
         
-        property var name: "AD-PAVED"
-        property var layerType: "symbol"
-        property var source: "aviationData"
+        property string name: "AD-PAVED"
+        property string layerType: "symbol"
+        property string source: "aviationData"
         property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
     }
     
     MapParameter {
         type: "layout"
 
-        property var layer: "AD-PAVED"
+        property string layer: "AD-PAVED"
         property var textField: ["get", "NAM"]
-        property var textSize: 12
+        property real textSize: 12
         property var textAnchor: "top"
         property var textOffset: [0, 1]
         property var textOptional: true
@@ -834,8 +834,8 @@ Map {
     
     MapParameter {
         type: "paint"
-        property var layer: "AD-PAVED"
-        property var textHaloWidth: 2
+        property string layer: "AD-PAVED"
+        property real textHaloWidth: 2
         property var textHaloColor: "white"
     }
     

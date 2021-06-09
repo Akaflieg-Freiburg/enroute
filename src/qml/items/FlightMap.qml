@@ -488,14 +488,39 @@ Map {
         property var lineWidth: 3.0
     }
 
-    
+    // We print PRC labels first and then label the traffic circuits. This way,
+    // traffic circuit labels will be printed with higher priority
+    MapParameter {
+        type: "layer"
+
+        property var name: "PRCLabels"
+        property var layerType: "symbol"
+        property var source: "aviationData"
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "TFC"]]
+        property var minzoom: 10
+    }
+    MapParameter {
+        type: "layout"
+
+        property var layer: "PRCLabels"
+        property var symbolPlacement: "line"
+        property var textField: ["get", "NAM"]
+        property var textSize: 16
+    }
+    MapParameter {
+        type: "paint"
+        property var layer: "PRCLabels"
+        property var textHaloWidth: 10
+        property var textHaloColor: "white"
+    }
+
     MapParameter {
         type: "layer"
         
         property var name: "TFCLabels"
         property var layerType: "symbol"
         property var source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "PRC"]
+        property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "TFC"]]
         property var minzoom: 10
     }
     MapParameter {

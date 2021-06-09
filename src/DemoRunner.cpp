@@ -24,6 +24,9 @@
 #include <chrono>
 
 #include "DemoRunner.h"
+#include "Global.h"
+#include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_Simulate.h"
 
 using namespace std::chrono_literals;
 
@@ -44,9 +47,14 @@ void delay(std::chrono::milliseconds ms)
 
 void DemoRunner::run()
 {
+    // Set up traffic simulator
+    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
+    Global::trafficDataProvider()->addDataSource( trafficSimulator );
+
     qWarning() << "Running Demo";
 
     emit resizeMainWindow(400, 600);
+
     delay(1s);
     emit saveImage("demo.png");
 }

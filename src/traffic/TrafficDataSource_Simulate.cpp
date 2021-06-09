@@ -23,145 +23,41 @@
 
 // Member functions
 
-Traffic::TrafficDataSource_Simulate::TrafficDataSource_Simulate(const QString& fileName, QObject *parent) :
-    TrafficDataSource_Abstract(parent), simulatorFile(fileName) {
+Traffic::TrafficDataSource_Simulate::TrafficDataSource_Simulate(QObject *parent) :
+    TrafficDataSource_Abstract(parent) {
 
-    connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Simulate::readFromSimulatorStream);
+    simulatorTimer.setInterval(1s);
+    simulatorTimer.setSingleShot(false);
+    connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Simulate::sendSimulatorData);
 
     // Initially, set properties
-    updateProperties();
+    TrafficDataSource_Simulate::disconnectFromTrafficReceiver();
 }
 
 
 void Traffic::TrafficDataSource_Simulate::connectToTrafficReceiver()
 {
-    // Do not do anything if the file is open and there are no errors
-    if ( receivingHeartbeat() ) {
-        return;
-    }
-
-    // Close the file if already open
-    disconnectFromTrafficReceiver();
-
-    // Open the file
-    simulatorFile.unsetError();
-    if (simulatorFile.open(QIODevice::ReadOnly)) {
-        simulatorTextStream.setDevice(&simulatorFile);
-        simulatorTextStream.setCodec("ISO 8859-1");
-        lastPayload = QString();
-        lastTime = 0;
-        readFromSimulatorStream();
-    }
-
-    // Update properties
-    updateProperties();
+    setConnectivityStatus( tr("Connected.") );
+    simulatorTimer.start();
 }
 
 
 void Traffic::TrafficDataSource_Simulate::disconnectFromTrafficReceiver()
 {
-    // Stop any simulation that might be running
-    simulatorFile.close();
-    simulatorTimer.stop();
-
-    // Update properties
+    setConnectivityStatus( tr("Not connected.") );
     setReceivingHeartbeat(false);
-    updateProperties();
+    simulatorTimer.stop();
 }
 
 
-void Traffic::TrafficDataSource_Simulate::readFromSimulatorStream()
+void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
 {
-    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
-        disconnectFromTrafficReceiver();
-        return;
-    }
+    QGeoPositionInfo pInfo;
+    pInfo.setCoordinate( {58, 7} );
+    pInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
+    emit positionUpdated( Positioning::PositionInfo(pInfo) );
 
-    if (!lastPayload.isEmpty()) {
-        processFLARMSentence(lastPayload);
-    }
-
-    // Read line
-    QString line;
-    if (!simulatorTextStream.readLineInto(&line)) {
-        disconnectFromTrafficReceiver();
-        return;
-    }
-
-    // Set lastPayload, set timer
-    auto tuple = line.split(QStringLiteral(" "));
-    if (tuple.length() < 2) {
-        return;
-    }
-    auto time = tuple[0].toInt();
-    lastPayload = tuple[1];
-
-    if (lastTime == 0) {
-        simulatorTimer.setInterval(0);
-    } else {
-        simulatorTimer.setInterval(time-lastTime);
-    }
-    simulatorTimer.start();
-    lastTime = time;
-}
-
-
-void Traffic::TrafficDataSource_Simulate::updateProperties()
-{
-    // Set new value: connectivityStatus
-    if ( simulatorFile.isOpen() && (simulatorFile.error() == QFileDevice::NoError)) {
-        setConnectivityStatus( tr("Connected.") );
-    } else {
-        setConnectivityStatus( tr("Not connected.") );
-    }
-
-    // Set new value: errorString
-    switch (simulatorFile.error()) {
-    case QFileDevice::NoError:
-        setErrorString( QString() );
-        break;
-    case QFileDevice::ReadError:
-        setErrorString( tr("An error occurred when reading from the file.") );
-        break;
-    case QFileDevice::WriteError:
-        setErrorString( tr("An error occurred when writing to the file.") );
-        break;
-    case QFileDevice::FatalError:
-        setErrorString( tr("A fatal error occurred.") );
-        break;
-    case QFileDevice::ResourceError:
-        setErrorString( tr("Out of resources (e.g., too many open files, out of memory, etc.)") );
-        break;
-    case QFileDevice::OpenError:
-        setErrorString( tr("The file could not be opened.") );
-        break;
-    case QFileDevice::AbortError:
-        setErrorString( tr("The operation was aborted.") );
-        break;
-    case QFileDevice::TimeOutError:
-        setErrorString( tr("A timeout occurred.") );
-        break;
-    case QFileDevice::UnspecifiedError:
-        setErrorString( tr("An unspecified error occurred.") );
-        break;
-    case QFileDevice::RemoveError:
-        setErrorString( tr("The file could not be removed.") );
-        break;
-    case QFileDevice::RenameError:
-        setErrorString( tr("The file could not be renamed.") );
-        break;
-    case QFileDevice::PositionError:
-        setErrorString( tr("The position in the file could not be changed.") );
-        break;
-    case QFileDevice::ResizeError:
-        setErrorString( tr("The file could not be resized.") );
-        break;
-    case QFileDevice::PermissionsError:
-        setErrorString( tr("The file could not be accessed.") );
-        break;
-    case QFileDevice::CopyError:
-        setErrorString( tr("The file could not be copied.") );
-        break;
-    }
+    setReceivingHeartbeat(true);
 
 }
+

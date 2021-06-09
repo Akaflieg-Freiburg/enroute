@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <QFile>
+#include <QGeoPositionInfo>
 
 #include "traffic/TrafficDataSource_Abstract.h"
 
@@ -42,10 +42,11 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Simulate(const QString& fileName, QObject *parent = nullptr);
+    explicit TrafficDataSource_Simulate(QObject *parent = nullptr);
 
     // Standard destructor
     ~TrafficDataSource_Simulate() override = default;
+
 
 
     /*! \brief Getter function for the property with the same name
@@ -57,7 +58,7 @@ public:
      */
     QString sourceName() const override
     {
-        return tr("Simulator file %1").arg(simulatorFile.fileName());
+        return tr("Simulator data");
     }
 
 
@@ -77,23 +78,12 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Read one line from the simulator file's text stream and passes the string
-    // on to processFLARMMessage.  Sets up a timer to read the next line in due
-    // time.
-    void readFromSimulatorStream();
-
-    // Update the properties "errorString" and "connectivityStatus".
-    void updateProperties();
+#warning doku
+    void sendSimulatorData();
 
 private:
-    QTextStream textStream;
-
     // Simulator related members
-    QFile simulatorFile;
-    QTextStream simulatorTextStream;
     QTimer simulatorTimer;
-    int lastTime {0};
-    QString lastPayload;
 };
 
 }

@@ -419,7 +419,7 @@ Map {
         type: "paint"
         property string layer: "dangerZoneLabels"
         property real textHaloWidth: 2
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
     MapParameter {
         type: "layout"
@@ -503,7 +503,7 @@ Map {
         type: "layout"
 
         property string layer: "PRCLabels"
-        property var symbolPlacement: "line"
+        property string symbolPlacement: "line"
         property var textField: ["get", "NAM"]
         property real textSize: 16
     }
@@ -511,7 +511,7 @@ Map {
         type: "paint"
         property string layer: "PRCLabels"
         property real textHaloWidth: 10
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
 
     MapParameter {
@@ -527,7 +527,7 @@ Map {
         type: "layout"
         
         property string layer: "TFCLabels"
-        property var symbolPlacement: "line"
+        property string symbolPlacement: "line"
         property var textField: ["get", "NAM"]
         property real textSize: 16
     }
@@ -535,7 +535,7 @@ Map {
         type: "paint"
         property string layer: "TFCLabels"
         property real textHaloWidth: 10
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
 
     /*************************************
@@ -677,16 +677,16 @@ Map {
         property string layer: "optionalText"
         property var textField: ["get", "COD"]
         property real textSize: 12
-        property var textAnchor: "top"
+        property string textAnchor: "top"
         property var textOffset: [0, 1]
-        property var textOptional: true
+        property bool textOptional: true
     }
     
     MapParameter {
         type: "paint"
         property string layer: "optionalText"
         property real textHaloWidth: 2
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
 
     
@@ -707,9 +707,9 @@ Map {
         property string layer: "WPs"
         property var textField: ["get", "NAM"]
         property real textSize: 12
-        property var textAnchor: "top"
+        property string textAnchor: "top"
         property var textOffset: [0, 1]
-        property var textOptional: true
+        property bool textOptional: true
         property var iconImage: ["get", "CAT"]
     }
     
@@ -717,7 +717,7 @@ Map {
         type: "paint"
         property string layer: "WPs"
         property real textHaloWidth: 2
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
 
 
@@ -739,9 +739,9 @@ Map {
         property string layer: "RPs"
         property var textField: ["get", "SCO"]
         property real textSize: 12
-        property var textAnchor: "top"
+        property string textAnchor: "top"
         property var textOffset: [0, 1]
-        property var textOptional: true
+        property bool textOptional: true
         property var iconImage: ["get", "CAT"]
     }
     
@@ -749,7 +749,7 @@ Map {
         type: "paint"
         property string layer: "RPs"
         property real textHaloWidth: 2
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
 
     
@@ -770,19 +770,19 @@ Map {
         property string layer: "AD-GRASS"
         property var textField: ["get", "NAM"]
         property real textSize: 12
-        property var textAnchor: "top"
+        property string textAnchor: "top"
         property var textOffset: [0, 1]
-        property var textOptional: true
+        property bool textOptional: true
         property var iconImage: ["get", "CAT"]
         property var iconRotate: ["get", "ORI"]
-        property var iconRotationAlignment: "map"
+        property string iconRotationAlignment: "map"
     }
     
     MapParameter {
         type: "paint"
         property string layer: "AD-GRASS"
         property real textHaloWidth: 2
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
 
     
@@ -802,8 +802,8 @@ Map {
 
         property string layer: "NavAidIcons"
         property var iconImage: ["get", "CAT"]
-        property var iconIgnorePlacement: true
-        property var iconAllowOverlap: true
+        property bool iconIgnorePlacement: true
+        property bool iconAllowOverlap: true
     }
 
     
@@ -824,19 +824,19 @@ Map {
         property string layer: "AD-PAVED"
         property var textField: ["get", "NAM"]
         property real textSize: 12
-        property var textAnchor: "top"
+        property string textAnchor: "top"
         property var textOffset: [0, 1]
-        property var textOptional: true
+        property bool textOptional: true
         property var iconImage: ["get", "CAT"]
         property var iconRotate: ["get", "ORI"]
-        property var iconRotationAlignment: "map"
+        property string iconRotationAlignment: "map"
     }
     
     MapParameter {
         type: "paint"
         property string layer: "AD-PAVED"
         property real textHaloWidth: 2
-        property var textHaloColor: "white"
+        property string textHaloColor: "white"
     }
     
 

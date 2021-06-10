@@ -41,6 +41,7 @@ public:
 signals:
     void resizeMainWindow(int w, int h);
     void saveImage(QString fileName);
+    void zoom(int zoomLevel);
 
 private slots:
 #warning doku!

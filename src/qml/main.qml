@@ -546,6 +546,10 @@ ApplicationWindow {
             })
         }
 
+        function onZoom(zoomLevel) {
+            flightMap.zoomLevel = zoomLevel
+        }
+
     }
 
     // Enroute closed unexpectedly if...

@@ -52,12 +52,15 @@ void Traffic::TrafficDataSource_Simulate::disconnectFromTrafficReceiver()
 
 void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
 {
-    QGeoPositionInfo pInfo;
-    pInfo.setCoordinate( {58, 7} );
-    pInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
-    emit positionUpdated( Positioning::PositionInfo(pInfo) );
 
-    setReceivingHeartbeat(true);
+    geoInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
+    if (geoInfo.isValid()) {
+        emit positionUpdated( Positioning::PositionInfo(geoInfo) );
+        setReceivingHeartbeat(true);
+    } else {
+        setReceivingHeartbeat(false);
+    }
 
+    pressureAltitudeUpdated(barometricHeight);
 }
 

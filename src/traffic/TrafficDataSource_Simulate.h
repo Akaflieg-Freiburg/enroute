@@ -77,13 +77,37 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
+#warning
+    void setCoordinate(const QGeoCoordinate& coordinate)
+    {
+        geoInfo.setCoordinate(coordinate);
+    }
+
+    void setTT(AviationUnits::Angle TT)
+    {
+        geoInfo.setAttribute(QGeoPositionInfo::Direction, TT.toDEG());
+    }
+
+    void setGS(AviationUnits::Speed GS)
+    {
+        geoInfo.setAttribute(QGeoPositionInfo::GroundSpeed, GS.toMPS());
+    }
+
+    void setBarometricHeight(AviationUnits::Distance barHeight)
+    {
+        barometricHeight = barHeight;
+    }
+
 private slots:
 #warning doku
     void sendSimulatorData();
 
 private:
+
     // Simulator related members
     QTimer simulatorTimer;
+    QGeoPositionInfo geoInfo;
+    AviationUnits::Distance barometricHeight;
 };
 
 }

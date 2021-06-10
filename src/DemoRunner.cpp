@@ -36,21 +36,6 @@ using namespace std::chrono_literals;
 DemoRunner::DemoRunner(QObject *parent) : QObject(parent) {
     qWarning() << "DemoRunner Initialisation";
 
-    auto *engine = qobject_cast<QQmlApplicationEngine*>(parent);
-    Q_ASSERT(engine != nullptr);
-
-    // Save settings
-    // Obtain a pointer to the flightMap
-    QQuickItem *flightMap = nullptr;
-    foreach (auto rootItem, engine->rootObjects()) {
-        flightMap = rootItem->findChild<QQuickItem*>("flightMap");
-        if (flightMap != nullptr) {
-            break;
-        }
-    }
-    Q_ASSERT(flightMap != nullptr);
-
-
     QTimer::singleShot(4s, this, &DemoRunner::run);
 }
 
@@ -62,9 +47,33 @@ void delay(std::chrono::milliseconds ms)
     loop.exec();
 }
 
+QObject* findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine)
+{
+    foreach (auto rootItem, engine->rootObjects()) {
+        if (rootItem->objectName() == objectName) {
+            return rootItem;
+        }
+        auto *objectPtr = rootItem->findChild<QObject*>(objectName);
+        if (objectPtr != nullptr) {
+            return objectPtr;
+        }
+    }
+    return nullptr;
+}
 
 void DemoRunner::run()
 {
+    auto *engine = qobject_cast<QQmlApplicationEngine*>(parent());
+    Q_ASSERT(engine != nullptr);
+
+    // Save settings
+    // Obtain a pointer to the flightMap
+    QObject* applicationWindow = findQQuickItem("applicationWindow", engine);
+    Q_ASSERT(applicationWindow != nullptr);
+    QObject* flightMap = findQQuickItem("flightMap", engine);
+    Q_ASSERT(flightMap != nullptr);
+
+
     // Set up traffic simulator
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
     Global::trafficDataProvider()->addDataSource( trafficSimulator );
@@ -72,26 +81,29 @@ void DemoRunner::run()
 
     qWarning() << "Running Demo";
 
-    emit resizeMainWindow(400, 600);
+    applicationWindow->setProperty("width", 400);
+    applicationWindow->setProperty("height", 600);
 
     // EDTF Taxiway
+    /*
     trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
     trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(800) );
     trafficSimulator->setTT( AviationUnits::Angle::fromDEG(160) );
     trafficSimulator->setGS( AviationUnits::Speed::fromKN(5) );
-    emit zoom(13); // Set maximum zoom level
+    flightMap->setProperty("zoomLevel", 13);
     delay(2s);
     emit saveImage("Ground.png");
-
-/*
- *     // EDTF Downwind Runway 34
-    trafficSimulator->setCoordinate( {47.99992, 7.80979, 550} );
-    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(1800) );
-    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(120) );
-    trafficSimulator->setGS( AviationUnits::Speed::fromKN(75) );
-    delay(2s);
-    emit saveImage("demo.png");
     */
+
+    // Approaching EDDR
+    trafficSimulator->setCoordinate( {49.4550, 7.0028, AviationUnits::Distance::fromFT(5500).toM()} );
+    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(550) );
+    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(170) );
+    trafficSimulator->setGS( AviationUnits::Speed::fromKN(90) );
+    flightMap->setProperty("zoomLevel", 11);
+    delay(2s);
+    emit saveImage("Flight.png");
+
 }
 
 

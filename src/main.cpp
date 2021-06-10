@@ -146,6 +146,7 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
     auto *engine = new QQmlApplicationEngine();
+    auto* demoRunner = new DemoRunner(engine);
 
     // Make global objects available to QML engine
     engine->rootContext()->setContextProperty("global", new Global(engine) );

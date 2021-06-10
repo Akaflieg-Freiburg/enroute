@@ -32,7 +32,6 @@
 
 bool isConstructing {false};
 
-QPointer<DemoRunner> g_demoRunner {};
 QPointer<GeoMaps::MapManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
@@ -59,12 +58,6 @@ template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
 
 Global::Global(QObject *parent) : QObject(parent)
 {
-}
-
-
-auto Global::demoRunner() -> DemoRunner*
-{
-    return allocateInternal<DemoRunner>(g_demoRunner);
 }
 
 

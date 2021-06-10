@@ -31,6 +31,8 @@ import "pages"
 
 ApplicationWindow {
     id: view
+    objectName: "applicationWindow"
+
     visible: true
     title: qsTr("Enroute Flight Navigation")
     width: 800
@@ -529,27 +531,6 @@ ApplicationWindow {
     Shortcut {
         sequence: StandardKey.Close
         onActivated: Qt.quit()
-    }
-
-    Connections {
-        target: global.demoRunner()
-
-        function onResizeMainWindow(w, h) {
-            view.width = w
-            view.height = h
-        }
-
-        function onSaveImage(fileName) {
-            stackView.grabToImage(function(imageResult) {
-                var ok = imageResult.saveToFile(fileName);
-                console.log("saving screenshot to file " + fileName + ". Result: " + ok);
-            })
-        }
-
-        function onZoom(zoomLevel) {
-            flightMap.zoomLevel = zoomLevel
-        }
-
     }
 
     // Enroute closed unexpectedly if...

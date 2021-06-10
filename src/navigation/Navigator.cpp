@@ -67,25 +67,30 @@ void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& i
     }
 
     if (!GS.isFinite()) {
-        m_isInFlight = false;
-        emit isInFlightChanged();
+        setIsInFlight(false);
         return;
     }
 
     if (m_isInFlight) {
         // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
         if ( GS.toKN() < minFlightSpeedInKN-flightSpeedHysteresisInKn ) {
-            m_isInFlight = false;
-            emit isInFlightChanged();
+            setIsInFlight(false);
         }
-
         return;
-        }
+    }
 
     // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
     if ( GS.toKN() > minFlightSpeedInKN ) {
-        m_isInFlight = true;
-        emit isInFlightChanged();
+        setIsInFlight(true);
     }
 }
 
+
+void Navigation::Navigator::setIsInFlight(bool newIsInFlight)
+{
+    if (m_isInFlight == newIsInFlight) {
+        return;
+    }
+    m_isInFlight = newIsInFlight;
+    emit isInFlightChanged();
+}

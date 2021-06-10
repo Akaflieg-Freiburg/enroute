@@ -111,6 +111,9 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Navigator)
 
+    // Setter function for the property with the same name
+    void setIsInFlight(bool newIsInFlight);
+
     // Aircraft is considered flying if speed is at least this high
     static constexpr double minFlightSpeedInKN = 30.0;
     // Hysteresis for flight speed

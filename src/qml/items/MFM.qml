@@ -109,7 +109,7 @@ Item {
             when: flightMap.followGPS === true
             value: {
                 // If not in flight, then aircraft stays in center of display
-                if (!global.navigator.isInFlight)
+                if (!global.navigator().isInFlight)
                     return positionProvider.lastValidCoordinate
                 if (!positionProvider.lastValidTT.isFinite())
                     return positionProvider.lastValidCoordinate

@@ -22,11 +22,13 @@
 #include <QEventLoop>
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
+#include <QQuickWindow>
 #include <QTimer>
 #include <chrono>
 
 #include "DemoRunner.h"
 #include "Global.h"
+#include "Settings.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
 
@@ -68,7 +70,7 @@ void DemoRunner::run()
 
     // Save settings
     // Obtain a pointer to the flightMap
-    QObject* applicationWindow = findQQuickItem("applicationWindow", engine);
+    QQuickWindow* applicationWindow =  qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", engine));
     Q_ASSERT(applicationWindow != nullptr);
     QObject* flightMap = findQQuickItem("flightMap", engine);
     Q_ASSERT(flightMap != nullptr);
@@ -85,24 +87,24 @@ void DemoRunner::run()
     applicationWindow->setProperty("height", 600);
 
     // EDTF Taxiway
-    /*
     trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
     trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(800) );
     trafficSimulator->setTT( AviationUnits::Angle::fromDEG(160) );
     trafficSimulator->setGS( AviationUnits::Speed::fromKN(5) );
     flightMap->setProperty("zoomLevel", 13);
-    delay(2s);
-    emit saveImage("Ground.png");
-    */
+    Global::settings()->setMapBearingPolicy(Settings::NUp);
+    delay(4s);
+    applicationWindow->grabWindow().save("Ground.png");
 
     // Approaching EDDR
-    trafficSimulator->setCoordinate( {49.4550, 7.0028, AviationUnits::Distance::fromFT(5500).toM()} );
-    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(550) );
+    trafficSimulator->setCoordinate( {49.35, 7.0028, AviationUnits::Distance::fromFT(5500).toM()} );
+    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(5500) );
     trafficSimulator->setTT( AviationUnits::Angle::fromDEG(170) );
     trafficSimulator->setGS( AviationUnits::Speed::fromKN(90) );
     flightMap->setProperty("zoomLevel", 11);
-    delay(2s);
-    emit saveImage("Flight.png");
+    Global::settings()->setMapBearingPolicy(Settings::TTUp);
+    delay(4s);
+    applicationWindow->grabWindow().save("Flight.png");
 
 }
 

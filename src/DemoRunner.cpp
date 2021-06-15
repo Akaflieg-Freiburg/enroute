@@ -70,23 +70,29 @@ void DemoRunner::run()
 
     // Save settings
     // Obtain a pointer to the flightMap
-    QQuickWindow* applicationWindow =  qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", engine));
+    auto* applicationWindow =  qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", engine));
     Q_ASSERT(applicationWindow != nullptr);
     QObject* flightMap = findQQuickItem("flightMap", engine);
     Q_ASSERT(flightMap != nullptr);
-
 
     // Set up traffic simulator
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
     Global::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
 
-    qWarning() << "Running Demo";
+    qWarning() << "Demo Mode" << "Running Demo";
 
+    // Resize window
+    qWarning() << "Demo Mode" << "Resize window";
     applicationWindow->setProperty("width", 400);
     applicationWindow->setProperty("height", 600);
 
-    // EDTF Taxiway
+    // Set language
+    Global::settings()->installTranslators("en");
+    engine->retranslate();
+
+    // EDTF Taxiway   
+    qWarning() << "Demo Mode" << "EDTF Taxiway";
     trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
     trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(800) );
     trafficSimulator->setTT( AviationUnits::Angle::fromDEG(160) );
@@ -97,6 +103,7 @@ void DemoRunner::run()
     applicationWindow->grabWindow().save("Ground.png");
 
     // Approaching EDDR
+    qWarning() << "Demo Mode" << "Approaching EDDR";
     trafficSimulator->setCoordinate( {49.35, 7.0028, AviationUnits::Distance::fromFT(5500).toM()} );
     trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(5500) );
     trafficSimulator->setTT( AviationUnits::Angle::fromDEG(170) );

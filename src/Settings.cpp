@@ -161,7 +161,7 @@ auto Settings::useMetricUnitsStatic() -> bool
 }
 
 
-void Settings::installTranslators()
+void Settings::installTranslators(const QString &localeName)
 {
     // Remove existing translators
     if (enrouteTranslator != nullptr) {
@@ -170,9 +170,17 @@ void Settings::installTranslators()
     }
 
     // If desired, install new translators
-    QLocale::setDefault(QLocale::system());
+    if (localeName.isEmpty()) {
+        QLocale::setDefault(QLocale::system());
+    } else {
+        QLocale::setDefault(localeName);
+    }
 
     enrouteTranslator = new QTranslator(this);
-    enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
+    if (localeName.isEmpty()) {
+        enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
+    } else {
+        enrouteTranslator->load(QString(":enroute_%1.qm").arg(localeName));
+    }
     QCoreApplication::installTranslator(enrouteTranslator);
 }

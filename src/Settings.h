@@ -223,6 +223,10 @@ public:
      */
     void setUseMetricUnits(bool unitHorizKmh);
 
+    // Removes/Installs global application translators
+#warning docu
+    void installTranslators(const QString &localeName={});
+
 signals:
     /*! Notifier signal */
     void acceptedTermsChanged();
@@ -247,10 +251,6 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(Settings)
-
-    // Removes/Installs global application translators, according to the
-    // settings value "System/preferEnglish"
-    void installTranslators();
 
     QPointer<QTranslator> enrouteTranslator {nullptr};
 

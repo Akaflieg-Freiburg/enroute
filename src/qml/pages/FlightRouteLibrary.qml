@@ -132,6 +132,16 @@ Page {
 
                 text: modelData
                 icon.source: "/icons/material/ic_directions.svg"
+
+                onClicked: {
+                    global.mobileAdaptor().vibrateBrief()
+                    finalFileName = modelData
+                    if (global.navigator().flightRoute.size > 0)
+                        overwriteDialog.open()
+                    else
+                        openFromLibrary()
+                }
+
             }
 
             ToolButton {
@@ -323,7 +333,7 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
+        var errorString = global.navigator().flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

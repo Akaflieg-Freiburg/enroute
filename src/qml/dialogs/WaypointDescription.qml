@@ -399,8 +399,11 @@ Dialog {
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
                 close()
+                var index = global.navigator().flightRoute.lastIndexOf(waypoint)
+                if (index < 0)
+                    return
                 toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
-                global.navigator().flightRoute.removeWaypoint(waypoint)
+                global.navigator().flightRoute.removeWaypoint(index)
             }
         }
 

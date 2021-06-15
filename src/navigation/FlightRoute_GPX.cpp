@@ -106,7 +106,7 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
 
     // waypoints
     //
-    for(const auto& _waypoint : _waypoints) {
+    for(const auto& _waypoint : m_waypoints) {
 
         if (!_waypoint.isValid()) {
             continue; // skip silently
@@ -295,7 +295,7 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
         return tr("Error interpreting GPX file: no valid route found.");
     }
 
-    _waypoints = source;
+    m_waypoints = source;
 
     updateLegs();
     emit waypointsChanged();

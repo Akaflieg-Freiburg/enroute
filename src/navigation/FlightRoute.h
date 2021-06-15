@@ -117,10 +117,22 @@ public:
 
     /*! \brief Returns true if waypoint is in this route
      *
-     * @param waypoint Pointer to a waypoint
-     * @returns bool true if waypoint in route
+     * @param waypoint Waypoint
+     *
+     * @returns bool Returns true if waypoint geographically close to a waypoint in the route
      */
     Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const;
+
+    /*! \brief Index for last occurrence of the waypoint in the flight route
+     *
+     *  This method finds the index position of the last waypoint in the route that is
+     *  geograhphically close to the given waypoint.
+     *
+     *  @param waypoint Waypoint to be searched
+     *
+     *  @returns Index position of the last waypoint in the route close to the given waypoint. Returns -1 if no waypoint is close.
+     */
+    Q_INVOKABLE int lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
 
     /*! \brief Loads the route from a GeoJSON document
      *
@@ -281,7 +293,7 @@ public:
      */
     int size() const
     {
-        return _waypoints.size();
+        return m_waypoints.size();
     }
 
     /*! \brief Human-readable summary of the flight route*/
@@ -364,9 +376,9 @@ private:
     // "/flight route.geojson"
     QString stdFileName;
 
-    QVector<GeoMaps::Waypoint> _waypoints;
+    QVector<GeoMaps::Waypoint> m_waypoints;
 
-    QVector<Leg*> _legs;
+    QVector<Leg*> m_legs;
 
     QLocale myLocale;
 };

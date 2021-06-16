@@ -69,13 +69,13 @@ GeoMaps::MapManager::MapManager(QObject *parent) :
     // due. The method "autoUpdateGeoMapList" will also set a reasonable timeout
     // value for the timer and start it.
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &MapManager::autoUpdateGeoMapList);
-    autoUpdateGeoMapList();
+    QTimer::singleShot(0, this, &GeoMaps::MapManager::autoUpdateGeoMapList); // Cannot call autoUpdateGeoMapList immediately, or else Global::allocateInternal will crash
 
     // If there is a downloaded maps.json file, we read it. Otherwise, we start a download.
     if (_maps_json.hasFile()) {
         readGeoMapListFromJSONFile();
     } else {
-        _maps_json.startFileDownload();
+        QTimer::singleShot(0, &_maps_json, &GeoMaps::Downloadable::startFileDownload);
     }
 }
 

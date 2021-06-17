@@ -223,8 +223,13 @@ public:
      */
     void setUseMetricUnits(bool unitHorizKmh);
 
-    // Removes/Installs global application translators
-#warning docu
+    /*! \brief Removes/Installs global application translators
+     *
+     * This method can be used to change the GUI language on the fly.
+     * It removes all existing translators and installs new ones.
+     *
+     * @param localeName Name of the locale (such as "de") or an empty string for the system locale.
+     */
     void installTranslators(const QString &localeName={});
 
 signals:

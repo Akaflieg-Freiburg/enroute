@@ -71,7 +71,7 @@ class GeoMapProvider : public QObject
     Q_OBJECT
 
 public:
-    /*! \brief Create a new GeoMap provider
+    /*! \brief Creates a new GeoMap provider
      *
      * This constructor creates a new GeoMapProvider instance. Note that the
      * instance will only start to work once the method setWeatherDataProvider() has

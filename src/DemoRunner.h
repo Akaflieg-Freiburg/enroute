@@ -20,31 +20,31 @@
 
 #pragma once
 
-#include <QSettings>
 
-#include "units/Speed.h"
-
-class QQuickItem;
-
-#warning doku!
+/*! \brief Remote controls the app and takes screenshot images
+ *
+ * This class remote controls the app.  It sets up a traffic data receiver simulator,
+ * feeds it with data and controls the GUI, in order to generate a sequence of screenshots,
+ * which can then be used in the manual and as propaganda material.
+ */
 
 class DemoRunner : public QObject {
     Q_OBJECT
 
 public:
-#warning doku!
+    /*! \brief Creates a new DemoRunner
+     *
+     * This constructor creates a new DemoRunner instance.
+     *
+     * @param parent The standard QObject parent
+     */
     explicit DemoRunner(QObject *parent = nullptr);
 
     // Standard destructor
     ~DemoRunner() override = default;
 
-signals:
-    void resizeMainWindow(int w, int h);
-    void saveImage(QString fileName);
-    void zoom(int zoomLevel);
-
 private slots:
-#warning doku!
+    // Begin to remote-control the app
     void run();
 
 private:

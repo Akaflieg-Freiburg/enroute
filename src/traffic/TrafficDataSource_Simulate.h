@@ -27,10 +27,9 @@
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: Simulator file with FLARM/NMEA sentences
+/*! \brief Traffic receiver: Simulator that provides constant data
  *
- *  For testing purposes, this class connects to a simulator file with time
- *  stamps and FLARM/NMEA sentences, as provided by FLARM Inc.
+ *  For testing purposes, this class provides constant traffic data.
  */
 class TrafficDataSource_Simulate : public TrafficDataSource_Abstract {
     Q_OBJECT
@@ -38,16 +37,12 @@ class TrafficDataSource_Simulate : public TrafficDataSource_Abstract {
 public:
     /*! \brief Default constructor
      *
-     *  @param fileName Name of the simulator file
-     *
      *  @param parent The standard QObject parent pointer
      */
     explicit TrafficDataSource_Simulate(QObject *parent = nullptr);
 
     // Standard destructor
     ~TrafficDataSource_Simulate() override = default;
-
-
 
     /*! \brief Getter function for the property with the same name
      *
@@ -77,29 +72,44 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
-#warning
+    /*! \brief Set coordinate that is to be reported by this class as the position of ownship
+     *
+     *  @param coordinate Coordinate of simulated ownship
+     */
     void setCoordinate(const QGeoCoordinate& coordinate)
     {
         geoInfo.setCoordinate(coordinate);
     }
 
+    /*! \brief Set angle that is to be reported by this class as the true track of ownship
+     *
+     *  @param TT True track of simulated ownship
+     */
     void setTT(AviationUnits::Angle TT)
     {
         geoInfo.setAttribute(QGeoPositionInfo::Direction, TT.toDEG());
     }
 
+    /*! \brief Set speed that is to be reported by this class as the ground speed of ownship
+     *
+     *  @param GS Ground speed of simulated ownship
+     */
     void setGS(AviationUnits::Speed GS)
     {
         geoInfo.setAttribute(QGeoPositionInfo::GroundSpeed, GS.toMPS());
     }
 
-    void setBarometricHeight(AviationUnits::Distance barHeight)
+    /*! \brief Set distance that is to be reported by this class as the barometric altitude of ownship
+     *
+     *  @param barAlt Barometric altitude of simulated ownship
+     */
+    void setBarometricHeight(AviationUnits::Distance barAlt)
     {
-        barometricHeight = barHeight;
+        barometricHeight = barAlt;
     }
 
 private slots:
-#warning doku
+    // Send out simulated data. This slot will be called once per second once connectToTrafficReceiver() has been called
     void sendSimulatorData();
 
 private:

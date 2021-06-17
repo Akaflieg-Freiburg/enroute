@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
 #include <QDebug>
 #include <QEventLoop>
 #include <QQmlApplicationEngine>
@@ -39,7 +40,7 @@ using namespace std::chrono_literals;
 DemoRunner::DemoRunner(QObject *parent) : QObject(parent) {
     qWarning() << "DemoRunner Initialisation";
 
-    QTimer::singleShot(4s, this, &DemoRunner::run);
+    QTimer::singleShot(10s, this, &DemoRunner::run);
 }
 
 
@@ -128,6 +129,8 @@ void DemoRunner::run()
     delay(4s);
     applicationWindow->grabWindow().save("EDDS-Info.png");
 
+    // Done. Terminate the program.
+    QApplication::exit();
 }
 
 

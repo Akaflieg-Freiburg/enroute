@@ -43,7 +43,7 @@ Item {
 
         PluginParameter {
             name: "mapboxgl.mapping.additional_style_urls"
-            value: geoMapProvider.styleFileURL
+            value: global.geoMapProvider().styleFileURL
         }
 
     }
@@ -54,7 +54,7 @@ Item {
 
         anchors.fill: parent
 
-        geoJSON: geoMapProvider.geoJSON
+        geoJSON: global.geoMapProvider().geoJSON
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
@@ -377,7 +377,7 @@ Item {
 
             onDoubleClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                var wp = geoMapProvider.closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
+                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
                                                         global.navigator().flightRoute)
                 waypointDescription.waypoint = wp
@@ -567,7 +567,7 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*Qt.application.font.pixelSize
 
-        text: geoMapProvider.copyrightNotice
+        text: global.geoMapProvider().copyrightNotice
         visible: width < parent.width
         onLinkActivated: Qt.openUrlExternally(link)
     }
@@ -584,7 +584,7 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
         LongTextDialog {
             id: copyrightDialog
             title: qsTr("Map Data Copyright Information")
-            text: geoMapProvider.copyrightNotice.replace("•", "<br><br>").replace("•", "<br><br>").replace("•", "<br><br>")
+            text: global.geoMapProvider().copyrightNotice.replace("•", "<br><br>").replace("•", "<br><br>").replace("•", "<br><br>")
             standardButtons: Dialog.Cancel
         }
     }

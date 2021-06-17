@@ -61,7 +61,7 @@ Page {
     }
 
     Connections {
-        target: geoMapProvider
+        target: global.geoMapProvider()
 
         function onStyleFileURLChanged() {
             mapLoader.active = false

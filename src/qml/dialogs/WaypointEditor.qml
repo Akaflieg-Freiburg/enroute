@@ -29,7 +29,7 @@ Dialog {
     id: waypointEditorDialog
 
     // Property waypoint, and code to handle waypoint changes
-    property var waypoint: geoMapProvider.createWaypoint()
+    property var waypoint: global.geoMapProvider().createWaypoint()
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)

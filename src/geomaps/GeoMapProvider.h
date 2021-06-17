@@ -197,12 +197,6 @@ public:
         return _combinedGeoJSON_;
     }
 
-    /*! \brief Pointer to static instance of this class
-     *
-     *  @returns Pointer to global instance
-     */
-    static GeoMapProvider* globalInstance();
-
     /*! List of nearby waypoints
      *
      * @param position Position near which waypoints are searched for

@@ -37,11 +37,6 @@
 
 using namespace std::chrono_literals;
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<GeoMaps::GeoMapProvider> geoMapProviderStatic {};
-#endif
-
 
 GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : QObject(parent),
@@ -236,19 +231,6 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint
         }
     }
     return {};
-}
-
-
-auto GeoMaps::GeoMapProvider::globalInstance() -> GeoMaps::GeoMapProvider*
-{
-#ifndef __clang_analyzer__
-    if (geoMapProviderStatic.isNull()) {
-        geoMapProviderStatic = new GeoMaps::GeoMapProvider();
-    }
-    return geoMapProviderStatic;
-#else
-    return nullptr;
-#endif
 }
 
 

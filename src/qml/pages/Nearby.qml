@@ -111,7 +111,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: adList.model = geoMapProvider.nearbyWaypoints(positionProvider.lastValidCoordinate, "AD")
+            Component.onCompleted: adList.model = global.geoMapProvider().nearbyWaypoints(positionProvider.lastValidCoordinate, "AD")
 
             Label {
                 anchors.fill: parent
@@ -133,7 +133,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: naList.model = geoMapProvider.nearbyWaypoints(positionProvider.lastValidCoordinate, "NAV")
+            Component.onCompleted: naList.model = global.geoMapProvider().nearbyWaypoints(positionProvider.lastValidCoordinate, "NAV")
 
             Label {
                 anchors.fill: parent
@@ -155,7 +155,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: rpList.model = geoMapProvider.nearbyWaypoints(positionProvider.lastValidCoordinate, "WP")
+            Component.onCompleted: rpList.model = global.geoMapProvider().nearbyWaypoints(positionProvider.lastValidCoordinate, "WP")
             
             Label {
                 anchors.fill: parent

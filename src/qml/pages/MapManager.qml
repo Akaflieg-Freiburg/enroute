@@ -152,7 +152,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = qsTr("Map Info: ") + model.modelData.objectName
-                                infoDialog.text = geoMapProvider.describeMapFile(model.modelData.fileName)
+                                infoDialog.text = global.geoMapProvider().describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
                             }
                         }

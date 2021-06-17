@@ -33,7 +33,7 @@ import "../items"
 Dialog {
     id: waypointDescriptionDialog
 
-    property var waypoint : geoMapProvider.createWaypoint()
+    property var waypoint : global.geoMapProvider().createWaypoint()
     property var weatherStation : weatherDownloadManager.findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {
@@ -53,7 +53,7 @@ Dialog {
             waypointPropertyDelegate.createObject(co, {text: pro[j]});
 
         // Create airspace description items
-        var asl = geoMapProvider.airspaces(waypoint.coordinate)
+        var asl = global.geoMapProvider().airspaces(waypoint.coordinate)
         for (var i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
     }

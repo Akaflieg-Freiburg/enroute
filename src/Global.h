@@ -28,6 +28,7 @@ class QNetworkAccessManager;
 class Settings;
 
 namespace GeoMaps {
+class GeoMapProvider;
 class MapManager;
 };
 
@@ -79,6 +80,12 @@ public:
      * managed by this class.
      */
     ~Global() = default;
+
+    /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static GeoMaps::GeoMapProvider* geoMapProvider();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
      *

@@ -166,9 +166,6 @@ auto main(int argc, char *argv[]) -> int
     // Attach clock
     engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
 
-    // Attach geo map provider
-    engine->rootContext()->setContextProperty("geoMapProvider", GeoMaps::GeoMapProvider::globalInstance());
-
     // Attach Weather::WeatherDataProvider
     engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::WeatherDataProvider::globalInstance());
 
@@ -203,6 +200,7 @@ auto main(int argc, char *argv[]) -> int
     }
 
     // Ensure that things get deleted in the right order
+    delete demoRunner;
     delete engine;
 
     return 0;

@@ -89,7 +89,7 @@ Item {
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJSON)
                 errorString = global.navigator().flightRoute.loadFromGeoJSON(importManager.filePath)
             if (importManager.fileFunction === MobileAdaptor.FlightRoute_GPX) {
-                errorString = global.navigator().flightRoute.loadFromGpx(importManager.filePath, geoMapProvider)
+                errorString = global.navigator().flightRoute.loadFromGpx(importManager.filePath, global.geoMapProvider())
             }
 
             if (errorString !== "") {

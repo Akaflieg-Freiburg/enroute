@@ -217,7 +217,7 @@ auto Weather::WeatherDataProvider::findOrConstructWeatherStation(const QString &
         return weatherStationPtr;
     }
 
-    auto *newWeatherStation = new Weather::Station(ICAOCode, GeoMaps::GeoMapProvider::globalInstance(), this);
+    auto *newWeatherStation = new Weather::Station(ICAOCode, Global::geoMapProvider(), this);
     _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
     return newWeatherStation;
 }

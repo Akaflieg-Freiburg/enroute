@@ -70,12 +70,13 @@ void DemoRunner::run()
     auto *engine = qobject_cast<QQmlApplicationEngine*>(parent());
     Q_ASSERT(engine != nullptr);
 
-    // Save settings
-    // Obtain a pointer to the flightMap
+    // Obtain pointers to QML items
     auto* applicationWindow =  qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", engine));
     Q_ASSERT(applicationWindow != nullptr);
-    QObject* flightMap = findQQuickItem("flightMap", engine);
+    auto* flightMap = findQQuickItem("flightMap", engine);
     Q_ASSERT(flightMap != nullptr);
+    auto *waypointDescription = findQQuickItem("waypointDescription", engine);
+    Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
@@ -93,6 +94,7 @@ void DemoRunner::run()
     Global::settings()->installTranslators("en");
     engine->retranslate();
 
+    /*
     // EDTF Taxiway   
     qWarning() << "Demo Mode" << "EDTF Taxiway";
     trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
@@ -115,6 +117,9 @@ void DemoRunner::run()
     Global::settings()->setMapBearingPolicy(Settings::TTUp);
     delay(4s);
     applicationWindow->grabWindow().save("Flight.png");
+*/
+
+    // Stuttgart Airport Info
 
 }
 

@@ -600,5 +600,6 @@ Choose <strong>Library/Maps</strong> to open the map management page.</p>")
 
     WaypointDescription {
         id: waypointDescription
+        objectName: waypointDescription
     }
 }

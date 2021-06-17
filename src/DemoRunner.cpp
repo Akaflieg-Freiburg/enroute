@@ -49,7 +49,8 @@ void delay(std::chrono::milliseconds ms)
     loop.exec();
 }
 
-QObject* findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine)
+
+auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) -> QObject*
 {
     foreach (auto rootItem, engine->rootObjects()) {
         if (rootItem->objectName() == objectName) {
@@ -62,6 +63,7 @@ QObject* findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine
     }
     return nullptr;
 }
+
 
 void DemoRunner::run()
 {
@@ -98,6 +100,7 @@ void DemoRunner::run()
     trafficSimulator->setTT( AviationUnits::Angle::fromDEG(160) );
     trafficSimulator->setGS( AviationUnits::Speed::fromKN(5) );
     flightMap->setProperty("zoomLevel", 13);
+    flightMap->setProperty("followGPS", true);
     Global::settings()->setMapBearingPolicy(Settings::NUp);
     delay(4s);
     applicationWindow->grabWindow().save("Ground.png");

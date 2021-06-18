@@ -33,6 +33,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
+#include "traffic/TrafficFactor.h"
 
 using namespace std::chrono_literals;
 
@@ -96,6 +97,7 @@ void DemoRunner::run()
     Global::settings()->installTranslators("en");
     engine->retranslate();
 
+    /*
     // EDTF Taxiway   
     qWarning() << "Demo Mode" << "EDTF Taxiway";
     trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
@@ -128,9 +130,33 @@ void DemoRunner::run()
     Global::settings()->setMapBearingPolicy(Settings::NUp);
     delay(4s);
     applicationWindow->grabWindow().save("01-03-03-EDFEinfo.png");
+*/
+
+    // Approaching EDTF w/ traffic
+    qWarning() << "Demo Mode" << "EDTF Traffic";
+    trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
+    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(800) );
+    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(160) );
+    trafficSimulator->setGS( AviationUnits::Speed::fromKN(5) );
+    flightMap->setProperty("zoomLevel", 13);
+    flightMap->setProperty("followGPS", true);
+    Global::settings()->setMapBearingPolicy(Settings::NUp);
+    delay(4s);
+    applicationWindow->grabWindow().save("01-03-01-ground.png");
+
+    Traffic::TrafficFactor trafficFactor;
+    QGeoPositionInfo trafficInfo;
+    trafficFactor.setData(1, //int newAlarmLevel,
+                          "newId", //const QString & newID,
+                          AviationUnits::Distance::fromM(100), // newHDist,
+                          AviationUnits::Distance::fromM(100), // newVDist,
+                          Traffic::TrafficFactor::Aircraft, // newType,
+                          {},
+                          {} //const QString & newCallSign
+                          );
 
     // Done. Terminate the program.
-    QApplication::exit();
+    //QApplication::exit();
 }
 
 

@@ -56,6 +56,12 @@ public:
         return tr("Simulator data");
     }
 
+    // Methods
+#warning
+    QGeoCoordinate getCoordinate() const
+    {
+        return geoInfo.coordinate();
+    }
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver

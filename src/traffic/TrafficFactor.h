@@ -26,6 +26,8 @@
 #include "units/Distance.h"
 #include "units/Speed.h"
 
+class DemoRunner;
+
 namespace Traffic {
 
 /*! \brief Traffic opponents
@@ -40,9 +42,9 @@ class TrafficFactor : public QObject {
     Q_OBJECT
 
     // Only friends can set properties
+    friend class ::DemoRunner;
     friend class TrafficDataProvider;
     friend class TrafficDataSource_Abstract;
-    friend class TrafficDataSource_Udp_GDL;
 
 public:
     /*! \brief Aircraft type */

@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a03935d5a0b769caeea8487fa32c6f797"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a03935d5a0b769caeea8487fa32c6f797">setUseMetricUnits</a> (bool unitHorizKmh)</td></tr>
 <tr class="memdesc:a03935d5a0b769caeea8487fa32c6f797"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a03935d5a0b769caeea8487fa32c6f797">More...</a><br /></td></tr>
 <tr class="separator:a03935d5a0b769caeea8487fa32c6f797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a552e74b647ab61860c3f3aa09328c5b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a552e74b647ab61860c3f3aa09328c5b0">installTranslators</a> (const QString &amp;localeName={})</td></tr>
+<tr class="memdesc:a552e74b647ab61860c3f3aa09328c5b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes/Installs global application translators.  <a href="classSettings.html#a552e74b647ab61860c3f3aa09328c5b0">More...</a><br /></td></tr>
+<tr class="separator:a552e74b647ab61860c3f3aa09328c5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -508,6 +511,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <p>This function differs from <a class="el" href="classSettings.html#ad6a39832b833c5e8089814d915225450" title="Hide airspaces with lower bound FL100 or above.">hideUpperAirspaces()</a> only in that it is static. It uses the globalInstance() to retrieve data.</p>
 <dl class="section return"><dt>Returns</dt><dd>Property hideUpperAirspaces </dd></dl>
+
+</div>
+</div>
+<a id="a552e74b647ab61860c3f3aa09328c5b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a552e74b647ab61860c3f3aa09328c5b0">&#9670;&nbsp;</a></span>installTranslators()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Settings::installTranslators </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>localeName</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes/Installs global application translators. </p>
+<p>This method can be used to change the GUI language on the fly. It removes all existing translators and installs new ones.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">localeName</td><td>Name of the locale (such as "de") or an empty string for the system locale. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

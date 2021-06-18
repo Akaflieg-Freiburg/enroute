@@ -48,7 +48,6 @@ $(function() {
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classTraffic_1_1TrafficDataProvider-members.html">List of all members</a>  </div>
@@ -127,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#ad08bfbab038fcc25fbe45af20b8e1e99">TrafficDataProvider</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classTraffic_1_1TrafficDataProvider.html#ad08bfbab038fcc25fbe45af20b8e1e99">More...</a><br /></td></tr>
 <tr class="separator:ad08bfbab038fcc25fbe45af20b8e1e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc156cb8e358c5e3d6e987287208e090"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#acc156cb8e358c5e3d6e987287208e090">addDataSource</a> (<a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a> *source)</td></tr>
+<tr class="memdesc:acc156cb8e358c5e3d6e987287208e090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an additional data source.  <a href="classTraffic_1_1TrafficDataProvider.html#acc156cb8e358c5e3d6e987287208e090">More...</a><br /></td></tr>
+<tr class="separator:acc156cb8e358c5e3d6e987287208e090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7349f286dc40b5401fd683e7c1b35e74"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a7349f286dc40b5401fd683e7c1b35e74">receivingHeartbeat</a> () const</td></tr>
 <tr class="memdesc:a7349f286dc40b5401fd683e7c1b35e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classTraffic_1_1TrafficDataProvider.html#a7349f286dc40b5401fd683e7c1b35e74">More...</a><br /></td></tr>
 <tr class="separator:a7349f286dc40b5401fd683e7c1b35e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,12 +160,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab47094963629bd1b65dbe7d30b2d22e5 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#ab47094963629bd1b65dbe7d30b2d22e5">statusString</a> () const</td></tr>
 <tr class="memdesc:ab47094963629bd1b65dbe7d30b2d22e5 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <a href="classPositioning_1_1PositionInfoSource__Abstract.html#ab47094963629bd1b65dbe7d30b2d22e5">More...</a><br /></td></tr>
 <tr class="separator:ab47094963629bd1b65dbe7d30b2d22e5 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae5b5472505f13124c2506a4105da72e4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classTraffic_1_1TrafficDataProvider.html">TrafficDataProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#ae5b5472505f13124c2506a4105da72e4">globalInstance</a> ()</td></tr>
-<tr class="memdesc:ae5b5472505f13124c2506a4105da72e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance of this class.  <a href="classTraffic_1_1TrafficDataProvider.html#ae5b5472505f13124c2506a4105da72e4">More...</a><br /></td></tr>
-<tr class="separator:ae5b5472505f13124c2506a4105da72e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -253,6 +249,33 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="acc156cb8e358c5e3d6e987287208e090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc156cb8e358c5e3d6e987287208e090">&#9670;&nbsp;</a></span>addDataSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataProvider::addDataSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html">Traffic::TrafficDataSource_Abstract</a> *&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add an additional data source. </p>
+<p>This method adds an additional data source to this <a class="el" href="classTraffic_1_1TrafficDataProvider.html" title="Traffic receiver.">TrafficDataProvider</a>, typically a simulator source used for debugging purposes. The <a class="el" href="classTraffic_1_1TrafficDataProvider.html" title="Traffic receiver.">TrafficDataProvider</a> takes ownership of the source.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>New TrafficDataSource that is to be added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8a2aa6ad47cb97a7e78aabbe32dbc521"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a2aa6ad47cb97a7e78aabbe32dbc521">&#9670;&nbsp;</a></span>connectToTrafficReceiver</h2>
 
@@ -309,34 +332,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ae5b5472505f13124c2506a4105da72e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5b5472505f13124c2506a4105da72e4">&#9670;&nbsp;</a></span>globalInstance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="classTraffic_1_1TrafficDataProvider.html">TrafficDataProvider</a>* Traffic::TrafficDataProvider::globalInstance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pointer to static instance of this class. </p>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to global instance </dd></dl>
-
-</div>
-</div>
 <a id="a7349f286dc40b5401fd683e7c1b35e74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7349f286dc40b5401fd683e7c1b35e74">&#9670;&nbsp;</a></span>receivingHeartbeat()</h2>
 
@@ -363,7 +358,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property receiving </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00129">129</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00134">134</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -393,7 +388,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjects4QML </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00148">148</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00153">153</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -423,7 +418,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property trafficObjectWithoutPosition </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00165">165</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00170">170</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -453,7 +448,7 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property <a class="el" href="classTraffic_1_1Warning.html" title="Traffic warning.">Warning</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00182">182</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00187">187</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -481,7 +476,7 @@ Properties</h2></td></tr>
 <p>Maximal horizontal distance for traffic to be shown. </p>
 <p>Traffic whose horizontal distance to the own aircraft is large than this number will be ignored. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00197">197</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00202">202</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -508,7 +503,7 @@ Properties</h2></td></tr>
 <p>Maximal vertical distance for traffic to be shown. </p>
 <p>Traffic whose vertical distance to the own aircraft is large than this number will be ignored. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00191">191</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00196">196</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -536,7 +531,7 @@ Properties</h2></td></tr>
 <p>Heartbeat indicator. </p>
 <p>When active, traffic receivers send regular heartbeat messages. These can be used to verify that the connection to the receiver works, even in times when no traffic is reported. This property indicates if the class receives heartbeat messages from at least one of the known receivers. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00123">123</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00128">128</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +558,7 @@ Properties</h2></td></tr>
 <p>Traffic objects whose position is known. </p>
 <p>This property holds a list of the most relevant traffic objects, as a QQmlListProperty for better cooperation with QML. Note that only the valid items in this list pertain to actual traffic. Invalid items should be ignored. The list is not sorted in any way. The items themselves are owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00142">142</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00147">147</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -590,7 +585,7 @@ Properties</h2></td></tr>
 <p>Most relevant traffic object whose position is not known. </p>
 <p>This property holds a pointer to the most relevant traffic object whose position is not known. This item should be ignored if invalid. The item is owned by this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00159">159</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00164">164</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -617,7 +612,7 @@ Properties</h2></td></tr>
 <p>Current traffic warning. </p>
 <p>This property holds the current traffic warning. The traffic warning is updated regularly and set to an invalid warning (i.e. one with alarmLevel == -1) after a certain period. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00176">176</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00181">181</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>

@@ -67,6 +67,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5ed2dcda4a95efd58822a1c1b256921a"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#a5ed2dcda4a95efd58822a1c1b256921a">geoMapProvider</a> ()</td></tr>
+<tr class="memdesc:a5ed2dcda4a95efd58822a1c1b256921a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.">GeoMaps::GeoMapProvider</a> instance.  <a href="classGlobal.html#a5ed2dcda4a95efd58822a1c1b256921a">More...</a><br /></td></tr>
+<tr class="separator:a5ed2dcda4a95efd58822a1c1b256921a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabad0b3e2bb8b83be7b6416fb49ec62f"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1MapManager.html">GeoMaps::MapManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#aabad0b3e2bb8b83be7b6416fb49ec62f">mapManager</a> ()</td></tr>
 <tr class="memdesc:aabad0b3e2bb8b83be7b6416fb49ec62f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1MapManager.html" title="Manages the list of geographic maps.">GeoMaps::MapManager</a> instance.  <a href="classGlobal.html#aabad0b3e2bb8b83be7b6416fb49ec62f">More...</a><br /></td></tr>
 <tr class="separator:aabad0b3e2bb8b83be7b6416fb49ec62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -82,6 +85,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aba4b0b92d44c11026c675e2208d0003b"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classSettings.html">Settings</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#aba4b0b92d44c11026c675e2208d0003b">settings</a> ()</td></tr>
 <tr class="memdesc:aba4b0b92d44c11026c675e2208d0003b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classSettings.html" title="Global Settings Manager.">Settings</a> instance.  <a href="classGlobal.html#aba4b0b92d44c11026c675e2208d0003b">More...</a><br /></td></tr>
 <tr class="separator:aba4b0b92d44c11026c675e2208d0003b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed9f3526d8793743290c5e6b80daa4b5"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#aed9f3526d8793743290c5e6b80daa4b5">trafficDataProvider</a> ()</td></tr>
+<tr class="memdesc:aed9f3526d8793743290c5e6b80daa4b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static TrafficDataProvider instance.  <a href="classGlobal.html#aed9f3526d8793743290c5e6b80daa4b5">More...</a><br /></td></tr>
+<tr class="separator:aed9f3526d8793743290c5e6b80daa4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> instance storage. </p>
@@ -91,7 +97,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This method must only be called while a global QCoreApplication exists. If <a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> manages an instance of your class, then none of the static methods must not be called in the constructor of your class, or else an inite loop may result.</dd></dl>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="Global_8h_source.html#l00059">59</a> of file <a class="el" href="Global_8h_source.html">Global.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Global_8h_source.html#l00066">66</a> of file <a class="el" href="Global_8h_source.html">Global.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7a2436b32bca56d1777c342b89fb77cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a2436b32bca56d1777c342b89fb77cc">&#9670;&nbsp;</a></span>Global()</h2>
@@ -156,6 +162,34 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5ed2dcda4a95efd58822a1c1b256921a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ed2dcda4a95efd58822a1c1b256921a">&#9670;&nbsp;</a></span>geoMapProvider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a>* Global::geoMapProvider </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.">GeoMaps::GeoMapProvider</a> instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
 <a id="aabad0b3e2bb8b83be7b6416fb49ec62f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabad0b3e2bb8b83be7b6416fb49ec62f">&#9670;&nbsp;</a></span>mapManager()</h2>
 
@@ -292,6 +326,34 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to appplication-wide static <a class="el" href="classSettings.html" title="Global Settings Manager.">Settings</a> instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
+<a id="aed9f3526d8793743290c5e6b80daa4b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed9f3526d8793743290c5e6b80daa4b5">&#9670;&nbsp;</a></span>trafficDataProvider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a>* Global::trafficDataProvider </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to appplication-wide static TrafficDataProvider instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
 
 </div>

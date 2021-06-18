@@ -76,7 +76,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7b0f04d852a4d5947b9eacebecfb3716"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">GeoMapProvider</a> (QObject *parent=nullptr)</td></tr>
-<tr class="memdesc:a7b0f04d852a4d5947b9eacebecfb3716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new GeoMap provider.  <a href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">More...</a><br /></td></tr>
+<tr class="memdesc:a7b0f04d852a4d5947b9eacebecfb3716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new GeoMap provider.  <a href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">More...</a><br /></td></tr>
 <tr class="separator:a7b0f04d852a4d5947b9eacebecfb3716"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bcb756e652eb0ce8b3afcd181765475"><td class="memItemLeft" align="right" valign="top"><a id="a4bcb756e652eb0ce8b3afcd181765475"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a4bcb756e652eb0ce8b3afcd181765475">~GeoMapProvider</a> ()=default</td></tr>
@@ -116,9 +116,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a53246263c4ed4511901a4019fdd9ee38"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a53246263c4ed4511901a4019fdd9ee38">describeMapFile</a> (const QString &amp;fileName)</td></tr>
 <tr class="memdesc:a53246263c4ed4511901a4019fdd9ee38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describe installed map.  <a href="classGeoMaps_1_1GeoMapProvider.html#a53246263c4ed4511901a4019fdd9ee38">More...</a><br /></td></tr>
 <tr class="separator:a53246263c4ed4511901a4019fdd9ee38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e52160ee3071b3b03751c80cf96c146"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html">GeoMapProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a1e52160ee3071b3b03751c80cf96c146">globalInstance</a> ()</td></tr>
-<tr class="memdesc:a1e52160ee3071b3b03751c80cf96c146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance of this class.  <a href="classGeoMaps_1_1GeoMapProvider.html#a1e52160ee3071b3b03751c80cf96c146">More...</a><br /></td></tr>
-<tr class="separator:a1e52160ee3071b3b03751c80cf96c146"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -167,7 +164,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Create a new GeoMap provider. </p>
+<p>Creates a new GeoMap provider. </p>
 <p>This constructor creates a new <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.">GeoMapProvider</a> instance. Note that the instance will only start to work once the method setWeatherDataProvider() has been called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -425,34 +422,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a1e52160ee3071b3b03751c80cf96c146"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e52160ee3071b3b03751c80cf96c146">&#9670;&nbsp;</a></span>globalInstance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html">GeoMapProvider</a>* GeoMaps::GeoMapProvider::globalInstance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pointer to static instance of this class. </p>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to global instance </dd></dl>
-
-</div>
-</div>
 <a id="aab48a9697490dc84fa65e201cd155e46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab48a9697490dc84fa65e201cd155e46">&#9670;&nbsp;</a></span>nearbyWaypoints()</h2>
 
@@ -536,7 +505,7 @@ Properties</h2></td></tr>
 <p>Waypoints. </p>
 <dl class="section return"><dt>Returns</dt><dd>a list of all waypoints known to this <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.">GeoMapProvider</a> (that is, the union of all waypoints in any of the installed maps) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00240">240</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00234">234</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -618,7 +587,7 @@ Properties</h2></td></tr>
 <p>URL where a style file for the base map can be retrieved. </p>
 <p>This property holds a URL where a mapbox style file for the base map can be retrieved. The style file is adjusted, so that its source element points to the local <a class="el" href="classGeoMaps_1_1TileServer.html" title="HTTP server for mapbox&#39; MBTiles files.">TileServer</a> URL where the base map is served. Whenever the base map changes (e.g. because new maps have been downloaded or removed), the style file is deleted, a new style file is generated and a notification signal is emitted. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00227">227</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00221">221</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>

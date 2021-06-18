@@ -156,32 +156,30 @@ $(function() {
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
 <div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="classSettings.html#abb7d7d39c273f5dbf96ba5e3e11a42ae">  224</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a03935d5a0b769caeea8487fa32c6f797">setUseMetricUnits</a>(<span class="keywordtype">bool</span> unitHorizKmh);</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;signals:</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a6f668f7060dd26689be13c1116129cea">acceptedTermsChanged</a>();</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#ae4f4c5b12a4405bfb318768a7da8901a">acceptedWeatherTermsChanged</a>();</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a247aef5d21452e14173383c5b6dfcc7d">hideUpperAirspacesChanged</a>();</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#acccf91a2b03c7f2dc105601ea2514ffe">lastWhatsNewHashChanged</a>();</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a552e74b647ab61860c3f3aa09328c5b0">installTranslators</a>(<span class="keyword">const</span> QString &amp;localeName={});</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;signals:</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a6f668f7060dd26689be13c1116129cea">acceptedTermsChanged</a>();</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a2f40a106148699ca1c07eb5f54406ba5">mapBearingPolicyChanged</a>();</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#ae4f4c5b12a4405bfb318768a7da8901a">acceptedWeatherTermsChanged</a>();</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#abf3f9b7c592b03b27ae1c640b4cc3fce">nightModeChanged</a>();</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a247aef5d21452e14173383c5b6dfcc7d">hideUpperAirspacesChanged</a>();</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a20537cfef6d43f9f2cb8173a08e8d374">useMetricUnitsChanged</a>();</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#acccf91a2b03c7f2dc105601ea2514ffe">lastWhatsNewHashChanged</a>();</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classSettings.html">Settings</a>)</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a2f40a106148699ca1c07eb5f54406ba5">mapBearingPolicyChanged</a>();</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">// Removes/Installs global application translators, according to the</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// settings value &quot;System/preferEnglish&quot;</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordtype">void</span> installTranslators();</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    QPointer&lt;QTranslator&gt; enrouteTranslator {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#abf3f9b7c592b03b27ae1c640b4cc3fce">nightModeChanged</a>();</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classSettings.html#a20537cfef6d43f9f2cb8173a08e8d374">useMetricUnitsChanged</a>();</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    QSettings settings;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;};</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classSettings.html">Settings</a>)</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    QPointer&lt;QTranslator&gt; enrouteTranslator {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    QSettings settings;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassSettings_html"><div class="ttname"><a href="classSettings.html">Settings</a></div><div class="ttdoc">Global Settings Manager.</div><div class="ttdef"><b>Definition:</b> <a href="Settings_8h_source.html#l00043">Settings.h:43</a></div></div>
 <div class="ttc" id="aclassSettings_html_a16829a6ad926fd1b81c1ec7221dbb4dc"><div class="ttname"><a href="classSettings.html#a16829a6ad926fd1b81c1ec7221dbb4dc">Settings::setAcceptedTerms</a></div><div class="ttdeci">void setAcceptedTerms(int terms)</div><div class="ttdoc">Setter function for property of the same name.</div></div>
@@ -207,6 +205,7 @@ $(function() {
 <div class="ttc" id="aclassSettings_html_a5d4228b4851b4d78c800c107908f6bf2"><div class="ttname"><a href="classSettings.html#a5d4228b4851b4d78c800c107908f6bf2">Settings::setAcceptedWeatherTerms</a></div><div class="ttdeci">void setAcceptedWeatherTerms(bool terms)</div><div class="ttdoc">Setter function for property of the same name.</div></div>
 <div class="ttc" id="aclassSettings_html_ad199996469eef7c24c9269aef65f80f4"><div class="ttname"><a href="classSettings.html#ad199996469eef7c24c9269aef65f80f4">Settings::hideUpperAirspacesStatic</a></div><div class="ttdeci">static bool hideUpperAirspacesStatic()</div><div class="ttdoc">Getter function for property of the same name.</div></div>
 <div class="ttc" id="aclassSettings_html_a0d6cafe99bda20fbd868a23ee2b698a4"><div class="ttname"><a href="classSettings.html#a0d6cafe99bda20fbd868a23ee2b698a4">Settings::acceptedTerms</a></div><div class="ttdeci">int acceptedTerms</div><div class="ttdoc">Find out if Terms &amp; Conditions have been accepted.</div><div class="ttdef"><b>Definition:</b> <a href="Settings_8h_source.html#l00091">Settings.h:91</a></div></div>
+<div class="ttc" id="aclassSettings_html_a552e74b647ab61860c3f3aa09328c5b0"><div class="ttname"><a href="classSettings.html#a552e74b647ab61860c3f3aa09328c5b0">Settings::installTranslators</a></div><div class="ttdeci">void installTranslators(const QString &amp;localeName={})</div><div class="ttdoc">Removes/Installs global application translators.</div></div>
 <div class="ttc" id="aclassSettings_html_a343a49b86224260b0485de96993a7be3"><div class="ttname"><a href="classSettings.html#a343a49b86224260b0485de96993a7be3">Settings::setNightMode</a></div><div class="ttdeci">void setNightMode(bool newNightMode)</div><div class="ttdoc">Setter function for property of the same name.</div></div>
 <div class="ttc" id="aclassSettings_html_a20537cfef6d43f9f2cb8173a08e8d374"><div class="ttname"><a href="classSettings.html#a20537cfef6d43f9f2cb8173a08e8d374">Settings::useMetricUnitsChanged</a></div><div class="ttdeci">void useMetricUnitsChanged()</div></div>
 <div class="ttc" id="aclassSettings_html_a5e57e7002df5b0a81ca60bbdff5ed2e7"><div class="ttname"><a href="classSettings.html#a5e57e7002df5b0a81ca60bbdff5ed2e7">Settings::mapBearingPolicy</a></div><div class="ttdeci">MapBearingPolicyValues mapBearingPolicy</div><div class="ttdoc">Map bearing policy.</div><div class="ttdef"><b>Definition:</b> <a href="Settings_8h_source.html#l00187">Settings.h:187</a></div></div>

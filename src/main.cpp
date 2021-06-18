@@ -110,9 +110,11 @@ auto main(int argc, char *argv[]) -> int
 
     // Command line parsing
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg."));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));
     parser.addHelpOption();
     parser.addVersionOption();
+    QCommandLineOption screenshotOption("s", QCoreApplication::translate("main", "Run simulator and generate screenshots for manual"));
+    parser.addOption(screenshotOption);
     parser.addPositionalArgument("[fileName]", QCoreApplication::translate("main", "File to import."));
     parser.process(app);
     auto positionalArguments = parser.positionalArguments();
@@ -146,7 +148,10 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
     auto* engine = new QQmlApplicationEngine();
-    auto* demoRunner = new DemoRunner(engine);
+    QObject* demoRunner = nullptr;
+    if (parser.isSet(screenshotOption)) {
+        demoRunner = new DemoRunner(engine);
+    }
 
     // Make global objects available to QML engine
     engine->rootContext()->setContextProperty("global", new Global(engine) );

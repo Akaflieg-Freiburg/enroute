@@ -106,7 +106,7 @@ void DemoRunner::run()
     flightMap->setProperty("followGPS", true);
     Global::settings()->setMapBearingPolicy(Settings::NUp);
     delay(4s);
-    applicationWindow->grabWindow().save("Ground.png");
+    applicationWindow->grabWindow().save("01-03-01-ground.png");
 
     // Approaching EDDR
     qWarning() << "Demo Mode" << "Approaching EDDR";
@@ -117,17 +117,17 @@ void DemoRunner::run()
     flightMap->setProperty("zoomLevel", 11);
     Global::settings()->setMapBearingPolicy(Settings::TTUp);
     delay(4s);
-    applicationWindow->grabWindow().save("Flight.png");
+    applicationWindow->grabWindow().save("01-03-02-flight.png");
 
     // Stuttgart Airport Info
-    qWarning() << "Demo Mode" << "EDDS Info Page";
-    auto waypoint = Global::geoMapProvider()->findByID("EDDS");
+    qWarning() << "Demo Mode" << "EDFE Info Page";
+    auto waypoint = Global::geoMapProvider()->findByID("EDFE");
     Q_ASSERT(waypoint.isValid());
     waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
     QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
     Global::settings()->setMapBearingPolicy(Settings::NUp);
     delay(4s);
-    applicationWindow->grabWindow().save("EDDS-Info.png");
+    applicationWindow->grabWindow().save("01-03-03-EDFEinfo.png");
 
     // Done. Terminate the program.
     QApplication::exit();

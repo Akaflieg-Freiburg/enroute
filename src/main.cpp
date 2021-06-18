@@ -175,13 +175,8 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));
     engine->rootContext()->setContextProperty("savedZoomLevel", settings.value("Map/zoomLevel", 9));
 
-    // Load GUI
+    // Load GUI and enter event loop
     engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    if (engine->rootObjects().isEmpty()) {
-        return -1;
-    }
-
-    // Enter event loop
     QGuiApplication::exec();
 
     // Save settings

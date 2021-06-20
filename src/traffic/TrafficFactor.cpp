@@ -180,6 +180,7 @@ void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, Av
     }
 
     setAnimate(true);
+    setValid();
 }
 
 

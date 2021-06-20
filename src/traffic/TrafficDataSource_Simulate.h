@@ -56,12 +56,6 @@ public:
         return tr("Simulator data");
     }
 
-    // Methods
-#warning
-    QGeoCoordinate getCoordinate() const
-    {
-        return geoInfo.coordinate();
-    }
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
@@ -114,6 +108,19 @@ public slots:
         barometricHeight = barAlt;
     }
 
+#warning
+    void addTraffic(TrafficFactor* factor)
+    {
+        factor->setParent(this);
+        trafficFactors.append(factor);
+    }
+
+    void removeTraffic()
+    {
+        qDeleteAll(trafficFactors);
+        trafficFactors.clear();
+    }
+
 private slots:
     // Send out simulated data. This slot will be called once per second once connectToTrafficReceiver() has been called
     void sendSimulatorData();
@@ -124,6 +131,7 @@ private:
     QTimer simulatorTimer;
     QGeoPositionInfo geoInfo;
     AviationUnits::Distance barometricHeight;
+    QVector<TrafficFactor*> trafficFactors;
 };
 
 }

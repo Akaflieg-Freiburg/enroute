@@ -94,6 +94,14 @@ public:
      */
     bool hasHigherPriorityThan(const TrafficFactor &rhs) const;
 
+    /*! \brief Updates the timestamp to the current time, extending the life time of the object */
+    void updateTimestamp()
+    {
+        _positionInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
+        setValid();
+    }
+
+
     //
     // PROPERTIES
     //

@@ -61,6 +61,16 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
         setReceivingHeartbeat(false);
     }
 
+    foreach(TrafficFactor* trafficFactor, trafficFactors) {
+        trafficFactor->updateTimestamp();
+        if (trafficFactor->coordinate().isValid()) {
+            emit factorWithPosition(*trafficFactor);
+        } else {
+            emit factorWithoutPosition(*trafficFactor);
+        }
+        emit factorWithPosition(*trafficFactor);
+        emit factorWithoutPosition(*trafficFactor);
+    }
+
     pressureAltitudeUpdated(barometricHeight);
 }
-

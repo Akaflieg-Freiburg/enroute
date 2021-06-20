@@ -41,7 +41,7 @@ using namespace std::chrono_literals;
 DemoRunner::DemoRunner(QObject *parent) : QObject(parent) {
     qWarning() << "DemoRunner Initialisation";
 
-    QTimer::singleShot(10s, this, &DemoRunner::run);
+    QTimer::singleShot(1s, this, &DemoRunner::run);
 }
 
 
@@ -134,26 +134,49 @@ void DemoRunner::run()
 
     // Approaching EDTF w/ traffic
     qWarning() << "Demo Mode" << "EDTF Traffic";
-    trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
-    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(800) );
-    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(160) );
-    trafficSimulator->setGS( AviationUnits::Speed::fromKN(5) );
+    QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
+    trafficSimulator->setCoordinate( ownPosition );
+    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromM(600) );
+    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(41) );
+    trafficSimulator->setGS( AviationUnits::Speed::fromKN(92) );
     flightMap->setProperty("zoomLevel", 13);
     flightMap->setProperty("followGPS", true);
-    Global::settings()->setMapBearingPolicy(Settings::NUp);
-    delay(4s);
-    applicationWindow->grabWindow().save("01-03-01-ground.png");
-
-    Traffic::TrafficFactor trafficFactor;
+    Global::settings()->setMapBearingPolicy(Settings::TTUp);
+    QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
     QGeoPositionInfo trafficInfo;
-    trafficFactor.setData(1, //int newAlarmLevel,
-                          "newId", //const QString & newID,
-                          AviationUnits::Distance::fromM(100), // newHDist,
-                          AviationUnits::Distance::fromM(100), // newVDist,
-                          Traffic::TrafficFactor::Aircraft, // newType,
-                          {},
-                          {} //const QString & newCallSign
-                          );
+    trafficInfo.setCoordinate(trafficPosition);
+    trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
+    trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, AviationUnits::Speed::fromKN(70).toMPS() );
+    trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
+    trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
+    auto* trafficFactor1 = new Traffic::TrafficFactor(this);
+    trafficFactor1->setData(0, //int newAlarmLevel,
+                           "newId", //const QString & newID,
+                           AviationUnits::Distance::fromM( ownPosition.distanceTo(trafficPosition) ), // newHDist,
+                           AviationUnits::Distance::fromM( trafficPosition.altitude()-ownPosition.altitude() ), // newVDist,
+                           Traffic::TrafficFactor::Aircraft, // newType,
+                           trafficInfo,
+                           {} //const QString & newCallSign
+                           );
+//    trafficSimulator->addTraffic(trafficFactor1);
+//    delay(4s);
+    applicationWindow->grabWindow().save("01-03-01-traffic.png");
+    trafficSimulator->removeTraffic();
+
+    qWarning() << "Demo Mode" << "EDTF Mode S Traffic";
+    trafficInfo.setCoordinate({});
+    auto* trafficFactor2 = new Traffic::TrafficFactor(this);
+    trafficFactor2->setData(1, //int newAlarmLevel,
+                           "newId", //const QString & newID,
+                           AviationUnits::Distance::fromM( ownPosition.distanceTo(trafficPosition) ), // newHDist,
+                           AviationUnits::Distance::fromM( trafficPosition.altitude()-ownPosition.altitude() ), // newVDist,
+                           Traffic::TrafficFactor::Aircraft, // newType,
+                           trafficInfo,
+                           {} //const QString & newCallSign
+                           );
+    trafficSimulator->addTraffic(trafficFactor2);
+    delay(4s);
+    applicationWindow->grabWindow().save("01-03-01-traffic.png");
 
     // Done. Terminate the program.
     //QApplication::exit();

@@ -33,6 +33,7 @@ parts:
     build-packages:
       - git
       - doxygen
+      - libgl-dev
     cmake-parameters:
       - "-DKDE_INSTALL_USE_QT_SYS_PATHS=ON"
       - "-DCMAKE_INSTALL_PREFIX=/usr"

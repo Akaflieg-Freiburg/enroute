@@ -60,7 +60,7 @@ Map {
         global.mobileAdaptor().hideSplashScreen()
     }
 
-    maximumZoomLevel: 13
+    maximumZoomLevel: 13.5
     minimumZoomLevel: 7
     
     

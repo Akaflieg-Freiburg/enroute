@@ -109,6 +109,61 @@ Map {
         property real lineWidth: 0.5
     }
 
+    /*
+     * Gliding Sectors
+     */
+
+    MapParameter {
+        type: "layer"
+
+        property string name: "glidingSector"
+        property string layerType: "fill"
+        property string source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "GLD"]
+    }
+    MapParameter {
+        type: "paint"
+        property string layer: "glidingSector"
+        property string fillColor: "yellow"
+        property real fillOpacity: 0.1
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property string name: "glidingSectorOutlines"
+        property string layerType: "line"
+        property string source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "GLD"]
+    }
+    MapParameter {
+        type: "paint"
+        property string layer: "glidingSectorOutlines"
+        property string lineColor: "yellow"
+        property real lineOpacity: 0.8 //0.3
+        property real lineWidth: 2.0
+    }
+
+    MapParameter {
+        type: "layer"
+
+        property string name: "glidingSectorLabels"
+        property string layerType: "symbol"
+        property string source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "GLD"]
+        property int minzoom: 10
+    }
+    MapParameter {
+        type: "layout"
+
+        property string layer: "glidingSectorLabels"
+        property var textField: ["get", "NAM"]
+        property real textSize: 12
+        property string iconImage: "WhiteBox"
+        property string iconTextFit: "both"
+        property var iconTextFitPadding: [2,5,2,5]
+    }
+
 
     /*
      * RMZ - Radio Mandatory Zone
@@ -364,61 +419,6 @@ Map {
         property var iconTextFitPadding: [2,5,2,5]
     }
 
-
-    /*
-     * Gliding Sectors
-     */
-
-    MapParameter {
-        type: "layer"
-
-        property string name: "glidingSector"
-        property string layerType: "fill"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "GLD"]
-    }
-    MapParameter {
-        type: "paint"
-        property string layer: "glidingSector"
-        property string fillColor: "yellow"
-        property real fillOpacity: 0.1
-    }
-
-    MapParameter {
-        type: "layer"
-
-        property string name: "glidingSectorOutlines"
-        property string layerType: "line"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "GLD"]
-    }
-    MapParameter {
-        type: "paint"
-        property string layer: "glidingSectorOutlines"
-        property string lineColor: "yellow"
-        property real lineOpacity: 0.8 //0.3
-        property real lineWidth: 2.0
-    }
-
-    MapParameter {
-        type: "layer"
-
-        property string name: "glidingSectorLabels"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "GLD"]
-        property int minzoom: 10
-    }
-    MapParameter {
-        type: "layout"
-
-        property string layer: "glidingSectorLabels"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string iconImage: "WhiteBox"
-        property string iconTextFit: "both"
-        property var iconTextFitPadding: [2,5,2,5]
-    }
 
     /*
      * Danger Zone, Prohibited Zone, Restricted Zone

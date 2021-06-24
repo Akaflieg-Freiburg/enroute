@@ -222,7 +222,7 @@ public:
      *  the FLARM device that reported the traffic. This can be the FLARM ID, or
      *  an empty string if no meaningful ID can be assigned.
      */
-    Q_PROPERTY(QString ID READ ID NOTIFY IDChanged)
+    Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged)
 
     /*! \brief Getter method for property with the same name
      *
@@ -233,8 +233,17 @@ public:
         return _ID;
     }
 
+#warning
+    void setID(const QString& newID) {
+        if (_ID == newID) {
+            return;
+        }
+        _ID = newID;
+        emit IDChanged();
+    }
+
     /*! \brief Type of aircraft, as reported by FLARM */
-    Q_PROPERTY(AircraftType type READ type NOTIFY typeChanged)
+    Q_PROPERTY(AircraftType type READ type WRITE setType NOTIFY typeChanged)
 
     /*! \brief Getter method for property with the same name
      *
@@ -243,6 +252,15 @@ public:
     AircraftType type() const
     {
         return _type;
+    }
+
+#warning
+    void setType(AircraftType newType) {
+        if (_type == newType) {
+            return;
+        }
+        _type = newType;
+        emit typeChanged();
     }
 
     /*! \brief Validity
@@ -269,7 +287,7 @@ public:
      *  position to the traffic, at the time of report.  Otherwise, it contains
      *  NaN.
      */
-    Q_PROPERTY(AviationUnits::Distance vDist READ vDist NOTIFY vDistChanged)
+    Q_PROPERTY(AviationUnits::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged)
 
     /*! \brief Getter method for property with the same name
      *
@@ -278,6 +296,15 @@ public:
     AviationUnits::Distance vDist() const
     {
         return _vDist;
+    }
+
+#warning
+    void setVDist(AviationUnits::Distance newVDist) {
+        if (_vDist == newVDist) {
+            return;
+        }
+        _vDist = newVDist;
+        emit vDistChanged();
     }
 
 signals:
@@ -289,6 +316,9 @@ signals:
 
     /*! \brief Notifier signal */
     void callSignChanged();
+
+    /*! \brief Notifier signal */
+    void colorChanged();
 
     /*! \brief Notifier signal */
     void descriptionChanged();
@@ -324,7 +354,12 @@ private:
     // Copy data from other object
     void copyFrom(const TrafficFactor_Abstract & other)
     {
-        setData(other._alarmLevel, other._ID, other._vDist, other._type, other.m_callSign);
+        setAlarmLevel(other.alarmLevel());
+        setAnimate(other.animate());
+        setCallSign(other.callSign());
+        setID(other.ID());
+        setType(other.type());
+        setVDist(other.vDist());
     }
 
     // Set data
@@ -335,9 +370,6 @@ private:
                  const QString & newCallSign);
 
 private:
-    // Setter function for property animate
-    void setAnimate(bool a);
-
     //
     // Property values
     //
@@ -348,8 +380,8 @@ private:
     QString _description;
     QString _ID;
     AircraftType _type {AircraftType::unknown};
-    bool _valid {false};
     AviationUnits::Distance _vDist;
+    bool _valid {false};
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for timeoutMS milliseconds

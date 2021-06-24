@@ -44,17 +44,6 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObje
 }
 
 
-void Traffic::TrafficFactor_Abstract::setAnimate(bool a)
-{
-    if (a == _animate) {
-        return;
-    }
-
-    _animate = a;
-    emit animateChanged();
-}
-
-
 void Traffic::TrafficFactor_Abstract::setColor()
 {
     QString newColor = QStringLiteral("red");

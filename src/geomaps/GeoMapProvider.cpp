@@ -297,7 +297,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, Settings::hideUpperAirspacesStatic());
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, Global::settings()->hideUpperAirspaces(), Global::settings()->hideGlidingSectors());
 }
 
 
@@ -328,7 +328,7 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 }
 
 
-void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces)
+void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces, bool hideGlidingSectors)
 {
     //
     // Generate new GeoJSON array and new list of waypoints
@@ -357,6 +357,16 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
                     continue;
                 }
             }
+
+            // If 'hideGlidingSector' is set, ignore all objects that are airspaces
+            // and that are gliding sectors
+            if (hideGlidingSectors) {
+                Airspace airspaceTest(object);
+                if (airspaceTest.CAT() == "GLD") {
+                    continue;
+                }
+            }
+
             objectSet += object;
         }
     }
@@ -407,6 +417,7 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(Global::mapManager()->aviationMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
     connect(Global::mapManager()->baseMaps(), &DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
     connect(Global::settings(), &Settings::hideUpperAirspacesChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(Global::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3s);

@@ -74,6 +74,30 @@ Page {
                 }
             }
 
+            SwitchDelegate {
+                id: hideGlidingSectors
+                text: qsTr("Hide Gliding Sectors") + (
+                          global.settings().hideGlidingSectors ? (
+                                                                  `<br><font color="#606060" size="2">`
+                                                                  + qsTr("Gliding sectors hidden")
+                                                                  +"</font>"
+                                                                  ) : (
+                                                                  `<br><font color="#606060" size="2">`
+                                                                  + qsTr("Gliding sectors shown")
+                                                                  + `</font>`
+                                                                  )
+                          )
+                icon.source: "/icons/material/ic_map.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    hideGlidingSectors.checked = global.settings().hideGlidingSectors
+                }
+                onToggled: {
+                    global.mobileAdaptor().vibrateBrief()
+                    global.settings().hideGlidingSectors = hideGlidingSectors.checked
+                }
+            }
+
             Label {
                 Layout.leftMargin: Qt.application.font.pixelSize
                 text: qsTr("System")

@@ -122,6 +122,21 @@ public:
      */
     bool hasTranslation() const { return QFile::exists(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2))); }
 
+    /*! \brief Hide gliding sectors */
+    Q_PROPERTY(bool hideGlidingSectors READ hideGlidingSectors WRITE setHideGlidingSectors NOTIFY hideGlidingSectorsChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property hideGlidingSectors
+     */
+    bool hideGlidingSectors() const { return settings.value(QStringLiteral("Map/hideGlidingSectors"), true).toBool(); }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param hide Property hideGlidingSectors
+     */
+    void setHideGlidingSectors(bool hide);
+
     /*! \brief Hide airspaces with lower bound FL100 or above */
     Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
 
@@ -238,6 +253,9 @@ signals:
 
     /*! Notifier signal */
     void acceptedWeatherTermsChanged();
+
+    /*! Notifier signal */
+    void hideGlidingSectorsChanged();
 
     /*! Notifier signal */
     void hideUpperAirspacesChanged();

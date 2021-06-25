@@ -19,91 +19,48 @@
  ***************************************************************************/
 
 
-#include "Settings.h"
 #include "traffic/TrafficFactor_Abstract.h"
 
 
 Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObject(parent)
 {  
     timeoutCounter.setSingleShot(true);
-
-    // Compute derived properties and set bindings
-    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::setColor);
-    setColor();
-
-//    connect(this, &Traffic::TrafficFactor_Abstract::coordinateChanged, this, &Traffic::TrafficFactor_Abstract::setDescription);
-    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::setDescription);
-    connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::setDescription);
-#warning
-    // setDescription();
-
-//    connect(this, &Traffic::TrafficFactor_Abstract::positionInfoChanged, this, &Traffic::TrafficFactor_Abstract::setValid);
+    timeoutCounter.setInterval(timeout);
     connect(&timeoutCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::setValid);
-#warning
-    // setValid();
+
+    // Bindings
+    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::colorChanged);
 }
 
 
-void Traffic::TrafficFactor_Abstract::setColor()
-{
-    QString newColor = QStringLiteral("red");
-    if (_alarmLevel == 0) {
-        newColor = QStringLiteral("green");
-    }
-    if (_alarmLevel == 1) {
-        newColor = QStringLiteral("yellow");
-    }
+void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel) {
 
-    // Set value and emit signal, if appropriate
-    if (_color == newColor) {
+    // Safety checks
+    if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
         return;
     }
-    _color = newColor;
-    emit colorChanged();
+
+    updateTimestamp();
+    if (m_alarmLevel == newAlarmLevel) {
+        return;
+    }
+    if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
+        return;
+    }
+    m_alarmLevel = newAlarmLevel;
+    emit alarmLevelChanged();
+    setValid();
+
 }
 
 
-void Traffic::TrafficFactor_Abstract::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newVDist, AircraftType newType, const QString & newCallSign)
+void Traffic::TrafficFactor_Abstract::updateTimestamp()
 {
-    // Set properties
-    bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
-    _alarmLevel = newAlarmLevel;
 
-    bool hasIDChanged = (_ID != newID);
-    _ID = newID;
-
-    bool hasTypeChanged = (_type != newType);
-    _type = newType;
-
-    bool hasVDistChanged = (_vDist != newVDist);
-    _vDist = newVDist;
-
-    // If the ID changed, do not animate property changes in the GUI.
-    if (hasIDChanged) {
-        setAnimate(false);
+    bool isActive = timeoutCounter.isActive();
+    timeoutCounter.start();
+    if (!isActive) {
+        setValid();
     }
 
-    bool hasCallSignChanged = (m_callSign != newCallSign);
-    m_callSign = newCallSign;
-
-    // Emit notifier signals as appropriate
-    if (hasAlarmLevelChanged) {
-        emit alarmLevelChanged();
-    }
-    if (hasIDChanged) {
-        emit IDChanged();
-        setAnimate(false);
-    }
-    if (hasTypeChanged) {
-        emit typeChanged();
-    }
-    if (hasVDistChanged) {
-        emit vDistChanged();
-    }
-    if (hasCallSignChanged) {
-        emit callSignChanged();
-    }
-
-    setAnimate(true);
-    setValid();
 }

@@ -19,48 +19,90 @@
  ***************************************************************************/
 
 
-#include "traffic/TrafficFactor_Abstract.h"
+#include <Settings.h>
+
+#include "traffic/TrafficFactor_DistanceOnly.h"
 
 
-Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObject(parent)
+Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent) : Traffic::TrafficFactor_Abstract(parent)
 {  
-    timeoutCounter.setSingleShot(true);
-    timeoutCounter.setInterval(timeout);
-    connect(&timeoutCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::setValid);
+    // Bindings for property description
+    connect(this, &Traffic::TrafficFactor_Abstract::callSignChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+    connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
 
-    // Bindings
-    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::colorChanged);
+#warning
 }
 
 
-void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel) {
-
-    // Safety checks
-    if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
-        return;
-    }
-
-    updateTimestamp();
-    if (m_alarmLevel == newAlarmLevel) {
-        return;
-    }
-    if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
-        return;
-    }
-    m_alarmLevel = newAlarmLevel;
-    emit alarmLevelChanged();
-    setValid();
-
-}
-
-
-void Traffic::TrafficFactor_Abstract::updateTimestamp()
+auto Traffic::TrafficFactor_DistanceOnly::description() -> QString
 {
 
-    bool isActive = timeoutCounter.isActive();
-    timeoutCounter.start();
-    if (!isActive) {
-        setValid();
+    QStringList results;
+
+    // CallSign
+    if (!callSign().isEmpty()) {
+        results << callSign();
     }
+
+    // Aircraft type
+    switch(type()) {
+    case Aircraft:
+        results << tr("Aircraft");
+        break;
+    case Airship:
+        results << tr("Airship");
+        break;
+    case Balloon:
+        results << tr("Balloon");
+        break;
+    case Copter:
+        results << tr("Copter");
+        break;
+    case Drone:
+        results << tr("Drone");
+        break;
+    case Glider:
+        results << tr("Glider");
+        break;
+    case HangGlider:
+        results << tr("Hang glider");
+        break;
+    case Jet:
+        results << tr("Jet");
+        break;
+    case Paraglider:
+        results << tr("Paraglider");
+        break;
+    case Skydiver:
+        results << tr("Skydiver");
+        break;
+    case StaticObstacle:
+        results << tr("Static Obstacle");
+        break;
+    case TowPlane:
+        results << tr("Tow Plane");
+        break;
+    default:
+        results << tr("Traffic");
+        break;
+    }
+
+    // Position
+    results << tr("Position unknown");
+
+    // Vertical distance
+    if (vDist().isFinite()) {
+        results << vDist().toString(Settings::useMetricUnitsStatic(), true, true);
+    }
+
+    return results.join(u"<br>");
+
+}
+
+
+void Traffic::TrafficFactor_DistanceOnly::setValid()
+{
+#warning
 
 }

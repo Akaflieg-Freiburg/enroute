@@ -72,18 +72,6 @@ public:
     //
     // Methods
     //
-
-    /*! \brief Copy data from other object */
-    virtual void copy(const TrafficFactor_Abstract& other)
-    {
-        setAlarmLevel(other.alarmLevel());
-        setAnimate(other.animate());
-        setCallSign(other.callSign());
-        setID(other.ID());
-        setType(other.type());
-        setVDist(other.vDist());
-    }
-
     /*! \brief Updates the timestamp to the current time, extending the life time of the object */
     void updateTimestamp();
 
@@ -346,7 +334,20 @@ signals:
     /*! \brief Notifier signal */
     void validChanged();
 
-private slots:
+
+protected:
+    // Copy data from other object
+    virtual void copyAbstract(const TrafficFactor_Abstract& other)
+    {
+        setAlarmLevel(other.alarmLevel());
+        setAnimate(other.animate());
+        setCallSign(other.callSign());
+        setID(other.ID());
+        setType(other.type());
+        setVDist(other.vDist());
+    }
+
+private:
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
     virtual void setValid() = 0;

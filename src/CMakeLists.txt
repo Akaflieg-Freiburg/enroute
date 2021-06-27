@@ -104,6 +104,7 @@ set(SOURCES
     traffic/TrafficDataSource_Udp.h
     traffic/TrafficDataProvider.h
     traffic/TrafficFactor_Abstract.h
+    traffic/TrafficFactor_DistanceOnly.h
     traffic/TrafficFactor.h
     traffic/Warning.h
     ui/ScaleQuickItem.h
@@ -157,6 +158,7 @@ set(SOURCES
     traffic/TrafficDataSource_Udp.cpp
     traffic/TrafficDataProvider.cpp
     traffic/TrafficFactor_Abstract.cpp
+    traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor.cpp
     traffic/Warning.cpp
     ui/ScaleQuickItem.cpp

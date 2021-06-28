@@ -31,7 +31,9 @@ Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent)
     connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
     connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
 
-#warning
+    // Bindings for property valid
+    connect(this, &Traffic::TrafficFactor_DistanceOnly::hDistChanged, this, &Traffic::TrafficFactor_DistanceOnly::updateValid);
+
 }
 
 
@@ -101,8 +103,18 @@ auto Traffic::TrafficFactor_DistanceOnly::description() -> QString
 }
 
 
-void Traffic::TrafficFactor_DistanceOnly::setValid()
+void Traffic::TrafficFactor_DistanceOnly::updateValid()
 {
-#warning
+
+    bool newValid = validAbstract();
+    if (hDist().isFinite()) {
+        newValid = false;
+    }
+
+    // Update property
+    if (m_valid != newValid) {
+        m_valid = newValid;
+        emit validChanged();
+    }
 
 }

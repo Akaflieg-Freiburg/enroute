@@ -68,8 +68,7 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Horizontal distance from own position to the traffic, at the time
-     *  of report
+    /*! \brief Horizontal distance from own position to the traffic, at the time of report
      *
      *  If known, this property holds the horizontal distance from the own
      *  position to the traffic, at the time of report.  Otherwise, it contains
@@ -105,7 +104,7 @@ signals:
 private slots:
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
-    virtual void setValid() override;
+    virtual void updateValid() override;
 
 private:
     //

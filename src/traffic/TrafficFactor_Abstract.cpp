@@ -26,14 +26,19 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObje
 {  
     timeoutCounter.setSingleShot(true);
     timeoutCounter.setInterval(timeout);
-    connect(&timeoutCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::setValid);
 
-    // Bindings
+    // Bindings for property color
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::colorChanged);
+
+    // Bindings for property valid
+    connect(&timeoutCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::updateValid);
+    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::updateValid);
+
 }
 
 
-void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel) {
+void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel)
+{
 
     // Safety checks
     if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
@@ -49,7 +54,6 @@ void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel) {
     }
     m_alarmLevel = newAlarmLevel;
     emit alarmLevelChanged();
-    setValid();
 
 }
 
@@ -57,10 +61,19 @@ void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel) {
 void Traffic::TrafficFactor_Abstract::updateTimestamp()
 {
 
-    bool isActive = timeoutCounter.isActive();
     timeoutCounter.start();
-    if (!isActive) {
-        setValid();
-    }
+    updateValid();
 
+}
+
+
+auto Traffic::TrafficFactor_Abstract::validAbstract() const -> bool
+{
+    if (m_alarmLevel < 0) {
+        return false;
+    }
+    if (m_alarmLevel > 3) {
+        return false;
+    }
+    return timeoutCounter.isActive();
 }

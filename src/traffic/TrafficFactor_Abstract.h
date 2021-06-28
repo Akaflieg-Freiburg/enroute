@@ -347,10 +347,13 @@ protected:
         setVDist(other.vDist());
     }
 
-private:
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
-    virtual void setValid() = 0;
+    virtual void updateValid() = 0;
+    bool m_valid {false};
+
+    // Checks if this class contains valid data.
+    bool validAbstract() const;
 
 private:
     //
@@ -363,7 +366,6 @@ private:
     QString m_ID;
     AircraftType m_type {AircraftType::unknown};
     AviationUnits::Distance m_vDist;
-    bool m_valid {false};
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for longer than timeout.

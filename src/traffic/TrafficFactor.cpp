@@ -101,7 +101,7 @@ void Traffic::TrafficFactor::setColor()
 }
 
 
-void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, AircraftType newType, const QGeoPositionInfo& newPositionInfo, const QString & newCallSign)
+void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, Traffic::TrafficFactor_Abstract::AircraftType newType, const QGeoPositionInfo& newPositionInfo, const QString & newCallSign)
 {
     // Set properties
     bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);

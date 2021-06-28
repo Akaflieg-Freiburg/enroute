@@ -43,7 +43,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
         QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
         m_trafficObjects.append( trafficObject );
     }
-    m_trafficObjectWithoutPosition = new Traffic::TrafficFactor(this);
+    m_trafficObjectWithoutPosition = new Traffic::TrafficFactor_DistanceOnly(this);
     QQmlEngine::setObjectOwnership(m_trafficObjectWithoutPosition, QQmlEngine::CppOwnership);
 
     setSourceName(tr("Traffic data receiver"));
@@ -209,11 +209,13 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 }
 
 
-void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor)
+void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor)
 {
+
     if ((factor.ID() == m_trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
         m_trafficObjectWithoutPosition->copyFrom(factor);
     }
+
 }
 
 

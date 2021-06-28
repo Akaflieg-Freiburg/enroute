@@ -222,47 +222,47 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         }
 
         // Target type is optional
-        Traffic::TrafficFactor::AircraftType type = Traffic::TrafficFactor::unknown;
+        Traffic::TrafficFactor_Abstract::AircraftType type = Traffic::TrafficFactor_Abstract::unknown;
         {
             auto targetType = arguments[10];
             if (targetType == u"1") {
-                type = Traffic::TrafficFactor::Glider;
+                type = Traffic::TrafficFactor_Abstract::Glider;
             }
             if (targetType == u"2") {
-                type = Traffic::TrafficFactor::TowPlane;
+                type = Traffic::TrafficFactor_Abstract::TowPlane;
             }
             if (targetType == u"3") {
-                type = Traffic::TrafficFactor::Copter;
+                type = Traffic::TrafficFactor_Abstract::Copter;
             }
             if (targetType == u"4") {
-                type = Traffic::TrafficFactor::Skydiver;
+                type = Traffic::TrafficFactor_Abstract::Skydiver;
             }
             if (targetType == u"5") {
-                type = Traffic::TrafficFactor::Aircraft;
+                type = Traffic::TrafficFactor_Abstract::Aircraft;
             }
             if (targetType == u"6") {
-                type = Traffic::TrafficFactor::HangGlider;
+                type = Traffic::TrafficFactor_Abstract::HangGlider;
             }
             if (targetType == u"7") {
-                type = Traffic::TrafficFactor::Paraglider;
+                type = Traffic::TrafficFactor_Abstract::Paraglider;
             }
             if (targetType == u"8") {
-                type = Traffic::TrafficFactor::Aircraft;
+                type = Traffic::TrafficFactor_Abstract::Aircraft;
             }
             if (targetType == u"9") {
-                type = Traffic::TrafficFactor::Jet;
+                type = Traffic::TrafficFactor_Abstract::Jet;
             }
             if (targetType == u"B") {
-                type = Traffic::TrafficFactor::Balloon;
+                type = Traffic::TrafficFactor_Abstract::Balloon;
             }
             if (targetType == u"C") {
-                type = Traffic::TrafficFactor::Airship;
+                type = Traffic::TrafficFactor_Abstract::Airship;
             }
             if (targetType == u"D") {
-                type = Traffic::TrafficFactor::Drone;
+                type = Traffic::TrafficFactor_Abstract::Drone;
             }
             if (targetType == u"F") {
-                type = Traffic::TrafficFactor::StaticObstacle;
+                type = Traffic::TrafficFactor_Abstract::StaticObstacle;
             }
         }
 
@@ -272,7 +272,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         if (!ok) {
             groundSpeedInMPS = qQNaN();
         }
-        if ((groundSpeedInMPS == 0.0) && (type != Traffic::TrafficFactor::StaticObstacle)) {
+        if ((groundSpeedInMPS == 0.0) && (type != Traffic::TrafficFactor_Abstract::StaticObstacle)) {
             return;
         }
 
@@ -302,8 +302,14 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
                 pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
             }
 
-            m_factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo, {});
-            emit factorWithoutPosition(m_factor);
+            m_factorDistanceOnly.setAlarmLevel(alarmLevel);
+            m_factorDistanceOnly.setID(targetID);
+            m_factorDistanceOnly.setHDist(hDist);
+            m_factorDistanceOnly.setVDist(vDist);
+            m_factorDistanceOnly.setType(type);
+            m_factorDistanceOnly.setCallSign({});
+//            m_factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo, {});
+            emit factorWithoutPosition(m_factorDistanceOnly);
             return;
         }
 

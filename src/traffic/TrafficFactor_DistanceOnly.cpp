@@ -37,7 +37,7 @@ Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent)
 }
 
 
-auto Traffic::TrafficFactor_DistanceOnly::description() -> QString
+auto Traffic::TrafficFactor_DistanceOnly::description() const -> QString
 {
 
     QStringList results;
@@ -100,6 +100,15 @@ auto Traffic::TrafficFactor_DistanceOnly::description() -> QString
 
     return results.join(u"<br>");
 
+}
+
+
+void Traffic::TrafficFactor_DistanceOnly::setHDist(AviationUnits::Distance newHDist) {
+    if (m_hDist == newHDist) {
+        return;
+    }
+    m_hDist = newHDist;
+    emit hDistChanged();
 }
 
 

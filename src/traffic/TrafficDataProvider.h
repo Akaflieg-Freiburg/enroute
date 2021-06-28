@@ -26,6 +26,7 @@
 
 #include "positioning/PositionInfoSource_Abstract.h"
 #include "traffic/Warning.h"
+#include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor.h"
 
 
@@ -125,13 +126,13 @@ public:
      *  position is not known.  This item should be ignored if invalid. The item
      *  is owned by this class.
      */
-    Q_PROPERTY(Traffic::TrafficFactor *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
+    Q_PROPERTY(Traffic::TrafficFactor_DistanceOnly *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property trafficObjectWithoutPosition
      */
-    Traffic::TrafficFactor *trafficObjectWithoutPosition()
+    Traffic::TrafficFactor_DistanceOnly *trafficObjectWithoutPosition()
     {
         return m_trafficObjectWithoutPosition;
     }
@@ -204,7 +205,7 @@ private slots:
     void onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor);
 
     // Called if one of the sources reports traffic (position known)
-    void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor &factor);
+    void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor);
 
     // Resetter method
     void resetWarning();
@@ -228,7 +229,7 @@ private:
 
     // Targets
     QList<Traffic::TrafficFactor *> m_trafficObjects;
-    QPointer<Traffic::TrafficFactor> m_trafficObjectWithoutPosition;
+    QPointer<Traffic::TrafficFactor_DistanceOnly> m_trafficObjectWithoutPosition;
 
     // TrafficData Sources
     QList<QPointer<Traffic::TrafficDataSource_Abstract>> m_dataSources;

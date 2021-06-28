@@ -154,7 +154,7 @@ void DemoRunner::run()
                            "newId", //const QString & newID,
                            AviationUnits::Distance::fromM( ownPosition.distanceTo(trafficPosition) ), // newHDist,
                            AviationUnits::Distance::fromM( trafficPosition.altitude()-ownPosition.altitude() ), // newVDist,
-                           Traffic::TrafficFactor::Aircraft, // newType,
+                           Traffic::TrafficFactor_Abstract::Aircraft, // newType,
                            trafficInfo,
                            {} //const QString & newCallSign
                            );
@@ -170,7 +170,7 @@ void DemoRunner::run()
                            "newId", //const QString & newID,
                            AviationUnits::Distance::fromM( ownPosition.distanceTo(trafficPosition) ), // newHDist,
                            AviationUnits::Distance::fromM( trafficPosition.altitude()-ownPosition.altitude() ), // newVDist,
-                           Traffic::TrafficFactor::Aircraft, // newType,
+                           Traffic::TrafficFactor_Abstract::Aircraft, // newType,
                            trafficInfo,
                            {} //const QString & newCallSign
                            );

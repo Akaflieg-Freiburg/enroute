@@ -23,6 +23,7 @@
 #include <QGeoPositionInfo>
 #include <QTimer>
 
+#include "traffic/TrafficFactor_Abstract.h"
 #include "units/Distance.h"
 #include "units/Speed.h"
 
@@ -317,13 +318,13 @@ public:
     }
 
     /*! \brief Type of aircraft, as reported by FLARM */
-    Q_PROPERTY(AircraftType type READ type NOTIFY typeChanged)
+    Q_PROPERTY(Traffic::TrafficFactor_Abstract::AircraftType type READ type NOTIFY typeChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property vDist
      */
-    AircraftType type() const
+    Traffic::TrafficFactor_Abstract::AircraftType type() const
     {
         return _type;
     }
@@ -462,7 +463,7 @@ private:
                  const QString & newID,
                  AviationUnits::Distance newHDist,
                  AviationUnits::Distance newVDist,
-                 AircraftType newType,
+                 Traffic::TrafficFactor_Abstract::AircraftType newType,
                  const QGeoPositionInfo & newPositionInfo,
                  const QString & newCallSign);
 
@@ -482,7 +483,7 @@ private:
     QString _icon;
     QString _ID;
     QGeoPositionInfo _positionInfo;
-    AircraftType _type {AircraftType::unknown};
+    Traffic::TrafficFactor_Abstract::AircraftType _type {Traffic::TrafficFactor_Abstract::AircraftType::unknown};
     bool _valid {false};
     AviationUnits::Distance _vDist;
 

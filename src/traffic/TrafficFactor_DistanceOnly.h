@@ -25,11 +25,10 @@
 
 namespace Traffic {
 
-#warning
-/*! \brief Traffic factors
+/*! \brief Traffic factor where only distance is known
  *
- *  Objects of this class represent traffic factors, as detected by FLARM and
- *  similar devices.  This is an abstract base class.
+ *  Objects of this class represent traffic factors, where only the horizontal distance to the traffic is known.
+ *  This is often the case for aircraft that report their position only through a Mode-S transponder.
  */
 
 class TrafficFactor_DistanceOnly : public Traffic::TrafficFactor_Abstract {
@@ -61,7 +60,7 @@ public:
      *
      *  @returns Property description
      */
-    virtual QString description();
+    virtual QString description() const override;
 
 
     //
@@ -89,24 +88,19 @@ public:
      *
      *  @param newHDist Property hDist
      */
-    void setHDist(AviationUnits::Distance newHDist) {
-        if (m_hDist == newHDist) {
-            return;
-        }
-        m_hDist = newHDist;
-        emit hDistChanged();
-    }
+    void setHDist(AviationUnits::Distance newHDist);
+
 
 signals:
     /*! \brief Notifier signal */
     void hDistChanged();
 
-private slots:
+
+private:
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
     virtual void updateValid() override;
 
-private:
     //
     // Property values
     //

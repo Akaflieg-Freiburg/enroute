@@ -62,14 +62,18 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
     }
 
     foreach(TrafficFactor* trafficFactor, trafficFactors) {
-        trafficFactor->updateTimestamp();
-        if (trafficFactor->coordinate().isValid()) {
-            emit factorWithPosition(*trafficFactor);
-        } else {
-            emit factorWithoutPosition(*trafficFactor);
+        if (trafficFactor == nullptr) {
+            continue;
         }
-        emit factorWithPosition(*trafficFactor);
-        emit factorWithoutPosition(*trafficFactor);
+
+        trafficFactor->updateTimestamp();
+        if (trafficFactor->valid()) {
+            emit factorWithPosition(*trafficFactor);
+        }
+    }
+
+    if (!trafficFactor_DistanceOnly.isNull()) {
+        emit factorWithoutPosition(*trafficFactor_DistanceOnly);
     }
 
     pressureAltitudeUpdated(barometricHeight);

@@ -131,7 +131,8 @@ private:
     QTimer simulatorTimer;
     QGeoPositionInfo geoInfo;
     AviationUnits::Distance barometricHeight;
-    QVector<TrafficFactor*> trafficFactors;
+    QVector<QPointer<TrafficFactor>> trafficFactors;
+    QPointer<TrafficFactor_DistanceOnly> trafficFactor_DistanceOnly;
 };
 
 }

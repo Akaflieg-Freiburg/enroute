@@ -21,6 +21,7 @@
 #pragma once
 
 #include "positioning/PositionInfo.h"
+#include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor.h"
 #include "traffic/Warning.h"
 
@@ -149,7 +150,7 @@ signals:
      *
      *  \param factor Traffic factor.
      */
-    void factorWithoutPosition(const Traffic::TrafficFactor &factor);
+    void factorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor);
 
     /*! \brief Traffic factor with position
      *
@@ -330,6 +331,7 @@ private:
 
     // Targets
     Traffic::TrafficFactor m_factor;
+    Traffic::TrafficFactor_DistanceOnly m_factorDistanceOnly;
 };
 
 }

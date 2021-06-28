@@ -316,35 +316,35 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
 
         // Traffic type
         auto ee = static_cast<quint8>(message.at(17));
-        auto type = Traffic::TrafficFactor::unknown;
+        auto type = Traffic::TrafficFactor_Abstract::unknown;
         switch(ee) {
         case 1:
         case 2:
         case 3:
         case 4:
         case 5:
-            type = Traffic::TrafficFactor::Aircraft;
+            type = Traffic::TrafficFactor_Abstract::Aircraft;
             break;
         case 6:
-            type = Traffic::TrafficFactor::Jet;
+            type = Traffic::TrafficFactor_Abstract::Jet;
             break;
         case 7:
-            type = Traffic::TrafficFactor::Copter;
+            type = Traffic::TrafficFactor_Abstract::Copter;
             break;
         case 9:
-            type = Traffic::TrafficFactor::Glider;
+            type = Traffic::TrafficFactor_Abstract::Glider;
             break;
         case 10:
-            type = Traffic::TrafficFactor::Balloon;
+            type = Traffic::TrafficFactor_Abstract::Balloon;
             break;
         case 11:
-            type = Traffic::TrafficFactor::Skydiver;
+            type = Traffic::TrafficFactor_Abstract::Skydiver;
             break;
         case 14:
-            type = Traffic::TrafficFactor::Drone;
+            type = Traffic::TrafficFactor_Abstract::Drone;
             break;
         case 19:
-            type = Traffic::TrafficFactor::StaticObstacle;
+            type = Traffic::TrafficFactor_Abstract::StaticObstacle;
             break;
         default:
             break;
@@ -387,11 +387,16 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto callSign = QString::fromLatin1(message.mid(18,8)).simplified();
 
         // Expose data
-        m_factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);
-        if ((callSign.compare("MODE S", Qt::CaseInsensitive) == 0) ||
-                (callSign.compare("MODE-S", Qt::CaseInsensitive) == 0)) {
-            emit factorWithoutPosition(m_factor);
+        if ((callSign.compare("MODE S", Qt::CaseInsensitive) == 0) || (callSign.compare("MODE-S", Qt::CaseInsensitive) == 0)) {
+            m_factorDistanceOnly.setAlarmLevel(alert);
+            m_factorDistanceOnly.setID(id);
+            m_factorDistanceOnly.setHDist(hDist);
+            m_factorDistanceOnly.setVDist(vDist);
+            m_factorDistanceOnly.setType(type);
+            m_factorDistanceOnly.setCallSign(callSign);
+            emit factorWithoutPosition(m_factorDistanceOnly);
         } else {
+            m_factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);
             emit factorWithPosition(m_factor);
         }
     }

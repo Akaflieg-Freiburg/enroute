@@ -138,7 +138,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
             }
         }
 
-        m_factor.setData(0 /* Alert Level */, targetID, hDist, vDist, Traffic::TrafficFactor::unknown, geoPositionInfo, callsign);
+        m_factor.setData(0 /* Alert Level */, targetID, hDist, vDist, Traffic::TrafficFactor_Abstract::unknown, geoPositionInfo, callsign);
         emit factorWithPosition(m_factor);
         return;
     }

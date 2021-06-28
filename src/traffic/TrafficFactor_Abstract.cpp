@@ -36,6 +36,7 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObje
 
 }
 
+#warning clarify and document: need to update timestamp manually or not?
 
 void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel)
 {

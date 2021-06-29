@@ -1,10 +1,11 @@
 CMakeLists.txt.user
 
 # build dirs
-build
-build-android-release
+build/
+build-android-release/
 build-android-debug/
 build-linux-debug/
+build-qt5-android-release/
 
 # IDE
 .vscode

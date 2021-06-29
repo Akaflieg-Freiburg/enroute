@@ -46,12 +46,12 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 {
     public static native void onWifiConnected();
 
-    private static MobileAdaptor        m_instance;
+    private static MobileAdaptor           m_instance;
 
-    private static NotificationManager  m_notificationManager;
-    private static Notification.Builder m_builder;
+    private static NotificationManager     m_notificationManager;
+    private static Notification.Builder    m_builder;
 
-    private static Vibrator             m_vibrator;
+    private static Vibrator                m_vibrator;
    
     private static WifiLock                m_wifiLock;
     private static WifiManager             m_wifiManager;
@@ -61,7 +61,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     public MobileAdaptor()
     {
         m_instance = this;
-	m_wifiStateChangeReceiver = new WifiStateChangeReceiver();
     }
 
     @Override
@@ -69,18 +68,9 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 
 	super.onCreate(savedInstanceState);
 	
-	// Get WiFi manager
-	m_wifiManager = (WifiManager) m_instance.getSystemService(Context.WIFI_SERVICE);
-	
-	// Get WiFi lock w/o reference counting
-	m_wifiLock = m_wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL , "Traffic Receiver Wi-Fi Lock");
-	m_wifiLock.setReferenceCounted(false);
-	
-	// Look for WiFi changes
-	IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-	m_instance.registerReceiver(m_wifiStateChangeReceiver, intentFilter);
-	
+        // Get WiFi manager and stateChangeReceiver
+        m_wifiManager = (WifiManager) m_instance.getSystemService(Context.WIFI_SERVICE);
+        m_wifiStateChangeReceiver = new WifiStateChangeReceiver();
     }
 
     @Override
@@ -98,17 +88,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	
         super.onDestroy();
     }
+
     
-    
-    /* Vibrate once, very briefly */
-    public static void vibrateBrief()
-    {
-        if (m_vibrator == null) {
-            m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
-	}
-        m_vibrator.vibrate(20);
-    }
-    
+    //
+    // Static Methods
+    //
     
     /* Get the SSID of the current WIFI network, if any.  Returns a string like "<unknown SSID>" otherwise */
     public static String getSSID()
@@ -123,20 +107,30 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     /* Acquire or release a WiFi lock */
     public static void lockWiFi(boolean on)
     {
-	// Paranoid safety checks
-	if (m_wifiLock == null) {
-	    return;
-	}
+        Log.i("enroute Flight Navigation", "lockWiFi");
 
-	// Acquire lock
-	if (on == true) {
-	    m_wifiLock.acquire();
-	    return;
-	}
+        // Get WiFi lock w/o reference counting
+        if (m_wifiLock == null) {
+            Log.d("Enroute Flight Navigation", "lockWiFi - get locker");
+            m_wifiLock = m_wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL , "Traffic Receiver Wi-Fi Lock");
+            m_wifiLock.setReferenceCounted(false);
+        }
 
-	// Release lock
-	if (m_wifiLock.isHeld()==true) 
+        // Paranoid safety checks
+        if (m_wifiLock == null) {
+            return;
+        }
+
+        // Acquire lock
+        if (on == true) {
+            m_wifiLock.acquire();
+            return;
+        }
+
+        // Release lock
+        if (m_wifiLock.isHeld()==true) {
 	    m_wifiLock.release();
+        }
     }
 
     
@@ -175,6 +169,33 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	m_notificationManager.notify(0, m_builder.build());
     }
 
+    
+    /* Begin to monitor network changes */
+    public static void startWiFiMonitor()
+    {
+	Log.d("enroute flight navigation", "startWiFiMonitor");
+
+	// Look for WiFi changes
+	IntentFilter intentFilter = new IntentFilter();
+	intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+	m_instance.registerReceiver(m_wifiStateChangeReceiver, intentFilter);
+    }
+
+    
+    /* Vibrate once, very briefly */
+    public static void vibrateBrief()
+    {
+        if (m_vibrator == null) {
+            m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
+	}
+        m_vibrator.vibrate(20);
+    }
+
+
+    //
+    // Embedded classes
+    //
+    
     private class WifiStateChangeReceiver extends BroadcastReceiver
     {
         @Override

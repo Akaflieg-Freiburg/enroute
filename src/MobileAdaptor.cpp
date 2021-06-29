@@ -98,6 +98,10 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 
 void MobileAdaptor::deferredInitialization() const
 {
+#if defined(Q_OS_ANDROID)
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+#endif
+
     QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this, &MobileAdaptor::showDownloadNotification);
 }
 

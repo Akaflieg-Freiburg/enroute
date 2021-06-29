@@ -73,6 +73,16 @@ void Settings::setAcceptedWeatherTerms(bool terms)
 }
 
 
+void Settings::setHideGlidingSectors(bool hide)
+{
+    if (hide == hideGlidingSectors()) {
+        return;
+    }
+    settings.setValue("Map/hideGlidingSectors", hide);
+    emit hideGlidingSectorsChanged();
+}
+
+
 void Settings::setHideUpperAirspaces(bool hide)
 {
     if (hide == hideUpperAirspaces()) {

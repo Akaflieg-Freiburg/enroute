@@ -263,7 +263,7 @@ private:
     // Interal function that does most of the work for aviationMapsChanged() emits
     // geoJSONChanged() when done. This function is meant to be run in a separate
     // thread.
-    void fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces);
+    void fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces, bool hideGlidingSectors);
 
     // This slot is called every time the the set of MBTile files changes. It
     // sets up the tile server to and generates a new style file.

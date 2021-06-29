@@ -185,7 +185,7 @@ $(function() {
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="comment">// Interal function that does most of the work for aviationMapsChanged() emits</span></div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="comment">// geoJSONChanged() when done. This function is meant to be run in a separate</span></div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="comment">// thread.</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">void</span> fillAviationDataCache(<span class="keyword">const</span> QStringList&amp; JSONFileNames, <span class="keywordtype">bool</span> hideUpperAirspaces);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">void</span> fillAviationDataCache(<span class="keyword">const</span> QStringList&amp; JSONFileNames, <span class="keywordtype">bool</span> hideUpperAirspaces, <span class="keywordtype">bool</span> hideGlidingSectors);</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="comment">// This slot is called every time the the set of MBTile files changes. It</span></div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="comment">// sets up the tile server to and generates a new style file.</span></div>

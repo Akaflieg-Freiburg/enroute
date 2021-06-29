@@ -173,6 +173,8 @@ Dialog {
                                 return "blue";
                             case "CTR":
                                 return "blue";
+                            case "GLD":
+                                return "yellow";
                             case "DNG":
                             case "P":
                             case "PJE":
@@ -194,6 +196,7 @@ Dialog {
                             case "B":
                             case "C":
                             case "D":
+                            case "GLD":
                             case "NRA":
                                 return ShapePath.SolidLine;
                             }
@@ -245,6 +248,8 @@ Dialog {
                         switch(airspace.CAT) {
                         case "CTR":
                             return "#40ff0000";
+                        case "GLD":
+                            return "#40ffff00";
                         case "RMZ":
                             return "#400000ff";
                         }

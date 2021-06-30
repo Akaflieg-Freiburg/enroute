@@ -211,9 +211,11 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor)
 {
+#warning need to handle animate!
 
     if ((factor.ID() == m_trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
         m_trafficObjectWithoutPosition->copyFrom(factor);
+        m_trafficObjectWithoutPosition->startLiveTime();
     }
 
 }

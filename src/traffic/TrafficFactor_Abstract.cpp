@@ -24,19 +24,18 @@
 
 Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObject(parent)
 {  
-    timeoutCounter.setSingleShot(true);
-    timeoutCounter.setInterval(timeout);
+    lifeTimeCounter.setSingleShot(true);
+    lifeTimeCounter.setInterval(lifeTime);
 
     // Bindings for property color
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::colorChanged);
 
     // Bindings for property valid
-    connect(&timeoutCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::updateValid);
+    connect(&lifeTimeCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::updateValid);
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::updateValid);
 
 }
 
-#warning clarify and document: need to update timestamp manually or not?
 
 void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel)
 {
@@ -46,7 +45,7 @@ void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel)
         return;
     }
 
-    updateTimestamp();
+    startLiveTime();
     if (m_alarmLevel == newAlarmLevel) {
         return;
     }
@@ -59,10 +58,10 @@ void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel)
 }
 
 
-void Traffic::TrafficFactor_Abstract::updateTimestamp()
+void Traffic::TrafficFactor_Abstract::startLiveTime()
 {
 
-    timeoutCounter.start();
+    lifeTimeCounter.start();
     updateValid();
 
 }
@@ -76,5 +75,5 @@ auto Traffic::TrafficFactor_Abstract::validAbstract() const -> bool
     if (m_alarmLevel > 3) {
         return false;
     }
-    return timeoutCounter.isActive();
+    return lifeTimeCounter.isActive();
 }

@@ -167,26 +167,71 @@ Item {
         // ADDITINAL MAP ITEMS
         MapCircle { // Circle for nondirectional traffic warning
             center: positionProvider.lastValidCoordinate
-            Behavior on center {
-                CoordinateAnimation { duration: 1000 }
-                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
-            }
-            radius: Math.max(500, global.trafficDataProvider().trafficObjectWithoutPosition.hDistM)
+
+            radius: Math.max(500, global.trafficDataProvider().trafficObjectWithoutPosition.hDist.toM())
             Behavior on radius {
                 NumberAnimation { duration: 1000 }
                 enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
             }
+
             color: global.trafficDataProvider().trafficObjectWithoutPosition.color
             Behavior on color {
                 ColorAnimation { duration: 400 }
                 enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
             }
             opacity: 0.3
-            visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
+            //visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
         }
 
-        TrafficLabel { // Label for nondirectional traffic warning
-            trafficInfo: global.trafficDataProvider().trafficObjectWithoutPosition
+        MapQuickItem {
+            id: mapCircleLabel
+
+            property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
+
+            coordinate: positionProvider.lastValidCoordinate
+            Behavior on coordinate {
+                CoordinateAnimation { duration: 1000 }
+                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
+            }
+
+            visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
+
+            Connections {
+                // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+                // is not updated when the height of the map changes. It does get updated when the
+                // width of the map changes. We use the undocumented method polishAndUpdate() here.
+                target: flightMap
+                function onHeightChanged() { mapCircleLabel.polishAndUpdate() }
+            }
+
+            sourceItem: Label {
+                id: lbl
+
+                x: -width/2
+                y: mapCircleLabel.distFromCenter - height/2
+
+                text: global.trafficDataProvider().trafficObjectWithoutPosition.description
+                textFormat: Text.RichText
+
+                font.pixelSize: 0.8*Qt.application.font.pixelSize
+
+                leftInset: -4
+                rightInset: -4
+                bottomInset: -1
+                topInset: -2
+
+                background: Rectangle {
+                    border.color: "black"
+                    border.width: 1
+                    color: Qt.lighter(global.trafficDataProvider().trafficObjectWithoutPosition.color, 1.9)
+
+                    Behavior on color {
+                        ColorAnimation { duration: 400 }
+                        enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
+                    }
+                    radius: 4
+                }
+            }
         }
 
         MapItemView { // Labels for traffic opponents

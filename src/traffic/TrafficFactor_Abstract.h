@@ -72,8 +72,14 @@ public:
     //
     // Methods
     //
-    /*! \brief Updates the timestamp to the current time, extending the life time of the object */
-    void updateTimestamp();
+
+    /*! \brief Starts or extends the lifetime of this object
+     *
+     *  Traffic information is valantile, and is considered valid only
+     *  for "lifeTime" seconds.  This method starts or extends the
+     *  object's life time.
+     */
+    void startLiveTime();
 
 
     //
@@ -337,7 +343,7 @@ signals:
 
 protected:
     // Copy data from other object
-    virtual void copyAbstract(const TrafficFactor_Abstract& other)
+    virtual void copyFromAbstract(const TrafficFactor_Abstract& other)
     {
         setAlarmLevel(other.alarmLevel());
         setAnimate(other.animate());
@@ -369,8 +375,8 @@ private:
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for longer than timeout.
-    QTimer timeoutCounter;
-    static constexpr auto timeout = 10s;
+    QTimer lifeTimeCounter;
+    static constexpr auto lifeTime = 10s;
 };
 
 }

@@ -50,9 +50,9 @@ public:
     //
 
     /*! \brief Copy data from other object */
-    virtual void copy(const TrafficFactor_DistanceOnly& other)
+    virtual void copyFrom(const TrafficFactor_DistanceOnly& other)
     {
-        copyAbstract(other);
+        copyFromAbstract(other);
         setHDist(other.hDist());
     }
 
@@ -61,6 +61,21 @@ public:
      *  @returns Property description
      */
     virtual QString description() const override;
+
+    /*! \brief Estimates if this traffic object has higher priority than other
+     *  traffic object
+     *
+     * The following criteria are applied in order.
+     *
+     * - Valid traffic objects have higher priority than invalid objects.
+     * - Traffic objects with higher alarm level have higher priority.
+     * - Traffic objects that are closer have higher priority.
+     *
+     * @param rhs Right hand side of the comparison
+     *
+     * @returns Boolean with the result
+     */
+    bool hasHigherPriorityThan(const TrafficFactor_DistanceOnly &rhs) const;
 
 
     //

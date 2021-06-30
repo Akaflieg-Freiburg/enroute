@@ -154,13 +154,13 @@ public:
         return m_Warning;
     }
 
-    /*! \brief Maximal vertical distance for traffic to be shown
+    /*! \brief Maximal vertical distance for relevant traffic
      *
      *  Traffic whose vertical distance to the own aircraft is large than this number will be ignored.
      */
     static constexpr AviationUnits::Distance maxVerticalDistance = AviationUnits::Distance::fromM(1500.0);
 
-    /*! \brief Maximal horizontal distance for traffic to be shown
+    /*! \brief Maximal horizontal distance for relevant traffic
      *
      *  Traffic whose horizontal distance to the own aircraft is large than this number will be ignored.
      */

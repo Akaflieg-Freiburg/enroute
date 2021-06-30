@@ -308,7 +308,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             m_factorDistanceOnly.setVDist(vDist);
             m_factorDistanceOnly.setType(type);
             m_factorDistanceOnly.setCallSign({});
-//            m_factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo, {});
+            m_factorDistanceOnly.startLiveTime();
             emit factorWithoutPosition(m_factorDistanceOnly);
             return;
         }

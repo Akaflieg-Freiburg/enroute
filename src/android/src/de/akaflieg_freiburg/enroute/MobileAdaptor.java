@@ -84,7 +84,9 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	}
 	
 	// Unregister the WiFi state change receiver
-	m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
+        if (m_wifiStateChangeReceiver != null) {
+            m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
+        }
 	
         super.onDestroy();
     }

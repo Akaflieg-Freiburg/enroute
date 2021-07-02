@@ -80,8 +80,21 @@ ninja apk
 echo "Build AAB"
 ninja aab
 
-#$Qt5_DIR_ANDROID/bin/androiddeployqt --input android_deployment_settings.json --output android-build --release --apk enroute-release-unsigned.apk
-#echo "Unsigned APK file is available at $PWD/enroute-release-unsigned.apk"
+
+#
+# Collect debug information
+#
+
+rm -f native-debug-symbols.zip
+cd android-build/libs
+find arm64-v8a/*.so|parallel $ANDROID_NDK_ROOT/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-objcopy --strip-debug {} {.}.so.sym
+zip ../../native-debug-symbols.zip arm64-v8a/*.so.sym
+cd ../..
+
+
+#
+# Sign files … and done.
+#
 
 if [ -z "$ANDROID_KEYSTORE_FILE" -o -z "$ANDROID_KEYSTORE_PASS" ]
 then

@@ -61,6 +61,7 @@ Page {
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
                     wpEditor.waypoint = waypoint
+                    wpEditor.index = waypointLayout.index
                     wpEditor.open()
                 }
             }
@@ -85,7 +86,7 @@ Page {
                             global.mobileAdaptor().vibrateBrief()
                             global.navigator().flightRoute.moveUp(index)
                         }
-                    } // Action
+                    }
 
                     Action {
                         text: qsTr("Move Down")
@@ -95,7 +96,7 @@ Page {
                             global.mobileAdaptor().vibrateBrief()
                             global.navigator().flightRoute.moveDown(index)
                         }
-                    } // Action
+                    }
 
                     Action {
                         text: qsTr("Remove")
@@ -104,7 +105,7 @@ Page {
                             global.mobileAdaptor().vibrateBrief()
                             global.navigator().flightRoute.removeWaypoint(index)
                         }
-                    } // Action
+                    }
                 }
             }
 

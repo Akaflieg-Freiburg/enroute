@@ -30,6 +30,7 @@ Dialog {
 
     // Property waypoint, and code to handle waypoint changes
     property var waypoint: global.geoMapProvider().createWaypoint()
+    property int index: -1 // Index of waypoint in flight route
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
@@ -63,7 +64,7 @@ Dialog {
     onAccepted: setName()
 
     function setName() {
-        global.navigator().flightRoute.renameWaypoint(waypoint, wpNameField.text)
+        global.navigator().flightRoute.renameWaypoint(index, wpNameField.text)
         close()
     }
 

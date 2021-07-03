@@ -55,7 +55,8 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
    
     private static WifiLock                m_wifiLock;
     private static WifiManager             m_wifiManager;
-    private static WifiStateChangeReceiver m_wifiStateChangeReceiver;
+//    private static WifiStateChangeReceiver m_wifiStateChangeReceiver;
+    private static BroadcastReceiver m_wifiStateChangeReceiver;
 
     
     public MobileAdaptor()
@@ -84,8 +85,10 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	}
 	
 	// Unregister the WiFi state change receiver
-	m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
-	
+        if (m_wifiStateChangeReceiver != null) {
+            m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
+        }
+
         super.onDestroy();
     }
 

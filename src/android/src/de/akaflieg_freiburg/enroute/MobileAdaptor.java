@@ -55,7 +55,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
    
     private static WifiLock                m_wifiLock;
     private static WifiManager             m_wifiManager;
-//    private static WifiStateChangeReceiver m_wifiStateChangeReceiver;
     private static BroadcastReceiver m_wifiStateChangeReceiver;
 
     

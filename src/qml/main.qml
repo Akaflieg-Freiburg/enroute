@@ -42,18 +42,6 @@ ApplicationWindow {
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
-
-    FLARMWarning {
-        id: flarmWarning
-
-        height: visible ? implicitHeight : 0
-        Behavior on height { NumberAnimation { duration: 100 } }
-
-        anchors.top: view.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-    }
-
     Drawer {
         id: drawer
 
@@ -366,10 +354,7 @@ ApplicationWindow {
         id: stackView
         initialItem: "pages/MapPage.qml"
 
-        anchors.top: flarmWarning.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.fill: parent
 
         focus: true
 

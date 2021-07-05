@@ -180,7 +180,7 @@ Item {
                 enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
             }
             opacity: 0.3
-            //visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
+            visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
         }
 
         MapQuickItem {

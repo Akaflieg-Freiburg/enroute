@@ -69,6 +69,7 @@ void Traffic::TrafficFactor_Abstract::startLiveTime()
 
 auto Traffic::TrafficFactor_Abstract::validAbstract() const -> bool
 {
+
     if (m_alarmLevel < 0) {
         return false;
     }

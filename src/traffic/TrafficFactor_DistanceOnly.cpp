@@ -141,7 +141,7 @@ void Traffic::TrafficFactor_DistanceOnly::updateValid()
 {
 
     bool newValid = validAbstract();
-    if (hDist().isFinite()) {
+    if (!hDist().isFinite()) {
         newValid = false;
     }
 

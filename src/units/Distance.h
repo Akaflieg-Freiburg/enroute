@@ -67,7 +67,7 @@ namespace AviationUnits {
          *
          * @returns distance
          */
-        static Distance fromNM(double distanceInNM)
+        static constexpr Distance fromNM(double distanceInNM)
         {
             Distance result;
             result.m_distanceInM = distanceInNM*MetersPerNauticalMile;

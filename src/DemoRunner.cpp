@@ -165,16 +165,13 @@ void DemoRunner::run()
 
     qWarning() << "Demo Mode" << "EDTF Mode S Traffic";
     trafficInfo.setCoordinate({});
-    auto* trafficFactor2 = new Traffic::TrafficFactor(this);
-    trafficFactor2->setData(1, //int newAlarmLevel,
-                           "newId", //const QString & newID,
-                           AviationUnits::Distance::fromM( ownPosition.distanceTo(trafficPosition) ), // newHDist,
-                           AviationUnits::Distance::fromM( trafficPosition.altitude()-ownPosition.altitude() ), // newVDist,
-                           Traffic::TrafficFactor_Abstract::Aircraft, // newType,
-                           trafficInfo,
-                           {} //const QString & newCallSign
-                           );
-    trafficSimulator->addTraffic(trafficFactor2);
+    auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
+    trafficFactor2->setAlarmLevel(1);
+    trafficFactor2->setID("newID");
+    trafficFactor2->setHDist( AviationUnits::Distance::fromM(1000) );
+    trafficFactor2->setType( Traffic::TrafficFactor_Abstract::Aircraft );
+    trafficFactor2->setCallSign({});
+    trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
     delay(4s);
     applicationWindow->grabWindow().save("01-03-01-traffic.png");
 

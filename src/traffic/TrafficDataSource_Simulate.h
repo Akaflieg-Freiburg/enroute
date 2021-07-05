@@ -108,6 +108,17 @@ public slots:
         barometricHeight = barAlt;
     }
 
+
+#warning
+    void setTrafficFactor_DistanceOnly(TrafficFactor_DistanceOnly* factor=nullptr)
+    {
+        delete trafficFactor_DistanceOnly;
+        if (factor != nullptr) {
+            factor->setParent(this);
+            trafficFactor_DistanceOnly = factor;
+        }
+    }
+
 #warning
     void addTraffic(TrafficFactor* factor)
     {
@@ -115,6 +126,7 @@ public slots:
         trafficFactors.append(factor);
     }
 
+#warning
     void removeTraffic()
     {
         qDeleteAll(trafficFactors);

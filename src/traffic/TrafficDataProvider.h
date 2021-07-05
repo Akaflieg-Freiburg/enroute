@@ -155,15 +155,15 @@ public:
 
     /*! \brief Maximal vertical distance for traffic to be shown
      *
-     *  Traffic whose vertical distance to the own aircraft is large than this number will be ignored.
+     *  Traffic whose vertical distance to the own aircraft is larger than this number will be ignored.
      */
     static constexpr AviationUnits::Distance maxVerticalDistance = AviationUnits::Distance::fromM(1500.0);
 
     /*! \brief Maximal horizontal distance for traffic to be shown
      *
-     *  Traffic whose horizontal distance to the own aircraft is large than this number will be ignored.
+     *  Traffic whose horizontal distance to the own aircraft is larger than this number will be ignored.
      */
-    static constexpr AviationUnits::Distance maxHorizontalDistance = AviationUnits::Distance::fromKM(20.0);
+    static constexpr AviationUnits::Distance maxHorizontalDistance = AviationUnits::Distance::fromNM(20.0);
 
 signals:
     /*! \brief Notifier signal */

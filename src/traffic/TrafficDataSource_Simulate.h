@@ -72,6 +72,15 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
+    /*! \brief Set distance that is to be reported by this class as the barometric altitude of ownship
+     *
+     *  @param barAlt Barometric altitude of simulated ownship
+     */
+    void setBarometricHeight(AviationUnits::Distance barAlt)
+    {
+        barometricHeight = barAlt;
+    }
+
     /*! \brief Set coordinate that is to be reported by this class as the position of ownship
      *
      *  @param coordinate Coordinate of simulated ownship
@@ -79,15 +88,6 @@ public slots:
     void setCoordinate(const QGeoCoordinate& coordinate)
     {
         geoInfo.setCoordinate(coordinate);
-    }
-
-    /*! \brief Set angle that is to be reported by this class as the true track of ownship
-     *
-     *  @param TT True track of simulated ownship
-     */
-    void setTT(AviationUnits::Angle TT)
-    {
-        geoInfo.setAttribute(QGeoPositionInfo::Direction, TT.toDEG());
     }
 
     /*! \brief Set speed that is to be reported by this class as the ground speed of ownship
@@ -99,17 +99,20 @@ public slots:
         geoInfo.setAttribute(QGeoPositionInfo::GroundSpeed, GS.toMPS());
     }
 
-    /*! \brief Set distance that is to be reported by this class as the barometric altitude of ownship
+    /*! \brief Set angle that is to be reported by this class as the true track of ownship
      *
-     *  @param barAlt Barometric altitude of simulated ownship
+     *  @param TT True track of simulated ownship
      */
-    void setBarometricHeight(AviationUnits::Distance barAlt)
+    void setTT(AviationUnits::Angle TT)
     {
-        barometricHeight = barAlt;
+        geoInfo.setAttribute(QGeoPositionInfo::Direction, TT.toDEG());
     }
 
-
-#warning
+    /*! \brief Set traffic item (distance only) that is to be reported by this class
+     *
+     *  @param factor Traffic factor, or nullptr to remove all distance-only traffic.
+     *  The traffic factor will be owned by this class.
+     */
     void setTrafficFactor_DistanceOnly(TrafficFactor_DistanceOnly* factor=nullptr)
     {
         delete trafficFactor_DistanceOnly;

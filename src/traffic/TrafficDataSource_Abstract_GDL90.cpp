@@ -396,7 +396,11 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
             m_factorDistanceOnly.setCallSign(callSign);
             emit factorWithoutPosition(m_factorDistanceOnly);
         } else {
-            m_factor.setData(alert, id, hDist, vDist, type, pInfo, callSign);
+            m_factor.setAlarmLevel(alert);
+            m_factor.setID(id);
+            m_factor.setType(type);
+            m_factor.setPositionInfo(pInfo);
+            m_factor.setCallSign(callSign);
             emit factorWithPosition(m_factor);
         }
     }

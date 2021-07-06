@@ -150,14 +150,10 @@ void DemoRunner::run()
     trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
     trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
     auto* trafficFactor1 = new Traffic::TrafficFactor(this);
-    trafficFactor1->setData(0, //int newAlarmLevel,
-                           "newId", //const QString & newID,
-                           AviationUnits::Distance::fromM( ownPosition.distanceTo(trafficPosition) ), // newHDist,
-                           AviationUnits::Distance::fromM( trafficPosition.altitude()-ownPosition.altitude() ), // newVDist,
-                           Traffic::TrafficFactor_Abstract::Aircraft, // newType,
-                           trafficInfo,
-                           {} //const QString & newCallSign
-                           );
+    trafficFactor1->setAlarmLevel(0);
+    trafficFactor1->setID("newID");
+    trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
+    trafficFactor1->setPositionInfo(trafficInfo);
 //    trafficSimulator->addTraffic(trafficFactor1);
 //    delay(4s);
     applicationWindow->grabWindow().save("01-03-01-traffic.png");

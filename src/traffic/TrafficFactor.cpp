@@ -20,179 +20,40 @@
 
 
 #include "Settings.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/TrafficFactor.h"
 
 
-Traffic::TrafficFactor::TrafficFactor(QObject *parent) : QObject(parent)
+Traffic::TrafficFactor::TrafficFactor(QObject *parent) : TrafficFactor_Abstract(parent)
 {  
-    timeoutCounter.setSingleShot(true);
 
-    // Compute derived properties and set bindings
-    connect(this, &Traffic::TrafficFactor::alarmLevelChanged, this, &Traffic::TrafficFactor::setColor);
-    setColor();
+    // Bindings for property description
+#warning want update method
+    connect(this, &Traffic::TrafficFactor_Abstract::callSignChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+    connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
 
-    connect(this, &Traffic::TrafficFactor::coordinateChanged, this, &Traffic::TrafficFactor::setDescription);
-    connect(this, &Traffic::TrafficFactor::typeChanged, this, &Traffic::TrafficFactor::setDescription);
-    connect(this, &Traffic::TrafficFactor::vDistChanged, this, &Traffic::TrafficFactor::setDescription);
-    setDescription();
+    // Bindings for property icon
+#warning want update method
+    connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor::iconChanged);
+    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::iconChanged);
 
-    connect(this, &Traffic::TrafficFactor::colorChanged, this, &Traffic::TrafficFactor::setIcon);
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::setIcon);
-    setIcon();
+    // Bindings for property valid
+    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::updateValid);
 
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::setValid);
-    connect(&timeoutCounter, &QTimer::timeout, this, &Traffic::TrafficFactor::setValid);
-    setValid();
 }
 
 
-auto Traffic::TrafficFactor::hasHigherPriorityThan(const TrafficFactor &rhs) const -> bool
-{
-    // Criterion 1: Valid instances have higher priority than invalid ones
-    if (!rhs.valid()) {
-        return true;
-    }
-    if (!valid()) {
-        return false;
-    }
-    // At this point, both instances are valid.
-
-    // Criterion 2: Alarm level
-    if (_alarmLevel > rhs._alarmLevel) {
-        return true;
-    }
-    if (_alarmLevel < rhs._alarmLevel) {
-        return false;
-    }
-    // At this point, both instances have equal alarm levels
-
-    // Final criterion: distance to current position
-    return (_hDist < rhs._hDist);
-}
-
-
-void Traffic::TrafficFactor::setAnimate(bool a)
-{
-    if (a == _animate) {
-        return;
-    }
-
-    _animate = a;
-    emit animateChanged();
-}
-
-
-void Traffic::TrafficFactor::setColor()
-{
-    QString newColor = QStringLiteral("red");
-    if (_alarmLevel == 0) {
-        newColor = QStringLiteral("green");
-    }
-    if (_alarmLevel == 1) {
-        newColor = QStringLiteral("yellow");
-    }
-
-    // Set value and emit signal, if appropriate
-    if (_color == newColor) {
-        return;
-    }
-    _color = newColor;
-    emit colorChanged();
-}
-
-
-void Traffic::TrafficFactor::setData(int newAlarmLevel, const QString& newID, AviationUnits::Distance newHDist, AviationUnits::Distance newVDist, Traffic::TrafficFactor_Abstract::AircraftType newType, const QGeoPositionInfo& newPositionInfo, const QString & newCallSign)
-{
-    // Set properties
-    bool hasAlarmLevelChanged = (_alarmLevel != newAlarmLevel);
-    _alarmLevel = newAlarmLevel;
-
-    bool hasIDChanged = (_ID != newID);
-    _ID = newID;
-
-    bool hasCoordinateChanged = (coordinate() != newPositionInfo.coordinate());
-    bool hasTTChanged = false;
-    if (_positionInfo.hasAttribute(QGeoPositionInfo::Direction) != newPositionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
-        hasTTChanged = true;
-    } else {
-        if (_positionInfo.attribute(QGeoPositionInfo::Direction) != newPositionInfo.attribute(QGeoPositionInfo::Direction)) {
-            hasTTChanged = true;
-        }
-    }
-    bool _positionInfoChanged = (_positionInfo != newPositionInfo);
-    _positionInfo = newPositionInfo;
-
-    bool hasTypeChanged = (_type != newType);
-    _type = newType;
-
-    bool hasVDistChanged = (_vDist != newVDist);
-    _vDist = newVDist;
-
-    bool hasHDistChanged = (_hDist != newHDist);
-    _hDist = newHDist;
-
-    bool hasClimbRateChanged = (_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed) != newPositionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
-
-    bool hasGroundSpeedChanged = (_positionInfo.attribute(QGeoPositionInfo::GroundSpeed) != newPositionInfo.attribute(QGeoPositionInfo::GroundSpeed));
-
-    // If the ID changed, do not animate property changes in the GUI.
-    if (hasIDChanged) {
-        setAnimate(false);
-    }
-
-    bool hasCallSignChanged = (m_callSign != newCallSign);
-    m_callSign = newCallSign;
-
-    // Emit notifier signals as appropriate
-    if (hasAlarmLevelChanged) {
-        emit alarmLevelChanged();
-    }
-    if (hasCoordinateChanged) {
-        emit coordinateChanged();
-    }
-    if (hasHDistChanged) {
-        emit hDistChanged();
-    }
-    if (hasIDChanged) {
-        emit IDChanged();
-        setAnimate(false);
-    }
-    if (_positionInfoChanged)  {
-        emit positionInfoChanged();
-    }
-    if (hasTTChanged) {
-        emit ttChanged();
-    }
-    if (hasGroundSpeedChanged) {
-        emit groundSpeedChanged();
-    }
-    if (hasClimbRateChanged) {
-        emit climbRateChanged();
-    }
-    if (hasTypeChanged) {
-        emit typeChanged();
-    }
-    if (hasVDistChanged) {
-        emit vDistChanged();
-    }
-    if (hasCallSignChanged) {
-        emit callSignChanged();
-    }
-
-    setAnimate(true);
-    setValid();
-}
-
-
-void Traffic::TrafficFactor::setDescription()
+auto Traffic::TrafficFactor::description() const -> QString
 {
     QStringList results;
 
-    if (!m_callSign.isEmpty()) {
-        results << m_callSign;
+    if (!callSign().isEmpty()) {
+        results << callSign();
     }
 
-    switch(_type) {
+    switch(type()) {
     case TrafficFactor_Abstract::Aircraft:
         results << tr("Aircraft");
         break;
@@ -234,12 +95,12 @@ void Traffic::TrafficFactor::setDescription()
         break;
     }
 
-    if (!_positionInfo.coordinate().isValid()) {
+    if (!positionInfo().coordinate().isValid()) {
         results << tr("Position unknown");
     }
 
-    if (_vDist.isFinite()) {
-        auto result = _vDist.toString(Settings::useMetricUnitsStatic(), true, true);
+    if (vDist().isFinite()) {
+        auto result = vDist().toString(Settings::useMetricUnitsStatic(), true, true);
         auto climbRateMPS = climbRate().toMPS();
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {
@@ -255,63 +116,106 @@ void Traffic::TrafficFactor::setDescription()
         results << result;
     }
 
-    auto newDescription = results.join(u"<br>");
+    return results.join(u"<br>");
 
-    // Set value and emit signal, if appropriate
-    if (_description == newDescription) {
-        return;
-    }
-    _description = newDescription;
-    emit descriptionChanged();
 }
 
 
-void Traffic::TrafficFactor::setIcon()
+auto Traffic::TrafficFactor::hasHigherPriorityThan(const TrafficFactor &rhs) const -> bool
+{
+
+    // Criterion 1: Valid instances have higher priority than invalid ones
+    if (!rhs.valid()) {
+        return true;
+    }
+    if (!valid()) {
+        return false;
+    }
+    // At this point, both instances are valid.
+
+    // Criterion 2: Alarm level
+    if (alarmLevel() > rhs.alarmLevel()) {
+        return true;
+    }
+    if (alarmLevel() < rhs.alarmLevel()) {
+        return false;
+    }
+    // At this point, both instances have equal alarm levels
+
+    // Final criterion: distance to current position
+    auto ownCoordinate = Positioning::PositionProvider::lastValidCoordinate();
+    if (!ownCoordinate.isValid()) {
+        return false;
+    }
+
+    return ownCoordinate.distanceTo(coordinate()) < ownCoordinate.distanceTo(rhs.coordinate());
+
+}
+
+
+auto Traffic::TrafficFactor::icon() const -> QString
 {
     // BaseType
     QString baseType = QStringLiteral("noDirection");
-    if (_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed) && _positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
-        auto GS = AviationUnits::Speed::fromMPS( _positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
+    if (m_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed) && m_positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
+        auto GS = AviationUnits::Speed::fromMPS( m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
         if (GS.isFinite() && (GS.toKN() > 4)) {
             baseType = QStringLiteral("withDirection");
         }
     }
 
-    auto newIcon = "/icons/traffic-"+baseType+"-"+color()+".svg";
-
-    // Set value and emit signal, if appropriate
-    if (_icon == newIcon) {
-        return;
-    }
-    _icon = newIcon;
-    emit iconChanged();
+    return "/icons/traffic-"+baseType+"-"+color()+".svg";
 }
 
 
-void Traffic::TrafficFactor::setValid()
+void Traffic::TrafficFactor::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
 {
-
-    // Compute validity
-    bool newValid = true;
-    if (!_positionInfo.isValid()) {
-        newValid = false;
-    } else {
-        // If this traffic object it not invalid for trivial reasons, check the age and set the timer.
-        auto delta = QDateTime::currentDateTimeUtc().msecsTo( _positionInfo.timestamp().addMSecs(timeoutMS) );
-        if (delta <= 0) {
-            newValid = false;
-        } else {
-            newValid = true;
-            timeoutCounter.start(delta);
-        }
-
-    }
-
-    // Set value and emit signal, if appropriate
-    if (_valid == newValid) {
+    if (m_positionInfo == newPositionInfo) {
         return;
     }
-    _valid = newValid;
-    emit validChanged();
+    m_positionInfo = newPositionInfo;
+
+    auto ownCoordinate = Positioning::PositionProvider::lastValidCoordinate();
+    auto trafficCoordinate = m_positionInfo.coordinate();
+    if (ownCoordinate.isValid() && trafficCoordinate.isValid()) {
+        m_hDist = AviationUnits::Distance::fromM( ownCoordinate.distanceTo(trafficCoordinate) );
+
+        if ((ownCoordinate.type() == QGeoCoordinate::Coordinate3D) && (trafficCoordinate.type() == QGeoCoordinate::Coordinate3D)) {
+            setVDist( AviationUnits::Distance::fromM(trafficCoordinate.altitude()-ownCoordinate.altitude()) );
+        } else {
+            setVDist( {} );
+        }
+
+    } else {
+        m_hDist = AviationUnits::Distance::fromM( qQNaN() );
+        setVDist( {} );
+    }
+
+    /* Notifier signals */
+#warning too many emissions here
+    emit climbRateChanged();
+    emit coordinateChanged();
+    emit groundSpeedChanged();
+    emit hDistChanged();
+    emit positionInfoChanged();
+    emit ttChanged();
+    emit vDistChanged();
+
+}
+
+
+void Traffic::TrafficFactor::updateValid()
+{
+
+    bool newValid = validAbstract();
+    if (!positionInfo().isValid()) {
+        newValid = false;
+    }
+
+    // Update property
+    if (m_valid != newValid) {
+        m_valid = newValid;
+        emit validChanged();
+    }
 
 }

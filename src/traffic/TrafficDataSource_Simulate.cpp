@@ -66,7 +66,7 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
             continue;
         }
 
-        trafficFactor->updateTimestamp();
+        trafficFactor->startLiveTime();
         if (trafficFactor->valid()) {
             emit factorWithPosition(*trafficFactor);
         }

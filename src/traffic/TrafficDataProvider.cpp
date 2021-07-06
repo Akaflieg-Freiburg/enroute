@@ -223,6 +223,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
 {
+
     // Check if traffic is too far away to be shown
     bool farAway = false;
     if (factor.vDist().isFinite() && (factor.vDist() > maxVerticalDistance)) {

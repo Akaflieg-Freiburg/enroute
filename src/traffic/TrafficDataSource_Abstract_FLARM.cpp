@@ -353,7 +353,10 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         }
 
         // Construct a traffic object
-        m_factor.setData(alarmLevel, targetID, hDist, vDist, type, pInfo, {});
+        m_factor.setAlarmLevel(alarmLevel);
+        m_factor.setID(targetID);
+        m_factor.setType(type);
+        m_factor.setPositionInfo(pInfo);
         emit factorWithPosition(m_factor);
         return;
     }

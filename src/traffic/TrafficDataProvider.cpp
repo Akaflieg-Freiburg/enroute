@@ -239,8 +239,10 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         if (factor.ID() == target->ID()) {
             // If traffic is too far away, delete the entry. Otherwise, replace the entry by the factor.
             if (farAway) {
+                target->setAnimate(false);
                 target->copyFrom( TrafficFactor() );
             } else {
+                target->setAnimate(true);
                 target->copyFrom(factor);
             }
             return;
@@ -259,6 +261,8 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         }
     }
     if (factor.hasHigherPriorityThan(*lowestPriObject)) {
+        lowestPriObject->setAnimate(false);
+        qWarning() << "COPY" << lowestPriObject << lowestPriObject->animate();
         lowestPriObject->copyFrom(factor);
     }
 

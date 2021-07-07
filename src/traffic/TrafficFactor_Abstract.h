@@ -343,10 +343,10 @@ signals:
 
 protected:
     // Copy data from other object
+#warning Animate not copied
     virtual void copyFromAbstract(const TrafficFactor_Abstract& other)
     {
         setAlarmLevel(other.alarmLevel());
-        setAnimate(other.animate());
         setCallSign(other.callSign());
         setID(other.ID());
         setType(other.type());
@@ -366,7 +366,7 @@ private:
     // Property values
     //
     int m_alarmLevel {0};
-    bool m_animate {true};
+    bool m_animate {false};
     QString m_callSign {};
     QString m_color {QStringLiteral("red")};
     QString m_ID;

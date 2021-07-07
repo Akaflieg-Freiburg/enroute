@@ -121,38 +121,6 @@ auto Traffic::TrafficFactor::description() const -> QString
 }
 
 
-auto Traffic::TrafficFactor::hasHigherPriorityThan(const TrafficFactor &rhs) const -> bool
-{
-
-    // Criterion 1: Valid instances have higher priority than invalid ones
-    if (!rhs.valid()) {
-        return true;
-    }
-    if (!valid()) {
-        return false;
-    }
-    // At this point, both instances are valid.
-
-    // Criterion 2: Alarm level
-    if (alarmLevel() > rhs.alarmLevel()) {
-        return true;
-    }
-    if (alarmLevel() < rhs.alarmLevel()) {
-        return false;
-    }
-    // At this point, both instances have equal alarm levels
-
-    // Final criterion: distance to current position
-    auto ownCoordinate = Positioning::PositionProvider::lastValidCoordinate();
-    if (!ownCoordinate.isValid()) {
-        return false;
-    }
-
-    return ownCoordinate.distanceTo(coordinate()) < ownCoordinate.distanceTo(rhs.coordinate());
-
-}
-
-
 auto Traffic::TrafficFactor::icon() const -> QString
 {
     // BaseType

@@ -53,7 +53,6 @@ public:
     virtual void copyFrom(const TrafficFactor_DistanceOnly& other)
     {
         copyFromAbstract(other);
-        setHDist(other.hDist());
     }
 
     /*! \brief Getter method for property with the same name
@@ -61,55 +60,6 @@ public:
      *  @returns Property description
      */
     virtual QString description() const override;
-
-    /*! \brief Estimates if this traffic object has higher priority than other
-     *  traffic object
-     *
-     * The following criteria are applied in order.
-     *
-     * - Valid traffic objects have higher priority than invalid objects.
-     * - Traffic objects with higher alarm level have higher priority.
-     * - Traffic objects that are closer have higher priority.
-     *
-     * @param rhs Right hand side of the comparison
-     *
-     * @returns Boolean with the result
-     */
-    bool hasHigherPriorityThan(const TrafficFactor_DistanceOnly &rhs) const;
-
-
-    //
-    // PROPERTIES
-    //
-
-    /*! \brief Horizontal distance from own position to the traffic, at the time of report
-     *
-     *  If known, this property holds the horizontal distance from the own
-     *  position to the traffic, at the time of report.  Otherwise, it contains
-     *  NaN.
-     */
-    Q_PROPERTY(AviationUnits::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property hDist
-     */
-    AviationUnits::Distance hDist() const
-    {
-        return m_hDist;
-    }
-
-    /*! \brief Setter function for property with the same name
-     *
-     *  @param newHDist Property hDist
-     */
-    void setHDist(AviationUnits::Distance newHDist);
-
-
-signals:
-    /*! \brief Notifier signal */
-    void hDistChanged();
-
 
 private:
     // Setter function for the property valid. Implementors of this class must bind this to the
@@ -119,7 +69,6 @@ private:
     //
     // Property values
     //
-    AviationUnits::Distance m_hDist;
 };
 
 }

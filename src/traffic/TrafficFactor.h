@@ -73,21 +73,6 @@ public:
      */
     QString description() const override;
 
-    /*! \brief Estimates if this traffic object has higher priority than other
-     *  traffic object
-     *
-     * The following criteria are applied in order.
-     *
-     * - Valid traffic objects have higher priority than invalid objects.
-     * - Traffic objects with higher alarm level have higher priority.
-     * - Traffic objects that are closer have higher priority.
-     *
-     * @param rhs Right hand side of the comparison
-     *
-     * @returns Boolean with the result
-     */
-    bool hasHigherPriorityThan(const TrafficFactor &rhs) const;
-
 
     //
     // PROPERTIES

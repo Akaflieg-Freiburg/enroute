@@ -24,6 +24,7 @@
 
 Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObject(parent)
 {  
+
     lifeTimeCounter.setSingleShot(true);
     lifeTimeCounter.setInterval(lifeTime);
 
@@ -33,6 +34,33 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObje
     // Bindings for property valid
     connect(&lifeTimeCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::updateValid);
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::updateValid);
+
+}
+
+
+auto Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const -> bool
+{
+
+    // Criterion 1: Valid instances have higher priority than invalid ones
+    if (!rhs.valid()) {
+        return true;
+    }
+    if (!valid()) {
+        return false;
+    }
+    // At this point, both instances are valid.
+
+    // Criterion 2: Alarm level
+    if (alarmLevel() > rhs.alarmLevel()) {
+        return true;
+    }
+    if (alarmLevel() < rhs.alarmLevel()) {
+        return false;
+    }
+    // At this point, both instances have equal alarm levels
+
+    // Final criterion: distance to current position
+    return (hDist() < rhs.hDist());
 
 }
 
@@ -54,6 +82,17 @@ void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel)
     }
     m_alarmLevel = newAlarmLevel;
     emit alarmLevelChanged();
+
+}
+
+
+void Traffic::TrafficFactor_Abstract::setHDist(AviationUnits::Distance newHDist) {
+
+    if (m_hDist == newHDist) {
+        return;
+    }
+    m_hDist = newHDist;
+    emit hDistChanged();
 
 }
 

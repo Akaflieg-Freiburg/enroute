@@ -73,6 +73,22 @@ public:
     // Methods
     //
 
+
+    /*! \brief Estimates if this traffic object has higher priority than other
+     *  traffic object
+     *
+     * The following criteria are applied in order.
+     *
+     * - Valid traffic objects have higher priority than invalid objects.
+     * - Traffic objects with higher alarm level have higher priority.
+     * - Traffic objects that are closer have higher priority.
+     *
+     * @param rhs Right hand side of the comparison
+     *
+     * @returns Boolean with the result
+     */
+    bool hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const;
+
     /*! \brief Starts or extends the lifetime of this object
      *
      *  Traffic information is valantile, and is considered valid only
@@ -212,6 +228,29 @@ public:
      */
     virtual QString description() const = 0;
 
+    /*! \brief Horizontal distance from own position to the traffic, at the time of report
+     *
+     *  If known, this property holds the horizontal distance from the own
+     *  position to the traffic, at the time of report.  Otherwise, it contains
+     *  NaN.
+     */
+    Q_PROPERTY(AviationUnits::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property hDist
+     */
+    AviationUnits::Distance hDist() const
+    {
+        return m_hDist;
+    }
+
+    /*! \brief Setter function for property with the same name
+     *
+     *  @param newHDist Property hDist
+     */
+    void setHDist(AviationUnits::Distance newHDist);
+
     /*! \brief Identifier string of the traffic
      *
      *  This property holds an identifier string for the traffic, as assigned by
@@ -329,6 +368,9 @@ signals:
     void descriptionChanged();
 
     /*! \brief Notifier signal */
+    void hDistChanged();
+
+    /*! \brief Notifier signal */
     void IDChanged();
 
     /*! \brief Notifier signal */
@@ -348,6 +390,7 @@ protected:
     {
         setAlarmLevel(other.alarmLevel());
         setCallSign(other.callSign());
+        setHDist(other.hDist());
         setID(other.ID());
         setType(other.type());
         setVDist(other.vDist());
@@ -369,6 +412,7 @@ private:
     bool m_animate {false};
     QString m_callSign {};
     QString m_color {QStringLiteral("red")};
+    AviationUnits::Distance m_hDist;
     QString m_ID;
     AircraftType m_type {AircraftType::unknown};
     AviationUnits::Distance m_vDist;

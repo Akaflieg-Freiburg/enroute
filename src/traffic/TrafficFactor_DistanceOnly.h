@@ -49,12 +49,6 @@ public:
     // Methods
     //
 
-    /*! \brief Copy data from other object */
-    virtual void copyFrom(const TrafficFactor_DistanceOnly& other)
-    {
-        copyFromAbstract(other);
-    }
-
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property description
@@ -66,9 +60,6 @@ private:
     // notifier signals of all the properties that validity depends on.
     virtual void updateValid() override;
 
-    //
-    // Property values
-    //
 };
 
 }

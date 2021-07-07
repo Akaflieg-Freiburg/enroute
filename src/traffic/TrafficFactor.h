@@ -60,11 +60,10 @@ public:
     //
 
     // Copy data from other object
-    void copyFrom(const TrafficFactor & other)
+    void copyFrom(const TrafficFactor& other)
     {
-        copyFromAbstract(other);
+        TrafficFactor_Abstract::copyFrom(other);
         setPositionInfo(other.positionInfo());
-#warning need to cover hDist and vDist
     }
 
     /*! \brief Getter method for property with the same name

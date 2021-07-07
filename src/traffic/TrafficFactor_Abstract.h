@@ -73,6 +73,21 @@ public:
     // Methods
     //
 
+    /*! \brief Copy data from other object
+     *
+     *  This method copies all properties from the other object, except
+     *  the property "animate". The lifeTime of this object is not
+     *  changed.
+     */
+    void copyFrom(const TrafficFactor_Abstract& other)
+    {
+        setAlarmLevel(other.alarmLevel());
+        setCallSign(other.callSign());
+        setHDist(other.hDist());
+        setID(other.ID());
+        setType(other.type());
+        setVDist(other.vDist());
+    }
 
     /*! \brief Estimates if this traffic object has higher priority than other
      *  traffic object
@@ -384,18 +399,6 @@ signals:
 
 
 protected:
-    // Copy data from other object
-#warning Animate not copied
-    virtual void copyFromAbstract(const TrafficFactor_Abstract& other)
-    {
-        setAlarmLevel(other.alarmLevel());
-        setCallSign(other.callSign());
-        setHDist(other.hDist());
-        setID(other.ID());
-        setType(other.type());
-        setVDist(other.vDist());
-    }
-
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
     virtual void updateValid() = 0;

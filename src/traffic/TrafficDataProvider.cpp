@@ -211,9 +211,15 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor)
 {
-#warning need to handle animate!
 
-    if ((factor.ID() == m_trafficObjectWithoutPosition->ID()) || factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
+    if (factor.ID() == m_trafficObjectWithoutPosition->ID()) {
+        m_trafficObjectWithoutPosition->setAnimate(true);
+        m_trafficObjectWithoutPosition->copyFrom(factor);
+        m_trafficObjectWithoutPosition->startLiveTime();
+    }
+
+    if (factor.hasHigherPriorityThan(*m_trafficObjectWithoutPosition)) {
+        m_trafficObjectWithoutPosition->setAnimate(false);
         m_trafficObjectWithoutPosition->copyFrom(factor);
         m_trafficObjectWithoutPosition->startLiveTime();
     }
@@ -240,10 +246,11 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
             // If traffic is too far away, delete the entry. Otherwise, replace the entry by the factor.
             if (farAway) {
                 target->setAnimate(false);
-                target->copyFrom( TrafficFactor() );
+                target->copyFrom(TrafficFactor());
             } else {
                 target->setAnimate(true);
                 target->copyFrom(factor);
+                target->startLiveTime();
             }
             return;
         }
@@ -262,8 +269,8 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     }
     if (factor.hasHigherPriorityThan(*lowestPriObject)) {
         lowestPriObject->setAnimate(false);
-        qWarning() << "COPY" << lowestPriObject << lowestPriObject->animate();
         lowestPriObject->copyFrom(factor);
+        lowestPriObject->startLiveTime();
     }
 
 }

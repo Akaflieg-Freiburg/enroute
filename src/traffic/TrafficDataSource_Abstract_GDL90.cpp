@@ -389,20 +389,22 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Expose data
         if ((callSign.compare("MODE S", Qt::CaseInsensitive) == 0) || (callSign.compare("MODE-S", Qt::CaseInsensitive) == 0)) {
             m_factorDistanceOnly.setAlarmLevel(alert);
-            m_factorDistanceOnly.setID(id);
-            m_factorDistanceOnly.setHDist(hDist);
-            m_factorDistanceOnly.setVDist(vDist);
-            m_factorDistanceOnly.setType(type);
             m_factorDistanceOnly.setCallSign(callSign);
+            m_factorDistanceOnly.setHDist(hDist);
+            m_factorDistanceOnly.setID(id);
+            m_factorDistanceOnly.setType(type);
+            m_factorDistanceOnly.setVDist(vDist);
+            m_factorDistanceOnly.startLiveTime();
             emit factorWithoutPosition(m_factorDistanceOnly);
         } else {
-#warning need to set hDist and vDist
-
             m_factor.setAlarmLevel(alert);
-            m_factor.setID(id);
-            m_factor.setType(type);
-            m_factor.setPositionInfo(pInfo);
             m_factor.setCallSign(callSign);
+            m_factor.setHDist(hDist);
+            m_factor.setID(id);
+            m_factor.setPositionInfo(pInfo);
+            m_factor.setType(type);
+            m_factor.setVDist(vDist);
+            m_factor.startLiveTime();
             emit factorWithPosition(m_factor);
         }
     }

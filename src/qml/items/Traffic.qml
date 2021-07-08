@@ -31,7 +31,7 @@ MapQuickItem {
     anchorPoint.x: image.width/2
     anchorPoint.y: image.height/2
 
-    coordinate: trafficInfo.coordinate
+    coordinate: trafficInfo.positionInfo.coordinate()
     Behavior on coordinate {
         CoordinateAnimation { duration: 1000 }
         enabled: trafficInfo.animate
@@ -51,7 +51,7 @@ MapQuickItem {
         Image {
             id: image
 
-            rotation: isFinite(trafficInfo.TT) ? trafficInfo.TT-flightMap.bearing : 0
+            rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-flightMap.bearing : 0
 
             source: trafficInfo.icon
 

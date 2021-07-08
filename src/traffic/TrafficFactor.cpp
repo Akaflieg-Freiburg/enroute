@@ -42,23 +42,12 @@ Traffic::TrafficFactor::TrafficFactor(QObject *parent) : TrafficFactor_Abstract(
 
 void Traffic::TrafficFactor::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
 {
+
     if (m_positionInfo == newPositionInfo) {
         return;
     }
     m_positionInfo = newPositionInfo;
-
-    auto ownCoordinate = Positioning::PositionProvider::lastValidCoordinate();
-    auto trafficCoordinate = m_positionInfo.coordinate();
-
-    /* Notifier signals */
-#warning too many emissions here
-    emit climbRateChanged();
-    emit coordinateChanged();
-    emit groundSpeedChanged();
-    emit hDistChanged();
     emit positionInfoChanged();
-    emit ttChanged();
-    emit vDistChanged();
 
 }
 
@@ -119,7 +108,7 @@ void Traffic::TrafficFactor::updateDescription()
 
     if (vDist().isFinite()) {
         auto result = vDist().toString(Settings::useMetricUnitsStatic(), true, true);
-        auto climbRateMPS = climbRate().toMPS();
+        auto climbRateMPS = m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed);
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {
                 result += " ↘";

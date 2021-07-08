@@ -129,12 +129,19 @@ public:
         return (m_positionInfo == rhs.m_positionInfo);
     }
 
+    /*! \brief Conversion */
+    operator QGeoPositionInfo() const
+    {
+        return m_positionInfo;
+    }
+
     /*! \brief Liftetime of geographic positioning information
      *
      * Geographic position information is considered valid only for
      * this amount of time after it has been received.
      */
     static constexpr auto lifetime = 20s;
+
 
 private:
     QGeoPositionInfo m_positionInfo {};

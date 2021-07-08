@@ -30,9 +30,9 @@ MapQuickItem {
     property var trafficInfo: ({})
 
     property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
-    property real t: isFinite(trafficInfo.TT) ? 2*Math.PI*(trafficInfo.TT-flightMap.bearing)/360.0 : 0
+    property real t: trafficInfo.positionInfo.trueTrack().isFinite() ? 2*Math.PI*(trafficInfo.positionInfo.trueTrack()-flightMap.bearing)/360.0 : 0
 
-    coordinate: trafficInfo.coordinate.isValid ? trafficInfo.coordinate : positionProvider.lastValidCoordinate
+    coordinate: trafficInfo.positionInfo.coordinate().isValid ? trafficInfo.positionInfo.coordinate() : positionProvider.lastValidCoordinate
     Behavior on coordinate {
         CoordinateAnimation { duration: 1000 }
         enabled: trafficInfo.animate

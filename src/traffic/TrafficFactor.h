@@ -23,6 +23,7 @@
 #include <QGeoPositionInfo>
 #include <QTimer>
 
+#include "positioning/PositionInfo.h"
 #include "traffic/TrafficFactor_Abstract.h"
 #include "units/Distance.h"
 #include "units/Speed.h"
@@ -71,71 +72,6 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Climb rate at the time of report
-     *
-     *  If known, this property holds the horizontal climb rate of the traffic
-     *  at the time of report.  Otherwise, it contains NaN.
-     */
-    Q_PROPERTY(AviationUnits::Speed climbRate READ climbRate NOTIFY climbRateChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property climbRate
-     */
-    AviationUnits::Speed climbRate() const
-    {
-        return AviationUnits::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
-    }
-
-    /*! \brief Coordinate of the traffic, as reported by FLARM
-     *
-     *  This property contains the coordinate part of the positionInfo. The
-     *  property exists for better cooperation with QML
-     */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate NOTIFY coordinateChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property coordinate
-     */
-    QGeoCoordinate coordinate() const
-    {
-        return m_positionInfo.coordinate();
-    }
-
-    /*! \brief Ground speed the time of report
-     *
-     *  If known, this property holds the ground speed of the traffic
-     *  at the time of report.  Otherwise, it contains NaN.
-     */
-    Q_PROPERTY(AviationUnits::Speed groundSpeed READ groundSpeed NOTIFY groundSpeedChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property groundSpeed
-     */
-    AviationUnits::Speed groundSpeed() const
-    {
-        return AviationUnits::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
-    }
-
-    /*! \brief Horizontal distance from own position to the traffic, at the time of report
-     *
-     *  If known, this property holds the horizontal distance from the own
-     *  position to the traffic, at the time of report.  Otherwise, it contains
-     *  NaN.
-     */
-    Q_PROPERTY(AviationUnits::Distance hDist READ hDist NOTIFY hDistChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property hDist
-     */
-    AviationUnits::Distance hDist() const
-    {
-        return m_hDist;
-    }
-
     /*! \brief Suggested icon
      *
      *  Depending on alarm level and movement of the traffic opponent, this
@@ -157,15 +93,15 @@ public:
      *  This property contains the coordinate part of the positionInfo. The
      *  property exists for better cooperation with QML
      */
-    Q_PROPERTY(QGeoPositionInfo positionInfo READ positionInfo WRITE setPositionInfo NOTIFY positionInfoChanged)
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo WRITE setPositionInfo NOTIFY positionInfoChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property positionInfo
      */
-    QGeoPositionInfo positionInfo() const
+    Positioning::PositionInfo positionInfo() const
     {
-        return m_positionInfo;
+        return Positioning::PositionInfo(m_positionInfo);
     }
 
     /*! \brief Setter function for property with the same name
@@ -176,44 +112,14 @@ public:
      */
     void setPositionInfo(const QGeoPositionInfo& positionInfo);
 
-    /*! \brief True track of traffic, as reported by FLARM
-     *
-     *  This property holds the true track of the traffic, or NaN if no track is
-     *  known.
-     */
-    Q_PROPERTY(double TT READ TT NOTIFY ttChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property TT
-     */
-    double TT() const
-    {
-        if (m_positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
-            return m_positionInfo.attribute(QGeoPositionInfo::Direction);
-        }
-        return qQNaN();
-    }
-
 
 signals:
-    /*! \brief Notifier signal */
-    void climbRateChanged();
-
-    /*! \brief Notifier signal */
-    void coordinateChanged();
-
-    /*! \brief Notifier signal */
-    void groundSpeedChanged();
-
     /*! \brief Notifier signal */
     void iconChanged();
 
     /*! \brief Notifier signal */
     void positionInfoChanged();
 
-    /*! \brief Notifier signal */
-    void ttChanged();
 
 protected:
     // See documentation in base class

@@ -44,6 +44,8 @@ public:
     // Standard destructor
     ~TrafficFactor_DistanceOnly() override = default;
 
+#warning Maybe want coordinate as property
+
 };
 
 }

@@ -303,11 +303,11 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             }
 
             m_factorDistanceOnly.setAlarmLevel(alarmLevel);
+            m_factorDistanceOnly.setCallSign({});
             m_factorDistanceOnly.setID(targetID);
             m_factorDistanceOnly.setHDist(hDist);
-            m_factorDistanceOnly.setVDist(vDist);
             m_factorDistanceOnly.setType(type);
-            m_factorDistanceOnly.setCallSign({});
+            m_factorDistanceOnly.setVDist(vDist);
             m_factorDistanceOnly.startLiveTime();
             emit factorWithoutPosition(m_factorDistanceOnly);
             return;
@@ -351,14 +351,15 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         if (ok) {
             pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
         }
-#warning need to set vDist
 
         // Construct a traffic object
         m_factor.setAlarmLevel(alarmLevel);
         m_factor.setHDist(hDist);
         m_factor.setID(targetID);
-        m_factor.setType(type);
         m_factor.setPositionInfo(pInfo);
+        m_factor.setType(type);
+        m_factor.setVDist(vDist);
+        m_factor.startLiveTime();
         emit factorWithPosition(m_factor);
         return;
     }

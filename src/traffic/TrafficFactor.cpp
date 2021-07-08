@@ -49,17 +49,6 @@ void Traffic::TrafficFactor::setPositionInfo(const QGeoPositionInfo& newPosition
 
     auto ownCoordinate = Positioning::PositionProvider::lastValidCoordinate();
     auto trafficCoordinate = m_positionInfo.coordinate();
-    if (ownCoordinate.isValid() && trafficCoordinate.isValid()) {
-#warning move vDist!
-        if ((ownCoordinate.type() == QGeoCoordinate::Coordinate3D) && (trafficCoordinate.type() == QGeoCoordinate::Coordinate3D)) {
-            setVDist( AviationUnits::Distance::fromM(trafficCoordinate.altitude()-ownCoordinate.altitude()) );
-        } else {
-            setVDist( {} );
-        }
-
-    } else {
-        setVDist( {} );
-    }
 
     /* Notifier signals */
 #warning too many emissions here

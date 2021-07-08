@@ -27,8 +27,6 @@ namespace Traffic {
 
 class TrafficDataSource_Abstract;
 
-#warning This class can probably be removed
-
 /*! \brief Traffic warning
  *
  *  Objects of this class represent traffic warnings, as detected by FLARM and

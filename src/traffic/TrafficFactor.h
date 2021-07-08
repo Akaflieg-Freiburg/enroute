@@ -170,9 +170,10 @@ public:
 
     /*! \brief Setter function for property with the same name
      *
+     *  Setting a new position info does not update the hDist or vDist properties.
+     *
      *  @param newPositionInfo Property positionInfo
      */
-#warning This does not update hDist nor vDist
     void setPositionInfo(const QGeoPositionInfo& positionInfo);
 
     /*! \brief True track of traffic, as reported by FLARM
@@ -192,24 +193,6 @@ public:
             return m_positionInfo.attribute(QGeoPositionInfo::Direction);
         }
         return qQNaN();
-    }
-
-    /*! \brief Vertical distance from own position to the traffic, at the time
-     *  of report
-     *
-     *  If known, this property holds the vertical distance from the own
-     *  position to the traffic, at the time of report.  Otherwise, it contains
-     *  NaN.
-     */
-    Q_PROPERTY(AviationUnits::Distance vDist READ vDist NOTIFY vDistChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property vDist
-     */
-    AviationUnits::Distance vDist() const
-    {
-        return m_vDist;
     }
 
 

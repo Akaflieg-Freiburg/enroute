@@ -28,24 +28,53 @@ Traffic::TrafficFactor::TrafficFactor(QObject *parent) : TrafficFactor_Abstract(
 {  
 
     // Bindings for property description
-#warning want update method
-    connect(this, &Traffic::TrafficFactor_Abstract::callSignChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
-    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
-    connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor_Abstract::descriptionChanged);
+    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::dispatchUpdateDescription);
 
     // Bindings for property icon
-#warning want update method
-    connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor::iconChanged);
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::iconChanged);
+    connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor::updateIcon);
+    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::updateIcon);
 
     // Bindings for property valid
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::updateValid);
+    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::dispatchUpdateValid);
 
 }
 
 
-auto Traffic::TrafficFactor::description() const -> QString
+void Traffic::TrafficFactor::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
+{
+    if (m_positionInfo == newPositionInfo) {
+        return;
+    }
+    m_positionInfo = newPositionInfo;
+
+    auto ownCoordinate = Positioning::PositionProvider::lastValidCoordinate();
+    auto trafficCoordinate = m_positionInfo.coordinate();
+    if (ownCoordinate.isValid() && trafficCoordinate.isValid()) {
+#warning move vDist!
+        if ((ownCoordinate.type() == QGeoCoordinate::Coordinate3D) && (trafficCoordinate.type() == QGeoCoordinate::Coordinate3D)) {
+            setVDist( AviationUnits::Distance::fromM(trafficCoordinate.altitude()-ownCoordinate.altitude()) );
+        } else {
+            setVDist( {} );
+        }
+
+    } else {
+        setVDist( {} );
+    }
+
+    /* Notifier signals */
+#warning too many emissions here
+    emit climbRateChanged();
+    emit coordinateChanged();
+    emit groundSpeedChanged();
+    emit hDistChanged();
+    emit positionInfoChanged();
+    emit ttChanged();
+    emit vDistChanged();
+
+}
+
+
+void Traffic::TrafficFactor::updateDescription()
 {
     QStringList results;
 
@@ -116,12 +145,18 @@ auto Traffic::TrafficFactor::description() const -> QString
         results << result;
     }
 
-    return results.join(u"<br>");
+    // Set property value
+    auto newDescription = results.join(u"<br>");
+    if (m_description == newDescription) {
+        return;
+    }
+    m_description = newDescription;
+    emit descriptionChanged();
 
 }
 
 
-auto Traffic::TrafficFactor::icon() const -> QString
+void Traffic::TrafficFactor::updateIcon()
 {
     // BaseType
     QString baseType = QStringLiteral("noDirection");
@@ -132,58 +167,26 @@ auto Traffic::TrafficFactor::icon() const -> QString
         }
     }
 
-    return "/icons/traffic-"+baseType+"-"+color()+".svg";
-}
-
-
-void Traffic::TrafficFactor::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
-{
-    if (m_positionInfo == newPositionInfo) {
+    auto newIcon = "/icons/traffic-"+baseType+"-"+color()+".svg";
+    if (m_icon == newIcon) {
         return;
     }
-    m_positionInfo = newPositionInfo;
-
-    auto ownCoordinate = Positioning::PositionProvider::lastValidCoordinate();
-    auto trafficCoordinate = m_positionInfo.coordinate();
-    if (ownCoordinate.isValid() && trafficCoordinate.isValid()) {
-        m_hDist = AviationUnits::Distance::fromM( ownCoordinate.distanceTo(trafficCoordinate) );
-
-        if ((ownCoordinate.type() == QGeoCoordinate::Coordinate3D) && (trafficCoordinate.type() == QGeoCoordinate::Coordinate3D)) {
-            setVDist( AviationUnits::Distance::fromM(trafficCoordinate.altitude()-ownCoordinate.altitude()) );
-        } else {
-            setVDist( {} );
-        }
-
-    } else {
-        m_hDist = AviationUnits::Distance::fromM( qQNaN() );
-        setVDist( {} );
-    }
-
-    /* Notifier signals */
-#warning too many emissions here
-    emit climbRateChanged();
-    emit coordinateChanged();
-    emit groundSpeedChanged();
-    emit hDistChanged();
-    emit positionInfoChanged();
-    emit ttChanged();
-    emit vDistChanged();
-
+    m_icon = newIcon;
+    emit iconChanged();
 }
 
 
 void Traffic::TrafficFactor::updateValid()
 {
 
-    bool newValid = validAbstract();
     if (!positionInfo().isValid()) {
-        newValid = false;
+        if (m_valid) {
+            m_valid = false;
+            emit validChanged();
+        }
+        return;
     }
 
-    // Update property
-    if (m_valid != newValid) {
-        m_valid = newValid;
-        emit validChanged();
-    }
+    TrafficFactor_Abstract::updateValid();
 
 }

@@ -52,6 +52,7 @@ configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/knotifications5/enroute\
 #
 # Set up sources
 #
+
 set(SOURCES
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
@@ -176,7 +177,17 @@ set(SOURCES
     ${HEADERS}
     )
 
+#
+# Compile definitions
+#
+
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+
+
+#
 # We use this macro here to avoid creating extremely large C++ files with binary content
+#
+
 qt_add_big_resources(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc

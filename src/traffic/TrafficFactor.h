@@ -62,15 +62,9 @@ public:
     // Copy data from other object
     void copyFrom(const TrafficFactor& other)
     {
-        TrafficFactor_Abstract::copyFrom(other);
         setPositionInfo(other.positionInfo());
+        TrafficFactor_Abstract::copyFrom(other); // This will also call updateDescription
     }
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property description
-     */
-    QString description() const override;
 
 
     //
@@ -153,7 +147,10 @@ public:
      *
      *  @returns Property icon
      */
-    QString icon() const;
+    QString icon() const
+    {
+        return m_icon;
+    }
 
     /*! \brief PositionInfo of the traffic
      *
@@ -175,6 +172,7 @@ public:
      *
      *  @param newPositionInfo Property positionInfo
      */
+#warning This does not update hDist nor vDist
     void setPositionInfo(const QGeoPositionInfo& positionInfo);
 
     /*! \brief True track of traffic, as reported by FLARM
@@ -226,9 +224,6 @@ signals:
     void groundSpeedChanged();
 
     /*! \brief Notifier signal */
-    void hDistChanged();
-
-    /*! \brief Notifier signal */
     void iconChanged();
 
     /*! \brief Notifier signal */
@@ -237,9 +232,12 @@ signals:
     /*! \brief Notifier signal */
     void ttChanged();
 
-    /*! \brief Notifier signal */
-    void vDistChanged();
+protected:
+    // See documentation in base class
+    virtual void updateDescription() override;
 
+    // Updates property icon
+    void updateIcon();
 
 private:
     // Setter function for the property valid. Implementors of this class must bind this to the
@@ -249,6 +247,7 @@ private:
     //
     // Property values
     //
+    QString m_icon;
     QGeoPositionInfo m_positionInfo;
     AviationUnits::Distance m_vDist;
     AviationUnits::Distance m_hDist;

@@ -87,6 +87,7 @@ public:
         setID(other.ID());
         setType(other.type());
         setVDist(other.vDist());
+        updateDescription();
     }
 
     /*! \brief Estimates if this traffic object has higher priority than other
@@ -241,7 +242,10 @@ public:
      *
      *  @returns Property description
      */
-    virtual QString description() const = 0;
+    QString description() const
+    {
+        return m_description;
+    }
 
     /*! \brief Horizontal distance from own position to the traffic, at the time of report
      *
@@ -399,13 +403,19 @@ signals:
 
 
 protected:
-    // Setter function for the property valid. Implementors of this class must bind this to the
-    // notifier signals of all the properties that validity depends on.
-    virtual void updateValid() = 0;
+    // Setter function for the property valid.  This function is virtual and must not be
+    // called or accessed from the constructor. For this reason, we have a special function
+    // "dispatchUpdateValid", which whose address is already known to the constructor.
+    virtual void updateValid();
+    void dispatchUpdateValid();
     bool m_valid {false};
 
-    // Checks if this class contains valid data.
-    bool validAbstract() const;
+    // Setter function for the property "description". This function is virtual and must not be
+    // called or accessed from the constructor. For this reason, we have a special function
+    // "dispatchUpdateDescription", which whose address is already known to the constructor.
+    virtual void updateDescription();
+    void dispatchUpdateDescription();
+    QString m_description {};
 
 private:
     //

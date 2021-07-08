@@ -44,22 +44,6 @@ public:
     // Standard destructor
     ~TrafficFactor_DistanceOnly() override = default;
 
-
-    //
-    // Methods
-    //
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property description
-     */
-    virtual QString description() const override;
-
-private:
-    // Setter function for the property valid. Implementors of this class must bind this to the
-    // notifier signals of all the properties that validity depends on.
-    virtual void updateValid() override;
-
 };
 
 }

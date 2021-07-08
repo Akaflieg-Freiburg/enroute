@@ -351,9 +351,11 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         if (ok) {
             pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, targetVS);
         }
+#warning need to set vDist
 
         // Construct a traffic object
         m_factor.setAlarmLevel(alarmLevel);
+        m_factor.setHDist(hDist);
         m_factor.setID(targetID);
         m_factor.setType(type);
         m_factor.setPositionInfo(pInfo);

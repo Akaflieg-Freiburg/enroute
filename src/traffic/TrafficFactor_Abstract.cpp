@@ -19,10 +19,11 @@
  ***************************************************************************/
 
 
+#include "Settings.h"
 #include "traffic/TrafficFactor_Abstract.h"
 
 
-Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObject(parent)
+Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObject(parent)
 {  
 
     lifeTimeCounter.setSingleShot(true);
@@ -31,10 +32,28 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject *parent) : QObje
     // Bindings for property color
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::colorChanged);
 
-    // Bindings for property valid
-    connect(&lifeTimeCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::updateValid);
-    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::updateValid);
+    // Bindings for property description
+    connect(this, &Traffic::TrafficFactor_Abstract::callSignChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
+    connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
+    connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
 
+    // Bindings for property valid
+    connect(&lifeTimeCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
+    connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
+    connect(this, &Traffic::TrafficFactor_Abstract::hDistChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
+
+}
+
+
+void Traffic::TrafficFactor_Abstract::dispatchUpdateDescription()
+{
+    updateDescription();
+}
+
+
+void Traffic::TrafficFactor_Abstract::dispatchUpdateValid()
+{
+    updateValid();
 }
 
 
@@ -106,14 +125,98 @@ void Traffic::TrafficFactor_Abstract::startLiveTime()
 }
 
 
-auto Traffic::TrafficFactor_Abstract::validAbstract() const -> bool
+void Traffic::TrafficFactor_Abstract::updateDescription()
+{
+    QStringList results;
+
+    // CallSign
+    if (!callSign().isEmpty()) {
+        results << callSign();
+    }
+
+    // Aircraft type
+    switch(type()) {
+    case Aircraft:
+        results << tr("Aircraft");
+        break;
+    case Airship:
+        results << tr("Airship");
+        break;
+    case Balloon:
+        results << tr("Balloon");
+        break;
+    case Copter:
+        results << tr("Copter");
+        break;
+    case Drone:
+        results << tr("Drone");
+        break;
+    case Glider:
+        results << tr("Glider");
+        break;
+    case HangGlider:
+        results << tr("Hang glider");
+        break;
+    case Jet:
+        results << tr("Jet");
+        break;
+    case Paraglider:
+        results << tr("Paraglider");
+        break;
+    case Skydiver:
+        results << tr("Skydiver");
+        break;
+    case StaticObstacle:
+        results << tr("Static Obstacle");
+        break;
+    case TowPlane:
+        results << tr("Tow Plane");
+        break;
+    default:
+        results << tr("Traffic");
+        break;
+    }
+
+    // Position
+    results << tr("Position unknown");
+
+    // Vertical distance
+    if (vDist().isFinite()) {
+        results << vDist().toString(Settings::useMetricUnitsStatic(), true, true);
+    }
+
+    // Set property value
+    auto newDescription = results.join(u"<br>");
+    if (m_description == newDescription) {
+        return;
+    }
+    m_description = newDescription;
+    emit descriptionChanged();
+}
+
+
+void Traffic::TrafficFactor_Abstract::updateValid()
 {
 
+    bool newValid = true;
     if (m_alarmLevel < 0) {
-        return false;
+        newValid = false;
     }
     if (m_alarmLevel > 3) {
-        return false;
+        newValid = false;
     }
-    return lifeTimeCounter.isActive();
+    if (!lifeTimeCounter.isActive()) {
+        newValid = false;
+    }
+    if (!hDist().isFinite()) {
+        newValid = false;
+    }
+
+    // Update property
+    if (m_valid == newValid) {
+        return;
+    }
+    m_valid = newValid;
+    emit validChanged();
+
 }

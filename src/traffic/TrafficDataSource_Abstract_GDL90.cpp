@@ -396,6 +396,8 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
             m_factorDistanceOnly.setCallSign(callSign);
             emit factorWithoutPosition(m_factorDistanceOnly);
         } else {
+#warning need to set hDist and vDist
+
             m_factor.setAlarmLevel(alert);
             m_factor.setID(id);
             m_factor.setType(type);

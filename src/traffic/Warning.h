@@ -27,6 +27,7 @@ namespace Traffic {
 
 class TrafficDataSource_Abstract;
 
+#warning This class can probably be removed
 
 /*! \brief Traffic warning
  *
@@ -141,10 +142,10 @@ public:
 private:
     // Private constructor, only to be used by TrafficDataSource_Abstract
     explicit Warning(const QString& AlarmLevel,
-                          const QString& RelativeBearing,
-                          const QString& AlarmType,
-                          const QString& RelativeVertical,
-                          const QString& RelativeDistance);
+                     const QString& RelativeBearing,
+                     const QString& AlarmType,
+                     const QString& RelativeVertical,
+                     const QString& RelativeDistance);
 
     // Property values
     int m_alarmLevel {-1};

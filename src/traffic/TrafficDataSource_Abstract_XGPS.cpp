@@ -138,6 +138,8 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
             }
         }
 
+#warning need to set hDist and vDist
+
         m_factor.setAlarmLevel(0);
         m_factor.setID(targetID);
         m_factor.setType(Traffic::TrafficFactor_Abstract::unknown);

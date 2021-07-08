@@ -108,12 +108,12 @@ public slots:
         geoInfo.setAttribute(QGeoPositionInfo::Direction, TT.toDEG());
     }
 
-    /*! \brief Set traffic item (distance only) that is to be reported by this class
+    /*! \brief Set traffic factor (distance only) that is to be reported by this class
      *
      *  @param factor Traffic factor, or nullptr to remove all distance-only traffic.
      *  The traffic factor will be owned by this class.
      */
-    void setTrafficFactor_DistanceOnly(TrafficFactor_DistanceOnly* factor=nullptr)
+    void setTrafficFactor_DistanceOnly(Traffic::TrafficFactor_DistanceOnly* factor=nullptr)
     {
         delete trafficFactor_DistanceOnly;
         if (factor != nullptr) {
@@ -122,14 +122,17 @@ public slots:
         }
     }
 
-#warning
-    void addTraffic(TrafficFactor* factor)
+    /*! \brief Add a traffic factor that is to be reported by this class
+     *
+     *  @param factor Traffic factor to be added. The pointer must be valid. The traffic factor will be owned by this class.
+     */
+    void addTraffic(Traffic::TrafficFactor* factor)
     {
         factor->setParent(this);
         trafficFactors.append(factor);
     }
 
-#warning
+    /*! \brief Remove all traffic factors (with position) */
     void removeTraffic()
     {
         qDeleteAll(trafficFactors);

@@ -167,6 +167,117 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>&#8212; Stefan Kebekus.</p>)html");
     }
 
+    if (name == ":text/flarmSetup.md") {
+        return tr(R"html(
+<p>In order to display nearby traffic on the moving map, <strong>Enroute Flight
+Navigation</strong> can connect to your aircraft's traffic receiver (typically a FLARM
+device).</p>
+
+<p>The author has tested the <strong>Enroute Flight Navigation</strong> with the
+following traffic receivers.</p>
+)html") + R"html(
+<ul style="margin-left:-25px;">
+  <li>Air Avionics AT-1 ‘AIR Traffic’ with software version 5.</li>
+</ul>
+)html" + tr(R"html(
+<p>Users reported success with the following traffic receivers.</p>
+)html") + R"html(
+<ul style="margin-left:-25px;">
+  <li>PilotAware Rosetta</li>
+  <li>SkyEcho2</li>
+  <li>Stratux</li>
+  <li>T-Beam</li>
+</ul>
+)html" + tr(R"html(
+<h2>Before you connect</h2>
+
+<p>Before you try to connect this app to your traffic receiver, make sure
+that the following conditions are met.</p>
+
+<ul style="margin-left:-25px;">
+  <li>Your traffic receiver has an integrated Wi-Fi interface that acts as a
+  wireless access point. Bluetooth devices are currently not supported.</li>
+
+  <li>You know the network name (=SSID) of the WLAN network deployed by your traffic
+  receiver. If the network is encrypted, you also need to know the WLAN
+  password.</li>
+
+  <li>Some devices require an additional password in order to access traffic
+  data. This is currently not supported. Set up your device so that no
+  additional password is required.</li>
+</ul>
+)html") + tr(R"html(
+<h2>Connecting to the traffic receiver</h2>
+
+<p>It takes a two steps to connect <strong>Enroute Flight
+Navigation</strong> to the traffic receiver for the first time. Once things
+are set up properly, your device should automatically detect the traffic
+receiver's WLAN network, enter the network and connect to the traffic data
+stream whenever you go flying.</p>
+
+)html") + tr(R"html(
+<h3>Step 1: Enter the traffic receiver's WLAN network</h3>
+
+<ul style="margin-left:-25px;">
+  <li>Make sure that the traffic receiver has power and is switched on. In a typical
+  aircraft installation, the traffic receiver is connected to the 'Avionics'
+  switch and will automatically switch on. You may need to wait a minute before
+  the WLAN comes online and is visible to your device.</li>
+
+  <li>Enter the WLAN network deployed by your traffic receiver. This is usually done
+  in the "WLAN Settings" of your device. Enter the WLAN password if
+  required. Some devices will issue a warning that the WLAN is not connected to
+  the internet. In this case, you might need to confirm that you wish to enter
+  the WLAN network.</li>
+</ul>
+
+<p>Most operating systems will offer to remember the connection, so that your
+device will automatically connect to this WLAN in the future. We recommend to
+use this option.</p>
+
+)html") + tr(R"html(
+<h3>Step 2: Connect to the traffic data stream</h3>
+
+<p>Open the main menu and navigate to the "Information" menu.</p>
+
+<ul style="margin-left:-25px;">
+  <li>If the entry "Traffic Receiver" is highlighted in green, then <strong>Enroute
+  Flight Navigation</strong> has already found the traffic receiver in the network
+  and has connected to it. Congratulations, you are done!</li>
+
+  <li>If the entry "Traffic Receiver" is not highlighted in green, then select the
+  entry. The "Traffic Receiver Status" page will open. The page explains the
+  connection status in detail, and explains how to establish a connection
+  manually.</li>
+</ul>
+)html") + tr(R"html(
+<h2>Troubleshooting</h2>
+
+<h4>The app cannot connect to the traffic data stream</h4>
+
+<ul style="margin-left:-25px;">
+  <li>If check that your device is connected to the WLAN network deployed by your
+  traffic receiver.</li>
+</ul>
+
+<h4>The connection breaks down after a few seconds</h4>
+
+<p>Most traffic receivers cannot serve more than one client and abort connections
+at random if more than one device tries to access.</p>
+
+<ul style="margin-left:-25px;">
+  <li>Make sure that there no second device connected to the traffic receiver's WLAN
+  network. The other device might well be in your friend's pocket!</li>
+
+  <li>Make sure that there is no other app trying to connected to the traffic
+  receiver's data stream.</li>
+
+  <li>Many traffic receivers offer "configuration panels" that can be accessed via a
+  web browser. Close all web browsers.</li>
+</ul>
+)html");
+    }
+
     if (name == ":text/flightRouteLibraryInfo.html") {
         return tr(R"html(<p>The flight routes are stored in standard <a href="https://geojson.org">GeoJSON format</a> in the following directory.<p>
 
@@ -286,117 +397,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>&#8212; Stefan Kebekus.</p>)html");
     }
 
-    if (name == ":text/flarmSetup.md") {
-        return tr(R"html(
-<p>In order to display nearby traffic on the moving map, <strong>Enroute Flight
-Navigation</strong> can connect to your aircraft's traffic receiver (typically a FLARM
-device).</p>
-
-<p>The author has tested the <strong>Enroute Flight Navigation</strong> with the
-following traffic receivers.</p>
-)html") + R"html(
-<ul style="margin-left:-25px;">
-  <li>Air Avionics AT-1 ‘AIR Traffic’ with software version 5.</li>
-</ul>
-)html" + tr(R"html(
-<p>Users reported success with the following traffic receivers.</p>
-)html") + R"html(
-<ul style="margin-left:-25px;">
-  <li>PilotAware Rosetta</li>
-  <li>SkyEcho2</li>
-  <li>Stratux</li>
-  <li>T-Beam</li>
-</ul>
-)html" + tr(R"html(
-<h2>Before you connect</h2>
-
-<p>Before you try to connect this app to your traffic receiver, make sure
-that the following conditions are met.</p>
-
-<ul style="margin-left:-25px;">
-  <li>Your traffic receiver has an integrated Wi-Fi interface that acts as a
-  wireless access point. Bluetooth devices are currently not supported.</li>
-
-  <li>You know the network name (=SSID) of the WLAN network deployed by your traffic
-  receiver. If the network is encrypted, you also need to know the WLAN
-  password.</li>
-
-  <li>Some devices require an additional password in order to access traffic
-  data. This is currently not supported. Set up your device so that no
-  additional password is required.</li>
-</ul>
-)html") + tr(R"html(
-<h2>Connecting to the traffic receiver</h2>
-
-<p>It takes a two steps to connect <strong>Enroute Flight
-Navigation</strong> to the traffic receiver for the first time. Once things
-are set up properly, your device should automatically detect the traffic
-receiver's WLAN network, enter the network and connect to the traffic data
-stream whenever you go flying.</p>
-
-)html") + tr(R"html(
-<h3>Step 1: Enter the traffic receiver's WLAN network</h3>
-
-<ul style="margin-left:-25px;">
-  <li>Make sure that the traffic receiver has power and is switched on. In a typical
-  aircraft installation, the traffic receiver is connected to the 'Avionics'
-  switch and will automatically switch on. You may need to wait a minute before
-  the WLAN comes online and is visible to your device.</li>
-
-  <li>Enter the WLAN network deployed by your traffic receiver. This is usually done
-  in the "WLAN Settings" of your device. Enter the WLAN password if
-  required. Some devices will issue a warning that the WLAN is not connected to
-  the internet. In this case, you might need to confirm that you wish to enter
-  the WLAN network.</li>
-</ul>
-
-<p>Most operating systems will offer to remember the connection, so that your
-device will automatically connect to this WLAN in the future. We recommend to
-use this option.</p>
-
-)html") + tr(R"html(
-<h3>Step 2: Connect to the traffic data stream</h3>
-
-<p>Open the main menu and navigate to the "Information" menu.</p>
-
-<ul style="margin-left:-25px;">
-  <li>If the entry "Traffic Receiver" is highlighted in green, then <strong>Enroute
-  Flight Navigation</strong> has already found the traffic receiver in the network
-  and has connected to it. Congratulations, you are done!</li>
-
-  <li>If the entry "Traffic Receiver" is not highlighted in green, then select the
-  entry. The "Traffic Receiver Status" page will open. The page explains the
-  connection status in detail, and explains how to establish a connection
-  manually.</li>
-</ul>
-)html") + tr(R"html(
-<h2>Troubleshooting</h2>
-
-<h4>The app cannot connect to the traffic data stream</h4>
-
-<ul style="margin-left:-25px;">
-  <li>If check that your device is connected to the WLAN network deployed by your
-  traffic receiver.</li>
-</ul>
-
-<h4>The connection breaks down after a few seconds</h4>
-
-<p>Most traffic receivers cannot serve more than one client and abort connections
-at random if more than one device tries to access.</p>
-
-<ul style="margin-left:-25px;">
-  <li>Make sure that there no second device connected to the traffic receiver's WLAN
-  network. The other device might well be in your friend's pocket!</li>
-
-  <li>Make sure that there is no other app trying to connected to the traffic
-  receiver's data stream.</li>
-
-  <li>Many traffic receivers offer "configuration panels" that can be accessed via a
-  web browser. Close all web browsers.</li>
-</ul>
-)html");
-    }
-
     if (name == ":text/simulatorSetup.md") {
         return tr(R"html(
 <p><strong>Enroute Flight Navigation</strong> can connect to flight simulator software.  The app
@@ -404,6 +404,13 @@ has been tested with the following programs.</p>
 
 <ul style="margin-left:-25px;">
   <li>X-Plane 11.</li>
+</ul>
+
+<p>Users have reported success with the following programs.</p>
+
+<ul style="margin-left:-25px;">
+  <li>Microsoft Flight Simulator.</li>
+  <li>X-Plane 10.</li>
 </ul>
 
 <p>Please contact us if you are aware of other programs that also work.</p>
@@ -435,20 +442,22 @@ adjust accordingly.  To end the connection to the flight simulator, simply leave
 the flight simulator's Wi-Fi network.</p>
 
 )html") + tr(R"html(
+<h3>MS Flight Simulator</h3>
+
+<p>In order to communicate with other programs, the MS Flight Simulator requires
+additional software. Users reported that <strong>Enroute Flight Navigation</strong> works
+well with the inexpensive EFB-Connector program <a href= "http://xmapsy.com/">XMapsy</a>.
+If you are aware of other software that also works, then please be in touch.  The article
+<a href="https://support.foreflight.com/hc/en-us/articles/204115275-How-do-I-connect-Microsoft-Flight-Simulator-FS-X-or-FS-2004-to-ForeFlight-">How
+do I connect Microsoft Flight Simulator 2020 (MSFS2020) to ForeFlight?</a>
+might be helpful.</p>
+)html") + tr(R"html(
 <h3>X-Plane 11</h3>
 
 <p>Open the "Settings" window and choose the "Network" tab.  Locate the settings
 group "This machine's role" on the right-hand side of the tab. Open the section
 "iPHONE, iPAD, and EXTERNAL APPS" and select the item "Broadcast to all mapping
 apps on the network" under the headline "OTHER MAPPING APPS".</p>
-)html") + tr(R"html(
-<h3>MS Flight Simulator</h3>
-
-<p>Unknown as of now, as the author does not have access to this program.
-If the MS Flight Simulator works for you, please be in touch.  The article
-<a href="https://support.foreflight.com/hc/en-us/articles/204115275-How-do-I-connect-Microsoft-Flight-Simulator-FS-X-or-FS-2004-to-ForeFlight-">How
-do I connect Microsoft Flight Simulator 2020 (MSFS2020) to ForeFlight?</a>
-might be helpful.</p>
 )html") + tr(R"html(
 <h3>Other programs</h3>
 
@@ -493,8 +502,7 @@ page will open, which explains the connection status in more detail.</p>
 
     if (name == ":text/whatsnew.html") {
         return tr("**The moving map can now optionally display glider sectors.** Update your aviation maps and go to Menu/Settings to enable this feature.") + "\n\n"
-                + tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.") + "\n\n"
-+ tr("**We need help with the Microsoft Flight Simulator.** This App should work well with the MS Flight Simulator, but the author does not have access to a Windows machine. Please contact us if you know the Flight Simulator and if you would like to help with testing.") + "\n\n";
+                + tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.");
     }
 
     QFile file(name);

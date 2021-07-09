@@ -304,6 +304,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
 
             m_factorDistanceOnly.setAlarmLevel(alarmLevel);
             m_factorDistanceOnly.setCallSign({});
+            m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());
             m_factorDistanceOnly.setID(targetID);
             m_factorDistanceOnly.setHDist(hDist);
             m_factorDistanceOnly.setType(type);

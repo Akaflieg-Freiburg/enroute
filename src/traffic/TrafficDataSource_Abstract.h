@@ -22,7 +22,7 @@
 
 #include "positioning/PositionInfo.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
-#include "traffic/TrafficFactor.h"
+#include "traffic/TrafficFactor_WithPosition.h"
 #include "traffic/Warning.h"
 
 
@@ -159,7 +159,7 @@ signals:
      *
      *  \param factor Traffic factor.
      */
-    void factorWithPosition(const Traffic::TrafficFactor &factor);
+    void factorWithPosition(const Traffic::TrafficFactor_WithPosition &factor);
 
     /*! \brief Traffic factor with position
      *
@@ -330,7 +330,7 @@ private:
     bool m_hasHeartbeat {false};
 
     // Targets
-    Traffic::TrafficFactor m_factor;
+    Traffic::TrafficFactor_WithPosition m_factor;
     Traffic::TrafficFactor_DistanceOnly m_factorDistanceOnly;
 };
 

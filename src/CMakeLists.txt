@@ -106,7 +106,7 @@ set(SOURCES
     traffic/TrafficDataProvider.h
     traffic/TrafficFactor_Abstract.h
     traffic/TrafficFactor_DistanceOnly.h
-    traffic/TrafficFactor.h
+    traffic/TrafficFactor_WithPosition.h
     traffic/Warning.h
     ui/ScaleQuickItem.h
     units/Angle.h
@@ -160,7 +160,7 @@ set(SOURCES
     traffic/TrafficDataProvider.cpp
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
-    traffic/TrafficFactor.cpp
+    traffic/TrafficFactor_WithPosition.cpp
     traffic/Warning.cpp
     ui/ScaleQuickItem.cpp
     units/Angle.cpp

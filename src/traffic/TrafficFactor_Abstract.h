@@ -30,6 +30,8 @@ using namespace std::chrono_literals;
 
 namespace Traffic {
 
+#warning documentation
+
 /*! \brief Traffic factors
  *
  *  Objects of this class represent traffic factors, as detected by FLARM and

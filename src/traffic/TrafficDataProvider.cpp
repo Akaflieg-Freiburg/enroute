@@ -39,7 +39,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     int numTrafficObjects = 20;
     m_trafficObjects.reserve(numTrafficObjects);
     for(int i = 0; i<numTrafficObjects; i++) {
-        auto *trafficObject = new Traffic::TrafficFactor(this);
+        auto *trafficObject = new Traffic::TrafficFactor_WithPosition(this);
         QQmlEngine::setObjectOwnership(trafficObject, QQmlEngine::CppOwnership);
         m_trafficObjects.append( trafficObject );
     }
@@ -227,7 +227,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
 }
 
 
-void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor)
+void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)
 {
 
     // Check if traffic is too far away to be shown
@@ -246,7 +246,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
             // If traffic is too far away, delete the entry. Otherwise, replace the entry by the factor.
             if (farAway) {
                 target->setAnimate(false);
-                target->copyFrom(TrafficFactor());
+                target->copyFrom(TrafficFactor_WithPosition());
             } else {
                 target->setAnimate(true);
                 target->copyFrom(factor);

@@ -27,7 +27,7 @@
 #include "positioning/PositionInfoSource_Abstract.h"
 #include "traffic/Warning.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
-#include "traffic/TrafficFactor.h"
+#include "traffic/TrafficFactor_WithPosition.h"
 
 
 namespace Traffic {
@@ -109,13 +109,13 @@ public:
      *  be ignored. The list is not sorted in any way. The items themselves are
      *  owned by this class.
      */
-    Q_PROPERTY(QQmlListProperty<Traffic::TrafficFactor> trafficObjects4QML READ trafficObjects4QML CONSTANT)
+    Q_PROPERTY(QQmlListProperty<Traffic::TrafficFactor_WithPosition> trafficObjects4QML READ trafficObjects4QML CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property trafficObjects4QML
      */
-    QQmlListProperty<Traffic::TrafficFactor> trafficObjects4QML()
+    QQmlListProperty<Traffic::TrafficFactor_WithPosition> trafficObjects4QML()
     {
         return QQmlListProperty(this, &m_trafficObjects);
     }
@@ -202,7 +202,7 @@ private slots:
     void onSourceHeartbeatChanged();
 
     // Called if one of the sources reports traffic (position unknown)
-    void onTrafficFactorWithPosition(const Traffic::TrafficFactor &factor);
+    void onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor);
 
     // Called if one of the sources reports traffic (position known)
     void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor);
@@ -228,7 +228,7 @@ private:
     QTimer foreFlightBroadcastTimer;
 
     // Targets
-    QList<Traffic::TrafficFactor *> m_trafficObjects;
+    QList<Traffic::TrafficFactor_WithPosition *> m_trafficObjects;
     QPointer<Traffic::TrafficFactor_DistanceOnly> m_trafficObjectWithoutPosition;
 
     // TrafficData Sources

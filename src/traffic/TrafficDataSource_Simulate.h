@@ -126,7 +126,7 @@ public slots:
      *
      *  @param factor Traffic factor to be added. The pointer must be valid. The traffic factor will be owned by this class.
      */
-    void addTraffic(Traffic::TrafficFactor* factor)
+    void addTraffic(Traffic::TrafficFactor_WithPosition* factor)
     {
         factor->setParent(this);
         trafficFactors.append(factor);
@@ -149,7 +149,7 @@ private:
     QTimer simulatorTimer;
     QGeoPositionInfo geoInfo;
     AviationUnits::Distance barometricHeight;
-    QVector<QPointer<TrafficFactor>> trafficFactors;
+    QVector<QPointer<TrafficFactor_WithPosition>> trafficFactors;
     QPointer<TrafficFactor_DistanceOnly> trafficFactor_DistanceOnly;
 };
 

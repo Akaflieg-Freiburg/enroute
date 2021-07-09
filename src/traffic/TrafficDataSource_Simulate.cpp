@@ -61,7 +61,7 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
         setReceivingHeartbeat(false);
     }
 
-    foreach(TrafficFactor* trafficFactor, trafficFactors) {
+    foreach(TrafficFactor_WithPosition* trafficFactor, trafficFactors) {
         if (trafficFactor == nullptr) {
             continue;
         }

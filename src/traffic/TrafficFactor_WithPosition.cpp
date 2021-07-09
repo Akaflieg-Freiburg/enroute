@@ -21,26 +21,26 @@
 
 #include "Settings.h"
 #include "positioning/PositionProvider.h"
-#include "traffic/TrafficFactor.h"
+#include "traffic/TrafficFactor_WithPosition.h"
 
 
-Traffic::TrafficFactor::TrafficFactor(QObject *parent) : TrafficFactor_Abstract(parent)
+Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent) : TrafficFactor_Abstract(parent)
 {  
 
     // Bindings for property description
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::dispatchUpdateDescription);
+    connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::dispatchUpdateDescription);
 
     // Bindings for property icon
-    connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor::updateIcon);
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::updateIcon);
+    connect(this, &Traffic::TrafficFactor_Abstract::colorChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
+    connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::updateIcon);
 
     // Bindings for property valid
-    connect(this, &Traffic::TrafficFactor::positionInfoChanged, this, &Traffic::TrafficFactor::dispatchUpdateValid);
+    connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::dispatchUpdateValid);
 
 }
 
 
-void Traffic::TrafficFactor::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
+void Traffic::TrafficFactor_WithPosition::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
 {
 
     if (m_positionInfo == newPositionInfo) {
@@ -52,7 +52,7 @@ void Traffic::TrafficFactor::setPositionInfo(const QGeoPositionInfo& newPosition
 }
 
 
-void Traffic::TrafficFactor::updateDescription()
+void Traffic::TrafficFactor_WithPosition::updateDescription()
 {
     QStringList results;
 
@@ -134,7 +134,7 @@ void Traffic::TrafficFactor::updateDescription()
 }
 
 
-void Traffic::TrafficFactor::updateIcon()
+void Traffic::TrafficFactor_WithPosition::updateIcon()
 {
     // BaseType
     QString baseType = QStringLiteral("noDirection");
@@ -154,7 +154,7 @@ void Traffic::TrafficFactor::updateIcon()
 }
 
 
-void Traffic::TrafficFactor::updateValid()
+void Traffic::TrafficFactor_WithPosition::updateValid()
 {
 
     if (!positionInfo().isValid()) {

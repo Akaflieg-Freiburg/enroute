@@ -33,7 +33,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
-#include "traffic/TrafficFactor.h"
+#include "traffic/TrafficFactor_WithPosition.h"
 
 using namespace std::chrono_literals;
 
@@ -149,7 +149,7 @@ void DemoRunner::run()
     trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, AviationUnits::Speed::fromKN(70).toMPS() );
     trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
     trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
-    auto* trafficFactor1 = new Traffic::TrafficFactor(this);
+    auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
     trafficFactor1->setAlarmLevel(0);
     trafficFactor1->setID("newID");
     trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);

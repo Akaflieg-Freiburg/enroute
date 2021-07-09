@@ -390,6 +390,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         if ((callSign.compare("MODE S", Qt::CaseInsensitive) == 0) || (callSign.compare("MODE-S", Qt::CaseInsensitive) == 0)) {
             m_factorDistanceOnly.setAlarmLevel(alert);
             m_factorDistanceOnly.setCallSign(callSign);
+            m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());
             m_factorDistanceOnly.setHDist(hDist);
             m_factorDistanceOnly.setID(id);
             m_factorDistanceOnly.setType(type);

@@ -32,13 +32,14 @@ class DemoRunner;
 
 namespace Traffic {
 
+#warning documentation
 /*! \brief Traffic opponents
  *
  *  Objects of this class represent traffic opponents whose position is known, as detected by FLARM and
  *  similar devices.
  */
 
-class TrafficFactor : public TrafficFactor_Abstract {
+class TrafficFactor_WithPosition : public TrafficFactor_Abstract {
     Q_OBJECT
 
     // Only friends can set properties
@@ -51,17 +52,17 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit TrafficFactor(QObject *parent = nullptr);
+    explicit TrafficFactor_WithPosition(QObject *parent = nullptr);
 
     // Standard destructor
-    ~TrafficFactor() override = default;
+    ~TrafficFactor_WithPosition() override = default;
 
     //
     // Methods
     //
 
     // Copy data from other object
-    void copyFrom(const TrafficFactor& other)
+    void copyFrom(const TrafficFactor_WithPosition& other)
     {
         setPositionInfo(other.positionInfo());
         TrafficFactor_Abstract::copyFrom(other); // This will also call updateDescription

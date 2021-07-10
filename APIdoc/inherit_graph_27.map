@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classTraffic_1_1TrafficFactor.html" title="Traffic opponents." alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node1" href="$classTraffic_1_1TrafficFactor__Abstract.html" title="Abstract base class for traffic factors." alt="" coords="5,39,152,80"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficFactor__DistanceOnly.html" title="Traffic factor where only distance is known." alt="" coords="200,5,347,47"/>
+<area shape="rect" id="node3" href="$classTraffic_1_1TrafficFactor__WithPosition.html" title="Traffic factor whose precise position is known." alt="" coords="200,71,347,112"/>
 </map>

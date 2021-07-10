@@ -1,0 +1,4 @@
+<map id="Traffic::TrafficFactor_WithPosition" name="Traffic::TrafficFactor_WithPosition">
+<area shape="rect" id="node1" title="Traffic factor whose precise position is known." alt="" coords="5,95,152,136"/>
+<area shape="rect" id="node2" href="$classTraffic_1_1TrafficFactor__Abstract.html" title="Abstract base class for traffic factors." alt="" coords="5,5,152,47"/>
+</map>

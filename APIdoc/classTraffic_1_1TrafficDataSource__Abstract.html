@@ -96,12 +96,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a287d4c6523682facee4e2ef8a3f703db">errorStringChanged</a> (QString newError)</td></tr>
 <tr class="memdesc:a287d4c6523682facee4e2ef8a3f703db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 <tr class="separator:a287d4c6523682facee4e2ef8a3f703db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c534eb6826cdf6e9509cbe7a23a2a1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c534eb6826cdf6e9509cbe7a23a2a1e">factorWithoutPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;factor)</td></tr>
-<tr class="memdesc:a5c534eb6826cdf6e9509cbe7a23a2a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor without position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c534eb6826cdf6e9509cbe7a23a2a1e">More...</a><br /></td></tr>
-<tr class="separator:a5c534eb6826cdf6e9509cbe7a23a2a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae78d16fa4a55ff06ffef4b3b4eb6ad70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae78d16fa4a55ff06ffef4b3b4eb6ad70">factorWithPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;factor)</td></tr>
-<tr class="memdesc:ae78d16fa4a55ff06ffef4b3b4eb6ad70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ae78d16fa4a55ff06ffef4b3b4eb6ad70">More...</a><br /></td></tr>
-<tr class="separator:ae78d16fa4a55ff06ffef4b3b4eb6ad70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5543aa5fa931f0dda6f376492c10ff4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae5543aa5fa931f0dda6f376492c10ff4">factorWithoutPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> &amp;factor)</td></tr>
+<tr class="memdesc:ae5543aa5fa931f0dda6f376492c10ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor without position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#ae5543aa5fa931f0dda6f376492c10ff4">More...</a><br /></td></tr>
+<tr class="separator:ae5543aa5fa931f0dda6f376492c10ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e6718fc854bee5f87f7bc95825bc261"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e6718fc854bee5f87f7bc95825bc261">factorWithPosition</a> (const <a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> &amp;factor)</td></tr>
+<tr class="memdesc:a6e6718fc854bee5f87f7bc95825bc261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a6e6718fc854bee5f87f7bc95825bc261">More...</a><br /></td></tr>
+<tr class="separator:a6e6718fc854bee5f87f7bc95825bc261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c183f3d353775394079a77761dc1fc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c183f3d353775394079a77761dc1fc6">warning</a> (const <a class="el" href="classTraffic_1_1Warning.html">Traffic::Warning</a> &amp;warning)</td></tr>
 <tr class="memdesc:a5c183f3d353775394079a77761dc1fc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traffic factor with position.  <a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5c183f3d353775394079a77761dc1fc6">More...</a><br /></td></tr>
 <tr class="separator:a5c183f3d353775394079a77761dc1fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,7 +186,7 @@ Properties</h2></td></tr>
 <div class="textblock"><p>Base class for all traffic receiver data sources. </p>
 <p>This is an abstract base class for all classes that connect to a traffic receiver. In addition to the properties listed below, the class also emits imporant data via the signals barometricAltitudeUpdated, factorWithoutPosition, factorWithPosition and warning. It contains methods to interpret FLARM and GDL90 data streams. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00056">56</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00057">57</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa00f8a63b0ee164611f8ee234ba44a64"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa00f8a63b0ee164611f8ee234ba44a64">&#9670;&nbsp;</a></span>TrafficDataSource_Abstract()</h2>
@@ -249,7 +249,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property connectivityStatus </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00125">125</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00126">126</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -335,12 +335,12 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property errorString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00103">103</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00104">104</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
-<a id="a5c534eb6826cdf6e9509cbe7a23a2a1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c534eb6826cdf6e9509cbe7a23a2a1e">&#9670;&nbsp;</a></span>factorWithoutPosition</h2>
+<a id="ae5543aa5fa931f0dda6f376492c10ff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5543aa5fa931f0dda6f376492c10ff4">&#9670;&nbsp;</a></span>factorWithoutPosition</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -351,7 +351,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">void Traffic::TrafficDataSource_Abstract::factorWithoutPosition </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> &amp;&#160;</td>
           <td class="paramname"><em>factor</em></td><td>)</td>
           <td></td>
         </tr>
@@ -374,8 +374,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ae78d16fa4a55ff06ffef4b3b4eb6ad70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae78d16fa4a55ff06ffef4b3b4eb6ad70">&#9670;&nbsp;</a></span>factorWithPosition</h2>
+<a id="a6e6718fc854bee5f87f7bc95825bc261"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e6718fc854bee5f87f7bc95825bc261">&#9670;&nbsp;</a></span>factorWithPosition</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -386,7 +386,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">void Traffic::TrafficDataSource_Abstract::factorWithPosition </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classTraffic_1_1TrafficFactor.html">Traffic::TrafficFactor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> &amp;&#160;</td>
           <td class="paramname"><em>factor</em></td><td>)</td>
           <td></td>
         </tr>
@@ -600,7 +600,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property receivingHeartbeat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00146">146</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00147">147</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -966,7 +966,7 @@ Properties</h2></td></tr>
 not connected yet.". Subclasses shall use the setter function to set the property content.</p>
 <p>The setter method is protected and can be used by subclasses to update the property content. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00119">119</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00120">120</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -993,7 +993,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>String describing the last socket error. </p>
 <p>This property holds a translated, human-readable string that describes the last error, or an empty string when there is not error. The string is cleared when a new connection attempt is started. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00097">97</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00098">98</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1021,7 +1021,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>When active, traffic receivers send regular heartbeat messages. These can be used to verify that the connection to the receiver works, even in times when no traffic is reported. This property indicates if the class receives heartbeat messages from at least one of the known receivers.</p>
 <p>The setter and resetter methods are protected and can be used by subclasses to update the property content. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00140">140</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00141">141</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -1049,7 +1049,7 @@ not connected yet.". Subclasses shall use the setter function to set the propert
 <p>This property contains a short, human-readable and translated description of the source. A typical string is "TCP connection to
 132.168.1.1 port 2000". </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00157">157</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__Abstract_8h_source.html#l00158">158</a> of file <a class="el" href="TrafficDataSource__Abstract_8h_source.html">TrafficDataSource_Abstract.h</a>.</p>
 
 </div>
 </div>

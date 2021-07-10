@@ -135,7 +135,7 @@ signals:
      *  the altitude shown by your altimeter if the altimeter is set to 1013.2
      *  hPa.
      */
-    void pressureAltitudeUpdated(AviationUnits::Distance);
+    void pressureAltitudeUpdated(Units::Distance);
 
     /*! \brief Notifier signal */
     void connectivityStatusChanged(QString newStatus);
@@ -316,13 +316,13 @@ private:
     // started. The timer can then be used to check if the altitude information
     // is recent enough to be used. Whenever an invalid altitude is set, the
     // timer should be stopped.
-    AviationUnits::Distance m_trueAltitude;
-    AviationUnits::Distance m_trueAltitudeFOM; // Fig. of Merit
+    Units::Distance m_trueAltitude;
+    Units::Distance m_trueAltitudeFOM; // Fig. of Merit
     QTimer m_trueAltitudeTimer;
 
     // Pressure altitude of own aircraft. See the member m_trueAltitude for a
     // description how the timer should be used.
-    AviationUnits::Distance m_pressureAltitude;
+    Units::Distance m_pressureAltitude;
     QTimer m_pressureAltitudeTimer;
 
     // Heartbeat timer

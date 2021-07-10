@@ -83,17 +83,17 @@ public:
      *  start, this property is set to 0°.  The value is stored in a QSetting at
      *  destruction, and restored in the construction.
      */
-    Q_PROPERTY(AviationUnits::Angle lastValidTT READ lastValidTT NOTIFY lastValidTTChanged)
+    Q_PROPERTY(Units::Angle lastValidTT READ lastValidTT NOTIFY lastValidTTChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastValidTrack
      */
-    static AviationUnits::Angle lastValidTT();
+    static Units::Angle lastValidTT();
 
 signals:
     /*! \brief Notifier signal */
-    void lastValidTTChanged(AviationUnits::Angle);
+    void lastValidTTChanged(Units::Angle);
 
     /*! \brief Notifier signal */
     void lastValidCoordinateChanged(QGeoCoordinate);
@@ -113,7 +113,7 @@ private slots:
     void setLastValidCoordinate(const QGeoCoordinate &newCoordinate);
 
     // Setter method for property with the same name
-    void setLastValidTT(AviationUnits::Angle newTT);
+    void setLastValidTT(Units::Angle newTT);
 
     // Setter method for property with the same name
     void updateStatusString();
@@ -134,7 +134,7 @@ private:
     PositionInfoSource_Satellite satelliteSource;
 
     QGeoCoordinate m_lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};
-    AviationUnits::Angle m_lastValidTT {};
+    Units::Angle m_lastValidTT {};
 };
 
 }

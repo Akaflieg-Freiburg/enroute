@@ -197,9 +197,9 @@ private:
     Q_DISABLE_COPY_MOVE(Aircraft)
 
     static constexpr double minAircraftSpeedInKT  = 10.0;
-    static constexpr double minAircraftSpeedInKMH = minAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
+    static constexpr double minAircraftSpeedInKMH = minAircraftSpeedInKT * Units::Speed::KMH_per_KT;
     static constexpr double maxAircraftSpeedInKT  = 400.0;
-    static constexpr double maxAircraftSpeedInKMH = maxAircraftSpeedInKT * AviationUnits::Speed::KMH_per_KT;
+    static constexpr double maxAircraftSpeedInKMH = maxAircraftSpeedInKT * Units::Speed::KMH_per_KT;
     static constexpr double minFuelConsuption = 0.0;
     static constexpr double maxFuelConsuption = 300.0;
 

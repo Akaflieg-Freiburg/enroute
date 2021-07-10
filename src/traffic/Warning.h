@@ -106,7 +106,7 @@ public:
      *
      *  @returns Horizontal distance, might be NaN
      */
-    Q_INVOKABLE AviationUnits::Distance hDist() const
+    Q_INVOKABLE Units::Distance hDist() const
     {
         return m_hDist;
     }
@@ -123,7 +123,7 @@ public:
      *
      *  @returns Relative bearing, might be NaN
      */
-    Q_INVOKABLE AviationUnits::Angle relativeBearing() const
+    Q_INVOKABLE Units::Angle relativeBearing() const
     {
         return m_relativeBearing;
     }
@@ -132,7 +132,7 @@ public:
      *
      *  @returns Vertical distance, might be NaN
      */
-    Q_INVOKABLE AviationUnits::Distance vDist() const
+    Q_INVOKABLE Units::Distance vDist() const
     {
         return m_vDist;
     }
@@ -148,9 +148,9 @@ private:
     // Property values
     int m_alarmLevel {-1};
     int m_alarmType {-1};
-    AviationUnits::Distance m_hDist;
-    AviationUnits::Angle m_relativeBearing;
-    AviationUnits::Distance m_vDist;
+    Units::Distance m_hDist;
+    Units::Angle m_relativeBearing;
+    Units::Distance m_vDist;
 };
 
 }

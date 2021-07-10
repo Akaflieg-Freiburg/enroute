@@ -283,7 +283,7 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
         result.append("ID  " + m_properties.value("COD").toString() + " " + m_properties.value("MOR").toString());
         result.append("NAV " + m_properties.value("NAV").toString());
         if (m_properties.contains("ELE")) {
-            result.append(QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(m_properties.value("ELE").toDouble()).toFeet())));
+            result.append(QString("ELEV%1 ft AMSL").arg(qRound(Units::Distance::fromM(m_properties.value("ELE").toDouble()).toFeet())));
         }
     }
 
@@ -307,7 +307,7 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
             result.append("RWY " + m_properties.value("RWY").toString().replace("\n", "<br>"));
         }
 
-        result.append( QString("ELEV%1 ft AMSL").arg(qRound(AviationUnits::Distance::fromM(m_properties.value("ELE").toDouble()).toFeet())));
+        result.append( QString("ELEV%1 ft AMSL").arg(qRound(Units::Distance::fromM(m_properties.value("ELE").toDouble()).toFeet())));
     }
 
     if (m_properties.value("TYP").toString() == "WP") {

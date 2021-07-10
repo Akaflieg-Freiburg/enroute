@@ -201,7 +201,7 @@ auto Weather::Station::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetri
         return QString();
 }
 
-    auto dist = AviationUnits::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
+    auto dist = Units::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
     auto QUJ = qRound(fromCoordinate.azimuthTo(_coordinate));
 
     if (useMetricUnits) {

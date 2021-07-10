@@ -292,13 +292,13 @@ public:
      *  position to the traffic, at the time of report.  Otherwise, it contains
      *  an invalid distance.
      */
-    Q_PROPERTY(AviationUnits::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
+    Q_PROPERTY(Units::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property hDist
      */
-    AviationUnits::Distance hDist() const
+    Units::Distance hDist() const
     {
         return m_hDist;
     }
@@ -307,7 +307,7 @@ public:
      *
      *  @param newHDist Property hDist
      */
-    void setHDist(AviationUnits::Distance newHDist)
+    void setHDist(Units::Distance newHDist)
     {
 
         if (m_hDist == newHDist) {
@@ -392,13 +392,13 @@ public:
      *  position to the traffic, at the time of report.  Otherwise, it contains
      *  NaN.
      */
-    Q_PROPERTY(AviationUnits::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged)
+    Q_PROPERTY(Units::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property vDist
      */
-    AviationUnits::Distance vDist() const
+    Units::Distance vDist() const
     {
         return m_vDist;
     }
@@ -407,7 +407,7 @@ public:
      *
      *  @param newVDist Property vDist
      */
-    void setVDist(AviationUnits::Distance newVDist) {
+    void setVDist(Units::Distance newVDist) {
         if (m_vDist == newVDist) {
             return;
         }
@@ -470,10 +470,10 @@ private:
     bool m_animate {false};
     QString m_callSign {};
     QString m_color {QStringLiteral("red")};
-    AviationUnits::Distance m_hDist;
+    Units::Distance m_hDist;
     QString m_ID;
     AircraftType m_type {AircraftType::unknown};
-    AviationUnits::Distance m_vDist;
+    Units::Distance m_vDist;
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for longer than timeout.

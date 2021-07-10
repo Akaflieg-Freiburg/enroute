@@ -150,9 +150,9 @@ private:
   Q_DISABLE_COPY_MOVE(Wind)
 
   static constexpr double minWindSpeedInKT  = 0.0;
-  static constexpr double minWindSpeedInKMH = minWindSpeedInKT * AviationUnits::Speed::KMH_per_KT;
+  static constexpr double minWindSpeedInKMH = minWindSpeedInKT * Units::Speed::KMH_per_KT;
   static constexpr double maxWindSpeedInKT  = 100.0;
-  static constexpr double maxWindSpeedInKMH = maxWindSpeedInKT * AviationUnits::Speed::KMH_per_KT;
+  static constexpr double maxWindSpeedInKMH = maxWindSpeedInKT * Units::Speed::KMH_per_KT;
   static constexpr double minWindDirection  = 0.0;
   static constexpr double maxWindDirection  = 360.0;
 

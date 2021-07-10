@@ -24,7 +24,7 @@
 #include <QtMath>
 #include <QObject>
 
-namespace AviationUnits {
+namespace Units {
 
     /*! \brief Convenience class for speed computations
      *
@@ -111,7 +111,7 @@ namespace AviationUnits {
          *
          * @returns Quotient as a dimension-less number
          */
-        Q_INVOKABLE double operator/(AviationUnits::Speed rhs)
+        Q_INVOKABLE double operator/(Units::Speed rhs)
         {
             if (qFuzzyIsNull(rhs._speedInMPS))
                 return qQNaN();
@@ -124,7 +124,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator==(AviationUnits::Speed rhs) const
+        Q_INVOKABLE bool operator==(Units::Speed rhs) const
         {
             return _speedInMPS == rhs._speedInMPS;
         }
@@ -135,7 +135,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator!=(AviationUnits::Speed rhs) const
+        Q_INVOKABLE bool operator!=(Units::Speed rhs) const
         {
             return _speedInMPS != rhs._speedInMPS;
         }
@@ -214,7 +214,7 @@ namespace AviationUnits {
  *
  * @returns Reference to the QDataStream
  */
-QDataStream &operator<<(QDataStream &out, AviationUnits::Speed speed);
+QDataStream &operator<<(QDataStream &out, Units::Speed speed);
 
 
 /*! \brief Deserialization of a speed object into a QDataStream
@@ -225,8 +225,8 @@ QDataStream &operator<<(QDataStream &out, AviationUnits::Speed speed);
  *
  * @returns Reference to the QDataStream
  */
-QDataStream &operator>>(QDataStream &in, AviationUnits::Speed &speed);
+QDataStream &operator>>(QDataStream &in, Units::Speed &speed);
 
 
 // Declare meta types
-Q_DECLARE_METATYPE(AviationUnits::Speed)
+Q_DECLARE_METATYPE(Units::Speed)

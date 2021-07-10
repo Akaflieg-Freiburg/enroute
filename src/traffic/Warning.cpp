@@ -61,25 +61,25 @@ Traffic::Warning::Warning(
     bool ok = false;
     auto hDistM = RelativeDistance.toDouble(&ok);
     if (ok) {
-        m_hDist = AviationUnits::Distance::fromM(hDistM);
+        m_hDist = Units::Distance::fromM(hDistM);
     } else {
-        m_hDist = AviationUnits::Distance::fromM(qQNaN());
+        m_hDist = Units::Distance::fromM(qQNaN());
     }
 
     // Relative Bearing
     auto rb = RelativeBearing.toDouble(&ok);
     if (ok) {
-        m_relativeBearing = AviationUnits::Angle::fromDEG(rb);
+        m_relativeBearing = Units::Angle::fromDEG(rb);
     } else {
-        m_relativeBearing = AviationUnits::Angle::fromRAD(qQNaN());
+        m_relativeBearing = Units::Angle::fromRAD(qQNaN());
     }
 
     // vDist
     auto vDistM = RelativeVertical.toDouble(&ok);
     if (ok) {
-        m_vDist = AviationUnits::Distance::fromM(vDistM);
+        m_vDist = Units::Distance::fromM(vDistM);
     } else {
-        m_vDist = AviationUnits::Distance::fromM(qQNaN());
+        m_vDist = Units::Distance::fromM(qQNaN());
     }
 
 }

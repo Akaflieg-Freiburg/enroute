@@ -21,7 +21,7 @@
 #include "units/Time.h"
 
 
-auto AviationUnits::Time::toHoursAndMinutes() const -> QString {
+auto Units::Time::toHoursAndMinutes() const -> QString {
     // Paranoid safety checks
     if (!isFinite()) {
         return "-:--";

@@ -23,7 +23,7 @@
 #include "units/Angle.h"
 
 
-auto AviationUnits::Angle::toClock() const -> QString
+auto Units::Angle::toClock() const -> QString
 {
     if (!isFinite()) {
         return "-";
@@ -34,5 +34,5 @@ auto AviationUnits::Angle::toClock() const -> QString
         result = 12;
     }
 
-    return QCoreApplication::translate("AviationUnits::Angle", "%1 o'clock").arg(result);
+    return QCoreApplication::translate("Units::Angle", "%1 o'clock").arg(result);
 }

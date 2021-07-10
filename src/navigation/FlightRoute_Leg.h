@@ -79,13 +79,13 @@ public:
     }
 
     /*! \brief Length of the leg */
-    Q_PROPERTY(AviationUnits::Distance distance READ distance CONSTANT)
+    Q_PROPERTY(Units::Distance distance READ distance CONSTANT)
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property distance
    */
-    AviationUnits::Distance distance() const;
+    Units::Distance distance() const;
 
     /*! \brief Fuel
    *
@@ -105,50 +105,50 @@ public:
    * This property holds the ground speed for the leg, in meters per second. It
    * holds NaN if the leg is invalid or if the ground speed cannot be computed.
    */
-    Q_PROPERTY(AviationUnits::Speed GS READ GS NOTIFY valChanged)
+    Q_PROPERTY(Units::Speed GS READ GS NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property GS
    */
-    AviationUnits::Speed GS() const;
+    Units::Speed GS() const;
 
     /*! \brief True course
    *
    * This property holds the true course for the leg. It holds NaN if the leg is
    * invalid or shorter than 100m
    */
-    Q_PROPERTY(AviationUnits::Angle TC READ TC NOTIFY valChanged)
+    Q_PROPERTY(Units::Angle TC READ TC NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property TC
    */
-    AviationUnits::Angle TC() const;
+    Units::Angle TC() const;
 
     /*! \brief Time required for this leg.
    *
    * Set to NaN if the time cannot be computed.
    */
-    Q_PROPERTY(AviationUnits::Time Time READ Time NOTIFY valChanged)
+    Q_PROPERTY(Units::Time Time READ Time NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property Time
    */
-    AviationUnits::Time Time() const{ return distance()/GS(); }
+    Units::Time Time() const{ return distance()/GS(); }
 
     /*! \brief True heading.
    *
    * Set to NaN if a TH cannot be computed.
    */
-    Q_PROPERTY(AviationUnits::Angle TH READ TH CONSTANT)
+    Q_PROPERTY(Units::Angle TH READ TH CONSTANT)
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property TH
    */
-    AviationUnits::Angle TH() const { return TC()+WCA(); }
+    Units::Angle TH() const { return TC()+WCA(); }
 
     /*! \brief Human-readable description of the leg
    *
@@ -175,7 +175,7 @@ public:
    *
    * @returns Wind correction angle, or NaN if a WCA cannot be computed
    */
-    AviationUnits::Angle WCA() const;
+    Units::Angle WCA() const;
 
 signals:
     /*! \brief Notification signal */

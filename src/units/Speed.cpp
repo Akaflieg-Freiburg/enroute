@@ -22,7 +22,7 @@
 #include "units/Speed.h"
 
 
-auto AviationUnits::Speed::toString() const -> QString {
+auto Units::Speed::toString() const -> QString {
     if (Settings::useMetricUnitsStatic()) {
         return QString("%1 km/h").arg( qRound(toKMH()) );
 }
@@ -30,17 +30,17 @@ auto AviationUnits::Speed::toString() const -> QString {
 }
 
 
-auto operator<<(QDataStream &out, AviationUnits::Speed speed) -> QDataStream &
+auto operator<<(QDataStream &out, Units::Speed speed) -> QDataStream &
 {
     out << speed.toMPS();
     return out;
 }
 
 
-auto operator>>(QDataStream &in, AviationUnits::Speed &speed) -> QDataStream &
+auto operator>>(QDataStream &in, Units::Speed &speed) -> QDataStream &
 {
     double buffer = NAN;
     in >> buffer;
-    speed = AviationUnits::Speed::fromMPS(buffer);
+    speed = Units::Speed::fromMPS(buffer);
     return in;
 }

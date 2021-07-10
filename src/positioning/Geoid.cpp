@@ -73,18 +73,18 @@ void Positioning::Geoid::readEGM()
 // points according to Numerical Recipies in C++ 3.6 "Interpolation in Two or
 // More Dimensions".
 //
-auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> AviationUnits::Distance
+auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> Units::Distance
 {
     // Paranoid safety checks
     if (!coord.isValid()) {
-        return AviationUnits::Distance::fromM( qQNaN() );
+        return Units::Distance::fromM( qQNaN() );
     }
 
     // Read EGM vector if this has not been done already
     if (egm.empty()) {
         readEGM();
         if (egm.empty()) {
-            return AviationUnits::Distance::fromM( qQNaN() );
+            return Units::Distance::fromM( qQNaN() );
         }
     }
 
@@ -134,5 +134,5 @@ auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> AviationUnit
         row_dist = 1 - row_dist;
     }
 
-    return AviationUnits::Distance::fromM( interpolated );
+    return Units::Distance::fromM( interpolated );
 }

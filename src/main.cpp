@@ -66,10 +66,10 @@ auto main(int argc, char *argv[]) -> int
     qputenv("QSG_RENDER_LOOP", "basic");
 
     // Register types
-    qRegisterMetaType<AviationUnits::Angle>();
-    qRegisterMetaType<AviationUnits::Distance>();
-    qRegisterMetaType<AviationUnits::Speed>();
-    qRegisterMetaType<AviationUnits::Time>();
+    qRegisterMetaType<Units::Angle>();
+    qRegisterMetaType<Units::Distance>();
+    qRegisterMetaType<Units::Speed>();
+    qRegisterMetaType<Units::Time>();
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();

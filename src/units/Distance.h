@@ -24,7 +24,7 @@
 #include <QObject>
 
 
-namespace AviationUnits {
+namespace Units {
 
     /*! \brief Convenience class for distance computations
      *
@@ -93,7 +93,7 @@ namespace AviationUnits {
          *
          * @returns reference to this distance
          */
-        Q_INVOKABLE AviationUnits::Distance &operator+=(AviationUnits::Distance other)
+        Q_INVOKABLE Units::Distance &operator+=(Units::Distance other)
         {
             m_distanceInM += other.m_distanceInM;
             return *this;
@@ -123,7 +123,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the addition
          */
-        Q_INVOKABLE auto operator+(AviationUnits::Distance rhs) const -> AviationUnits::Distance
+        Q_INVOKABLE auto operator+(Units::Distance rhs) const -> Units::Distance
         {
             return fromM(m_distanceInM + rhs.m_distanceInM);
         }
@@ -134,7 +134,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the subtraction
          */
-        Q_INVOKABLE auto operator-(AviationUnits::Distance rhs) const -> AviationUnits::Distance
+        Q_INVOKABLE auto operator-(Units::Distance rhs) const -> Units::Distance
         {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
@@ -145,7 +145,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator<(AviationUnits::Distance rhs) const
+        Q_INVOKABLE auto operator<(Units::Distance rhs) const
         {
             return m_distanceInM < rhs.m_distanceInM;
         }
@@ -156,7 +156,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator>(AviationUnits::Distance rhs) const
+        Q_INVOKABLE auto operator>(Units::Distance rhs) const
         {
             return m_distanceInM > rhs.m_distanceInM;
         }
@@ -167,7 +167,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(AviationUnits::Distance rhs) const
+        Q_INVOKABLE auto operator!=(Units::Distance rhs) const
         {
             return m_distanceInM != rhs.m_distanceInM;
         }
@@ -178,7 +178,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(AviationUnits::Distance rhs) const
+        Q_INVOKABLE auto operator==(Units::Distance rhs) const
         {
             return m_distanceInM == rhs.m_distanceInM;
         }
@@ -249,4 +249,4 @@ namespace AviationUnits {
 
 
 // Declare meta types
-Q_DECLARE_METATYPE(AviationUnits::Distance)
+Q_DECLARE_METATYPE(Units::Distance)

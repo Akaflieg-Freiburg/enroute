@@ -121,7 +121,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             return;
         }
 
-        m_trueAltitude = AviationUnits::Distance::fromM(alt);
+        m_trueAltitude = Units::Distance::fromM(alt);
         m_trueAltitudeFOM = {};
         m_trueAltitudeTimer.start();
         return;
@@ -174,9 +174,9 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
 
         // Ground speed
         bool ok = false;
-        auto groundSpeed = AviationUnits::Speed::fromKN(arguments[6].toDouble(&ok));
+        auto groundSpeed = Units::Speed::fromKN(arguments[6].toDouble(&ok));
         if (!ok) {
-            groundSpeed = AviationUnits::Speed::fromKN(qQNaN());
+            groundSpeed = Units::Speed::fromKN(qQNaN());
         }
         if (groundSpeed.isFinite()) {
             pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, groundSpeed.toMPS() );
@@ -216,9 +216,9 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
 
         // Relative vertical information is optional
         // Vertical distance is optional
-        auto vDist = AviationUnits::Distance::fromM(arguments[3].toDouble(&ok));
+        auto vDist = Units::Distance::fromM(arguments[3].toDouble(&ok));
         if (!ok) {
-            vDist = AviationUnits::Distance::fromM(qQNaN());
+            vDist = Units::Distance::fromM(qQNaN());
         }
 
         // Target type is optional
@@ -286,7 +286,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         //
         if (arguments[2] == u"") {
             // Horizontal distance is mandatory
-            auto hDist = AviationUnits::Distance::fromM(arguments[1].toDouble(&ok));
+            auto hDist = Units::Distance::fromM(arguments[1].toDouble(&ok));
             if (!ok) {
                 return;
             }
@@ -336,7 +336,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         if (vDist.isFinite()) {
             targetCoordinate = targetCoordinate.atDistanceAndAzimuth(0, 0, vDist.toM());
         }
-        auto hDist = AviationUnits::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
+        auto hDist = Units::Distance::fromM(sqrt(relativeNorth*relativeNorth+relativeEast*relativeEast));
 
         // Construct a PositionInfo object that contains additional information (such as ground speed, if available)
         QGeoPositionInfo pInfo(targetCoordinate, QDateTime::currentDateTimeUtc());
@@ -573,7 +573,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         }
 
         bool ok = false;
-        auto barometricAlt = AviationUnits::Distance::fromFT(arguments[0].toDouble(&ok));
+        auto barometricAlt = Units::Distance::fromFT(arguments[0].toDouble(&ok));
         if (!ok) {
             return;
         }

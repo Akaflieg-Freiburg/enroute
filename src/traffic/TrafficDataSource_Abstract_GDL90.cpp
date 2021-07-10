@@ -95,28 +95,28 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
     auto a = static_cast<quint8>(decodedData.at(12)) & 0x0FU;
     switch (a) {
     case 1:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(10.0).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(10.0).toM() );
         break;
     case 2:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(4.0).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(4.0).toM() );
         break;
     case 3:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(2.0).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(2.0).toM() );
         break;
     case 4:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(1.0).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(1.0).toM() );
         break;
     case 5:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.5).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(0.5).toM() );
         break;
     case 6:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.3).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(0.3).toM() );
         break;
     case 7:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.1).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(0.1).toM() );
         break;
     case 8:
-        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, AviationUnits::Distance::fromNM(0.05).toM() );
+        pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, Units::Distance::fromNM(0.05).toM() );
         break;
     case 9:
         pInfo.setAttribute(QGeoPositionInfo::HorizontalAccuracy, 30.0 );
@@ -136,7 +136,7 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
     auto hh1 = static_cast<quint8>(decodedData.at(14));
     quint32 hhTmp = (hh0 << 4) + (hh1 >> 4);
     if (hhTmp != 0xFFF) {
-        AviationUnits::Speed hSpeed = AviationUnits::Speed::fromKN(hhTmp);
+        Units::Speed hSpeed = Units::Speed::fromKN(hhTmp);
         pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
     }
 
@@ -145,7 +145,7 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
     auto vv1 = static_cast<quint8>(decodedData.at(15));
     quint32 vvTmp = (vv0 << 8) + vv1;
     if (vvTmp != 0xFFF) {
-        AviationUnits::Speed vSpeed = AviationUnits::Speed::fromFPM(vvTmp*64.0);
+        Units::Speed vSpeed = Units::Speed::fromFPM(vvTmp*64.0);
         pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS() );
     }
 
@@ -256,10 +256,10 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto dd1 = static_cast<quint8>(message.at(11));
         quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
         if (ddTmp != 0xFFF) {
-            m_pressureAltitude = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
+            m_pressureAltitude = Units::Distance::fromFT(25.0*ddTmp - 1000.0);
             m_pressureAltitudeTimer.start();
         } else {
-            m_pressureAltitude = AviationUnits::Distance::fromM( qQNaN() );
+            m_pressureAltitude = Units::Distance::fromM( qQNaN() );
             m_pressureAltitudeTimer.stop();
         }
         emit pressureAltitudeUpdated(m_pressureAltitude);
@@ -278,7 +278,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         if (ddInt > 32767) {
             ddInt -= 65536;
         }
-        m_trueAltitude = AviationUnits::Distance::fromFT(ddInt*5.0);
+        m_trueAltitude = Units::Distance::fromFT(ddInt*5.0);
         auto geoidCorrection = Positioning::Geoid::separation( Positioning::PositionProvider::lastValidCoordinate() );
         if (geoidCorrection.isFinite()) {
             m_trueAltitude = m_trueAltitude-geoidCorrection;
@@ -288,7 +288,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto vm0 = static_cast<quint8>(message.at(2)) & 0x7FU;
         auto vm1 = static_cast<quint8>(message.at(3));
         auto vmInt = (vm0 << 8) + vm1;
-        m_trueAltitudeFOM = AviationUnits::Distance::fromM(vmInt);
+        m_trueAltitudeFOM = Units::Distance::fromM(vmInt);
         m_trueAltitudeTimer.start();
 
 
@@ -352,13 +352,13 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
 
         // Compute true altitude and altitude distance of traffic if
         // a recent pressure altitude reading for owncraft exists.
-        AviationUnits::Distance vDist {};
+        Units::Distance vDist {};
         if (m_pressureAltitudeTimer.isActive()) {
             auto dd0 = static_cast<quint8>(message.at(10));
             auto dd1 = static_cast<quint8>(message.at(11));
             quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
             if (ddTmp != 0xFFF) {
-                auto trafficPressureAltitude = AviationUnits::Distance::fromFT(25.0*ddTmp - 1000.0);
+                auto trafficPressureAltitude = Units::Distance::fromFT(25.0*ddTmp - 1000.0);
                 vDist = trafficPressureAltitude - m_pressureAltitude;
 
                 // Compute true altitude of traffic if possible
@@ -373,13 +373,13 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
 
         // Compute horizontal distance to traffic if our own position
         // is known.
-        AviationUnits::Distance hDist {};
+        Units::Distance hDist {};
         auto* positionProviderPtr = Positioning::PositionProvider::globalInstance();
         if (positionProviderPtr != nullptr) {
             auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
             auto trafficCoordinate = pInfo.coordinate();
             if (ownShipCoordinate.isValid() && trafficCoordinate.isValid()) {
-                hDist = AviationUnits::Distance::fromM( ownShipCoordinate.distanceTo(trafficCoordinate) );
+                hDist = Units::Distance::fromM( ownShipCoordinate.distanceTo(trafficCoordinate) );
             }
         }
 

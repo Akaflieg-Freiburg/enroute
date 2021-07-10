@@ -101,9 +101,9 @@ void DemoRunner::run()
     // EDTF Taxiway   
     qWarning() << "Demo Mode" << "EDTF Taxiway";
     trafficSimulator->setCoordinate( {48.02197, 7.83451, 240} );
-    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(800) );
-    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(160) );
-    trafficSimulator->setGS( AviationUnits::Speed::fromKN(5) );
+    trafficSimulator->setBarometricHeight( Units::Distance::fromFT(800) );
+    trafficSimulator->setTT( Units::Angle::fromDEG(160) );
+    trafficSimulator->setGS( Units::Speed::fromKN(5) );
     flightMap->setProperty("zoomLevel", 13);
     flightMap->setProperty("followGPS", true);
     Global::settings()->setMapBearingPolicy(Settings::NUp);
@@ -112,10 +112,10 @@ void DemoRunner::run()
 
     // Approaching EDDR
     qWarning() << "Demo Mode" << "Approaching EDDR";
-    trafficSimulator->setCoordinate( {49.35, 7.0028, AviationUnits::Distance::fromFT(5500).toM()} );
-    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromFT(5500) );
-    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(170) );
-    trafficSimulator->setGS( AviationUnits::Speed::fromKN(90) );
+    trafficSimulator->setCoordinate( {49.35, 7.0028, Units::Distance::fromFT(5500).toM()} );
+    trafficSimulator->setBarometricHeight( Units::Distance::fromFT(5500) );
+    trafficSimulator->setTT( Units::Angle::fromDEG(170) );
+    trafficSimulator->setGS( Units::Speed::fromKN(90) );
     flightMap->setProperty("zoomLevel", 11);
     Global::settings()->setMapBearingPolicy(Settings::TTUp);
     delay(4s);
@@ -136,9 +136,9 @@ void DemoRunner::run()
     qWarning() << "Demo Mode" << "EDTF Traffic";
     QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
     trafficSimulator->setCoordinate( ownPosition );
-    trafficSimulator->setBarometricHeight( AviationUnits::Distance::fromM(600) );
-    trafficSimulator->setTT( AviationUnits::Angle::fromDEG(41) );
-    trafficSimulator->setGS( AviationUnits::Speed::fromKN(92) );
+    trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
+    trafficSimulator->setTT( Units::Angle::fromDEG(41) );
+    trafficSimulator->setGS( Units::Speed::fromKN(92) );
     flightMap->setProperty("zoomLevel", 13);
     flightMap->setProperty("followGPS", true);
     Global::settings()->setMapBearingPolicy(Settings::TTUp);
@@ -146,7 +146,7 @@ void DemoRunner::run()
     QGeoPositionInfo trafficInfo;
     trafficInfo.setCoordinate(trafficPosition);
     trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
-    trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, AviationUnits::Speed::fromKN(70).toMPS() );
+    trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(70).toMPS() );
     trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
     trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
     auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
@@ -164,7 +164,7 @@ void DemoRunner::run()
     auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
     trafficFactor2->setAlarmLevel(1);
     trafficFactor2->setID("newID");
-    trafficFactor2->setHDist( AviationUnits::Distance::fromM(1000) );
+    trafficFactor2->setHDist( Units::Distance::fromM(1000) );
     trafficFactor2->setType( Traffic::TrafficFactor_Abstract::Aircraft );
     trafficFactor2->setCallSign({});
     trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);

@@ -77,12 +77,12 @@ void Aircraft::setCruiseSpeedInKT(double speedInKT) {
 }
 
 auto Aircraft::cruiseSpeedInKMH() const -> double {
-    auto speed = AviationUnits::Speed::fromKN(_cruiseSpeedInKT);
+    auto speed = Units::Speed::fromKN(_cruiseSpeedInKT);
     return speed.toKMH();
 }
 
 void Aircraft::setCruiseSpeedInKMH(double speedInKMH) {
-    auto speed = AviationUnits::Speed::fromKMH(speedInKMH);
+    auto speed = Units::Speed::fromKMH(speedInKMH);
     setCruiseSpeedInKT(speed.toKN());
 }
 
@@ -103,12 +103,12 @@ void Aircraft::setDescentSpeedInKT(double speedInKT) {
 }
 
 auto Aircraft::descentSpeedInKMH() const -> double {
-    auto speed = AviationUnits::Speed::fromKN(_descentSpeedInKT);
+    auto speed = Units::Speed::fromKN(_descentSpeedInKT);
     return speed.toKMH();
 }
 
 void Aircraft::setDescentSpeedInKMH(double speedInKMH) {
-    auto speed = AviationUnits::Speed::fromKMH(speedInKMH);
+    auto speed = Units::Speed::fromKMH(speedInKMH);
     setDescentSpeedInKT(speed.toKN());
 }
 

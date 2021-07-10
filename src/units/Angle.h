@@ -30,7 +30,7 @@
  * with angles, speeds, distances, etc, without the need to worry about units.
  */
 
-namespace AviationUnits {
+namespace Units {
 
     /*! \brief Convenience class for angle computations
      *
@@ -82,7 +82,7 @@ namespace AviationUnits {
          *
          * @returns Sum of the two angles
          */
-        Q_INVOKABLE AviationUnits::Angle operator+(AviationUnits::Angle rhs)
+        Q_INVOKABLE Units::Angle operator+(Units::Angle rhs)
         {
             Angle result;
             result.m_angleInRAD = m_angleInRAD + rhs.m_angleInRAD;
@@ -95,7 +95,7 @@ namespace AviationUnits {
          *
          * @returns Difference of the two angles
          */
-        Q_INVOKABLE AviationUnits::Angle operator-(AviationUnits::Angle rhs)
+        Q_INVOKABLE Units::Angle operator-(Units::Angle rhs)
         {
             Angle result;
             result.m_angleInRAD = m_angleInRAD - rhs.m_angleInRAD;
@@ -108,7 +108,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(AviationUnits::Angle rhs) const
+        Q_INVOKABLE auto operator==(Units::Angle rhs) const
         {
             return m_angleInRAD == rhs.m_angleInRAD;
         }
@@ -119,7 +119,7 @@ namespace AviationUnits {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(AviationUnits::Angle rhs) const
+        Q_INVOKABLE auto operator!=(Units::Angle rhs) const
         {
             return m_angleInRAD != rhs.m_angleInRAD;
         }
@@ -192,4 +192,4 @@ namespace AviationUnits {
 };
 
 // Declare meta types
-Q_DECLARE_METATYPE(AviationUnits::Angle)
+Q_DECLARE_METATYPE(Units::Angle)

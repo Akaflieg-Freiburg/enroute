@@ -134,8 +134,8 @@ private:
     //
     QString m_icon;
     QGeoPositionInfo m_positionInfo;
-    AviationUnits::Distance m_vDist;
-    AviationUnits::Distance m_hDist;
+    Units::Distance m_vDist;
+    Units::Distance m_hDist;
 
 };
 

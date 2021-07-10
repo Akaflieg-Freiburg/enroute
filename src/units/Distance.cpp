@@ -21,7 +21,7 @@
 #include "units/Distance.h"
 
 
-auto AviationUnits::Distance::toString(bool useMetric, bool vertical, bool forceSign) const -> QString
+auto Units::Distance::toString(bool useMetric, bool vertical, bool forceSign) const -> QString
 {
     if (!isFinite()) {
         return QString();

@@ -72,7 +72,7 @@ public:
      *
      *  @returns Ground speed or NaN if unknown.
      */
-    Q_INVOKABLE AviationUnits::Speed groundSpeed() const;
+    Q_INVOKABLE Units::Speed groundSpeed() const;
 
     /*! \brief Validity
      *
@@ -85,38 +85,38 @@ public:
      *
      *  @returns Position error estimate or NaN if unknown.
      */
-    Q_INVOKABLE AviationUnits::Distance positionErrorEstimate() const;
+    Q_INVOKABLE Units::Distance positionErrorEstimate() const;
 
     /*! \brief True Altitude
      *
      *  @returns True altitude with geoid correction taken into account or NaN
      *  if unknown.
      */
-    Q_INVOKABLE AviationUnits::Distance trueAltitude() const;
+    Q_INVOKABLE Units::Distance trueAltitude() const;
 
     /*! \brief True altitude error estimate
      *
      *  @returns True altitude error estimate or NaN if unknown.
      */
-    Q_INVOKABLE AviationUnits::Distance trueAltitudeErrorEstimate() const;
+    Q_INVOKABLE Units::Distance trueAltitudeErrorEstimate() const;
 
     /*! \brief True track
      *
      *  @returns True track or NaN if unknown.
      */
-    Q_INVOKABLE AviationUnits::Angle trueTrack() const;
+    Q_INVOKABLE Units::Angle trueTrack() const;
 
     /*! \brief Magnetic variation
      *
      *  @returns Magnetic variation or NaN if unknown.
      */
-    Q_INVOKABLE AviationUnits::Angle variation() const;
+    Q_INVOKABLE Units::Angle variation() const;
 
     /*! \brief Vertical speed
      *
      *  @returns Vertical speed or NaN if unknown.
      */
-    Q_INVOKABLE AviationUnits::Speed verticalSpeed() const;
+    Q_INVOKABLE Units::Speed verticalSpeed() const;
 
     /*! \brief Comparison: equal
      *

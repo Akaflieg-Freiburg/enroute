@@ -97,8 +97,8 @@ private:
     int nextHashIndex {0};
 
     // GPS altitude of owncraft
-    AviationUnits::Distance m_trueAltitude;
-    AviationUnits::Distance m_trueAltitude_FOM;
+    Units::Distance m_trueAltitude;
+    Units::Distance m_trueAltitude_FOM;
     QTimer m_trueAltitudeTimer;
 
 };

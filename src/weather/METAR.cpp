@@ -78,14 +78,14 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         // Wind
         if (xml.isStartElement() && name == "wind_speed_kt") {
             auto content = xml.readElementText();
-            _wind = AviationUnits::Speed::fromKN(content.toDouble());
+            _wind = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Gust
         if (xml.isStartElement() && name == "wind_gust_kt") {
             auto content = xml.readElementText();
-            _gust = AviationUnits::Speed::fromKN(content.toDouble());
+            _gust = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 

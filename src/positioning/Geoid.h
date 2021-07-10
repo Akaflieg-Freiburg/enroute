@@ -61,7 +61,7 @@ public:
      *
      * @returns Geoidal separation. In case that the method fails, NAN is returned
      */
-    static AviationUnits::Distance separation(const QGeoCoordinate& coord);
+    static Units::Distance separation(const QGeoCoordinate& coord);
 
 private:
     // Reads data into the vector egm

@@ -42,7 +42,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         m_lastValidCoordinate = tmp;
     }
-    m_lastValidTT = AviationUnits::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
+    m_lastValidTT = Units::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
 
     // Wire up satellite source
     connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
@@ -130,7 +130,7 @@ void Positioning::PositionProvider::onPressureAltitudeUpdated()
     // This method is called if one of our providers has a new pressure altitude.
     // We go through the list of providers in order of preference, to find the first one
     // that has valid data for us.
-    AviationUnits::Distance pAlt;
+    Units::Distance pAlt;
 
     // Priority #1: Traffic data provider
     auto* trafficDataProvider = Global::trafficDataProvider();
@@ -162,7 +162,7 @@ void Positioning::PositionProvider::setLastValidCoordinate(const QGeoCoordinate 
 }
 
 
-void Positioning::PositionProvider::setLastValidTT(AviationUnits::Angle newTT)
+void Positioning::PositionProvider::setLastValidTT(Units::Angle newTT)
 {
     if (!newTT.isFinite()) {
         return;
@@ -185,7 +185,7 @@ auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
 }
 
 
-auto Positioning::PositionProvider::lastValidTT() -> AviationUnits::Angle
+auto Positioning::PositionProvider::lastValidTT() -> Units::Angle
 {
     auto *positionProvider = globalInstance();
     if (positionProvider == nullptr) {

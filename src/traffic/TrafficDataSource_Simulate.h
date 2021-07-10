@@ -76,7 +76,7 @@ public slots:
      *
      *  @param barAlt Barometric altitude of simulated ownship
      */
-    void setBarometricHeight(AviationUnits::Distance barAlt)
+    void setBarometricHeight(Units::Distance barAlt)
     {
         barometricHeight = barAlt;
     }
@@ -94,7 +94,7 @@ public slots:
      *
      *  @param GS Ground speed of simulated ownship
      */
-    void setGS(AviationUnits::Speed GS)
+    void setGS(Units::Speed GS)
     {
         geoInfo.setAttribute(QGeoPositionInfo::GroundSpeed, GS.toMPS());
     }
@@ -103,7 +103,7 @@ public slots:
      *
      *  @param TT True track of simulated ownship
      */
-    void setTT(AviationUnits::Angle TT)
+    void setTT(Units::Angle TT)
     {
         geoInfo.setAttribute(QGeoPositionInfo::Direction, TT.toDEG());
     }
@@ -148,7 +148,7 @@ private:
     // Simulator related members
     QTimer simulatorTimer;
     QGeoPositionInfo geoInfo;
-    AviationUnits::Distance barometricHeight;
+    Units::Distance barometricHeight;
     QVector<QPointer<TrafficFactor_WithPosition>> trafficFactors;
     QPointer<TrafficFactor_DistanceOnly> trafficFactor_DistanceOnly;
 };

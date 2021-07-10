@@ -79,7 +79,7 @@ void Positioning::PositionInfoSource_Abstract::setStatusString(const QString &st
 }
 
 
-void Positioning::PositionInfoSource_Abstract::setPressureAltitude(AviationUnits::Distance newPressureAltitude)
+void Positioning::PositionInfoSource_Abstract::setPressureAltitude(Units::Distance newPressureAltitude)
 {
     if (newPressureAltitude.isFinite()) {
         m_pressureAltitudeTimer.start();

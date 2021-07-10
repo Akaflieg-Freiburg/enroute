@@ -95,11 +95,11 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
         if (!ok) {
             return;
         }
-        auto alt = AviationUnits::Distance::fromFT(list[4].toDouble(&ok));
+        auto alt = Units::Distance::fromFT(list[4].toDouble(&ok));
         if (!ok) {
             return;
         }
-        auto vSpeed = AviationUnits::Speed::fromFPM(list[5].toDouble(&ok));
+        auto vSpeed = Units::Speed::fromFPM(list[5].toDouble(&ok));
         if (!ok) {
             return;
         }
@@ -107,7 +107,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
         if (!ok) {
             return;
         }
-        auto hSpeed = AviationUnits::Speed::fromKN(list[8].toDouble(&ok));
+        auto hSpeed = Units::Speed::fromKN(list[8].toDouble(&ok));
         if (!ok) {
             return;
         }
@@ -127,14 +127,14 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
 
         // Compute horizontal and vertical distance to traffic if our own position
         // is known.
-        AviationUnits::Distance hDist {};
-        AviationUnits::Distance vDist {};
+        Units::Distance hDist {};
+        Units::Distance vDist {};
         auto* positionProviderPtr = Positioning::PositionProvider::globalInstance();
         if (positionProviderPtr != nullptr) {
             auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
             if (ownShipCoordinate.isValid()) {
-                hDist = AviationUnits::Distance::fromM( ownShipCoordinate.distanceTo(trafficCoordinate) );
-                vDist = alt - AviationUnits::Distance::fromM(ownShipCoordinate.altitude());
+                hDist = Units::Distance::fromM( ownShipCoordinate.distanceTo(trafficCoordinate) );
+                vDist = alt - Units::Distance::fromM(ownShipCoordinate.altitude());
             }
         }
 

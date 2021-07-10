@@ -379,8 +379,8 @@ auto Navigation::FlightRoute::summary() const -> QString {
 
     QString result;
 
-    auto dist = AviationUnits::Distance::fromM(0.0);
-    auto time = AviationUnits::Time::fromS(0.0);
+    auto dist = Units::Distance::fromM(0.0);
+    auto time = Units::Time::fromS(0.0);
     double fuelInL = 0.0;
 
     for(auto *_leg : m_legs) {

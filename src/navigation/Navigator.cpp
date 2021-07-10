@@ -42,7 +42,7 @@ auto Navigation::Navigator::describeWay(const QGeoCoordinate &from, const QGeoCo
         return QString();
     }
 
-    auto dist = AviationUnits::Distance::fromM(from.distanceTo(to));
+    auto dist = Units::Distance::fromM(from.distanceTo(to));
     auto QUJ = qRound(from.azimuthTo(to));
 
     if (Global::settings()->useMetricUnits()) {
@@ -60,7 +60,7 @@ void Navigation::Navigator::deferredInitialization() const
 
 void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& info)
 {
-    AviationUnits::Speed GS;
+    Units::Speed GS;
 
     if (info.isValid()) {
         GS = info.groundSpeed();

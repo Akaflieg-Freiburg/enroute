@@ -27,7 +27,7 @@ Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo &info)
 }
 
 
-auto Positioning::PositionInfo::groundSpeed() const -> AviationUnits::Speed
+auto Positioning::PositionInfo::groundSpeed() const -> Units::Speed
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -36,7 +36,7 @@ auto Positioning::PositionInfo::groundSpeed() const -> AviationUnits::Speed
         return {};
     }
 
-    return AviationUnits::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
+    return Units::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
 }
 
 
@@ -51,7 +51,7 @@ auto Positioning::PositionInfo::isValid() const -> bool
 }
 
 
-auto Positioning::PositionInfo::positionErrorEstimate() const -> AviationUnits::Distance
+auto Positioning::PositionInfo::positionErrorEstimate() const -> Units::Distance
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -60,11 +60,11 @@ auto Positioning::PositionInfo::positionErrorEstimate() const -> AviationUnits::
         return {};
     }
 
-    return AviationUnits::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::HorizontalAccuracy));
+    return Units::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::HorizontalAccuracy));
 }
 
 
-auto Positioning::PositionInfo::trueAltitude() const -> AviationUnits::Distance
+auto Positioning::PositionInfo::trueAltitude() const -> Units::Distance
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -73,12 +73,12 @@ auto Positioning::PositionInfo::trueAltitude() const -> AviationUnits::Distance
         return {};
     }
 
-    return AviationUnits::Distance::fromM(m_positionInfo.coordinate().altitude());
+    return Units::Distance::fromM(m_positionInfo.coordinate().altitude());
 
 }
 
 
-auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> AviationUnits::Distance
+auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> Units::Distance
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -87,11 +87,11 @@ auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> AviationUni
         return {};
     }
 
-    return AviationUnits::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::VerticalAccuracy));
+    return Units::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::VerticalAccuracy));
 }
 
 
-auto Positioning::PositionInfo::trueTrack() const -> AviationUnits::Angle
+auto Positioning::PositionInfo::trueTrack() const -> Units::Angle
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -106,11 +106,11 @@ auto Positioning::PositionInfo::trueTrack() const -> AviationUnits::Angle
         return {};
     }
 
-    return AviationUnits::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::Direction));
+    return Units::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::Direction));
 }
 
 
-auto Positioning::PositionInfo::variation() const -> AviationUnits::Angle
+auto Positioning::PositionInfo::variation() const -> Units::Angle
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -119,11 +119,11 @@ auto Positioning::PositionInfo::variation() const -> AviationUnits::Angle
         return {};
     }
 
-    return AviationUnits::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::MagneticVariation));
+    return Units::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::MagneticVariation));
 }
 
 
-auto Positioning::PositionInfo::verticalSpeed() const -> AviationUnits::Speed
+auto Positioning::PositionInfo::verticalSpeed() const -> Units::Speed
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -132,6 +132,6 @@ auto Positioning::PositionInfo::verticalSpeed() const -> AviationUnits::Speed
         return {};
     }
 
-    return AviationUnits::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
+    return Units::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed));
 }
 

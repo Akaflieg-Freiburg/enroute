@@ -80,14 +80,14 @@ void Weather::Wind::setWindSpeedInKT(double speedInKT)
 
 auto Weather::Wind::windSpeedInKMH() const -> double
 {
-    auto speed = AviationUnits::Speed::fromKN(_windSpeedInKT);
+    auto speed = Units::Speed::fromKN(_windSpeedInKT);
     return speed.toKMH();
 }
 
 
 void Weather::Wind::setWindSpeedInKMH(double speedInKMH)
 {
-    setWindSpeedInKT( AviationUnits::Speed::fromKMH(speedInKMH).toKN() );
+    setWindSpeedInKT( Units::Speed::fromKMH(speedInKMH).toKN() );
 }
 
 

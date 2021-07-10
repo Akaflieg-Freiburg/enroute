@@ -265,7 +265,7 @@ private:
     FlightCategory _flightCategory {unknown};
 
     // Gust speed, as returned by the Aviation Weather Center
-    AviationUnits::Speed _gust;
+    Units::Speed _gust;
 
     // Station ID, as returned by the Aviation Weather Center
     QString _ICAOCode;
@@ -283,6 +283,6 @@ private:
     QString _raw_text;
 
     // Wind speed, as returned by the Aviation Weather Center
-    AviationUnits::Speed _wind;
+    Units::Speed _wind;
 };
 }

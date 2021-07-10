@@ -83,13 +83,13 @@ public:
      *  information will be set to "invalid" when no data has arrived for more
      *  than the time specified in PositionInfo::lifetime.
      */
-    Q_PROPERTY(AviationUnits::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property pressureAltitude
      */
-    AviationUnits::Distance pressureAltitude() const
+    Units::Distance pressureAltitude() const
     {
         return m_pressureAltitude;
     }
@@ -148,7 +148,7 @@ signals:
     void positionInfoChanged(const Positioning::PositionInfo &info);
 
     /*! \brief Notifier signal */
-    void pressureAltitudeChanged(AviationUnits::Distance pAlt);
+    void pressureAltitudeChanged(Units::Distance pAlt);
 
     /*! \brief Notifier signal */
     void receivingPositionInfoChanged(bool);
@@ -170,7 +170,7 @@ protected:
     // This method must be used by child classes to update the pressure altitude
     // The class uses a timer internally to reset the position info to "invalid"
     // after the time specified in PositionInfo::lifetime seconds.
-    void setPressureAltitude(AviationUnits::Distance newPressureAltitude);
+    void setPressureAltitude(Units::Distance newPressureAltitude);
 
     // This method must be used by child classes to update the source name
     void setSourceName(const QString &name);
@@ -185,7 +185,7 @@ private:
     // Resets the pressure altitude to "invalid"
     void resetPressureAltitude();
 
-    AviationUnits::Distance m_pressureAltitude {};
+    Units::Distance m_pressureAltitude {};
     QTimer m_pressureAltitudeTimer;
 
     Positioning::PositionInfo m_positionInfo;

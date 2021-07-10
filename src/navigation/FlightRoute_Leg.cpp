@@ -36,14 +36,14 @@ Navigation::FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps:
 }
 
 
-auto Navigation::FlightRoute::Leg::distance() const -> AviationUnits::Distance
+auto Navigation::FlightRoute::Leg::distance() const -> Units::Distance
 {
     // Paranoid safety checks
     if (!isValid()) {
         return {};
     }
 
-    return AviationUnits::Distance::fromM( _start.coordinate().distanceTo( _end.coordinate() ));
+    return Units::Distance::fromM( _start.coordinate().distanceTo( _end.coordinate() ));
 }
 
 
@@ -58,7 +58,7 @@ auto Navigation::FlightRoute::Leg::Fuel() const -> double
 }
 
 
-auto Navigation::FlightRoute::Leg::GS() const -> AviationUnits::Speed
+auto Navigation::FlightRoute::Leg::GS() const -> Units::Speed
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle()) {
@@ -67,16 +67,16 @@ auto Navigation::FlightRoute::Leg::GS() const -> AviationUnits::Speed
 
     auto TASInKT = _aircraft->cruiseSpeedInKT();
     auto WSInKT  = _wind->windSpeedInKT();
-    auto WD      = AviationUnits::Angle::fromDEG( _wind->windDirectionInDEG() );
+    auto WD      = Units::Angle::fromDEG( _wind->windDirectionInDEG() );
 
     // Law of cosine for wind triangle
     auto GSInKT = qSqrt( TASInKT*TASInKT + WSInKT*WSInKT - 2.0*TASInKT*WSInKT*(WD-TH()).cos() );
 
-    return AviationUnits::Speed::fromKN(GSInKT);
+    return Units::Speed::fromKN(GSInKT);
 }
 
 
-auto Navigation::FlightRoute::Leg::TC() const -> AviationUnits::Angle
+auto Navigation::FlightRoute::Leg::TC() const -> Units::Angle
 {
     // Paranoid safety checks
     if (!isValid()) {
@@ -86,23 +86,23 @@ auto Navigation::FlightRoute::Leg::TC() const -> AviationUnits::Angle
         return {};
     }
 
-    return AviationUnits::Angle::fromDEG( _start.coordinate().azimuthTo(_end.coordinate()) );
+    return Units::Angle::fromDEG( _start.coordinate().azimuthTo(_end.coordinate()) );
 }
 
 
-auto Navigation::FlightRoute::Leg::WCA() const -> AviationUnits::Angle
+auto Navigation::FlightRoute::Leg::WCA() const -> Units::Angle
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle()) {
         return {};
     }
 
-    AviationUnits::Speed TAS = AviationUnits::Speed::fromKN( _aircraft->cruiseSpeedInKT() );
-    AviationUnits::Speed WS  = AviationUnits::Speed::fromKN( _wind->windSpeedInKT() );
-    AviationUnits::Angle WD  = AviationUnits::Angle::fromDEG( _wind->windDirectionInDEG() );
+    Units::Speed TAS = Units::Speed::fromKN( _aircraft->cruiseSpeedInKT() );
+    Units::Speed WS  = Units::Speed::fromKN( _wind->windSpeedInKT() );
+    Units::Angle WD  = Units::Angle::fromDEG( _wind->windDirectionInDEG() );
 
     // Law of sine for wind triangle
-    return AviationUnits::Angle::asin(-(TC()-WD).sin() *(WS/TAS));
+    return Units::Angle::asin(-(TC()-WD).sin() *(WS/TAS));
 }
 
 

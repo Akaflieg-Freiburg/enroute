@@ -27,7 +27,7 @@
 #include "units/Speed.h"
 
 
-namespace AviationUnits {
+namespace Units {
 
     /*! \brief Convenience class for time computations
      *
@@ -74,7 +74,7 @@ namespace AviationUnits {
          *
          * @returns reference to this time
          */
-        Q_INVOKABLE AviationUnits::Time &operator+=(AviationUnits::Time other)
+        Q_INVOKABLE Units::Time &operator+=(Units::Time other)
         {
             _timeInS += other._timeInS;
             return *this;
@@ -131,13 +131,13 @@ namespace AviationUnits {
  *
  * @returns quotient of numerator and denominator as time
  */
-[[maybe_unused]]  static AviationUnits::Time operator/(AviationUnits::Distance dist,
-                                                      AviationUnits::Speed speed) {
+[[maybe_unused]]  static Units::Time operator/(Units::Distance dist,
+                                                      Units::Speed speed) {
     if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
         return {};
-    return AviationUnits::Time::fromS(dist.toM() / speed.toMPS());
+    return Units::Time::fromS(dist.toM() / speed.toMPS());
 }
 
 
 // Declare meta types
-Q_DECLARE_METATYPE(AviationUnits::Time)
+Q_DECLARE_METATYPE(Units::Time)

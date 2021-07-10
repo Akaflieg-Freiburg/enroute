@@ -27,11 +27,13 @@
 
 namespace Traffic {
 
-#warning documentation
 /*! \brief Traffic factor where only distance is known
  *
  *  Objects of this class represent traffic factors, where only the horizontal distance to the traffic is known.
- *  This is often the case for aircraft that report their position only through a Mode-S transponder.
+ *  This is typically the case for aircraft that report their position only through a Mode-S transponder.
+ *  Compared to TrafficFactor_Abstract, instances of this class hold one additional property, namely
+ *  the ownship position at the time of report.  The traffic must then be expected within a cylinder
+ *  centered in coordinate with radius hDist.
  */
 
 class TrafficFactor_DistanceOnly : public Traffic::TrafficFactor_Abstract {
@@ -51,7 +53,15 @@ public:
     // Methods
     //
 
-    // Copy data from other object
+    /*! \brief Copy data from other object
+     *
+     *  This method copies all properties from the other object, with two notable exceptions.
+     *
+     *  - The property "animate" is not copied, the property "animate" of this class is not touched.
+     *  - The lifeTime of this object is not changed.
+     *
+     *  @param other Instance whose properties are copied
+     */
     void copyFrom(const TrafficFactor_DistanceOnly& other)
     {
         setCoordinate(other.coordinate());

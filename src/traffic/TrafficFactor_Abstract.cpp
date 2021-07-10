@@ -84,38 +84,6 @@ auto Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_
 }
 
 
-void Traffic::TrafficFactor_Abstract::setAlarmLevel(int newAlarmLevel)
-{
-
-    // Safety checks
-    if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
-        return;
-    }
-
-    startLiveTime();
-    if (m_alarmLevel == newAlarmLevel) {
-        return;
-    }
-    if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
-        return;
-    }
-    m_alarmLevel = newAlarmLevel;
-    emit alarmLevelChanged();
-
-}
-
-
-void Traffic::TrafficFactor_Abstract::setHDist(AviationUnits::Distance newHDist) {
-
-    if (m_hDist == newHDist) {
-        return;
-    }
-    m_hDist = newHDist;
-    emit hDistChanged();
-
-}
-
-
 void Traffic::TrafficFactor_Abstract::startLiveTime()
 {
 

@@ -30,19 +30,29 @@ using namespace std::chrono_literals;
 
 namespace Traffic {
 
-#warning documentation
 
-/*! \brief Traffic factors
+/*! \brief Abstract base class for traffic factors
  *
- *  Objects of this class represent traffic factors, as detected by FLARM and
- *  similar devices.  This is an abstract base class.
+ *  This is an abstract base class for traffic factors, as reported by traffic
+ *  data receivers (e.g. FLARM devices).
+ *
+ *  Since the real-world traffic situation changes continuously, instances of this class have a limited lifetime.
+ *  The length of the lifetime is specified in the constant "lifeTime". You can (re)start an object's lifetime
+ *  startLiveTime(). Once the lift-time of an object is expired, the property "valid" will alway contain
+ *  the word "false", regardless of the object's other properties.
  */
 
 class TrafficFactor_Abstract : public QObject {
     Q_OBJECT
 
 public:
-    /*! \brief Aircraft type */
+    /*! \brief Length of lifetime for objects of this class */
+    static constexpr auto lifeTime = 10s;
+
+    /*! \brief Aircraft type
+     *
+     *  This enum defines a few aircraft type. The list is modeled after the FLARM/NMEA specification.
+     */
     enum AircraftType
     {
         unknown, /*!< Unknown aircraft type */
@@ -65,7 +75,7 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit TrafficFactor_Abstract(QObject *parent = nullptr);
+    explicit TrafficFactor_Abstract(QObject* parent = nullptr);
 
     // Standard destructor
     ~TrafficFactor_Abstract() override = default;
@@ -77,9 +87,12 @@ public:
 
     /*! \brief Copy data from other object
      *
-     *  This method copies all properties from the other object, except
-     *  the property "animate". The lifeTime of this object is not
-     *  changed.
+     *  This method copies all properties from the other object, with two notable exceptions.
+     *
+     *  - The property "animate" is not copied, the property "animate" of this class is not touched.
+     *  - The lifeTime of this object is not changed.
+     *
+     *  @param other Instance whose properties are copied
      */
     void copyFrom(const TrafficFactor_Abstract& other)
     {
@@ -120,17 +133,24 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Alarm Level, as reported by FLARM
+    /*! \brief Alarm Level
      *
-     * This is the alarm level associated with the traffic object. Alarm levels
-     * are not computed by this class, but by the FLARM device that reports the
-     * traffic. This is an integer in the range 0, …, 3 with the following
-     * meaning.
+     *  This is the alarm level associated with the traffic object. The alarm level is an integer in the
+     *  range 0 (no alarm), …, 3 (maximal alarm). The values are not computed by this class, but reported
+     *  by the traffic receiver that reports the traffic. The precise meaning depends on the type of
+     *  traffic receiver used.
+     *
+     *  FLARM
      *
      *  - 0 = no alarm (also used for no-alarm traffic information)
      *  - 1 = alarm, 13-18 seconds to impact
      *  - 2 = alarm, 9-12 seconds to impact
      *  - 3 = alarm, 0-8 seconds to impact
+     *
+     *  Other
+     *
+     *  - 0 = no alarm
+     *  - 1 = alarm
      */
     Q_PROPERTY(int alarmLevel READ alarmLevel WRITE setAlarmLevel NOTIFY alarmLevelChanged)
 
@@ -147,15 +167,32 @@ public:
      *
      *  @param newAlarmLevel Property alarmLevel
      */
-    void setAlarmLevel(int newAlarmLevel);
+    void setAlarmLevel(int newAlarmLevel)
+    {
+
+        // Safety checks
+        if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
+            return;
+        }
+
+        startLiveTime();
+        if (m_alarmLevel == newAlarmLevel) {
+            return;
+        }
+        if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
+            return;
+        }
+        m_alarmLevel = newAlarmLevel;
+        emit alarmLevelChanged();
+
+    }
 
     /*! \brief Indicates if changes in properties should be animated in the GUI
      *
-     *  This method indicates if changes in properties should be animated in the
-     *  GUI. It is "true" if the class believes that changes in the properties
-     *  indicate movement of the traffic opponent. It is "false" if the class
-     *  believes that changes in the properties indicate that a new traffic
-     *  opponent is being tracked.
+     *  This boolen properts is used to indicate if changes in properties should be animated in the
+     *  GUI.  This property is typically set to "true" before gradual changes are applied, such as
+     *  the position change of an aircraft.  It is typically set to "false" before data of a new
+     *  aircraft set.
      */
     Q_PROPERTY(bool animate READ animate WRITE setAnimate NOTIFY animateChanged)
 
@@ -199,11 +236,11 @@ public:
      *
      *  @param newCallSign Property callSign
      */
-    void setCallSign(const QString& newCallsign) {
-        if (m_callSign == newCallsign) {
+    void setCallSign(const QString& newCallSign) {
+        if (m_callSign == newCallSign) {
             return;
         }
-        m_callSign = newCallsign;
+        m_callSign = newCallSign;
         emit callSignChanged();
     }
 
@@ -253,7 +290,7 @@ public:
      *
      *  If known, this property holds the horizontal distance from the own
      *  position to the traffic, at the time of report.  Otherwise, it contains
-     *  NaN.
+     *  an invalid distance.
      */
     Q_PROPERTY(AviationUnits::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
 
@@ -270,7 +307,15 @@ public:
      *
      *  @param newHDist Property hDist
      */
-    void setHDist(AviationUnits::Distance newHDist);
+    void setHDist(AviationUnits::Distance newHDist)
+    {
+
+        if (m_hDist == newHDist) {
+            return;
+        }
+        m_hDist = newHDist;
+        emit hDistChanged();
+    }
 
     /*! \brief Identifier string of the traffic
      *
@@ -301,12 +346,12 @@ public:
         emit IDChanged();
     }
 
-    /*! \brief Type of aircraft, as reported by FLARM */
+    /*! \brief Type of aircraft, as reported by the traffic receiver */
     Q_PROPERTY(AircraftType type READ type WRITE setType NOTIFY typeChanged)
 
     /*! \brief Getter method for property with the same name
      *
-     *  @returns Property vDist
+     *  @returns Property type
      */
     AircraftType type() const
     {
@@ -327,9 +372,8 @@ public:
 
     /*! \brief Validity
      *
-     * A traffic object is considered valid if the data is meaningful and if the
-     * report is no older than the time specified in timeoutMS.  Only valid
-     * traffic objects should be shown in the GUI.
+     *  A traffic object is considered valid if the data is meaningful and if the
+     *  lifetime is not expired.  Only valid traffic objects should be shown in the GUI.
      */
     Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
 
@@ -342,8 +386,7 @@ public:
         return m_valid;
     }
 
-    /*! \brief Vertical distance from own position to the traffic, at the time
-     *  of report
+    /*! \brief Vertical distance from own position to the traffic, at the time of report
      *
      *  If known, this property holds the vertical distance from the own
      *  position to the traffic, at the time of report.  Otherwise, it contains
@@ -435,7 +478,6 @@ private:
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for longer than timeout.
     QTimer lifeTimeCounter;
-    static constexpr auto lifeTime = 10s;
 };
 
 }

@@ -20,32 +20,23 @@
 
 #pragma once
 
-#include <QGeoPositionInfo>
-#include <QTimer>
-
 #include "positioning/PositionInfo.h"
 #include "traffic/TrafficFactor_Abstract.h"
-#include "units/Distance.h"
-#include "units/Speed.h"
 
-class DemoRunner;
 
 namespace Traffic {
 
-#warning documentation
-/*! \brief Traffic opponents
+
+/*! \brief Traffic factor whose precise position is known
  *
- *  Objects of this class represent traffic opponents whose position is known, as detected by FLARM and
- *  similar devices.
+ *  Objects of this class represent traffic factors whose precise position is known.
+ *  Other properties of the traffic, such as heading and ground speed, mifght also
+ *  be known.  Compared to TrafficFactor_Abstract, instances of this class hold
+ *  important additional property, namely the positionInfo for the traffic.
  */
 
 class TrafficFactor_WithPosition : public TrafficFactor_Abstract {
     Q_OBJECT
-
-    // Only friends can set properties
-    friend class ::DemoRunner;
-    friend class TrafficDataProvider;
-    friend class TrafficDataSource_Abstract;
 
 public:
     /*! \brief Default constructor
@@ -61,7 +52,15 @@ public:
     // Methods
     //
 
-    // Copy data from other object
+    /*! \brief Copy data from other object
+     *
+     *  This method copies all properties from the other object, with two notable exceptions.
+     *
+     *  - The property "animate" is not copied, the property "animate" of this class is not touched.
+     *  - The lifeTime of this object is not changed.
+     *
+     *  @param other Instance whose properties are copied
+     */
     void copyFrom(const TrafficFactor_WithPosition& other)
     {
         setPositionInfo(other.positionInfo());
@@ -89,11 +88,7 @@ public:
         return m_icon;
     }
 
-    /*! \brief PositionInfo of the traffic
-     *
-     *  This property contains the coordinate part of the positionInfo. The
-     *  property exists for better cooperation with QML
-     */
+    /*! \brief PositionInfo of the traffic */
     Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo WRITE setPositionInfo NOTIFY positionInfoChanged)
 
     /*! \brief Getter method for property with the same name
@@ -107,11 +102,11 @@ public:
 
     /*! \brief Setter function for property with the same name
      *
-     *  Setting a new position info does not update the hDist or vDist properties.
+     *  @note Setting a new position info does not update the hDist or vDist properties.
      *
      *  @param newPositionInfo Property positionInfo
      */
-    void setPositionInfo(const QGeoPositionInfo& positionInfo);
+    void setPositionInfo(const QGeoPositionInfo& newPositionInfo);
 
 
 signals:

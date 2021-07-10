@@ -1,5 +1,5 @@
 <map id="Traffic::TrafficDataProvider" name="Traffic::TrafficDataProvider">
-<area shape="rect" id="node1" title="Traffic receiver." alt="" coords="98,124,291,151"/>
+<area shape="rect" id="node1" title="Traffic receiver." alt="" coords="85,124,278,151"/>
 <area shape="rect" id="node2" href="$classPositioning_1_1PositionInfoSource__Abstract.html" title="Abstract base class for all classes that provide geographic position information." alt="" coords="5,5,184,47"/>
-<area shape="rect" id="node3" href="$classAviationUnits_1_1Distance.html" title="Convenience class for distance computations." alt="" coords="209,13,383,39"/>
+<area shape="rect" id="node3" href="$classUnits_1_1Distance.html" title="Convenience class for distance computations." alt="" coords="209,13,330,39"/>
 </map>

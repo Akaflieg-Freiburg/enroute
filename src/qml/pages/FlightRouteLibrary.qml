@@ -31,46 +31,54 @@ Page {
     title: qsTr("Flight Route Library")
     focus: true
 
+
     header: ToolBar {
+
+        Material.foreground: "white"
+        height: 60
 
         ToolButton {
             id: backButton
 
             anchors.left: parent.left
-            anchors.leftMargin: drawer.dragMargin
+            anchors.verticalCenter: parent.verticalCenter
+
+            visible: Qt.platform.os !== "android"
+            width: Qt.platform.os !== "android" ? undefined : 0
 
             icon.source: "/icons/material/ic_arrow_back.svg"
-            icon.color: "white"
+
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
-                }
+                stackView.pop()
             }
-        } // ToolButton
+        }
 
         Label {
-            anchors.left: backButton.right
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
             anchors.right: headerMenuToolButton.left
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
 
             text: stackView.currentItem.title
-            color: "white"
             elide: Label.ElideRight
-            font.bold: true
-            horizontalAlignment: Qt.AlignHCenter
+            font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
         }
 
         ToolButton {
             id: headerMenuToolButton
 
+            anchors.verticalCenter: parent.verticalCenter
+
             anchors.right: parent.right
+
             icon.source: "/icons/material/ic_more_vert.svg"
             icon.color: "white"
+
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
                 headerMenuX.popup()
@@ -101,9 +109,9 @@ Page {
 
             }
 
-        } // ToolButton
+        }
 
-    } // ToolBar
+    }
 
     TextField {
         id: textInput

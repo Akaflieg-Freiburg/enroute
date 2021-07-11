@@ -138,37 +138,41 @@ Page {
         }
     }
 
+
     header: ToolBar {
 
         Material.foreground: "white"
+        height: 60
 
         ToolButton {
             id: backButton
 
             anchors.left: parent.left
-            anchors.leftMargin: drawer.dragMargin
+            anchors.verticalCenter: parent.verticalCenter
+
+            visible: Qt.platform.os !== "android"
+            width: Qt.platform.os !== "android" ? undefined : 0
 
             icon.source: "/icons/material/ic_arrow_back.svg"
+
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
-                }
+                stackView.pop()
             }
         }
 
         Label {
-            anchors.left: backButton.right
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
             anchors.right: headerMenuToolButton.left
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
 
             text: stackView.currentItem.title
             elide: Label.ElideRight
-            font.bold: true
-            horizontalAlignment: Qt.AlignHCenter
+            font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
         }
 
@@ -176,6 +180,8 @@ Page {
             id: headerMenuToolButton
 
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
             visible: (sv.currentIndex === 0)
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
@@ -369,7 +375,7 @@ Page {
         TabButton { text: qsTr("Wind") }
         TabButton { text: qsTr("ACFT") }
         Material.elevation: 3
-    } // TabBar
+    }
 
     SwipeView{
         id: sv

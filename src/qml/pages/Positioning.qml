@@ -54,6 +54,7 @@ Page {
             columns: 2
 
             width: view.width
+            implicitWidth: view.width
 
             Label {
                 text: qsTr("<h3>Status</h3>")

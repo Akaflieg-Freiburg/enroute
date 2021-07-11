@@ -51,6 +51,7 @@ Page {
             id: cL
 
             width: sv.availableWidth
+            implicitWidth: sv.availableWidth
 
             Label {
                 id: lbl1

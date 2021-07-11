@@ -34,42 +34,48 @@ Page {
 
     header: ToolBar {
 
+        Material.foreground: "white"
+        height: 60
+
         ToolButton {
             id: backButton
 
             anchors.left: parent.left
-            anchors.leftMargin: drawer.dragMargin
+            anchors.verticalCenter: parent.verticalCenter
+
+            visible: Qt.platform.os !== "android"
+            width: Qt.platform.os !== "android" ? undefined : 0
 
             icon.source: "/icons/material/ic_arrow_back.svg"
-            icon.color: "white"
+
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
-                }
+                stackView.pop()
             }
         }
 
         Label {
-            anchors.left: backButton.right
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
             anchors.right: headerMenuToolButton.left
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
 
             text: stackView.currentItem.title
-            color: "white"
             elide: Label.ElideRight
-            font.bold: true
-            horizontalAlignment: Qt.AlignHCenter
+            font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
         }
+
 
         ToolButton {
             id: headerMenuToolButton
 
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
             icon.source: "/icons/material/ic_help_outline.svg"
             icon.color: "white"
             onClicked: {
@@ -80,7 +86,6 @@ Page {
         }
 
     }
-
 
     ScrollView {
         id: view

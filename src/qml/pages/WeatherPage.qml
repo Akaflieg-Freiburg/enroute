@@ -83,7 +83,6 @@ Page {
             verticalAlignment: Qt.AlignVCenter
         }
 
-
         ToolButton {
             id: headerMenuToolButton
 

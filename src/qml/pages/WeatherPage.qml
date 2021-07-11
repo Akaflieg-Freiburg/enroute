@@ -48,72 +48,83 @@ Page {
 
     header: ToolBar {
 
-        RowLayout {
-            width: pg.width
+        Material.foreground: "white"
+        height: 60
 
-            ToolButton {
-                id: backButton
+        ToolButton {
+            id: backButton
 
-                icon.source: "/icons/material/ic_arrow_back.svg"
-                icon.color: "white"
-                onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
-                    if (stackView.depth > 1) {
-                        stackView.pop()
-                    } else {
-                        drawer.open()
-                    }
-                }
-            }
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
 
-            Label {
-                Layout.fillWidth: true
+            visible: Qt.platform.os !== "android"
+            width: Qt.platform.os !== "android" ? undefined : 0
 
-                text: stackView.currentItem.title
-                color: "white"
-                elide: Label.ElideRight
-                font.bold: true
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-            }
+            icon.source: "/icons/material/ic_arrow_back.svg"
 
-            ToolButton {
-                id: headerMenuToolButton
-
-                icon.source: "/icons/material/ic_more_vert.svg"
-                icon.color: "white"
-
-                onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
-                    headerMenuX.popup()
-                }
-
-                AutoSizingMenu{
-                    id: headerMenuX
-
-                    MenuItem {
-                        text: qsTr("Update METAR/TAF data")
-                        enabled: (!weatherDownloadManager.downloading) && (global.settings().acceptedWeatherTerms)
-                        onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
-                            if (!weatherDownloadManager.downloading)
-                                weatherDownloadManager.update(false)
-                        }
-                    } // MenuItem
-
-                    MenuItem {
-                        text: qsTr("Disallow internet connection")
-                        enabled: global.settings().acceptedWeatherTerms
-                        onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
-                            global.settings().acceptedWeatherTerms = false
-                        }
-                    } // MenuItem
-
-                }
-
+            onClicked: {
+                global.mobileAdaptor().vibrateBrief()
+                stackView.pop()
             }
         }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.right: parent.right
+
+            icon.source: "/icons/material/ic_more_vert.svg"
+            icon.color: "white"
+
+            onClicked: {
+                global.mobileAdaptor().vibrateBrief()
+                headerMenuX.popup()
+            }
+
+            AutoSizingMenu{
+                id: headerMenuX
+
+                MenuItem {
+                    text: qsTr("Update METAR/TAF data")
+                    enabled: (!weatherDownloadManager.downloading) && (global.settings().acceptedWeatherTerms)
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        if (!weatherDownloadManager.downloading)
+                            weatherDownloadManager.update(false)
+                    }
+                } // MenuItem
+
+                MenuItem {
+                    text: qsTr("Disallow internet connection")
+                    enabled: global.settings().acceptedWeatherTerms
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        global.settings().acceptedWeatherTerms = false
+                    }
+                } // MenuItem
+
+            }
+
+        }
+
     }
 
     Component {

@@ -253,7 +253,8 @@ ApplicationWindow {
                             onClicked: {
                                 global.mobileAdaptor().vibrateBrief()
                                 stackView.pop()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enroute/manual");
+                                stackView.push("pages/Manual.qml")
+                                aboutMenu.close()
                                 drawer.close()
                             }
                         }

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoPositionInfo>
+#include <QPointer>
 
 #include "traffic/TrafficDataSource_Abstract.h"
 
@@ -117,7 +118,7 @@ public slots:
     {
         delete trafficFactor_DistanceOnly;
         if (factor != nullptr) {
-            factor->setParent(this);
+            factor->setParent( this );
             trafficFactor_DistanceOnly = factor;
         }
     }

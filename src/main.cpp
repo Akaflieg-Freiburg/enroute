@@ -29,6 +29,7 @@
 #include <QQuickItem>
 #include <QSettings>
 #include <QTranslator>
+#include <QtWebView/QtWebView>
 
 #if !defined(Q_OS_ANDROID)
 #include <QApplication>
@@ -91,6 +92,9 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::WeatherDataProvider>("enroute", 1, 0, "WeatherProvider", "Weather::WeatherProvider objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
+
+    // Initialize web view
+    QtWebView::initialize();
 
     // Set up application
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

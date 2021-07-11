@@ -59,7 +59,6 @@ $Qt5_DIR_SOURCE/configure \
     -skip qtwebengine \
     -skip qtwebglplugin \
     -skip qtwebsockets \
-    -skip qtwebview \
     -skip qtxmlpatterns \
     -ssl \
     -I /home/kebekus/Software/buildsystems/openssl-1.1.1k/include \

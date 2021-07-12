@@ -189,77 +189,89 @@ Page {
 
     header: ToolBar {
 
+        Material.foreground: "white"
+        height: 60
+
         ToolButton {
             id: backButton
 
             anchors.left: parent.left
-            anchors.leftMargin: drawer.dragMargin
+            anchors.verticalCenter: parent.verticalCenter
+
+            visible: Qt.platform.os !== "android"
+            width: Qt.platform.os !== "android" ? undefined : 0
 
             icon.source: "/icons/material/ic_arrow_back.svg"
-            icon.color: "white"
+
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
                 stackView.pop()
             }
-        } // ToolButton
+        }
 
         Label {
-            anchors.left: backButton.right
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
             anchors.right: headerMenuToolButton.left
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
 
             text: stackView.currentItem.title
-            color: "white"
             elide: Label.ElideRight
-            font.bold: true
-            horizontalAlignment: Qt.AlignHCenter
+            font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
         }
 
         ToolButton {
+            id: headerMenuToolButton
+
+            anchors.verticalCenter: parent.verticalCenter
+
             anchors.right: parent.right
 
-            id: headerMenuToolButton
             icon.source: "/icons/material/ic_more_vert.svg"
             icon.color: "white"
+
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
                 headerMenuX.popup()
             }
 
-            AutoSizingMenu {
-                id: headerMenuX
+        }
 
-                MenuItem {
-                    id: updateMenu
+        AutoSizingMenu {
+            id: headerMenuX
 
-                    text: qsTr("Update list of maps")
+            MenuItem {
+                id: updateMenu
 
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        global.mapManager().updateGeoMapList()
-                    }
+                text: qsTr("Update list of maps")
+
+                onTriggered: {
+                    global.mobileAdaptor().vibrateBrief()
+                    highlighted = false
+                    global.mapManager().updateGeoMapList()
                 }
+            }
 
-                MenuItem {
-                    id: downloadUpdatesMenu
+            MenuItem {
+                id: downloadUpdatesMenu
 
-                    text: qsTr("Download all updates…")
-                    enabled: global.mapManager().geoMaps.updatable
+                text: qsTr("Download all updates…")
+                enabled: global.mapManager().geoMaps.updatable
 
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        global.mapManager().geoMaps.updateAll()
-                    }
+                onTriggered: {
+                    global.mobileAdaptor().vibrateBrief()
+                    highlighted = false
+                    global.mapManager().geoMaps.updateAll()
                 }
+            }
 
-            } // AutoSizingMenu
-        } // ToolButton
+        } // AutoSizingMenu
 
-    } // ToolBar
+    }
 
 
     TabBar {

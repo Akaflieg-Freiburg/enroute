@@ -31,40 +31,41 @@ Page {
 
     header: ToolBar {
 
+
         Material.foreground: "white"
+        height: 60
 
         ToolButton {
             id: closeButton
 
             anchors.left: parent.left
-            anchors.leftMargin: drawer.dragMargin
+            anchors.verticalCenter: parent.verticalCenter
 
-            icon.source: "/icons/material/ic_clear.svg"
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
-                }
+                stackView.pop()
             }
         }
 
         Label {
-            anchors.left: closeButton.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
             anchors.right: backButton.left
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
 
             text: stackView.currentItem.title
             elide: Label.ElideRight
-            font.bold: true
-            horizontalAlignment: Qt.AlignHCenter
+            font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
         }
 
         ToolButton {
             id: backButton
+
+            anchors.verticalCenter: parent.verticalCenter
 
             anchors.right: forwardButton.left
             enabled: webView.canGoBack
@@ -78,6 +79,8 @@ Page {
 
         ToolButton {
             id: forwardButton
+
+            anchors.verticalCenter: parent.verticalCenter
 
             anchors.right: parent.right
             enabled: webView.canGoForward

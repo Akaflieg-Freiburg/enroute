@@ -55,8 +55,6 @@ Page {
         }
 
         Label {
-            id: lbl
-
             anchors.verticalCenter: parent.verticalCenter
 
             anchors.left: parent.left

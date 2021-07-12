@@ -20,7 +20,6 @@ $Qt5_DIR_SOURCE/configure \
     -force-debug-info \
     -nomake tests \
     -nomake examples \
-    -no-feature-accessibility \
     -no-feature-assistant \
     -no-feature-designer \
     -no-feature-geoservices_esri \

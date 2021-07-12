@@ -106,5 +106,6 @@ with the bank account data.
             }
 
         }
-    } // ScrollView
+    }
+
 } // Page

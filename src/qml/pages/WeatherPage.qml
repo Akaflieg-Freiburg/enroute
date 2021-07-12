@@ -57,9 +57,6 @@ Page {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            visible: Qt.platform.os !== "android"
-            width: Qt.platform.os !== "android" ? undefined : 0
-
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
@@ -74,7 +71,7 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
 
             anchors.left: parent.left
-            anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
+            anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
             text: stackView.currentItem.title
@@ -218,7 +215,7 @@ Page {
             }
 
         }
-    } // ColumnLayout
+    }
 
     Rectangle {
         id: downloadIndicator
@@ -267,7 +264,7 @@ Page {
             NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
             NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
         }
-    } // downloadIndicator - Rectangle
+    }
 
     ScrollView { // Privacy Warning
         anchors.fill: parent
@@ -342,7 +339,7 @@ Page {
 
         }
 
-    } // Pane (footer)
+    }
 
     // Try and update METAR/TAF as soon as someone opens this page if the current list of stations
     // is empty. This is not a background update, we want user interaction.

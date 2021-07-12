@@ -198,9 +198,6 @@ Page {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            visible: Qt.platform.os !== "android"
-            width: Qt.platform.os !== "android" ? undefined : 0
-
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
@@ -215,7 +212,7 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
 
             anchors.left: parent.left
-            anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
+            anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
             text: stackView.currentItem.title
@@ -269,7 +266,7 @@ Page {
                 }
             }
 
-        } // AutoSizingMenu
+        }
 
     }
 
@@ -289,7 +286,7 @@ Page {
             text: qsTr("Base Maps")
         }
         Material.elevation: 3
-    } // TabBar
+    }
 
     ColumnLayout {
         anchors.top: bar.bottom
@@ -385,7 +382,7 @@ Page {
 
         } // SwipeView
 
-    } // ColumnLayout
+    }
 
 
     Rectangle {
@@ -462,7 +459,7 @@ Page {
             NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
             NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
         }
-    } // downloadIndicator - Rectangle
+    }
 
     footer: Pane {
         width: parent.width
@@ -481,7 +478,7 @@ Page {
                 global.mapManager().geoMaps.updateAll()
             }
         }
-    } // Pane (footer)
+    }
 
     // Show error when list of maps cannot be downloaded
     Connections {

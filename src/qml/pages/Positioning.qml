@@ -182,7 +182,7 @@ Page {
 
         } // GridLayout
 
-    } // Scrollview
+    }
 
     LongTextDialog {
         id: trafficHelp

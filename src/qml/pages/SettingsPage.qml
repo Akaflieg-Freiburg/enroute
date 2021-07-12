@@ -181,7 +181,6 @@ Page {
             }
 
         } // ColumnLayout
-    } // Scrollview
-
+    }
 
 } // Page

@@ -33,9 +33,6 @@ ToolBar {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
 
-        visible: Qt.platform.os !== "android"
-        width: Qt.platform.os !== "android" ? undefined : 0
-
         icon.source: "/icons/material/ic_arrow_back.svg"
 
         onClicked: {
@@ -50,7 +47,7 @@ ToolBar {
         anchors.verticalCenter: parent.verticalCenter
 
         anchors.left: parent.left
-        anchors.leftMargin: Qt.platform.os !== "android" ? 72 : 16
+        anchors.leftMargin: 72
         anchors.right: parent.right
 
         text: stackView.currentItem.title

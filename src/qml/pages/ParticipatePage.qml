@@ -85,5 +85,6 @@ please get in touch with us by opening a GitHub issue.</p>
                 onLinkActivated: Qt.openUrlExternally(link)
             }
         } // Item
-    } // ScrollView
+    }
+
 } // Page

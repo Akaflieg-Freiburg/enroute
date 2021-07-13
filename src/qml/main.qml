@@ -160,6 +160,7 @@ ApplicationWindow {
                         }
 
                     }
+
                 }
 
                 ItemDelegate {
@@ -247,17 +248,71 @@ ApplicationWindow {
 
                         ItemDelegate { // Manual
                             text: qsTr("Manual")
-                            icon.source: "/icons/material/ic_help_outline.svg"
+                            icon.source: "/icons/material/ic_book.svg"
                             Layout.fillWidth: true
 
                             onClicked: {
                                 global.mobileAdaptor().vibrateBrief()
-                                stackView.pop()
-                                stackView.push("pages/Manual.qml")
-                                aboutMenu.close()
-                                drawer.close()
+                                manualMenu.popup()
                             }
+
+
+                            AutoSizingMenu {
+                                id: manualMenu
+
+                                ItemDelegate {
+                                    text: qsTr("Read online")
+                                    icon.source: "/icons/material/ic_open_in_browser.svg"
+                                    Layout.fillWidth: true
+
+                                    onClicked: {
+                                        global.mobileAdaptor().vibrateBrief()
+                                        stackView.pop()
+                                        stackView.push("pages/Manual.qml")
+                                        aboutMenu.close()
+                                        drawer.close()
+
+                                        manualMenu.close()
+                                        aboutMenu.close()
+                                        drawer.close()
+                                    }
+
+                                }
+
+                                ItemDelegate { // Manual … download as ebook
+                                    text: qsTr("Download as ebook")
+                                    icon.source: "/icons/material/ic_file_download.svg"
+                                    Layout.fillWidth: true
+
+                                    onClicked: {
+                                        global.mobileAdaptor().vibrateBrief()
+                                        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.epub")
+
+                                        manualMenu.close()
+                                        aboutMenu.close()
+                                        drawer.close()
+                                    }
+                                }
+
+                                ItemDelegate { // Manual … download as ebook
+                                    text: qsTr("Download as PDF document")
+                                    icon.source: "/icons/material/ic_file_download.svg"
+                                    Layout.fillWidth: true
+
+                                    onClicked: {
+                                        global.mobileAdaptor().vibrateBrief()
+                                        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.pdf")
+
+                                        manualMenu.close()
+                                        aboutMenu.close()
+                                        drawer.close()
+                                    }
+                                }
+
+                            }
+
                         }
+
 
                         Rectangle {
                             height: 1
@@ -304,6 +359,7 @@ ApplicationWindow {
                             }
                         }
                     }
+
                 }
 
                 ItemDelegate { // Bug report
@@ -499,7 +555,7 @@ ApplicationWindow {
         onRejected: close()
     }
 
-    LongTextDialogMD {
+    LongTextDialog {
         id: whatsNewDialog
         standardButtons: Dialog.Ok
         anchors.centerIn: parent

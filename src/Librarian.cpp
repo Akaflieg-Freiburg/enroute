@@ -501,8 +501,8 @@ page will open, which explains the connection status in more detail.</p>
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("**The moving map can now optionally display glider sectors.** Update your aviation maps and go to Menu/Settings to enable this feature.") + "\n\n"
-                + tr("**We need help with the Italian translation.** If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.");
+        return tr("<p><strong>The manual is now built into the app.</strong> Open the main menu and go to Information/Manual to try it out.</p>")
+               + tr("<p><strong>We need help with the Italian translation.</strong> If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.</p>");
     }
 
     QFile file(name);

@@ -68,7 +68,7 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
 
             anchors.right: forwardButton.left
-            enabled: webView.canGoBack
+            visible: webView.canGoBack
 
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked: {
@@ -83,7 +83,7 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
 
             anchors.right: parent.right
-            enabled: webView.canGoForward
+            visible: webView.canGoForward
 
             icon.source: "/icons/material/ic_arrow_forward.svg"
             onClicked: {

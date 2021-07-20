@@ -150,30 +150,14 @@ Page {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your traffic receiver…")
-                onClicked: trafficHelp.open()
-
-                LongTextDialog {
-                    id: trafficHelp
-                    standardButtons: Dialog.Ok
-
-                    title: qsTr("Connect your traffic receiver")
-                    text: librarian.getStringFromRessource(":text/flarmSetup.md")
-                }
+                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/traffic.html"})
             }
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your flight simulator…")
-                onClicked: simulatorHelp.open()
-
-                LongTextDialog {
-                    id: simulatorHelp
-                    standardButtons: Dialog.Ok
-
-                    title: qsTr("Connect your flight simulator")
-                    text: librarian.getStringFromRessource(":text/simulatorSetup.md")
-                }
+                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/simulator.html"})
             }
 
             Item { // Spacer

@@ -31,8 +31,8 @@ Page {
 
     header: ToolBar {
 
-
-        Material.foreground: "white"
+        Material.background: "white"
+        Material.foreground: "teal"
         height: 60
 
         ToolButton {
@@ -41,7 +41,7 @@ Page {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            icon.source: "/icons/material/ic_arrow_back.svg"
+            icon.source: "/icons/material/ic_clear.svg"
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()

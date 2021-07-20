@@ -66,7 +66,6 @@ Page {
             verticalAlignment: Qt.AlignVCenter
         }
 
-
         ToolButton {
             id: headerMenuToolButton
 
@@ -77,7 +76,7 @@ Page {
             icon.color: "white"
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                trafficHelp.open()
+                stackView.push("Manual.qml", {"fileName": "02-steps/traffic.html"})
             }
 
         }
@@ -175,7 +174,6 @@ Page {
 
     }
 
-
     footer: Pane {
         width: parent.width
         Material.elevation: 3
@@ -204,16 +202,6 @@ Page {
 
         }
 
-    }
-
-
-    LongTextDialog {
-        id: trafficHelp
-        standardButtons: Dialog.Ok
-        anchors.centerIn: parent
-
-        title: qsTr("Connect your traffic receiver")
-        text: librarian.getStringFromRessource(":text/flarmSetup.md")
     }
 
 }

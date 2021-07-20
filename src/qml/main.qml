@@ -261,6 +261,25 @@ ApplicationWindow {
                                 id: manualMenu
 
                                 ItemDelegate {
+                                    text: qsTr("Read offline")
+                                    icon.source: "/icons/material/ic_open_in_browser.svg"
+                                    Layout.fillWidth: true
+
+                                    onClicked: {
+                                        global.mobileAdaptor().vibrateBrief()
+                                        stackView.pop()
+                                        stackView.push("pages/Manual.qml")
+                                        aboutMenu.close()
+                                        drawer.close()
+
+                                        manualMenu.close()
+                                        aboutMenu.close()
+                                        drawer.close()
+                                    }
+
+                                }
+
+                                ItemDelegate {
                                     text: qsTr("Read online")
                                     icon.source: "/icons/material/ic_open_in_browser.svg"
                                     Layout.fillWidth: true

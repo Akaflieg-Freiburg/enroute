@@ -100,7 +100,7 @@ Page {
 
         anchors.fill: parent
 
-        url: "https://akaflieg-freiburg.github.io/enrouteText/manual"
+        url: "file:///android_asset/manual/index.html"
     }
 
 

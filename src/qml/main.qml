@@ -358,7 +358,7 @@ ApplicationWindow {
                         }
 
                         ItemDelegate { // Manual … download as ebook
-                            text: qsTr("Download as PDF document")
+                            text: qsTr("Download as PDF")
                             icon.source: "/icons/material/ic_file_download.svg"
                             Layout.fillWidth: true
 

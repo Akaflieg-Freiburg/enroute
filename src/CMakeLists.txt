@@ -256,6 +256,9 @@ if( ANDROID )
     # The android target require a few additional variables
     set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
 
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
+
     # The android target depends on our own copy of openssl
     set(ANDROID_EXTRA_LIBS
         ${openssl_SOURCE_DIR}/arm/libcrypto_1_1.so
@@ -287,6 +290,9 @@ if (NOT ANDROID)
         ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
         )
 
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg Qt5::WebView KF5::Notifications qhttpengine kdsingleapplication sunset)
@@ -299,6 +305,7 @@ if (NOT ANDROID)
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/enroute\ flight\ navigation.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 # Enforce C++17 and no extensions

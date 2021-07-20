@@ -27,7 +27,7 @@ import QtWebView 1.15
 Page {
     id: pg
     title: qsTr("Manual")
-
+    property string fileName: ""
 
     header: ToolBar {
 
@@ -100,7 +100,7 @@ Page {
 
         anchors.fill: parent
 
-        url: "file:///android_asset/manual/index.html"
+        url: "file://" + manual_location + "/"  + pg.fileName
     }
 
 

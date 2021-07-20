@@ -157,6 +157,9 @@ auto main(int argc, char *argv[]) -> int
         demoRunner = new DemoRunner(engine);
     }
 
+    // Manual location
+    engine->rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
+
     // Make global objects available to QML engine
     engine->rootContext()->setContextProperty("global", new Global(engine) );
 

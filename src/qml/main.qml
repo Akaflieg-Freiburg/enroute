@@ -246,99 +246,6 @@ ApplicationWindow {
                             color: Material.primary
                         }
 
-                        ItemDelegate { // Manual
-                            text: qsTr("Manual")
-                            icon.source: "/icons/material/ic_book.svg"
-                            Layout.fillWidth: true
-
-                            onClicked: {
-                                global.mobileAdaptor().vibrateBrief()
-                                manualMenu.popup()
-                            }
-
-
-                            AutoSizingMenu {
-                                id: manualMenu
-
-                                ItemDelegate {
-                                    text: qsTr("Read offline")
-                                    icon.source: "/icons/material/ic_open_in_browser.svg"
-                                    Layout.fillWidth: true
-
-                                    onClicked: {
-                                        global.mobileAdaptor().vibrateBrief()
-                                        stackView.pop()
-                                        stackView.push("pages/Manual.qml")
-                                        aboutMenu.close()
-                                        drawer.close()
-
-                                        manualMenu.close()
-                                        aboutMenu.close()
-                                        drawer.close()
-                                    }
-
-                                }
-
-                                ItemDelegate {
-                                    text: qsTr("Read online")
-                                    icon.source: "/icons/material/ic_open_in_browser.svg"
-                                    Layout.fillWidth: true
-
-                                    onClicked: {
-                                        global.mobileAdaptor().vibrateBrief()
-                                        stackView.pop()
-                                        stackView.push("pages/Manual.qml")
-                                        aboutMenu.close()
-                                        drawer.close()
-
-                                        manualMenu.close()
-                                        aboutMenu.close()
-                                        drawer.close()
-                                    }
-
-                                }
-
-                                ItemDelegate { // Manual … download as ebook
-                                    text: qsTr("Download as ebook")
-                                    icon.source: "/icons/material/ic_file_download.svg"
-                                    Layout.fillWidth: true
-
-                                    onClicked: {
-                                        global.mobileAdaptor().vibrateBrief()
-                                        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.epub")
-
-                                        manualMenu.close()
-                                        aboutMenu.close()
-                                        drawer.close()
-                                    }
-                                }
-
-                                ItemDelegate { // Manual … download as ebook
-                                    text: qsTr("Download as PDF document")
-                                    icon.source: "/icons/material/ic_file_download.svg"
-                                    Layout.fillWidth: true
-
-                                    onClicked: {
-                                        global.mobileAdaptor().vibrateBrief()
-                                        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.pdf")
-
-                                        manualMenu.close()
-                                        aboutMenu.close()
-                                        drawer.close()
-                                    }
-                                }
-
-                            }
-
-                        }
-
-
-                        Rectangle {
-                            height: 1
-                            Layout.fillWidth: true
-                            color: Material.primary
-                        }
-
                         ItemDelegate { // About
                             text: qsTr("About Enroute Flight Navigation")
                             icon.source: "/icons/material/ic_info_outline.svg"
@@ -380,6 +287,95 @@ ApplicationWindow {
                     }
 
                 }
+
+
+                ItemDelegate { // Manual
+                    text: qsTr("Manual")
+                    icon.source: "/icons/material/ic_book.svg"
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        manualMenu.popup()
+                    }
+
+
+                    AutoSizingMenu {
+                        id: manualMenu
+
+                        ItemDelegate {
+                            text: qsTr("Read manual")
+                            icon.source: "/icons/material/ic_book.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                global.mobileAdaptor().vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/Manual.qml", {"fileName": "index.html"})
+                                aboutMenu.close()
+                                drawer.close()
+
+                                manualMenu.close()
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+
+                        }
+
+                        Rectangle {
+                            height: 1
+                            Layout.fillWidth: true
+                            color: Material.primary
+                        }
+
+                        ItemDelegate {
+                            text: qsTr("Open in browser")
+                            icon.source: "/icons/material/ic_open_in_browser.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                global.mobileAdaptor().vibrateBrief()
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual")
+                                manualMenu.close()
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+
+                        }
+
+                        ItemDelegate { // Manual … download as ebook
+                            text: qsTr("Download as ebook")
+                            icon.source: "/icons/material/ic_file_download.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                global.mobileAdaptor().vibrateBrief()
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.epub")
+                                manualMenu.close()
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                        ItemDelegate { // Manual … download as ebook
+                            text: qsTr("Download as PDF document")
+                            icon.source: "/icons/material/ic_file_download.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                global.mobileAdaptor().vibrateBrief()
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.pdf")
+
+                                manualMenu.close()
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                    }
+
+                }
+
 
                 ItemDelegate { // Bug report
                     text: qsTr("Bug report")

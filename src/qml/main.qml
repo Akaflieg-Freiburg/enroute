@@ -34,7 +34,7 @@ ApplicationWindow {
     objectName: "applicationWindow"
 
     visible: true
-    title: qsTr("Enroute Flight Navigation")
+    title: "Enroute Flight Navigation"
     width: 800
     height: 800
 
@@ -55,16 +55,54 @@ ApplicationWindow {
 
                 spacing: 0
 
+                Rectangle {
+                    height: 16
+                    Layout.fillWidth: true
+                    color: Material.primary
+                }
+
                 Label {
                     Layout.fillWidth: true
+                    leftPadding: 16
+                    rightPadding: 16
 
-                    text: "<strong>Enroute Flight Navigation</strong><br>Akaflieg Freiburg"
+                    text: "Enroute Flight Navigation " + Qt.application.version
                     color: "white"
-                    padding: Qt.application.font.pixelSize
+                    font.pixelSize: 20
+                    font.weight: Font.Medium
 
                     background: Rectangle {
                         color: Material.primary
                     }
+                }
+
+                Rectangle {
+                    height: 4
+
+                    Layout.fillWidth: true
+                    color: Material.primary
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    leftPadding: 16
+                    rightPadding: 16
+                    height: 20
+
+                    text: "Akaflieg Freiburg"
+                    font.pixelSize: 16
+                    color: "white"
+
+                    background: Rectangle {
+                        color: Material.primary
+                    }
+                }
+
+                Rectangle {
+                    height: 18
+
+                    Layout.fillWidth: true
+                    color: Material.primary
                 }
 
                 ItemDelegate {
@@ -288,7 +326,6 @@ ApplicationWindow {
 
                 }
 
-
                 ItemDelegate { // Manual
                     text: qsTr("Manual")
                     icon.source: "/icons/material/ic_book.svg"
@@ -375,7 +412,6 @@ ApplicationWindow {
                     }
 
                 }
-
 
                 ItemDelegate { // Bug report
                     text: qsTr("Bug report")

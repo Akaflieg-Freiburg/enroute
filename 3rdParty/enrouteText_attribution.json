@@ -1,0 +1,62 @@
+[
+    {
+	"Id": "sphinx-material",
+	"Name": "Material Sphinx Theme",
+	"Description": "A Material Design theme for Sphinx documentation",
+	"Homepage": "https://github.com/bashtage/sphinx-material/",
+	"License": "MIT License",
+	"LicenseId": "MIT",
+	"LicenseFile": "enrouteText/licenses/sphinx-material.md",
+	"Copyright": "Copyright (c) 2019 Kevin Sheppard kevin.k.sheppard@gmail.com"
+    },
+    {
+	"Id": "jquery",
+	"Name": "jQuery",
+	"Description": "New Wave JavaScript",
+	"Homepage": "https://github.com/jquery/jquery",
+	"License": "MIT License",
+	"LicenseId": "MIT",
+	"LicenseFile": "enrouteText/licenses/jquery.md",
+	"Copyright": "Copyright OpenJS Foundation and other contributors"
+    },
+    {
+	"Id": "underscore",
+	"Name": "underscore",
+	"Description": "JavaScript library ",
+	"Homepage": "https://github.com/jashkenas/underscore",
+	"License": "MIT License",
+	"LicenseId": "MIT",
+	"LicenseFile": "enrouteText/licenses/underscore.md",
+	"Copyright": "Copyright (c) 2009-2021 Jeremy Ashkenas, Julian Gonggrijp, and DocumentCloud and Investigative Reporters & Editors"
+    },
+    {
+	"Id": "lunr",
+	"Name": "lunr.js",
+	"Description": "A bit like Solr, but much smaller and not as bright",
+	"Homepage": "https://github.com/olivernn/lunr.js",
+	"License": "MIT License",
+	"LicenseId": "MIT",
+	"LicenseFile": "enrouteText/licenses/lunr.md",
+	"Copyright": "Copyright (C) 2013 by Oliver Nightingale"
+    },
+    {
+	"Id": "fontawesome",
+	"Name": "fontawesome",
+	"Description": "The iconic SVG, font, and CSS toolkit",
+	"Homepage": "https://github.com/FortAwesome/Font-Awesome",
+	"License": "SIL Open Font Licence 1.1",
+	"LicenseId": "SIL OFL 1.1",
+	"LicenseFile": "enrouteText/licenses/fontawesome.md",
+	"Copyright": "Copyright Font Awesome team"
+    },
+    {
+	"Id": "materialiconfont",
+	"Name": "Google Material Icon Font",
+	"Description": "Google Material Icon Font",
+	"Homepage": "https://fonts.google.com/icons",
+	"License": "Apache Licence 2.0",
+	"LicenseId": "Apache 2.0",
+	"LicenseFile": "enrouteText/licenses/materialiconfont.md",
+	"Copyright": "Copyright Google Inc."
+    }
+]

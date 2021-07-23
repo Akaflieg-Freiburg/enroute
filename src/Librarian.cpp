@@ -77,68 +77,41 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
       <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
     </td>
   </tr>
-  <tr>
-    <td>
-      <br>
-      <h3>Contributing Authors</h3>
-      <br>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Adrien Crovato is a private pilot and aerospace engineer. He joined the development team in 2020, and contributes to the C++ and QML code base.</p>
-      <br>
-      <br>
-      <a href='mailto:adriencrovato+code@gmail.com'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/crovato.jpg' alt='Adrien Crovato' height='140'><br>Adrien Crovato</p>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Heiner Tholen enjoys building things, analog and digital, airborne as well as ground-based. He uses Enroute as a pilot of ultralight planes. Heiner joined the Enroute team mid 2020 and contributes to the C++/QML codebase.</p>
-      <br>
-      <br>
-      <a href='mailto:ul@heinertholen.com'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/tholen.jpg' alt='Heiner Tholen' height='140'><br>Heiner Tholen</p>
-     </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Johannes Zellner joined the development in 2020.  He contributes to the C++ and QML code base of the app and helps with bug fixing.</p>
-      <br>
-      <br>
-      <a href='mailto:johannes@zellner.org'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/zellner.jpg' alt='Johannes Zellner' height='140'><br>Johannes Zellner</p>
-    </td>
-  </tr>
 </table>
 )html") + tr(R"html(
 <h3>Manual</h3>
 
 <p>The manual has kindly been provided by Michael Horbaschk.</p>
-
+)html") + tr(R"html(
 <h3>Translations</h3>
-
-<p><strong>French:</strong> Adrien Crovato. Adrien has been described above.</p>
-
-<p><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</p>
-
-<p><strong>Italian:</strong> Ivan Battistella.</p>
-
-<p><strong>Polish:</strong> Sławek Mikuła.</p>
-
+)html") + (R"html(
+<ul style="margin-left:-25px;">
+)html") + tr(R"html(
+<li><strong>French:</strong> Adrien Crovato. Adrien is a private pilot and aerospace engineer.</li>
+)html") + tr(R"html(
+<li><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</li>
+)html") + tr(R"html(
+<li><strong>Italian:</strong> Ivan Battistella.</li>
+)html") + tr(R"html(
+<li><strong>Polish:</strong> Sławek Mikuła.</li>
+)html") + (R"html(
+</ul>
+)html") + tr(R"html(
 <h3>Alumni</h3>
-
-<p>Luca Bertoncello (Italian translation)</p>
-
-<p>Szymon Kocur (Polish translation)</p>
-
+)html") + (R"html(
+<ul style="margin-left:-25px;">
+)html") + tr(R"html(
+<li>Luca Bertoncello (Italian translation)</li>
+)html") + tr(R"html(
+<li>Adrien Crovato (Integration of weather information)</li>
+)html") + tr(R"html(
+<li>Szymon Kocur (Polish translation)</li>
+)html") + tr(R"html(
+<li>Heiner Tholen (User interface)</li>
+)html") + tr(R"html(
+<li>Johannes Zellner (Geoid correction for altitude)</li>
+)html") + (R"html(
+</ul>
 <p></p>)html");
     }
 

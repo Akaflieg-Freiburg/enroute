@@ -53,7 +53,6 @@
 	<file alias="icons/material/ic_wb_sunny.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_wb_sunny_24px.svg</file>
 
 	<!-- GUI icons: General -->
-        <file alias="icons/crovato.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/crovato.jpg</file>
         <file alias="icons/icon_airfield.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/icon_airfield.svg</file>
         <file alias="icons/kebekus.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/kebekus.jpg</file>
         <file alias="icons/nav_participate.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/nav_participate.svg</file>
@@ -61,7 +60,6 @@
         <file alias="icons/self-noDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noDirection.svg</file>
         <file alias="icons/self-noPosition.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-noPosition.svg</file>
         <file alias="icons/self-withDirection.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/self-withDirection.svg</file>
-        <file alias="icons/tholen.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/tholen.jpg</file>
         <file alias="icons/traffic-noDirection-green.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection-green.svg</file>
         <file alias="icons/traffic-noDirection-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection-yellow.svg</file>
         <file alias="icons/traffic-noDirection-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-noDirection-red.svg</file>
@@ -69,7 +67,6 @@
         <file alias="icons/traffic-withDirection-yellow.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-yellow.svg</file>
         <file alias="icons/traffic-withDirection-red.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/traffic-withDirection-red.svg</file>
         <file alias="icons/vertLine.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/vertLine.svg</file>
-        <file alias="icons/zellner.jpg">${CMAKE_CURRENT_SOURCE_DIR}/icons/zellner.jpg</file>
 
 	<!-- GUI icons: Waypoint -->
 	<file alias="icons/waypoints/AD.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD.svg</file>

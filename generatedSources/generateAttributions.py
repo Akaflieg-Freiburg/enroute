@@ -19,14 +19,15 @@ def get_name(employee):
 data = []
 
 # Include data from all the Qt modules that we use
-data += qtattributionsscanner("3rdParty/qt5/qtandroidextras")
-data += qtattributionsscanner("3rdParty/qt5/qtbase")
-data += qtattributionsscanner("3rdParty/qt5/qtdeclarative")
-data += qtattributionsscanner("3rdParty/qt5/qtlocation")
-data += qtattributionsscanner("3rdParty/qt5/qtquickcontrols2")
-data += qtattributionsscanner("3rdParty/qt5/qtsvg")
-data += qtattributionsscanner("3rdParty/qt5/qttranslations")
-data += qtattributionsscanner("3rdParty/qt5/qtx11extras")
+data += qtattributionsscanner("../qt5/qtandroidextras")
+data += qtattributionsscanner("../qt5/qtbase")
+data += qtattributionsscanner("../qt5/qtdeclarative")
+data += qtattributionsscanner("../qt5/qtlocation")
+data += qtattributionsscanner("../qt5/qtquickcontrols2")
+data += qtattributionsscanner("../qt5/qtsvg")
+data += qtattributionsscanner("../qt5/qttranslations")
+data += qtattributionsscanner("../qt5/qtwebview")
+data += qtattributionsscanner("../qt5/qtx11extras")
 
 # Include data from modules in 3rdParty
 for root,directors,files in os.walk("3rdParty"):
@@ -35,8 +36,11 @@ for root,directors,files in os.walk("3rdParty"):
             continue
         if file.endswith("_attribution.json"):
             with open(root+"/"+file) as json_file:
-                data.append(json.load(json_file))
-
+                x = json.load(json_file)
+                if isinstance(x, list):
+                    data += x
+                else:
+                    data.append(x)
 
 # Sort data
 data.sort(key=get_name)
@@ -52,7 +56,7 @@ for entry in data:
         rstString += "- {}. {}.\n".format(entry["Name"], entry["License"])
         htmlString += "<li>{}. {}.</li>\n".format(entry["Name"], entry["License"])
         
-#print(rstString)
+
 with open("3rdParty/enrouteText/manual/04-appendix/licenses_overview.rst", "w") as rstFile:
     rstFile.write(rstString)
     rstFile.close()

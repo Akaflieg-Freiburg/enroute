@@ -94,7 +94,6 @@ Page {
 
     }
 
-
     WebView {
         id: webView
 
@@ -102,7 +101,6 @@ Page {
 
         url: "file://" + manual_location + "/"  + pg.fileName
     }
-
 
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
@@ -116,4 +114,4 @@ Page {
         }
     }
 
-} // Page
+}

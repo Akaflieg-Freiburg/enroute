@@ -8,7 +8,5 @@ main:
     url: /FAQ
   - title: "Manual"
     url: /manual
-  - title: "Maps"
-    url: /maps
   - title: "Acknowledgements"
     url: /acknowledgements

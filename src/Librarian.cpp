@@ -284,8 +284,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("<p><strong>The manual is now built into the app.</strong> Open the main menu and go to Information/Manual to try it out.</p>")
-               + tr("<p><strong>We need help with the Italian translation.</strong> If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.</p>");
+        return tr("<p><strong>The manual is now built into the app.</strong> To try it out, Open the main menu and choose the item 'Manual'.</p>")
+               + tr("<p><strong>We need help with the Italian translation.</strong> If you would like to help, if you speak Italian and if know how to use the GIT revision control system, then please contact us.</p>")
+               + tr("<p><strong>Google now counts more than 10.000 active installations of this app.</strong> Thanks to everybody who made this success possible!</p>");
     }
 
     QFile file(name);

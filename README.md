@@ -12,6 +12,8 @@
 
 * Download the app for Linux Desktop on [flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute) or [snapcraft.io](https://snapcraft.io/enroute-flight-navigation). It might also be listed in your software management app.
 
+* Read the [user manual](https://akaflieg-freiburg.github.io/enrouteText/manual).
+
 ## Information for developers
 
 * Please have a look at the [wiki pages](https://github.com/Akaflieg-Freiburg/enroute/wiki).

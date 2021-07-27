@@ -6,7 +6,7 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 license: GPL-3.0
 
 apps:
-  enroute:
+  enroute-flight-navigation:
     command: usr/bin/enroute
     common-id: de.akaflieg_freiburg.enroute
     desktop: usr/share/applications/de.akaflieg_freiburg.enroute.desktop

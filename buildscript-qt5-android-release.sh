@@ -4,11 +4,11 @@
 set -e
 
 # Clear build directory
-rm -rf build-qt5-android-release
-mkdir build-qt5-android-release
+rm -rf ../build-qt5-android-release
+mkdir ../build-qt5-android-release
 
 # Configure
-cd build-qt5-android-release
+cd ../build-qt5-android-release
 $Qt5_DIR_SOURCE/configure \
     -opensource \
     -confirm-license \

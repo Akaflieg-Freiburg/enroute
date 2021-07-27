@@ -94,6 +94,8 @@ Page {
                 MenuItem {
                     text: qsTr("Import …")
                     enabled: Qt.platform.os !== "android"
+                    visible: Qt.platform.os !== "android"
+                    height: Qt.platform.os !== "android" ? undefined : 0
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()

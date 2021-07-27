@@ -13,6 +13,18 @@
         "--talk-name=org.freedesktop.Notifications"
     ],
     "modules": [
+	{
+            "name": "qt5-qtwebview",
+            "buildsystem": "qmake",
+            "cleanup-platform": [ "/bin" ],
+            "sources": [
+		{
+		    "type": "git",
+		    "url": "https://invent.kde.org/qt/qt/qtwebview.git",
+		    "commit": "920de5f"
+		}
+	    ]
+        },
         {
             "name": "enroute",
             "buildsystem": "cmake-ninja",

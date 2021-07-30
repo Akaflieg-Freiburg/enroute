@@ -85,6 +85,9 @@ private slots:
     // processFLARMMessage.
     void onReadyRead();
 
+#warning
+    void sendPassword();
+
 private:
     QTcpSocket m_socket;
     QTextStream m_textStream;

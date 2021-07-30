@@ -83,8 +83,23 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
 
     QString sentence;
     while( m_textStream.readLineInto(&sentence) ) {
+
+        // Check if the TCP connection asks for a password
+        if (sentence.startsWith("PASS$")) {
+            qWarning() << "Password requested";
+            QTimer::singleShot(0, this, &Traffic::TrafficDataSource_Tcp::sendPassword);
+        }
+
         processFLARMSentence(sentence);
     }
 
 }
 
+
+void Traffic::TrafficDataSource_Tcp::sendPassword()
+{
+    qWarning() << "Traffic::TrafficDataSource_Tcp::sendPassword() sending static password 6160";
+
+    m_textStream << "6160\n";
+    m_textStream.flush();
+}

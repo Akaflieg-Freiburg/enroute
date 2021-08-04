@@ -207,6 +207,7 @@ auto main(int argc, char *argv[]) -> int
     }
 
     // Ensure that things get deleted in the right order
+    Global::trafficDataProvider()->disconnectFromTrafficReceiver();
     delete demoRunner;
     delete engine;
 

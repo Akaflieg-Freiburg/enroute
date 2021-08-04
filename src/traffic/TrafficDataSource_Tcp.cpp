@@ -83,9 +83,9 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
 
     QString sentence;
     while( m_textStream.readLineInto(&sentence) ) {
-
+        qWarning() << sentence;
         // Check if the TCP connection asks for a password
-        if (sentence.startsWith("PASS$")) {
+        if (sentence.startsWith("PASS?")) {
             qWarning() << "Password requested";
             QTimer::singleShot(0, this, &Traffic::TrafficDataSource_Tcp::sendPassword);
         }

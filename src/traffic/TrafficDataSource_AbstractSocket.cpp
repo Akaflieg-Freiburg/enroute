@@ -117,11 +117,7 @@ void Traffic::TrafficDataSource_AbstractSocket::onErrorOccurred(QAbstractSocket:
 void Traffic::TrafficDataSource_AbstractSocket::onReceivingHeartbeatChanged(bool receivingHB)
 {
     // Acquire or release WiFi lock as appropriate
-    auto* mobileAdaptor = Global::mobileAdaptor();
-    if (mobileAdaptor != nullptr) {
-        MobileAdaptor::lockWifi(receivingHB);
-    }
-
+    MobileAdaptor::lockWifi(receivingHB);
 }
 
 

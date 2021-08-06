@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "Global.h"
+#include "MobileAdaptor.h"
+#include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataSource_Tcp.h"
-
 
 // Member functions
 
@@ -100,6 +102,12 @@ void Traffic::TrafficDataSource_Tcp::sendPassword()
 {
     qWarning() << "Traffic::TrafficDataSource_Tcp::sendPassword() sending static password 6160";
 
-    m_textStream << "6160\n";
-    m_textStream.flush();
+    auto SSID = MobileAdaptor::getSSID();
+    auto password = Global::passwordDB()->getPassword(SSID);
+
+    if (!password.isEmpty()) {
+        m_textStream << password+"\n";
+        m_textStream.flush();
+    }
+
 }

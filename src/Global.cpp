@@ -29,6 +29,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
+#include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 
 bool isConstructing {false};
@@ -38,6 +39,7 @@ QPointer<GeoMaps::MapManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
+QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Settings> g_settings {};
 QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
 
@@ -93,11 +95,16 @@ auto Global::networkAccessManager() -> QNetworkAccessManager*
 }
 
 
+auto Global::passwordDB() -> Traffic::PasswordDB*
+{
+    return allocateInternal<Traffic::PasswordDB>(g_passwordDB);
+}
+
+
 auto Global::settings() -> Settings*
 {
     return allocateInternal<Settings>(g_settings);
 }
-
 
 auto Global::trafficDataProvider() -> Traffic::TrafficDataProvider*
 {

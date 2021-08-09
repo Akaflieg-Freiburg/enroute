@@ -93,7 +93,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Weather::WeatherDataProvider>("enroute", 1, 0, "WeatherProvider", "Weather::WeatherProvider objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 
-    // Initialize web view
+    // Initialize web view on platforms where we use it
     QtWebView::initialize();
 
     // Set up application

@@ -25,6 +25,7 @@
 
 namespace Traffic {
 
+#warning
 
 class PasswordDB : public QObject {
     Q_OBJECT
@@ -34,10 +35,27 @@ public:
 
     ~PasswordDB();
 
-    QString getPassword(const QString& key);
+    const bool contains(const QString& key)
+    {
+        return m_passwordDB.contains(key);
+    }
+
+    const QString getPassword(const QString& key)
+    {
+        return m_passwordDB.value(key);
+    }
+
+    void removePassword(const QString& key);
+
+    void setPassword(const QString& key, const QString& value);
 
 private:
-    QHash<QString, QString> *m_passwordDB {nullptr};
+    void read();
+    void save();
+
+    QString passwordDBFileName {};
+
+    QHash<QString, QString> m_passwordDB {};
 };
 
 }

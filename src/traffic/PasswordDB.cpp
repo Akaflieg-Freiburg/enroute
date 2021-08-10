@@ -20,28 +20,76 @@
 
 #include "traffic/PasswordDB.h"
 
+#include <QDataStream>
+#include <QFile>
+#include <QStandardPaths>
+
 
 Traffic::PasswordDB::PasswordDB(QObject* parent) : QObject(parent)
 {
-    ;
+    passwordDBFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "trafficDataReceiverPasswordDB.dat";
+    read();
 }
 
 
 Traffic::PasswordDB::~PasswordDB()
+= default;
+
+
+void Traffic::PasswordDB::read()
 {
-    delete m_passwordDB;
+    auto passwordFile = QFile(passwordDBFileName);
+    if (!passwordFile.open(QIODevice::ReadOnly)) {
+        return;
+    }
+    auto inputStream = QDataStream(&passwordFile);
+
+    QHash<QString, QString> tmp;
+    inputStream >> tmp;
+    if (inputStream.status() != QDataStream::Ok) {
+        return;
+    }
+    if (passwordFile.error() != QFileDevice::NoError) {
+        return;
+    }
+
+    passwordFile.close();
+    m_passwordDB = tmp;
+
 }
 
 
-auto Traffic::PasswordDB::getPassword(const QString& key) -> QString
+void Traffic::PasswordDB::save()
 {
-    if (m_passwordDB == nullptr) {
-#warning
-        ;
+    auto passwordDBFile = QFile(passwordDBFileName);
+    if (!passwordDBFile.open(QIODevice::WriteOnly)) {
+        return;
     }
-    if (m_passwordDB == nullptr) {
-        return {};
+    if (passwordDBFile.error() != QFileDevice::NoError) {
+        return;
     }
 
-    return m_passwordDB->value(key);
+    auto outputStream = QDataStream(&passwordDBFile);
+    outputStream << m_passwordDB;
+    passwordDBFile.close();
+
+}
+
+
+void Traffic::PasswordDB::removePassword(const QString& key)
+{
+    if (!m_passwordDB.contains(key)) {
+        return;
+    }
+    m_passwordDB.remove(key);
+    save();
+}
+
+void Traffic::PasswordDB::setPassword(const QString& key, const QString& value)
+{
+    if (m_passwordDB.value(key) == value) {
+        return;
+    }
+    m_passwordDB[key] = value;
+    save();
 }

@@ -81,18 +81,99 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
+#warning
+    void deferredInitialization();
+
     // Read lines from the socket's text stream and passes the string on to
     // processFLARMMessage.
     void onReadyRead();
 
 #warning
-    void sendPassword();
+    void sendPassword_internal();
+
+#warning
+    void sendPassword(const QString& SSID, const QString& password);
+
+#warning
+    void resetPasswordLifecycle();
+
+#warning
+    void updatePasswordStatusOnDisconnected();
+
+#warning
+    void updatePasswordStatusOnHeartbeatChange(bool newHeartbeat);
 
 private:
     QTcpSocket m_socket;
     QTextStream m_textStream;
     QString m_hostName;
     quint16 m_port;
+
+
+    /* Password lifecycle
+     *
+     * - The method onReadyRead detects that the device requests password. It will
+     *   store the current SSID in passwordRequest_SSID and set passwordRequest_Status
+     *   to waitingForPassword.
+     *
+     * - If a password for the SSID is found in the database, the method sendPassword
+     *   is called with that password.  Otherwise, the signal passwordRequest is
+     *   emitted, which will hopefully lead to lead to a user-provided password through
+     *   sendPassword()
+     *
+     * - The method send password will store the password in passwordRequest_password,
+     *   send the password to the device and set passwordRequest_Status to waitingForDevice.
+     *
+     * - When the connection is closed while passwordRequest_Status == waitingForDevice,
+     *   this means that the traffic data receiver has rejected the password. The
+     *   password stored in passwordRequest_password for passwordRequest_SSID is removed
+     *   from the password database, passwordRequest_Status is set to idle, the members
+     *   passwordRequest_SSID and passwordRequest_password are cleared and an immediate
+     *   reconnect is scheduled.
+     *
+     * - When the heartbeat is received while passwordRequest_Status == waitingForDevice,
+     *   this means that the traffic data receiver has accepted the password. The instance
+     *   will then emit the passwordStorageRequest. The member passwordRequest_Status is
+     *   set to idle, and the members passwordRequest_SSID and passwordRequest_password
+     *   are cleared.
+     */
+    enum {
+        /*  No password-related activity is pending */
+        idle,
+
+        /*  Waiting for password
+         *
+         *  A password has been requested by the traffic data
+         *  receiver.
+         *
+         *  At this stage, the member passwordRequest_SSID
+         *  contains the network name of the WiFi network that
+         *  the device was connected to at the time of the
+         *  request.
+         */
+        waitingForPassword,
+
+        /*  Waiting for device
+         *
+         *  A password has been sent to the traffic data
+         *  receiver, and this class is now waiting for the
+         *  device to respond.
+         *
+         *  At this stage, the member passwordRequest_SSID
+         *  contains the network name of the WiFi network that
+         *  the device was connected to at the time of the
+         *  request. The member passwordRequest_password
+         *  contains the password that has been sent to the
+         *  traffic data receiver
+         */
+        waitingForDevice
+    } passwordRequest_Status {idle};
+
+    // See passwordRequest_Status documentation
+    QString passwordRequest_SSID;
+
+    // See passwordRequest_Status documentation
+    QString passwordRequest_password;
 };
 
 }

@@ -167,6 +167,15 @@ public:
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
 signals:
+    /* \brief Password request
+     *
+     *  This signal is emitted whenever one of the traffic receivers asks for a password.
+     *  Note that this is not the WiFi-Password.
+     *
+     *  @param SSID Name of the WiFi network that is currently in use.
+     */
+    void passwordRequest(const QString &SSID);
+
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
 

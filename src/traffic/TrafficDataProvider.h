@@ -198,6 +198,9 @@ public slots:
      */
     void disconnectFromTrafficReceiver();
 
+#warning
+    void sendPassword(const QString& SSID, const QString &password);
+
 private slots:   
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of globalInstance().

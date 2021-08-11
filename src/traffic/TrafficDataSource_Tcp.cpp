@@ -70,11 +70,6 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 }
 
 
-void Traffic::TrafficDataSource_Tcp::deferredInitialization()
-{
-}
-
-
 void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
     // Reset password lifecycle
@@ -149,12 +144,13 @@ void Traffic::TrafficDataSource_Tcp::sendPassword_internal()
 
     qWarning() << "Traffic::TrafficDataSource_Tcp::sendPassword_internal";
 
-    if (passwordRequest_Status != waitingForPassword) {
+    // Make sure that this instance is in the state that we think it is
+    // Otherwise, abort.
+    if ((passwordRequest_Status != waitingForPassword)
+        || (m_socket.state() != QAbstractSocket::ConnectedState)
+        || receivingHeartbeat()) {
         resetPasswordLifecycle();
-    }
-#warning want to ensure that socket is connected
-    if (receivingHeartbeat()) {
-        resetPasswordLifecycle();
+        return;
     }
 
     // Connect signals
@@ -179,7 +175,7 @@ void Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnDisconnected()
     Global::passwordDB()->removePassword(passwordRequest_SSID);
 
     // Schedule reconnection in 500ms
-    QTimer::singleShot(500, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver);
+    QTimer::singleShot(500ms, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver);
 
     // Clear and reset
     resetPasswordLifecycle();

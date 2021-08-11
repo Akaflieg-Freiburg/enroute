@@ -80,19 +80,16 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
-private slots:
 #warning
-    void deferredInitialization();
+    void sendPassword(const QString& SSID, const QString& password) override;
 
+private slots:
     // Read lines from the socket's text stream and passes the string on to
     // processFLARMMessage.
     void onReadyRead();
 
 #warning
     void sendPassword_internal();
-
-#warning
-    void sendPassword(const QString& SSID, const QString& password);
 
 #warning
     void resetPasswordLifecycle();

@@ -255,6 +255,11 @@ public slots:
      */
     virtual void disconnectFromTrafficReceiver() = 0;
 
+#warning
+    virtual void sendPassword(const QString& SSID, const QString& password)
+    {
+        ;
+    }
 
 protected:
     /*! \brief Process one FLARM/NMEA sentence

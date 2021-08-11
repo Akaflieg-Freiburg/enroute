@@ -284,6 +284,18 @@ void Traffic::TrafficDataProvider::resetWarning()
 }
 
 
+void Traffic::TrafficDataProvider::sendPassword(const QString& SSID, const QString &password)
+{
+    foreach(auto dataSource, m_dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        dataSource->sendPassword(SSID, password);
+    }
+
+}
+
+
 void Traffic::TrafficDataProvider::setReceivingHeartbeat(bool newReceivingHeartbeat)
 {
     if (m_receivingHeartbeat == newReceivingHeartbeat) {

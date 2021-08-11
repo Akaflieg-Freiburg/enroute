@@ -616,6 +616,12 @@ ApplicationWindow {
         onOpened: global.settings().lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
 
+    PasswordDialog {
+        id: pwd
+
+        Component.onCompleted: pwd.open()
+    }
+
     Shortcut {
         sequence: StandardKey.Quit
         onActivated: Qt.quit()
@@ -624,6 +630,13 @@ ApplicationWindow {
     Shortcut {
         sequence: StandardKey.Close
         onActivated: Qt.quit()
+    }
+
+    Connections {
+        target: global.trafficDataProvider()
+        function onPasswordRequest(ssid) {
+            console.log("password request " + ssid)
+        }
     }
 
     // Enroute closed unexpectedly if...

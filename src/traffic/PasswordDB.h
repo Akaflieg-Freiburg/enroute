@@ -35,6 +35,8 @@ public:
 
     ~PasswordDB();
 
+    Q_PROPERTY(bool empty READ empty NOTIFY emptyChanged)
+
     const bool contains(const QString& key)
     {
         return m_passwordDB.contains(key);
@@ -47,7 +49,12 @@ public:
 
     void removePassword(const QString& key);
 
-   Q_INVOKABLE void setPassword(const QString& key, const QString& value);
+    Q_INVOKABLE void setPassword(const QString& key, const QString& value);
+
+    Q_INVOKABLE void clear();
+
+signals:
+    void emptyChanged();
 
 private:
     void read();

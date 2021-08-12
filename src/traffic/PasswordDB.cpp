@@ -76,6 +76,13 @@ void Traffic::PasswordDB::save()
 }
 
 
+void Traffic::PasswordDB::clear()
+{
+    m_passwordDB.clear();
+    save();
+}
+
+
 void Traffic::PasswordDB::removePassword(const QString& key)
 {
     if (!m_passwordDB.contains(key)) {

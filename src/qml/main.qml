@@ -616,12 +616,6 @@ ApplicationWindow {
         onOpened: global.settings().lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
 
-    PasswordStorageDialog {
-        id: pwd
-
-        Component.onCompleted: pwd.open()
-    }
-
     Shortcut {
         sequence: StandardKey.Quit
         onActivated: Qt.quit()

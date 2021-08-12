@@ -91,6 +91,7 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordRequest, this, &Traffic::TrafficDataProvider::passwordRequest);
+    connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
 
@@ -284,13 +285,13 @@ void Traffic::TrafficDataProvider::resetWarning()
 }
 
 
-void Traffic::TrafficDataProvider::sendPassword(const QString& SSID, const QString &password)
+void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QString &password)
 {
     foreach(auto dataSource, m_dataSources) {
         if (dataSource.isNull()) {
             continue;
         }
-        dataSource->sendPassword(SSID, password);
+        dataSource->setPassword(SSID, password);
     }
 
 }

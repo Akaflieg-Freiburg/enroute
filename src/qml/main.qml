@@ -616,7 +616,7 @@ ApplicationWindow {
         onOpened: global.settings().lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
 
-    PasswordDialog {
+    PasswordStorageDialog {
         id: pwd
 
         Component.onCompleted: pwd.open()
@@ -634,8 +634,22 @@ ApplicationWindow {
 
     Connections {
         target: global.trafficDataProvider()
+
         function onPasswordRequest(ssid) {
             console.log("password request " + ssid)
+            dialogLoader.active = false
+            dialogLoader.dialogArgs = ssid
+            dialogLoader.source = "dialogs/PasswordDialog.qml"
+            dialogLoader.active = true
+        }
+
+        function onPasswordStorageRequest(ssid, password) {
+            console.log("password storage request " + ssid + " " + password)
+            dialogLoader.active = false
+            dialogLoader.dialogArgs = ssid
+            dialogLoader.text = password
+            dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
+            dialogLoader.active = true
         }
     }
 

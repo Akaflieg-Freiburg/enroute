@@ -81,7 +81,7 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 #warning
-    void sendPassword(const QString& SSID, const QString& password) override;
+    void setPassword(const QString& SSID, const QString& password) override;
 
 private slots:
     // Read lines from the socket's text stream and passes the string on to

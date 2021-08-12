@@ -25,7 +25,7 @@ import QtQuick.Layouts 1.15
 Dialog {
     id: dlg
 
-    property var dialogArgs: undefined
+    property var dialogArgs: undefined // SSID
 
 
     // Size is chosen so that the dialog does not cover the parent in full
@@ -40,36 +40,33 @@ Dialog {
 
     modal: true
 
-    title: "Password"
-    standardButtons: Dialog.Ok|Dialog.Cancel
-    
+    title: qsTr("Store password?")
 
-    ColumnLayout {
+    Label {
         anchors.fill: parent
 
-        Label {
-            text: qsTr("Enter the password for the traffic data receiver in the WiFi network <strong>%1</strong>.").arg(dialogArgs)
-            Layout.fillWidth: true
-            wrapMode: Text.Wrap
-        }
-
-        TextField {
-            id: pwField
-            Layout.fillWidth: true
-            onAccepted: dlg.accept()
-            placeholderText: qsTr("Password")
-            echoMode: viewBox.checked ? TextInput.Normal : TextInput.Password
-        }
-
-        CheckBox {
-            id: viewBox
-            text: qsTr("Show clear text")
-        }
-
+        text: qsTr("<p><strong>Enroute Flight Navigation</strong> is now connected to the traffic data receiver in the WiFi network <strong>%1</strong>.</p>").arg(dialogArgs)
+              +qsTr("<p>Would you like to store the password for the traffic data receiver? Note that the stored password will not be encrypted. You can later clear all passwords in the setting page.</p>")
+        textFormat: Text.RichText
+        wrapMode: Text.Wrap
     }
+
+    footer: DialogButtonBox {
+        ToolButton {
+            text: qsTr("Store")
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+        }
+        ToolButton {
+            text: qsTr("Cancel")
+            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+        }
+
+    } // DialogButtonBox
+
 
     onAccepted: {
-        console.log("Password accepted")
-        global.trafficDataProvider().setPassword(dialogArgs, pwField.text)
+        console.log("Password stored" + dialogArgs + dialogLoader.text)
+        global.passwordDB().setPassword(dialogArgs, dialogLoader.text)
     }
+
 } // Dialog

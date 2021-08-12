@@ -176,6 +176,9 @@ signals:
      */
     void passwordRequest(const QString &SSID);
 
+#warning
+    void passwordStorageRequest(const QString& SSID, const QString& password);
+
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
 
@@ -199,7 +202,7 @@ public slots:
     void disconnectFromTrafficReceiver();
 
 #warning
-    void sendPassword(const QString& SSID, const QString &password);
+    void setPassword(const QString& SSID, const QString &password);
 
 private slots:   
     // Intializations that are moved out of the constructor, in order to avoid

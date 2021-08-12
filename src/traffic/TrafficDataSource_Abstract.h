@@ -256,7 +256,7 @@ public slots:
     virtual void disconnectFromTrafficReceiver() = 0;
 
 #warning
-    virtual void sendPassword(const QString& SSID, const QString& password)
+    virtual void setPassword(const QString& SSID, const QString& password)
     {
         ;
     }

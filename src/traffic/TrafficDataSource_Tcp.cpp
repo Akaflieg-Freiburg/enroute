@@ -98,7 +98,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
             passwordRequest_SSID = MobileAdaptor::getSSID();
             auto* passwordDB = Global::passwordDB();
             if (passwordDB->contains(passwordRequest_SSID)) {
-                sendPassword(passwordRequest_SSID, passwordDB->getPassword(passwordRequest_SSID));
+                setPassword(passwordRequest_SSID, passwordDB->getPassword(passwordRequest_SSID));
             } else {
                 emit passwordRequest(passwordRequest_SSID);
             }
@@ -124,9 +124,9 @@ void Traffic::TrafficDataSource_Tcp::resetPasswordLifecycle()
 }
 
 
-void Traffic::TrafficDataSource_Tcp::sendPassword(const QString& SSID, const QString& password)
+void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QString& password)
 {
-    qWarning() << "Traffic::TrafficDataSource_Tcp::sendPassword" << SSID << password;
+    qWarning() << "Traffic::TrafficDataSource_Tcp::setPassword" << SSID << password;
 
     if (passwordRequest_Status != waitingForPassword) {
         return;

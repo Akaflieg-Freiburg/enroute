@@ -47,7 +47,7 @@ public:
 
     void removePassword(const QString& key);
 
-    void setPassword(const QString& key, const QString& value);
+   Q_INVOKABLE void setPassword(const QString& key, const QString& value);
 
 private:
     void read();

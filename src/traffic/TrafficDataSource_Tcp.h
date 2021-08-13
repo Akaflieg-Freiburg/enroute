@@ -80,7 +80,10 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
-#warning
+    /*! \brief Set password
+     *
+     *  This method implements the pure virtual method declared by its superclass.
+     */
     void setPassword(const QString& SSID, const QString& password) override;
 
 private slots:
@@ -88,16 +91,29 @@ private slots:
     // processFLARMMessage.
     void onReadyRead();
 
-#warning
+    // This method does the actual job of sending the password to the traffic data receiver
+    //
+    // It checks if the instance is actually waiting for a password and returns if it is not.
+    //
+    // It connects the slots updatePasswordStatusOnHeartbeatChange that will respond to
+    // heartbeat (=password accepted) and updatePasswordStatusOnDisconnected (=password
+    // rejected). It will send the password and set passwordRequest_Status to
+    // "waitingForDevice"
     void sendPassword_internal();
 
-#warning
+    // This method set passwordRequest_Status to "idle", resets passwordRequest_SSID
+    // and passwordRequest_password, and disconnects the slots
+    // updatePasswordStatusOnHeartbeatChange and updatePasswordStatusOnDisconnected);
     void resetPasswordLifecycle();
 
-#warning
+    // This slot is called when the password has been rejected by the traffic data
+    // receiver. It clears the password from the database, schedules a reconnect and
+    // calls resetPasswordLifecycle().
     void updatePasswordStatusOnDisconnected();
 
-#warning
+    // This slot is called when the password has been accepted by the traffic data
+    // receiver. It emits a password storage request if appropriate and calls
+    // resetPasswordLifecycle().
     void updatePasswordStatusOnHeartbeatChange(bool newHeartbeat);
 
 private:

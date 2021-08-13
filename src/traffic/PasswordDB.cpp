@@ -28,16 +28,7 @@
 Traffic::PasswordDB::PasswordDB(QObject* parent) : QObject(parent)
 {
     passwordDBFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "trafficDataReceiverPasswordDB.dat";
-    read();
-}
 
-
-Traffic::PasswordDB::~PasswordDB()
-= default;
-
-
-void Traffic::PasswordDB::read()
-{
     auto passwordFile = QFile(passwordDBFileName);
     if (!passwordFile.open(QIODevice::ReadOnly)) {
         return;
@@ -55,7 +46,26 @@ void Traffic::PasswordDB::read()
 
     passwordFile.close();
     m_passwordDB = tmp;
+    updateEmpty();
+}
 
+
+void Traffic::PasswordDB::clear()
+{
+    m_passwordDB.clear();
+    save();
+    updateEmpty();
+}
+
+
+void Traffic::PasswordDB::removePassword(const QString& key)
+{
+    if (!m_passwordDB.contains(key)) {
+        return;
+    }
+    m_passwordDB.remove(key);
+    save();
+    updateEmpty();
 }
 
 
@@ -76,27 +86,28 @@ void Traffic::PasswordDB::save()
 }
 
 
-void Traffic::PasswordDB::clear()
+void Traffic::PasswordDB::setPassword(const QString& key, const QString& password)
 {
-    m_passwordDB.clear();
+
+    if (m_passwordDB.contains(key) && (m_passwordDB.value(key) == password)) {
+        return;
+    }
+
+    m_passwordDB[key] = password;
     save();
+    updateEmpty();
+
 }
 
 
-void Traffic::PasswordDB::removePassword(const QString& key)
+void Traffic::PasswordDB::updateEmpty()
 {
-    if (!m_passwordDB.contains(key)) {
-        return;
-    }
-    m_passwordDB.remove(key);
-    save();
-}
 
-void Traffic::PasswordDB::setPassword(const QString& key, const QString& value)
-{
-    if (m_passwordDB.value(key) == value) {
+    if (m_passwordDB.isEmpty() == m_empty) {
         return;
     }
-    m_passwordDB[key] = value;
-    save();
+
+    m_empty = m_passwordDB.isEmpty();
+    emit emptyChanged();
+
 }

@@ -25,41 +25,116 @@
 
 namespace Traffic {
 
-#warning
 
+/*! \brief Password database
+ *
+ *  This simple class provides access to a password database, which is in essence
+ *  a glorified QHash<QString, QString>, where keys are network SSIDs and values
+ *  are passwords.
+ */
 class PasswordDB : public QObject {
     Q_OBJECT
 
 public:
+    /*! \brief Default constructor
+     *
+     *  This default constructor will read the database from a file into memory.
+     *
+     *  @param parent The standard QObject parent pointer
+     */
     PasswordDB(QObject* parent);
 
-    ~PasswordDB();
+    ~PasswordDB() = default;
 
+
+    //
+    // Properties
+    //
+
+    /*! \brief Empty
+     *
+     *  This proerty contains true if the password database is empty.
+     */
     Q_PROPERTY(bool empty READ empty NOTIFY emptyChanged)
 
-    const bool contains(const QString& key)
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property empty
+     */
+    bool empty() const
+    {
+        return m_empty;
+    }
+
+
+    //
+    // Methods
+    //
+
+    /*! \brief Clear database
+     *
+     *  This method clears the database and saves it to the disk.
+     */
+    Q_INVOKABLE void clear();
+
+    /*! \brief Check if database contains a given key
+     *
+     *  @param key Key to look up
+     *
+     *  @returns True if database contains the key
+     */
+    Q_INVOKABLE bool contains(const QString& key) const
     {
         return m_passwordDB.contains(key);
     }
 
-    const QString getPassword(const QString& key)
+    /*! \brief Find password for a given key
+     *
+     *  @param key Key to look up
+     *
+     *  @returns Password, or an empty string if the database does not contain the key
+     */
+    Q_INVOKABLE QString getPassword(const QString& key) const
     {
         return m_passwordDB.value(key);
     }
 
-    void removePassword(const QString& key);
+    /*! \brief Remove key/password
+     *
+     *  This method removes a key/password from the database and saves the
+     *  database to the disk.
+     *
+     *  @param key Key for password to be removed.
+     */
+    Q_INVOKABLE void removePassword(const QString& key);
 
-    Q_INVOKABLE void setPassword(const QString& key, const QString& value);
-
-    Q_INVOKABLE void clear();
+    /*! \brief Set key/password
+     *
+     *  This method adds a key/password to the database and saves the
+     *  database to the disk.  If a password already exists for the given
+     *  key, then it will be overwritten.
+     *
+     *  @param key Key to be added
+     *
+     *  @param password Password to be added
+     */
+    Q_INVOKABLE void setPassword(const QString& key, const QString& password);
 
 signals:
+    /*! \brief Notifier signal */
     void emptyChanged();
 
 private:
-    void read();
+    // Update the property 'empty' and emit the notifier signal, if appropriate
+    void updateEmpty();
+
+    // Save database to disk
     void save();
 
+    // Property empty
+    bool m_empty {true};
+
+    // Password database
     QString passwordDBFileName {};
 
     QHash<QString, QString> m_passwordDB {};

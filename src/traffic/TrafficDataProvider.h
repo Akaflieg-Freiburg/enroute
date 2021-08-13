@@ -167,16 +167,21 @@ public:
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
 signals:
-    /* \brief Password request
+    /*! \brief Password request
      *
-     *  This signal is emitted whenever one of the traffic receivers asks for a password.
-     *  Note that this is not the WiFi-Password.
+     *  This signal is emitted whenever one of the traffic data sources requires
+     *  asks for a password. Note that this is not the WiFi-Password.
      *
      *  @param SSID Name of the WiFi network that is currently in use.
      */
     void passwordRequest(const QString &SSID);
 
-#warning
+    /*! \brief Password storage request
+     *
+     *  This signal is emitted whenever one of the traffic data sources has verified
+     *  a password that was not yet in the database. The GUI should connect to this
+     *  signal and open a "Store Password …?" dialogn.
+     */
     void passwordStorageRequest(const QString& SSID, const QString& password);
 
     /*! \brief Notifier signal */
@@ -201,7 +206,16 @@ public slots:
      */
     void disconnectFromTrafficReceiver();
 
-#warning
+    /*! \brief Send password to the traffic data sources
+     *
+     *  This method will send a password/ssid combination to all traffic
+     *  data source. If a source is waiting for a password with the given
+     *  SSID, then it will send the password to the traffic data receiver.
+     *
+     *  @param SSID Network where the receiver should be connected
+     *
+     *  @param password Password that is sent to the receiver
+     */
     void setPassword(const QString& SSID, const QString &password);
 
 private slots:   

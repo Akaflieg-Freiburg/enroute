@@ -143,6 +143,7 @@ Page {
                 icon.source: "/icons/material/ic_lock.svg"
                 text: `<font size="4">` + qsTr("Clear password storage") + "</font>"
                 onClicked: clearPasswordDialog.open()
+                visible: !global.passwordDB().empty
             }
 
             Label {

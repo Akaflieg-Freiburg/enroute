@@ -255,7 +255,14 @@ public slots:
      */
     virtual void disconnectFromTrafficReceiver() = 0;
 
-#warning
+    /*! \brief Set password
+     *
+     *  If the implementation of the traffic data source supports passwords, this
+     *  method checks if the traffic data source is waiting for a password with key
+     *  SSID. If so, it will send the password to the traffic data receiver.
+     *  If the implementation of the traffic data source does not support passwords,
+     *  this method does nothing.
+     */
     virtual void setPassword(const QString& SSID, const QString& password)
     {
         ;

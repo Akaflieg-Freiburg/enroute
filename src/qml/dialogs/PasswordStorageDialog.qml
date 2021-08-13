@@ -46,7 +46,7 @@ Dialog {
         anchors.fill: parent
 
         text: qsTr("<p><strong>Enroute Flight Navigation</strong> is now connected to the traffic data receiver in the WiFi network <strong>%1</strong>.</p>").arg(dialogArgs)
-              +qsTr("<p>Would you like to store the password for the traffic data receiver? Note that the stored password will not be encrypted. You can later clear all passwords in the setting page.</p>")
+              +qsTr("<p>Would you like to store the password for the traffic data receiver? Note that the stored password will not be encrypted. You can clear the password storage from the setting page.</p>")
         textFormat: Text.RichText
         wrapMode: Text.Wrap
     }

@@ -57,8 +57,12 @@ Page {
             implicitWidth: view.width
 
             Label {
-                text: qsTr("<h3>Status</h3>")
                 Layout.columnSpan: 2
+
+                text: qsTr("Status")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
             }
 
             Label { // Status
@@ -91,6 +95,15 @@ Page {
             Item {
                 height: Qt.application.font.pixelSize*0.5
                 Layout.columnSpan: 2
+            }
+
+            Label {
+                Layout.columnSpan: 2
+
+                text: qsTr("Position Data")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
             }
 
             Label { text: qsTr("Latitude") }
@@ -182,15 +195,6 @@ Page {
 
         } // GridLayout
 
-    }
-
-    LongTextDialog {
-        id: trafficHelp
-        standardButtons: Dialog.Ok
-        anchors.centerIn: parent
-
-        title: qsTr("Connect your traffic receiver")
-        text: librarian.getStringFromRessource(":text/flarmSetup.md")
     }
 
 }

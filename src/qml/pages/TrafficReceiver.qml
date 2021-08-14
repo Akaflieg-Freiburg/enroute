@@ -30,58 +30,9 @@ import "../items"
 
 Page {
     id: trafficReceiverPage
-    title: qsTr("Traffic Receiver")
+    title: qsTr("Traffic Data Receiver")
 
-    header: ToolBar {
-
-        Material.foreground: "white"
-        height: 60
-
-        ToolButton {
-            id: backButton
-
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-
-            icon.source: "/icons/material/ic_arrow_back.svg"
-
-            onClicked: {
-                global.mobileAdaptor().vibrateBrief()
-                stackView.pop()
-            }
-        }
-
-        Label {
-            id: lbl
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.left: parent.left
-            anchors.leftMargin: 72
-            anchors.right: headerMenuToolButton.left
-
-            text: stackView.currentItem.title
-            elide: Label.ElideRight
-            font.pixelSize: 20
-            verticalAlignment: Qt.AlignVCenter
-        }
-
-        ToolButton {
-            id: headerMenuToolButton
-
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-
-            icon.source: "/icons/material/ic_help_outline.svg"
-            icon.color: "white"
-            onClicked: {
-                global.mobileAdaptor().vibrateBrief()
-                stackView.push("Manual.qml", {"fileName": "02-steps/traffic.html"})
-            }
-
-        }
-
-    }
+    header: StandardHeader {}
 
     ScrollView {
         id: view
@@ -108,9 +59,10 @@ Page {
             Label {
                 Layout.fillWidth: true
 
-                text: qsTr("<h3>Status</h3>")
+                text: qsTr("Status")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
                 font.bold: true
-                textFormat: Text.MarkdownText
+                color: Material.accent
             }
 
             Label { // Status
@@ -140,40 +92,66 @@ Page {
                 }
             }
 
+            Label {
+                Layout.fillWidth: true
+                visible: global.trafficDataProvider().receivingHeartbeat
+
+                text: qsTr("<p>Well done! Go flying. Give yourself a pat on the back.</p>")
+                wrapMode: Text.WordWrap
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                icon.source: "/icons/material/ic_tap_and_play.svg"
+                text: qsTr("Connect to Traffic Receiver")
+                enabled: !timer.running
+                visible: !global.trafficDataProvider().receivingHeartbeat
+                onClicked: {
+                    global.trafficDataProvider().connectToTrafficReceiver()
+                    timer.running = true;
+                }
+                Timer {
+                    id: timer
+                    interval: 1000
+                }
+            }
+
+            Item {
+                height: Qt.application.font.pixelSize*0.5
+                Layout.columnSpan: 2
+            }
 
             Label {
                 Layout.fillWidth: true
+                visible: !global.trafficDataProvider().receivingHeartbeat
 
-                text:   {
-                    if (global.trafficDataProvider().receivingHeartbeat)
-                        return qsTr("<p>Well done! Go flying. Give yourself a pat on the back.</p>")
-                    else
-                        return qsTr("
-<h3>How to connect your device to the traffic receiver</h3>
-
-<ul style=\"margin-left:-25px;\">
-<li>Make sure that your traffic receiver has an integrated Wi-Fi interface that acts as a wireless access point. Bluetooth devices are currently not supported.</li>
-<li>Use the 'WLAN Settings' of your device to enter the WLAN network deployed by your traffic receiver.</li>
-<li>Once your device has entered the WLAN network, use the button at the bottom of the page to connect the <strong>Enroute Flight Navigation</strong> to the traffic data stream.</li>
-</ul>
-") + qsTr("
-<p>If no traffic data has arrived after a few seconds, something has gone wrong.</p>
-
-<ul style=\"margin-left:-25px;\">
-<li>Make sure that your device has entered the WLAN network deployed by your traffic receiver.  If not, then use the button at the bottem of the screen to abort the connection attempt.</li>
-<li>Some traffic receivers protect the data stream with an additional password. This is currently not supported.</li>
-<li>Click on the question mark in the page title to open a more detailed help dialog.</li>
-</ul>
-")
-}
-                textFormat: Text.RichText
-                wrapMode: Text.WordWrap
-
+                text: qsTr("Help")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
             }
+
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                visible: !global.trafficDataProvider().receivingHeartbeat
+                icon.source: "/icons/material/ic_info_outline.svg"
+                text: qsTr("How to connect your traffic receiver…")
+                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/traffic.html"})
+            }
+
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                visible: !global.trafficDataProvider().receivingHeartbeat
+                icon.source: "/icons/material/ic_info_outline.svg"
+                text: qsTr("How to connect your flight simulator…")
+                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/simulator.html"})
+            }
+
         }
 
     }
 
+    /*
     footer: Pane {
         width: parent.width
         Material.elevation: 3
@@ -201,7 +179,7 @@ Page {
             }
 
         }
-
     }
+*/
 
 }

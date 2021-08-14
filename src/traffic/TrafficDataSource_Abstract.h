@@ -265,7 +265,8 @@ public slots:
      */
     virtual void setPassword(const QString& SSID, const QString& password)
     {
-        ;
+        Q_UNUSED(SSID)
+        Q_UNUSED(password)
     }
 
 protected:

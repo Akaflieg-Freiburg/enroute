@@ -213,7 +213,6 @@ Page {
 
 
         onAccepted: {
-            console.log("Password storage cleared")
             global.passwordDB().clear()
             toast.doToast(qsTr("Password storage cleared"))
         }

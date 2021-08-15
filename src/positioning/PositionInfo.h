@@ -27,8 +27,6 @@
 #include "units/Distance.h"
 #include "units/Speed.h"
 
-#include <QDebug>
-
 using namespace std::chrono_literals;
 
 

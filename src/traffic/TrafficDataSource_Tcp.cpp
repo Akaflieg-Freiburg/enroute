@@ -92,8 +92,6 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
 
         // Check if the TCP connection asks for a password
         if (sentence.startsWith("PASS?")) {
-            qWarning() << "Password requested by device";
-
             passwordRequest_Status = waitingForPassword;
             passwordRequest_SSID = MobileAdaptor::getSSID();
             auto* passwordDB = Global::passwordDB();
@@ -126,8 +124,6 @@ void Traffic::TrafficDataSource_Tcp::resetPasswordLifecycle()
 
 void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QString& password)
 {
-    qWarning() << "Traffic::TrafficDataSource_Tcp::setPassword" << SSID << password;
-
     if (passwordRequest_Status != waitingForPassword) {
         return;
     }
@@ -141,8 +137,6 @@ void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QStr
 
 void Traffic::TrafficDataSource_Tcp::sendPassword_internal()
 {
-
-    qWarning() << "Traffic::TrafficDataSource_Tcp::sendPassword_internal";
 
     // Make sure that this instance is in the state that we think it is
     // Otherwise, abort.

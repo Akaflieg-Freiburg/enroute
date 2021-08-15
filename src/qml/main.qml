@@ -630,7 +630,6 @@ ApplicationWindow {
         target: global.trafficDataProvider()
 
         function onPasswordRequest(ssid) {
-            console.log("password request " + ssid)
             dialogLoader.active = false
             dialogLoader.dialogArgs = ssid
             dialogLoader.source = "dialogs/PasswordDialog.qml"
@@ -638,7 +637,6 @@ ApplicationWindow {
         }
 
         function onPasswordStorageRequest(ssid, password) {
-            console.log("password storage request " + ssid + " " + password)
             dialogLoader.active = false
             dialogLoader.dialogArgs = ssid
             dialogLoader.text = password

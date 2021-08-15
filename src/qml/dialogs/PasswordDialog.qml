@@ -68,8 +68,6 @@ Dialog {
 
     }
 
-    onAccepted: {
-        console.log("Password accepted")
-        global.trafficDataProvider().setPassword(dialogArgs, pwField.text)
-    }
+    onAccepted: global.trafficDataProvider().setPassword(dialogArgs, pwField.text)
+
 } // Dialog

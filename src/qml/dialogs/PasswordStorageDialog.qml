@@ -64,9 +64,6 @@ Dialog {
     } // DialogButtonBox
 
 
-    onAccepted: {
-        console.log("Password stored" + dialogArgs + dialogLoader.text)
-        global.passwordDB().setPassword(dialogArgs, dialogLoader.text)
-    }
+    onAccepted: global.passwordDB().setPassword(dialogArgs, dialogLoader.text)
 
 } // Dialog

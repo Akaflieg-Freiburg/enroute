@@ -48,9 +48,10 @@ MapQuickItem {
         rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-flightMap.bearing : 0
 
         FlightVector {
+            width: 3
             groundSpeedInMetersPerSecond: trafficInfo.positionInfo.groundSpeed().toMPS()
             visible: (groundSpeedInMetersPerSecond > 5) && (trafficInfo.positionInfo.trueTrack().isFinite())
-            opacity: 0.4
+            opacity: 0.8
         }
 
         Image {

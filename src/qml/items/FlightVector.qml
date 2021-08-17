@@ -48,22 +48,23 @@ Rectangle {
     color: "black"
 
     Rectangle {
-        id: whiteStripe1to2min
-        x: 1
+        id: whiteStripe3to4min
+
+        x: parent.width > 2 ? 1 : 0
         y: parent.height/5
 
-        width: 3
+        width: parent.width > 2 ? parent.width-2 : parent.width
         height: parent.height/5
         color: "white"
     }
 
     Rectangle {
-        id: whiteStripe3to4min
+        id: whiteStripe1to2min
 
-        x: 1
+        x: parent.width > 2 ? 1 : 0
         y: 3*parent.height/5
 
-        width: 3
+        width: parent.width > 2 ? parent.width-2 : parent.width
         height: parent.height/5
         color: "white"
     }

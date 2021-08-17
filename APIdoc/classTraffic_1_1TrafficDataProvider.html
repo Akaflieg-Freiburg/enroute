@@ -88,9 +88,18 @@ Public Slots</h2></td></tr>
 <tr class="memitem:ac9544cf2977ec2df572e9c31ce11dd36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#ac9544cf2977ec2df572e9c31ce11dd36">disconnectFromTrafficReceiver</a> ()</td></tr>
 <tr class="memdesc:ac9544cf2977ec2df572e9c31ce11dd36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect from traffic receiver.  <a href="classTraffic_1_1TrafficDataProvider.html#ac9544cf2977ec2df572e9c31ce11dd36">More...</a><br /></td></tr>
 <tr class="separator:ac9544cf2977ec2df572e9c31ce11dd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2537ea79f8edb450e5a2ccd5fbb7f50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#ac2537ea79f8edb450e5a2ccd5fbb7f50">setPassword</a> (const QString &amp;SSID, const QString &amp;password)</td></tr>
+<tr class="memdesc:ac2537ea79f8edb450e5a2ccd5fbb7f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send password to the traffic data sources.  <a href="classTraffic_1_1TrafficDataProvider.html#ac2537ea79f8edb450e5a2ccd5fbb7f50">More...</a><br /></td></tr>
+<tr class="separator:ac2537ea79f8edb450e5a2ccd5fbb7f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
+<tr class="memitem:a37ead3c2f91a5ac7da2a69a69909b2ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a37ead3c2f91a5ac7da2a69a69909b2ec">passwordRequest</a> (const QString &amp;SSID)</td></tr>
+<tr class="memdesc:a37ead3c2f91a5ac7da2a69a69909b2ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Password request.  <a href="classTraffic_1_1TrafficDataProvider.html#a37ead3c2f91a5ac7da2a69a69909b2ec">More...</a><br /></td></tr>
+<tr class="separator:a37ead3c2f91a5ac7da2a69a69909b2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a349d33b1efe2d10fcc86fc92e4776f6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a349d33b1efe2d10fcc86fc92e4776f6b">passwordStorageRequest</a> (const QString &amp;SSID, const QString &amp;password)</td></tr>
+<tr class="memdesc:a349d33b1efe2d10fcc86fc92e4776f6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Password storage request.  <a href="classTraffic_1_1TrafficDataProvider.html#a349d33b1efe2d10fcc86fc92e4776f6b">More...</a><br /></td></tr>
+<tr class="separator:a349d33b1efe2d10fcc86fc92e4776f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eace63d69cd00b4a828c45bd2069818"><td class="memItemLeft" align="right" valign="top"><a id="a3eace63d69cd00b4a828c45bd2069818"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataProvider.html#a3eace63d69cd00b4a828c45bd2069818">receivingHeartbeatChanged</a> (bool)</td></tr>
 <tr class="memdesc:a3eace63d69cd00b4a828c45bd2069818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -332,6 +341,80 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a37ead3c2f91a5ac7da2a69a69909b2ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37ead3c2f91a5ac7da2a69a69909b2ec">&#9670;&nbsp;</a></span>passwordRequest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataProvider::passwordRequest </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>SSID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Password request. </p>
+<p>This signal is emitted whenever one of the traffic data sources requires asks for a password. Note that this is not the WiFi-Password.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">SSID</td><td>Name of the WiFi network that is currently in use. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a349d33b1efe2d10fcc86fc92e4776f6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a349d33b1efe2d10fcc86fc92e4776f6b">&#9670;&nbsp;</a></span>passwordStorageRequest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataProvider::passwordStorageRequest </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>SSID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>password</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Password storage request. </p>
+<p>This signal is emitted whenever one of the traffic data sources has verified a password that was not yet in the database. The GUI should connect to this signal and open a "Store Password …?" dialogn. </p>
+
+</div>
+</div>
 <a id="a7349f286dc40b5401fd683e7c1b35e74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7349f286dc40b5401fd683e7c1b35e74">&#9670;&nbsp;</a></span>receivingHeartbeat()</h2>
 
@@ -359,6 +442,52 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Property receiving </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00135">135</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="ac2537ea79f8edb450e5a2ccd5fbb7f50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2537ea79f8edb450e5a2ccd5fbb7f50">&#9670;&nbsp;</a></span>setPassword</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Traffic::TrafficDataProvider::setPassword </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>SSID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>password</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send password to the traffic data sources. </p>
+<p>This method will send a password/ssid combination to all traffic data source. If a source is waiting for a password with the given SSID, then it will send the password to the traffic data receiver.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">SSID</td><td>Network where the receiver should be connected</td></tr>
+    <tr><td class="paramname">password</td><td>Password that is sent to the receiver </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

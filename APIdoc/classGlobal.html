@@ -79,6 +79,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a63b36104daa49b20e17e142e3263f6e3"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNavigation_1_1Navigator.html">Navigation::Navigator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#a63b36104daa49b20e17e142e3263f6e3">navigator</a> ()</td></tr>
 <tr class="memdesc:a63b36104daa49b20e17e142e3263f6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data.">Navigation::Navigator</a> instance.  <a href="classGlobal.html#a63b36104daa49b20e17e142e3263f6e3">More...</a><br /></td></tr>
 <tr class="separator:a63b36104daa49b20e17e142e3263f6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9002a6c781b03c6131b6c9508ebe4d89"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classTraffic_1_1PasswordDB.html">Traffic::PasswordDB</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#a9002a6c781b03c6131b6c9508ebe4d89">passwordDB</a> ()</td></tr>
+<tr class="memdesc:a9002a6c781b03c6131b6c9508ebe4d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PasswordDB instance.  <a href="classGlobal.html#a9002a6c781b03c6131b6c9508ebe4d89">More...</a><br /></td></tr>
+<tr class="separator:a9002a6c781b03c6131b6c9508ebe4d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc8c1c24cc9f699f8f65b761e91fcdf3"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QNetworkAccessManager *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#afc8c1c24cc9f699f8f65b761e91fcdf3">networkAccessManager</a> ()</td></tr>
 <tr class="memdesc:afc8c1c24cc9f699f8f65b761e91fcdf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static QNetworkAccessManager instance.  <a href="classGlobal.html#afc8c1c24cc9f699f8f65b761e91fcdf3">More...</a><br /></td></tr>
 <tr class="separator:afc8c1c24cc9f699f8f65b761e91fcdf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -97,7 +100,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This method must only be called while a global QCoreApplication exists. If <a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> manages an instance of your class, then none of the static methods must not be called in the constructor of your class, or else an inite loop may result.</dd></dl>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="Global_8h_source.html#l00066">66</a> of file <a class="el" href="Global_8h_source.html">Global.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Global_8h_source.html#l00067">67</a> of file <a class="el" href="Global_8h_source.html">Global.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7a2436b32bca56d1777c342b89fb77cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a2436b32bca56d1777c342b89fb77cc">&#9670;&nbsp;</a></span>Global()</h2>
@@ -298,6 +301,34 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to appplication-wide static QNetworkAccessManager instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
+<a id="a9002a6c781b03c6131b6c9508ebe4d89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9002a6c781b03c6131b6c9508ebe4d89">&#9670;&nbsp;</a></span>passwordDB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classTraffic_1_1PasswordDB.html">Traffic::PasswordDB</a>* Global::passwordDB </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to appplication-wide static PasswordDB instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
 
 </div>

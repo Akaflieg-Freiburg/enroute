@@ -28,9 +28,6 @@ MapQuickItem {
 
     property var trafficInfo: ({})
 
-    anchorPoint.x: image.width/2
-    anchorPoint.y: image.height/2
-
     coordinate: trafficInfo.positionInfo.coordinate()
     Behavior on coordinate {
         CoordinateAnimation { duration: 1000 }
@@ -48,10 +45,19 @@ MapQuickItem {
     }
 
     sourceItem: Item {
+        rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-flightMap.bearing : 0
+
+        FlightVector {
+            groundSpeedInMetersPerSecond: trafficInfo.positionInfo.groundSpeed().toMPS()
+            visible: (groundSpeedInMetersPerSecond > 5) && (trafficInfo.positionInfo.trueTrack().isFinite())
+            opacity: 0.4
+        }
+
         Image {
             id: image
 
-            rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-flightMap.bearing : 0
+            x: -width/2.0
+            y: -height/2.0
 
             source: trafficInfo.icon
 

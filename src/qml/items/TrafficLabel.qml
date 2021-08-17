@@ -29,7 +29,7 @@ MapQuickItem {
 
     property var trafficInfo: ({})
 
-    property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
+    property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 36
     property real t: trafficInfo.positionInfo.trueTrack().isFinite() ? 2*Math.PI*(trafficInfo.positionInfo.trueTrack()-flightMap.bearing)/360.0 : 0
 
     coordinate: trafficInfo.positionInfo.coordinate().isValid ? trafficInfo.positionInfo.coordinate() : positionProvider.lastValidCoordinate
@@ -51,8 +51,8 @@ MapQuickItem {
     sourceItem: Label {
         id: lbl
 
-        x: -distFromCenter*Math.sin(t) - width/2
-        y: distFromCenter*Math.cos(t) - height/2
+        x: -width/2.0  - distFromCenter*Math.sin(t)
+        y: -height/2.0 - distFromCenter*Math.cos(t)
 
         text: trafficInfo.description
         textFormat: Text.RichText

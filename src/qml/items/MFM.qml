@@ -302,8 +302,6 @@ Item {
         MapQuickItem {
             id: ownPosition
 
-            anchorPoint.x: imageOP.width/2
-            anchorPoint.y: imageOP.height/2
             coordinate: positionProvider.lastValidCoordinate
 
             Connections {
@@ -315,10 +313,19 @@ Item {
             }
 
             sourceItem: Item {
+
+                rotation: flightMap.animatedTrack-flightMap.bearing
+
+                FlightVector {
+                    groundSpeedInMetersPerSecond: positionProvider.positionInfo.groundSpeed().toMPS()
+                    visible: (global.navigator().isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
+                }
+
                 Image {
                     id: imageOP
 
-                    rotation: flightMap.animatedTrack-flightMap.bearing
+                    x: -width/2.0
+                    y: -height/2.0
 
                     source: {
                         var pInfo = positionProvider.positionInfo

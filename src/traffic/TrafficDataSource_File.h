@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QFile>
+#include <QTextStream>
 
 #include "traffic/TrafficDataSource_Abstract.h"
 

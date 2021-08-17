@@ -48,6 +48,7 @@
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
+#include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "ui/ScaleQuickItem.h"
@@ -86,9 +87,10 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", "Navigator objects cannot be created in QML");
-    qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "FLARMAdaptor", "FLARMAdaptor objects cannot be created in QML");
-    qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "SatNav", "SatNav objects cannot be created in QML");
-    qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor", "TrafficFactor objects cannot be created in QML");
+    qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", "PasswordDB objects cannot be created in QML");
+    qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", "TrafficDataProvider objects cannot be created in QML");
+    qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "PositionProvider", "PositionProvider objects cannot be created in QML");
+    qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", "TrafficFactor_WithPosition objects cannot be created in QML");
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::WeatherDataProvider>("enroute", 1, 0, "WeatherProvider", "Weather::WeatherProvider objects cannot be created in QML");
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
@@ -207,6 +209,7 @@ auto main(int argc, char *argv[]) -> int
     }
 
     // Ensure that things get deleted in the right order
+    Global::trafficDataProvider()->disconnectFromTrafficReceiver();
     delete demoRunner;
     delete engine;
 

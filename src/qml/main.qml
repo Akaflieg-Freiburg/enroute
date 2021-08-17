@@ -626,6 +626,25 @@ ApplicationWindow {
         onActivated: Qt.quit()
     }
 
+    Connections {
+        target: global.trafficDataProvider()
+
+        function onPasswordRequest(ssid) {
+            dialogLoader.active = false
+            dialogLoader.dialogArgs = ssid
+            dialogLoader.source = "dialogs/PasswordDialog.qml"
+            dialogLoader.active = true
+        }
+
+        function onPasswordStorageRequest(ssid, password) {
+            dialogLoader.active = false
+            dialogLoader.dialogArgs = ssid
+            dialogLoader.text = password
+            dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
+            dialogLoader.active = true
+        }
+    }
+
     // Enroute closed unexpectedly if...
     // * the "route" page is open
     // * the route menu is opened

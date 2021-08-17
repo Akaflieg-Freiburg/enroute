@@ -13,6 +13,7 @@
         <file alias="icons/material/ic_airplanemode_active.svg">${material-design-icons_SOURCE_DIR}/device/svg/production/ic_airplanemode_active_24px.svg</file>
 	<file alias="icons/material/ic_arrow_back.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_back_24px.svg</file>
 	<file alias="icons/material/ic_arrow_forward.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_arrow_forward_24px.svg</file>
+	<file alias="icons/material/ic_attach_money.svg">${material-design-icons_SOURCE_DIR}/editor/svg/production/ic_attach_money_24px.svg</file>
         <file alias="icons/material/ic_book.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_book_24px.svg</file>
         <file alias="icons/material/ic_brightness_3.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_brightness_3_24px.svg</file>
         <file alias="icons/material/ic_bug_report.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_bug_report_24px.svg</file>
@@ -22,9 +23,7 @@
 	<file alias="icons/material/ic_cloud_queue.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_cloud_queue_24px.svg</file>
         <file alias="icons/material/ic_delete.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_delete_24px.svg</file>
         <file alias="icons/material/ic_directions.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_directions_24px.svg</file>
-	<file alias="icons/material/ic_attach_money.svg">${material-design-icons_SOURCE_DIR}/editor/svg/production/ic_attach_money_24px.svg</file>
         <file alias="icons/material/ic_exit_to_app.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_exit_to_app_24px.svg</file>
-        <file alias="icons/material/ic_mode_edit.svg">${material-design-icons_SOURCE_DIR}/editor/svg/production/ic_mode_edit_24px.svg</file>
         <file alias="icons/material/ic_file_download.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_file_download_24px.svg</file>
 	<file alias="icons/material/ic_help_outline.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_help_outline_24px.svg</file>
 	<file alias="icons/material/ic_info_outline.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_info_outline_24px.svg</file>
@@ -33,8 +32,10 @@
 	<file alias="icons/material/ic_keyboard_tab.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_tab_24px.svg</file>
 	<file alias="icons/material/ic_library_add.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_add_24px.svg</file>
 	<file alias="icons/material/ic_library_books.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_books_24px.svg</file>
+	<file alias="icons/material/ic_lock.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_lock_24px.svg</file>
 	<file alias="icons/material/ic_map.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_map_24px.svg</file>
 	<file alias="icons/material/ic_menu.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_menu_24px.svg</file>
+        <file alias="icons/material/ic_mode_edit.svg">${material-design-icons_SOURCE_DIR}/editor/svg/production/ic_mode_edit_24px.svg</file>
 	<file alias="icons/material/ic_more_horiz.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_horiz_24px.svg</file>
         <file alias="icons/material/ic_more_vert.svg">${material-design-icons_SOURCE_DIR}/navigation/svg/production/ic_more_vert_24px.svg</file>
 	<file alias="icons/material/ic_my_location.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_my_location_24px.svg</file>

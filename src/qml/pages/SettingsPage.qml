@@ -138,6 +138,14 @@ Page {
                 }
             }
 
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                icon.source: "/icons/material/ic_lock.svg"
+                text: `<font size="4">` + qsTr("Clear password storage") + "</font>"
+                onClicked: clearPasswordDialog.open()
+                visible: !global.passwordDB().empty
+            }
+
             Label {
                 Layout.leftMargin: Qt.application.font.pixelSize
                 text: qsTr("Help")
@@ -166,5 +174,50 @@ Page {
 
         } // ColumnLayout
     }
+
+    Dialog {
+        id: clearPasswordDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        modal: true
+
+        title: qsTr("Clear password storage?")
+
+        Label {
+            anchors.fill: parent
+
+            text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
+            wrapMode: Text.Wrap
+        }
+
+        footer: DialogButtonBox {
+            ToolButton {
+                text: qsTr("Clear")
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            }
+            ToolButton {
+                text: qsTr("Cancel")
+                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            }
+
+        } // DialogButtonBox
+
+
+        onAccepted: {
+            global.passwordDB().clear()
+            toast.doToast(qsTr("Password storage cleared"))
+        }
+
+    }
+
 
 } // Page

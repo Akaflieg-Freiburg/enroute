@@ -10,6 +10,8 @@
         <file alias="dialogs/LongTextDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialog.qml</file>
         <file alias="dialogs/LongTextDialogMD.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialogMD.qml</file>
         <file alias="dialogs/MissingPermissionsDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/MissingPermissionsDialog.qml</file>
+        <file alias="dialogs/PasswordDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/PasswordDialog.qml</file>
+        <file alias="dialogs/PasswordStorageDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/PasswordStorageDialog.qml</file>
         <file alias="dialogs/TooManyDownloadsDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/TooManyDownloadsDialog.qml</file>
         <file alias="dialogs/UpdateMapDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/UpdateMapDialog.qml</file>
         <file alias="dialogs/WaypointDescription.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointDescription.qml</file>

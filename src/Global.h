@@ -37,6 +37,7 @@ class Navigator;
 }
 
 namespace Traffic {
+class PasswordDB;
 class TrafficDataProvider;
 }
 
@@ -104,6 +105,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Navigation::Navigator* navigator();
+
+    /*! \brief Pointer to appplication-wide static PasswordDB instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Traffic::PasswordDB* passwordDB();
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *

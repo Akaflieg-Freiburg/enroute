@@ -83,12 +83,15 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
 void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abstract* source)
 {
+
     Q_ASSERT( source != nullptr );
 
     source->setParent(this);
     m_dataSources << source;
     connect(source, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(source, &Traffic::TrafficDataSource_Abstract::passwordRequest, this, &Traffic::TrafficDataProvider::passwordRequest);
+    connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
 
@@ -279,6 +282,18 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
 void Traffic::TrafficDataProvider::resetWarning()
 {
     setWarning( Traffic::Warning() );
+}
+
+
+void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QString &password)
+{
+    foreach(auto dataSource, m_dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        dataSource->setPassword(SSID, password);
+    }
+
 }
 
 

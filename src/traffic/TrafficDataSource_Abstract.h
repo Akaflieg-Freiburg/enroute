@@ -186,6 +186,15 @@ signals:
      */
     void positionUpdated(Positioning::PositionInfo pInfo);
 
+    /*! \brief Error or problem message from traffic data receiver
+     *
+     *  If this class receives error or problem information from a connected traffic
+     *  receiver, this information is emitted here.
+     *
+     *  @param message A human-readable, translated problem report
+     */
+    void trafficReceiverErrorMessage(QString message);
+
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
 
@@ -206,16 +215,6 @@ signals:
      *  @param result String that identifies the obstacle database version
      */
     void trafficReceiverObVersion(QString result);
-
-    /*! \brief Result of traffic receiver self test
-     *
-     *  If this class receives self-test information from a connected traffic
-     *  receiver, this information is emitted here.
-     *
-     *  @param result Result of self-test as a human-readable, translated error
-     *  message
-     */
-    void trafficReceiverSelfTest(QString result);
 
     /*! \brief Traffic receiver software version
      *

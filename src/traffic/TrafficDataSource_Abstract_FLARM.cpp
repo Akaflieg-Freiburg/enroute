@@ -511,7 +511,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         auto result = results.join(QStringLiteral(" • "));
 
         // Emit results of self-test
-        emit trafficReceiverSelfTest(result);
+        emit trafficReceiverErrorMessage(result);
         return;
     }
 

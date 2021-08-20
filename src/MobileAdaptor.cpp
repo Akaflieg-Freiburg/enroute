@@ -27,6 +27,7 @@
 #include "Global.h"
 #include "MobileAdaptor.h"
 #include "geomaps/GeoMapProvider.h"
+#include "traffic/TrafficDataProvider.h"
 
 
 #if defined(Q_OS_ANDROID)
@@ -50,6 +51,9 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     QDir exchangeDir(fileExchangeDirectoryName);
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(fileExchangeDirectoryName);
+
+    // Set up signals and slots
+    connect(&trafficReceiverErrorNotificationTimer, &QTimer::timeout, this, &MobileAdaptor::clearTrafficReceiverErrorNotification);
 
 #if defined (Q_OS_ANDROID)
     // Ask for permissions
@@ -96,13 +100,14 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 }
 
 
-void MobileAdaptor::deferredInitialization() const
+void MobileAdaptor::deferredInitialization()
 {
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 #endif
 
     QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this, &MobileAdaptor::showDownloadNotification);
+    connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverErrorMessage, this, &MobileAdaptor::showTrafficReceiverErrorNotification);
 }
 
 
@@ -110,6 +115,7 @@ MobileAdaptor::~MobileAdaptor()
 {
     // Close all pending notifications
     showDownloadNotification(false);
+    showTrafficReceiverErrorNotification();
 }
 
 
@@ -193,6 +199,46 @@ void MobileAdaptor::showDownloadNotification(bool show)
         }
     }
 #endif
+}
+
+
+void MobileAdaptor::showTrafficReceiverErrorNotification(QString message)
+{
+
+#if defined(Q_OS_ANDROID)
+    QAndroidJniObject jni_title = QAndroidJniObject::fromString(message);
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyTrafficReceiverError", "(Ljava/lang/String;)V", jni_title.object<jstring>());
+#else
+
+    if (message.isEmpty()) {
+        clearTrafficReceiverErrorNotification();
+        return;
+    }
+
+    qWarning("X");
+
+    if (trafficReceiverErrorNotification.isNull()) {
+        trafficReceiverErrorNotification = new KNotification(QStringLiteral("trafficReceiverProblem"), KNotification::Persistent, this);
+        trafficReceiverErrorNotification->setPixmap( {":/icons/appIcon.png"} );
+        trafficReceiverErrorNotification->setTitle(tr("Traffic Receiver Problem"));
+    }
+
+    trafficReceiverErrorNotification->setText(message);
+    trafficReceiverErrorNotification->sendEvent();
+    trafficReceiverErrorNotificationTimer.start(10*1000);
+#endif
+}
+
+void MobileAdaptor::clearTrafficReceiverErrorNotification()
+{
+    qWarning() << "MobileAdaptor::clearTrafficReceiverErrorNotification()";
+
+    if (!trafficReceiverErrorNotification.isNull()) {
+        qWarning() << "A";
+        trafficReceiverErrorNotification->close();
+    }
+    delete trafficReceiverErrorNotification;
+    trafficReceiverErrorNotificationTimer.stop();
 }
 
 

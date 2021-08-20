@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QtGlobal>
+#include <QTimer>
 
 #ifndef Q_OS_ANDROID
 #include <KNotification>
@@ -183,12 +184,21 @@ public slots:
     */
     static void vibrateBrief();
 
-    /*! \brief Shows a notifaction, indicating that a download is in progress
+    /*! \brief Shows a notification, indicating that a download is in progress
      *
      * @param show If set to 'true', a notification will be shown. If set to
      * 'false', any existing notification will be withdrawn
      */
     void showDownloadNotification(bool show);
+
+
+    /*! \brief Shows a notification, indicating a problem with the traffic data receiver
+     *
+     * @param message Message body of the notification, or an emptry string to close an ongoing notification
+     */
+#warning
+    void showTrafficReceiverErrorNotification(QString message={});
+    void clearTrafficReceiverErrorNotification();
 
     /*! \brief Helper function, not for public consumption
      *
@@ -235,7 +245,7 @@ signals:
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of globalInstance().
-    void deferredInitialization() const;
+    void deferredInitialization();
 
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)
@@ -255,6 +265,8 @@ private:
     QStringList permissions;
 #else
     QPointer<KNotification> downloadNotification;
+    QPointer<KNotification> trafficReceiverErrorNotification;
+    QTimer trafficReceiverErrorNotificationTimer;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

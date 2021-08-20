@@ -94,6 +94,7 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
+    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverErrorMessage, this, &Traffic::TrafficDataProvider::trafficReceiverErrorMessage);
 
 }
 

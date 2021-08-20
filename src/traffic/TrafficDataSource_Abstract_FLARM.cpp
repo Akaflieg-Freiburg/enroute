@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "Global.h"
+#include "MobileAdaptor.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 
@@ -511,7 +513,9 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         auto result = results.join(QStringLiteral(" • "));
 
         // Emit results of self-test
-        emit trafficReceiverErrorMessage(result);
+        if ((severity == u"2") || (severity == u"3")) {
+            emit trafficReceiverErrorMessage( result );
+        }
         return;
     }
 

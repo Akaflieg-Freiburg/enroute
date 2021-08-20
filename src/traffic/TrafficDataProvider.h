@@ -187,6 +187,15 @@ signals:
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
 
+    /*! \brief Error or problem message from traffic data receiver
+     *
+     *  If this class receives error or problem information from a connected traffic
+     *  receiver, this information is emitted here.
+     *
+     *  @param message A human-readable, translated problem report
+     */
+    void trafficReceiverErrorMessage(QString message);
+
     /*! \brief Notifier signal */
     void warningChanged(const Traffic::Warning&);
 

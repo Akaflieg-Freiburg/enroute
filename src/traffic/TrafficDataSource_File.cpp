@@ -164,4 +164,7 @@ void Traffic::TrafficDataSource_File::updateProperties()
         break;
     }
 
+    // Clear traffic receiver error message
+    setTrafficReceiverError();
+
 }

@@ -107,7 +107,7 @@ void MobileAdaptor::deferredInitialization()
 #endif
 
     QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this, &MobileAdaptor::showDownloadNotification);
-    connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverErrorMessage, this, &MobileAdaptor::showTrafficReceiverErrorNotification);
+    connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverErrorChanged, this, &MobileAdaptor::showTrafficReceiverErrorNotification);
 }
 
 

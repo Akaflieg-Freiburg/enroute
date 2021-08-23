@@ -137,6 +137,24 @@ public:
         return m_trafficObjectWithoutPosition;
     }
 
+    /*! \brief String describing the current traffic data receiver errors
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the current errors reported by the traffic receiver, or an empty string when
+     *  there is not error.  The string is cleared when a new connection attempt
+     *  is started.
+     */
+    Q_PROPERTY(QString trafficReceiverError READ trafficReceiverError NOTIFY trafficReceiverErrorChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    QString trafficReceiverError()
+    {
+        return m_trafficReceiverError;
+    }
+
     /*! \brief Current traffic warning
      *
      *  This property holds the current traffic warning.  The traffic warning is
@@ -187,14 +205,8 @@ signals:
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
 
-    /*! \brief Error or problem message from traffic data receiver
-     *
-     *  If this class receives error or problem information from a connected traffic
-     *  receiver, this information is emitted here.
-     *
-     *  @param message A human-readable, translated problem report
-     */
-    void trafficReceiverErrorMessage(QString message);
+    /*! \brief Notifier signal */
+    void trafficReceiverErrorChanged(QString message);
 
     /*! \brief Notifier signal */
     void warningChanged(const Traffic::Warning&);
@@ -245,6 +257,9 @@ private slots:
     // Called if one of the sources reports traffic (position known)
     void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor);
 
+    // Called if one of the sources reports or clears an error string
+    void onTrafficReceiverError(const QString& msg);
+
     // Resetter method
     void resetWarning();
 
@@ -276,6 +291,7 @@ private:
     // Property cache
     Traffic::Warning m_Warning;
     QTimer m_WarningTimer;
+    QString m_trafficReceiverError {};
 
     // Reconnect
     QTimer reconnectionTimer;

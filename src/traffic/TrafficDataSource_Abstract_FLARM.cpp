@@ -514,7 +514,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
 
         // Emit results of self-test
         if ((severity == u"2") || (severity == u"3")) {
-            emit trafficReceiverErrorMessage( result );
+            setTrafficReceiverError(result);
         }
         return;
     }

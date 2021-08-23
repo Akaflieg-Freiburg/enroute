@@ -127,6 +127,24 @@ public:
      */
     virtual QString sourceName() const = 0;
 
+    /*! \brief String describing the last traffic data receiver error
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the last error reported by the traffic receiver, or an empty string when
+     *  there is not error.  The string is cleared when a new connection attempt
+     *  is started.
+     */
+    Q_PROPERTY(QString trafficReceiverError READ trafficReceiverError WRITE setTrafficReceiverError NOTIFY trafficReceiverErrorChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    QString trafficReceiverError()
+    {
+        return m_trafficReceiverError;
+    }
+
 signals:
     /*! \brief Notifier signal */
     void connectivityStatusChanged(QString newStatus);
@@ -186,17 +204,11 @@ signals:
      */
     void positionUpdated(Positioning::PositionInfo pInfo);
 
-    /*! \brief Error or problem message from traffic data receiver
-     *
-     *  If this class receives error or problem information from a connected traffic
-     *  receiver, this information is emitted here.
-     *
-     *  @param message A human-readable, translated problem report
-     */
-    void trafficReceiverErrorMessage(QString message);
-
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
+
+    /*! \brief Notifier signal */
+    void trafficReceiverErrorChanged(const QString& message);
 
     /*! \brief Traffic receiver hardware version
      *
@@ -333,11 +345,17 @@ protected:
      */
     void setReceivingHeartbeat(bool newReceivingHeartbeat);
 
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param newErrorString Property errorString
+     */
+    void setTrafficReceiverError(const QString& newErrorString = QString());
 
 private:
     // Property caches
     QString m_connectivityStatus {};
     QString m_errorString {};
+    QString m_trafficReceiverError {};
 
     // True altitude of own aircraft. We store these values because the
     // necessary information to compile a PositionInfo class does not always

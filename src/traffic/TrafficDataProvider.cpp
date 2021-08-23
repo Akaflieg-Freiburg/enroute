@@ -94,7 +94,7 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
-    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverErrorMessage, this, &Traffic::TrafficDataProvider::trafficReceiverErrorMessage);
+    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverError);
 
 }
 
@@ -277,6 +277,33 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         lowestPriObject->startLiveTime();
     }
 
+}
+
+
+void Traffic::TrafficDataProvider::onTrafficReceiverError(const QString& msg)
+{
+    Q_UNUSED(msg);
+
+    QStringList results;
+    foreach(auto dataSource, m_dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        QString msg = dataSource->trafficReceiverError();
+        if (msg.isEmpty()) {
+            continue;
+        }
+        results += dataSource->sourceName() + ": " + msg;
+    }
+    results = results + results;
+
+    auto result = results.join("\n");
+
+    if (m_trafficReceiverError == result) {
+        return;
+    }
+    m_trafficReceiverError = result;
+    emit trafficReceiverErrorChanged(result);
 }
 
 

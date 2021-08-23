@@ -85,3 +85,14 @@ void Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat()
 {
     setReceivingHeartbeat(false);
 }
+
+
+void Traffic::TrafficDataSource_Abstract::setTrafficReceiverError(const QString &newErrorString)
+{
+    if (m_trafficReceiverError == newErrorString) {
+        return;
+    }
+
+    m_trafficReceiverError = newErrorString;
+    emit trafficReceiverErrorChanged(newErrorString);
+}

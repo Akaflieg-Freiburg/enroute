@@ -295,7 +295,6 @@ void Traffic::TrafficDataProvider::onTrafficReceiverError(const QString& msg)
         }
         results += dataSource->sourceName() + ": " + msg;
     }
-    results = results + results;
 
     auto result = results.join("\n");
 

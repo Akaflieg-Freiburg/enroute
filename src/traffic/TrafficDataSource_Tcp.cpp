@@ -56,6 +56,7 @@ Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 
 void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 {
+
     // Reset password lifecycle
     resetPasswordLifecycle();
 
@@ -65,15 +66,23 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
     m_socket.connectToHost(m_hostName, m_port);
     m_textStream.setDevice(&m_socket);
 
+    // Schedule automatic reconnection as soon as connection to traffic data receiver is lost
+    connect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver, Qt::ConnectionType::QueuedConnection);
+
     // Update properties
     onStateChanged(m_socket.state());
+
 }
 
 
 void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
+
     // Reset password lifecycle
     resetPasswordLifecycle();
+
+    // Disable automatic reconnection as soon as connection to traffic data receiver is lost
+    disconnect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver);
 
     // Disconnect socket.
     m_socket.abort();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -51,9 +51,6 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     QDir exchangeDir(fileExchangeDirectoryName);
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(fileExchangeDirectoryName);
-
-    // Set up signals and slots
-    connect(&trafficReceiverErrorNotificationTimer, &QTimer::timeout, this, &MobileAdaptor::clearTrafficReceiverErrorNotification);
 
 #if defined (Q_OS_ANDROID)
     // Ask for permissions
@@ -117,151 +114,3 @@ MobileAdaptor::~MobileAdaptor()
     showDownloadNotification(false);
     showTrafficReceiverErrorNotification();
 }
-
-
-void MobileAdaptor::hideSplashScreen()
-{
-    if (splashScreenHidden) {
-        return;
-    }
-    splashScreenHidden = true;
-#if defined(Q_OS_ANDROID)
-    QtAndroid::hideSplashScreen(200);
-#endif
-}
-
-
-void MobileAdaptor::lockWifi(bool lock)
-{
-    Q_UNUSED(lock)
-
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWifi", "(Z)V", lock);
-#endif
-
-}
-
-
-Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
-{
-#if defined (Q_OS_ANDROID)
-    // Check is required permissions have been granted
-    foreach(auto permission, permissions) {
-        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied) {
-            return true;
-        }
-    }
-#endif
-    return false;
-}
-
-
-void MobileAdaptor::vibrateBrief()
-{
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
-#endif
-}
-
-
-auto MobileAdaptor::getSSID() -> QString
-{
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                               "getSSID", "()Ljava/lang/String;");
-    return stringObject.toString();
-#endif
-    return "<unknown ssid>";
-}
-
-
-void MobileAdaptor::showDownloadNotification(bool show)
-{
-
-#if defined(Q_OS_ANDROID)
-    QString text;
-    if (show) {
-        text = tr("Downloading map data…");
-    }
-    QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
-#else
-    if (show) {
-        if (downloadNotification.isNull()) {
-            downloadNotification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
-            downloadNotification->setPixmap( {":/icons/appIcon.png"} );
-            downloadNotification->setText(tr("Downloading map data…"));
-        }
-        downloadNotification->sendEvent();
-    } else {
-        if (!downloadNotification.isNull()) {
-            downloadNotification->close();
-        }
-    }
-#endif
-}
-
-
-void MobileAdaptor::showTrafficReceiverErrorNotification(QString message)
-{
-
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject jni_title = QAndroidJniObject::fromString(message);
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyTrafficReceiverError", "(Ljava/lang/String;)V", jni_title.object<jstring>());
-#else
-
-    if (message.isEmpty()) {
-        clearTrafficReceiverErrorNotification();
-        return;
-    }
-
-    qWarning("X");
-
-    if (trafficReceiverErrorNotification.isNull()) {
-        trafficReceiverErrorNotification = new KNotification(QStringLiteral("trafficReceiverProblem"), KNotification::Persistent, this);
-        trafficReceiverErrorNotification->setPixmap( {":/icons/appIcon.png"} );
-        trafficReceiverErrorNotification->setTitle(tr("Traffic Receiver Problem"));
-    }
-
-    trafficReceiverErrorNotification->setText(message);
-    trafficReceiverErrorNotification->sendEvent();
-    trafficReceiverErrorNotificationTimer.start(10*1000);
-#endif
-}
-
-void MobileAdaptor::clearTrafficReceiverErrorNotification()
-{
-    qWarning() << "MobileAdaptor::clearTrafficReceiverErrorNotification()";
-
-    if (!trafficReceiverErrorNotification.isNull()) {
-        qWarning() << "A";
-        trafficReceiverErrorNotification->close();
-    }
-    delete trafficReceiverErrorNotification;
-    trafficReceiverErrorNotificationTimer.stop();
-}
-
-
-
-#if defined(Q_OS_ANDROID)
-
-extern "C" {
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
-{
-
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (QCoreApplication::instance() == nullptr) {
-        return;
-    }
-
-    Global::mobileAdaptor()->emitWifiConnected();
-
-}
-
-
-}
-#endif

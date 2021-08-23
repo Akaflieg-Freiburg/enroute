@@ -191,14 +191,11 @@ public slots:
      */
     void showDownloadNotification(bool show);
 
-
     /*! \brief Shows a notification, indicating a problem with the traffic data receiver
      *
      * @param message Message body of the notification, or an emptry string to close an ongoing notification
      */
-#warning
     void showTrafficReceiverErrorNotification(QString message={});
-    void clearTrafficReceiverErrorNotification();
 
     /*! \brief Helper function, not for public consumption
      *
@@ -266,7 +263,6 @@ private:
 #else
     QPointer<KNotification> downloadNotification;
     QPointer<KNotification> trafficReceiverErrorNotification;
-    QTimer trafficReceiverErrorNotificationTimer;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

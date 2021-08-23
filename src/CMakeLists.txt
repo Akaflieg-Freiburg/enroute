@@ -202,6 +202,7 @@ if( ANDROID )
     qtquick_compiler_add_resources(QTQUICKCOMPILEDRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
     list(APPEND SOURCES
         ${QTQUICKCOMPILEDRESOURCES}
+        MobileAdaptor_Android.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
@@ -289,6 +290,7 @@ endif()
 
 if (NOT ANDROID)
     list(APPEND SOURCES
+        MobileAdaptor_Linux.cpp
         ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
         )
 

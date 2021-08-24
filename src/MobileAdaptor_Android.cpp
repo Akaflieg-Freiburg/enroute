@@ -99,6 +99,7 @@ void MobileAdaptor::showDownloadNotification(bool show)
 void MobileAdaptor::showTrafficReceiverErrorNotification(QString message)
 {
 
+    qWarning()  << "MobileAdaptor::showTrafficReceiverErrorNotification " << message;
     QAndroidJniObject jni_title = QAndroidJniObject::fromString(message);
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyTrafficReceiverError", "(Ljava/lang/String;)V", jni_title.object<jstring>());
 

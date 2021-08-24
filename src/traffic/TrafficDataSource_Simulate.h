@@ -57,7 +57,6 @@ public:
         return tr("Simulator data");
     }
 
-
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
      *

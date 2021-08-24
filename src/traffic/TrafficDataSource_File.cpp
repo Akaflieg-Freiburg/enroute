@@ -58,6 +58,34 @@ void Traffic::TrafficDataSource_File::connectToTrafficReceiver()
 }
 
 
+auto Traffic::TrafficDataSource_File::containsFLARMSimulationData(const QString& fileName) -> bool
+{
+    QFile inFile(fileName);
+
+    if (!inFile.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    QTextStream inStream(&inFile);
+
+    // Check ten lines. These will typically look like
+    //
+    // "850962 $PFLAU,0,1,2,1,0,180,0,-147,7851*4D"
+    // "851002 $PGRMZ,4921,F,2*04"
+    // "851342 $PFLAA,0,2205,-598,-71,1,AA123F,180,,0,1.5,1*24"
+    //
+    QRegExp regExp("\\d* .*\\*[0-9A-F][0-9A-F]");
+
+    inStream.readLine();
+    for(int i=0;i<10;i++) {
+        auto line = inStream.readLine();
+        if (!regExp.exactMatch(line)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 void Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver()
 {
     // Stop any simulation that might be running

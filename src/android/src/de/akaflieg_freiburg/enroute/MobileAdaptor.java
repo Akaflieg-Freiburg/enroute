@@ -181,6 +181,42 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	m_notificationManager.notify(0, m_builder.build());
     }
 
+
+/* Show traffic receiver error notification */
+public static void notifyTrafficReceiverError(String text)
+{
+    m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
+
+    // Cancel notification
+    if ("".equals(text)) {
+        m_notificationManager.cancel(1);
+        return;
+    }
+
+    // Build and show notification
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        NotificationChannel notificationChannel = new NotificationChannel("trafficReceiverError", "Traffic Data Receiver Error", NotificationManager.IMPORTANCE_HIGH);
+        m_notificationManager.createNotificationChannel(notificationChannel);
+        m_builder = new Notification.Builder(m_instance, notificationChannel.getId());
+    } else {
+        m_builder = new Notification.Builder(m_instance);
+    }
+
+    Context context = QtNative.activity();
+    String packageName = context.getApplicationContext().getPackageName();
+    Intent resultIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+    resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    m_builder.setContentIntent(resultPendingIntent);
+
+    m_builder.setSmallIcon(R.drawable.ic_file_download)
+        .setContentTitle(text)
+        .setOngoing(false)
+        .setAutoCancel(false);
+
+    m_notificationManager.notify(1, m_builder.build());
+}
+
     
     /* Begin to monitor network changes */
     public static void startWiFiMonitor()

@@ -645,6 +645,16 @@ ApplicationWindow {
         }
     }
 
+    Connections {
+        target: global.mobileAdaptor()
+
+        function onNotificationClicked() {
+            stackView.pop(null)
+            stackView.push("pages/TrafficReceiver.qml")
+        }
+
+    }
+
     // Enroute closed unexpectedly if...
     // * the "route" page is open
     // * the route menu is opened

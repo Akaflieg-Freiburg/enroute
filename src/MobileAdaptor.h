@@ -163,6 +163,11 @@ public:
     void emitWifiConnected() {
         emit wifiConnected();
     }
+
+    // Emits the signal "notificationClicked".
+    void emitNotificationClicked() {
+        emit notificationClicked();
+    }
 #endif
 
 public slots:
@@ -195,7 +200,7 @@ public slots:
      *
      * @param message Message body of the notification, or an emptry string to close an ongoing notification
      */
-    void showTrafficReceiverErrorNotification(QString message={});
+    void showTrafficReceiverErrorNotification(QString text={});
 
     /*! \brief Helper function, not for public consumption
      *
@@ -238,6 +243,10 @@ signals:
      *  This signal is emitted when a new WiFi connection becomes available.
      */
     void wifiConnected();
+
+    /*! \brief Emitted when the user clicks on a notification
+     */
+    void notificationClicked();
 
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid

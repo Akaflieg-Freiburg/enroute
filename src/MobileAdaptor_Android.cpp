@@ -96,12 +96,13 @@ void MobileAdaptor::showDownloadNotification(bool show)
 }
 
 
-void MobileAdaptor::showTrafficReceiverErrorNotification(QString message)
+void MobileAdaptor::showTrafficReceiverErrorNotification(QString text)
 {
 
-    qWarning()  << "MobileAdaptor::showTrafficReceiverErrorNotification " << message;
-    QAndroidJniObject jni_title = QAndroidJniObject::fromString(message);
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyTrafficReceiverError", "(Ljava/lang/String;)V", jni_title.object<jstring>());
+    QAndroidJniObject jni_title = QAndroidJniObject::fromString(tr("Warning: Traffic data receiver"));
+    QAndroidJniObject jni_subject = QAndroidJniObject::fromString(text);
+    QAndroidJniObject jni_text = QAndroidJniObject::fromString(text);
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyTrafficReceiverError", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", jni_title.object<jstring>(), jni_subject.object<jstring>(), jni_text.object<jstring>());
 
 }
 
@@ -120,6 +121,24 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     }
 
     Global::mobileAdaptor()->emitWifiConnected();
+
+}
+
+// This method is called from Java to indicate that the user has clicked into the Android
+// notification for reporting traffic data receiver errors
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/)
+{
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (QCoreApplication::instance() == nullptr) {
+        return;
+    }
+
+    Global::mobileAdaptor()->emitNotificationClicked();
 
 }
 

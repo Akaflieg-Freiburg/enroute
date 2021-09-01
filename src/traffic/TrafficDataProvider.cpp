@@ -284,19 +284,16 @@ void Traffic::TrafficDataProvider::onTrafficReceiverError(const QString& msg)
 {
     Q_UNUSED(msg);
 
-    QStringList results;
+    QString result;
     foreach(auto dataSource, m_dataSources) {
         if (dataSource.isNull()) {
             continue;
         }
-        QString msg = dataSource->trafficReceiverError();
-        if (msg.isEmpty()) {
-            continue;
+        result = dataSource->trafficReceiverError();
+        if (!result.isEmpty()) {
+            break;
         }
-        results += dataSource->sourceName() + ": " + msg;
     }
-
-    auto result = results.join("\n");
 
     if (m_trafficReceiverError == result) {
         return;

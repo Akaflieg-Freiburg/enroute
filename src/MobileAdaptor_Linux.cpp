@@ -43,6 +43,7 @@ void MobileAdaptor::lockWifi(bool lock)
 
 Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 {
+    Q_UNUSED(this);
     return false;
 }
 
@@ -64,10 +65,12 @@ void MobileAdaptor::showDownloadNotification(bool show)
     if (show) {
         if (downloadNotification.isNull()) {
             downloadNotification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
+            downloadNotification->setDefaultAction( tr("Open Application") );
             downloadNotification->setPixmap( {":/icons/appIcon.png"} );
             downloadNotification->setText(tr("Downloading map data…"));
         }
         downloadNotification->sendEvent();
+        connect(downloadNotification, &KNotification::defaultActivated, [this]() { emit notificationClicked(0); });
     } else {
         if (!downloadNotification.isNull()) {
             downloadNotification->close();
@@ -90,11 +93,14 @@ void MobileAdaptor::showTrafficReceiverErrorNotification(QString message)
 
     if (trafficReceiverErrorNotification.isNull()) {
         trafficReceiverErrorNotification = new KNotification(QStringLiteral("trafficReceiverProblem"), KNotification::Persistent, this);
+        trafficReceiverErrorNotification->setDefaultAction( tr("Open Application") );
         trafficReceiverErrorNotification->setPixmap( {":/icons/appIcon.png"} );
         trafficReceiverErrorNotification->setTitle(tr("Traffic Receiver Problem"));
     }
 
     trafficReceiverErrorNotification->setText(message);
     trafficReceiverErrorNotification->sendEvent();
+
+    connect(trafficReceiverErrorNotification, &KNotification::defaultActivated, [this]() { emit notificationClicked(1); });
 
 }

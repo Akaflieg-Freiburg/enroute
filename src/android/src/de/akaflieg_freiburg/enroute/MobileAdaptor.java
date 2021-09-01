@@ -45,7 +45,7 @@ import android.util.Log;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 {
-    public static native void onNotificationClicked();
+    public static native void onNotificationClicked(int notifyID);
     public static native void onWifiConnected();
     
     private static MobileAdaptor           m_instance;
@@ -172,13 +172,13 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	} else {
 	    m_builder = new Notification.Builder(m_instance);
 	}
-	
-	Context context = QtNative.activity();
-	String packageName = context.getApplicationContext().getPackageName();
-	Intent resultIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-	resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-	PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-	m_builder.setContentIntent(resultPendingIntent);
+
+
+        Context context = QtNative.activity();
+        Intent notificationIntent = new Intent("MyAction");
+        notificationIntent.putExtra("NotificationID", (int)0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT) ;
+        m_builder.setContentIntent(pendingIntent);
 	
 	m_builder.setSmallIcon(R.drawable.ic_file_download)
 	    .setColor(Color.rgb(00,0x80,0x80))
@@ -273,7 +273,12 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	@Override
 	public void onReceive(Context context, Intent intent) {
 	    Log.d("enroute flight navigation", "onReceive " + intent.getIntExtra("NotificationID", -1));
-	    onNotificationClicked();
+
+            Intent i = new Intent(context, MobileAdaptor.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(i);
+
+            onNotificationClicked(intent.getIntExtra("NotificationID", -1));
 	}
     }
     

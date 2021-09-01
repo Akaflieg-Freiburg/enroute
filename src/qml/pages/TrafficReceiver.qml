@@ -30,6 +30,8 @@ import "../items"
 
 Page {
     id: trafficReceiverPage
+    objectName: "TrafficReceiverPage"
+
     title: qsTr("Traffic Data Receiver")
 
     header: StandardHeader {}

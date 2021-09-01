@@ -165,8 +165,8 @@ public:
     }
 
     // Emits the signal "notificationClicked".
-    void emitNotificationClicked() {
-        emit notificationClicked();
+    void emitNotificationClicked(int notifyID) {
+        emit notificationClicked(notifyID);
     }
 #endif
 
@@ -246,7 +246,7 @@ signals:
 
     /*! \brief Emitted when the user clicks on a notification
      */
-    void notificationClicked();
+    void notificationClicked(int notifyID);
 
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid

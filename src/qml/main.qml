@@ -648,9 +648,13 @@ ApplicationWindow {
     Connections {
         target: global.mobileAdaptor()
 
-        function onNotificationClicked() {
-            stackView.pop(null)
-            stackView.push("pages/TrafficReceiver.qml")
+        function onNotificationClicked(notifyID) {
+            if ((notifyID === 0) && (stackView.currentItem.objectName !== "MapManagerPage")) {
+                stackView.push("pages/MapManager.qml")
+            }
+            if ((notifyID === 1) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
+                stackView.push("pages/TrafficReceiver.qml")
+            }
         }
 
     }

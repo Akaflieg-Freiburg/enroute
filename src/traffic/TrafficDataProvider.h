@@ -144,7 +144,7 @@ public:
      *  there is not error.  The string is cleared when a new connection attempt
      *  is started.
      */
-    Q_PROPERTY(QString trafficReceiverError READ trafficReceiverError NOTIFY trafficReceiverErrorChanged)
+    Q_PROPERTY(QString trafficReceiverError READ trafficReceiverError NOTIFY trafficReceiverSelfTestErrorChanged)
 
     /*! \brief Getter function for the property with the same name
      *
@@ -206,7 +206,7 @@ signals:
     void receivingHeartbeatChanged(bool);
 
     /*! \brief Notifier signal */
-    void trafficReceiverErrorChanged(QString message);
+    void trafficReceiverSelfTestErrorChanged(QString message);
 
     /*! \brief Notifier signal */
     void warningChanged(const Traffic::Warning&);
@@ -258,7 +258,7 @@ private slots:
     void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor);
 
     // Called if one of the sources reports or clears an error string
-    void onTrafficReceiverError(const QString& msg);
+    void onTrafficReceiverSelfTestError(const QString& msg);
 
     // Resetter method
     void resetWarning();

@@ -134,13 +134,13 @@ public:
      *  there is not error.  The string is cleared when a new connection attempt
      *  is started.
      */
-    Q_PROPERTY(QString trafficReceiverError READ trafficReceiverError WRITE setTrafficReceiverError NOTIFY trafficReceiverErrorChanged)
+    Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError WRITE setTrafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property errorString
      */
-    QString trafficReceiverError()
+    QString trafficReceiverSelfTestError()
     {
         return m_trafficReceiverError;
     }
@@ -208,7 +208,7 @@ signals:
     void receivingHeartbeatChanged(bool);
 
     /*! \brief Notifier signal */
-    void trafficReceiverErrorChanged(const QString& message);
+    void trafficReceiverSelfTestErrorChanged(const QString& message);
 
     /*! \brief Traffic receiver hardware version
      *
@@ -349,7 +349,7 @@ protected:
      *
      *  @param newErrorString Property errorString
      */
-    void setTrafficReceiverError(const QString& newErrorString = QString());
+    void setTrafficReceiverSelfTestError(const QString& newErrorString = QString());
 
 private:
     // Property caches

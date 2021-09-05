@@ -69,6 +69,15 @@ public:
       };
     Q_ENUM(FileFunction)
 
+    /*! \brief Notification types */
+    enum NotificationType
+    {
+        DownloadInfo = 0,                 /*< Info that  download is in progress */
+        TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
+        TrafficReceiverProblem = 2        /*< Traffic receiver reports problem while running */
+    };
+    Q_ENUM(NotificationType)
+
     /*! \brief Checks if all requred permissions have been granted
      *
      * On Android, the app requirs certain permissions to run. This method can
@@ -165,12 +174,20 @@ public:
     }
 
     // Emits the signal "notificationClicked".
-    void emitNotificationClicked(int notifyID) {
-        emit notificationClicked(notifyID);
+    void emitNotificationClicked(NotificationType notificationType) {
+        emit notificationClicked(notificationType);
     }
 #endif
 
 public slots:
+    /*! \brief Hides a notification
+     *
+     *  This method hides a notification to the user.
+     *
+     *  @param notificationType Type of the notification
+     */
+    void hideNotification(NotificationType notificationType);
+
     /*! \brief Hides the android splash screen.
      *
      * On Android, hides the android splash screen.
@@ -196,11 +213,16 @@ public slots:
      */
     void showDownloadNotification(bool show);
 
-    /*! \brief Shows a notification, indicating a problem with the traffic data receiver
+    /*! \brief Shows a notification
      *
-     * @param message Message body of the notification, or an emptry string to close an ongoing notification
+     *  This method shows a notification to the user. On Android, this is a native notification.
+     *  The notification title and the icon(s) are chosen depending on the notificationType.
+     *
+     *  @param notificationType Type of the notification
+     *
+     *  @param message Message body of the notification, or an empty string to close an ongoing notification
      */
-    void showTrafficReceiverErrorNotification(QString text={});
+    void showNotification(NotificationType notificationType, QString text);
 
     /*! \brief Helper function, not for public consumption
      *
@@ -246,7 +268,7 @@ signals:
 
     /*! \brief Emitted when the user clicks on a notification
      */
-    void notificationClicked(int notifyID);
+    void notificationClicked(NotificationType notificationType);
 
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid
@@ -271,7 +293,7 @@ private:
     QStringList permissions;
 #else
     QPointer<KNotification> downloadNotification;
-    QPointer<KNotification> trafficReceiverErrorNotification;
+    QMap<NotificationType, QPointer<KNotification>> notifications;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

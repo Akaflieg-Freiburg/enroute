@@ -94,7 +94,7 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
-    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverError);
+    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
 
 }
 
@@ -280,7 +280,7 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
 }
 
 
-void Traffic::TrafficDataProvider::onTrafficReceiverError(const QString& msg)
+void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError(const QString& msg)
 {
     Q_UNUSED(msg);
 
@@ -289,7 +289,7 @@ void Traffic::TrafficDataProvider::onTrafficReceiverError(const QString& msg)
         if (dataSource.isNull()) {
             continue;
         }
-        result = dataSource->trafficReceiverError();
+        result = dataSource->trafficReceiverSelfTestError();
         if (!result.isEmpty()) {
             break;
         }
@@ -299,7 +299,7 @@ void Traffic::TrafficDataProvider::onTrafficReceiverError(const QString& msg)
         return;
     }
     m_trafficReceiverError = result;
-    emit trafficReceiverErrorChanged(result);
+    emit trafficReceiverSelfTestErrorChanged(result);
 }
 
 

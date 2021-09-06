@@ -23,10 +23,6 @@
 #include <QtGlobal>
 #include <QTimer>
 
-#ifndef Q_OS_ANDROID
-#include <KNotification>
-#endif
-
 #include <QObject>
 
 /*! \brief Interface to platform-specific capabilities of mobile devices
@@ -171,22 +167,9 @@ public:
     void emitWifiConnected() {
         emit wifiConnected();
     }
-
-    // Emits the signal "notificationClicked".
-    void emitNotificationClicked(MobileAdaptor::NotificationType notificationType) {
-        emit notificationClicked(notificationType);
-    }
 #endif
 
 public slots:
-    /*! \brief Hides a notification
-     *
-     *  This method hides a notification to the user.
-     *
-     *  @param notificationType Type of the notification
-     */
-    void hideNotification(MobileAdaptor::NotificationType notificationType);
-
     /*! \brief Hides the android splash screen.
      *
      * On Android, hides the android splash screen.
@@ -204,17 +187,6 @@ public slots:
      * On other platforms, this does nothing.
     */
     static void vibrateBrief();
-
-    /*! \brief Shows a notification
-     *
-     *  This method shows a notification to the user. On Android, this is a native notification.
-     *  The notification title and the icon(s) are chosen depending on the notificationType.
-     *
-     *  @param notificationType Type of the notification
-     *
-     *  @param message Message body of the notification, or an empty string to close an ongoing notification
-     */
-    void showNotification(MobileAdaptor::NotificationType notificationType, const QString& title, const QString& text, const QString& longText);
 
     /*! \brief Helper function, not for public consumption
      *
@@ -258,10 +230,6 @@ signals:
      */
     void wifiConnected();
 
-    /*! \brief Emitted when the user clicks on a notification
-     */
-    void notificationClicked(MobileAdaptor::NotificationType notificationType);
-
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of globalInstance().
@@ -283,8 +251,6 @@ private:
     static bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     QStringList permissions;
-#else
-    QMap<MobileAdaptor::NotificationType, QPointer<KNotification>> notifications;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

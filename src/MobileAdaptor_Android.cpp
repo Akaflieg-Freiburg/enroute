@@ -83,31 +83,6 @@ auto MobileAdaptor::getSSID() -> QString
 }
 
 
-void MobileAdaptor::hideNotification(NotificationType notificationType)
-{
-    jint jni_ID                   = notificationType;
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
-}
-
-
-void MobileAdaptor::showNotification(NotificationType notificationType, const QString& title, const QString& text, const QString& longText)
-{
-    jint jni_ID                    = notificationType;
-    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title);
-    QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);
-    QAndroidJniObject jni_longText = QAndroidJniObject::fromString(longText);
-
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                              "showNotification",
-                                              "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-                                              jni_ID, jni_title.object<jstring>(),
-                                              jni_text.object<jstring>(),
-                                              jni_longText.object<jstring>()
-                                              );
-
-}
-
-
 extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
@@ -122,24 +97,6 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     }
 
     Global::mobileAdaptor()->emitWifiConnected();
-
-}
-
-// This method is called from Java to indicate that the user has clicked into the Android
-// notification for reporting traffic data receiver errors
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID)
-{
-
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (QCoreApplication::instance() == nullptr) {
-        return;
-    }
-
-    Global::mobileAdaptor()->emitNotificationClicked((MobileAdaptor::NotificationType)notifyID);
 
 }
 

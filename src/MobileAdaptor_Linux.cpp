@@ -29,6 +29,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "traffic/TrafficDataProvider.h"
 
+#warning too many includes
 
 void MobileAdaptor::hideSplashScreen()
 {
@@ -52,52 +53,8 @@ void MobileAdaptor::vibrateBrief()
 {
 }
 
+
 auto MobileAdaptor::getSSID() -> QString
 {
     return "<unknown ssid>";
-}
-
-void MobileAdaptor::hideNotification(NotificationType notificationType)
-{
-    auto notification = notifications.value(notificationType, nullptr);
-    if (!notification.isNull()) {
-        notification->close();
-        delete notification;
-    }
-
-    if (notifications.contains(notificationType)) {
-        notifications.remove(notificationType);
-    }
-}
-
-void MobileAdaptor::showNotification(NotificationType notificationType, const QString& title, const QString& text, const QString& longText)
-{
-    // Get notificonst cation, &if it exists; otherwise get nullptr
-    auto notification = notifications.value(notificationType, nullptr);
-
-    // Otherwise, generate a new notification
-    if (notification.isNull()) {
-        switch (notificationType) {
-        case DownloadInfo:
-            notification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
-            break;
-        case TrafficReceiverSelfTestError:
-        case TrafficReceiverProblem:
-            notification = new KNotification(QStringLiteral("trafficReceiverProblem"), KNotification::Persistent, this);
-            break;
-        }
-        notification->setDefaultAction( tr("Open Application") );
-        notification->setPixmap( {":/icons/appIcon.png"} );
-    }
-
-    notification->setTitle(title);
-    notifications[notificationType] = notification;
-    connect(notification, &KNotification::defaultActivated, [this, notificationType]() { emit notificationClicked(notificationType); });
-    if (longText.isEmpty()) {
-        notification->setText(text);
-    } else {
-        notification->setText(longText);
-    }
-    notification->sendEvent();
-
 }

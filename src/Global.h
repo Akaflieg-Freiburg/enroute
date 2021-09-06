@@ -41,6 +41,10 @@ class PasswordDB;
 class TrafficDataProvider;
 }
 
+namespace Platform {
+class NotificationManager;
+}
+
 
 /*! \brief Global instance storage
  *
@@ -111,6 +115,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Traffic::PasswordDB* passwordDB();
+
+    /*! \brief Pointer to appplication-wide static notification manager instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Platform::NotificationManager* notificationManager();
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *

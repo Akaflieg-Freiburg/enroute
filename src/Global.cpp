@@ -29,6 +29,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
+#include "platform/NotificationManager.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 
@@ -38,6 +39,7 @@ QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<GeoMaps::MapManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
+QPointer<Platform::NotificationManager> g_notificationManager {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Settings> g_settings {};
@@ -92,6 +94,12 @@ auto Global::navigator() -> Navigation::Navigator*
 auto Global::networkAccessManager() -> QNetworkAccessManager*
 {
     return allocateInternal<QNetworkAccessManager>(g_networkAccessManager);
+}
+
+
+auto Global::notificationManager() -> Platform::NotificationManager*
+{
+    return allocateInternal<Platform::NotificationManager>(g_notificationManager);
 }
 
 

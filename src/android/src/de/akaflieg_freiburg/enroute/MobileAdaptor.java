@@ -200,7 +200,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 
     
     /* Show traffic receiver error notification */
-    public static void showNotification(int id, String title, String subject, String text, String longText)
+    public static void showNotification(int id, String title, String text, String longText)
     {
 	// Get notification manager
 	m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -231,10 +231,12 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	m_builder.setContentIntent(pendingIntent);
 	m_builder.setColor(Color.rgb(00,0x80,0x80));
 	m_builder.setContentTitle(title);
-	m_builder.setContentText(subject);
+	m_builder.setContentText(text);
 	m_builder.setOngoing(false);
 	m_builder.setAutoCancel(false);
-	m_builder.setStyle(new Notification.BigTextStyle().bigText(text));
+	if (!"".equals(longText)) {
+	    m_builder.setStyle(new Notification.BigTextStyle().bigText(longText));
+	}
 	
 	switch(id) {
         case 0:
@@ -246,10 +248,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	    m_builder.setSmallIcon(R.drawable.ic_error);
 	    m_builder.setLargeIcon(BitmapFactory.decodeResource(QtNative.activity().getResources(), R.drawable.ic_error));
 	    break;
-        }
-	
-	if (!"".equals(longText)) {
-	    m_builder.setStyle(new Notification.BigTextStyle().bigText(longText));
         }
 	
 	m_notificationManager.notify(id, m_builder.build());

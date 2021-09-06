@@ -27,6 +27,7 @@
 #include "Global.h"
 #include "MobileAdaptor.h"
 #include "geomaps/GeoMapProvider.h"
+#include "platform/NotificationManager.h"
 #include "traffic/TrafficDataProvider.h"
 
 
@@ -102,31 +103,10 @@ void MobileAdaptor::deferredInitialization()
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 #endif
-
-    connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this,
-            [this](bool downloading){
-                if (downloading) {
-                    showNotification(DownloadInfo, tr("Downloading map data…"), {}, {});
-                } else {
-                    hideNotification(DownloadInfo);
-                }
-            } );
-
-    connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged, this,
-            [this](const QString& message){
-                if (message.isEmpty()) {
-                    hideNotification(TrafficReceiverSelfTestError);
-                } else {
-                    showNotification(TrafficReceiverSelfTestError, tr("Traffic data receiver problem"), message, message);
-                }
-            } );
 }
 
 
 MobileAdaptor::~MobileAdaptor()
 {
-    // Close all pending notifications
-    hideNotification(DownloadInfo);
-    hideNotification(TrafficReceiverSelfTestError);
-    hideNotification(TrafficReceiverProblem);
+    ;
 }

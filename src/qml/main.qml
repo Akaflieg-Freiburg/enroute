@@ -626,6 +626,22 @@ ApplicationWindow {
         onActivated: Qt.quit()
     }
 
+    //
+    // Connections
+    //
+
+    Connections {
+        target: global.mapManager().geoMaps
+
+        function onDownloadingChanged(downloading) {
+            if (downloading) {
+                global.notificationManager().showNotification(NotificationManager.DownloadInfo, qsTr("Downloading map data…"), "", "");
+            } else {
+                global.notificationManager().hideNotification(NotificationManager.DownloadInfo);
+            }
+        }
+    }
+
     Connections {
         target: global.trafficDataProvider()
 
@@ -643,10 +659,18 @@ ApplicationWindow {
             dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
             dialogLoader.active = true
         }
+
+        function onTrafficReceiverSelfTestErrorChanged(message) {
+            if (message === "") {
+                global.notificationManager().hideNotification(NotificationManager.TrafficReceiverSelfTestError);
+            } else {
+                global.notificationManager().showNotification(NotificationManager.TrafficReceiverSelfTestError, qsTr("Traffic data receiver problem"), message, message);
+            }
+        }
     }
 
     Connections {
-        target: global.mobileAdaptor()
+        target: global.notificationManager()
 
         function onNotificationClicked(notifyID) {
             if ((notifyID === 0) && (stackView.currentItem.objectName !== "MapManagerPage")) {

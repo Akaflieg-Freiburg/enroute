@@ -83,26 +83,31 @@ auto MobileAdaptor::getSSID() -> QString
 }
 
 
-void MobileAdaptor::showDownloadNotification(bool show)
+void MobileAdaptor::hideNotification(NotificationType notificationType)
 {
+    qWarning() << "hideNotification" << notificationType;
 
-    QString text;
-    if (show) {
-        text = tr("Downloading map data…");
-    }
-    QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
-
+    jint jni_ID                   = notificationType;
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
 }
 
 
-void MobileAdaptor::showTrafficReceiverErrorNotification(QString text)
+void MobileAdaptor::showNotification(NotificationType notificationType, QString title, QString text, QString longText)
 {
+    qWarning() << "showNotification" << notificationType << text;
 
-    QAndroidJniObject jni_title = QAndroidJniObject::fromString(tr("Warning: Traffic data receiver"));
-    QAndroidJniObject jni_subject = QAndroidJniObject::fromString(text);
-    QAndroidJniObject jni_text = QAndroidJniObject::fromString(text);
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyTrafficReceiverError", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", jni_title.object<jstring>(), jni_subject.object<jstring>(), jni_text.object<jstring>());
+    jint jni_ID                    = notificationType;
+    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title);
+    QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);
+    QAndroidJniObject jni_longText = QAndroidJniObject::fromString(longText);
+
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                              "showNotification",
+                                              "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                                              jni_ID, jni_title.object<jstring>(),
+                                              jni_text.object<jstring>(),
+                                              jni_longText.object<jstring>()
+                                              );
 
 }
 
@@ -138,7 +143,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotifi
         return;
     }
 
-    Global::mobileAdaptor()->emitNotificationClicked(notifyID);
+    Global::mobileAdaptor()->emitNotificationClicked((MobileAdaptor::NotificationType)notifyID);
 
 }
 

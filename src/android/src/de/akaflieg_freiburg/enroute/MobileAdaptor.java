@@ -29,6 +29,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
@@ -191,41 +192,67 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     
     
     /* Show traffic receiver error notification */
-    public static void notifyTrafficReceiverError(String title, String subject, String text)
+    public static void hideNotification(int id)
     {
 	m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
-	
-	// Cancel notification
-	if ("".equals(text)) {
-	    m_notificationManager.cancel(1);
-	    return;
-	}
+        m_notificationManager.cancel(id);
+    }
+
+    
+    /* Show traffic receiver error notification */
+    public static void showNotification(int id, String title, String subject, String text, String longText)
+    {
+	// Get notification manager
+	m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
 	
 	// Build and show notification
 	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-	    NotificationChannel notificationChannel = new NotificationChannel("trafficReceiverError", "Traffic Data Receiver Error", NotificationManager.IMPORTANCE_HIGH);
+	    
+	    NotificationChannel notificationChannel = null;
+	    switch(id) {
+            case 0:
+		notificationChannel = new NotificationChannel("info", "Information", NotificationManager.IMPORTANCE_LOW);
+		break;
+            case 1:
+            case 2:
+		notificationChannel = new NotificationChannel("error", "Error Message", NotificationManager.IMPORTANCE_HIGH);
+		break;
+            }
 	    m_notificationManager.createNotificationChannel(notificationChannel);
 	    m_builder = new Notification.Builder(m_instance, notificationChannel.getId());
 	} else {
 	    m_builder = new Notification.Builder(m_instance);
 	}
 	
-	Context context = QtNative.activity();
-	
 	Intent notificationIntent = new Intent("MyAction");
-	notificationIntent.putExtra("NotificationID", (int)1);
-	PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT) ;
+	notificationIntent.putExtra("NotificationID", id);
+	PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT) ;
+	
 	m_builder.setContentIntent(pendingIntent);
+	m_builder.setColor(Color.rgb(00,0x80,0x80));
+	m_builder.setContentTitle(title);
+	m_builder.setContentText(subject);
+	m_builder.setOngoing(false);
+	m_builder.setAutoCancel(false);
+	m_builder.setStyle(new Notification.BigTextStyle().bigText(text));
 	
-	m_builder.setSmallIcon(R.drawable.ic_warning)
-	    .setColor(Color.rgb(00,0x80,0x80))
-	    .setContentTitle(title)
-	    .setContentText(subject)
-	    .setOngoing(false)
-	    .setAutoCancel(false)
-	    .setStyle(new Notification.BigTextStyle().bigText(text));
+	switch(id) {
+        case 0:
+	    m_builder.setSmallIcon(R.drawable.ic_info);
+	    m_builder.setLargeIcon(BitmapFactory.decodeResource(QtNative.activity().getResources(), R.drawable.ic_file_download));
+	    break;
+        case 1:
+        case 2:
+	    m_builder.setSmallIcon(R.drawable.ic_error);
+	    m_builder.setLargeIcon(BitmapFactory.decodeResource(QtNative.activity().getResources(), R.drawable.ic_error));
+	    break;
+        }
 	
-	m_notificationManager.notify(1, m_builder.build());
+	if (!"".equals(longText)) {
+	    m_builder.setStyle(new Notification.BigTextStyle().bigText(longText));
+        }
+	
+	m_notificationManager.notify(id, m_builder.build());
     }
     
     

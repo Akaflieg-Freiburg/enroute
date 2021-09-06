@@ -73,72 +73,35 @@ void MobileAdaptor::hideNotification(NotificationType notificationType)
 }
 
 
-void MobileAdaptor::showDownloadNotification(bool show)
+void MobileAdaptor::showNotification(NotificationType notificationType, QString title, QString text, QString longText)
 {
-
-    if (show) {
-        if (downloadNotification.isNull()) {
-            downloadNotification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
-            downloadNotification->setDefaultAction( tr("Open Application") );
-            downloadNotification->setPixmap( {":/icons/appIcon.png"} );
-            downloadNotification->setText(tr("Downloading map data…"));
-        }
-        downloadNotification->sendEvent();
-        connect(downloadNotification, &KNotification::defaultActivated, [this]() { emit notificationClicked(NotificationType::DownloadInfo); });
-    } else {
-        if (!downloadNotification.isNull()) {
-            downloadNotification->close();
-        }
-    }
-
-}
-
-
-void MobileAdaptor::showNotification(NotificationType notificationType, QString message)
-{
-    if (message.isEmpty()) {
-        hideNotification(notificationType);
-        return;
-    }
 
     // Get notification, if it exists; otherwise get nullptr
     auto notification = notifications.value(notificationType, nullptr);
-
-    // Close and delete notification if message is empty
-    if (message.isEmpty()) {
-        if (!notification.isNull()) {
-            notification->close();
-            delete notification;
-        }
-
-        if (notifications.contains(notificationType)) {
-            notifications.remove(notificationType);
-        }
-        return;
-    }
 
     // Otherwise, generate a new notification
     if (notification.isNull()) {
         switch (notificationType) {
         case DownloadInfo:
             notification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
-            notification->setDefaultAction( tr("Open Application") );
-            notification->setPixmap( {":/icons/appIcon.png"} );
-            notification->setText(tr("Downloading map data…"));
             break;
         case TrafficReceiverSelfTestError:
         case TrafficReceiverProblem:
             notification = new KNotification(QStringLiteral("trafficReceiverProblem"), KNotification::Persistent, this);
-            notification->setDefaultAction( tr("Open Application") );
-            notification->setPixmap( {":/icons/appIcon.png"} );
-            notification->setTitle(tr("Traffic Receiver Problem"));
             break;
         }
+        notification->setDefaultAction( tr("Open Application") );
+        notification->setPixmap( {":/icons/appIcon.png"} );
     }
 
+    notification->setTitle(title);
     notifications[notificationType] = notification;
     connect(notification, &KNotification::defaultActivated, [this, notificationType]() { emit notificationClicked(notificationType); });
-    notification->setText(message);
+    if (longText.isEmpty()) {
+        notification->setText(text);
+    } else {
+        notification->setText(longText);
+    }
     notification->sendEvent();
 
 }

@@ -174,7 +174,7 @@ public:
     }
 
     // Emits the signal "notificationClicked".
-    void emitNotificationClicked(NotificationType notificationType) {
+    void emitNotificationClicked(MobileAdaptor::NotificationType notificationType) {
         emit notificationClicked(notificationType);
     }
 #endif
@@ -186,7 +186,7 @@ public slots:
      *
      *  @param notificationType Type of the notification
      */
-    void hideNotification(NotificationType notificationType);
+    void hideNotification(MobileAdaptor::NotificationType notificationType);
 
     /*! \brief Hides the android splash screen.
      *
@@ -206,13 +206,6 @@ public slots:
     */
     static void vibrateBrief();
 
-    /*! \brief Shows a notification, indicating that a download is in progress
-     *
-     * @param show If set to 'true', a notification will be shown. If set to
-     * 'false', any existing notification will be withdrawn
-     */
-    void showDownloadNotification(bool show);
-
     /*! \brief Shows a notification
      *
      *  This method shows a notification to the user. On Android, this is a native notification.
@@ -222,7 +215,7 @@ public slots:
      *
      *  @param message Message body of the notification, or an empty string to close an ongoing notification
      */
-    void showNotification(NotificationType notificationType, QString text);
+    void showNotification(MobileAdaptor::NotificationType notificationType, QString title, QString text, QString longText);
 
     /*! \brief Helper function, not for public consumption
      *
@@ -268,7 +261,7 @@ signals:
 
     /*! \brief Emitted when the user clicks on a notification
      */
-    void notificationClicked(NotificationType notificationType);
+    void notificationClicked(MobileAdaptor::NotificationType notificationType);
 
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid
@@ -292,8 +285,7 @@ private:
 
     QStringList permissions;
 #else
-    QPointer<KNotification> downloadNotification;
-    QMap<NotificationType, QPointer<KNotification>> notifications;
+    QMap<MobileAdaptor::NotificationType, QPointer<KNotification>> notifications;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

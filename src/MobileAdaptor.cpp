@@ -103,16 +103,30 @@ void MobileAdaptor::deferredInitialization()
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 #endif
 
-    connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this, &MobileAdaptor::showDownloadNotification);
+    connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this,
+            [this](bool downloading){
+                if (downloading) {
+                    showNotification(DownloadInfo, tr("Downloading map data…"), {}, {});
+                } else {
+                    hideNotification(DownloadInfo);
+                }
+            } );
+
     connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged, this,
-            [this](QString message){ showNotification(TrafficReceiverSelfTestError, message); } );
+            [this](QString message){
+                if (message.isEmpty()) {
+                    hideNotification(TrafficReceiverSelfTestError);
+                } else {
+                    showNotification(TrafficReceiverSelfTestError, tr("Traffic data receiver problem"), message, message);
+                }
+            } );
 }
 
 
 MobileAdaptor::~MobileAdaptor()
 {
     // Close all pending notifications
-    showDownloadNotification(false);
+    hideNotification(DownloadInfo);
     hideNotification(TrafficReceiverSelfTestError);
     hideNotification(TrafficReceiverProblem);
 }

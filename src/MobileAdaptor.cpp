@@ -113,7 +113,7 @@ void MobileAdaptor::deferredInitialization()
             } );
 
     connect(Global::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged, this,
-            [this](QString message){
+            [this](const QString& message){
                 if (message.isEmpty()) {
                     hideNotification(TrafficReceiverSelfTestError);
                 } else {

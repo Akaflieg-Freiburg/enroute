@@ -85,17 +85,13 @@ auto MobileAdaptor::getSSID() -> QString
 
 void MobileAdaptor::hideNotification(NotificationType notificationType)
 {
-    qWarning() << "hideNotification" << notificationType;
-
     jint jni_ID                   = notificationType;
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
 }
 
 
-void MobileAdaptor::showNotification(NotificationType notificationType, QString title, QString text, QString longText)
+void MobileAdaptor::showNotification(NotificationType notificationType, const QString& title, const QString& text, const QString& longText)
 {
-    qWarning() << "showNotification" << notificationType << text;
-
     jint jni_ID                    = notificationType;
     QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title);
     QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);

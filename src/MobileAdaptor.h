@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #pragma once
 
 #include <QtGlobal>
@@ -215,7 +214,7 @@ public slots:
      *
      *  @param message Message body of the notification, or an empty string to close an ongoing notification
      */
-    void showNotification(MobileAdaptor::NotificationType notificationType, QString title, QString text, QString longText);
+    void showNotification(MobileAdaptor::NotificationType notificationType, const QString& title, const QString& text, const QString& longText);
 
     /*! \brief Helper function, not for public consumption
      *

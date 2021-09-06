@@ -52,12 +52,10 @@ void MobileAdaptor::vibrateBrief()
 {
 }
 
-
 auto MobileAdaptor::getSSID() -> QString
 {
     return "<unknown ssid>";
 }
-
 
 void MobileAdaptor::hideNotification(NotificationType notificationType)
 {
@@ -72,11 +70,9 @@ void MobileAdaptor::hideNotification(NotificationType notificationType)
     }
 }
 
-
-void MobileAdaptor::showNotification(NotificationType notificationType, QString title, QString text, QString longText)
+void MobileAdaptor::showNotification(NotificationType notificationType, const QString& title, const QString& text, const QString& longText)
 {
-
-    // Get notification, if it exists; otherwise get nullptr
+    // Get notificonst cation, &if it exists; otherwise get nullptr
     auto notification = notifications.value(notificationType, nullptr);
 
     // Otherwise, generate a new notification

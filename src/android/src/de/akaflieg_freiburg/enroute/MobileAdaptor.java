@@ -69,7 +69,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	
 	m_notifyClickReceiver = new NotifyClickReceiver();
 	IntentFilter intentFilter = new IntentFilter();
-	intentFilter.addAction("MyAction");
+        intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
 	m_instance.registerReceiver(m_notifyClickReceiver, intentFilter);
     }
     

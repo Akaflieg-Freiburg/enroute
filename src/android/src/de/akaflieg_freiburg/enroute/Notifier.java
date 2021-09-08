@@ -78,7 +78,7 @@ public class Notifier
 	    m_builder = new Notification.Builder(QtNative.activity());
 	}
 	
-	Intent notificationIntent = new Intent("MyAction");
+        Intent notificationIntent = new Intent("de.akaflieg_freiburg.enroute.onNotificationClick");
 	notificationIntent.putExtra("NotificationID", id);
 	PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT) ;
 	

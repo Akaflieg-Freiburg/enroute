@@ -125,7 +125,6 @@ Page {
                     if (global.trafficDataProvider().trafficReceiverSelfTestError === "")
                         return global.trafficDataProvider().trafficReceiverRuntimeError
                     return global.trafficDataProvider().trafficReceiverRuntimeError + "<br>" + global.trafficDataProvider().trafficReceiverSelfTestError
-
                 }
 
                 text: (myText === "") ? qsTr("No problem reported") : myText

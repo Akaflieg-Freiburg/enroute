@@ -27,8 +27,9 @@ auto Platform::Notifier::title(Platform::Notifier::Notifications notification) -
     case DownloadInfo:
         return tr("Downloading map data…");
     case TrafficReceiverRuntimeError:
-    case TrafficReceiverSelfTestError:
         return tr("Traffic data receiver problem");
+    case TrafficReceiverSelfTestError:
+        return tr("Traffic data receiver self test error");
     }
 
     return {};

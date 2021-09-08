@@ -119,12 +119,21 @@ Page {
                 leftInset: -4
                 rightInset: -4
 
-                text: (global.trafficDataProvider().trafficReceiverError === "") ? qsTr("No problem reported") : global.trafficDataProvider().trafficReceiverError
+                property string myText: {
+                    if (global.trafficDataProvider().trafficReceiverRuntimeError === "")
+                        return global.trafficDataProvider().trafficReceiverSelfTestError
+                    if (global.trafficDataProvider().trafficReceiverSelfTestError === "")
+                        return global.trafficDataProvider().trafficReceiverRuntimeError
+                    return global.trafficDataProvider().trafficReceiverRuntimeError + "<br>" + global.trafficDataProvider().trafficReceiverSelfTestError
+
+                }
+
+                text: (myText === "") ? qsTr("No problem reported") : myText
                 wrapMode: Text.WordWrap
 
                 background: Rectangle {
                     border.color: "black"
-                    color: (global.trafficDataProvider().trafficReceiverError === "") ? "green" : "red"
+                    color: (parent.myText === "") ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }

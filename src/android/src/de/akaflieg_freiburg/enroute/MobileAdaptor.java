@@ -23,13 +23,9 @@ package de.akaflieg_freiburg.enroute;
 
 import org.qtproject.qt5.android.QtNative;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
@@ -37,7 +33,6 @@ import android.os.Vibrator;
 
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.os.Bundle;
@@ -50,9 +45,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     public static native void onWifiConnected();
     
     private static MobileAdaptor           m_instance;
-    
-    private static NotificationManager     m_notificationManager;
-    private static Notification.Builder    m_builder;
     
     private static Vibrator                m_vibrator;
     
@@ -151,106 +143,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	if (m_wifiLock.isHeld()==true) {
 	    m_wifiLock.release();
 	}
-    }
-    
-    
-    /* Show download notification */
-    public static void notifyDownload(String text)
-    {
-	m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
-	
-	// Cancel notification
-	if ("".equals(text)) {
-	    m_notificationManager.cancel(0);
-	    return;
-	}
-	
-	// Build and show notification
-	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-	    NotificationChannel notificationChannel = new NotificationChannel("appStatus", "App Status", NotificationManager.IMPORTANCE_LOW);
-	    m_notificationManager.createNotificationChannel(notificationChannel);
-	    m_builder = new Notification.Builder(m_instance, notificationChannel.getId());
-	} else {
-	    m_builder = new Notification.Builder(m_instance);
-	}
-
-
-        Context context = QtNative.activity();
-        Intent notificationIntent = new Intent("MyAction");
-        notificationIntent.putExtra("NotificationID", (int)0);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT) ;
-        m_builder.setContentIntent(pendingIntent);
-	
-	m_builder.setSmallIcon(R.drawable.ic_file_download)
-	    .setColor(Color.rgb(00,0x80,0x80))
-	    .setContentTitle(text)
-	    .setOngoing(false)
-	    .setAutoCancel(false);
-	
-	m_notificationManager.notify(0, m_builder.build());
-    }
-    
-    
-    /* Show traffic receiver error notification */
-    public static void hideNotification(int id)
-    {
-	m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
-        m_notificationManager.cancel(id);
-    }
-
-    
-    /* Show traffic receiver error notification */
-    public static void showNotification(int id, String title, String text, String longText)
-    {
-	// Get notification manager
-	m_notificationManager = (NotificationManager) m_instance.getSystemService(Context.NOTIFICATION_SERVICE);
-	
-	// Build and show notification
-	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-	    
-	    NotificationChannel notificationChannel = null;
-	    switch(id) {
-            case 0:
-		notificationChannel = new NotificationChannel("info", "Information", NotificationManager.IMPORTANCE_LOW);
-		break;
-            case 1:
-            case 2:
-		notificationChannel = new NotificationChannel("error", "Error Message", NotificationManager.IMPORTANCE_HIGH);
-		break;
-            }
-	    m_notificationManager.createNotificationChannel(notificationChannel);
-	    m_builder = new Notification.Builder(m_instance, notificationChannel.getId());
-	} else {
-	    m_builder = new Notification.Builder(m_instance);
-	}
-	
-	Intent notificationIntent = new Intent("MyAction");
-	notificationIntent.putExtra("NotificationID", id);
-	PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT) ;
-	
-	m_builder.setContentIntent(pendingIntent);
-	m_builder.setColor(Color.rgb(00,0x80,0x80));
-	m_builder.setContentTitle(title);
-	m_builder.setContentText(text);
-	m_builder.setOngoing(false);
-	m_builder.setAutoCancel(false);
-	if (!"".equals(longText)) {
-	    m_builder.setStyle(new Notification.BigTextStyle().bigText(longText));
-	}
-	
-	switch(id) {
-        case 0:
-	    m_builder.setSmallIcon(R.drawable.ic_info);
-	    m_builder.setLargeIcon(BitmapFactory.decodeResource(QtNative.activity().getResources(), R.drawable.ic_file_download));
-	    break;
-        case 1:
-        case 2:
-	    m_builder.setSmallIcon(R.drawable.ic_error);
-	    m_builder.setLargeIcon(BitmapFactory.decodeResource(QtNative.activity().getResources(), R.drawable.ic_error));
-	    break;
-        }
-	
-	m_notificationManager.notify(id, m_builder.build());
     }
     
     

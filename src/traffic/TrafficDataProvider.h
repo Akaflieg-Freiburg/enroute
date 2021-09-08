@@ -141,14 +141,32 @@ public:
      *
      *  This property holds a translated, human-readable string that describes
      *  the current errors reported by the traffic receiver, or an empty string when
-     *  there is not error.  The string is cleared when a new connection attempt
+     *  there is no error.  The string is cleared when a new connection attempt
+     *  is started.
+     */
+    Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property trafficReceiverRuntimeError
+     */
+    QString trafficReceiverRuntimeError()
+    {
+        return m_trafficReceiverRuntimeError;
+    }
+
+    /*! \brief String describing the traffic data receiver errors found in self-test
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the errors reported by the traffic receiver during self-test, or an empty string when
+     *  there is no error.  The string is cleared when a new connection attempt
      *  is started.
      */
     Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property errorString
+     * @returns Property trafficReceiverSelfTestError
      */
     QString trafficReceiverSelfTestError()
     {

@@ -29,19 +29,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-//import android.graphics.BitmapFactory;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.net.wifi.WifiManager.WifiLock;
-import android.os.Vibrator;
-
-import android.content.BroadcastReceiver;
-import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
-import android.os.Bundle;
-import android.util.Log;
 
 
 public class Notifier
@@ -50,17 +39,6 @@ public class Notifier
     
     private static NotificationManager     m_notificationManager;
     private static Notification.Builder    m_builder;
-    /*
-    
-    private static NotificationManager           m_instance;
-    
-    private static Vibrator                m_vibrator;
-    
-    private static WifiLock                m_wifiLock;
-    private static WifiManager             m_wifiManager;
-    private static BroadcastReceiver       m_wifiStateChangeReceiver;
-    private static BroadcastReceiver       m_notifyClickReceiver;
-    */    
   
     
     //
@@ -127,25 +105,6 @@ public class Notifier
         }
 	
 	m_notificationManager.notify(id, m_builder.build());
-    }
-        
-    
-    //
-    // Embedded classes
-    //    
-    
-    private class NotifyClickReceiver extends BroadcastReceiver
-    {
-	@Override
-	public void onReceive(Context context, Intent intent) {
-	    Log.d("enroute flight navigation", "onReceive " + intent.getIntExtra("NotificationID", -1));
-
-            Intent i = new Intent(context, NotificationManager.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(i);
-
-            onNotificationClicked(intent.getIntExtra("NotificationID", -1));
-	}
     }
     
 }

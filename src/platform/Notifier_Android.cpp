@@ -20,43 +20,41 @@
 
 #include <QAndroidJniEnvironment>
 #include <QCoreApplication>
-#include <QDebug>
 #include <QtAndroidExtras/QAndroidJniObject>
 
 #include "Global.h"
-#include "platform/NotificationManager.h"
+#include "platform/Notifier.h"
 
 
-Platform::NotificationManager::NotificationManager(QObject *parent)
+Platform::Notifier::Notifier(QObject *parent)
     : QObject(parent)
 {
     ;
 }
 
 
-Platform::NotificationManager::~NotificationManager()
+Platform::Notifier::~Notifier()
 {
     ;
 }
 
 
-void Platform::NotificationManager::hideNotification(NotificationType notificationType)
+void Platform::Notifier::hideNotification(Platform::Notifier::Notifications notification)
 {
-    jint jni_ID                   = notificationType;
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
+    jint jni_ID                   = notification;
+//    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
 }
 
 
-void Platform::NotificationManager::showNotification(NotificationType notificationType, const QString& title, const QString& text, const QString& longText)
+void Platform::Notifier::showNotification(Platform::Notifier::Notifications notification, const QString& text, const QString& longText)
 {
-    qWarning() << "showNotification";
-
-    jint jni_ID                    = notificationType;
-    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title);
+    jint jni_ID                    = notification;
+    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notification));
     QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);
     QAndroidJniObject jni_longText = QAndroidJniObject::fromString(longText);
 
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor",
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
                                               "showNotification",
                                               "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
                                               jni_ID,
@@ -67,25 +65,3 @@ void Platform::NotificationManager::showNotification(NotificationType notificati
 
 }
 
-
-extern "C" {
-
-// This method is called from Java to indicate that the user has clicked into the Android
-// notification for reporting traffic data receiver errors
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID)
-{
-
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (QCoreApplication::instance() == nullptr) {
-        return;
-    }
-
-    Global::notificationManager()->emitNotificationClicked((Platform::NotificationManager::NotificationType)notifyID);
-
-}
-
-}

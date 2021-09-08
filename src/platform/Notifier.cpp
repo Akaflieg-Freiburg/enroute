@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,33 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "MobileAdaptor.h"
+#include "platform/Notifier.h"
 
 
-void MobileAdaptor::hideSplashScreen()
+auto Platform::Notifier::title(Platform::Notifier::Notifications notification) -> QString
 {
+    switch (notification) {
+    case DownloadInfo:
+        return tr("Downloading map data…");
+    case TrafficReceiverRuntimeError:
+    case TrafficReceiverSelfTestError:
+        return tr("Traffic data receiver problem");
+    }
+
+    return {};
 }
 
-
-void MobileAdaptor::lockWifi(bool lock)
-{
-    Q_UNUSED(lock)
-}
-
-
-Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
-{
-    Q_UNUSED(this);
-    return false;
-}
-
-
-void MobileAdaptor::vibrateBrief()
-{
-}
-
-
-auto MobileAdaptor::getSSID() -> QString
-{
-    return "<unknown ssid>";
-}

@@ -32,7 +32,7 @@ namespace Platform {
  *  clicks on a notification.
  */
 
-class NotificationManager : public QObject
+class Notifier : public QObject
 {
     Q_OBJECT
 
@@ -41,27 +41,27 @@ public:
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit NotificationManager(QObject* parent = nullptr);
+    explicit Notifier(QObject* parent = nullptr);
 
-    ~NotificationManager();
+    ~Notifier();
 
     /*! \brief Notification types
      *
      *  This enum lists a number of predefined notification types
      *  only these notifications can be shown.
      */
-    enum NotificationType
+    enum Notifications
     {
         DownloadInfo = 0,                 /*< Info that  download is in progress */
         TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
         TrafficReceiverRuntimeError = 2   /*< Traffic receiver reports problem while running */
     };
-    Q_ENUM(NotificationType)
+    Q_ENUM(Notifications)
 
 public slots:
     // Emits the signal "notificationClicked".
-    void emitNotificationClicked(Platform::NotificationManager::NotificationType notificationType) {
-        emit notificationClicked(notificationType);
+    void emitNotificationClicked(Platform::Notifier::Notifications notification) {
+        emit notificationClicked(notification);
     }
 
     /*! \brief Hides a notification
@@ -69,32 +69,36 @@ public slots:
      *  This method hides a notification that is currently shown.  If the notification is not
      *  shown, this method does nothing.
      *
-     *  @param notificationType Type of the notification
+     *  @param notification Type of the notification
      */
-    static void hideNotification(Platform::NotificationManager::NotificationType notificationType);
+    static void hideNotification(Platform::Notifier::Notifications notification);
 
     /*! \brief Shows a notification
      *
-     *  This method shows a notification to the user.
+     *  This method shows a notification to the user. On platforms where notifications have
+     *  titles, an appropriate (translated) title is shown.
      *
-     *  @param notificationType Type of the notification
-     *
-     *  @param title One-line notification title ("Traffic receiver problem")
+     *  @param notification Type of the notification
      *
      *  @param text One-line notification text ("Device INOP · Maintenance required · Battery low")
      *
      *  @param longText If not empty, then the notification might be expandable. When expanded, the one-line "text" is replaced by the content of this "longText".
      *  Depending on the platform, this parameter might also be ignored.
      */
-    void showNotification(Platform::NotificationManager::NotificationType notificationType, const QString& title, const QString& text, const QString& longText);
+    void showNotification(Platform::Notifier::Notifications notification, const QString& text, const QString& longText);
 
 signals:
     /*! \brief Emitted when the user clicks on a notification
+     *
+     *  @param notification Notification that was clicked on
      */
-    void notificationClicked(Platform::NotificationManager::NotificationType notificationType);
+    void notificationClicked(Platform::Notifier::Notifications notification);
 
 private:
-    Q_DISABLE_COPY_MOVE(NotificationManager)
+    Q_DISABLE_COPY_MOVE(Notifier)
+
+    // Get translated title for specific notification
+    static QString title(Platform::Notifier::Notifications notification);
 };
 
 }

@@ -30,6 +30,7 @@
 #include "Global.h"
 #include "MobileAdaptor.h"
 #include "geomaps/GeoMapProvider.h"
+#include "platform/Notifier.h"
 #include "traffic/TrafficDataProvider.h"
 
 
@@ -97,6 +98,24 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     }
 
     Global::mobileAdaptor()->emitWifiConnected();
+
+}
+
+// This method is called from Java to indicate that the user has clicked into the Android
+// notification for reporting traffic data receiver errors
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID)
+{
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (QCoreApplication::instance() == nullptr) {
+        return;
+    }
+
+    Global::notifier()->emitNotificationClicked((Platform::Notifier::Notifications)notifyID);
 
 }
 

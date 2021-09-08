@@ -42,7 +42,7 @@ class TrafficDataProvider;
 }
 
 namespace Platform {
-class NotificationManager;
+class Notifier;
 }
 
 
@@ -120,7 +120,7 @@ public:
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Platform::NotificationManager* notificationManager();
+    Q_INVOKABLE static Platform::Notifier* notifier();
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *

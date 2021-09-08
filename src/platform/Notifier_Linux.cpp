@@ -20,23 +20,23 @@
 
 #include <KNotification>
 
-#include "platform/NotificationManager.h"
+#include "platform/Notifier.h"
 
 
-QMap<Platform::NotificationManager::NotificationType, QPointer<KNotification>> notifications;
+QMap<Platform::Notifier::Notifications, QPointer<KNotification>> notificationPtrs;
 
 
-Platform::NotificationManager::NotificationManager(QObject *parent)
+Platform::Notifier::Notifier(QObject *parent)
     : QObject(parent)
 {
     ;
 }
 
 
-Platform::NotificationManager::~NotificationManager()
+Platform::Notifier::~Notifier()
 {
 
-    foreach(auto notification, notifications) {
+    foreach(auto notification, notificationPtrs) {
         if (notification.isNull()) {
             continue;
         }
@@ -47,51 +47,53 @@ Platform::NotificationManager::~NotificationManager()
 }
 
 
-void Platform::NotificationManager::hideNotification(Platform::NotificationManager::NotificationType notificationType)
+void Platform::Notifier::hideNotification(Platform::Notifier::Notifications notificationType)
 {
 
-    auto notification = notifications.value(notificationType, nullptr);
+    auto notification = notificationPtrs.value(notificationType, nullptr);
     if (!notification.isNull()) {
         notification->close();
         delete notification;
     }
 
-    if (notifications.contains(notificationType)) {
-        notifications.remove(notificationType);
+    if (notificationPtrs.contains(notificationType)) {
+        notificationPtrs.remove(notificationType);
     }
 
 }
 
 
-void Platform::NotificationManager::showNotification(NotificationType notificationType, const QString& title, const QString& text, const QString& longText)
+void Platform::Notifier::showNotification(Notifications notification, const QString& text, const QString& longText)
 {
 
     // Get notificonst cation, &if it exists; otherwise get nullptr
-    auto notification = notifications.value(notificationType, nullptr);
+    auto notificationPtr = notificationPtrs.value(notification, nullptr);
 
     // Otherwise, generate a new notification
-    if (notification.isNull()) {
-        switch (notificationType) {
+    if (notificationPtr.isNull()) {
+        switch (notification) {
         case DownloadInfo:
-            notification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
+            notificationPtr = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
             break;
         case TrafficReceiverSelfTestError:
+            notificationPtr = new KNotification(QStringLiteral("trafficReceiverSelfTestError"), KNotification::Persistent, this);
+            break;
         case TrafficReceiverRuntimeError:
-            notification = new KNotification(QStringLiteral("trafficReceiverProblem"), KNotification::Persistent, this);
+            notificationPtr = new KNotification(QStringLiteral("trafficReceiverRuntimeError"), KNotification::Persistent, this);
             break;
         }
-        notification->setDefaultAction( tr("Open Application") );
-        notification->setPixmap( {":/icons/appIcon.png"} );
+        notificationPtr->setDefaultAction( tr("Open Application") );
+        notificationPtr->setPixmap( {":/icons/appIcon.png"} );
     }
 
-    notification->setTitle(title);
-    notifications[notificationType] = notification;
-    connect(notification, &KNotification::defaultActivated, [this, notificationType]() { emit notificationClicked(notificationType); });
+    notificationPtr->setTitle(title(notification));
+    notificationPtrs[notification] = notificationPtr;
+    connect(notificationPtr, &KNotification::defaultActivated, [this, notification]() { emit notificationClicked(notification); });
     if (longText.isEmpty()) {
-        notification->setText(text);
+        notificationPtr->setText(text);
     } else {
-        notification->setText(longText);
+        notificationPtr->setText(longText);
     }
-    notification->sendEvent();
+    notificationPtr->sendEvent();
 
 }

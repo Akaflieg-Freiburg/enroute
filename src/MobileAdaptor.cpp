@@ -18,25 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
 #include <QDir>
-#include <QPointer>
 #include <QStandardPaths>
-#include <QTimer>
-
-#include "Global.h"
-#include "MobileAdaptor.h"
-#include "geomaps/GeoMapProvider.h"
-#include "platform/NotificationManager.h"
-#include "traffic/TrafficDataProvider.h"
-
 
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniEnvironment>
+#include <QHash>
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
 #endif
 
+#include "MobileAdaptor.h"
 
 
 MobileAdaptor::MobileAdaptor(QObject *parent)

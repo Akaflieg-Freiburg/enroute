@@ -635,9 +635,9 @@ ApplicationWindow {
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
-                global.notificationManager().showNotification(NotificationManager.DownloadInfo, qsTr("Downloading map data…"), "", "");
+                global.notifier().showNotification(Notifier.DownloadInfo, "", "");
             } else {
-                global.notificationManager().hideNotification(NotificationManager.DownloadInfo);
+                global.notifier().hideNotification(Notifier.DownloadInfo);
             }
         }
     }
@@ -662,23 +662,23 @@ ApplicationWindow {
 
         function onTrafficReceiverRuntimeErrorChanged(message) {
             if (message === "") {
-                global.notificationManager().hideNotification(NotificationManager.TrafficReceiverRuntimeError);
+                global.notifier().hideNotification(Notifier.TrafficReceiverRuntimeError);
             } else {
-                global.notificationManager().showNotification(NotificationManager.TrafficReceiverRuntimeError, qsTr("Traffic data receiver problem"), message, message);
+                global.notifier().showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
             }
         }
 
         function onTrafficReceiverSelfTestErrorChanged(message) {
             if (message === "") {
-                global.notificationManager().hideNotification(NotificationManager.TrafficReceiverSelfTestError);
+                global.notifier().hideNotification(Notifier.TrafficReceiverSelfTestError);
             } else {
-                global.notificationManager().showNotification(NotificationManager.TrafficReceiverSelfTestError, qsTr("Traffic data receiver problem"), message, message);
+                global.notifier().showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
             }
         }
     }
 
     Connections {
-        target: global.notificationManager()
+        target: global.notifier()
 
         function onNotificationClicked(notifyID) {
             if ((notifyID === 0) && (stackView.currentItem.objectName !== "MapManagerPage")) {

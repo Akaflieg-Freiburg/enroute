@@ -533,12 +533,23 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             return;
         }
 
-        /*
-        auto RX = arguments[0];
+        // Handle runtime errors
+        QStringList results;
+        // auto RX = arguments[0];
         auto TX = arguments[1];
+        if (TX == "0") {
+            results += tr("No FLARM transmission");
+        }
         auto GPS = arguments[2];
+        if (GPS == "0") {
+            results += tr("No GPS reception");
+        }
         auto Power = arguments[3];
-        */
+        if (Power == "0") {
+            results += tr("Under- or Overvoltage");
+        }
+        setTrafficReceiverRuntimeError(results.join(" • "));
+
         auto AlarmLevel = arguments[4];
         auto RelativeBearing = arguments[5];
         auto AlarmType = arguments[6];

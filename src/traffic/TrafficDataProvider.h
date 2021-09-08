@@ -144,15 +144,15 @@ public:
      *  there is not error.  The string is cleared when a new connection attempt
      *  is started.
      */
-    Q_PROPERTY(QString trafficReceiverError READ trafficReceiverError NOTIFY trafficReceiverSelfTestErrorChanged)
+    Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property errorString
      */
-    QString trafficReceiverError()
+    QString trafficReceiverSelfTestError()
     {
-        return m_trafficReceiverError;
+        return m_trafficReceiverSelfTestError;
     }
 
     /*! \brief Current traffic warning
@@ -206,6 +206,9 @@ signals:
     void receivingHeartbeatChanged(bool);
 
     /*! \brief Notifier signal */
+    void trafficReceiverRuntimeErrorChanged(QString message);
+
+    /*! \brief Notifier signal */
     void trafficReceiverSelfTestErrorChanged(QString message);
 
     /*! \brief Notifier signal */
@@ -252,13 +255,16 @@ private slots:
     void onSourceHeartbeatChanged();
 
     // Called if one of the sources reports traffic (position unknown)
-    void onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor);
+    void onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition& factor);
 
     // Called if one of the sources reports traffic (position known)
-    void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor);
+    void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly& factor);
 
     // Called if one of the sources reports or clears an error string
     void onTrafficReceiverSelfTestError(const QString& msg);
+
+    // Called if one of the sources reports or clears an error string
+    void onTrafficReceiverRuntimeError(const QString& msg);
 
     // Resetter method
     void resetWarning();
@@ -291,7 +297,8 @@ private:
     // Property cache
     Traffic::Warning m_Warning;
     QTimer m_WarningTimer;
-    QString m_trafficReceiverError {};
+    QString m_trafficReceiverRuntimeError {};
+    QString m_trafficReceiverSelfTestError {};
 
     // Reconnect
     QTimer reconnectionTimer;

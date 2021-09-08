@@ -207,6 +207,7 @@ if( ANDROID )
         platform/NotificationManager_Android.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
+        android/src/de/akaflieg_freiburg/enroute/Notifier.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
         )

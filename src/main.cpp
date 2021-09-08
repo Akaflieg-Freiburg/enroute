@@ -154,11 +154,6 @@ auto main(int argc, char *argv[]) -> int
 #endif
 
     /*
-     * Setup connections
-     */
-#warning
-
-    /*
      * Set up ApplicationEngine for QML
      */
     auto* engine = new QQmlApplicationEngine();

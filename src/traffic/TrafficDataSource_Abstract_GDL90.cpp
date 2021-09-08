@@ -232,6 +232,24 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
 
     // Heartbeat message
     if (messageID == 0) {
+        if (message.length() < 3) {
+            return;
+        }
+
+        // Handle runtime errors
+        QStringList results;
+        auto status = static_cast<quint8>(message.at(0));
+        if ((status & 1<<7) == 0) {
+            results += tr("No GPS reception");
+        }
+        if ((status & 1<<6) != 0) {
+            results += tr("Maintenance required");
+        }
+        if ((status & 1<<3) != 0) {
+            results += tr("GPS Battery low voltage");
+        }
+        setTrafficReceiverRuntimeError(results.join(" • "));
+
         setReceivingHeartbeat(true);
         return;
     }

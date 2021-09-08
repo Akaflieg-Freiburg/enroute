@@ -127,10 +127,28 @@ public:
      */
     virtual QString sourceName() const = 0;
 
-    /*! \brief String describing the last traffic data receiver error
+    /*! \brief String describing the last traffic data receiver runtime error
      *
      *  This property holds a translated, human-readable string that describes
      *  the last error reported by the traffic receiver, or an empty string when
+     *  there is not error.  The string is cleared when a new connection attempt
+     *  is started.
+     */
+    Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError WRITE setTrafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    QString trafficReceiverRuntimeError()
+    {
+        return m_trafficReceiverRuntimeError;
+    }
+
+    /*! \brief String describing the last traffic data receiver self-test error
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the last error reported by the traffic receiver self-test, or an empty string when
      *  there is not error.  The string is cleared when a new connection attempt
      *  is started.
      */
@@ -142,7 +160,7 @@ public:
      */
     QString trafficReceiverSelfTestError()
     {
-        return m_trafficReceiverError;
+        return m_trafficReceiverSelfTestError;
     }
 
 signals:
@@ -206,6 +224,9 @@ signals:
 
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
+
+    /*! \brief Notifier signal */
+    void trafficReceiverRuntimeErrorChanged(const QString& message);
 
     /*! \brief Notifier signal */
     void trafficReceiverSelfTestErrorChanged(const QString& message);
@@ -349,13 +370,20 @@ protected:
      *
      *  @param newErrorString Property errorString
      */
-    void setTrafficReceiverSelfTestError(const QString& newErrorString = QString());
+    void setTrafficReceiverRuntimeError(const QString& newErrorString);
+
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param newErrorString Property errorString
+     */
+    void setTrafficReceiverSelfTestError(const QString& newErrorString);
 
 private:
     // Property caches
     QString m_connectivityStatus {};
     QString m_errorString {};
-    QString m_trafficReceiverError {};
+    QString m_trafficReceiverRuntimeError {};
+    QString m_trafficReceiverSelfTestError {};
 
     // True altitude of own aircraft. We store these values because the
     // necessary information to compile a PositionInfo class does not always

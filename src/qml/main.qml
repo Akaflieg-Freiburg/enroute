@@ -660,6 +660,14 @@ ApplicationWindow {
             dialogLoader.active = true
         }
 
+        function onTrafficReceiverRuntimeErrorChanged(message) {
+            if (message === "") {
+                global.notificationManager().hideNotification(NotificationManager.TrafficReceiverRuntimeError);
+            } else {
+                global.notificationManager().showNotification(NotificationManager.TrafficReceiverRuntimeError, qsTr("Traffic data receiver problem"), message, message);
+            }
+        }
+
         function onTrafficReceiverSelfTestErrorChanged(message) {
             if (message === "") {
                 global.notificationManager().hideNotification(NotificationManager.TrafficReceiverSelfTestError);

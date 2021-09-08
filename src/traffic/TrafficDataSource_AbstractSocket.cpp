@@ -147,7 +147,8 @@ void Traffic::TrafficDataSource_AbstractSocket::onStateChanged(QAbstractSocket::
     }
 
     // Clear traffic receiver error message
-    setTrafficReceiverSelfTestError();
+    setTrafficReceiverRuntimeError({});
+    setTrafficReceiverSelfTestError({});
 
 }
 

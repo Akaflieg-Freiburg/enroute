@@ -193,6 +193,7 @@ void Traffic::TrafficDataSource_File::updateProperties()
     }
 
     // Clear traffic receiver error message
-    setTrafficReceiverSelfTestError();
+    setTrafficReceiverRuntimeError({});
+    setTrafficReceiverSelfTestError({});
 
 }

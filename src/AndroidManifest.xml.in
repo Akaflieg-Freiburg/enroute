@@ -34,7 +34,8 @@
               android:label="Enroute"
               android:screenOrientation="unspecified"
               android:launchMode="singleInstance"
-	      android:showWhenLocked="true">
+              android:showWhenLocked="true"
+              android:windowSoftInputMode="adjustResize">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

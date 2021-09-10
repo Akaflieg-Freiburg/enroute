@@ -97,6 +97,7 @@ set(SOURCES
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
     Settings.h
+    traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_AbstractSocket.h
@@ -149,6 +150,7 @@ set(SOURCES
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
     Settings.cpp
+    traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
     traffic/TrafficDataSource_Abstract_FLARM.cpp

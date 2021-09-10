@@ -37,6 +37,7 @@ class Navigator;
 }
 
 namespace Traffic {
+class FlarmnetDB;
 class PasswordDB;
 class TrafficDataProvider;
 }
@@ -81,6 +82,12 @@ public:
      * managed by this class.
      */
     ~Global() = default;
+
+    /*! \brief Pointer to appplication-wide static FlarmnetDB instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Traffic::FlarmnetDB* flarmnetDB();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider instance
      *

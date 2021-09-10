@@ -182,7 +182,7 @@ ApplicationWindow {
                         }
 
                         ItemDelegate {
-                            text: qsTr("Maps")
+                            text: qsTr("Maps and Data")
                                   + (global.mapManager().geoMaps.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
                                   + (global.navigator().isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"

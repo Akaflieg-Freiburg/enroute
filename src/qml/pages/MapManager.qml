@@ -28,7 +28,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("Map Library")
+    title: qsTr("Map and Data Library")
 
     Component {
         id: sectionHeading
@@ -285,6 +285,9 @@ Page {
         TabButton {
             text: qsTr("Base Maps")
         }
+        TabButton {
+            text: qsTr("Data")
+        }
         Material.elevation: 3
     }
 
@@ -342,6 +345,30 @@ Page {
                     }
 
                 }
+
+                // Refresh list of maps on overscroll
+                property int refreshFlick: 0
+                onFlickStarted: {
+                    refreshFlick = atYBeginning
+                }
+                onFlickEnded: {
+                    if ( atYBeginning && refreshFlick ) {
+                        global.mobileAdaptor().vibrateBrief()
+                        global.mapManager().updateGeoMapList()
+                    }
+                }
+            } // ListView
+
+            ListView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                clip: true
+                model: global.mapManager().baseMaps.downloadablesAsObjectList
+                delegate: mapItem
+                ScrollIndicator.vertical: ScrollIndicator {}
+
+                section.property: "modelData.section"
+                section.delegate: sectionHeading
 
                 // Refresh list of maps on overscroll
                 property int refreshFlick: 0

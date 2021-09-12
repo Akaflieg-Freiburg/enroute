@@ -82,8 +82,8 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Platform::Notifier::Notifications>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
-    qmlRegisterType<GeoMaps::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
-    qmlRegisterType<GeoMaps::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
+    qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
     qmlRegisterUncreatableType<GeoMaps::MapManager>("enroute", 1, 0, "MapManager", "MapManager objects cannot be created in QML");
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");

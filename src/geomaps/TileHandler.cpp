@@ -29,9 +29,9 @@
 #include <qhttpengine/socket.h>
 
 #include "TileHandler.h"
-#include "geomaps/Downloadable.h"
+#include "dataManagement/Downloadable.h"
 
-GeoMaps::TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
+GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
     // Initialize with default values
@@ -51,7 +51,7 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<Downloadable>>& mbtileF
             hasDBError = true;
             return;
         }
-        connect(mbtileFile, &Downloadable::aboutToChangeFile, this, &TileHandler::removeFile);
+        connect(mbtileFile, &DataManagement::Downloadable::aboutToChangeFile, this, &TileHandler::removeFile);
 
         // Open database
         auto databaseConnectionName = baseURL+"-"+mbtileFile->fileName();

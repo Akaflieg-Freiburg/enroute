@@ -154,7 +154,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.geoMapProvider().describeMapFile(model.modelData.fileName)
+                                infoDialog.text = global.mapManager().describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
                             }
                         }
@@ -272,7 +272,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.geoMapProvider().describeMapFile(model.modelData.fileName)
+                                infoDialog.text = global.mapManager().describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
                             }
                         }

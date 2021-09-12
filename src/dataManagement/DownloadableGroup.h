@@ -22,7 +22,7 @@
 
 #include "DownloadableGroupWatcher.h"
 
-namespace GeoMaps {
+namespace DataManagement {
 
 /*! \brief Manages a set of downloadable objects
 

@@ -25,6 +25,8 @@
 
 #include <qhttpengine/handler.h>
 
+#include <dataManagement/Downloadable.h>
+
 
 namespace GeoMaps {
 
@@ -68,7 +70,7 @@ public:
     
     @param parent The standard QObject parent
   */
-  explicit TileHandler(const QVector<QPointer<GeoMaps::Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
+  explicit TileHandler(const QVector<QPointer<DataManagement::Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
   // Destructor
   ~TileHandler() override;

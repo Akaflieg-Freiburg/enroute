@@ -28,7 +28,7 @@
 #include <QSaveFile>
 
 
-namespace GeoMaps {
+namespace DataManagement {
 
 /*! \brief Base class for all downloadable objects
 

@@ -144,21 +144,6 @@ public:
         return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://maptiler.com/copyright/'>© MapTiler</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
     }
 
-    /*! \brief Describe installed map
-     *
-     * This method describes installed GeoJSON map files.
-     *
-     * @warning The data is only updated
-     * after the maps have been parsed in the GeoJSON parsing process. It is
-     * therefore possible that the method returns wrong information if it is
-     * called directly after a new map has been installed.
-     *
-     * @param fileName Name of a GeoJSON file.
-     *
-     * @returns A human-readable HTML string, or an empty string if no data is available
-     */
-    Q_INVOKABLE static QString describeMapFile(const QString& fileName);
-
     /*! \brief Waypoints containing a given substring
      *
      * @param filter List of words

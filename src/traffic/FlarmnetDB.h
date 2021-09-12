@@ -23,7 +23,7 @@
 #include <QCache>
 #include <QObject>
 
-#include "geomaps/Downloadable.h"
+#include "dataManagement/Downloadable.h"
 
 namespace Traffic {
 
@@ -71,7 +71,7 @@ private slots:
     void findFlarmnetDBDownloadable();
 
 private:
-    QPointer<GeoMaps::Downloadable> flarmnetDBDownloadable;
+    QPointer<DataManagement::Downloadable> flarmnetDBDownloadable;
 
     QCache<QString, QString> m_cache {};
 };

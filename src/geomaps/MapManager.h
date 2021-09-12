@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include <QTimer> 
+#include <QTimer>
 
-#include "geomaps/DownloadableGroup.h"
+#include "dataManagement/DownloadableGroup.h"
 
 
 namespace GeoMaps {
@@ -77,38 +77,53 @@ public:
     The is a DownloadableGroupWatcher that holds all aviation maps. The maps
     also appear in geoMaps, which is the union of aviation maps and base maps.
   */
-  Q_PROPERTY(DownloadableGroupWatcher *aviationMaps READ aviationMaps CONSTANT)
+  Q_PROPERTY(DataManagement::DownloadableGroupWatcher *aviationMaps READ aviationMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
     
     @returns Property aviationMaps
   */
-  DownloadableGroupWatcher *aviationMaps() { return &_aviationMaps; }
+  DataManagement::DownloadableGroupWatcher *aviationMaps() { return &_aviationMaps; }
   
   /*! \brief Pointer to the DownloadableGroup that holds all base maps
 
     The is a DownloadableGroup that holds all base maps. The maps also appear in
     geoMaps, which is the union of aviation maps and base maps.
   */
-  Q_PROPERTY(DownloadableGroupWatcher *baseMaps READ baseMaps CONSTANT)
+  Q_PROPERTY(DataManagement::DownloadableGroupWatcher *baseMaps READ baseMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property baseMaps
   */
-  DownloadableGroupWatcher *baseMaps() { return &_baseMaps; };
+  DataManagement::DownloadableGroupWatcher *baseMaps() { return &_baseMaps; };
 
   /*! \brief Pointer to the DownloadableGroup that holds all data items
    *
    *  This is a DownloadableGroup that holds all base maps.
    */
-  Q_PROPERTY(DownloadableGroupWatcher *databases READ databases CONSTANT)
+  Q_PROPERTY(DataManagement::DownloadableGroupWatcher *databases READ databases CONSTANT)
 
   /*! \brief Getter function for the property with the same name
    *
    *  @returns Property databases
    */
-  DownloadableGroupWatcher *databases() { return &_databases; };
+  DataManagement::DownloadableGroupWatcher *databases() { return &_databases; };
+
+  /*! \brief Describe installed map
+     *
+     * This method describes installed GeoJSON map files.
+     *
+     * @warning The data is only updated
+     * after the maps have been parsed in the GeoJSON parsing process. It is
+     * therefore possible that the method returns wrong information if it is
+     * called directly after a new map has been installed.
+     *
+     * @param fileName Name of a GeoJSON file.
+     *
+     * @returns A human-readable HTML string, or an empty string if no data is available
+     */
+  Q_INVOKABLE static QString describeMapFile(const QString& fileName);
 
   /*! \brief Indicates whether the file "maps.json" is currently being downloaded */
   Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
@@ -124,13 +139,13 @@ public:
     The is a DownloadableGroup that holds all maps.  This is the union of
     aviation maps and base maps.
   */
-  Q_PROPERTY(DownloadableGroupWatcher *geoMaps READ geoMaps CONSTANT)
+  Q_PROPERTY(DataManagement::DownloadableGroupWatcher *geoMaps READ geoMaps CONSTANT)
 
   /*! \brief Getter function for the property with the same name
 
     @returns Property geoMaps
   */
-  DownloadableGroupWatcher *geoMaps() { return &_geoMaps; }
+  DataManagement::DownloadableGroupWatcher *geoMaps() { return &_geoMaps; }
 
   /*! \brief True if the list of available geo maps has already been downloaded */
   Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
@@ -210,13 +225,13 @@ private:
   // This Downloadable object manages the central text file that describes the
   // remotely available aviation maps. It is set in the constructor to point to
   // the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
-  Downloadable _maps_json;
+  DataManagement::Downloadable _maps_json;
   
   // List of geographic maps
-  DownloadableGroup _databases;
-  DownloadableGroup _geoMaps;
-  DownloadableGroup _baseMaps;
-  DownloadableGroup _aviationMaps;
+  DataManagement::DownloadableGroup _databases;
+  DataManagement::DownloadableGroup _geoMaps;
+  DataManagement::DownloadableGroup _baseMaps;
+  DataManagement::DownloadableGroup _aviationMaps;
 };
 
 };

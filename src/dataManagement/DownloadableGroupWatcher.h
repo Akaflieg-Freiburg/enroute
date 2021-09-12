@@ -25,7 +25,7 @@
 #include "Downloadable.h"
 
 
-namespace GeoMaps {
+namespace DataManagement {
 
 /*! \brief Watches a group of Downloadable objects
   
@@ -45,13 +45,13 @@ public:
       by section() and then secondly by file name. The nullptr is never
       contained in the list.
     */
-    Q_PROPERTY(QVector<QPointer<Downloadable>> downloadables READ downloadables NOTIFY downloadablesChanged)
+    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable>> downloadables READ downloadables NOTIFY downloadablesChanged)
 
     /*! \brief Getter function for the property with the same name
       
       @returns Property downloadables
     */
-    QVector<QPointer<Downloadable>> downloadables() const;
+    QVector<QPointer<DataManagement::Downloadable>> downloadables() const;
 
     /*! \brief List of Downloadables in this group, as a list of QObjects
 
@@ -73,13 +73,13 @@ public:
       ascending order, first by section() and then secondly by file name. The
       nullptr is never contained in the list.
     */
-    Q_PROPERTY(QVector<QPointer<Downloadable>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
+    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property downloadablesWithFiles
     */
-    QVector<QPointer<Downloadable>> downloadablesWithFile() const;
+    QVector<QPointer<DataManagement::Downloadable>> downloadablesWithFile() const;
 
     /*! \brief Indicates whether a download process is currently running
 
@@ -148,7 +148,7 @@ public slots:
 
 signals:
     /*! \brief Notifier signal for property downloading */
-    void downloadablesWithFileChanged(QVector<QPointer<GeoMaps::Downloadable>>);
+    void downloadablesWithFileChanged(QVector<QPointer<DataManagement::Downloadable>>);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged(bool);

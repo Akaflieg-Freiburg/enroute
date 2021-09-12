@@ -39,7 +39,7 @@ void Traffic::FlarmnetDB::clearCache()
 
 void Traffic::FlarmnetDB::deferredInitialization()
 {
-    connect(Global::mapManager()->databases(), &GeoMaps::DownloadableGroupWatcher::downloadablesChanged, this, &Traffic::FlarmnetDB::findFlarmnetDBDownloadable);
+    connect(Global::mapManager()->databases(), &DataManagement::DownloadableGroupWatcher::downloadablesChanged, this, &Traffic::FlarmnetDB::findFlarmnetDBDownloadable);
     findFlarmnetDBDownloadable();
 }
 
@@ -48,7 +48,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
 {
     // Find correct downloadable. We do this only if a QCoreApplication
     // exists, in order to avoid calling Global::mapManager during shutdown.
-    QPointer<GeoMaps::Downloadable> newFlarmnetDBDownloadable;
+    QPointer<DataManagement::Downloadable> newFlarmnetDBDownloadable;
     if (QCoreApplication::instance() != nullptr) {
         auto downloadables = Global::mapManager()->databases()->downloadables();
         foreach(auto downloadable, downloadables) {
@@ -65,12 +65,12 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     }
 
     if (flarmnetDBDownloadable != nullptr) {
-        disconnect(flarmnetDBDownloadable, &GeoMaps::Downloadable::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
+        disconnect(flarmnetDBDownloadable, &DataManagement::Downloadable::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
     }
 
     flarmnetDBDownloadable = newFlarmnetDBDownloadable;
     if (flarmnetDBDownloadable != nullptr) {
-        connect(flarmnetDBDownloadable, &GeoMaps::Downloadable::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
+        connect(flarmnetDBDownloadable, &DataManagement::Downloadable::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
 
         // Create an empty file, if no file exists. We set the FileModificationTime
         // to a point in the past, so that it will automatically be updated at the

@@ -27,7 +27,7 @@
 #include "Downloadable.h"
 #include "Global.h"
 
-GeoMaps::Downloadable::Downloadable(QUrl url, const QString &fileName, QObject *parent)
+DataManagement::Downloadable::Downloadable(QUrl url, const QString &fileName, QObject *parent)
     : QObject(parent), _url(std::move(url)) {
     // Paranoid safety checks
     Q_ASSERT(!fileName.isEmpty());
@@ -44,7 +44,7 @@ GeoMaps::Downloadable::Downloadable(QUrl url, const QString &fileName, QObject *
 }
 
 
-GeoMaps::Downloadable::~Downloadable() {
+DataManagement::Downloadable::~Downloadable() {
     // Free all ressources
     delete _networkReplyDownloadFile;
     delete _networkReplyDownloadHeader;
@@ -52,7 +52,7 @@ GeoMaps::Downloadable::~Downloadable() {
 }
 
 
-auto GeoMaps::Downloadable::infoText() const -> QString {
+auto DataManagement::Downloadable::infoText() const -> QString {
     if (downloading()) {
         return tr("downloading … %1% complete").arg(_downloadProgress);
     }
@@ -83,7 +83,7 @@ auto GeoMaps::Downloadable::infoText() const -> QString {
 }
 
 
-auto GeoMaps::Downloadable::fileContent() const -> QByteArray {
+auto DataManagement::Downloadable::fileContent() const -> QByteArray {
     // Paranoid safety checks
     Q_ASSERT(!_fileName.isEmpty());
 
@@ -103,7 +103,7 @@ auto GeoMaps::Downloadable::fileContent() const -> QByteArray {
 }
 
 
-void GeoMaps::Downloadable::setRemoteFileDate(const QDateTime &date) {
+void DataManagement::Downloadable::setRemoteFileDate(const QDateTime &date) {
     // Do nothing if old and new data agrees
     if (date == _remoteFileDate) {
         return;
@@ -122,7 +122,7 @@ void GeoMaps::Downloadable::setRemoteFileDate(const QDateTime &date) {
 }
 
 
-void GeoMaps::Downloadable::setRemoteFileSize(qint64 size) {
+void DataManagement::Downloadable::setRemoteFileSize(qint64 size) {
     // Paranoid safety checks
     Q_ASSERT(size >= -1);
     if (size < -1) {
@@ -147,7 +147,7 @@ void GeoMaps::Downloadable::setRemoteFileSize(qint64 size) {
 }
 
 
-void GeoMaps::Downloadable::setSection(const QString& sectionName)
+void DataManagement::Downloadable::setSection(const QString& sectionName)
 {
     if (sectionName == _section) {
         return;
@@ -157,7 +157,7 @@ void GeoMaps::Downloadable::setSection(const QString& sectionName)
 }
 
 
-auto GeoMaps::Downloadable::updatable() const -> bool {
+auto DataManagement::Downloadable::updatable() const -> bool {
     if (downloading()) {
         return false;
     }
@@ -170,7 +170,7 @@ auto GeoMaps::Downloadable::updatable() const -> bool {
 }
 
 
-void GeoMaps::Downloadable::deleteFile() {
+void DataManagement::Downloadable::deleteFile() {
     // If the local file does not exist, there is nothing to do
     if (!QFile::exists(_fileName)) {
         return;
@@ -194,7 +194,7 @@ void GeoMaps::Downloadable::deleteFile() {
 }
 
 
-void GeoMaps::Downloadable::startInfoDownload() {
+void DataManagement::Downloadable::startInfoDownload() {
 
     // Do not start a new check if an old one is still running
     if (!_networkReplyDownloadHeader.isNull()) {
@@ -209,7 +209,7 @@ void GeoMaps::Downloadable::startInfoDownload() {
 }
 
 
-void GeoMaps::Downloadable::startFileDownload() {
+void DataManagement::Downloadable::startFileDownload() {
 
     // Do not begin a new download if one is already running
     if (downloading()) {
@@ -260,7 +260,7 @@ void GeoMaps::Downloadable::startFileDownload() {
 }
 
 
-void GeoMaps::Downloadable::stopFileDownload() {
+void DataManagement::Downloadable::stopFileDownload() {
 
     // Do stop a new download if none is already running
     if (!downloading()) {
@@ -284,7 +284,7 @@ void GeoMaps::Downloadable::stopFileDownload() {
 }
 
 
-void GeoMaps::Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
+void DataManagement::Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
 
     // Do nothing if there is no error
     if (code == QNetworkReply::NoError) {
@@ -456,7 +456,7 @@ void GeoMaps::Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkErro
 }
 
 
-void GeoMaps::Downloadable::downloadFileFinished() {
+void DataManagement::Downloadable::downloadFileFinished() {
     // Paranoid safety checks
     //  Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_tmpFile.isNull());
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
@@ -505,7 +505,7 @@ void GeoMaps::Downloadable::downloadFileFinished() {
 }
 
 
-void GeoMaps::Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
+void DataManagement::Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
     auto oldDownloadProgress = _downloadProgress;
 
     // If the content is compressed, then Qt does not know the total size and will set 'bytesTotal' to -1. In that case, the number _remoteFileSize might be a better estimate.
@@ -527,7 +527,7 @@ void GeoMaps::Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, q
 }
 
 
-void GeoMaps::Downloadable::downloadFilePartialDataReceiver() {
+void DataManagement::Downloadable::downloadFilePartialDataReceiver() {
     // Paranoid safety checks
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
         stopFileDownload();
@@ -542,7 +542,7 @@ void GeoMaps::Downloadable::downloadFilePartialDataReceiver() {
 }
 
 
-void GeoMaps::Downloadable::downloadHeaderFinished() {
+void DataManagement::Downloadable::downloadHeaderFinished() {
     // Paranoid safety checks
     Q_ASSERT(!_networkReplyDownloadHeader.isNull());
     if (_networkReplyDownloadHeader.isNull()) {

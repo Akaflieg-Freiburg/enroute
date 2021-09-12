@@ -26,8 +26,8 @@
 #include "Global.h"
 #include "MobileAdaptor.h"
 #include "Settings.h"
+#include "dataManagement/DataManager.h"
 #include "geomaps/GeoMapProvider.h"
-#include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier.h"
 #include "traffic/FlarmnetDB.h"
@@ -38,7 +38,7 @@ bool isConstructing {false};
 
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
-QPointer<GeoMaps::MapManager> g_mapManager {};
+QPointer<DataManagement::DataManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<Platform::Notifier> g_notifier {};
@@ -81,9 +81,9 @@ auto Global::geoMapProvider() -> GeoMaps::GeoMapProvider*
 }
 
 
-auto Global::mapManager() -> GeoMaps::MapManager*
+auto Global::dataManager() -> DataManagement::DataManager*
 {
-    return allocateInternal<GeoMaps::MapManager>(g_mapManager);
+    return allocateInternal<DataManagement::DataManager>(g_mapManager);
 }
 
 

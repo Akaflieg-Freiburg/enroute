@@ -25,7 +25,7 @@ LongTextDialog {
     id: mud
 
     title: qsTr("Updates available")
-    text: qsTr("<p>One or several of your installed maps or databases can be updated. The estimated download size is %1.</p>").arg(global.mapManager().geoMaps.updateSize)
+    text: qsTr("<p>One or several of your installed maps or databases can be updated. The estimated download size is %1.</p>").arg(global.dataManager().geoMaps.updateSize)
 
     footer: DialogButtonBox {
         ToolButton {
@@ -37,6 +37,6 @@ LongTextDialog {
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
         }
 
-        onAccepted: global.mapManager().geoMaps.updateAll()
+        onAccepted: global.dataManager().geoMaps.updateAll()
     } // DialogButtonBox
 }

@@ -25,7 +25,7 @@
 #include "dataManagement/DownloadableGroup.h"
 
 
-namespace GeoMaps {
+namespace DataManagement {
 
 /*! \brief Manages the list of geographic maps
   
@@ -50,7 +50,7 @@ namespace GeoMaps {
   and with the directory "aviation_maps".
 */
 
-class MapManager : public QObject
+class DataManager : public QObject
 {
   Q_OBJECT
   
@@ -63,14 +63,14 @@ public:
     
     @param parent The standard QObject parent pointer.
   */
-  explicit MapManager(QObject *parent=nullptr);
+  explicit DataManager(QObject *parent=nullptr);
   
   /*! \brief Destructor
     
     This destructor purges the download directory "aviation_map", by deleting
     all files that do not belong to any of the maps.
   */
-  ~MapManager();
+  ~DataManager();
   
   /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
 
@@ -173,7 +173,7 @@ signals:
   /*! \brief Download error
     
     This signal is emitted if the download process for the file "maps.json"
-    fails for whatever reason.  Since the MapManager updates the list regularly,
+    fails for whatever reason.  Since the DataManager updates the list regularly,
     this signal can be emitted anytime.
     
     @param message A brief error message of the form "the requested resource is
@@ -212,7 +212,7 @@ private slots:
   void autoUpdateGeoMapList();
   
 private:
-  Q_DISABLE_COPY_MOVE(MapManager)
+  Q_DISABLE_COPY_MOVE(DataManager)
   
   // This method returns a list of files in the download directory that have no
   // corresponding entry in _aviationMaps.

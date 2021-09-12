@@ -28,7 +28,7 @@ import "../items"
 
 Page {
     id: pg
-    objectName: "MapManagerPage"
+    objectName: "DataManagerPage"
 
     title: qsTr("Map and Data Library")
 
@@ -57,10 +57,10 @@ Page {
                 var nFilesTotal;
                 var mapTypeString;
                 if (sv.currentIndex == 0) {  // swipe view shows aviation maps
-                    nFilesTotal = global.mapManager().aviationMaps.numberOfFilesTotal();
+                    nFilesTotal = global.dataManager().aviationMaps.numberOfFilesTotal();
                     mapTypeString = qsTr("aviation maps")
                 } else {  // swipe view shows base maps
-                    nFilesTotal = global.mapManager().baseMaps.numberOfFilesTotal();
+                    nFilesTotal = global.dataManager().baseMaps.numberOfFilesTotal();
                     mapTypeString = qsTr("base maps")
                 }
 
@@ -154,7 +154,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.mapManager().describeMapFile(model.modelData.fileName)
+                                infoDialog.text = global.dataManager().describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
                             }
                         }
@@ -272,7 +272,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.mapManager().describeMapFile(model.modelData.fileName)
+                                infoDialog.text = global.dataManager().describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
                             }
                         }
@@ -369,7 +369,7 @@ Page {
                 onTriggered: {
                     global.mobileAdaptor().vibrateBrief()
                     highlighted = false
-                    global.mapManager().updateGeoMapList()
+                    global.dataManager().updateGeoMapList()
                 }
             }
 
@@ -377,12 +377,12 @@ Page {
                 id: downloadUpdatesMenu
 
                 text: qsTr("Download all updates…")
-                enabled: global.mapManager().geoMaps.updatable
+                enabled: global.dataManager().geoMaps.updatable
 
                 onTriggered: {
                     global.mobileAdaptor().vibrateBrief()
                     highlighted = false
-                    global.mapManager().geoMaps.updateAll()
+                    global.dataManager().geoMaps.updateAll()
                 }
             }
 
@@ -428,7 +428,7 @@ Page {
 
             ListView {
                 clip: true
-                model: global.mapManager().aviationMaps.downloadablesAsObjectList
+                model: global.dataManager().aviationMaps.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -474,7 +474,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         global.mobileAdaptor().vibrateBrief()
-                        global.mapManager().updateGeoMapList()
+                        global.dataManager().updateGeoMapList()
                     }
                 }
             } // ListView
@@ -483,7 +483,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.mapManager().baseMaps.downloadablesAsObjectList
+                model: global.dataManager().baseMaps.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -498,7 +498,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         global.mobileAdaptor().vibrateBrief()
-                        global.mapManager().updateGeoMapList()
+                        global.dataManager().updateGeoMapList()
                     }
                 }
             } // ListView
@@ -507,7 +507,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.mapManager().databases.downloadablesAsObjectList
+                model: global.dataManager().databases.downloadablesAsObjectList
                 delegate: databaseItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -522,7 +522,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         global.mobileAdaptor().vibrateBrief()
-                        global.mapManager().updateGeoMapList()
+                        global.dataManager().updateGeoMapList()
                     }
                 }
             } // ListView
@@ -541,7 +541,7 @@ Page {
         anchors.bottom: parent.bottom
 
         color: "white"
-        visible: !global.mapManager().downloadingGeoMapList && !global.mapManager().hasGeoMapList
+        visible: !global.dataManager().downloadingGeoMapList && !global.dataManager().hasGeoMapList
 
         Label {
             anchors.left: parent.left
@@ -565,7 +565,7 @@ Page {
         anchors.bottom: parent.bottom
 
         color: "white"
-        visible: global.mapManager().downloadingGeoMapList
+        visible: global.dataManager().downloadingGeoMapList
 
         Label {
             id: downloadIndicatorLabel
@@ -591,9 +591,9 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: global.mapManager()
+            target: global.dataManager()
             function onDownloadingGeoMapListChanged () {
-                if (global.mapManager().downloadingGeoMapList) {
+                if (global.dataManager().downloadingGeoMapList) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -612,7 +612,7 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: !global.mapManager().geoMaps.downloading && global.mapManager().geoMaps.updatable
+        visible: !global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable
 
         ToolButton {
             id: downloadUpdatesActionButton
@@ -622,14 +622,14 @@ Page {
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                global.mapManager().geoMaps.updateAll()
+                global.dataManager().geoMaps.updateAll()
             }
         }
     }
 
     // Show error when list of maps cannot be downloaded
     Connections {
-        target: global.mapManager()
+        target: global.dataManager()
         function onError (message) {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")

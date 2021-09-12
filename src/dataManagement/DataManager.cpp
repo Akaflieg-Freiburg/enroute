@@ -25,7 +25,7 @@
 #include <QLockFile>
 #include <QSettings>
 #include <QSqlDatabase>
-#include <qsqlquery.h>
+#include <QSqlQuery>
 #include <QStandardPaths>
 
 #include <chrono>
@@ -33,11 +33,11 @@
 
 using namespace std::chrono_literals;
 
+#include "DataManager.h"
 #include "Global.h"
-#include "MapManager.h"
 
 
-GeoMaps::MapManager::MapManager(QObject *parent) :
+DataManagement::DataManager::DataManager(QObject *parent) :
     QObject(parent),
     _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json", this)
@@ -59,20 +59,20 @@ GeoMaps::MapManager::MapManager(QObject *parent) :
     }
 
     // Construct the Dowloadable object "_maps_json". Let it point to the remote file "maps.json" and wire it up.
-    connect(&_maps_json, &DataManagement::Downloadable::downloadingChanged, this, &MapManager::downloadingGeoMapListChanged);
-    connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &MapManager::readGeoMapListFromJSONFile);
-    connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &MapManager::setTimeOfLastUpdateToNow);
-    connect(&_maps_json, &DataManagement::Downloadable::error, this, &MapManager::errorReceiver);
+    connect(&_maps_json, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingGeoMapListChanged);
+    connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::readGeoMapListFromJSONFile);
+    connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::setTimeOfLastUpdateToNow);
+    connect(&_maps_json, &DataManagement::Downloadable::error, this, &DataManager::errorReceiver);
 
     // Wire up the DownloadableGroup _geoMaps
-    connect(&_geoMaps, &DataManagement::DownloadableGroup::downloadablesChanged, this, &MapManager::geoMapListChanged);
-    connect(&_geoMaps, &DataManagement::DownloadableGroup::filesChanged, this, &MapManager::localFileOfGeoMapChanged);
+    connect(&_geoMaps, &DataManagement::DownloadableGroup::downloadablesChanged, this, &DataManager::geoMapListChanged);
+    connect(&_geoMaps, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::localFileOfGeoMapChanged);
 
     // Wire up the automatic update timer and check if automatic updates are
     // due. The method "autoUpdateGeoMapList" will also set a reasonable timeout
     // value for the timer and start it.
-    connect(&_autoUpdateTimer, &QTimer::timeout, this, &MapManager::autoUpdateGeoMapList);
-    QTimer::singleShot(0, this, &GeoMaps::MapManager::autoUpdateGeoMapList); // Cannot call autoUpdateGeoMapList immediately, or else Global::allocateInternal will crash
+    connect(&_autoUpdateTimer, &QTimer::timeout, this, &DataManager::autoUpdateGeoMapList);
+    QTimer::singleShot(0, this, &DataManagement::DataManager::autoUpdateGeoMapList); // Cannot call autoUpdateGeoMapList immediately, or else Global::allocateInternal will crash
 
     // If there is a downloaded maps.json file, we read it. Otherwise, we start a download.
     if (_maps_json.hasFile()) {
@@ -83,7 +83,7 @@ GeoMaps::MapManager::MapManager(QObject *parent) :
 }
 
 
-GeoMaps::MapManager::~MapManager()
+DataManagement::DataManager::~DataManager()
 {
 
     // It might be possible for whatever reason that our download directory
@@ -117,9 +117,8 @@ GeoMaps::MapManager::~MapManager()
 
 
 
-auto GeoMaps::MapManager::describeMapFile(const QString& fileName) -> QString
+auto DataManagement::DataManager::describeMapFile(const QString& fileName) -> QString
 {
-#warning Move this to MapManager
     QFileInfo fi(fileName);
     if (!fi.exists()) {
         return tr("No information available.");
@@ -190,19 +189,19 @@ auto GeoMaps::MapManager::describeMapFile(const QString& fileName) -> QString
 }
 
 
-void GeoMaps::MapManager::updateGeoMapList()
+void DataManagement::DataManager::updateGeoMapList()
 {
     QTimer::singleShot(0, &_maps_json, &DataManagement::Downloadable::startFileDownload);
 }
 
 
-void GeoMaps::MapManager::errorReceiver(const QString& /*unused*/, QString message)
+void DataManagement::DataManager::errorReceiver(const QString& /*unused*/, QString message)
 {
     emit error(std::move(message));
 }
 
 
-void GeoMaps::MapManager::localFileOfGeoMapChanged()
+void DataManagement::DataManager::localFileOfGeoMapChanged()
 {
     // Ok, a local file changed. First, we check if this means that the local file
     // of an unsupported map (=map with invalid URL) is gone. These maps are then
@@ -225,7 +224,7 @@ void GeoMaps::MapManager::localFileOfGeoMapChanged()
 }
 
 
-void GeoMaps::MapManager::readGeoMapListFromJSONFile()
+void DataManagement::DataManager::readGeoMapListFromJSONFile()
 {
     if (!_maps_json.hasFile()) {
         return;
@@ -320,11 +319,11 @@ void GeoMaps::MapManager::readGeoMapListFromJSONFile()
 }
 
 
-void GeoMaps::MapManager::setTimeOfLastUpdateToNow()
+void DataManagement::DataManager::setTimeOfLastUpdateToNow()
 {
     // Save timestamp, so that we know when an automatic update is due
     QSettings settings;
-    settings.setValue("MapManager/MapListTimeStamp", QDateTime::currentDateTimeUtc());
+    settings.setValue("DataManager/MapListTimeStamp", QDateTime::currentDateTimeUtc());
 
     // Now that we downloaded successfully, we need to check for updates only once
     // a day
@@ -332,12 +331,12 @@ void GeoMaps::MapManager::setTimeOfLastUpdateToNow()
 }
 
 
-void GeoMaps::MapManager::autoUpdateGeoMapList()
+void DataManagement::DataManager::autoUpdateGeoMapList()
 {
     // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     QSettings settings;
-    QDateTime lastUpdate = settings.value("MapManager/MapListTimeStamp", QDateTime()).toDateTime();
+    QDateTime lastUpdate = settings.value("DataManager/MapListTimeStamp", QDateTime()).toDateTime();
 
     if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)) ) {
         // Updates are due. Check again in one hour if the update went well or if we need to try again.
@@ -351,7 +350,7 @@ void GeoMaps::MapManager::autoUpdateGeoMapList()
 }
 
 
-auto GeoMaps::MapManager::unattachedFiles() const -> QList<QString>
+auto DataManagement::DataManager::unattachedFiles() const -> QList<QString>
 {
     QList<QString> result;
 

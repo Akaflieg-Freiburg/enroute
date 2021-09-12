@@ -21,7 +21,7 @@
 #include <QCoreApplication>
 
 #include "Global.h"
-#include "geomaps/MapManager.h"
+#include "dataManagement/DataManager.h"
 #include "traffic/FlarmnetDB.h"
 
 
@@ -39,7 +39,7 @@ void Traffic::FlarmnetDB::clearCache()
 
 void Traffic::FlarmnetDB::deferredInitialization()
 {
-    connect(Global::mapManager()->databases(), &DataManagement::DownloadableGroupWatcher::downloadablesChanged, this, &Traffic::FlarmnetDB::findFlarmnetDBDownloadable);
+    connect(Global::dataManager()->databases(), &DataManagement::DownloadableGroupWatcher::downloadablesChanged, this, &Traffic::FlarmnetDB::findFlarmnetDBDownloadable);
     findFlarmnetDBDownloadable();
 }
 
@@ -50,7 +50,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     // exists, in order to avoid calling Global::mapManager during shutdown.
     QPointer<DataManagement::Downloadable> newFlarmnetDBDownloadable;
     if (QCoreApplication::instance() != nullptr) {
-        auto downloadables = Global::mapManager()->databases()->downloadables();
+        auto downloadables = Global::dataManager()->databases()->downloadables();
         foreach(auto downloadable, downloadables) {
             if (downloadable->fileName().contains("Flarmnet")) {
                 newFlarmnetDBDownloadable = downloadable;

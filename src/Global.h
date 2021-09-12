@@ -27,9 +27,12 @@ class MobileAdaptor;
 class QNetworkAccessManager;
 class Settings;
 
+namespace DataManagement {
+class DataManager;
+}
+
 namespace GeoMaps {
 class GeoMapProvider;
-class MapManager;
 };
 
 namespace Navigation {
@@ -99,11 +102,11 @@ public:
      */
     Q_INVOKABLE static GeoMaps::GeoMapProvider* geoMapProvider();
 
-    /*! \brief Pointer to appplication-wide static GeoMaps::MapManager instance
+    /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static GeoMaps::MapManager* mapManager();
+    Q_INVOKABLE static DataManagement::DataManager* dataManager();
 
     /*! \brief Pointer to appplication-wide static MobileAdaptor instance
      *

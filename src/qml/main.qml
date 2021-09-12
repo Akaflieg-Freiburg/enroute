@@ -183,7 +183,7 @@ ApplicationWindow {
 
                         ItemDelegate {
                             text: qsTr("Maps and Data")
-                                  + (global.mapManager().geoMaps.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + (global.dataManager().geoMaps.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
                                   + (global.navigator().isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
@@ -191,7 +191,7 @@ ApplicationWindow {
                             enabled: !global.navigator().isInFlight
                             onClicked: {
                                 global.mobileAdaptor().vibrateBrief()
-                                stackView.push("pages/MapManager.qml")
+                                stackView.push("pages/DataManager.qml")
                                 libraryMenu.close()
                                 drawer.close()
                             }
@@ -492,7 +492,7 @@ ApplicationWindow {
                 return
             }
 
-            if (global.mapManager().geoMaps.updatable && !global.navigator().isInFlight) {
+            if (global.dataManager().geoMaps.updatable && !global.navigator().isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
                 dialogLoader.active = true
@@ -631,7 +631,7 @@ ApplicationWindow {
     //
 
     Connections {
-        target: global.mapManager().geoMaps
+        target: global.dataManager().geoMaps
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
@@ -681,8 +681,8 @@ ApplicationWindow {
         target: global.notifier()
 
         function onNotificationClicked(notifyID) {
-            if ((notifyID === 0) && (stackView.currentItem.objectName !== "MapManagerPage")) {
-                stackView.push("pages/MapManager.qml")
+            if ((notifyID === 0) && (stackView.currentItem.objectName !== "DataManagerPage")) {
+                stackView.push("pages/DataManager.qml")
             }
             if ((notifyID === 1) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")

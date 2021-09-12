@@ -43,9 +43,9 @@
 #include "Librarian.h"
 #include "MobileAdaptor.h"
 #include "Settings.h"
+#include "dataManagement/DataManager.h"
 #include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
-#include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier.h"
 #include "positioning/PositionProvider.h"
@@ -85,7 +85,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
-    qmlRegisterUncreatableType<GeoMaps::MapManager>("enroute", 1, 0, "MapManager", "MapManager objects cannot be created in QML");
+    qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", "DataManager objects cannot be created in QML");
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", "Navigator objects cannot be created in QML");

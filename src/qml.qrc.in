@@ -34,7 +34,7 @@
         <file alias="pages/FlightRouteLibrary.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteLibrary.qml</file>
         <file alias="pages/InfoPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/InfoPage.qml</file>
         <file alias="pages/Manual.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/Manual.qml</file>
-        <file alias="pages/MapManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapManager.qml</file>
+        <file alias="pages/DataManager.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapManager.qml</file>
         <file alias="pages/MapPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/MapPage.qml</file>
         <file alias="pages/Nearby.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/Nearby.qml</file>
         <file alias="pages/ParticipatePage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/ParticipatePage.qml</file>

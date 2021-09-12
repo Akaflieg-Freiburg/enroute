@@ -75,13 +75,13 @@ set(SOURCES
     # Header files
     Aircraft.h
     Clock.h
+    dataManagement/DataManager.h
     dataManagement/Downloadable.h
     dataManagement/DownloadableGroup.h
     dataManagement/DownloadableGroupWatcher.h
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/GeoMapProvider.h
-    geomaps/MapManager.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
     geomaps/Waypoint.h
@@ -126,13 +126,13 @@ set(SOURCES
     # C++ files
     Aircraft.cpp
     Clock.cpp
+    dataManagement/DataManager.cpp
     dataManagement/Downloadable.cpp
     dataManagement/DownloadableGroup.cpp
     dataManagement/DownloadableGroupWatcher.cpp
     DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/GeoMapProvider.cpp
-    geomaps/MapManager.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp

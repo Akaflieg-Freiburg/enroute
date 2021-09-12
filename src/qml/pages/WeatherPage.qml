@@ -35,7 +35,7 @@ import "../items"
 
   - Perhaps give sunset information in top line
 
-  - Unify/coordinate behaviour with MapManager
+  - Unify/coordinate behaviour with DataManager
 
   - Handle error messages
 

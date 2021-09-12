@@ -66,6 +66,9 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:adb0ba1b9426a75fafc69e03e887b36c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function and type of a file that we have been requested to open.  <a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">More...</a><br /></td></tr>
 <tr class="separator:adb0ba1b9426a75fafc69e03e887b36c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace6b2af4402ac8f45cdc95ff9b4001b4"><td class="memItemLeft" align="right" valign="top"><a id="ace6b2af4402ac8f45cdc95ff9b4001b4"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">NotificationType</a> </td></tr>
+<tr class="memdesc:ace6b2af4402ac8f45cdc95ff9b4001b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notification types. <br /></td></tr>
+<tr class="separator:ace6b2af4402ac8f45cdc95ff9b4001b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
@@ -75,9 +78,6 @@ Public Slots</h2></td></tr>
 <tr class="memitem:ac9aeebb931553a70f0432aa9d8f4491c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ac9aeebb931553a70f0432aa9d8f4491c">vibrateBrief</a> ()</td></tr>
 <tr class="memdesc:ac9aeebb931553a70f0432aa9d8f4491c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the device briefly vibrate.  <a href="classMobileAdaptor.html#ac9aeebb931553a70f0432aa9d8f4491c">More...</a><br /></td></tr>
 <tr class="separator:ac9aeebb931553a70f0432aa9d8f4491c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a4496e52193c1509258b3742989a64b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#a0a4496e52193c1509258b3742989a64b">showDownloadNotification</a> (bool show)</td></tr>
-<tr class="memdesc:a0a4496e52193c1509258b3742989a64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notifaction, indicating that a download is in progress.  <a href="classMobileAdaptor.html#a0a4496e52193c1509258b3742989a64b">More...</a><br /></td></tr>
-<tr class="separator:a0a4496e52193c1509258b3742989a64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec045b31cb9780f701c4c00886e7bcec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">processFileOpenRequest</a> (const QString &amp;path)</td></tr>
 <tr class="memdesc:aec045b31cb9780f701c4c00886e7bcec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function, not for public consumption.  <a href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">More...</a><br /></td></tr>
 <tr class="separator:aec045b31cb9780f701c4c00886e7bcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,7 +129,7 @@ Static Public Member Functions</h2></td></tr>
 <p>This class is an interface to capabilities of mobile devices (e.g. vibration) that need platform-specific code to operate.</p>
 <p>This class also receives platform-specific requests to open files and exposes these requests to C++ and QML via the signal <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>. The signal <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a> is however only emitted after the method <a class="el" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d" title="Start receiving &quot;open file&quot; requests from platform.">startReceiveOpenFileRequests()</a> has been called, requests that come in earlier will be put on hold. This allows apps to set up their GUI before processing file open requests (that might need user interaction). </p>
 
-<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00045">45</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00041">41</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="adb0ba1b9426a75fafc69e03e887b36c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb0ba1b9426a75fafc69e03e887b36c7">&#9670;&nbsp;</a></span>FileFunction</h2>
@@ -151,7 +151,7 @@ Static Public Member Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00081">81</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00077">77</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
 
 </div>
 </div>
@@ -485,40 +485,6 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td>File name </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a0a4496e52193c1509258b3742989a64b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a4496e52193c1509258b3742989a64b">&#9670;&nbsp;</a></span>showDownloadNotification</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MobileAdaptor::showDownloadNotification </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>show</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Shows a notifaction, indicating that a download is in progress. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">show</td><td>If set to 'true', a notification will be shown. If set to 'false', any existing notification will be withdrawn </td></tr>
   </table>
   </dd>
 </dl>

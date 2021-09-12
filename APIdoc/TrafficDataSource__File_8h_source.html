@@ -87,42 +87,43 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// Standard destructor</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    ~<a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a91623b1e7fda4afdbb8e4c53985ac4d9">TrafficDataSource_File</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">sourceName</a>()<span class="keyword"> const override</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;Simulator file %1&quot;</span>).arg(simulatorFile.fileName());</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#aebff0f62f13269c098faa64f11a19be1">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a33dbbbc0cc638310d92f3dc0481d6b9f">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// Read one line from the simulator file&#39;s text stream and passes the string</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// on to processFLARMMessage.  Sets up a timer to read the next line in due</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// time.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> readFromSimulatorStream();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#aa67c8f49b9726f0199bafca483e9fb7d">containsFLARMSimulationData</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">sourceName</a>()<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;Simulator file %1&quot;</span>).arg(simulatorFile.fileName());</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#aebff0f62f13269c098faa64f11a19be1">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a33dbbbc0cc638310d92f3dc0481d6b9f">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Update the properties &quot;errorString&quot; and &quot;connectivityStatus&quot;.</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> updateProperties();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    QTextStream textStream;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// Read one line from the simulator file&#39;s text stream and passes the string</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">// on to processFLARMMessage.  Sets up a timer to read the next line in due</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// time.</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span> readFromSimulatorStream();</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// Simulator related members</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    QFile simulatorFile;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    QTextStream simulatorTextStream;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">   95</a></span>&#160;    QTimer simulatorTimer;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">int</span> lastTime {0};</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    QString lastPayload;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// Update the properties &quot;errorString&quot; and &quot;connectivityStatus&quot;.</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span> updateProperties();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    QTextStream textStream;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// Simulator related members</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    QFile simulatorFile;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    QTextStream simulatorTextStream;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    QTimer simulatorTimer;</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">  102</a></span>&#160;    <span class="keywordtype">int</span> lastTime {0};</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    QString lastPayload;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a547c442589e2fdd7872996c5f159650b"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__File_8h_source.html#l00095">TrafficDataSource_File.h:95</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a547c442589e2fdd7872996c5f159650b"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__File_8h_source.html#l00102">TrafficDataSource_File.h:102</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_aebff0f62f13269c098faa64f11a19be1"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#aebff0f62f13269c098faa64f11a19be1">Traffic::TrafficDataSource_File::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver() override</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_aa67c8f49b9726f0199bafca483e9fb7d"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#aa67c8f49b9726f0199bafca483e9fb7d">Traffic::TrafficDataSource_File::containsFLARMSimulationData</a></div><div class="ttdeci">static bool containsFLARMSimulationData(const QString &amp;fileName)</div><div class="ttdoc">Reads file and checks if the file contains FLARM simulation data.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a33dbbbc0cc638310d92f3dc0481d6b9f"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a33dbbbc0cc638310d92f3dc0481d6b9f">Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver</a></div><div class="ttdeci">void disconnectFromTrafficReceiver() override</div><div class="ttdoc">Disconnect from traffic receiver.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a91623b1e7fda4afdbb8e4c53985ac4d9"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a91623b1e7fda4afdbb8e4c53985ac4d9">Traffic::TrafficDataSource_File::TrafficDataSource_File</a></div><div class="ttdeci">TrafficDataSource_File(const QString &amp;fileName, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
 <!-- start footer part -->

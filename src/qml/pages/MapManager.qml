@@ -147,11 +147,11 @@ Page {
                         Action {
                             id: infoAction
 
-                            text: qsTr("Map Info")
+                            text: qsTr("Info")
 
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
-                                infoDialog.title = qsTr("Map Info: ") + model.modelData.objectName
+                                infoDialog.title = model.modelData.objectName
                                 infoDialog.text = global.geoMapProvider().describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
                             }
@@ -387,7 +387,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.mapManager().baseMaps.downloadablesAsObjectList
+                model: global.mapManager().databases.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 

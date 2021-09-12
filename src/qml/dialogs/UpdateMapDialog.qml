@@ -24,8 +24,8 @@ import QtQuick.Controls 2.15
 LongTextDialog {
     id: mud
 
-    title: qsTr("Map updates available")
-    text: qsTr("<p>One or several of your installed maps can be updated. The estimated download size is %1.</p>").arg(global.mapManager().geoMaps.updateSize)
+    title: qsTr("Updates available")
+    text: qsTr("<p>One or several of your installed maps or databases can be updated. The estimated download size is %1.</p>").arg(global.mapManager().geoMaps.updateSize)
 
     footer: DialogButtonBox {
         ToolButton {

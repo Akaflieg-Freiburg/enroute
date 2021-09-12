@@ -119,6 +119,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
 
 auto GeoMaps::GeoMapProvider::describeMapFile(const QString& fileName) -> QString
 {
+#warning Move this to MapManager
     QFileInfo fi(fileName);
     if (!fi.exists()) {
         return tr("No information available.");
@@ -174,6 +175,15 @@ auto GeoMaps::GeoMapProvider::describeMapFile(const QString& fileName) -> QStrin
             }
             db.close();
         }
+    }
+
+    // Extract infomation from text file - this is simply the first line
+    if (fileName.endsWith(u".txt")) {
+        // Open file and read first line
+        QFile dataFile(fileName);
+        dataFile.open(QIODevice::ReadOnly);
+        auto description = dataFile.readLine();
+        result += QString("<p>%1</p>").arg( QString::fromLatin1(description));
     }
 
     return result;

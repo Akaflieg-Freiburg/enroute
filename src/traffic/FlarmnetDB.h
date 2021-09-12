@@ -20,8 +20,10 @@
 
 #pragma once
 
-#include <QHash>
+#include <QCache>
 #include <QObject>
+
+#include "geomaps/Downloadable.h"
 
 namespace Traffic {
 
@@ -58,8 +60,20 @@ public:
      */
     Q_INVOKABLE QString getRegistration(const QString& key);
 
+private slots:
+    // The title says everything
+    void clearCache();
+
+    // The title says everything
+    void deferredInitialization();
+
+    // The title says everything
+    void findFlarmnetDBDownloadable();
+
 private:
-    QHash<QString, QString> m_passwordDB {};
+    QPointer<GeoMaps::Downloadable> flarmnetDBDownloadable;
+
+    QCache<QString, QString> m_cache {};
 };
 
 }

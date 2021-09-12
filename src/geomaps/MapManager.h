@@ -98,6 +98,18 @@ public:
   */
   DownloadableGroupWatcher *baseMaps() { return &_baseMaps; };
 
+  /*! \brief Pointer to the DownloadableGroup that holds all data items
+   *
+   *  This is a DownloadableGroup that holds all base maps.
+   */
+  Q_PROPERTY(DownloadableGroupWatcher *databases READ databases CONSTANT)
+
+  /*! \brief Getter function for the property with the same name
+   *
+   *  @returns Property databases
+   */
+  DownloadableGroupWatcher *databases() { return &_databases; };
+
   /*! \brief Indicates whether the file "maps.json" is currently being downloaded */
   Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
 
@@ -201,6 +213,7 @@ private:
   Downloadable _maps_json;
   
   // List of geographic maps
+  DownloadableGroup _databases;
   DownloadableGroup _geoMaps;
   DownloadableGroup _baseMaps;
   DownloadableGroup _aviationMaps;

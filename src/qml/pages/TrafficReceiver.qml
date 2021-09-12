@@ -30,6 +30,8 @@ import "../items"
 
 Page {
     id: trafficReceiverPage
+    objectName: "TrafficReceiverPage"
+
     title: qsTr("Traffic Data Receiver")
 
     header: StandardHeader {}
@@ -59,7 +61,7 @@ Page {
             Label {
                 Layout.fillWidth: true
 
-                text: qsTr("Status")
+                text: qsTr("Connection Status")
                 font.pixelSize: Qt.application.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
@@ -96,9 +98,47 @@ Page {
                 Layout.fillWidth: true
                 visible: global.trafficDataProvider().receivingHeartbeat
 
-                text: qsTr("<p>Well done! Go flying. Give yourself a pat on the back.</p>")
-                wrapMode: Text.WordWrap
+                text: qsTr("Traffic Data Receiver Status")
+                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
             }
+
+            Label {
+                Layout.fillWidth: true
+                Layout.leftMargin: 4
+                Layout.rightMargin: 4
+
+                visible: global.trafficDataProvider().receivingHeartbeat
+
+                bottomPadding: 0.6*Qt.application.font.pixelSize
+                topPadding: 0.6*Qt.application.font.pixelSize
+                leftPadding: 0.2*Qt.application.font.pixelSize
+                rightPadding: 0.2*Qt.application.font.pixelSize
+
+                leftInset: -4
+                rightInset: -4
+
+                property string myText: {
+                    if (global.trafficDataProvider().trafficReceiverRuntimeError === "")
+                        return global.trafficDataProvider().trafficReceiverSelfTestError
+                    if (global.trafficDataProvider().trafficReceiverSelfTestError === "")
+                        return global.trafficDataProvider().trafficReceiverRuntimeError
+                    return global.trafficDataProvider().trafficReceiverRuntimeError + "<br>" + global.trafficDataProvider().trafficReceiverSelfTestError
+                }
+
+                text: (myText === "") ? qsTr("No problem reported") : myText
+                wrapMode: Text.WordWrap
+
+                background: Rectangle {
+                    border.color: "black"
+                    color: (parent.myText === "") ? "green" : "red"
+                    opacity: 0.2
+                    radius: 4
+                }
+
+            }
+
 
             Button {
                 Layout.alignment: Qt.AlignHCenter

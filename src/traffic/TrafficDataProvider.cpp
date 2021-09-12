@@ -94,6 +94,8 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
+    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError);
+    connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
 
 }
 
@@ -276,6 +278,52 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         lowestPriObject->startLiveTime();
     }
 
+}
+
+
+void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError(const QString& msg)
+{
+    Q_UNUSED(msg);
+
+    QString result;
+    foreach(auto dataSource, m_dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        result = dataSource->trafficReceiverRuntimeError();
+        if (!result.isEmpty()) {
+            break;
+        }
+    }
+
+    if (m_trafficReceiverRuntimeError == result) {
+        return;
+    }
+    m_trafficReceiverRuntimeError = result;
+    emit trafficReceiverRuntimeErrorChanged(result);
+}
+
+
+void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError(const QString& msg)
+{
+    Q_UNUSED(msg);
+
+    QString result;
+    foreach(auto dataSource, m_dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        result = dataSource->trafficReceiverSelfTestError();
+        if (!result.isEmpty()) {
+            break;
+        }
+    }
+
+    if (m_trafficReceiverSelfTestError == result) {
+        return;
+    }
+    m_trafficReceiverSelfTestError = result;
+    emit trafficReceiverSelfTestErrorChanged(result);
 }
 
 

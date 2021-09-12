@@ -127,6 +127,42 @@ public:
      */
     virtual QString sourceName() const = 0;
 
+    /*! \brief String describing the last traffic data receiver runtime error
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the last error reported by the traffic receiver, or an empty string when
+     *  there is not error.  The string is cleared when a new connection attempt
+     *  is started.
+     */
+    Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError WRITE setTrafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    QString trafficReceiverRuntimeError()
+    {
+        return m_trafficReceiverRuntimeError;
+    }
+
+    /*! \brief String describing the last traffic data receiver self-test error
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the last error reported by the traffic receiver self-test, or an empty string when
+     *  there is not error.  The string is cleared when a new connection attempt
+     *  is started.
+     */
+    Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError WRITE setTrafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    QString trafficReceiverSelfTestError()
+    {
+        return m_trafficReceiverSelfTestError;
+    }
+
 signals:
     /*! \brief Notifier signal */
     void connectivityStatusChanged(QString newStatus);
@@ -189,6 +225,12 @@ signals:
     /*! \brief Notifier signal */
     void receivingHeartbeatChanged(bool);
 
+    /*! \brief Notifier signal */
+    void trafficReceiverRuntimeErrorChanged(const QString& message);
+
+    /*! \brief Notifier signal */
+    void trafficReceiverSelfTestErrorChanged(const QString& message);
+
     /*! \brief Traffic receiver hardware version
      *
      *  If this class receives information about the hardware version of a
@@ -206,16 +248,6 @@ signals:
      *  @param result String that identifies the obstacle database version
      */
     void trafficReceiverObVersion(QString result);
-
-    /*! \brief Result of traffic receiver self test
-     *
-     *  If this class receives self-test information from a connected traffic
-     *  receiver, this information is emitted here.
-     *
-     *  @param result Result of self-test as a human-readable, translated error
-     *  message
-     */
-    void trafficReceiverSelfTest(QString result);
 
     /*! \brief Traffic receiver software version
      *
@@ -334,11 +366,24 @@ protected:
      */
     void setReceivingHeartbeat(bool newReceivingHeartbeat);
 
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param newErrorString Property errorString
+     */
+    void setTrafficReceiverRuntimeError(const QString& newErrorString);
+
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param newErrorString Property errorString
+     */
+    void setTrafficReceiverSelfTestError(const QString& newErrorString);
 
 private:
     // Property caches
     QString m_connectivityStatus {};
     QString m_errorString {};
+    QString m_trafficReceiverRuntimeError {};
+    QString m_trafficReceiverSelfTestError {};
 
     // True altitude of own aircraft. We store these values because the
     // necessary information to compile a PositionInfo class does not always

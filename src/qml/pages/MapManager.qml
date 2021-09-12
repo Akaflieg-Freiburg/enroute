@@ -28,6 +28,8 @@ import "../items"
 
 Page {
     id: pg
+    objectName: "MapManagerPage"
+
     title: qsTr("Map Library")
 
     Component {

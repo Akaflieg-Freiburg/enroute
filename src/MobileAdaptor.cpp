@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,23 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
 #include <QDir>
-#include <QPointer>
 #include <QStandardPaths>
-#include <QTimer>
-
-#include "Global.h"
-#include "MobileAdaptor.h"
-#include "geomaps/GeoMapProvider.h"
-
 
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniEnvironment>
+#include <QHash>
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
 #endif
 
+#include "MobileAdaptor.h"
 
 
 MobileAdaptor::MobileAdaptor(QObject *parent)
@@ -96,126 +90,15 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 }
 
 
-void MobileAdaptor::deferredInitialization() const
+void MobileAdaptor::deferredInitialization()
 {
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 #endif
-
-    QObject::connect(Global::mapManager()->geoMaps(), &GeoMaps::DownloadableGroup::downloadingChanged, this, &MobileAdaptor::showDownloadNotification);
 }
 
 
 MobileAdaptor::~MobileAdaptor()
 {
-    // Close all pending notifications
-    showDownloadNotification(false);
+    ;
 }
-
-
-void MobileAdaptor::hideSplashScreen()
-{
-    if (splashScreenHidden) {
-        return;
-    }
-    splashScreenHidden = true;
-#if defined(Q_OS_ANDROID)
-    QtAndroid::hideSplashScreen(200);
-#endif
-}
-
-
-void MobileAdaptor::lockWifi(bool lock)
-{
-    Q_UNUSED(lock)
-
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWifi", "(Z)V", lock);
-#endif
-
-}
-
-
-Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
-{
-#if defined (Q_OS_ANDROID)
-    // Check is required permissions have been granted
-    foreach(auto permission, permissions) {
-        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied) {
-            return true;
-        }
-    }
-#endif
-    return false;
-}
-
-
-void MobileAdaptor::vibrateBrief()
-{
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
-#endif
-}
-
-
-auto MobileAdaptor::getSSID() -> QString
-{
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                               "getSSID", "()Ljava/lang/String;");
-    return stringObject.toString();
-#endif
-    return "<unknown ssid>";
-}
-
-
-void MobileAdaptor::showDownloadNotification(bool show)
-{
-
-#if defined(Q_OS_ANDROID)
-    QString text;
-    if (show) {
-        text = tr("Downloading map data…");
-    }
-    QAndroidJniObject jni_title   = QAndroidJniObject::fromString(text);
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "notifyDownload", "(Ljava/lang/String;)V", jni_title.object<jstring>());
-#else
-    if (show) {
-        if (downloadNotification.isNull()) {
-            downloadNotification = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
-            downloadNotification->setPixmap( {":/icons/appIcon.png"} );
-            downloadNotification->setText(tr("Downloading map data…"));
-        }
-        downloadNotification->sendEvent();
-    } else {
-        if (!downloadNotification.isNull()) {
-            downloadNotification->close();
-        }
-    }
-#endif
-}
-
-
-
-#if defined(Q_OS_ANDROID)
-
-extern "C" {
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
-{
-
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (QCoreApplication::instance() == nullptr) {
-        return;
-    }
-
-    Global::mobileAdaptor()->emitWifiConnected();
-
-}
-
-
-}
-#endif

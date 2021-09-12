@@ -48,6 +48,13 @@ public:
     // Standard destructor
     ~TrafficDataSource_File() override = default;
 
+    /*! \brief Reads file and checks if the file contains FLARM simulation data
+     *
+     *  @param fileName Name of the file to be checked
+     *
+     *  @returns True if the file is likely to contain FLARM simulation data
+     */
+    static bool containsFLARMSimulationData(const QString& fileName);
 
     /*! \brief Getter function for the property with the same name
      *
@@ -60,7 +67,6 @@ public:
     {
         return tr("Simulator file %1").arg(simulatorFile.fileName());
     }
-
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver

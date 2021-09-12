@@ -221,15 +221,13 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         return;
     }
 
-#if !defined(Q_OS_ANDROID)
     // FLARM Simulator file
-    if (myPath.endsWith(u".txt", Qt::CaseInsensitive)) {
+    if (Traffic::TrafficDataSource_File::containsFLARMSimulationData(myPath)) {
         auto *source = new Traffic::TrafficDataSource_File(myPath);
         Global::trafficDataProvider()->addDataSource(source); // Will take ownership of source
         source->connectToTrafficReceiver();
         return;
     }
-#endif
 
     emit openFileRequest(myPath, UnknownFunction);
 }

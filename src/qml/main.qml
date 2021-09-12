@@ -626,6 +626,22 @@ ApplicationWindow {
         onActivated: Qt.quit()
     }
 
+    //
+    // Connections
+    //
+
+    Connections {
+        target: global.mapManager().geoMaps
+
+        function onDownloadingChanged(downloading) {
+            if (downloading) {
+                global.notifier().showNotification(Notifier.DownloadInfo, "", "");
+            } else {
+                global.notifier().hideNotification(Notifier.DownloadInfo);
+            }
+        }
+    }
+
     Connections {
         target: global.trafficDataProvider()
 
@@ -643,6 +659,36 @@ ApplicationWindow {
             dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
             dialogLoader.active = true
         }
+
+        function onTrafficReceiverRuntimeErrorChanged(message) {
+            if (message === "") {
+                global.notifier().hideNotification(Notifier.TrafficReceiverRuntimeError);
+            } else {
+                global.notifier().showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
+            }
+        }
+
+        function onTrafficReceiverSelfTestErrorChanged(message) {
+            if (message === "") {
+                global.notifier().hideNotification(Notifier.TrafficReceiverSelfTestError);
+            } else {
+                global.notifier().showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
+            }
+        }
+    }
+
+    Connections {
+        target: global.notifier()
+
+        function onNotificationClicked(notifyID) {
+            if ((notifyID === 0) && (stackView.currentItem.objectName !== "MapManagerPage")) {
+                stackView.push("pages/MapManager.qml")
+            }
+            if ((notifyID === 1) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
+                stackView.push("pages/TrafficReceiver.qml")
+            }
+        }
+
     }
 
     // Enroute closed unexpectedly if...

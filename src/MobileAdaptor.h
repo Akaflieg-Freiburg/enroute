@@ -18,14 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #pragma once
 
 #include <QtGlobal>
-
-#ifndef Q_OS_ANDROID
-#include <KNotification>
-#endif
+#include <QTimer>
 
 #include <QObject>
 
@@ -67,6 +63,15 @@ public:
         FlightRoute_GeoJSON /*!< File contains a flight route, stored as GPX. */
       };
     Q_ENUM(FileFunction)
+
+    /*! \brief Notification types */
+    enum NotificationType
+    {
+        DownloadInfo = 0,                 /*< Info that  download is in progress */
+        TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
+        TrafficReceiverProblem = 2        /*< Traffic receiver reports problem while running */
+    };
+    Q_ENUM(NotificationType)
 
     /*! \brief Checks if all requred permissions have been granted
      *
@@ -183,13 +188,6 @@ public slots:
     */
     static void vibrateBrief();
 
-    /*! \brief Shows a notifaction, indicating that a download is in progress
-     *
-     * @param show If set to 'true', a notification will be shown. If set to
-     * 'false', any existing notification will be withdrawn
-     */
-    void showDownloadNotification(bool show);
-
     /*! \brief Helper function, not for public consumption
      *
      * This helper function is called by platform-dependent code whenever the
@@ -235,7 +233,7 @@ signals:
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of globalInstance().
-    void deferredInitialization() const;
+    void deferredInitialization();
 
 private:
     Q_DISABLE_COPY_MOVE(MobileAdaptor)
@@ -253,8 +251,6 @@ private:
     static bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     QStringList permissions;
-#else
-    QPointer<KNotification> downloadNotification;
 #endif
 
     bool receiveOpenFileRequestsStarted {false};

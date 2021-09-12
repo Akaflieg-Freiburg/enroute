@@ -195,6 +195,9 @@ public class ShareActivity extends QtActivity {
             Log.d(TAG, "processIntent intent.getAction() == null");
             return;
         }
+
+    Log.d(TAG, "processIntent() " + intent.getAction());
+
         // we are listening to android.intent.action.SEND or VIEW (see Manifest)
         if (intent.getAction().equals("android.intent.action.VIEW")) {
             intentUri = intent.getData();

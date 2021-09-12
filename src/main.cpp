@@ -47,6 +47,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
+#include "platform/Notifier.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
@@ -78,6 +79,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Traffic::Warning>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
+    qRegisterMetaType<Platform::Notifier::Notifications>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<GeoMaps::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
@@ -89,6 +91,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", "Navigator objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", "PasswordDB objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", "TrafficDataProvider objects cannot be created in QML");
+    qmlRegisterUncreatableType<Platform::Notifier>("enroute", 1, 0, "Notifier", "Notifier objects cannot be created in QML");
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "PositionProvider", "PositionProvider objects cannot be created in QML");
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", "TrafficFactor_WithPosition objects cannot be created in QML");
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");

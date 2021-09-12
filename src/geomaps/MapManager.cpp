@@ -207,6 +207,9 @@ void GeoMaps::MapManager::readGeoMapListFromJSONFile()
             if (localFileName.endsWith("mbtiles")) {
                 _baseMaps.addToGroup(downloadable);
             }
+            if (localFileName.endsWith("txt")) {
+                _databases.addToGroup(downloadable);
+            }
         }
 
     }

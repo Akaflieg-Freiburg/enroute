@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2021 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,25 +18,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+#pragma once
 
-LongTextDialog {
-    id: mud
+#include <QCache>
+#include <QObject>
 
-    title: qsTr("Updates available")
-    text: qsTr("<p>One or several of your installed maps or databases can be updated. The estimated download size is %1.</p>").arg(global.mapManager().geoMaps.updateSize)
+#include "geomaps/Downloadable.h"
 
-    footer: DialogButtonBox {
-        ToolButton {
-            text: qsTr("Update now")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-        ToolButton {
-            text: qsTr("Later")
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-        }
+namespace Traffic {
 
-        onAccepted: global.mapManager().geoMaps.updateAll()
-    } // DialogButtonBox
+
+/*! \brief Flarmnet database
+ *
+ *  This simple class provides access to a Flarmnet database, which is in essence
+ *  a glorified QHash<QString, QString>, where keys are Flarm IDs and values
+ *  are aircraft registration strings.
+ */
+class FlarmnetDB : public QObject {
+    Q_OBJECT
+
+public:
+    /*! \brief Default constructor
+     *
+     *  This default constructor will read the database from a file into memory.
+     *
+     *  @param parent The standard QObject parent pointer
+     */
+    FlarmnetDB(QObject* parent);
+
+    ~FlarmnetDB() = default;
+
+    //
+    // Methods
+    //
+
+    /*! \brief Find password for a given key
+     *
+     *  @param key FlarmID to look up
+     *
+     *  @returns Aircraft registration, or an empty string if the database does not contain the key
+     */
+    Q_INVOKABLE QString getRegistration(const QString& key);
+
+private slots:
+    // The title says everything
+    void clearCache();
+
+    // The title says everything
+    void deferredInitialization();
+
+    // The title says everything
+    void findFlarmnetDBDownloadable();
+
+private:
+    QPointer<GeoMaps::Downloadable> flarmnetDBDownloadable;
+
+    QCache<QString, QString> m_cache {};
+};
+
 }

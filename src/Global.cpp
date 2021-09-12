@@ -30,11 +30,13 @@
 #include "geomaps/MapManager.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier.h"
+#include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 
 bool isConstructing {false};
 
+QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<GeoMaps::MapManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
@@ -64,6 +66,12 @@ template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
 
 Global::Global(QObject *parent) : QObject(parent)
 {
+}
+
+
+auto Global::flarmnetDB() -> Traffic::FlarmnetDB*
+{
+    return allocateInternal<Traffic::FlarmnetDB>(g_flarmnetDB);
 }
 
 

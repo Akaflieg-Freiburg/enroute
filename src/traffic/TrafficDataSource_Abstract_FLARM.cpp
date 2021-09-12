@@ -21,6 +21,7 @@
 #include "Global.h"
 #include "MobileAdaptor.h"
 #include "positioning/PositionProvider.h"
+#include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 
 
@@ -305,7 +306,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             }
 
             m_factorDistanceOnly.setAlarmLevel(alarmLevel);
-            m_factorDistanceOnly.setCallSign({});
+            m_factor.setCallSign( Global::flarmnetDB()->getRegistration(targetID) );
             m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());
             m_factorDistanceOnly.setID(targetID);
             m_factorDistanceOnly.setHDist(hDist);
@@ -357,6 +358,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
 
         // Construct a traffic object
         m_factor.setAlarmLevel(alarmLevel);
+        m_factor.setCallSign( Global::flarmnetDB()->getRegistration(targetID) );
         m_factor.setHDist(hDist);
         m_factor.setID(targetID);
         m_factor.setPositionInfo(pInfo);

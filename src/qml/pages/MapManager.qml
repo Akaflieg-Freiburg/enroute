@@ -30,7 +30,7 @@ Page {
     id: pg
     objectName: "MapManagerPage"
 
-    title: qsTr("Map Library")
+    title: qsTr("Map and Data Library")
 
     Component {
         id: sectionHeading
@@ -149,11 +149,129 @@ Page {
                         Action {
                             id: infoAction
 
-                            text: qsTr("Map Info")
+                            text: qsTr("Info")
 
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
-                                infoDialog.title = qsTr("Map Info: ") + model.modelData.objectName
+                                infoDialog.title = model.modelData.objectName
+                                infoDialog.text = global.geoMapProvider().describeMapFile(model.modelData.fileName)
+                                infoDialog.open()
+                            }
+                        }
+                        Action {
+                            id: removeAction
+
+                            text: qsTr("Uninstall")
+
+                            onTriggered: {
+                                global.mobileAdaptor().vibrateBrief()
+                                model.modelData.deleteFile()
+                            }
+                        }
+                    }
+
+                } // ToolButton
+            }
+
+            Connections {
+                target: model.modelData
+                function onError(objectName, message) {
+                    dialogLoader.active = false
+                    dialogLoader.title = qsTr("Download Error")
+                    dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
+                    dialogLoader.source = "../dialogs/ErrorDialog.qml"
+                    dialogLoader.active = true
+                }
+            }
+
+        }
+
+    }
+
+    Component {
+        id: databaseItem
+
+        Item {
+            id: element
+            width: pg.width
+            height: gridLayout.height
+
+            GridLayout {
+                id: gridLayout
+
+                columnSpacing: 0
+                rowSpacing: 0
+
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                columns: 6
+
+                ItemDelegate {
+                    text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
+                    icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_library_books.svg"
+                    Layout.fillWidth: true
+                    enabled: !model.modelData.hasFile
+                    onClicked: {
+                        if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
+                            global.mobileAdaptor().vibrateBrief()
+                            model.modelData.startFileDownload();
+                        }
+                    }
+                }
+
+                ToolButton {
+                    id: downloadButton
+                    icon.source: "/icons/material/ic_file_download.svg"
+                    visible: !model.modelData.hasFile && !model.modelData.downloading
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        startFileDownload()
+                    }
+                }
+
+                ToolButton {
+                    id: updateButton
+                    icon.source: "/icons/material/ic_refresh.svg"
+                    visible: model.modelData.updatable
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        startFileDownload()
+                    }
+                }
+
+                ToolButton {
+                    id: cancelButton
+                    icon.source: "/icons/material/ic_cancel.svg"
+                    visible: model.modelData.downloading
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        model.modelData.stopFileDownload()
+                    }
+                }
+
+                ToolButton {
+                    id: removeButton
+                    icon.source: "/icons/material/ic_more_horiz.svg"
+
+                    visible: model.modelData.hasFile & !model.modelData.downloading
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        removeMenu.popup()
+                    }
+
+                    AutoSizingMenu {
+                        id: removeMenu
+
+                        Action {
+                            id: infoAction
+
+                            text: qsTr("Info")
+
+                            onTriggered: {
+                                global.mobileAdaptor().vibrateBrief()
+                                infoDialog.title = model.modelData.objectName
                                 infoDialog.text = global.geoMapProvider().describeMapFile(model.modelData.fileName)
                                 infoDialog.open()
                             }
@@ -287,6 +405,9 @@ Page {
         TabButton {
             text: qsTr("Base Maps")
         }
+        TabButton {
+            text: qsTr("Data")
+        }
         Material.elevation: 3
     }
 
@@ -364,6 +485,30 @@ Page {
                 clip: true
                 model: global.mapManager().baseMaps.downloadablesAsObjectList
                 delegate: mapItem
+                ScrollIndicator.vertical: ScrollIndicator {}
+
+                section.property: "modelData.section"
+                section.delegate: sectionHeading
+
+                // Refresh list of maps on overscroll
+                property int refreshFlick: 0
+                onFlickStarted: {
+                    refreshFlick = atYBeginning
+                }
+                onFlickEnded: {
+                    if ( atYBeginning && refreshFlick ) {
+                        global.mobileAdaptor().vibrateBrief()
+                        global.mapManager().updateGeoMapList()
+                    }
+                }
+            } // ListView
+
+            ListView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                clip: true
+                model: global.mapManager().databases.downloadablesAsObjectList
+                delegate: databaseItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
                 section.property: "modelData.section"

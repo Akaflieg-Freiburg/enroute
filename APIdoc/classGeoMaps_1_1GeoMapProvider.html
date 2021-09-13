@@ -113,9 +113,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a460d0b8845cc06219d31c2560fddf9b0"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a460d0b8845cc06219d31c2560fddf9b0">createWaypoint</a> ()</td></tr>
 <tr class="memdesc:a460d0b8845cc06219d31c2560fddf9b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create invalid waypoint.  <a href="classGeoMaps_1_1GeoMapProvider.html#a460d0b8845cc06219d31c2560fddf9b0">More...</a><br /></td></tr>
 <tr class="separator:a460d0b8845cc06219d31c2560fddf9b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53246263c4ed4511901a4019fdd9ee38"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a53246263c4ed4511901a4019fdd9ee38">describeMapFile</a> (const QString &amp;fileName)</td></tr>
-<tr class="memdesc:a53246263c4ed4511901a4019fdd9ee38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describe installed map.  <a href="classGeoMaps_1_1GeoMapProvider.html#a53246263c4ed4511901a4019fdd9ee38">More...</a><br /></td></tr>
-<tr class="separator:a53246263c4ed4511901a4019fdd9ee38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -131,7 +128,7 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON. </p>
-<p>This class works closely with <a class="el" href="classGeoMaps_1_1MapManager.html" title="Manages the list of geographic maps.">MapManager</a>. It reads the files managed by <a class="el" href="classGeoMaps_1_1MapManager.html" title="Manages the list of geographic maps.">MapManager</a> and provides them for use in MapBoxGL powered maps. The data is served via two channels.</p>
+<p>This class works closely with MapManager. It reads the files managed by MapManager and provides them for use in MapBoxGL powered maps. The data is served via two channels.</p>
 <ul>
 <li>All files in GeoJSON format are concatenated, and the resulting compound GeoJSON is served via the geoJSON property of this class.</li>
 <li>A list of waypoints is generated and available via the waypoints property</li>
@@ -302,43 +299,6 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a53246263c4ed4511901a4019fdd9ee38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53246263c4ed4511901a4019fdd9ee38">&#9670;&nbsp;</a></span>describeMapFile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static Q_INVOKABLE QString GeoMaps::GeoMapProvider::describeMapFile </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Describe installed map. </p>
-<p>This method describes installed GeoJSON map files.</p>
-<dl class="section warning"><dt>Warning</dt><dd>The data is only updated after the maps have been parsed in the GeoJSON parsing process. It is therefore possible that the method returns wrong information if it is called directly after a new map has been installed.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fileName</td><td>Name of a GeoJSON file.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A human-readable HTML string, or an empty string if no data is available </dd></dl>
-
-</div>
-</div>
 <a id="a05372e99df414d3595bc3bdad75a8ef5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05372e99df414d3595bc3bdad75a8ef5">&#9670;&nbsp;</a></span>filteredWaypointObjects()</h2>
 
@@ -418,7 +378,7 @@ Properties</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property geoJSON </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00195">195</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00180">180</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -505,7 +465,7 @@ Properties</h2></td></tr>
 <p>Waypoints. </p>
 <dl class="section return"><dt>Returns</dt><dd>a list of all waypoints known to this <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.">GeoMapProvider</a> (that is, the union of all waypoints in any of the installed maps) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00234">234</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00219">219</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -560,7 +520,7 @@ Properties</h2></td></tr>
 <p>Union of all aviation maps in GeoJSON format. </p>
 <p>This property holds all installed aviation maps in GeoJSON format, combined into one GeoJSON document. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00189">189</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00174">174</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>
@@ -587,7 +547,7 @@ Properties</h2></td></tr>
 <p>URL where a style file for the base map can be retrieved. </p>
 <p>This property holds a URL where a mapbox style file for the base map can be retrieved. The style file is adjusted, so that its source element points to the local <a class="el" href="classGeoMaps_1_1TileServer.html" title="HTTP server for mapbox&#39; MBTiles files.">TileServer</a> URL where the base map is served. Whenever the base map changes (e.g. because new maps have been downloaded or removed), the style file is deleted, a new style file is generated and a notification signal is emitted. </p>
 
-<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00221">221</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GeoMapProvider_8h_source.html#l00206">206</a> of file <a class="el" href="GeoMapProvider_8h_source.html">GeoMapProvider.h</a>.</p>
 
 </div>
 </div>

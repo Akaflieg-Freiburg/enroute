@@ -1,0 +1,4 @@
+<map id="DataManagement::DownloadableGroup" name="DataManagement::DownloadableGroup">
+<area shape="rect" id="node1" title="Manages a set of downloadable objects." alt="" coords="5,95,245,136"/>
+<area shape="rect" id="node2" href="$classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects." alt="" coords="5,5,245,47"/>
+</map>

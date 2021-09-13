@@ -552,7 +552,7 @@ Page {
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.StyledText
             wrapMode: Text.Wrap
-            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the item 'Update' from the menu.  To find the menu, look for the symbol '&#8942;' at the top right corner of the screen.</p>")
+            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the item 'Update' from the menu. You find the menu at the top right corner of the screen.</p>")
         }
     }
 

@@ -139,6 +139,22 @@ void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QStr
     if (SSID != passwordRequest_SSID) {
         return;
     }
+
+    // First case: the device is already delivering data. This happens for Stratux devices
+    // that request a password for historical reasons, but really do not need one.
+    // In this case, accept the password immediately and issue a password storage request
+    // if appropriate
+    if (receivingHeartbeat()) {
+        // emit a password storage request if appropriate
+        auto* passwordDB = Global::passwordDB();
+        if (!passwordDB->contains(passwordRequest_SSID) ||
+            (passwordDB->getPassword(passwordRequest_SSID) != passwordRequest_password)) {
+            emit passwordStorageRequest(passwordRequest_SSID, passwordRequest_password);
+        }
+        return;
+    }
+
+    // Second case: the devise is not yet delivering data. This is the normal case.
     passwordRequest_password = password;
     QTimer::singleShot(0, this, &Traffic::TrafficDataSource_Tcp::sendPassword_internal);
 }

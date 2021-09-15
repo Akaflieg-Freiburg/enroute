@@ -520,8 +520,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*Qt.application.font.pixelSize
-        anchors.bottom: navBar.top
-        anchors.bottomMargin: 1.5*Qt.application.font.pixelSize
+        anchors.bottom: trafficDataReceiverButton.top
+        anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*Qt.application.font.pixelSize : 1.5*Qt.application.font.pixelSize
 
         height: 66
         width:  66
@@ -530,6 +530,31 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             global.mobileAdaptor().vibrateBrief()
             flightMap.followGPS = true
             toast.doToast(qsTr("Map Mode: Autopan"))
+        }
+    }
+
+    RoundButton {
+        id: trafficDataReceiverButton
+
+        Material.background: global.trafficDataProvider().receivingHeartbeat ? Material.Green : Material.Red
+
+        opacity: 0.9
+        icon.source: "/icons/material/ic_airplanemode_active.svg"
+        visible: !global.trafficDataProvider().receivingHeartbeat
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0.5*Qt.application.font.pixelSize
+        anchors.bottom: navBar.top
+        anchors.bottomMargin: visible ? 1.5*Qt.application.font.pixelSize : 0
+
+        height: visible ? 66 : 0
+        width:  66
+
+        onClicked: {
+            global.mobileAdaptor().vibrateBrief()
+            global.mobileAdaptor().vibrateBrief()
+            stackView.pop()
+            stackView.push("../pages/TrafficReceiver.qml")
         }
     }
 
@@ -603,7 +628,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.leftMargin: 0.5*Qt.application.font.pixelSize
         anchors.right: zoomIn.left
         anchors.rightMargin: 0.5*Qt.application.font.pixelSize
-        anchors.verticalCenter: followGPSButton.verticalCenter
+        anchors.verticalCenter: zoomOut.verticalCenter
 
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
         visible: parent.height > parent.width

@@ -538,7 +538,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         Material.background: global.trafficDataProvider().receivingHeartbeat ? Material.Green : Material.Red
 
-        opacity: 0.9
+        opacity: Material.theme === Material.Dark ? 0.3 : 0.8
         icon.source: "/icons/material/ic_airplanemode_active.svg"
         visible: !global.trafficDataProvider().receivingHeartbeat
 

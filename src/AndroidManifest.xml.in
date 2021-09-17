@@ -35,6 +35,7 @@
               android:screenOrientation="unspecified"
               android:launchMode="singleInstance"
               android:showWhenLocked="true"
+	      android:theme="@style/SplashScreenTheme"
               android:windowSoftInputMode="adjustResize">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

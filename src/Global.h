@@ -82,6 +82,13 @@ public:
      */
     ~Global() = default;
 
+    /*! \brief Delete all global objects
+     *
+     * The title says it all: this method deletes all objects that have been
+     * constructed in the past.
+     */
+    static void destruct();
+
     /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider instance
      *
      * @returns Pointer to appplication-wide static instance.

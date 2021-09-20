@@ -37,6 +37,11 @@ Traffic::TrafficDataSource_Simulate::TrafficDataSource_Simulate(QObject *parent)
 
 void Traffic::TrafficDataSource_Simulate::connectToTrafficReceiver()
 {
+    // Do not do anything if the traffic receiver is connected and is receiving.
+    if (receivingHeartbeat()) {
+        return;
+    }
+
     setConnectivityStatus( tr("Connected.") );
     simulatorTimer.start();
 }

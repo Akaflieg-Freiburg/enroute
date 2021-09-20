@@ -51,6 +51,11 @@ Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 
 void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
 {
+    // Do not do anything if the traffic receiver is connected and is receiving.
+    if (receivingHeartbeat()) {
+        return;
+    }
+
     // Paranoid safety checks
     if (!m_socket.isNull()) {
         delete m_socket;

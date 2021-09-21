@@ -215,5 +215,8 @@ auto main(int argc, char *argv[]) -> int
 
     // We exit(…) and do not return here. The reason is that the deconstruction of the qApp object
     // freezes sporadically (for unclear reasons) whenever a connection to a traffic data receiver exists.
-    exit(0);
+    //
+    // BAD IDEA: exit causes crash reports. Again I do not know why.
+    //
+    //exit(0);
 }

@@ -35,6 +35,7 @@
 #include "traffic/TrafficDataProvider.h"
 
 bool isConstructing {false};
+bool isDestructing {false};
 
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
@@ -52,6 +53,7 @@ template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
 {
     Q_ASSERT( QCoreApplication::instance() != nullptr );
     Q_ASSERT( !isConstructing );
+    Q_ASSERT( !isDestructing );
 
     if (pointer.isNull()) {
         isConstructing = true;
@@ -66,6 +68,27 @@ template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
 
 Global::Global(QObject *parent) : QObject(parent)
 {
+}
+
+
+void Global::destruct()
+{
+    Q_ASSERT( !isConstructing );
+    Q_ASSERT( !isDestructing );
+
+    isDestructing = true;
+
+    delete g_flarmnetDB;
+    delete g_geoMapProvider;
+    delete g_mapManager;
+    delete g_mobileAdaptor;
+    delete g_navigator;
+    delete g_networkAccessManager;
+    delete g_passwordDB;
+    delete g_settings;
+    delete g_trafficDataProvider;
+
+    isDestructing = false;
 }
 
 

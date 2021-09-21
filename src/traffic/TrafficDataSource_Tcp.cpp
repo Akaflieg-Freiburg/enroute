@@ -28,10 +28,11 @@
 Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_AbstractSocket(parent), m_hostName(std::move(hostName)), m_port(port) {
 
-    // Create socket
+    // Connect socket
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::onReadyRead);
     connect(&m_socket, &QTcpSocket::stateChanged, this, &Traffic::TrafficDataSource_Tcp::onStateChanged);
+    connect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver, Qt::ConnectionType::QueuedConnection);
 
     // Set up text stream
     m_textStream.setDevice(&m_socket);
@@ -56,6 +57,10 @@ Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 
 void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 {
+    // Do not do anything if the traffic receiver is connected and is receiving.
+    if (receivingHeartbeat()) {
+        return;
+    }
 
     // Reset password lifecycle
     resetPasswordLifecycle();
@@ -63,11 +68,10 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
     // Start new connection
     m_socket.abort();
     setErrorString();
+    m_socket.setSocketOption(QAbstractSocket::LowDelayOption, 1);
+    m_socket.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     m_socket.connectToHost(m_hostName, m_port);
     m_textStream.setDevice(&m_socket);
-
-    // Schedule automatic reconnection as soon as connection to traffic data receiver is lost
-    connect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver, Qt::ConnectionType::QueuedConnection);
 
     // Update properties
     onStateChanged(m_socket.state());
@@ -80,9 +84,6 @@ void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 
     // Reset password lifecycle
     resetPasswordLifecycle();
-
-    // Disable automatic reconnection as soon as connection to traffic data receiver is lost
-    disconnect(&m_socket, &QAbstractSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver);
 
     // Disconnect socket.
     m_socket.abort();

@@ -212,9 +212,14 @@ auto main(int argc, char *argv[]) -> int
     }
 
     // Ensure that things get deleted in the right order
-    Global::trafficDataProvider()->disconnectFromTrafficReceiver();
     delete demoRunner;
     delete engine;
+    Global::destruct();
 
-    return 0;
+    // We exit(…) and do not return here. The reason is that the deconstruction of the qApp object
+    // freezes sporadically (for unclear reasons) whenever a connection to a traffic data receiver exists.
+    //
+    // BAD IDEA: exit causes crash reports. Again I do not know why.
+    //
+    //exit(0);
 }

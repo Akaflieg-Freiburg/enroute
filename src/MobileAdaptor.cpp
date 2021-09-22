@@ -51,8 +51,9 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     permissions << "android.permission.ACCESS_FINE_LOCATION";
     permissions << "android.permission.ACCESS_NETWORK_STATE";
     permissions << "android.permission.ACCESS_WIFI_STATE";
-    permissions << "android.permission.WRITE_EXTERNAL_STORAGE";
     permissions << "android.permission.READ_EXTERNAL_STORAGE";
+    permissions << "android.permission.WRITE_EXTERNAL_STORAGE";
+    permissions << "android.permission.WAKE_LOCK";
     QtAndroid::requestPermissionsSync(permissions);
 #endif
 

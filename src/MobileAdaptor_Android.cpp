@@ -48,9 +48,7 @@ void MobileAdaptor::hideSplashScreen()
 
 void MobileAdaptor::lockWifi(bool lock)
 {
-
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWifi", "(Z)V", lock);
-
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
 }
 
 
@@ -70,9 +68,7 @@ Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 
 void MobileAdaptor::vibrateBrief()
 {
-
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
-
 }
 
 

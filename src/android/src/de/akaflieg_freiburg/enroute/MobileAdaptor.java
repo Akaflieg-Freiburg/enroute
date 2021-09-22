@@ -74,8 +74,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     }
     
     
-    @Override
-    public void onDestroy() {
+    @Override public void onDestroy() {
 	// Release WiFi lock
 	if (m_wifiLock != null) {
 	    if (m_wifiLock.isHeld() == true) {
@@ -90,7 +89,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 		m_instance.unregisterReceiver(m_wifiStateChangeReceiver);
 		m_wifiStateChangeReceiver = null;
 	    } catch (IllegalArgumentException e) {
-		Log.d("enroute flight navigation", "onDestroy: IllegalArgumentException on m_instance.unregisterReceiver(m_wifiStateChangeReceiver)");
+		Log.d("enroute flight navigation", "Exception in onDestroy: " + e.toString() );
 	    }
 	    
 	} else {
@@ -105,25 +104,30 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     // Static Methods
     //
     
-    /* Get the SSID of the current WIFI network, if any.  Returns a string like "<unknown SSID>" otherwise */
+    /*
+     * Get the SSID of the current WIFI network, if any.  Returns a string like
+     * "<unknown SSID>" otherwise
+     */
     public static String getSSID()
     {
+
 	if (m_wifiManager == null) {
 	    m_wifiManager = (WifiManager) m_instance.getSystemService(Context.WIFI_SERVICE);
 	}
 	WifiInfo wifiInfo = m_wifiManager.getConnectionInfo();
 	return wifiInfo.getSSID();
+	
     }
     
     
-    /* Acquire or release a WiFi lock */
+    /*
+     * Acquire or release a WiFi lock
+     */
     public static void lockWiFi(boolean on)
     {
-	Log.i("enroute Flight Navigation", "lockWiFi");
 	
 	// Get WiFi lock w/o reference counting
 	if (m_wifiLock == null) {
-	    Log.d("Enroute Flight Navigation", "lockWiFi - get locker");
 	    m_wifiLock = m_wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL , "Traffic Receiver Wi-Fi Lock");
 	    m_wifiLock.setReferenceCounted(false);
 	}
@@ -134,8 +138,14 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	}
 	
 	// Acquire lock
-	if (on == true) {
-	    m_wifiLock.acquire();
+        if (on == true) {
+	    
+            try {
+		m_wifiLock.acquire();
+            } catch (Exception e) {
+		Log.d("enroute flight navigation", "Exception in lockWiFi(): " + e.toString() );
+            }
+	    
 	    return;
 	}
 	
@@ -143,18 +153,19 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	if (m_wifiLock.isHeld()==true) {
 	    m_wifiLock.release();
 	}
+	
     }
     
     
     /* Begin to monitor network changes */
     public static void startWiFiMonitor()
     {
-	Log.d("enroute flight navigation", "startWiFiMonitor");
 	
 	// Look for WiFi changes
 	IntentFilter intentFilter = new IntentFilter();
 	intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 	m_instance.registerReceiver(m_wifiStateChangeReceiver, intentFilter);
+
     }
     
     
@@ -174,28 +185,29 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
     
     private class WifiStateChangeReceiver extends BroadcastReceiver
     {
-	@Override
-	public void onReceive(Context context, Intent intent)
+	
+	@Override public void onReceive(Context context, Intent intent)
 	{
+	    
 	    NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 	    if (info.getState() == State.CONNECTED) {
 		onWifiConnected();
 	    }
+	    
 	}
     }
     
     
     private class NotifyClickReceiver extends BroadcastReceiver
     {
-	@Override
-	public void onReceive(Context context, Intent intent) {
-	    Log.d("enroute flight navigation", "onReceive " + intent.getIntExtra("NotificationID", -1));
+	@Override public void onReceive(Context context, Intent intent) {
 
             Intent i = new Intent(context, MobileAdaptor.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);
-
+	    
             onNotificationClicked(intent.getIntExtra("NotificationID", -1));
+	    
 	}
     }
     

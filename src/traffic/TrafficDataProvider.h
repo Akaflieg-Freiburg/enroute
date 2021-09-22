@@ -62,7 +62,7 @@ public:
     explicit TrafficDataProvider(QObject *parent = nullptr);
 
     // Standard destructor
-    ~TrafficDataProvider() = default;
+    ~TrafficDataProvider();
 
 
     //

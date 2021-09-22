@@ -81,6 +81,19 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 }
 
 
+Traffic::TrafficDataProvider::~TrafficDataProvider()
+{
+    foreach(auto dataSource, m_dataSources) {
+        if (dataSource.isNull()) {
+            continue;
+        }
+        dataSource->disconnect();
+        delete dataSource;
+    }
+    m_dataSources.clear();
+}
+
+
 void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abstract* source)
 {
 

@@ -261,7 +261,7 @@ ApplicationWindow {
 
                             text: qsTr("Traffic Receiver")
                                   + `<br><font color="#606060" size="2">`
-                                  + ((global.trafficDataProvider().receivingHeartbeat) ? qsTr("Receiving traffic data.") : qsTr("Not receiving traffic data."))
+                                  + ((global.trafficDataProvider().receivingHeartbeat) ? qsTr("Receiving heartbeat.") : qsTr("Not receiving heartbeat."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_airplanemode_active.svg"
                             onClicked: {

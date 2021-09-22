@@ -390,7 +390,7 @@ void Traffic::TrafficDataProvider::updateStatusString()
         if (!m_currentSource.isNull()) {
             result += QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(m_currentSource->sourceName());
         }
-        result += QString("<li>%1</li>").arg(tr("Receiving traffic data."));
+        result += QString("<li>%1</li>").arg(tr("Receiving heartbeat."));
         if (positionInfo().isValid()) {
             result += QString("<li>%1</li>").arg(tr("Receiving position info."));
         }
@@ -402,7 +402,7 @@ void Traffic::TrafficDataProvider::updateStatusString()
         return;
     }
 
-    QString result = "<p>" + tr("Not receiving traffic data.") + "<p><ul style='margin-left:-25px;'>";
+    QString result = "<p>" + tr("Not receiving heartbeat.") + "<p><ul style='margin-left:-25px;'>";
     foreach(auto source, m_dataSources) {
         if (source.isNull()) {
             continue;

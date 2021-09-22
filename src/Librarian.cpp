@@ -159,7 +159,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
 <p><strong>Enroute Flight Navigation</strong> is a free nagivation app for VFR pilots, developed as a project of Akaflieg Freiburg.</p>
 
-<ul>
+<ul style="margin-left:-25px;">
   <li>Simple, elegant and functional</li>
   <li>No ads, no commercical "pro" version</li>
   <li>No registration, no membership</li>

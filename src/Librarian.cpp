@@ -91,7 +91,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html") + tr(R"html(
 <li><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</li>
 )html") + tr(R"html(
-<li><strong>Italian:</strong> Ivan Battistella.</li>
+<li><strong>Italian:</strong> Ivan Battistella and Antonio Fardella.  Antonio is a naval aviator with a passion for everything challenging.</li>
 )html") + tr(R"html(
 <li><strong>Polish:</strong> Sławek Mikuła.</li>
 )html") + (R"html(

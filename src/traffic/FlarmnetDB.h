@@ -71,6 +71,8 @@ private slots:
     void findFlarmnetDBDownloadable();
 
 private:
+    QString getRegistrationFromFile(const QString& key);
+
     QPointer<DataManagement::Downloadable> flarmnetDBDownloadable;
 
     QCache<QString, QString> m_cache {};

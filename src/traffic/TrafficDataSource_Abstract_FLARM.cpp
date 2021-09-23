@@ -201,6 +201,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
     // Data on other proximate aircraft
     if (messageType == u"PFLAA") {
 
+        qWarning() << arguments;
+
         // Helper variable
         bool ok = false;
 

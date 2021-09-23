@@ -91,15 +91,36 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
 
 auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
 {
+
+    qWarning() << "getRegistration" << key;
+
+    if (key.contains("!")) {
+        auto result = key.section('!', -1, -1);
+        qWarning() << "  result" << result;
+        return result;
+    }
+
     // Check if key exists in the cache
     auto* cachedValue = m_cache[key];
     if (cachedValue != nullptr) {
+        qWarning() << "  cached Value" << *cachedValue;
         return *cachedValue;
     }
 
+    auto result = getRegistrationFromFile(key);
+    qWarning() << "  result" << result;
+    m_cache.insert(key, new QString(result));
+    return result;
+}
+
+
+auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
+{
+
+    qWarning() << "getRegistrationFromFile" << key;
+
     // If not in the cache, try to find the values in the file.
     if (flarmnetDBDownloadable == nullptr) {
-        m_cache.insert(key, new QString());
         return {};
     }
 
@@ -107,8 +128,6 @@ auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
     if (!dataFile.open(QIODevice::ReadOnly)) {
         dataFile.open(QIODevice::WriteOnly);
         dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
-
-        m_cache.insert(key, new QString());
         return {};
     }
     dataFile.readLine();
@@ -132,12 +151,10 @@ auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
     do{
         if (getKey(dataFile, startIndex) == key) {
             auto value = getVal(dataFile, startIndex);
-            m_cache.insert(key, new QString(value));
             return value;
         }
         if (getKey(dataFile, endIndex) == key) {
             auto value = getVal(dataFile, endIndex);
-            m_cache.insert(key, new QString(value));
             return value;
         }
         qint64 midIndex = (startIndex + endIndex)/2;
@@ -151,6 +168,5 @@ auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
         }
     }while(startIndex != endIndex);
 
-    m_cache.insert(key, new QString());
     return {};
 }

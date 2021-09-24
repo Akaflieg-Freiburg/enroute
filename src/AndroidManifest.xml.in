@@ -27,9 +27,8 @@
   <application android:hardwareAccelerated="true"
 	       android:name="org.qtproject.qt5.android.bindings.QtApplication"
 	       android:label="Enroute Flight Navigation"
-	       android:icon="@drawable/icon"
-	       android:requestLegacyExternalStorage="true"
-	       android:extractNativeLibs="true">
+               android:icon="@mipmap/ic_launcher"
+	       android:requestLegacyExternalStorage="true">
     <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
 	      android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
               android:label="Enroute Flight Navigation"

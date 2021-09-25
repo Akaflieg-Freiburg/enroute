@@ -103,12 +103,14 @@ $(function() {
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> findFlarmnetDBDownloadable();</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    QPointer&lt;DataManagement::Downloadable&gt; flarmnetDBDownloadable;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    QString getRegistrationFromFile(<span class="keyword">const</span> QString&amp; key);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    QCache&lt;QString, QString&gt; m_cache {};</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    QPointer&lt;DataManagement::Downloadable&gt; flarmnetDBDownloadable;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    QCache&lt;QString, QString&gt; m_cache {};</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassTraffic_1_1FlarmnetDB_html_aaa221fc063f289573bd391073ae9791d"><div class="ttname"><a href="classTraffic_1_1FlarmnetDB.html#aaa221fc063f289573bd391073ae9791d">Traffic::FlarmnetDB::FlarmnetDB</a></div><div class="ttdeci">FlarmnetDB(QObject *parent)</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="aclassTraffic_1_1FlarmnetDB_html_a1b7e190d11eb57aeabaea14af819fc85"><div class="ttname"><a href="classTraffic_1_1FlarmnetDB.html#a1b7e190d11eb57aeabaea14af819fc85">Traffic::FlarmnetDB::getRegistration</a></div><div class="ttdeci">Q_INVOKABLE QString getRegistration(const QString &amp;key)</div><div class="ttdoc">Find password for a given key.</div></div>

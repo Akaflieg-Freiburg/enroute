@@ -2310,7 +2310,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
 
     switch (group.type()) {
     case metaf::MiscGroup::Type::SUNSHINE_DURATION_MINUTES:
-        if (const auto duration = group.data(); *duration) {
+        if (const auto duration = group.data(); duration) {
             return tr("Duration of sunshine that occurred the previous calendar day is %1 minutes.").arg(qRound(*duration));
         }
         return tr("No sunshine occurred the previous calendar day");

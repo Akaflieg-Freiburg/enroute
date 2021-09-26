@@ -34,6 +34,7 @@
 #include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
+#include "weather/WeatherDataProvider.h"
 
 bool isConstructing {false};
 bool isDestructing {false};
@@ -49,6 +50,7 @@ QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Settings> g_settings {};
 QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
+QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
 
 
 template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
@@ -90,6 +92,7 @@ void Global::destruct()
     delete g_positionProvider;
     delete g_settings;
     delete g_trafficDataProvider;
+    delete g_weatherDataProvider;
 
     isDestructing = false;
 }
@@ -154,8 +157,14 @@ auto Global::settings() -> Settings*
     return allocateInternal<Settings>(g_settings);
 }
 
+
 auto Global::trafficDataProvider() -> Traffic::TrafficDataProvider*
 {
     return allocateInternal<Traffic::TrafficDataProvider>(g_trafficDataProvider);
+}
 
+
+auto Global::weatherDataProvider() -> Weather::WeatherDataProvider*
+{
+    return allocateInternal<Weather::WeatherDataProvider>(g_weatherDataProvider);
 }

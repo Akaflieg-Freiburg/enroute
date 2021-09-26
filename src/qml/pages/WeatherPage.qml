@@ -100,11 +100,11 @@ Page {
 
                 MenuItem {
                     text: qsTr("Update METAR/TAF data")
-                    enabled: (!weatherDownloadManager.downloading) && (global.settings().acceptedWeatherTerms)
+                    enabled: (!global.weatherDataProvider().downloading) && (global.settings().acceptedWeatherTerms)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
-                        if (!weatherDownloadManager.downloading)
-                            weatherDownloadManager.update(false)
+                        if (!global.weatherDataProvider().downloading)
+                            global.weatherDataProvider().update(false)
                     }
                 } // MenuItem
 
@@ -176,7 +176,7 @@ Page {
             Layout.fillWidth: true
             clip: true
 
-            model: weatherDownloadManager.weatherStations
+            model: global.weatherDataProvider().weatherStations
             delegate: stationDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -210,7 +210,7 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     global.mobileAdaptor().vibrateBrief()
-                    weatherDownloadManager.update(false)
+                    global.weatherDataProvider().update(false)
                 }
             }
 
@@ -223,7 +223,7 @@ Page {
         anchors.fill: parent
 
         color: "white"
-        visible: weatherDownloadManager.downloading && !weatherDownloadManager.backgroundUpdate
+        visible: global.weatherDataProvider().downloading && !global.weatherDataProvider().backgroundUpdate
 
         Text {
             id: downloadIndicatorLabel
@@ -249,9 +249,9 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: weatherDownloadManager
+            target: global.weatherDataProvider()
             function onDownloadingChanged () {
-                if (weatherDownloadManager.downloading && !weatherDownloadManager.backgroundUpdate) {
+                if (global.weatherDataProvider().downloading && !global.weatherDataProvider().backgroundUpdate) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -297,7 +297,7 @@ Page {
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
                     global.settings().acceptedWeatherTerms = true
-                    weatherDownloadManager.update()
+                    global.weatherDataProvider().update()
                 }
             }
 
@@ -323,7 +323,7 @@ Page {
                 id: qnhLabel
                 visible: qnhLabel.text != ""
                 Layout.fillWidth: true
-                text: weatherDownloadManager.QNHInfo
+                text: global.weatherDataProvider().QNHInfo
             }
 
             Icon {
@@ -334,7 +334,7 @@ Page {
                 id: sunLabel
                 visible: sunLabel.text != ""
                 Layout.fillWidth: true
-                text: weatherDownloadManager.sunInfo
+                text: global.weatherDataProvider().sunInfo
             }
 
         }
@@ -345,16 +345,16 @@ Page {
     // is empty. This is not a background update, we want user interaction.
     Component.onCompleted: {
         if (stationList.count == 0)
-            weatherDownloadManager.update(false)
+            global.weatherDataProvider().update(false)
         else
-            weatherDownloadManager.update(true)
+            global.weatherDataProvider().update(true)
     }
 
     // Show error when weather cannot be updated -- but not if we are running a background upate
     Connections {
-        target: weatherDownloadManager
+        target: global.weatherDataProvider()
         function onError (message) {
-            if (weatherDownloadManager.backgroundUpdate)
+            if (global.weatherDataProvider().backgroundUpdate)
                 return
             dialogLoader.active = false
             dialogLoader.title = qsTr("Update Error")

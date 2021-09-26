@@ -180,9 +180,6 @@ auto main(int argc, char *argv[]) -> int
     // Attach clock
     engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
 
-    // Attach Weather::WeatherDataProvider
-    engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::WeatherDataProvider::globalInstance());
-
     // Load GUI and enter event loop
     engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     QGuiApplication::exec();

@@ -25,12 +25,6 @@
 #include "traffic/TrafficDataProvider.h"
 
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<Positioning::PositionProvider> positionProviderStatic {};
-#endif
-
-
 Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
     // Restore the last valid coordiante and track

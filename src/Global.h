@@ -53,6 +53,10 @@ namespace Positioning {
 class PositionProvider;
 }
 
+namespace Weather {
+class WeatherDataProvider;
+}
+
 
 /*! \brief Global instance storage
  *
@@ -80,12 +84,12 @@ class Global : public QObject
 {
     Q_OBJECT
 
-public:
-    /*! \brief Standard constructor
+        public:
+                 /*! \brief Standard constructor
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Global(QObject *parent = nullptr);
+                 explicit Global(QObject *parent = nullptr);
 
     /*! \brief Standard deconstructor
      *
@@ -137,7 +141,7 @@ public:
      */
     Q_INVOKABLE static Traffic::PasswordDB* passwordDB();
 
-    /*! \brief Pointer to appplication-wide static PasswordDB instance
+    /*! \brief Pointer to appplication-wide static PositionProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
@@ -166,6 +170,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Traffic::TrafficDataProvider* trafficDataProvider();
+
+    /*! \brief Pointer to appplication-wide static WeatherDataProvider instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Weather::WeatherDataProvider* weatherDataProvider();
 
 private:
     Q_DISABLE_COPY_MOVE(Global)

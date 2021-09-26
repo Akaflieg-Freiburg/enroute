@@ -77,16 +77,6 @@ public:
     ~WeatherDataProvider() override;
 
     //
-    // Methods
-    //
-
-    /*! \brief Pointer to static instance of this class
-     *
-     *  @returns Pointer to global instance
-     */
-    static WeatherDataProvider* globalInstance();
-
-    //
     // Properties
     //
 
@@ -240,7 +230,7 @@ private slots:
     // Name says it all. This method is called from the constructor,
     // but with a little lag to avoid conflicts in the initialisation of
     // static objects.
-    void setupConnections() const;
+    void deferredInitialization();
 
 private:
     Q_DISABLE_COPY_MOVE(WeatherDataProvider)

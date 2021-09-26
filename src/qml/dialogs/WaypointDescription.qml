@@ -34,7 +34,7 @@ Dialog {
     id: waypointDescriptionDialog
 
     property var waypoint : global.geoMapProvider().createWaypoint()
-    property var weatherStation : weatherDownloadManager.findWeatherStation( waypoint.ICAOCode )
+    property var weatherStation : global.weatherDataProvider().findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {
         // Delete old text items

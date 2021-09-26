@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <gsl/util>
+
 #include <QDataStream>
 #include <QLockFile>
 #include <QNetworkReply>
@@ -44,12 +46,6 @@
 using namespace std::chrono_literals;
 
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<Weather::WeatherDataProvider> WeatherDataProviderStatic {};
-#endif
-
-
 Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(parent)
 {
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
@@ -68,28 +64,28 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
     connect(this, &Weather::WeatherDataProvider::weatherStationsChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
 
     // Set up connections to other static objects, but do so with a little lag to avoid conflicts in the initialisation
-    QTimer::singleShot(0, this, &Weather::WeatherDataProvider::setupConnections);
-
-    // Read METAR/TAF from "weather.dat"
-    bool success = load();
-
-    // Compute time for next update
-    int remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateIntervalNormal_ms) );
-    if (!success || !_lastUpdate.isValid() || (remainingTime < 0)) {
-        update();
-    } else {
-        _updateTimer.setInterval(remainingTime);
-    }
+    QTimer::singleShot(0, this, &Weather::WeatherDataProvider::deferredInitialization);
 }
 
 
-void Weather::WeatherDataProvider::setupConnections() const
+void Weather::WeatherDataProvider::deferredInitialization()
 {
     connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
     connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
+
+    // Read METAR/TAF from "weather.dat"
+    bool success = load();
+
+    // Compute time for next update
+    auto remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateIntervalNormal_ms) );
+    if (!success || !_lastUpdate.isValid() || (remainingTime < 0)) {
+        update();
+    } else {
+        _updateTimer.setInterval( gsl::narrow_cast<int>(remainingTime) );
+    }
 }
 
 
@@ -220,19 +216,6 @@ auto Weather::WeatherDataProvider::findOrConstructWeatherStation(const QString &
     auto *newWeatherStation = new Weather::Station(ICAOCode, Global::geoMapProvider(), this);
     _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
     return newWeatherStation;
-}
-
-
-auto Weather::WeatherDataProvider::globalInstance() -> Weather::WeatherDataProvider*
-{
-#ifndef __clang_analyzer__
-    if (WeatherDataProviderStatic.isNull()) {
-        WeatherDataProviderStatic = new Weather::WeatherDataProvider();
-    }
-    return WeatherDataProviderStatic;
-#else
-    return nullptr;
-#endif
 }
 
 

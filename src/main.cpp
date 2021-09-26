@@ -186,30 +186,9 @@ auto main(int argc, char *argv[]) -> int
     // Attach Weather::WeatherDataProvider
     engine->rootContext()->setContextProperty("weatherDownloadManager", Weather::WeatherDataProvider::globalInstance());
 
-    // Restore saved settings and make them available to QML
-    QSettings settings;
-    engine->rootContext()->setContextProperty("savedCenter", settings.value("Map/center", QVariant::fromValue(QGeoCoordinate(48.022653, 7.832583))));
-    engine->rootContext()->setContextProperty("savedBearing", settings.value("Map/bearing", 0.0));
-    engine->rootContext()->setContextProperty("savedZoomLevel", settings.value("Map/zoomLevel", 9));
-
     // Load GUI and enter event loop
     engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     QGuiApplication::exec();
-
-    // Save settings
-    // Obtain a pointer to the flightMap
-    QQuickItem *flightMap = nullptr;
-    foreach (auto rootItem, engine->rootObjects()) {
-        flightMap = rootItem->findChild<QQuickItem*>("flightMap");
-        if (flightMap != nullptr) {
-            break;
-        }
-    }
-    if (flightMap != nullptr) {
-        settings.setValue("Map/center", QQmlProperty::read(flightMap, "center"));
-        settings.setValue("Map/bearing", QQmlProperty::read(flightMap, "bearing"));
-        settings.setValue("Map/zoomLevel", QQmlProperty::read(flightMap, "zoomLevel"));
-    }
 
     // Ensure that things get deleted in the right order
     delete demoRunner;

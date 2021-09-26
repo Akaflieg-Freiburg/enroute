@@ -55,6 +55,13 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     // Wire up traffic data provider source
     QTimer::singleShot(0, this, &Positioning::PositionProvider::deferredInitialization);
 
+    // Save position at regular intervals
+    auto* saveTimer = new QTimer(this);
+    saveTimer->setInterval(1min + 57s);
+    saveTimer->setSingleShot(false);
+    connect(saveTimer, &QTimer::timeout, this, &Positioning::PositionProvider::savePositionAndTrack);
+    saveTimer->start();
+
     // Update properties
     updateStatusString();
 }
@@ -62,14 +69,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
 
 Positioning::PositionProvider::~PositionProvider()
 {
-    // Save the last valid coordinate
-    QSettings settings;
-    settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.latitude());
-    settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.longitude());
-    settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.altitude());
-
-    // Save the last valid track
-    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.toDEG());
+    savePositionAndTrack();
 }
 
 
@@ -146,6 +146,19 @@ void Positioning::PositionProvider::onPressureAltitudeUpdated()
     // Set new info
     setPressureAltitude(pAlt);
 
+}
+
+
+void Positioning::PositionProvider::savePositionAndTrack()
+{
+    // Save the last valid coordinate
+    QSettings settings;
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.latitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.longitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.altitude());
+
+    // Save the last valid track
+    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.toDEG());
 }
 
 

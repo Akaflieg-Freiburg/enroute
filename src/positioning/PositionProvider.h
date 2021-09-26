@@ -109,6 +109,9 @@ private slots:
     // Connected to sources, in order to receive new data
     void onPressureAltitudeUpdated();
 
+    // Saves last valid position and track
+    void savePositionAndTrack();
+
     // Setter method for property with the same name
     void setLastValidCoordinate(const QGeoCoordinate &newCoordinate);
 

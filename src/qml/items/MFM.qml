@@ -80,7 +80,7 @@ Item {
         //
 
         // Initially, set the bearing to the last saved value
-        bearing: savedBearing
+        bearing: 0
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
@@ -98,7 +98,7 @@ Item {
         //
 
         // Initially, set the center to the last saved value
-        center: savedCenter
+        center: positionProvider.lastValidCoordinate
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
@@ -158,7 +158,7 @@ Item {
         //
 
         // Initially, set the zoom level to the last saved value
-        zoomLevel: savedZoomLevel
+        zoomLevel: 12
 
         // Animate changes in zoom level for visually smooth transition
         Behavior on zoomLevel { NumberAnimation { duration: 400 } }

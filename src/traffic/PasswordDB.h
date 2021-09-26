@@ -28,9 +28,9 @@ namespace Traffic {
 
 /*! \brief Password database
  *
- *  This simple class provides access to a password database, which is in essence
- *  a glorified QHash<QString, QString>, where keys are network SSIDs and values
- *  are passwords.
+ *  This simple class provides access to a password database, which is in
+ *  essence a glorified QHash<QString, QString>, where keys are network SSIDs
+ *  and values are passwords.
  */
 class PasswordDB : public QObject {
     Q_OBJECT
@@ -92,7 +92,8 @@ public:
      *
      *  @param key Key to look up
      *
-     *  @returns Password, or an empty string if the database does not contain the key
+     *  @returns Password, or an empty string if the database does not contain
+     *  the key
      */
     Q_INVOKABLE QString getPassword(const QString& key) const
     {
@@ -110,9 +111,9 @@ public:
 
     /*! \brief Set key/password
      *
-     *  This method adds a key/password to the database and saves the
-     *  database to the disk.  If a password already exists for the given
-     *  key, then it will be overwritten.
+     *  This method adds a key/password to the database and saves the database
+     *  to the disk.  If a password already exists for the given key, then it
+     *  will be overwritten.
      *
      *  @param key Key to be added
      *

@@ -110,8 +110,8 @@ public slots:
 
     /*! \brief Set traffic factor (distance only) that is to be reported by this class
      *
-     *  @param factor Traffic factor, or nullptr to remove all distance-only traffic.
-     *  The traffic factor will be owned by this class.
+     *  @param factor Traffic factor, or nullptr to remove all distance-only
+     *  traffic. The traffic factor will be owned by this class.
      */
     void setTrafficFactor_DistanceOnly(Traffic::TrafficFactor_DistanceOnly* factor=nullptr)
     {
@@ -124,7 +124,8 @@ public slots:
 
     /*! \brief Add a traffic factor that is to be reported by this class
      *
-     *  @param factor Traffic factor to be added. The pointer must be valid. The traffic factor will be owned by this class.
+     *  @param factor Traffic factor to be added. The pointer must be valid. The
+     *  traffic factor will be owned by this class.
      */
     void addTraffic(Traffic::TrafficFactor_WithPosition* factor)
     {
@@ -140,7 +141,8 @@ public slots:
     }
 
 private slots:
-    // Send out simulated data. This slot will be called once per second once connectToTrafficReceiver() has been called
+    // Send out simulated data. This slot will be called once per second once
+    // connectToTrafficReceiver() has been called
     void sendSimulatorData();
 
 private:

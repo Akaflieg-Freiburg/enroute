@@ -48,8 +48,8 @@ namespace Traffic {
  *
  *  Following the standards established by the app ForeFlight, this classEnroute
  *  broadcasts a UDP message on port 63093 every 5 seconds while the app is
- *  running in the foreground. This message allows devices to discover
- *  Enroute’s IP address, which can be used as the target of UDP unicast messages.
+ *  running in the foreground. This message allows devices to discover Enroute’s
+ *  IP address, which can be used as the target of UDP unicast messages.
  */
 class TrafficDataProvider : public Positioning::PositionInfoSource_Abstract {
     Q_OBJECT
@@ -71,8 +71,9 @@ public:
 
     /*! \brief Add an additional data source
      *
-     *  This method adds an additional data source to this
-     *  TrafficDataProvider, typically a simulator source used for debugging purposes. The TrafficDataProvider takes ownership of the source.
+     *  This method adds an additional data source to this TrafficDataProvider,
+     *  typically a simulator source used for debugging purposes. The
+     *  TrafficDataProvider takes ownership of the source.
      *
      *  @param source New TrafficDataSource that is to be added.
      */
@@ -140,9 +141,9 @@ public:
     /*! \brief String describing the current traffic data receiver errors
      *
      *  This property holds a translated, human-readable string that describes
-     *  the current errors reported by the traffic receiver, or an empty string when
-     *  there is no error.  The string is cleared when a new connection attempt
-     *  is started.
+     *  the current errors reported by the traffic receiver, or an empty string
+     *  when there is no error.  The string is cleared when a new connection
+     *  attempt is started.
      */
     Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
 
@@ -158,9 +159,9 @@ public:
     /*! \brief String describing the traffic data receiver errors found in self-test
      *
      *  This property holds a translated, human-readable string that describes
-     *  the errors reported by the traffic receiver during self-test, or an empty string when
-     *  there is no error.  The string is cleared when a new connection attempt
-     *  is started.
+     *  the errors reported by the traffic receiver during self-test, or an
+     *  empty string when there is no error.  The string is cleared when a new
+     *  connection attempt is started.
      */
     Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
 
@@ -192,13 +193,15 @@ public:
 
     /*! \brief Maximal vertical distance for relevant traffic
      *
-     *  Traffic whose vertical distance to the own aircraft is larger than this number will be ignored.
+     *  Traffic whose vertical distance to the own aircraft is larger than this
+     *  number will be ignored.
      */
     static constexpr Units::Distance maxVerticalDistance = Units::Distance::fromM(1500.0);
 
     /*! \brief Maximal horizontal distance for relevant traffic
      *
-     *  Traffic whose horizontal distance to the own aircraft is larger than this number will be ignored.
+     *  Traffic whose horizontal distance to the own aircraft is larger than
+     *  this number will be ignored.
      */
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
@@ -214,9 +217,9 @@ signals:
 
     /*! \brief Password storage request
      *
-     *  This signal is emitted whenever one of the traffic data sources has verified
-     *  a password that was not yet in the database. The GUI should connect to this
-     *  signal and open a "Store Password …?" dialogn.
+     *  This signal is emitted whenever one of the traffic data sources has
+     *  verified a password that was not yet in the database. The GUI should
+     *  connect to this signal and open a "Store Password …?" dialogn.
      */
     void passwordStorageRequest(const QString& SSID, const QString& password);
 
@@ -250,9 +253,9 @@ public slots:
 
     /*! \brief Send password to the traffic data sources
      *
-     *  This method will send a password/ssid combination to all traffic
-     *  data source. If a source is waiting for a password with the given
-     *  SSID, then it will send the password to the traffic data receiver.
+     *  This method will send a password/ssid combination to all traffic data
+     *  source. If a source is waiting for a password with the given SSID, then
+     *  it will send the password to the traffic data receiver.
      *
      *  @param SSID Network where the receiver should be connected
      *
@@ -265,8 +268,8 @@ private slots:
     // nested uses of globalInstance().
     void deferredInitialization() const;
 
-    // Sends out foreflight broadcast message
-    // See https://www.foreflight.com/connect/spec/
+    // Sends out foreflight broadcast message See
+    // https://www.foreflight.com/connect/spec/
     void foreFlightBroadcast();
 
     // Called if one of the sources indicates a heartbeat change

@@ -27,8 +27,7 @@
 
 namespace Traffic {
 
-/*! \brief Base class for all traffic receiver data sources that receive data
-    via network sockets
+/*! \brief Base class for all traffic receiver data sources that receive data via network sockets
  *
  *  This is an abstract base class for all classes that connect to a traffic
  *  receiver via network sockets.  In addition to TrafficDataSource_Abstract, it

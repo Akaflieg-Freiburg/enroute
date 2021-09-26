@@ -148,9 +148,9 @@ public:
     /*! \brief String describing the last traffic data receiver self-test error
      *
      *  This property holds a translated, human-readable string that describes
-     *  the last error reported by the traffic receiver self-test, or an empty string when
-     *  there is not error.  The string is cleared when a new connection attempt
-     *  is started.
+     *  the last error reported by the traffic receiver self-test, or an empty
+     *  string when there is not error.  The string is cleared when a new
+     *  connection attempt is started.
      */
     Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError WRITE setTrafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
 
@@ -190,8 +190,8 @@ signals:
 
     /* \brief Password request
      *
-     *  This signal is emitted whenever the traffic receiver asks for a password.
-     *  Note that this is not the WiFi-Password.
+     *  This signal is emitted whenever the traffic receiver asks for a
+     *  password. Note that this is not the WiFi-Password.
      *
      *  @param SSID Name of the WiFi network that is currently in use.
      */
@@ -199,8 +199,8 @@ signals:
 
     /* \brief Password storage request
      *
-     *  This signal is emitted whenever the traffic receiver has successfully connected
-     *  using a password that was not yet in the database.
+     *  This signal is emitted whenever the traffic receiver has successfully
+     *  connected using a password that was not yet in the database.
      *
      *  @param SSID Name of the WiFi network that is was used in use.
      */
@@ -289,11 +289,11 @@ public slots:
 
     /*! \brief Set password
      *
-     *  If the implementation of the traffic data source supports passwords, this
-     *  method checks if the traffic data source is waiting for a password with key
-     *  SSID. If so, it will send the password to the traffic data receiver.
-     *  If the implementation of the traffic data source does not support passwords,
-     *  this method does nothing.
+     *  If the implementation of the traffic data source supports passwords,
+     *  this method checks if the traffic data source is waiting for a password
+     *  with key SSID. If so, it will send the password to the traffic data
+     *  receiver. If the implementation of the traffic data source does not
+     *  support passwords, this method does nothing.
      */
     virtual void setPassword(const QString& SSID, const QString& password)
     {
@@ -316,10 +316,10 @@ protected:
 
     /*! \brief Process one GDL90 message
      *
-     *  This method expects exactly one GDL90 message, including starting
-     *  and trailing 0x7e bytes.  The method interprets the string and updates
-     *  the properties and emits signals as appropriate. Invalid messages
-     *  are silently ignored.
+     *  This method expects exactly one GDL90 message, including starting and
+     *  trailing 0x7e bytes.  The method interprets the string and updates the
+     *  properties and emits signals as appropriate. Invalid messages are
+     *  silently ignored.
      *
      *  @param message A QByteArray containing a GDL90 message.
      */
@@ -331,9 +331,8 @@ protected:
      *
      *  https://www.foreflight.com/support/network-gps/
      *
-     *  The method interprets the string and updates
-     *  the properties and emits signals as appropriate. Invalid messages
-     *  are silently ignored.
+     *  The method interprets the string and updates the properties and emits
+     *  signals as appropriate. Invalid messages are silently ignored.
      *
      *  @param data A QByteArray containing an XGPS string.
      */
@@ -359,8 +358,8 @@ protected:
 
     /*! \brief Setter method for the property with the same name
      *
-     *  When set to 'true' a timer is stated that will automatically
-     *  reset the property to 'false' after 5 seconds of inactivity.
+     *  When set to 'true' a timer is stated that will automatically reset the
+     *  property to 'false' after 5 seconds of inactivity.
      *
      *  @param newReceivingHeartbeat Property receivingHeartbeat
      */

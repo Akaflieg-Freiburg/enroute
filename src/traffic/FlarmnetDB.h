@@ -30,9 +30,9 @@ namespace Traffic {
 
 /*! \brief Flarmnet database
  *
- *  This simple class provides access to a Flarmnet database, which is in essence
- *  a glorified QHash<QString, QString>, where keys are Flarm IDs and values
- *  are aircraft registration strings.
+ *  This simple class provides access to a Flarmnet database, which is in
+ *  essence a glorified QHash<QString, QString>, where keys are Flarm IDs and
+ *  values are aircraft registration strings.
  */
 class FlarmnetDB : public QObject {
     Q_OBJECT
@@ -56,7 +56,8 @@ public:
      *
      *  @param key FlarmID to look up
      *
-     *  @returns Aircraft registration, or an empty string if the database does not contain the key
+     *  @returns Aircraft registration, or an empty string if the database does
+     *  not contain the key
      */
     Q_INVOKABLE QString getRegistration(const QString& key);
 

@@ -147,8 +147,8 @@ $(function() {
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
 <div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae9e66e5600baf14b4ef7503a6f5e3191">  191</a></span>&#160;    <span class="comment">/* \brief Password request</span></div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">     *  This signal is emitted whenever the traffic receiver asks for a password.</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">     *  Note that this is not the WiFi-Password.</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">     *  This signal is emitted whenever the traffic receiver asks for a</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">     *  password. Note that this is not the WiFi-Password.</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">     *</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">     *  @param SSID Name of the WiFi network that is currently in use.</span></div>
 <div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Abstract.html#aea76b8d0bb5a6aa6badda6aa9919bc82">  197</a></span>&#160;<span class="comment">     */</span></div>
@@ -156,8 +156,8 @@ $(function() {
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">/* \brief Password storage request</span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">     *  This signal is emitted whenever the traffic receiver has successfully connected</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">     *  using a password that was not yet in the database.</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">     *  This signal is emitted whenever the traffic receiver has successfully</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">     *  connected using a password that was not yet in the database.</span></div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">     *</span></div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">     *  @param SSID Name of the WiFi network that is was used in use.</span></div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">     */</span></div>
@@ -197,52 +197,52 @@ $(function() {
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a6b26687aa06b80260d341c84fe5d592b">processGDLMessage</a>(<span class="keyword">const</span> QByteArray&amp; message);</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a3d13ac6b531ce304590c921d8784c9a7">processXGPSString</a>(<span class="keyword">const</span> QByteArray&amp; data);</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">resetReceivingHeartbeat</a>();</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">setConnectivityStatus</a>(<span class="keyword">const</span> QString&amp; newConnectivityStatus);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160; </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">setErrorString</a>(<span class="keyword">const</span> QString&amp; newErrorString = QString());</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">setReceivingHeartbeat</a>(<span class="keywordtype">bool</span> newReceivingHeartbeat);</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#adf4777529f39b5e2c226d7370968ea4d">setTrafficReceiverRuntimeError</a>(<span class="keyword">const</span> QString&amp; newErrorString);</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a8361236d0d61cbb169b348ca726ba404">setTrafficReceiverSelfTestError</a>(<span class="keyword">const</span> QString&amp; newErrorString);</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="comment">// Property caches</span></div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    QString m_connectivityStatus {};</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    QString m_errorString {};</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    QString m_trafficReceiverRuntimeError {};</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    QString m_trafficReceiverSelfTestError {};</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="comment">// True altitude of own aircraft. We store these values because the</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="comment">// necessary information to compile a PositionInfo class does not always</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">// come in one piece.  Whenever a valid altitude is set, the timer should be</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="comment">// started. The timer can then be used to check if the altitude information</span></div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="comment">// is recent enough to be used. Whenever an invalid altitude is set, the</span></div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="comment">// timer should be stopped.</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitudeFOM; <span class="comment">// Fig. of Merit</span></div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    QTimer m_trueAltitudeTimer;</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="comment">// Pressure altitude of own aircraft. See the member m_trueAltitude for a</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="comment">// description how the timer should be used.</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_pressureAltitude;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    QTimer m_pressureAltitudeTimer;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160; </div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="comment">// Heartbeat timer</span></div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    QTimer m_heartbeatTimer;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    <span class="keywordtype">bool</span> m_hasHeartbeat {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160; </div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <span class="comment">// Targets</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <a class="code" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> m_factor;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> m_factorDistanceOnly;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;};</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;}</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a3d13ac6b531ce304590c921d8784c9a7">processXGPSString</a>(<span class="keyword">const</span> QByteArray&amp; data);</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">resetReceivingHeartbeat</a>();</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">setConnectivityStatus</a>(<span class="keyword">const</span> QString&amp; newConnectivityStatus);</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">setErrorString</a>(<span class="keyword">const</span> QString&amp; newErrorString = QString());</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">setReceivingHeartbeat</a>(<span class="keywordtype">bool</span> newReceivingHeartbeat);</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160; </div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#adf4777529f39b5e2c226d7370968ea4d">setTrafficReceiverRuntimeError</a>(<span class="keyword">const</span> QString&amp; newErrorString);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a8361236d0d61cbb169b348ca726ba404">setTrafficReceiverSelfTestError</a>(<span class="keyword">const</span> QString&amp; newErrorString);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="comment">// Property caches</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    QString m_connectivityStatus {};</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    QString m_errorString {};</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    QString m_trafficReceiverRuntimeError {};</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    QString m_trafficReceiverSelfTestError {};</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="comment">// True altitude of own aircraft. We store these values because the</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="comment">// necessary information to compile a PositionInfo class does not always</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="comment">// come in one piece.  Whenever a valid altitude is set, the timer should be</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">// started. The timer can then be used to check if the altitude information</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="comment">// is recent enough to be used. Whenever an invalid altitude is set, the</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="comment">// timer should be stopped.</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitudeFOM; <span class="comment">// Fig. of Merit</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    QTimer m_trueAltitudeTimer;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="comment">// Pressure altitude of own aircraft. See the member m_trueAltitude for a</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="comment">// description how the timer should be used.</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_pressureAltitude;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    QTimer m_pressureAltitudeTimer;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="comment">// Heartbeat timer</span></div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    QTimer m_heartbeatTimer;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    <span class="keywordtype">bool</span> m_hasHeartbeat {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    <span class="comment">// Targets</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <a class="code" href="classTraffic_1_1TrafficFactor__WithPosition.html">Traffic::TrafficFactor_WithPosition</a> m_factor;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html">Traffic::TrafficFactor_DistanceOnly</a> m_factorDistanceOnly;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;};</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160; </div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Abstract_html_a287d4c6523682facee4e2ef8a3f703db"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Abstract.html#a287d4c6523682facee4e2ef8a3f703db">Traffic::TrafficDataSource_Abstract::errorStringChanged</a></div><div class="ttdeci">void errorStringChanged(QString newError)</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a></div><div class="ttdoc">Geographic position.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00043">PositionInfo.h:43</a></div></div>

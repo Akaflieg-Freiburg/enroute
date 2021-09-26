@@ -98,136 +98,129 @@ $(function() {
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="classWeather_1_1WeatherDataProvider.html#aa9f20f5c6fe86fddf7aeed9438bba139">~WeatherDataProvider</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// Methods</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// Properties</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">static</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html">WeatherDataProvider</a>* <a class="code" href="classWeather_1_1WeatherDataProvider.html#a17248794b111f4480d647125d98ef359">globalInstance</a>();</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">   87</a></span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">backgroundUpdate</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">backgroundUpdate</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a1f5c01f8cda0c5d745238b4e54fbd501">backgroundUpdateChanged</a>)</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">// Properties</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">   97</a></span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">backgroundUpdate</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">backgroundUpdate</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a1f5c01f8cda0c5d745238b4e54fbd501">backgroundUpdateChanged</a>)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    </div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">  103</a></span>&#160;    bool <a class="code" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">backgroundUpdate</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _backgroundUpdate; };</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">downloading</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">downloading</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a39abdd9eb031cdab206478ee04f2ed8a">downloadingChanged</a>)</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">downloading</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#adee73dcc1122ab480ad3aafe6470f145">  132</a></span>&#160;    Q_INVOKABLE <a class="code" href="classWeather_1_1Station.html">Weather::Station</a> *<a class="code" href="classWeather_1_1WeatherDataProvider.html#adee73dcc1122ab480ad3aafe6470f145">findWeatherStation</a>(<span class="keyword">const</span> QString &amp;ICAOCode)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="keywordflow">return</span> _weatherStationsByICAOCode.value(ICAOCode, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">  144</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">QNHInfo</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">QNHInfo</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a60c015caab8446faf71a5958912a2c02">QNHInfoChanged</a>)</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">QNHInfo</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">  159</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">sunInfo</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">sunInfo</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a8c707fa8e25ec16286dc6928a7503129">sunInfoChanged</a>)</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keyword">static</span> QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">sunInfo</a>() ;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#aed52eaaa5a67a913ef7647fc4c7edf4e">update</a>(<span class="keywordtype">bool</span> isBackgroundUpdate=<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">  199</a></span>&#160;    Q_PROPERTY(QList&lt;Weather::Station *&gt; <a class="code" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">weatherStations</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">weatherStations</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#ad74174b2df0e872e225cdf1c22f27a1a">weatherStationsChanged</a>)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    </div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">   93</a></span>&#160;    bool <a class="code" href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">backgroundUpdate</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _backgroundUpdate; };</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">downloading</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">downloading</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a39abdd9eb031cdab206478ee04f2ed8a">downloadingChanged</a>)</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">downloading</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#adee73dcc1122ab480ad3aafe6470f145">  122</a></span>&#160;    Q_INVOKABLE <a class="code" href="classWeather_1_1Station.html">Weather::Station</a> *<a class="code" href="classWeather_1_1WeatherDataProvider.html#adee73dcc1122ab480ad3aafe6470f145">findWeatherStation</a>(<span class="keyword">const</span> QString &amp;ICAOCode)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">return</span> _weatherStationsByICAOCode.value(ICAOCode, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">  134</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">QNHInfo</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">QNHInfo</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a60c015caab8446faf71a5958912a2c02">QNHInfoChanged</a>)</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">QNHInfo</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">  149</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">sunInfo</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">sunInfo</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#a8c707fa8e25ec16286dc6928a7503129">sunInfoChanged</a>)</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">static</span> QString <a class="code" href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">sunInfo</a>() ;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#aed52eaaa5a67a913ef7647fc4c7edf4e">update</a>(<span class="keywordtype">bool</span> isBackgroundUpdate=<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">  189</a></span>&#160;    Q_PROPERTY(QList&lt;Weather::Station *&gt; <a class="code" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">weatherStations</a> READ <a class="code" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">weatherStations</a> NOTIFY <a class="code" href="classWeather_1_1WeatherDataProvider.html#ad74174b2df0e872e225cdf1c22f27a1a">weatherStationsChanged</a>)</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    QList&lt;Weather::Station *&gt; <a class="code" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">weatherStations</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;signals:</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a1f5c01f8cda0c5d745238b4e54fbd501">backgroundUpdateChanged</a>();</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    QList&lt;Weather::Station *&gt; <a class="code" href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">weatherStations</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;signals:</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a1f5c01f8cda0c5d745238b4e54fbd501">backgroundUpdateChanged</a>();</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a39abdd9eb031cdab206478ee04f2ed8a">downloadingChanged</a>();</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#aa83bdd18eb7cdeb9b23208e29ff73f56">error</a>(QString message);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a60c015caab8446faf71a5958912a2c02">QNHInfoChanged</a>();</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a39abdd9eb031cdab206478ee04f2ed8a">downloadingChanged</a>();</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#aa83bdd18eb7cdeb9b23208e29ff73f56">error</a>(QString message);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a60c015caab8446faf71a5958912a2c02">QNHInfoChanged</a>();</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a8c707fa8e25ec16286dc6928a7503129">sunInfoChanged</a>();</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#ad74174b2df0e872e225cdf1c22f27a1a">weatherStationsChanged</a>();</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="comment">// Called when a download is finished</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordtype">void</span> downloadFinished();</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#a8c707fa8e25ec16286dc6928a7503129">sunInfoChanged</a>();</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html#ad74174b2df0e872e225cdf1c22f27a1a">weatherStationsChanged</a>();</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="comment">// Called when a download is finished</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordtype">void</span> downloadFinished();</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="comment">// Check for expired METARs and TAFs and delete them.</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="comment">// This also deletes weather stations if they are no longer in use.</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordtype">void</span> deleteExpiredMesages();</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="comment">// Name says it all. This method is called from the constructor,</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="comment">// but with a little lag to avoid conflicts in the initialisation of</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="comment">// static objects.</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordtype">void</span> setupConnections() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classWeather_1_1WeatherDataProvider.html">WeatherDataProvider</a>)</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="comment">// Update interval is 30 mins, or 5 mins if update failed</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> updateIntervalNormal_ms  = 30*60*1000;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> updateIntervalOnError_ms =  5*60*1000;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">// Check for expired METARs and TAFs and delete them.</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// This also deletes weather stations if they are no longer in use.</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordtype">void</span> deleteExpiredMesages();</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="comment">// Name says it all. This method is called from the constructor,</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="comment">// but with a little lag to avoid conflicts in the initialisation of</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="comment">// static objects.</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordtype">void</span> deferredInitialization();</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classWeather_1_1WeatherDataProvider.html">WeatherDataProvider</a>)</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment">// Update interval is 30 mins, or 5 mins if update failed</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> updateIntervalNormal_ms  = 30*60*1000;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> updateIntervalOnError_ms =  5*60*1000;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="comment">// Similar to findWeatherStation, but will create a weather station if no</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="comment">// station with the given code is known</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="classWeather_1_1Station.html">Weather::Station</a> *findOrConstructWeatherStation(<span class="keyword">const</span> QString &amp;ICAOCode);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="comment">// This method loads METAR/TAFs from a file &quot;weather.dat&quot; in</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="comment">// QStandardPaths::AppDataLocation.  There is locking to ensure that no two</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="comment">// processes access the file. The method will fail silently on error.</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="comment">// Returns true on success and false on failure.</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keywordtype">bool</span> load();</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// Similar to findWeatherStation, but will create a weather station if no</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// station with the given code is known</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <a class="code" href="classWeather_1_1Station.html">Weather::Station</a> *findOrConstructWeatherStation(<span class="keyword">const</span> QString &amp;ICAOCode);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="comment">// This method loads METAR/TAFs from a file &quot;weather.dat&quot; in</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="comment">// QStandardPaths::AppDataLocation.  There is locking to ensure that no two</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="comment">// processes access the file. The method will fail silently on error.</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="comment">// Returns true on success and false on failure.</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keywordtype">bool</span> load();</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="comment">// This method saves all METAR/TAFs that are valid and not yet expired to a</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="comment">// file &quot;weather.dat&quot; in QStandardPaths::AppDataLocation.  There is locking</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="comment">// to ensure that no two processes access the file. The method will fail</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="comment">// silently on error.</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">void</span> save();</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="comment">// List of replies from aviationweather.com</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    QList&lt;QPointer&lt;QNetworkReply&gt;&gt; _networkReplies;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="comment">// A timer used for auto-updating the weather reports every 30 minutes</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    QTimer _updateTimer;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="comment">// A timer used for deleting expired weather reports ever 11 minutes</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    QTimer _deleteExiredMessagesTimer;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// This method saves all METAR/TAFs that are valid and not yet expired to a</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// file &quot;weather.dat&quot; in QStandardPaths::AppDataLocation.  There is locking</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="comment">// to ensure that no two processes access the file. The method will fail</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="comment">// silently on error.</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordtype">void</span> save();</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="comment">// List of replies from aviationweather.com</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    QList&lt;QPointer&lt;QNetworkReply&gt;&gt; _networkReplies;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="comment">// A timer used for auto-updating the weather reports every 30 minutes</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    QTimer _updateTimer;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="comment">// A timer used for deleting expired weather reports ever 11 minutes</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    QTimer _deleteExiredMessagesTimer;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="comment">// Flag, as set by the update() method</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordtype">bool</span> _backgroundUpdate {<span class="keyword">true</span>};</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="comment">// List of weather stations, accessible by ICAO code</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    QMap&lt;QString, QPointer&lt;Weather::Station&gt;&gt; _weatherStationsByICAOCode;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="comment">// Date and Time of last update</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    QDateTime _lastUpdate;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;};</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">// Flag, as set by the update() method</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keywordtype">bool</span> _backgroundUpdate {<span class="keyword">true</span>};</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="comment">// List of weather stations, accessible by ICAO code</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    QMap&lt;QString, QPointer&lt;Weather::Station&gt;&gt; _weatherStationsByICAOCode;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="comment">// Date and Time of last update</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    QDateTime _lastUpdate;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;};</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;}</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a56bf601a83772e02d316b5f01da3975e"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">Weather::WeatherDataProvider::backgroundUpdate</a></div><div class="ttdeci">bool backgroundUpdate</div><div class="ttdoc">Background update flag.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00097">WeatherDataProvider.h:97</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a56bf601a83772e02d316b5f01da3975e"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a56bf601a83772e02d316b5f01da3975e">Weather::WeatherDataProvider::backgroundUpdate</a></div><div class="ttdeci">bool backgroundUpdate</div><div class="ttdoc">Background update flag.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00087">WeatherDataProvider.h:87</a></div></div>
 <div class="ttc" id="aclassSettings_html"><div class="ttname"><a href="classSettings.html">Settings</a></div><div class="ttdoc">Global Settings Manager.</div><div class="ttdef"><b>Definition:</b> <a href="Settings_8h_source.html#l00043">Settings.h:43</a></div></div>
 <div class="ttc" id="aclassClock_html"><div class="ttname"><a href="classClock.html">Clock</a></div><div class="ttdoc">This extremely simple class give accss to time and offers a few time-related functions.</div><div class="ttdef"><b>Definition:</b> <a href="Clock_8h_source.html#l00035">Clock.h:35</a></div></div>
 <div class="ttc" id="aclassWeather_1_1Station_html"><div class="ttname"><a href="classWeather_1_1Station.html">Weather::Station</a></div><div class="ttdoc">This class represents a weather station that issues METAR or TAF report.</div><div class="ttdef"><b>Definition:</b> <a href="Station_8h_source.html#l00043">Station.h:43</a></div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_ad74174b2df0e872e225cdf1c22f27a1a"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#ad74174b2df0e872e225cdf1c22f27a1a">Weather::WeatherDataProvider::weatherStationsChanged</a></div><div class="ttdeci">void weatherStationsChanged()</div><div class="ttdoc">Signal emitted when the list of weather reports changes.</div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_aed52eaaa5a67a913ef7647fc4c7edf4e"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#aed52eaaa5a67a913ef7647fc4c7edf4e">Weather::WeatherDataProvider::update</a></div><div class="ttdeci">Q_INVOKABLE void update(bool isBackgroundUpdate=true)</div><div class="ttdoc">Update method.</div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a3e86b97258a906b0e0692007be230d58"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">Weather::WeatherDataProvider::sunInfo</a></div><div class="ttdeci">QString sunInfo</div><div class="ttdoc">sunInfo</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00159">WeatherDataProvider.h:159</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a3e86b97258a906b0e0692007be230d58"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a3e86b97258a906b0e0692007be230d58">Weather::WeatherDataProvider::sunInfo</a></div><div class="ttdeci">QString sunInfo</div><div class="ttdoc">sunInfo</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00149">WeatherDataProvider.h:149</a></div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00064">WeatherDataProvider.h:64</a></div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a1f5c01f8cda0c5d745238b4e54fbd501"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a1f5c01f8cda0c5d745238b4e54fbd501">Weather::WeatherDataProvider::backgroundUpdateChanged</a></div><div class="ttdeci">void backgroundUpdateChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_aa83bdd18eb7cdeb9b23208e29ff73f56"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#aa83bdd18eb7cdeb9b23208e29ff73f56">Weather::WeatherDataProvider::error</a></div><div class="ttdeci">void error(QString message)</div><div class="ttdoc">Signal emitted when a network error occurs.</div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a2dd0260bb1c01b72103652a2e96b35d3"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a2dd0260bb1c01b72103652a2e96b35d3">Weather::WeatherDataProvider::WeatherDataProvider</a></div><div class="ttdeci">WeatherDataProvider(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a17248794b111f4480d647125d98ef359"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a17248794b111f4480d647125d98ef359">Weather::WeatherDataProvider::globalInstance</a></div><div class="ttdeci">static WeatherDataProvider * globalInstance()</div><div class="ttdoc">Pointer to static instance of this class.</div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a6ec5dc5d952f6e91c2cac03d52005be6"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">Weather::WeatherDataProvider::downloading</a></div><div class="ttdeci">bool downloading</div><div class="ttdoc">Downloading flag.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00103">WeatherDataProvider.h:103</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a6ec5dc5d952f6e91c2cac03d52005be6"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">Weather::WeatherDataProvider::downloading</a></div><div class="ttdeci">bool downloading</div><div class="ttdoc">Downloading flag.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00093">WeatherDataProvider.h:93</a></div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a60c015caab8446faf71a5958912a2c02"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a60c015caab8446faf71a5958912a2c02">Weather::WeatherDataProvider::QNHInfoChanged</a></div><div class="ttdeci">void QNHInfoChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a8c707fa8e25ec16286dc6928a7503129"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a8c707fa8e25ec16286dc6928a7503129">Weather::WeatherDataProvider::sunInfoChanged</a></div><div class="ttdeci">void sunInfoChanged()</div><div class="ttdoc">Notifier signal.</div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a0261e3d7a2e30dd2b966ed33047b4953"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">Weather::WeatherDataProvider::weatherStations</a></div><div class="ttdeci">QList&lt; Weather::Station * &gt; weatherStations</div><div class="ttdoc">List of weather stations.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00199">WeatherDataProvider.h:199</a></div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_af8e354b66e38c248d1fa7286097a5e3b"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">Weather::WeatherDataProvider::QNHInfo</a></div><div class="ttdeci">QString QNHInfo</div><div class="ttdoc">QNHInfo.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00144">WeatherDataProvider.h:144</a></div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_adee73dcc1122ab480ad3aafe6470f145"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#adee73dcc1122ab480ad3aafe6470f145">Weather::WeatherDataProvider::findWeatherStation</a></div><div class="ttdeci">Q_INVOKABLE Weather::Station * findWeatherStation(const QString &amp;ICAOCode) const</div><div class="ttdoc">Find WeatherStation by ICAO code.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00132">WeatherDataProvider.h:132</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a0261e3d7a2e30dd2b966ed33047b4953"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a0261e3d7a2e30dd2b966ed33047b4953">Weather::WeatherDataProvider::weatherStations</a></div><div class="ttdeci">QList&lt; Weather::Station * &gt; weatherStations</div><div class="ttdoc">List of weather stations.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00189">WeatherDataProvider.h:189</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_af8e354b66e38c248d1fa7286097a5e3b"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#af8e354b66e38c248d1fa7286097a5e3b">Weather::WeatherDataProvider::QNHInfo</a></div><div class="ttdeci">QString QNHInfo</div><div class="ttdoc">QNHInfo.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00134">WeatherDataProvider.h:134</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_adee73dcc1122ab480ad3aafe6470f145"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#adee73dcc1122ab480ad3aafe6470f145">Weather::WeatherDataProvider::findWeatherStation</a></div><div class="ttdeci">Q_INVOKABLE Weather::Station * findWeatherStation(const QString &amp;ICAOCode) const</div><div class="ttdoc">Find WeatherStation by ICAO code.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00122">WeatherDataProvider.h:122</a></div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_aa9f20f5c6fe86fddf7aeed9438bba139"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#aa9f20f5c6fe86fddf7aeed9438bba139">Weather::WeatherDataProvider::~WeatherDataProvider</a></div><div class="ttdeci">~WeatherDataProvider() override</div><div class="ttdoc">Destructor.</div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html_a39abdd9eb031cdab206478ee04f2ed8a"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html#a39abdd9eb031cdab206478ee04f2ed8a">Weather::WeatherDataProvider::downloadingChanged</a></div><div class="ttdeci">void downloadingChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <!-- start footer part -->

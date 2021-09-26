@@ -88,6 +88,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a9002a6c781b03c6131b6c9508ebe4d89"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classTraffic_1_1PasswordDB.html">Traffic::PasswordDB</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#a9002a6c781b03c6131b6c9508ebe4d89">passwordDB</a> ()</td></tr>
 <tr class="memdesc:a9002a6c781b03c6131b6c9508ebe4d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PasswordDB instance.  <a href="classGlobal.html#a9002a6c781b03c6131b6c9508ebe4d89">More...</a><br /></td></tr>
 <tr class="separator:a9002a6c781b03c6131b6c9508ebe4d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cdf2edef150119b5374cf83e8fbab83"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#a5cdf2edef150119b5374cf83e8fbab83">positionProvider</a> ()</td></tr>
+<tr class="memdesc:a5cdf2edef150119b5374cf83e8fbab83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PositionProvider instance.  <a href="classGlobal.html#a5cdf2edef150119b5374cf83e8fbab83">More...</a><br /></td></tr>
+<tr class="separator:a5cdf2edef150119b5374cf83e8fbab83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a352cbc33987d91f147fca7c764689b79"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classPlatform_1_1Notifier.html">Platform::Notifier</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#a352cbc33987d91f147fca7c764689b79">notifier</a> ()</td></tr>
 <tr class="memdesc:a352cbc33987d91f147fca7c764689b79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <a href="classGlobal.html#a352cbc33987d91f147fca7c764689b79">More...</a><br /></td></tr>
 <tr class="separator:a352cbc33987d91f147fca7c764689b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,6 +103,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aed9f3526d8793743290c5e6b80daa4b5"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#aed9f3526d8793743290c5e6b80daa4b5">trafficDataProvider</a> ()</td></tr>
 <tr class="memdesc:aed9f3526d8793743290c5e6b80daa4b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static TrafficDataProvider instance.  <a href="classGlobal.html#aed9f3526d8793743290c5e6b80daa4b5">More...</a><br /></td></tr>
 <tr class="separator:aed9f3526d8793743290c5e6b80daa4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa61478ae28946a174442559a93391d9b"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#aa61478ae28946a174442559a93391d9b">weatherDataProvider</a> ()</td></tr>
+<tr class="memdesc:aa61478ae28946a174442559a93391d9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static WeatherDataProvider instance.  <a href="classGlobal.html#aa61478ae28946a174442559a93391d9b">More...</a><br /></td></tr>
+<tr class="separator:aa61478ae28946a174442559a93391d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> instance storage. </p>
@@ -109,7 +115,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This method must only be called while a global QCoreApplication exists. If <a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> manages an instance of your class, then none of the static methods must not be called in the constructor of your class, or else an inite loop may result.</dd></dl>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="Global_8h_source.html#l00075">75</a> of file <a class="el" href="Global_8h_source.html">Global.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Global_8h_source.html#l00083">83</a> of file <a class="el" href="Global_8h_source.html">Global.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7a2436b32bca56d1777c342b89fb77cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a2436b32bca56d1777c342b89fb77cc">&#9670;&nbsp;</a></span>Global()</h2>
@@ -426,6 +432,34 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a5cdf2edef150119b5374cf83e8fbab83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cdf2edef150119b5374cf83e8fbab83">&#9670;&nbsp;</a></span>positionProvider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a>* Global::positionProvider </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to appplication-wide static PositionProvider instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
 <a id="aba4b0b92d44c11026c675e2208d0003b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba4b0b92d44c11026c675e2208d0003b">&#9670;&nbsp;</a></span>settings()</h2>
 
@@ -478,6 +512,34 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to appplication-wide static TrafficDataProvider instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
+<a id="aa61478ae28946a174442559a93391d9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa61478ae28946a174442559a93391d9b">&#9670;&nbsp;</a></span>weatherDataProvider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a>* Global::weatherDataProvider </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to appplication-wide static WeatherDataProvider instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
 
 </div>

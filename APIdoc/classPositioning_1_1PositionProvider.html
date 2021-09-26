@@ -141,9 +141,6 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5da03727e664686eb8e9c0ccddabbff3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classPositioning_1_1PositionProvider.html">PositionProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a5da03727e664686eb8e9c0ccddabbff3">globalInstance</a> ()</td></tr>
-<tr class="memdesc:a5da03727e664686eb8e9c0ccddabbff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to static instance.  <a href="classPositioning_1_1PositionProvider.html#a5da03727e664686eb8e9c0ccddabbff3">More...</a><br /></td></tr>
-<tr class="separator:a5da03727e664686eb8e9c0ccddabbff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c139a25c7e3bd583ac72e117ff9753f"><td class="memItemLeft" align="right" valign="top">static QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionProvider.html#a6c139a25c7e3bd583ac72e117ff9753f">lastValidCoordinate</a> ()</td></tr>
 <tr class="memdesc:a6c139a25c7e3bd583ac72e117ff9753f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classPositioning_1_1PositionProvider.html#a6c139a25c7e3bd583ac72e117ff9753f">More...</a><br /></td></tr>
 <tr class="separator:a6c139a25c7e3bd583ac72e117ff9753f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,7 +176,7 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Central Position Provider. </p>
 <p>This class collects position data from the various sources (satellite, network, traffic receiver, …) chooses the best available source and exposes the data to QML and other parts of the program.</p>
-<p>There exists one static instance of this class, which can be accessed via the method <a class="el" href="classPositioning_1_1PositionProvider.html#a5da03727e664686eb8e9c0ccddabbff3" title="Pointer to static instance.">globalInstance()</a>. No other instance of this class should be used.</p>
+<p>There exists one static instance of this class, which can be accessed via the method globalInstance(). No other instance of this class should be used.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
 <p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00060">60</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
@@ -219,35 +216,6 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5da03727e664686eb8e9c0ccddabbff3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da03727e664686eb8e9c0ccddabbff3">&#9670;&nbsp;</a></span>globalInstance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="classPositioning_1_1PositionProvider.html">PositionProvider</a>* Positioning::PositionProvider::globalInstance </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pointer to static instance. </p>
-<p>This method returns a pointer to a static instance of this class. In rare situations, during shutdown of the app, a nullptr might be returned.</p>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to a static instance of this class </dd></dl>
-
-</div>
-</div>
 <a id="a6c139a25c7e3bd583ac72e117ff9753f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6c139a25c7e3bd583ac72e117ff9753f">&#9670;&nbsp;</a></span>lastValidCoordinate()</h2>
 
@@ -328,7 +296,7 @@ Properties</h2></td></tr>
 <p>Last valid coordinate reading. </p>
 <p>This property holds the last valid coordinate known. At the first start, this property is set to the location Freiburg Airport, EDTF. The value is stored in a QSetting at destruction, and restored in the construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00108">108</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00099">99</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>
@@ -355,7 +323,7 @@ Properties</h2></td></tr>
 <p>Last valid true track. </p>
 <p>This property holds the last valid true track known. At the first start, this property is set to 0°. The value is stored in a QSetting at destruction, and restored in the construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00122">122</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00113">113</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>

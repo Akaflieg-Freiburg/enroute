@@ -82,19 +82,6 @@ void Positioning::PositionProvider::deferredInitialization() const
 }
 
 
-auto Positioning::PositionProvider::globalInstance() -> PositionProvider *
-{
-#ifndef __clang_analyzer__
-    if (positionProviderStatic.isNull()) {
-        positionProviderStatic = new PositionProvider();
-    }
-    return positionProviderStatic;
-#else
-    return nullptr;
-#endif
-}
-
-
 void Positioning::PositionProvider::onPositionUpdated()
 {
     // This method is called if one of our providers has a new position info.
@@ -190,7 +177,7 @@ void Positioning::PositionProvider::setLastValidTT(Units::Angle newTT)
 
 auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
 {
-    auto *positionProvider = globalInstance();
+    auto *positionProvider = Global::positionProvider();
     if (positionProvider == nullptr) {
         return {};
     }
@@ -200,7 +187,7 @@ auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
 
 auto Positioning::PositionProvider::lastValidTT() -> Units::Angle
 {
-    auto *positionProvider = globalInstance();
+    auto *positionProvider = Global::positionProvider();
     if (positionProvider == nullptr) {
         return {};
     }

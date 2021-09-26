@@ -71,7 +71,7 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 2
 
-                text: positionProvider.statusString
+                text: global.positionProvider().statusString
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -86,7 +86,7 @@ Page {
 
                 background: Rectangle {
                     border.color: "black"
-                    color: positionProvider.positionInfo.isValid() ? "green" : "red"
+                    color: global.positionProvider().positionInfo.isValid() ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
@@ -110,9 +110,9 @@ Page {
             Label {
                 Layout.fillWidth: true
                 text: {
-                    if (!positionProvider.positionInfo.isValid())
+                    if (!global.positionProvider().positionInfo.isValid())
                         return "-"
-                    const lat = positionProvider.positionInfo.coordinate().toString().split(",")[0]
+                    const lat = global.positionProvider().positionInfo.coordinate().toString().split(",")[0]
                     if (lat === "")
                         return "-"
                     return lat
@@ -122,9 +122,9 @@ Page {
             Label { text: qsTr("Longitude") }
             Label {
                 text: {
-                    if (!positionProvider.positionInfo.isValid())
+                    if (!global.positionProvider().positionInfo.isValid())
                         return "-"
-                    const lon = positionProvider.positionInfo.coordinate().toString().split(",")[1]
+                    const lon = global.positionProvider().positionInfo.coordinate().toString().split(",")[1]
                     if (lon === "")
                         return "-"
                     return lon
@@ -134,7 +134,7 @@ Page {
             Label { text: qsTr("True Altitude") }
             Label {
                 text: {
-                    const talt = positionProvider.positionInfo.trueAltitude();
+                    const talt = global.positionProvider().positionInfo.trueAltitude();
                     return talt.isFinite() ? Math.round(talt.toFeet()) + " ft" : "-"
                 }
             }
@@ -142,7 +142,7 @@ Page {
             Label { text: qsTr("Error (horizontal)") }
             Label {
                 text: {
-                    const posError = positionProvider.positionInfo.positionErrorEstimate();
+                    const posError = global.positionProvider().positionInfo.positionErrorEstimate();
                     return posError.isFinite() ? "±" + Math.round(posError.toM()) + " m" : "-"
                 }
             }
@@ -150,7 +150,7 @@ Page {
             Label { text: qsTr("Error (vertical)") }
             Label {
                 text: {
-                    const taltError = positionProvider.positionInfo.trueAltitudeErrorEstimate();
+                    const taltError = global.positionProvider().positionInfo.trueAltitudeErrorEstimate();
                     return taltError.isFinite() ? "±" + Math.round(taltError.toFeet()) + " ft" : "-"
                 }
 
@@ -158,7 +158,7 @@ Page {
 
             Label { text: qsTr("Magnetic Variation") }
             Label { text: {
-                    const magVar = positionProvider.positionInfo.variation();
+                    const magVar = global.positionProvider().positionInfo.variation();
                     return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
                 }
             }
@@ -166,7 +166,7 @@ Page {
             Label { text: qsTr("Ground Speed") }
             Label {
                 text: {
-                    const gs = positionProvider.positionInfo.groundSpeed();
+                    const gs = global.positionProvider().positionInfo.groundSpeed();
                     if (!gs.isFinite())
                         return "-"
                     return global.settings().useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
@@ -176,7 +176,7 @@ Page {
             Label { text: qsTr("True Track") }
             Label {
                 text: {
-                    const tt = positionProvider.positionInfo.trueTrack();
+                    const tt = global.positionProvider().positionInfo.trueTrack();
                     return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
@@ -184,13 +184,13 @@ Page {
             Label { text: qsTr("Vertical Speed") }
             Label {
                 text: {
-                    const vs = positionProvider.positionInfo.verticalSpeed();
+                    const vs = global.positionProvider().positionInfo.verticalSpeed();
                     return vs.isFinite() ? Math.round(vs.toFPM()) + " ft/min" : "-"
                 }
             }
 
             Label { text: qsTr("Pressure Altitude") }
-            Label { text: positionProvider.pressureAltitude.isFinite() ? Math.round(positionProvider.pressureAltitude.toFeet()) + " ft" : "-" }
+            Label { text: global.positionProvider().pressureAltitude.isFinite() ? Math.round(global.positionProvider().pressureAltitude.toFeet()) + " ft" : "-" }
 
 
         } // GridLayout

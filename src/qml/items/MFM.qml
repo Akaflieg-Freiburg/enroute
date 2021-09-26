@@ -58,7 +58,7 @@ Item {
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
-        property real animatedTrack: positionProvider.lastValidTT.isFinite() ? positionProvider.lastValidTT.toDEG() : 0
+        property real animatedTrack: global.positionProvider().lastValidTT.isFinite() ? global.positionProvider().lastValidTT.toDEG() : 0
         Behavior on animatedTrack { RotationAnimation {duration: 400; direction: RotationAnimation.Shortest } }
 
 
@@ -86,7 +86,7 @@ Item {
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
             when: global.settings().mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: global.settings().mapBearingPolicy === GlobalSettings.TTUp ? positionProvider.lastValidTT.toDEG() : 0
+            value: global.settings().mapBearingPolicy === GlobalSettings.TTUp ? global.positionProvider().lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -98,7 +98,7 @@ Item {
         //
 
         // Initially, set the center to the last saved value
-        center: positionProvider.lastValidCoordinate
+        center: global.positionProvider().lastValidCoordinate
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
@@ -110,9 +110,9 @@ Item {
             value: {
                 // If not in flight, then aircraft stays in center of display
                 if (!global.navigator().isInFlight)
-                    return positionProvider.lastValidCoordinate
-                if (!positionProvider.lastValidTT.isFinite())
-                    return positionProvider.lastValidCoordinate
+                    return global.positionProvider().lastValidCoordinate
+                if (!global.positionProvider().lastValidTT.isFinite())
+                    return global.positionProvider().lastValidCoordinate
 
                 // Otherwise, we position the aircraft someplace on a circle around the
                 // center, so that the map shows a larger portion of the airspace ahead
@@ -129,7 +129,7 @@ Item {
                                         )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
-                return positionProvider.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, positionProvider.lastValidTT.toDEG())
+                return global.positionProvider().lastValidCoordinate.atDistanceAndAzimuth(radiusInM, global.positionProvider().lastValidTT.toDEG())
             }
         }
 
@@ -166,7 +166,7 @@ Item {
 
         // ADDITINAL MAP ITEMS
         MapCircle { // Circle for nondirectional traffic warning
-            center: positionProvider.lastValidCoordinate
+            center: global.positionProvider().lastValidCoordinate
 
             radius: Math.max(500, global.trafficDataProvider().trafficObjectWithoutPosition.hDist.toM())
             Behavior on radius {
@@ -188,7 +188,7 @@ Item {
 
             property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
 
-            coordinate: positionProvider.lastValidCoordinate
+            coordinate: global.positionProvider().lastValidCoordinate
             Behavior on coordinate {
                 CoordinateAnimation { duration: 1000 }
                 enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
@@ -248,8 +248,8 @@ Item {
 
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
-            coordinate: positionProvider.lastValidCoordinate
-            visible: (global.navigator().isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
+            coordinate: global.positionProvider().lastValidCoordinate
+            visible: (global.navigator().isInFlight) && (global.positionProvider().positionInfo.trueTrack().isFinite())
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -263,7 +263,7 @@ Item {
                 Rectangle {
                     id: fiveMinuteBarBaseRect
 
-                    property real animatedGroundSpeedInMetersPerSecond: (global.navigator().isInFlight) ? positionProvider.positionInfo.groundSpeed().toMPS() : 0.0
+                    property real animatedGroundSpeedInMetersPerSecond: (global.navigator().isInFlight) ? global.positionProvider().positionInfo.groundSpeed().toMPS() : 0.0
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
                     rotation: flightMap.animatedTrack-flightMap.bearing
@@ -302,7 +302,7 @@ Item {
         MapQuickItem {
             id: ownPosition
 
-            coordinate: positionProvider.lastValidCoordinate
+            coordinate: global.positionProvider().lastValidCoordinate
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -317,8 +317,8 @@ Item {
                 rotation: flightMap.animatedTrack-flightMap.bearing
 
                 FlightVector {
-                    groundSpeedInMetersPerSecond: positionProvider.positionInfo.groundSpeed().toMPS()
-                    visible: (global.navigator().isInFlight) && (positionProvider.positionInfo.trueTrack().isFinite())
+                    groundSpeedInMetersPerSecond: global.positionProvider().positionInfo.groundSpeed().toMPS()
+                    visible: (global.navigator().isInFlight) && (global.positionProvider().positionInfo.trueTrack().isFinite())
                 }
 
                 Image {
@@ -328,7 +328,7 @@ Item {
                     y: -height/2.0
 
                     source: {
-                        var pInfo = positionProvider.positionInfo
+                        var pInfo = global.positionProvider().positionInfo
 
                         if (!pInfo.isValid()) {
                             return "/icons/self-noPosition.svg"

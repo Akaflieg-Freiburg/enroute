@@ -317,7 +317,7 @@ Dialog {
                 // Mention useMetricUnits
                 global.settings().useMetricUnits
 
-                return global.navigator().describeWay(positionProvider.positionInfo.coordinate(), waypoint.coordinate)
+                return global.navigator().describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
             }
             visible: (text !== "")
             Layout.fillWidth: true
@@ -360,7 +360,7 @@ Dialog {
             text: qsTr("Direct")
             icon.source: "/icons/material/ic_keyboard_tab.svg"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: positionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
+            enabled: global.positionProvider().receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
@@ -368,7 +368,7 @@ Dialog {
                     overwriteDialog.open()
                 else {
                     global.navigator().flightRoute.clear()
-                    global.navigator().flightRoute.append(positionProvider.lastValidCoordinate)
+                    global.navigator().flightRoute.append(global.positionProvider().lastValidCoordinate)
                     global.navigator().flightRoute.append(waypoint)
                     toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
                 }
@@ -441,7 +441,7 @@ Dialog {
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
             global.navigator().flightRoute.clear()
-            global.navigator().flightRoute.append(positionProvider.lastValidCoordinate)
+            global.navigator().flightRoute.append(global.positionProvider().lastValidCoordinate)
             global.navigator().flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))

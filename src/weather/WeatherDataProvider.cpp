@@ -85,8 +85,8 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
 
 void Weather::WeatherDataProvider::setupConnections() const
 {
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
+    connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
+    connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
     connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
@@ -363,7 +363,7 @@ void Weather::WeatherDataProvider::save()
 auto Weather::WeatherDataProvider::sunInfo() -> QString
 {
     // Paranoid safety checks
-    auto *positionProvider = Positioning::PositionProvider::globalInstance();
+    auto *positionProvider = Global::positionProvider();
     if (positionProvider == nullptr) {
         return QString();
     }
@@ -430,7 +430,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
 auto Weather::WeatherDataProvider::QNHInfo() const -> QString
 {
     // Paranoid safety checks
-    auto *positionProvider = Positioning::PositionProvider::globalInstance();
+    auto *positionProvider = Global::positionProvider();
     if (positionProvider == nullptr) {
         return QString();
     }

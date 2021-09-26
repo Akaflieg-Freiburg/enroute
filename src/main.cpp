@@ -168,9 +168,6 @@ auto main(int argc, char *argv[]) -> int
     // Make global objects available to QML engine
     engine->rootContext()->setContextProperty("global", new Global(engine) );
 
-    // Make GPS available to QML engine
-    engine->rootContext()->setContextProperty("positionProvider", Positioning::PositionProvider::globalInstance());
-
     // Attach library info
     engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
 

@@ -30,6 +30,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier.h"
+#include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
@@ -43,6 +44,7 @@ QPointer<DataManagement::DataManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<Platform::Notifier> g_notifier {};
+QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Settings> g_settings {};
@@ -85,6 +87,7 @@ void Global::destruct()
     delete g_navigator;
     delete g_networkAccessManager;
     delete g_passwordDB;
+    delete g_positionProvider;
     delete g_settings;
     delete g_trafficDataProvider;
 
@@ -137,6 +140,12 @@ auto Global::notifier() -> Platform::Notifier*
 auto Global::passwordDB() -> Traffic::PasswordDB*
 {
     return allocateInternal<Traffic::PasswordDB>(g_passwordDB);
+}
+
+
+auto Global::positionProvider() -> Positioning::PositionProvider*
+{
+    return allocateInternal<Positioning::PositionProvider>(g_positionProvider);
 }
 
 

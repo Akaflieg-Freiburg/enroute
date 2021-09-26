@@ -58,7 +58,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
-                    const talt= positionProvider.positionInfo.trueAltitude();
+                    const talt= global.positionProvider().positionInfo.trueAltitude();
                     return talt.isFinite() ? Math.round(talt.toFeet()) + " ft" : "-"
                 }
                 font.weight: Font.Bold
@@ -89,7 +89,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: positionProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(positionProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                text: global.positionProvider().pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(global.positionProvider().pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"
@@ -118,7 +118,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
-                    const gs = positionProvider.positionInfo.groundSpeed();
+                    const gs = global.positionProvider().positionInfo.groundSpeed();
                     if (!gs.isFinite())
                         return "-"
                     return global.settings().useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
@@ -150,7 +150,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
-                    var tt = positionProvider.positionInfo.trueTrack();
+                    var tt = global.positionProvider().positionInfo.trueTrack();
                     return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
 

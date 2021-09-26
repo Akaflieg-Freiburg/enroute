@@ -49,6 +49,10 @@ namespace Platform {
 class Notifier;
 }
 
+namespace Positioning {
+class PositionProvider;
+}
+
 
 /*! \brief Global instance storage
  *
@@ -132,6 +136,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Traffic::PasswordDB* passwordDB();
+
+    /*! \brief Pointer to appplication-wide static PasswordDB instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Positioning::PositionProvider* positionProvider();
 
     /*! \brief Pointer to appplication-wide static notification manager instance
      *

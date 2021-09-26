@@ -54,7 +54,7 @@ auto Navigation::Navigator::describeWay(const QGeoCoordinate &from, const QGeoCo
 
 void Navigation::Navigator::deferredInitialization() const
 {
-    connect(Positioning::PositionProvider::globalInstance(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::onPositionUpdated);
+    connect(Global::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::onPositionUpdated);
 }
 
 

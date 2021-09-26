@@ -20,6 +20,7 @@
 
 #include <array>
 
+#include "Global.h"
 #include "positioning/Geoid.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Abstract.h"
@@ -394,7 +395,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Compute horizontal distance to traffic if our own position
         // is known.
         Units::Distance hDist {};
-        auto* positionProviderPtr = Positioning::PositionProvider::globalInstance();
+        auto* positionProviderPtr = Global::positionProvider();
         if (positionProviderPtr != nullptr) {
             auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
             auto trafficCoordinate = pInfo.coordinate();

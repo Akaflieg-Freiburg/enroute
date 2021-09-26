@@ -85,7 +85,7 @@ Page {
 
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = global.navigator().describeWay(positionProvider.positionInfo.coordinate(), model.modelData.coordinate)
+                        var wayTo  = global.navigator().describeWay(global.positionProvider().positionInfo.coordinate(), model.modelData.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
@@ -111,7 +111,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: adList.model = global.geoMapProvider().nearbyWaypoints(positionProvider.lastValidCoordinate, "AD")
+            Component.onCompleted: adList.model = global.geoMapProvider().nearbyWaypoints(global.positionProvider().lastValidCoordinate, "AD")
 
             Label {
                 anchors.fill: parent
@@ -133,7 +133,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: naList.model = global.geoMapProvider().nearbyWaypoints(positionProvider.lastValidCoordinate, "NAV")
+            Component.onCompleted: naList.model = global.geoMapProvider().nearbyWaypoints(global.positionProvider().lastValidCoordinate, "NAV")
 
             Label {
                 anchors.fill: parent
@@ -155,7 +155,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: rpList.model = global.geoMapProvider().nearbyWaypoints(positionProvider.lastValidCoordinate, "WP")
+            Component.onCompleted: rpList.model = global.geoMapProvider().nearbyWaypoints(global.positionProvider().lastValidCoordinate, "WP")
             
             Label {
                 anchors.fill: parent

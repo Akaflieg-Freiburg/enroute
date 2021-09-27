@@ -158,26 +158,21 @@ auto main(int argc, char *argv[]) -> int
     /*
      * Set up ApplicationEngine for QML
      */
-    auto* engine = new QQmlApplicationEngine();
-    QObject* demoRunner = nullptr;
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
+    engine.rootContext()->setContextProperty("global", new Global(&engine) );
+    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+
     if (parser.isSet(screenshotOption)) {
-        demoRunner = new DemoRunner(engine);
+        new DemoRunner(&app);
     }
 
-    // Manual location
-    engine->rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
-
-    // Make global objects available to QML engine
-    engine->rootContext()->setContextProperty("global", new Global(engine) );
-
     // Load GUI and enter event loop
-    engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    QGuiApplication::exec();
+    return QGuiApplication::exec();
 
     // Ensure that things get deleted in the right order
-    delete demoRunner;
-    delete engine;
-    Global::destruct();
+//    delete demoRunner;
+//    Global::destruct();
 
     // We exit(…) and do not return here. The reason is that the deconstruction of the qApp object
     // freezes sporadically (for unclear reasons) whenever a connection to a traffic data receiver exists.

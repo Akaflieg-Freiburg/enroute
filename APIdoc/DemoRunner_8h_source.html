@@ -70,25 +70,26 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classDemoRunner.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDemoRunner.html">DemoRunner</a> : <span class="keyword">public</span> QObject {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">DemoRunner</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    ~<a class="code" href="classDemoRunner.html">DemoRunner</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// Begin to remote-control the app</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> run();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classDemoRunner.html">DemoRunner</a>)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classDemoRunner.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDemoRunner.html">DemoRunner</a> : <span class="keyword">public</span> QObject {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">DemoRunner</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// Standard destructor</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    ~<a class="code" href="classDemoRunner.html">DemoRunner</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// Begin to remote-control the app</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> run();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classDemoRunner.html">DemoRunner</a>)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassDemoRunner_html"><div class="ttname"><a href="classDemoRunner.html">DemoRunner</a></div><div class="ttdoc">Remote controls the app and takes screenshot images.</div><div class="ttdef"><b>Definition:</b> <a href="DemoRunner_8h_source.html#l00031">DemoRunner.h:31</a></div></div>
+<div class="ttc" id="aclassDemoRunner_html"><div class="ttname"><a href="classDemoRunner.html">DemoRunner</a></div><div class="ttdoc">Remote controls the app and takes screenshot images.</div><div class="ttdef"><b>Definition:</b> <a href="DemoRunner_8h_source.html#l00032">DemoRunner.h:32</a></div></div>
 <div class="ttc" id="aclassDemoRunner_html_a6a65ea26f415fbcac035a00f5a6dd9f8"><div class="ttname"><a href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">DemoRunner::DemoRunner</a></div><div class="ttdeci">DemoRunner(QObject *parent=nullptr)</div><div class="ttdoc">Creates a new DemoRunner.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

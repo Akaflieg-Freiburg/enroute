@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QObject>
 
 /*! \brief Remote controls the app and takes screenshot images
  *

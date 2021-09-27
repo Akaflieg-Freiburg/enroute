@@ -181,7 +181,7 @@ Rectangle {
                 id: utc_1
                 Layout.alignment: Qt.AlignHCenter
 
-                text: global.navigator().clock().timeAsUTCString
+                text: global.navigator().clock.timeAsUTCString
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"

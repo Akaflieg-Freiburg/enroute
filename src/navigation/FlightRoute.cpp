@@ -26,6 +26,7 @@
 #include "FlightRoute.h"
 #include "Global.h"
 #include "Settings.h"
+#include "navigation/Navigator.h"
 
 
 Navigation::FlightRoute::FlightRoute(QObject *parent)
@@ -40,7 +41,7 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
 
-    connect(Aircraft::globalInstance(), &Aircraft::valChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(Global::navigator()->aircraft(), &Aircraft::valChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(Weather::Wind::globalInstance(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
 }
 
@@ -405,10 +406,10 @@ auto Navigation::FlightRoute::summary() const -> QString {
 
 
     QStringList complaints;
-    if (!qIsFinite(Aircraft::globalInstance()->cruiseSpeedInKT())) {
+    if (!qIsFinite(Global::navigator()->aircraft()->cruiseSpeedInKT())) {
         complaints += tr("Cruise speed not specified.");
     }
-    if (!qIsFinite(Aircraft::globalInstance()->fuelConsumptionInLPH())) {
+    if (!qIsFinite(Global::navigator()->aircraft()->fuelConsumptionInLPH())) {
         complaints += tr("Fuel consumption not specified.");
     }
     if (!qIsFinite(Weather::Wind::globalInstance()->windSpeedInKT())) {
@@ -451,7 +452,7 @@ void Navigation::FlightRoute::updateLegs()
     m_legs.clear();
 
     for(int i=0; i<m_waypoints.size()-1; i++) {
-        m_legs.append(new Leg(m_waypoints.at(i), m_waypoints.at(i+1), Aircraft::globalInstance(), Weather::Wind::globalInstance(), this));
+        m_legs.append(new Leg(m_waypoints.at(i), m_waypoints.at(i+1), Global::navigator()->aircraft(), Weather::Wind::globalInstance(), this));
     }
 }
 

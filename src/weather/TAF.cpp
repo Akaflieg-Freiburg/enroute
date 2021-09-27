@@ -21,7 +21,9 @@
 #include <QDataStream>
 #include <QXmlStreamAttribute>
 
-#include "Clock.h"
+#include "Global.h"
+#include "navigation/Navigator.h"
+#include "navigation/Clock.h"
 #include "weather/TAF.h"
 
 
@@ -73,7 +75,7 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
 
         if (xml.isEndElement() && name == "TAF") {
             break;
-}
+        }
 
         xml.skipCurrentElement();
     }
@@ -101,7 +103,7 @@ auto Weather::TAF::isExpired() const -> bool
 {
     if (!_expirationTime.isValid()) {
         return true;
-}
+    }
     return QDateTime::currentDateTime() > _expirationTime;
 }
 
@@ -110,19 +112,19 @@ auto Weather::TAF::isValid() const -> bool
 {
     if (!_location.isValid()) {
         return false;
-}
+    }
     if (!_expirationTime.isValid()) {
         return false;
-}
+    }
     if (!_issueTime.isValid()) {
         return false;
-}
+    }
     if (_ICAOCode.isEmpty()) {
         return false;
-}
+    }
     if (hasParseError()) {
         return false;
-}
+    }
 
     return true;
 }
@@ -132,16 +134,16 @@ auto Weather::TAF::relativeIssueTime() const -> QString
 {
     if (!_issueTime.isValid()) {
         return QString();
-}
+    }
 
-    return Clock::describeTimeDifference(_issueTime);
+    return Navigation::Clock::describeTimeDifference(_issueTime);
 }
 
 
 void Weather::TAF::setupSignals() const
 {
     // Emit notifier signals whenever the time changes
-    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
+    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
 }
 
 

@@ -32,10 +32,10 @@
 
 #include "sunset.h"
 
-#include "Clock.h"
 #include "Global.h"
 #include "Settings.h"
 #include "geomaps/GeoMapProvider.h"
+#include "navigation/Clock.h"
 #include "navigation/FlightRoute.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
@@ -73,8 +73,8 @@ void Weather::WeatherDataProvider::deferredInitialization()
     connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
     connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 
-    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
-    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
+    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
+    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 
     // Read METAR/TAF from "weather.dat"
     bool success = load();
@@ -399,12 +399,12 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
 
     if (sunrise.isValid() && sunset.isValid() && sunriseTomorrow.isValid()) {
         if (currentTime < sunrise) {
-            return tr("SR %1, %2").arg(Clock::describePointInTime(sunrise), Clock::describeTimeDifference(sunrise));
+            return tr("SR %1, %2").arg(Navigation::Clock::describePointInTime(sunrise), Navigation::Clock::describeTimeDifference(sunrise));
         }
         if (currentTime < sunset.addSecs(40*60)) {
-            return tr("SS %1, %2").arg(Clock::describePointInTime(sunset), Clock::describeTimeDifference(sunset));
+            return tr("SS %1, %2").arg(Navigation::Clock::describePointInTime(sunset), Navigation::Clock::describeTimeDifference(sunset));
         }
-        return tr("SR %1, %2").arg(Clock::describePointInTime(sunriseTomorrow), Clock::describeTimeDifference(sunriseTomorrow));
+        return tr("SR %1, %2").arg(Navigation::Clock::describePointInTime(sunriseTomorrow), Navigation::Clock::describeTimeDifference(sunriseTomorrow));
     }
     return QString();
 }
@@ -448,7 +448,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     if (closestReportWithQNH != nullptr) {
         return tr("QNH: %1 hPa in %2, %3").arg(closestReportWithQNH->metar()->QNH())
                 .arg(closestReportWithQNH->ICAOCode(),
-                     Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
+                     Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }
     return QString();
 }

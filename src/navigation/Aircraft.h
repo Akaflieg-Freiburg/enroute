@@ -25,6 +25,8 @@
 #include "units/Speed.h"
 
 
+namespace Navigation {
+
 /*! \brief This extremely simple class holds a few numbers that describe an
     aircraft */
 
@@ -44,12 +46,6 @@ public:
 
     // Standard destructor
     ~Aircraft() override = default;
-
-    /*! \brief Pointer to static instance of this class
-     *
-     *  @returns Pointer to global instance
-     */
-    static Aircraft* globalInstance();
 
     /*! \brief Cruise Speed
      *
@@ -209,3 +205,5 @@ private:
 
     QSettings settings;
 };
+
+}

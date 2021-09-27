@@ -21,6 +21,8 @@
 #pragma once
 
 #include "FlightRoute.h"
+#include "navigation/Clock.h"
+#include "navigation/FlightRoute.h"
 #include "positioning/PositionInfo.h"
 
 
@@ -63,6 +65,32 @@ public:
     // PROPERTIES
     //
 
+    /*! \brief Current aircraft
+     *
+     *  The aircraft returned here is owned by this class and must not be deleted.
+     *  QML ownership has been set to QQmlEngine::CppOwnership.
+     */
+    Q_PROPERTY(Navigation::Aircraft* aircraft READ aircraft CONSTANT)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property aircraft
+     */
+    Navigation::Aircraft* aircraft();
+
+    /*! \brief Global clock
+     *
+     *  The clock returned here is owned by this class and must not be deleted.
+     *  QML ownership has been set to QQmlEngine::CppOwnership.
+     */
+    Q_PROPERTY(Navigation::Clock* clock READ clock CONSTANT)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property clock
+     */
+    Navigation::Clock* clock();
+
     /*! \brief Current flight route
      *
      *  This flight route returned here is owned by this class and must not be deleted.
@@ -74,10 +102,7 @@ public:
      *
      *  @returns Property flightRoute
      */
-    FlightRoute* flightRoute() const
-    {
-        return m_flightRoute;
-    }
+    FlightRoute* flightRoute();
 
     /*! \brief Estimate whether the device is flying or on the ground
      *
@@ -120,6 +145,9 @@ private:
     static constexpr double flightSpeedHysteresisInKn = 5.0;
 
     bool m_isInFlight {false};
+
+    QPointer<Aircraft> m_aircraft {nullptr};
+    QPointer<Clock> m_clock {nullptr};
     QPointer<FlightRoute> m_flightRoute {nullptr};
 };
 

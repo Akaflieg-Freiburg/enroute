@@ -18,9 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Clock.h"
 #include "Global.h"
 #include "Settings.h"
+#include "navigation/Navigator.h"
+#include "navigation/Clock.h"
 #include "weather/METAR.h"
 
 
@@ -214,15 +215,15 @@ auto Weather::METAR::relativeObservationTime() const -> QString
         return QString();
     }
 
-    return Clock::describeTimeDifference(_observationTime);
+    return Navigation::Clock::describeTimeDifference(_observationTime);
 }
 
 
 void Weather::METAR::setupSignals() const
 {
     // Emit notifier signals whenever the time changes
-    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::METAR::summaryChanged);
-    connect(Clock::globalInstance(), &Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
+    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
+    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
 
     connect(Global::settings(), &Settings::useMetricUnitsChanged, this, &Weather::METAR::summaryChanged);
 }
@@ -270,7 +271,7 @@ auto Weather::METAR::summary() const -> QString {
         return QString();
     }
 
-    return tr("%1 %2: %3").arg(messageType(), Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
+    return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(_observationTime), resultList.join(" • "));
 }
 
 

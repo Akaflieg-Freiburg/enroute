@@ -29,13 +29,7 @@
 using namespace std::chrono_literals;
 
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<Clock> clockStatic {};
-#endif
-
-
-Clock::Clock(QObject *parent) : QObject(parent)
+Navigation::Clock::Clock(QObject *parent) : QObject(parent)
 {
     // We need to update the time regularly. I do not use a simple timer here that emits "timeChanged" once per minute, because I
     // want the signal to be emitted right after the full minute. So, I use a timer that once a minute set a single-shot time
@@ -54,7 +48,7 @@ Clock::Clock(QObject *parent) : QObject(parent)
 }
 
 
-auto Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
+auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
 {
     auto minutes = qRound(QDateTime::currentDateTime().secsTo(pointInTime)/60.0);
 
@@ -87,7 +81,7 @@ auto Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
 }
 
 
-auto Clock::describePointInTime(QDateTime pointInTime) -> QString
+auto Navigation::Clock::describePointInTime(QDateTime pointInTime) -> QString
 {
     pointInTime = pointInTime.toUTC();
 
@@ -111,20 +105,7 @@ auto Clock::describePointInTime(QDateTime pointInTime) -> QString
 }
 
 
-auto Clock::globalInstance() -> Clock *
-{
-#ifndef __clang_analyzer__
-    if (clockStatic.isNull()) {
-        clockStatic = new Clock();
-    }
-    return clockStatic;
-#else
-    return nullptr;
-#endif
-}
-
-
-void Clock::setSingleShotTimer()
+void Navigation::Clock::setSingleShotTimer()
 {
     QTime current = QDateTime::currentDateTime().time();
     int msecsToNextMinute = 60*1000 - (current.msecsSinceStartOfDay() % (60*1000));
@@ -135,7 +116,7 @@ void Clock::setSingleShotTimer()
 }
 
 
-auto Clock::timeAsUTCString() -> QString
+auto Navigation::Clock::timeAsUTCString() -> QString
 {
     return QDateTime::currentDateTimeUtc().toString("H:mm");
 }

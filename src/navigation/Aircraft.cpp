@@ -23,13 +23,8 @@
 #include <QPointer>
 #include <QtGlobal>
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<Aircraft> aircraftStatic {};
-#endif
 
-
-Aircraft::Aircraft(QObject *parent) : QObject(parent) {
+Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
     _cruiseSpeedInKT = settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble();
     if ((_cruiseSpeedInKT < minAircraftSpeedInKT) || (_cruiseSpeedInKT > maxAircraftSpeedInKT)) {
         _cruiseSpeedInKT = qQNaN();
@@ -47,24 +42,12 @@ Aircraft::Aircraft(QObject *parent) : QObject(parent) {
 }
 
 
-auto Aircraft::globalInstance() -> Aircraft*
-{
-#ifndef __clang_analyzer__
-    if (aircraftStatic.isNull()) {
-        aircraftStatic = new Aircraft();
-    }
-    return aircraftStatic;
-#else
-    return nullptr;
-#endif
-}
-
-
-auto Aircraft::cruiseSpeedInKT() const -> double {
+auto Navigation::Aircraft::cruiseSpeedInKT() const -> double {
     return _cruiseSpeedInKT;
 }
 
-void Aircraft::setCruiseSpeedInKT(double speedInKT) {
+
+void Navigation::Aircraft::setCruiseSpeedInKT(double speedInKT) {
     if ((speedInKT < minAircraftSpeedInKT) || (speedInKT > maxAircraftSpeedInKT)) {
         speedInKT = qQNaN();
     }
@@ -76,21 +59,25 @@ void Aircraft::setCruiseSpeedInKT(double speedInKT) {
     }
 }
 
-auto Aircraft::cruiseSpeedInKMH() const -> double {
+
+auto Navigation::Aircraft::cruiseSpeedInKMH() const -> double {
     auto speed = Units::Speed::fromKN(_cruiseSpeedInKT);
     return speed.toKMH();
 }
 
-void Aircraft::setCruiseSpeedInKMH(double speedInKMH) {
+
+void Navigation::Aircraft::setCruiseSpeedInKMH(double speedInKMH) {
     auto speed = Units::Speed::fromKMH(speedInKMH);
     setCruiseSpeedInKT(speed.toKN());
 }
 
-auto Aircraft::descentSpeedInKT() const -> double {
+
+auto Navigation::Aircraft::descentSpeedInKT() const -> double {
     return _descentSpeedInKT;
 }
 
-void Aircraft::setDescentSpeedInKT(double speedInKT) {
+
+void Navigation::Aircraft::setDescentSpeedInKT(double speedInKT) {
     if ((speedInKT < minAircraftSpeedInKT) || (speedInKT > maxAircraftSpeedInKT)) {
         speedInKT = qQNaN();
     }
@@ -102,17 +89,20 @@ void Aircraft::setDescentSpeedInKT(double speedInKT) {
     }
 }
 
-auto Aircraft::descentSpeedInKMH() const -> double {
+
+auto Navigation::Aircraft::descentSpeedInKMH() const -> double {
     auto speed = Units::Speed::fromKN(_descentSpeedInKT);
     return speed.toKMH();
 }
 
-void Aircraft::setDescentSpeedInKMH(double speedInKMH) {
+
+void Navigation::Aircraft::setDescentSpeedInKMH(double speedInKMH) {
     auto speed = Units::Speed::fromKMH(speedInKMH);
     setDescentSpeedInKT(speed.toKN());
 }
 
-void Aircraft::setFuelConsumptionInLPH(double fuelConsumptionInLPH) {
+
+void Navigation::Aircraft::setFuelConsumptionInLPH(double fuelConsumptionInLPH) {
     if ((fuelConsumptionInLPH < minFuelConsuption) || (fuelConsumptionInLPH > maxFuelConsuption)) {
         fuelConsumptionInLPH = qQNaN();
     }

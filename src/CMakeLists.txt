@@ -73,8 +73,6 @@ set(SOURCES
     ressources.qrc.in
 
     # Header files
-    Aircraft.h
-    Clock.h
     dataManagement/DataManager.h
     dataManagement/Downloadable.h
     dataManagement/DownloadableGroup.h
@@ -88,6 +86,8 @@ set(SOURCES
     Global.h
     Librarian.h
     MobileAdaptor.h
+    navigation/Aircraft.h
+    navigation/Clock.h
     navigation/FlightRoute.h
     navigation/FlightRoute_Leg.h
     navigation/Navigator.h
@@ -124,8 +124,6 @@ set(SOURCES
     weather/Wind.h
 
     # C++ files
-    Aircraft.cpp
-    Clock.cpp
     dataManagement/DataManager.cpp
     dataManagement/Downloadable.cpp
     dataManagement/DownloadableGroup.cpp
@@ -141,6 +139,8 @@ set(SOURCES
     main.cpp
     MobileAdaptor.cpp
     MobileAdaptor_share.cpp
+    navigation/Aircraft.cpp
+    navigation/Clock.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp
     navigation/FlightRoute_Leg.cpp

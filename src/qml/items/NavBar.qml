@@ -50,7 +50,7 @@ Rectangle {
             id: trueAltitude
 
             Layout.preferredWidth: m_implicitWidth
-            property var m_implicitWidth: Math.max(trueAltitude_1.contentWidth, trueAltitude_2.contentWidth)
+            property real m_implicitWidth: Math.max(trueAltitude_1.contentWidth, trueAltitude_2.contentWidth)
 
             Label {
                 id: trueAltitude_1
@@ -82,7 +82,7 @@ Rectangle {
 
             visible: grid.numVisibleItems() >= 5
             Layout.preferredWidth: visible ? m_implicitWidth : 0
-            property var m_implicitWidth: Math.max(flightLevel_1.contentWidth, flightLevel_2.contentWidth)
+            property real m_implicitWidth: Math.max(flightLevel_1.contentWidth, flightLevel_2.contentWidth)
 
             Label {
                 id: flightLevel_1
@@ -110,7 +110,7 @@ Rectangle {
             id: groundSpeed
 
             Layout.preferredWidth: m_implicitWidth
-            property var m_implicitWidth: Math.max(groundSpeed_1.contentWidth, groundSpeed_2.contentWidth)
+            property real m_implicitWidth: Math.max(groundSpeed_1.contentWidth, groundSpeed_2.contentWidth)
 
             Label {
                 id: groundSpeed_1
@@ -142,7 +142,7 @@ Rectangle {
             id: trueTrack
 
             Layout.preferredWidth: m_implicitWidth
-            property var m_implicitWidth: Math.max(trueTrack_1.contentWidth, trueTrack_2.contentWidth)
+            property real m_implicitWidth: Math.max(trueTrack_1.contentWidth, trueTrack_2.contentWidth)
 
             Label {
                 id: trueTrack_1
@@ -175,13 +175,13 @@ Rectangle {
 
             visible: grid.numVisibleItems() >= 4
             Layout.preferredWidth: m_implicitWidth
-            property var m_implicitWidth: Math.max(utc_1.contentWidth, utc_2.contentWidth)
+            property real m_implicitWidth: Math.max(utc_1.contentWidth, utc_2.contentWidth)
 
             Label {
                 id: utc_1
                 Layout.alignment: Qt.AlignHCenter
 
-                text: clock.timeAsUTCString
+                text: global.navigator().clock().timeAsUTCString
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3
                 color: "white"

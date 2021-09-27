@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,8 @@
 #include <QGeoCoordinate>
 #include <QObject>
 
+
+namespace Navigation {
 
 /*! \brief This extremely simple class give accss to time and offers a few time-related functions
  *
@@ -83,15 +85,6 @@ public:
      */
     Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime);
 
-    /*! \brief Pointer to static instance
-     *
-     * This method returns a pointer to a static instance of this class. In rare
-     * situations, during shutdown of the app, a nullptr might be returned.
-     *
-     * @returns A pointer to a static instance of this class
-     */
-    static Clock *globalInstance();
-
     /*! \brief Current time in UTC as a string
      *
      * This property holds the current time in UTC as a string of the form "8:06" or "13:45". The implementation makes some effort to ensure
@@ -132,3 +125,5 @@ private:
     // Sets a single shot timer to emit timeChanged just after the full minute
     void setSingleShotTimer();
 };
+
+}

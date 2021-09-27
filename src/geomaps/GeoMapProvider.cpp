@@ -30,9 +30,9 @@
 #include <QtConcurrent/QtConcurrent>
 #include <chrono>
 
-#include "Clock.h"
 #include "GeoMapProvider.h"
 #include "Global.h"
+#include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 
 using namespace std::chrono_literals;

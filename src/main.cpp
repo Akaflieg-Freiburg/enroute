@@ -36,8 +36,6 @@
 #include <kdsingleapplication.h>
 #endif
 
-#include "Aircraft.h"
-#include "Clock.h"
 #include "DemoRunner.h"
 #include "Global.h"
 #include "Librarian.h"
@@ -46,6 +44,8 @@
 #include "dataManagement/DataManager.h"
 #include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
+#include "navigation/Aircraft.h"
+#include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier.h"
 #include "positioning/PositionProvider.h"
@@ -81,7 +81,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qRegisterMetaType<Platform::Notifier::Notifications>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
-    qmlRegisterType<Clock>("enroute", 1, 0, "Clock");
+    qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
@@ -171,14 +171,8 @@ auto main(int argc, char *argv[]) -> int
     // Attach library info
     engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
 
-    // Attach aircraft info
-    engine->rootContext()->setContextProperty("aircraft", Aircraft::globalInstance());
-
     // Attach wind info
     engine->rootContext()->setContextProperty("wind", Weather::Wind::globalInstance());
-
-    // Attach clock
-    engine->rootContext()->setContextProperty("clock", Clock::globalInstance());
 
     // Load GUI and enter event loop
     engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

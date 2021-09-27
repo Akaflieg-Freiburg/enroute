@@ -123,7 +123,7 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
 
     QStringList filterWords;
     foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
-        QString simplifiedWord = Librarian::globalInstance()->simplifySpecialChars(word);
+        QString simplifiedWord = Global::librarian()->simplifySpecialChars(word);
         if (simplifiedWord.isEmpty()) {
             continue;
         }
@@ -137,9 +137,9 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
         }
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = Librarian::globalInstance()->simplifySpecialChars(wp.name());
-            QString codeName = Librarian::globalInstance()->simplifySpecialChars(wp.ICAOCode());
-            QString wordx = Librarian::globalInstance()->simplifySpecialChars(word);
+            QString fullName = Global::librarian()->simplifySpecialChars(wp.name());
+            QString codeName = Global::librarian()->simplifySpecialChars(wp.ICAOCode());
+            QString wordx = Global::librarian()->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
                 allWordsFound = false;

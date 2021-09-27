@@ -189,7 +189,7 @@ Page {
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().exportContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", librarian.flightRouteGet(modelData).suggestedFilename())
+                                var errorString = global.mobileAdaptor().exportContent(global.librarian().flightRouteGet(modelData).toGeoJSON(), "application/geo+json", global.librarian().flightRouteGet(modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -214,7 +214,7 @@ Page {
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().exportContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", librarian.flightRouteGet(modelData).suggestedFilename())
+                                var errorString = global.mobileAdaptor().exportContent(global.librarian().flightRouteGet(modelData).toGpx(), "application/gpx+xml", global.librarian().flightRouteGet(modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -243,7 +243,7 @@ Page {
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().viewContent(librarian.flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                                var errorString = global.mobileAdaptor().viewContent(global.librarian().flightRouteGet(modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -260,7 +260,7 @@ Page {
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().viewContent(librarian.flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                                var errorString = global.mobileAdaptor().viewContent(global.librarian().flightRouteGet(modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -311,7 +311,7 @@ Page {
 
         clip: true
 
-        model: librarian.flightRoutes(textInput.displayText)
+        model: global.librarian().flightRoutes(textInput.displayText)
         delegate: flightRouteDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
@@ -338,7 +338,7 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = global.navigator().flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
+        var errorString = global.navigator().flightRoute.loadFromGeoJSON(global.librarian().flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
@@ -408,7 +408,7 @@ Page {
         standardButtons: Dialog.Ok
 
         title: qsTr("Flight Route Library")
-        text: librarian.getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(librarian.flightRouteDirectory())
+        text: global.librarian().getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(global.librarian().flightRouteDirectory())
     }
 
     Dialog {
@@ -470,7 +470,7 @@ Page {
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
-            librarian.flightRouteRemove(page.finalFileName)
+            global.librarian().flightRouteRemove(page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Flight route removed from device"))
         }
@@ -529,15 +529,15 @@ Page {
                 id: renameButton
 
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-                enabled: (renameName.displayText !== "") && !librarian.flightRouteExists(renameName.displayText)
+                enabled: (renameName.displayText !== "") && !global.librarian().flightRouteExists(renameName.displayText)
                 text: qsTr("Rename")
             }
         }
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
-            if ((renameName.text !== "") && !librarian.flightRouteExists(renameName.text)) {
-                librarian.flightRouteRename(finalFileName, renameName.text)
+            if ((renameName.text !== "") && !global.librarian().flightRouteExists(renameName.text)) {
+                global.librarian().flightRouteRename(finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 close()
                 toast.doToast(qsTr("Flight route renamed"))

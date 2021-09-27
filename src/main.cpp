@@ -85,6 +85,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
+    qmlRegisterUncreatableType<Librarian>("enroute", 1, 0, "Librarian", "Librarian objects cannot be created in QML");
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", "DataManager objects cannot be created in QML");
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
@@ -168,12 +169,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Make global objects available to QML engine
     engine->rootContext()->setContextProperty("global", new Global(engine) );
-
-    // Attach library info
-    engine->rootContext()->setContextProperty("librarian", Librarian::globalInstance());
-
-    // Attach wind info
-    engine->rootContext()->setContextProperty("wind", Weather::Wind::globalInstance());
 
     // Load GUI and enter event loop
     engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

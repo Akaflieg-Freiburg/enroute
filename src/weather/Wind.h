@@ -32,6 +32,10 @@ class Wind : public QObject
 {
   Q_OBJECT
 
+#warning Use proper units
+
+#warning No not use settings in constructor
+
 public:
   /*! \brief Default constructor
 

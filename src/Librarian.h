@@ -143,12 +143,6 @@ public:
      */
     Q_INVOKABLE QStringList flightRoutes(const QString &filter=QString());
 
-    /*! \brief Pointer to static instance of this class
-     *
-     *  @returns Pointer to global instance
-     */
-    static Librarian* globalInstance();
-
     /*! \brief Filters a QStringList in a fuzzy way
      *
      * This helper method filters a QStringList. It returns a sublist of those

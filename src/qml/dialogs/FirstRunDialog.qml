@@ -25,7 +25,7 @@ LongTextDialog {
     id: frRld
 
     closePolicy: Popup.NoAutoClose
-    text:  librarian.getStringFromRessource(":text/firstStart.html")
+    text:  global.librarian().getStringFromRessource(":text/firstStart.html")
 
     footer: DialogButtonBox {
         ToolButton {

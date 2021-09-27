@@ -480,18 +480,18 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
-                        bottom: wind.minWindDirection
-                        top: wind.maxWindDirection
+                        bottom: global.navigator().wind.minWindDirection
+                        top: global.navigator().wind.maxWindDirection
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        wind.windDirectionInDEG = text
+                        global.navigator().wind.windDirectionInDEG = text
                         windSpeed.focus = true
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
-                    text: isFinite(wind.windDirectionInDEG) ? wind.windDirectionInDEG : ""
+                    text: isFinite(global.navigator().wind.windDirectionInDEG) ? global.navigator().wind.windDirectionInDEG : ""
                     placeholderText: qsTr("undefined")
                 }
                 Label {
@@ -503,7 +503,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windDirection.text !== ""
                     onClicked: {
-                        wind.windDirectionInDEG = -1
+                        global.navigator().wind.windDirectionInDEG = -1
                         windDirection.clear()
                     }
                 }
@@ -518,17 +518,17 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
-                        bottom: global.settings().useMetricUnits ? wind.minWindSpeedInKMH : wind.minWindSpeedInKT
-                        top: global.settings().useMetricUnits ? wind.maxWindSpeedInKMH : wind.maxWindSpeedInKT
+                        bottom: global.settings().useMetricUnits ? global.navigator().wind.minWindSpeedInKMH : global.navigator().wind.minWindSpeedInKT
+                        top: global.settings().useMetricUnits ? global.navigator().wind.maxWindSpeedInKMH : global.navigator().wind.maxWindSpeedInKT
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        global.settings().useMetricUnits ? wind.windSpeedInKMH = text : wind.windSpeedInKT = text
+                        global.settings().useMetricUnits ? global.navigator().wind.windSpeedInKMH = text : global.navigator().wind.windSpeedInKT = text
                         focus = false
                     }
                     color: (acceptableInput ? Material.foreground : "red")
-                    text: isFinite(wind.windSpeedInKT) ? Math.round(global.settings().useMetricUnits ? wind.windSpeedInKMH : wind.windSpeedInKT) : ""
+                    text: isFinite(global.navigator().wind.windSpeedInKT) ? Math.round(global.settings().useMetricUnits ? global.navigator().wind.windSpeedInKMH : global.navigator().wind.windSpeedInKT) : ""
                     placeholderText: qsTr("undefined")
                 }
                 Label {
@@ -540,7 +540,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windSpeed.text !== ""
                     onClicked: {
-                        wind.windSpeedInKT = -1
+                        global.navigator().wind.windSpeedInKT = -1
                         windSpeed.clear()
                     }
                 }

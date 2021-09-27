@@ -24,6 +24,7 @@
 
 #include "DemoRunner.h"
 #include "Global.h"
+#include "Librarian.h"
 #include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
@@ -41,6 +42,7 @@ bool isDestructing {false};
 
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
+QPointer<Librarian> g_librarian {};
 QPointer<DataManagement::DataManager> g_mapManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
@@ -84,6 +86,7 @@ void Global::destruct()
 
     delete g_flarmnetDB;
     delete g_geoMapProvider;
+    delete g_librarian;
     delete g_mapManager;
     delete g_mobileAdaptor;
     delete g_navigator;
@@ -113,6 +116,12 @@ auto Global::geoMapProvider() -> GeoMaps::GeoMapProvider*
 auto Global::dataManager() -> DataManagement::DataManager*
 {
     return allocateInternal<DataManagement::DataManager>(g_mapManager);
+}
+
+
+auto Global::librarian() -> Librarian*
+{
+    return allocateInternal<Librarian>(g_librarian);
 }
 
 

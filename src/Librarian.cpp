@@ -24,13 +24,6 @@
 #include <QStandardPaths>
 #include <QtGlobal>
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<QNetworkAccessManager> networkAccessManagerStatic {};
-QPointer<Librarian> librarianStatic {};
-#endif
-
-
 Librarian::Librarian(QObject *parent) : QObject(parent)
 {
     auto libraryPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
@@ -354,19 +347,6 @@ auto Librarian::flightRoutes(const QString &filter) -> QStringList
         fileBaseNames << fileName.section('.', 0, -2);
 
     return permissiveFilter(fileBaseNames, filter);
-}
-
-
-auto Librarian::globalInstance() -> Librarian*
-{
-#ifndef __clang_analyzer__
-    if (librarianStatic.isNull()) {
-        librarianStatic = new Librarian();
-    }
-    return librarianStatic;
-#else
-    return nullptr;
-#endif
 }
 
 

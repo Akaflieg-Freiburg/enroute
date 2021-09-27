@@ -23,6 +23,7 @@
 #include <QObject>
 
 class DemoRunner;
+class Librarian;
 class MobileAdaptor;
 class QNetworkAccessManager;
 class Settings;
@@ -85,11 +86,11 @@ class Global : public QObject
     Q_OBJECT
 
         public:
-                 /*! \brief Standard constructor
+    /*! \brief Standard constructor
      *
      * @param parent The standard QObject parent pointer
      */
-                 explicit Global(QObject *parent = nullptr);
+    explicit Global(QObject *parent = nullptr);
 
     /*! \brief Standard deconstructor
      *
@@ -105,6 +106,13 @@ class Global : public QObject
      */
     static void destruct();
 
+
+    /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static DataManagement::DataManager* dataManager();
+
     /*! \brief Pointer to appplication-wide static FlarmnetDB instance
      *
      * @returns Pointer to appplication-wide static instance.
@@ -117,11 +125,11 @@ class Global : public QObject
      */
     Q_INVOKABLE static GeoMaps::GeoMapProvider* geoMapProvider();
 
-    /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
+    /*! \brief Pointer to appplication-wide static librarian instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static DataManagement::DataManager* dataManager();
+    Q_INVOKABLE static Librarian* librarian();
 
     /*! \brief Pointer to appplication-wide static MobileAdaptor instance
      *

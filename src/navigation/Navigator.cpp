@@ -122,3 +122,13 @@ void Navigation::Navigator::setIsInFlight(bool newIsInFlight)
     m_isInFlight = newIsInFlight;
     emit isInFlightChanged();
 }
+
+
+auto Navigation::Navigator::wind() -> Weather::Wind*
+{
+    if (m_wind.isNull()) {
+        m_wind = new Weather::Wind(this);
+        QQmlEngine::setObjectOwnership(m_wind, QQmlEngine::CppOwnership);
+    }
+    return m_wind;
+}

@@ -487,7 +487,7 @@ ApplicationWindow {
             // Start accepting files
             global.mobileAdaptor().startReceiveOpenFileRequests()
 
-            if ((global.settings().lastWhatsNewHash !== librarian.getStringHashFromRessource(":text/whatsnew.html")) && !global.navigator().isInFlight) {
+            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && !global.navigator().isInFlight) {
                 whatsNewDialog.open()
                 return
             }
@@ -612,8 +612,8 @@ ApplicationWindow {
         anchors.centerIn: parent
         
         title: qsTr("What's new …?")
-        text: librarian.getStringFromRessource(":text/whatsnew.html")
-        onOpened: global.settings().lastWhatsNewHash = librarian.getStringHashFromRessource(":text/whatsnew.html")
+        text: global.librarian().getStringFromRessource(":text/whatsnew.html")
+        onOpened: global.settings().lastWhatsNewHash = global.librarian().getStringHashFromRessource(":text/whatsnew.html")
     }
 
     Shortcut {

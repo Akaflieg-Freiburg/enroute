@@ -25,7 +25,7 @@ LongTextDialog {
     id: frRld
 
     closePolicy: Popup.NoAutoClose
-    text:  librarian.getStringFromRessource(":text/missingPermissions.html")
+    text:  global.librarian().getStringFromRessource(":text/missingPermissions.html")
 
     footer: DialogButtonBox {
         ToolButton {

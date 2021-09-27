@@ -121,6 +121,19 @@ public:
         return m_isInFlight;
     }
 
+    /*! \brief Current wind
+     *
+     *  The wind returned here is owned by this class and must not be deleted.
+     *  QML ownership has been set to QQmlEngine::CppOwnership.
+     */
+    Q_PROPERTY(Weather::Wind* wind READ wind CONSTANT)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property wind
+     */
+    Weather::Wind* wind();
+
 signals:
     /*! \brief Notifier signal */
     void isInFlightChanged();
@@ -149,6 +162,7 @@ private:
     QPointer<Aircraft> m_aircraft {nullptr};
     QPointer<Clock> m_clock {nullptr};
     QPointer<FlightRoute> m_flightRoute {nullptr};
+    QPointer<Weather::Wind> m_wind {nullptr};
 };
 
 }

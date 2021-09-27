@@ -67,7 +67,7 @@ Page {
 
                 Label {
                     id: lbl1
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/info_enroute.html")
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_enroute.html")
                     textFormat: Text.RichText
                     linkColor: Material.accent
                     width: pg.width
@@ -93,7 +93,7 @@ Page {
 
                 Label {
                     id: lbl2
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/authors.html")
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/authors.html")
                     textFormat: Text.RichText // Link OK
                     width: pg.width
                     wrapMode: Text.Wrap
@@ -117,7 +117,7 @@ Page {
 
                 Label {
                     id: lbl3
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+librarian.getStringFromRessource(":text/info_license.html")
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_license.html")
                     textFormat: Text.RichText
                     linkColor: Material.accent
                     width: pg.width

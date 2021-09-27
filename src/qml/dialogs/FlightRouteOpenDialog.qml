@@ -113,7 +113,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: librarian.flightRoutes(filterName.displayText)
+            model: global.global.librarian()().flightRoutes(filterName.displayText)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -130,7 +130,7 @@ Dialog {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = global.navigator().flightRoute.loadFromGeoJSON(librarian.flightRouteFullPath(finalFileName))
+        var errorString = global.navigator().flightRoute.loadFromGeoJSON(global.global.librarian()().flightRouteFullPath(finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

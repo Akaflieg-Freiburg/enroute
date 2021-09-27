@@ -278,7 +278,7 @@ Page {
             Label {
                 id: t1
                 width: parent.width
-                text: librarian.getStringFromRessource(":text/weatherPermissions.html")
+                text: global.librarian().getStringFromRessource(":text/weatherPermissions.html")
                 leftPadding: Qt.application.font.pixelSize
                 rightPadding: Qt.application.font.pixelSize
                 topPadding: 2*Qt.application.font.pixelSize

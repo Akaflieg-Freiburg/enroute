@@ -88,9 +88,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2ed55a60c00c77d00b88c7fc00f1c2a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#aa2ed55a60c00c77d00b88c7fc00f1c2a">DataManager</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:aa2ed55a60c00c77d00b88c7fc00f1c2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classDataManagement_1_1DataManager.html#aa2ed55a60c00c77d00b88c7fc00f1c2a">More...</a><br /></td></tr>
 <tr class="separator:aa2ed55a60c00c77d00b88c7fc00f1c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8da0062a211280a76b7e1583d3a3834a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a8da0062a211280a76b7e1583d3a3834a">~DataManager</a> ()</td></tr>
-<tr class="memdesc:a8da0062a211280a76b7e1583d3a3834a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classDataManagement_1_1DataManager.html#a8da0062a211280a76b7e1583d3a3834a">More...</a><br /></td></tr>
-<tr class="separator:a8da0062a211280a76b7e1583d3a3834a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5217a6e0fc580cc39cc1b4a8c6ed06db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a5217a6e0fc580cc39cc1b4a8c6ed06db">cleanUp</a> ()</td></tr>
+<tr class="memdesc:a5217a6e0fc580cc39cc1b4a8c6ed06db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classDataManagement_1_1DataManager.html#a5217a6e0fc580cc39cc1b4a8c6ed06db">More...</a><br /></td></tr>
+<tr class="separator:a5217a6e0fc580cc39cc1b4a8c6ed06db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab04a8e41e6c56dad48a4bd52f1c79d1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html">DataManagement::DownloadableGroupWatcher</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#ab04a8e41e6c56dad48a4bd52f1c79d1b">aviationMaps</a> ()</td></tr>
 <tr class="memdesc:ab04a8e41e6c56dad48a4bd52f1c79d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classDataManagement_1_1DataManager.html#ab04a8e41e6c56dad48a4bd52f1c79d1b">More...</a><br /></td></tr>
 <tr class="separator:ab04a8e41e6c56dad48a4bd52f1c79d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,26 +183,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a8da0062a211280a76b7e1583d3a3834a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8da0062a211280a76b7e1583d3a3834a">&#9670;&nbsp;</a></span>~DataManager()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">DataManagement::DataManager::~DataManager </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Destructor. </p>
-<p>This destructor purges the download directory "aviation_map", by deleting all files that do not belong to any of the maps. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab04a8e41e6c56dad48a4bd52f1c79d1b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab04a8e41e6c56dad48a4bd52f1c79d1b">&#9670;&nbsp;</a></span>aviationMaps()</h2>
@@ -261,6 +241,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>Property baseMaps </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00135">135</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+
+</div>
+</div>
+<a id="a5217a6e0fc580cc39cc1b4a8c6ed06db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5217a6e0fc580cc39cc1b4a8c6ed06db">&#9670;&nbsp;</a></span>cleanUp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DataManagement::DataManager::cleanUp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+<p>This destructor purges the download directory "aviation_map", by deleting all files that do not belong to any of the maps. </p>
 
 </div>
 </div>

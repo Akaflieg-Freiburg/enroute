@@ -23,83 +23,44 @@
 
 #include "weather/Wind.h"
 
-// Static instance of this class. Do not analyze, because of many unwanted warnings.
-#ifndef __clang_analyzer__
-QPointer<Weather::Wind> windStatic {};
-#endif
-
 
 Weather::Wind::Wind(QObject *parent)
     : QObject(parent)
 {
-    _windSpeedInKT = settings.value("Wind/windSpeedInKT", -1.0).toDouble();
-    if ((_windSpeedInKT < minWindSpeedInKT) || (_windSpeedInKT > maxWindSpeedInKT)) {
-        _windSpeedInKT = qQNaN();
+    _windSpeed = Units::Speed::fromKN(settings.value("Wind/windSpeedInKT", -1.0).toDouble());
+    if ((_windSpeed < minWindSpeed) || (_windSpeed > maxWindSpeed)) {
+        _windSpeed = Units::Speed();
     }
 
-    _windDirectionInDEG = settings.value("Wind/windDirectionInDEG", -1.0).toDouble();
-    if ((_windDirectionInDEG < minWindDirection) || (_windDirectionInDEG > maxWindDirection)) {
-        _windDirectionInDEG = qQNaN();
-    }
+    _windDirection = Units::Angle::fromDEG(settings.value("Wind/windDirectionInDEG", 0.0).toDouble());
 }
 
 
-auto Weather::Wind::globalInstance() -> Weather::Wind*
+void Weather::Wind::setWindSpeed(Units::Speed newWindSpeed)
 {
-#ifndef __clang_analyzer__
-    if (windStatic.isNull()) {
-        windStatic = new Weather::Wind();
+
+    if ((newWindSpeed < minWindSpeed) || (newWindSpeed > maxWindSpeed)) {
+        newWindSpeed = Units::Speed();
     }
-    return windStatic;
-#else
-    return nullptr;
-#endif
+
+    if (newWindSpeed == _windSpeed) {
+        return;
+    }
+
+    _windSpeed = newWindSpeed;
+    settings.setValue("Wind/windSpeedInKT", _windSpeed.toKN());
+    emit valChanged();
 }
 
 
-auto Weather::Wind::windSpeedInKT() const -> double
-{
-    return _windSpeedInKT;
-}
-
-
-void Weather::Wind::setWindSpeedInKT(double speedInKT)
+void Weather::Wind::setWindDirection(Units::Angle newWindDirection)
 {
 
-    if ((speedInKT < minWindSpeedInKT) || (speedInKT > maxWindSpeedInKT)) {
-        speedInKT = qQNaN();
+    if (newWindDirection == _windDirection) {
+        return;
     }
 
-    if (!qFuzzyCompare(speedInKT, _windSpeedInKT)) {
-        _windSpeedInKT = speedInKT;
-        settings.setValue("Wind/windSpeedInKT", _windSpeedInKT);
-        emit valChanged();
-    }
-}
-
-
-auto Weather::Wind::windSpeedInKMH() const -> double
-{
-    auto speed = Units::Speed::fromKN(_windSpeedInKT);
-    return speed.toKMH();
-}
-
-
-void Weather::Wind::setWindSpeedInKMH(double speedInKMH)
-{
-    setWindSpeedInKT( Units::Speed::fromKMH(speedInKMH).toKN() );
-}
-
-
-void Weather::Wind::setWindDirectionInDEG(double windDirection)
-{
-    if ((windDirection < minWindDirection) || (windDirection > maxWindDirection)) {
-        windDirection = qQNaN();
-    }
-
-    if (!qFuzzyCompare(windDirection, _windDirectionInDEG)) {
-        _windDirectionInDEG = windDirection;
-        settings.setValue("Wind/windDirectionInDEG", _windDirectionInDEG);
-        emit valChanged();
-    }
+    _windDirection = newWindDirection;
+    settings.setValue("Wind/windDirectionInDEG", _windDirection.toDEG());
+    emit valChanged();
 }

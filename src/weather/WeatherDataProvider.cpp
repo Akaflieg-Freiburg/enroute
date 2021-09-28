@@ -89,9 +89,6 @@ void Weather::WeatherDataProvider::deferredInitialization()
 }
 
 
-Weather::WeatherDataProvider::~WeatherDataProvider() = default;
-
-
 void Weather::WeatherDataProvider::deleteExpiredMesages()
 {
     QVector<QString> ICAOCodesToDelete;

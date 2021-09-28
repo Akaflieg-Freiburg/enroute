@@ -50,9 +50,6 @@ public:
      */
     explicit PositionProvider(QObject *parent = nullptr);
 
-    /*! \brief Standard deconstructor */
-    ~PositionProvider() override;
-
     /*! \brief Last valid coordinate reading
      *
      *  This property holds the last valid coordinate known.  At the first
@@ -91,7 +88,7 @@ signals:
 
 private slots:   
     // Intializations that are moved out of the constructor, in order to avoid
-    // nested uses of globalInstance().
+    // nested uses of constructors in Global.
     void deferredInitialization() const;
 
     // Connected to sources, in order to receive new data

@@ -41,7 +41,7 @@ namespace Units {
          *
          * @returns speed
          */
-        static Speed fromFPM(double speedInFPM)
+        Q_INVOKABLE static constexpr Units::Speed fromFPM(double speedInFPM)
         {
             Speed result;
             result._speedInMPS = speedInFPM/FPM_per_MPS;
@@ -54,7 +54,7 @@ namespace Units {
          *
          * @returns speed
          */
-        static Speed fromMPS(double speedInMPS)
+        Q_INVOKABLE static constexpr Units::Speed fromMPS(double speedInMPS)
         {
             Speed result;
             result._speedInMPS = speedInMPS;
@@ -67,7 +67,7 @@ namespace Units {
          *
          * @returns speed
          */
-        static Speed fromKN(double speedInKT)
+        Q_INVOKABLE static constexpr Units::Speed fromKN(double speedInKT)
         {
             Speed result;
             result._speedInMPS = speedInKT / KN_per_MPS;
@@ -80,7 +80,7 @@ namespace Units {
          *
          * @returns speed
          */
-        static Speed fromKMH(double speedInKMH)
+        Q_INVOKABLE static constexpr Units::Speed fromKMH(double speedInKMH)
         {
             Speed result;
             result._speedInMPS = speedInKMH / KMH_per_MPS;
@@ -140,6 +140,27 @@ namespace Units {
             return _speedInMPS != rhs._speedInMPS;
         }
 
+        /*! \brief Comparison
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        Q_INVOKABLE bool operator<(Units::Speed rhs) const
+        {
+            return _speedInMPS < rhs._speedInMPS;
+        }
+
+        /*! \brief Comparison
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        Q_INVOKABLE bool operator>(Units::Speed rhs) const
+        {
+            return _speedInMPS > rhs._speedInMPS;
+        }
 
         /*! \brief Convert to feet per minute
          *
@@ -200,7 +221,7 @@ namespace Units {
 
     private:
         // Speed in meters per second
-        double _speedInMPS{qQNaN()};
+        double _speedInMPS{ NAN };
     };
 
 };

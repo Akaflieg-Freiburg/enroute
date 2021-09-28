@@ -61,10 +61,6 @@ public:
      */
     explicit TrafficDataProvider(QObject *parent = nullptr);
 
-    // Standard destructor
-    ~TrafficDataProvider();
-
-
     //
     // Methods
     //
@@ -79,6 +75,8 @@ public:
      */
     void addDataSource(Traffic::TrafficDataSource_Abstract* source);
 
+    /*! \brief Clear all data sources */
+    void clearDataSources();
 
     //
     // Properties
@@ -265,7 +263,7 @@ public slots:
 
 private slots:   
     // Intializations that are moved out of the constructor, in order to avoid
-    // nested uses of globalInstance().
+    // nested uses of constructors in Global.
     void deferredInitialization() const;
 
     // Sends out foreflight broadcast message See

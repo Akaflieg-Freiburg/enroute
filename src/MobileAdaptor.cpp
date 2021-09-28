@@ -97,9 +97,3 @@ void MobileAdaptor::deferredInitialization()
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 #endif
 }
-
-
-MobileAdaptor::~MobileAdaptor()
-{
-    ;
-}

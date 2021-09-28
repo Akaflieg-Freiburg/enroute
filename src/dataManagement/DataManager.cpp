@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
 #include <QDirIterator>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -64,6 +65,9 @@ DataManagement::DataManager::DataManager(QObject *parent) :
     connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::setTimeOfLastUpdateToNow);
     connect(&_maps_json, &DataManagement::Downloadable::error, this, &DataManager::errorReceiver);
 
+    // Cleanup
+    connect(qApp, &QApplication::aboutToQuit, this, &DataManagement::DataManager::cleanUp);
+
     // Wire up the DownloadableGroup _geoMaps
     connect(&_geoMaps, &DataManagement::DownloadableGroup::downloadablesChanged, this, &DataManager::geoMapListChanged);
     connect(&_geoMaps, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::localFileOfGeoMapChanged);
@@ -83,7 +87,7 @@ DataManagement::DataManager::DataManager(QObject *parent) :
 }
 
 
-DataManagement::DataManager::~DataManager()
+void DataManagement::DataManager::cleanUp()
 {
 
     // It might be possible for whatever reason that our download directory

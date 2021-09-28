@@ -38,12 +38,11 @@
 #include "weather/WeatherDataProvider.h"
 
 bool isConstructing {false};
-bool isDestructing {false};
 
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<Librarian> g_librarian {};
-QPointer<DataManagement::DataManager> g_mapManager {};
+QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<Platform::Notifier> g_notifier {};
@@ -59,7 +58,6 @@ template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
 {
     Q_ASSERT( QCoreApplication::instance() != nullptr );
     Q_ASSERT( !isConstructing );
-    Q_ASSERT( !isDestructing );
 
     if (pointer.isNull()) {
         isConstructing = true;
@@ -77,30 +75,6 @@ Global::Global(QObject *parent) : QObject(parent)
 }
 
 
-void Global::destruct()
-{
-    Q_ASSERT( !isConstructing );
-    Q_ASSERT( !isDestructing );
-
-    isDestructing = true;
-
-    delete g_flarmnetDB;
-    delete g_geoMapProvider;
-    delete g_librarian;
-    delete g_mapManager;
-    delete g_mobileAdaptor;
-    delete g_navigator;
-    delete g_networkAccessManager;
-    delete g_passwordDB;
-    delete g_positionProvider;
-    delete g_settings;
-    delete g_trafficDataProvider;
-    delete g_weatherDataProvider;
-
-    isDestructing = false;
-}
-
-
 auto Global::flarmnetDB() -> Traffic::FlarmnetDB*
 {
     return allocateInternal<Traffic::FlarmnetDB>(g_flarmnetDB);
@@ -115,7 +89,7 @@ auto Global::geoMapProvider() -> GeoMaps::GeoMapProvider*
 
 auto Global::dataManager() -> DataManagement::DataManager*
 {
-    return allocateInternal<DataManagement::DataManager>(g_mapManager);
+    return allocateInternal<DataManagement::DataManager>(g_dataManager);
 }
 
 

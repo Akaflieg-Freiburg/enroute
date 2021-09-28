@@ -143,7 +143,7 @@ private slots:
     void onPositionUpdated(const Positioning::PositionInfo& info);
 
     // Intializations that are moved out of the constructor, in order to avoid
-    // nested uses of globalInstance().
+    // nested uses of constructors in Global.
     void deferredInitialization() const;
 
 private:

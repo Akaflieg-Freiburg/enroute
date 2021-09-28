@@ -33,10 +33,6 @@ namespace Navigation {
 class Aircraft : public QObject {
     Q_OBJECT
 
-#warning Use proper units
-
-#warning No not use settings in constructor
-
 public:
     /*! \brief Default constructor
      *
@@ -53,17 +49,19 @@ public:
 
     /*! \brief Cruise Speed
      *
-     * This property holds the cruise speed of the aircraft. This is a
-     * double number that lies in the interval [minAircraftSpeed,
-     * maxAircraftSpeed] or NaN if the cruise speed has not been set.
+     * This property holds the cruise speed of the aircraft. This lies in the interval [minAircraftSpeed,
+     * maxAircraftSpeed] or if NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(double cruiseSpeedInKT READ cruiseSpeedInKT WRITE setCruiseSpeedInKT NOTIFY valChanged)
+    Q_PROPERTY(Units::Speed cruiseSpeed READ cruiseSpeed WRITE setCruiseSpeed NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property cruise speed
      */
-    double cruiseSpeedInKT() const;
+    Units::Speed cruiseSpeed() const
+    {
+        return _cruiseSpeed;
+    }
 
     /*! \brief Setter function for property of the same name
      *
@@ -73,31 +71,7 @@ public:
      *
      * @param speedInKT Property cruise speed
      */
-    void setCruiseSpeedInKT(double speedInKT);
-
-    /*! \brief Cruise Speed
-     *
-     * This property holds the cruise speed of the aircraft. This is a
-     * double number that lies in the interval [minAircraftSpeed,
-     * maxAircraftSpeed] or NaN if the cruise speed has not been set.
-     */
-    Q_PROPERTY(double cruiseSpeedInKMH READ cruiseSpeedInKMH WRITE setCruiseSpeedInKMH NOTIFY valChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property cruise speed
-     */
-    double cruiseSpeedInKMH() const;
-
-    /*! \brief Setter function for property of the same name
-     *
-     * This method saves the new value in a QSetting object. If speedInKMH is
-     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
-     * property will be set to NaN.
-     *
-     * @param speedInKMH Property cruise speed
-     */
-    void setCruiseSpeedInKMH(double speedInKMH);
+    void setCruiseSpeed(Units::Speed newSpeed);
 
     /*! \brief Decent Speed
      *
@@ -105,47 +79,26 @@ public:
      * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed]
      * or NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(double descentSpeedInKT READ descentSpeedInKT WRITE setDescentSpeedInKT NOTIFY valChanged)
+    Q_PROPERTY(Units::Speed descentSpeed READ descentSpeed WRITE setDescentSpeed NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
      *
-     * @returns Property descentSpeedInKT
+     * @returns Property descentSpeed
      */
-    double descentSpeedInKT() const;
+    Units::Speed descentSpeed() const
+    {
+        return _descentSpeed;
+    }
 
     /*! \brief Setter function for property of the same name
      *
-     * This method saves the new value in a QSetting object. If speedInKT is
+     * This method saves the new value in a QSetting object. If newSpeed is
      * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
      * property will be set to NaN.
      *
-     * @param speedInKT Descent speed in knots
+     * @param newSpeed Descent speed
      */
-    void setDescentSpeedInKT(double speedInKT);
-
-    /*! \brief Decent Speed
-     *
-     * This property holds the descent speed of the aircraft. This is a
-     * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed]
-     * or NaN if the cruise speed has not been set.
-     */
-    Q_PROPERTY(double descentSpeedInKMH READ descentSpeedInKMH WRITE setDescentSpeedInKMH NOTIFY valChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property descentSpeedInKMH
-     */
-    double descentSpeedInKMH() const;
-
-    /*! \brief Setter function for property of the same name
-     *
-     * This method saves the new value in a QSetting object. If speedInKMH is
-     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
-     * property will be set to NaN.
-     *
-     * @param speedInKMH Descent speed in km/h
-     */
-    void setDescentSpeedInKMH(double speedInKMH);
+    void setDescentSpeed(Units::Speed newSpeed);
 
     /*! \brief Fuel Consumption
      *
@@ -171,17 +124,11 @@ public:
      */
     void setFuelConsumptionInLPH(double fuelConsumptionInLPH);
 
-    /*! \brief Minimal speed of the aircraft that is considered valid in kt*/
-    Q_PROPERTY(double minAircraftSpeedInKT MEMBER minAircraftSpeedInKT CONSTANT)
+    /*! \brief Minimal speed of the aircraft that is considered valid */
+    Q_PROPERTY(Units::Speed minAircraftSpeed MEMBER minAircraftSpeed CONSTANT)
 
-    /*! \brief Minimal speed of the aircraft that is considered valid in km/h*/
-    Q_PROPERTY(double minAircraftSpeedInKMH MEMBER minAircraftSpeedInKMH CONSTANT)
-
-    /*! \brief Maximal speed of the aircraft that is considered valid in kt*/
-    Q_PROPERTY(double maxAircraftSpeedInKT MEMBER maxAircraftSpeedInKT CONSTANT)
-
-    /*! \brief Maximal speed of the aircraft that is considered valid in km/h*/
-    Q_PROPERTY(double maxAircraftSpeedInKMH MEMBER maxAircraftSpeedInKMH CONSTANT)
+    /*! \brief Maximal speed of the aircraft that is considered valid */
+    Q_PROPERTY(Units::Speed maxAircraftSpeed MEMBER maxAircraftSpeed CONSTANT)
 
     /*! \brief Minimal fuel consumption that is considered valid */
     Q_PROPERTY(double minFuelConsuption MEMBER minFuelConsuption CONSTANT)
@@ -196,15 +143,13 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(Aircraft)
 
-    static constexpr double minAircraftSpeedInKT  = 10.0;
-    static constexpr double minAircraftSpeedInKMH = minAircraftSpeedInKT * Units::Speed::KMH_per_KT;
-    static constexpr double maxAircraftSpeedInKT  = 400.0;
-    static constexpr double maxAircraftSpeedInKMH = maxAircraftSpeedInKT * Units::Speed::KMH_per_KT;
+    static constexpr Units::Speed minAircraftSpeed = Units::Speed::fromKN(10.0);
+    static constexpr Units::Speed maxAircraftSpeed = Units::Speed::fromKN(400.0);
     static constexpr double minFuelConsuption = 0.0;
     static constexpr double maxFuelConsuption = 300.0;
 
-    double _cruiseSpeedInKT{qQNaN()};
-    double _descentSpeedInKT{qQNaN()};
+    Units::Speed _cruiseSpeed {};
+    Units::Speed _descentSpeed {};
     double _fuelConsumptionInLPH{qQNaN()};
 
     QSettings settings;

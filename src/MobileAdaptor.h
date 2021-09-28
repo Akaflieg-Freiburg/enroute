@@ -52,7 +52,7 @@ public:
     */
     explicit MobileAdaptor(QObject *parent = nullptr);
 
-    ~MobileAdaptor();
+    ~MobileAdaptor() = default;
 
     /*! \brief Function and type of a file that we have been requested to
      * open */
@@ -232,7 +232,7 @@ signals:
 
 private slots:
     // Intializations that are moved out of the constructor, in order to avoid
-    // nested uses of globalInstance().
+    // nested uses of Global.
     void deferredInitialization();
 
 private:

@@ -22,8 +22,8 @@
 #include <QXmlStreamAttribute>
 
 #include "Global.h"
-#include "navigation/Navigator.h"
 #include "navigation/Clock.h"
+#include "navigation/Navigator.h"
 #include "weather/TAF.h"
 
 

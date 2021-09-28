@@ -73,9 +73,6 @@ public:
      */
     explicit WeatherDataProvider(QObject *parent = nullptr);
 
-    /*! \brief Destructor */
-    ~WeatherDataProvider() override;
-
     //
     // Properties
     //

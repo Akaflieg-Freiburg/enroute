@@ -22,148 +22,102 @@
 
 #include <QSettings>
 
+#include "units/Angle.h"
 #include "units/Speed.h"
 
 namespace Weather {
-
-/*! \brief This extremely simple class holds the wind speed and direction */
-
-class Wind : public QObject
-{
-  Q_OBJECT
-
-#warning Use proper units
-
-#warning No not use settings in constructor
-
-public:
-  /*! \brief Default constructor
-
-    This constructor reads the values of the properties listed below via
-    QSettings. The values are set to NaN if no valid numbers can be found in the
-    settings object.
-
-    @param parent The standard QObject parent pointer
-  */
-  explicit Wind(QObject *parent = nullptr);
-
-  // Standard destructor
-  ~Wind() override = default;
-
-    /*! \brief Pointer to static instance of this class
+  
+  /*! \brief This extremely simple class holds the wind speed and direction */
+  
+  class Wind : public QObject
+  {
+    Q_OBJECT
+    
+  public:
+    /*! \brief Default constructor
      *
-     *  @returns Pointer to global instance
+     *  This constructor reads the values of the properties listed below via
+     *  QSettings. The values are set to NaN if no valid numbers can be found in
+     *  the settings object.
+     *
+     *  @param parent The standard QObject parent pointer
      */
-    static Wind* globalInstance();
+    explicit Wind(QObject *parent = nullptr);
+    
+    // Standard destructor
+    ~Wind() override = default;
+    
+    /*! \brief Wind Speed
+     *
+     *  This property holds the wind speed. This is a number that lies in the
+     *  interval [minWindSpeed, maxWindSpeed] or NaN if the wind speed has not
+     *  been set.
+     */
+    Q_PROPERTY(Units::Speed windSpeed READ windSpeed WRITE setWindSpeed NOTIFY valChanged)
+    
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property windSpeed
+     */
+    Units::Speed windSpeed() const
+    {
+      return _windSpeed;
+    }
+    
+    /*! \brief Setter function for property of the same name
+     *
+     *  This method saves the new value in a QSetting object. If newWindSpeed is
+     *  outside of the interval [minWindSpeed, maxWindSpeed], the property will
+     *  be set to NaN.
+     *
+     *  @param speed Property windSpeed
+     */
+    void setWindSpeed(Units::Speed newWindSpeed);
+    
+    /*! \brief Wind Direction
+     *
+     *  This property holds the wind direction. This is NaN if no value has been
+     *  set.
+     */
+    Q_PROPERTY(Units::Angle windDirection READ windDirection WRITE setWindDirection NOTIFY valChanged)
 
-  /*! \brief Wind Speed in knots
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property windDirection
+     */
+    Units::Angle windDirection() const
+    {
+      return _windDirection;
+    }
 
-    This property holds the wind speed. This is a number that lies in the
-    interval [minWindSpeed, maxWindSpeed] or NaN if the wind speed has not been
-    set.
-  */
-  Q_PROPERTY(double windSpeedInKT READ windSpeedInKT WRITE setWindSpeedInKT NOTIFY valChanged)
-
-  /*! \brief Getter function for property of the same name
-
-    @returns Property windSpeedInKT
-  */
-  double windSpeedInKT() const;
-
-  /*! \brief Setter function for property of the same name
-
-    This method saves the new value in a QSetting object. If speedInKT is
-    outside of the interval [minWindSpeed, maxWindSpeed], the property
-    will be set to NaN.
-
-    @param speedInKT Property windSpeedInKT
-  */
-  void setWindSpeedInKT(double speedInKT);
-
-  /*! \brief Wind Speed in km/h
-
-    This property holds the wind speed. This is a number that lies in the
-    interval [minWindSpeed, maxWindSpeed] or NaN if the wind speed has not been
-    set.
-  */
-  Q_PROPERTY(double windSpeedInKMH READ windSpeedInKMH WRITE setWindSpeedInKMH NOTIFY valChanged)
-
-  /*! \brief Getter function for property of the same name
-
-    @returns Property windSpeedInKMH
-  */
-  double windSpeedInKMH() const;
-
-  /*! \brief Setter function for property of the same name
-
-    This method saves the new value in a QSetting object. If speedInKMH is
-    outside of the interval [minWindSpeed, maxWindSpeed], the property
-    will be set to NaN.
-
-    @param speedInKMH Property windSpeedInKMH
-  */
-  void setWindSpeedInKMH(double speedInKMH);
-
-  /*! \brief Wind Direction
-
-    This property holds the wind direction. This is a number that lies in the
-    interval [minWindDirection, maxWindDirection] or NaN if no value has been
-    set.
-  */
-  Q_PROPERTY(double windDirectionInDEG READ windDirectionInDEG WRITE setWindDirectionInDEG NOTIFY valChanged)
-
-  /*! \brief Getter function for property of the same name
-
-    @returns Property windDirectionInDEG
-  */
-  double windDirectionInDEG() const { return _windDirectionInDEG; }
-
-  /*! \brief Setter function for property of the same name
-
-    This method saves the new value in a QSetting object. If windDirection is
-    outside of the interval [minWindDirection, maxWindDirection], the property
-    will be set to NaN.
-
-    @param windDirection Property windDirectionInDEG
-  */
-  void setWindDirectionInDEG(double windDirection);
-
-  /*! \brief Minimal speed of the aircraft that is considered valid */
-  Q_PROPERTY(double minWindSpeedInKT MEMBER minWindSpeedInKT CONSTANT)
-
-  /*! \brief Maximal speed of the aircraft that is considered valid */
-  Q_PROPERTY(double maxWindSpeedInKT MEMBER maxWindSpeedInKT CONSTANT)
-
-  /*! \brief Minimal speed of the aircraft that is considered valid */
-  Q_PROPERTY(double minWindSpeedInKMH MEMBER minWindSpeedInKMH CONSTANT)
-
-  /*! \brief Maximal speed of the aircraft that is considered valid */
-  Q_PROPERTY(double maxWindSpeedInKMH MEMBER maxWindSpeedInKMH CONSTANT)
-
-  /*! \brief Minimal wind direction that is considered valid */
-  Q_PROPERTY(double minWindDirection MEMBER minWindDirection CONSTANT)
-
-  /*! \brief Maximal wind direction that is considered valid */
-  Q_PROPERTY(double maxWindDirection MEMBER maxWindDirection CONSTANT)
-
-signals:
-  /*! \brief Notifier signal */
-  void valChanged();
-
-private:
-  Q_DISABLE_COPY_MOVE(Wind)
-
-  static constexpr double minWindSpeedInKT  = 0.0;
-  static constexpr double minWindSpeedInKMH = minWindSpeedInKT * Units::Speed::KMH_per_KT;
-  static constexpr double maxWindSpeedInKT  = 100.0;
-  static constexpr double maxWindSpeedInKMH = maxWindSpeedInKT * Units::Speed::KMH_per_KT;
-  static constexpr double minWindDirection  = 0.0;
-  static constexpr double maxWindDirection  = 360.0;
-
-  double _windSpeedInKT {qQNaN()};
-  double _windDirectionInDEG {qQNaN()};
-
-  QSettings settings;
-};
-
+    /*! \brief Setter function for property of the same name
+     *
+     *  This method saves the new value in a QSetting object.
+     *
+     *  @param newWindDirection Property windDirection
+     */
+    void setWindDirection(Units::Angle newWindDirection);
+    
+    /*! \brief Minimal wind speed that is considered valid */
+    Q_PROPERTY(Units::Speed minWindSpeed MEMBER minWindSpeed CONSTANT)
+    
+    /*! \brief Maximal wind speed that is considered valid */
+    Q_PROPERTY(Units::Speed maxWindSpeed MEMBER maxWindSpeed CONSTANT)
+    
+  signals:
+    /*! \brief Notifier signal */
+    void valChanged();
+    
+  private:
+    Q_DISABLE_COPY_MOVE(Wind)
+    
+    static constexpr Units::Speed minWindSpeed = Units::Speed::fromKN(0.0);
+    static constexpr Units::Speed maxWindSpeed = Units::Speed::fromKN(100.0);
+    
+    Units::Speed _windSpeed {};
+    Units::Angle _windDirection {};
+    
+    QSettings settings;
+  };
+  
 }

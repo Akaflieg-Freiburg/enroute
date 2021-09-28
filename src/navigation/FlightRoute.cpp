@@ -42,7 +42,7 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
 
     connect(Global::navigator()->aircraft(), &Aircraft::valChanged, this, &Navigation::FlightRoute::summaryChanged);
-    connect(Weather::Wind::globalInstance(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(Global::navigator()->wind(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
 }
 
 
@@ -406,19 +406,17 @@ auto Navigation::FlightRoute::summary() const -> QString {
 
 
     QStringList complaints;
-    if (!qIsFinite(Global::navigator()->aircraft()->cruiseSpeedInKT())) {
+    if ( !Global::navigator()->aircraft()->cruiseSpeed().isFinite() ) {
         complaints += tr("Cruise speed not specified.");
     }
     if (!qIsFinite(Global::navigator()->aircraft()->fuelConsumptionInLPH())) {
         complaints += tr("Fuel consumption not specified.");
     }
-    if (!qIsFinite(Weather::Wind::globalInstance()->windSpeedInKT())) {
+    if (!Global::navigator()->wind()->windSpeed().isFinite()) {
         complaints += tr("Wind speed not specified.");
     }
-    if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
-        if (!qIsFinite(Weather::Wind::globalInstance()->windDirectionInDEG())) {
-            complaints += tr("Wind direction not specified.");
-        }
+    if (!Global::navigator()->wind()->windDirection().isFinite()) {
+        complaints += tr("Wind direction not specified.");
     }
 
     if (!complaints.isEmpty()) {
@@ -452,7 +450,7 @@ void Navigation::FlightRoute::updateLegs()
     m_legs.clear();
 
     for(int i=0; i<m_waypoints.size()-1; i++) {
-        m_legs.append(new Leg(m_waypoints.at(i), m_waypoints.at(i+1), Global::navigator()->aircraft(), Weather::Wind::globalInstance(), this));
+        m_legs.append(new Leg(m_waypoints.at(i), m_waypoints.at(i+1), Global::navigator()->aircraft(), Global::navigator()->wind(), this));
     }
 }
 

@@ -29,9 +29,8 @@ namespace Navigation {
 
 /*! \brief This extremely simple class give accss to time and offers a few time-related functions
  *
- *
- * There exists one static instance of this class, which can be accessed via the
- * method globalInstance().  No other instance of this class should be used.
+ * There exists one static instance of this class, which can be accessed via
+ * Global.  No other instance of this class should be used.
  */
 
 class Clock : public QObject {

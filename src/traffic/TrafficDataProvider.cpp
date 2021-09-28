@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
 #include <QQmlEngine>
 #include <chrono>
 
@@ -78,10 +79,13 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Try to (re)connect whenever the network situation changes
     QTimer::singleShot(0, this, &Traffic::TrafficDataProvider::deferredInitialization);
+
+    // Clean up
+    connect(qApp, &QApplication::aboutToQuit, this, &Traffic::TrafficDataProvider::clearDataSources);
 }
 
 
-Traffic::TrafficDataProvider::~TrafficDataProvider()
+void Traffic::TrafficDataProvider::clearDataSources()
 {
     foreach(auto dataSource, m_dataSources) {
         if (dataSource.isNull()) {

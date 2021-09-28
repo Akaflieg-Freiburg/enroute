@@ -70,7 +70,7 @@ public:
     This destructor purges the download directory "aviation_map", by deleting
     all files that do not belong to any of the maps.
   */
-  ~DataManager();
+  void cleanUp();
   
   /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
 

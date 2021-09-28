@@ -25,14 +25,14 @@
 
 
 Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
-    _cruiseSpeedInKT = settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble();
-    if ((_cruiseSpeedInKT < minAircraftSpeedInKT) || (_cruiseSpeedInKT > maxAircraftSpeedInKT)) {
-        _cruiseSpeedInKT = qQNaN();
+    _cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
+    if ((_cruiseSpeed < minAircraftSpeed) || (_cruiseSpeed > maxAircraftSpeed)) {
+        _cruiseSpeed = Units::Speed();
     }
 
-    _descentSpeedInKT = settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble();
-    if ((_descentSpeedInKT < minAircraftSpeedInKT) || (_descentSpeedInKT > maxAircraftSpeedInKT)) {
-        _descentSpeedInKT = qQNaN();
+    _descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
+    if ((_descentSpeed < minAircraftSpeed) || (_descentSpeed > maxAircraftSpeed)) {
+        _descentSpeed = Units::Speed();
     }
 
     _fuelConsumptionInLPH = settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble();
@@ -42,63 +42,36 @@ Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
 }
 
 
-auto Navigation::Aircraft::cruiseSpeedInKT() const -> double {
-    return _cruiseSpeedInKT;
-}
+void Navigation::Aircraft::setCruiseSpeed(Units::Speed newSpeed) {
 
-
-void Navigation::Aircraft::setCruiseSpeedInKT(double speedInKT) {
-    if ((speedInKT < minAircraftSpeedInKT) || (speedInKT > maxAircraftSpeedInKT)) {
-        speedInKT = qQNaN();
+    if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
+        newSpeed = Units::Speed();
     }
 
-    if (!qFuzzyCompare(speedInKT, _cruiseSpeedInKT)) {
-        _cruiseSpeedInKT = speedInKT;
-        settings.setValue("Aircraft/cruiseSpeedInKTS", _cruiseSpeedInKT);
-        emit valChanged();
-    }
-}
-
-
-auto Navigation::Aircraft::cruiseSpeedInKMH() const -> double {
-    auto speed = Units::Speed::fromKN(_cruiseSpeedInKT);
-    return speed.toKMH();
-}
-
-
-void Navigation::Aircraft::setCruiseSpeedInKMH(double speedInKMH) {
-    auto speed = Units::Speed::fromKMH(speedInKMH);
-    setCruiseSpeedInKT(speed.toKN());
-}
-
-
-auto Navigation::Aircraft::descentSpeedInKT() const -> double {
-    return _descentSpeedInKT;
-}
-
-
-void Navigation::Aircraft::setDescentSpeedInKT(double speedInKT) {
-    if ((speedInKT < minAircraftSpeedInKT) || (speedInKT > maxAircraftSpeedInKT)) {
-        speedInKT = qQNaN();
+    if (newSpeed == _cruiseSpeed) {
+        return;
     }
 
-    if (!qFuzzyCompare(speedInKT, _descentSpeedInKT)) {
-        _descentSpeedInKT = speedInKT;
-        settings.setValue("Aircraft/descentSpeedInKTS", _descentSpeedInKT);
-        emit valChanged();
+    _cruiseSpeed = newSpeed;
+    settings.setValue("Aircraft/cruiseSpeedInKTS", _cruiseSpeed.toKN());
+    emit valChanged();
+
+}
+
+
+void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
+
+    if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
+        newSpeed = Units::Speed();
     }
-}
 
+    if (newSpeed == _descentSpeed) {
+        return;
+    }
 
-auto Navigation::Aircraft::descentSpeedInKMH() const -> double {
-    auto speed = Units::Speed::fromKN(_descentSpeedInKT);
-    return speed.toKMH();
-}
-
-
-void Navigation::Aircraft::setDescentSpeedInKMH(double speedInKMH) {
-    auto speed = Units::Speed::fromKMH(speedInKMH);
-    setDescentSpeedInKT(speed.toKN());
+    _descentSpeed = newSpeed;
+    settings.setValue("Aircraft/descentSpeedInKTS", _descentSpeed.toKN());
+    emit valChanged();
 }
 
 

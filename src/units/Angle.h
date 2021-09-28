@@ -47,7 +47,7 @@ namespace Units {
          *
          * @returns Angle
          */
-        static Angle fromRAD(double angleInRAD)
+        Q_INVOKABLE static Units::Angle fromRAD(double angleInRAD)
         {
             Angle result;
             result.m_angleInRAD = angleInRAD;
@@ -60,11 +60,20 @@ namespace Units {
          *
          * @returns Angle
          */
-        static Angle fromDEG(double angleInDEG)
+        Q_INVOKABLE static Units::Angle fromDEG(double angleInDEG)
         {
             Angle result;
             result.m_angleInRAD = qDegreesToRadians(angleInDEG);
             return result;
+        }
+
+        /*! \brief Constructs an invalid angle
+         *
+         * @returns Invalid Angle
+         */
+        Q_INVOKABLE static Units::Angle nan()
+        {
+            return {};
         }
 
         /*! \brief Checks if the angle is valid
@@ -148,7 +157,7 @@ namespace Units {
          *
          * @returns Angle computed
          */
-        static Angle asin(double arg) {
+        Q_INVOKABLE static Units::Angle asin(double arg) {
             Angle result;
             result.m_angleInRAD = std::asin(arg);
             return result;

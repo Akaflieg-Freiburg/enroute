@@ -31,11 +31,7 @@ Settings::Settings(QObject *parent)
     : QObject(parent)
 {
     installTranslators();
-}
 
-
-Settings::~Settings()
-{
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
 }

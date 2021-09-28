@@ -35,7 +35,7 @@
  * QSettings on destruction.
  *
  * There exists one static instance of this class, which can be accessed via the
- * method globalInstance().  No other instance of this class should be used.
+ * Global functions.  No other instance of this class should be used.
  *
  * The methods in this class are reentrant, but not thread safe.
  */
@@ -50,9 +50,6 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit Settings(QObject *parent = nullptr);
-
-    /*! \brief Standard deconstructor */
-    ~Settings() override;
 
     /*! \brief Possible map bearing policies */
     enum MapBearingPolicyValues
@@ -101,7 +98,6 @@ public:
     /*! \brief Getter function for property of the same name
      *
      * This function differs from acceptedWeatherTerms() only in that it is static.
-     * It uses the globalInstance() to retrieve data.
      *
      * @returns Property acceptedWeatherTerms
      */
@@ -149,7 +145,6 @@ public:
     /*! \brief Getter function for property of the same name
      *
      * This function differs from hideUpperAirspaces() only in that it is static.
-     * It uses the globalInstance() to retrieve data.
      *
      * @returns Property hideUpperAirspaces
      */
@@ -223,7 +218,6 @@ public:
     /*! \brief Getter function for property of the same name
      *
      * This function differs from useMetricUnits() only in that it is static.
-     * It uses the globalInstance() to retrieve data.
      *
      * @returns Property useMetricUnits
      */

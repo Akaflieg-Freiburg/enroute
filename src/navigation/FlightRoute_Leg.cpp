@@ -65,12 +65,12 @@ auto Navigation::FlightRoute::Leg::GS() const -> Units::Speed
         return {};
     }
 
-    auto TASInKT = _aircraft->cruiseSpeedInKT();
-    auto WSInKT  = _wind->windSpeedInKT();
-    auto WD      = Units::Angle::fromDEG( _wind->windDirectionInDEG() );
+    auto TASInKN = _aircraft->cruiseSpeed().toKN();
+    auto WSInKN  = _wind->windSpeed().toKN();
+    auto WD      = _wind->windDirection();
 
     // Law of cosine for wind triangle
-    auto GSInKT = qSqrt( TASInKT*TASInKT + WSInKT*WSInKT - 2.0*TASInKT*WSInKT*(WD-TH()).cos() );
+    auto GSInKT = qSqrt( TASInKN*TASInKN + WSInKN*WSInKN - 2.0*TASInKN*WSInKN*(WD-TH()).cos() );
 
     return Units::Speed::fromKN(GSInKT);
 }
@@ -97,9 +97,9 @@ auto Navigation::FlightRoute::Leg::WCA() const -> Units::Angle
         return {};
     }
 
-    Units::Speed TAS = Units::Speed::fromKN( _aircraft->cruiseSpeedInKT() );
-    Units::Speed WS  = Units::Speed::fromKN( _wind->windSpeedInKT() );
-    Units::Angle WD  = Units::Angle::fromDEG( _wind->windDirectionInDEG() );
+    Units::Speed TAS = _aircraft->cruiseSpeed();
+    Units::Speed WS  = _wind->windSpeed();
+    Units::Angle WD  = _wind->windDirection();
 
     // Law of sine for wind triangle
     return Units::Angle::asin(-(TC()-WD).sin() *(WS/TAS));
@@ -152,20 +152,20 @@ auto Navigation::FlightRoute::Leg::hasDataForWindTriangle() const -> bool
     if ( _aircraft.isNull() ) {
         return false;
     }
-    if ( !qIsFinite(_aircraft->cruiseSpeedInKT()) ) {
+    if ( !_aircraft->cruiseSpeed().isFinite() ) {
         return false;
     }
 
     if (_wind.isNull()) {
         return false;
     }
-    if ( !qIsFinite(_wind->windSpeedInKT()) ) {
+    if ( !_wind->windSpeed().isFinite() ) {
         return false;
     }
-    if ( !qIsFinite(_wind->windDirectionInDEG()) ) {
+    if ( !_wind->windDirection().isFinite() ) {
         return false;
     }
-    if (_wind->windSpeedInKT() > 0.75*_aircraft->cruiseSpeedInKT()) {
+    if (_wind->windSpeed().toKN() > 0.75*_aircraft->cruiseSpeed().toKN() ) {
         return false;
     }
 

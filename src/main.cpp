@@ -159,8 +159,10 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("angle", QVariant::fromValue(Units::Angle()) );
     engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
     engine.rootContext()->setContextProperty("global", new Global(&engine) );
+    engine.rootContext()->setContextProperty("speed", QVariant::fromValue(Units::Speed()) );
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption)) {

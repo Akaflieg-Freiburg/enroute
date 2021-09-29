@@ -69,7 +69,7 @@ public:
      * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
      * property will be set to NaN.
      *
-     * @param speedInKT Property cruise speed
+     * @param newSpeed Property cruise speed
      */
     void setCruiseSpeed(Units::Speed newSpeed);
 

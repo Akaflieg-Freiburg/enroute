@@ -70,7 +70,7 @@ namespace Weather {
      *  outside of the interval [minWindSpeed, maxWindSpeed], the property will
      *  be set to NaN.
      *
-     *  @param speed Property windSpeed
+     *  @param newWindSpeed Property windSpeed
      */
     void setWindSpeed(Units::Speed newWindSpeed);
     

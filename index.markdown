@@ -73,10 +73,11 @@ Public License](https://en.wikipedia.org/wiki/GNU_General_Public_License), a
 widely-used free software license that guarantees end users the freedom to run,
 study, share, and modify the software.
 
-[We do not collect your data.](/privacy/) We do not use the "Facebook API",
-"Crashlytics" or similar software that spies on you. You do not need to register
-for "membership". And we do not hassle you with e-mails. We do not even have or
-want your address!
+[We do not collect your
+data.](https://akaflieg-freiburg.github.io/enrouteText/manual/04-appendix/privacy.html)
+We do not use the "Facebook API", "Crashlytics" or similar software that spies
+on you. You do not need to register for "membership". And we do not hassle you
+with e-mails. We do not even have or want your address!
 
 
 # … and what's with the name?
@@ -92,8 +93,8 @@ aircraft in the particular country.
 # Disclaimer
 
 This free app is published in the hope that it might be useful as an aid to
-prudent navigation. It comes with no guarantees. It may not work as
-expected. The data does not come from official sources and might be incomplete,
-outdated or otherwise incorrect.  **This app is no substitute for proper flight
+prudent navigation. It comes with no guarantees. It may not work as expected.
+The data does not come from official sources and might be incomplete, outdated
+or otherwise incorrect.  **This app is no substitute for proper flight
 preparation or good pilotage. Relying on it as a primary means of navigation is
 most likely illegal, most certainly stupid and potentially suicidal.**

@@ -91,24 +91,18 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
 
 auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
 {
-
-    qWarning() << "getRegistration" << key;
-
     if (key.contains("!")) {
         auto result = key.section('!', -1, -1);
-        qWarning() << "  result" << result;
         return result;
     }
 
     // Check if key exists in the cache
     auto* cachedValue = m_cache[key];
     if (cachedValue != nullptr) {
-        qWarning() << "  cached Value" << *cachedValue;
         return *cachedValue;
     }
 
     auto result = getRegistrationFromFile(key);
-    qWarning() << "  result" << result;
     m_cache.insert(key, new QString(result));
     return result;
 }

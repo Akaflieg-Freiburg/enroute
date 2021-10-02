@@ -111,8 +111,6 @@ auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
 auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
 {
 
-    qWarning() << "getRegistrationFromFile" << key;
-
     // If not in the cache, try to find the values in the file.
     if (flarmnetDBDownloadable == nullptr) {
         return {};

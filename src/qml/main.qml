@@ -460,7 +460,6 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        objectName: "stackView"
 
         initialItem: "pages/MapPage.qml"
 
@@ -517,6 +516,19 @@ ApplicationWindow {
             }
         }
 
+        Connections {
+            target: global.demoRunner()
+
+            function onRequestOpenNearbyPage() {
+                stackView.pop()
+                stackView.push("pages/Nearby.qml")
+            }
+
+            function onRequestClosePages() {
+                stackView.pop()
+            }
+
+        }
     }
 
     DropArea {

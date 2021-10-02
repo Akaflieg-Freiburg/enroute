@@ -39,7 +39,7 @@ using namespace std::chrono_literals;
 
 
 DemoRunner::DemoRunner(QObject *parent) : QObject(parent) {
-    qWarning() << "DemoRunner Initialisation";
+
 }
 
 
@@ -77,8 +77,6 @@ void DemoRunner::run()
     Q_ASSERT(flightMap != nullptr);
     auto *waypointDescription = findQQuickItem("waypointDescription", m_engine);
     Q_ASSERT(waypointDescription != nullptr);
-    auto *stackView = findQQuickItem("stackView", m_engine);
-    Q_ASSERT(stackView != nullptr);
 
     // Set up traffic simulator
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
@@ -101,11 +99,13 @@ void DemoRunner::run()
     Global::navigator()->flightRoute()->clear();
 
     // Nearby waypoints
-    QString retVal;
-    QMetaObject::invokeMethod(stackView, "push", Qt::DirectConnection,
-                              Q_RETURN_ARG(QString, retVal),
-                              Q_ARG(QString, "pages/Nearby.qml"));
-    delay(4s);
+    {
+        qWarning() << "Demo Mode" << "Nearby Waypoints Page";
+        emit requestOpenNearbyPage();
+        delay(4s);
+        applicationWindow->grabWindow().save("02-02-01-Nearby.png");
+        emit requestClosePages();
+    }
 
     // EDTF Taxiway
     {

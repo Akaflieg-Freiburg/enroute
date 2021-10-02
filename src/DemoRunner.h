@@ -45,6 +45,12 @@ public:
     // Standard destructor
     ~DemoRunner() override = default;
 
+    /*! \brief Set pointer to QQmlApplicationEngine
+     *
+     *  To work, the instance needs to know the QQmlApplicationEngine that runs the GUI.q
+     *
+     *  @param engine Pointer to QQmlApplicationEngine
+     */
     void setEngine(QQmlApplicationEngine* engine)
     {
         m_engine = engine;
@@ -53,6 +59,13 @@ public:
 public slots:
     // Begin to remote-control the app
     void run();
+
+signals:
+    /*! \brief Emitted to indicate that the GUI should open the "nearby" page */
+    void requestOpenNearbyPage();
+
+    /*! \brief Emitted to indicate that the GUI return to the main page */
+    void requestClosePages();
 
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)

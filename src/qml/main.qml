@@ -460,6 +460,8 @@ ApplicationWindow {
 
     StackView {
         id: stackView
+        objectName: "stackView"
+
         initialItem: "pages/MapPage.qml"
 
         anchors.fill: parent

@@ -166,20 +166,9 @@ auto main(int argc, char *argv[]) -> int
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption)) {
-        new DemoRunner(&app);
+        QTimer::singleShot(1s, Global::demoRunner(), &DemoRunner::run);
     }
 
     // Load GUI and enter event loop
     return QGuiApplication::exec();
-
-    // Ensure that things get deleted in the right order
-//    delete demoRunner;
-//    Global::destruct();
-
-    // We exit(…) and do not return here. The reason is that the deconstruction of the qApp object
-    // freezes sporadically (for unclear reasons) whenever a connection to a traffic data receiver exists.
-    //
-    // BAD IDEA: exit causes crash reports. Again I do not know why.
-    //
-    //exit(0);
 }

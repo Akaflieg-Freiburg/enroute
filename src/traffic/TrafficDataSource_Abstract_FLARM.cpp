@@ -306,7 +306,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             }
 
             m_factorDistanceOnly.setAlarmLevel(alarmLevel);
-            m_factor.setCallSign( Global::flarmnetDB()->getRegistration(targetID) );
+            m_factorDistanceOnly.setCallSign( Global::flarmnetDB()->getRegistration(targetID) );
             m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());
             m_factorDistanceOnly.setID(targetID);
             m_factorDistanceOnly.setHDist(hDist);

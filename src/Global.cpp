@@ -39,16 +39,17 @@
 
 bool isConstructing {false};
 
+QPointer<DataManagement::DataManager> g_dataManager {};
+QPointer<DemoRunner> g_demoRunner {};
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<Librarian> g_librarian {};
-QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
-QPointer<Platform::Notifier> g_notifier {};
-QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
+QPointer<Platform::Notifier> g_notifier {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
+QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<Settings> g_settings {};
 QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
 QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
@@ -90,6 +91,12 @@ auto Global::geoMapProvider() -> GeoMaps::GeoMapProvider*
 auto Global::dataManager() -> DataManagement::DataManager*
 {
     return allocateInternal<DataManagement::DataManager>(g_dataManager);
+}
+
+
+auto Global::demoRunner() -> DemoRunner*
+{
+    return allocateInternal<DemoRunner>(g_demoRunner);
 }
 
 

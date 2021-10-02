@@ -44,7 +44,7 @@ public:
     // Standard destructor
     ~DemoRunner() override = default;
 
-private slots:
+public slots:
     // Begin to remote-control the app
     void run();
 

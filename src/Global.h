@@ -106,6 +106,12 @@ class Global : public QObject
      */
     Q_INVOKABLE static DataManagement::DataManager* dataManager();
 
+    /*! \brief Pointer to appplication-wide static DemoRunner instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static DemoRunner* demoRunner();
+
     /*! \brief Pointer to appplication-wide static FlarmnetDB instance
      *
      * @returns Pointer to appplication-wide static instance.

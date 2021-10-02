@@ -21,7 +21,6 @@
 #include <QApplication>
 #include <QDebug>
 #include <QEventLoop>
-#include <QQmlApplicationEngine>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
@@ -69,17 +68,16 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
 
 void DemoRunner::run()
 {
-    auto *engine = qobject_cast<QQmlApplicationEngine*>(parent());
-    Q_ASSERT(engine != nullptr);
+    Q_ASSERT(m_engine != nullptr);
 
     // Obtain pointers to QML items
-    auto* applicationWindow =  qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", engine));
+    auto* applicationWindow =  qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", m_engine));
     Q_ASSERT(applicationWindow != nullptr);
-    auto* flightMap = findQQuickItem("flightMap", engine);
+    auto* flightMap = findQQuickItem("flightMap", m_engine);
     Q_ASSERT(flightMap != nullptr);
-    auto *waypointDescription = findQQuickItem("waypointDescription", engine);
+    auto *waypointDescription = findQQuickItem("waypointDescription", m_engine);
     Q_ASSERT(waypointDescription != nullptr);
-    auto *stackView = findQQuickItem("stackView", engine);
+    auto *stackView = findQQuickItem("stackView", m_engine);
     Q_ASSERT(stackView != nullptr);
 
     // Set up traffic simulator
@@ -97,7 +95,7 @@ void DemoRunner::run()
 
     // Set language
     Global::settings()->installTranslators("en");
-    engine->retranslate();
+    m_engine->retranslate();
 
     // Clear flight route
     Global::navigator()->flightRoute()->clear();

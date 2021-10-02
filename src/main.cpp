@@ -166,6 +166,7 @@ auto main(int argc, char *argv[]) -> int
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption)) {
+        Global::demoRunner()->setEngine(&engine);
         QTimer::singleShot(1s, Global::demoRunner(), &DemoRunner::run);
     }
 

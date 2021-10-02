@@ -20,7 +20,8 @@
 
 #pragma once
 
-#include <QObject>
+#include <QQmlApplicationEngine>
+
 
 /*! \brief Remote controls the app and takes screenshot images
  *
@@ -44,10 +45,17 @@ public:
     // Standard destructor
     ~DemoRunner() override = default;
 
+    void setEngine(QQmlApplicationEngine* engine)
+    {
+        m_engine = engine;
+    }
+
 public slots:
     // Begin to remote-control the app
     void run();
 
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)
+
+    QPointer<QQmlApplicationEngine> m_engine;
 };

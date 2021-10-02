@@ -41,6 +41,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classDemoRunner-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -55,17 +56,31 @@ $(function() {
 
 <p>Inherits QObject.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
+Signals</h2></td></tr>
+<tr class="memitem:a5aa15fd0c1aec84702211d8eeee87803"><td class="memItemLeft" align="right" valign="top"><a id="a5aa15fd0c1aec84702211d8eeee87803"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDemoRunner.html#a5aa15fd0c1aec84702211d8eeee87803">requestOpenNearbyPage</a> ()</td></tr>
+<tr class="memdesc:a5aa15fd0c1aec84702211d8eeee87803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted to indicate that the GUI should open the "nearby" page. <br /></td></tr>
+<tr class="separator:a5aa15fd0c1aec84702211d8eeee87803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3267bf286b33d8aa5e2af7fc70ffdc"><td class="memItemLeft" align="right" valign="top"><a id="a0f3267bf286b33d8aa5e2af7fc70ffdc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDemoRunner.html#a0f3267bf286b33d8aa5e2af7fc70ffdc">requestClosePages</a> ()</td></tr>
+<tr class="memdesc:a0f3267bf286b33d8aa5e2af7fc70ffdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted to indicate that the GUI return to the main page. <br /></td></tr>
+<tr class="separator:a0f3267bf286b33d8aa5e2af7fc70ffdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a65ea26f415fbcac035a00f5a6dd9f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">DemoRunner</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a6a65ea26f415fbcac035a00f5a6dd9f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classDemoRunner.html" title="Remote controls the app and takes screenshot images.">DemoRunner</a>.  <a href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">More...</a><br /></td></tr>
 <tr class="separator:a6a65ea26f415fbcac035a00f5a6dd9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2a302b436ca39e05faeaa6b683b7f58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDemoRunner.html#ac2a302b436ca39e05faeaa6b683b7f58">setEngine</a> (QQmlApplicationEngine *engine)</td></tr>
+<tr class="memdesc:ac2a302b436ca39e05faeaa6b683b7f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pointer to QQmlApplicationEngine.  <a href="classDemoRunner.html#ac2a302b436ca39e05faeaa6b683b7f58">More...</a><br /></td></tr>
+<tr class="separator:ac2a302b436ca39e05faeaa6b683b7f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Remote controls the app and takes screenshot images. </p>
 <p>This class remote controls the app. It sets up a traffic data receiver simulator, feeds it with data and controls the GUI, in order to generate a sequence of screenshots, which can then be used in the manual and as propaganda material. </p>
 
-<p class="definition">Definition at line <a class="el" href="DemoRunner_8h_source.html#l00032">32</a> of file <a class="el" href="DemoRunner_8h_source.html">DemoRunner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DemoRunner_8h_source.html#l00033">33</a> of file <a class="el" href="DemoRunner_8h_source.html">DemoRunner.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6a65ea26f415fbcac035a00f5a6dd9f8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a65ea26f415fbcac035a00f5a6dd9f8">&#9670;&nbsp;</a></span>DemoRunner()</h2>
@@ -99,6 +114,44 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac2a302b436ca39e05faeaa6b683b7f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2a302b436ca39e05faeaa6b683b7f58">&#9670;&nbsp;</a></span>setEngine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DemoRunner::setEngine </td>
+          <td>(</td>
+          <td class="paramtype">QQmlApplicationEngine *&#160;</td>
+          <td class="paramname"><em>engine</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set pointer to QQmlApplicationEngine. </p>
+<p>To work, the instance needs to know the QQmlApplicationEngine that runs the GUI.q</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">engine</td><td>Pointer to QQmlApplicationEngine </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="DemoRunner_8h_source.html#l00072">72</a> of file <a class="el" href="DemoRunner_8h_source.html">DemoRunner.h</a>.</p>
 
 </div>
 </div>

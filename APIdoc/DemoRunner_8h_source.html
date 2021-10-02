@@ -70,27 +70,43 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QQmlApplicationEngine&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classDemoRunner.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDemoRunner.html">DemoRunner</a> : <span class="keyword">public</span> QObject {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">DemoRunner</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    ~<a class="code" href="classDemoRunner.html">DemoRunner</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// Begin to remote-control the app</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> run();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classDemoRunner.html">DemoRunner</a>)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classDemoRunner.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDemoRunner.html">DemoRunner</a> : <span class="keyword">public</span> QObject {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">DemoRunner</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// Standard destructor</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    ~<a class="code" href="classDemoRunner.html">DemoRunner</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDemoRunner.html#ac2a302b436ca39e05faeaa6b683b7f58">setEngine</a>(QQmlApplicationEngine* engine)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        m_engine = engine;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// Begin to remote-control the app</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> run();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;signals:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDemoRunner.html#a5aa15fd0c1aec84702211d8eeee87803">requestOpenNearbyPage</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDemoRunner.html#a0f3267bf286b33d8aa5e2af7fc70ffdc">requestClosePages</a>();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classDemoRunner.html">DemoRunner</a>)</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classDemoRunner.html#ac2a302b436ca39e05faeaa6b683b7f58">   72</a></span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    QPointer&lt;QQmlApplicationEngine&gt; m_engine;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassDemoRunner_html"><div class="ttname"><a href="classDemoRunner.html">DemoRunner</a></div><div class="ttdoc">Remote controls the app and takes screenshot images.</div><div class="ttdef"><b>Definition:</b> <a href="DemoRunner_8h_source.html#l00032">DemoRunner.h:32</a></div></div>
+<div class="ttc" id="aclassDemoRunner_html"><div class="ttname"><a href="classDemoRunner.html">DemoRunner</a></div><div class="ttdoc">Remote controls the app and takes screenshot images.</div><div class="ttdef"><b>Definition:</b> <a href="DemoRunner_8h_source.html#l00033">DemoRunner.h:33</a></div></div>
 <div class="ttc" id="aclassDemoRunner_html_a6a65ea26f415fbcac035a00f5a6dd9f8"><div class="ttname"><a href="classDemoRunner.html#a6a65ea26f415fbcac035a00f5a6dd9f8">DemoRunner::DemoRunner</a></div><div class="ttdeci">DemoRunner(QObject *parent=nullptr)</div><div class="ttdoc">Creates a new DemoRunner.</div></div>
+<div class="ttc" id="aclassDemoRunner_html_ac2a302b436ca39e05faeaa6b683b7f58"><div class="ttname"><a href="classDemoRunner.html#ac2a302b436ca39e05faeaa6b683b7f58">DemoRunner::setEngine</a></div><div class="ttdeci">void setEngine(QQmlApplicationEngine *engine)</div><div class="ttdoc">Set pointer to QQmlApplicationEngine.</div><div class="ttdef"><b>Definition:</b> <a href="DemoRunner_8h_source.html#l00072">DemoRunner.h:72</a></div></div>
+<div class="ttc" id="aclassDemoRunner_html_a0f3267bf286b33d8aa5e2af7fc70ffdc"><div class="ttname"><a href="classDemoRunner.html#a0f3267bf286b33d8aa5e2af7fc70ffdc">DemoRunner::requestClosePages</a></div><div class="ttdeci">void requestClosePages()</div><div class="ttdoc">Emitted to indicate that the GUI return to the main page.</div></div>
+<div class="ttc" id="aclassDemoRunner_html_a5aa15fd0c1aec84702211d8eeee87803"><div class="ttname"><a href="classDemoRunner.html#a5aa15fd0c1aec84702211d8eeee87803">DemoRunner::requestOpenNearbyPage</a></div><div class="ttdeci">void requestOpenNearbyPage()</div><div class="ttdoc">Emitted to indicate that the GUI should open the &quot;nearby&quot; page.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -23,11 +23,12 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QLockFile>
 #include <QQmlEngine>
 #include <QRandomGenerator>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QtConcurrent/QtConcurrent>
+#include <QtConcurrent/QtConcurrentRun>
 #include <chrono>
 
 #include "GeoMapProvider.h"

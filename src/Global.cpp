@@ -76,7 +76,6 @@ Global::Global(QObject *parent) : QObject(parent)
 }
 
 
-#warning docu
 bool Global::ready()
 {
     if (isConstructing) {

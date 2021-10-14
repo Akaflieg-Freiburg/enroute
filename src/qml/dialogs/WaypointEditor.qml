@@ -43,23 +43,79 @@ Dialog {
     y: (parent.height-height)/2.0
 
     modal: true
-    title: qsTr("New waypoint name")
+    title: qsTr("Edit waypoint")
 
     standardButtons: Dialog.Cancel|Dialog.Ok
     focus: true
 
-    TextField {
-        id: wpNameField
-
+    GridLayout {
         width: waypointEditorDialog.availableWidth
+        columns: 2
 
-        text: waypoint.extendedName
-        focus: true
+        Label {
+            text: qsTr("Name")
+        }
 
-        onEditingFinished: setName()
+        TextField {
+            id: wpNameField
 
-        placeholderText: qsTr("undefined")
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+            Layout.minimumWidth: Qt.application.font.pixelSize*5
+
+            text: waypoint.extendedName
+            focus: true
+
+//            onEditingFinished: setName()
+
+            placeholderText: qsTr("undefined")
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Latitude")
+        }
+
+        TextField {
+            id: latitude
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+            Layout.minimumWidth: Qt.application.font.pixelSize*5
+
+            text: waypoint.coordinate.latitude
+
+            validator: DoubleValidator {
+                bottom: -90
+                top: 90
+                notation: DoubleValidator.StandardNotation
+            }
+            inputMethodHints: Qt.ImhDigitsOnly
+            color: (acceptableInput ? Material.foreground : "red")
+        }
+
+        Label {
+            text: qsTr("Longitude")
+        }
+
+        TextField {
+            id: longitude
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+            Layout.minimumWidth: Qt.application.font.pixelSize*5
+
+            text: waypoint.coordinate.longitude
+
+            validator: DoubleValidator {
+                bottom: -180.0
+                top: 180.0
+                notation: DoubleValidator.StandardNotation
+            }
+            inputMethodHints: Qt.ImhDigitsOnly
+            color: (acceptableInput ? Material.foreground : "red")
+        }
+
     }
+
 
     onAccepted: setName()
 

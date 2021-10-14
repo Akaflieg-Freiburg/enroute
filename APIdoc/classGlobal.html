@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.12.0</span>
+   &#160;<span id="projectnumber">2.12.1</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -67,6 +67,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab027998f937805f0c37ede565c98c35c"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#ab027998f937805f0c37ede565c98c35c">ready</a> ()</td></tr>
+<tr class="memdesc:ab027998f937805f0c37ede565c98c35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if this class is ready to be used.  <a href="classGlobal.html#ab027998f937805f0c37ede565c98c35c">More...</a><br /></td></tr>
+<tr class="separator:ab027998f937805f0c37ede565c98c35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08f84f550f34c57bfdb65b9206d31bf3"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classDataManagement_1_1DataManager.html">DataManagement::DataManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobal.html#a08f84f550f34c57bfdb65b9206d31bf3">dataManager</a> ()</td></tr>
 <tr class="memdesc:a08f84f550f34c57bfdb65b9206d31bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static GeoMaps::DataManager instance.  <a href="classGlobal.html#a08f84f550f34c57bfdb65b9206d31bf3">More...</a><br /></td></tr>
 <tr class="separator:a08f84f550f34c57bfdb65b9206d31bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -488,6 +491,35 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Pointer to appplication-wide static PositionProvider instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
+<a id="ab027998f937805f0c37ede565c98c35c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab027998f937805f0c37ede565c98c35c">&#9670;&nbsp;</a></span>ready()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE bool Global::ready </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Indicates if this class is ready to be used. </p>
+<p>This method returns false if the app is in constructing state where the pointer-returning methods should not be used.</p>
+<p>This is relevant for C++ code that is called from Android, often at unexpected times (during startup, …). This code should check that the <a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> class is ready before using it. </p>
 
 </div>
 </div>

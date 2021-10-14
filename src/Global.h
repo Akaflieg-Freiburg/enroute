@@ -99,6 +99,16 @@ class Global : public QObject
      */
     ~Global() = default;
 
+    /*! \brief Indicates if this class is ready to be used
+     *
+     *  This method returns false if the app is in constructing state
+     *  where the pointer-returning methods should not be used.
+     *
+     *  This is relevant for C++ code that is called from Android, often at
+     *  unexpected times (during startup, …). This code should check that
+     *  the Global class is ready before using it.
+     */
+    Q_INVOKABLE static bool ready();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
      *

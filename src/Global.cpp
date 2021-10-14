@@ -76,6 +76,19 @@ Global::Global(QObject *parent) : QObject(parent)
 }
 
 
+#warning docu
+bool Global::ready()
+{
+    if (isConstructing) {
+        return false;
+    }
+    if (QCoreApplication::instance() == nullptr ) {
+        return false;
+    }
+    return true;
+}
+
+
 auto Global::flarmnetDB() -> Traffic::FlarmnetDB*
 {
     return allocateInternal<Traffic::FlarmnetDB>(g_flarmnetDB);

@@ -89,12 +89,9 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     // and thus before a QApplication instance has been constructed.
     // In these cases, the methods of the Global class must not be called
     // and we simply return.
-    if (QCoreApplication::instance() == nullptr) {
-        return;
+    if (Global::ready()) {
+        Global::mobileAdaptor()->emitWifiConnected();
     }
-
-    Global::mobileAdaptor()->emitWifiConnected();
-
 }
 
 // This method is called from Java to indicate that the user has clicked into the Android
@@ -107,12 +104,9 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotifi
     // and thus before a QApplication instance has been constructed.
     // In these cases, the methods of the Global class must not be called
     // and we simply return.
-    if (QCoreApplication::instance() == nullptr) {
-        return;
+    if (Global::ready()) {
+        Global::notifier()->emitNotificationClicked((Platform::Notifier::Notifications)notifyID);
     }
-
-    Global::notifier()->emitNotificationClicked((Platform::Notifier::Notifications)notifyID);
-
 }
 
-}
+} // extern "C"

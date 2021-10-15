@@ -146,6 +146,17 @@ auto main(int argc, char *argv[]) -> int
     }
 #endif
 
+    // Ignore SSL errors
+    QObject::connect(Global::networkAccessManager(), &QNetworkAccessManager::sslErrors,
+                     [](QNetworkReply *reply, const QList<QSslError> &errors) {
+                         foreach(auto error, errors)
+                             qWarning() << "A" << error.errorString();
+                         if (reply != nullptr) {
+                             reply->ignoreSslErrors();
+                         }
+                     });
+
+
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     if (positionalArguments.length() == 1) {
         Global::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);

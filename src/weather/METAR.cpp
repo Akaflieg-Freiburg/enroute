@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
@@ -222,10 +222,10 @@ auto Weather::METAR::relativeObservationTime() const -> QString
 void Weather::METAR::setupSignals() const
 {
     // Emit notifier signals whenever the time changes
-    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
-    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
+    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
+    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
 
-    connect(Global::settings(), &Settings::useMetricUnitsChanged, this, &Weather::METAR::summaryChanged);
+    connect(GlobalObject::settings(), &Settings::useMetricUnitsChanged, this, &Weather::METAR::summaryChanged);
 }
 
 

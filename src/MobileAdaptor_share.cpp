@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "MobileAdaptor.h"
 #include "navigation/FlightRoute.h"
 #include "traffic/TrafficDataProvider.h"
@@ -224,7 +224,7 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     // FLARM Simulator file
     if (Traffic::TrafficDataSource_File::containsFLARMSimulationData(myPath)) {
         auto *source = new Traffic::TrafficDataSource_File(myPath);
-        Global::trafficDataProvider()->addDataSource(source); // Will take ownership of source
+        GlobalObject::trafficDataProvider()->addDataSource(source); // Will take ownership of source
         source->connectToTrafficReceiver();
         return;
     }
@@ -257,7 +257,7 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    Global::mobileAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
+    GlobalObject::mobileAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

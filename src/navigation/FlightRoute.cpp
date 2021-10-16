@@ -24,7 +24,7 @@
 #include <QStandardPaths>
 
 #include "FlightRoute.h"
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 #include "navigation/Navigator.h"
 
@@ -41,8 +41,8 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
 
-    connect(Global::navigator()->aircraft(), &Aircraft::valChanged, this, &Navigation::FlightRoute::summaryChanged);
-    connect(Global::navigator()->wind(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(GlobalObject::navigator()->aircraft(), &Aircraft::valChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(GlobalObject::navigator()->wind(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
 }
 
 
@@ -392,7 +392,7 @@ auto Navigation::FlightRoute::summary() const -> QString {
         }
     }
 
-    if (Global::settings()->useMetricUnits()) {
+    if (GlobalObject::settings()->useMetricUnits()) {
         result += tr("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
     } else {
         result += tr("Total: %1&nbsp;nm").arg(dist.toNM(), 0, 'f', 1);
@@ -406,16 +406,16 @@ auto Navigation::FlightRoute::summary() const -> QString {
 
 
     QStringList complaints;
-    if ( !Global::navigator()->aircraft()->cruiseSpeed().isFinite() ) {
+    if ( !GlobalObject::navigator()->aircraft()->cruiseSpeed().isFinite() ) {
         complaints += tr("Cruise speed not specified.");
     }
-    if (!qIsFinite(Global::navigator()->aircraft()->fuelConsumptionInLPH())) {
+    if (!qIsFinite(GlobalObject::navigator()->aircraft()->fuelConsumptionInLPH())) {
         complaints += tr("Fuel consumption not specified.");
     }
-    if (!Global::navigator()->wind()->windSpeed().isFinite()) {
+    if (!GlobalObject::navigator()->wind()->windSpeed().isFinite()) {
         complaints += tr("Wind speed not specified.");
     }
-    if (!Global::navigator()->wind()->windDirection().isFinite()) {
+    if (!GlobalObject::navigator()->wind()->windDirection().isFinite()) {
         complaints += tr("Wind direction not specified.");
     }
 
@@ -450,7 +450,7 @@ void Navigation::FlightRoute::updateLegs()
     m_legs.clear();
 
     for(int i=0; i<m_waypoints.size()-1; i++) {
-        m_legs.append(new Leg(m_waypoints.at(i), m_waypoints.at(i+1), Global::navigator()->aircraft(), Global::navigator()->wind(), this));
+        m_legs.append(new Leg(m_waypoints.at(i), m_waypoints.at(i+1), GlobalObject::navigator()->aircraft(), GlobalObject::navigator()->wind(), this));
     }
 }
 

@@ -22,7 +22,7 @@
 #include <QQmlEngine>
 #include <chrono>
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "MobileAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
@@ -131,7 +131,7 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 void Traffic::TrafficDataProvider::deferredInitialization() const
 {
     // Try to (re)connect whenever the network situation changes
-    connect(Global::mobileAdaptor(), &MobileAdaptor::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+    connect(GlobalObject::mobileAdaptor(), &MobileAdaptor::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
 }
 
 

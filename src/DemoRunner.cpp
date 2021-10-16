@@ -27,7 +27,7 @@
 #include <chrono>
 
 #include "DemoRunner.h"
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
@@ -80,7 +80,7 @@ void DemoRunner::run()
 
     // Set up traffic simulator
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
-    Global::trafficDataProvider()->addDataSource( trafficSimulator );
+    GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
     delay(10s);
 
@@ -92,11 +92,11 @@ void DemoRunner::run()
     applicationWindow->setProperty("height", 600);
 
     // Set language
-    Global::settings()->installTranslators("en");
+    GlobalObject::settings()->installTranslators("en");
     m_engine->retranslate();
 
     // Clear flight route
-    Global::navigator()->flightRoute()->clear();
+    GlobalObject::navigator()->flightRoute()->clear();
 
     // Nearby waypoints
     {
@@ -116,7 +116,7 @@ void DemoRunner::run()
         trafficSimulator->setGS( Units::Speed::fromKN(5) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        Global::settings()->setMapBearingPolicy(Settings::NUp);
+        GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save("01-03-01-ground.png");
     }
@@ -129,7 +129,7 @@ void DemoRunner::run()
         trafficSimulator->setTT( Units::Angle::fromDEG(170) );
         trafficSimulator->setGS( Units::Speed::fromKN(90) );
         flightMap->setProperty("zoomLevel", 11);
-        Global::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save("01-03-02-flight.png");
     }
@@ -137,11 +137,11 @@ void DemoRunner::run()
     // Egelsbach Airport Info
     {
         qWarning() << "Demo Mode" << "EDFE Info Page";
-        auto waypoint = Global::geoMapProvider()->findByID("EDFE");
+        auto waypoint = GlobalObject::geoMapProvider()->findByID("EDFE");
         Q_ASSERT(waypoint.isValid());
         waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
         QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
-        Global::settings()->setMapBearingPolicy(Settings::NUp);
+        GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save("01-03-03-EDFEinfo.png");
         QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
@@ -157,7 +157,7 @@ void DemoRunner::run()
         trafficSimulator->setGS( Units::Speed::fromKN(92) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        Global::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
         QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
         QGeoPositionInfo trafficInfo;
         trafficInfo.setCoordinate(trafficPosition);

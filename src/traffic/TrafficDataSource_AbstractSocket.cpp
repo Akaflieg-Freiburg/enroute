@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "MobileAdaptor.h"
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 

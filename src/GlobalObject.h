@@ -58,12 +58,13 @@ namespace Weather {
 class WeatherDataProvider;
 }
 
+#warning docu!
 
-/*! \brief Global instance storage
+/*! \brief GlobalObject instance storage
  *
  * This class manages a collection of static instances of classes that are used
  * throughout the application.  The instances are constructed lazily at runtime,
- * whenever the appropriate methods are called.  They are children of the global
+ * whenever the appropriate methods are called.  They are children of the GlobalObject
  * QCoreApplication object and deleted along with this object.
  *
  * Although all relevant methods are static, it is possible to construct an
@@ -73,15 +74,15 @@ class WeatherDataProvider;
  * pointer is guaranteed to be valid.  The instances are owned by this class and
  * must not be deleted. QML ownership has been set to QQmlEngine::CppOwnership.
  *
- * @note This method must only be called while a global QCoreApplication exists.
- * If Global manages an instance of your class, then none of the static methods
+ * @note This method must only be called while a GlobalObject QCoreApplication exists.
+ * If GlobalObject manages an instance of your class, then none of the static methods
  * must not be called in the constructor of your class, or else an inite loop
  * may result.
  *
  * The methods in this class are reentrant, but not thread safe.
  */
 
-class Global : public QObject
+class GlobalObject : public QObject
 {
     Q_OBJECT
 
@@ -90,14 +91,20 @@ class Global : public QObject
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Global(QObject *parent = nullptr);
+    explicit GlobalObject(QObject *parent = nullptr);
 
     /*! \brief Standard deconstructor
      *
      * This destructor will destruct all application-wide static instances
      * managed by this class.
      */
-    ~Global() = default;
+    ~GlobalObject() = default;
+
+#warning docu
+    virtual void deferredInitialization()
+    {
+        ;
+    }
 
     /*! \brief Indicates if this class is ready to be used
      *
@@ -106,8 +113,9 @@ class Global : public QObject
      *
      *  This is relevant for C++ code that is called from Android, often at
      *  unexpected times (during startup, …). This code should check that
-     *  the Global class is ready before using it.
+     *  the GlobalObject class is ready before using it.
      */
+#warning find better name
     Q_INVOKABLE static bool ready();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
@@ -195,7 +203,7 @@ class Global : public QObject
     Q_INVOKABLE static Weather::WeatherDataProvider* weatherDataProvider();
 
 private:
-    Q_DISABLE_COPY_MOVE(Global)
+    Q_DISABLE_COPY_MOVE(GlobalObject)
 
     template<typename T> static T* allocateInternal(QPointer<T>& pointer);
 };

@@ -22,6 +22,7 @@
 
 #include <QTimer>
 
+#include "GlobalObject.h"
 #include "dataManagement/DownloadableGroup.h"
 
 
@@ -50,7 +51,7 @@ namespace DataManagement {
   and with the directory "aviation_maps".
 */
 
-class DataManager : public QObject
+class DataManager : public GlobalObject
 {
   Q_OBJECT
   
@@ -72,6 +73,9 @@ public:
   */
   void cleanUp();
   
+#warning docu
+  void deferredInitialization();
+
   /*! \brief Pointer to the DownloadableGroup that holds all aviation maps
 
     The is a DownloadableGroupWatcher that holds all aviation maps. The maps

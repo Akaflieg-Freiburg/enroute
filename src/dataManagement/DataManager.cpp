@@ -35,11 +35,10 @@
 using namespace std::chrono_literals;
 
 #include "DataManager.h"
-#include "Global.h"
 
 
 DataManagement::DataManager::DataManager(QObject *parent) :
-    QObject(parent),
+    GlobalObject(parent),
     _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json", this)
 {
@@ -93,8 +92,9 @@ void DataManagement::DataManager::cleanUp()
     // It might be possible for whatever reason that our download directory
     // contains files that we do not know whom they belong to. We hunt down those
     // files and silently delete them.
-    foreach(auto path, unattachedFiles())
+    foreach(auto path, unattachedFiles()) {
         QFile::remove(path);
+    }
 
     // It might be possible that our download directory contains empty
     // subdirectories. We we remove them all.
@@ -119,6 +119,22 @@ void DataManagement::DataManager::cleanUp()
         delete geoMapPtr;
 }
 
+
+void DataManagement::DataManager::deferredInitialization()
+{
+#warning implement
+    qWarning() << "DataManagement::DataManager::deferredInitialization()";
+
+    // Handle SSL errors
+    QObject::connect(GlobalObject::networkAccessManager(), &QNetworkAccessManager::sslErrors,
+                     [](QNetworkReply *reply, const QList<QSslError> &errors) {
+                         foreach(auto error, errors)
+                             qWarning() << "A" << error.errorString();
+                         if (reply != nullptr) {
+                             reply->ignoreSslErrors();
+                         }
+                     });
+}
 
 
 auto DataManagement::DataManager::describeMapFile(const QString& fileName) -> QString

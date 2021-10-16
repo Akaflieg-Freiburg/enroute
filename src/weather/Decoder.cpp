@@ -28,7 +28,7 @@
 #include <QTimeZone>
 #include <gsl/gsl>
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
@@ -39,10 +39,10 @@ Weather::Decoder::Decoder(QObject *parent)
     : QObject(parent)
 {
     // Re-parse the text whenever the date changes
-    connect(Global::navigator()->clock(), &Navigation::Clock::dateChanged, this, &Weather::Decoder::parse);
+    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::dateChanged, this, &Weather::Decoder::parse);
 
     // Re-parse whenever the preferred unit system changes
-    connect(Global::settings(), &Settings::useMetricUnitsChanged, this, &Weather::Decoder::parse);
+    connect(GlobalObject::settings(), &Settings::useMetricUnitsChanged, this, &Weather::Decoder::parse);
 }
 
 
@@ -366,7 +366,7 @@ auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString {
         return tr("not reported");
     }
 
-    if (Global::settings()->useMetricUnits()) {
+    if (GlobalObject::settings()->useMetricUnits()) {
         const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
         if (s.has_value()) {
             return QString("%1 km/h").arg(qRound(*s));

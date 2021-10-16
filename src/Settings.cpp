@@ -23,7 +23,7 @@
 #include <QLocale>
 #include <QSettings>
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 
 
@@ -39,13 +39,13 @@ Settings::Settings(QObject *parent)
 
 auto Settings::acceptedWeatherTermsStatic() -> bool
 {
-    return Global::settings()->acceptedWeatherTerms();
+    return GlobalObject::settings()->acceptedWeatherTerms();
 }
 
 
 auto Settings::hideUpperAirspacesStatic() -> bool
 {
-    return Global::settings()->hideUpperAirspaces();
+    return GlobalObject::settings()->hideUpperAirspaces();
 }
 
 
@@ -163,7 +163,7 @@ void Settings::setUseMetricUnits(bool unitHorizKmh)
 
 auto Settings::useMetricUnitsStatic() -> bool
 {
-    return Global::settings()->useMetricUnits();
+    return GlobalObject::settings()->useMetricUnits();
 }
 
 

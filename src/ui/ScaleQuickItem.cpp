@@ -21,7 +21,7 @@
 #include <QPainter>
 #include <cmath>
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "ScaleQuickItem.h"
 #include "Settings.h"
 
@@ -30,7 +30,7 @@ Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
 
-    connect(Global::settings(), &Settings::useMetricUnitsChanged, this, &QQuickItem::update);
+    connect(GlobalObject::settings(), &Settings::useMetricUnitsChanged, this, &QQuickItem::update);
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
 
 }

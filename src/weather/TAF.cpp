@@ -21,7 +21,7 @@
 #include <QDataStream>
 #include <QXmlStreamAttribute>
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "weather/TAF.h"
@@ -143,7 +143,7 @@ auto Weather::TAF::relativeIssueTime() const -> QString
 void Weather::TAF::setupSignals() const
 {
     // Emit notifier signals whenever the time changes
-    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
+    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
 }
 
 

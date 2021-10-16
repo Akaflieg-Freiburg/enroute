@@ -37,7 +37,7 @@
 #endif
 
 #include "DemoRunner.h"
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
 #include "Settings.h"
@@ -146,24 +146,13 @@ auto main(int argc, char *argv[]) -> int
     }
 #endif
 
-    // Ignore SSL errors
-    QObject::connect(Global::networkAccessManager(), &QNetworkAccessManager::sslErrors,
-                     [](QNetworkReply *reply, const QList<QSslError> &errors) {
-                         foreach(auto error, errors)
-                             qWarning() << "A" << error.errorString();
-                         if (reply != nullptr) {
-                             reply->ignoreSslErrors();
-                         }
-                     });
-
-
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     if (positionalArguments.length() == 1) {
-        Global::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);
+        GlobalObject::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);
     }
-    QTimer::singleShot(4s, Global::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
+    QTimer::singleShot(4s, GlobalObject::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), Global::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*
@@ -172,13 +161,13 @@ auto main(int argc, char *argv[]) -> int
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("angle", QVariant::fromValue(Units::Angle()) );
     engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
-    engine.rootContext()->setContextProperty("global", new Global(&engine) );
+    engine.rootContext()->setContextProperty("global", new GlobalObject(&engine) );
     engine.rootContext()->setContextProperty("speed", QVariant::fromValue(Units::Speed()) );
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption)) {
-        Global::demoRunner()->setEngine(&engine);
-        QTimer::singleShot(1s, Global::demoRunner(), &DemoRunner::run);
+        GlobalObject::demoRunner()->setEngine(&engine);
+        QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::run);
     }
 
     // Load GUI and enter event loop

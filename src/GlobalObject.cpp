@@ -23,7 +23,7 @@
 #include <QQmlEngine>
 
 #include "DemoRunner.h"
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
 #include "Settings.h"
@@ -55,7 +55,7 @@ QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
 QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
 
 
-template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
+template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -> T*
 {
     Q_ASSERT( QCoreApplication::instance() != nullptr );
     Q_ASSERT( !isConstructing );
@@ -65,18 +65,22 @@ template<typename T> auto Global::allocateInternal(QPointer<T>& pointer) -> T*
         pointer = new T( QCoreApplication::instance() );
         isConstructing = false;
         QQmlEngine::setObjectOwnership(pointer, QQmlEngine::CppOwnership);
+        auto* gobj = qobject_cast<GlobalObject*>(pointer);
+        if (gobj != nullptr) {
+            gobj->deferredInitialization();
+        }
     }
     return pointer;
 }
 
 
 
-Global::Global(QObject *parent) : QObject(parent)
+GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 {
 }
 
 
-bool Global::ready()
+auto GlobalObject::ready() -> bool
 {
     if (isConstructing) {
         return false;
@@ -88,85 +92,85 @@ bool Global::ready()
 }
 
 
-auto Global::flarmnetDB() -> Traffic::FlarmnetDB*
+auto GlobalObject::flarmnetDB() -> Traffic::FlarmnetDB*
 {
     return allocateInternal<Traffic::FlarmnetDB>(g_flarmnetDB);
 }
 
 
-auto Global::geoMapProvider() -> GeoMaps::GeoMapProvider*
+auto GlobalObject::geoMapProvider() -> GeoMaps::GeoMapProvider*
 {
     return allocateInternal<GeoMaps::GeoMapProvider>(g_geoMapProvider);
 }
 
 
-auto Global::dataManager() -> DataManagement::DataManager*
+auto GlobalObject::dataManager() -> DataManagement::DataManager*
 {
     return allocateInternal<DataManagement::DataManager>(g_dataManager);
 }
 
 
-auto Global::demoRunner() -> DemoRunner*
+auto GlobalObject::demoRunner() -> DemoRunner*
 {
     return allocateInternal<DemoRunner>(g_demoRunner);
 }
 
 
-auto Global::librarian() -> Librarian*
+auto GlobalObject::librarian() -> Librarian*
 {
     return allocateInternal<Librarian>(g_librarian);
 }
 
 
-auto Global::mobileAdaptor() -> MobileAdaptor*
+auto GlobalObject::mobileAdaptor() -> MobileAdaptor*
 {
     return allocateInternal<MobileAdaptor>(g_mobileAdaptor);
 }
 
 
-auto Global::navigator() -> Navigation::Navigator*
+auto GlobalObject::navigator() -> Navigation::Navigator*
 {
     return allocateInternal<Navigation::Navigator>(g_navigator);
 }
 
 
-auto Global::networkAccessManager() -> QNetworkAccessManager*
+auto GlobalObject::networkAccessManager() -> QNetworkAccessManager*
 {
     return allocateInternal<QNetworkAccessManager>(g_networkAccessManager);
 }
 
 
-auto Global::notifier() -> Platform::Notifier*
+auto GlobalObject::notifier() -> Platform::Notifier*
 {
     return allocateInternal<Platform::Notifier>(g_notifier);
 }
 
 
-auto Global::passwordDB() -> Traffic::PasswordDB*
+auto GlobalObject::passwordDB() -> Traffic::PasswordDB*
 {
     return allocateInternal<Traffic::PasswordDB>(g_passwordDB);
 }
 
 
-auto Global::positionProvider() -> Positioning::PositionProvider*
+auto GlobalObject::positionProvider() -> Positioning::PositionProvider*
 {
     return allocateInternal<Positioning::PositionProvider>(g_positionProvider);
 }
 
 
-auto Global::settings() -> Settings*
+auto GlobalObject::settings() -> Settings*
 {
     return allocateInternal<Settings>(g_settings);
 }
 
 
-auto Global::trafficDataProvider() -> Traffic::TrafficDataProvider*
+auto GlobalObject::trafficDataProvider() -> Traffic::TrafficDataProvider*
 {
     return allocateInternal<Traffic::TrafficDataProvider>(g_trafficDataProvider);
 }
 
 
-auto Global::weatherDataProvider() -> Weather::WeatherDataProvider*
+auto GlobalObject::weatherDataProvider() -> Weather::WeatherDataProvider*
 {
     return allocateInternal<Weather::WeatherDataProvider>(g_weatherDataProvider);
 }

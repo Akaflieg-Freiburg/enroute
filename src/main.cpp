@@ -42,6 +42,7 @@
 #include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
+#include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Aircraft.h"
@@ -83,6 +84,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft");
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
+    qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", "SSLErrorHandler objects cannot be created in QML");
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<Librarian>("enroute", 1, 0, "Librarian", "Librarian objects cannot be created in QML");

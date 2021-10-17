@@ -28,6 +28,7 @@
 #include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
+#include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier.h"
@@ -40,6 +41,7 @@
 bool isConstructing {false};
 
 QPointer<DataManagement::DataManager> g_dataManager {};
+QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
 QPointer<DemoRunner> g_demoRunner {};
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
@@ -80,7 +82,7 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 }
 
 
-auto GlobalObject::ready() -> bool
+auto GlobalObject::canConstruct() -> bool
 {
     if (isConstructing) {
         return false;
@@ -161,6 +163,12 @@ auto GlobalObject::positionProvider() -> Positioning::PositionProvider*
 auto GlobalObject::settings() -> Settings*
 {
     return allocateInternal<Settings>(g_settings);
+}
+
+
+auto GlobalObject::sslErrorHandler() -> DataManagement::SSLErrorHandler*
+{
+    return allocateInternal<DataManagement::SSLErrorHandler>(g_sslErrorHandler);
 }
 
 

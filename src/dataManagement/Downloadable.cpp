@@ -317,8 +317,7 @@ void DataManagement::Downloadable::downloadFileErrorReceiver(QNetworkReply::Netw
         break;
 
     case QNetworkReply::SslHandshakeFailedError:
-        message += tr("the SSL/TLS handshake failed and the encrypted channel could not be "
-                      "established. The sslErrors() signal should have been emitted");
+        message += tr("the SSL/TLS handshake failed and the encrypted channel could not be established.");
         break;
 
     case QNetworkReply::TemporaryNetworkFailureError:

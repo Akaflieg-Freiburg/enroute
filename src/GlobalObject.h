@@ -30,6 +30,7 @@ class Settings;
 
 namespace DataManagement {
 class DataManager;
+class SSLErrorHandler;
 }
 
 namespace GeoMaps {
@@ -58,26 +59,23 @@ namespace Weather {
 class WeatherDataProvider;
 }
 
-#warning docu!
-
-/*! \brief GlobalObject instance storage
+/*! \brief Base class for global singleton objects
  *
- * This class manages a collection of static instances of classes that are used
+ * This is the base class for static instances of classes that are used
  * throughout the application.  The instances are constructed lazily at runtime,
- * whenever the appropriate methods are called.  They are children of the GlobalObject
+ * whenever the appropriate methods are called.  They are children of the
  * QCoreApplication object and deleted along with this object.
  *
  * Although all relevant methods are static, it is possible to construct an
  * instance of this class, which allows to use this class from QML.
  *
- * The static methods return pointers to application-wide static objects. These
- * pointer is guaranteed to be valid.  The instances are owned by this class and
+ * The static methods return pointers to application-wide static objects. They must only be called while
+ * a global QCoreApplication instance exists.  If these conditions are satisfied, the
+ * pointers returned are guaranteed to be valid.  The instances are owned by this class and
  * must not be deleted. QML ownership has been set to QQmlEngine::CppOwnership.
  *
- * @note This method must only be called while a GlobalObject QCoreApplication exists.
- * If GlobalObject manages an instance of your class, then none of the static methods
- * must not be called in the constructor of your class, or else an inite loop
- * may result.
+ * Objects that inherit from this class MUST NOT call any of the static methods from their constructors.
+ * Instead, the method deferredInitialization() can be used, which is called immediately after the constructor returns.
  *
  * The methods in this class are reentrant, but not thread safe.
  */
@@ -100,13 +98,7 @@ class GlobalObject : public QObject
      */
     ~GlobalObject() = default;
 
-#warning docu
-    virtual void deferredInitialization()
-    {
-        ;
-    }
-
-    /*! \brief Indicates if this class is ready to be used
+    /*! \brief Indicates if the static methods are ready to be used
      *
      *  This method returns false if the app is in constructing state
      *  where the pointer-returning methods should not be used.
@@ -115,8 +107,7 @@ class GlobalObject : public QObject
      *  unexpected times (during startup, …). This code should check that
      *  the GlobalObject class is ready before using it.
      */
-#warning find better name
-    Q_INVOKABLE static bool ready();
+    Q_INVOKABLE static bool canConstruct();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
      *
@@ -190,6 +181,12 @@ class GlobalObject : public QObject
      */
     Q_INVOKABLE static Settings* settings();
 
+    /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static DataManagement::SSLErrorHandler* sslErrorHandler();
+
     /*! \brief Pointer to appplication-wide static TrafficDataProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
@@ -201,6 +198,18 @@ class GlobalObject : public QObject
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Weather::WeatherDataProvider* weatherDataProvider();
+
+protected:
+   /*! \brief Non-constructor initialization
+    *
+    *  This method is called by the static methods that create global instances
+    *  immediately after the constructor returns. This class can be re-implemented
+    *  to perform initialization steps that refer to other singleton objects.
+    */
+    virtual void deferredInitialization()
+    {
+        ;
+    }
 
 private:
     Q_DISABLE_COPY_MOVE(GlobalObject)

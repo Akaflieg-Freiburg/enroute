@@ -644,7 +644,7 @@ ApplicationWindow {
     // Connections
     //
 
-    Connections {
+    Connections { // GeoMaps
         target: global.dataManager().geoMaps
 
         function onDownloadingChanged(downloading) {
@@ -656,7 +656,57 @@ ApplicationWindow {
         }
     }
 
-    Connections {
+    Connections { // Notifier
+        target: global.notifier()
+
+        function onNotificationClicked(notifyID) {
+            if ((notifyID === 0) && (stackView.currentItem.objectName !== "DataManagerPage")) {
+                stackView.push("pages/DataManager.qml")
+            }
+            if ((notifyID === 1) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
+                stackView.push("pages/TrafficReceiver.qml")
+            }
+        }
+
+    }
+
+    Connections { // SSLErrorHandler
+        target: global.sslErrorHandler()
+
+
+        function onSslError(message) {
+            sslErrorDialog.text = message
+            sslErrorDialog.open()
+        }
+
+    }
+
+    LongTextDialog {
+        id: sslErrorDialog
+        anchors.centerIn: parent
+
+        standardButtons: Dialog.Close|Dialog.Ignore
+
+        title: qsTr("Network security error")
+
+        onAccepted: {
+            close()
+            global.settings().ignoreSSLProblems = true
+            sslErrorConfirmation.open()
+        }
+
+        LongTextDialogMD {
+            id: sslErrorConfirmation
+            standardButtons: Dialog.Ok
+
+            title: qsTr("Network security settings")
+            text: qsTr("You have chosen to ignore network security errors in the future. \
+**This poses a security risk.** \
+Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.")
+        }
+    }
+
+    Connections { // TrafficDataProvider
         target: global.trafficDataProvider()
 
         function onPasswordRequest(ssid) {
@@ -689,20 +739,6 @@ ApplicationWindow {
                 global.notifier().showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
             }
         }
-    }
-
-    Connections {
-        target: global.notifier()
-
-        function onNotificationClicked(notifyID) {
-            if ((notifyID === 0) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManager.qml")
-            }
-            if ((notifyID === 1) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
-                stackView.push("pages/TrafficReceiver.qml")
-            }
-        }
-
     }
 
     // Enroute closed unexpectedly if...

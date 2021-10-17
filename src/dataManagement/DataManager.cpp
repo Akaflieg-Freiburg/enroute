@@ -58,7 +58,8 @@ DataManagement::DataManager::DataManager(QObject *parent) :
             QFile::rename(offendingFile, offendingFile.section('.', 0, -2));
     }
 
-    // Construct the Dowloadable object "_maps_json". Let it point to the remote file "maps.json" and wire it up.
+    // Construct the Dowloadable object "_maps_json". Let it point to the remote
+    // file "maps.json" and wire it up.
     connect(&_maps_json, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingGeoMapListChanged);
     connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::readGeoMapListFromJSONFile);
     connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::setTimeOfLastUpdateToNow);
@@ -77,7 +78,8 @@ DataManagement::DataManager::DataManager(QObject *parent) :
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &DataManager::autoUpdateGeoMapList);
     QTimer::singleShot(0, this, &DataManagement::DataManager::autoUpdateGeoMapList); // Cannot call autoUpdateGeoMapList immediately, or else Global::allocateInternal will crash
 
-    // If there is a downloaded maps.json file, we read it. Otherwise, we start a download.
+    // If there is a downloaded maps.json file, we read it. Otherwise, we start
+    // a download.
     if (_maps_json.hasFile()) {
         readGeoMapListFromJSONFile();
     } else {
@@ -90,8 +92,8 @@ void DataManagement::DataManager::cleanUp()
 {
 
     // It might be possible for whatever reason that our download directory
-    // contains files that we do not know whom they belong to. We hunt down those
-    // files and silently delete them.
+    // contains files that we do not know whom they belong to. We hunt down
+    // those files and silently delete them.
     foreach(auto path, unattachedFiles()) {
         QFile::remove(path);
     }
@@ -117,23 +119,6 @@ void DataManagement::DataManager::cleanUp()
     // Clear and delete everything
     foreach(auto geoMapPtr, _geoMaps.downloadables())
         delete geoMapPtr;
-}
-
-
-void DataManagement::DataManager::deferredInitialization()
-{
-#warning implement
-    qWarning() << "DataManagement::DataManager::deferredInitialization()";
-
-    // Handle SSL errors
-    QObject::connect(GlobalObject::networkAccessManager(), &QNetworkAccessManager::sslErrors,
-                     [](QNetworkReply *reply, const QList<QSslError> &errors) {
-                         foreach(auto error, errors)
-                             qWarning() << "A" << error.errorString();
-                         if (reply != nullptr) {
-                             reply->ignoreSslErrors();
-                         }
-                     });
 }
 
 
@@ -223,10 +208,10 @@ void DataManagement::DataManager::errorReceiver(const QString& /*unused*/, QStri
 
 void DataManagement::DataManager::localFileOfGeoMapChanged()
 {
-    // Ok, a local file changed. First, we check if this means that the local file
-    // of an unsupported map (=map with invalid URL) is gone. These maps are then
-    // no longer wanted. We go through the list and see if we can find any
-    // candidates.
+    // Ok, a local file changed. First, we check if this means that the local
+    // file of an unsupported map (=map with invalid URL) is gone. These maps
+    // are then no longer wanted. We go through the list and see if we can find
+    // any candidates.
     auto geoMaps = _geoMaps.downloadables();
     foreach(auto geoMapPtr, geoMaps) {
         if (geoMapPtr->url().isValid()) {
@@ -253,9 +238,9 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
     // List of maps as we have them now
     QVector<QPointer<DataManagement::Downloadable>> oldMaps = _geoMaps.downloadables();
 
-    // To begin, we handle the maps described in the maps.json file. If these maps
-    // were already present in the old list, we re-use them. Otherwise, we create
-    // new Downloadable objects.
+    // To begin, we handle the maps described in the maps.json file. If these
+    // maps were already present in the old list, we re-use them. Otherwise, we
+    // create new Downloadable objects.
     QJsonParseError parseError{};
     auto doc = QJsonDocument::fromJson(_maps_json.fileContent(), &parseError);
     if (parseError.error != QJsonParseError::NoError) {
@@ -311,10 +296,10 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
 
     }
 
-    // Now go through all the leftover objects in the old list of aviation
-    // maps. These are now aviation maps that are no longer supported. If they
-    // have no local file to them, we simply delete them.  If they have a local
-    // file, we keep them, but set their QUrl to invalid; this will mark them as
+    // Now go through all the leftover objects in the old list of aviation maps.
+    // These are now aviation maps that are no longer supported. If they have no
+    // local file to them, we simply delete them.  If they have a local file, we
+    // keep them, but set their QUrl to invalid; this will mark them as
     // unsupported in the GUI.
     foreach(auto geoMapPtr, oldMaps) {
         if (geoMapPtr->hasFile()) {
@@ -323,8 +308,8 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
         delete geoMapPtr;
     }
 
-    // Now it is still possible that the download directory contains files beloning
-    // to unsupported maps. Add those to newMaps.
+    // Now it is still possible that the download directory contains files
+    // beloning to unsupported maps. Add those to newMaps.
     foreach(auto path, unattachedFiles()) {
         // Generate proper object name from path
         QString objectName = path;
@@ -359,7 +344,8 @@ void DataManagement::DataManager::autoUpdateGeoMapList()
     QDateTime lastUpdate = settings.value("DataManager/MapListTimeStamp", QDateTime()).toDateTime();
 
     if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)) ) {
-        // Updates are due. Check again in one hour if the update went well or if we need to try again.
+        // Updates are due. Check again in one hour if the update went well or
+        // if we need to try again.
         _autoUpdateTimer.start(1h);
         updateGeoMapList();
         return;
@@ -375,14 +361,15 @@ auto DataManagement::DataManager::unattachedFiles() const -> QList<QString>
     QList<QString> result;
 
     // It might be possible for whatever reason that our download directory
-    // contains files that we do not know whom they belong to. We hunt down those
-    // files.
+    // contains files that we do not know whom they belong to. We hunt down
+    // those files.
     QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviation_maps",
                               QDir::Files, QDirIterator::Subdirectories);
     while (fileIterator.hasNext()) {
         fileIterator.next();
 
-        // Now check if this file exists as the local file of some geographic map
+        // Now check if this file exists as the local file of some geographic
+        // map
         bool isAttachedToAviationMap = false;
         foreach(auto geoMapPtr, _geoMaps.downloadables()) {
             if (geoMapPtr->fileName() == QFileInfo(fileIterator.filePath()).absoluteFilePath()) {

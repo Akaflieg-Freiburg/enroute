@@ -89,6 +89,15 @@ void Settings::setHideUpperAirspaces(bool hide)
 }
 
 
+void Settings::setIgnoreSSLProblems(bool ignore)
+{
+    if (ignore == ignoreSSLProblems()) {
+        return;
+    }
+    settings.setValue("ignoreSSLProblems", ignore);
+    emit ignoreSSLProblemsChanged();
+}
+
 void Settings::setLastWhatsNewHash(uint lwnh)
 {
     if (lwnh == lastWhatsNewHash()) {

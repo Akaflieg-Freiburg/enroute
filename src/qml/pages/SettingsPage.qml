@@ -138,6 +138,21 @@ Page {
                 }
             }
 
+            SwitchDelegate {
+                id: ignoreSSL
+                text: qsTr("Ignore network security errors")
+                icon.source: "/icons/material/ic_lock.svg"
+                Layout.fillWidth: true
+                visible: global.settings().ignoreSSLProblems
+                Component.onCompleted: {
+                    ignoreSSL.checked = global.settings().ignoreSSLProblems
+                }
+                onToggled: {
+                    global.mobileAdaptor().vibrateBrief()
+                    global.settings().ignoreSSLProblems = ignoreSSL.checked
+                }
+            }
+
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_lock.svg"

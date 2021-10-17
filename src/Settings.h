@@ -156,6 +156,21 @@ public:
      */
     void setHideUpperAirspaces(bool hide);
 
+    /*! \brief Ignore SSL securitry problems */
+    Q_PROPERTY(bool ignoreSSLProblems READ ignoreSSLProblems WRITE setIgnoreSSLProblems NOTIFY ignoreSSLProblemsChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property ignoreSSLProblems
+     */
+    bool ignoreSSLProblems() const { return settings.value(QStringLiteral("ignoreSSLProblems"), false).toBool(); }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param hide Property ignoreSSLProblems
+     */
+    void setIgnoreSSLProblems(bool ignore);
+
     /*! \brief Hash of the last "what's new message that was shown to the user
      *
      * This property is used in the app to determine if the message has been
@@ -253,6 +268,9 @@ signals:
 
     /*! Notifier signal */
     void hideUpperAirspacesChanged();
+
+    /*! Notifier signal */
+    void ignoreSSLProblemsChanged();
 
     /*! Notifier signal */
     void lastWhatsNewHashChanged();

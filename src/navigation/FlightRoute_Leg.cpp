@@ -21,7 +21,7 @@
 #include <QtGlobal>
 
 #include "FlightRoute_Leg.h"
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 
 
@@ -125,7 +125,7 @@ auto Navigation::FlightRoute::Leg::description() const -> QString
     }
 
     QString result;
-    if (Global::settings()->useMetricUnits()) {
+    if (GlobalObject::settings()->useMetricUnits()) {
         result += QString("%1 km").arg(distance().toKM(), 0, 'f', 1);
     } else {
         result += QString("%1 nm").arg(distance().toNM(), 0, 'f', 1);

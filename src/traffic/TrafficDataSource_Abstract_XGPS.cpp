@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 
@@ -130,7 +130,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
         // is known.
         Units::Distance hDist {};
         Units::Distance vDist {};
-        auto* positionProviderPtr = Global::positionProvider();
+        auto* positionProviderPtr = GlobalObject::positionProvider();
         if (positionProviderPtr != nullptr) {
             auto ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
             if (ownShipCoordinate.isValid()) {

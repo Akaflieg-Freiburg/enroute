@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "MobileAdaptor.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataSource_Tcp.h"
@@ -104,7 +104,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
         if (sentence.startsWith("PASS?")) {
             passwordRequest_Status = waitingForPassword;
             passwordRequest_SSID = MobileAdaptor::getSSID();
-            auto* passwordDB = Global::passwordDB();
+            auto* passwordDB = GlobalObject::passwordDB();
             if (passwordDB->contains(passwordRequest_SSID)) {
                 setPassword(passwordRequest_SSID, passwordDB->getPassword(passwordRequest_SSID));
             } else {
@@ -147,7 +147,7 @@ void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QStr
     // if appropriate
     if (receivingHeartbeat()) {
         // emit a password storage request if appropriate
-        auto* passwordDB = Global::passwordDB();
+        auto* passwordDB = GlobalObject::passwordDB();
         if (!passwordDB->contains(passwordRequest_SSID) ||
             (passwordDB->getPassword(passwordRequest_SSID) != passwordRequest_password)) {
             emit passwordStorageRequest(passwordRequest_SSID, passwordRequest_password);
@@ -192,7 +192,7 @@ void Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnDisconnected()
     }
 
     // Remove password from database
-    Global::passwordDB()->removePassword(passwordRequest_SSID);
+    GlobalObject::passwordDB()->removePassword(passwordRequest_SSID);
 
     // Schedule reconnection in 500ms
     QTimer::singleShot(500ms, this, &Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver);
@@ -214,7 +214,7 @@ void Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnHeartbeatChange(bool 
     }
 
     // emit a password storage request if appropriate
-    auto* passwordDB = Global::passwordDB();
+    auto* passwordDB = GlobalObject::passwordDB();
     if (!passwordDB->contains(passwordRequest_SSID) ||
         (passwordDB->getPassword(passwordRequest_SSID) != passwordRequest_password)) {
         emit passwordStorageRequest(passwordRequest_SSID, passwordRequest_password);

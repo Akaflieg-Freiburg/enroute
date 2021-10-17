@@ -32,7 +32,7 @@
 
 #include "sunset.h"
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Clock.h"
@@ -70,11 +70,11 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
 
 void Weather::WeatherDataProvider::deferredInitialization()
 {
-    connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
-    connect(Global::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 
-    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
-    connect(Global::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
+    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
+    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 
     // Read METAR/TAF from "weather.dat"
     bool success = load();
@@ -210,7 +210,7 @@ auto Weather::WeatherDataProvider::findOrConstructWeatherStation(const QString &
         return weatherStationPtr;
     }
 
-    auto *newWeatherStation = new Weather::Station(ICAOCode, Global::geoMapProvider(), this);
+    auto *newWeatherStation = new Weather::Station(ICAOCode, GlobalObject::geoMapProvider(), this);
     _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
     return newWeatherStation;
 }
@@ -343,7 +343,7 @@ void Weather::WeatherDataProvider::save()
 auto Weather::WeatherDataProvider::sunInfo() -> QString
 {
     // Paranoid safety checks
-    auto *positionProvider = Global::positionProvider();
+    auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {
         return QString();
     }
@@ -410,7 +410,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
 auto Weather::WeatherDataProvider::QNHInfo() const -> QString
 {
     // Paranoid safety checks
-    auto *positionProvider = Global::positionProvider();
+    auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {
         return QString();
     }
@@ -479,7 +479,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
 
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
-    const QVariantList& steerpts = Global::navigator()->flightRoute()->geoPath();
+    const QVariantList& steerpts = GlobalObject::navigator()->flightRoute()->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
         queries.push_back(QString("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
@@ -499,7 +499,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
     foreach(auto query, queries) {
         QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
         QNetworkRequest request(url);
-        QPointer<QNetworkReply> reply = Global::networkAccessManager()->get(request);
+        QPointer<QNetworkReply> reply = GlobalObject::networkAccessManager()->get(request);
         _networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);

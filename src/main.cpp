@@ -37,11 +37,12 @@
 #endif
 
 #include "DemoRunner.h"
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Librarian.h"
 #include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
+#include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Aircraft.h"
@@ -83,6 +84,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft");
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
+    qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", "SSLErrorHandler objects cannot be created in QML");
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<Librarian>("enroute", 1, 0, "Librarian", "Librarian objects cannot be created in QML");
@@ -148,11 +150,11 @@ auto main(int argc, char *argv[]) -> int
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     if (positionalArguments.length() == 1) {
-        Global::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);
+        GlobalObject::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);
     }
-    QTimer::singleShot(4s, Global::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
+    QTimer::singleShot(4s, GlobalObject::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), Global::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*
@@ -161,13 +163,13 @@ auto main(int argc, char *argv[]) -> int
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("angle", QVariant::fromValue(Units::Angle()) );
     engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
-    engine.rootContext()->setContextProperty("global", new Global(&engine) );
+    engine.rootContext()->setContextProperty("global", new GlobalObject(&engine) );
     engine.rootContext()->setContextProperty("speed", QVariant::fromValue(Units::Speed()) );
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption)) {
-        Global::demoRunner()->setEngine(&engine);
-        QTimer::singleShot(1s, Global::demoRunner(), &DemoRunner::run);
+        GlobalObject::demoRunner()->setEngine(&engine);
+        QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::run);
     }
 
     // Load GUI and enter event loop

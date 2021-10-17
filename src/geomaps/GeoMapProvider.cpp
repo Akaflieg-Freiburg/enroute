@@ -23,15 +23,16 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QLockFile>
 #include <QQmlEngine>
 #include <QRandomGenerator>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QtConcurrent/QtConcurrent>
+#include <QtConcurrent/QtConcurrentRun>
 #include <chrono>
 
 #include "GeoMapProvider.h"
-#include "Global.h"
+#include "GlobalObject.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 
@@ -99,7 +100,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
         }
     }
 
-    for(auto& variant : Global::navigator()->flightRoute()->midFieldWaypoints() ) {
+    for(auto& variant : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() ) {
         auto wp = variant.value<GeoMaps::Waypoint>();
         if (!wp.isValid()) {
             continue;
@@ -123,7 +124,7 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
 
     QStringList filterWords;
     foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
-        QString simplifiedWord = Global::librarian()->simplifySpecialChars(word);
+        QString simplifiedWord = GlobalObject::librarian()->simplifySpecialChars(word);
         if (simplifiedWord.isEmpty()) {
             continue;
         }
@@ -137,9 +138,9 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
         }
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
-            QString fullName = Global::librarian()->simplifySpecialChars(wp.name());
-            QString codeName = Global::librarian()->simplifySpecialChars(wp.ICAOCode());
-            QString wordx = Global::librarian()->simplifySpecialChars(word);
+            QString fullName = GlobalObject::librarian()->simplifySpecialChars(wp.name());
+            QString codeName = GlobalObject::librarian()->simplifySpecialChars(wp.ICAOCode());
+            QString wordx = GlobalObject::librarian()->simplifySpecialChars(word);
 
             if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
                 allWordsFound = false;
@@ -223,7 +224,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
     // Generate new GeoJSON array and new list of waypoints
     //
     QStringList JSONFileNames;
-    foreach(auto geoMapPtr, Global::dataManager()->aviationMaps()->downloadables()) {
+    foreach(auto geoMapPtr, GlobalObject::dataManager()->aviationMaps()->downloadables()) {
         // Ignore everything but geojson files
         if (!geoMapPtr->fileName().endsWith(u".geojson", Qt::CaseInsensitive)) {
             continue;
@@ -234,7 +235,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, Global::settings()->hideUpperAirspaces(), Global::settings()->hideGlidingSectors());
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->hideUpperAirspaces(), GlobalObject::settings()->hideGlidingSectors());
 }
 
 
@@ -247,7 +248,7 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
     // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(Global::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);
@@ -351,10 +352,10 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 void GeoMaps::GeoMapProvider::deferredInitialization()
 {
     // Connect the WeatherProvider, so aviation maps will be generated
-    connect(Global::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
-    connect(Global::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
-    connect(Global::settings(), &Settings::hideUpperAirspacesChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
-    connect(Global::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
+    connect(GlobalObject::settings(), &Settings::hideUpperAirspacesChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3s);

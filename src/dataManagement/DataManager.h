@@ -22,19 +22,20 @@
 
 #include <QTimer>
 
+#include "GlobalObject.h"
 #include "dataManagement/DownloadableGroup.h"
 
 
 namespace DataManagement {
 
 /*! \brief Manages the list of geographic maps
-  
+
   This class manages a list of available and installed geographic maps.  It
   retrieves the list of geographic maps from a remote server on a regular basis,
   updates the list automatically once a week, and maintains a list of
   Downloadable objectes that correspond to these geographic maps.  It informs
   the user if updates are available for one or several of these geographic maps.
-  
+
   The list of available maps is downloaded from a remote server whose address is
   hardcoded into the binary. The list is downloaded to a file "maps.json" in
   QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The format
@@ -50,23 +51,23 @@ namespace DataManagement {
   and with the directory "aviation_maps".
 */
 
-class DataManager : public QObject
+class DataManager : public GlobalObject
 {
   Q_OBJECT
   
 public:
   /*! \brief Standard constructor
-    
+
     This constructor reads the file "maps.json" and initiates a download of the
     file if no file is available or if the last download is more than one week
     old.
-    
+
     @param parent The standard QObject parent pointer.
   */
   explicit DataManager(QObject *parent=nullptr);
   
   /*! \brief Destructor
-    
+
     This destructor purges the download directory "aviation_map", by deleting
     all files that do not belong to any of the maps.
   */
@@ -114,14 +115,15 @@ public:
      *
      * This method describes installed GeoJSON map files.
      *
-     * @warning The data is only updated
-     * after the maps have been parsed in the GeoJSON parsing process. It is
-     * therefore possible that the method returns wrong information if it is
-     * called directly after a new map has been installed.
+     * @warning The data is only updated after the maps have been parsed in the
+     * GeoJSON parsing process. It is therefore possible that the method returns
+     * wrong information if it is called directly after a new map has been
+     * installed.
      *
      * @param fileName Name of a GeoJSON file.
      *
-     * @returns A human-readable HTML string, or an empty string if no data is available
+     * @returns A human-readable HTML string, or an empty string if no data is
+     * available
      */
   Q_INVOKABLE static QString describeMapFile(const QString& fileName);
 
@@ -162,7 +164,7 @@ public slots:
     This will trigger a download the file maps.json from the remote server.
   */
   void updateGeoMapList();
-  
+
 signals:
   /*! \brief Notification signal for the property with the same name */
   void geoMapListChanged();
@@ -171,11 +173,11 @@ signals:
   void downloadingGeoMapListChanged();
 
   /*! \brief Download error
-    
+
     This signal is emitted if the download process for the file "maps.json"
-    fails for whatever reason.  Since the DataManager updates the list regularly,
-    this signal can be emitted anytime.
-    
+    fails for whatever reason.  Since the DataManager updates the list
+    regularly, this signal can be emitted anytime.
+
     @param message A brief error message of the form "the requested resource is
     no longer available at the server", possibly translated.
   */

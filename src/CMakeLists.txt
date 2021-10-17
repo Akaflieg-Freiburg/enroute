@@ -77,13 +77,14 @@ set(SOURCES
     dataManagement/Downloadable.h
     dataManagement/DownloadableGroup.h
     dataManagement/DownloadableGroupWatcher.h
+    dataManagement/SSLErrorHandler.h
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/GeoMapProvider.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
     geomaps/Waypoint.h
-    Global.h
+    GlobalObject.h
     Librarian.h
     MobileAdaptor.h
     navigation/Aircraft.h
@@ -128,13 +129,14 @@ set(SOURCES
     dataManagement/Downloadable.cpp
     dataManagement/DownloadableGroup.cpp
     dataManagement/DownloadableGroupWatcher.cpp
+    dataManagement/SSLErrorHandler.cpp
     DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
-    Global.cpp
+    GlobalObject.cpp
     Librarian.cpp
     main.cpp
     MobileAdaptor.cpp
@@ -234,17 +236,17 @@ if( ANDROID )
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
 
     # The android target depends on our own copy of openssl
-    set(ANDROID_EXTRA_LIBS
-        ${openssl_SOURCE_DIR}/arm/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/arm/libssl_1_1.so
-        ${openssl_SOURCE_DIR}/arm64/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/arm64/libssl_1_1.so
-        ${openssl_SOURCE_DIR}/x86/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/x86/libssl_1_1.so
-        ${openssl_SOURCE_DIR}/x86_64/libcrypto_1_1.so
-        ${openssl_SOURCE_DIR}/x86_64/libssl_1_1.so
-        CACHE INTERNAL ""
-        )
+#    set(ANDROID_EXTRA_LIBS
+ #       ${openssl_SOURCE_DIR}/arm/libcrypto_1_1.so
+  #      ${openssl_SOURCE_DIR}/arm/libssl_1_1.so
+   #     ${openssl_SOURCE_DIR}/arm64/libcrypto_1_1.so
+    #    ${openssl_SOURCE_DIR}/arm64/libssl_1_1.so
+     #   ${openssl_SOURCE_DIR}/x86/libcrypto_1_1.so
+      #  ${openssl_SOURCE_DIR}/x86/libssl_1_1.so
+       # ${openssl_SOURCE_DIR}/x86_64/libcrypto_1_1.so
+        #${openssl_SOURCE_DIR}/x86_64/libssl_1_1.so
+    #    CACHE INTERNAL ""
+     #   )
 
     # The android target is a library, not an executable
     add_library(${PROJECT_NAME} SHARED ${SOURCES} ${ANDROID_EXTRA_SOURCES})

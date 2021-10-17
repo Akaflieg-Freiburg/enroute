@@ -20,7 +20,7 @@
 
 #include <QQmlEngine>
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "Settings.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
@@ -64,7 +64,7 @@ auto Navigation::Navigator::describeWay(const QGeoCoordinate &from, const QGeoCo
     auto dist = Units::Distance::fromM(from.distanceTo(to));
     auto QUJ = qRound(from.azimuthTo(to));
 
-    if (Global::settings()->useMetricUnits()) {
+    if (GlobalObject::settings()->useMetricUnits()) {
         return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
     }
     return QString("DIST %1 nm • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
@@ -73,7 +73,7 @@ auto Navigation::Navigator::describeWay(const QGeoCoordinate &from, const QGeoCo
 
 void Navigation::Navigator::deferredInitialization() const
 {
-    connect(Global::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::onPositionUpdated);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::onPositionUpdated);
 }
 
 

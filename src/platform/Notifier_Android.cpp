@@ -22,7 +22,7 @@
 #include <QCoreApplication>
 #include <QtAndroidExtras/QAndroidJniObject>
 
-#include "Global.h"
+#include "GlobalObject.h"
 #include "platform/Notifier.h"
 
 

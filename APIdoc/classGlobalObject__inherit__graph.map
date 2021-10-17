@@ -1,0 +1,5 @@
+<map id="GlobalObject" name="GlobalObject">
+<area shape="rect" id="node1" title="Base class for global singleton objects." alt="" coords="191,5,297,32"/>
+<area shape="rect" id="node2" href="$classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps." alt="" coords="5,87,240,114"/>
+<area shape="rect" id="node3" href="$classDataManagement_1_1SSLErrorHandler.html" title="Handles SSL error." alt="" coords="265,80,466,121"/>
+</map>

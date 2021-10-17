@@ -52,7 +52,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> <a class="el" href="classSettings.html" title="Global Settings Manager.">Settings</a> Manager.  
+<p>Global <a class="el" href="classSettings.html" title="Global Settings Manager.">Settings</a> Manager.  
  <a href="classSettings.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Settings_8h_source.html">Settings.h</a>&gt;</code></p>
@@ -78,6 +78,8 @@ Signals</h2></td></tr>
 <tr class="separator:a527ac68cd4050d82a3466816247307cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a247aef5d21452e14173383c5b6dfcc7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a247aef5d21452e14173383c5b6dfcc7d">hideUpperAirspacesChanged</a> ()</td></tr>
 <tr class="separator:a247aef5d21452e14173383c5b6dfcc7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a639280874c190b69c8bff955bb45a1cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a639280874c190b69c8bff955bb45a1cf">ignoreSSLProblemsChanged</a> ()</td></tr>
+<tr class="separator:a639280874c190b69c8bff955bb45a1cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acccf91a2b03c7f2dc105601ea2514ffe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#acccf91a2b03c7f2dc105601ea2514ffe">lastWhatsNewHashChanged</a> ()</td></tr>
 <tr class="separator:acccf91a2b03c7f2dc105601ea2514ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f40a106148699ca1c07eb5f54406ba5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a2f40a106148699ca1c07eb5f54406ba5">mapBearingPolicyChanged</a> ()</td></tr>
@@ -119,6 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7bc24c4946bf606327d784d239b57010"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a7bc24c4946bf606327d784d239b57010">setHideUpperAirspaces</a> (bool hide)</td></tr>
 <tr class="memdesc:a7bc24c4946bf606327d784d239b57010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a7bc24c4946bf606327d784d239b57010">More...</a><br /></td></tr>
 <tr class="separator:a7bc24c4946bf606327d784d239b57010"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22b88c43ced63b6263222721b4ba59ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a22b88c43ced63b6263222721b4ba59ec">ignoreSSLProblems</a> () const</td></tr>
+<tr class="memdesc:a22b88c43ced63b6263222721b4ba59ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a22b88c43ced63b6263222721b4ba59ec">More...</a><br /></td></tr>
+<tr class="separator:a22b88c43ced63b6263222721b4ba59ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d64bb761b07bd34599f77b00a465422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a6d64bb761b07bd34599f77b00a465422">setIgnoreSSLProblems</a> (bool ignore)</td></tr>
+<tr class="memdesc:a6d64bb761b07bd34599f77b00a465422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a6d64bb761b07bd34599f77b00a465422">More...</a><br /></td></tr>
+<tr class="separator:a6d64bb761b07bd34599f77b00a465422"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a878132f3db043f5d264b986f1731713b"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a878132f3db043f5d264b986f1731713b">lastWhatsNewHash</a> () const</td></tr>
 <tr class="memdesc:a878132f3db043f5d264b986f1731713b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a878132f3db043f5d264b986f1731713b">More...</a><br /></td></tr>
 <tr class="separator:a878132f3db043f5d264b986f1731713b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +187,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#ad6a39832b833c5e8089814d915225450">hideUpperAirspaces</a></td></tr>
 <tr class="memdesc:ad6a39832b833c5e8089814d915225450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide airspaces with lower bound FL100 or above. <br /></td></tr>
 <tr class="separator:ad6a39832b833c5e8089814d915225450"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add7496cc9567578d32e592a9d69ad313"><td class="memItemLeft" align="right" valign="top"><a id="add7496cc9567578d32e592a9d69ad313"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#add7496cc9567578d32e592a9d69ad313">ignoreSSLProblems</a></td></tr>
+<tr class="memdesc:add7496cc9567578d32e592a9d69ad313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ignore SSL securitry problems. <br /></td></tr>
+<tr class="separator:add7496cc9567578d32e592a9d69ad313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab45e2da2c84987873dd7cd9524390a8d"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#ab45e2da2c84987873dd7cd9524390a8d">lastWhatsNewHash</a></td></tr>
 <tr class="memdesc:ab45e2da2c84987873dd7cd9524390a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash of the last "what's new message that was shown to the user.  <a href="classSettings.html#ab45e2da2c84987873dd7cd9524390a8d">More...</a><br /></td></tr>
 <tr class="separator:ab45e2da2c84987873dd7cd9524390a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,9 +208,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a53ae26e2f5151609d43ad5e2484a816f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> <a class="el" href="classSettings.html" title="Global Settings Manager.">Settings</a> Manager. </p>
+<div class="textblock"><p>Global <a class="el" href="classSettings.html" title="Global Settings Manager.">Settings</a> Manager. </p>
 <p>This class holds a few data items and exposes them via QObject properties, so that they can be used in QML. All data stored in this class is saved via QSettings on destruction.</p>
-<p>There exists one static instance of this class, which can be accessed via the <a class="el" href="classGlobal.html" title="Global instance storage.">Global</a> functions. No other instance of this class should be used.</p>
+<p>There exists one static instance of this class, which can be accessed via the Global functions. No other instance of this class should be used.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
 <p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00043">43</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
@@ -578,6 +590,62 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a22b88c43ced63b6263222721b4ba59ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22b88c43ced63b6263222721b4ba59ec">&#9670;&nbsp;</a></span>ignoreSSLProblems()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Settings::ignoreSSLProblems </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property ignoreSSLProblems </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00184">184</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+
+</div>
+</div>
+<a id="a639280874c190b69c8bff955bb45a1cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a639280874c190b69c8bff955bb45a1cf">&#9670;&nbsp;</a></span>ignoreSSLProblemsChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Settings::ignoreSSLProblemsChanged </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Notifier signal </p>
+
+</div>
+</div>
 <a id="a552e74b647ab61860c3f3aa09328c5b0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a552e74b647ab61860c3f3aa09328c5b0">&#9670;&nbsp;</a></span>installTranslators()</h2>
 
@@ -631,7 +699,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00188">188</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00203">203</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -857,6 +925,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a6d64bb761b07bd34599f77b00a465422"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d64bb761b07bd34599f77b00a465422">&#9670;&nbsp;</a></span>setIgnoreSSLProblems()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Settings::setIgnoreSSLProblems </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ignore</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter function for property of the same name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hide</td><td>Property ignoreSSLProblems </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4b99c1d3c7f6db0dbf8598e43eff7dea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4b99c1d3c7f6db0dbf8598e43eff7dea">&#9670;&nbsp;</a></span>setLastWhatsNewHash()</h2>
 
@@ -988,7 +1082,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property useMetricUnits </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00234">234</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00249">249</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -1125,7 +1219,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Hash of the last "what's new message that was shown to the user. </p>
 <p>This property is used in the app to determine if the message has been shown or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00182">182</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00197">197</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>

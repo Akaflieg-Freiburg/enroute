@@ -48,8 +48,6 @@ namespace DataManagement
     void sslError(QString description);
 
   private slots:
-    void issueTest();
-
     // This is the actual error handler.
     void onSSLError(QNetworkReply *reply, const QList<QSslError> &errors);
 

@@ -21,8 +21,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-#include "dataManagement/SSLErrorHandler.h"
 #include "Settings.h"
+#include "dataManagement/SSLErrorHandler.h"
 
 
 DataManagement::SSLErrorHandler::SSLErrorHandler(QObject *parent) :
@@ -32,25 +32,13 @@ DataManagement::SSLErrorHandler::SSLErrorHandler(QObject *parent) :
 }
 
 
-#include <QTimer>
 void DataManagement::SSLErrorHandler::deferredInitialization()
 {
     QObject::connect(GlobalObject::networkAccessManager(), &QNetworkAccessManager::sslErrors,
                      this, &DataManagement::SSLErrorHandler::onSSLError);
-
-    QTimer::singleShot(2000, this, &DataManagement::SSLErrorHandler::issueTest);
-}
-
-#warning
-void DataManagement::SSLErrorHandler::issueTest()
-{
-    QList<QSslError> errors;
-    errors += QSslError(QSslError::CertificateSignatureFailed);
-    onSSLError(nullptr, errors);
 }
 
 
-// This is the actual error handler.
 void DataManagement::SSLErrorHandler::onSSLError(QNetworkReply *reply, const QList<QSslError> &errors)
 {
 
@@ -80,7 +68,9 @@ void DataManagement::SSLErrorHandler::onSSLError(QNetworkReply *reply, const QLi
                  "caused by outdated security certificates in your system.  Certificates "
                  "can only be installed by the hardware manufacturer via system updates. "
                  "If your device has not received any system security updates in a while, then secure "
-                 "internet connections are no longer possible.") +
+                 "internet connections are no longer possible. "
+                 "<a href='https://akaflieg-freiburg.github.io/enrouteText/manual/03-reference/platform.html#network-security-problems'>See "
+                 "the platform notes in the manual</a> for more details.") +
               "</p>";
     result += "<p>" +
               tr("On recent devices, this problem is a strong indication that your "

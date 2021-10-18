@@ -26,6 +26,7 @@
 
 #include "Downloadable.h"
 #include "GlobalObject.h"
+#include "Settings.h"
 
 DataManagement::Downloadable::Downloadable(QUrl url, const QString &fileName, QObject *parent)
     : QObject(parent), _url(std::move(url)) {
@@ -280,7 +281,8 @@ void DataManagement::Downloadable::stopFileDownload() {
 }
 
 
-void DataManagement::Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code) {
+void DataManagement::Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
+{
 
     // Do nothing if there is no error
     if (code == QNetworkReply::NoError) {
@@ -289,6 +291,12 @@ void DataManagement::Downloadable::downloadFileErrorReceiver(QNetworkReply::Netw
 
     // Stop the download
     stopFileDownload();
+
+    // Do not do anything about SSL errors; this has already been handled by the SSLErrorHandler
+    if ((code == QNetworkReply::SslHandshakeFailedError) &&
+        !GlobalObject::settings()->ignoreSSLProblems()) {
+        return;
+    }
 
     // Come up with a message…
     QString message;

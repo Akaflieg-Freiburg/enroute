@@ -548,6 +548,8 @@ Page {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.topMargin: Qt.application.font.pixelSize*2
+            anchors.leftMargin: Qt.application.font.pixelSize*2
+            anchors.rightMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.StyledText
@@ -574,6 +576,8 @@ Page {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.topMargin: Qt.application.font.pixelSize*2
+            anchors.leftMargin: Qt.application.font.pixelSize*2
+            anchors.rightMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.StyledText

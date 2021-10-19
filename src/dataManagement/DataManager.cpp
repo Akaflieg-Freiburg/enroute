@@ -35,6 +35,7 @@
 using namespace std::chrono_literals;
 
 #include "DataManager.h"
+#include "Settings.h"
 
 
 DataManagement::DataManager::DataManager(QObject *parent) :
@@ -72,18 +73,28 @@ DataManagement::DataManager::DataManager(QObject *parent) :
     connect(&_geoMaps, &DataManagement::DownloadableGroup::downloadablesChanged, this, &DataManager::geoMapListChanged);
     connect(&_geoMaps, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::localFileOfGeoMapChanged);
 
+}
+
+
+void DataManagement::DataManager::deferredInitialization()
+{
+    qWarning() << "DataManagement::DataManager::deferredInitialization()";
+
     // Wire up the automatic update timer and check if automatic updates are
     // due. The method "autoUpdateGeoMapList" will also set a reasonable timeout
     // value for the timer and start it.
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &DataManager::autoUpdateGeoMapList);
-    QTimer::singleShot(0, this, &DataManagement::DataManager::autoUpdateGeoMapList); // Cannot call autoUpdateGeoMapList immediately, or else Global::allocateInternal will crash
+    connect(GlobalObject::settings(), &Settings::acceptedTermsChanged, this, &DataManager::updateGeoMapList);
+    if (GlobalObject::settings()->acceptedTerms()) {
+        autoUpdateGeoMapList();
+    }
 
     // If there is a downloaded maps.json file, we read it. Otherwise, we start
     // a download.
     if (_maps_json.hasFile()) {
         readGeoMapListFromJSONFile();
     } else {
-        QTimer::singleShot(0, &_maps_json, &DataManagement::Downloadable::startFileDownload);
+        _maps_json.startFileDownload();
     }
 }
 
@@ -196,7 +207,8 @@ auto DataManagement::DataManager::describeMapFile(const QString& fileName) -> QS
 
 void DataManagement::DataManager::updateGeoMapList()
 {
-    QTimer::singleShot(0, &_maps_json, &DataManagement::Downloadable::startFileDownload);
+    qWarning() << "DataManagement::DataManager::updateGeoMapList()";
+    _maps_json.startFileDownload();
 }
 
 

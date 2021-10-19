@@ -65,7 +65,11 @@ public:
     @param parent The standard QObject parent pointer.
   */
   explicit DataManager(QObject *parent=nullptr);
-  
+
+    /*! \brief deferredInitialization
+     */
+    void deferredInitialization();
+
   /*! \brief Destructor
 
     This destructor purges the download directory "aviation_map", by deleting

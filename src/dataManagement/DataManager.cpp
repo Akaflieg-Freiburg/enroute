@@ -78,7 +78,6 @@ DataManagement::DataManager::DataManager(QObject *parent) :
 
 void DataManagement::DataManager::deferredInitialization()
 {
-    qWarning() << "DataManagement::DataManager::deferredInitialization()";
 
     // Wire up the automatic update timer and check if automatic updates are
     // due. The method "autoUpdateGeoMapList" will also set a reasonable timeout
@@ -207,7 +206,6 @@ auto DataManagement::DataManager::describeMapFile(const QString& fileName) -> QS
 
 void DataManagement::DataManager::updateGeoMapList()
 {
-    qWarning() << "DataManagement::DataManager::updateGeoMapList()";
     _maps_json.startFileDownload();
 }
 

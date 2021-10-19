@@ -623,7 +623,6 @@ ApplicationWindow {
     LongTextDialog {
         id: whatsNewDialog
         standardButtons: Dialog.Ok
-        anchors.centerIn: parent
         
         title: qsTr("What's new …?")
         text: global.librarian().getStringFromRessource(":text/whatsnew.html")
@@ -683,7 +682,6 @@ ApplicationWindow {
 
     LongTextDialog {
         id: sslErrorDialog
-        anchors.centerIn: parent
 
         standardButtons: Dialog.Close|Dialog.Ignore
 

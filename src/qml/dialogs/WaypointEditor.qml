@@ -20,10 +20,13 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Shapes 1.15
 
 import enroute 1.0
+
+import "../items"
 
 Dialog {
     id: waypointEditorDialog
@@ -53,6 +56,7 @@ Dialog {
         columns: 2
 
         Label {
+            Layout.alignment: Qt.AlignBaseline
             text: qsTr("Name")
         }
 
@@ -76,42 +80,37 @@ Dialog {
             text: qsTr("Latitude")
         }
 
-        TextField {
-            id: latitude
+        DegreeInput {
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBaseline
-            Layout.minimumWidth: Qt.application.font.pixelSize*5
-
-            text: waypoint.coordinate.latitude
-
-            validator: DoubleValidator {
-                bottom: -90
-                top: 90
-                notation: DoubleValidator.StandardNotation
-            }
-            inputMethodHints: Qt.ImhDigitsOnly
-            color: (acceptableInput ? Material.foreground : "red")
+            currentIndex: formatChoice.currentIndex
+            value: waypoint.coordinate.latitude
+            minValue: -90.0
+            maxValue: 90.0
         }
 
         Label {
+            Layout.alignment: Qt.AlignBaseline
             text: qsTr("Longitude")
         }
 
-        TextField {
-            id: longitude
+        DegreeInput {
+            Layout.fillWidth: true
+            currentIndex: formatChoice.currentIndex
+            value: waypoint.coordinate.longitude
+            minValue: -180.0
+            maxValue: 180.0
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Format")
+        }
+        ComboBox {
+            id: formatChoice
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            Layout.minimumWidth: Qt.application.font.pixelSize*5
 
-            text: waypoint.coordinate.longitude
-
-            validator: DoubleValidator {
-                bottom: -180.0
-                top: 180.0
-                notation: DoubleValidator.StandardNotation
-            }
-            inputMethodHints: Qt.ImhDigitsOnly
-            color: (acceptableInput ? Material.foreground : "red")
+            model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
         }
 
     }

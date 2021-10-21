@@ -93,7 +93,9 @@ void DataManagement::DataManager::deferredInitialization()
     if (_maps_json.hasFile()) {
         readGeoMapListFromJSONFile();
     } else {
-        _maps_json.startFileDownload();
+        if (GlobalObject::settings()->acceptedTerms()) {
+            _maps_json.startFileDownload();
+        }
     }
 }
 

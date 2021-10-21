@@ -40,6 +40,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        submodules: true
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2

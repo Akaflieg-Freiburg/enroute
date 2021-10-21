@@ -29,6 +29,18 @@ StackLayout {
     property double minValue
     property double maxValue
 
+    function minutes() {
+        absValue = Math.abs(value)
+        fracValue = absValue-Math.floor(absValue)
+        return Math.floor(fracValue*60.0)
+    }
+
+    function seconds() {
+        absValue = Math.abs(value)
+        fracValue = absValue-Math.floor(absValue)-minutes()/60.0
+        return fracValue*60.0*60.0
+    }
+
     RowLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline

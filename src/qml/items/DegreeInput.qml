@@ -20,85 +20,210 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 
 StackLayout {
 
     property double value
-    property double minValue
-    property double maxValue
+    property int minValue
+    property int maxValue
 
-    function minutes() {
-        absValue = Math.abs(value)
-        fracValue = absValue-Math.floor(absValue)
-        return Math.floor(fracValue*60.0)
+    readonly property bool acceptableInput: d_d.acceptableInput &&
+                                            dm_d.acceptableInput &&
+                                            dm_m.acceptableInput &&
+                                            dms_d.acceptableInput &&
+                                            dms_m.acceptableInput &&
+                                            dms_s.acceptableInput &&
+                                            (value >= minValue) &&
+                                            (value <= maxValue)
+
+    function setTexts() {
+        var minutes = 60.0*(Math.abs(value) - Math.floor(Math.abs(value)))
+        var seconds = 60.0*(minutes - Math.floor(minutes))
+
+        d_d.text = value.toLocaleString(Qt.locale(), 'f', 10)
+
+        dm_d.text = Math.trunc(value)
+        dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 10)
+
+        dms_d.text = Math.trunc(value)
+        dms_m.text = Math.floor(minutes)
+        dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 10)
     }
 
-    function seconds() {
-        absValue = Math.abs(value)
-        fracValue = absValue-Math.floor(absValue)-minutes()/60.0
-        return fracValue*60.0*60.0
-    }
+    Component.onCompleted: setTexts()
+    onCurrentIndexChanged: setTexts()
+    onValueChanged: setTexts()
 
-    RowLayout {
+    RowLayout { // Degree
+        id: d
+
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
+        function setValue() {
+            if (!d_d.acceptableInput)
+                return
+
+            dVal = Number.fromLocaleString(Qt.locale(), d_d.text)
+            value = dVal
+        }
+
         TextField {
+            id: d_d
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            text: value.toLocaleString(Qt.locale(), 'f', 10)
+
             validator: DoubleValidator {
                 bottom: minValue
                 top: maxValue
                 notation: DoubleValidator.StandardNotation
             }
-            onEditingFinished: value = text
+            color: (acceptableInput ? Material.foreground : "red")
+
+            onEditingFinished: {
+                d.setValue()
+                focus = false
+            }
         }
         Label { text: "°" }
-    } // Degree
+    }
 
-    RowLayout {
+    RowLayout { // Degree and Minute
+        id: dm
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
+        function setValue() {
+            if (!dm_d.acceptableInput || !dm_m.acceptableInput)
+                return
+
+            dVal = Number.fromLocaleString(Qt.locale(), dm_d.text)
+            mVal = Number.fromLocaleString(Qt.locale(), dm_m.text)
+            if (dVal >= 0)
+                value = dVal + mVal/60.0
+            else
+                value = dVal - mVal/60.0
+        }
+
         TextField {
+            id: dm_d
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            text: Math.trunc(value)
+            validator: IntValidator {
+                bottom: minValue
+                top: maxValue
+            }
+            color: (acceptableInput ? Material.foreground : "red")
+
+            readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
+            onEditingFinished: {
+                dm.setValue()
+                focus = false
+                dm_m.focus = true
+            }
         }
         Label { text: "°" }
 
         TextField {
+            id: dm_m
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            text: (value-Math.trunc(value))*60.0
+            validator: DoubleValidator {
+                bottom: 0.0
+                top: 59.9999999999999
+                notation: DoubleValidator.StandardNotation
+            }
+            color: (acceptableInput ? Material.foreground : "red")
+            readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
+            onEditingFinished: {
+                dm.setValue()
+                focus = false
+            }
         }
         Label { text: "'" }
 
-    } // Degree and Minute
+    }
 
-    RowLayout {
+    RowLayout { // Degree, Minutes and Seconds
+        id: dms
+
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
+        function setValue() {
+            if (!dms_d.acceptableInput || !dms_m.acceptableInput || !dms_s.acceptableInput)
+                return
+
+            dVal = Number.fromLocaleString(Qt.locale(), dms_d.text)
+            mVal = Number.fromLocaleString(Qt.locale(), dms_m.text)
+            sVal = Number.fromLocaleString(Qt.locale(), dms_s.text)
+            if (dVal >= 0)
+                value = dVal + mVal/60.0 + sVal/3600.0
+            else
+                value = dVal - mVal/60.0 - sVal/3600.0
+        }
+
         TextField {
+            id: dms_d
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            validator: IntValidator {
+                bottom: minValue
+                top: maxValue
+            }
+            color: (acceptableInput ? Material.foreground : "red")
+            readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
+            onEditingFinished: {
+                dms.setValue()
+                focus = false
+                dms_m.focus = true
+            }
         }
         Label { text: "°" }
 
         TextField {
+            id: dms_m
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            validator: IntValidator {
+                bottom: 0
+                top: 59
+            }
+            color: (acceptableInput ? Material.foreground : "red")
+            readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
+            onEditingFinished: {
+                dms.setValue()
+                focus = false
+                dms_s.focus = true
+            }
         }
         Label { text: "'" }
 
         TextField {
+            id: dms_s
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            validator: DoubleValidator {
+                bottom: 0.0
+                top: 59.9999999999999
+                notation: DoubleValidator.StandardNotation
+            }
+            color: (acceptableInput ? Material.foreground : "red")
+            readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
+            onEditingFinished: {
+                dms.setValue()
+                focus = false
+            }
         }
         Label { text: "''" }
-    } // Degree and Minute
+    }
 }

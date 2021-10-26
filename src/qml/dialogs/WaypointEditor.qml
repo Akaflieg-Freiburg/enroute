@@ -70,35 +70,7 @@ Dialog {
             text: waypoint.extendedName
             focus: true
 
-//            onEditingFinished: setName()
-
             placeholderText: qsTr("undefined")
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Latitude")
-        }
-
-        DegreeInput {
-            Layout.fillWidth: true
-            currentIndex: formatChoice.currentIndex
-            value: waypoint.coordinate.latitude
-            minValue: -90.0
-            maxValue: 90.0
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Longitude")
-        }
-
-        DegreeInput {
-            Layout.fillWidth: true
-            currentIndex: formatChoice.currentIndex
-            value: waypoint.coordinate.longitude
-            minValue: -180.0
-            maxValue: 180.0
         }
 
         Label {
@@ -113,8 +85,44 @@ Dialog {
             model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
         }
 
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Latitude")
+        }        
+        DegreeInput {
+            id: latInput
+
+            Layout.fillWidth: true
+            currentIndex: formatChoice.currentIndex
+            value: waypoint.coordinate.latitude
+            minValue: -90.0
+            maxValue: 90.0
+
+            onAcceptableInputChanged: enableOk()
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Longitude")
+        }
+
+        DegreeInput {
+            id: longInput
+
+            Layout.fillWidth: true
+            currentIndex: formatChoice.currentIndex
+            value: waypoint.coordinate.longitude
+            minValue: -180.0
+            maxValue: 180.0
+
+            onAcceptableInputChanged: enableOk()
+        }
+
     }
 
+    function enableOk() {
+        waypointEditorDialog.standardButton(DialogButtonBox.Ok).enabled = latInput.acceptableInput && longInput.acceptableInput
+    }
 
     onAccepted: setName()
 

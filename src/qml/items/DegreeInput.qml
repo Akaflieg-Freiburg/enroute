@@ -67,7 +67,7 @@ StackLayout {
             if (!d_d.acceptableInput)
                 return
 
-            dVal = Number.fromLocaleString(Qt.locale(), d_d.text)
+            var dVal = Number.fromLocaleString(Qt.locale(), d_d.text)
             value = dVal
         }
 
@@ -76,7 +76,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-
+            placeholderText: qsTr("undefined")
             validator: DoubleValidator {
                 bottom: minValue
                 top: maxValue
@@ -86,7 +86,6 @@ StackLayout {
 
             onEditingFinished: {
                 d.setValue()
-                focus = false
             }
         }
         Label { text: "°" }
@@ -101,8 +100,8 @@ StackLayout {
             if (!dm_d.acceptableInput || !dm_m.acceptableInput)
                 return
 
-            dVal = Number.fromLocaleString(Qt.locale(), dm_d.text)
-            mVal = Number.fromLocaleString(Qt.locale(), dm_m.text)
+            var dVal = Number.fromLocaleString(Qt.locale(), dm_d.text)
+            var mVal = Number.fromLocaleString(Qt.locale(), dm_m.text)
             if (dVal >= 0)
                 value = dVal + mVal/60.0
             else
@@ -114,6 +113,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            placeholderText: qsTr("undefined")
             validator: IntValidator {
                 bottom: minValue
                 top: maxValue
@@ -123,8 +123,6 @@ StackLayout {
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dm.setValue()
-                focus = false
-                dm_m.focus = true
             }
         }
         Label { text: "°" }
@@ -134,6 +132,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            placeholderText: qsTr("undefined")
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999
@@ -143,7 +142,6 @@ StackLayout {
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dm.setValue()
-                focus = false
             }
         }
         Label { text: "'" }
@@ -160,9 +158,9 @@ StackLayout {
             if (!dms_d.acceptableInput || !dms_m.acceptableInput || !dms_s.acceptableInput)
                 return
 
-            dVal = Number.fromLocaleString(Qt.locale(), dms_d.text)
-            mVal = Number.fromLocaleString(Qt.locale(), dms_m.text)
-            sVal = Number.fromLocaleString(Qt.locale(), dms_s.text)
+            var dVal = Number.fromLocaleString(Qt.locale(), dms_d.text)
+            var mVal = Number.fromLocaleString(Qt.locale(), dms_m.text)
+            var sVal = Number.fromLocaleString(Qt.locale(), dms_s.text)
             if (dVal >= 0)
                 value = dVal + mVal/60.0 + sVal/3600.0
             else
@@ -174,6 +172,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            placeholderText: qsTr("undefined")
             validator: IntValidator {
                 bottom: minValue
                 top: maxValue
@@ -182,8 +181,6 @@ StackLayout {
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
-                focus = false
-                dms_m.focus = true
             }
         }
         Label { text: "°" }
@@ -193,6 +190,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            placeholderText: qsTr("undefined")
             validator: IntValidator {
                 bottom: 0
                 top: 59
@@ -201,8 +199,6 @@ StackLayout {
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
-                focus = false
-                dms_s.focus = true
             }
         }
         Label { text: "'" }
@@ -212,6 +208,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            placeholderText: qsTr("undefined")
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999
@@ -221,7 +218,6 @@ StackLayout {
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
-                focus = false
             }
         }
         Label { text: "''" }

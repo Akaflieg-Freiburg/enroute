@@ -43,14 +43,14 @@ StackLayout {
         var minutes = 60.0*(Math.abs(value) - Math.floor(Math.abs(value)))
         var seconds = 60.0*(minutes - Math.floor(minutes))
 
-        d_d.text = value.toLocaleString(Qt.locale(), 'f', 10)
+        d_d.text = value.toLocaleString(Qt.locale(), 'f', 7)
 
         dm_d.text = Math.trunc(value)
-        dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 10)
+        dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 5)
 
         dms_d.text = Math.trunc(value)
         dms_m.text = Math.floor(minutes)
-        dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 10)
+        dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 3)
     }
 
     Component.onCompleted: setTexts()

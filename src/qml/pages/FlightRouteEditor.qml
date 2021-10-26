@@ -479,10 +479,9 @@ Page {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
-                    validator: DoubleValidator {
+                    validator: IntValidator {
                         bottom: 0
                         top: 360
-                        notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
@@ -495,7 +494,7 @@ Page {
                         if (!global.navigator().wind.windSpeed.isFinite()) {
                             return ""
                         }
-                        return global.navigator().wind.windDirection.toDEG()
+                        return Math.round( global.navigator().wind.windDirection.toDEG() )
                     }
                     placeholderText: qsTr("undefined")
                 }

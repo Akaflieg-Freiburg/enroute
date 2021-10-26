@@ -52,7 +52,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     if (QCoreApplication::instance() != nullptr) {
         auto downloadables = GlobalObject::dataManager()->databases()->downloadables();
         foreach(auto downloadable, downloadables) {
-            if (downloadable->fileName().contains("Flarmnet")) {
+            if (downloadable->fileName().contains("Flarm")) {
                 newFlarmnetDBDownloadable = downloadable;
                 break;
             }
@@ -119,6 +119,8 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
     QFile dataFile(flarmnetDBDownloadable->fileName());
     if (!dataFile.open(QIODevice::ReadOnly)) {
         dataFile.open(QIODevice::WriteOnly);
+        dataFile.write(tr("Placeholder file.").toLatin1());
+        dataFile.flush();
         dataFile.setFileTime(QDateTime( QDate(2021, 8, 21), QTime(13, 0)), QFileDevice::FileModificationTime);
         return {};
     }

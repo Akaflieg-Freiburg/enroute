@@ -552,9 +552,9 @@ Page {
             anchors.rightMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.StyledText
+            textFormat: Text.RichText
             wrapMode: Text.Wrap
-            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using the item 'Update' from the menu. You find the menu at the top right corner of the screen.</p>")
+            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
         }
     }
 
@@ -580,10 +580,10 @@ Page {
             anchors.rightMargin: Qt.application.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.StyledText
+            textFormat: Text.RichText
             wrapMode: Text.Wrap
             text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
-        } // downloadIndicatorLabel
+        }
 
         BusyIndicator {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -616,12 +616,29 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: !global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable
+        visible: downloadMapListActionButton.visible || downloadUpdatesActionButton.visible
+        contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
+
+        ToolButton {
+            id: downloadMapListActionButton
+            anchors.centerIn: parent
+            visible: !global.dataManager().downloadingGeoMapList && !global.dataManager().hasGeoMapList
+
+            text: qsTr("Download list of maps…")
+            icon.source: "/icons/material/ic_file_download.svg"
+
+            onClicked: {
+                global.mobileAdaptor().vibrateBrief()
+                global.dataManager().updateGeoMapList()
+            }
+        }
 
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            text: qsTr("Download all updates…")
+            visible: !global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable
+
+            text: qsTr("Update")
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
@@ -643,11 +660,11 @@ Page {
         }
     }
 
-
     LongTextDialog {
         id: infoDialog
 
         text: ""
         standardButtons: Dialog.Ok
     }
+
 } // Page

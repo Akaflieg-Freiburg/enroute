@@ -220,6 +220,14 @@ auto GeoMaps::Waypoint::isNear(const Waypoint& other) const -> bool
 }
 
 
+auto GeoMaps::Waypoint::relocated(const QGeoCoordinate& newCoordinate) const -> GeoMaps::Waypoint
+{
+    Waypoint copy(*this);
+    copy.m_coordinate = newCoordinate;
+    return copy;
+}
+
+
 auto GeoMaps::Waypoint::renamed(const QString &newName) const -> GeoMaps::Waypoint
 {
     Waypoint copy(*this);

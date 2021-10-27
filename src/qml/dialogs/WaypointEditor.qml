@@ -124,10 +124,9 @@ Dialog {
         waypointEditorDialog.standardButton(DialogButtonBox.Ok).enabled = latInput.acceptableInput && longInput.acceptableInput
     }
 
-    onAccepted: setName()
-
-    function setName() {
+    onAccepted: {
         global.navigator().flightRoute.renameWaypoint(index, wpNameField.text)
+        global.navigator().flightRoute.relocateWaypoint(index, latInput.value, longInput.value)
         close()
     }
 

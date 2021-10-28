@@ -113,7 +113,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: global.global.librarian()().flightRoutes(filterName.displayText)
+            model: global.librarian().flightRoutes(filterName.displayText)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate

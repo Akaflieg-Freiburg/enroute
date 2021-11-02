@@ -187,7 +187,20 @@ public:
 
     /*! \brief Rename waypoint(s)
      *
-     *  Sets the names all waypoints in the route that equal "waypoint" to newName.
+     *  Relocates the waypoint with the given index. If the index is invalid, if the coordinates are invalid or if the new coordinates are closer than 10m to the old coordinate, then this method does nothing.
+     *  The signal "waypoint changed" is emitted as appropriate.
+     *
+     *  @param idx Index of waypoint
+     *
+     *  @param latitude New latitude for waypoint
+     *
+     *  @param longitude New longitude for waypoint
+     */
+    Q_INVOKABLE void relocateWaypoint(int idx, double latitude, double longitude);
+
+    /*! \brief Rename waypoint(s)
+     *
+     *  Relocates the waypoint with the given index. If the index is invalid if the new name equals the old name, then this method does nothing.
      *  The signal "waypoint changed" is emitted as appropriate.
      *
      *  @param idx Index of waypoint

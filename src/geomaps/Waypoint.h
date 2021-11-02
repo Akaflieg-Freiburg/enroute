@@ -108,7 +108,15 @@ public:
         return (m_coordinate == other.m_coordinate) && (m_properties == other.m_properties);
     }
 
-    /*! \brief Copy waypoint and change name
+    /*! \brief Copy waypoint and change location
+     *
+     *  @param newCoordinate New coordinate of the waypoint
+     *
+     *  @returns Copy of the waypoints with name changed
+     */
+    Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint relocated(const QGeoCoordinate& newCoordinate) const;
+
+    /*! \brief Copy waypoint and change location
      *
      *  @param newName New name of the waypoint
      *

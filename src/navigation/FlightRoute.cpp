@@ -252,12 +252,41 @@ void Navigation::FlightRoute::removeWaypoint(int idx)
 }
 
 
+void Navigation::FlightRoute::relocateWaypoint(int idx, double latitude, double longitude)
+{
+    // Paranoid safety checks
+    if ((idx < 0) || (idx >= m_waypoints.size())) {
+        return;
+    }
+
+
+    // If the new coordinate is invalid of closer than 100m to the old coordinate, then do nothing.
+    QGeoCoordinate newCoordinate(latitude, longitude);
+    if (!newCoordinate.isValid()) {
+        return;
+    }
+    if (m_waypoints[idx].coordinate().isValid() && (m_waypoints[idx].coordinate().distanceTo(newCoordinate) < 10.0)) {
+        return;
+    }
+
+
+    m_waypoints[idx] = m_waypoints[idx].relocated(newCoordinate);
+    updateLegs();
+    emit waypointsChanged();
+}
+
+
 void Navigation::FlightRoute::renameWaypoint(int idx, const QString& newName)
 {
     // Paranoid safety checks
     if ((idx < 0) || (idx >= m_waypoints.size())) {
         return;
     }
+    // If name did not
+    if (m_waypoints[idx].name() == newName) {
+        return;
+    }
+
 
     m_waypoints[idx] = m_waypoints[idx].renamed(newName);
     updateLegs();

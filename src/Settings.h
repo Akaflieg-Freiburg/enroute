@@ -167,7 +167,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param hide Property ignoreSSLProblems
+     * @param ignore Property ignoreSSLProblems
      */
     void setIgnoreSSLProblems(bool ignore);
 

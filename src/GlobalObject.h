@@ -100,12 +100,11 @@ class GlobalObject : public QObject
 
     /*! \brief Indicates if the static methods are ready to be used
      *
-     *  This method returns false if the app is in constructing state
-     *  where the pointer-returning methods should not be used.
-     *
      *  This is relevant for C++ code that is called from Android, often at
      *  unexpected times (during startup, …). This code should check that
      *  the GlobalObject class is ready before using it.
+     *
+     *  @returns False if the app is in constructing state where the pointer-returning methods should not be used.
      */
     Q_INVOKABLE static bool canConstruct();
 

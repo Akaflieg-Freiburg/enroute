@@ -4,7 +4,7 @@
 	  android:versionName="${PROJECT_VERSION}"
 	  android:versionCode="${PROJECT_VERSION_CODE}0"
 	  android:installLocation="auto">
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30"/>
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="31"/>
   
   <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
        Remove the comment if you do not require these default permissions. -->

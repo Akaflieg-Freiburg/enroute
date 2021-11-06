@@ -616,7 +616,7 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: downloadMapListActionButton.visible || downloadUpdatesActionButton.visible
+        visible: (!global.dataManager().downloadingGeoMapList && !global.dataManager().hasGeoMapList) || (!global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable)
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
 
         ToolButton {

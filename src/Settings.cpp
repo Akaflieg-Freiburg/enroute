@@ -188,7 +188,7 @@ void Settings::installTranslators(const QString &localeName)
     if (localeName.isEmpty()) {
         QLocale::setDefault(QLocale::system());
     } else {
-        QLocale::setDefault(localeName);
+        QLocale::setDefault(QLocale(localeName));
     }
 
     enrouteTranslator = new QTranslator(this);

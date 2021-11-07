@@ -9,29 +9,30 @@
 # language code. The variable LANGS contains all language codes that will be
 # considered.
 
-find_path(Qt5_TRANSLATION_DIR qtbase_de.qm
-    HINTS ${Qt5Core_DIR}/../../../translations
+find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
+    HINTS ${Qt6Core_DIR}/../../../translations
     HINTS /usr/share/qt5/translations
     HINTS /usr/share/qt/translations
     HINTS /usr/translations
     REQUIRED
     )
-set(Qt5_LCONVERT_EXECUTABLE Qt5::lconvert)
+set(Qt6_LCONVERT_EXECUTABLE Qt6::lconvert)
+set(Qt6_LRELEASE_EXECUTABLE Qt6::lrelease)
 
 set(LANGS de fr it pl)
 foreach(_lang ${LANGS})
-    set(QT_QM_FILES ${Qt5_TRANSLATION_DIR}/qtbase_${_lang}.qm)
-    if (EXISTS ${Qt5_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
-        list(APPEND QT_QM_FILES ${Qt5_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
+    set(QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtbase_${_lang}.qm)
+    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
+        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
     endif()
-    if (EXISTS ${Qt5_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
-        list(APPEND QT_QM_FILES ${Qt5_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
+    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
+        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
     endif()
     add_custom_command(
         OUTPUT enroute_${_lang}.qm
         DEPENDS ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts
-        COMMAND ${Qt5_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
-        COMMAND ${Qt5_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${QT_QM_FILES} -o enroute_${_lang}.qm
+        COMMAND ${Qt6_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
+        COMMAND ${Qt6_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${QT_QM_FILES} -o enroute_${_lang}.qm
         COMMENT "Generating translations for language ${_lang}"
         )
 endforeach()
@@ -81,8 +82,6 @@ set(SOURCES
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/GeoMapProvider.h
-    geomaps/TileHandler.h
-    geomaps/TileServer.h
     geomaps/Waypoint.h
     GlobalObject.h
     Librarian.h
@@ -133,8 +132,6 @@ set(SOURCES
     DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/GeoMapProvider.cpp
-    geomaps/TileHandler.cpp
-    geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
     GlobalObject.cpp
     Librarian.cpp
@@ -252,7 +249,7 @@ if( ANDROID )
     add_library(${PROJECT_NAME} SHARED ${SOURCES} ${ANDROID_EXTRA_SOURCES})
 
     # Add libraries and include paths
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::AndroidExtras Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg Qt5::WebView qhttpengine sunset)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView sunset)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
 endif()
 
@@ -273,7 +270,7 @@ if (NOT ANDROID)
 
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg Qt5::WebView KF5::Notifications qhttpengine kdsingleapplication sunset)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt6::Core5Compat Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView sunset)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
     target_precompile_headers(${PROJECT_NAME} PRIVATE
         <QObject>

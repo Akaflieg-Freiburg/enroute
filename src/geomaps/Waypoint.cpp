@@ -231,7 +231,9 @@ auto GeoMaps::Waypoint::relocated(const QGeoCoordinate& newCoordinate) const -> 
 auto GeoMaps::Waypoint::renamed(const QString &newName) const -> GeoMaps::Waypoint
 {
     Waypoint copy(*this);
-    copy.m_properties.replace("NAM", newName);
+    #warning
+//    copy.m_properties.replace("NAM", newName);
+copy.m_properties.insert("NAM", newName);
     return copy;
 }
 

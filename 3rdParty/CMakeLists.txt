@@ -9,8 +9,8 @@ set(material-design-icons_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/material-design
 # Nitroshare's QHTTPEngine
 #
 
-set(qhttpengine_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/qhttpengine CACHE INTERNAL "" FORCE)
-add_subdirectory(${qhttpengine_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/qhttpengine)
+#set(qhttpengine_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/qhttpengine CACHE INTERNAL "" FORCE)
+#add_subdirectory(${qhttpengine_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/qhttpengine)
 
 
 #
@@ -33,7 +33,7 @@ set(mapBoxFont_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/openseamap-gl CACHE INTERN
 # KDSingleAppplication
 #
 
-add_subdirectory(KDSingleApplication ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplication)
+#add_subdirectory(KDSingleApplication ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplication)
 
 
 #

@@ -33,7 +33,8 @@
 
 #if !defined(Q_OS_ANDROID)
 #include <QApplication>
-#include <kdsingleapplication.h>
+#warning
+//#include <kdsingleapplication.h>
 #endif
 
 #include "DemoRunner.h"
@@ -106,7 +107,6 @@ auto main(int argc, char *argv[]) -> int
     QtWebView::initialize();
 
     // Set up application
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #if defined(Q_OS_ANDROID)
     QGuiApplication app(argc, argv);
 #else
@@ -136,6 +136,8 @@ auto main(int argc, char *argv[]) -> int
     }
 
 #if !defined(Q_OS_ANDROID)
+#warning
+/*
     // Single application on desktops
     KDSingleApplication kdsingleapp;
     if (!kdsingleapp.isPrimaryInstance()) {
@@ -146,6 +148,7 @@ auto main(int argc, char *argv[]) -> int
         }
         return 0;
     }
+*/
 #endif
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
@@ -154,7 +157,8 @@ auto main(int argc, char *argv[]) -> int
     }
     QTimer::singleShot(4s, GlobalObject::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
+#warning
+//    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*

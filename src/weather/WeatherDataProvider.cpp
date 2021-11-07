@@ -170,13 +170,13 @@ void Weather::WeatherDataProvider::downloadFinished() {
             xml.readNext();
 
             // Read METAR
-            if (xml.isStartElement() && (xml.name() == "METAR")) {
+            if (xml.isStartElement() && (xml.name() == QStringLiteral("METAR"))) {
                 auto *metar = new Weather::METAR(xml, this);
                 findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             }
 
             // Read TAF
-            if (xml.isStartElement() && (xml.name() == "TAF")) {
+            if (xml.isStartElement() && (xml.name() == QStringLiteral("TAF"))) {
                 auto *taf = new Weather::TAF(xml, this);
                 findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             }

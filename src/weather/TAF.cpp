@@ -27,6 +27,13 @@
 #include "weather/TAF.h"
 
 
+Weather::TAF::TAF(QObject *parent)
+    : Weather::Decoder(parent)
+{
+
+}
+
+
 Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
     : Weather::Decoder(parent)
 {

@@ -36,7 +36,7 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 
 
     // Set up text stream
     m_textStream.setDevice(&m_socket);
-    m_textStream.setCodec("ISO 8859-1");
+    m_textStream.setEncoding(QStringConverter::Latin1);
 
     //
     // Initialize properties

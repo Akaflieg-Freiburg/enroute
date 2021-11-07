@@ -34,7 +34,6 @@
 #include "dataManagement/DataManager.h"
 #include "Settings.h"
 #include "Waypoint.h"
-#include "TileServer.h"
 
 
 class Librarian;
@@ -258,9 +257,6 @@ private:
     // _tileServer. This is set to a random number that changes every time the
     // set of MBTile files changes
     QString _currentPath;
-
-    // Tile Server
-    TileServer _tileServer;
 
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> _styleFile;

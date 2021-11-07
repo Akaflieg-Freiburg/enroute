@@ -300,7 +300,9 @@ private:
 protected:
     bool m_isValid {false};
     QGeoCoordinate m_coordinate;
-    QMultiMap<QString, QVariant> m_properties;
+    #warning
+//    QMultiMap<QString, QVariant> m_properties;
+    QMap<QString, QVariant> m_properties;
 };
 
 }

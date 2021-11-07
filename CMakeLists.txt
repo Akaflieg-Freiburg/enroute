@@ -43,17 +43,17 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Doxygen)
 find_package(Git REQUIRED)
-find_package(Qt5 5.15 COMPONENTS Concurrent Core Gui LinguistTools Positioning Quick QuickWidgets Sql Svg WebView REQUIRED)
+find_package(Qt6 COMPONENTS Concurrent Core Core5Compat Gui LinguistTools Positioning Quick QuickWidgets Sql Svg WebView REQUIRED)
 if( ANDROID )
-    find_package(Qt5 5.15 COMPONENTS AndroidExtras REQUIRED)
-    find_package(Qt5QuickCompiler)
+    find_package(Qt6 COMPONENTS AndroidExtras REQUIRED)
+    find_package(Qt6QuickCompiler)
 else()
     find_package(ECM REQUIRED NO_MODULE)
     set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
     include(KDEInstallDirs)
 
-    find_package(KF5Notifications REQUIRED)
-    find_package(Qt5 5.15 COMPONENTS DBus Widgets REQUIRED)
+#    find_package(KF5Notifications REQUIRED)
+    find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)
 endif()
 
 

@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QRegExp>
+
 #include "traffic/TrafficDataSource_File.h"
 
 
@@ -47,7 +49,7 @@ void Traffic::TrafficDataSource_File::connectToTrafficReceiver()
     simulatorFile.unsetError();
     if (simulatorFile.open(QIODevice::ReadOnly)) {
         simulatorTextStream.setDevice(&simulatorFile);
-        simulatorTextStream.setCodec("ISO 8859-1");
+        simulatorTextStream.setEncoding(QStringConverter::Latin1);
         lastPayload = QString();
         lastTime = 0;
         readFromSimulatorStream();

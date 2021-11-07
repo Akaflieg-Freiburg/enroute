@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+//#include <QCoreApplication>
 #include <QGeoCoordinate>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -28,7 +28,8 @@
 #include <QRandomGenerator>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QtConcurrent/QtConcurrentRun>
+//#include <QtConcurrent>
+//#include <QtConcurrentRun>
 #include <chrono>
 
 #include "GeoMapProvider.h"
@@ -41,7 +42,8 @@ using namespace std::chrono_literals;
 
 GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : QObject(parent),
-      _tileServer(QUrl()),
+#warning 
+//      _tileServer(QUrl()),
       _styleFile(nullptr)
 {
     // Initialize _combinedGeoJSON_ with an empty document
@@ -51,7 +53,8 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-    _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
+#warning
+//    _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 
     // Deferred initializsation
     QTimer::singleShot(0, this, &GeoMaps::GeoMapProvider::deferredInitialization);
@@ -235,7 +238,8 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->hideUpperAirspaces(), GlobalObject::settings()->hideGlidingSectors());
+#warning
+//    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->hideUpperAirspaces(), GlobalObject::settings()->hideGlidingSectors());
 }
 
 
@@ -244,19 +248,22 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
-    _tileServer.removeMbtilesFileSet(_currentPath);
+    #warning
+//    _tileServer.removeMbtilesFileSet(_currentPath);
 
     // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+    #warning    
+//    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);
     QFile file(QStringLiteral(":/flightMap/osm-liberty.json"));
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
-    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
-    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+#warning
+//    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
+//    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
     _styleFile->open();
     _styleFile->write(data);
     _styleFile->close();

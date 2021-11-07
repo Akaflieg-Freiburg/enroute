@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KNotification>
+#warning
+//#include <KNotification>
 
 #include "platform/Notifier.h"
 
-
-QMap<Platform::Notifier::Notifications, QPointer<KNotification>> notificationPtrs;
+#warning
+// QMap<Platform::Notifier::Notifications, QPointer<KNotification>> notificationPtrs;
 
 
 Platform::Notifier::Notifier(QObject *parent)
@@ -35,7 +36,8 @@ Platform::Notifier::Notifier(QObject *parent)
 
 Platform::Notifier::~Notifier()
 {
-
+#warning
+/*
     foreach(auto notification, notificationPtrs) {
         if (notification.isNull()) {
             continue;
@@ -43,13 +45,14 @@ Platform::Notifier::~Notifier()
         notification->close();
         delete notification;
     }
-
+*/
 }
 
 
 void Platform::Notifier::hideNotification(Platform::Notifier::Notifications notificationType)
 {
-
+#warning
+/*
     auto notification = notificationPtrs.value(notificationType, nullptr);
     if (!notification.isNull()) {
         notification->close();
@@ -59,13 +62,14 @@ void Platform::Notifier::hideNotification(Platform::Notifier::Notifications noti
     if (notificationPtrs.contains(notificationType)) {
         notificationPtrs.remove(notificationType);
     }
-
+*/
 }
 
 
 void Platform::Notifier::showNotification(Notifications notification, const QString& text, const QString& longText)
 {
-
+#warning
+/*
     // Get notificonst cation, &if it exists; otherwise get nullptr
     auto notificationPtr = notificationPtrs.value(notification, nullptr);
 
@@ -95,5 +99,5 @@ void Platform::Notifier::showNotification(Notifications notification, const QStr
         notificationPtr->setText(longText);
     }
     notificationPtr->sendEvent();
-
+*/
 }

@@ -36,7 +36,7 @@ Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject 
             setSourceName( tr("Built-in receiver/%1").arg( sName.at(0).toUpper()+sName.mid(1) ) );
         }
 
-        connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(updateStatusString()));
+        connect(source, SIGNAL(errorOccurred(QGeoPositionInfoSource::Error)), this, SLOT(updateStatusString()));
         connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionInfoSource_Satellite::onPositionUpdated);
         source->startUpdates();
     } else {

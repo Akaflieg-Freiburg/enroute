@@ -19,10 +19,10 @@
  ***************************************************************************/
 
 //import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-
 
 Item {
 
@@ -40,12 +40,12 @@ Item {
         visible: false
         source: parent.source
     }
-/*
+
     ColorOverlay {
         id: colorOverlay
         anchors.fill: parent
         source: wpLblImg
         color: Material.foreground
     }
-    */
+
 }

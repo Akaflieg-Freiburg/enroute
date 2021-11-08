@@ -69,7 +69,8 @@ using namespace std::chrono_literals;
 auto main(int argc, char *argv[]) -> int
 {
     // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
-    qputenv("QSG_RENDER_LOOP", "basic");
+#warning
+//    qputenv("QSG_RENDER_LOOP", "basic");
 
     // Register types
     qRegisterMetaType<Units::Angle>();
@@ -114,7 +115,9 @@ auto main(int argc, char *argv[]) -> int
 #if defined(Q_OS_ANDROID)
     QGuiApplication app(argc, argv);
 #else
-    QApplication app(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
+    QGuiApplication app(argc, argv);
 #endif
     QCoreApplication::setOrganizationName("Akaflieg Freiburg");
     QCoreApplication::setOrganizationDomain("akaflieg_freiburg.de");

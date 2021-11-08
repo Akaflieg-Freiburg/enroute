@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//#include <QCoreApplication>
+#include <QtConcurrent>
 #include <QGeoCoordinate>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -28,8 +28,6 @@
 #include <QRandomGenerator>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-//#include <QtConcurrent>
-//#include <QtConcurrentRun>
 #include <chrono>
 
 #include "GeoMapProvider.h"
@@ -238,8 +236,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-#warning
-//    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->hideUpperAirspaces(), GlobalObject::settings()->hideGlidingSectors());
+    _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::settings()->hideUpperAirspaces(), GlobalObject::settings()->hideGlidingSectors());
 }
 
 

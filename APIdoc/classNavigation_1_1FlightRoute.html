@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.12.7</span>
+   &#160;<span id="projectnumber">2.13.0</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -134,6 +134,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a728bfe96fa44c9b4dd037d25e0a1b75e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1FlightRoute.html#a728bfe96fa44c9b4dd037d25e0a1b75e">loadFromGpx</a> (QXmlStreamReader &amp;xml, <a class="el" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *geoMapProvider)</td></tr>
 <tr class="memdesc:a728bfe96fa44c9b4dd037d25e0a1b75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the route from a GPX document.  <a href="classNavigation_1_1FlightRoute.html#a728bfe96fa44c9b4dd037d25e0a1b75e">More...</a><br /></td></tr>
 <tr class="separator:a728bfe96fa44c9b4dd037d25e0a1b75e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff9df360c61b59e8bd180844372ad07b"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1FlightRoute.html#aff9df360c61b59e8bd180844372ad07b">relocateWaypoint</a> (int idx, double latitude, double longitude)</td></tr>
+<tr class="memdesc:aff9df360c61b59e8bd180844372ad07b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename waypoint(s)  <a href="classNavigation_1_1FlightRoute.html#aff9df360c61b59e8bd180844372ad07b">More...</a><br /></td></tr>
+<tr class="separator:aff9df360c61b59e8bd180844372ad07b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8633c18e04c3106dc654adfb4b93c3bf"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1FlightRoute.html#a8633c18e04c3106dc654adfb4b93c3bf">renameWaypoint</a> (int idx, const QString &amp;newName)</td></tr>
 <tr class="memdesc:a8633c18e04c3106dc654adfb4b93c3bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename waypoint(s)  <a href="classNavigation_1_1FlightRoute.html#a8633c18e04c3106dc654adfb4b93c3bf">More...</a><br /></td></tr>
 <tr class="separator:a8633c18e04c3106dc654adfb4b93c3bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -667,6 +670,51 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
+<a id="aff9df360c61b59e8bd180844372ad07b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff9df360c61b59e8bd180844372ad07b">&#9670;&nbsp;</a></span>relocateWaypoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE void Navigation::FlightRoute::relocateWaypoint </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>latitude</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>longitude</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Rename waypoint(s) </p>
+<p>Relocates the waypoint with the given index. If the index is invalid, if the coordinates are invalid or if the new coordinates are closer than 10m to the old coordinate, then this method does nothing. The signal "waypoint changed" is emitted as appropriate.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">idx</td><td>Index of waypoint</td></tr>
+    <tr><td class="paramname">latitude</td><td>New latitude for waypoint</td></tr>
+    <tr><td class="paramname">longitude</td><td>New longitude for waypoint </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad6ddd89746d8dff69fe3de1e4f3aed50"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad6ddd89746d8dff69fe3de1e4f3aed50">&#9670;&nbsp;</a></span>removeWaypoint</h2>
 
@@ -729,7 +777,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Rename waypoint(s) </p>
-<p>Sets the names all waypoints in the route that equal "waypoint" to newName. The signal "waypoint changed" is emitted as appropriate.</p>
+<p>Relocates the waypoint with the given index. If the index is invalid if the new name equals the old name, then this method does nothing. The signal "waypoint changed" is emitted as appropriate.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">idx</td><td>Index of waypoint</td></tr>
@@ -794,7 +842,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00294">294</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00307">307</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -925,7 +973,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>List of coordinates for the waypoints. </p>
 <p>This property holds a list of coordinates of the waypoints, suitable for drawing the flight path on a QML map. For better interaction with QML, the data is returned in the form of a QVariantList rather than QList&lt;QGeoCoordinate&gt;. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00254">254</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00267">267</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -952,7 +1000,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>List of legs. </p>
 <p>This property returns a list of all legs in the route. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00279">279</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00292">292</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -979,7 +1027,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>List of waypoints in the flight route that are not airfields. </p>
 <p>This property lists all the waypoints in the route that are not airfields, navaids, reporting points, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00267">267</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00280">280</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -1006,7 +1054,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>List of waypoints in the flight route that are not airfields. </p>
 <p>This property lists all the waypoints in the route that are not airfields, navaids, reporting points, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00313">313</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00326">326</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>

@@ -27,6 +27,7 @@
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QQuickItem>
+#include <QQuickWindow>
 #include <QSettings>
 #include <QTranslator>
 #include <QtWebView/QtWebView>
@@ -107,6 +108,9 @@ auto main(int argc, char *argv[]) -> int
     QtWebView::initialize();
 
     // Set up application
+
+//QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+//QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
 #if defined(Q_OS_ANDROID)
     QGuiApplication app(argc, argv);
 #else

@@ -17,7 +17,6 @@ $Qt5_DIR_SOURCE/configure \
     -prefix $Qt5_DIR_ANDROID \
     -android-ndk $ANDROID_NDK_ROOT \
     -android-sdk $ANDROID_SDK_ROOT \
-    -force-debug-info \
     -nomake tests \
     -nomake examples \
     -no-feature-assistant \

@@ -20,10 +20,13 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Shapes 1.15
 
 import enroute 1.0
+
+import "../items"
 
 Dialog {
     id: waypointEditorDialog
@@ -43,28 +46,87 @@ Dialog {
     y: (parent.height-height)/2.0
 
     modal: true
-    title: qsTr("New waypoint name")
+    title: qsTr("Edit waypoint")
 
     standardButtons: Dialog.Cancel|Dialog.Ok
     focus: true
 
-    TextField {
-        id: wpNameField
-
+    GridLayout {
         width: waypointEditorDialog.availableWidth
+        columns: 2
 
-        text: waypoint.extendedName
-        focus: true
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Name")
+        }
 
-        onEditingFinished: setName()
+        TextField {
+            id: wpNameField
 
-        placeholderText: qsTr("undefined")
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+            Layout.minimumWidth: Qt.application.font.pixelSize*5
+
+            text: waypoint.extendedName
+            focus: true
+
+            placeholderText: qsTr("undefined")
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Format")
+        }
+        ComboBox {
+            id: formatChoice
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+
+            model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Latitude")
+        }        
+        DegreeInput {
+            id: latInput
+
+            Layout.fillWidth: true
+            currentIndex: formatChoice.currentIndex
+            value: waypoint.coordinate.latitude
+            minValue: -90.0
+            maxValue: 90.0
+
+            onAcceptableInputChanged: enableOk()
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Longitude")
+        }
+
+        DegreeInput {
+            id: longInput
+
+            Layout.fillWidth: true
+            currentIndex: formatChoice.currentIndex
+            value: waypoint.coordinate.longitude
+            minValue: -180.0
+            maxValue: 180.0
+
+            onAcceptableInputChanged: enableOk()
+        }
+
     }
 
-    onAccepted: setName()
+    function enableOk() {
+        waypointEditorDialog.standardButton(DialogButtonBox.Ok).enabled = latInput.acceptableInput && longInput.acceptableInput
+    }
 
-    function setName() {
+    onAccepted: {
         global.navigator().flightRoute.renameWaypoint(index, wpNameField.text)
+        global.navigator().flightRoute.relocateWaypoint(index, latInput.value, longInput.value)
         close()
     }
 

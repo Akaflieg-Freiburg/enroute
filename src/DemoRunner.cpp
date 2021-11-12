@@ -107,6 +107,15 @@ void DemoRunner::run()
         emit requestClosePages();
     }
 
+    // Weather
+    {
+        qWarning() << "Demo Mode" << "Weather Page";
+        emit requestOpenWeatherPage();
+        delay(4s);
+        applicationWindow->grabWindow().save("02-03-01-Weather.png");
+        emit requestClosePages();
+    }
+
     // EDTF Taxiway
     {
         qWarning() << "Demo Mode" << "EDTF Taxiway";

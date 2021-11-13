@@ -93,7 +93,7 @@ void Weather::Decoder::parse()
             decodedStrings << "<li>"+decodedString+"</li>";
         }
     }
-    _decodedText = listStart+decodedStrings.join("\n")+listEnd+"<br>";
+    _decodedText = listStart+decodedStrings.join("\n")+listEnd;
 
     if (_decodedText != oldDecodedText) {
         emit decodedTextChanged();

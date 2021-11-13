@@ -34,6 +34,7 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
+#include "weather/WeatherDataProvider.h"
 
 using namespace std::chrono_literals;
 
@@ -115,11 +116,14 @@ void DemoRunner::run()
         applicationWindow->grabWindow().save("02-03-01-Weather.png");
     }
 
-    // Weather
+    // Weather Dialog
     {
         qWarning() << "Demo Mode" << "Weather Page";
         auto *weatherReport = findQQuickItem("weatherReport", m_engine);
         Q_ASSERT(weatherReport != nullptr);
+        auto station = GlobalObject::weatherDataProvider()->findWeatherStation("LFSB");
+        weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
+        Q_ASSERT(station != nullptr);
         QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
         delay(4s);
         applicationWindow->grabWindow().save("02-03-02-WeatherDialog.png");

@@ -111,8 +111,18 @@ void DemoRunner::run()
     {
         qWarning() << "Demo Mode" << "Weather Page";
         emit requestOpenWeatherPage();
-        delay(4s);
+        delay(1s);
         applicationWindow->grabWindow().save("02-03-01-Weather.png");
+    }
+
+    // Weather
+    {
+        qWarning() << "Demo Mode" << "Weather Page";
+        auto *weatherReport = findQQuickItem("weatherReport", m_engine);
+        Q_ASSERT(weatherReport != nullptr);
+        QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
+        delay(4s);
+        applicationWindow->grabWindow().save("02-03-02-WeatherDialog.png");
         emit requestClosePages();
     }
 

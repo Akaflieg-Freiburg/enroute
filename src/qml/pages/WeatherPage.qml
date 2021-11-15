@@ -366,6 +366,7 @@ Page {
 
     WeatherReport {
         id: weatherReport
+        objectName: "weatherReport"
     }
 
 } // Page

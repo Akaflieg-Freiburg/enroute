@@ -164,7 +164,6 @@ protected:
     // The class uses a timer internally to reset the position info to "invalid"
     // after the time specified in PositionInfo::lifetime seconds. It also
     // updates the property receivingPositionInfo.
-    //
     void setPositionInfo(const Positioning::PositionInfo &info);
 
     // This method must be used by child classes to update the pressure altitude

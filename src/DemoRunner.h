@@ -64,6 +64,9 @@ signals:
     /*! \brief Emitted to indicate that the GUI should open the "nearby" page */
     void requestOpenNearbyPage();
 
+    /*! \brief Emitted to indicate that the GUI should open the "weather" page */
+    void requestOpenWeatherPage();
+
     /*! \brief Emitted to indicate that the GUI return to the main page */
     void requestClosePages();
 

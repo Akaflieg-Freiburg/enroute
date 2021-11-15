@@ -193,6 +193,9 @@ Page {
             Label { text: global.positionProvider().pressureAltitude.isFinite() ? Math.round(global.positionProvider().pressureAltitude.toFeet()) + " ft" : "-" }
 
 
+            Label { text: qsTr("Timestamp") }
+            Label { text: global.positionProvider().positionInfo.isValid() ? global.positionProvider().positionInfo.timestampString() : "-" }
+
         } // GridLayout
 
     }

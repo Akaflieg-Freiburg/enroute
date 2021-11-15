@@ -145,40 +145,39 @@ $(function() {
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">// The class uses a timer internally to reset the position info to &quot;invalid&quot;</span></div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="comment">// after the time specified in PositionInfo::lifetime seconds. It also</span></div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">// updates the property receivingPositionInfo.</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordtype">void</span> setPositionInfo(<span class="keyword">const</span> <a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &amp;info);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">// This method must be used by child classes to update the pressure altitude</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfoSource__Abstract.html#a3ae4cb194907fe0a3f66e79d4ea0ebc9">  171</a></span>&#160;    <span class="comment">// The class uses a timer internally to reset the position info to &quot;invalid&quot;</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="comment">// after the time specified in PositionInfo::lifetime seconds.</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordtype">void</span> setPressureAltitude(<a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> newPressureAltitude);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="comment">// This method must be used by child classes to update the source name</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">void</span> setSourceName(<span class="keyword">const</span> QString &amp;name);</div>
-<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfoSource__Abstract.html#ab47094963629bd1b65dbe7d30b2d22e5">  177</a></span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="comment">// This method must be used by child classes to update the status string</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">void</span> setStatusString(<span class="keyword">const</span> QString &amp;status);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">// Resets the position info to &quot;invalid&quot;</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">void</span> resetPositionInfo();</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="comment">// Resets the pressure altitude to &quot;invalid&quot;</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">void</span> resetPressureAltitude();</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_pressureAltitude {};</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    QTimer m_pressureAltitudeTimer;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> m_positionInfo;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    QTimer m_positionInfoTimer;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    QString m_sourceName {};</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    QString m_statusString {};</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">bool</span> _receivingPositionInfo {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;};</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;}</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">void</span> setPositionInfo(<span class="keyword">const</span> <a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &amp;info);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment">// This method must be used by child classes to update the pressure altitude</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">// The class uses a timer internally to reset the position info to &quot;invalid&quot;</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfoSource__Abstract.html#a3ae4cb194907fe0a3f66e79d4ea0ebc9">  171</a></span>&#160;    <span class="comment">// after the time specified in PositionInfo::lifetime seconds.</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">void</span> setPressureAltitude(<a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> newPressureAltitude);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">// This method must be used by child classes to update the source name</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordtype">void</span> setSourceName(<span class="keyword">const</span> QString &amp;name);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfoSource__Abstract.html#ab47094963629bd1b65dbe7d30b2d22e5">  177</a></span>&#160;    <span class="comment">// This method must be used by child classes to update the status string</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">void</span> setStatusString(<span class="keyword">const</span> QString &amp;status);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">// Resets the position info to &quot;invalid&quot;</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">void</span> resetPositionInfo();</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="comment">// Resets the pressure altitude to &quot;invalid&quot;</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">void</span> resetPressureAltitude();</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_pressureAltitude {};</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    QTimer m_pressureAltitudeTimer;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> m_positionInfo;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    QTimer m_positionInfoTimer;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    QString m_sourceName {};</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    QString m_statusString {};</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordtype">bool</span> _receivingPositionInfo {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;};</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a></div><div class="ttdoc">Geographic position.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00043">PositionInfo.h:43</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfoSource__Abstract_html_ad2ecfedb836495670657d696ea5aec08"><div class="ttname"><a href="classPositioning_1_1PositionInfoSource__Abstract.html#ad2ecfedb836495670657d696ea5aec08">Positioning::PositionInfoSource_Abstract::pressureAltitude</a></div><div class="ttdeci">Units::Distance pressureAltitude</div><div class="ttdoc">Pressure altitude.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfoSource__Abstract_8h_source.html#l00122">PositionInfoSource_Abstract.h:122</a></div></div>

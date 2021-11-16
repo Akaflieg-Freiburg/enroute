@@ -182,7 +182,7 @@ public slots:
 
     /*! \brief Make the device briefly vibrate
      *
-     * On Android, make the device briefly vibrate.
+     * On Android, make the device briefly vibrate if haptic feedback is enabled in the system settings.
      *
      * On other platforms, this does nothing.
     */

@@ -33,6 +33,7 @@ import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Settings;
@@ -120,7 +121,17 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 	
     }
     
-    
+/*
+* Get the SSID of the current WIFI network, if any.  Returns a string like
+* "<unknown SSID>" otherwise
+*/
+public static String manufacturer()
+{
+
+    return android.os.Build.MANUFACTURER;
+
+}
+
     /*
      * Acquire or release a WiFi lock
      */

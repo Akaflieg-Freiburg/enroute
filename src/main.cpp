@@ -121,6 +121,8 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
 
+    qWarning() << "ENROUTE" << MobileAdaptor::manufacturer();
+
     // Command line parsing
     QCommandLineParser parser;
     parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));

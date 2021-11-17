@@ -32,6 +32,12 @@ void MobileAdaptor::lockWifi(bool lock)
 }
 
 
+Q_INVOKABLE auto MobileAdaptor::manufacturer() -> QString
+{
+    return {};
+}
+
+
 Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 {
     Q_UNUSED(this);

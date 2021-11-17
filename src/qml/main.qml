@@ -106,8 +106,22 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    id: menuItemAircraft
+                    text: qsTr("Aircraft")
+                    icon.source: "/icons/material/ic_directions.svg"
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/Aircraft.qml")
+                        drawer.close()
+                    }
+                }
+
+                ItemDelegate {
                     id: menuItemRoute
-                    text: qsTr("Route")
+                    text: qsTr("Route and Wind")
                     icon.source: "/icons/material/ic_directions.svg"
                     Layout.fillWidth: true
 
@@ -118,6 +132,7 @@ ApplicationWindow {
                         drawer.close()
                     }
                 }
+
 
                 ItemDelegate {
                     id: menuItemNearby

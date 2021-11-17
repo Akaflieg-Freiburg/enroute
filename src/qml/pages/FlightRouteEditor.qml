@@ -580,6 +580,71 @@ Page {
 
                 columns: 4
 
+                Label {
+                    text: qsTr("Name")
+                    Layout.alignment: Qt.AlignBaseline
+                }
+                TextField {
+                    id: name
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
+
+                    onEditingFinished: {
+                    }
+                    KeyNavigation.tab: descentSpeed
+                    KeyNavigation.backtab: windSpeed
+                    text: "D-KEWW"
+                    placeholderText: qsTr("undefined")
+                }
+
+                Label {
+                    text: qsTr("Units")
+                    Layout.columnSpan: 4
+                    font.pixelSize: Qt.application.font.pixelSize*1.2
+                    font.bold: true
+                    color: Material.accent
+                }
+
+                Label {
+                    text: qsTr("Horizontal")
+                    Layout.alignment: Qt.AlignBaseline
+                }
+                ComboBox {
+                    id: horizontalUOM
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+
+                    model: [ qsTr("Nautical Miles"), qsTr("Kilometers"), qsTr("Statute Miles") ]
+                }
+                Label {
+                    text: qsTr("Vertical")
+                    Layout.alignment: Qt.AlignBaseline
+                }
+                ComboBox {
+                    id: verticalUOM
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+
+                    model: [ qsTr("Feet"), qsTr("Meters") ]
+                }
+                Label {
+                    text: qsTr("Volume")
+                    Layout.alignment: Qt.AlignBaseline
+                }
+                ComboBox {
+                    id: volumeUOM
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+
+                    model: [ qsTr("Liters"), qsTr("Gallons") ]
+                }
+
+
                 Label { Layout.fillHeight: true }
                 Label {
                     text: qsTr("True Airspeed")
@@ -691,6 +756,59 @@ Page {
                         descentSpeed.clear()
                     }
                 }
+
+                Label {
+                    text: qsTr("Minumum")
+                    Layout.alignment: Qt.AlignBaseline
+                }
+                TextField {
+                    id: minimumSpeed
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBaseline
+                    Layout.minimumWidth: Qt.application.font.pixelSize*5
+                    validator: DoubleValidator {
+                        bottom: global.settings().useMetricUnits ? global.navigator().aircraft.minAircraftSpeed.toKMH() : global.navigator().aircraft.minAircraftSpeed.toKN()
+                        top: global.settings().useMetricUnits ? global.navigator().aircraft.maxAircraftSpeed.toKMH() : global.navigator().aircraft.maxAircraftSpeed.toKN()
+                        notation: DoubleValidator.StandardNotation
+                    }
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    onEditingFinished: {
+                        if ( global.settings().useMetricUnits ) {
+                            global.navigator().aircraft.descentSpeed = speed.fromKMH(text)
+                        } else {
+
+                            global.navigator().aircraft.descentSpeed = speed.fromKN(text)
+                        }
+                        fuelConsumption.focus = true
+                    }
+                    color: (acceptableInput ? Material.foreground : "red")
+                    KeyNavigation.tab: fuelConsumption
+                    KeyNavigation.backtab: cruiseSpeed
+                    text: {
+                        if (!global.navigator().aircraft.descentSpeed.isFinite()) {
+                            return ""
+                        }
+                        if (global.settings().useMetricUnits) {
+                            return Math.round(global.navigator().aircraft.descentSpeed.toKMH()).toString()
+                        }
+                        return Math.round(global.navigator().aircraft.descentSpeed.toKN()).toString()
+                    }
+                    placeholderText: qsTr("undefined")
+                }
+                Label {
+                    text: global.settings().useMetricUnits ? "km/h" : "kt"
+                    Layout.alignment: Qt.AlignBaseline
+                }
+                ToolButton {
+                    icon.source: "/icons/material/ic_clear.svg"
+                    Layout.alignment: Qt.AlignVCenter
+                    enabled: descentSpeed.text !== ""
+                    onClicked: {
+                        global.navigator().aircraft.descentSpeed = speed.fromKN(-1)
+                        descentSpeed.clear()
+                    }
+                }
+
 
                 Label { Layout.fillHeight: true }
                 Label {

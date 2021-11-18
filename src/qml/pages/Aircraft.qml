@@ -247,6 +247,10 @@ Page {
             columns: 4
 
 
+            Rectangle {
+                Layout.columnSpan: 4
+                height: Qt.application.font.pixelSize
+            }
             Label {
                 text: qsTr("Name")
                 Layout.columnSpan: 4
@@ -254,6 +258,7 @@ Page {
                 font.bold: true
                 color: Material.accent
             }
+
 
             Label {
                 text: qsTr("Name")

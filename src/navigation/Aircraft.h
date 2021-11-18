@@ -34,6 +34,36 @@ class Aircraft : public QObject {
     Q_OBJECT
 
 public:
+    /*! \brief Units of measurement for horizontal distances */
+    enum HorizontalDistanceUnit {
+        /*! \brief Nautical Mile */
+        nauticalMile,
+
+        /*! \brief Kilometer */
+        kilometer,
+
+        /*! \brief Statute Mile */
+        statuteMile
+    };
+
+    /*! \brief Units of measurement for vertical distances */
+    enum VerticalDistanceUnit {
+        /*! \brief Feet */
+        feet,
+
+        /*! \brief Meters */
+        meters
+    };
+
+    /*! \brief Units of measurement for volumes */
+    enum VolumeUnit {
+        /*! \brief Liter */
+        liter,
+
+        /*! \brief Gallon */
+        gallon
+    };
+
     /*! \brief Default constructor
      *
      * This constructor reads the values of the properties listed below via
@@ -100,6 +130,31 @@ public:
      */
     void setDescentSpeed(Units::Speed newSpeed);
 
+    /*! \brief Minimum Speed
+     *
+     * This property holds the minimum speed of the aircraft. This lies in the interval [minAircraftSpeed,
+     * maxAircraftSpeed] or if NaN if the minimum speed has not been set.
+     */
+    Q_PROPERTY(Units::Speed minimumSpeed READ minimumSpeed WRITE setMinimumSpeed NOTIFY minimumSpeedChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property minimum speed
+     */
+    Units::Speed minimumSpeed() const
+    {
+        return _minimumSpeed;
+    }
+
+    /*! \brief Setter function for property of the same name
+     *
+     * If newSpeed is outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
+     * property will be set to NaN.
+     *
+     * @param newSpeed Property minimum speed
+     */
+    void setMinimumSpeed(Units::Speed newSpeed);
+
     /*! \brief Fuel Consumption
      *
      * This property holds the fuel consumption of the aircraft. This is a
@@ -138,6 +193,9 @@ public:
 
 signals:
     /*! \brief Notifier signal */
+    void minimumSpeedChanged();
+
+    /*! \brief Notifier signal */
     void valChanged();
 
 private:
@@ -150,7 +208,12 @@ private:
 
     Units::Speed _cruiseSpeed {};
     Units::Speed _descentSpeed {};
+    Units::Speed _minimumSpeed {};
     double _fuelConsumptionInLPH{qQNaN()};
+
+    HorizontalDistanceUnit _horizontalDistanceUnit {nauticalMile};
+    VerticalDistanceUnit _verticalDistanceUnit {feet};
+    VolumeUnit _volumeUnit {liter};
 
     QSettings settings;
 };

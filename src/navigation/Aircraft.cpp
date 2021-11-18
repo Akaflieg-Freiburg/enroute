@@ -47,7 +47,6 @@ void Navigation::Aircraft::setCruiseSpeed(Units::Speed newSpeed) {
     if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
         newSpeed = Units::Speed();
     }
-
     if (newSpeed == _cruiseSpeed) {
         return;
     }
@@ -64,7 +63,6 @@ void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
     if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
         newSpeed = Units::Speed();
     }
-
     if (newSpeed == _descentSpeed) {
         return;
     }
@@ -72,6 +70,21 @@ void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
     _descentSpeed = newSpeed;
     settings.setValue("Aircraft/descentSpeedInKTS", _descentSpeed.toKN());
     emit valChanged();
+}
+
+
+void Navigation::Aircraft::setMinimumSpeed(Units::Speed newSpeed) {
+
+    if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
+        newSpeed = Units::Speed();
+    }
+    if (newSpeed == _minimumSpeed) {
+        return;
+    }
+
+    _minimumSpeed = newSpeed;
+    settings.setValue("Aircraft/minimumSpeedInKTS", _minimumSpeed.toKN());
+    emit minimumSpeedChanged();
 }
 
 

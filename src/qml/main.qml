@@ -108,7 +108,7 @@ ApplicationWindow {
                 ItemDelegate {
                     id: menuItemAircraft
                     text: qsTr("Aircraft")
-                    icon.source: "/icons/material/ic_directions.svg"
+                    icon.source: "/icons/material/ic_airplanemode_active.svg"
                     Layout.fillWidth: true
 
                     onClicked: {

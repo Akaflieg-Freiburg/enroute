@@ -74,6 +74,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Units::Distance>();
     qRegisterMetaType<Units::Speed>();
     qRegisterMetaType<Units::Time>();
+    qRegisterMetaType<Units::Volume>();
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();

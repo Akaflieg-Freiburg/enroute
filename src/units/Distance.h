@@ -76,6 +76,19 @@ namespace Units {
 
         /*! \brief Constructs a distance
          *
+         * @param distanceInMIL distance in international miles
+         *
+         * @returns distance
+         */
+        static constexpr Distance fromMIL(double distanceInMIL)
+        {
+            Distance result;
+            result.m_distanceInM = distanceInMIL*MetersPerMile;
+            return result;
+        }
+
+        /*! \brief Constructs a distance
+         *
          * @param distanceInFT distance in feet
          *
          * @returns distance
@@ -183,22 +196,13 @@ namespace Units {
             return m_distanceInM == rhs.m_distanceInM;
         }
 
-        /*! \brief Convert to nautical miles
+        /*! \brief Convert to feet
          *
-         * @returns distance in nautical miles
+         * @returns distance in feet
          */
-        Q_INVOKABLE double toNM() const
+        Q_INVOKABLE double toFeet() const
         {
-            return m_distanceInM / MetersPerNauticalMile;
-        }
-
-        /*! \brief Convert to meters
-         *
-         * @returns distance in meters
-         */
-        Q_INVOKABLE double toM() const
-        {
-            return m_distanceInM;
+            return m_distanceInM / MetersPerFeet;
         }
 
         /*! \brief Convert to meters
@@ -210,13 +214,31 @@ namespace Units {
             return m_distanceInM / 1000.;
         }
 
-        /*! \brief Convert to feet
+        /*! \brief Convert to meters
          *
-         * @returns distance in feet
+         * @returns distance in meters
          */
-        Q_INVOKABLE double toFeet() const
+        Q_INVOKABLE double toM() const
         {
-            return m_distanceInM / MetersPerFeet;
+            return m_distanceInM;
+        }
+
+        /*! \brief Convert to international miles
+         *
+         * @returns distance in international miles
+         */
+        Q_INVOKABLE double toMIL() const
+        {
+            return m_distanceInM / MetersPerMile;
+        }
+
+        /*! \brief Convert to nautical miles
+         *
+         * @returns distance in nautical miles
+         */
+        Q_INVOKABLE double toNM() const
+        {
+            return m_distanceInM / MetersPerNauticalMile;
         }
 
         /*! \brief Convert to string
@@ -241,6 +263,7 @@ namespace Units {
     private:
         static constexpr double MetersPerFeet = 0.3048;
         static constexpr double MetersPerNauticalMile = 1852;
+        static constexpr double MetersPerMile = 1609.344;
 
         // Speed in meters per second
         double m_distanceInM{ NAN };

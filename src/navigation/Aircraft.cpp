@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,31 +20,28 @@
 
 #include "Aircraft.h"
 
-#include <QPointer>
-#include <QtGlobal>
-
 
 Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
     _cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
-    if ((_cruiseSpeed < minAircraftSpeed) || (_cruiseSpeed > maxAircraftSpeed)) {
+    if ((_cruiseSpeed < minValidTAS) || (_cruiseSpeed > maxValidTAS)) {
         _cruiseSpeed = Units::Speed();
     }
 
     _descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
-    if ((_descentSpeed < minAircraftSpeed) || (_descentSpeed > maxAircraftSpeed)) {
+    if ((_descentSpeed < minValidTAS) || (_descentSpeed > maxValidTAS)) {
         _descentSpeed = Units::Speed();
     }
 
-    _fuelConsumptionInLPH = settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble();
-    if ((_fuelConsumptionInLPH < minFuelConsuption) || (_fuelConsumptionInLPH > maxFuelConsuption)) {
-        _fuelConsumptionInLPH = qQNaN();
+    _fuelConsumptionPerHour = Units::Volume::fromL(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
+    if ((_fuelConsumptionPerHour < minValidFuelConsuption) || (_fuelConsumptionPerHour > maxValidFuelConsuption)) {
+        _fuelConsumptionPerHour = Units::Volume();
     }
 }
 
 
 void Navigation::Aircraft::setCruiseSpeed(Units::Speed newSpeed) {
 
-    if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
+    if ((newSpeed < minValidTAS) || (newSpeed > maxValidTAS)) {
         newSpeed = Units::Speed();
     }
     if (newSpeed == _cruiseSpeed) {
@@ -53,14 +50,14 @@ void Navigation::Aircraft::setCruiseSpeed(Units::Speed newSpeed) {
 
     _cruiseSpeed = newSpeed;
     settings.setValue("Aircraft/cruiseSpeedInKTS", _cruiseSpeed.toKN());
-    emit valChanged();
+    emit cruiseSpeedChanged();
 
 }
 
 
 void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
 
-    if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
+    if ((newSpeed < minValidTAS) || (newSpeed > maxValidTAS)) {
         newSpeed = Units::Speed();
     }
     if (newSpeed == _descentSpeed) {
@@ -69,13 +66,26 @@ void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
 
     _descentSpeed = newSpeed;
     settings.setValue("Aircraft/descentSpeedInKTS", _descentSpeed.toKN());
-    emit valChanged();
+    emit descentSpeedChanged();
+}
+
+
+void Navigation::Aircraft::setFuelConsumptionPerHour(Units::Volume newFuelConsumptionPerHour) {
+    if ((newFuelConsumptionPerHour < minValidFuelConsuption) || (newFuelConsumptionPerHour > maxValidFuelConsuption)) {
+        newFuelConsumptionPerHour = Units::Volume::fromL(qQNaN());
+    }
+
+    if (!qFuzzyCompare(newFuelConsumptionPerHour.toL(), _fuelConsumptionPerHour.toL())) {
+        _fuelConsumptionPerHour = newFuelConsumptionPerHour;
+        settings.setValue("Aircraft/fuelConsumptionInLPH", _fuelConsumptionPerHour.toL());
+        emit fuelConsumptionPerHourChanged();
+    }
 }
 
 
 void Navigation::Aircraft::setMinimumSpeed(Units::Speed newSpeed) {
 
-    if ((newSpeed < minAircraftSpeed) || (newSpeed > maxAircraftSpeed)) {
+    if ((newSpeed < minValidTAS) || (newSpeed > maxValidTAS)) {
         newSpeed = Units::Speed();
     }
     if (newSpeed == _minimumSpeed) {
@@ -88,14 +98,45 @@ void Navigation::Aircraft::setMinimumSpeed(Units::Speed newSpeed) {
 }
 
 
-void Navigation::Aircraft::setFuelConsumptionInLPH(double fuelConsumptionInLPH) {
-    if ((fuelConsumptionInLPH < minFuelConsuption) || (fuelConsumptionInLPH > maxFuelConsuption)) {
-        fuelConsumptionInLPH = qQNaN();
+void Navigation::Aircraft::setName(const QString& newName) {
+
+    if (newName == _name) {
+        return;
     }
 
-    if (!qFuzzyCompare(fuelConsumptionInLPH, _fuelConsumptionInLPH)) {
-        _fuelConsumptionInLPH = fuelConsumptionInLPH;
-        settings.setValue("Aircraft/fuelConsumptionInLPH", _fuelConsumptionInLPH);
-        emit valChanged();
+    _name = newName;
+    emit nameChanged();
+}
+
+
+void Navigation::Aircraft::setPreferredHorizontalDistanceUnit(HorizontalDistanceUnit newUnit)
+{
+    if (newUnit == _preferredHorizontalDistanceUnit) {
+        return;
     }
+
+    _preferredHorizontalDistanceUnit = newUnit;
+    emit preferredHorizontalDistanceUnitChanged();
+}
+
+
+void Navigation::Aircraft::setPreferredVerticalDistanceUnit(VerticalDistanceUnit newUnit)
+{
+    if (newUnit == _preferredVerticalDistanceUnit) {
+        return;
+    }
+
+    _preferredVerticalDistanceUnit = newUnit;
+    emit preferredVerticalDistanceUnitChanged();
+}
+
+
+void Navigation::Aircraft::setPreferredVolumeUnit(VolumeUnit newUnit)
+{
+    if (newUnit == _preferredVolumeUnit) {
+        return;
+    }
+
+    _preferredVolumeUnit = newUnit;
+    emit preferredVolumeUnitChanged();
 }

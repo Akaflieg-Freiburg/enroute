@@ -118,6 +118,7 @@ set(SOURCES
     units/Speed.h
     units/Time.h
     units/Volume.h
+    units/VolumeFlow.h
     weather/Decoder.h
     weather/METAR.h
     weather/Station.h
@@ -177,6 +178,7 @@ set(SOURCES
     units/Speed.cpp
     units/Time.cpp
     units/Volume.cpp
+    units/VolumeFlow.cpp
     weather/Decoder.cpp
     weather/METAR.cpp
     weather/Station.cpp

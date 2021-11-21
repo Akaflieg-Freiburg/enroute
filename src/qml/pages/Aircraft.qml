@@ -272,10 +272,10 @@ Page {
                 Layout.minimumWidth: Qt.application.font.pixelSize*5
 
                 onEditingFinished: {
+                    global.navigator().aircraft.name = text
+                    horizontalUOM.focus = true
                 }
-                KeyNavigation.tab: descentSpeed
-                KeyNavigation.backtab: windSpeed
-                text: "D-KEWW"
+                text: global.navigator().aircraft.name
                 placeholderText: qsTr("undefined")
             }
 
@@ -297,6 +297,9 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
 
+                currentIndex: global.navigator().aircraft.horizontalDistanceUnit
+                onCurrentIndexChanged: global.navigator().aircraft.horizontalDistanceUnit = currentIndex
+
                 model: [ qsTr("Nautical Miles"), qsTr("Kilometers"), qsTr("Statute Miles") ]
             }
             Label {
@@ -309,6 +312,9 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
 
+                currentIndex: global.navigator().aircraft.vertialDistanceUnit
+                onCurrentIndexChanged: global.navigator().aircraft.verticalDistanceUnit = currentIndex
+
                 model: [ qsTr("Feet"), qsTr("Meters") ]
             }
             Label {
@@ -320,6 +326,9 @@ Page {
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+
+                currentIndex: global.navigator().aircraft.fuelConsumptionUnit
+                onCurrentIndexChanged: global.navigator().aircraft.fuelConsumptionUnit = currentIndex
 
                 model: [ qsTr("Liters"), qsTr("Gallons") ]
             }

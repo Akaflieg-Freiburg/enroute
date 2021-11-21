@@ -42,7 +42,7 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
 
     connect(GlobalObject::navigator()->aircraft(), &Aircraft::cruiseSpeedChanged, this, &Navigation::FlightRoute::summaryChanged);
-    connect(GlobalObject::navigator()->aircraft(), &Aircraft::fuelConsumptionPerHourChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(GlobalObject::navigator()->aircraft(), &Aircraft::fuelConsumptionChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator()->wind(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
 }
 
@@ -439,7 +439,7 @@ auto Navigation::FlightRoute::summary() const -> QString {
     if ( !GlobalObject::navigator()->aircraft()->cruiseSpeed().isFinite() ) {
         complaints += tr("Cruise speed not specified.");
     }
-    if (!GlobalObject::navigator()->aircraft()->fuelConsumptionPerHour().isFinite()) {
+    if (!GlobalObject::navigator()->aircraft()->fuelConsumption().isFinite()) {
         complaints += tr("Fuel consumption not specified.");
     }
     if (!GlobalObject::navigator()->wind()->windSpeed().isFinite()) {

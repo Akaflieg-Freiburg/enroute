@@ -32,9 +32,9 @@ Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
         _descentSpeed = Units::Speed();
     }
 
-    _fuelConsumptionPerHour = Units::Volume::fromL(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
-    if ((_fuelConsumptionPerHour < minValidFuelConsuption) || (_fuelConsumptionPerHour > maxValidFuelConsuption)) {
-        _fuelConsumptionPerHour = Units::Volume();
+    _fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
+    if ((_fuelConsumption < minValidFuelConsuption) || (_fuelConsumption > maxValidFuelConsuption)) {
+        _fuelConsumption = Units::VolumeFlow();
     }
 }
 
@@ -49,7 +49,6 @@ void Navigation::Aircraft::setCruiseSpeed(Units::Speed newSpeed) {
     }
 
     _cruiseSpeed = newSpeed;
-    settings.setValue("Aircraft/cruiseSpeedInKTS", _cruiseSpeed.toKN());
     emit cruiseSpeedChanged();
 
 }
@@ -65,21 +64,41 @@ void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
     }
 
     _descentSpeed = newSpeed;
-    settings.setValue("Aircraft/descentSpeedInKTS", _descentSpeed.toKN());
     emit descentSpeedChanged();
 }
 
 
-void Navigation::Aircraft::setFuelConsumptionPerHour(Units::Volume newFuelConsumptionPerHour) {
-    if ((newFuelConsumptionPerHour < minValidFuelConsuption) || (newFuelConsumptionPerHour > maxValidFuelConsuption)) {
-        newFuelConsumptionPerHour = Units::Volume::fromL(qQNaN());
+void Navigation::Aircraft::setFuelConsumption(Units::VolumeFlow newFuelConsumption) {
+    if ((newFuelConsumption < minValidFuelConsuption) || (newFuelConsumption > maxValidFuelConsuption)) {
+        newFuelConsumption = Units::VolumeFlow();
     }
 
-    if (!qFuzzyCompare(newFuelConsumptionPerHour.toL(), _fuelConsumptionPerHour.toL())) {
-        _fuelConsumptionPerHour = newFuelConsumptionPerHour;
-        settings.setValue("Aircraft/fuelConsumptionInLPH", _fuelConsumptionPerHour.toL());
-        emit fuelConsumptionPerHourChanged();
+    if (!qFuzzyCompare(newFuelConsumption.toLPH(), _fuelConsumption.toLPH())) {
+        _fuelConsumption = newFuelConsumption;
+        emit fuelConsumptionChanged();
     }
+}
+
+
+void Navigation::Aircraft::setFuelConsumptionUnit(FuelConsumptionUnit newUnit)
+{
+    if (newUnit == _fuelConsumptionUnit) {
+        return;
+    }
+
+    _fuelConsumptionUnit = newUnit;
+    emit fuelConsumptionUnitChanged();
+}
+
+
+void Navigation::Aircraft::setHorizontalDistanceUnit(HorizontalDistanceUnit newUnit)
+{
+    if (newUnit == _horizontalDistanceUnit) {
+        return;
+    }
+
+    _horizontalDistanceUnit = newUnit;
+    emit horizontalDistanceUnitChanged();
 }
 
 
@@ -93,7 +112,6 @@ void Navigation::Aircraft::setMinimumSpeed(Units::Speed newSpeed) {
     }
 
     _minimumSpeed = newSpeed;
-    settings.setValue("Aircraft/minimumSpeedInKTS", _minimumSpeed.toKN());
     emit minimumSpeedChanged();
 }
 
@@ -109,34 +127,13 @@ void Navigation::Aircraft::setName(const QString& newName) {
 }
 
 
-void Navigation::Aircraft::setPreferredHorizontalDistanceUnit(HorizontalDistanceUnit newUnit)
+void Navigation::Aircraft::setVerticalDistanceUnit(VerticalDistanceUnit newUnit)
 {
-    if (newUnit == _preferredHorizontalDistanceUnit) {
+    if (newUnit == _verticalDistanceUnit) {
         return;
     }
 
-    _preferredHorizontalDistanceUnit = newUnit;
-    emit preferredHorizontalDistanceUnitChanged();
+    _verticalDistanceUnit = newUnit;
+    emit verticalDistanceUnitChanged();
 }
 
-
-void Navigation::Aircraft::setPreferredVerticalDistanceUnit(VerticalDistanceUnit newUnit)
-{
-    if (newUnit == _preferredVerticalDistanceUnit) {
-        return;
-    }
-
-    _preferredVerticalDistanceUnit = newUnit;
-    emit preferredVerticalDistanceUnitChanged();
-}
-
-
-void Navigation::Aircraft::setPreferredVolumeUnit(VolumeUnit newUnit)
-{
-    if (newUnit == _preferredVolumeUnit) {
-        return;
-    }
-
-    _preferredVolumeUnit = newUnit;
-    emit preferredVolumeUnitChanged();
-}

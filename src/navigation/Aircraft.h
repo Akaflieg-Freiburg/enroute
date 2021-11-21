@@ -23,7 +23,7 @@
 #include <QSettings>
 
 #include "units/Speed.h"
-#include "units/Volume.h"
+#include "units/VolumeFlow.h"
 
 
 namespace Navigation {
@@ -35,35 +35,42 @@ class Aircraft : public QObject {
     Q_OBJECT
 
 public:
+    /*! \brief Units of measurement for volumes */
+    enum FuelConsumptionUnit {
+        /*! \brief Liter per hour */
+        literPerHour = 0,
+
+        /*! \brief Gallon per hour */
+        gallonPerHour = 1
+    };
+    Q_ENUM(FuelConsumptionUnit)
+
     /*! \brief Units of measurement for horizontal distances */
     enum HorizontalDistanceUnit {
         /*! \brief Nautical Mile */
-        nauticalMile,
+        nauticalMile = 0,
 
         /*! \brief Kilometer */
-        kilometer,
+        kilometer = 1,
 
         /*! \brief Statute Mile */
-        statuteMile
+        statuteMile = 2
     };
+    Q_ENUM(HorizontalDistanceUnit)
 
     /*! \brief Units of measurement for vertical distances */
     enum VerticalDistanceUnit {
         /*! \brief Feet */
-        feet,
+        feet = 0,
 
         /*! \brief Meters */
-        meters
+        meters = 1
     };
+    Q_ENUM(VerticalDistanceUnit)
 
-    /*! \brief Units of measurement for volumes */
-    enum VolumeUnit {
-        /*! \brief Liter */
-        liter,
-
-        /*! \brief Gallon */
-        gallon
-    };
+    //
+    // Constructor and destructor
+    //
 
     /*! \brief Default constructor
      *
@@ -78,44 +85,10 @@ public:
     // Standard destructor
     ~Aircraft() override = default;
 
+
     //
     // Properties
     //
-
-    /*! \brief Fuel Consumption
-     *
-     * This property holds the fuel consumption of the aircraft. This is a
-     * number that lies in the interval [minFuelConsumption,
-     * maxFuelConsumption] or NaN if no value has been set.
-     */
-    Q_PROPERTY(Units::Volume fuelConsumptionPerHour READ fuelConsumptionPerHour WRITE setFuelConsumptionPerHour NOTIFY fuelConsumptionPerHourChanged)
-
-    /*! \brief Maximal speed of the aircraft that is considered valid */
-    Q_PROPERTY(Units::Speed maxValidTAS MEMBER maxValidTAS CONSTANT)
-
-    /*! \brief Maximal fuel consumption that is considered valid */
-    Q_PROPERTY(Units::Volume maxValidFuelConsuption MEMBER maxValidFuelConsuption CONSTANT)
-
-    /*! \brief Minimal speed of the aircraft that is considered valid */
-    Q_PROPERTY(Units::Speed minValidTAS MEMBER minValidTAS CONSTANT)
-
-    /*! \brief Minimal fuel consumption that is considered valid */
-    Q_PROPERTY(Units::Volume minValidFuelConsuption MEMBER minValidFuelConsuption CONSTANT)
-
-    /*! \brief Name
-     *
-     * This property holds the name.
-     */
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-
-    /*! \brief Preferred units of measurement for horizontal distances */
-    Q_PROPERTY(HorizontalDistanceUnit preferredHorizontalDistanceUnit READ preferredHorizontalDistanceUnit WRITE setPreferredHorizontalDistanceUnit NOTIFY preferredHorizontalDistanceUnitChanged)
-
-    /*! \brief Preferred units of measurement for vertical distances */
-    Q_PROPERTY(VerticalDistanceUnit preferredVerticalDistanceUnit READ preferredVerticalDistanceUnit WRITE setPreferredVerticalDistanceUnit NOTIFY preferredVerticalDistanceUnitChanged)
-
-    /*! \brief Preferred units of measurement for volumes */
-    Q_PROPERTY(VolumeUnit preferredVolumeUnit READ preferredVolumeUnit WRITE setPreferredVolumeUnit NOTIFY preferredVolumeUnitChanged)
 
     /*! \brief Cruise Speed
      *
@@ -132,6 +105,23 @@ public:
      */
     Q_PROPERTY(Units::Speed descentSpeed READ descentSpeed WRITE setDescentSpeed NOTIFY descentSpeedChanged)
 
+    /*! \brief Fuel Consumption
+     *
+     * This property holds the fuel consumption of the aircraft. This is a
+     * number that lies in the interval [minFuelConsumption,
+     * maxFuelConsumption] or NaN if no value has been set.
+     */
+    Q_PROPERTY(Units::VolumeFlow fuelConsumption READ fuelConsumption WRITE setFuelConsumption NOTIFY fuelConsumptionChanged)
+
+    /*! \brief Preferred units of measurement for fuel consumption */
+    Q_PROPERTY(FuelConsumptionUnit fuelConsumptionUnit READ fuelConsumptionUnit WRITE setFuelConsumptionUnit NOTIFY fuelConsumptionUnitChanged)
+
+    /*! \brief Preferred units of measurement for horizontal distances */
+    Q_PROPERTY(HorizontalDistanceUnit horizontalDistanceUnit READ horizontalDistanceUnit WRITE setHorizontalDistanceUnit NOTIFY horizontalDistanceUnitChanged)
+
+    /*! \brief Maximal speed of the aircraft that is considered valid */
+    Q_PROPERTY(Units::Speed maxValidTAS MEMBER maxValidTAS CONSTANT)
+
     /*! \brief Minimum Speed
      *
      * This property holds the minimum speed of the aircraft. This lies in the interval [minAircraftSpeed,
@@ -139,40 +129,28 @@ public:
      */
     Q_PROPERTY(Units::Speed minimumSpeed READ minimumSpeed WRITE setMinimumSpeed NOTIFY minimumSpeedChanged)
 
+    /*! \brief Maximal fuel consumption that is considered valid */
+    Q_PROPERTY(Units::VolumeFlow maxValidFuelConsuption MEMBER maxValidFuelConsuption CONSTANT)
+
+    /*! \brief Minimal speed of the aircraft that is considered valid */
+    Q_PROPERTY(Units::Speed minValidTAS MEMBER minValidTAS CONSTANT)
+
+    /*! \brief Minimal fuel consumption that is considered valid */
+    Q_PROPERTY(Units::VolumeFlow minValidFuelConsuption MEMBER minValidFuelConsuption CONSTANT)
+
+    /*! \brief Name
+     *
+     * This property holds the name.
+     */
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+
+    /*! \brief Preferred units of measurement for vertical distances */
+    Q_PROPERTY(VerticalDistanceUnit verticalDistanceUnit READ verticalDistanceUnit WRITE setVerticalDistanceUnit NOTIFY verticalDistanceUnitChanged)
+
 
     //
     // Getter Methods
     //
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property fuelConsumptionInLPH
-     */
-    Units::Volume fuelConsumptionPerHour() const { return _fuelConsumptionPerHour; }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property name
-     */
-    QString name() const { return _name; }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property preferredHorizontalDistanceUnit
-     */
-    HorizontalDistanceUnit preferredHorizontalDistanceUnit() const { return _preferredHorizontalDistanceUnit; }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property preferredVertialDistanceUnit
-     */
-    VerticalDistanceUnit preferredVerticalDistanceUnit() const { return _preferredVerticalDistanceUnit; }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property preferredVolumeUnit
-     */
-    VolumeUnit preferredVolumeUnit() const { return _preferredVolumeUnit; }
 
     /*! \brief Getter function for property of the same name
      *
@@ -188,9 +166,39 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property fuelConsumptionInLPH
+     */
+    Units::VolumeFlow fuelConsumption() const { return _fuelConsumption; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property preferredVolumeUnit
+     */
+    FuelConsumptionUnit fuelConsumptionUnit() const { return _fuelConsumptionUnit; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property preferredHorizontalDistanceUnit
+     */
+    HorizontalDistanceUnit horizontalDistanceUnit() const { return _horizontalDistanceUnit; }
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property minimum speed
      */
     Units::Speed minimumSpeed() const { return _minimumSpeed; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property name
+     */
+    QString name() const { return _name; }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property preferredVertialDistanceUnit
+     */
+    VerticalDistanceUnit verticalDistanceUnit() const { return _verticalDistanceUnit; }
 
 
     //
@@ -199,9 +207,37 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * This method saves the new value in a QSetting object. If speedInKT is
+     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
+     * property will be set to NaN.
+     *
+     * @param newSpeed Property cruise speed
+     */
+    void setCruiseSpeed(Units::Speed newSpeed);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newSpeed Descent speed
+     */
+    void setDescentSpeed(Units::Speed newSpeed);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param newFuelConsumptionPerHour Fuel consumption per hour
      */
-    void setFuelConsumptionPerHour(Units::Volume newFuelConsumptionPerHour);
+    void setFuelConsumption(Units::VolumeFlow newFuelConsumption);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newUnit Property preferredFuelConsumptionUnit
+     */
+    void setFuelConsumptionUnit(FuelConsumptionUnit newUnit);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newUnit Property preferredHorizontalDistanceUnit
+     */
+    void setHorizontalDistanceUnit(HorizontalDistanceUnit newUnit);
 
     /*! \brief Setter function for property of the same name
      *
@@ -220,54 +256,11 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param newUnit Property preferredHorizontalDistanceUnit
-     */
-    void setPreferredHorizontalDistanceUnit(HorizontalDistanceUnit newUnit);
-
-    /*! \brief Setter function for property of the same name
-     *
      * @param newUnit Property preferredVerticalDistanceUnit
      */
-    void setPreferredVerticalDistanceUnit(VerticalDistanceUnit newUnit);
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param newUnit Property preferredVolumeUnit
-     */
-    void setPreferredVolumeUnit(VolumeUnit newUnit);
-
-    /*! \brief Setter function for property of the same name
-     *
-     * This method saves the new value in a QSetting object. If speedInKT is
-     * outside of the interval [minAircraftSpeed, maxAircraftSpeed], the
-     * property will be set to NaN.
-     *
-     * @param newSpeed Property cruise speed
-     */
-    void setCruiseSpeed(Units::Speed newSpeed);
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param newSpeed Descent speed
-     */
-    void setDescentSpeed(Units::Speed newSpeed);
+    void setVerticalDistanceUnit(VerticalDistanceUnit newUnit);
 
 signals:   
-    /*! \brief Notifier signal */
-    void fuelConsumptionPerHourChanged();
-
-    /*! \brief Notifier signal */
-    void nameChanged();
-
-    /*! \brief Notifier signal */
-    void preferredHorizontalDistanceUnitChanged();
-
-    /*! \brief Notifier signal */
-    void preferredVerticalDistanceUnitChanged();
-
-    /*! \brief Notifier signal */
-    void preferredVolumeUnitChanged();
-
     /*! \brief Notifier signal */
     void cruiseSpeedChanged();
 
@@ -275,25 +268,39 @@ signals:
     void descentSpeedChanged();
 
     /*! \brief Notifier signal */
+    void fuelConsumptionChanged();
+
+    /*! \brief Notifier signal */
+    void fuelConsumptionUnitChanged();
+
+    /*! \brief Notifier signal */
+    void horizontalDistanceUnitChanged();
+
+    /*! \brief Notifier signal */
     void minimumSpeedChanged();
+
+    /*! \brief Notifier signal */
+    void nameChanged();
+
+    /*! \brief Notifier signal */
+    void verticalDistanceUnitChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(Aircraft)
 
     static constexpr Units::Speed minValidTAS = Units::Speed::fromKN(10.0);
     static constexpr Units::Speed maxValidTAS = Units::Speed::fromKN(400.0);
-    static constexpr Units::Volume minValidFuelConsuption = Units::Volume::fromL(0.0);
-    static constexpr Units::Volume maxValidFuelConsuption = Units::Volume::fromL(300.0);
+    static constexpr Units::VolumeFlow minValidFuelConsuption = Units::VolumeFlow::fromLPH(0.0);
+    static constexpr Units::VolumeFlow maxValidFuelConsuption = Units::VolumeFlow::fromLPH(300.0);
 
     Units::Speed _cruiseSpeed {};
     Units::Speed _descentSpeed {};
-    Units::Volume _fuelConsumptionPerHour {};
+    Units::VolumeFlow _fuelConsumption {};
+    FuelConsumptionUnit _fuelConsumptionUnit {literPerHour};
+    HorizontalDistanceUnit _horizontalDistanceUnit {nauticalMile};
     Units::Speed _minimumSpeed {};
     QString _name {};
-
-    HorizontalDistanceUnit _preferredHorizontalDistanceUnit {nauticalMile};
-    VerticalDistanceUnit _preferredVerticalDistanceUnit {feet};
-    VolumeUnit _preferredVolumeUnit {liter};
+    VerticalDistanceUnit _verticalDistanceUnit {feet};
 
     QSettings settings;
 };

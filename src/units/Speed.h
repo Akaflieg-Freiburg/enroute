@@ -34,7 +34,24 @@ namespace Units {
     class Speed {
         Q_GADGET
 
-    public:
+    public:        
+        /*! \brief Units of measurement for vertical distances */
+        enum SpeedUnit {
+            /*! \brief Feet per minute */
+            feetPerMinute = 0,
+
+            /*! \brief Meter per second */
+            meterPerSecond = 1,
+
+            /*! \brief Knots */
+            knot = 2,
+
+            /*! \brief Kilometer per hour */
+            kilometerPerHour = 4
+        };
+        Q_ENUM(SpeedUnit)
+
+
         /*! \brief Constructs a speed
          *
          * @param speedInFPM speed in feet per minute

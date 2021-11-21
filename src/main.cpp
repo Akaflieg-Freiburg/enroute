@@ -58,6 +58,8 @@
 #include "units/Distance.h"
 #include "units/Speed.h"
 #include "units/Time.h"
+#include "units/Volume.h"
+#include "units/VolumeFlow.h"
 #include "weather/WeatherDataProvider.h"
 #include "weather/Wind.h"
 #include <chrono>
@@ -75,6 +77,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Units::Speed>();
     qRegisterMetaType<Units::Time>();
     qRegisterMetaType<Units::Volume>();
+    qRegisterMetaType<Units::VolumeFlow>();
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();

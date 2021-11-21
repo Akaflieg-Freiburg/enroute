@@ -32,7 +32,7 @@ Navigation::FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps:
     _end   = end;
 
     connect(_aircraft, &Aircraft::cruiseSpeedChanged, this, &FlightRoute::Leg::valChanged);
-    connect(_aircraft, &Aircraft::fuelConsumptionPerHourChanged, this, &FlightRoute::Leg::valChanged);
+    connect(_aircraft, &Aircraft::fuelConsumptionChanged, this, &FlightRoute::Leg::valChanged);
     connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::Leg::valChanged);
 }
 
@@ -55,7 +55,7 @@ auto Navigation::FlightRoute::Leg::Fuel() const -> double
         return qQNaN();
     }
 
-    return _aircraft->fuelConsumptionPerHour().toL()*Time().toH();
+    return _aircraft->fuelConsumption().toLPH()*Time().toH();
 }
 
 

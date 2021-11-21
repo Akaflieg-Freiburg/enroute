@@ -381,8 +381,17 @@ Page {
                 placeholderText: qsTr("undefined")
             }
             Label {
-                text: global.settings().useMetricUnits ? "km/h" : "kt"
                 Layout.alignment: Qt.AlignBaseline
+                text: {
+                    switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                    case Aircraft.NauticalMile:
+                        return "kn";
+                    case Aircraft.Kilometer:
+                        return "km/h";
+                    case Aircraft.StatuteMile :
+                        return "mph";
+                    }
+                }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_clear.svg"
@@ -425,16 +434,29 @@ Page {
                     if (!global.navigator().aircraft.descentSpeed.isFinite()) {
                         return ""
                     }
-                    if (global.settings().useMetricUnits) {
+                    switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                    case Aircraft.NauticalMile:
+                        return Math.round(global.navigator().aircraft.descentSpeed.toKN()).toString()
+                    case Aircraft.Kilometer:
                         return Math.round(global.navigator().aircraft.descentSpeed.toKMH()).toString()
+                    case Aircraft.StatuteMile :
+                        return Math.round(global.navigator().aircraft.descentSpeed.toMPH()).toString()
                     }
-                    return Math.round(global.navigator().aircraft.descentSpeed.toKN()).toString()
                 }
                 placeholderText: qsTr("undefined")
             }
             Label {
-                text: global.settings().useMetricUnits ? "km/h" : "kt"
                 Layout.alignment: Qt.AlignBaseline
+                text: {
+                    switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                    case Aircraft.NauticalMile:
+                        return "kn";
+                    case Aircraft.Kilometer:
+                        return "km/h";
+                    case Aircraft.StatuteMile :
+                        return "mph";
+                    }
+                }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_clear.svg"
@@ -485,8 +507,17 @@ Page {
                 placeholderText: qsTr("undefined")
             }
             Label {
-                text: global.settings().useMetricUnits ? "km/h" : "kt"
                 Layout.alignment: Qt.AlignBaseline
+                text: {
+                    switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                    case Aircraft.NauticalMile:
+                        return "kn";
+                    case Aircraft.Kilometer:
+                        return "km/h";
+                    case Aircraft.StatuteMile :
+                        return "mph";
+                    }
+                }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_clear.svg"

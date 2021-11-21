@@ -35,23 +35,6 @@ namespace Units {
         Q_GADGET
 
     public:        
-        /*! \brief Units of measurement for vertical distances */
-        enum SpeedUnit {
-            /*! \brief Feet per minute */
-            feetPerMinute = 0,
-
-            /*! \brief Meter per second */
-            meterPerSecond = 1,
-
-            /*! \brief Knots */
-            knot = 2,
-
-            /*! \brief Kilometer per hour */
-            kilometerPerHour = 4
-        };
-        Q_ENUM(SpeedUnit)
-
-
         /*! \brief Constructs a speed
          *
          * @param speedInFPM speed in feet per minute
@@ -75,6 +58,20 @@ namespace Units {
         {
             Speed result;
             result._speedInMPS = speedInMPS;
+            return result;
+        }
+
+
+        /*! \brief Constructs a speed
+         *
+         * @param speedInMPH speed in statute miles per hous
+         *
+         * @returns speed
+         */
+        Q_INVOKABLE static constexpr Units::Speed fromMPH(double speedInMPH)
+        {
+            Speed result;
+            result._speedInMPS = speedInMPH*MPS_per_MPH;
             return result;
         }
 
@@ -197,6 +194,15 @@ namespace Units {
             return _speedInMPS;
         }
 
+        /*! \brief Convert to meters per second
+         *
+         * @returns speed in status miles per hour
+         */
+        Q_INVOKABLE double toMPH() const
+        {
+            return _speedInMPS/MPS_per_MPH;
+        }
+
         /*! \brief Convert to knots
          *
          * @returns speed in knots (=Nautical miles per hour)
@@ -224,14 +230,19 @@ namespace Units {
          */
         Q_INVOKABLE QString toString() const;
 
-        /*! \brief Unitless constant: one feett per minute / meters per second */
+        /*! \brief Unitless constant: one feet per minute / meters per second */
         static constexpr double FPM_per_MPS = 196.85039370079;
+
+        /*! \brief Unitless constant: one mile per hour / meters per second */
+        static constexpr double MPS_per_MPH = 0.44704;
 
         /*! \brief Unitless constant: one km/h / meters per second */
         static constexpr double KMH_per_MPS = 3.6;
 
         /*! \brief Unitless constant: one knot / meters per second */
         static constexpr double KN_per_MPS = 1.943844;
+
+
 
         /*! \brief Unitless constant: one km/h / knot */
         static constexpr double KMH_per_KT = KMH_per_MPS / KN_per_MPS;

@@ -38,33 +38,33 @@ public:
     /*! \brief Units of measurement for volumes */
     enum FuelConsumptionUnit {
         /*! \brief Liter per hour */
-        literPerHour = 0,
+        LiterPerHour = 0,
 
         /*! \brief Gallon per hour */
-        gallonPerHour = 1
+        GallonPerHour = 1
     };
     Q_ENUM(FuelConsumptionUnit)
 
     /*! \brief Units of measurement for horizontal distances */
     enum HorizontalDistanceUnit {
         /*! \brief Nautical Mile */
-        nauticalMile = 0,
+        NauticalMile = 0,
 
         /*! \brief Kilometer */
-        kilometer = 1,
+        Kilometer = 1,
 
         /*! \brief Statute Mile */
-        statuteMile = 2
+        StatuteMile = 2
     };
     Q_ENUM(HorizontalDistanceUnit)
 
     /*! \brief Units of measurement for vertical distances */
     enum VerticalDistanceUnit {
         /*! \brief Feet */
-        feet = 0,
+        Feet = 0,
 
         /*! \brief Meters */
-        meters = 1
+        Meters = 1
     };
     Q_ENUM(VerticalDistanceUnit)
 
@@ -296,11 +296,11 @@ private:
     Units::Speed _cruiseSpeed {};
     Units::Speed _descentSpeed {};
     Units::VolumeFlow _fuelConsumption {};
-    FuelConsumptionUnit _fuelConsumptionUnit {literPerHour};
-    HorizontalDistanceUnit _horizontalDistanceUnit {nauticalMile};
+    FuelConsumptionUnit _fuelConsumptionUnit {LiterPerHour};
+    HorizontalDistanceUnit _horizontalDistanceUnit {NauticalMile};
     Units::Speed _minimumSpeed {};
     QString _name {};
-    VerticalDistanceUnit _verticalDistanceUnit {feet};
+    VerticalDistanceUnit _verticalDistanceUnit {Feet};
 
     QSettings settings;
 };

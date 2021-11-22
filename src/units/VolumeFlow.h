@@ -41,7 +41,7 @@ namespace Units {
          *
          * @returns volume flow
          */
-        static constexpr VolumeFlow fromLPH(double volumeFlowInLPH)
+        Q_INVOKABLE static constexpr VolumeFlow fromLPH(double volumeFlowInLPH)
         {
             VolumeFlow result;
             result.m_volumeFlowInLPH = volumeFlowInLPH;
@@ -54,7 +54,7 @@ namespace Units {
          *
          * @returns volume flow
          */
-        static constexpr VolumeFlow fromGPH(double volumFlowInGPH)
+        Q_INVOKABLE static constexpr VolumeFlow fromGPH(double volumFlowInGPH)
         {
             VolumeFlow result;
             result.m_volumeFlowInLPH = LitersPerGallon*volumFlowInGPH;

@@ -22,18 +22,19 @@
 
 
 Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
+#warning This needs to go
     _cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
-    if ((_cruiseSpeed < minValidTAS) || (_cruiseSpeed > maxValidTAS)) {
+    if ((_cruiseSpeed < minValidSpeed) || (_cruiseSpeed > maxValidSpeed)) {
         _cruiseSpeed = Units::Speed();
     }
 
     _descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
-    if ((_descentSpeed < minValidTAS) || (_descentSpeed > maxValidTAS)) {
+    if ((_descentSpeed < minValidSpeed) || (_descentSpeed > maxValidSpeed)) {
         _descentSpeed = Units::Speed();
     }
 
     _fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
-    if ((_fuelConsumption < minValidFuelConsuption) || (_fuelConsumption > maxValidFuelConsuption)) {
+    if ((_fuelConsumption < minValidFuelConsumption) || (_fuelConsumption > maxValidFuelConsumption)) {
         _fuelConsumption = Units::VolumeFlow();
     }
 }
@@ -41,7 +42,7 @@ Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
 
 void Navigation::Aircraft::setCruiseSpeed(Units::Speed newSpeed) {
 
-    if ((newSpeed < minValidTAS) || (newSpeed > maxValidTAS)) {
+    if ((newSpeed < minValidSpeed) || (newSpeed > maxValidSpeed)) {
         newSpeed = Units::Speed();
     }
     if (newSpeed == _cruiseSpeed) {
@@ -56,7 +57,7 @@ void Navigation::Aircraft::setCruiseSpeed(Units::Speed newSpeed) {
 
 void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
 
-    if ((newSpeed < minValidTAS) || (newSpeed > maxValidTAS)) {
+    if ((newSpeed < minValidSpeed) || (newSpeed > maxValidSpeed)) {
         newSpeed = Units::Speed();
     }
     if (newSpeed == _descentSpeed) {
@@ -69,7 +70,7 @@ void Navigation::Aircraft::setDescentSpeed(Units::Speed newSpeed) {
 
 
 void Navigation::Aircraft::setFuelConsumption(Units::VolumeFlow newFuelConsumption) {
-    if ((newFuelConsumption < minValidFuelConsuption) || (newFuelConsumption > maxValidFuelConsuption)) {
+    if ((newFuelConsumption < minValidFuelConsumption) || (newFuelConsumption > maxValidFuelConsumption)) {
         newFuelConsumption = Units::VolumeFlow();
     }
 
@@ -104,7 +105,7 @@ void Navigation::Aircraft::setHorizontalDistanceUnit(HorizontalDistanceUnit newU
 
 void Navigation::Aircraft::setMinimumSpeed(Units::Speed newSpeed) {
 
-    if ((newSpeed < minValidTAS) || (newSpeed > maxValidTAS)) {
+    if ((newSpeed < minValidSpeed) || (newSpeed > maxValidSpeed)) {
         newSpeed = Units::Speed();
     }
     if (newSpeed == _minimumSpeed) {

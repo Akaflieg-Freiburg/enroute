@@ -120,7 +120,10 @@ public:
     Q_PROPERTY(HorizontalDistanceUnit horizontalDistanceUnit READ horizontalDistanceUnit WRITE setHorizontalDistanceUnit NOTIFY horizontalDistanceUnitChanged)
 
     /*! \brief Maximal speed of the aircraft that is considered valid */
-    Q_PROPERTY(Units::Speed maxValidTAS MEMBER maxValidTAS CONSTANT)
+    Q_PROPERTY(Units::Speed maxValidSpeed MEMBER maxValidSpeed CONSTANT)
+
+    /*! \brief Maximal fuel consumption that is considered valid */
+    Q_PROPERTY(Units::VolumeFlow maxValidFuelConsumption MEMBER maxValidFuelConsumption CONSTANT)
 
     /*! \brief Minimum Speed
      *
@@ -129,14 +132,11 @@ public:
      */
     Q_PROPERTY(Units::Speed minimumSpeed READ minimumSpeed WRITE setMinimumSpeed NOTIFY minimumSpeedChanged)
 
-    /*! \brief Maximal fuel consumption that is considered valid */
-    Q_PROPERTY(Units::VolumeFlow maxValidFuelConsuption MEMBER maxValidFuelConsuption CONSTANT)
+    /*! \brief Minimal fuel consumption that is considered valid */
+    Q_PROPERTY(Units::VolumeFlow minValidFuelConsumption MEMBER minValidFuelConsumption CONSTANT)
 
     /*! \brief Minimal speed of the aircraft that is considered valid */
-    Q_PROPERTY(Units::Speed minValidTAS MEMBER minValidTAS CONSTANT)
-
-    /*! \brief Minimal fuel consumption that is considered valid */
-    Q_PROPERTY(Units::VolumeFlow minValidFuelConsuption MEMBER minValidFuelConsuption CONSTANT)
+    Q_PROPERTY(Units::Speed minValidSpeed MEMBER minValidSpeed CONSTANT)
 
     /*! \brief Name
      *
@@ -288,10 +288,10 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(Aircraft)
 
-    static constexpr Units::Speed minValidTAS = Units::Speed::fromKN(10.0);
-    static constexpr Units::Speed maxValidTAS = Units::Speed::fromKN(400.0);
-    static constexpr Units::VolumeFlow minValidFuelConsuption = Units::VolumeFlow::fromLPH(0.0);
-    static constexpr Units::VolumeFlow maxValidFuelConsuption = Units::VolumeFlow::fromLPH(300.0);
+    static constexpr Units::Speed minValidSpeed = Units::Speed::fromKN(10.0);
+    static constexpr Units::Speed maxValidSpeed = Units::Speed::fromKN(400.0);
+    static constexpr Units::VolumeFlow minValidFuelConsumption = Units::VolumeFlow::fromLPH(0.0);
+    static constexpr Units::VolumeFlow maxValidFuelConsumption = Units::VolumeFlow::fromLPH(300.0);
 
     Units::Speed _cruiseSpeed {};
     Units::Speed _descentSpeed {};

@@ -130,7 +130,6 @@ auto main(int argc, char *argv[]) -> int
     // On Huawei devices, set the environment variable "QT_ANDROID_NO_EXIT_CALL", which
     // prevents an exit() call, and thereby prevents a crash on these devices.
     if (MobileAdaptor::manufacturer() == "HUAWEI") {
-        qWarning() << "ENROUTE set env variable";
         qputenv("QT_ANDROID_NO_EXIT_CALL", "1");
     }
 

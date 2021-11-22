@@ -80,6 +80,15 @@ auto MobileAdaptor::getSSID() -> QString
 }
 
 
+
+auto MobileAdaptor::manufacturer() -> QString
+{
+    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                                                               "manufacturer", "()Ljava/lang/String;");
+    return stringObject.toString();
+}
+
+
 extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)

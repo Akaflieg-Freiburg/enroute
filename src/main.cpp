@@ -128,6 +128,14 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
 
+    // Workaround for crappy Hauwei devices.
+    //
+    // On Huawei devices, set the environment variable "QT_ANDROID_NO_EXIT_CALL", which
+    // prevents an exit() call, and thereby prevents a crash on these devices.
+    if (MobileAdaptor::manufacturer() == "HUAWEI") {
+        qputenv("QT_ANDROID_NO_EXIT_CALL", "1");
+    }
+
     // Command line parsing
     QCommandLineParser parser;
     parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));

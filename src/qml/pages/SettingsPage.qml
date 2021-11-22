@@ -36,6 +36,7 @@ Page {
         id: view
         anchors.fill: parent
         anchors.topMargin: Qt.application.font.pixelSize
+        contentWidth: availableWidth
 
         ColumnLayout {
             width: settingsPage.width

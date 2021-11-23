@@ -272,9 +272,11 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: Qt.application.font.pixelSize*5
+                KeyNavigation.tab: horizontalUOM
 
                 onEditingFinished: {
                     global.navigator().aircraft.name = text
+                    horizontalUOM.focus = true
                 }
                 text: global.navigator().aircraft.name
                 placeholderText: qsTr("undefined")
@@ -297,6 +299,7 @@ Page {
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+                KeyNavigation.tab: verticalUOM
 
                 currentIndex: global.navigator().aircraft.horizontalDistanceUnit
                 onCurrentIndexChanged: global.navigator().aircraft.horizontalDistanceUnit = currentIndex
@@ -312,6 +315,7 @@ Page {
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+                KeyNavigation.tab: volumeUOM
 
                 currentIndex: global.navigator().aircraft.verticalDistanceUnit
                 onCurrentIndexChanged: global.navigator().aircraft.verticalDistanceUnit = currentIndex
@@ -327,6 +331,7 @@ Page {
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+                KeyNavigation.tab: cruiseSpeed
 
                 currentIndex: global.navigator().aircraft.fuelConsumptionUnit
                 onCurrentIndexChanged: global.navigator().aircraft.fuelConsumptionUnit = currentIndex
@@ -353,6 +358,8 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: Qt.application.font.pixelSize*5
+                KeyNavigation.tab: descentSpeed
+
                 validator: DoubleValidator {
                     bottom: {
                         switch(global.navigator().aircraft.horizontalDistanceUnit) {
@@ -380,13 +387,13 @@ Page {
                 onEditingFinished: {
                     switch(global.navigator().aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(text)
+                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.Kilometer:
-                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKMH(text)
+                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromMPS(text)
+                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromMPS(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
@@ -439,6 +446,8 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: Qt.application.font.pixelSize*5
+                KeyNavigation.tab: minimumSpeed
+
                 validator: DoubleValidator {
                     bottom: {
                         switch(global.navigator().aircraft.horizontalDistanceUnit) {
@@ -467,13 +476,13 @@ Page {
                 onEditingFinished: {
                     switch(global.navigator().aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(text)
+                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.Kilometer:
-                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromKMH(text)
+                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromMPS(text)
+                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromMPS(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
@@ -525,6 +534,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: Qt.application.font.pixelSize*5
+                KeyNavigation.tab: fuelConsumption
 
                 validator: DoubleValidator {
                     bottom: {
@@ -553,13 +563,13 @@ Page {
                 onEditingFinished: {
                     switch(global.navigator().aircraft.horizontalDistanceUnit) {
                     case Aircraft.NauticalMile:
-                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKN(text)
+                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKN(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.Kilometer:
-                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKMH(text)
+                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromMPS(text)
+                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromMPS(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
@@ -621,6 +631,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: Qt.application.font.pixelSize*5
+                KeyNavigation.tab: name
 
                 validator: DoubleValidator {
                     bottom: {

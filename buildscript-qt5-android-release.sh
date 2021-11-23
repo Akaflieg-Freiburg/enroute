@@ -62,6 +62,6 @@ $Qt5_DIR_SOURCE/configure \
     -I /home/kebekus/Software/buildsystems/openssl-1.1.1k/include \
     -no-warnings-are-errors
 
-nice make -j8
+nice make
 rm -rf $Qt5_DIR_ANDROID
 nice make install

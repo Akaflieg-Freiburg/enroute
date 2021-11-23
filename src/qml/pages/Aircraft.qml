@@ -605,7 +605,7 @@ Page {
 
             Label { Layout.fillHeight: true }
             Label {
-                text: qsTr("Fuel consumption")
+                text: qsTr("Fuel Consumption")
                 Layout.columnSpan: 4
                 font.pixelSize: Qt.application.font.pixelSize*1.2
                 font.bold: true
@@ -645,10 +645,10 @@ Page {
                 onEditingFinished: {
                     switch(global.navigator().aircraft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:
-                        global.navigator().aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(text)
+                        global.navigator().aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.GallonPerHour:
-                        global.navigator().aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromGPH(text)
+                        global.navigator().aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromGPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
@@ -659,9 +659,9 @@ Page {
                     }
                     switch(global.navigator().aircraft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:
-                        return (Math.round(global.navigator().aircraft.fuelConsumption.toLPH()*10.0)/10.0).toString()
+                        return global.navigator().aircraft.fuelConsumption.toLPH().toLocaleString(Qt.locale(), 'f', 1)
                     case Aircraft.GallonPerHour:
-                        return (Math.round(global.navigator().aircraft.fuelConsumption.toGPH()*10.0)/10.0).toString()
+                        return global.navigator().aircraft.fuelConsumption.toGPH().toLocaleString(Qt.locale(), 'f', 1)
                     }
                 }
                 placeholderText: qsTr("undefined")

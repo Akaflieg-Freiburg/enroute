@@ -37,6 +37,9 @@ auto Navigation::Navigator::aircraft() -> Navigation::Aircraft*
     if (m_aircraft.isNull()) {
         m_aircraft = new Navigation::Aircraft(this);
         QQmlEngine::setObjectOwnership(m_aircraft, QQmlEngine::CppOwnership);
+
+        auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft.json";
+
     }
     return m_aircraft;
 }

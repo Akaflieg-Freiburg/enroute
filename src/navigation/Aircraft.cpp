@@ -18,6 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
+
 #include "Aircraft.h"
 
 
@@ -138,3 +142,58 @@ void Navigation::Aircraft::setVerticalDistanceUnit(VerticalDistanceUnit newUnit)
     emit verticalDistanceUnitChanged();
 }
 
+
+
+//
+// Methods
+//
+
+auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
+{
+    QJsonParseError parseError{};
+    auto document = QJsonDocument::fromJson(JSON, &parseError);
+    if (parseError.error != QJsonParseError::NoError) {
+        return parseError.errorString();
+    }
+
+    auto content = document.object();
+    if (content.isEmpty()) {
+        return tr("JSON document contains no data.");
+    }
+
+    if (content["content"] != "aircraft") {
+        return tr("JSON document does not describe an aircraft.");
+    }
+
+    setCruiseSpeed( Units::Speed::fromMPS( content["cruiseSpeed_mps"].toDouble(NAN) ));
+    setDescentSpeed( Units::Speed::fromMPS( content["descentSpeed_mps"].toDouble(NAN) ));
+    setFuelConsumption( Units::VolumeFlow::fromLPH( content["fuelConsumption_lph"].toDouble(NAN) ));
+    setFuelConsumptionUnit( static_cast<FuelConsumptionUnit>(content["fuelConsumptionUnit"].toInt(LiterPerHour)) );
+    setHorizontalDistanceUnit( static_cast<HorizontalDistanceUnit>(content["horizontalDistanceUnit"].toInt(NauticalMile)) );
+    setMinimumSpeed( Units::Speed::fromMPS( content["minimumSpeed_mps"].toDouble(NAN) ));
+    setName( content["name"].toString() );
+    setVerticalDistanceUnit( static_cast<VerticalDistanceUnit>(content["verticalDistanceUnit"].toInt(Feet)) );
+
+    return {};
+}
+
+
+auto Navigation::Aircraft::toJSON() const -> QByteArray
+{
+    QJsonObject jsonObj;
+    jsonObj.insert(QStringLiteral("content"), "aircraft");
+
+    jsonObj.insert(QStringLiteral("cruiseSpeed_mps"), _cruiseSpeed.toMPS());
+    jsonObj.insert(QStringLiteral("descentSpeed_mps"), _descentSpeed.toMPS());
+    jsonObj.insert(QStringLiteral("fuelConsumption_lph"), _fuelConsumption.toLPH());
+    jsonObj.insert(QStringLiteral("fuelConsumptionUnit"), _fuelConsumptionUnit);
+    jsonObj.insert(QStringLiteral("horizontalDistanceUnit"), _horizontalDistanceUnit);
+    jsonObj.insert(QStringLiteral("minimumSpeed_mps"), _minimumSpeed.toMPS());
+    jsonObj.insert(QStringLiteral("name"), _name);
+    jsonObj.insert(QStringLiteral("verticalDistanceUnit"), _verticalDistanceUnit);
+
+
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    return doc.toJson();
+}

@@ -26,21 +26,6 @@
 
 
 Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
-#warning This needs to go
-    _cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
-    if ((_cruiseSpeed < minValidSpeed) || (_cruiseSpeed > maxValidSpeed)) {
-        _cruiseSpeed = Units::Speed();
-    }
-
-    _descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
-    if ((_descentSpeed < minValidSpeed) || (_descentSpeed > maxValidSpeed)) {
-        _descentSpeed = Units::Speed();
-    }
-
-    _fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
-    if ((_fuelConsumption < minValidFuelConsumption) || (_fuelConsumption > maxValidFuelConsumption)) {
-        _fuelConsumption = Units::VolumeFlow();
-    }
 }
 
 

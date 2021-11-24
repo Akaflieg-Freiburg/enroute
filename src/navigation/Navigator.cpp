@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QQmlEngine>
+#include <QStandardPaths>
 
 #include "GlobalObject.h"
 #include "Settings.h"
@@ -28,7 +29,15 @@
 
 Navigation::Navigator::Navigator(QObject *parent) : QObject(parent)
 {
+    m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft.json";
+
     QTimer::singleShot(0, this, &Navigation::Navigator::deferredInitialization);
+}
+
+
+Navigation::Navigator::~Navigator()
+{
+    saveAircraft();
 }
 
 
@@ -38,8 +47,27 @@ auto Navigation::Navigator::aircraft() -> Navigation::Aircraft*
         m_aircraft = new Navigation::Aircraft(this);
         QQmlEngine::setObjectOwnership(m_aircraft, QQmlEngine::CppOwnership);
 
-        auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft.json";
+        QFile file(m_aircraftFileName);
+        if (file.open(QIODevice::ReadOnly)) {
+            m_aircraft->loadFromJSON(file.readAll());
+        } else {
+            QSettings settings;
+            auto cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
+            auto descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
+            auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
+            m_aircraft->setCruiseSpeed(cruiseSpeed);
+            m_aircraft->setDescentSpeed(descentSpeed);
+            m_aircraft->setFuelConsumption(fuelConsumption);
+        }
 
+        connect(m_aircraft, &Navigation::Aircraft::cruiseSpeedChanged, this, &Navigation::Navigator::saveAircraft);
+        connect(m_aircraft, &Navigation::Aircraft::descentSpeedChanged, this, &Navigation::Navigator::saveAircraft);
+        connect(m_aircraft, &Navigation::Aircraft::fuelConsumptionChanged, this, &Navigation::Navigator::saveAircraft);
+        connect(m_aircraft, &Navigation::Aircraft::fuelConsumptionUnitChanged, this, &Navigation::Navigator::saveAircraft);
+        connect(m_aircraft, &Navigation::Aircraft::horizontalDistanceUnitChanged, this, &Navigation::Navigator::saveAircraft);
+        connect(m_aircraft, &Navigation::Aircraft::minimumSpeedChanged, this, &Navigation::Navigator::saveAircraft);
+        connect(m_aircraft, &Navigation::Aircraft::nameChanged, this, &Navigation::Navigator::saveAircraft);
+        connect(m_aircraft, &Navigation::Aircraft::verticalDistanceUnitChanged, this, &Navigation::Navigator::saveAircraft);
     }
     return m_aircraft;
 }
@@ -114,6 +142,14 @@ void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& i
     if ( GS.toKN() > minFlightSpeedInKN ) {
         setIsInFlight(true);
     }
+}
+
+
+void Navigation::Navigator::saveAircraft() const
+{
+    QFile file(m_aircraftFileName);
+    file.open(QIODevice::WriteOnly);
+    file.write(m_aircraft->toJSON());
 }
 
 

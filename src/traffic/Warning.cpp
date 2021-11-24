@@ -20,7 +20,9 @@
 
 #include <QCoreApplication>
 
+#include "GlobalObject.h"
 #include "Settings.h"
+#include "navigation/Navigator.h"
 #include "traffic/Warning.h"
 
 
@@ -110,18 +112,24 @@ auto Traffic::Warning::description() const -> QString
     // Horizontal distance
     if (m_hDist.isFinite() && !m_hDist.isNegative()) {
 
-        if (Settings::useMetricUnitsStatic()) {
-            auto hDistKM = qRound(m_hDist.toKM()*10.0)/10.0;
-            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 km").arg(hDistKM);
-        } else {
-            auto hDistNM = qRound(m_hDist.toNM()*10.0)/10.0;
-            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 nm").arg(hDistNM);
+        switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+        case Navigation::Aircraft::Kilometer:
+            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 km").arg(qRound(m_hDist.toKM()*10.0)/10.0);
+            break;
+        case Navigation::Aircraft::NauticalMile:
+            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 nm").arg(qRound(m_hDist.toNM()*10.0)/10.0);
+            break;
+        case Navigation::Aircraft::StatuteMile:
+            result << QCoreApplication::translate("Traffic::Warning", "Distance %1 mil").arg(qRound(m_hDist.toMIL()*10.0)/10.0);
+            break;
         }
 
     }
 
     // Vertical distance
     if (m_vDist.isFinite()) {
+
+#warning Vertical distance!
 
         auto vDistFT = qRound(qAbs(m_vDist.toFeet())/10.0)*10.0;
 

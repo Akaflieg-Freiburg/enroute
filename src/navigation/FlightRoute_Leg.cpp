@@ -22,6 +22,7 @@
 
 #include "FlightRoute_Leg.h"
 #include "GlobalObject.h"
+#include "navigation/Navigator.h"
 #include "Settings.h"
 
 
@@ -126,10 +127,16 @@ auto Navigation::FlightRoute::Leg::description() const -> QString
     }
 
     QString result;
-    if (GlobalObject::settings()->useMetricUnits()) {
-        result += QString("%1 km").arg(distance().toKM(), 0, 'f', 1);
-    } else {
-        result += QString("%1 nm").arg(distance().toNM(), 0, 'f', 1);
+    switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    case Navigation::Aircraft::Kilometer:
+        result += tr("%1&nbsp;km").arg(distance().toKM(), 0, 'f', 1);
+        break;
+    case Navigation::Aircraft::NauticalMile:
+        result += tr("%1&nbsp;nm").arg(distance().toNM(), 0, 'f', 1);
+        break;
+    case Navigation::Aircraft::StatuteMile:
+        result += tr("%1&nbsp;mil").arg(distance().toMIL(), 0, 'f', 1);
+        break;
     }
     auto _time = Time();
     if (_time.isFinite()) {

@@ -221,15 +221,6 @@ namespace Units {
             return _speedInMPS * KMH_per_MPS;
         }
 
-        /*! \brief Print speed as a string
-         *
-         * Depending on the user's preference, this method describes the speed
-         * as a string.
-         *
-         * @returns A string of the form "12 kt" or "19 km/h".
-         */
-        Q_INVOKABLE QString toString() const;
-
         /*! \brief Unitless constant: one feet per minute / meters per second */
         static constexpr double FPM_per_MPS = 196.85039370079;
 

@@ -159,23 +159,6 @@ void Settings::setNightMode(bool newNightMode)
 }
 
 
-void Settings::setUseMetricUnits(bool unitHorizKmh)
-{
-    if (unitHorizKmh == useMetricUnits()) {
-        return;
-    }
-
-    settings.setValue("System/useMetricUnits", unitHorizKmh);
-    emit useMetricUnitsChanged();
-}
-
-
-auto Settings::useMetricUnitsStatic() -> bool
-{
-    return GlobalObject::settings()->useMetricUnits();
-}
-
-
 void Settings::installTranslators(const QString &localeName)
 {
     // Remove existing translators

@@ -241,25 +241,6 @@ namespace Units {
             return m_distanceInM / MetersPerNauticalMile;
         }
 
-        /*! \brief Convert to string
-         *
-         *  This method converts the distance to string that is fit for
-         *  human consumption, of the form "10.9 nm", "130 ft" or "3500 m".
-         *  The distance is rounded to reasonable precision.
-         *
-         *  @param useMetric Determines whether metric or imperial units are used.
-         *
-         *  @param vertical If 'true', then meters or feet are used. Otherwise, the
-         *  method uses kilometer, meters or feet.
-         *
-         *  @param forceSign If 'true', then positive distances are prepended by a
-         *  "+" sign.
-         *
-         *  @returns A string that describes the distance, or an empty string if
-         *  no reasonable distance is set.
-         */
-        Q_INVOKABLE QString toString(bool useMetric, bool vertical, bool forceSign=false) const;
-
     private:
         static constexpr double MetersPerFeet = 0.3048;
         static constexpr double MetersPerNauticalMile = 1852;

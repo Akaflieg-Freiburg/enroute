@@ -80,7 +80,7 @@ public class Notifier
 	
         Intent notificationIntent = new Intent("de.akaflieg_freiburg.enroute.onNotificationClick");
 	notificationIntent.putExtra("NotificationID", id);
-	PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT) ;
+	PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE) ;
 	
 	m_builder.setContentIntent(pendingIntent);
 	m_builder.setColor(Color.rgb(00,0x80,0x80));

@@ -30,6 +30,7 @@
                android:icon="@mipmap/ic_launcher"
 	       android:requestLegacyExternalStorage="true">
     <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
+	      android:exported="true"
 	      android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
               android:label="Enroute Flight Navigation"
               android:screenOrientation="unspecified"

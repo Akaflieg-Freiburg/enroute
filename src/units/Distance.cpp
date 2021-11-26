@@ -20,3 +20,51 @@
 
 #include "units/Distance.h"
 
+
+QString Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const
+{
+    if (!isFinite()) {
+        return {};
+    }
+
+    double roundedDist = NAN;
+    QString unit;
+
+    switch (units) {
+    case Feet:
+        roundedDist = qRound(toFeet());
+        unit = "ft";
+        break;
+    case Meter:
+        roundedDist = qRound(toM());
+        unit = "m";
+        break;
+    case Kilometer:
+        roundedDist = qRound(toKM()*10.0)/10.0;
+        unit = "km";
+        break;
+    case StatuteMile:
+        roundedDist = qRound(toMIL()*10.0)/10.0;
+        unit = "mil";
+        break;
+    case NauticalMile:
+        roundedDist = qRound(toNM()*10.0)/10.0;
+        unit = "nm";
+        break;
+    }
+
+    // Round value to reasonable numbers
+    if (roundBigNumbers) {
+        if (qAbs(roundedDist) > 1000.0) {
+            roundedDist = qRound(roundedDist/100.0)*100.0;
+        } else if (qAbs(roundedDist) > 100.0) {
+            roundedDist = qRound(roundedDist/10.0)*10.0;
+        }
+    }
+
+    QString signString;
+    if (forceSign && roundedDist > 0.0) {
+        signString += "+";
+    }
+    return signString + QString::number(roundedDist) + " " + unit;
+}

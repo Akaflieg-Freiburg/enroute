@@ -35,6 +35,16 @@ namespace Units {
         Q_GADGET
 
     public:
+        /*! \brief Units of measurement for distances */
+        enum DistanceUnit {
+            Feet,
+            Meter,
+            Kilometer,
+            StatuteMile,
+            NauticalMile,
+        };
+        Q_ENUM(DistanceUnit)
+
         /*! \brief Constructs a distance
          *
          * @param distanceInM distance in meters
@@ -240,6 +250,23 @@ namespace Units {
         {
             return m_distanceInM / MetersPerNauticalMile;
         }
+
+        /*! \brief Convert to string
+         *
+         *  This method converts the distance to string that is fit for
+         *  human consumption, of the form "10.9 nm", "130 ft" or "3500 m".
+         *  The distance is rounded to reasonable precision.
+         *
+         *  @param unit Determines the units that are used.
+         *
+         *  @param roundBigNumbers If true, then round "1234" to "1200" and "117" to "120"
+         *
+         *  @param forceSign If 'true', then positive distances are prepended by a  "+" sign.
+         *
+         *  @returns A string that describes the distance, or an empty string if
+         *  no reasonable distance is set.
+         */
+        Q_INVOKABLE QString toString(Units::Distance::DistanceUnit units, bool roundBigNumbers=false, bool forceSign=false) const;
 
     private:
         static constexpr double MetersPerFeet = 0.3048;

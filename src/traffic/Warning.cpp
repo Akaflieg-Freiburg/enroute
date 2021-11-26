@@ -128,18 +128,23 @@ auto Traffic::Warning::description() const -> QString
 
     // Vertical distance
     if (m_vDist.isFinite()) {
+        QString vDistString;
+        switch(GlobalObject::navigator()->aircraft()->verticalDistanceUnit()) {
+        case Navigation::Aircraft::Feet:
+            vDistString = m_vDist.toString(Units::Distance::DistanceUnit::Feet, true);
+            break;
+        case Navigation::Aircraft::Meters:
+            vDistString = m_vDist.toString(Units::Distance::DistanceUnit::Meter, true);
+            break;
+        }
 
-#warning Vertical distance!
-
-        auto vDistFT = qRound(qAbs(m_vDist.toFeet())/10.0)*10.0;
-
-        if (vDistFT < 100) {
+        if (qAbs(m_vDist.toFeet()) < 100) {
             result << QCoreApplication::translate("Traffic::Warning", "Same altitude");
         } else {
             if (m_vDist.isNegative()) {
-                result << QCoreApplication::translate("Traffic::Warning", "%1 ft below").arg(vDistFT);
+                result << QCoreApplication::translate("Traffic::Warning", "%1 below").arg(vDistString);
             } else {
-                result << QCoreApplication::translate("Traffic::Warning", "%1 ft above").arg(vDistFT);
+                result << QCoreApplication::translate("Traffic::Warning", "%1 above").arg(vDistString);
             }
         }
     }

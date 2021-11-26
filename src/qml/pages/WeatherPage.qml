@@ -142,7 +142,7 @@ Page {
                 text: {
                     var result = model.modelData.twoLineTitle
 
-                    var wayTo  = model.modelData.wayTo(global.positionProvider().positionInfo.coordinate(), global.settings().useMetricUnits)
+                    var wayTo  = model.modelData.wayTo(global.positionProvider().positionInfo.coordinate())
                     if (wayTo !== "")
                         result = result + "<br>" + wayTo
 

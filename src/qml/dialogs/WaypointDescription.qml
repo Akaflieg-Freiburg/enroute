@@ -314,8 +314,8 @@ Dialog {
 
         Label { // Second header line with distance and QUJ
             text: {
-                // Mention useMetricUnits
-                global.settings().useMetricUnits
+                // Mention horizontalDistanceUnit
+                global.navigator().aircraft.horizontalDistanceUnit
 
                 return global.navigator().describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
             }

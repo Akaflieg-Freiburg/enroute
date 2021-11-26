@@ -424,21 +424,21 @@ auto Navigation::FlightRoute::summary() const -> QString {
 
     switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
     case Navigation::Aircraft::Kilometer:
-        result += tr("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
+        result += tr("Total: %1 km").arg(dist.toKM(), 0, 'f', 1);
         break;
     case Navigation::Aircraft::NauticalMile:
-        result += tr("Total: %1&nbsp;nm").arg(dist.toNM(), 0, 'f', 1);
+        result += tr("Total: %1 nm").arg(dist.toNM(), 0, 'f', 1);
         break;
     case Navigation::Aircraft::StatuteMile:
-        result += tr("Total: %1&nbsp;mil").arg(dist.toMIL(), 0, 'f', 1);
+        result += tr("Total: %1 mil").arg(dist.toMIL(), 0, 'f', 1);
         break;
     }
 
     if (time.isFinite()) {
-        result += QStringLiteral(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
+        result += QStringLiteral(" • %1 h").arg(time.toHoursAndMinutes());
     }
     if (qIsFinite(fuelInL)) {
-        result += QStringLiteral(" • %1&nbsp;L").arg(qRound(fuelInL));
+        result += QStringLiteral(" • %1 l").arg(qRound(fuelInL));
     }
 
 

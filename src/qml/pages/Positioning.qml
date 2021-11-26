@@ -169,7 +169,17 @@ Page {
                     const gs = global.positionProvider().positionInfo.groundSpeed();
                     if (!gs.isFinite())
                         return "-"
-                    return global.settings().useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
+
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                        return Math.round(gs.toKMH()) + " km/h"
+                    }
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
+                        return Math.round(gs.toMPH()) + " mph"
+                    }
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.NauticalMile) {
+                        return Math.round(gs.toKN()) + " kn"
+                    }
+                    return "++"
                 }
             }
 

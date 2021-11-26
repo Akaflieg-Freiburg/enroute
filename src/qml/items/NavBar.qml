@@ -22,6 +22,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+import enroute 1.0
 
 Rectangle {
     id: grid
@@ -121,7 +122,17 @@ Rectangle {
                     const gs = global.positionProvider().positionInfo.groundSpeed();
                     if (!gs.isFinite())
                         return "-"
-                    return global.settings().useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
+
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                        return Math.round(gs.toKMH()) + " km/h"
+                    }
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
+                        return Math.round(gs.toMPH()) + " mph"
+                    }
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.NauticalMile) {
+                        return Math.round(gs.toKN()) + " kn"
+                    }
+                    return "++"
                 }
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3

@@ -99,7 +99,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library …")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
@@ -135,7 +135,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0)
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -188,7 +188,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in other app …")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (global.navigator().flightRoute.size > 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")

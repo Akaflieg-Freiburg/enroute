@@ -522,8 +522,28 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
-                        bottom: global.settings().useMetricUnits ? global.navigator().wind.minWindSpeed.toKMH() : global.navigator().wind.minWindSpeed.toKN()
-                        top: global.settings().useMetricUnits ? global.navigator().wind.maxWindSpeed.toKMH() : global.navigator().wind.maxWindSpeed.toKN()
+                        bottom: {
+                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            case Aircraft.NauticalMile:
+                                return global.navigator().wind.minWindSpeed.toKN()
+                            case Aircraft.Kilometer:
+                                return global.navigator().wind.minWindSpeed.toKMH()
+                            case Aircraft.StatuteMile :
+                                return global.navigator().wind.minWindSpeed.toMIL()
+                            }
+                            return NaN
+                        }
+                        top: {
+                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            case Aircraft.NauticalMile:
+                                return global.navigator().wind.maxWindSpeed.toKN()
+                            case Aircraft.Kilometer:
+                                return global.navigator().wind.maxWindSpeed.toKMH()
+                            case Aircraft.StatuteMile :
+                                return global.navigator().wind.maxWindSpeed.toMIL()
+                            }
+                            return NaN
+                        }
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
@@ -578,8 +598,8 @@ Page {
 
                 Layout.fillWidth: true
                 text: {
-                    // Mention useMetricUnits
-                    global.settings().useMetricUnits
+                    // Mention horizontal distance units
+                    global.navigator().aircraft.horizontalDistanceUnit
 
                     return global.navigator().flightRoute.summary
                 }

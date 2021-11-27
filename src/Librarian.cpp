@@ -277,9 +277,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("<p><strong>Enroute Flight Navigation</strong> now uses the Flarmnet database to identify traffic.</p>")
-                + tr("<p>The traffic receiver status is now shown prominently on the front page.</p>")
-                + tr("<p>The app now honors the system setting for haptic feedback.</p>")
+        return tr("<p>As requested by our users, <strong>Enroute Flight Navigation</strong> now supports more units of measurement. Go to the new 'Aircraft' entry in the main menu to choose your preferred units.</p>")
                 + tr("<p><strong>Innovation Award 2021</strong> The readers of the German aviation magazine 'Aerokurier' have named <strong>Enroute Flight Navigation</strong> as one of the top three innovations of the year in the category 'Avionics'. Thanks to everybody who made this success possible!</p>");
     }
 

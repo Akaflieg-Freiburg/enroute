@@ -127,8 +127,8 @@ Page {
                 Layout.fillWidth: true
                 enabled: false
                 text: {
-                    // Mention useMetricUnits
-                    global.settings().useMetricUnits
+                    // Mention horizontal distance unit
+                    global.navigator().aircraft.horizontalDistanceUnit
                     if (leg === null)
                         return ""
                     return leg.description
@@ -548,10 +548,16 @@ Page {
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        if (global.settings().useMetricUnits) {
-                            global.navigator().wind.windSpeed = speed.fromKMH(text)
-                        } else {
+                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        case Aircraft.NauticalMile:
                             global.navigator().wind.windSpeed = speed.fromKN(text)
+                            break;
+                        case Aircraft.Kilometer:
+                            global.navigator().wind.windSpeed = speed.fromKMH(text)
+                            break;
+                        case Aircraft.StatuteMile :
+                            global.navigator().wind.windSpeed = speed.fromMPH(text)
+                            break;
                         }
                         focus = false
                     }
@@ -560,15 +566,31 @@ Page {
                         if (!global.navigator().wind.windSpeed.isFinite()) {
                             return ""
                         }
-                        if (global.settings().useMetricUnits) {
+                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        case Aircraft.NauticalMile:
+                            return Math.round( global.navigator().wind.windSpeed.toKN() )
+                        case Aircraft.Kilometer:
                             return Math.round( global.navigator().wind.windSpeed.toKMH() )
+                        case Aircraft.StatuteMile :
+                            return Math.round( global.navigator().wind.windSpeed.toMPH() )
                         }
-                        return Math.round( global.navigator().wind.windSpeed.toKN() )
+                        return NaN
                     }
                     placeholderText: qsTr("undefined")
                 }
                 Label {
-                    text: global.settings().useMetricUnits ? "km/h" : "kt"
+                    text: {
+                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        case Aircraft.NauticalMile:
+                            return "kn"
+                        case Aircraft.Kilometer:
+                            return "km/h"
+                        case Aircraft.StatuteMile:
+                            return "mph"
+                        }
+                        return ""
+
+                    }
                     Layout.alignment: Qt.AlignBaseline
                 }
                 ToolButton {

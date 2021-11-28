@@ -20,8 +20,7 @@
 
 #include <QJsonArray>
 
-//#include "Units.h"
-
+#include "units/Distance.h"
 #include "Airspace.h"
 
 
@@ -80,6 +79,7 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     _lowerBound = properties["BOT"].toString();
 }
 
+
 auto GeoMaps::Airspace::estimatedLowerBoundInFtMSL() const -> double {
     double result = 0.0;
     bool ok = false;
@@ -114,6 +114,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundInFtMSL() const -> double {
     return 0.0;
 }
 
+
 auto GeoMaps::Airspace::isUpper() const -> bool {
     QString AL = _lowerBound.simplified();
 
@@ -128,4 +129,34 @@ auto GeoMaps::Airspace::isUpper() const -> bool {
     }
 
     return fl >= 100.0;
+}
+
+
+QString GeoMaps::Airspace::makeMetric(const QString& standard) const
+{
+    QStringList list = standard.split(' ', Qt::SkipEmptyParts);
+    if (list.isEmpty()) {
+        return standard;
+    }
+
+    if (list[0] == "FL") {
+        if (list.size() < 2) {
+            return standard;
+        }
+        bool ok = false;
+        auto feetHeight = 100*list[1].toInt(&ok);
+        if (!ok) {
+            return standard;
+        }
+        list[1] =QString("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
+        return list.join(' ');
+    }
+
+    bool ok = false;
+    auto feetHeight = list[0].toInt(&ok);
+    if (!ok) {
+        return standard;
+    }
+    list[0] = QString("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
+    return list.join(' ');
 }

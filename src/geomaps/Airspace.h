@@ -91,6 +91,18 @@ public:
      */
     QString lowerBound() const { return _lowerBound; }
 
+    /*! \brief Lower limit of the airspace
+     *
+     * A string that describes the lower bound of the airspace in metric terms
+     */
+    Q_PROPERTY(QString lowerBoundMetric READ lowerBoundMetric CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property lowerBoundMetric
+     */
+    QString lowerBoundMetric() const { return makeMetric(_lowerBound); }
+
     /* \brief Name of the airspace, such as "ED-R 31" */
     Q_PROPERTY(QString name READ name CONSTANT)
 
@@ -126,8 +138,6 @@ public:
     /*! \brief Upper limit of the airspace
      *
      * A string that describes the upper bound of the airspace
-     *
-     * @see lowerBound
      */
     Q_PROPERTY(QString upperBound READ upperBound CONSTANT)
 
@@ -137,7 +147,23 @@ public:
      */
     QString upperBound() const { return _upperBound; }
 
+    /*! \brief Upper limit of the airspace
+     *
+     * A string that describes the upper bound of the airspace in metric terms
+     */
+    Q_PROPERTY(QString upperBoundMetric READ upperBoundMetric CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property upperBoundMetric
+     */
+    QString upperBoundMetric() const { return makeMetric(_upperBound); }
+
 private:
+    // Transforms a height string such as "4500", "1500 GND" or "FL 130" into a string that describes the height
+    // in meters. If the height string cannot be parsed, returns the original string
+    QString makeMetric(const QString& standard) const;
+
     QString _name{};
     QString _CAT{};
     QString _upperBound{};

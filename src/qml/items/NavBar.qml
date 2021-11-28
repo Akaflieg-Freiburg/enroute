@@ -60,7 +60,15 @@ Rectangle {
 
                 text: {
                     const talt= global.positionProvider().positionInfo.trueAltitude();
-                    return talt.isFinite() ? Math.round(talt.toFeet()) + " ft" : "-"
+                    if (!talt.isFinite())
+                        return "-"
+                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    case Aircraft.Feet:
+                        return Math.round(talt.toFeet()) + " ft"
+                    case Aircraft.Meters:
+                        return Math.round(talt.toM()) + " m"
+                    }
+                    return "-"
                 }
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3

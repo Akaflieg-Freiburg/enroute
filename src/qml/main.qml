@@ -181,7 +181,20 @@ ApplicationWindow {
                     }
 
                     AutoSizingMenu {
-                        id: libraryMenu
+                        id: libraryMenu                        
+
+                        ItemDelegate {
+                            text: qsTr("Aircraft")
+                            icon.source: "/icons/material/ic_airplanemode_active.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                global.mobileAdaptor().vibrateBrief()
+                                stackView.push("pages/AircraftLibrary.qml")
+                                libraryMenu.close()
+                                drawer.close()
+                            }
+                        }
 
                         ItemDelegate {
                             text: qsTr("Flight Routes")
@@ -195,6 +208,7 @@ ApplicationWindow {
                                 drawer.close()
                             }
                         }
+
 
                         ItemDelegate {
                             text: qsTr("Maps and Data")

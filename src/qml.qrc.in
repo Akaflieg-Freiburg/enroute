@@ -5,7 +5,6 @@
         <file alias="dialogs/ErrorDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/ErrorDialog.qml</file>	
         <file alias="dialogs/FirstRunDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FirstRunDialog.qml</file>
         <file alias="dialogs/FlightRouteAddWPDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteAddWPDialog.qml</file>
-        <file alias="dialogs/FlightRouteOpenDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteOpenDialog.qml</file>
         <file alias="dialogs/FlightRouteSaveDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteSaveDialog.qml</file>
         <file alias="dialogs/LongTextDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialog.qml</file>
         <file alias="dialogs/LongTextDialogMD.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/LongTextDialogMD.qml</file>
@@ -30,6 +29,7 @@
         <file alias="items/TrafficLabel.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/TrafficLabel.qml</file>
         <file alias="items/WordWrappingItemDelegate.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/WordWrappingItemDelegate.qml</file>	
         <file alias="pages/Aircraft.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/Aircraft.qml</file>
+        <file alias="pages/AircraftLibrary.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/AircraftLibrary.qml</file>
         <file alias="pages/BugReportPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/BugReportPage.qml</file>
         <file alias="pages/DonatePage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/DonatePage.qml</file>
         <file alias="pages/FlightRouteEditor.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/FlightRouteEditor.qml</file>	

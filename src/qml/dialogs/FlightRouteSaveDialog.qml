@@ -103,7 +103,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: global.librarian().flightRoutes("")
+            model: global.librarian().libraryEntries(Librarian.Routes, "")
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -126,7 +126,7 @@ Dialog {
         if (fileName.text === "")
             return
         finalFileName = fileName.text
-        if (global.librarian().flightRouteExists(finalFileName))
+        if (global.librarian().entryExists(Librarian.Routes, finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()

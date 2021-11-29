@@ -295,9 +295,9 @@ auto Librarian::getStringHashFromRessource(const QString &name) -> uint
 }
 
 
-auto Librarian::flightRouteExists(const QString &baseName) const -> bool
+auto Librarian::entryExists(Library library, const QString &baseName) const -> bool
 {
-    return QFile::exists(flightRouteFullPath(baseName));
+    return QFile::exists(entryFullPath(library, baseName));
 }
 
 
@@ -307,7 +307,7 @@ auto Librarian::flightRouteGet(const QString &baseName) const -> QObject *
     if (route == nullptr) {
         return nullptr;
     }
-    auto error = route->loadFromGeoJSON(flightRouteFullPath(baseName));
+    auto error = route->loadFromGeoJSON(entryFullPath(Routes, baseName));
     if (error.isEmpty()) {
         return route;
     }
@@ -316,30 +316,50 @@ auto Librarian::flightRouteGet(const QString &baseName) const -> QObject *
 }
 
 
-auto Librarian::flightRouteFullPath(const QString &baseName) const -> QString
+auto Librarian::entryFullPath(Library library, const QString &baseName) const -> QString
 {
-    return flightRouteLibraryDir.path()+"/"+baseName+".geojson";
+    QStringList filterList;
+    filterList << "*";
+
+    QDir dir(libraryDirectory(library));
+    auto fileNames = dir.entryList(filterList, QDir::Files);
+    if (fileNames.isEmpty())
+        return {};
+    return dir.absoluteFilePath(fileNames[0]);
 }
 
 
 void Librarian::flightRouteRemove(const QString &baseName) const
 {
-    QFile::remove(flightRouteFullPath(baseName));
+    QFile::remove(entryFullPath(Routes, baseName));
 }
 
 
 void Librarian::flightRouteRename(const QString &oldName, const QString &newName) const
 {
-    QFile::rename(flightRouteFullPath(oldName), flightRouteFullPath(newName));
+    QFile::rename(entryFullPath(Routes, oldName), entryFullPath(Routes, newName));
 }
 
 
-auto Librarian::flightRoutes(const QString &filter) -> QStringList
+auto Librarian::libraryDirectory(Library library) const -> QString
+{
+    switch (library) {
+    case Aircraft:
+        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft";
+    case Routes:
+        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
+    }
+    return {};
+}
+
+
+auto Librarian::libraryEntries(Library library, const QString &filter) -> QStringList
 {
     QStringList filterList;
-    filterList << "*.geojson";
+    filterList << "*";
 
-    auto fileNames = flightRouteLibraryDir.entryList(filterList);
+    QDir dir(libraryDirectory(library));
+    auto fileNames = dir.entryList(filterList, QDir::Files);
 
     QStringList fileBaseNames;
     foreach(auto fileName, fileNames)

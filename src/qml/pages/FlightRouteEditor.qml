@@ -191,13 +191,11 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("Open from library …")
+                    text: qsTr("View Library …")
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-                        dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/FlightRouteOpenDialog.qml"
-                        dialogLoader.active = true
+                        stackView.push("FlightRouteLibrary.qml")
                     }
                 }
 
@@ -210,15 +208,6 @@ Page {
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
                         dialogLoader.active = true
-                    }
-                }
-
-                MenuItem {
-                    text: qsTr("View Library …")
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        stackView.push("FlightRouteLibrary.qml")
                     }
                 }
 

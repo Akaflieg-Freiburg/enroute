@@ -27,7 +27,7 @@
 
 Traffic::PasswordDB::PasswordDB(QObject* parent) : QObject(parent)
 {
-    passwordDBFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "trafficDataReceiverPasswordDB.dat";
+    passwordDBFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/trafficDataReceiverPasswordDB.dat";
 
     auto passwordFile = QFile(passwordDBFileName);
     if (!passwordFile.open(QIODevice::ReadOnly)) {

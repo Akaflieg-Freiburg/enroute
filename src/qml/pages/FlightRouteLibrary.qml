@@ -164,22 +164,6 @@ Page {
                 AutoSizingMenu {
                     id: cptMenu
 
-                    Action {
-                        id: openAction
-                        text: qsTr("Open …")
-                        onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
-                            finalFileName = modelData
-                            if (global.navigator().flightRoute.size > 0)
-                                overwriteDialog.open()
-                            else
-                                openFromLibrary()
-                        }
-
-                    } // openAction
-
-                    MenuSeparator { }
-
                     AutoSizingMenu {
                         title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
 

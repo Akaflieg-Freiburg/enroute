@@ -137,6 +137,16 @@ void Navigation::Aircraft::setVerticalDistanceUnit(VerticalDistanceUnit newUnit)
 // Methods
 //
 
+auto Navigation::Aircraft::loadFromJSON(const QString& fileName) -> QString
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return tr("Unable to open the file '%1' for reading.").arg(fileName);
+    }
+    return loadFromJSON(file.readAll());
+}
+
+
 auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
 {
     QJsonParseError parseError{};
@@ -184,8 +194,7 @@ auto Navigation::Aircraft::save(const QString& fileName) const -> QString
         QFile::remove(fileName);
         return tr("Unable to write to file '%1'.").arg(fileName);
     }
-    file.close();
-    return QString();
+    return {};
 }
 
 

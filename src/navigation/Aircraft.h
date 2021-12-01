@@ -271,6 +271,20 @@ public:
      * appropriate.  If this method returns a non-empty string, then
      * the JSON data might be partially read.
      *
+     * @param fileName File name
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
+    Q_INVOKABLE QString loadFromJSON(const QString& fileName);
+
+
+    /*! \brief Reads aircraft data from a JSON document
+     *
+     * This method loads reads data from a JSON document and stores it in the present object. Notifier signals are emitted as
+     * appropriate.  If this method returns a non-empty string, then
+     * the JSON data might be partially read.
+     *
      * @param JSON JSON data
      *
      * @returns Empty string in case of success, human-readable, translated

@@ -26,9 +26,6 @@
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
 {
-    auto libraryPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
-    flightRouteLibraryDir.setPath(libraryPath);
-    flightRouteLibraryDir.mkpath(libraryPath);
 
     // This app used to store flight routes in QStandardPaths::GenericDataLocation. However, Android 11
     // no longer allows this "Scoped Storage". We will therefore move our files from
@@ -36,6 +33,7 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
     // since we set "requestlegacystorage" in the manifest file and target Android 10. See
     // https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app
     auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
+    auto libraryPath = directory(Routes);
     QDir d(oldlibraryPath);
     foreach(auto elt, d.entryList( QStringList(), QDir::Files)) {
         if (QFile::copy(oldlibraryPath+"/"+elt, libraryPath+"/"+elt)) {
@@ -295,53 +293,56 @@ auto Librarian::getStringHashFromRessource(const QString &name) -> uint
 }
 
 
-auto Librarian::entryExists(Library library, const QString &baseName) const -> bool
+auto Librarian::exists(Librarian::Library library, const QString &baseName) const -> bool
 {
-    return QFile::exists(entryFullPath(library, baseName));
+    return QFile::exists(fullPath(library, baseName));
 }
 
 
-auto Librarian::flightRouteGet(const QString &baseName) const -> QObject *
+auto Librarian::get(Librarian::Library library, const QString &baseName) const -> QObject *
 {
-    auto *route = new Navigation::FlightRoute();
-    if (route == nullptr) {
+    if (library == Routes) {
+        auto *route = new Navigation::FlightRoute();
+        if (route == nullptr) {
+            return nullptr;
+        }
+        auto error = route->loadFromGeoJSON(fullPath(Routes, baseName));
+        if (error.isEmpty()) {
+            return route;
+        }
+        delete route;
         return nullptr;
     }
-    auto error = route->loadFromGeoJSON(entryFullPath(Routes, baseName));
-    if (error.isEmpty()) {
-        return route;
-    }
-    delete route;
+
     return nullptr;
 }
 
 
-auto Librarian::entryFullPath(Library library, const QString &baseName) const -> QString
+auto Librarian::fullPath(Librarian::Library library, const QString &baseName) const -> QString
 {
-    QStringList filterList;
-    filterList << "*";
-
-    QDir dir(libraryDirectory(library));
-    auto fileNames = dir.entryList(filterList, QDir::Files);
-    if (fileNames.isEmpty())
-        return {};
-    return dir.absoluteFilePath(fileNames[0]);
+    switch (library) {
+    case Aircraft:
+        return directory(library)+"/"+baseName+".json";
+    case Routes:
+        return directory(library)+"/"+baseName+".geojson";
+    }
+    return {};
 }
 
 
-void Librarian::flightRouteRemove(const QString &baseName) const
+void Librarian::remove(Librarian::Library library, const QString& baseName) const
 {
-    QFile::remove(entryFullPath(Routes, baseName));
+    QFile::remove(fullPath(library, baseName));
 }
 
 
-void Librarian::flightRouteRename(const QString &oldName, const QString &newName) const
+void Librarian::rename(Librarian::Library library, const QString &oldName, const QString &newName) const
 {
-    QFile::rename(entryFullPath(Routes, oldName), entryFullPath(Routes, newName));
+    QFile::rename(fullPath(library, oldName), fullPath(library, newName));
 }
 
 
-auto Librarian::libraryDirectory(Library library) const -> QString
+auto Librarian::directory(Library library) const -> QString
 {
     switch (library) {
     case Aircraft:
@@ -353,12 +354,12 @@ auto Librarian::libraryDirectory(Library library) const -> QString
 }
 
 
-auto Librarian::libraryEntries(Library library, const QString &filter) -> QStringList
+auto Librarian::entries(Library library, const QString &filter) -> QStringList
 {
     QStringList filterList;
     filterList << "*";
 
-    QDir dir(libraryDirectory(library));
+    QDir dir(directory(library));
     auto fileNames = dir.entryList(filterList, QDir::Files);
 
     QStringList fileBaseNames;

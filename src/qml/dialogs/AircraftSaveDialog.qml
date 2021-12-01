@@ -27,7 +27,7 @@ import enroute 1.0
 
 Dialog {
     id: dlg
-    title: qsTr("Save Flight Route…")
+    title: qsTr("Save Aircraft…")
 
     modal: true
     focus: true
@@ -52,7 +52,7 @@ Dialog {
         ItemDelegate {
             id: idel
             text: modelData
-            icon.source: "/icons/material/ic_directions.svg"
+            icon.source: "/icons/material/ic_airplanemode_active.svg"
 
             anchors.left: parent.left
             anchors.right: parent.right
@@ -85,7 +85,7 @@ Dialog {
 
             Layout.fillWidth: true
             focus: true
-            placeholderText: qsTr("Flight Route Name")
+            placeholderText: qsTr("Aircraft Name")
 
             onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
 
@@ -103,7 +103,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: global.librarian().entries(Librarian.Routes)
+            model: global.librarian().entries(Librarian.Aircraft)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -113,7 +113,7 @@ Dialog {
 
     onOpened: {
         dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
-        fileName.text = global.navigator().flightRoute.suggestedFilename()
+        fileName.text = global.navigator().aircraft.name
     }
 
     onRejected: {
@@ -126,7 +126,7 @@ Dialog {
         if (fileName.text === "")
             return
         finalFileName = fileName.text
-        if (global.librarian().exists(Librarian.Routes, finalFileName))
+        if (global.librarian().exists(Librarian.Aircraft, finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -138,12 +138,12 @@ Dialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = global.navigator().flightRoute.save(global.librarian().fullPath(Librarian.Routes, finalFileName))
+        var errorString = global.navigator().aircraft.save(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
         } else
-            toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
+            toast.doToast(qsTr("Aircraft %1 saved").arg(finalFileName))
     }
 
     Dialog {
@@ -195,14 +195,14 @@ Dialog {
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
         height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
-        title: qsTr("Overwrite flight route?")
+        title: qsTr("Overwrite aircraft?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
+            text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }

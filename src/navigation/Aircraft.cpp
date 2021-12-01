@@ -18,11 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDir>
+#include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
 
 #include "Aircraft.h"
+#include "GlobalObject.h"
+#include "Librarian.h"
 
 
 Navigation::Aircraft::Aircraft(QObject *parent) : QObject(parent) {
@@ -160,6 +164,28 @@ auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
     setVerticalDistanceUnit( static_cast<VerticalDistanceUnit>(content["verticalDistanceUnit"].toInt(Feet)) );
 
     return {};
+}
+
+
+auto Navigation::Aircraft::save(const QString& fileName) const -> QString
+{
+    // Make directory, if it does not yet exist.
+    QDir dir;
+    dir.mkpath(GlobalObject::librarian()->directory(Librarian::Aircraft));
+
+    QFile file(fileName);
+    auto success = file.open(QIODevice::WriteOnly);
+    if (!success) {
+        return tr("Unable to open the file '%1' for writing.").arg(fileName);
+    }
+    auto numBytesWritten = file.write(toJSON());
+    if (numBytesWritten == -1) {
+        file.close();
+        QFile::remove(fileName);
+        return tr("Unable to write to file '%1'.").arg(fileName);
+    }
+    file.close();
+    return QString();
 }
 
 

@@ -87,13 +87,11 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("Open from library …")
+                    text: qsTr("View Library …")
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-                        dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/FlightRouteOpenDialog.qml"
-                        dialogLoader.active = true
+                        stackView.push("AircraftLibrary.qml")
                     }
                 }
 
@@ -104,128 +102,10 @@ Page {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
                         dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
+                        dialogLoader.source = "../dialogs/AircraftSaveDialog.qml"
                         dialogLoader.active = true
                     }
                 }
-
-                MenuItem {
-                    text: qsTr("View Library …")
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        stackView.push("FlightRouteLibrary.qml")
-                    }
-                }
-
-                MenuSeparator { }
-
-                MenuItem {
-                    text: qsTr("Import …")
-                    enabled: Qt.platform.os !== "android"
-                    height: Qt.platform.os !== "android" ? undefined : 0
-
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-
-                        global.mobileAdaptor().importContent()
-                    }
-                }
-
-                AutoSizingMenu {
-                    title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-                    enabled: (global.navigator().flightRoute.size > 0)
-
-                    MenuItem {
-                        text: qsTr("… to GeoJSON file")
-                        onTriggered: {
-                            headerMenuX.close()
-                            global.mobileAdaptor().vibrateBrief()
-                            highlighted = false
-                            parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
-                            if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
-                                return
-                            }
-                            if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
-                                shareErrorDialog.open()
-                                return
-                            }
-                            if (Qt.platform.os === "android")
-                                toast.doToast(qsTr("Flight route shared"))
-                            else
-                                toast.doToast(qsTr("Flight route exported"))
-                        }
-                    }
-
-                    MenuItem {
-                        text: qsTr("… to GPX file")
-                        onTriggered: {
-                            headerMenuX.close()
-                            global.mobileAdaptor().vibrateBrief()
-                            highlighted = false
-                            parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
-                            if (errorString === "abort") {
-                                toast.doToast(qsTr("Aborted"))
-                                return
-                            }
-                            if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
-                                shareErrorDialog.open()
-                                return
-                            }
-                            if (Qt.platform.os === "android")
-                                toast.doToast(qsTr("Flight route shared"))
-                            else
-                                toast.doToast(qsTr("Flight route exported"))
-                        }
-                    }
-                }
-
-                AutoSizingMenu {
-                    title: qsTr("Open in other app …")
-                    enabled: (global.navigator().flightRoute.size > 0)
-
-                    MenuItem {
-                        text: qsTr("… in GeoJSON format")
-
-                        onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
-                            highlighted = false
-                            parent.highlighted = false
-
-                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
-                            if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
-                                shareErrorDialog.open()
-                            } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
-                        }
-                    }
-
-                    MenuItem {
-                        text: qsTr("… in GPX format")
-
-                        onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
-                            highlighted = false
-                            parent.highlighted = false
-
-                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
-                            if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
-                                shareErrorDialog.open()
-                            } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
-                        }
-                    }
-
-                }
-
             }
         }
 

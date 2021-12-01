@@ -278,6 +278,18 @@ public:
      */
     Q_INVOKABLE QString loadFromJSON(const QByteArray &JSON);
 
+    /*! \brief Saves aircraft to a file
+     *
+     * This method saves the aircraft as a JSON file.
+     *
+     * @param fileName File name, needs to include path and extension
+     *
+     * @returns Empty string in case of success, human-readable, translated
+     * error message otherwise.
+     */
+    Q_INVOKABLE QString save(const QString& fileName) const;
+
+
     /*! \brief Exports to route to JSON
      *
      * This method serialises the object as a JSON

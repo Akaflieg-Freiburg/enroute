@@ -50,14 +50,14 @@ namespace Units {
 
         /*! \brief Constructs a volume flow
          *
-         * @param volumeInGAL volume in gallons per hour
+         * @param volumeFlowInGPH volume in gallons per hour
          *
          * @returns volume flow
          */
-        Q_INVOKABLE static constexpr Units::VolumeFlow fromGPH(double volumFlowInGPH)
+        Q_INVOKABLE static constexpr Units::VolumeFlow fromGPH(double volumeFlowInGPH)
         {
             VolumeFlow result;
-            result.m_volumeFlowInLPH = LitersPerGallon*volumFlowInGPH;
+            result.m_volumeFlowInLPH = LitersPerGallon*volumeFlowInGPH;
             return result;
         }
 

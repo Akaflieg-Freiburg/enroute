@@ -51,7 +51,7 @@ public:
 
     /*! \brief Name of the directory containing the given
      *
-     *  @param Library The library that is accessed
+     *  @param library The library that is accessed
      *
      *  @returns Name of the directory, without trailing slash
      */
@@ -73,7 +73,7 @@ public:
 
     /*! \brief Check if an entry with the given name exists in the library
      *
-     *  @param Library The library that is accessed
+     *  @param library The library that is accessed
      *
      *  @param baseName File name, without path and without extension
      *
@@ -83,14 +83,14 @@ public:
 
     /*! \brief Full path of a library entry
      *
-     *  @param Library The library that is accessed
+     *  @param library The library that is accessed
      *
      *  @param baseName Name of the entry, without path and without
      *  extension
      *
      *  @returns Full path of the entry, with extension
      */
-    Q_INVOKABLE QString fullPath(Library library, const QString &baseName) const;
+    Q_INVOKABLE QString fullPath(Librarian::Library library, const QString &baseName) const;
 
     /*! \brief Constructs an object from library entry
      *
@@ -105,7 +105,7 @@ public:
      * delete the flight route once it is no longer used. Note that QML does
      * that automatically.
      *
-     * @param Library The library that is accessed
+     * @param library The library that is accessed
      *
      * @param baseName File name, without path and without extension
      *
@@ -145,7 +145,7 @@ public:
 
     /*! \brief Removes an entry from a library
      *
-     *  @param Library The library that is accessed
+     *  @param library The library that is accessed
      *
      *  @param baseName File name, without path and without extension
      */
@@ -153,7 +153,7 @@ public:
 
     /*! \brief Renames an entry in a library
      *
-     *  @param Library The library that is accessed
+     *  @param library The library that is accessed
      *
      * @param oldName Name of the file that is to be renamed, without path and
      * without extension

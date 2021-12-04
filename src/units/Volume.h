@@ -37,7 +37,7 @@ namespace Units {
     public:
         /*! \brief Constructs a volume
          *
-         * @param distanceInL volume in liters
+         * @param volumeInL volume in liters
          *
          * @returns volume
          */
@@ -54,10 +54,10 @@ namespace Units {
          *
          * @returns volume
          */
-        static constexpr Volume fromGAL(double volumInGAL)
+        static constexpr Volume fromGAL(double volumeInGAL)
         {
             Volume result;
-            result.m_volumeInL = LitersPerGallon*volumInGAL;
+            result.m_volumeInL = LitersPerGallon*volumeInGAL;
             return result;
         }
 

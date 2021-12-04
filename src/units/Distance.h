@@ -257,7 +257,7 @@ namespace Units {
          *  human consumption, of the form "10.9 nm", "130 ft" or "3500 m".
          *  The distance is rounded to reasonable precision.
          *
-         *  @param unit Determines the units that are used.
+         *  @param units Determines the units that are used.
          *
          *  @param roundBigNumbers If true, then round "1234" to "1200" and "117" to "120"
          *

@@ -223,7 +223,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param newFuelConsumptionPerHour Fuel consumption per hour
+     * @param newFuelConsumption Fuel consumption
      */
     void setFuelConsumption(Units::VolumeFlow newFuelConsumption);
 
@@ -302,7 +302,6 @@ public:
      * error message otherwise.
      */
     Q_INVOKABLE QString save(const QString& fileName) const;
-
 
     /*! \brief Exports to route to JSON
      *

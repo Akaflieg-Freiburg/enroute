@@ -61,6 +61,9 @@ public slots:
     void run();
 
 signals:
+    /*! \brief Emitted to indicate that the GUI should open the "Aircraft" page */
+    void requestOpenAircraftPage();
+
     /*! \brief Emitted to indicate that the GUI should open the "nearby" page */
     void requestOpenNearbyPage();
 

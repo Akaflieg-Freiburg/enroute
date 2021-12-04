@@ -552,6 +552,11 @@ ApplicationWindow {
                 stackView.pop()
             }
 
+            function onRequestOpenAircraftPage() {
+                stackView.pop()
+                stackView.push("pages/Aircraft.qml")
+            }
+
             function onRequestOpenNearbyPage() {
                 stackView.pop()
                 stackView.push("pages/Nearby.qml")

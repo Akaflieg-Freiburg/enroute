@@ -101,6 +101,15 @@ void DemoRunner::run()
 
     // Nearby waypoints
     {
+        qWarning() << "Demo Mode" << "Aircraft Page";
+        emit requestOpenAircraftPage();
+        delay(4s);
+        applicationWindow->grabWindow().save("01-03-04-Aircraft.png");
+        emit requestClosePages();
+    }
+
+    // Nearby waypoints
+    {
         qWarning() << "Demo Mode" << "Nearby Waypoints Page";
         emit requestOpenNearbyPage();
         delay(4s);

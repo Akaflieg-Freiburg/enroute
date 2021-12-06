@@ -128,13 +128,12 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
 
-    // Workaround for crappy Hauwei devices.
+    // Workaround for crappy Hauwei and Samsung devices.
     //
     // On Huawei devices, set the environment variable "QT_ANDROID_NO_EXIT_CALL", which
-    // prevents an exit() call, and thereby prevents a crash on these devices.
-    if (MobileAdaptor::manufacturer() == "HUAWEI") {
-        qputenv("QT_ANDROID_NO_EXIT_CALL", "1");
-    }
+    // prevents an exit() call, and thereby prevents a crash on these devices. Same problem on Samsung Galaxy S21 devices with Android 12.
+    qputenv("QT_ANDROID_NO_EXIT_CALL", "1");
+
 
     // Command line parsing
     QCommandLineParser parser;

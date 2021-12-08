@@ -40,8 +40,7 @@ using namespace std::chrono_literals;
 
 GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : QObject(parent),
-#warning 
-//      _tileServer(QUrl()),
+      _tileServer(QUrl()),
       _styleFile(nullptr)
 {
     // Initialize _combinedGeoJSON_ with an empty document
@@ -51,8 +50,7 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     QJsonDocument geoDoc(resultObject);
     _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 
-#warning
-//    _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
+    _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 
     // Deferred initializsation
     QTimer::singleShot(0, this, &GeoMaps::GeoMapProvider::deferredInitialization);
@@ -245,22 +243,19 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
-    #warning
-//    _tileServer.removeMbtilesFileSet(_currentPath);
+    _tileServer.removeMbtilesFileSet(_currentPath);
 
     // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    #warning    
-//    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);
     QFile file(QStringLiteral(":/flightMap/osm-liberty.json"));
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
-#warning
-//    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
-//    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
+    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
     _styleFile->open();
     _styleFile->write(data);
     _styleFile->close();

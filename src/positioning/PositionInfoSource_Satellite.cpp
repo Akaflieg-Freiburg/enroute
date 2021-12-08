@@ -86,10 +86,8 @@ void Positioning::PositionInfoSource_Satellite::onPositionUpdated(const QGeoPosi
     }
 
     // It seems that some devices do not report valid time.
-    // If that is the case, set the current time as a timestamp.
-    if (!correctedInfo.timestamp().isValid()) {
-        correctedInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
-    }
+    // Therefore, set the current time as a timestamp.
+    correctedInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
 
     setPositionInfo( Positioning::PositionInfo(correctedInfo) );
     updateStatusString();

@@ -48,11 +48,6 @@ if( ANDROID )
     find_package(Qt5 5.15 COMPONENTS AndroidExtras REQUIRED)
     find_package(Qt5QuickCompiler)
 else()
-    find_package(ECM REQUIRED NO_MODULE)
-    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-    include(KDEInstallDirs)
-
-    find_package(KF5Notifications REQUIRED)
     find_package(Qt5 5.15 COMPONENTS DBus Widgets REQUIRED)
 endif()
 

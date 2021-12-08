@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KNotification>
+#include <QDBusInterface>
+#include <QDebug>
 
 #include "platform/Notifier.h"
 
 
-QMap<Platform::Notifier::Notifications, QPointer<KNotification>> notificationPtrs;
+QMap<Platform::Notifier::Notifications, uint> notificationIDs;
 
 
 Platform::Notifier::Notifier(QObject *parent)
@@ -35,13 +36,19 @@ Platform::Notifier::Notifier(QObject *parent)
 
 Platform::Notifier::~Notifier()
 {
+    QDBusInterface notify("org.freedesktop.Notifications",
+                          "/org/freedesktop/Notifications",
+                          "org.freedesktop.Notifications",
+                          QDBusConnection::sessionBus());
 
-    foreach(auto notification, notificationPtrs) {
-        if (notification.isNull()) {
+    foreach(auto notificationID, notificationIDs) {
+        if (notificationID == 0) {
             continue;
         }
-        notification->close();
-        delete notification;
+        auto reply = notify.call("CloseNotification", notificationID); // time: 0 means: never expire.
+        if (reply.type() != QDBusMessage::ReplyMessage) {
+            qWarning() << reply.errorName() << reply.errorMessage();
+        }
     }
 
 }
@@ -49,23 +56,60 @@ Platform::Notifier::~Notifier()
 
 void Platform::Notifier::hideNotification(Platform::Notifier::Notifications notificationType)
 {
-
-    auto notification = notificationPtrs.value(notificationType, nullptr);
-    if (!notification.isNull()) {
-        notification->close();
-        delete notification;
+qWarning() << "hide" << notificationType;
+    if (!notificationIDs.contains(notificationType)) {
+        return;
     }
 
-    if (notificationPtrs.contains(notificationType)) {
-        notificationPtrs.remove(notificationType);
+    auto notificationID = notificationIDs.value(notificationType, 0);
+    if (notificationID == 0) {
+        return;
     }
+
+    QDBusInterface notify("org.freedesktop.Notifications",
+                          "/org/freedesktop/Notifications",
+                          "org.freedesktop.Notifications",
+                          QDBusConnection::sessionBus());
+    auto reply = notify.call("CloseNotification", notificationID); // time: 0 means: never expire.
+    if (reply.type() != QDBusMessage::ReplyMessage) {
+        qWarning() << reply.errorName() << reply.errorMessage();
+    }
+    notificationIDs.remove(notificationType);
 
 }
 
 
 void Platform::Notifier::showNotification(Notifications notification, const QString& text, const QString& longText)
 {
+    qWarning() << "show" << notification;
 
+    QDBusInterface notify("org.freedesktop.Notifications",
+                          "/org/freedesktop/Notifications",
+                          "org.freedesktop.Notifications",
+                          QDBusConnection::sessionBus());
+
+    auto reply = notify.call("Notify",
+                             "Enroute Flight Navigation",
+                             notificationIDs.value(notification, 0), // Notification to replace. 0 means: do not replace
+                             "de.akaflieg_freiburg.enroute",
+                             title(notification),
+                             text,
+                             QStringList(), // actions_list
+                             QMap<QString,QVariant>(), // hint
+                             0); // time: 0 means: never expire.
+    if (reply.type() == QDBusMessage::ReplyMessage) {
+        if (reply.arguments().size() > 0) {
+            bool ok = false;
+            auto number = reply.arguments().at(0).toUInt(&ok);
+            if (ok) {
+                notificationIDs.insert(notification, number);
+            }
+        }
+    } else {
+        qWarning() << reply.errorName() << reply.errorMessage();
+    }
+
+    /*
     // Get notificonst cation, &if it exists; otherwise get nullptr
     auto notificationPtr = notificationPtrs.value(notification, nullptr);
 
@@ -95,5 +139,5 @@ void Platform::Notifier::showNotification(Notifications notification, const QStr
         notificationPtr->setText(longText);
     }
     notificationPtr->sendEvent();
-
+*/
 }

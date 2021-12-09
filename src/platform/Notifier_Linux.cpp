@@ -18,82 +18,90 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <KNotification>
+#include <QApplication>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 #include "platform/Notifier.h"
 
 
-QMap<Platform::Notifier::Notifications, QPointer<KNotification>> notificationPtrs;
+QMap<Platform::Notifier::NotificationTypes, uint> notificationIDs;
+QPointer<QDBusInterface> notficationInterface;
+
+// This implementation of notifications uses the specification found here:
+// https://specifications.freedesktop.org/notification-spec/latest/ar01s09.html
+//
+// Help with DBus programming is found here:
+// https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/
+
+
+
+// This method returns a pointer to the QDBusInterface used to access notifications.
+// It constructs the object, if necessary.
+// We do not implement this in the constructor because the construction
+// takes time, which would add to the startup delay.
+
+QDBusInterface* getNotificationInterface()
+{
+    if (notficationInterface.isNull()) {
+        notficationInterface = new QDBusInterface("org.freedesktop.Notifications",
+                                                  "/org/freedesktop/Notifications",
+                                                  "org.freedesktop.Notifications",
+                                                  QDBusConnection::sessionBus());
+        notficationInterface->setParent(qApp);
+    }
+    return notficationInterface;
+}
 
 
 Platform::Notifier::Notifier(QObject *parent)
     : QObject(parent)
 {
-    ;
 }
 
 
 Platform::Notifier::~Notifier()
 {
 
-    foreach(auto notification, notificationPtrs) {
-        if (notification.isNull()) {
+    foreach(auto notificationID, notificationIDs) {
+        if (notificationID == 0) {
             continue;
         }
-        notification->close();
-        delete notification;
+        getNotificationInterface()->call("CloseNotification", notificationID);
     }
+    delete notficationInterface;
 
 }
 
 
-void Platform::Notifier::hideNotification(Platform::Notifier::Notifications notificationType)
+void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes notificationType)
 {
 
-    auto notification = notificationPtrs.value(notificationType, nullptr);
-    if (!notification.isNull()) {
-        notification->close();
-        delete notification;
+    auto notificationID = notificationIDs.value(notificationType, 0);
+    if (notificationID == 0) {
+        return;
     }
 
-    if (notificationPtrs.contains(notificationType)) {
-        notificationPtrs.remove(notificationType);
-    }
+    getNotificationInterface()->call("CloseNotification", notificationID);
+    notificationIDs.remove(notificationType);
 
 }
 
 
-void Platform::Notifier::showNotification(Notifications notification, const QString& text, const QString& longText)
+void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
 {
 
-    // Get notificonst cation, &if it exists; otherwise get nullptr
-    auto notificationPtr = notificationPtrs.value(notification, nullptr);
-
-    // Otherwise, generate a new notification
-    if (notificationPtr.isNull()) {
-        switch (notification) {
-        case DownloadInfo:
-            notificationPtr = new KNotification(QStringLiteral("downloading"), KNotification::Persistent, this);
-            break;
-        case TrafficReceiverSelfTestError:
-            notificationPtr = new KNotification(QStringLiteral("trafficReceiverSelfTestError"), KNotification::Persistent, this);
-            break;
-        case TrafficReceiverRuntimeError:
-            notificationPtr = new KNotification(QStringLiteral("trafficReceiverRuntimeError"), KNotification::Persistent, this);
-            break;
-        }
-        notificationPtr->setDefaultAction( tr("Open Application") );
-        notificationPtr->setPixmap( {":/icons/appIcon.png"} );
+    QDBusReply<uint> reply = getNotificationInterface()->call("Notify",
+                                                              "Enroute Flight Navigation",
+                                                              notificationIDs.value(notificationType, 0), // Notification to replace. 0 means: do not replace
+                                                              "", // Icon
+                                                              "Enroute Flight Navigation", // Title
+                                                              title(notificationType), // Summary
+                                                              QStringList(), // actions_list
+                                                              QMap<QString,QVariant>(), // hint
+                                                              0); // time: 0 means: never expire.
+    if (reply.isValid()) {
+        notificationIDs.insert(notificationType, reply.value());
     }
-
-    notificationPtr->setTitle(title(notification));
-    notificationPtrs[notification] = notificationPtr;
-    connect(notificationPtr, &KNotification::defaultActivated, [this, notification]() { emit notificationClicked(notification); });
-    if (longText.isEmpty()) {
-        notificationPtr->setText(text);
-    } else {
-        notificationPtr->setText(longText);
-    }
-    notificationPtr->sendEvent();
 
 }

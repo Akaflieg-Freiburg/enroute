@@ -39,18 +39,18 @@ Platform::Notifier::~Notifier()
 }
 
 
-void Platform::Notifier::hideNotification(Platform::Notifier::Notifications notification)
+void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes notificationType)
 {
-    jint jni_ID                   = notification;
+    jint jni_ID                   = notificationType;
 //    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
 }
 
 
-void Platform::Notifier::showNotification(Platform::Notifier::Notifications notification, const QString& text, const QString& longText)
+void Platform::Notifier::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
 {
-    jint jni_ID                    = notification;
-    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notification));
+    jint jni_ID                    = notificationType;
+    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notificationType));
     QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);
     QAndroidJniObject jni_longText = QAndroidJniObject::fromString(longText);
 

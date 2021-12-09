@@ -21,7 +21,7 @@
 #include "platform/Notifier.h"
 
 
-auto Platform::Notifier::title(Platform::Notifier::Notifications notification) -> QString
+auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
 {
     switch (notification) {
     case DownloadInfo:

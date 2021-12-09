@@ -83,7 +83,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Traffic::Warning>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
-    qRegisterMetaType<Platform::Notifier::Notifications>("Platform::Notifier::Notifications");
+    qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft");
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");

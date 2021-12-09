@@ -38,7 +38,7 @@ Traffic::TrafficDataSource_File::TrafficDataSource_File(const QString& fileName,
 void Traffic::TrafficDataSource_File::connectToTrafficReceiver()
 {
     // Do not do anything if the file is open and there are no errors
-    if ( receivingHeartbeat() ) {
+    if (simulatorFile.isOpen() && (simulatorFile.error() == QFile::NoError)) {
         return;
     }
 

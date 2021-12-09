@@ -71,7 +71,7 @@ Page {
                     dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startFileDownload,
                         nFilesTotal: nFilesTotal,
                         mapTypeString: mapTypeString};
-                    dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
+                    dialogLoader.source = "dialogs/TooManyDownloadsDialog.qml";
                     dialogLoader.active = true;
                 } else {
                     model.modelData.startFileDownload();

@@ -114,7 +114,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotifi
     // In these cases, the methods of the Global class must not be called
     // and we simply return.
     if (GlobalObject::canConstruct()) {
-        GlobalObject::notifier()->emitNotificationClicked((Platform::Notifier::Notifications)notifyID);
+        GlobalObject::notifier()->emitNotificationClicked((Platform::Notifier::NotificationTypes)notifyID);
     }
 }
 

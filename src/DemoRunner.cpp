@@ -24,6 +24,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
+#include <QTranslator>
 #include <chrono>
 
 #include "DemoRunner.h"
@@ -72,7 +73,7 @@ void DemoRunner::run()
     Q_ASSERT(m_engine != nullptr);
 
     // Obtain pointers to QML items
-    auto* applicationWindow =  qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", m_engine));
+    auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", m_engine));
     Q_ASSERT(applicationWindow != nullptr);
     auto* flightMap = findQQuickItem("flightMap", m_engine);
     Q_ASSERT(flightMap != nullptr);
@@ -93,8 +94,19 @@ void DemoRunner::run()
     applicationWindow->setProperty("height", 600);
 
     // Set language
-    GlobalObject::settings()->installTranslators("en");
-    m_engine->retranslate();
+    auto* enrouteTranslator = new QTranslator(qApp);
+    if (enrouteTranslator->load(QString(":enroute_en.qm"))) {
+        foreach(auto translator, qApp->findChildren<QTranslator*>()) {
+            if (QCoreApplication::removeTranslator(translator)) {
+                delete translator;
+            }
+        }
+        if (QCoreApplication::installTranslator(enrouteTranslator)) {
+            m_engine->retranslate();
+        }
+    } else {
+        delete enrouteTranslator;
+    }
 
     // Clear flight route
     GlobalObject::navigator()->flightRoute()->clear();

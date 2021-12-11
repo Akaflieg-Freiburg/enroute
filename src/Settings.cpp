@@ -30,8 +30,6 @@
 Settings::Settings(QObject *parent)
     : QObject(parent)
 {
-    installTranslators();
-
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
 }
@@ -97,6 +95,7 @@ void Settings::setIgnoreSSLProblems(bool ignore)
     settings.setValue("ignoreSSLProblems", ignore);
     emit ignoreSSLProblemsChanged();
 }
+
 
 void Settings::setLastWhatsNewHash(uint lwnh)
 {
@@ -173,29 +172,4 @@ void Settings::setUseMetricUnits(bool unitHorizKmh)
 auto Settings::useMetricUnitsStatic() -> bool
 {
     return GlobalObject::settings()->useMetricUnits();
-}
-
-
-void Settings::installTranslators(const QString &localeName)
-{
-    // Remove existing translators
-    if (enrouteTranslator != nullptr) {
-        QCoreApplication::removeTranslator(enrouteTranslator);
-        delete enrouteTranslator;
-    }
-
-    // If desired, install new translators
-    if (localeName.isEmpty()) {
-        QLocale::setDefault(QLocale::system());
-    } else {
-        QLocale::setDefault(QLocale(localeName));
-    }
-
-    enrouteTranslator = new QTranslator(this);
-    if (localeName.isEmpty()) {
-        enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)));
-    } else {
-        enrouteTranslator->load(QString(":enroute_%1.qm").arg(localeName));
-    }
-    QCoreApplication::installTranslator(enrouteTranslator);
 }

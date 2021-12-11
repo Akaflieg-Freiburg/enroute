@@ -69,8 +69,7 @@ using namespace std::chrono_literals;
 auto main(int argc, char *argv[]) -> int
 {
     // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
-#warning
-//    qputenv("QSG_RENDER_LOOP", "basic");
+    qputenv("QSG_RENDER_LOOP", "basic");
 
     // Register types
     qRegisterMetaType<Units::Angle>();

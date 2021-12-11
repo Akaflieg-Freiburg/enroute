@@ -79,6 +79,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a08a36f2c3b6a99c964887e1dc926e200"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfo.html#a08a36f2c3b6a99c964887e1dc926e200">positionErrorEstimate</a> () const</td></tr>
 <tr class="memdesc:a08a36f2c3b6a99c964887e1dc926e200"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position error estimate.  <a href="classPositioning_1_1PositionInfo.html#a08a36f2c3b6a99c964887e1dc926e200">More...</a><br /></td></tr>
 <tr class="separator:a08a36f2c3b6a99c964887e1dc926e200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3800ca5b4dac2b290f4f5c9fc0bd71f"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfo.html#aa3800ca5b4dac2b290f4f5c9fc0bd71f">timestamp</a> () const</td></tr>
+<tr class="memdesc:aa3800ca5b4dac2b290f4f5c9fc0bd71f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp.  <a href="classPositioning_1_1PositionInfo.html#aa3800ca5b4dac2b290f4f5c9fc0bd71f">More...</a><br /></td></tr>
+<tr class="separator:aa3800ca5b4dac2b290f4f5c9fc0bd71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b48da3bee8445ddd4cd502f4512a013"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfo.html#a8b48da3bee8445ddd4cd502f4512a013">timestampString</a> () const</td></tr>
 <tr class="memdesc:a8b48da3bee8445ddd4cd502f4512a013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp string.  <a href="classPositioning_1_1PositionInfo.html#a8b48da3bee8445ddd4cd502f4512a013">More...</a><br /></td></tr>
 <tr class="separator:a8b48da3bee8445ddd4cd502f4512a013"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -256,7 +259,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result of the comparison </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfo_8h_source.html#l00134">134</a> of file <a class="el" href="PositionInfo_8h_source.html">PositionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfo_8h_source.html#l00143">143</a> of file <a class="el" href="PositionInfo_8h_source.html">PositionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -277,6 +280,36 @@ Static Public Attributes</h2></td></tr>
 
 <p>Position error estimate. </p>
 <dl class="section return"><dt>Returns</dt><dd>Position error estimate or NaN if unknown. </dd></dl>
+
+</div>
+</div>
+<a id="aa3800ca5b4dac2b290f4f5c9fc0bd71f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3800ca5b4dac2b290f4f5c9fc0bd71f">&#9670;&nbsp;</a></span>timestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QDateTime Positioning::PositionInfo::timestamp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Timestamp. </p>
+<dl class="section return"><dt>Returns</dt><dd>Timestamp of the position info. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="PositionInfo_8h_source.html#l00092">92</a> of file <a class="el" href="PositionInfo_8h_source.html">PositionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -306,7 +339,7 @@ Static Public Attributes</h2></td></tr>
 <p>Timestamp string. </p>
 <dl class="section return"><dt>Returns</dt><dd>Timestamp of the position info, as a string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfo_8h_source.html#l00092">92</a> of file <a class="el" href="PositionInfo_8h_source.html">PositionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfo_8h_source.html#l00101">101</a> of file <a class="el" href="PositionInfo_8h_source.html">PositionInfo.h</a>.</p>
 
 </div>
 </div>
@@ -434,7 +467,7 @@ Static Public Attributes</h2></td></tr>
 <p>Liftetime of geographic positioning information. </p>
 <p>Geographic position information is considered valid only for this amount of time after it has been received. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfo_8h_source.html#l00150">150</a> of file <a class="el" href="PositionInfo_8h_source.html">PositionInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfo_8h_source.html#l00159">159</a> of file <a class="el" href="PositionInfo_8h_source.html">PositionInfo.h</a>.</p>
 
 </div>
 </div>

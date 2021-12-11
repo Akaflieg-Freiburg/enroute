@@ -25,7 +25,6 @@
 #include <QObject>
 #include <QPointer>
 #include <QSettings>
-#include <QTranslator>
 
 
 /*! \brief Global Settings Manager
@@ -247,15 +246,6 @@ public:
      */
     void setUseMetricUnits(bool unitHorizKmh);
 
-    /*! \brief Removes/Installs global application translators
-     *
-     * This method can be used to change the GUI language on the fly.
-     * It removes all existing translators and installs new ones.
-     *
-     * @param localeName Name of the locale (such as "de") or an empty string for the system locale.
-     */
-    void installTranslators(const QString &localeName={});
-
 signals:
     /*! Notifier signal */
     void acceptedTermsChanged();
@@ -286,8 +276,6 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(Settings)
-
-    QPointer<QTranslator> enrouteTranslator {nullptr};
 
     QSettings settings;
 };

@@ -20,11 +20,11 @@
 
 #pragma once
 
-#include <QtMath>
-#include <QObject>
-
 #include "units/Distance.h"
 #include "units/Speed.h"
+
+#include <QtMath>
+#include <QObject>
 
 
 namespace Units {
@@ -38,6 +38,18 @@ namespace Units {
         Q_GADGET
 
     public:
+        /*! \brief Constructs a time
+         *
+         * @param timeInmS  time in milliseconds
+         *
+         * @returns time
+         */
+        static Time fromMS(double timeInMS) {
+            Time result;
+            result._timeInS = timeInMS*1000.0;
+            return result;
+        }
+
         /*! \brief Constructs a time
          *
          * @param timeInS  time in seconds
@@ -121,22 +133,6 @@ namespace Units {
         double _timeInS{qQNaN()};
     };
 };
-
-
-/*! \brief Divide distance and speed
- *
- * @param dist numerator
- *
- * @param speed denominator
- *
- * @returns quotient of numerator and denominator as time
- */
-[[maybe_unused]]  static Units::Time operator/(Units::Distance dist,
-                                                      Units::Speed speed) {
-    if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
-        return {};
-    return Units::Time::fromS(dist.toM() / speed.toMPS());
-}
 
 
 // Declare meta types

@@ -20,45 +20,43 @@
 
 #pragma once
 
-#include <QNetworkReply>
-#include <QSslError>
+#include "units/Distance.h"
+#include "units/Time.h"
 
-#include "GlobalObject.h"
+//
+// Operations
+//
 
-namespace DataManagement
+
+/*! \brief Compute speed as quotient of distance by time
+ *
+ *  @param dist Distance
+ *
+ *  @param time Time
+ *
+ *  @return Speed
+ */
+inline Units::Speed operator/(Units::Distance dist, Units::Time time)
 {
+    if ((!dist.isFinite()) || (!time.isFinite()) || (qFuzzyIsNull(time.toS())))
+        return {};
 
-  /*! \brief Handles SSL error
-   *
-   *  This class watches for SSL errors that are reported by the global
-   *  QNetworkAccessManager instance.  Depending on the settings, errors are
-   *  either ignored or reported via the SSLError() signal.
-   */
+    return Units::Speed::fromMPS(dist.toM()/time.toS());
+}
 
-  class SSLErrorHandler : public GlobalObject
-  {
-    Q_OBJECT
 
-  public:
-    /*! \brief Standard constructor
-     *
-     *  @param parent The standard QObject parent pointer.
-     */
-    explicit SSLErrorHandler(QObject *parent = nullptr);
+/*! \brief Compute time as quotient of distance and speed
+ *
+ * @param dist Distance
+ *
+ * @param speed Speed
+ *
+ * @returns Time
+ */
+inline Units::Time operator/(Units::Distance dist, Units::Speed speed)
+{
+    if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
+        return {};
 
-  signals:
-    /*! \brief Notification signal for the property with the same name */
-    void sslError(QString description);
-
-  private slots:
-    // This is the actual error handler.
-    void onSSLError(QNetworkReply *reply, const QList<QSslError> &errors);
-
-  private:
-    Q_DISABLE_COPY_MOVE(SSLErrorHandler)
-
-    // Re-implemented from base class. See documentation there.
-    void deferredInitialization();
-  };
-
-};
+    return Units::Time::fromS(dist.toM() / speed.toMPS());
+}

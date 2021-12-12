@@ -85,6 +85,15 @@ public:
      */
     Q_INVOKABLE Units::Distance positionErrorEstimate() const;
 
+    /*! \brief Timestamp
+     *
+     *  @returns Timestamp of the position info.
+     */
+    Q_INVOKABLE QDateTime timestamp() const
+    {
+        return m_positionInfo.timestamp().toUTC();
+    }
+
     /*! \brief Timestamp string
      *
      *  @returns Timestamp of the position info, as a string.

@@ -82,5 +82,5 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
         emit factorWithoutPosition(*trafficFactor_DistanceOnly);
     }
 
-    pressureAltitudeUpdated(barometricHeight);
+    emit pressureAltitudeUpdated(barometricHeight);
 }

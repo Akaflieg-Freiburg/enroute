@@ -121,6 +121,15 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
 
+    // Install translator
+    auto* enrouteTranslator = new QTranslator(&app);
+    if (enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)))) {
+        QCoreApplication::installTranslator(enrouteTranslator);
+    } else {
+        delete enrouteTranslator;
+    }
+
+
     // Workaround for crappy Hauwei and Samsung devices.
     //
     // On Huawei devices, set the environment variable "QT_ANDROID_NO_EXIT_CALL", which

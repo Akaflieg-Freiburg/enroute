@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QDataStream>
+#include <QGeoCoordinate>
 #include <QXmlStreamReader>
 
 #include "units/Speed.h"

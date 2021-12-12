@@ -97,7 +97,6 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library …")
-                    enabled: (global.navigator().flightRoute.size > 0)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false

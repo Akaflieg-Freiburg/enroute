@@ -30,8 +30,6 @@
 Settings::Settings(QObject *parent)
     : QObject(parent)
 {
-    installTranslators();
-
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
 }
@@ -98,6 +96,7 @@ void Settings::setIgnoreSSLProblems(bool ignore)
     emit ignoreSSLProblemsChanged();
 }
 
+
 void Settings::setLastWhatsNewHash(uint lwnh)
 {
     if (lwnh == lastWhatsNewHash()) {
@@ -159,6 +158,7 @@ void Settings::setNightMode(bool newNightMode)
 }
 
 
+<<<<<<< HEAD
 void Settings::installTranslators(const QString &localeName)
 {
     // Remove existing translators
@@ -181,4 +181,20 @@ void Settings::installTranslators(const QString &localeName)
         enrouteTranslator->load(QString(":enroute_%1.qm").arg(localeName));
     }
     QCoreApplication::installTranslator(enrouteTranslator);
+=======
+void Settings::setUseMetricUnits(bool unitHorizKmh)
+{
+    if (unitHorizKmh == useMetricUnits()) {
+        return;
+    }
+
+    settings.setValue("System/useMetricUnits", unitHorizKmh);
+    emit useMetricUnitsChanged();
+}
+
+
+auto Settings::useMetricUnitsStatic() -> bool
+{
+    return GlobalObject::settings()->useMetricUnits();
+>>>>>>> master
 }

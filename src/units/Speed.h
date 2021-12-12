@@ -24,6 +24,7 @@
 #include <QtMath>
 #include <QObject>
 
+
 namespace Units {
 
     /*! \brief Convenience class for speed computations
@@ -130,6 +131,17 @@ namespace Units {
             if (qFuzzyIsNull(rhs._speedInMPS))
                 return qQNaN();
             return _speedInMPS / rhs._speedInMPS;
+        }
+
+        /*! \brief Adds two speeds
+         *
+         * @param rhs Denominator of the division
+         *
+         * @returns Quotient as a dimension-less number
+         */
+        Q_INVOKABLE Units::Speed operator+(Units::Speed rhs)
+        {
+            return Units::Speed::fromMPS(_speedInMPS + rhs._speedInMPS);
         }
 
         /*! \brief Equality check
@@ -244,6 +256,24 @@ namespace Units {
     };
 
 };
+
+
+//
+// Operations
+//
+
+/*! \brief Scalar multiplication
+ *
+ *  @param lhs Scalar
+ *
+ *  @param rhs Speed
+ *
+ *  @returns Multiplies speed
+ */
+inline Units::Speed operator*(double lhs, Units::Speed rhs )
+{
+    return Units::Speed::fromMPS( lhs*rhs.toMPS() );
+}
 
 
 /*! \brief Serialization of a speed object into a QDataStream

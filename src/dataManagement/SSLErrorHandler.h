@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include <QNetworkReply>
+#include <QSslError>
+
 #include "GlobalObject.h"
 
 namespace DataManagement

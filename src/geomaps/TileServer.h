@@ -24,7 +24,9 @@
 #include <qhttpengine/server.h>
 
 #include <QPointer>
+#include <QUrl>
 
+#include <dataManagement/Downloadable.h>
 
 namespace GeoMaps {
 

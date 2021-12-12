@@ -157,7 +157,7 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
     // If we have a current source, if the current source has a heartbeat and if the current source is a TCP source, then we simply stick with it.
     if ((qobject_cast<Traffic::TrafficDataSource_Tcp*>(m_currentSource) != nullptr)
             && m_currentSource->receivingHeartbeat() ) {
-        emit setReceivingHeartbeat(true);
+        setReceivingHeartbeat(true);
         return;
     }
 

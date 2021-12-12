@@ -40,7 +40,7 @@ namespace Units {
     public:
         /*! \brief Constructs a time
          *
-         * @param timeInmS  time in milliseconds
+         * @param timeInMS  time in milliseconds
          *
          * @returns time
          */

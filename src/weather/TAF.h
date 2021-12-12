@@ -21,9 +21,9 @@
 #pragma once
 
 #include <QDataStream>
+#include <QGeoCoordinate>
 #include <QXmlStreamReader>
 
-//#include "Units.h"
 #include "weather/Decoder.h"
 
 

@@ -51,7 +51,7 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
     // Schedule the first update in 1 seconds from now
-    connect(&_updateTimer, &QTimer::timeout, [=, this](){ this->update(); });
+    connect(&_updateTimer, &QTimer::timeout, this, [=, this](){ this->update(); });
     _updateTimer.setInterval(updateIntervalNormal_ms);
     _updateTimer.start();
 

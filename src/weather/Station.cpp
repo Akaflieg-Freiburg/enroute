@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "geomaps/GeoMapProvider.h"
+#include "units/Units.h"
 #include "weather/Station.h"
 
 #include <utility>

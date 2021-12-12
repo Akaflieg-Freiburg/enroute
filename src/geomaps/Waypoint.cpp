@@ -20,6 +20,7 @@
 
 
 #include <QJsonArray>
+#include <QUrl>
 
 #include "Waypoint.h"
 #include "units/Distance.h"

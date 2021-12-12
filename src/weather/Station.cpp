@@ -21,6 +21,7 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
 #include "geomaps/GeoMapProvider.h"
+#include "units/Units.h"
 #include "weather/Station.h"
 
 #include <utility>

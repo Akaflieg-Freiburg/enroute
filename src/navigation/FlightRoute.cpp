@@ -24,6 +24,7 @@
 #include <QStandardPaths>
 
 #include "FlightRoute.h"
+#include "FlightRoute_Leg.h"
 #include "GlobalObject.h"
 #include "Settings.h"
 #include "navigation/Navigator.h"

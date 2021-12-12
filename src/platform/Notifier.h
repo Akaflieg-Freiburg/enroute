@@ -69,7 +69,7 @@ public slots:
      *  This method hides a notification that is currently shown.  If the notification is not
      *  shown, this method does nothing.
      *
-     *  @param notification Type of the notification
+     *  @param notificationType Type of the notification
      */
     static void hideNotification(Platform::Notifier::NotificationTypes notificationType);
 
@@ -78,7 +78,7 @@ public slots:
      *  This method shows a notification to the user. On platforms where notifications have
      *  titles, an appropriate (translated) title is shown.
      *
-     *  @param notification Type of the notification
+     *  @param notificationType Type of the notification
      *
      *  @param text One-line notification text ("Device INOP · Maintenance required · Battery low")
      *
@@ -90,7 +90,7 @@ public slots:
 signals:
     /*! \brief Emitted when the user clicks on a notification
      *
-     *  @param notification Notification that was clicked on
+     *  @param notificationType Notification that was clicked on
      */
     void notificationClicked(Platform::Notifier::NotificationTypes notificationType);
 

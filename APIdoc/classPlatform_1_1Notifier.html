@@ -178,7 +178,7 @@ Public Member Functions</h2></td></tr>
 <p>This method hides a notification that is currently shown. If the notification is not shown, this method does nothing.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">notification</td><td>Type of the notification </td></tr>
+    <tr><td class="paramname">notificationType</td><td>Type of the notification </td></tr>
   </table>
   </dd>
 </dl>
@@ -212,7 +212,7 @@ Public Member Functions</h2></td></tr>
 <p>Emitted when the user clicks on a notification. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">notification</td><td>Notification that was clicked on </td></tr>
+    <tr><td class="paramname">notificationType</td><td>Notification that was clicked on </td></tr>
   </table>
   </dd>
 </dl>
@@ -263,7 +263,7 @@ Public Member Functions</h2></td></tr>
 <p>This method shows a notification to the user. On platforms where notifications have titles, an appropriate (translated) title is shown.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">notification</td><td>Type of the notification</td></tr>
+    <tr><td class="paramname">notificationType</td><td>Type of the notification</td></tr>
     <tr><td class="paramname">text</td><td>One-line notification text ("Device INOP · Maintenance required · Battery low")</td></tr>
     <tr><td class="paramname">longText</td><td>If not empty, then the notification might be expandable. When expanded, the one-line "text" is replaced by the content of this "longText". Depending on the platform, this parameter might also be ignored. </td></tr>
   </table>

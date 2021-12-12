@@ -33,7 +33,7 @@ set(mapBoxFont_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/openseamap-gl CACHE INTERN
 # KDSingleAppplication
 #
 
-#add_subdirectory(KDSingleApplication ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplication)
+add_subdirectory(KDSingleApplication ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplication)
 
 
 #

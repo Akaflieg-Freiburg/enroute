@@ -275,7 +275,7 @@ if (NOT ANDROID)
 
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt6::Core5Compat Qt6::DBus Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt6::Core5Compat Qt6::DBus Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView kdsingleapplication qhttpengine sunset)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
     target_precompile_headers(${PROJECT_NAME} PRIVATE
         <QObject>

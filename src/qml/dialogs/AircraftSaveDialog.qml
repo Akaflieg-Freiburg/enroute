@@ -87,7 +87,7 @@ Dialog {
             focus: true
             placeholderText: qsTr("Aircraft Name")
 
-            onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+            onDisplayTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (displayText !== "")
 
             onAccepted: {
                 if (fileName.text === "")
@@ -112,8 +112,8 @@ Dialog {
     } // ColumnLayout
 
     onOpened: {
-        dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
         fileName.text = global.navigator().aircraft.name
+        dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
     }
 
     onRejected: {

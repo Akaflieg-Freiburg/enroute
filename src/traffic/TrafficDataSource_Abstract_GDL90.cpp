@@ -59,7 +59,6 @@ const std::array<quint16, 256> Crc16Table =
 
 // Static Helper functions
 
-
 auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
 {
     // Check message size
@@ -146,9 +145,14 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
     // Find vertical speed if available
     auto vv0 = static_cast<quint8>(decodedData.at(14)) & 0x0FU;
     auto vv1 = static_cast<quint8>(decodedData.at(15));
-    quint32 vvTmp = (vv0 << 8) + vv1;
-    if (vvTmp != 0xFFF) {
-        Units::Speed vSpeed = Units::Speed::fromFPM(vvTmp*64.0);
+    qint32 vvTmp = (vv0 << 8) + vv1;
+    if (vvTmp != 0x800) {
+        Units::Speed vSpeed;
+        if (vvTmp < 0x800) {
+            vSpeed = Units::Speed::fromFPM(64.0*vvTmp);
+        } else {
+            vSpeed = Units::Speed::fromFPM(-64.0*((1<<12)-vvTmp));
+        }
         pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS() );
     }
 
@@ -257,7 +261,6 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
 
     // Ownship report
     if (messageID == 10) {
-
         // Get position info w/o altitude information
         auto pInfo = pInfoFromOwnshipReport(message);
         if (!pInfo.isValid()) {

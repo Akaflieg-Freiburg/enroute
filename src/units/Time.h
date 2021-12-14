@@ -46,7 +46,7 @@ namespace Units {
          */
         static Time fromMS(double timeInMS) {
             Time result;
-            result._timeInS = timeInMS*1000.0;
+            result._timeInS = timeInMS/1000.0;
             return result;
         }
 

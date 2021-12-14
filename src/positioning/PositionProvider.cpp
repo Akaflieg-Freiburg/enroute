@@ -100,7 +100,6 @@ void Positioning::PositionProvider::onPositionUpdated()
         auto deltaV = (info.trueAltitude() - positionInfo().trueAltitude());
         auto deltaT = Units::Time::fromMS( positionInfo().timestamp().msecsTo(info.timestamp()) );
         auto vSpeed = deltaV/deltaT;
-
         if (vSpeed.isFinite()) {
             if (positionInfo().verticalSpeed().isFinite()) {
                 vSpeed = 0.8*vSpeed + 0.2*positionInfo().verticalSpeed();

@@ -95,9 +95,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a61d6aa366020ce865d428c14413a3de0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeather_1_1Station.html#a61d6aa366020ce865d428c14413a3de0">taf</a> () const</td></tr>
 <tr class="memdesc:a61d6aa366020ce865d428c14413a3de0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <a href="classWeather_1_1Station.html#a61d6aa366020ce865d428c14413a3de0">More...</a><br /></td></tr>
 <tr class="separator:a61d6aa366020ce865d428c14413a3de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cec4cf0ac9adef425bae9bbbe4b3c62"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeather_1_1Station.html#a8cec4cf0ac9adef425bae9bbbe4b3c62">wayTo</a> (const QGeoCoordinate &amp;from, bool useMetric) const</td></tr>
-<tr class="memdesc:a8cec4cf0ac9adef425bae9bbbe4b3c62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given point to the weather station.  <a href="classWeather_1_1Station.html#a8cec4cf0ac9adef425bae9bbbe4b3c62">More...</a><br /></td></tr>
-<tr class="separator:a8cec4cf0ac9adef425bae9bbbe4b3c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5cd8e90b78f39783b2707307af6011d"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeather_1_1Station.html#ad5cd8e90b78f39783b2707307af6011d">wayTo</a> (const QGeoCoordinate &amp;from) const</td></tr>
+<tr class="memdesc:ad5cd8e90b78f39783b2707307af6011d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of the way from a given point to the weather station.  <a href="classWeather_1_1Station.html#ad5cd8e90b78f39783b2707307af6011d">More...</a><br /></td></tr>
+<tr class="separator:ad5cd8e90b78f39783b2707307af6011d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -475,8 +475,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a8cec4cf0ac9adef425bae9bbbe4b3c62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cec4cf0ac9adef425bae9bbbe4b3c62">&#9670;&nbsp;</a></span>wayTo()</h2>
+<a id="ad5cd8e90b78f39783b2707307af6011d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5cd8e90b78f39783b2707307af6011d">&#9670;&nbsp;</a></span>wayTo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -485,18 +485,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">Q_INVOKABLE QString Weather::Station::wayTo </td>
           <td>(</td>
           <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
-          <td class="paramname"><em>from</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>useMetric</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -505,7 +495,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">from</td><td>Starting point of the way</td></tr>
-    <tr><td class="paramname">useMetric</td><td>If true, then description uses metric units. Otherwise, nautical units are used.</td></tr>
   </table>
   </dd>
 </dl>

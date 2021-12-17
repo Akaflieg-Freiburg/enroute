@@ -196,8 +196,11 @@ $(function() {
 <li>Fuel
 : <a class="el" href="classNavigation_1_1FlightRoute_1_1Leg.html#a1279dbd028733759b9eb193043c4376d">Navigation::FlightRoute::Leg</a>
 </li>
-<li>fuelConsumptionInLPH
-: <a class="el" href="classNavigation_1_1Aircraft.html#a623517240b71371f33c3e99dc64a0122">Navigation::Aircraft</a>
+<li>fuelConsumption
+: <a class="el" href="classNavigation_1_1Aircraft.html#af5c8b631c91695e2809824b9423443d8">Navigation::Aircraft</a>
+</li>
+<li>fuelConsumptionUnit
+: <a class="el" href="classNavigation_1_1Aircraft.html#ab706db21dd99928d0e60e4da27757ad4">Navigation::Aircraft</a>
 </li>
 </ul>
 
@@ -243,6 +246,9 @@ $(function() {
 </li>
 <li>hideUpperAirspaces
 : <a class="el" href="classSettings.html#ad6a39832b833c5e8089814d915225450">Settings</a>
+</li>
+<li>horizontalDistanceUnit
+: <a class="el" href="classNavigation_1_1Aircraft.html#a133c3cf37de26092f89946aa645de7af">Navigation::Aircraft</a>
 </li>
 </ul>
 
@@ -302,6 +308,9 @@ $(function() {
 <li>lowerBound
 : <a class="el" href="classGeoMaps_1_1Airspace.html#acf1bb39993a117a1104f391cf9e7743a">GeoMaps::Airspace</a>
 </li>
+<li>lowerBoundMetric
+: <a class="el" href="classGeoMaps_1_1Airspace.html#a9080eacac710fbf829b6f515669cea7a">GeoMaps::Airspace</a>
+</li>
 </ul>
 
 
@@ -309,11 +318,11 @@ $(function() {
 <li>mapBearingPolicy
 : <a class="el" href="classSettings.html#a5e57e7002df5b0a81ca60bbdff5ed2e7">Settings</a>
 </li>
-<li>maxAircraftSpeed
-: <a class="el" href="classNavigation_1_1Aircraft.html#a3a2f8233f3ecb2eb08bc31b099347609">Navigation::Aircraft</a>
+<li>maxValidFuelConsumption
+: <a class="el" href="classNavigation_1_1Aircraft.html#aa18815699b2a009e73fc6b26b774eecc">Navigation::Aircraft</a>
 </li>
-<li>maxFuelConsuption
-: <a class="el" href="classNavigation_1_1Aircraft.html#a3c62bfb269a3f13b288e1921d485bc6d">Navigation::Aircraft</a>
+<li>maxValidSpeed
+: <a class="el" href="classNavigation_1_1Aircraft.html#a3299c68081e572b1dec244cd3994651b">Navigation::Aircraft</a>
 </li>
 <li>maxWindSpeed
 : <a class="el" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">Weather::Wind</a>
@@ -330,11 +339,14 @@ $(function() {
 <li>midFieldWaypoints
 : <a class="el" href="classNavigation_1_1FlightRoute.html#a8942375cd1954eecd3d5f78e0758d3ae">Navigation::FlightRoute</a>
 </li>
-<li>minAircraftSpeed
-: <a class="el" href="classNavigation_1_1Aircraft.html#afd27af645e7e92d107b874d0d5e66a68">Navigation::Aircraft</a>
+<li>minimumSpeed
+: <a class="el" href="classNavigation_1_1Aircraft.html#a267f8b8cacf3afc889d370eaa95d2953">Navigation::Aircraft</a>
 </li>
-<li>minFuelConsuption
-: <a class="el" href="classNavigation_1_1Aircraft.html#acb7bc988a741ede886f49b6782152a1c">Navigation::Aircraft</a>
+<li>minValidFuelConsumption
+: <a class="el" href="classNavigation_1_1Aircraft.html#ab1d6941afd7f4f7754faf3664e9f1079">Navigation::Aircraft</a>
+</li>
+<li>minValidSpeed
+: <a class="el" href="classNavigation_1_1Aircraft.html#a0228588d0195a639767748a76bf774a5">Navigation::Aircraft</a>
 </li>
 <li>minWindSpeed
 : <a class="el" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">Weather::Wind</a>
@@ -349,6 +361,7 @@ $(function() {
 <li>name
 : <a class="el" href="classGeoMaps_1_1TileHandler.html#a3fded7c8e387470d88c6ba1ea09d32b8">GeoMaps::TileHandler</a>
 , <a class="el" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">GeoMaps::Waypoint</a>
+, <a class="el" href="classNavigation_1_1Aircraft.html#a350978751a1abcb83fda349407ad8534">Navigation::Aircraft</a>
 </li>
 <li>nightMode
 : <a class="el" href="classSettings.html#a8f9130af9d8c307ee832472d35c1fa7e">Settings</a>
@@ -512,11 +525,11 @@ $(function() {
 <li>upperBound
 : <a class="el" href="classGeoMaps_1_1Airspace.html#aaf33383272ae13062e87e03c1911d886">GeoMaps::Airspace</a>
 </li>
+<li>upperBoundMetric
+: <a class="el" href="classGeoMaps_1_1Airspace.html#a7103ae9c4f56ddad4b08458e15b7fa3d">GeoMaps::Airspace</a>
+</li>
 <li>url
 : <a class="el" href="classDataManagement_1_1Downloadable.html#a89d4e61eae690448f82c5567a63f67fb">DataManagement::Downloadable</a>
-</li>
-<li>useMetricUnits
-: <a class="el" href="classSettings.html#a53ae26e2f5151609d43ad5e2484a816f">Settings</a>
 </li>
 </ul>
 
@@ -533,6 +546,9 @@ $(function() {
 </li>
 <li>vertical
 : <a class="el" href="classUi_1_1ScaleQuickItem.html#aa04a12f55a48af3156eea25906437208">Ui::ScaleQuickItem</a>
+</li>
+<li>verticalDistanceUnit
+: <a class="el" href="classNavigation_1_1Aircraft.html#abef82d007b819d7dbb4b665f92c03a7d">Navigation::Aircraft</a>
 </li>
 </ul>
 

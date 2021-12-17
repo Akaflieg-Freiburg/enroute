@@ -41,6 +41,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classLibrarian-members.html">List of all members</a>  </div>
@@ -49,39 +50,47 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Manage libraries of flight routes and text assets.  
+<p>Manage libraries and text assets.  
  <a href="classLibrarian.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Librarian_8h_source.html">Librarian.h</a>&gt;</code></p>
 
 <p>Inherits QObject.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a2b754918a55e72090791575e42388714"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Library</a> { <a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714abe17840a43266fea355a5a29bd8f96f1">Aircraft</a>, 
+<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714afdc20d8a45e9bc1d2c3f9e9778c2b81c">Routes</a>
+ }</td></tr>
+<tr class="memdesc:a2b754918a55e72090791575e42388714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of library.  <a href="classLibrarian.html#a2b754918a55e72090791575e42388714">More...</a><br /></td></tr>
+<tr class="separator:a2b754918a55e72090791575e42388714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a8d33e313658242b6ac8f37c01fc75e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a7a8d33e313658242b6ac8f37c01fc75e">Librarian</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a7a8d33e313658242b6ac8f37c01fc75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classLibrarian.html#a7a8d33e313658242b6ac8f37c01fc75e">More...</a><br /></td></tr>
 <tr class="separator:a7a8d33e313658242b6ac8f37c01fc75e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aaa6b88a96c43819a2fcbdfd96b19f7"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a4aaa6b88a96c43819a2fcbdfd96b19f7">flightRouteDirectory</a> () const</td></tr>
-<tr class="memdesc:a4aaa6b88a96c43819a2fcbdfd96b19f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the directory containing the flight route library.  <a href="classLibrarian.html#a4aaa6b88a96c43819a2fcbdfd96b19f7">More...</a><br /></td></tr>
-<tr class="separator:a4aaa6b88a96c43819a2fcbdfd96b19f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b288b545ff8bcdf05ba90cd1c5a8509"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a7b288b545ff8bcdf05ba90cd1c5a8509">flightRouteExists</a> (const QString &amp;baseName) const</td></tr>
-<tr class="memdesc:a7b288b545ff8bcdf05ba90cd1c5a8509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a flight route with the given name exists in the library.  <a href="classLibrarian.html#a7b288b545ff8bcdf05ba90cd1c5a8509">More...</a><br /></td></tr>
-<tr class="separator:a7b288b545ff8bcdf05ba90cd1c5a8509"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34ddb5e6ed230b0b468367f231ed665e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a34ddb5e6ed230b0b468367f231ed665e">flightRouteGet</a> (const QString &amp;baseName) const</td></tr>
-<tr class="memdesc:a34ddb5e6ed230b0b468367f231ed665e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a flight route from library file.  <a href="classLibrarian.html#a34ddb5e6ed230b0b468367f231ed665e">More...</a><br /></td></tr>
-<tr class="separator:a34ddb5e6ed230b0b468367f231ed665e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a8bcfcb7aaf1d5d83362bfa35d63091"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a2a8bcfcb7aaf1d5d83362bfa35d63091">flightRouteFullPath</a> (const QString &amp;baseName) const</td></tr>
-<tr class="memdesc:a2a8bcfcb7aaf1d5d83362bfa35d63091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full path of a flight route in the library.  <a href="classLibrarian.html#a2a8bcfcb7aaf1d5d83362bfa35d63091">More...</a><br /></td></tr>
-<tr class="separator:a2a8bcfcb7aaf1d5d83362bfa35d63091"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5191f033cdd1a13b2b51c21d6fbb5e8a"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a5191f033cdd1a13b2b51c21d6fbb5e8a">flightRouteRemove</a> (const QString &amp;baseName) const</td></tr>
-<tr class="memdesc:a5191f033cdd1a13b2b51c21d6fbb5e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a flight route from the library.  <a href="classLibrarian.html#a5191f033cdd1a13b2b51c21d6fbb5e8a">More...</a><br /></td></tr>
-<tr class="separator:a5191f033cdd1a13b2b51c21d6fbb5e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0fba7edcc98f24a3136f8b9170592c6"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#ac0fba7edcc98f24a3136f8b9170592c6">flightRouteRename</a> (const QString &amp;oldName, const QString &amp;newName) const</td></tr>
-<tr class="memdesc:ac0fba7edcc98f24a3136f8b9170592c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renames a flight route in the library.  <a href="classLibrarian.html#ac0fba7edcc98f24a3136f8b9170592c6">More...</a><br /></td></tr>
-<tr class="separator:ac0fba7edcc98f24a3136f8b9170592c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2415b9702f97cf92c0f064ce00b3fd24"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QStringList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a2415b9702f97cf92c0f064ce00b3fd24">flightRoutes</a> (const QString &amp;filter=QString())</td></tr>
-<tr class="memdesc:a2415b9702f97cf92c0f064ce00b3fd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists all flight routes in the library whose name contains the string 'filter'.  <a href="classLibrarian.html#a2415b9702f97cf92c0f064ce00b3fd24">More...</a><br /></td></tr>
-<tr class="separator:a2415b9702f97cf92c0f064ce00b3fd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49b6bf77dac3e87ea2d5f7f5aa778a3c"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a49b6bf77dac3e87ea2d5f7f5aa778a3c">directory</a> (<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a> library) const</td></tr>
+<tr class="memdesc:a49b6bf77dac3e87ea2d5f7f5aa778a3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the directory containing the given.  <a href="classLibrarian.html#a49b6bf77dac3e87ea2d5f7f5aa778a3c">More...</a><br /></td></tr>
+<tr class="separator:a49b6bf77dac3e87ea2d5f7f5aa778a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa51ac87e98c51f9da434a9c4fc0d0e2d"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QStringList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#aa51ac87e98c51f9da434a9c4fc0d0e2d">entries</a> (<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a> library, const QString &amp;filter=QString())</td></tr>
+<tr class="memdesc:aa51ac87e98c51f9da434a9c4fc0d0e2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists all entries in the library whose name contains the string 'filter'.  <a href="classLibrarian.html#aa51ac87e98c51f9da434a9c4fc0d0e2d">More...</a><br /></td></tr>
+<tr class="separator:aa51ac87e98c51f9da434a9c4fc0d0e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a555dcd705c1147b64a8d7cd35b00f8d6"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a555dcd705c1147b64a8d7cd35b00f8d6">exists</a> (<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a> library, const QString &amp;baseName) const</td></tr>
+<tr class="memdesc:a555dcd705c1147b64a8d7cd35b00f8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if an entry with the given name exists in the library.  <a href="classLibrarian.html#a555dcd705c1147b64a8d7cd35b00f8d6">More...</a><br /></td></tr>
+<tr class="separator:a555dcd705c1147b64a8d7cd35b00f8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36019d59e6b4651f6f1cd00e9ec3f1f5"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a36019d59e6b4651f6f1cd00e9ec3f1f5">fullPath</a> (<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a> library, const QString &amp;baseName) const</td></tr>
+<tr class="memdesc:a36019d59e6b4651f6f1cd00e9ec3f1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full path of a library entry.  <a href="classLibrarian.html#a36019d59e6b4651f6f1cd00e9ec3f1f5">More...</a><br /></td></tr>
+<tr class="separator:a36019d59e6b4651f6f1cd00e9ec3f1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc2500ce150befd8d7843672ac42ed15"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#acc2500ce150befd8d7843672ac42ed15">get</a> (<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a> library, const QString &amp;baseName) const</td></tr>
+<tr class="memdesc:acc2500ce150befd8d7843672ac42ed15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an object from library entry.  <a href="classLibrarian.html#acc2500ce150befd8d7843672ac42ed15">More...</a><br /></td></tr>
+<tr class="separator:acc2500ce150befd8d7843672ac42ed15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a0110e520c286815a1e1da4aa0c2db"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a50a0110e520c286815a1e1da4aa0c2db">remove</a> (<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a> library, const QString &amp;baseName) const</td></tr>
+<tr class="memdesc:a50a0110e520c286815a1e1da4aa0c2db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an entry from a library.  <a href="classLibrarian.html#a50a0110e520c286815a1e1da4aa0c2db">More...</a><br /></td></tr>
+<tr class="separator:a50a0110e520c286815a1e1da4aa0c2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b5645a100e9c95fd3b4720ae2dca00e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#a9b5645a100e9c95fd3b4720ae2dca00e">rename</a> (<a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a> library, const QString &amp;oldName, const QString &amp;newName) const</td></tr>
+<tr class="memdesc:a9b5645a100e9c95fd3b4720ae2dca00e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renames an entry in a library.  <a href="classLibrarian.html#a9b5645a100e9c95fd3b4720ae2dca00e">More...</a><br /></td></tr>
+<tr class="separator:a9b5645a100e9c95fd3b4720ae2dca00e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4120162631b19d6abf849eb0e8ee2f"><td class="memItemLeft" align="right" valign="top">QStringList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLibrarian.html#afc4120162631b19d6abf849eb0e8ee2f">permissiveFilter</a> (const QStringList &amp;in, const QString &amp;filter)</td></tr>
 <tr class="memdesc:afc4120162631b19d6abf849eb0e8ee2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filters a QStringList in a fuzzy way.  <a href="classLibrarian.html#afc4120162631b19d6abf849eb0e8ee2f">More...</a><br /></td></tr>
 <tr class="separator:afc4120162631b19d6abf849eb0e8ee2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -99,11 +108,36 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a171f8b5e52d87d3661dd00f32adfd4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Manage libraries of flight routes and text assets. </p>
-<p>This simple class manage libraries of flight routes and text assets, and exposes these objects to QML. </p>
+<div class="textblock"><p>Manage libraries and text assets. </p>
+<p>This class manages libraries of aircrafts and routes, as well as text assets, and exposes these objects to QML. </p>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00030">30</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00029">29</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a2b754918a55e72090791575e42388714"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b754918a55e72090791575e42388714">&#9670;&nbsp;</a></span>Library</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type of library. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2b754918a55e72090791575e42388714abe17840a43266fea355a5a29bd8f96f1"></a>Aircraft&#160;</td><td class="fielddoc"><p>Aircraft library. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b754918a55e72090791575e42388714afdc20d8a45e9bc1d2c3f9e9778c2b81c"></a>Routes&#160;</td><td class="fielddoc"><p>Flight route library. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00055">55</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7a8d33e313658242b6ac8f37c01fc75e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a8d33e313658242b6ac8f37c01fc75e">&#9670;&nbsp;</a></span>Librarian()</h2>
 
@@ -129,7 +163,6 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>The constructor ensures that the relevant directory for storing the flight route library exists</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
@@ -140,162 +173,90 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4aaa6b88a96c43819a2fcbdfd96b19f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4aaa6b88a96c43819a2fcbdfd96b19f7">&#9670;&nbsp;</a></span>flightRouteDirectory()</h2>
+<a id="a49b6bf77dac3e87ea2d5f7f5aa778a3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49b6bf77dac3e87ea2d5f7f5aa778a3c">&#9670;&nbsp;</a></span>directory()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE QString Librarian::flightRouteDirectory </td>
+          <td class="memname">Q_INVOKABLE QString Librarian::directory </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a>&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Name of the directory containing the flight route library. </p>
+<p>Name of the directory containing the given. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">library</td><td>The library that is accessed</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>Name of the directory, without trailing slash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Librarian_8h_source.html#l00092">92</a> of file <a class="el" href="Librarian_8h_source.html">Librarian.h</a>.</p>
-
 </div>
 </div>
-<a id="a7b288b545ff8bcdf05ba90cd1c5a8509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b288b545ff8bcdf05ba90cd1c5a8509">&#9670;&nbsp;</a></span>flightRouteExists()</h2>
+<a id="aa51ac87e98c51f9da434a9c4fc0d0e2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa51ac87e98c51f9da434a9c4fc0d0e2d">&#9670;&nbsp;</a></span>entries()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE bool Librarian::flightRouteExists </td>
+          <td class="memname">Q_INVOKABLE QStringList Librarian::entries </td>
           <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>baseName</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check if a flight route with the given name exists in the library. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">baseName</td><td>File name, without path and without extension</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the file exists </dd></dl>
-
-</div>
-</div>
-<a id="a2a8bcfcb7aaf1d5d83362bfa35d63091"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a8bcfcb7aaf1d5d83362bfa35d63091">&#9670;&nbsp;</a></span>flightRouteFullPath()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE QString Librarian::flightRouteFullPath </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>baseName</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Full path of a flight route in the library. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">baseName</td><td>Name of the flight route, without path and without extension</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Full path of the flight route, with extension </dd></dl>
-
-</div>
-</div>
-<a id="a34ddb5e6ed230b0b468367f231ed665e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34ddb5e6ed230b0b468367f231ed665e">&#9670;&nbsp;</a></span>flightRouteGet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE QObject* Librarian::flightRouteGet </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>baseName</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Constructs a flight route from library file. </p>
-<p>This method constructs a flight route, by reading a flight route file from the library. The flight route is construted with aircraft and wind set to nullptr, so that no wind computations are possible. It is, however, possible to export the flight route (for instance to GeoJSON or GPX format).</p>
-<p>Ownership is transferred to the caller, so it is up to the caller to delete the flight route once it is no longer used. Note that QML does that automatically.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">baseName</td><td>File name, without path and without extension</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to the flight route as QObject*, or a nullptr in case of error. </dd></dl>
-
-</div>
-</div>
-<a id="a5191f033cdd1a13b2b51c21d6fbb5e8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5191f033cdd1a13b2b51c21d6fbb5e8a">&#9670;&nbsp;</a></span>flightRouteRemove()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE void Librarian::flightRouteRemove </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>baseName</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Removes a flight route from the library. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">baseName</td><td>File name, without path and without extension </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac0fba7edcc98f24a3136f8b9170592c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0fba7edcc98f24a3136f8b9170592c6">&#9670;&nbsp;</a></span>flightRouteRename()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE void Librarian::flightRouteRename </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>oldName</em>, </td>
+          <td class="paramtype"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a>&#160;</td>
+          <td class="paramname"><em>library</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>newName</em>&#160;</td>
+          <td class="paramname"><em>filter</em> = <code>QString()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lists all entries in the library whose name contains the string 'filter'. </p>
+<p>The check for string containment is done in a fuzzy way.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">library</td><td>The library that is to be searched</td></tr>
+    <tr><td class="paramname">filter</td><td>String used to filter the list</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A filtered QStringList with the base names of flight routes</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classLibrarian.html#afc4120162631b19d6abf849eb0e8ee2f" title="Filters a QStringList in a fuzzy way.">permissiveFilter</a> </dd></dl>
+
+</div>
+</div>
+<a id="a555dcd705c1147b64a8d7cd35b00f8d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a555dcd705c1147b64a8d7cd35b00f8d6">&#9670;&nbsp;</a></span>exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE bool Librarian::exists </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a>&#160;</td>
+          <td class="paramname"><em>library</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>baseName</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -305,43 +266,94 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Renames a flight route in the library. </p>
+<p>Check if an entry with the given name exists in the library. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">oldName</td><td>Name of the file that is to be renamed, without path and without extension</td></tr>
-    <tr><td class="paramname">newName</td><td>New file name, without path and without extension. A file with that name must not exist in the library </td></tr>
+    <tr><td class="paramname">library</td><td>The library that is accessed</td></tr>
+    <tr><td class="paramname">baseName</td><td>File name, without path and without extension</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the file exists </dd></dl>
 
 </div>
 </div>
-<a id="a2415b9702f97cf92c0f064ce00b3fd24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2415b9702f97cf92c0f064ce00b3fd24">&#9670;&nbsp;</a></span>flightRoutes()</h2>
+<a id="a36019d59e6b4651f6f1cd00e9ec3f1f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36019d59e6b4651f6f1cd00e9ec3f1f5">&#9670;&nbsp;</a></span>fullPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE QStringList Librarian::flightRoutes </td>
+          <td class="memname">Q_INVOKABLE QString Librarian::fullPath </td>
           <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>filter</em> = <code>QString()</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a>&#160;</td>
+          <td class="paramname"><em>library</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>baseName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Lists all flight routes in the library whose name contains the string 'filter'. </p>
-<p>The check for string containment is done in a fuzzy way.</p>
+<p>Full path of a library entry. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filter</td><td>String used to filter the list</td></tr>
+    <tr><td class="paramname">library</td><td>The library that is accessed</td></tr>
+    <tr><td class="paramname">baseName</td><td>Name of the entry, without path and without extension</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A filtered QStringList with the base names of flight routes</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classLibrarian.html#afc4120162631b19d6abf849eb0e8ee2f" title="Filters a QStringList in a fuzzy way.">permissiveFilter</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Full path of the entry, with extension </dd></dl>
+
+</div>
+</div>
+<a id="acc2500ce150befd8d7843672ac42ed15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc2500ce150befd8d7843672ac42ed15">&#9670;&nbsp;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QObject* Librarian::get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a>&#160;</td>
+          <td class="paramname"><em>library</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>baseName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs an object from library entry. </p>
+<p>This method constructs an object from a library entry.</p>
+<p>If the entry is a route, the route is construted with aircraft and wind set to nullptr, so that no wind computations are possible. It is, however, possible to export the flight route (for instance to GeoJSON or GPX format).</p>
+<p>Ownership is transferred to the caller, so it is up to the caller to delete the flight route once it is no longer used. Note that QML does that automatically.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">library</td><td>The library that is accessed</td></tr>
+    <tr><td class="paramname">baseName</td><td>File name, without path and without extension</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the object, or a nullptr in case of error. </dd></dl>
 
 </div>
 </div>
@@ -456,6 +468,87 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Filteres QStringList </dd></dl>
+
+</div>
+</div>
+<a id="a50a0110e520c286815a1e1da4aa0c2db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a0110e520c286815a1e1da4aa0c2db">&#9670;&nbsp;</a></span>remove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE void Librarian::remove </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a>&#160;</td>
+          <td class="paramname"><em>library</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>baseName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes an entry from a library. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">library</td><td>The library that is accessed</td></tr>
+    <tr><td class="paramname">baseName</td><td>File name, without path and without extension </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9b5645a100e9c95fd3b4720ae2dca00e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b5645a100e9c95fd3b4720ae2dca00e">&#9670;&nbsp;</a></span>rename()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE void Librarian::rename </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classLibrarian.html#a2b754918a55e72090791575e42388714">Librarian::Library</a>&#160;</td>
+          <td class="paramname"><em>library</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>oldName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>newName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Renames an entry in a library. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">library</td><td>The library that is accessed</td></tr>
+    <tr><td class="paramname">oldName</td><td>Name of the file that is to be renamed, without path and without extension</td></tr>
+    <tr><td class="paramname">newName</td><td>New file name, without path and without extension. A file with that name must not exist in the library </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

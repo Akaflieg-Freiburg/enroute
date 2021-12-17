@@ -44,7 +44,8 @@ $(function() {
 
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>save()
-: <a class="el" href="classNavigation_1_1FlightRoute.html#a6d4b14c2b073f577f13f8eb58476cdcc">Navigation::FlightRoute</a>
+: <a class="el" href="classNavigation_1_1Aircraft.html#a5e8131ca8cdc9f9074f4c4a9cbd20e4d">Navigation::Aircraft</a>
+, <a class="el" href="classNavigation_1_1FlightRoute.html#a6d4b14c2b073f577f13f8eb58476cdcc">Navigation::FlightRoute</a>
 </li>
 <li>saveContent()
 : <a class="el" href="classShare.html#a7a83cbb2add6d849f9c1dcba677b6a85">Share</a>
@@ -107,8 +108,11 @@ $(function() {
 <li>setFileReceived()
 : <a class="el" href="classShare.html#ab6cda95d4b4ec646c08a46530c90496a">Share</a>
 </li>
-<li>setFuelConsumptionInLPH()
-: <a class="el" href="classNavigation_1_1Aircraft.html#a52d4b4e462af8164f0a89380caaf1275">Navigation::Aircraft</a>
+<li>setFuelConsumption()
+: <a class="el" href="classNavigation_1_1Aircraft.html#a8daf01175fe106c5a1c7e5823f38680f">Navigation::Aircraft</a>
+</li>
+<li>setFuelConsumptionUnit()
+: <a class="el" href="classNavigation_1_1Aircraft.html#a999dd1cc9af871e29f8d9921c8ab3cc8">Navigation::Aircraft</a>
 </li>
 <li>setGS()
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a3de49d50d5175bc17a86e890828ab383">Traffic::TrafficDataSource_Simulate</a>
@@ -122,6 +126,9 @@ $(function() {
 <li>setHideUpperAirspaces()
 : <a class="el" href="classSettings.html#a7bc24c4946bf606327d784d239b57010">Settings</a>
 </li>
+<li>setHorizontalDistanceUnit()
+: <a class="el" href="classNavigation_1_1Aircraft.html#a515f165eb56521d4176cc75831c29673">Navigation::Aircraft</a>
+</li>
 <li>setID()
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#af84919314330123936dd247761868369">Traffic::TrafficFactor_Abstract</a>
 </li>
@@ -133,6 +140,12 @@ $(function() {
 </li>
 <li>setMapBearingPolicy()
 : <a class="el" href="classSettings.html#a63b47523760496f7eb42a3e1a24d13fe">Settings</a>
+</li>
+<li>setMinimumSpeed()
+: <a class="el" href="classNavigation_1_1Aircraft.html#a7a6eadbaa35de2ad0fe2e1a9dc84d5d8">Navigation::Aircraft</a>
+</li>
+<li>setName()
+: <a class="el" href="classNavigation_1_1Aircraft.html#a5912675f1c7f7b8814dcccec02620283">Navigation::Aircraft</a>
 </li>
 <li>setNightMode()
 : <a class="el" href="classSettings.html#a343a49b86224260b0485de96993a7be3">Settings</a>
@@ -182,14 +195,14 @@ $(function() {
 <li>setType()
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#ac015bf1e9f86f95108b52a833effad3b">Traffic::TrafficFactor_Abstract</a>
 </li>
-<li>setUseMetricUnits()
-: <a class="el" href="classSettings.html#a03935d5a0b769caeea8487fa32c6f797">Settings</a>
-</li>
 <li>setVDist()
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a453bf488468e851f296fc9941034f85a">Traffic::TrafficFactor_Abstract</a>
 </li>
 <li>setVertical()
 : <a class="el" href="classUi_1_1ScaleQuickItem.html#a6282839357d1216a0daf3154c64f9d5f">Ui::ScaleQuickItem</a>
+</li>
+<li>setVerticalDistanceUnit()
+: <a class="el" href="classNavigation_1_1Aircraft.html#a62ca2333557df43be51f19e1c9ddd092">Navigation::Aircraft</a>
 </li>
 <li>setWindDirection()
 : <a class="el" href="classWeather_1_1Wind.html#ac4fc899c852e2e80c9f5524116bc01ff">Weather::Wind</a>
@@ -256,11 +269,14 @@ $(function() {
 <li>Station()
 : <a class="el" href="classWeather_1_1Station.html#a63ccdb9be16c434b7389b3eb105a7f3c">Weather::Station</a>
 </li>
-<li>statusString
-: <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a3ae4cb194907fe0a3f66e79d4ea0ebc9">Positioning::PositionInfoSource_Abstract</a>
+<li>statusString()
+: <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#ab47094963629bd1b65dbe7d30b2d22e5">Positioning::PositionInfoSource_Abstract</a>
 </li>
 <li>statusStringChanged()
 : <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a67c3b0c193e0daea9e843401d0a4f059">Positioning::PositionInfoSource_Abstract</a>
+</li>
+<li>StatuteMile
+: <a class="el" href="classNavigation_1_1Aircraft.html#ad275b982d1ffdbe2a4b0b05abb0f2699ac2da663c7b92defbc19b430c23bb912b">Navigation::Aircraft</a>
 </li>
 <li>stopFileDownload()
 : <a class="el" href="classDataManagement_1_1Downloadable.html#a04d38f4e75f3458c0acff7a0903dce3f">DataManagement::Downloadable</a>
@@ -274,8 +290,8 @@ $(function() {
 <li>suggestedFilename()
 : <a class="el" href="classNavigation_1_1FlightRoute.html#abdf8265d94681dfa09fd9aa471c4d67d">Navigation::FlightRoute</a>
 </li>
-<li>summary
-: <a class="el" href="classNavigation_1_1FlightRoute.html#a60fae946d0a40b374efdf3e19fe0b936">Navigation::FlightRoute</a>
+<li>summary()
+: <a class="el" href="classNavigation_1_1FlightRoute.html#a4ec44c6fe297d3504fc94d63ac4a63cd">Navigation::FlightRoute</a>
 , <a class="el" href="classWeather_1_1METAR.html#a64ee6087e0dc1a9142e39f056206490a">Weather::METAR</a>
 </li>
 <li>summaryChanged()

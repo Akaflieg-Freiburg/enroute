@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,20 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/Notifier.h"
+#pragma once
+
+#include "units/Distance.h"
+#include "units/Time.h"
+
+//
+// Operations
+//
 
 
-auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
+/*! \brief Compute speed as quotient of distance by time
+ *
+ *  @param dist Distance
+ *
+ *  @param time Time
+ *
+ *  @return Speed
+ */
+inline Units::Speed operator/(Units::Distance dist, Units::Time time)
 {
-    switch (notification) {
-    case DownloadInfo:
-        return tr("Downloading map data…");
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
-    }
+    if ((!dist.isFinite()) || (!time.isFinite()) || (qFuzzyIsNull(time.toS())))
+        return {};
 
-    return {};
+    return Units::Speed::fromMPS(dist.toM()/time.toS());
 }
 
+
+/*! \brief Compute time as quotient of distance and speed
+ *
+ * @param dist Distance
+ *
+ * @param speed Speed
+ *
+ * @returns Time
+ */
+inline Units::Time operator/(Units::Distance dist, Units::Speed speed)
+{
+    if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
+        return {};
+
+    return Units::Time::fromS(dist.toM() / speed.toMPS());
+}

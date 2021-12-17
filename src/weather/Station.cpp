@@ -18,7 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "navigation/Aircraft.h"
+#include "navigation/Navigator.h"
 #include "geomaps/GeoMapProvider.h"
+#include "units/Units.h"
 #include "weather/Station.h"
 
 #include <utility>
@@ -49,11 +52,11 @@ void Weather::Station::readDataFromWaypoint()
     // Paranoid safety checks
     if (_geoMapProvider.isNull()) {
         return;
-}
+    }
     // Immediately quit if we already have the necessary data
     if (hasWaypointData) {
         return;
-}
+    }
 
     auto waypoint = _geoMapProvider->findByID(_ICAOCode);
     if (!waypoint.isValid()) {
@@ -66,25 +69,25 @@ void Weather::Station::readDataFromWaypoint()
     _coordinate = waypoint.coordinate();
     if (_coordinate != cacheCoordiante) {
         emit coordinateChanged();
-}
+    }
 
     auto cacheExtendedName = _extendedName;
     _extendedName = waypoint.extendedName();
     if (_extendedName != cacheExtendedName) {
         emit extendedNameChanged();
-}
+    }
 
     auto cacheIcon = _icon;
     _icon = waypoint.icon();
     if (_icon != cacheIcon) {
         emit iconChanged();
-}
+    }
 
     auto cacheTwoLineTitle = _twoLineTitle;
     _twoLineTitle = waypoint.twoLineTitle();
     if (_twoLineTitle != cacheTwoLineTitle) {
         emit twoLineTitleChanged();
-}
+    }
 
     disconnect(_geoMapProvider, nullptr, this, nullptr);
 }
@@ -98,12 +101,12 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
             metar->deleteLater();
             return;
         }
-}
+    }
 
     // If METAR did not change, then do nothing
     if (metar == _metar) {
         return;
-}
+    }
 
     // Cache values
     auto cacheHasMETAR = hasMETAR();
@@ -111,7 +114,7 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
     // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
     if (metar != nullptr) {
         metar->setParent(this);
-}
+    }
 
     // Clear and delete old METAR, if one exists.
     if (!_metar.isNull()) {
@@ -129,13 +132,13 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
         // Update coordinate
         if (!_coordinate.isValid()) {
             _coordinate = _metar->coordinate();
-}
+        }
     }
 
     // Let the world know that the metar changed
     if (cacheHasMETAR != hasMETAR()) {
         emit hasMETARChanged();
-}
+    }
     emit metarChanged();
 }
 
@@ -148,12 +151,12 @@ void Weather::Station::setTAF(Weather::TAF *taf)
             taf->deleteLater();
             return;
         }
-}
+    }
 
     // If TAF did not change, then do nothing
     if (taf == _taf) {
         return;
-}
+    }
 
     // Cache values
     auto cacheHasTAF = hasTAF();
@@ -161,7 +164,7 @@ void Weather::Station::setTAF(Weather::TAF *taf)
     // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
     if (taf != nullptr) {
         taf->setParent(this);
-}
+    }
 
     // Clear and delete old TAF, if one exists.
     if (!_taf.isNull()) {
@@ -179,33 +182,38 @@ void Weather::Station::setTAF(Weather::TAF *taf)
         // Update coordinate
         if (!_coordinate.isValid()) {
             _coordinate = _taf->coordinate();
-}
+        }
     }
 
     // Let the world know that the taf changed
     if (cacheHasTAF != hasTAF()) {
         emit hasTAFChanged();
-}
+    }
     emit tafChanged();
 }
 
 
-auto Weather::Station::wayTo(const QGeoCoordinate& fromCoordinate, bool useMetricUnits) const -> QString
+auto Weather::Station::wayTo(const QGeoCoordinate& fromCoordinate) const -> QString
 {
     // Paranoid safety checks
     if (!fromCoordinate.isValid()) {
-        return QString();
-}
+        return {};
+    }
     auto _coordinate = coordinate();
     if (!_coordinate.isValid()) {
-        return QString();
-}
+        return {};
+    }
 
     auto dist = Units::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
     auto QUJ = qRound(fromCoordinate.azimuthTo(_coordinate));
 
-    if (useMetricUnits) {
+    switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    case Navigation::Aircraft::Kilometer:
         return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-}
-    return QString("DIST %1 NM • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+    case Navigation::Aircraft::StatuteMile:
+        return QString("DIST %1 mil • QUJ %2°").arg(dist.toMIL(), 0, 'f', 1).arg(QUJ);
+    case Navigation::Aircraft::NauticalMile:
+        return QString("DIST %1 nm • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
+    }
+    return {};
 }

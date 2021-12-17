@@ -117,6 +117,9 @@ set(SOURCES
     units/Distance.h
     units/Speed.h
     units/Time.h
+    units/Units.h
+    units/Volume.h
+    units/VolumeFlow.h
     weather/Decoder.h
     weather/METAR.h
     weather/Station.h
@@ -175,6 +178,8 @@ set(SOURCES
     units/Distance.cpp
     units/Speed.cpp
     units/Time.cpp
+    units/Volume.cpp
+    units/VolumeFlow.cpp
     weather/Decoder.cpp
     weather/METAR.cpp
     weather/Station.cpp
@@ -273,7 +278,7 @@ if (NOT ANDROID)
 
     # Add executable and libraries
     add_executable(${PROJECT_NAME} ${SOURCES})
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg Qt5::WebView KF5::Notifications qhttpengine kdsingleapplication sunset)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::DBus Qt5::Positioning Qt5::Quick Qt5::Sql Qt5::Svg Qt5::WebView qhttpengine kdsingleapplication sunset)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
     target_precompile_headers(${PROJECT_NAME} PRIVATE
         <QObject>
@@ -282,7 +287,6 @@ if (NOT ANDROID)
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/enroute\ flight\ navigation.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 

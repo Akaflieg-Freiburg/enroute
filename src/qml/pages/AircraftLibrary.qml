@@ -30,87 +30,11 @@ import "../items"
 
 Page {
     id: page
-    title: qsTr("Flight Route Library")
+    title: qsTr("Aircraft Library")
     focus: true
 
 
-    header: ToolBar {
-
-        Material.foreground: "white"
-        height: 60
-
-        ToolButton {
-            id: backButton
-
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-
-            icon.source: "/icons/material/ic_arrow_back.svg"
-
-            onClicked: {
-                global.mobileAdaptor().vibrateBrief()
-                stackView.pop()
-            }
-        }
-
-        Label {
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.left: parent.left
-            anchors.leftMargin: 72
-            anchors.right: headerMenuToolButton.left
-
-            text: stackView.currentItem.title
-            elide: Label.ElideRight
-            font.pixelSize: 20
-            verticalAlignment: Qt.AlignVCenter
-        }
-
-        ToolButton {
-            id: headerMenuToolButton
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.right: parent.right
-
-            icon.source: "/icons/material/ic_more_vert.svg"
-            icon.color: "white"
-
-            onClicked: {
-                global.mobileAdaptor().vibrateBrief()
-                headerMenuX.popup()
-            }
-
-            AutoSizingMenu{
-                id: headerMenuX
-
-                MenuItem {
-                    text: qsTr("Info …")
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        infoDialog.open()
-                    }
-
-                } // ToolButton
-
-                MenuItem {
-                    text: qsTr("Import …")
-                    enabled: Qt.platform.os !== "android"
-                    visible: Qt.platform.os !== "android"
-                    height: Qt.platform.os !== "android" ? undefined : 0
-
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        global.mobileAdaptor().importContent()
-                    }
-                }
-
-            }
-
-        }
-
-    }
+    header: StandardHeader {}
 
     TextField {
         id: textInput
@@ -120,12 +44,12 @@ Page {
         anchors.left: parent.left
         anchors.leftMargin: Qt.application.font.pixelSize*2.0
 
-        placeholderText: qsTr("Filter Flight Route Names")
+        placeholderText: qsTr("Filter Aircraft Names")
         font.pixelSize: Qt.application.font.pixelSize*1.5
     }
 
     Component {
-        id: flightRouteDelegate
+        id: entryDelegate
 
         RowLayout {
             anchors.left: parent.left
@@ -138,7 +62,7 @@ Page {
                 Layout.fillWidth: true
 
                 text: modelData
-                icon.source: "/icons/material/ic_directions.svg"
+                icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
@@ -163,101 +87,6 @@ Page {
 
                 AutoSizingMenu {
                     id: cptMenu
-
-                    AutoSizingMenu {
-                        title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-
-                        MenuItem {
-                            text: qsTr("… to GeoJSON file")
-                            onTriggered: {
-                                cptMenu.close()
-                                global.mobileAdaptor().vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = global.mobileAdaptor().exportContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
-                                if (errorString === "abort") {
-                                    toast.doToast(qsTr("Aborted"))
-                                    return
-                                }
-                                if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
-                                    shareErrorDialog.open()
-                                    return
-                                }
-                                if (Qt.platform.os === "android")
-                                    toast.doToast(qsTr("Flight route shared"))
-                                else
-                                    toast.doToast(qsTr("Flight route exported"))
-                            }
-                        }
-
-                        MenuItem {
-                            text: qsTr("… to GPX file")
-                            onTriggered: {
-                                cptMenu.close()
-                                global.mobileAdaptor().vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = global.mobileAdaptor().exportContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
-                                if (errorString === "abort") {
-                                    toast.doToast(qsTr("Aborted"))
-                                    return
-                                }
-                                if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
-                                    shareErrorDialog.open()
-                                    return
-                                }
-                                if (Qt.platform.os === "android")
-                                    toast.doToast(qsTr("Flight route shared"))
-                                else
-                                    toast.doToast(qsTr("Flight route exported"))
-                            }
-                        }
-                    }
-
-                    AutoSizingMenu {
-                        title: qsTr("Open in other app …")
-
-                        MenuItem {
-                            text: qsTr("… in GeoJSON format")
-
-                            onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = global.mobileAdaptor().viewContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
-                                if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
-                                    shareErrorDialog.open()
-                                } else
-                                    toast.doToast(qsTr("Flight route opened in other app"))
-                            }
-                        }
-
-                        MenuItem {
-                            text: qsTr("… in GPX format")
-
-                            onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = global.mobileAdaptor().viewContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
-                                if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
-                                    shareErrorDialog.open()
-                                } else
-                                    toast.doToast(qsTr("Flight route opened in other app"))
-                            }
-                        }
-
-                    }
-
-                    MenuSeparator { }
 
                     Action {
                         id: renameAction
@@ -297,8 +126,8 @@ Page {
 
         clip: true
 
-        model: global.librarian().entries(Librarian.Routes, textInput.displayText)
-        delegate: flightRouteDelegate
+        model: global.librarian().entries(Librarian.Aircraft, textInput.displayText)
+        delegate: entryDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
 
@@ -315,8 +144,8 @@ Page {
         textFormat: Text.StyledText
         wrapMode: Text.Wrap
         text: (textInput.text === "")
-              ? qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
-              : qsTr("<h3>Sorry!</h3><p>No flight routes match your filter criteria.</p>")
+              ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add a route here, chose 'Aircraft' from the main menu, and save the current aircraft to the library.</p>")
+              : qsTr("<h3>Sorry!</h3><p>No aircraft match your filter criteria.</p>")
     }
 
 
@@ -324,13 +153,13 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = global.navigator().flightRoute.loadFromGeoJSON(global.librarian().fullPath(Librarian.Routes, finalFileName))
+        var errorString = global.navigator().aircraft.loadFromJSON(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
             return
         }
-        stackView.push("FlightRouteEditor.qml")
+        stackView.push("Aircraft.qml")
     }
 
     function reloadFlightRouteList() {
@@ -389,20 +218,12 @@ Page {
 
     }
 
-    LongTextDialog {
-        id: infoDialog
-        standardButtons: Dialog.Ok
-
-        title: qsTr("Flight Route Library")
-        text: global.librarian().getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(global.librarian().directory(Librarian.Routes))
-    }
-
     Dialog {
         id: overwriteDialog
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Overwrite current flight route?")
+        title: qsTr("Overwrite current aircraft?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
@@ -412,7 +233,7 @@ Page {
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
+            text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
@@ -428,7 +249,6 @@ Page {
             global.mobileAdaptor().vibrateBrief()
             close()
         }
-
     }
 
     Dialog {
@@ -446,7 +266,7 @@ Page {
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
+            text: qsTr("Once the aircraft <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
@@ -456,9 +276,9 @@ Page {
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
-            global.librarian().remove(Librarian.Routes, page.finalFileName)
+            global.librarian().remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
-            toast.doToast(qsTr("Flight route removed from device"))
+            toast.doToast(qsTr("Aircraft removed from device"))
         }
         onRejected: {
             global.mobileAdaptor().vibrateBrief()
@@ -472,7 +292,7 @@ Page {
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Rename Flight Route")
+        title: qsTr("Rename Aircraft")
 
         standardButtons: Dialog.Cancel
         modal: true
@@ -490,7 +310,7 @@ Page {
             Label {
                 width: overwriteDialog.availableWidth
 
-                text: qsTr("Enter new name for the route <strong>%1</strong>.").arg(finalFileName)
+                text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(finalFileName)
                 color: Material.primary
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
@@ -503,7 +323,7 @@ Page {
                 Layout.fillWidth: true
                 focus: true
 
-                placeholderText: qsTr("New Flight Route Name")
+                placeholderText: qsTr("New Aircraft Name")
 
                 onAccepted: renameDialog.onAccepted()
             }
@@ -515,45 +335,24 @@ Page {
                 id: renameButton
 
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-                enabled: (renameName.text !== "") && !(global.librarian().exists(Librarian.Routes, renameName.text))
+                enabled: (renameName.text !== "") && !(global.librarian().exists(Librarian.Aircraft, renameName.text))
                 text: qsTr("Rename")
             }
         }
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
-            if ((renameName.text !== "") && !global.librarian().exists(Librarian.Routes, renameName.text)) {
-                global.librarian().rename(Librarian.Routes, finalFileName, renameName.text)
+            if ((renameName.text !== "") && !global.librarian().exists(Librarian.Aircraft, renameName.text)) {
+                global.librarian().rename(Librarian.Aircraft, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 close()
-                toast.doToast(qsTr("Flight route renamed"))
+                toast.doToast(qsTr("Aircraft renamed"))
             }
         }
         onRejected: {
             global.mobileAdaptor().vibrateBrief()
             close()
         }
-
-    }
-
-    Dialog {
-        id: shareErrorDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
-
-        title: qsTr("Error exporting data…")
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-
-        Label {
-            id: shareErrorDialogLabel
-            width: shareErrorDialog.availableWidth
-            onLinkActivated: Qt.openUrlExternally(link)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
-
-        standardButtons: Dialog.Ok
-        modal: true
 
     }
 

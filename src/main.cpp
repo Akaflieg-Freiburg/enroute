@@ -58,6 +58,8 @@
 #include "units/Distance.h"
 #include "units/Speed.h"
 #include "units/Time.h"
+#include "units/Volume.h"
+#include "units/VolumeFlow.h"
 #include "weather/WeatherDataProvider.h"
 #include "weather/Wind.h"
 #include <chrono>
@@ -74,13 +76,15 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Units::Distance>();
     qRegisterMetaType<Units::Speed>();
     qRegisterMetaType<Units::Time>();
+    qRegisterMetaType<Units::Volume>();
+    qRegisterMetaType<Units::VolumeFlow>();
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
-    qRegisterMetaType<Platform::Notifier::Notifications>("Platform::Notifier::Notifications");
+    qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft");
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
@@ -120,6 +124,15 @@ auto main(int argc, char *argv[]) -> int
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
 #endif
+
+    // Install translator
+    auto* enrouteTranslator = new QTranslator(&app);
+    if (enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)))) {
+        QCoreApplication::installTranslator(enrouteTranslator);
+    } else {
+        delete enrouteTranslator;
+    }
+
 
     // Workaround for crappy Hauwei and Samsung devices.
     //

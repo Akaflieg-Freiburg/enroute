@@ -50,18 +50,18 @@ public:
      *  This enum lists a number of predefined notification types
      *  only these notifications can be shown.
      */
-    enum Notifications
+    enum NotificationTypes
     {
         DownloadInfo = 0,                 /*< Info that  download is in progress */
         TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
         TrafficReceiverRuntimeError = 2   /*< Traffic receiver reports problem while running */
     };
-    Q_ENUM(Notifications)
+    Q_ENUM(NotificationTypes)
 
 public slots:
     // Emits the signal "notificationClicked".
-    void emitNotificationClicked(Platform::Notifier::Notifications notification) {
-        emit notificationClicked(notification);
+    void emitNotificationClicked(Platform::Notifier::NotificationTypes notificationType) {
+        emit notificationClicked(notificationType);
     }
 
     /*! \brief Hides a notification
@@ -69,36 +69,36 @@ public slots:
      *  This method hides a notification that is currently shown.  If the notification is not
      *  shown, this method does nothing.
      *
-     *  @param notification Type of the notification
+     *  @param notificationType Type of the notification
      */
-    static void hideNotification(Platform::Notifier::Notifications notification);
+    static void hideNotification(Platform::Notifier::NotificationTypes notificationType);
 
     /*! \brief Shows a notification
      *
      *  This method shows a notification to the user. On platforms where notifications have
      *  titles, an appropriate (translated) title is shown.
      *
-     *  @param notification Type of the notification
+     *  @param notificationType Type of the notification
      *
      *  @param text One-line notification text ("Device INOP · Maintenance required · Battery low")
      *
      *  @param longText If not empty, then the notification might be expandable. When expanded, the one-line "text" is replaced by the content of this "longText".
      *  Depending on the platform, this parameter might also be ignored.
      */
-    void showNotification(Platform::Notifier::Notifications notification, const QString& text, const QString& longText);
+    void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
 
 signals:
     /*! \brief Emitted when the user clicks on a notification
      *
-     *  @param notification Notification that was clicked on
+     *  @param notificationType Notification that was clicked on
      */
-    void notificationClicked(Platform::Notifier::Notifications notification);
+    void notificationClicked(Platform::Notifier::NotificationTypes notificationType);
 
 private:
     Q_DISABLE_COPY_MOVE(Notifier)
 
     // Get translated title for specific notification
-    static QString title(Platform::Notifier::Notifications notification);
+    static QString title(Platform::Notifier::NotificationTypes notificationType);
 };
 
 }

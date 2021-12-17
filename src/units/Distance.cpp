@@ -21,47 +21,50 @@
 #include "units/Distance.h"
 
 
-auto Units::Distance::toString(bool useMetric, bool vertical, bool forceSign) const -> QString
+QString Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const
 {
     if (!isFinite()) {
-        return QString();
-}
+        return {};
+    }
 
     double roundedDist = NAN;
     QString unit;
 
-    if (vertical && useMetric) {
-        roundedDist = qRound(toM());
-        unit = "m";
-    }
-    if (vertical && !useMetric) {
+    switch (units) {
+    case Feet:
         roundedDist = qRound(toFeet());
         unit = "ft";
-    }
-    if (!vertical && useMetric) {
-        if (qAbs(toM()) < 5000) {
-            roundedDist = qRound(toM());
-            unit = "m";
-        } else {
-            roundedDist = qRound(toKM()*10.0)/10.0;
-            unit = "km";
-        }
-    }
-    if (!vertical && !useMetric) {
+        break;
+    case Meter:
+        roundedDist = qRound(toM());
+        unit = "m";
+        break;
+    case Kilometer:
+        roundedDist = qRound(toKM()*10.0)/10.0;
+        unit = "km";
+        break;
+    case StatuteMile:
+        roundedDist = qRound(toMIL()*10.0)/10.0;
+        unit = "mil";
+        break;
+    case NauticalMile:
         roundedDist = qRound(toNM()*10.0)/10.0;
         unit = "nm";
+        break;
     }
 
     // Round value to reasonable numbers
-    if (qAbs(roundedDist) > 1000.0) {
-        roundedDist = qRound(roundedDist/100.0)*100.0;
-    } else if (qAbs(roundedDist) > 100.0) {
-        roundedDist = qRound(roundedDist/10.0)*10.0;
-}
+    if (roundBigNumbers) {
+        if (qAbs(roundedDist) > 1000.0) {
+            roundedDist = qRound(roundedDist/100.0)*100.0;
+        } else if (qAbs(roundedDist) > 100.0) {
+            roundedDist = qRound(roundedDist/10.0)*10.0;
+        }
+    }
 
     QString signString;
     if (forceSign && roundedDist > 0.0) {
         signString += "+";
-}
+    }
     return signString + QString::number(roundedDist) + " " + unit;
 }

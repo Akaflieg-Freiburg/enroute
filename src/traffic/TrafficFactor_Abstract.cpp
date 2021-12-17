@@ -18,8 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
+#include "GlobalObject.h"
 #include "Settings.h"
+#include "navigation/Navigator.h"
 #include "traffic/TrafficFactor_Abstract.h"
 
 
@@ -150,7 +151,31 @@ void Traffic::TrafficFactor_Abstract::updateDescription()
 
     // Vertical distance
     if (vDist().isFinite()) {
-        results << vDist().toString(Settings::useMetricUnitsStatic(), true, true);
+        QString unitString;
+        double number;
+
+        switch(GlobalObject::navigator()->aircraft()->verticalDistanceUnit()) {
+        case Navigation::Aircraft::Feet:
+            number = vDist().toFeet();
+            unitString = "ft";
+            break;
+        case Navigation::Aircraft::Meters:
+            number = vDist().toM();
+            unitString = "m";
+            break;
+        }
+
+        // Round value to reasonable numbers
+        if (qAbs(number) > 1000.0) {
+            number = qRound(number/100.0)*100.0;
+        } else if (qAbs(number) > 100.0) {
+            number = qRound(number/10.0)*10.0;
+        }
+        QString signString;
+        if (number > 0.0) {
+            signString += "+";
+        }
+        results << signString << QString::number(number) << "&nbsp;" << unitString;
     }
 
     // Set property value

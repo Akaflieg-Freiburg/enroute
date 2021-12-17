@@ -18,7 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
+#include "GlobalObject.h"
+#include "navigation/Aircraft.h"
+#include "navigation/Navigator.h"
 #include "Settings.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
@@ -107,7 +109,16 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
     }
 
     if (vDist().isFinite()) {
-        auto result = vDist().toString(Settings::useMetricUnitsStatic(), true, true);
+        QString result;
+        switch(GlobalObject::navigator()->aircraft()->verticalDistanceUnit()) {
+        case Navigation::Aircraft::VerticalDistanceUnit::Feet:
+            result = vDist().toString(Units::Distance::Feet, true, true);
+            break;
+        case Navigation::Aircraft::VerticalDistanceUnit::Meters:
+            result = vDist().toString(Units::Distance::Meter, true, true);
+            break;
+        }
+
         auto climbRateMPS = m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed);
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {

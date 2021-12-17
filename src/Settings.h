@@ -25,7 +25,6 @@
 #include <QObject>
 #include <QPointer>
 #include <QSettings>
-#include <QTranslator>
 
 
 /*! \brief Global Settings Manager
@@ -220,42 +219,6 @@ public:
      */
     void setNightMode(bool newNightMode);
 
-    /*! \brief Set to true is app should be shown in English rather than the
-     * system language */
-    Q_PROPERTY(bool useMetricUnits READ useMetricUnits WRITE setUseMetricUnits NOTIFY useMetricUnitsChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property useMetricUnits
-     */
-    bool useMetricUnits() const { return settings.value(QStringLiteral("System/useMetricUnits"), false).toBool(); }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * This function differs from useMetricUnits() only in that it is static.
-     *
-     * @returns Property useMetricUnits
-     */
-    static bool useMetricUnitsStatic();
-
-    /*! \brief Setter function for property of the same name
-     *
-     * Setting this property will switch the horizontal speed unit to km/h
-     * instead of kt.
-     *
-     * @param unitHorizKmh Property unitHorizKmh
-     */
-    void setUseMetricUnits(bool unitHorizKmh);
-
-    /*! \brief Removes/Installs global application translators
-     *
-     * This method can be used to change the GUI language on the fly.
-     * It removes all existing translators and installs new ones.
-     *
-     * @param localeName Name of the locale (such as "de") or an empty string for the system locale.
-     */
-    void installTranslators(const QString &localeName={});
-
 signals:
     /*! Notifier signal */
     void acceptedTermsChanged();
@@ -281,13 +244,8 @@ signals:
     /*! Notifier signal */
     void nightModeChanged();
 
-    /*! Notifier signal */
-    void useMetricUnitsChanged();
-
 private:
     Q_DISABLE_COPY_MOVE(Settings)
-
-    QPointer<QTranslator> enrouteTranslator {nullptr};
 
     QSettings settings;
 };

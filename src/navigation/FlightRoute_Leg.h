@@ -23,9 +23,7 @@
 #include <QPointer>
 
 #include "FlightRoute.h"
-#include "units/Angle.h"
-#include "units/Distance.h"
-#include "units/Time.h"
+#include "units/Units.h"
 
 namespace Navigation {
 

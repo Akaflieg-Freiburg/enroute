@@ -22,14 +22,6 @@
 #include "units/Speed.h"
 
 
-auto Units::Speed::toString() const -> QString {
-    if (Settings::useMetricUnitsStatic()) {
-        return QString("%1 km/h").arg( qRound(toKMH()) );
-}
-    return QString("%1 kn").arg( qRound(toKN()) );
-}
-
-
 auto operator<<(QDataStream &out, Units::Speed speed) -> QDataStream &
 {
     out << speed.toMPS();

@@ -71,7 +71,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (weatherStation !== null) ? weatherStation.wayTo(global.positionProvider().positionInfo.coordinate(), global.settings().useMetricUnits) : ""
+            text: (weatherStation !== null) ? weatherStation.wayTo( global.positionProvider().positionInfo.coordinate() ) : ""
             visible: global.positionProvider().receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

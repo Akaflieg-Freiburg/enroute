@@ -229,14 +229,11 @@ public:
      *
      * @param from Starting point of the way
      *
-     * @param useMetric If true, then description uses metric units. Otherwise,
-     * nautical units are used.
-     *
      * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot
      * be described (e.g. because one of the coordinates is invalid or unknown),
      * then an empty string is returned.
      */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from, bool useMetric) const;
+    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from) const;
 
 signals:
     /* \brief Notifier signal */

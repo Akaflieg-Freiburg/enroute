@@ -124,7 +124,7 @@ Page {
                 text: {
                     if (!global.positionProvider().positionInfo.isValid())
                         return "-"
-                    const lon = global.positionProvider().positionInfo.coordinate().toString().split(",")[1]
+                    const lon = global.positionProvider().positionInfo.coordinate().toString().split(",")[1].trim()
                     if (lon === "")
                         return "-"
                     return lon
@@ -135,7 +135,15 @@ Page {
             Label {
                 text: {
                     const talt = global.positionProvider().positionInfo.trueAltitude();
-                    return talt.isFinite() ? Math.round(talt.toFeet()) + " ft" : "-"
+                    if (!talt.isFinite())
+                        return "-"
+                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    case Aircraft.Feet:
+                        return Math.round(talt.toFeet()) + " ft"
+                    case Aircraft.Meters:
+                        return Math.round(talt.toM()) + " m"
+                    }
+                    return "-"
                 }
             }
 
@@ -151,9 +159,16 @@ Page {
             Label {
                 text: {
                     const taltError = global.positionProvider().positionInfo.trueAltitudeErrorEstimate();
-                    return taltError.isFinite() ? "±" + Math.round(taltError.toFeet()) + " ft" : "-"
+                    if (!taltError.isFinite())
+                        return "-"
+                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    case Aircraft.Feet:
+                        return "±" + Math.round(taltError.toFeet()) + " ft"
+                    case Aircraft.Meters:
+                        return "±" + Math.round(taltError.toM()) + " m"
+                    }
+                    return "-"
                 }
-
             }
 
             Label { text: qsTr("Magnetic Variation") }
@@ -169,7 +184,17 @@ Page {
                     const gs = global.positionProvider().positionInfo.groundSpeed();
                     if (!gs.isFinite())
                         return "-"
-                    return global.settings().useMetricUnits ? Math.round(gs.toKMH()) + " km/h" : Math.round(gs.toKN()) + " kn"
+
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                        return Math.round(gs.toKMH()) + " km/h"
+                    }
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
+                        return Math.round(gs.toMPH()) + " mph"
+                    }
+                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.NauticalMile) {
+                        return Math.round(gs.toKN()) + " kn"
+                    }
+                    return "-"
                 }
             }
 
@@ -185,13 +210,20 @@ Page {
             Label {
                 text: {
                     const vs = global.positionProvider().positionInfo.verticalSpeed();
-                    return vs.isFinite() ? Math.round(vs.toFPM()) + " ft/min" : "-"
+                    if (!vs.isFinite())
+                        return "-"
+                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    case Aircraft.Feet:
+                        return Math.round(vs.toFPM()) + " ft/min"
+                    case Aircraft.Meters:
+                        return Math.round(vs.toMPS()) + " m/s"
+                    }
+                    return "-"
                 }
             }
 
             Label { text: qsTr("Pressure Altitude") }
             Label { text: global.positionProvider().pressureAltitude.isFinite() ? Math.round(global.positionProvider().pressureAltitude.toFeet()) + " ft" : "-" }
-
 
             Label { text: qsTr("Timestamp") }
             Label { text: global.positionProvider().positionInfo.isValid() ? global.positionProvider().positionInfo.timestampString() : "-" }

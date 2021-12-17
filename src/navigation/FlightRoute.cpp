@@ -42,7 +42,8 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
 
-    connect(GlobalObject::navigator()->aircraft(), &Aircraft::valChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(GlobalObject::navigator()->aircraft(), &Aircraft::cruiseSpeedChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(GlobalObject::navigator()->aircraft(), &Aircraft::fuelConsumptionChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator()->wind(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
 }
 
@@ -422,16 +423,23 @@ auto Navigation::FlightRoute::summary() const -> QString {
         }
     }
 
-    if (GlobalObject::settings()->useMetricUnits()) {
-        result += tr("Total: %1&nbsp;km").arg(dist.toKM(), 0, 'f', 1);
-    } else {
-        result += tr("Total: %1&nbsp;nm").arg(dist.toNM(), 0, 'f', 1);
+    switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    case Navigation::Aircraft::Kilometer:
+        result += tr("Total: %1 km").arg(dist.toKM(), 0, 'f', 1);
+        break;
+    case Navigation::Aircraft::NauticalMile:
+        result += tr("Total: %1 nm").arg(dist.toNM(), 0, 'f', 1);
+        break;
+    case Navigation::Aircraft::StatuteMile:
+        result += tr("Total: %1 mil").arg(dist.toMIL(), 0, 'f', 1);
+        break;
     }
+
     if (time.isFinite()) {
-        result += QStringLiteral(" • %1&nbsp;h").arg(time.toHoursAndMinutes());
+        result += QStringLiteral(" • %1 h").arg(time.toHoursAndMinutes());
     }
     if (qIsFinite(fuelInL)) {
-        result += QStringLiteral(" • %1&nbsp;L").arg(qRound(fuelInL));
+        result += QStringLiteral(" • %1 l").arg(qRound(fuelInL));
     }
 
 
@@ -439,7 +447,7 @@ auto Navigation::FlightRoute::summary() const -> QString {
     if ( !GlobalObject::navigator()->aircraft()->cruiseSpeed().isFinite() ) {
         complaints += tr("Cruise speed not specified.");
     }
-    if (!qIsFinite(GlobalObject::navigator()->aircraft()->fuelConsumptionInLPH())) {
+    if (!GlobalObject::navigator()->aircraft()->fuelConsumption().isFinite()) {
         complaints += tr("Fuel consumption not specified.");
     }
     if (!GlobalObject::navigator()->wind()->windSpeed().isFinite()) {

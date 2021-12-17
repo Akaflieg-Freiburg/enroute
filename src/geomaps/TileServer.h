@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "dataManagement/Downloadable.h"
 #include <qhttpengine/filesystemhandler.h>
 #include <qhttpengine/server.h>
 

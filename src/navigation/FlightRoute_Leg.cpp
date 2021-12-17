@@ -22,6 +22,7 @@
 
 #include "FlightRoute_Leg.h"
 #include "GlobalObject.h"
+#include "navigation/Navigator.h"
 #include "Settings.h"
 
 
@@ -31,7 +32,8 @@ Navigation::FlightRoute::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps:
     _start = start;
     _end   = end;
 
-    connect(_aircraft, &Aircraft::valChanged, this, &FlightRoute::Leg::valChanged);
+    connect(_aircraft, &Aircraft::cruiseSpeedChanged, this, &FlightRoute::Leg::valChanged);
+    connect(_aircraft, &Aircraft::fuelConsumptionChanged, this, &FlightRoute::Leg::valChanged);
     connect(_wind, &Weather::Wind::valChanged, this, &FlightRoute::Leg::valChanged);
 }
 
@@ -54,7 +56,7 @@ auto Navigation::FlightRoute::Leg::Fuel() const -> double
         return qQNaN();
     }
 
-    return _aircraft->fuelConsumptionInLPH()*Time().toH();
+    return _aircraft->fuelConsumption().toLPH()*Time().toH();
 }
 
 
@@ -125,10 +127,16 @@ auto Navigation::FlightRoute::Leg::description() const -> QString
     }
 
     QString result;
-    if (GlobalObject::settings()->useMetricUnits()) {
-        result += QString("%1 km").arg(distance().toKM(), 0, 'f', 1);
-    } else {
-        result += QString("%1 nm").arg(distance().toNM(), 0, 'f', 1);
+    switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    case Navigation::Aircraft::Kilometer:
+        result += tr("%1 km").arg(distance().toKM(), 0, 'f', 1);
+        break;
+    case Navigation::Aircraft::NauticalMile:
+        result += tr("%1 nm").arg(distance().toNM(), 0, 'f', 1);
+        break;
+    case Navigation::Aircraft::StatuteMile:
+        result += tr("%1 mil").arg(distance().toMIL(), 0, 'f', 1);
+        break;
     }
     auto _time = Time();
     if (_time.isFinite()) {

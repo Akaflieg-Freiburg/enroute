@@ -127,8 +127,8 @@ Page {
                 Layout.fillWidth: true
                 enabled: false
                 text: {
-                    // Mention useMetricUnits
-                    global.settings().useMetricUnits
+                    // Mention horizontal distance unit
+                    global.navigator().aircraft.horizontalDistanceUnit
                     if (leg === null)
                         return ""
                     return leg.description
@@ -191,13 +191,11 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("Open from library …")
+                    text: qsTr("View Library …")
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-                        dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/FlightRouteOpenDialog.qml"
-                        dialogLoader.active = true
+                        stackView.push("FlightRouteLibrary.qml")
                     }
                 }
 
@@ -210,15 +208,6 @@ Page {
                         dialogLoader.active = false
                         dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
                         dialogLoader.active = true
-                    }
-                }
-
-                MenuItem {
-                    text: qsTr("View Library …")
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        stackView.push("FlightRouteLibrary.qml")
                     }
                 }
 
@@ -370,7 +359,7 @@ Page {
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
         TabButton { text: qsTr("Wind") }
-        TabButton { text: qsTr("ACFT") }
+
         Material.elevation: 3
     }
 
@@ -522,16 +511,42 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     Layout.minimumWidth: Qt.application.font.pixelSize*5
                     validator: DoubleValidator {
-                        bottom: global.settings().useMetricUnits ? global.navigator().wind.minWindSpeed.toKMH() : global.navigator().wind.minWindSpeed.toKN()
-                        top: global.settings().useMetricUnits ? global.navigator().wind.maxWindSpeed.toKMH() : global.navigator().wind.maxWindSpeed.toKN()
+                        bottom: {
+                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            case Aircraft.NauticalMile:
+                                return global.navigator().wind.minWindSpeed.toKN()
+                            case Aircraft.Kilometer:
+                                return global.navigator().wind.minWindSpeed.toKMH()
+                            case Aircraft.StatuteMile :
+                                return global.navigator().wind.minWindSpeed.toMIL()
+                            }
+                            return NaN
+                        }
+                        top: {
+                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            case Aircraft.NauticalMile:
+                                return global.navigator().wind.maxWindSpeed.toKN()
+                            case Aircraft.Kilometer:
+                                return global.navigator().wind.maxWindSpeed.toKMH()
+                            case Aircraft.StatuteMile :
+                                return global.navigator().wind.maxWindSpeed.toMIL()
+                            }
+                            return NaN
+                        }
                         notation: DoubleValidator.StandardNotation
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        if (global.settings().useMetricUnits) {
-                            global.navigator().wind.windSpeed = speed.fromKMH(text)
-                        } else {
+                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        case Aircraft.NauticalMile:
                             global.navigator().wind.windSpeed = speed.fromKN(text)
+                            break;
+                        case Aircraft.Kilometer:
+                            global.navigator().wind.windSpeed = speed.fromKMH(text)
+                            break;
+                        case Aircraft.StatuteMile :
+                            global.navigator().wind.windSpeed = speed.fromMPH(text)
+                            break;
                         }
                         focus = false
                     }
@@ -540,15 +555,31 @@ Page {
                         if (!global.navigator().wind.windSpeed.isFinite()) {
                             return ""
                         }
-                        if (global.settings().useMetricUnits) {
+                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        case Aircraft.NauticalMile:
+                            return Math.round( global.navigator().wind.windSpeed.toKN() )
+                        case Aircraft.Kilometer:
                             return Math.round( global.navigator().wind.windSpeed.toKMH() )
+                        case Aircraft.StatuteMile :
+                            return Math.round( global.navigator().wind.windSpeed.toMPH() )
                         }
-                        return Math.round( global.navigator().wind.windSpeed.toKN() )
+                        return NaN
                     }
                     placeholderText: qsTr("undefined")
                 }
                 Label {
-                    text: global.settings().useMetricUnits ? "km/h" : "kt"
+                    text: {
+                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        case Aircraft.NauticalMile:
+                            return "kn"
+                        case Aircraft.Kilometer:
+                            return "km/h"
+                        case Aircraft.StatuteMile:
+                            return "mph"
+                        }
+                        return ""
+
+                    }
                     Layout.alignment: Qt.AlignBaseline
                 }
                 ToolButton {
@@ -561,186 +592,6 @@ Page {
                     }
                 }
 
-            }
-
-        }
-
-        ScrollView {
-            id: acftTab
-
-            contentWidth: width
-            clip: true
-
-            GridLayout {
-                id: aircraftTab
-                anchors.left: parent.left
-                anchors.leftMargin: Qt.application.font.pixelSize
-                anchors.right: parent.right
-                anchors.rightMargin: Qt.application.font.pixelSize
-
-                columns: 4
-
-                Label { Layout.fillHeight: true }
-                Label {
-                    text: qsTr("True Airspeed")
-                    Layout.columnSpan: 4
-                    font.pixelSize: Qt.application.font.pixelSize*1.2
-                    font.bold: true
-                    color: Material.accent
-                }
-
-                Label {
-                    text: qsTr("Cruise")
-                    Layout.alignment: Qt.AlignBaseline
-                }
-                TextField {
-                    id: cruiseSpeed
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: Qt.application.font.pixelSize*5
-                    validator: DoubleValidator {
-                        bottom: global.settings().useMetricUnits ? global.navigator().aircraft.minAircraftSpeed.toKMH() : global.navigator().aircraft.minAircraftSpeed.toKN()
-                        top: global.settings().useMetricUnits ? global.navigator().aircraft.maxAircraftSpeed.toKMH() : global.navigator().aircraft.maxAircraftSpeed.toKN()
-                        notation: DoubleValidator.StandardNotation
-                    }
-                    inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: {
-                        if ( global.settings().useMetricUnits ) {
-                            global.navigator().aircraft.cruiseSpeed = speed.fromKMH(text)
-                        } else {
-                            global.navigator().aircraft.cruiseSpeed = speed.fromKN(text)
-                        }
-                        descentSpeed.focus = true
-                    }
-                    color: (acceptableInput ? Material.foreground : "red")
-                    KeyNavigation.tab: descentSpeed
-                    KeyNavigation.backtab: windSpeed
-                    text: {
-                        if (!global.navigator().aircraft.cruiseSpeed.isFinite()) {
-                            return ""
-                        }
-                        if (global.settings().useMetricUnits) {
-                            return Math.round(global.navigator().aircraft.cruiseSpeed.toKMH()).toString()
-                        }
-                        return Math.round(global.navigator().aircraft.cruiseSpeed.toKN()).toString()
-                    }
-                    placeholderText: qsTr("undefined")
-                }
-                Label {
-                    text: global.settings().useMetricUnits ? "km/h" : "kt"
-                    Layout.alignment: Qt.AlignBaseline
-                }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: cruiseSpeed.text !== ""
-                    onClicked: {
-                        global.navigator().aircraft.cruiseSpeed = speed.fromKN(-1)
-                        cruiseSpeed.clear()
-                    }
-                }
-
-                Label {
-                    text: qsTr("Descent")
-                    Layout.alignment: Qt.AlignBaseline
-                }
-                TextField {
-                    id: descentSpeed
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: Qt.application.font.pixelSize*5
-                    validator: DoubleValidator {
-                        bottom: global.settings().useMetricUnits ? global.navigator().aircraft.minAircraftSpeed.toKMH() : global.navigator().aircraft.minAircraftSpeed.toKN()
-                        top: global.settings().useMetricUnits ? global.navigator().aircraft.maxAircraftSpeed.toKMH() : global.navigator().aircraft.maxAircraftSpeed.toKN()
-                        notation: DoubleValidator.StandardNotation
-                    }
-                    inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: {
-                        if ( global.settings().useMetricUnits ) {
-                            global.navigator().aircraft.descentSpeed = speed.fromKMH(text)
-                        } else {
-
-                            global.navigator().aircraft.descentSpeed = speed.fromKN(text)
-                        }
-                        fuelConsumption.focus = true
-                    }
-                    color: (acceptableInput ? Material.foreground : "red")
-                    KeyNavigation.tab: fuelConsumption
-                    KeyNavigation.backtab: cruiseSpeed
-                    text: {
-                        if (!global.navigator().aircraft.descentSpeed.isFinite()) {
-                            return ""
-                        }
-                        if (global.settings().useMetricUnits) {
-                            return Math.round(global.navigator().aircraft.descentSpeed.toKMH()).toString()
-                        }
-                        return Math.round(global.navigator().aircraft.descentSpeed.toKN()).toString()
-                    }
-                    placeholderText: qsTr("undefined")
-                }
-                Label {
-                    text: global.settings().useMetricUnits ? "km/h" : "kt"
-                    Layout.alignment: Qt.AlignBaseline
-                }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: descentSpeed.text !== ""
-                    onClicked: {
-                        global.navigator().aircraft.descentSpeed = speed.fromKN(-1)
-                        descentSpeed.clear()
-                    }
-                }
-
-                Label { Layout.fillHeight: true }
-                Label {
-                    text: qsTr("Fuel consumption")
-                    Layout.columnSpan: 4
-                    font.pixelSize: Qt.application.font.pixelSize*1.2
-                    font.bold: true
-                    color: Material.accent
-                }
-
-                Label {
-                    text: qsTr("Cruise")
-                    Layout.alignment: Qt.AlignBaseline
-                }
-                TextField {
-                    id: fuelConsumption
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: Qt.application.font.pixelSize*5
-                    validator: DoubleValidator {
-                        bottom: global.navigator().aircraft.minFuelConsuption
-                        top: global.navigator().aircraft.maxFuelConsuption
-                        notation: DoubleValidator.StandardNotation
-                    }
-                    inputMethodHints: Qt.ImhDigitsOnly
-                    onEditingFinished: {
-                        focus = false
-                        global.navigator().aircraft.fuelConsumptionInLPH = text
-                    }
-                    color: (acceptableInput ? Material.foreground : "red")
-                    KeyNavigation.tab: windDirection
-                    KeyNavigation.backtab: descentSpeed
-                    text: isFinite(global.navigator().aircraft.fuelConsumptionInLPH) ? global.navigator().aircraft.fuelConsumptionInLPH.toString() : ""
-                    placeholderText: qsTr("undefined")
-                }
-                Label {
-                    text: qsTr("l/h")
-                    Layout.alignment: Qt.AlignBaseline
-                }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: fuelConsumption.text !== ""
-                    onClicked: {
-                        aircraft.fuelConsumptionInLPH = -1
-                        fuelConsumption.clear()
-                    }
-                }
-
-                Label { Layout.fillHeight: true }
             }
 
         }
@@ -758,8 +609,8 @@ Page {
 
                 Layout.fillWidth: true
                 text: {
-                    // Mention useMetricUnits
-                    global.settings().useMetricUnits
+                    // Mention horizontal distance units
+                    global.navigator().aircraft.horizontalDistanceUnit
 
                     return global.navigator().flightRoute.summary
                 }

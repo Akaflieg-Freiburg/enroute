@@ -18,21 +18,5 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Settings.h"
-#include "units/Speed.h"
+#include "units/Volume.h"
 
-
-auto operator<<(QDataStream &out, Units::Speed speed) -> QDataStream &
-{
-    out << speed.toMPS();
-    return out;
-}
-
-
-auto operator>>(QDataStream &in, Units::Speed &speed) -> QDataStream &
-{
-    double buffer = NAN;
-    in >> buffer;
-    speed = Units::Speed::fromMPS(buffer);
-    return in;
-}

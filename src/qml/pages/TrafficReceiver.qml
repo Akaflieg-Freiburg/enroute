@@ -176,7 +176,7 @@ Page {
                 visible: !global.trafficDataProvider().receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your traffic receiver…")
-                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/traffic.html"})
+                onClicked: openManual("02-steps/traffic.html")
             }
 
             WordWrappingItemDelegate {
@@ -184,42 +184,11 @@ Page {
                 visible: !global.trafficDataProvider().receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your flight simulator…")
-                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/simulator.html"})
+                onClicked: openManual("02-steps/simulator.html")
             }
 
         }
 
     }
-
-    /*
-    footer: Pane {
-        width: parent.width
-        Material.elevation: 3
-        visible: !global.trafficDataProvider().receivingHeartbeat
-
-        ToolButton {
-            anchors.centerIn: parent
-            width: Math.min(implicitWidth, parent.width-Qt.application.font.pixelSize)
-
-            text: qsTr("Connect to Traffic Receiver")
-
-            icon.source: "/icons/material/ic_tap_and_play.svg"
-
-            Layout.alignment: Qt.AlignHCenter
-            Material.foreground: Material.accent
-
-            enabled: !timer.running
-            onClicked: {
-                global.trafficDataProvider().connectToTrafficReceiver()
-                timer.running = true;
-            }
-            Timer {
-                id: timer
-                interval: 1000
-            }
-
-        }
-    }
-*/
 
 }

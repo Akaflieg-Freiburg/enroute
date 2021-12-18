@@ -29,10 +29,10 @@
 #include <QQuickItem>
 #include <QSettings>
 #include <QTranslator>
-#include <QtWebView/QtWebView>
 
 #if !defined(Q_OS_ANDROID)
 #include <QApplication>
+#include <QtWebView/QtWebView>
 #include <kdsingleapplication.h>
 #endif
 

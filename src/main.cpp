@@ -30,9 +30,10 @@
 #include <QSettings>
 #include <QTranslator>
 
-#if !defined(Q_OS_ANDROID)
-#include <QApplication>
+#if defined(Q_OS_ANDROID)
 #include <QtWebView/QtWebView>
+#else
+#include <QApplication>
 #include <kdsingleapplication.h>
 #endif
 

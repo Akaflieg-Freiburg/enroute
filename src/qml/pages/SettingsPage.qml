@@ -156,14 +156,14 @@ Page {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your traffic receiver…")
-                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/traffic.html"})
+                onClicked: openManual("02-steps/traffic.html")
             }
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your flight simulator…")
-                onClicked: stackView.push("Manual.qml", {"fileName": "02-steps/simulator.html"})
+                onClicked: openManual("02-steps/simulator.html")
             }
 
             Item { // Spacer

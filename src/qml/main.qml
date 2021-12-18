@@ -373,6 +373,8 @@ ApplicationWindow {
                             text: qsTr("Read manual")
                             icon.source: "/icons/material/ic_book.svg"
                             Layout.fillWidth: true
+                            visible: Qt.platform.os == "android"
+                            height: visible ? undefined : 0
 
                             onClicked: {
                                 global.mobileAdaptor().vibrateBrief()
@@ -389,7 +391,8 @@ ApplicationWindow {
                         }
 
                         Rectangle {
-                            height: 1
+                            visible: Qt.platform.os == "android"
+                            height: visible ? 1 : 0
                             Layout.fillWidth: true
                             color: Material.primary
                         }
@@ -801,5 +804,12 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
             close.accepted = false // prevent closing of the app
             stackView.pop(); // will close the stackView page
         }
+    }
+
+    function openManual(pageUrl) {
+        if (Qt.platform.os === "android")
+            stackView.push("pages/Manual.qml", {"fileName": pageUrl})
+        else
+            Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/"+pageUrl)
     }
 }

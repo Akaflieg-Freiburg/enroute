@@ -103,7 +103,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: global.librarian().flightRoutes("")
+            model: global.librarian().entries(Librarian.Routes)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -126,7 +126,7 @@ Dialog {
         if (fileName.text === "")
             return
         finalFileName = fileName.text
-        if (global.librarian().flightRouteExists(finalFileName))
+        if (global.librarian().exists(Librarian.Routes, finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -138,7 +138,7 @@ Dialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = global.navigator().flightRoute.save(global.librarian().flightRouteFullPath(finalFileName))
+        var errorString = global.navigator().flightRoute.save(global.librarian().fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

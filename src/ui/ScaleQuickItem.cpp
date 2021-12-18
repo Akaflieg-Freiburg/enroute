@@ -21,6 +21,8 @@
 #include <QPainter>
 #include <cmath>
 
+#include "navigation/Navigator.h"
+#include "navigation/Aircraft.h"
 #include "GlobalObject.h"
 #include "ScaleQuickItem.h"
 #include "Settings.h"
@@ -30,7 +32,7 @@ Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
 
-    connect(GlobalObject::settings(), &Settings::useMetricUnitsChanged, this, &QQuickItem::update);
+    connect(GlobalObject::navigator()->aircraft(), &Navigation::Aircraft::horizontalDistanceUnitChanged, this, &QQuickItem::update);
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
 
 }
@@ -44,8 +46,18 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
     }
 
     // Pre-compute a few numbers that will be used when drawing
-    auto _useMetricUnits = Settings::useMetricUnitsStatic();
-    qreal pixelPerUnit        = _useMetricUnits ? _pixelPer10km * 0.1 : _pixelPer10km * 0.1852;
+    qreal pixelPerUnit   = NAN;
+    switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    case Navigation::Aircraft::Kilometer:
+        pixelPerUnit = _pixelPer10km * 0.1;
+        break;
+    case Navigation::Aircraft::StatuteMile:
+        pixelPerUnit = _pixelPer10km * 0.1609344;
+        break;
+    case Navigation::Aircraft::NauticalMile:
+        pixelPerUnit = _pixelPer10km * 0.1852;
+        break;
+    }
     qreal scaleSizeInUnit     = _vertical ? (height()-10.0)/pixelPerUnit : (width()-10.0)/pixelPerUnit;
     qreal ScaleUnitInUnit     = pow(10.0, floor(log10(scaleSizeInUnit)));
     int   sizeOfUnitInPix     = qRound(ScaleUnitInUnit*pixelPerUnit);
@@ -60,7 +72,18 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
         font.setPixelSize(qRound(font.pixelSize()*0.8));
     }
     painter->setFont(font);
-    QString text = QString(_useMetricUnits ? QString("%1 km") : QString("%1 nm")).arg(sizeOfScaleInUnit);
+    QString text;
+    switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    case Navigation::Aircraft::Kilometer:
+        text = QString("%1 km").arg(sizeOfScaleInUnit);
+        break;
+    case Navigation::Aircraft::StatuteMile:
+        text = QString("%1 mil").arg(sizeOfScaleInUnit);
+        break;
+    case Navigation::Aircraft::NauticalMile:
+        text = QString("%1 nm").arg(sizeOfScaleInUnit);
+        break;
+    }
     int textWidth  = painter->fontMetrics().horizontalAdvance(text);
     int textHeight = painter->fontMetrics().height();
 

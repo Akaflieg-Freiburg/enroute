@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,11 +27,12 @@ import enroute 1.0
 
 Dialog {
     id: dlg
-    title: qsTr("Load Flight Route from Library…")
+    title: qsTr("Save Aircraft…")
+
     modal: true
     focus: true
 
-    // Size is chosen so that the dialog does not cover the parent in full
+    // Width and height are chosen so that the dialog does not cover the parent in full
     width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
     height: parent.height-2*Qt.application.font.pixelSize
 
@@ -41,10 +42,9 @@ Dialog {
     x: (parent.width-width)/2.0
     y: (parent.height-height)/2.0
 
-
     implicitHeight: height
 
-    standardButtons: DialogButtonBox.Cancel
+    standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
 
     Component {
         id: fileDelegate
@@ -52,7 +52,7 @@ Dialog {
         ItemDelegate {
             id: idel
             text: modelData
-            icon.source: "/icons/material/ic_directions.svg"
+            icon.source: "/icons/material/ic_airplanemode_active.svg"
 
             anchors.left: parent.left
             anchors.right: parent.right
@@ -61,14 +61,12 @@ Dialog {
                 global.mobileAdaptor().vibrateBrief()
                 finalFileName = modelData
                 dlg.close()
-                if (global.navigator().flightRoute.size > 0)
-                    overwriteDialog.open()
-                else
-                    openFromLibrary()
+                overwriteDialog.open()
             }
         }
 
     } // fileDelegate
+
 
     ColumnLayout {
         anchors.fill: parent
@@ -76,33 +74,25 @@ Dialog {
         Label {
             Layout.fillWidth: true
 
-            text: qsTr("Choose a flight route from the list below.")
+            text: qsTr("Enter a name or choose an existing name from the list below.")
             color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
         TextField {
-            id: filterName
+            id: fileName
 
             Layout.fillWidth: true
-            placeholderText: qsTr("Filter Flight Route Names")
+            focus: true
+            placeholderText: qsTr("Aircraft Name")
 
-            onTextChanged: lView.model = library.flightRoutes(text)
+            onDisplayTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (displayText !== "")
 
             onAccepted: {
-                if (text.length === 0)
+                if (fileName.text === "")
                     return
-                if (lView.model.length === 0)
-                    return
-
-                global.mobileAdaptor().vibrateBrief()
-                finalFileName = lView.model[0]
-                dlg.close()
-                if (global.navigator().flightRoute.size > 0)
-                    overwriteDialog.open()
-                else
-                    openFromLibrary()
+                dlg.accept()
             }
         }
 
@@ -113,7 +103,7 @@ Dialog {
             Layout.fillHeight: true
 
             clip: true
-            model: global.librarian().flightRoutes(filterName.displayText)
+            model: global.librarian().entries(Librarian.Aircraft)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -121,20 +111,39 @@ Dialog {
 
     } // ColumnLayout
 
+    onOpened: {
+        fileName.text = global.navigator().aircraft.name
+        dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
+    }
+
     onRejected: {
         global.mobileAdaptor().vibrateBrief()
         close()
     }
 
+    onAccepted: {
+        global.mobileAdaptor().vibrateBrief()
+        if (fileName.text === "")
+            return
+        finalFileName = fileName.text
+        if (global.librarian().exists(Librarian.Aircraft, finalFileName))
+            overwriteDialog.open()
+        else
+            saveToLibrary()
+    }
+
+    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;
 
-    function openFromLibrary() {
-        var errorString = global.navigator().flightRoute.loadFromGeoJSON(global.global.librarian()().flightRouteFullPath(finalFileName))
+    function saveToLibrary() {
+        var errorString = global.navigator().aircraft.save(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
-        }
+        } else
+            toast.doToast(qsTr("Aircraft %1 saved").arg(finalFileName))
     }
 
     Dialog {
@@ -174,41 +183,41 @@ Dialog {
             } // Label
         } // ScrollView
 
-    }
+    }  // Dialog: fileError
 
     Dialog {
         id: overwriteDialog
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Overwrite current flight route?")
-
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
         height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
+        title: qsTr("Overwrite aircraft?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
         Label {
             width: overwriteDialog.availableWidth
 
-            text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
+            text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
-            dlg.openFromLibrary()
+            dlg.saveToLibrary()
         }
+
         onRejected: {
             global.mobileAdaptor().vibrateBrief()
             close()
             dlg.open()
         }
 
-    }
+    } // Dialog: overwriteDialog
 
 } // Dialog

@@ -156,20 +156,3 @@ void Settings::setNightMode(bool newNightMode)
     settings.setValue("Map/nightMode", newNightMode);
     emit nightModeChanged();
 }
-
-
-void Settings::setUseMetricUnits(bool unitHorizKmh)
-{
-    if (unitHorizKmh == useMetricUnits()) {
-        return;
-    }
-
-    settings.setValue("System/useMetricUnits", unitHorizKmh);
-    emit useMetricUnitsChanged();
-}
-
-
-auto Settings::useMetricUnitsStatic() -> bool
-{
-    return GlobalObject::settings()->useMetricUnits();
-}

@@ -46,6 +46,11 @@ public:
      */
     explicit Navigator(QObject *parent = nullptr);
 
+    /*! \brief Standard destructor
+     *
+     */
+    ~Navigator();
+
     //
     // METHODS
     //
@@ -146,6 +151,9 @@ private slots:
     // nested uses of constructors in Global.
     void deferredInitialization() const;
 
+    // Save current aircraft to standard location
+    void saveAircraft() const;
+
 private:
     Q_DISABLE_COPY_MOVE(Navigator)
 
@@ -163,6 +171,8 @@ private:
     QPointer<Clock> m_clock {nullptr};
     QPointer<FlightRoute> m_flightRoute {nullptr};
     QPointer<Weather::Wind> m_wind {nullptr};
+
+    QString m_aircraftFileName;
 };
 
 }

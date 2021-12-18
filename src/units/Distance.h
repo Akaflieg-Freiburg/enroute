@@ -35,6 +35,16 @@ namespace Units {
         Q_GADGET
 
     public:
+        /*! \brief Units of measurement for distances */
+        enum DistanceUnit {
+            Feet,
+            Meter,
+            Kilometer,
+            StatuteMile,
+            NauticalMile,
+        };
+        Q_ENUM(DistanceUnit)
+
         /*! \brief Constructs a distance
          *
          * @param distanceInM distance in meters
@@ -71,6 +81,19 @@ namespace Units {
         {
             Distance result;
             result.m_distanceInM = distanceInNM*MetersPerNauticalMile;
+            return result;
+        }
+
+        /*! \brief Constructs a distance
+         *
+         * @param distanceInMIL distance in international miles
+         *
+         * @returns distance
+         */
+        static constexpr Distance fromMIL(double distanceInMIL)
+        {
+            Distance result;
+            result.m_distanceInM = distanceInMIL*MetersPerMile;
             return result;
         }
 
@@ -183,22 +206,13 @@ namespace Units {
             return m_distanceInM == rhs.m_distanceInM;
         }
 
-        /*! \brief Convert to nautical miles
+        /*! \brief Convert to feet
          *
-         * @returns distance in nautical miles
+         * @returns distance in feet
          */
-        Q_INVOKABLE double toNM() const
+        Q_INVOKABLE double toFeet() const
         {
-            return m_distanceInM / MetersPerNauticalMile;
-        }
-
-        /*! \brief Convert to meters
-         *
-         * @returns distance in meters
-         */
-        Q_INVOKABLE double toM() const
-        {
-            return m_distanceInM;
+            return m_distanceInM / MetersPerFeet;
         }
 
         /*! \brief Convert to meters
@@ -210,13 +224,31 @@ namespace Units {
             return m_distanceInM / 1000.;
         }
 
-        /*! \brief Convert to feet
+        /*! \brief Convert to meters
          *
-         * @returns distance in feet
+         * @returns distance in meters
          */
-        Q_INVOKABLE double toFeet() const
+        Q_INVOKABLE double toM() const
         {
-            return m_distanceInM / MetersPerFeet;
+            return m_distanceInM;
+        }
+
+        /*! \brief Convert to international miles
+         *
+         * @returns distance in international miles
+         */
+        Q_INVOKABLE double toMIL() const
+        {
+            return m_distanceInM / MetersPerMile;
+        }
+
+        /*! \brief Convert to nautical miles
+         *
+         * @returns distance in nautical miles
+         */
+        Q_INVOKABLE double toNM() const
+        {
+            return m_distanceInM / MetersPerNauticalMile;
         }
 
         /*! \brief Convert to string
@@ -225,22 +257,21 @@ namespace Units {
          *  human consumption, of the form "10.9 nm", "130 ft" or "3500 m".
          *  The distance is rounded to reasonable precision.
          *
-         *  @param useMetric Determines whether metric or imperial units are used.
+         *  @param units Determines the units that are used.
          *
-         *  @param vertical If 'true', then meters or feet are used. Otherwise, the
-         *  method uses kilometer, meters or feet.
+         *  @param roundBigNumbers If true, then round "1234" to "1200" and "117" to "120"
          *
-         *  @param forceSign If 'true', then positive distances are prepended by a
-         *  "+" sign.
+         *  @param forceSign If 'true', then positive distances are prepended by a  "+" sign.
          *
          *  @returns A string that describes the distance, or an empty string if
          *  no reasonable distance is set.
          */
-        Q_INVOKABLE QString toString(bool useMetric, bool vertical, bool forceSign=false) const;
+        Q_INVOKABLE QString toString(Units::Distance::DistanceUnit units, bool roundBigNumbers=false, bool forceSign=false) const;
 
     private:
         static constexpr double MetersPerFeet = 0.3048;
         static constexpr double MetersPerNauticalMile = 1852;
+        static constexpr double MetersPerMile = 1609.344;
 
         // Speed in meters per second
         double m_distanceInM{ NAN };

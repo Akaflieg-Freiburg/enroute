@@ -80,8 +80,8 @@ Page {
                     icon.source: model.modelData.icon
 
                     text: {
-                        // Mention useMetricUnits
-                        global.settings().useMetricUnits
+                        // Mention horizontal distance
+                        global.navigator().aircraft.horizontalDistanceUnit
 
                         var result = model.modelData.twoLineTitle
 

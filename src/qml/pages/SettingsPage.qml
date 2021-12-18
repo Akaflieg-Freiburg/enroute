@@ -108,24 +108,6 @@ Page {
             }
 
             SwitchDelegate {
-                id: useMetricUnits
-                text: qsTr("Use metric units")
-                      + `<br><font color="#606060" size="2">`
-                      + ( global.settings().useMetricUnits ?
-                             qsTr("Speed in km/h, distance in km") :
-                             qsTr("Speed in kn, distance in nm")
-                         )
-                      + "</font>"
-                icon.source: "/icons/material/ic_speed.svg"
-                Layout.fillWidth: true
-                Component.onCompleted: useMetricUnits.checked = global.settings().useMetricUnits
-                onCheckedChanged: {
-                    global.mobileAdaptor().vibrateBrief()
-                    global.settings().useMetricUnits = useMetricUnits.checked
-                }
-            }
-
-            SwitchDelegate {
                 id: nightMode
                 text: qsTr("Night mode")
                 icon.source: "/icons/material/ic_brightness_3.svg"

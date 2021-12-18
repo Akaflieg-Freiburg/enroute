@@ -1,9 +1,7 @@
 {
     "app-id": "${APP_ID}",
     "runtime": "org.kde.Platform",
-    "runtime-version": "5.15",
-    "base": "io.qt.qtwebengine.BaseApp",
-    "base-version": "5.15",
+    "runtime-version": "5.15-21.08",
     "sdk": "org.kde.Sdk",
     "command": "${PROJECT_NAME}",
     "finish-args": [
@@ -15,32 +13,11 @@
         "--talk-name=org.freedesktop.Notifications"
     ],
     "modules": [
-	{
-            "name": "qt5-qtwebview",
-            "buildsystem": "qmake",
-            "cleanup-platform": [ "/bin" ],
-	    "make-install-args": [
-                "INSTALL_ROOT=/app/scratchdir"
-            ],
-            "post-install": [
-                "cp -r /app/scratchdir/usr/* /app",
-                "rm -rf /app/scratchdir",
-                "ln -s /app/lib/*/*.so* /app/lib"
-            ],
-             "sources": [
-		{
-		    "type": "git",
-		    "url": "https://invent.kde.org/qt/qt/qtwebview.git",
-		    "commit": "920de5f"
-		}
-	    ]
-        },
         {
             "name": "enroute",
             "buildsystem": "cmake-ninja",
             "config-opts": [
-		"-DCMAKE_BUILD_TYPE=RelWithDebInfo",
-		"-DQt5WebView_DIR=/app/usr/lib/x86_64-linux-gnu/cmake/Qt5WebView"
+		"-DCMAKE_BUILD_TYPE=RelWithDebInfo"
 	    ],
             "sources": [
                 {

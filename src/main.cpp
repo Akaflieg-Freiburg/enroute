@@ -29,9 +29,10 @@
 #include <QQuickItem>
 #include <QSettings>
 #include <QTranslator>
-#include <QtWebView/QtWebView>
 
-#if !defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID)
+#include <QtWebView/QtWebView>
+#else
 #include <QApplication>
 #include <kdsingleapplication.h>
 #endif
@@ -107,7 +108,9 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 
     // Initialize web view on platforms where we use it
+#if defined(Q_OS_ANDROID)
     QtWebView::initialize();
+#endif
 
     // Set up application
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

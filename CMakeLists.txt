@@ -11,7 +11,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.13.4)
+project(enroute VERSION 2.14.0)
 set(APP_ID de.akaflieg_freiburg.enroute)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
@@ -43,9 +43,9 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Doxygen)
 find_package(Git REQUIRED)
-find_package(Qt5 5.15 COMPONENTS Concurrent Core Gui LinguistTools Positioning Quick QuickWidgets Sql Svg WebView REQUIRED)
+find_package(Qt5 5.15 COMPONENTS Concurrent Core Gui LinguistTools Positioning Quick QuickWidgets Sql Svg REQUIRED)
 if( ANDROID )
-    find_package(Qt5 5.15 COMPONENTS AndroidExtras REQUIRED)
+    find_package(Qt5 5.15 COMPONENTS AndroidExtras WebView REQUIRED)
     find_package(Qt5QuickCompiler)
 else()
     find_package(Qt5 5.15 COMPONENTS DBus Widgets REQUIRED)

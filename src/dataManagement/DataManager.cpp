@@ -73,6 +73,8 @@ DataManagement::DataManager::DataManager(QObject *parent) :
     connect(&_geoMaps, &DataManagement::DownloadableGroup::downloadablesChanged, this, &DataManager::geoMapListChanged);
     connect(&_geoMaps, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::localFileOfGeoMapChanged);
 
+    // If there is a downloaded maps.json file, we read it.
+    readGeoMapListFromJSONFile();
 }
 
 
@@ -85,18 +87,15 @@ void DataManagement::DataManager::deferredInitialization()
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &DataManager::autoUpdateGeoMapList);
     connect(GlobalObject::settings(), &Settings::acceptedTermsChanged, this, &DataManager::updateGeoMapList);
     if (GlobalObject::settings()->acceptedTerms()) {
-        autoUpdateGeoMapList();
-    }
 
-    // If there is a downloaded maps.json file, we read it. Otherwise, we start
-    // a download.
-    if (_maps_json.hasFile()) {
-        readGeoMapListFromJSONFile();
-    } else {
-        if (GlobalObject::settings()->acceptedTerms()) {
+        autoUpdateGeoMapList();
+
+        // If there is no downloaded maps.json file, be sure to start a download.
+        if (!_maps_json.hasFile() && GlobalObject::settings()->acceptedTerms()) {
             _maps_json.startFileDownload();
         }
     }
+
 }
 
 
@@ -332,6 +331,13 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
         downloadable->setSection("Unsupported Maps");
         downloadable->setObjectName(objectName);
         _geoMaps.addToGroup(downloadable);
+    }
+
+    // Update the whatsNew property
+    auto newWhatsNew = top.value("whatsNew").toString();
+    if (!newWhatsNew.isEmpty() && (newWhatsNew != _whatsNew)) {
+        _whatsNew = newWhatsNew;
+        emit whatsNewChanged();
     }
 }
 

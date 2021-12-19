@@ -162,6 +162,24 @@ public:
    */
   bool hasGeoMapList() const { return !_geoMaps.downloadables().isEmpty(); }
 
+  /*! \brief Current "what's new" message */
+  Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
+
+  /*! \brief Getter function for property of the same name
+   *
+   * @returns Property lastWhatsNew
+   */
+  QString whatsNew() const { return _whatsNew; }
+
+  /*! \brief Hash of the current "what's new" message */
+  Q_PROPERTY(uint whatsNewHash READ whatsNewHash NOTIFY whatsNewChanged)
+
+  /*! \brief Getter function for property of the same name
+   *
+   * @returns Property lastWhatsNewHash
+   */
+  uint whatsNewHash() const { return qHash(_whatsNew, 0); }
+
 public slots:
   /*! \brief Triggers an update of the list of available maps
 
@@ -186,6 +204,9 @@ signals:
     no longer available at the server", possibly translated.
   */
   void error(QString message);
+
+  /*! \brief Notification signal for the property with the same name */
+  void whatsNewChanged();
 
 private slots:
   // Trivial method that re-sends the signal, but without the parameter
@@ -223,6 +244,9 @@ private:
   // This method returns a list of files in the download directory that have no
   // corresponding entry in _aviationMaps.
   QList<QString> unattachedFiles() const;
+
+  // The current whats new string from _aviationMaps.
+  QString _whatsNew {};
 
   // This timer is used to trigger automatic updates. Its signal QTimer::timeout
   // is connected to the slot autoUpdateGeoMapList.

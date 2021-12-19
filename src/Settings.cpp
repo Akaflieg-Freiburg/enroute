@@ -107,6 +107,16 @@ void Settings::setLastWhatsNewHash(uint lwnh)
 }
 
 
+void Settings::setLastWhatsNewInMapsHash(uint lwnh)
+{
+    if (lwnh == lastWhatsNewInMapsHash()) {
+        return;
+    }
+    settings.setValue("lastWhatsNewInMapsHash", lwnh);
+    emit lastWhatsNewInMapsHashChanged();
+}
+
+
 auto Settings::mapBearingPolicy() const -> Settings::MapBearingPolicyValues
 {
     auto intVal = settings.value("Map/bearingPolicy", 0).toInt();

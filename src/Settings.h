@@ -170,7 +170,7 @@ public:
      */
     void setIgnoreSSLProblems(bool ignore);
 
-    /*! \brief Hash of the last "what's new message that was shown to the user
+    /*! \brief Hash of the last "what's new" message that was shown to the user
      *
      * This property is used in the app to determine if the message has been
      * shown or not.
@@ -188,6 +188,25 @@ public:
      * @param lwnh Property lastWhatsNewHash
      */
     void setLastWhatsNewHash(uint lwnh);
+
+    /*! \brief Hash of the last "what's new in maps" message that was shown to the user
+     *
+     * This property is used in the app to determine if the message has been
+     * shown or not.
+     */
+    Q_PROPERTY(uint lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property lastWhatsNewInMapsHash
+     */
+    uint lastWhatsNewInMapsHash() const { return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).toUInt(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @param lwnh Property lastWhatsNewInMapsHash
+     */
+    void setLastWhatsNewInMapsHash(uint lwnh);
 
     /*! \brief Map bearing policy */
     Q_PROPERTY(MapBearingPolicyValues mapBearingPolicy READ mapBearingPolicy WRITE setMapBearingPolicy NOTIFY mapBearingPolicyChanged)
@@ -237,6 +256,9 @@ signals:
 
     /*! Notifier signal */
     void lastWhatsNewHashChanged();
+
+    /*! Notifier signal */
+    void lastWhatsNewInMapsHashChanged();
 
     /*! Notifier signal */
     void mapBearingPolicyChanged();

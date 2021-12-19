@@ -525,6 +525,13 @@ ApplicationWindow {
                 return
             }
 
+            if ((global.settings().lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
+                    (global.dataManager().whatsNew !== "") &&
+                    !global.navigator().isInFlight) {
+                whatsNewInMapsDialog.open()
+                return
+            }
+
             if (global.dataManager().geoMaps.updatable && !global.navigator().isInFlight) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
@@ -669,6 +676,15 @@ ApplicationWindow {
         title: qsTr("What's new …?")
         text: global.librarian().getStringFromRessource(":text/whatsnew.html")
         onOpened: global.settings().lastWhatsNewHash = global.librarian().getStringHashFromRessource(":text/whatsnew.html")
+    }
+
+    LongTextDialog {
+        id: whatsNewInMapsDialog
+        standardButtons: Dialog.Ok
+
+        title: qsTr("What's new …?")
+        text: global.dataManager().whatsNew
+        onOpened: global.settings().lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
     }
 
     Shortcut {

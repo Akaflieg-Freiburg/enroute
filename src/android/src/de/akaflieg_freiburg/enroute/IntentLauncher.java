@@ -31,7 +31,7 @@ import android.util.Log;
 import android.content.ComponentName;
 import android.content.SharedPreferences;
 
-import org.qtproject.qt5.android.QtNative;
+import org.qtproject.qt.android.QtNative;
 
 import java.io.File;
 import java.lang.String;

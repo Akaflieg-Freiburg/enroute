@@ -25,6 +25,7 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
 
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
@@ -33,9 +34,8 @@
 #include <QUrl>
 
 #if defined(Q_OS_ANDROID)
-#include <QAndroidJniEnvironment>
-#include <QtAndroid>
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QJniEnvironment>
+#include <QJniObject>
 #else
 #include <QFileDialog>
 #include <QProcess>
@@ -150,10 +150,10 @@ void MobileAdaptor::startReceiveOpenFileRequests()
     receiveOpenFileRequestsStarted = true;
 
 #if defined(Q_OS_ANDROID)
-    QAndroidJniObject activity = QtAndroid::androidActivity();
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
 
     if (activity.isValid()) {
-        QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
+        QJniObject jniTempDir = QJniObject::fromString(fileExchangeDirectoryName);
         if (!jniTempDir.isValid()) {
             return;
         }
@@ -240,9 +240,9 @@ auto MobileAdaptor::outgoingIntent(const QString& methodName, const QString& fil
         return false;
     }
 
-    QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
-    QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
-    auto ok = QAndroidJniObject::callStaticMethod<jboolean>(
+    QJniObject jsPath = QJniObject::fromString(filePath);
+    QJniObject jsMimeType = QJniObject::fromString(mimeType);
+    auto ok = QJniObject::callStaticMethod<jboolean>(
                 "de/akaflieg_freiburg/enroute/IntentLauncher",
                 methodName.toStdString().c_str(),
                 "(Ljava/lang/String;Ljava/lang/String;)Z",

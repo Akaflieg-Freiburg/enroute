@@ -21,7 +21,7 @@
 
 package de.akaflieg_freiburg.enroute;
 
-import org.qtproject.qt5.android.QtNative;
+import org.qtproject.qt.android.QtNative;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

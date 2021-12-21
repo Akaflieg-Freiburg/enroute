@@ -211,7 +211,6 @@ qt_add_big_resources(SOURCES
 # Generate android executable
 #
 if( ANDROID )
-    qtquick_compiler_add_resources(QTQUICKCOMPILEDRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
     list(APPEND SOURCES
         ${QTQUICKCOMPILEDRESOURCES}
         MobileAdaptor_Android.cpp
@@ -240,26 +239,15 @@ if( ANDROID )
 
     # Compile definitions
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
+    list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
 
-    # The android target depends on our own copy of openssl
-#    set(ANDROID_EXTRA_LIBS
- #       ${openssl_SOURCE_DIR}/arm/libcrypto_1_1.so
-  #      ${openssl_SOURCE_DIR}/arm/libssl_1_1.so
-   #     ${openssl_SOURCE_DIR}/arm64/libcrypto_1_1.so
-    #    ${openssl_SOURCE_DIR}/arm64/libssl_1_1.so
-     #   ${openssl_SOURCE_DIR}/x86/libcrypto_1_1.so
-      #  ${openssl_SOURCE_DIR}/x86/libssl_1_1.so
-       # ${openssl_SOURCE_DIR}/x86_64/libcrypto_1_1.so
-        #${openssl_SOURCE_DIR}/x86_64/libssl_1_1.so
-    #    CACHE INTERNAL ""
-     #   )
-
-    # The android target is a library, not an executable
-    add_library(${PROJECT_NAME} SHARED ${SOURCES} ${ANDROID_EXTRA_SOURCES})
-
-    # Add libraries and include paths
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView sunset)
+    qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION ${SOURCES} ${ANDROID_EXTRA_SOURCES})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
     target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt::CorePrivate Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
+    set_target_properties(${PROJECT_NAME} PROPERTIES QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android")
+    qt_import_qml_plugins(${PROJECT_NAME})
+    qt_finalize_executable(${PROJECT_NAME})
 endif()
 
 

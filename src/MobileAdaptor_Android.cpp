@@ -18,14 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QAndroidJniEnvironment>
+#include <QJniEnvironment>
 #include <QCoreApplication>
 #include <QDir>
 #include <QPointer>
 #include <QStandardPaths>
-#include <QtAndroid>
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QJniObject>
 #include <QTimer>
+
+#include <QtCore/private/qandroidextras_p.h>
 
 #include "GlobalObject.h"
 #include "MobileAdaptor.h"
@@ -41,23 +42,25 @@ void MobileAdaptor::hideSplashScreen()
         return;
     }
     splashScreenHidden = true;
-    QtAndroid::hideSplashScreen(200);
+    QNativeInterface::QAndroidApplication::hideSplashScreen(200);
 
 }
 
 
 void MobileAdaptor::lockWifi(bool lock)
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
 }
 
 
 Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 {
-
     // Check is required permissions have been granted
     foreach(auto permission, permissions) {
-        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied) {
+#warning not optimal, may lead to startup delay
+        auto resultFuture = QtAndroidPrivate::checkPermission(permission);
+        resultFuture.waitForFinished();
+        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied) {
             return true;
         }
     }
@@ -68,13 +71,13 @@ Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 
 void MobileAdaptor::vibrateBrief()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 }
 
 
 auto MobileAdaptor::getSSID() -> QString
 {
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+    QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
                                                                                "getSSID", "()Ljava/lang/String;");
     return stringObject.toString();
 }
@@ -83,7 +86,7 @@ auto MobileAdaptor::getSSID() -> QString
 
 auto MobileAdaptor::manufacturer() -> QString
 {
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+    QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
                                                                                "manufacturer", "()Ljava/lang/String;");
     return stringObject.toString();
 }

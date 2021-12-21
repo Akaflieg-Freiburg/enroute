@@ -18,14 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QStandardPaths>
 
+#include <QtCore/private/qandroidextras_p.h>
+
 #if defined(Q_OS_ANDROID)
-#include <QAndroidJniEnvironment>
 #include <QHash>
-#include <QtAndroid>
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QJniEnvironment>
+#include <QJniObject>
 #endif
 
 #include "MobileAdaptor.h"
@@ -54,18 +56,23 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     permissions << "android.permission.READ_EXTERNAL_STORAGE";
     permissions << "android.permission.WRITE_EXTERNAL_STORAGE";
     permissions << "android.permission.WAKE_LOCK";
-    QtAndroid::requestPermissionsSync(permissions);
+#warning implementation blocks GUI thread
+    foreach(auto permission, permissions) {
+        auto resultFuture = QtAndroidPrivate::requestPermission(permission);
+        resultFuture.waitForFinished();
+    }
+#warning Not implemented
+    //QtAndroid::requestPermissionsSync(permissions);
 #endif
 
     // Disable the screen saver so that the screen does not switch off automatically
 #if defined(Q_OS_ANDROID)
     bool on=true;
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
-    QtAndroid::runOnAndroidThread([on]{
-        QAndroidJniObject activity = QtAndroid::androidActivity();
+    QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on]{
+        QJniObject activity = QNativeInterface::QAndroidApplication::context();
         if (activity.isValid()) {
-            QAndroidJniObject window =
-                    activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
+            QJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
 
             if (window.isValid()) {
                 const int FLAG_KEEP_SCREEN_ON = 128;
@@ -76,7 +83,7 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
                 }
             }
         }
-        QAndroidJniEnvironment env;
+        QJniEnvironment env;
         if (env->ExceptionCheck() != 0u) {
             env->ExceptionClear();
         }
@@ -94,6 +101,6 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
 void MobileAdaptor::deferredInitialization()
 {
 #if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 #endif
 }

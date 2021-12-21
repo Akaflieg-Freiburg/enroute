@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QAndroidJniEnvironment>
+#include <QJniEnvironment>
 #include <QCoreApplication>
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QJniObject>
 
 #include "GlobalObject.h"
 #include "platform/Notifier.h"
@@ -41,27 +41,26 @@ Platform::Notifier::~Notifier()
 
 void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes notificationType)
 {
-    jint jni_ID                   = notificationType;
-//    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
+    jint jni_ID             = notificationType;
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
 }
 
 
 void Platform::Notifier::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
 {
-    jint jni_ID                    = notificationType;
-    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notificationType));
-    QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);
-    QAndroidJniObject jni_longText = QAndroidJniObject::fromString(longText);
+    jint jni_ID             = notificationType;
+    QJniObject jni_title    = QJniObject::fromString(title(notificationType));
+    QJniObject jni_text     = QJniObject::fromString(text);
+    QJniObject jni_longText = QJniObject::fromString(longText);
 
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
-                                              "showNotification",
-                                              "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-                                              jni_ID,
-                                              jni_title.object<jstring>(),
-                                              jni_text.object<jstring>(),
-                                              jni_longText.object<jstring>()
-                                              );
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
+                                       "showNotification",
+                                       "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                                       jni_ID,
+                                       jni_title.object<jstring>(),
+                                       jni_text.object<jstring>(),
+                                       jni_longText.object<jstring>()
+                                       );
 
 }
 

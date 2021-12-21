@@ -35,9 +35,9 @@ set -e
 # Clean up
 #
 
-rm -rf build-android-debug
-mkdir -p build-android-debug
-cd build-android-debug
+rm -rf build6-android-debug
+mkdir -p build6-android-debug
+cd build6-android-debug
 
 #
 # Configure
@@ -45,23 +45,17 @@ cd build-android-debug
 
 cmake .. \
       -G Ninja\
-      -DANDROID_ABI:STRING=armeabi-v7a \
-      -DANDROID_BUILD_ABI_arm64-v8a:BOOL=OFF \
-      -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
-      -DANDROID_BUILD_ABI_x86:BOOL=OFF \
-      -DANDROID_BUILD_ABI_x86_64:BOOL=ON \
-      -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-      -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
-      -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
-      -DANDROID_STL:STRING=c++_shared \
       -DCMAKE_BUILD_TYPE:STRING=Debug \
-      -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-      -DCMAKE_CXX_FLAGS="-Wall -Wextra" \
-      -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-      -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_ANDROID \
-      -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR_ANDROID \
+      -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR_ANDROID\_x86 \
+      -DOPENSSL_ROOT_DIR:PATH=$OPENSSL_ROOT_DIR \
+      -DANDROID_NATIVE_API_LEVEL:STRING=23 \
+      -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
       -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-      -DCMAKE_UNITY_BUILD:BOOL=ON
+      -DANDROID_ABI:STRING=x86 \
+      -DANDROID_STL:STRING=c++_shared \
+      -DCMAKE_FIND_ROOT_PATH:PATH=$Qt6_DIR_ANDROID\_x86 \
+      -DQT_HOST_PATH:PATH=$Qt6_DIR_LINUX \
+      -DANDROID_SDK_ROOT:PATH=$ANDROID_SDK_ROOT
 
 
 # This is bizarrely necessary, or else 'android_deployment_settings.json'

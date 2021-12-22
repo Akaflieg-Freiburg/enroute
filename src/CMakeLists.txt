@@ -249,8 +249,6 @@ if( ANDROID )
         QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         )
-    message(xx ${ANDROID_EXTRA_LIBS} xx)
-    #    set_target_properties(${PROJECT_NAME} PROPERTIES QT_ANDROID_EXTRA_LIBS ${QT_ANDROID_EXTRA_LIBS})
     qt_import_qml_plugins(${PROJECT_NAME})
     qt_finalize_executable(${PROJECT_NAME})
 endif()

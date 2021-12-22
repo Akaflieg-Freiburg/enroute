@@ -22,12 +22,11 @@
 #include <QDir>
 #include <QStandardPaths>
 
-#include <QtCore/private/qandroidextras_p.h>
-
 #if defined(Q_OS_ANDROID)
 #include <QHash>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QtCore/private/qandroidextras_p.h>
 #endif
 
 #include "MobileAdaptor.h"

@@ -46,7 +46,6 @@ configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qr
 configure_file(icons.qrc.in icons.qrc)
 configure_file(qml.qrc.in qml.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/knotifications5/enroute\ flight\ navigation.notifyrc.in enroute\ flight\ navigation.notifyrc)
 
 
 #

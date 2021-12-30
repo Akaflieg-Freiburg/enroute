@@ -5,10 +5,13 @@
     "sdk": "org.kde.Sdk",
     "command": "${PROJECT_NAME}",
     "finish-args": [
-        "--share=ipc",
+        "--device=dri",
+        "--device=shm",
+	"--share=ipc",
         "--share=network",
-        "--socket=x11",
+        "--socket=fallback-x11",
         "--socket=wayland",
+        "--socket=x11",
         "--system-talk-name=org.freedesktop.GeoClue2",
         "--talk-name=org.freedesktop.Notifications"
     ],

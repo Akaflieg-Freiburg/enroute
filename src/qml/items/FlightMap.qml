@@ -79,14 +79,7 @@ Map {
     /*************************************
      * Airspaces
      *************************************/
-    
-    MapParameter {
-        type: "image"
-        
-        property string name: "WhiteBox"
-        property string sprite: ":flightMap/sprites/WhiteBox.png"
-    }
-    
+
 
     /*
      * FIS - Flight Information Sector
@@ -99,15 +92,15 @@ Map {
         property string layerType: "line"
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "FIS"]
-        property int maxzoom: 10
     }
 
     MapParameter {
         type: "paint"
         property string layer: "FIS"
-        property string lineColor: "black"
-        property real lineWidth: 0.5
+        property string lineColor: "lightgreen"
+        property real lineWidth: 1.5
     }
+
 
     /*
      * Gliding Sectors
@@ -121,6 +114,7 @@ Map {
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "GLD"]
     }
+
     MapParameter {
         type: "paint"
         property string layer: "glidingSector"
@@ -136,32 +130,13 @@ Map {
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "GLD"]
     }
+
     MapParameter {
         type: "paint"
         property string layer: "glidingSectorOutlines"
         property string lineColor: "yellow"
         property real lineOpacity: 0.8 //0.3
         property real lineWidth: 2.0
-    }
-
-    MapParameter {
-        type: "layer"
-
-        property string name: "glidingSectorLabels"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "GLD"]
-        property int minzoom: 10
-    }
-    MapParameter {
-        type: "layout"
-
-        property string layer: "glidingSectorLabels"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string iconImage: "WhiteBox"
-        property string iconTextFit: "both"
-        property var iconTextFitPadding: [2,5,2,5]
     }
 
 
@@ -201,28 +176,7 @@ Map {
         property real lineWidth: 2.0
         property var lineDasharray: [3.0, 3.0]
     }
-    
-    MapParameter {
-        type: "layer"
-        
-        property string name: "RMZLabels"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "RMZ"]
-        property int minzoom: 10
-    }
-    
-    MapParameter {
-        type: "layout"
-        
-        property string layer: "RMZLabels"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string iconImage: "WhiteBox"
-        property string iconTextFit: "both"
-        property var iconTextFitPadding: [2,5,2,5]
-    }
-    
+
     
     /*
      * TMZ - Transponder Mandatory Zone
@@ -244,7 +198,7 @@ Map {
         property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0, 0.5, 3.0]
     }
-    
+
     
     /*
      * Danger Zone - PJE
@@ -265,8 +219,8 @@ Map {
         property string lineColor: "red"
         property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
-    }
-    
+    }   
+
     
     /*
      * Airspaces A, B, C, D that are not control zones
@@ -305,7 +259,28 @@ Map {
         property real lineWidth: airspaceLineWidth
         property real lineOffset: airspaceLineWidth/2.0
     }
-    
+
+
+    /*
+     * Airspaces E, F, G
+     */
+
+    MapParameter {
+        type: "layer"
+
+        property string name: "EFGOutlines"
+        property string layerType: "line"
+        property string source: "aviationData"
+        property var filter: ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]
+    }
+
+    MapParameter {
+        type: "paint"
+        property string layer: "EFGOutlines"
+        property string lineColor: "blue"
+        property real lineWidth: 2.0
+    }
+
     
     /*
      * Control Zones
@@ -319,6 +294,7 @@ Map {
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
+
     MapParameter {
         type: "paint"
         property string layer: "controlZones"
@@ -334,31 +310,13 @@ Map {
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
+
     MapParameter {
         type: "paint"
         property string layer: "controlZoneOutlines"
         property string lineColor: "blue"
         property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
-    }
-    MapParameter {
-        type: "layer"
-        
-        property string name: "controlZoneLabels"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "CTR"]
-        property int minzoom: 10
-    }
-    MapParameter {
-        type: "layout"
-
-        property string layer: "controlZoneLabels"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string iconImage: "WhiteBox"
-        property string iconTextFit: "both"
-        property var iconTextFitPadding: [2,5,2,5]
     }
 
     
@@ -374,6 +332,7 @@ Map {
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "NRA"]
     }
+
     MapParameter {
         type: "paint"
         property string layer: "natureReserveAreas"
@@ -391,32 +350,13 @@ Map {
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "NRA"]
     }
+
     MapParameter {
         type: "paint"
         property string layer: "natureReserveAreaOutlines"
         property string lineColor: "green"
         property real lineOpacity: 0.3
         property real lineWidth: 2.0
-    }
-
-    MapParameter {
-        type: "layer"
-
-        property string name: "natureReserveAreaLabels"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "NRA"]
-        property int minzoom: 10
-    }
-    MapParameter {
-        type: "layout"
-
-        property string layer: "natureReserveAreaLabels"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string iconImage: "WhiteBox"
-        property string iconTextFit: "both"
-        property var iconTextFitPadding: [2,5,2,5]
     }
 
 
@@ -458,33 +398,47 @@ Map {
         property real lineWidth: 2.0
         property var lineDasharray: [4.0, 3.0]
     }
-    
+
+
+    /*
+     * Airspace labels
+     */
+
     MapParameter {
         type: "layer"
-        
-        property string name: "dangerZoneLabels"
+
+        property string name: "AirspaceLabels"
         property string layerType: "symbol"
         property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
+        property var filter: ["==", ["get", "TYP"], "AS"]
         property int minzoom: 10
     }
+
+    MapParameter {
+        type: "layout"
+
+        property string layer: "AirspaceLabels"
+        property bool symbolAvoidEdges: true
+        property string symbolPlacement: "line"
+//        property real symbolSpacing: 800
+        property bool textAllowOverlap: false
+        property string textAnchor: "center"
+        property var textField: ["get", "NAM"]
+        property bool textIgnorePlacement: false
+        property string textJustify: "center"
+        property var textOffset: [0,1]
+        property bool textOptional: true
+        property real textSize: 12
+
+    }
+
     MapParameter {
         type: "paint"
-        property string layer: "dangerZoneLabels"
+        property string layer: "AirspaceLabels"
         property real textHaloWidth: 2
         property string textHaloColor: "white"
     }
-    MapParameter {
-        type: "layout"
-        
-        property string layer: "dangerZoneLabels"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string iconImage: "WhiteBox"
-        property string iconTextFit: "both"
-        property var iconTextFitPadding: [2,5,2,5]
-    }
-    
+
     // End of airspaces
 
     /*

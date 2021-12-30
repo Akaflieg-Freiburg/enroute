@@ -82,6 +82,8 @@ void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes 
 
 void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
 {
+    Q_UNUSED(text)
+    Q_UNUSED(longText)
 
     QDBusReply<uint> reply = getNotificationInterface()->call("Notify",
                                                               "Enroute Flight Navigation",

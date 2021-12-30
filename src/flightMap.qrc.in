@@ -42,7 +42,5 @@
         <file alias="flightMap/sprites/VORDME@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VORDME@2x.png</file>
         <file alias="flightMap/sprites/VORTAC.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VORTAC.png</file>
         <file alias="flightMap/sprites/VORTAC@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VORTAC@2x.png</file>
-	
-        <file alias="flightMap/sprites/WhiteBox.png">${CMAKE_CURRENT_SOURCE_DIR}/icons/WhiteBox.png</file>
     </qresource>
 </RCC>

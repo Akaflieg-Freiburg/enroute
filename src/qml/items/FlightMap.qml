@@ -79,14 +79,7 @@ Map {
     /*************************************
      * Airspaces
      *************************************/
-    
-    MapParameter {
-        type: "image"
-        
-        property string name: "WhiteBox"
-        property string sprite: ":flightMap/sprites/WhiteBox.png"
-    }
-    
+
 
     /*
      * FIS - Flight Information Sector
@@ -104,8 +97,8 @@ Map {
     MapParameter {
         type: "paint"
         property string layer: "FIS"
-        property string lineColor: "black"
-        property real lineWidth: 0.5
+        property string lineColor: "lightgreen"
+        property real lineWidth: 1.5
     }
 
 
@@ -266,7 +259,28 @@ Map {
         property real lineWidth: airspaceLineWidth
         property real lineOffset: airspaceLineWidth/2.0
     }
-    
+
+
+    /*
+     * Airspaces E, F, G
+     */
+
+    MapParameter {
+        type: "layer"
+
+        property string name: "EFGOutlines"
+        property string layerType: "line"
+        property string source: "aviationData"
+        property var filter: ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]
+    }
+
+    MapParameter {
+        type: "paint"
+        property string layer: "EFGOutlines"
+        property string lineColor: "blue"
+        property real lineWidth: 2.0
+    }
+
     
     /*
      * Control Zones

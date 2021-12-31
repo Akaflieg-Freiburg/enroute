@@ -170,6 +170,9 @@ Dialog {
                             case "B":
                             case "C":
                             case "D":
+                            case "E":
+                            case "F":
+                            case "G":
                                 return "blue";
                             case "CTR":
                                 return "blue";
@@ -196,6 +199,9 @@ Dialog {
                             case "B":
                             case "C":
                             case "D":
+                            case "E":
+                            case "F":
+                            case "G":
                             case "GLD":
                             case "NRA":
                                 return ShapePath.SolidLine;

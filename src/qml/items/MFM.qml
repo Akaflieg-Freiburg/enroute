@@ -444,6 +444,8 @@ Item {
                 var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                         flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
                                                         global.navigator().flightRoute)
+                if (!wp.isValid)
+                    return
                 waypointDescription.waypoint = wp
                 waypointDescription.open()
             }

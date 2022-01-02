@@ -344,13 +344,17 @@ void Librarian::rename(Librarian::Library library, const QString &oldName, const
 
 auto Librarian::directory(Library library) const -> QString
 {
+    QString path;
     switch (library) {
     case Aircraft:
-        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft";
+        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft";
+        break;
     case Routes:
-        return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
+        path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight routes";
+        break;
     }
-    return {};
+    QDir().mkpath(path);
+    return path;
 }
 
 

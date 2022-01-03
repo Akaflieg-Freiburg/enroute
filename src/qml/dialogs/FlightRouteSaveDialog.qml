@@ -87,7 +87,7 @@ Dialog {
             focus: true
             placeholderText: qsTr("Flight Route Name")
 
-            onTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+            onDisplayTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (displayText !== "")
 
             onAccepted: {
                 if (fileName.text === "")

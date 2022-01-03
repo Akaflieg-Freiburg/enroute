@@ -403,7 +403,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
 }
 
 
-auto Navigation::FlightRoute::summary() const -> QString {
+auto Navigation::FlightRoute::summary() const -> QString
+{
 
     if (m_legs.empty()) {
         return {};
@@ -421,6 +422,9 @@ auto Navigation::FlightRoute::summary() const -> QString {
             time += _leg->Time();
             fuelInL += _leg->Fuel();
         }
+    }
+    if (!dist.isFinite()) {
+        return {};
     }
 
     switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {

@@ -272,7 +272,7 @@ Page {
                         global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromMPS(Number.fromLocaleString(Qt.locale(), text))
+                        global.navigator().aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
@@ -361,7 +361,7 @@ Page {
                         global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromMPS(Number.fromLocaleString(Qt.locale(), text))
+                        global.navigator().aircraft.descentSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }
@@ -405,7 +405,7 @@ Page {
             }
 
             Label {
-                text: qsTr("Minumum")
+                text: qsTr("Minimum")
                 Layout.alignment: Qt.AlignBaseline
             }
             TextField {
@@ -448,7 +448,7 @@ Page {
                         global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKMH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     case Aircraft.StatuteMile :
-                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromMPS(Number.fromLocaleString(Qt.locale(), text))
+                        global.navigator().aircraft.minimumSpeed = aircraftPage.staticSpeed.fromMPH(Number.fromLocaleString(Qt.locale(), text))
                         return
                     }
                 }

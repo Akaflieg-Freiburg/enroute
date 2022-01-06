@@ -33,8 +33,8 @@ import "../items"
 Dialog {
     id: waypointDescriptionDialog
 
-    property var waypoint : global.geoMapProvider().createWaypoint()
-    property var weatherStation : global.weatherDataProvider().findWeatherStation( waypoint.ICAOCode )
+    property var waypoint: global.geoMapProvider().createWaypoint()
+    property var weatherStation: global.weatherDataProvider().findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {
         // Delete old text items

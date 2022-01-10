@@ -76,5 +76,8 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)
 
+#warning
+    void setLanguage(const QString &language);
+
     QPointer<QQmlApplicationEngine> m_engine;
 };

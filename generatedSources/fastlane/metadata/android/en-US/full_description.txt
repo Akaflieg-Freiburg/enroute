@@ -1,0 +1,11 @@
+Enroute is a non-commercial flight navigation app written by flight enthusiasts for VFR pilots. Designed to be simple, functional, and elegant, it takes the stress out of your next flight.
+
+Enroute features a moving map similar in style to the official ICAO maps. Your current position and your flight path for the next five minutes are marked, and so is your intended flight route. A simple tap gives you all the information about airspaces, airfields, and navaids – complete with frequencies, codes, elevations, and runway information.
+
+Our aeronautical maps are free, receive weekly updates, and cover large parts of the world. Selected maps show traffic circuits and flight procedures for control zones.
+
+Enroute supports essential flight planning. It allows you to quickly and easily compute distances, courses, and headings. It gives you an estimate for flight time and fuel consumption. If the weather turns bad, the app will show you the closest airfields for landing, complete with distances, directions, runway information, and frequencies.
+
+There is no advertising and no commercial “pro”-version of the app. We do not spy on you. You do not need to register for “membership.” And we do not hassle you with e-mails. We do not even have or want your address!
+
+Disclaimer: We publish this free app hoping that it might be helpful as an aid to prudent navigation. It comes with no guarantees. It may not work as expected. The data does not come from official sources and might be incomplete, outdated, or otherwise incorrect. This app is no substitute for proper flight preparation or good pilotage. Relying on it as a primary means of navigation is most likely illegal, undoubtedly stupid, and potentially suicidal.

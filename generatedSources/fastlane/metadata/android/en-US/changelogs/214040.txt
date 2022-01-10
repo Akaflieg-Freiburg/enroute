@@ -1,0 +1,1 @@
+As requested by our users, Enroute Flight Navigation now supports more units of measurement.

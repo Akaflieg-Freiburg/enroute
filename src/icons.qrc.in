@@ -2,7 +2,7 @@
     <qresource>
         <!-- Central application icons -->
         <file alias="icons/appIcon.svg">${CMAKE_SOURCE_DIR}/metadata/${APP_ID}.svg</file>
-        <file alias="icons/appIcon.png">${CMAKE_SOURCE_DIR}/generatedSources/metadata/${APP_ID}.png</file>
+        <file alias="icons/appIcon.png">${CMAKE_SOURCE_DIR}/generatedSources/icons/${APP_ID}.png</file>
 
 	<!-- Google Material Icons -->
         <file alias="icons/material/ic_flight.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/ic_flight.svg</file>

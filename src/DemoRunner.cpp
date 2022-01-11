@@ -99,10 +99,11 @@ void DemoRunner::run()
 
     foreach(auto language, languages) {
         qWarning() << "Generating screenshots for Google Play" << language;
+        int count = 1;
 
         // Generate directory
         QDir dir;
-        dir.mkpath("metadata/android/phoneScreenshots/"+language);
+        dir.mkpath(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots").arg(language));
 
         // Set language
         setLanguage(language);
@@ -114,10 +115,10 @@ void DemoRunner::run()
             trafficSimulator->setBarometricHeight( Units::Distance::fromFT(5500) );
             trafficSimulator->setTT( Units::Angle::fromDEG(170) );
             trafficSimulator->setGS( Units::Speed::fromKN(90) );
-            flightMap->setProperty("zoomLevel", 11);
+            flightMap->setProperty("zoomLevel", 12);
             GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
             delay(4s);
-            applicationWindow->grabWindow().save(QString("metadata/android/phoneScreenshots/%1/1_%1.png").arg(language));
+            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
         }
 
         // Approaching EDTF w/ traffic
@@ -126,16 +127,16 @@ void DemoRunner::run()
             QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
             trafficSimulator->setCoordinate( ownPosition );
             trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
-            trafficSimulator->setTT( Units::Angle::fromDEG(41) );
+            trafficSimulator->setTT( Units::Angle::fromDEG(51) );
             trafficSimulator->setGS( Units::Speed::fromKN(92) );
             flightMap->setProperty("zoomLevel", 13);
             flightMap->setProperty("followGPS", true);
             GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
-            QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
+            QGeoCoordinate trafficPosition(48.03899, 7.80114, 540);
             QGeoPositionInfo trafficInfo;
             trafficInfo.setCoordinate(trafficPosition);
-            trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
-            trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(70).toMPS() );
+            trafficInfo.setAttribute(QGeoPositionInfo::Direction, 240);
+            trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(60).toMPS() );
             trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
             trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
             auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
@@ -157,7 +158,7 @@ void DemoRunner::run()
             trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
             delay(4s);
-            applicationWindow->grabWindow().save(QString("metadata/android/phoneScreenshots/%1/2_%1.png").arg(language));
+            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
             trafficFactor1->setHDist( {} );
             trafficSimulator->removeTraffic();
             trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
@@ -171,7 +172,7 @@ void DemoRunner::run()
             waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
             QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
             delay(4s);
-            applicationWindow->grabWindow().save(QString("metadata/android/phoneScreenshots/%1/3_%1.png").arg(language));
+            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
             QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
         }
 
@@ -186,7 +187,7 @@ void DemoRunner::run()
             weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
             QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
             delay(4s);
-            applicationWindow->grabWindow().save(QString("metadata/android/phoneScreenshots/%1/4_%1.png").arg(language));
+            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
             emit requestClosePages();
         }
 
@@ -195,7 +196,7 @@ void DemoRunner::run()
             qWarning() << "… Nearby Waypoints Page";
             emit requestOpenNearbyPage();
             delay(4s);
-            applicationWindow->grabWindow().save(QString("metadata/android/phoneScreenshots/%1/5_%1.png").arg(language));
+            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
             emit requestClosePages();
         }
     }

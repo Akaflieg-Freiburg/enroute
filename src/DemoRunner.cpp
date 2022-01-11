@@ -111,10 +111,10 @@ void DemoRunner::run()
         // Approaching EDDR
         {
             qWarning() << "… Approaching EDDR";
-            trafficSimulator->setCoordinate( {49.35, 7.0028, Units::Distance::fromFT(5500).toM()} );
+            trafficSimulator->setCoordinate( {49.30, 7.0028, Units::Distance::fromFT(5500).toM()} );
             trafficSimulator->setBarometricHeight( Units::Distance::fromFT(5500) );
-            trafficSimulator->setTT( Units::Angle::fromDEG(170) );
-            trafficSimulator->setGS( Units::Speed::fromKN(90) );
+            trafficSimulator->setTT( Units::Angle::fromDEG(158) );
+            trafficSimulator->setGS( Units::Speed::fromKN(91) );
             flightMap->setProperty("zoomLevel", 12);
             GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
             delay(4s);
@@ -124,19 +124,20 @@ void DemoRunner::run()
         // Approaching EDTF w/ traffic
         {
             qWarning() << "… EDTF Traffic";
+
             QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
             trafficSimulator->setCoordinate( ownPosition );
             trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
-            trafficSimulator->setTT( Units::Angle::fromDEG(51) );
+            trafficSimulator->setTT( Units::Angle::fromDEG(36) );
             trafficSimulator->setGS( Units::Speed::fromKN(92) );
             flightMap->setProperty("zoomLevel", 13);
             flightMap->setProperty("followGPS", true);
             GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
-            QGeoCoordinate trafficPosition(48.03899, 7.80114, 540);
+            QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
             QGeoPositionInfo trafficInfo;
             trafficInfo.setCoordinate(trafficPosition);
-            trafficInfo.setAttribute(QGeoPositionInfo::Direction, 240);
-            trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(60).toMPS() );
+            trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
+            trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(70).toMPS() );
             trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
             trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
             auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);

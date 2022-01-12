@@ -94,111 +94,127 @@ void DemoRunner::run()
     applicationWindow->setProperty("width", 1080/2);
     applicationWindow->setProperty("height", 1920/2);
 
-    QStringList languages;
-    languages << "de-DE" << "en-US" << "fr-FR" << "it-IT" << "pl-PL";
+    QStringList languages = {"de-DE", "en-US", "fr-FR", "it-IT", "pl-PL"};
+    QStringList devices = {"phone", "sevenInch", "tenInch"};
 
-    foreach(auto language, languages) {
-        qWarning() << "Generating screenshots for Google Play" << language;
-        int count = 1;
+    foreach(auto device, devices) {
+        foreach(auto language, languages) {
+            if (device == "phone") {
+                applicationWindow->setProperty("width", 1080/2);
+                applicationWindow->setProperty("height", 1920/2);
+            }
+            if (device == "sevenInch") {
+                applicationWindow->setProperty("width", 1920/2);
+                applicationWindow->setProperty("height", 1200/2);
+            }
+            if (device == "tenInch") {
+                applicationWindow->setProperty("width", 1920/2);
+                applicationWindow->setProperty("height", 1200/2);
+            }
 
-        // Generate directory
-        QDir dir;
-        dir.mkpath(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots").arg(language));
 
-        // Set language
-        setLanguage(language);
+            qWarning() << "Generating screenshots for Google Play" << language;
+            int count = 1;
 
-        // Approaching EDDR
-        {
-            qWarning() << "… Approaching EDDR";
-            trafficSimulator->setCoordinate( {49.30, 7.0028, Units::Distance::fromFT(5500).toM()} );
-            trafficSimulator->setBarometricHeight( Units::Distance::fromFT(5500) );
-            trafficSimulator->setTT( Units::Angle::fromDEG(158) );
-            trafficSimulator->setGS( Units::Speed::fromKN(91) );
-            flightMap->setProperty("zoomLevel", 12);
-            GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
-            delay(4s);
-            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
-        }
+            // Generate directory
+            QDir dir;
+            dir.mkpath(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
 
-        // Approaching EDTF w/ traffic
-        {
-            qWarning() << "… EDTF Traffic";
+            // Set language
+            setLanguage(language);
 
-            QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
-            trafficSimulator->setCoordinate( ownPosition );
-            trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
-            trafficSimulator->setTT( Units::Angle::fromDEG(36) );
-            trafficSimulator->setGS( Units::Speed::fromKN(92) );
-            flightMap->setProperty("zoomLevel", 13);
-            flightMap->setProperty("followGPS", true);
-            GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
-            QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
-            QGeoPositionInfo trafficInfo;
-            trafficInfo.setCoordinate(trafficPosition);
-            trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
-            trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(70).toMPS() );
-            trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
-            trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
-            auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
-            trafficFactor1->setAlarmLevel(0);
-            trafficFactor1->setID("newID");
-            trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-            trafficFactor1->setPositionInfo(trafficInfo);
-            trafficFactor1->setHDist( Units::Distance::fromM(1000) );
-            trafficFactor1->setVDist( Units::Distance::fromM(17) );
-            trafficSimulator->addTraffic(trafficFactor1);
+            // Approaching EDDR
+            {
+                qWarning() << "… Approaching EDDR";
+                trafficSimulator->setCoordinate( {49.30, 7.0028, Units::Distance::fromFT(5500).toM()} );
+                trafficSimulator->setBarometricHeight( Units::Distance::fromFT(5500) );
+                trafficSimulator->setTT( Units::Angle::fromDEG(158) );
+                trafficSimulator->setGS( Units::Speed::fromKN(91) );
+                flightMap->setProperty("zoomLevel", 12);
+                GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                delay(4s);
+                applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+            }
 
-            auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
-            trafficFactor2->setAlarmLevel(1);
-            trafficFactor2->setID("newID");
-            trafficFactor2->setHDist( Units::Distance::fromM(1000) );
-            trafficFactor2->setType( Traffic::TrafficFactor_Abstract::Aircraft );
-            trafficFactor2->setCallSign({});
-            trafficFactor2->setCoordinate(ownPosition);
-            trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
+            // Approaching EDTF w/ traffic
+            {
+                qWarning() << "… EDTF Traffic";
 
-            delay(4s);
-            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
-            trafficFactor1->setHDist( {} );
-            trafficSimulator->removeTraffic();
-            trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
-            delay(20s);
-        }
+                QGeoCoordinate ownPosition(48.00144, 7.76231, 604);
+                trafficSimulator->setCoordinate( ownPosition );
+                trafficSimulator->setBarometricHeight( Units::Distance::fromM(600) );
+                trafficSimulator->setTT( Units::Angle::fromDEG(36) );
+                trafficSimulator->setGS( Units::Speed::fromKN(92) );
+                flightMap->setProperty("zoomLevel", 13);
+                flightMap->setProperty("followGPS", true);
+                GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
+                QGeoPositionInfo trafficInfo;
+                trafficInfo.setCoordinate(trafficPosition);
+                trafficInfo.setAttribute(QGeoPositionInfo::Direction, 160);
+                trafficInfo.setAttribute(QGeoPositionInfo::GroundSpeed, Units::Speed::fromKN(70).toMPS() );
+                trafficInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, -2);
+                trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
+                auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
+                trafficFactor1->setAlarmLevel(0);
+                trafficFactor1->setID("newID");
+                trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
+                trafficFactor1->setPositionInfo(trafficInfo);
+                trafficFactor1->setHDist( Units::Distance::fromM(1000) );
+                trafficFactor1->setVDist( Units::Distance::fromM(17) );
+                trafficSimulator->addTraffic(trafficFactor1);
 
-        // Erfurt Airport Info
-        {
-            qWarning() << "… EDDE Info Page";
-            auto waypoint = GlobalObject::geoMapProvider()->findByID("EDDE");
-            waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
-            QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
-            delay(4s);
-            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
-            QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
-        }
+                auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
+                trafficFactor2->setAlarmLevel(1);
+                trafficFactor2->setID("newID");
+                trafficFactor2->setHDist( Units::Distance::fromM(1000) );
+                trafficFactor2->setType( Traffic::TrafficFactor_Abstract::Aircraft );
+                trafficFactor2->setCallSign({});
+                trafficFactor2->setCoordinate(ownPosition);
+                trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
-        // Weather Dialog
-        {
-            qWarning() << "… LFSB Weather Dialog";
-            emit requestOpenWeatherPage();
-            auto *weatherReport = findQQuickItem("weatherReport", m_engine);
-            Q_ASSERT(weatherReport != nullptr);
-            auto station = GlobalObject::weatherDataProvider()->findWeatherStation("LFSB");
-            Q_ASSERT(station != nullptr);
-            weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
-            QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
-            delay(4s);
-            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
-            emit requestClosePages();
-        }
+                delay(4s);
+                applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                trafficFactor1->setHDist( {} );
+                trafficSimulator->removeTraffic();
+                trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
+                delay(20s);
+            }
 
-        // Nearby waypoints
-        {
-            qWarning() << "… Nearby Waypoints Page";
-            emit requestOpenNearbyPage();
-            delay(4s);
-            applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/phoneScreenshots/%2_%1.png").arg(language).arg(count++));
-            emit requestClosePages();
+            // Erfurt Airport Info
+            {
+                qWarning() << "… EDDE Info Page";
+                auto waypoint = GlobalObject::geoMapProvider()->findByID("EDDE");
+                waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
+                QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
+                delay(4s);
+                applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
+            }
+
+            // Weather Dialog
+            {
+                qWarning() << "… LFSB Weather Dialog";
+                emit requestOpenWeatherPage();
+                auto *weatherReport = findQQuickItem("weatherReport", m_engine);
+                Q_ASSERT(weatherReport != nullptr);
+                auto station = GlobalObject::weatherDataProvider()->findWeatherStation("LFSB");
+                Q_ASSERT(station != nullptr);
+                weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
+                QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
+                delay(4s);
+                applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                emit requestClosePages();
+            }
+
+            // Nearby waypoints
+            {
+                qWarning() << "… Nearby Waypoints Page";
+                emit requestOpenNearbyPage();
+                delay(4s);
+                applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                emit requestClosePages();
+            }
         }
     }
 

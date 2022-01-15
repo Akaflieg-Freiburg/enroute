@@ -1,0 +1,11 @@
+Enroute ist eine nicht-kommerzielle Flugnavigations-App, die von Flugbegeisterten für VFR-Piloten geschrieben wurde. Sie ist einfach, funktionell und elegant und macht jeden Flug ein wenig leichter.
+
+Enroute zeigt eine Karte im Stil der offiziellen ICAO-Karten. Ihre aktuelle Position und Ihre Flugstrecke für die nächsten fünf Minuten sind markiert, ebenso wie Ihre geplante Flugroute. Durch einfaches Antippen erhalten Sie alle Informationen über Lufträume, Flugplätze und Navigationshilfen - komplett mit Frequenzen, Codes, Höhenangaben und Landebahninformationen.
+
+Unsere Luftfahrtkarten sind kostenlos, werden wöchentlich aktualisiert und decken große Teile der Welt ab. Ausgewählte Karten zeigen Platzrunden und Flugverahren durch Kontrollzonen.
+
+Enroute unterstützt die grundlegende Flugplanung. Mit Enroute können Sie schnell und einfach Entfernungen, Kurse und Steuerkurse berechnen. Sie erhalten eine Schätzung der Flugzeit und des Treibstoffverbrauchs. Bei schlechtem Wetter zeigt Ihnen die App die nächstgelegenen Landeplätze mit Entfernungen, Richtungen, Landebahninformationen und Frequenzen an.
+
+Es gibt keine Werbung und keine kommerzielle "Pro"-Version der App. Wir spionieren Sie nicht aus. Sie müssen sich nicht für eine "Mitgliedschaft" anmelden. Und wir belästigen Sie nicht mit E-Mails. Wir kennen Ihre Adresse nicht und wollen sie auch gar nicht haben!
+
+Haftungsausschluss: Wir veröffentlichen diese kostenlose App in der Hoffnung, dass sie als Hilfe für eine umsichtige Navigation nützlich sein könnte. Sie enthält keinerlei Garantien. Sie funktioniert möglicherweise nicht wie erwartet. Die Daten stammen nicht aus offiziellen Quellen und können unvollständig, veraltet oder anderweitig fehlerhaft sein. Diese Anwendung ersetzt weder eine ordnungsmäßige Flugvorbereitung noch ausreichende Beherrschung des Pilotenhandwerks. Wer sich auf sie als primäres Mittel zur Navigation verlässt, handelt höchstwahrscheinlich illegal, auf jeden Fall äußerst unklug, und riskiert unter Umständen Leben und Gesundheit seiner selbst oder anderer Menschen.

@@ -1,0 +1,11 @@
+Enroute è un'applicazione di navigazione non commerciale scritta da appassionati di volo per piloti VFR. Progettata per essere semplice, funzionale ed elegante, migliora l'esperienza dal vostro prossimo volo.
+
+Enroute presenta una mappa in movimento simile nello stile alle mappe ufficiali ICAO. La tua posizione attuale e il tuo percorso di volo per i prossimi cinque minuti sono contrassegnati, così come la tua rotta di volo prevista. Un semplice tocco ti dà tutte le informazioni su spazi aerei, campi d'aviazione e aiuti di navigazione - completi di frequenze, codici, elevazioni e informazioni sulla pista.
+
+Le nostre mappe aeronautiche sono gratuite, vengono aggiornate settimanalmente e coprono gran parte del mondo. Le mappe selezionate mostrano i circuiti di traffico e le procedure di volo per le CTR.
+
+Enroute supporta la pianificazione di volo essenziale. Ti permette di calcolare rapidamente e facilmente distanze, rotte e direzioni. Ti dà una stima del tempo di volo e del consumo di carburante. Se il tempo diventa brutto, l'applicazione vi mostrerà gli aeroporti più vicini per l'atterraggio, completi di distanze, direzioni, informazioni sulle piste e frequenze.
+
+Non c'è pubblicità e nessuna versione commerciale "pro" dell'app. Noi non ti spiamo. Non c'è bisogno di registrarsi per la "membership". E non ti assilliamo con le e-mail. Non abbiamo e non vogliamo nemmeno il vostro indirizzo!
+
+Disclaimer: Pubblichiamo questa app gratuita sperando che possa essere utile come aiuto per una navigazione responsabile. Non ci sono garanzie. Potrebbe non funzionare come previsto. I dati non provengono da fonti ufficiali e potrebbero essere incompleti, non aggiornati o altrimenti errati. Questa applicazione non sostituisce una corretta pianificazione del volo o un buon pilotaggio. Affidarsi ad essa come mezzo primario di navigazione è molto probabilmente illegale, indubbiamente stupido e potenzialmente suicida.

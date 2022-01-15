@@ -1,0 +1,11 @@
+Enroute to niekomercyjna aplikacja do nawigacji lotniczej napisana przez entuzjastów lotów dla pilotów VFR. Zaprojektowana tak, aby być prosta, funkcjonalna i elegancka. Zmniejsza stres przed następnym lotem.
+
+Enroute posiada ruchomą mapę stylizowaną na oficjalne mapy ICAO. Zaznaczona jest Twoja aktualna pozycja oraz trasa lotu na najbliższe pięć minut, a także planowana trasa lotu. Kliknięcie na trasę udostępnia Ci wszystkie informacje o przestrzeniach powietrznych, lotniskach i pomocach nawigacyjnych - łącznie z częstotliwościami, kodami, wysokościami i informacjami o pasach startowych.
+
+Nasze mapy lotnicze są bezpłatne, aktualizowane co tydzień i obejmują dużą część świata. Wybrane mapy pokazują trasy lotnisk i procedury lotnicze dla stref kontroli.
+
+Aplikacja Enroute wspomaga podstawowe planowanie lotów. Umożliwia szybkie i łatwe obliczanie odległości, kursów i kierunków. Podaje szacunkowy czas lotu i zużycie paliwa. Jeśli pogoda się zepsuje, aplikacja pokaże Ci najbliższe lotniska do lądowania, wraz z odległościami, kierunkami, informacjami o pasach startowych i częstotliwościach.
+
+Nie ma żadnych reklam i nie ma komercyjnej wersji aplikacji typu "pro". Nie szpiegujemy Cię. Nie musisz zapisywać się do "członkostwa". A my nie będziemy cię nękać e-mail'ami. Nawet nie mamy ani nie chcemy Twojego adresu!
+
+Zastrzeżenie: Publikujemy tę darmową aplikację w nadziei, że może być pomocna jako pomoc w rozważnej nawigacji. Wiąże się to z brakiem jakiejkolwiek gwarancji. Aplikacja może działań niezgodnie z oczekiwaniami. Dane lotnicze nie pochodzą z oficjalnych źródeł i mogą być niekompletne, przestarzałe lub w inny sposób nieprawidłowe. Ta aplikacja nie jest substytutem właściwego przygotowania do lotu lub dobrego pilotażu. Poleganie na niej jako na podstawowym środku nawigacji jest najprawdopodobniej nielegalne, niewątpliwie głupie i potencjalnie samobójcze.

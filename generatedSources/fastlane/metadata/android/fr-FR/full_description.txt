@@ -1,0 +1,11 @@
+Enroute est une application de navigation de vol non commerciale écrite par des passionnés de vol pour les pilotes VFR. Conçue pour être simple, fonctionnelle et élégante, elle élimine le stress de votre prochain vol.
+
+Enroute présente une carte mobile dont le style est similaire à celui des cartes officielles de l'OACI. Votre position actuelle et votre trajectoire de vol pour les cinq prochaines minutes sont indiquées, ainsi que votre itinéraire de vol prévu. Une simple pression vous donne toutes les informations sur les espaces aériens, les aérodromes et les aides à la navigation - avec les fréquences, les codes, les élévations et les informations sur les pistes.
+
+Nos cartes aéronautiques sont gratuites, font l'objet de mises à jour hebdomadaires et couvrent une grande partie du monde. Certaines cartes montrent également les circuits d'aérodrome et les procédures de vol pour les zones de contrôle.
+
+Enroute permet la planification essentielle des vols. L'application vous permet de calculer rapidement et facilement les distances, les trajectoires et les caps. Elle vous donne une estimation du temps de vol et de la consommation de carburant. Si le temps se gâte, l'application vous indique les aérodromes les plus proches pour l'atterrissage, avec les distances, les directions, les informations sur les pistes et les fréquences.
+
+Il n'y a pas de publicité ni de version commerciale "pro" de l'application. Nous ne vous espionnons pas. Vous n'avez pas besoin de vous inscrire pour devenir "membre". Et nous ne vous importunons pas avec des e-mails. Nous n'avons même pas besoin de, et nous ne voulons pas, votre adresse !
+
+Clause de non-responsabilité : nous publions cette application gratuite en espérant qu'elle puisse être utile comme aide à la navigation prudente. Elle n'est assortie d'aucune garantie. Elle peut ne pas fonctionner comme prévu. Les données ne proviennent pas de sources officielles et peuvent être incomplètes, périmées ou incorrectes. Cette application ne remplace pas une bonne préparation du vol ou un bon pilotage. S'y fier comme principal moyen de navigation est très probablement illégal, indubitablement stupide et potentiellement suicidaire.

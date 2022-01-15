@@ -13,7 +13,6 @@ apps:
     extensions:
       - kde-neon
     plugs:
-      - kde-frameworks-5-plug
       - desktop
       - network
       - network-bind

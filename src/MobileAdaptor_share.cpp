@@ -69,7 +69,7 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
     QMimeType mime = db.mimeTypeForName(mimeType);
 
 #if defined(Q_OS_ANDROID)
-    auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1"+mime.preferredSuffix());
+    auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1."+mime.preferredSuffix());
     bool success = outgoingIntent("sendFile", tmpPath, mimeType);
     if (success) {
         return QString();

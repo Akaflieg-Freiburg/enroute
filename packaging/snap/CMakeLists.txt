@@ -33,4 +33,5 @@ add_custom_target(snap-publish
   COMMAND snapcraft upload ${CMAKE_CURRENT_BINARY_DIR}/enroute-flight-navigation_${PROJECT_VERSION}_amd64.snap --release stable
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Publishing snap"
+  DEPENDS snap-binary
   )

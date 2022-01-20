@@ -604,6 +604,7 @@ Page {
 
         ColumnLayout {
             width: parent.width
+
             Label {
                 id: summary
 
@@ -632,12 +633,23 @@ Page {
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    dialogLoader.active = false
-                    dialogLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
-                    dialogLoader.active = true
+                    flightRouteAddWPDialog.open()
                 }
             }
         }
+    }
+
+    FlightRouteAddWPDialog {
+        id: flightRouteAddWPDialog
+
+        Connections {
+            target: global.demoRunner()
+
+            function onRequestOpenFlightRouteAddWPDialog() {
+                flightRouteAddWPDialog.open()
+            }
+        }
+
     }
 
     Dialog {

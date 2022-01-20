@@ -572,6 +572,11 @@ ApplicationWindow {
                 stackView.push("pages/Nearby.qml")
             }
 
+            function onRequestOpenRoutePage() {
+                stackView.pop()
+                stackView.push("pages/FlightRouteEditor.qml")
+            }
+
             function onRequestOpenWeatherPage() {
                 stackView.pop()
                 stackView.push("pages/WeatherPage.qml")

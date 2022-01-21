@@ -255,6 +255,7 @@ void DemoRunner::run()
         GlobalObject::navigator()->aircraft()->setCruiseSpeed( Units::Speed::fromKN(90) );
         GlobalObject::navigator()->aircraft()->setFuelConsumption( Units::VolumeFlow::fromLPH(18) );
 
+        delay(2s);
         applicationWindow->grabWindow().save("02-02-02-RouteNonEmpty.png");
 
         emit requestOpenFlightRouteAddWPDialog();
@@ -268,7 +269,7 @@ void DemoRunner::run()
     {
         qWarning() << "… Aircraft Page";
         emit requestOpenAircraftPage();
-        delay(4s);
+        delay(2s);
         applicationWindow->grabWindow().save("01-03-04-Aircraft.png");
         emit requestClosePages();
     }
@@ -277,7 +278,7 @@ void DemoRunner::run()
     {
         qWarning() << "… Nearby Waypoints Page";
         emit requestOpenNearbyPage();
-        delay(4s);
+        delay(2s);
         applicationWindow->grabWindow().save("02-02-01-Nearby.png");
         emit requestClosePages();
     }
@@ -286,7 +287,7 @@ void DemoRunner::run()
     {
         qWarning() << "… Weather Page";
         emit requestOpenWeatherPage();
-        delay(1s);
+        delay(2s);
         applicationWindow->grabWindow().save("02-03-01-Weather.png");
     }
 
@@ -295,9 +296,9 @@ void DemoRunner::run()
         qWarning() << "… Weather Dialog";
         auto *weatherReport = findQQuickItem("weatherReport", m_engine);
         Q_ASSERT(weatherReport != nullptr);
-        auto station = GlobalObject::weatherDataProvider()->findWeatherStation("LFSB");
-        weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
+        auto station = GlobalObject::weatherDataProvider()->findWeatherStation("LSZB");
         Q_ASSERT(station != nullptr);
+        weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
         QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
         delay(4s);
         applicationWindow->grabWindow().save("02-03-02-WeatherDialog.png");

@@ -160,3 +160,16 @@ QString GeoMaps::Airspace::makeMetric(const QString& standard) const
     list[0] = QString("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
     return list.join(' ');
 }
+
+
+uint GeoMaps::qHash(const GeoMaps::Airspace& A)
+{
+    uint result = 0;
+    result += qHash(A._name);
+    result += qHash(A._CAT);
+    result += qHash(A._upperBound);
+    result += qHash(A._lowerBound);
+#warning Maybe not so easy
+    result += qHash(A.polygon().path());
+    return result;
+}

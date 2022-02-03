@@ -313,21 +313,27 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
     QVector<Airspace> newAirspaces;
+    QSet<Airspace> airspaces_seen;
     QVector<Waypoint> newWaypoints;
     foreach(auto object, objectSet) {
-        newFeatures += object;
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         Waypoint wp(object);
         if (wp.isValid()) {
             newWaypoints.append(wp);
+            newFeatures += object;
             continue;
         }
 
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
         Airspace as(object);
         if (as.isValid()) {
+            if (airspaces_seen.contains(as)) {
+                continue;
+            }
+            airspaces_seen.insert(as);
             newAirspaces.append(as);
+            newFeatures += object;
             continue;
         }
     }

@@ -40,7 +40,7 @@ using namespace std::chrono_literals;
 
 DataManagement::DataManager::DataManager(QObject *parent) :
     GlobalObject(parent),
-    _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/maps.json"),
+    _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json"),
                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json", this)
 {
     // Earlier versions of this program constructed files with names ending in ".geojson.geojson"

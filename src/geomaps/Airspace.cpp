@@ -165,11 +165,10 @@ QString GeoMaps::Airspace::makeMetric(const QString& standard) const
 uint GeoMaps::qHash(const GeoMaps::Airspace& A)
 {
     uint result = 0;
-    result += qHash(A._name);
-    result += qHash(A._CAT);
-    result += qHash(A._upperBound);
-    result += qHash(A._lowerBound);
-#warning Maybe not so easy
+    result += qHash(A.name());
+    result += qHash(A.CAT());
+    result += qHash(A.upperBound());
+    result += qHash(A.lowerBound());
     result += qHash(A.polygon().path());
     return result;
 }

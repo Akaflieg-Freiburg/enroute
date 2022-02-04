@@ -348,3 +348,9 @@ auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 
     return extendedName();
 }
+
+
+uint GeoMaps::qHash(const GeoMaps::Waypoint& wp)
+{
+    return qHash(wp.coordinate());
+}

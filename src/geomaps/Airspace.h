@@ -30,9 +30,8 @@ namespace GeoMaps {
 class Airspace {
     Q_GADGET
 
-    // Friends
+    /*! \brief Comparison */
     friend bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&) = default;
-    friend uint qHash(const GeoMaps::Airspace&);
 
 public:
     /*! \brief Constructs an invalid airspace */
@@ -176,16 +175,14 @@ private:
 };
 
 
-/*
-bool operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
-{
-    return ((A._name == B._name) &&
-            (A._CAT == B._CAT) &&
-            (A._upperBound == B._upperBound) &&
-            (A._lowerBound == B._lowerBound) &&
-            (A._polygon == B._polygon));
-}
-*/
+/*! \brief Hash function for airspaces
+ *
+ * @param as Airspace
+ *
+ * @returns Hash value
+ */
+uint qHash(const GeoMaps::Airspace& as);
+
 }
 
 

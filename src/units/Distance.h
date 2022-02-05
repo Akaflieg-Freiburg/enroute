@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <compare>
 #include <QtMath>
 #include <QObject>
 
@@ -33,6 +34,9 @@ namespace Units {
      */
     class Distance {
         Q_GADGET
+
+        /*! \brief Comparison */
+        friend auto operator<=>(const Distance&, const Distance&) = default;
 
     public:
         /*! \brief Units of measurement for distances */
@@ -160,50 +164,6 @@ namespace Units {
         Q_INVOKABLE auto operator-(Units::Distance rhs) const -> Units::Distance
         {
             return fromM(m_distanceInM - rhs.m_distanceInM);
-        }
-
-        /*! \brief Comparison: less than
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE auto operator<(Units::Distance rhs) const
-        {
-            return m_distanceInM < rhs.m_distanceInM;
-        }
-
-        /*! \brief Comparison: larger equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE auto operator>(Units::Distance rhs) const
-        {
-            return m_distanceInM > rhs.m_distanceInM;
-        }
-
-        /*! \brief Comparison: not equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE auto operator!=(Units::Distance rhs) const
-        {
-            return m_distanceInM != rhs.m_distanceInM;
-        }
-
-        /*! \brief Comparison: equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE auto operator==(Units::Distance rhs) const
-        {
-            return m_distanceInM == rhs.m_distanceInM;
         }
 
         /*! \brief Convert to feet

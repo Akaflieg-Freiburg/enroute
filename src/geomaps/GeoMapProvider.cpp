@@ -315,11 +315,16 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     QVector<Airspace> newAirspaces;
     QSet<Airspace> airspaces_seen;
     QVector<Waypoint> newWaypoints;
+    QSet<Waypoint> waypoints_seen;
     foreach(auto object, objectSet) {
 
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         Waypoint wp(object);
         if (wp.isValid()) {
+            if (waypoints_seen.contains(wp)) {
+                continue;
+            }
+            waypoints_seen.insert(wp);
             newWaypoints.append(wp);
             newFeatures += object;
             continue;

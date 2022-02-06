@@ -31,7 +31,7 @@ class Airspace {
     Q_GADGET
 
     /*! \brief Comparison */
-    friend bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&) = default;
+    friend bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&);
 
 public:
     /*! \brief Constructs an invalid airspace */
@@ -174,6 +174,8 @@ private:
     QGeoPolygon _polygon{};
 };
 
+/*! \brief Comparison */
+bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&);
 
 /*! \brief Hash function for airspaces
  *

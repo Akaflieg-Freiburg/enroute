@@ -162,6 +162,16 @@ QString GeoMaps::Airspace::makeMetric(const QString& standard) const
 }
 
 
+bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
+{
+    return ((A._name == B._name) &&
+            (A._CAT == B._CAT) &&
+            (A._upperBound == B._upperBound) &&
+            (A._lowerBound == B._lowerBound) &&
+            (A._polygon == B._polygon) );
+}
+
+
 uint GeoMaps::qHash(const GeoMaps::Airspace& A)
 {
     uint result = 0;

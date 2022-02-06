@@ -39,7 +39,7 @@ class Waypoint
     Q_GADGET
 
     /*! \brief Comparison */
-    friend bool operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) = default;
+    friend bool operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
 
 public:
     /*! \brief Constructs an invalid way point
@@ -294,6 +294,9 @@ protected:
     QGeoCoordinate m_coordinate;
     QMultiMap<QString, QVariant> m_properties;
 };
+
+/*! \brief Comparison */
+bool operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
 
 /*! \brief Hash function for airspaces
  *

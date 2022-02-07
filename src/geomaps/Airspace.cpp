@@ -179,6 +179,6 @@ uint GeoMaps::qHash(const GeoMaps::Airspace& A)
     result += qHash(A.CAT());
     result += qHash(A.upperBound());
     result += qHash(A.lowerBound());
-    result += qHash(A.polygon().path());
+    result += qHash(A.polygon());
     return result;
 }

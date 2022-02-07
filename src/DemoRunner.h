@@ -61,14 +61,20 @@ public slots:
     void run();
 
 signals:
+    /*! \brief Emitted to indicate that the GUI should open the "Add Waypoint" dialog */
+    void requestOpenFlightRouteAddWPDialog();
+
     /*! \brief Emitted to indicate that the GUI should open the "Aircraft" page */
     void requestOpenAircraftPage();
 
-    /*! \brief Emitted to indicate that the GUI should open the "nearby" page */
+    /*! \brief Emitted to indicate that the GUI should open the "Nearby" page */
     void requestOpenNearbyPage();
 
-    /*! \brief Emitted to indicate that the GUI should open the "weather" page */
+    /*! \brief Emitted to indicate that the GUI should open the "Weather" page */
     void requestOpenWeatherPage();
+
+    /*! \brief Emitted to indicate that the GUI should open the "Route & Wind" page */
+    void requestOpenRoutePage();
 
     /*! \brief Emitted to indicate that the GUI return to the main page */
     void requestClosePages();

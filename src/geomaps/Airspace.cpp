@@ -160,3 +160,25 @@ QString GeoMaps::Airspace::makeMetric(const QString& standard) const
     list[0] = QString("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
     return list.join(' ');
 }
+
+
+bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
+{
+    return ((A._name == B._name) &&
+            (A._CAT == B._CAT) &&
+            (A._upperBound == B._upperBound) &&
+            (A._lowerBound == B._lowerBound) &&
+            (A._polygon == B._polygon) );
+}
+
+
+uint GeoMaps::qHash(const GeoMaps::Airspace& A)
+{
+    uint result = 0;
+    result += qHash(A.name());
+    result += qHash(A.CAT());
+    result += qHash(A.upperBound());
+    result += qHash(A.lowerBound());
+    result += qHash(A.polygon().path());
+    return result;
+}

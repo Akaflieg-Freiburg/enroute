@@ -62,13 +62,11 @@ auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> 
     auto hours = minutes/60;
     minutes = minutes%60;
 
-    QString result = "";
-    if ((hours != 0) && (minutes == 0)) {
-        result = tr("%1h").arg(hours);
-    } else if ((hours == 0) && (minutes != 0)) {
-        result = tr("%1min").arg(minutes);
+    QString result;
+    if (hours == 0) {
+        result = QString("%1 min").arg(minutes);
     } else {
-        result = tr("%1h and %2min").arg(hours).arg(minutes);
+        result = QString("%1:%2 h").arg(hours).arg(minutes, 2, 10, QChar('0'));
     }
 
     if (past) {

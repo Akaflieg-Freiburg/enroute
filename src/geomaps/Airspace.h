@@ -30,6 +30,9 @@ namespace GeoMaps {
 class Airspace {
     Q_GADGET
 
+    /*! \brief Comparison */
+    friend bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&);
+
 public:
     /*! \brief Constructs an invalid airspace */
     Airspace() = default;
@@ -170,6 +173,17 @@ private:
     QString _lowerBound{};
     QGeoPolygon _polygon{};
 };
+
+/*! \brief Comparison */
+bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&);
+
+/*! \brief Hash function for airspaces
+ *
+ * @param as Airspace
+ *
+ * @returns Hash value
+ */
+uint qHash(const GeoMaps::Airspace& as);
 
 }
 

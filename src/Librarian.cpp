@@ -275,8 +275,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("<p>As requested by our users, <strong>Enroute Flight Navigation</strong> now supports more units of measurement. Go to the new 'Aircraft' entry in the main menu to choose your preferred units.</p>")
-                + tr("<p><strong>Innovation Award 2021</strong> The readers of the German aviation magazine 'Aerokurier' have named <strong>Enroute Flight Navigation</strong> as one of the top three innovations of the year in the category 'Avionics'. Thanks to everybody who made this success possible!</p>");
+        return tr("<p>The openAIP aviation database has seen a major update, and much of our infrastructure had to be rebuilt. "
+                  "<strong>Please contact us if you spot any inconsistencies and errors!</strong><p>");
     }
 
     QFile file(name);

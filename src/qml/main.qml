@@ -722,11 +722,18 @@ ApplicationWindow {
         target: global.notifier()
 
         function onNotificationClicked(notifyID) {
+            console.log(notifyID)
             if ((notifyID === 0) && (stackView.currentItem.objectName !== "DataManagerPage")) {
                 stackView.push("pages/DataManager.qml")
             }
             if ((notifyID === 1) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")
+            }
+            if ((notifyID === 2) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
+                stackView.push("pages/TrafficReceiver.qml")
+            }
+            if ((notifyID === 3) && (stackView.currentItem.objectName !== "DataManagerPage")) {
+                stackView.push("pages/DataManager.qml")
             }
         }
 

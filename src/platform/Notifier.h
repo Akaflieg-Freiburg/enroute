@@ -54,7 +54,8 @@ public:
     {
         DownloadInfo = 0,                 /*< Info that  download is in progress */
         TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
-        TrafficReceiverRuntimeError = 2   /*< Traffic receiver reports problem while running */
+        TrafficReceiverRuntimeError = 2,  /*< Traffic receiver reports problem while running */
+        GeoMapUpdatePending = 3           /*< Updates of geographic maps are available */
     };
     Q_ENUM(NotificationTypes)
 

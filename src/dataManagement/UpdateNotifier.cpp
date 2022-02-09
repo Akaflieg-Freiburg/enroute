@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,22 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDebug>
+
 #include "platform/Notifier.h"
+#include "UpdateNotifier.h"
 
 
-auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
+
+DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
+    QObject(parent)
 {
-    switch (notification) {
-    case DownloadInfo:
-        return tr("Downloading map data…");
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
-    case GeoMapUpdatePending:
-        return tr("Map updates available");
-    }
+    qWarning() << "UpdateNotifier is constructed";
 
-    return {};
+#warning does not belong here
+    notify();
 }
 
+
+void DataManagement::UpdateNotifier::notify()
+{
+    qWarning() << "UpdateNotifier::notify";
+
+    auto* geoMaps = GlobalObject::dataManager()->geoMaps();
+    if (geoMaps == nullptr) {
+        GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
+        return;
+    }
+    /*
+    if (!geoMaps->updatable()) {
+        GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
+        return;
+    }
+    */
+
+    auto text = tr("<p>One or several of your installed maps or databases can be updated. The estimated download size is %1.</p>").arg(geoMaps->updateSize());
+    GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, QString());
+}

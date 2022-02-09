@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,22 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/Notifier.h"
+#pragma once
+
+#include "dataManagement/DataManager.h"
 
 
-auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
+namespace DataManagement {
+
+/*! \brief Informs the user that updates of geographic maps are peding
+ *
+ *  This class informs the user by notification if updates of geographic maps are peding.
+ *  The implementation tries to ensure that update notifications never appear in flight, and
+ *  only when an active internet connection exists.
+ */
+
+class UpdateNotifier : public QObject
 {
-    switch (notification) {
-    case DownloadInfo:
-        return tr("Downloading map data…");
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
-    case GeoMapUpdatePending:
-        return tr("Map updates available");
-    }
+    Q_OBJECT
 
-    return {};
-}
+public:
+    /*! \brief Standard constructor
+     *
+     *  @param parent Pointer to the parent object, which must be a DataManager.
+     */
+    explicit UpdateNotifier(DataManager* parent);
 
+private:
+    // Notify of pending map updates
+    void notify();
+
+    Q_DISABLE_COPY_MOVE(UpdateNotifier)
+};
+
+};

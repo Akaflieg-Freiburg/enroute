@@ -77,6 +77,7 @@ set(SOURCES
     dataManagement/DownloadableGroup.h
     dataManagement/DownloadableGroupWatcher.h
     dataManagement/SSLErrorHandler.h
+    dataManagement/UpdateNotifier.h
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/GeoMapProvider.h
@@ -132,6 +133,7 @@ set(SOURCES
     dataManagement/DownloadableGroup.cpp
     dataManagement/DownloadableGroupWatcher.cpp
     dataManagement/SSLErrorHandler.cpp
+    dataManagement/UpdateNotifier.cpp
     DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/GeoMapProvider.cpp

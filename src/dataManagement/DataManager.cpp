@@ -34,6 +34,7 @@
 
 using namespace std::chrono_literals;
 
+#include "dataManagement/UpdateNotifier.h"
 #include "DataManager.h"
 #include "Settings.h"
 
@@ -96,6 +97,8 @@ void DataManagement::DataManager::deferredInitialization()
         }
     }
 
+    // Set up and start the updateNotifier
+    new DataManagement::UpdateNotifier(this);
 }
 
 

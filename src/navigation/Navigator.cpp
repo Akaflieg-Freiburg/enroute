@@ -125,29 +125,44 @@ auto Navigation::Navigator::flightRoute() -> FlightRoute*
 
 
 void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& info)
-{
-    Units::Speed GS;
-
-    if (info.isValid()) {
-        GS = info.groundSpeed();
-    }
-
-    if (!GS.isFinite()) {
-        setIsInFlight(false);
+{  
+    // Paranoid safety checks
+    if (m_aircraft.isNull()) {
+        setFlightStatus(Unknown);
         return;
     }
 
+    if (!info.isValid()) {
+        setFlightStatus(Unknown);
+        return;
+    }
+
+    // Get ground speed
+    auto GS = info.groundSpeed();
+    if (!GS.isFinite()) {
+        setFlightStatus(Unknown);
+        return;
+    }
+
+    // Get aircraft minimum speed
+    auto aircraftMinSpeed = m_aircraft->minimumSpeed();
+    if (!aircraftMinSpeed.isFinite()) {
+        setFlightStatus(Unknown);
+        return;
+    }
+
+    // Go to ground mode if ground speed is less then aircraftMinSpeed-flightSpeedHysteresis
     if (m_isInFlight) {
         // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
-        if ( GS.toKN() < minFlightSpeedInKN-flightSpeedHysteresisInKn ) {
-            setIsInFlight(false);
+        if ( GS < aircraftMinSpeed-flightSpeedHysteresis) {
+            setIsInFlight(Ground);
         }
         return;
     }
 
-    // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
-    if ( GS.toKN() > minFlightSpeedInKN ) {
-        setIsInFlight(true);
+    // Go to flight mode if ground speed is more than aircraftMinSpeed
+    if ( GS > aircraftMinSpeed ) {
+        setIsInFlight(Flight);
     }
 }
 
@@ -167,6 +182,16 @@ void Navigation::Navigator::setIsInFlight(bool newIsInFlight)
     }
     m_isInFlight = newIsInFlight;
     emit isInFlightChanged();
+}
+
+
+void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
+{
+    if (m_flightStatus == newFlightStatus) {
+        return;
+    }
+    m_flightStatus = newFlightStatus;
+    emit flightStatusChanged();
 }
 
 

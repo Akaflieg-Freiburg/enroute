@@ -135,13 +135,24 @@ namespace Units {
 
         /*! \brief Adds two speeds
          *
-         * @param rhs Denominator of the division
+         * @param rhs Right hand side
          *
-         * @returns Quotient as a dimension-less number
+         * @returns Sum
          */
         Q_INVOKABLE Units::Speed operator+(Units::Speed rhs)
         {
             return Units::Speed::fromMPS(_speedInMPS + rhs._speedInMPS);
+        }
+
+        /*! \brief Difference of two speeds
+         *
+         * @param rhs Right hand side
+         *
+         * @returns Difference
+         */
+        Q_INVOKABLE Units::Speed operator-(Units::Speed rhs)
+        {
+            return Units::Speed::fromMPS(_speedInMPS - rhs._speedInMPS);
         }
 
         /*! \brief Equality check

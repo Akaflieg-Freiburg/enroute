@@ -109,6 +109,31 @@ public:
      */
     FlightRoute* flightRoute();
 
+    /*! \brief FlightStatus */
+    enum FlightStatus
+      {
+        Ground, /*!< Device is on the ground */
+        Flight, /*!< Device is flying */
+        Unknown /*!< Unknown */
+      };
+    Q_ENUM(FlightStatus)
+
+    /*! \brief Estimate whether the device is flying or on the ground
+     *
+     *  This property holds an estimate, as to whether the device is flying or
+     *  on the ground.
+     */
+    Q_PROPERTY(FlightStatus flightStatus READ flightStatus NOTIFY flightStatusChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property flightStatus
+     */
+    FlightStatus flightStatus() const
+    {
+        return m_flightStatus;
+    }
+
     /*! \brief Estimate whether the device is flying or on the ground
      *
      *  This property holds an estimate, as to whether the device is flying or
@@ -137,11 +162,14 @@ public:
      *
      *  @returns Property wind
      */
-    Weather::Wind* wind();
+    Weather::Wind* wind();   
 
 signals:
     /*! \brief Notifier signal */
     void isInFlightChanged();
+
+    /*! \brief Notifier signal */
+    void flightStatusChanged();
 
 private slots:
     // Connected to sources, in order to receive new data
@@ -160,12 +188,14 @@ private:
     // Setter function for the property with the same name
     void setIsInFlight(bool newIsInFlight);
 
-    // Aircraft is considered flying if speed is at least this high
-    static constexpr double minFlightSpeedInKN = 30.0;
+    // Updater function for the property with the same name
+    void setFlightStatus(FlightStatus newFlightStatus);
+
     // Hysteresis for flight speed
-    static constexpr double flightSpeedHysteresisInKn = 5.0;
+    static constexpr auto flightSpeedHysteresis = Units::Speed::fromKN(5.0);
 
     bool m_isInFlight {false};
+    FlightStatus m_flightStatus {Unknown};
 
     QPointer<Aircraft> m_aircraft {nullptr};
     QPointer<Clock> m_clock {nullptr};

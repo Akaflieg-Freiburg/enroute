@@ -134,23 +134,6 @@ public:
         return m_flightStatus;
     }
 
-    /*! \brief Estimate whether the device is flying or on the ground
-     *
-     *  This property holds an estimate, as to whether the device is flying or
-     *  on the ground.  The current implementation considers the device is
-     *  flying if the groundspeed can be read and is greater then 30 knots.
-     */
-    Q_PROPERTY(bool isInFlight READ isInFlight NOTIFY isInFlightChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property isInFlight
-     */
-    bool isInFlight() const
-    {
-        return m_isInFlight;
-    }
-
     /*! \brief Current wind
      *
      *  The wind returned here is owned by this class and must not be deleted.
@@ -165,9 +148,6 @@ public:
     Weather::Wind* wind();   
 
 signals:
-    /*! \brief Notifier signal */
-    void isInFlightChanged();
-
     /*! \brief Notifier signal */
     void flightStatusChanged();
 
@@ -185,16 +165,12 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Navigator)
 
-    // Setter function for the property with the same name
-    void setIsInFlight(bool newIsInFlight);
-
     // Updater function for the property with the same name
     void setFlightStatus(FlightStatus newFlightStatus);
 
     // Hysteresis for flight speed
     static constexpr auto flightSpeedHysteresis = Units::Speed::fromKN(5.0);
 
-    bool m_isInFlight {false};
     FlightStatus m_flightStatus {Unknown};
 
     QPointer<Aircraft> m_aircraft {nullptr};

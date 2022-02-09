@@ -152,17 +152,17 @@ void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& i
     }
 
     // Go to ground mode if ground speed is less then aircraftMinSpeed-flightSpeedHysteresis
-    if (m_isInFlight) {
+    if (m_flightStatus == Flight) {
         // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
         if ( GS < aircraftMinSpeed-flightSpeedHysteresis) {
-            setIsInFlight(Ground);
+            setFlightStatus(Ground);
         }
         return;
     }
 
     // Go to flight mode if ground speed is more than aircraftMinSpeed
     if ( GS > aircraftMinSpeed ) {
-        setIsInFlight(Flight);
+        setFlightStatus(Flight);
     }
 }
 
@@ -172,16 +172,6 @@ void Navigation::Navigator::saveAircraft() const
     QFile file(m_aircraftFileName);
     file.open(QIODevice::WriteOnly);
     file.write(m_aircraft->toJSON());
-}
-
-
-void Navigation::Navigator::setIsInFlight(bool newIsInFlight)
-{
-    if (m_isInFlight == newIsInFlight) {
-        return;
-    }
-    m_isInFlight = newIsInFlight;
-    emit isInFlightChanged();
 }
 
 

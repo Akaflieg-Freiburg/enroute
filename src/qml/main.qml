@@ -213,11 +213,11 @@ ApplicationWindow {
                         ItemDelegate {
                             text: qsTr("Maps and Data")
                                   + (global.dataManager().geoMaps.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
-                                  + (global.navigator().isInFlight ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
+                                  + ( (global.navigator().flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
 
-                            enabled: !global.navigator().isInFlight
+                            enabled: global.navigator().flightStatus !== Navigator.Flight
                             onClicked: {
                                 global.mobileAdaptor().vibrateBrief()
                                 stackView.push("pages/DataManager.qml")
@@ -463,7 +463,7 @@ ApplicationWindow {
                     height: 1
                     Layout.fillWidth: true
                     color: Material.primary
-                    visible: !global.navigator().isInFlight
+                    visible: global.navigator().flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit
@@ -474,7 +474,7 @@ ApplicationWindow {
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
                         drawer.close()
-                        if (global.navigator().isInFlight)
+                        if (global.navigator().flightStatus === Navigator.Flight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -520,19 +520,19 @@ ApplicationWindow {
             // Start accepting files
             global.mobileAdaptor().startReceiveOpenFileRequests()
 
-            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && !global.navigator().isInFlight) {
+            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return
             }
 
             if ((global.settings().lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
                     (global.dataManager().whatsNew !== "") &&
-                    !global.navigator().isInFlight) {
+                    (global.navigator().flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()
                 return
             }
 
-            if (global.dataManager().geoMaps.updatable && !global.navigator().isInFlight) {
+            if (global.dataManager().geoMaps.updatable && (global.navigator().flightStatus !== Navigator.Flight)) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/UpdateMapDialog.qml"
                 dialogLoader.active = true
@@ -545,7 +545,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (global.navigator().isInFlight)
+                    if (global.navigator().flightStatus === Navigator.Flight)
                         exitDialog.open()
                     else
                         Qt.quit()

@@ -722,7 +722,7 @@ ApplicationWindow {
         target: global.notifier()
 
         function onNotificationClicked(notifyID) {
-            console.log(notifyID)
+            global.notifier().hideNotification(notifyID)
             if ((notifyID === 0) && (stackView.currentItem.objectName !== "DataManagerPage")) {
                 stackView.push("pages/DataManager.qml")
             }

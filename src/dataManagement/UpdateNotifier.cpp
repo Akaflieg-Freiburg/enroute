@@ -51,6 +51,6 @@ void DataManagement::UpdateNotifier::notify()
     }
     */
 
-    auto text = tr("<p>One or several of your installed maps or databases can be updated. The estimated download size is %1.</p>").arg(geoMaps->updateSize());
-    GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, QString());
+    auto text = tr("The estimated download size is %1.").arg(geoMaps->updateSize());
+    GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);
 }

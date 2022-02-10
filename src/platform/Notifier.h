@@ -72,7 +72,7 @@ public slots:
      *
      *  @param notificationType Type of the notification
      */
-    static void hideNotification(Platform::Notifier::NotificationTypes notificationType);
+    Q_INVOKABLE static void hideNotification(Platform::Notifier::NotificationTypes notificationType);
 
     /*! \brief Shows a notification
      *

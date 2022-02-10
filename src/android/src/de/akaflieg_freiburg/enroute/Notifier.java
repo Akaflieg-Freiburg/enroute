@@ -71,6 +71,9 @@ public class Notifier
             case 2:
 		notificationChannel = new NotificationChannel("error", "Error Message", NotificationManager.IMPORTANCE_HIGH);
 		break;
+            case 3:
+                notificationChannel = new NotificationChannel("update", "Update", NotificationManager.IMPORTANCE_HIGH);
+                break;
             }
 	    m_notificationManager.createNotificationChannel(notificationChannel);
 	    m_builder = new Notification.Builder(QtNative.activity(), notificationChannel.getId());
@@ -82,26 +85,28 @@ public class Notifier
 	notificationIntent.putExtra("NotificationID", id);
 	PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE) ;
 	
-	m_builder.setContentIntent(pendingIntent);
-	m_builder.setColor(Color.rgb(00,0x80,0x80));
+        m_builder.setAutoCancel(true);
+        m_builder.setColor(Color.rgb(00,0x80,0x80));
+        m_builder.setContentIntent(pendingIntent);
 	m_builder.setContentTitle(title);
-	m_builder.setContentText(text);
+        m_builder.setContentText(text);
 	m_builder.setOngoing(false);
-	m_builder.setAutoCancel(false);
+        m_builder.setTimeoutAfter(30*1000);
 	if (!"".equals(longText)) {
 	    m_builder.setStyle(new Notification.BigTextStyle().bigText(longText));
 	}
 	
 	switch(id) {
         case 0:
-	    m_builder.setSmallIcon(R.drawable.ic_info);
-	    m_builder.setLargeIcon(BitmapFactory.decodeResource(QtNative.activity().getResources(), R.drawable.ic_file_download));
+            m_builder.setSmallIcon(R.drawable.ic_info);
 	    break;
         case 1:
         case 2:
 	    m_builder.setSmallIcon(R.drawable.ic_error);
-	    m_builder.setLargeIcon(BitmapFactory.decodeResource(QtNative.activity().getResources(), R.drawable.ic_error));
 	    break;
+        case 3:
+            m_builder.setSmallIcon(R.drawable.ic_info);
+            break;
         }
 	
 	m_notificationManager.notify(id, m_builder.build());

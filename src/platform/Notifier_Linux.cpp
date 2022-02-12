@@ -41,18 +41,7 @@ QPointer<QDBusInterface> notficationInterface;
 // We do not implement this in the constructor because the construction
 // takes time, which would add to the startup delay.
 
-QDBusInterface* getNotificationInterface()
-{
-    if (notficationInterface.isNull()) {
-        notficationInterface = new QDBusInterface("org.freedesktop.Notifications",
-                                                  "/org/freedesktop/Notifications",
-                                                  "org.freedesktop.Notifications",
-                                                  QDBusConnection::sessionBus());
-        notficationInterface->setParent(qApp);
-    }
-    return notficationInterface;
-}
-
+#include <QDebug>
 
 Platform::Notifier::Notifier(QObject *parent)
     : QObject(parent)
@@ -62,14 +51,14 @@ Platform::Notifier::Notifier(QObject *parent)
 
 Platform::Notifier::~Notifier()
 {
-
-    foreach(auto notificationID, notificationIDs) {
-        if (notificationID == 0) {
-            continue;
+    if (!notficationInterface.isNull()) {
+        foreach(auto notificationID, notificationIDs) {
+            if (notificationID == 0) {
+                continue;
+            }
+            notficationInterface->call("CloseNotification", notificationID);
         }
-        getNotificationInterface()->call("CloseNotification", notificationID);
     }
-    delete notficationInterface;
 
 }
 
@@ -81,8 +70,11 @@ void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes 
     if (notificationID == 0) {
         return;
     }
+    if (notficationInterface.isNull()) {
+        return;
+    }
 
-    getNotificationInterface()->call("CloseNotification", notificationID);
+    notficationInterface->call("CloseNotification", notificationID);
     notificationIDs.remove(notificationType);
 
 }
@@ -93,15 +85,30 @@ void Platform::Notifier::showNotification(NotificationTypes notificationType, co
     Q_UNUSED(text)
     Q_UNUSED(longText)
 
-    QDBusReply<uint> reply = getNotificationInterface()->call("Notify",
-                                                              "Enroute Flight Navigation",
-                                                              notificationIDs.value(notificationType, 0), // Notification to replace. 0 means: do not replace
-                                                              "", // Icon
-                                                              "Enroute Flight Navigation", // Title
-                                                              title(notificationType), // Summary
-                                                              QStringList(), // actions_list
-                                                              QMap<QString,QVariant>(), // hint
-                                                              0); // time: 0 means: never expire.
+    // Start notification interface, if necessary
+    if (notficationInterface.isNull()) {
+        notficationInterface = new QDBusInterface("org.freedesktop.Notifications",
+                                                  "/org/freedesktop/Notifications",
+                                                  "org.freedesktop.Notifications",
+                                                  QDBusConnection::sessionBus());
+        notficationInterface->setParent(qApp);
+    }
+
+    QStringList actions;
+    if (notificationType == GeoMapUpdatePending) {
+        actions << "Update" << tr("Update");
+        actions << "Dismiss" << tr("Dismiss");
+    }
+
+    QDBusReply<uint> reply = notficationInterface->call("Notify",
+                                                        "Enroute Flight Navigation",
+                                                        notificationIDs.value(notificationType, 0), // Notification to replace. 0 means: do not replace
+                                                        "", // Icon
+                                                        "Enroute Flight Navigation", // Title
+                                                        title(notificationType), // Summary
+                                                        actions, // actions_list
+                                                        QMap<QString,QVariant>(), // hint
+                                                        0); // time: 0 means: never expire.
     if (reply.isValid()) {
         notificationIDs.insert(notificationType, reply.value());
     }

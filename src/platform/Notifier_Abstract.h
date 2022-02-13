@@ -32,7 +32,7 @@ namespace Platform {
  *  clicks on a notification.
  */
 
-class Notifier : public QObject
+class Notifier_Abstract : public QObject
 {
     Q_OBJECT
 
@@ -41,9 +41,9 @@ public:
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit Notifier(QObject* parent = nullptr);
+    explicit Notifier_Abstract(QObject* parent = nullptr);
 
-    ~Notifier();
+    ~Notifier_Abstract() = default;
 
     /*! \brief Notification types
      *
@@ -61,7 +61,7 @@ public:
 
 public slots:
     // Emits the signal "notificationClicked".
-    void emitNotificationClicked(Platform::Notifier::NotificationTypes notificationType) {
+    void emitNotificationClicked(Platform::Notifier_Abstract::NotificationTypes notificationType) {
         emit notificationClicked(notificationType);
     }
 
@@ -72,7 +72,7 @@ public slots:
      *
      *  @param notificationType Type of the notification
      */
-    Q_INVOKABLE static void hideNotification(Platform::Notifier::NotificationTypes notificationType);
+    Q_INVOKABLE virtual void hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType) = 0;
 
     /*! \brief Shows a notification
      *
@@ -86,20 +86,21 @@ public slots:
      *  @param longText If not empty, then the notification might be expandable. When expanded, the one-line "text" is replaced by the content of this "longText".
      *  Depending on the platform, this parameter might also be ignored.
      */
-    void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
+    virtual void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText) = 0;
 
 signals:
     /*! \brief Emitted when the user clicks on a notification
      *
      *  @param notificationType Notification that was clicked on
      */
-    void notificationClicked(Platform::Notifier::NotificationTypes notificationType);
+    void notificationClicked(Platform::Notifier_Abstract::NotificationTypes notificationType);
+
+protected:
+    // Get translated title for specific notification
+    QString title(Platform::Notifier_Abstract::NotificationTypes notificationType);
 
 private:
-    Q_DISABLE_COPY_MOVE(Notifier)
-
-    // Get translated title for specific notification
-    static QString title(Platform::Notifier::NotificationTypes notificationType);
+    Q_DISABLE_COPY_MOVE(Notifier_Abstract)
 };
 
 }

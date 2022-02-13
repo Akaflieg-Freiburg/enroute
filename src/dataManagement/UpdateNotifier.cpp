@@ -20,7 +20,7 @@
 
 #include <QDebug>
 
-#include "platform/Notifier.h"
+#include "platform/Notifier_Abstract.h"
 #include "UpdateNotifier.h"
 
 
@@ -41,7 +41,7 @@ void DataManagement::UpdateNotifier::notify()
 
     auto* geoMaps = GlobalObject::dataManager()->geoMaps();
     if (geoMaps == nullptr) {
-        GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
+        GlobalObject::notifier()->hideNotification(Platform::Notifier_Abstract::GeoMapUpdatePending);
         return;
     }
     /*
@@ -52,5 +52,5 @@ void DataManagement::UpdateNotifier::notify()
     */
 
     auto text = tr("The estimated download size is %1.").arg(geoMaps->updateSize());
-    GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);
+    GlobalObject::notifier()->showNotification(Platform::Notifier_Abstract::GeoMapUpdatePending, text, text);
 }

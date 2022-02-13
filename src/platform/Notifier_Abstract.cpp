@@ -18,10 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/Notifier.h"
+#include "platform/Notifier_Abstract.h"
 
 
-auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
+Platform::Notifier_Abstract::Notifier_Abstract(QObject *parent)
+    : QObject(parent)
+{
+}
+
+
+auto Platform::Notifier_Abstract::title(Platform::Notifier_Abstract::NotificationTypes notification) -> QString
 {
     switch (notification) {
     case DownloadInfo:

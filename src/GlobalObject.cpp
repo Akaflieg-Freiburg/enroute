@@ -31,12 +31,20 @@
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
-#include "platform/Notifier.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
+
+#if defined(Q_OS_ANDROID)
+#include "platform/Notifier_Android.h"
+#endif
+
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#include "platform/Notifier_Linux.h"
+#endif
+
 
 bool isConstructing {false};
 
@@ -142,7 +150,7 @@ auto GlobalObject::networkAccessManager() -> QNetworkAccessManager*
 }
 
 
-auto GlobalObject::notifier() -> Platform::Notifier*
+auto GlobalObject::notifier() -> Platform::Notifier_Abstract*
 {
     return allocateInternal<Platform::Notifier>(g_notifier);
 }

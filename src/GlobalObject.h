@@ -48,7 +48,7 @@ class TrafficDataProvider;
 }
 
 namespace Platform {
-class Notifier;
+class Notifier_Abstract;
 }
 
 namespace Positioning {
@@ -166,7 +166,7 @@ class GlobalObject : public QObject
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Platform::Notifier* notifier();
+    Q_INVOKABLE static Platform::Notifier_Abstract* notifier();
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *

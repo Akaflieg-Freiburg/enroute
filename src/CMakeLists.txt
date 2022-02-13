@@ -92,7 +92,7 @@ set(SOURCES
     navigation/FlightRoute.h
     navigation/FlightRoute_Leg.h
     navigation/Navigator.h
-    platform/Notifier.h
+    platform/Notifier_Abstract.h
     positioning/Geoid.h
     positioning/PositionInfo.h
     positioning/PositionInfoSource_Abstract.h
@@ -151,7 +151,7 @@ set(SOURCES
     navigation/FlightRoute_GPX.cpp
     navigation/FlightRoute_Leg.cpp
     navigation/Navigator.cpp
-    platform/Notifier.cpp
+    platform/Notifier_Abstract.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp
     positioning/PositionInfoSource_Abstract.cpp
@@ -215,6 +215,7 @@ if( ANDROID )
     list(APPEND SOURCES
         ${QTQUICKCOMPILEDRESOURCES}
         MobileAdaptor_Android.cpp
+        platform/Notifier_Android.h
         platform/Notifier_Android.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
@@ -270,6 +271,7 @@ endif()
 if (NOT ANDROID)
     list(APPEND SOURCES
         MobileAdaptor_Linux.cpp
+        platform/Notifier_Linux.h
         platform/Notifier_Linux.cpp
         ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
         )

@@ -39,9 +39,7 @@
 
 #if defined(Q_OS_ANDROID)
 #include "platform/Notifier_Android.h"
-#endif
-
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#else
 #include "platform/Notifier_Linux.h"
 #endif
 
@@ -57,7 +55,11 @@ QPointer<Librarian> g_librarian {};
 QPointer<MobileAdaptor> g_mobileAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
-QPointer<Platform::Notifier> g_notifier {};
+#if defined(Q_OS_ANDROID)
+QPointer<Platform::Notifier_Android> g_notifier {};
+#else
+QPointer<Platform::Notifier_Linux> g_notifier {};
+#endif
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<Settings> g_settings {};
@@ -150,9 +152,14 @@ auto GlobalObject::networkAccessManager() -> QNetworkAccessManager*
 }
 
 
-auto GlobalObject::notifier() -> Platform::Notifier_Abstract*
+auto GlobalObject::notifier() -> Platform::Notifier*
 {
+#if defined(Q_OS_ANDROID)
     return allocateInternal<Platform::Notifier>(g_notifier);
+#else
+    return allocateInternal<Platform::Notifier_Linux>(g_notifier);
+#endif
+
 }
 
 

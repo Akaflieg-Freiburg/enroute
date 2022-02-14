@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,16 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/Notifier_Abstract.h"
+#include "platform/Notifier.h"
 
 
-Platform::Notifier_Abstract::Notifier_Abstract(QObject *parent)
+Platform::Notifier::Notifier(QObject *parent)
     : QObject(parent)
 {
+#warning implement: close notifications on shutdown
 }
 
 
-auto Platform::Notifier_Abstract::title(Platform::Notifier_Abstract::NotificationTypes notification) -> QString
+auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
 {
     switch (notification) {
     case DownloadInfo:

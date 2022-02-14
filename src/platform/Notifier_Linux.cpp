@@ -26,15 +26,15 @@
 #include "platform/Notifier_Linux.h"
 
 
-Platform::Notifier::Notifier(QObject *parent)
-    : Platform::Notifier::Notifier_Abstract(parent)
+Platform::Notifier_Linux::Notifier_Linux(QObject *parent)
+    : Platform::Notifier_Linux::Notifier(parent)
 {
     connect(&notificationInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(onActionInvoked(uint,QString)));
     connect(&notificationInterface, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(onNotificationClosed(uint,uint)));
 }
 
 
-Platform::Notifier::~Notifier()
+Platform::Notifier_Linux::~Notifier_Linux()
 {
     foreach(auto notificationID, notificationIDs) {
         if (notificationID == 0) {
@@ -45,7 +45,7 @@ Platform::Notifier::~Notifier()
 }
 
 
-void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes notificationType)
+void Platform::Notifier_Linux::hideNotification(Platform::Notifier::NotificationTypes notificationType)
 {
 
     auto notificationID = notificationIDs.value(notificationType, 0);
@@ -59,7 +59,7 @@ void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes 
 }
 
 
-void Platform::Notifier::onActionInvoked(uint id, QString key)
+void Platform::Notifier_Linux::onActionInvoked(uint id, QString key)
 {
 
     if (key == "GeoMap_Dismiss") {
@@ -78,7 +78,7 @@ void Platform::Notifier::onActionInvoked(uint id, QString key)
 }
 
 
-void Platform::Notifier::onNotificationClosed(uint id, uint reason)
+void Platform::Notifier_Linux::onNotificationClosed(uint id, uint reason)
 {
     // reason == 2 means: notification is closed because user clicked on it
     if (reason != 2) {
@@ -117,7 +117,7 @@ void Platform::Notifier::onNotificationClosed(uint id, uint reason)
 }
 
 
-void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
+void Platform::Notifier_Linux::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
 {
     Q_UNUSED(text)
     Q_UNUSED(longText)

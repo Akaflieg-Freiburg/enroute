@@ -32,7 +32,7 @@ namespace Platform {
  *  clicks on a notification.
  */
 
-class Notifier_Abstract : public QObject
+class Notifier : public QObject
 {
     Q_OBJECT
 
@@ -41,9 +41,9 @@ public:
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit Notifier_Abstract(QObject* parent = nullptr);
+    explicit Notifier(QObject* parent = nullptr);
 
-    ~Notifier_Abstract() = default;
+    ~Notifier() = default;
 
     /*! \brief Notification types
      *
@@ -81,7 +81,7 @@ public slots:
      *
      *  @param notificationType Type of the notification
      */
-    Q_INVOKABLE virtual void hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType) = 0;
+    Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType) = 0;
 
     /*! \brief Shows a notification
      *
@@ -95,21 +95,21 @@ public slots:
      *  @param longText If not empty, then the notification might be expandable. When expanded, the one-line "text" is replaced by the content of this "longText".
      *  Depending on the platform, this parameter might also be ignored.
      */
-    virtual void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText) = 0;
+    virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText) = 0;
 
 signals:
     /*! \brief User action
      *
      * This signal is emitted in response to user interaction with a notification
      */
-    void action(Platform::Notifier_Abstract::NotificationActions action);
+    void action(Platform::Notifier::NotificationActions action);
 
 protected:
     // Get translated title for specific notification
-    QString title(Platform::Notifier_Abstract::NotificationTypes notificationType);
+    QString title(Platform::Notifier::NotificationTypes notificationType);
 
 private:
-    Q_DISABLE_COPY_MOVE(Notifier_Abstract)
+    Q_DISABLE_COPY_MOVE(Notifier)
 };
 
 }

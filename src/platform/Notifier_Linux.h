@@ -20,70 +20,53 @@
 
 #pragma once
 
-#include <QDBusAbstractInterface>
+#include <QDBusInterface>
 #include <QMap>
 
 #include "platform/Notifier_Abstract.h"
 
 namespace Platform {
 
-/*! \brief This class shows platform-native Linux desktop notifications
- *
- *  The class implements Notifier_Abstract.
- */
+// This class implements notifications for the linux desktop
 
 class Notifier : public Notifier_Abstract
 {
     Q_OBJECT
 
 public:
-    /*! \brief Standard constructor
-     *
-     * @param parent Standard QObject parent pointer
-    */
+    // Constructor
     explicit Notifier(QObject* parent = nullptr);
 
+    // Destructor
     ~Notifier();
 
 public slots:
-    /*! \brief Hides a notification
-     *
-     *  This method hides a notification that is currently shown.  If the notification is not
-     *  shown, this method does nothing.
-     *
-     *  @param notificationType Type of the notification
-     */
+    // Implementation of pure virtual function
     Q_INVOKABLE virtual void hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType);
 
-    /*! \brief Shows a notification
-     *
-     *  This method shows a notification to the user. On platforms where notifications have
-     *  titles, an appropriate (translated) title is shown.
-     *
-     *  @param notificationType Type of the notification
-     *
-     *  @param text One-line notification text ("Device INOP · Maintenance required · Battery low")
-     *
-     *  @param longText If not empty, then the notification might be expandable. When expanded, the one-line "text" is replaced by the content of this "longText".
-     *  Depending on the platform, this parameter might also be ignored.
-     */
+    // Implementation of pure virtual function
     virtual void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText);
 
 private slots:
-#warning docu
+    // This slot receives ActionInvoked messages from the DBus
     void onActionInvoked(uint id, QString key);
 
-#warning docu
+    // This slot receives NotificationClosed messages from the DBus
     void onNotificationClosed(uint id, uint reason);
 
 private:
     Q_DISABLE_COPY_MOVE(Notifier)
 
-#warning docu
+    // Maps NotificationTypes, to IDs of the ongoing notation for the NotificationType
     QMap<Platform::Notifier_Abstract::NotificationTypes, uint> notificationIDs;
 
-#warning docu
-    QPointer<QDBusInterface> notficationInterface;
+    // QDBusInterface to org.freedesktop.Notifications
+    // This implementation of notifications uses the specification found here:
+    // https://specifications.freedesktop.org/notification-spec/latest/ar01s09.html
+    //
+    // Help with DBus programming is found here:
+    // https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/
+    QDBusInterface notificationInterface {"org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", QDBusConnection::sessionBus()};
 };
 
 }

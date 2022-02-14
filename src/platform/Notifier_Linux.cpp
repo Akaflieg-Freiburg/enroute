@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include <QApplication>
-#include <QDBusInterface>
 #include <QDBusReply>
 
 #include "dataManagement/DataManager.h"
@@ -27,35 +26,22 @@
 #include "platform/Notifier_Linux.h"
 
 
-// This implementation of notifications uses the specification found here:
-// https://specifications.freedesktop.org/notification-spec/latest/ar01s09.html
-//
-// Help with DBus programming is found here:
-// https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/
-
 Platform::Notifier::Notifier(QObject *parent)
     : Platform::Notifier::Notifier_Abstract(parent)
 {
-    notficationInterface = new QDBusInterface("org.freedesktop.Notifications",
-                                              "/org/freedesktop/Notifications",
-                                              "org.freedesktop.Notifications",
-                                              QDBusConnection::sessionBus(), this);
-    connect(notficationInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(onActionInvoked(uint,QString)));
-    connect(notficationInterface, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(onNotificationClosed(uint,uint)));
+    connect(&notificationInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(onActionInvoked(uint,QString)));
+    connect(&notificationInterface, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(onNotificationClosed(uint,uint)));
 }
 
 
 Platform::Notifier::~Notifier()
 {
-    if (!notficationInterface.isNull()) {
-        foreach(auto notificationID, notificationIDs) {
-            if (notificationID == 0) {
-                continue;
-            }
-            notficationInterface->call("CloseNotification", notificationID);
+    foreach(auto notificationID, notificationIDs) {
+        if (notificationID == 0) {
+            continue;
         }
+        notificationInterface.call("CloseNotification", notificationID);
     }
-
 }
 
 
@@ -66,11 +52,8 @@ void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes 
     if (notificationID == 0) {
         return;
     }
-    if (notficationInterface.isNull()) {
-        return;
-    }
 
-    notficationInterface->call("CloseNotification", notificationID);
+    notificationInterface.call("CloseNotification", notificationID);
     notificationIDs.remove(notificationType);
 
 }
@@ -126,11 +109,6 @@ void Platform::Notifier::showNotification(NotificationTypes notificationType, co
     Q_UNUSED(text)
     Q_UNUSED(longText)
 
-    // Paranoid safety checks
-    if (notficationInterface.isNull()) {
-        return;
-    }
-
     // Close pending notification, if any
     hideNotification(notificationType);
 
@@ -140,7 +118,7 @@ void Platform::Notifier::showNotification(NotificationTypes notificationType, co
         actions << "GeoMap_Dismiss" << tr("Dismiss");
     }
 
-    QDBusReply<uint> reply = notficationInterface->call("Notify",
+    QDBusReply<uint> reply = notificationInterface.call("Notify",
                                                         "Enroute Flight Navigation",
                                                         notificationIDs.value(notificationType, 0), // Notification to replace. 0 means: do not replace
                                                         "", // Icon

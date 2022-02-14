@@ -27,12 +27,9 @@
 
 namespace Platform {
 
-/*! \brief This class shows platform-native notifications to the user.
+/*! \brief This class shows platform-native Linux desktop notifications
  *
- *  The enum NotificationType names a number pre-defined notifications that can be
- *  shown to the user with the method showNotification(). The method hideNotification()
- *  removes a notification. The signal notificationClicked() is emitted when the user
- *  clicks on a notification.
+ *  The class implements Notifier_Abstract.
  */
 
 class Notifier : public Notifier_Abstract
@@ -73,13 +70,19 @@ public slots:
     virtual void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText);
 
 private slots:
+#warning docu
     void onActionInvoked(uint id, QString key);
+
+#warning docu
     void onNotificationClosed(uint id, uint reason);
 
 private:
     Q_DISABLE_COPY_MOVE(Notifier)
 
+#warning docu
     QMap<Platform::Notifier_Abstract::NotificationTypes, uint> notificationIDs;
+
+#warning docu
     QPointer<QDBusInterface> notficationInterface;
 };
 

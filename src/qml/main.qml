@@ -721,19 +721,22 @@ ApplicationWindow {
     Connections { // Notifier
         target: global.notifier()
 
-        function onNotificationClicked(notifyID) {
-            global.notifier().hideNotification(notifyID)
-            if ((notifyID === 0) && (stackView.currentItem.objectName !== "DataManagerPage")) {
+        function onAction(act) {
+            if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
                 stackView.push("pages/DataManager.qml")
             }
-            if ((notifyID === 1) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
+            if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")
             }
-            if ((notifyID === 2) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
+            if ((act === Notifier.TrafficReceiverRuntimeError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")
             }
-            if ((notifyID === 3) && (stackView.currentItem.objectName !== "DataManagerPage")) {
+            if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
                 stackView.push("pages/DataManager.qml")
+            }
+            if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
+                global.dataManager().geoMaps.updateAll()
+                toast.doToast(qsTr("Starting map update"))
             }
         }
 

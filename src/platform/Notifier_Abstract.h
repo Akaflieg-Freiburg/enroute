@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -59,12 +59,21 @@ public:
     };
     Q_ENUM(NotificationTypes)
 
-public slots:
-    // Emits the signal "notificationClicked".
-    void emitNotificationClicked(Platform::Notifier_Abstract::NotificationTypes notificationType) {
-        emit notificationClicked(notificationType);
-    }
+    /*! \brief Notification actions
+     *
+     *  This enum lists a number of actions that the user can undertake when a notification is shown.
+     */
+    enum NotificationActions
+    {
+        DownloadInfo_Clicked,                 /*< User clicks on body of download notification */
+        TrafficReceiverSelfTestError_Clicked, /*< User clicks on body of traffic receiver self-test problem report */
+        TrafficReceiverRuntimeError_Clicked,  /*< User clicks on body of traffic receiver runtime problem report */
+        GeoMapUpdatePending_Clicked,          /*< User clicks on body of update message */
+        GeoMapUpdatePending_UpdateRequested   /*< User requests geo map update */
+    };
+    Q_ENUM(NotificationActions)
 
+public slots:
     /*! \brief Hides a notification
      *
      *  This method hides a notification that is currently shown.  If the notification is not
@@ -89,11 +98,11 @@ public slots:
     virtual void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText) = 0;
 
 signals:
-    /*! \brief Emitted when the user clicks on a notification
+    /*! \brief User action
      *
-     *  @param notificationType Notification that was clicked on
+     * This signal is emitted in response to user interaction with a notification
      */
-    void notificationClicked(Platform::Notifier_Abstract::NotificationTypes notificationType);
+    void action(Platform::Notifier_Abstract::NotificationActions action);
 
 protected:
     // Get translated title for specific notification

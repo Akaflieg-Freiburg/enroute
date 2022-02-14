@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -68,7 +68,7 @@ void Platform::Notifier::onActionInvoked(uint id, QString key)
         notificationIDs.remove(GeoMapUpdatePending);
     }
     if (key == "GeoMap_Update") {
-        GlobalObject::dataManager()->geoMaps()->updateAll();
+        emit action(GeoMapUpdatePending_UpdateRequested);
 
         // The method onNotificationClosed will later be called. The following line ensures
         // that the signal notificationClicked() is then no longer emitted.
@@ -99,7 +99,20 @@ void Platform::Notifier::onNotificationClosed(uint id, uint reason)
         i++;
     }
     if (haveType) {
-        emit notificationClicked(type);
+        switch (type) {
+        case DownloadInfo:
+            emit action(DownloadInfo_Clicked);
+            break;
+        case TrafficReceiverSelfTestError:
+            emit action(TrafficReceiverSelfTestError_Clicked);
+            break;
+        case TrafficReceiverRuntimeError:
+            emit action(TrafficReceiverRuntimeError_Clicked);
+            break;
+        case GeoMapUpdatePending:
+            emit action(GeoMapUpdatePending_Clicked);
+            break;
+        }
     }
 }
 

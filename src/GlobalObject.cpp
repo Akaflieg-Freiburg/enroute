@@ -155,7 +155,7 @@ auto GlobalObject::networkAccessManager() -> QNetworkAccessManager*
 auto GlobalObject::notifier() -> Platform::Notifier*
 {
 #if defined(Q_OS_ANDROID)
-    return allocateInternal<Platform::Notifier>(g_notifier);
+    return allocateInternal<Platform::Notifier_Android>(g_notifier);
 #else
     return allocateInternal<Platform::Notifier_Linux>(g_notifier);
 #endif

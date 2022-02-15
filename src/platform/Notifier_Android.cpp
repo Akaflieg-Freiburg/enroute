@@ -23,23 +23,23 @@
 #include <QtAndroidExtras/QAndroidJniObject>
 
 #include "GlobalObject.h"
-#include "platform/Notifier.h"
+#include "platform/Notifier_Android.h"
 
 
-Platform::Notifier::Notifier(QObject *parent)
-    : QObject(parent)
+Platform::Notifier_Android::Notifier_Android(QObject *parent)
+    : Platform::Notifier(parent)
 {
     ;
 }
 
 
-Platform::Notifier::~Notifier()
+Platform::Notifier_Android::~Notifier_Android()
 {
     ;
 }
 
 
-void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes notificationType)
+void Platform::Notifier_Android::hideNotification(Platform::Notifier::NotificationTypes notificationType)
 {
     jint jni_ID                   = notificationType;
 //    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
@@ -47,7 +47,7 @@ void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes 
 }
 
 
-void Platform::Notifier::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
+void Platform::Notifier_Android::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
 {
     jint jni_ID                    = notificationType;
     QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notificationType));

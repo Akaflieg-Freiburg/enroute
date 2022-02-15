@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -83,6 +83,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
+    qRegisterMetaType<Platform::Notifier::NotificationActions>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");

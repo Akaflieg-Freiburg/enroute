@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@
 #include "GlobalObject.h"
 #include "MobileAdaptor.h"
 #include "geomaps/GeoMapProvider.h"
-#include "platform/Notifier.h"
+#include "platform/Notifier_Android.h"
 #include "traffic/TrafficDataProvider.h"
 
 
@@ -48,7 +48,9 @@ void MobileAdaptor::hideSplashScreen()
 
 void MobileAdaptor::lockWifi(bool lock)
 {
+
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
+
 }
 
 
@@ -101,6 +103,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     if (GlobalObject::canConstruct()) {
         GlobalObject::mobileAdaptor()->emitWifiConnected();
     }
+
 }
 
 // This method is called from Java to indicate that the user has clicked into the Android
@@ -113,10 +116,16 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotifi
     // and thus before a QApplication instance has been constructed.
     // In these cases, the methods of the Global class must not be called
     // and we simply return.
-    if (GlobalObject::canConstruct()) {
-#warning
-//        GlobalObject::notifier()->emitNotificationClicked((Platform::Notifier::NotificationTypes)notifyID);
+    if (!GlobalObject::canConstruct()) {
+        return;
     }
+    auto* ptr = qobject_cast<Platform::Notifier_Android*>(GlobalObject::notifier());
+
+    if (ptr == nullptr) {
+        return;
+    }
+    ptr->onNotificationClicked((Platform::Notifier::NotificationTypes)notifyID);
+
 }
 
 } // extern "C"

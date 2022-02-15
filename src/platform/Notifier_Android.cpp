@@ -42,8 +42,26 @@ Platform::Notifier_Android::~Notifier_Android()
 void Platform::Notifier_Android::hideNotification(Platform::Notifier::NotificationTypes notificationType)
 {
     jint jni_ID                   = notificationType;
-//    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "hideNotification", "(I)V", jni_ID);
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
+}
+
+
+void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::NotificationTypes notificationType)
+{
+    switch (notificationType) {
+    case DownloadInfo:
+        emit action(DownloadInfo_Clicked);
+        break;
+    case TrafficReceiverSelfTestError:
+        emit action(TrafficReceiverSelfTestError_Clicked);
+        break;
+    case TrafficReceiverRuntimeError:
+        emit action(TrafficReceiverRuntimeError_Clicked);
+        break;
+    case GeoMapUpdatePending:
+        emit action(GeoMapUpdatePending_Clicked);
+        break;
+    }
 }
 
 

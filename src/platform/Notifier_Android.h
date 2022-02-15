@@ -44,6 +44,7 @@ public slots:
     // Implementation of pure virtual function
     virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
 
+    void onNotificationClicked(Platform::Notifier::NotificationTypes notificationType);
 private:
     Q_DISABLE_COPY_MOVE(Notifier_Android)
 };

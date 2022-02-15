@@ -96,6 +96,8 @@ public class Notifier
 	    m_builder.setStyle(new Notification.BigTextStyle().bigText(longText));
 	}
 	
+    m_builder.addAction(R.drawable.ic_info, "XX", pendingIntent);
+
 	switch(id) {
         case 0:
             m_builder.setSmallIcon(R.drawable.ic_info);

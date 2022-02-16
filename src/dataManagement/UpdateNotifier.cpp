@@ -18,8 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDateTime>
+#include <QSettings>
+
 #include "platform/Notifier.h"
 #include "UpdateNotifier.h"
+
 
 
 DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
@@ -36,18 +40,32 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
 void DataManagement::UpdateNotifier::updateNotification()
 {
 
+    // Get pointer to geoMaps
     auto* geoMaps = GlobalObject::dataManager()->geoMaps();
     if (geoMaps == nullptr) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
         return;
     }
 
+    // If there is no update, then we end here.
     if (!geoMaps->updatable()) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
         return;
     }
 
+    // Check if last notification is less than four hours ago. In that case, do not notify again.
+    QSettings settings;
+    auto lastGeoMapUpdateNotification = settings.value("lastGeoMapUpdateNotification").toDateTime();
+    if (lastGeoMapUpdateNotification.isValid()) {
+        auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
+        if (secsSinceLastNotification < 4*60*60) {
+            return;
+        }
+    }
+
+    // Notify!
     auto text = tr("The estimated download size is %1.").arg(geoMaps->updateSize());
     GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);
+    settings.setValue("lastGeoMapUpdateNotification", QDateTime::currentDateTimeUtc());
 
 }

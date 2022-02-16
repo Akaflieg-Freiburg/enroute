@@ -28,8 +28,7 @@ namespace DataManagement {
 /*! \brief Informs the user that updates of geographic maps are peding
  *
  *  This class informs the user by notification if updates of geographic maps are peding.
- *  The implementation tries to ensure that update notifications never appear in flight, and
- *  only when an active internet connection exists.
+ *  The implementation notifies the user at most every four hours.
  */
 
 class UpdateNotifier : public QObject

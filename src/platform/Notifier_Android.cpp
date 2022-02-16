@@ -46,8 +46,9 @@ void Platform::Notifier_Android::hideNotification(Platform::Notifier::Notificati
 }
 
 
-void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::NotificationTypes notificationType)
+void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::NotificationTypes notificationType, int actionID)
 {
+    hideNotification(notificationType);
     switch (notificationType) {
     case DownloadInfo:
         emit action(DownloadInfo_Clicked);
@@ -59,7 +60,11 @@ void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::Notif
         emit action(TrafficReceiverRuntimeError_Clicked);
         break;
     case GeoMapUpdatePending:
-        emit action(GeoMapUpdatePending_Clicked);
+        if (actionID == 0) {
+            emit action(GeoMapUpdatePending_Clicked);
+        } else {
+            emit action(GeoMapUpdatePending_UpdateRequested);
+        }
         break;
     }
 }
@@ -71,14 +76,19 @@ void Platform::Notifier_Android::showNotification(Platform::Notifier::Notificati
     QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notificationType));
     QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);
     QAndroidJniObject jni_longText = QAndroidJniObject::fromString(longText);
+    QAndroidJniObject jni_actionText;
+    if (notificationType == GeoMapUpdatePending) {
+        jni_actionText = QAndroidJniObject::fromString(tr("Update"));
+    }
 
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
                                               "showNotification",
-                                              "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                                              "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
                                               jni_ID,
                                               jni_title.object<jstring>(),
                                               jni_text.object<jstring>(),
-                                              jni_longText.object<jstring>()
+                                              jni_longText.object<jstring>(),
+                                              jni_actionText.object<jstring>()
                                               );
 
 }

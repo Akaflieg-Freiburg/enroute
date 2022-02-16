@@ -54,7 +54,7 @@ public class Notifier
 
     
     /* Show traffic receiver error notification */
-    public static void showNotification(int id, String title, String text, String longText)
+    public static void showNotification(int id, String title, String text, String longText, String actionText)
     {
 	// Get notification manager
 	m_notificationManager = (NotificationManager) QtNative.activity().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -83,7 +83,10 @@ public class Notifier
 	
         Intent notificationIntent = new Intent("de.akaflieg_freiburg.enroute.onNotificationClick");
 	notificationIntent.putExtra("NotificationID", id);
-	PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE) ;
+        if (!"".equals(actionText)) {
+            notificationIntent.putExtra("ActionID", 1);
+            }
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(QtNative.activity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE) ;
 	
         m_builder.setAutoCancel(true);
         m_builder.setColor(Color.rgb(00,0x80,0x80));
@@ -95,8 +98,10 @@ public class Notifier
 	if (!"".equals(longText)) {
 	    m_builder.setStyle(new Notification.BigTextStyle().bigText(longText));
 	}
-	
-    m_builder.addAction(R.drawable.ic_info, "XX", pendingIntent);
+    if (!"".equals(actionText)) {
+        m_builder.addAction(R.drawable.ic_info, actionText, pendingIntent);
+        notificationIntent.putExtra("ActionID", 1);
+        }
 
 	switch(id) {
         case 0:

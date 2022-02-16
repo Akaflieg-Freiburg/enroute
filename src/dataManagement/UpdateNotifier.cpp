@@ -18,39 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
-
 #include "platform/Notifier.h"
 #include "UpdateNotifier.h"
-
 
 
 DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
     QObject(parent)
 {
-    qWarning() << "UpdateNotifier is constructed";
 
-#warning does not belong here
-    notify();
+    connect(GlobalObject::dataManager()->geoMaps(), &DataManagement::DownloadableGroup::updatableChanged,
+            this, &DataManagement::UpdateNotifier::updateNotification);
+    updateNotification();
+
 }
 
 
-void DataManagement::UpdateNotifier::notify()
+void DataManagement::UpdateNotifier::updateNotification()
 {
-    qWarning() << "UpdateNotifier::notify";
 
     auto* geoMaps = GlobalObject::dataManager()->geoMaps();
     if (geoMaps == nullptr) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
         return;
     }
-    /*
+
     if (!geoMaps->updatable()) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
         return;
     }
-    */
 
     auto text = tr("The estimated download size is %1.").arg(geoMaps->updateSize());
     GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);
+
 }

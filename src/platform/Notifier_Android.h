@@ -44,7 +44,13 @@ public slots:
     // Implementation of pure virtual function
     virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
 
-    void onNotificationClicked(Platform::Notifier::NotificationTypes notificationType);
+    // This method is called from JAVA when the user interacts with the notification, via the exported "C" function
+    // Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked
+    //
+    // @param notificationType … the type of the notification that the user interacted with
+    //
+    // @param actionID - "0" when the user clicked into the notification body, not zero when the user clicked on a notification action
+    void onNotificationClicked(Platform::Notifier::NotificationTypes notificationType, int actionID);
 private:
     Q_DISABLE_COPY_MOVE(Notifier_Android)
 };

@@ -83,6 +83,9 @@ public slots:
      */
     Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType) = 0;
 
+    /*! \brief Hides all notifications */
+    Q_INVOKABLE void hideAll();
+
     /*! \brief Shows a notification
      *
      *  This method shows a notification to the user. On platforms where notifications have

@@ -44,8 +44,8 @@ public:
     explicit UpdateNotifier(DataManager* parent);
 
 private:
-    // Notify of pending map updates
-    void notify();
+    // Notify if map updates pending, else close the notification
+    void updateNotification();
 
     Q_DISABLE_COPY_MOVE(UpdateNotifier)
 };

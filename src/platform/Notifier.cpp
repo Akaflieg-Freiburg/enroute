@@ -18,13 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QGuiApplication>
+
 #include "platform/Notifier.h"
 
 
 Platform::Notifier::Notifier(QObject *parent)
     : QObject(parent)
 {
-#warning implement: close notifications on shutdown
+
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
+            [this](Qt::ApplicationState state) {
+        if (state == Qt::ApplicationSuspended) {
+            hideAll();
+        }
+    });
+}
+
+
+void Platform::Notifier::hideAll()
+{
+    hideNotification(DownloadInfo);
+    hideNotification(TrafficReceiverSelfTestError);
+    hideNotification(TrafficReceiverRuntimeError);
+    hideNotification(GeoMapUpdatePending);
 }
 
 

@@ -109,7 +109,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
 // This method is called from Java to indicate that the user has clicked into the Android
 // notification for reporting traffic data receiver errors
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
 {
 
     // This method gets called from Java before main() has executed
@@ -124,7 +124,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotifi
     if (ptr == nullptr) {
         return;
     }
-    ptr->onNotificationClicked((Platform::Notifier::NotificationTypes)notifyID);
+    ptr->onNotificationClicked((Platform::Notifier::NotificationTypes)notifyID, actionID);
 
 }
 

@@ -43,7 +43,7 @@ import android.util.Log;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity
 {
-    public static native void onNotificationClicked(int notifyID);
+    public static native void onNotificationClicked(int notifyID, int actionID);
     public static native void onWifiConnected();
     
     private static MobileAdaptor           m_instance;
@@ -226,7 +226,7 @@ public static String manufacturer()
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);
 	    
-            onNotificationClicked(intent.getIntExtra("NotificationID", -1));
+            onNotificationClicked(intent.getIntExtra("NotificationID", -1), intent.getIntExtra("ActionID", 0));
 	    
 	}
     }

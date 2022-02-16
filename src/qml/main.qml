@@ -532,12 +532,6 @@ ApplicationWindow {
                 return
             }
 
-            if (global.dataManager().geoMaps.updatable && (global.navigator().flightStatus !== Navigator.Flight)) {
-                dialogLoader.active = false
-                dialogLoader.source = "dialogs/UpdateMapDialog.qml"
-                dialogLoader.active = true
-                return
-            }
         }
 
         Keys.onReleased: {

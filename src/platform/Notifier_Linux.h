@@ -57,6 +57,9 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Notifier_Linux)
 
+    // App icon in a format that can be transferred via QDBus
+    QVariant iconVariant;
+
     // Maps NotificationTypes, to IDs of the ongoing notation for the NotificationType
     QMap<Platform::Notifier::NotificationTypes, uint> notificationIDs;
 

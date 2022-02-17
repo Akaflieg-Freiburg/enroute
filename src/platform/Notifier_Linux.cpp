@@ -19,11 +19,62 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QDBusMetaType>
 #include <QDBusReply>
+#include <QImage>
 
 #include "dataManagement/DataManager.h"
 #include "GlobalObject.h"
 #include "platform/Notifier_Linux.h"
+
+
+// The freedesktop specification for icons require that icons be sent via DBus in the following structure.
+// In order to be used in QDBus, the structure needs to be registred via qDBusRegisterMetaType, which in turn requires that
+//
+// * it is declared via Q_DECLARE_METATYPE
+//
+// * operators << and >> are defined that read/write from QDBusArguments
+//
+// see https://specifications.freedesktop.org/notification-spec/latest/ar01s08.html
+
+struct FreeDesktopImageStructure {
+    int width;
+    int height;
+    int rowStride;
+    bool hasAlpha;
+    int bitsPerSample;
+    int channels;
+    QByteArray data;
+};
+Q_DECLARE_METATYPE(FreeDesktopImageStructure)
+
+QDBusArgument& operator<<(QDBusArgument& argument, const FreeDesktopImageStructure& fdImage)
+{
+    argument.beginStructure();
+    argument << fdImage.width
+             << fdImage.height
+             << fdImage.rowStride
+             << fdImage.hasAlpha
+             << fdImage.bitsPerSample
+             << fdImage.channels
+             << fdImage.data;
+    argument.endStructure();
+    return argument;
+}
+
+const QDBusArgument& operator>>(const QDBusArgument &argument, FreeDesktopImageStructure& fdImage)
+{
+    argument.beginStructure();
+    argument >> fdImage.width
+            >> fdImage.height
+            >> fdImage.rowStride
+            >> fdImage.hasAlpha
+            >> fdImage.bitsPerSample
+            >> fdImage.channels
+            >> fdImage.data;
+    argument.endStructure();
+    return argument;
+}
 
 
 Platform::Notifier_Linux::Notifier_Linux(QObject *parent)
@@ -31,6 +82,21 @@ Platform::Notifier_Linux::Notifier_Linux(QObject *parent)
 {
     connect(&notificationInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(onActionInvoked(uint,QString)));
     connect(&notificationInterface, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(onNotificationClosed(uint,uint)));
+
+    // Construct iconVariant, which contains the app icon in a format that can be transferred via QDBus
+    QImage icon(":/icons/appIcon.png");
+    QImage image = icon.convertToFormat(QImage::Format_RGBA8888);
+    QByteArray data((const char *)image.constBits(), image.sizeInBytes());
+    qDBusRegisterMetaType<FreeDesktopImageStructure>();
+    FreeDesktopImageStructure specImage;
+    specImage.width = image.width();
+    specImage.height = image.height();
+    specImage.rowStride = image.bytesPerLine();
+    specImage.hasAlpha = true;
+    specImage.bitsPerSample = 8;
+    specImage.channels = 4;
+    specImage.data = data;
+    iconVariant = QVariant::fromValue(specImage);
 }
 
 
@@ -130,7 +196,8 @@ void Platform::Notifier_Linux::showNotification(NotificationTypes notificationTy
         actions << "GeoMap_Update" << tr("Update");
         actions << "GeoMap_Dismiss" << tr("Dismiss");
     }
-
+    QMap<QString,QVariant> hints;
+    hints["image-data"] = iconVariant;
     QDBusReply<uint> reply = notificationInterface.call("Notify",
                                                         "Enroute Flight Navigation",
                                                         notificationIDs.value(notificationType, 0), // Notification to replace. 0 means: do not replace
@@ -138,7 +205,7 @@ void Platform::Notifier_Linux::showNotification(NotificationTypes notificationTy
                                                         "Enroute Flight Navigation", // Title
                                                         title(notificationType), // Summary
                                                         actions, // actions_list
-                                                        QMap<QString,QVariant>(), // hint
+                                                        hints, // QMap<QString,QVariant>(), // hint
                                                         0); // time: 0 means: never expire.
     if (reply.isValid()) {
         notificationIDs.insert(notificationType, reply.value());

@@ -235,7 +235,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->hideUpperAirspaces(), GlobalObject::settings()->hideGlidingSectors());
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->airspaceHeightLimit(), GlobalObject::settings()->hideGlidingSectors());
 }
 
 
@@ -266,7 +266,7 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 }
 
 
-void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, bool hideUpperAirspaces, bool hideGlidingSectors)
+void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, int airspaceHeightLimit, bool hideGlidingSectors)
 {
     //
     // Generate new GeoJSON array and new list of waypoints
@@ -286,36 +286,15 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 
         foreach(auto value, document.object()["features"].toArray()) {
             auto object = value.toObject();
-
-            // If 'hideUpperAirspaces' is set, ignore all objects that are airspaces
-            // and that begin at FL100 or above.
-            if (hideUpperAirspaces) {
-                Airspace airspaceTest(object);
-                if (airspaceTest.isUpper()) {
-                    continue;
-                }
-            }
-
-            // If 'hideGlidingSector' is set, ignore all objects that are airspaces
-            // and that are gliding sectors
-            if (hideGlidingSectors) {
-                Airspace airspaceTest(object);
-                if (airspaceTest.CAT() == "GLD") {
-                    continue;
-                }
-            }
             objectSet += object;
         }
 
     }
 
-    // Then, create a new JSONArray of features and a new list of waypoints
-    QJsonArray newFeatures;
+    // Create vectors of airspaces and waypoints
     QVector<Airspace> newAirspaces;
     QVector<Waypoint> newWaypoints;
     foreach(auto object, objectSet) {
-        newFeatures += object;
-
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         Waypoint wp(object);
         if (wp.isValid()) {
@@ -329,6 +308,27 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
             newAirspaces.append(as);
             continue;
         }
+    }
+
+    // Then, create a new JSONArray of features and a new list of waypoints
+    QJsonArray newFeatures;
+    foreach(auto object, objectSet) {
+        // Ignore all objects that are airspaces and that begin above the airspaceHeightLimit.
+        Airspace airspaceTest(object);
+        if (airspaceTest.estimatedLowerBoundInFtMSL() >= (100.0*airspaceHeightLimit-1)) {
+            continue;
+        }
+
+        // If 'hideGlidingSector' is set, ignore all objects that are airspaces
+        // and that are gliding sectors
+        if (hideGlidingSectors) {
+            Airspace airspaceTest(object);
+            if (airspaceTest.CAT() == "GLD") {
+                continue;
+            }
+        }
+
+        newFeatures += object;
     }
 
     QJsonObject resultObject;
@@ -354,7 +354,7 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     // Connect the WeatherProvider, so aviation maps will be generated
     connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
-    connect(GlobalObject::settings(), &Settings::hideUpperAirspacesChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(GlobalObject::settings(), &Settings::airspaceHeightLimitChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
     connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);

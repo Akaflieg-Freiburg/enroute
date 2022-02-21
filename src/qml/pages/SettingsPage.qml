@@ -53,25 +53,29 @@ Page {
 
             SwitchDelegate {
                 id: hideUpperAsp
-                text: qsTr("Hide Airspaces ≥ FL100") + (
-                          global.settings().hideUpperAirspaces ? (
+                text: qsTr("Hide Airspaces above Height Limit") + (
+                          global.settings().airspaceHeightLimit < 999 ? (
                                                                   `<br><font color="#606060" size="2">`
-                                                                  + qsTr("Upper airspaces hidden")
+                                                                  + qsTr("Showing airspaces up to %1 ft.").arg(global.settings().airspaceHeightLimit*100.0)
                                                                   +"</font>"
                                                                   ) : (
                                                                   `<br><font color="#606060" size="2">`
-                                                                  + qsTr("All airspaces shown")
+                                                                  + qsTr("No limit, all airspaces shown")
                                                                   + `</font>`
                                                                   )
                           )
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    hideUpperAsp.checked = global.settings().hideUpperAirspaces
+                    hideUpperAsp.checked = global.settings().airspaceHeightLimit < 999
                 }
                 onToggled: {
                     global.mobileAdaptor().vibrateBrief()
-                    global.settings().hideUpperAirspaces = hideUpperAsp.checked
+                    if (hideUpperAsp.checked) {
+                        heightLimitDialog.open()
+                    } else {
+                        global.settings().airspaceHeightLimit = 999
+                    }
                 }
             }
 
@@ -217,5 +221,51 @@ Page {
 
     }
 
+    Dialog {
+        id: heightLimitDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        modal: true
+
+        title: qsTr("Setp Height Limit")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                text: qsTr("Show airspaces up to %1 ft.").arg(slider.value*100.0)
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            Slider {
+                id: slider
+                Layout.fillWidth: true
+
+                from: global.settings().airspaceHeightLimit_min
+                to: global.settings().airspaceHeightLimit_max
+
+                stepSize: 5
+            }
+
+        }
+
+        Component.onCompleted: slider.value = global.settings().lastValidAirspaceHeightLimit
+
+        onAccepted: global.settings().airspaceHeightLimit = slider.value
+        onRejected: hideUpperAsp.checked = false
+
+    } // Dialog
 
 } // Page

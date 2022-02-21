@@ -491,6 +491,16 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
+    Label {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 0.4*Qt.application.font.pixelSize
+
+        text: " "+qsTr("Showing airspaces up to %1 ft").arg(global.settings().airspaceHeightLimit*100)+" "
+        background: Rectangle { color: "white"; opacity: 0.8}
+        visible: global.settings().airspaceHeightLimit <= global.settings().airspaceHeightLimit_max
+    }
+
     RoundButton {
         id: northButton
 

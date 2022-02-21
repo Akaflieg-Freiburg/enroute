@@ -32,6 +32,17 @@ Settings::Settings(QObject *parent)
 {
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
+
+    // Convert old setting to new system
+    if (settings.contains("Map/hideUpperAirspaces")) {
+        auto hide = settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool();
+        if (hide) {
+            setAirspaceHeightLimit(100);
+        } else {
+            setAirspaceHeightLimit(999);
+        }
+        settings.remove("Map/hideUpperAirspaces");
+    }
 }
 
 
@@ -41,9 +52,46 @@ auto Settings::acceptedWeatherTermsStatic() -> bool
 }
 
 
-auto Settings::hideUpperAirspacesStatic() -> bool
+auto Settings::airspaceHeightLimit() const -> int
 {
-    return GlobalObject::settings()->hideUpperAirspaces();
+    auto aspHeightLimit = settings.value(QStringLiteral("Map/airspaceHeightLimit"), 999).toInt();
+    if (aspHeightLimit < airspaceHeightLimit_min) {
+        aspHeightLimit = airspaceHeightLimit_min;
+    }
+    if (aspHeightLimit > airspaceHeightLimit_max) {
+        aspHeightLimit = 999;
+    }
+
+    return aspHeightLimit;
+}
+
+
+void Settings::setAirspaceHeightLimit(int newAirspaceHeightLimit)
+{
+    if (newAirspaceHeightLimit < airspaceHeightLimit_min) {
+        newAirspaceHeightLimit = airspaceHeightLimit_min;
+    }
+    if (newAirspaceHeightLimit > airspaceHeightLimit_max) {
+        newAirspaceHeightLimit = 999;
+    }
+
+    if (newAirspaceHeightLimit != airspaceHeightLimit()) {
+        settings.setValue("Map/airspaceHeightLimit", newAirspaceHeightLimit);
+        emit airspaceHeightLimitChanged();
+    }
+
+    if ((newAirspaceHeightLimit != 999) &&
+            (newAirspaceHeightLimit != lastValidAirspaceHeightLimit())) {
+        settings.setValue("Map/lastValidAirspaceHeightLimit", newAirspaceHeightLimit);
+        emit lastValidAirspaceHeightLimitChanged();
+    }
+}
+
+
+auto Settings::lastValidAirspaceHeightLimit() const -> int
+{
+    auto result = settings.value(QStringLiteral("Map/lastValidAirspaceHeightLimit"), 100).toInt();
+    return qBound(airspaceHeightLimit_min, result, airspaceHeightLimit_max);
 }
 
 
@@ -74,16 +122,6 @@ void Settings::setHideGlidingSectors(bool hide)
     }
     settings.setValue("Map/hideGlidingSectors", hide);
     emit hideGlidingSectorsChanged();
-}
-
-
-void Settings::setHideUpperAirspaces(bool hide)
-{
-    if (hide == hideUpperAirspaces()) {
-        return;
-    }
-    settings.setValue("Map/hideUpperAirspaces", hide);
-    emit hideUpperAirspacesChanged();
 }
 
 

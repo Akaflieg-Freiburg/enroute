@@ -108,6 +108,33 @@ public:
      */
     void setAcceptedWeatherTerms(bool terms);
 
+#warning
+    Q_PROPERTY(int airspaceHeightLimit READ airspaceHeightLimit WRITE setAirspaceHeightLimit NOTIFY airspaceHeightLimitChanged)
+
+#warning
+    int airspaceHeightLimit() const;
+
+#warning
+    void setAirspaceHeightLimit(int newAirspaceHeightLimit);
+
+#warning
+    Q_PROPERTY(int airspaceHeightLimit_min MEMBER airspaceHeightLimit_min CONSTANT)
+
+#warning
+    Q_PROPERTY(int airspaceHeightLimit_max MEMBER airspaceHeightLimit_max CONSTANT)
+
+#warning
+    static constexpr int airspaceHeightLimit_min = 50;
+
+#warning
+    static constexpr int airspaceHeightLimit_max = 150;
+
+#warning
+    Q_PROPERTY(int lastValidAirspaceHeightLimit READ lastValidAirspaceHeightLimit NOTIFY lastValidAirspaceHeightLimitChanged)
+
+#warning
+    int lastValidAirspaceHeightLimit() const;
+
     /*! \brief True if translation files exist for the system language */
     Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
 
@@ -131,29 +158,6 @@ public:
      * @param hide Property hideGlidingSectors
      */
     void setHideGlidingSectors(bool hide);
-
-    /*! \brief Hide airspaces with lower bound FL100 or above */
-    Q_PROPERTY(bool hideUpperAirspaces READ hideUpperAirspaces WRITE setHideUpperAirspaces NOTIFY hideUpperAirspacesChanged)
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property hideUpperAirspaces
-     */
-    bool hideUpperAirspaces() const { return settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool(); }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * This function differs from hideUpperAirspaces() only in that it is static.
-     *
-     * @returns Property hideUpperAirspaces
-     */
-    static bool hideUpperAirspacesStatic();
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param hide Property hideUpperAirspaces
-     */
-    void setHideUpperAirspaces(bool hide);
 
     /*! \brief Ignore SSL securitry problems */
     Q_PROPERTY(bool ignoreSSLProblems READ ignoreSSLProblems WRITE setIgnoreSSLProblems NOTIFY ignoreSSLProblemsChanged)
@@ -246,13 +250,16 @@ signals:
     void acceptedWeatherTermsChanged();
 
     /*! Notifier signal */
+    void airspaceHeightLimitChanged();
+
+    /*! Notifier signal */
     void hideGlidingSectorsChanged();
 
     /*! Notifier signal */
-    void hideUpperAirspacesChanged();
+    void ignoreSSLProblemsChanged();
 
     /*! Notifier signal */
-    void ignoreSSLProblemsChanged();
+    void lastValidAirspaceHeightLimitChanged();
 
     /*! Notifier signal */
     void lastWhatsNewHashChanged();

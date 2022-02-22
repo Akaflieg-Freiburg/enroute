@@ -186,6 +186,7 @@ auto main(int argc, char *argv[]) -> int
      */
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("angle", QVariant::fromValue(Units::Angle()) );
+    engine.rootContext()->setContextProperty("distance", QVariant::fromValue(Units::Distance()) );
     engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
     engine.rootContext()->setContextProperty("global", new GlobalObject(&engine) );
     engine.rootContext()->setContextProperty("speed", QVariant::fromValue(Units::Speed()) );

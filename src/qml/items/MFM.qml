@@ -496,9 +496,26 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.top: parent.top
         anchors.topMargin: 0.4*Qt.application.font.pixelSize
 
-        text: " "+qsTr("Showing airspaces up to %1 ft").arg(global.settings().airspaceHeightLimit*100)+" "
+        text: {
+            var altitudeLimit = global.settings().airspaceAltitudeLimit
+            if (!altitudeLimit.isFinite()) {
+                return ""
+            }
+
+            var altitudeString = ""
+            switch(global.navigator().aircraft.verticalDistanceUnit) {
+            case Aircraft.Feet:
+                altitudeString = altitudeLimit.toFeet().toLocaleString(Qt.locale(), 'f', 0)+" ft"
+                break
+            case Aircraft.Meters:
+                altitudeString = altitudeLimit.toM().toLocaleString(Qt.locale(), 'f', 0)+" m"
+                break
+            }
+            return " "+qsTr("Showing airspaces up to %1").arg(altitudeString)+" "
+
+        }
         background: Rectangle { color: "white"; opacity: 0.8}
-        visible: global.settings().airspaceHeightLimit <= global.settings().airspaceHeightLimit_max
+        visible: global.settings().airspaceAltitudeLimit.isFinite()
     }
 
     RoundButton {

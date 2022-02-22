@@ -37,9 +37,9 @@ Settings::Settings(QObject *parent)
     if (settings.contains("Map/hideUpperAirspaces")) {
         auto hide = settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool();
         if (hide) {
-            setAirspaceHeightLimit(100);
+            setAirspaceAltitudeLimit( Units::Distance::fromFT(10000) );
         } else {
-            setAirspaceHeightLimit(999);
+            setAirspaceAltitudeLimit( Units::Distance::fromFT(qInf()) );
         }
         settings.remove("Map/hideUpperAirspaces");
     }
@@ -52,46 +52,47 @@ auto Settings::acceptedWeatherTermsStatic() -> bool
 }
 
 
-auto Settings::airspaceHeightLimit() const -> int
+auto Settings::airspaceAltitudeLimit() const -> Units::Distance
 {
-    auto aspHeightLimit = settings.value(QStringLiteral("Map/airspaceHeightLimit"), 999).toInt();
-    if (aspHeightLimit < airspaceHeightLimit_min) {
-        aspHeightLimit = airspaceHeightLimit_min;
+    auto aspAlttLimit = Units::Distance::fromFT( settings.value(QStringLiteral("Map/airspaceAltitudeLimit"), qQNaN()).toDouble() );
+    if (aspAlttLimit < airspaceAltitudeLimit_min) {
+        aspAlttLimit = airspaceAltitudeLimit_min;
     }
-    if (aspHeightLimit > airspaceHeightLimit_max) {
-        aspHeightLimit = 999;
+    if (aspAlttLimit > airspaceAltitudeLimit_max) {
+        aspAlttLimit = Units::Distance::fromFT( qInf() );
     }
-
-    return aspHeightLimit;
+    return aspAlttLimit;
 }
 
 
-void Settings::setAirspaceHeightLimit(int newAirspaceHeightLimit)
+void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit)
 {
-    if (newAirspaceHeightLimit < airspaceHeightLimit_min) {
-        newAirspaceHeightLimit = airspaceHeightLimit_min;
+#warning Round off to 500 ft?
+#warning Value should be called "Map/lastValidAirspaceAltitudeLimit_ft"?
+    if (newAirspaceAltitudeLimit < airspaceAltitudeLimit_min) {
+        newAirspaceAltitudeLimit = airspaceAltitudeLimit_min;
     }
-    if (newAirspaceHeightLimit > airspaceHeightLimit_max) {
-        newAirspaceHeightLimit = 999;
-    }
-
-    if (newAirspaceHeightLimit != airspaceHeightLimit()) {
-        settings.setValue("Map/airspaceHeightLimit", newAirspaceHeightLimit);
-        emit airspaceHeightLimitChanged();
+    if (!newAirspaceAltitudeLimit.isFinite() || (newAirspaceAltitudeLimit > airspaceAltitudeLimit_max)) {
+        newAirspaceAltitudeLimit = Units::Distance();
     }
 
-    if ((newAirspaceHeightLimit != 999) &&
-            (newAirspaceHeightLimit != lastValidAirspaceHeightLimit())) {
-        settings.setValue("Map/lastValidAirspaceHeightLimit", newAirspaceHeightLimit);
-        emit lastValidAirspaceHeightLimitChanged();
+    if (newAirspaceAltitudeLimit != airspaceAltitudeLimit()) {
+        settings.setValue("Map/airspaceAltitudeLimit", newAirspaceAltitudeLimit.toFeet());
+        emit airspaceAltitudeLimitChanged();
+    }
+
+    if (newAirspaceAltitudeLimit.isFinite() &&
+            (newAirspaceAltitudeLimit != lastValidAirspaceAltitudeLimit())) {
+        settings.setValue("Map/lastValidAirspaceAltitudeLimit", newAirspaceAltitudeLimit.toFeet());
+        emit lastValidAirspaceAltitudeLimitChanged();
     }
 }
 
 
-auto Settings::lastValidAirspaceHeightLimit() const -> int
+auto Settings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 {
-    auto result = settings.value(QStringLiteral("Map/lastValidAirspaceHeightLimit"), 100).toInt();
-    return qBound(airspaceHeightLimit_min, result, airspaceHeightLimit_max);
+    auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit"), 99999).toInt() );
+    return qBound(airspaceAltitudeLimit_min, result, airspaceAltitudeLimit_max);
 }
 
 

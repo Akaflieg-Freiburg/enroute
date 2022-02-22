@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,8 @@
 #include <QObject>
 #include <QPointer>
 #include <QSettings>
+
+#include "units/Distance.h"
 
 
 /*! \brief Global Settings Manager
@@ -108,32 +110,52 @@ public:
      */
     void setAcceptedWeatherTerms(bool terms);
 
-#warning
-    Q_PROPERTY(int airspaceHeightLimit READ airspaceHeightLimit WRITE setAirspaceHeightLimit NOTIFY airspaceHeightLimitChanged)
+    /*! \brief Airspace altitude limit for map display
+     *
+     * This property holds an altitude. The moving map will ony display airspaces whose lower
+     * boundary is lower than this altitude. The altitude value lies in the range [airspaceHeightLimit_min, airspaceHeightLimit_max]
+     * or takes a non-finite value to indicate that all airspaces shall be shown.
+     */
+    Q_PROPERTY(Units::Distance airspaceAltitudeLimit READ airspaceAltitudeLimit WRITE setAirspaceAltitudeLimit NOTIFY airspaceAltitudeLimitChanged)
 
-#warning
-    int airspaceHeightLimit() const;
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property airspaceAltitudeLimit
+     */
+    Units::Distance airspaceAltitudeLimit() const;
 
-#warning
-    void setAirspaceHeightLimit(int newAirspaceHeightLimit);
+    /*! \brief Setter function for property of the same name
+     *
+     *  If newAirspaceAltitudeLimit is less than airspaceHeightLimit_min, then
+     *  airspaceHeightLimit_min will be set. If newAirspaceAltitudeLimit is higher than
+     *  airspaceHeightLimit_max, then airspaceHeightLimit_max will be set.
+     *
+     * @param terms Property newAirspaceAltitudeLimit
+     */
+    void setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit);
 
-#warning
-    Q_PROPERTY(int airspaceHeightLimit_min MEMBER airspaceHeightLimit_min CONSTANT)
+    /*! \brief Minimum acceptable value for property airspaceAltitudeLimit
+     *
+     *  This is currently set to 3.000 ft
+     */
+    Q_PROPERTY(Units::Distance airspaceAltitudeLimit_min MEMBER airspaceAltitudeLimit_min CONSTANT)
+    static constexpr Units::Distance airspaceAltitudeLimit_min = Units::Distance::fromFT(3000);
 
-#warning
-    Q_PROPERTY(int airspaceHeightLimit_max MEMBER airspaceHeightLimit_max CONSTANT)
+    /*! \brief Maximum acceptable value for property airspaceAltitudeLimit
+     *
+     *  This is currently set to 15.000 ft
+     */
+    Q_PROPERTY(Units::Distance airspaceAltitudeLimit_max MEMBER airspaceAltitudeLimit_max CONSTANT)
+    static constexpr Units::Distance airspaceAltitudeLimit_max = Units::Distance::fromFT(15000);
 
-#warning
-    static constexpr int airspaceHeightLimit_min = 50;
+    /*! \brief Last finite value of airspaceAltitudeLimit */
+    Q_PROPERTY(Units::Distance lastValidAirspaceAltitudeLimit READ lastValidAirspaceAltitudeLimit NOTIFY lastValidAirspaceAltitudeLimitChanged)
 
-#warning
-    static constexpr int airspaceHeightLimit_max = 150;
-
-#warning
-    Q_PROPERTY(int lastValidAirspaceHeightLimit READ lastValidAirspaceHeightLimit NOTIFY lastValidAirspaceHeightLimitChanged)
-
-#warning
-    int lastValidAirspaceHeightLimit() const;
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property hasTranslation
+     */
+    Units::Distance lastValidAirspaceAltitudeLimit() const;
 
     /*! \brief True if translation files exist for the system language */
     Q_PROPERTY(bool hasTranslation READ hasTranslation CONSTANT)
@@ -243,34 +265,34 @@ public:
     void setNightMode(bool newNightMode);
 
 signals:
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void acceptedTermsChanged();
 
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void acceptedWeatherTermsChanged();
 
-    /*! Notifier signal */
-    void airspaceHeightLimitChanged();
+    /*! \brief Notifier signal */
+    void airspaceAltitudeLimitChanged();
 
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void hideGlidingSectorsChanged();
 
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void ignoreSSLProblemsChanged();
 
-    /*! Notifier signal */
-    void lastValidAirspaceHeightLimitChanged();
+    /*! \brief Notifier signal */
+    void lastValidAirspaceAltitudeLimitChanged();
 
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void lastWhatsNewHashChanged();
 
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void lastWhatsNewInMapsHashChanged();
 
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void mapBearingPolicyChanged();
 
-    /*! Notifier signal */
+    /*! \brief Notifier signal */
     void nightModeChanged();
 
 private:

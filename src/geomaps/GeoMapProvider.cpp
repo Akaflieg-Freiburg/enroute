@@ -72,7 +72,7 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
     }
 
     // Sort airspaces according to lower boundary
-    std::sort(result.begin(), result.end(), [](const Airspace& a, const Airspace& b) {return (a.estimatedLowerBoundInFtMSL() > b.estimatedLowerBoundInFtMSL()); });
+    std::sort(result.begin(), result.end(), [](const Airspace& a, const Airspace& b) {return (a.estimatedLowerBoundMSL() > b.estimatedLowerBoundMSL()); });
 
     QVariantList final;
     foreach(auto airspace, result)
@@ -235,7 +235,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->airspaceHeightLimit(), GlobalObject::settings()->hideGlidingSectors());
+    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->airspaceAltitudeLimit(), GlobalObject::settings()->hideGlidingSectors());
 }
 
 
@@ -266,7 +266,7 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 }
 
 
-void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, int airspaceHeightLimit, bool hideGlidingSectors)
+void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
 {
     //
     // Generate new GeoJSON array and new list of waypoints
@@ -313,9 +313,9 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
     foreach(auto object, objectSet) {
-        // Ignore all objects that are airspaces and that begin above the airspaceHeightLimit.
+        // Ignore all objects that are airspaces and that begin above the airspaceAltitudeLimit.
         Airspace airspaceTest(object);
-        if (airspaceTest.estimatedLowerBoundInFtMSL() >= (100.0*airspaceHeightLimit-1)) {
+        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL() > airspaceAltitudeLimit)) {
             continue;
         }
 
@@ -354,7 +354,7 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     // Connect the WeatherProvider, so aviation maps will be generated
     connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
-    connect(GlobalObject::settings(), &Settings::airspaceHeightLimitChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
+    connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
     connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);

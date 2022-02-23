@@ -181,7 +181,7 @@ ApplicationWindow {
                     }
 
                     AutoSizingMenu {
-                        id: libraryMenu                        
+                        id: libraryMenu
 
                         ItemDelegate {
                             text: qsTr("Aircraft")
@@ -710,6 +710,21 @@ ApplicationWindow {
                 global.notifier().hideNotification(Notifier.DownloadInfo);
             }
         }
+    }
+
+    Connections { // Notifier
+        target: global.navigator()
+
+        function onAirspaceAltitudeLimitAdjusted() {
+            var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+            if (airspaceAltitudeLimit.isFinite()) {
+                var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                toast.doToast(qsTr("Now showing airspaces up to %1.").arg(airspaceAltitudeLimitString))
+            } else {
+                toast.doToast(qsTr("Now showing all airspaces."))
+            }
+        }
+
     }
 
     Connections { // Notifier

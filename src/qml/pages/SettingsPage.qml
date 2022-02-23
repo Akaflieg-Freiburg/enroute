@@ -59,18 +59,14 @@ Page {
                     if (!altitudeLimit.isFinite()) {
                         secondLineString = qsTr("No limit, all airspaces shown")
                     } else {
-                        var altitudeString = ""
-                        switch(global.navigator().aircraft.verticalDistanceUnit) {
-                        case Aircraft.Feet:
-                            altitudeString = altitudeLimit.toFeet().toLocaleString(Qt.locale(), 'f', 0)+" ft"
-                            break
-                        case Aircraft.Meters:
-                            altitudeString = altitudeLimit.toM().toLocaleString(Qt.locale(), 'f', 0)+" m"
-                            break
-                        }
-                        secondLineString = qsTr("Showing airspaces up to %1").arg(altitudeString)
+                        // Mention
+                        global.navigator().aircraft.verticalDistanceUnit
+
+                        var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+                        var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                        secondLineString =  qsTr("Showing airspaces up to %1").arg(airspaceAltitudeLimitString)
                     }
-                    return qsTr("Hide Airspaces above Altitude Limit") +
+                    return qsTr("Airspace Altitude Limit") +
                             `<br><font color="#606060" size="2">` +
                             secondLineString +
                             `</font>`
@@ -192,7 +188,6 @@ Page {
 
         // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
         // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -200,12 +195,15 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
+        topMargin: Qt.application.font.pixelSize/2.0
+        bottomMargin: Qt.application.font.pixelSize/2.0
+
         modal: true
 
         title: qsTr("Clear password storage?")
 
         Label {
-            anchors.fill: parent
+            width: heightLimitDialog.availableWidth
 
             text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
             wrapMode: Text.Wrap
@@ -236,7 +234,6 @@ Page {
 
         // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
         // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -244,17 +241,28 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
+        topMargin: Qt.application.font.pixelSize/2.0
+        bottomMargin: Qt.application.font.pixelSize/2.0
+
         modal: true
 
         title: qsTr("Airspace Altitude Limit")
-        standardButtons: Dialog.Ok|Dialog.Cancel
+        standardButtons: slider.enabled ? Dialog.Ok|Dialog.Cancel : Dialog.Cancel
 
 
         ColumnLayout {
-            anchors.fill: parent
+            width: heightLimitDialog.availableWidth
 
             Label {
+                visible: slider.enabled
                 text: qsTr("Show airspaces up to %1 ft / %2 m.").arg(slider.value.toLocaleString()).arg( (slider.value/3.2808).toLocaleString(Qt.locale(),'f',0) )
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            Label {
+                visible: !slider.enabled
+                text: qsTr("Cannot set reasonable airspaces altitude limit because the present own altitude is too high.")
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
             }
@@ -262,8 +270,16 @@ Page {
             Slider {
                 id: slider
                 Layout.fillWidth: true
-
-                from: global.settings().airspaceAltitudeLimit_min.toFeet()
+                enabled: from < to
+                from: {
+                    var positionInfo = global.positionProvider().positionInfo
+                    if (!positionInfo.isValid())
+                        return global.settings().airspaceAltitudeLimit_min.toFeet()
+                    var trueAlt = positionInfo.trueAltitude()
+                    if (!trueAlt.isFinite())
+                        return global.settings().airspaceAltitudeLimit_min.toFeet()
+                    return Math.min(global.settings().airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
+                }
                 to: global.settings().airspaceAltitudeLimit_max.toFeet()
 
                 stepSize: 500

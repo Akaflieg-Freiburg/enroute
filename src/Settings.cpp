@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,7 +54,7 @@ auto Settings::acceptedWeatherTermsStatic() -> bool
 
 auto Settings::airspaceAltitudeLimit() const -> Units::Distance
 {
-    auto aspAlttLimit = Units::Distance::fromFT( settings.value(QStringLiteral("Map/airspaceAltitudeLimit"), qQNaN()).toDouble() );
+    auto aspAlttLimit = Units::Distance::fromFT( settings.value(QStringLiteral("Map/airspaceAltitudeLimit_ft"), qQNaN()).toDouble() );
     if (aspAlttLimit < airspaceAltitudeLimit_min) {
         aspAlttLimit = airspaceAltitudeLimit_min;
     }
@@ -67,8 +67,6 @@ auto Settings::airspaceAltitudeLimit() const -> Units::Distance
 
 void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit)
 {
-#warning Round off to 500 ft?
-#warning Value should be called "Map/lastValidAirspaceAltitudeLimit_ft"?
     if (newAirspaceAltitudeLimit < airspaceAltitudeLimit_min) {
         newAirspaceAltitudeLimit = airspaceAltitudeLimit_min;
     }
@@ -77,13 +75,13 @@ void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit
     }
 
     if (newAirspaceAltitudeLimit != airspaceAltitudeLimit()) {
-        settings.setValue("Map/airspaceAltitudeLimit", newAirspaceAltitudeLimit.toFeet());
+        settings.setValue("Map/airspaceAltitudeLimit_ft", newAirspaceAltitudeLimit.toFeet());
         emit airspaceAltitudeLimitChanged();
     }
 
     if (newAirspaceAltitudeLimit.isFinite() &&
             (newAirspaceAltitudeLimit != lastValidAirspaceAltitudeLimit())) {
-        settings.setValue("Map/lastValidAirspaceAltitudeLimit", newAirspaceAltitudeLimit.toFeet());
+        settings.setValue("Map/lastValidAirspaceAltitudeLimit_ft", newAirspaceAltitudeLimit.toFeet());
         emit lastValidAirspaceAltitudeLimitChanged();
     }
 }
@@ -91,7 +89,7 @@ void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit
 
 auto Settings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 {
-    auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit"), 99999).toInt() );
+    auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
     return qBound(airspaceAltitudeLimit_min, result, airspaceAltitudeLimit_max);
 }
 

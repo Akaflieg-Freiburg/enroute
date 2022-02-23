@@ -130,7 +130,7 @@ public:
      *  airspaceHeightLimit_min will be set. If newAirspaceAltitudeLimit is higher than
      *  airspaceHeightLimit_max, then airspaceHeightLimit_max will be set.
      *
-     * @param terms Property newAirspaceAltitudeLimit
+     * @param newAirspaceAltitudeLimit Property airspaceAltitudeLimit
      */
     void setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit);
 

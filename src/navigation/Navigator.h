@@ -148,6 +148,17 @@ public:
     Weather::Wind* wind();   
 
 signals:
+    /*! \brief Emitted when the airspaceAltitudeLimit is adjusted
+     *
+     *  To ensure that all relevant airspaces are visible on the moving map,
+     *  the navigator class will automatically adjust the property airspaceAltitudeLimit
+     *  of the global settings object whenever (ownship true altitude + 1000ft)
+     *  is higher than the present airspaceAltitudeLimit.
+     *
+     *  This signal is emitted whenever that happens.
+     */
+    void airspaceAltitudeLimitAdjusted();
+
     /*! \brief Notifier signal */
     void flightStatusChanged();
 

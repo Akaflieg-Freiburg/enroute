@@ -126,6 +126,28 @@ auto Navigation::Navigator::flightRoute() -> FlightRoute*
 
 void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& info)
 {  
+    //
+    // Check if altitude limit for flight maps needs to be lifted
+    //
+    if (info.isValid()) {
+        auto altLimit = GlobalObject::settings()->airspaceAltitudeLimit();
+        auto trueAltitude = info.trueAltitude();
+        if (altLimit.isFinite() &&
+                trueAltitude.isFinite() &&
+                (trueAltitude + Units::Distance::fromFT(1000) > altLimit)) {
+
+            // Round trueAltitude+1000ft up to nearest 500ft and set that as a new limit
+            auto newAltLimit = Units::Distance::fromFT(500.0*qCeil(trueAltitude.toFeet()/500.0+2.0));
+            GlobalObject::settings()->setAirspaceAltitudeLimit(newAltLimit);
+            emit airspaceAltitudeLimitAdjusted();
+        }
+    }
+
+
+    //
+    // Compute flight status
+    //
+
     // Paranoid safety checks
     if (m_aircraft.isNull()) {
         setFlightStatus(Unknown);

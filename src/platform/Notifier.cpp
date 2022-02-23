@@ -49,13 +49,13 @@ auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notificatio
 {
     switch (notification) {
     case DownloadInfo:
-        return tr("Downloading map data…");
+        return tr("Downloading map and data…");
     case TrafficReceiverRuntimeError:
         return tr("Traffic data receiver problem");
     case TrafficReceiverSelfTestError:
         return tr("Traffic data receiver self test error");
     case GeoMapUpdatePending:
-        return tr("Map updates available");
+        return tr("Map and data updates available");
     }
 
     return {};

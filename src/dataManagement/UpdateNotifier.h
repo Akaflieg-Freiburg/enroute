@@ -46,6 +46,10 @@ private:
     // Notify if map updates pending, else close the notification
     void updateNotification();
 
+    // When notifications are temporarily not possible, then use this timer
+    // to notify again.
+    QTimer notificationTimer;
+
     Q_DISABLE_COPY_MOVE(UpdateNotifier)
 };
 

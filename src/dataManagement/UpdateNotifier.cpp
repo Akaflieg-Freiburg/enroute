@@ -18,10 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDateTime>
-#include <QSettings>
-
+#include "navigation/Navigator.h"
 #include "platform/Notifier.h"
+#include "GlobalObject.h"
 #include "UpdateNotifier.h"
 
 
@@ -30,10 +29,13 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
     QObject(parent)
 {
 
-    connect(GlobalObject::dataManager()->geoMaps(), &DataManagement::DownloadableGroup::updatableChanged,
-            this, &DataManagement::UpdateNotifier::updateNotification);
-    updateNotification();
+    connect(GlobalObject::dataManager()->geoMaps(), &DataManagement::DownloadableGroup::updatableChanged, this, &DataManagement::UpdateNotifier::updateNotification);
+    connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotification);
 
+    notificationTimer.setInterval(11*60*1000);
+    notificationTimer.setSingleShot(true);
+
+    updateNotification();
 }
 
 
@@ -44,6 +46,7 @@ void DataManagement::UpdateNotifier::updateNotification()
     auto* geoMaps = GlobalObject::dataManager()->geoMaps();
     if (geoMaps == nullptr) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
+        notificationTimer.start();
         return;
     }
 
@@ -53,12 +56,21 @@ void DataManagement::UpdateNotifier::updateNotification()
         return;
     }
 
-    // Check if last notification is less than four hours ago. In that case, do not notify again.
+    // Do not notify when in flight, but ask again in 11min
+    if (GlobalObject::navigator()->flightStatus() == Navigation::Navigator::Flight) {
+        GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
+        notificationTimer.start();
+        return;
+    }
+
+    // Check if last notification is less than four hours ago. In that case, do not notify again,
+    // and ask again in 11min.
     QSettings settings;
     auto lastGeoMapUpdateNotification = settings.value("lastGeoMapUpdateNotification").toDateTime();
     if (lastGeoMapUpdateNotification.isValid()) {
         auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
         if (secsSinceLastNotification < 4*60*60) {
+            notificationTimer.start();
             return;
         }
     }

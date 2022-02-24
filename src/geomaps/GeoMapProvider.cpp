@@ -268,6 +268,10 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
 void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
 {
+
+    // Avoid rounding errors
+    airspaceAltitudeLimit = airspaceAltitudeLimit-Units::Distance::fromFT(1);
+
     //
     // Generate new GeoJSON array and new list of waypoints
     //

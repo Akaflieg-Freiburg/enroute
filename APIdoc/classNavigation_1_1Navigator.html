@@ -45,6 +45,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -62,12 +63,24 @@ $(function() {
 
 <p>Inherits QObject.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a577fd3b296e1f2bb63cf834d2991dd01"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01">FlightStatus</a> { <a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01a132109e6cbcfbe5abdd3e7f2f78bc1a9">Ground</a>, 
+<a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01a351bf8e5ae6162e24a27d32121d90faa">Flight</a>, 
+<a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01a5eb66afc569e21f23d92c805411c3d65">Unknown</a>
+ }</td></tr>
+<tr class="memdesc:a577fd3b296e1f2bb63cf834d2991dd01"><td class="mdescLeft">&#160;</td><td class="mdescRight">FlightStatus.  <a href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01">More...</a><br /></td></tr>
+<tr class="separator:a577fd3b296e1f2bb63cf834d2991dd01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a5677449495b01d366adf4383a551d45e"><td class="memItemLeft" align="right" valign="top"><a id="a5677449495b01d366adf4383a551d45e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#a5677449495b01d366adf4383a551d45e">isInFlightChanged</a> ()</td></tr>
-<tr class="memdesc:a5677449495b01d366adf4383a551d45e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a5677449495b01d366adf4383a551d45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc2b1f1ec9ff475ed1c31697ddafed8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#adfc2b1f1ec9ff475ed1c31697ddafed8">airspaceAltitudeLimitAdjusted</a> ()</td></tr>
+<tr class="memdesc:adfc2b1f1ec9ff475ed1c31697ddafed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when the airspaceAltitudeLimit is adjusted.  <a href="classNavigation_1_1Navigator.html#adfc2b1f1ec9ff475ed1c31697ddafed8">More...</a><br /></td></tr>
+<tr class="separator:adfc2b1f1ec9ff475ed1c31697ddafed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6be084caff4db0bcf5d59a9df9d20010"><td class="memItemLeft" align="right" valign="top"><a id="a6be084caff4db0bcf5d59a9df9d20010"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#a6be084caff4db0bcf5d59a9df9d20010">flightStatusChanged</a> ()</td></tr>
+<tr class="memdesc:a6be084caff4db0bcf5d59a9df9d20010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a6be084caff4db0bcf5d59a9df9d20010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -86,9 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a953af6be2d8631b596a88d937a56e25e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNavigation_1_1FlightRoute.html">FlightRoute</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#a953af6be2d8631b596a88d937a56e25e">flightRoute</a> ()</td></tr>
 <tr class="memdesc:a953af6be2d8631b596a88d937a56e25e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classNavigation_1_1Navigator.html#a953af6be2d8631b596a88d937a56e25e">More...</a><br /></td></tr>
 <tr class="separator:a953af6be2d8631b596a88d937a56e25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2102bbd49b080ed1e49fb5f4f054f38d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#a2102bbd49b080ed1e49fb5f4f054f38d">isInFlight</a> () const</td></tr>
-<tr class="memdesc:a2102bbd49b080ed1e49fb5f4f054f38d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classNavigation_1_1Navigator.html#a2102bbd49b080ed1e49fb5f4f054f38d">More...</a><br /></td></tr>
-<tr class="separator:a2102bbd49b080ed1e49fb5f4f054f38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb462437d292dddab2d9e73ba04403d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01">FlightStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#adb462437d292dddab2d9e73ba04403d2">flightStatus</a> () const</td></tr>
+<tr class="memdesc:adb462437d292dddab2d9e73ba04403d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classNavigation_1_1Navigator.html#adb462437d292dddab2d9e73ba04403d2">More...</a><br /></td></tr>
+<tr class="separator:adb462437d292dddab2d9e73ba04403d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af05a4d30f53ae789ed908fcc46535a79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1Wind.html">Weather::Wind</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#af05a4d30f53ae789ed908fcc46535a79">wind</a> ()</td></tr>
 <tr class="memdesc:af05a4d30f53ae789ed908fcc46535a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classNavigation_1_1Navigator.html#af05a4d30f53ae789ed908fcc46535a79">More...</a><br /></td></tr>
 <tr class="separator:af05a4d30f53ae789ed908fcc46535a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,9 +123,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a02167fe0638913d4a20016a3a0a74f5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNavigation_1_1FlightRoute.html">FlightRoute</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#a02167fe0638913d4a20016a3a0a74f5f">flightRoute</a></td></tr>
 <tr class="memdesc:a02167fe0638913d4a20016a3a0a74f5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current flight route.  <a href="classNavigation_1_1Navigator.html#a02167fe0638913d4a20016a3a0a74f5f">More...</a><br /></td></tr>
 <tr class="separator:a02167fe0638913d4a20016a3a0a74f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8bb2c6856b121537db1093b5c44d49c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#ab8bb2c6856b121537db1093b5c44d49c">isInFlight</a></td></tr>
-<tr class="memdesc:ab8bb2c6856b121537db1093b5c44d49c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate whether the device is flying or on the ground.  <a href="classNavigation_1_1Navigator.html#ab8bb2c6856b121537db1093b5c44d49c">More...</a><br /></td></tr>
-<tr class="separator:ab8bb2c6856b121537db1093b5c44d49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c6674deec9e2810d3cc3288c18553f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01">FlightStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#a1c6674deec9e2810d3cc3288c18553f8">flightStatus</a></td></tr>
+<tr class="memdesc:a1c6674deec9e2810d3cc3288c18553f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate whether the device is flying or on the ground.  <a href="classNavigation_1_1Navigator.html#a1c6674deec9e2810d3cc3288c18553f8">More...</a><br /></td></tr>
+<tr class="separator:a1c6674deec9e2810d3cc3288c18553f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1f3662dd2465080eec9bf2b73c3c0b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1Wind.html">Weather::Wind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Navigator.html#aa1f3662dd2465080eec9bf2b73c3c0b9">wind</a></td></tr>
 <tr class="memdesc:aa1f3662dd2465080eec9bf2b73c3c0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current wind.  <a href="classNavigation_1_1Navigator.html#aa1f3662dd2465080eec9bf2b73c3c0b9">More...</a><br /></td></tr>
 <tr class="separator:aa1f3662dd2465080eec9bf2b73c3c0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,7 +136,34 @@ Properties</h2></td></tr>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
 <p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00056">56</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a577fd3b296e1f2bb63cf834d2991dd01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a577fd3b296e1f2bb63cf834d2991dd01">&#9670;&nbsp;</a></span>FlightStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01">Navigation::Navigator::FlightStatus</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>FlightStatus. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a577fd3b296e1f2bb63cf834d2991dd01a132109e6cbcfbe5abdd3e7f2f78bc1a9"></a>Ground&#160;</td><td class="fielddoc"><p>Device is on the ground </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a577fd3b296e1f2bb63cf834d2991dd01a351bf8e5ae6162e24a27d32121d90faa"></a>Flight&#160;</td><td class="fielddoc"><p>Device is flying </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a577fd3b296e1f2bb63cf834d2991dd01a5eb66afc569e21f23d92c805411c3d65"></a>Unknown&#160;</td><td class="fielddoc"><p>Unknown </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00149">149</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a610f07279978c37984d35b0fc6f1d59e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a610f07279978c37984d35b0fc6f1d59e">&#9670;&nbsp;</a></span>Navigator()</h2>
 
@@ -195,6 +235,35 @@ Properties</h2></td></tr>
 
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property aircraft </dd></dl>
+
+</div>
+</div>
+<a id="adfc2b1f1ec9ff475ed1c31697ddafed8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfc2b1f1ec9ff475ed1c31697ddafed8">&#9670;&nbsp;</a></span>airspaceAltitudeLimitAdjusted</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Navigation::Navigator::airspaceAltitudeLimitAdjusted </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when the airspaceAltitudeLimit is adjusted. </p>
+<p>To ensure that all relevant airspaces are visible on the moving map, the navigator class will automatically adjust the property airspaceAltitudeLimit of the global settings object whenever (ownship true altitude + 1000ft) is higher than the present airspaceAltitudeLimit.</p>
+<p>This signal is emitted whenever that happens. </p>
 
 </div>
 </div>
@@ -284,8 +353,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a2102bbd49b080ed1e49fb5f4f054f38d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2102bbd49b080ed1e49fb5f4f054f38d">&#9670;&nbsp;</a></span>isInFlight()</h2>
+<a id="adb462437d292dddab2d9e73ba04403d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb462437d292dddab2d9e73ba04403d2">&#9670;&nbsp;</a></span>flightStatus()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,7 +363,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Navigation::Navigator::isInFlight </td>
+          <td class="memname"><a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01">FlightStatus</a> Navigation::Navigator::flightStatus </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -308,9 +377,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property isInFlight </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property flightStatus </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00160">160</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00168">168</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
 
 </div>
 </div>
@@ -416,8 +485,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ab8bb2c6856b121537db1093b5c44d49c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8bb2c6856b121537db1093b5c44d49c">&#9670;&nbsp;</a></span>isInFlight</h2>
+<a id="a1c6674deec9e2810d3cc3288c18553f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c6674deec9e2810d3cc3288c18553f8">&#9670;&nbsp;</a></span>flightStatus</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -426,7 +495,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Navigation::Navigator::isInFlight</td>
+          <td class="memname"><a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01">FlightStatus</a> Navigation::Navigator::flightStatus</td>
         </tr>
       </table>
   </td>
@@ -437,9 +506,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Estimate whether the device is flying or on the ground. </p>
-<p>This property holds an estimate, as to whether the device is flying or on the ground. The current implementation considers the device is flying if the groundspeed can be read and is greater then 30 knots. </p>
+<p>This property holds an estimate, as to whether the device is flying or on the ground. </p>
 
-<p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00154">154</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00162">162</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
 
 </div>
 </div>
@@ -466,7 +535,7 @@ Properties</h2></td></tr>
 <p>Current wind. </p>
 <p>The wind returned here is owned by this class and must not be deleted. QML ownership has been set to QQmlEngine::CppOwnership. </p>
 
-<p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00170">170</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Navigator_8h_source.html#l00178">178</a> of file <a class="el" href="Navigator_8h_source.html">Navigator.h</a>.</p>
 
 </div>
 </div>

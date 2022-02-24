@@ -51,7 +51,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classPlatform_1_1Notifier-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Platform::Notifier Class Reference</div>  </div>
+<div class="title">Platform::Notifier Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -61,27 +61,36 @@ $(function() {
 <p><code>#include &lt;<a class="el" href="Notifier_8h_source.html">Notifier.h</a>&gt;</code></p>
 
 <p>Inherits QObject.</p>
+
+<p>Inherited by Platform::Notifier_Android, and Platform::Notifier_Linux.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a8d97475ebccb109f98ba33e5e6ed3cf3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">NotificationTypes</a> </td></tr>
 <tr class="memdesc:a8d97475ebccb109f98ba33e5e6ed3cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notification types.  <a href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">More...</a><br /></td></tr>
 <tr class="separator:a8d97475ebccb109f98ba33e5e6ed3cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6895b84a239b3a954487639cf5a8fb29"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#a6895b84a239b3a954487639cf5a8fb29">NotificationActions</a> </td></tr>
+<tr class="memdesc:a6895b84a239b3a954487639cf5a8fb29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notification actions.  <a href="classPlatform_1_1Notifier.html#a6895b84a239b3a954487639cf5a8fb29">More...</a><br /></td></tr>
+<tr class="separator:a6895b84a239b3a954487639cf5a8fb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
-<tr class="memitem:a32451193cd4eaae65bf22a8e6119689c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#a32451193cd4eaae65bf22a8e6119689c">hideNotification</a> (<a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a> notificationType)</td></tr>
-<tr class="memdesc:a32451193cd4eaae65bf22a8e6119689c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides a notification.  <a href="classPlatform_1_1Notifier.html#a32451193cd4eaae65bf22a8e6119689c">More...</a><br /></td></tr>
-<tr class="separator:a32451193cd4eaae65bf22a8e6119689c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaebb25c49dbe3e439705973345d16039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#aaebb25c49dbe3e439705973345d16039">showNotification</a> (<a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a> notificationType, const QString &amp;text, const QString &amp;longText)</td></tr>
-<tr class="memdesc:aaebb25c49dbe3e439705973345d16039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notification.  <a href="classPlatform_1_1Notifier.html#aaebb25c49dbe3e439705973345d16039">More...</a><br /></td></tr>
-<tr class="separator:aaebb25c49dbe3e439705973345d16039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9aa46255c3b6a4032498bb96cd9dcfc"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#aa9aa46255c3b6a4032498bb96cd9dcfc">hideNotification</a> (<a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a> notificationType)=0</td></tr>
+<tr class="memdesc:aa9aa46255c3b6a4032498bb96cd9dcfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides a notification.  <a href="classPlatform_1_1Notifier.html#aa9aa46255c3b6a4032498bb96cd9dcfc">More...</a><br /></td></tr>
+<tr class="separator:aa9aa46255c3b6a4032498bb96cd9dcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a359feaaedf4a3518ce8e775414fa4c72"><td class="memItemLeft" align="right" valign="top"><a id="a359feaaedf4a3518ce8e775414fa4c72"></a>
+Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#a359feaaedf4a3518ce8e775414fa4c72">hideAll</a> ()</td></tr>
+<tr class="memdesc:a359feaaedf4a3518ce8e775414fa4c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides all notifications. <br /></td></tr>
+<tr class="separator:a359feaaedf4a3518ce8e775414fa4c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f81e49967febfd6ee56bcf96f9b654"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#a85f81e49967febfd6ee56bcf96f9b654">showNotification</a> (<a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a> notificationType, const QString &amp;text, const QString &amp;longText)=0</td></tr>
+<tr class="memdesc:a85f81e49967febfd6ee56bcf96f9b654"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a notification.  <a href="classPlatform_1_1Notifier.html#a85f81e49967febfd6ee56bcf96f9b654">More...</a><br /></td></tr>
+<tr class="separator:a85f81e49967febfd6ee56bcf96f9b654"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a1932542413c86e8a79125e0c1c5c980e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#a1932542413c86e8a79125e0c1c5c980e">notificationClicked</a> (<a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a> notificationType)</td></tr>
-<tr class="memdesc:a1932542413c86e8a79125e0c1c5c980e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when the user clicks on a notification.  <a href="classPlatform_1_1Notifier.html#a1932542413c86e8a79125e0c1c5c980e">More...</a><br /></td></tr>
-<tr class="separator:a1932542413c86e8a79125e0c1c5c980e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bad8438720721ca2e1980f84ba6faf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1Notifier.html#a1bad8438720721ca2e1980f84ba6faf5">action</a> (<a class="el" href="classPlatform_1_1Notifier.html#a6895b84a239b3a954487639cf5a8fb29">Platform::Notifier::NotificationActions</a> action)</td></tr>
+<tr class="memdesc:a1bad8438720721ca2e1980f84ba6faf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">User action.  <a href="classPlatform_1_1Notifier.html#a1bad8438720721ca2e1980f84ba6faf5">More...</a><br /></td></tr>
+<tr class="separator:a1bad8438720721ca2e1980f84ba6faf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -91,10 +100,29 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class shows platform-native notifications to the user. </p>
-<p>The enum NotificationType names a number pre-defined notifications that can be shown to the user with the method <a class="el" href="classPlatform_1_1Notifier.html#aaebb25c49dbe3e439705973345d16039" title="Shows a notification.">showNotification()</a>. The method <a class="el" href="classPlatform_1_1Notifier.html#a32451193cd4eaae65bf22a8e6119689c" title="Hides a notification.">hideNotification()</a> removes a notification. The signal <a class="el" href="classPlatform_1_1Notifier.html#a1932542413c86e8a79125e0c1c5c980e" title="Emitted when the user clicks on a notification.">notificationClicked()</a> is emitted when the user clicks on a notification. </p>
+<p>The enum NotificationType names a number pre-defined notifications that can be shown to the user with the method <a class="el" href="classPlatform_1_1Notifier.html#a85f81e49967febfd6ee56bcf96f9b654" title="Shows a notification.">showNotification()</a>. The method <a class="el" href="classPlatform_1_1Notifier.html#aa9aa46255c3b6a4032498bb96cd9dcfc" title="Hides a notification.">hideNotification()</a> removes a notification. The signal notificationClicked() is emitted when the user clicks on a notification. </p>
 
 <p class="definition">Definition at line <a class="el" href="Notifier_8h_source.html#l00053">53</a> of file <a class="el" href="Notifier_8h_source.html">Notifier.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a6895b84a239b3a954487639cf5a8fb29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6895b84a239b3a954487639cf5a8fb29">&#9670;&nbsp;</a></span>NotificationActions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classPlatform_1_1Notifier.html#a6895b84a239b3a954487639cf5a8fb29">Platform::Notifier::NotificationActions</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Notification actions. </p>
+<p>This enum lists a number of actions that the user can undertake when a notification is shown. </p>
+
+<p class="definition">Definition at line <a class="el" href="Notifier_8h_source.html#l00102">102</a> of file <a class="el" href="Notifier_8h_source.html">Notifier.h</a>.</p>
+
+</div>
+</div>
 <a id="a8d97475ebccb109f98ba33e5e6ed3cf3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8d97475ebccb109f98ba33e5e6ed3cf3">&#9670;&nbsp;</a></span>NotificationTypes</h2>
 
@@ -150,8 +178,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a32451193cd4eaae65bf22a8e6119689c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32451193cd4eaae65bf22a8e6119689c">&#9670;&nbsp;</a></span>hideNotification</h2>
+<a id="a1bad8438720721ca2e1980f84ba6faf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bad8438720721ca2e1980f84ba6faf5">&#9670;&nbsp;</a></span>action</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,7 +188,36 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void Platform::Notifier::hideNotification </td>
+          <td class="memname">void Platform::Notifier::action </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classPlatform_1_1Notifier.html#a6895b84a239b3a954487639cf5a8fb29">Platform::Notifier::NotificationActions</a>&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User action. </p>
+<p>This signal is emitted in response to user interaction with a notification </p>
+
+</div>
+</div>
+<a id="aa9aa46255c3b6a4032498bb96cd9dcfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9aa46255c3b6a4032498bb96cd9dcfc">&#9670;&nbsp;</a></span>hideNotification</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual Q_INVOKABLE void Platform::Notifier::hideNotification </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a>&#160;</td>
           <td class="paramname"><em>notificationType</em></td><td>)</td>
@@ -169,7 +226,7 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">slot</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">slot</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -185,8 +242,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1932542413c86e8a79125e0c1c5c980e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1932542413c86e8a79125e0c1c5c980e">&#9670;&nbsp;</a></span>notificationClicked</h2>
+<a id="a85f81e49967febfd6ee56bcf96f9b654"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85f81e49967febfd6ee56bcf96f9b654">&#9670;&nbsp;</a></span>showNotification</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,41 +252,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Platform::Notifier::notificationClicked </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a>&#160;</td>
-          <td class="paramname"><em>notificationType</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Emitted when the user clicks on a notification. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">notificationType</td><td>Notification that was clicked on </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aaebb25c49dbe3e439705973345d16039"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaebb25c49dbe3e439705973345d16039">&#9670;&nbsp;</a></span>showNotification</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Platform::Notifier::showNotification </td>
+          <td class="memname">virtual void Platform::Notifier::showNotification </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a>&#160;</td>
           <td class="paramname"><em>notificationType</em>, </td>
@@ -254,7 +277,7 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">slot</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

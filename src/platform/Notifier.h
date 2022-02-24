@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -43,7 +43,7 @@ public:
     */
     explicit Notifier(QObject* parent = nullptr);
 
-    ~Notifier();
+    ~Notifier() = default;
 
     /*! \brief Notification types
      *
@@ -54,16 +54,26 @@ public:
     {
         DownloadInfo = 0,                 /*< Info that  download is in progress */
         TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
-        TrafficReceiverRuntimeError = 2   /*< Traffic receiver reports problem while running */
+        TrafficReceiverRuntimeError = 2,  /*< Traffic receiver reports problem while running */
+        GeoMapUpdatePending = 3           /*< Updates of geographic maps are available */
     };
     Q_ENUM(NotificationTypes)
 
-public slots:
-    // Emits the signal "notificationClicked".
-    void emitNotificationClicked(Platform::Notifier::NotificationTypes notificationType) {
-        emit notificationClicked(notificationType);
-    }
+    /*! \brief Notification actions
+     *
+     *  This enum lists a number of actions that the user can undertake when a notification is shown.
+     */
+    enum NotificationActions
+    {
+        DownloadInfo_Clicked,                 /*< User clicks on body of download notification */
+        TrafficReceiverSelfTestError_Clicked, /*< User clicks on body of traffic receiver self-test problem report */
+        TrafficReceiverRuntimeError_Clicked,  /*< User clicks on body of traffic receiver runtime problem report */
+        GeoMapUpdatePending_Clicked,          /*< User clicks on body of update message */
+        GeoMapUpdatePending_UpdateRequested   /*< User requests geo map update */
+    };
+    Q_ENUM(NotificationActions)
 
+public slots:
     /*! \brief Hides a notification
      *
      *  This method hides a notification that is currently shown.  If the notification is not
@@ -71,7 +81,10 @@ public slots:
      *
      *  @param notificationType Type of the notification
      */
-    static void hideNotification(Platform::Notifier::NotificationTypes notificationType);
+    Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType) = 0;
+
+    /*! \brief Hides all notifications */
+    Q_INVOKABLE void hideAll();
 
     /*! \brief Shows a notification
      *
@@ -85,20 +98,21 @@ public slots:
      *  @param longText If not empty, then the notification might be expandable. When expanded, the one-line "text" is replaced by the content of this "longText".
      *  Depending on the platform, this parameter might also be ignored.
      */
-    void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
+    virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText) = 0;
 
 signals:
-    /*! \brief Emitted when the user clicks on a notification
+    /*! \brief User action
      *
-     *  @param notificationType Notification that was clicked on
+     * This signal is emitted in response to user interaction with a notification
      */
-    void notificationClicked(Platform::Notifier::NotificationTypes notificationType);
+    void action(Platform::Notifier::NotificationActions action);
+
+protected:
+    // Get translated title for specific notification
+    QString title(Platform::Notifier::NotificationTypes notificationType);
 
 private:
     Q_DISABLE_COPY_MOVE(Notifier)
-
-    // Get translated title for specific notification
-    static QString title(Platform::Notifier::NotificationTypes notificationType);
 };
 
 }

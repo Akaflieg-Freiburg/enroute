@@ -53,25 +53,35 @@ Page {
 
             SwitchDelegate {
                 id: hideUpperAsp
-                text: qsTr("Hide Airspaces ≥ FL100") + (
-                          global.settings().hideUpperAirspaces ? (
-                                                                  `<br><font color="#606060" size="2">`
-                                                                  + qsTr("Upper airspaces hidden")
-                                                                  +"</font>"
-                                                                  ) : (
-                                                                  `<br><font color="#606060" size="2">`
-                                                                  + qsTr("All airspaces shown")
-                                                                  + `</font>`
-                                                                  )
-                          )
+                text: {
+                    var secondLineString = ""
+                    var altitudeLimit = global.settings().airspaceAltitudeLimit
+                    if (!altitudeLimit.isFinite()) {
+                        secondLineString = qsTr("No limit, all airspaces shown")
+                    } else {
+                        // Mention
+                        global.navigator().aircraft.verticalDistanceUnit
+
+                        var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+                        var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                        secondLineString =  qsTr("Showing airspaces up to %1").arg(airspaceAltitudeLimitString)
+                    }
+                    return qsTr("Airspace Altitude Limit") +
+                            `<br><font color="#606060" size="2">` +
+                            secondLineString +
+                            `</font>`
+
+                }
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
-                Component.onCompleted: {
-                    hideUpperAsp.checked = global.settings().hideUpperAirspaces
-                }
+                Component.onCompleted: hideUpperAsp.checked = global.settings().airspaceAltitudeLimit.isFinite()
                 onToggled: {
                     global.mobileAdaptor().vibrateBrief()
-                    global.settings().hideUpperAirspaces = hideUpperAsp.checked
+                    if (hideUpperAsp.checked) {
+                        heightLimitDialog.open()
+                    } else {
+                        global.settings().airspaceAltitudeLimit = distance.nan()
+                    }
                 }
             }
 
@@ -79,14 +89,14 @@ Page {
                 id: hideGlidingSectors
                 text: qsTr("Hide Gliding Sectors") + (
                           global.settings().hideGlidingSectors ? (
-                                                                  `<br><font color="#606060" size="2">`
-                                                                  + qsTr("Gliding sectors hidden")
-                                                                  +"</font>"
-                                                                  ) : (
-                                                                  `<br><font color="#606060" size="2">`
-                                                                  + qsTr("Gliding sectors shown")
-                                                                  + `</font>`
-                                                                  )
+                                                                     `<br><font color="#606060" size="2">`
+                                                                     + qsTr("Gliding sectors hidden")
+                                                                     +"</font>"
+                                                                     ) : (
+                                                                     `<br><font color="#606060" size="2">`
+                                                                     + qsTr("Gliding sectors shown")
+                                                                     + `</font>`
+                                                                     )
                           )
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
@@ -178,7 +188,6 @@ Page {
 
         // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
         // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -186,12 +195,15 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
+        topMargin: Qt.application.font.pixelSize/2.0
+        bottomMargin: Qt.application.font.pixelSize/2.0
+
         modal: true
 
         title: qsTr("Clear password storage?")
 
         Label {
-            anchors.fill: parent
+            width: heightLimitDialog.availableWidth
 
             text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
             wrapMode: Text.Wrap
@@ -217,5 +229,69 @@ Page {
 
     }
 
+    Dialog {
+        id: heightLimitDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        topMargin: Qt.application.font.pixelSize/2.0
+        bottomMargin: Qt.application.font.pixelSize/2.0
+
+        modal: true
+
+        title: qsTr("Airspace Altitude Limit")
+        standardButtons: slider.enabled ? Dialog.Ok|Dialog.Cancel : Dialog.Cancel
+
+
+        ColumnLayout {
+            width: heightLimitDialog.availableWidth
+
+            Label {
+                visible: slider.enabled
+                text: qsTr("Show airspaces up to %1 ft / %2 m.").arg(slider.value.toLocaleString()).arg( (slider.value/3.2808).toLocaleString(Qt.locale(),'f',0) )
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            Label {
+                visible: !slider.enabled
+                text: qsTr("Cannot set reasonable airspaces altitude limit because the present own altitude is too high.")
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            Slider {
+                id: slider
+                Layout.fillWidth: true
+                enabled: from < to
+                from: {
+                    var positionInfo = global.positionProvider().positionInfo
+                    if (!positionInfo.isValid())
+                        return global.settings().airspaceAltitudeLimit_min.toFeet()
+                    var trueAlt = positionInfo.trueAltitude()
+                    if (!trueAlt.isFinite())
+                        return global.settings().airspaceAltitudeLimit_min.toFeet()
+                    return Math.min(global.settings().airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
+                }
+                to: global.settings().airspaceAltitudeLimit_max.toFeet()
+
+                stepSize: 500
+            }
+
+        }
+
+        Component.onCompleted: slider.value = global.settings().lastValidAirspaceAltitudeLimit.toFeet()
+
+        onAccepted: global.settings().airspaceAltitudeLimit = distance.fromFT(slider.value)
+        onRejected: hideUpperAsp.checked = false
+
+    } // Dialog
 
 } // Page

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,46 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QGuiApplication>
+#pragma once
 
-#include "platform/Notifier.h"
+#include "dataManagement/DataManager.h"
 
 
-Platform::Notifier::Notifier(QObject *parent)
-    : QObject(parent)
+namespace DataManagement {
+
+/*! \brief Informs the user that updates of geographic maps are peding
+ *
+ *  This class informs the user by notification if updates of geographic maps are peding.
+ *  The implementation notifies the user at most every four hours.
+ */
+
+class UpdateNotifier : public QObject
 {
+    Q_OBJECT
 
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
-            [this](Qt::ApplicationState state) {
-        if (state == Qt::ApplicationSuspended) {
-            hideAll();
-        }
-    });
-}
+public:
+    /*! \brief Standard constructor
+     *
+     *  @param parent Pointer to the parent object, which must be a DataManager.
+     */
+    explicit UpdateNotifier(DataManager* parent);
 
+private:
+    // Notify if map updates pending, else close the notification
+    void updateNotification();
 
-void Platform::Notifier::hideAll()
-{
-    hideNotification(DownloadInfo);
-    hideNotification(TrafficReceiverSelfTestError);
-    hideNotification(TrafficReceiverRuntimeError);
-    hideNotification(GeoMapUpdatePending);
-}
+    // When notifications are temporarily not possible, then use this timer
+    // to notify again.
+    QTimer notificationTimer;
 
+    Q_DISABLE_COPY_MOVE(UpdateNotifier)
+};
 
-auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
-{
-    switch (notification) {
-    case DownloadInfo:
-        return tr("Downloading map and data…");
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
-    case GeoMapUpdatePending:
-        return tr("Map and data updates available");
-    }
-
-    return {};
-}
-
+};

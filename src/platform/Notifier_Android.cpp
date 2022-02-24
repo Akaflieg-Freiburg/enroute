@@ -23,44 +23,74 @@
 #include <QJniObject>
 
 #include "GlobalObject.h"
-#include "platform/Notifier.h"
+#include "platform/Notifier_Android.h"
 
 
-Platform::Notifier::Notifier(QObject *parent)
-    : QObject(parent)
+Platform::Notifier_Android::Notifier_Android(QObject *parent)
+    : Platform::Notifier(parent)
 {
     ;
 }
 
 
-Platform::Notifier::~Notifier()
+Platform::Notifier_Android::~Notifier_Android()
 {
     ;
 }
 
 
-void Platform::Notifier::hideNotification(Platform::Notifier::NotificationTypes notificationType)
+void Platform::Notifier_Android::hideNotification(Platform::Notifier::NotificationTypes notificationType)
 {
-    jint jni_ID             = notificationType;
+    jint jni_ID                   = notificationType;
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
 }
 
 
-void Platform::Notifier::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
+void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::NotificationTypes notificationType, int actionID)
 {
-    jint jni_ID             = notificationType;
+    hideNotification(notificationType);
+    switch (notificationType) {
+    case DownloadInfo:
+        emit action(DownloadInfo_Clicked);
+        break;
+    case TrafficReceiverSelfTestError:
+        emit action(TrafficReceiverSelfTestError_Clicked);
+        break;
+    case TrafficReceiverRuntimeError:
+        emit action(TrafficReceiverRuntimeError_Clicked);
+        break;
+    case GeoMapUpdatePending:
+        if (actionID == 0) {
+            emit action(GeoMapUpdatePending_Clicked);
+        } else {
+            emit action(GeoMapUpdatePending_UpdateRequested);
+        }
+        break;
+    }
+}
+
+
+void Platform::Notifier_Android::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
+{
+
+    jint jni_ID                    = notificationType;
     QJniObject jni_title    = QJniObject::fromString(title(notificationType));
     QJniObject jni_text     = QJniObject::fromString(text);
     QJniObject jni_longText = QJniObject::fromString(longText);
+    QJniObject jni_actionText;
+    if (notificationType == GeoMapUpdatePending) {
+        jni_actionText = QJniObject::fromString(tr("Update"));
+    }
 
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
-                                       "showNotification",
-                                       "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-                                       jni_ID,
-                                       jni_title.object<jstring>(),
-                                       jni_text.object<jstring>(),
-                                       jni_longText.object<jstring>()
-                                       );
+                                              "showNotification",
+                                              "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                                              jni_ID,
+                                              jni_title.object<jstring>(),
+                                              jni_text.object<jstring>(),
+                                              jni_longText.object<jstring>(),
+                                              jni_actionText.object<jstring>()
+                                              );
 
 }
 

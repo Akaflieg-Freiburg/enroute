@@ -109,21 +109,29 @@ public:
      */
     FlightRoute* flightRoute();
 
+    /*! \brief FlightStatus */
+    enum FlightStatus
+      {
+        Ground, /*!< Device is on the ground */
+        Flight, /*!< Device is flying */
+        Unknown /*!< Unknown */
+      };
+    Q_ENUM(FlightStatus)
+
     /*! \brief Estimate whether the device is flying or on the ground
      *
      *  This property holds an estimate, as to whether the device is flying or
-     *  on the ground.  The current implementation considers the device is
-     *  flying if the groundspeed can be read and is greater then 30 knots.
+     *  on the ground.
      */
-    Q_PROPERTY(bool isInFlight READ isInFlight NOTIFY isInFlightChanged)
+    Q_PROPERTY(FlightStatus flightStatus READ flightStatus NOTIFY flightStatusChanged)
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property isInFlight
+     *  @returns Property flightStatus
      */
-    bool isInFlight() const
+    FlightStatus flightStatus() const
     {
-        return m_isInFlight;
+        return m_flightStatus;
     }
 
     /*! \brief Current wind
@@ -137,11 +145,22 @@ public:
      *
      *  @returns Property wind
      */
-    Weather::Wind* wind();
+    Weather::Wind* wind();   
 
 signals:
+    /*! \brief Emitted when the airspaceAltitudeLimit is adjusted
+     *
+     *  To ensure that all relevant airspaces are visible on the moving map,
+     *  the navigator class will automatically adjust the property airspaceAltitudeLimit
+     *  of the global settings object whenever (ownship true altitude + 1000ft)
+     *  is higher than the present airspaceAltitudeLimit.
+     *
+     *  This signal is emitted whenever that happens.
+     */
+    void airspaceAltitudeLimitAdjusted();
+
     /*! \brief Notifier signal */
-    void isInFlightChanged();
+    void flightStatusChanged();
 
 private slots:
     // Connected to sources, in order to receive new data
@@ -157,15 +176,13 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Navigator)
 
-    // Setter function for the property with the same name
-    void setIsInFlight(bool newIsInFlight);
+    // Updater function for the property with the same name
+    void setFlightStatus(FlightStatus newFlightStatus);
 
-    // Aircraft is considered flying if speed is at least this high
-    static constexpr double minFlightSpeedInKN = 30.0;
     // Hysteresis for flight speed
-    static constexpr double flightSpeedHysteresisInKn = 5.0;
+    static constexpr auto flightSpeedHysteresis = Units::Speed::fromKN(5.0);
 
-    bool m_isInFlight {false};
+    FlightStatus m_flightStatus {Unknown};
 
     QPointer<Aircraft> m_aircraft {nullptr};
     QPointer<Clock> m_clock {nullptr};

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,7 @@
 
 #include <QSettings>
 
+#include "units/Distance.h"
 #include "units/Speed.h"
 #include "units/VolumeFlow.h"
 
@@ -312,6 +313,15 @@ public:
      */
     Q_INVOKABLE QByteArray toJSON() const;
 
+    /*! \brief Convert vertical distance to string
+     *
+     *  This method converts a vertical distance to a localized string, taking verticalDistanceUnit into account.
+     *
+     *  @param distance Distance
+     *
+     *  @returns A string of the form "1.280 m", "3.500 ft", or "-" for an invalid distance
+     */
+    Q_INVOKABLE QString verticalDistanceToString(Units::Distance distance) const;
 
 signals:   
     /*! \brief Notifier signal */

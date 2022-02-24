@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,25 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+#pragma once
 
-LongTextDialog {
-    id: mud
+#include "platform/Notifier.h"
 
-    title: qsTr("Updates available")
-    text: qsTr("<p>One or several of your installed maps or databases can be updated. The estimated download size is %1.</p>").arg(global.dataManager().geoMaps.updateSize)
+namespace Platform {
 
-    footer: DialogButtonBox {
-        ToolButton {
-            text: qsTr("Update now")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-        ToolButton {
-            text: qsTr("Later")
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-        }
+// This class implements notifications for the linux desktop
 
-        onAccepted: global.dataManager().geoMaps.updateAll()
-    } // DialogButtonBox
+class Notifier_Android: public Notifier
+{
+    Q_OBJECT
+
+public:
+    // Constructor
+    explicit Notifier_Android(QObject* parent = nullptr);
+
+    // Destructor
+    ~Notifier_Android();
+
+public slots:
+    // Implementation of pure virtual function
+    Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType);
+
+    // Implementation of pure virtual function
+    virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
+
+    // This method is called from JAVA when the user interacts with the notification, via the exported "C" function
+    // Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked
+    //
+    // @param notificationType … the type of the notification that the user interacted with
+    //
+    // @param actionID - "0" when the user clicked into the notification body, not zero when the user clicked on a notification action
+    void onNotificationClicked(Platform::Notifier::NotificationTypes notificationType, int actionID);
+private:
+    Q_DISABLE_COPY_MOVE(Notifier_Android)
+};
+
 }

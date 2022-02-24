@@ -51,7 +51,7 @@ namespace Units {
          *
          * @returns distance
          */
-        static constexpr Distance fromM(double distanceInM)
+        Q_INVOKABLE static constexpr Units::Distance fromM(double distanceInM)
         {
             Distance result;
             result.m_distanceInM = distanceInM;
@@ -64,7 +64,7 @@ namespace Units {
          *
          * @returns distance
          */
-        static constexpr Distance fromKM(double distanceInKM)
+        Q_INVOKABLE static constexpr Units::Distance fromKM(double distanceInKM)
         {
             Distance result;
             result.m_distanceInM = 1000.0*distanceInKM;
@@ -77,7 +77,7 @@ namespace Units {
          *
          * @returns distance
          */
-        static constexpr Distance fromNM(double distanceInNM)
+        Q_INVOKABLE static constexpr Units::Distance fromNM(double distanceInNM)
         {
             Distance result;
             result.m_distanceInM = distanceInNM*MetersPerNauticalMile;
@@ -90,7 +90,7 @@ namespace Units {
          *
          * @returns distance
          */
-        static constexpr Distance fromMIL(double distanceInMIL)
+        Q_INVOKABLE static constexpr Units::Distance fromMIL(double distanceInMIL)
         {
             Distance result;
             result.m_distanceInM = distanceInMIL*MetersPerMile;
@@ -103,11 +103,20 @@ namespace Units {
          *
          * @returns distance
          */
-        static Distance fromFT(double distanceInFT)
+        Q_INVOKABLE static constexpr Units::Distance fromFT(double distanceInFT)
         {
             Distance result;
             result.m_distanceInM = distanceInFT * MetersPerFeet;
             return result;
+        }
+
+        /*! \brief Constructs an invalid distance
+         *
+         * @returns Invalid distance
+         */
+        Q_INVOKABLE static constexpr Units::Distance nan()
+        {
+            return {};
         }
 
         /*! \brief Add distance to this distance

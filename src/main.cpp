@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -84,6 +84,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
+    qRegisterMetaType<Platform::Notifier::NotificationActions>();
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
@@ -190,6 +191,7 @@ auto main(int argc, char *argv[]) -> int
      */
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("angle", QVariant::fromValue(Units::Angle()) );
+    engine.rootContext()->setContextProperty("distance", QVariant::fromValue(Units::Distance()) );
     engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
     engine.rootContext()->setContextProperty("global", new GlobalObject(&engine) );
     engine.rootContext()->setContextProperty("speed", QVariant::fromValue(Units::Speed()) );

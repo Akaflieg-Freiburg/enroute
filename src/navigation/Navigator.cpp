@@ -125,29 +125,66 @@ auto Navigation::Navigator::flightRoute() -> FlightRoute*
 
 
 void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& info)
-{
-    Units::Speed GS;
-
+{  
+    //
+    // Check if altitude limit for flight maps needs to be lifted
+    //
     if (info.isValid()) {
-        GS = info.groundSpeed();
+        auto altLimit = GlobalObject::settings()->airspaceAltitudeLimit();
+        auto trueAltitude = info.trueAltitude();
+        if (altLimit.isFinite() &&
+                trueAltitude.isFinite() &&
+                (trueAltitude + Units::Distance::fromFT(1000) > altLimit)) {
+
+            // Round trueAltitude+1000ft up to nearest 500ft and set that as a new limit
+            auto newAltLimit = Units::Distance::fromFT(500.0*qCeil(trueAltitude.toFeet()/500.0+2.0));
+            GlobalObject::settings()->setAirspaceAltitudeLimit(newAltLimit);
+            emit airspaceAltitudeLimitAdjusted();
+        }
     }
 
-    if (!GS.isFinite()) {
-        setIsInFlight(false);
+
+    //
+    // Compute flight status
+    //
+
+    // Paranoid safety checks
+    if (m_aircraft.isNull()) {
+        setFlightStatus(Unknown);
         return;
     }
 
-    if (m_isInFlight) {
+    if (!info.isValid()) {
+        setFlightStatus(Unknown);
+        return;
+    }
+
+    // Get ground speed
+    auto GS = info.groundSpeed();
+    if (!GS.isFinite()) {
+        setFlightStatus(Unknown);
+        return;
+    }
+
+    // Get aircraft minimum speed
+    auto aircraftMinSpeed = m_aircraft->minimumSpeed();
+    if (!aircraftMinSpeed.isFinite()) {
+        setFlightStatus(Unknown);
+        return;
+    }
+
+    // Go to ground mode if ground speed is less then aircraftMinSpeed-flightSpeedHysteresis
+    if (m_flightStatus == Flight) {
         // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
-        if ( GS.toKN() < minFlightSpeedInKN-flightSpeedHysteresisInKn ) {
-            setIsInFlight(false);
+        if ( GS < aircraftMinSpeed-flightSpeedHysteresis) {
+            setFlightStatus(Ground);
         }
         return;
     }
 
-    // If we are on the ground at present, go to flight mode only if the ground sped is more than minFlightSpeedInKT
-    if ( GS.toKN() > minFlightSpeedInKN ) {
-        setIsInFlight(true);
+    // Go to flight mode if ground speed is more than aircraftMinSpeed
+    if ( GS > aircraftMinSpeed ) {
+        setFlightStatus(Flight);
     }
 }
 
@@ -160,13 +197,13 @@ void Navigation::Navigator::saveAircraft() const
 }
 
 
-void Navigation::Navigator::setIsInFlight(bool newIsInFlight)
+void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 {
-    if (m_isInFlight == newIsInFlight) {
+    if (m_flightStatus == newFlightStatus) {
         return;
     }
-    m_isInFlight = newIsInFlight;
-    emit isInFlightChanged();
+    m_flightStatus = newFlightStatus;
+    emit flightStatusChanged();
 }
 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,6 +32,17 @@ Settings::Settings(QObject *parent)
 {
     // Save some values
     settings.setValue("lastVersion", PROJECT_VERSION);
+
+    // Convert old setting to new system
+    if (settings.contains("Map/hideUpperAirspaces")) {
+        auto hide = settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool();
+        if (hide) {
+            setAirspaceAltitudeLimit( Units::Distance::fromFT(10000) );
+        } else {
+            setAirspaceAltitudeLimit( Units::Distance::fromFT(qInf()) );
+        }
+        settings.remove("Map/hideUpperAirspaces");
+    }
 }
 
 
@@ -41,9 +52,45 @@ auto Settings::acceptedWeatherTermsStatic() -> bool
 }
 
 
-auto Settings::hideUpperAirspacesStatic() -> bool
+auto Settings::airspaceAltitudeLimit() const -> Units::Distance
 {
-    return GlobalObject::settings()->hideUpperAirspaces();
+    auto aspAlttLimit = Units::Distance::fromFT( settings.value(QStringLiteral("Map/airspaceAltitudeLimit_ft"), qQNaN()).toDouble() );
+    if (aspAlttLimit < airspaceAltitudeLimit_min) {
+        aspAlttLimit = airspaceAltitudeLimit_min;
+    }
+    if (aspAlttLimit > airspaceAltitudeLimit_max) {
+        aspAlttLimit = Units::Distance::fromFT( qInf() );
+    }
+    return aspAlttLimit;
+}
+
+
+void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit)
+{
+    if (newAirspaceAltitudeLimit < airspaceAltitudeLimit_min) {
+        newAirspaceAltitudeLimit = airspaceAltitudeLimit_min;
+    }
+    if (!newAirspaceAltitudeLimit.isFinite() || (newAirspaceAltitudeLimit > airspaceAltitudeLimit_max)) {
+        newAirspaceAltitudeLimit = Units::Distance();
+    }
+
+    if (newAirspaceAltitudeLimit != airspaceAltitudeLimit()) {
+        settings.setValue("Map/airspaceAltitudeLimit_ft", newAirspaceAltitudeLimit.toFeet());
+        emit airspaceAltitudeLimitChanged();
+    }
+
+    if (newAirspaceAltitudeLimit.isFinite() &&
+            (newAirspaceAltitudeLimit != lastValidAirspaceAltitudeLimit())) {
+        settings.setValue("Map/lastValidAirspaceAltitudeLimit_ft", newAirspaceAltitudeLimit.toFeet());
+        emit lastValidAirspaceAltitudeLimitChanged();
+    }
+}
+
+
+auto Settings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
+{
+    auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
+    return qBound(airspaceAltitudeLimit_min, result, airspaceAltitudeLimit_max);
 }
 
 
@@ -74,16 +121,6 @@ void Settings::setHideGlidingSectors(bool hide)
     }
     settings.setValue("Map/hideGlidingSectors", hide);
     emit hideGlidingSectorsChanged();
-}
-
-
-void Settings::setHideUpperAirspaces(bool hide)
-{
-    if (hide == hideUpperAirspaces()) {
-        return;
-    }
-    settings.setValue("Map/hideUpperAirspaces", hide);
-    emit hideUpperAirspacesChanged();
 }
 
 

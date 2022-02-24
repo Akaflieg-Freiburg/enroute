@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -216,4 +216,21 @@ auto Navigation::Aircraft::toJSON() const -> QByteArray
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc.toJson();
+}
+
+
+
+auto Navigation::Aircraft::verticalDistanceToString(Units::Distance distance) const -> QString
+{
+    if (!distance.isFinite()) {
+        return "-";
+    }
+
+    switch(_verticalDistanceUnit) {
+    case Navigation::Aircraft::Feet:
+        return QString("%L1 ft").arg(qRound(distance.toFeet()));
+    case Navigation::Aircraft::Meters:
+        return QString("%L1 m").arg(qRound(distance.toM()));
+    }
+    return {};
 }

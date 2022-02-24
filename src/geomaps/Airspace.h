@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,8 @@
 
 #include <QGeoPolygon>
 #include <QJsonObject>
+
+#include "units/Distance.h"
 
 namespace GeoMaps {
 
@@ -47,29 +49,16 @@ public:
      */
     explicit Airspace(const QJsonObject &geoJSONObject);
 
-    /*! \brief Estimates the lower limit of the airspace, in feet above MSL
+    /*! \brief Estimates the lower limit of the airspace above MSL
      *
-     * This method gives a rought estimate for the lower limit of the airspace
-     * in ft MSL. The result is not reliable enough for aviation purposes but
+     * This method gives a rought estimate for the lower limit of the airspace.
+     * The result is not reliable enough for aviation purposes but
      * can be used to sort the airspaces in the GUI.
      *
-     * @returns Estimated lower bound of the airspace, in feet above main sea
+     * @returns Estimated lower bound of the airspace, above main sea
      * level
      */
-    double estimatedLowerBoundInFtMSL() const;
-
-    /*! \brief Estimates if the airspace begins at FL100 or above
-     *
-     * If the lower limit string cannot be interpreted or if the lower limit is
-     * not given as a flight level, then this method returns 'false'.
-     */
-    Q_PROPERTY(bool isUpper READ isUpper CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property isUpper
-     */
-    bool isUpper() const;
+    Units::Distance estimatedLowerBoundMSL() const;
 
     /*! \brief Validity */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)

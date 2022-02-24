@@ -40,7 +40,7 @@ Dialog {
 
     modal: true
 
-    title: "Password"
+    title: qsTr("Password")
     standardButtons: Dialog.Ok|Dialog.Cancel
     
 

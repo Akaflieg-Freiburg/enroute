@@ -107,7 +107,7 @@ Item {
             when: flightMap.followGPS === true
             value: {
                 // If not in flight, then aircraft stays in center of display
-                if (!global.navigator().isInFlight)
+                if (global.navigator().flightStatus !== Navigator.Flight)
                     return global.positionProvider().lastValidCoordinate
                 if (!global.positionProvider().lastValidTT.isFinite())
                     return global.positionProvider().lastValidCoordinate
@@ -329,7 +329,7 @@ Item {
 
                 FlightVector {
                     groundSpeedInMetersPerSecond: global.positionProvider().positionInfo.groundSpeed().toMPS()
-                    visible: (global.navigator().isInFlight) && (global.positionProvider().positionInfo.trueTrack().isFinite())
+                    visible: (global.navigator().flightStatus === Navigator.Flight) && (global.positionProvider().positionInfo.trueTrack().isFinite())
                 }
 
                 Image {
@@ -489,6 +489,23 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             textFormat: Text.StyledText
             color: "red"
         }
+    }
+
+    Label {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 0.4*Qt.application.font.pixelSize
+
+        text: {
+            // Mention
+            global.navigator().aircraft.verticalDistanceUnit
+
+            var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+            var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+            return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
+        }
+        background: Rectangle { color: "white"; opacity: 0.8}
+        visible: global.settings().airspaceAltitudeLimit.isFinite()
     }
 
     RoundButton {

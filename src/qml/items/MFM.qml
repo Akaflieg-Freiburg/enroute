@@ -504,7 +504,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
             return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
         }
-        background: Rectangle { color: "white"; opacity: 0.8}
+        background: Rectangle { color: "white"; opacity: Material.theme === Material.Dark ? 0.1 : 0.8}
         visible: global.settings().airspaceAltitudeLimit.isFinite()
     }
 

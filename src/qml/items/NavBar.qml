@@ -59,16 +59,11 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
+                    // Mention
+                    global.navigator().aircraft.verticalDistanceUnit
+
                     const talt= global.positionProvider().positionInfo.trueAltitude();
-                    if (!talt.isFinite())
-                        return "-"
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
-                    case Aircraft.Feet:
-                        return Math.round(talt.toFeet()) + " ft"
-                    case Aircraft.Meters:
-                        return Math.round(talt.toM()) + " m"
-                    }
-                    return "-"
+                    return global.navigator().aircraft.verticalDistanceToString(talt)
                 }
                 font.weight: Font.Bold
                 font.pixelSize: Qt.application.font.pixelSize*1.3

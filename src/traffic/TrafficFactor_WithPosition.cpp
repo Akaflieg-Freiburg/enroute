@@ -108,17 +108,8 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
         results << tr("Position unknown");
     }
 
-    if (vDist().isFinite()) {
-        QString result;
-        switch(GlobalObject::navigator()->aircraft()->verticalDistanceUnit()) {
-        case Navigation::Aircraft::VerticalDistanceUnit::Feet:
-            result = vDist().toString(Units::Distance::Feet, true, true);
-            break;
-        case Navigation::Aircraft::VerticalDistanceUnit::Meters:
-            result = vDist().toString(Units::Distance::Meter, true, true);
-            break;
-        }
-
+    if (vDist().isFinite()) {       
+        QString result = GlobalObject::navigator()->aircraft()->verticalDistanceToString(vDist(), true);
         auto climbRateMPS = m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed);
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {

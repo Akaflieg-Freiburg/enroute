@@ -319,9 +319,11 @@ public:
      *
      *  @param distance Distance
      *
+     *  @param forceSign Prepend positive number with a sign "+"
+     *
      *  @returns A string of the form "1.280 m", "3.500 ft", or "-" for an invalid distance
      */
-    Q_INVOKABLE QString verticalDistanceToString(Units::Distance distance) const;
+    Q_INVOKABLE QString verticalDistanceToString(Units::Distance distance, bool forceSign=false) const;
 
 signals:   
     /*! \brief Notifier signal */

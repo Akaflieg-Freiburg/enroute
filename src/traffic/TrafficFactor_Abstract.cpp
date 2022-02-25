@@ -151,31 +151,7 @@ void Traffic::TrafficFactor_Abstract::updateDescription()
 
     // Vertical distance
     if (vDist().isFinite()) {
-        QString unitString;
-        double number;
-
-        switch(GlobalObject::navigator()->aircraft()->verticalDistanceUnit()) {
-        case Navigation::Aircraft::Feet:
-            number = vDist().toFeet();
-            unitString = "ft";
-            break;
-        case Navigation::Aircraft::Meters:
-            number = vDist().toM();
-            unitString = "m";
-            break;
-        }
-
-        // Round value to reasonable numbers
-        if (qAbs(number) > 1000.0) {
-            number = qRound(number/100.0)*100.0;
-        } else if (qAbs(number) > 100.0) {
-            number = qRound(number/10.0)*10.0;
-        }
-        QString signString;
-        if (number > 0.0) {
-            signString += "+";
-        }
-        results << signString << QString::number(number) << "&nbsp;" << unitString;
+        results << GlobalObject::navigator()->aircraft()->verticalDistanceToString(vDist(), true);
     }
 
     // Set property value

@@ -219,18 +219,20 @@ auto Navigation::Aircraft::toJSON() const -> QByteArray
 }
 
 
-
-auto Navigation::Aircraft::verticalDistanceToString(Units::Distance distance) const -> QString
+auto Navigation::Aircraft::verticalDistanceToString(Units::Distance distance, bool forceSign) const -> QString
 {
     if (!distance.isFinite()) {
         return "-";
     }
-
+    QString signString;
+    if (forceSign && (distance.toM() >= 0.0)) {
+        signString = "+";
+    }
     switch(_verticalDistanceUnit) {
     case Navigation::Aircraft::Feet:
-        return QString("%L1 ft").arg(qRound(distance.toFeet()));
+        return signString+QString("%L1 ft").arg(qRound(distance.toFeet()));
     case Navigation::Aircraft::Meters:
-        return QString("%L1 m").arg(qRound(distance.toM()));
+        return signString+QString("%L1 m").arg(qRound(distance.toM()));
     }
     return {};
 }

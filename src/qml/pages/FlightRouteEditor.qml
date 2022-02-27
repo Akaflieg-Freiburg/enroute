@@ -127,8 +127,10 @@ Page {
                 Layout.fillWidth: true
                 enabled: false
                 text: {
-                    // Mention horizontal distance unit
+                    // Mention units
                     global.navigator().aircraft.horizontalDistanceUnit
+                    global.navigator().aircraft.fuelConsumptionUnit
+
                     if (leg === null)
                         return ""
                     return leg.description
@@ -610,8 +612,9 @@ Page {
 
                 Layout.fillWidth: true
                 text: {
-                    // Mention horizontal distance units
+                    // Mention units
                     global.navigator().aircraft.horizontalDistanceUnit
+                    global.navigator().aircraft.fuelConsumptionUnit
 
                     return global.navigator().flightRoute.summary
                 }

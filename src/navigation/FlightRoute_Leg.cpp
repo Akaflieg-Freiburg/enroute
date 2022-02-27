@@ -49,14 +49,14 @@ auto Navigation::FlightRoute::Leg::distance() const -> Units::Distance
 }
 
 
-auto Navigation::FlightRoute::Leg::Fuel() const -> double
+auto Navigation::FlightRoute::Leg::Fuel() const -> Units::Volume
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle()) {
-        return qQNaN();
+        return {};
     }
 
-    return _aircraft->fuelConsumption().toLPH()*Time().toH();
+    return _aircraft->fuelConsumption()*Time();
 }
 
 
@@ -127,17 +127,7 @@ auto Navigation::FlightRoute::Leg::description() const -> QString
     }
 
     QString result;
-    switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
-    case Navigation::Aircraft::Kilometer:
-        result += tr("%1 km").arg(distance().toKM(), 0, 'f', 1);
-        break;
-    case Navigation::Aircraft::NauticalMile:
-        result += tr("%1 nm").arg(distance().toNM(), 0, 'f', 1);
-        break;
-    case Navigation::Aircraft::StatuteMile:
-        result += tr("%1 mil").arg(distance().toMIL(), 0, 'f', 1);
-        break;
-    }
+    result += QString("%1").arg( GlobalObject::navigator()->aircraft()->horizontalDistanceToString(distance()) );
     auto _time = Time();
     if (_time.isFinite()) {
         result += QString(" • %1 h").arg(_time.toHoursAndMinutes());

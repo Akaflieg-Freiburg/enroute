@@ -70,6 +70,18 @@ namespace Units {
             return std::isfinite(m_volumeInL);
         }
 
+        /*! \brief Add volume to this volume
+         *
+         * @param other volume to be added
+         *
+         * @returns reference to this volume
+         */
+        Q_INVOKABLE Units::Volume &operator+=(Units::Volume other)
+        {
+            m_volumeInL += other.m_volumeInL;
+            return *this;
+        }
+
         /*! \brief Comparison: less than
          *
          *  @param rhs Right hand side of the comparison

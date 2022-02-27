@@ -22,6 +22,8 @@
 
 #include "units/Distance.h"
 #include "units/Time.h"
+#include "units/Volume.h"
+#include "units/VolumeFlow.h"
 
 //
 // Operations
@@ -59,4 +61,21 @@ inline Units::Time operator/(Units::Distance dist, Units::Speed speed)
         return {};
 
     return Units::Time::fromS(dist.toM() / speed.toMPS());
+}
+
+
+/*! \brief Compute volume as product of volumeFlow and time
+ *
+ * @param volumeFlow Volume Flow
+ *
+ * @param time Time
+ *
+ * @returns Volume
+ */
+inline Units::Volume operator*(Units::VolumeFlow volumeFlow, Units::Time time)
+{
+    if (!volumeFlow.isFinite() || !time.isFinite())
+        return {};
+
+    return Units::Volume::fromL( volumeFlow.toLPH()*time.toH() );
 }

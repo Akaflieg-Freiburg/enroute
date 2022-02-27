@@ -414,36 +414,26 @@ auto Navigation::FlightRoute::summary() const -> QString
 
     auto dist = Units::Distance::fromM(0.0);
     auto time = Units::Time::fromS(0.0);
-    double fuelInL = 0.0;
+    auto fuel = Units::Volume::fromL(0.0);
 
     for(auto *_leg : m_legs) {
         dist += _leg->distance();
         if (dist.toM() > 100) {
             time += _leg->Time();
-            fuelInL += _leg->Fuel();
+            fuel += _leg->Fuel();
         }
     }
     if (!dist.isFinite()) {
         return {};
     }
 
-    switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
-    case Navigation::Aircraft::Kilometer:
-        result += tr("Total: %1 km").arg(dist.toKM(), 0, 'f', 1);
-        break;
-    case Navigation::Aircraft::NauticalMile:
-        result += tr("Total: %1 nm").arg(dist.toNM(), 0, 'f', 1);
-        break;
-    case Navigation::Aircraft::StatuteMile:
-        result += tr("Total: %1 mil").arg(dist.toMIL(), 0, 'f', 1);
-        break;
-    }
+    result += tr("Total: %1").arg( GlobalObject::navigator()->aircraft()->horizontalDistanceToString(dist) );
 
     if (time.isFinite()) {
         result += QStringLiteral(" • %1 h").arg(time.toHoursAndMinutes());
     }
-    if (qIsFinite(fuelInL)) {
-        result += QStringLiteral(" • %1 l").arg(qRound(fuelInL));
+    if (fuel.isFinite()) {
+        result += QStringLiteral(" • %1").arg(GlobalObject::navigator()->aircraft()->volumeToString(fuel));
     }
 
 

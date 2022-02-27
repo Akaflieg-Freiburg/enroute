@@ -94,18 +94,7 @@ auto Navigation::Navigator::describeWay(const QGeoCoordinate &from, const QGeoCo
 
     auto dist = Units::Distance::fromM(from.distanceTo(to));
     auto QUJ = qRound(from.azimuthTo(to));
-
-    switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
-    case Navigation::Aircraft::Kilometer:
-        return QStringLiteral("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    case Navigation::Aircraft::StatuteMile:
-        return QStringLiteral("DIST %1 mil • QUJ %2°").arg(dist.toMIL(), 0, 'f', 1).arg(QUJ);
-    case Navigation::Aircraft::NauticalMile:
-        return QStringLiteral("DIST %1 nm • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
-    }
-
-    // This should never be reached.
-    return {};
+    return QStringLiteral("DIST %1 • QUJ %2°").arg(GlobalObject::navigator()->aircraft()->horizontalDistanceToString(dist)).arg(QUJ);
 }
 
 

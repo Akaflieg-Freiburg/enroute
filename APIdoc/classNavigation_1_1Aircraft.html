@@ -169,6 +169,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62ca2333557df43be51f19e1c9ddd092"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#a62ca2333557df43be51f19e1c9ddd092">setVerticalDistanceUnit</a> (<a class="el" href="classNavigation_1_1Aircraft.html#a101d8c2c5beffb5a2af2c1835ee6d724">VerticalDistanceUnit</a> newUnit)</td></tr>
 <tr class="memdesc:a62ca2333557df43be51f19e1c9ddd092"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classNavigation_1_1Aircraft.html#a62ca2333557df43be51f19e1c9ddd092">More...</a><br /></td></tr>
 <tr class="separator:a62ca2333557df43be51f19e1c9ddd092"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ecfe46991afa3a2da83719187d7b5ea"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#a2ecfe46991afa3a2da83719187d7b5ea">horizontalDistanceToString</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> distance) const</td></tr>
+<tr class="memdesc:a2ecfe46991afa3a2da83719187d7b5ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert horizontal distance to string.  <a href="classNavigation_1_1Aircraft.html#a2ecfe46991afa3a2da83719187d7b5ea">More...</a><br /></td></tr>
+<tr class="separator:a2ecfe46991afa3a2da83719187d7b5ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c8c139c0cd156f22e3f3c8232609076"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#a2c8c139c0cd156f22e3f3c8232609076">horizontalSpeedToString</a> (<a class="el" href="classUnits_1_1Speed.html">Units::Speed</a> speed) const</td></tr>
+<tr class="memdesc:a2c8c139c0cd156f22e3f3c8232609076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert horizontal speed to string.  <a href="classNavigation_1_1Aircraft.html#a2c8c139c0cd156f22e3f3c8232609076">More...</a><br /></td></tr>
+<tr class="separator:a2c8c139c0cd156f22e3f3c8232609076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53844130b135bec48481773f0c02c8da"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#a53844130b135bec48481773f0c02c8da">loadFromJSON</a> (const QString &amp;fileName)</td></tr>
 <tr class="memdesc:a53844130b135bec48481773f0c02c8da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads aircraft data from a JSON document.  <a href="classNavigation_1_1Aircraft.html#a53844130b135bec48481773f0c02c8da">More...</a><br /></td></tr>
 <tr class="separator:a53844130b135bec48481773f0c02c8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,9 +187,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18d85e89bd3ab9d526f908b78614e44e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#a18d85e89bd3ab9d526f908b78614e44e">toJSON</a> () const</td></tr>
 <tr class="memdesc:a18d85e89bd3ab9d526f908b78614e44e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exports to route to JSON.  <a href="classNavigation_1_1Aircraft.html#a18d85e89bd3ab9d526f908b78614e44e">More...</a><br /></td></tr>
 <tr class="separator:a18d85e89bd3ab9d526f908b78614e44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad55aece3ce3e65db2d3c25b100afdd64"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#ad55aece3ce3e65db2d3c25b100afdd64">verticalDistanceToString</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> distance) const</td></tr>
-<tr class="memdesc:ad55aece3ce3e65db2d3c25b100afdd64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert vertical distance to string.  <a href="classNavigation_1_1Aircraft.html#ad55aece3ce3e65db2d3c25b100afdd64">More...</a><br /></td></tr>
-<tr class="separator:ad55aece3ce3e65db2d3c25b100afdd64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41327864cccd6c932ce23d9a3e16dee0"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#a41327864cccd6c932ce23d9a3e16dee0">verticalDistanceToString</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> distance, bool forceSign=false) const</td></tr>
+<tr class="memdesc:a41327864cccd6c932ce23d9a3e16dee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert vertical distance to string.  <a href="classNavigation_1_1Aircraft.html#a41327864cccd6c932ce23d9a3e16dee0">More...</a><br /></td></tr>
+<tr class="separator:a41327864cccd6c932ce23d9a3e16dee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a25cd192a4da73ed9eed273f714b87c"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#a8a25cd192a4da73ed9eed273f714b87c">verticalSpeedToString</a> (<a class="el" href="classUnits_1_1Speed.html">Units::Speed</a> speed) const</td></tr>
+<tr class="memdesc:a8a25cd192a4da73ed9eed273f714b87c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert vertical speed to string.  <a href="classNavigation_1_1Aircraft.html#a8a25cd192a4da73ed9eed273f714b87c">More...</a><br /></td></tr>
+<tr class="separator:a8a25cd192a4da73ed9eed273f714b87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae03217f94aacee61a7302a6c114e6738"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Aircraft.html#ae03217f94aacee61a7302a6c114e6738">volumeToString</a> (<a class="el" href="classUnits_1_1Volume.html">Units::Volume</a> volume) const</td></tr>
+<tr class="memdesc:ae03217f94aacee61a7302a6c114e6738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert volume to string.  <a href="classNavigation_1_1Aircraft.html#ae03217f94aacee61a7302a6c114e6738">More...</a><br /></td></tr>
+<tr class="separator:ae03217f94aacee61a7302a6c114e6738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -234,7 +246,7 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This extremely simple class holds a few numbers that describe an aircraft. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00053">53</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00054">54</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a9d123f8f7f3a6cab81f042841bcbad30"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d123f8f7f3a6cab81f042841bcbad30">&#9670;&nbsp;</a></span>FuelConsumptionUnit</h2>
@@ -256,7 +268,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00076">76</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00077">77</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -282,7 +294,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00086">86</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00087">87</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -306,7 +318,7 @@ Properties</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00099">99</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00100">100</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -373,7 +385,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property cruise speed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00196">196</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00197">197</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -403,7 +415,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property descentSpeed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00202">202</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00203">203</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -433,7 +445,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property fuelConsumptionInLPH </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00208">208</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00209">209</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -463,7 +475,35 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property preferredVolumeUnit </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00214">214</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00215">215</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+
+</div>
+</div>
+<a id="a2ecfe46991afa3a2da83719187d7b5ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ecfe46991afa3a2da83719187d7b5ea">&#9670;&nbsp;</a></span>horizontalDistanceToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Navigation::Aircraft::horizontalDistanceToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td>
+          <td class="paramname"><em>distance</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert horizontal distance to string. </p>
+<p>This method converts a horizontal distance to a localized string, taking horizontalDistanceUnit into account.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">distance</td><td>Distance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string of the form "280 km", or "-" for an invalid distance </dd></dl>
 
 </div>
 </div>
@@ -493,7 +533,35 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property preferredHorizontalDistanceUnit </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00220">220</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00221">221</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+
+</div>
+</div>
+<a id="a2c8c139c0cd156f22e3f3c8232609076"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c8c139c0cd156f22e3f3c8232609076">&#9670;&nbsp;</a></span>horizontalSpeedToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Navigation::Aircraft::horizontalSpeedToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Speed.html">Units::Speed</a>&#160;</td>
+          <td class="paramname"><em>speed</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert horizontal speed to string. </p>
+<p>This method converts a horizontal speed to a localized string, taking horizontalDistanceUnit into account.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">speed</td><td>Speed</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string of the form "98 kn", "154 km/h", or "-" </dd></dl>
 
 </div>
 </div>
@@ -579,7 +647,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property minimum speed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00226">226</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00227">227</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -609,7 +677,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00232">232</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00233">233</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -872,8 +940,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ad55aece3ce3e65db2d3c25b100afdd64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad55aece3ce3e65db2d3c25b100afdd64">&#9670;&nbsp;</a></span>verticalDistanceToString()</h2>
+<a id="a41327864cccd6c932ce23d9a3e16dee0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41327864cccd6c932ce23d9a3e16dee0">&#9670;&nbsp;</a></span>verticalDistanceToString()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -882,8 +950,18 @@ Properties</h2></td></tr>
           <td class="memname">Q_INVOKABLE QString Navigation::Aircraft::verticalDistanceToString </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td>
-          <td class="paramname"><em>distance</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><em>distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>forceSign</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -893,6 +971,7 @@ Properties</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">distance</td><td>Distance</td></tr>
+    <tr><td class="paramname">forceSign</td><td>Prepend positive number with a sign "+"</td></tr>
   </table>
   </dd>
 </dl>
@@ -926,7 +1005,63 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property preferredVertialDistanceUnit </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00238">238</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00239">239</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+
+</div>
+</div>
+<a id="a8a25cd192a4da73ed9eed273f714b87c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a25cd192a4da73ed9eed273f714b87c">&#9670;&nbsp;</a></span>verticalSpeedToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Navigation::Aircraft::verticalSpeedToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Speed.html">Units::Speed</a>&#160;</td>
+          <td class="paramname"><em>speed</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert vertical speed to string. </p>
+<p>This method converts a vertical speed to a localized string, taking verticalDistanceUnit into account.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">speed</td><td>Speed</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string of the form "500 ft/min", "2,5 m/s", or "-" </dd></dl>
+
+</div>
+</div>
+<a id="ae03217f94aacee61a7302a6c114e6738"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae03217f94aacee61a7302a6c114e6738">&#9670;&nbsp;</a></span>volumeToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Navigation::Aircraft::volumeToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Volume.html">Units::Volume</a>&#160;</td>
+          <td class="paramname"><em>volume</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert volume to string. </p>
+<p>This method converts a volume to a localized string, taking volumeUnit into account.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">volume</td><td>Volume</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string of the form "5.2 l", or "-" </dd></dl>
 
 </div>
 </div>
@@ -954,7 +1089,7 @@ Properties</h2></td></tr>
 <p>Cruise Speed. </p>
 <p>This property holds the cruise speed of the aircraft. This lies in the interval [minAircraftSpeed, maxAircraftSpeed] or if NaN if the cruise speed has not been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00135">135</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00136">136</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -981,7 +1116,7 @@ Properties</h2></td></tr>
 <p>Decent Speed. </p>
 <p>This property holds the descent speed of the aircraft. This is a number that lies in the interval [minAircraftSpeed, maxAircraftSpeed] or NaN if the cruise speed has not been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00143">143</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00144">144</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -1008,7 +1143,7 @@ Properties</h2></td></tr>
 <p>Fuel Consumption. </p>
 <p>This property holds the fuel consumption of the aircraft. This is a number that lies in the interval [minFuelConsumption, maxFuelConsumption] or NaN if no value has been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00151">151</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00152">152</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1170,7 @@ Properties</h2></td></tr>
 <p>Minimum Speed. </p>
 <p>This property holds the minimum speed of the aircraft. This lies in the interval [minAircraftSpeed, maxAircraftSpeed] or if NaN if the minimum speed has not been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00170">170</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00171">171</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1197,7 @@ Properties</h2></td></tr>
 <p>Name. </p>
 <p>This property holds the name. </p>
 
-<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00182">182</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Aircraft_8h_source.html#l00183">183</a> of file <a class="el" href="Aircraft_8h_source.html">Aircraft.h</a>.</p>
 
 </div>
 </div>

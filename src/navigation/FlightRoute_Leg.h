@@ -87,16 +87,16 @@ public:
 
     /*! \brief Fuel
    *
-   * This property holds the fuel consumption for the leg, in liters. It holds
+   * This property holds the fuel consumption for the leg. It holds
    * NaN if the leg is invalid or if the fuel consumption cannot be computed.
    */
-    Q_PROPERTY(double Fuel READ Fuel NOTIFY valChanged)
+    Q_PROPERTY(Units::Volume Fuel READ Fuel NOTIFY valChanged)
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property Fuel
    */
-    double Fuel() const;
+    Units::Volume Fuel() const;
 
     /*! \brief Ground speed
    *

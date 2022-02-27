@@ -334,12 +334,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: {
-                // Mention horizontalDistanceUnit
-                global.navigator().aircraft.horizontalDistanceUnit
-
-                return global.navigator().describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
-            }
+            text: global.navigator().describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

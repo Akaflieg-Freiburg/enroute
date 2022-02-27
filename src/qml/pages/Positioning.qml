@@ -132,20 +132,7 @@ Page {
             }
 
             Label { text: qsTr("True Altitude") }
-            Label {
-                text: {
-                    const talt = global.positionProvider().positionInfo.trueAltitude();
-                    if (!talt.isFinite())
-                        return "-"
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
-                    case Aircraft.Feet:
-                        return Math.round(talt.toFeet()) + " ft"
-                    case Aircraft.Meters:
-                        return Math.round(talt.toM()) + " m"
-                    }
-                    return "-"
-                }
-            }
+            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitude() ) }
 
             Label { text: qsTr("Error (horizontal)") }
             Label {
@@ -156,20 +143,7 @@ Page {
             }
 
             Label { text: qsTr("Error (vertical)") }
-            Label {
-                text: {
-                    const taltError = global.positionProvider().positionInfo.trueAltitudeErrorEstimate();
-                    if (!taltError.isFinite())
-                        return "-"
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
-                    case Aircraft.Feet:
-                        return "±" + Math.round(taltError.toFeet()) + " ft"
-                    case Aircraft.Meters:
-                        return "±" + Math.round(taltError.toM()) + " m"
-                    }
-                    return "-"
-                }
-            }
+            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeErrorEstimate() ) }
 
             Label { text: qsTr("Magnetic Variation") }
             Label { text: {
@@ -179,24 +153,7 @@ Page {
             }
 
             Label { text: qsTr("Ground Speed") }
-            Label {
-                text: {
-                    const gs = global.positionProvider().positionInfo.groundSpeed();
-                    if (!gs.isFinite())
-                        return "-"
-
-                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
-                        return Math.round(gs.toKMH()) + " km/h"
-                    }
-                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
-                        return Math.round(gs.toMPH()) + " mph"
-                    }
-                    if (global.navigator().aircraft.horizontalDistanceUnit === Aircraft.NauticalMile) {
-                        return Math.round(gs.toKN()) + " kn"
-                    }
-                    return "-"
-                }
-            }
+            Label { text: global.navigator().aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() ) }
 
             Label { text: qsTr("True Track") }
             Label {
@@ -207,23 +164,10 @@ Page {
             }
 
             Label { text: qsTr("Vertical Speed") }
-            Label {
-                text: {
-                    const vs = global.positionProvider().positionInfo.verticalSpeed();
-                    if (!vs.isFinite())
-                        return "-"
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
-                    case Aircraft.Feet:
-                        return Math.round(vs.toFPM()) + " ft/min"
-                    case Aircraft.Meters:
-                        return Math.round(vs.toMPS()) + " m/s"
-                    }
-                    return "-"
-                }
-            }
+            Label { text: global.navigator().aircraft.verticalSpeedToString( global.positionProvider().positionInfo.verticalSpeed() ) }
 
             Label { text: qsTr("Pressure Altitude") }
-            Label { text: global.positionProvider().pressureAltitude.isFinite() ? Math.round(global.positionProvider().pressureAltitude.toFeet()) + " ft" : "-" }
+            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().pressureAltitude ) }
 
             Label { text: qsTr("Timestamp") }
             Label { text: global.positionProvider().positionInfo.isValid() ? global.positionProvider().positionInfo.timestampString() : "-" }

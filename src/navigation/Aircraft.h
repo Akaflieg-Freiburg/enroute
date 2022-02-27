@@ -24,6 +24,7 @@
 
 #include "units/Distance.h"
 #include "units/Speed.h"
+#include "units/Volume.h"
 #include "units/VolumeFlow.h"
 
 
@@ -266,6 +267,26 @@ public:
     // Methods
     //
 
+    /*! \brief Convert horizontal distance to string
+     *
+     *  This method converts a horizontal distance to a localized string, taking horizontalDistanceUnit into account.
+     *
+     *  @param distance Distance
+     *
+     *  @returns A string of the form "280 km", or "-" for an invalid distance
+     */
+    Q_INVOKABLE QString horizontalDistanceToString(Units::Distance distance) const;
+
+    /*! \brief Convert horizontal speed to string
+     *
+     *  This method converts a horizontal speed to a localized string, taking horizontalDistanceUnit into account.
+     *
+     *  @param speed Speed
+     *
+     *  @returns A string of the form "98 kn", "154 km/h", or "-"
+     */
+    Q_INVOKABLE QString horizontalSpeedToString(Units::Speed speed) const;
+
     /*! \brief Reads aircraft data from a JSON document
      *
      * This method loads reads data from a JSON document and stores it in the present object. Notifier signals are emitted as
@@ -278,7 +299,6 @@ public:
      * error message otherwise.
      */
     Q_INVOKABLE QString loadFromJSON(const QString& fileName);
-
 
     /*! \brief Reads aircraft data from a JSON document
      *
@@ -319,9 +339,31 @@ public:
      *
      *  @param distance Distance
      *
+     *  @param forceSign Prepend positive number with a sign "+"
+     *
      *  @returns A string of the form "1.280 m", "3.500 ft", or "-" for an invalid distance
      */
-    Q_INVOKABLE QString verticalDistanceToString(Units::Distance distance) const;
+    Q_INVOKABLE QString verticalDistanceToString(Units::Distance distance, bool forceSign=false) const;
+
+    /*! \brief Convert vertical speed to string
+     *
+     *  This method converts a vertical speed to a localized string, taking verticalDistanceUnit into account.
+     *
+     *  @param speed Speed
+     *
+     *  @returns A string of the form "500 ft/min", "2,5 m/s", or "-"
+     */
+    Q_INVOKABLE QString verticalSpeedToString(Units::Speed speed) const;
+
+    /*! \brief Convert volume to string
+     *
+     *  This method converts a volume to a localized string, taking volumeUnit into account.
+     *
+     *  @param volume Volume
+     *
+     *  @returns A string of the form "5.2 l", or "-"
+     */
+    Q_INVOKABLE QString volumeToString(Units::Volume volume) const;
 
 signals:   
     /*! \brief Notifier signal */

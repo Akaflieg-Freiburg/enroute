@@ -454,7 +454,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
 void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
-    if (!Settings::acceptedWeatherTermsStatic()) {
+    if (!GlobalObject::settings()->acceptedWeatherTerms()) {
         return;
     }
 

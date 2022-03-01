@@ -82,6 +82,8 @@ void Positioning::PositionProvider::onPositionUpdated()
     PositionInfo info;
     QString source;
 
+#warning This depends on Setting positioningByTrafficDataReceiver
+
     // Priority #1: Traffic data provider
     auto* trafficDataProvider = GlobalObject::trafficDataProvider();
     if (trafficDataProvider != nullptr) {

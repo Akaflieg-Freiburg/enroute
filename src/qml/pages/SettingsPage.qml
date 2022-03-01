@@ -51,7 +51,7 @@ Page {
                 color: Material.accent
             }
 
-            SwitchDelegate {
+            WordWrappingSwitchDelegate {
                 id: hideUpperAsp
                 text: {
                     var secondLineString = ""
@@ -85,7 +85,7 @@ Page {
                 }
             }
 
-            SwitchDelegate {
+            WordWrappingSwitchDelegate {
                 id: hideGlidingSectors
                 text: qsTr("Hide Gliding Sectors") + (
                           global.settings().hideGlidingSectors ? (
@@ -117,7 +117,21 @@ Page {
                 color: Material.accent
             }
 
-            SwitchDelegate {
+            WordWrappingSwitchDelegate {
+                id: trafficDataReceiverPositioning
+                text: qsTr("Use traffic data receiver for positioning")
+                icon.source: "/icons/material/ic_satellite.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    trafficDataReceiverPositioning.checked = global.settings().positioningByTrafficDataReceiver
+                }
+                onToggled: {
+                    global.mobileAdaptor().vibrateBrief()
+                    global.settings().positioningByTrafficDataReceiver = trafficDataReceiverPositioning.checked
+                }
+            }
+
+            WordWrappingSwitchDelegate {
                 id: nightMode
                 text: qsTr("Night mode")
                 icon.source: "/icons/material/ic_brightness_3.svg"
@@ -131,7 +145,7 @@ Page {
                 }
             }
 
-            SwitchDelegate {
+            WordWrappingSwitchDelegate {
                 id: ignoreSSL
                 text: qsTr("Ignore network security errors")
                 icon.source: "/icons/material/ic_lock.svg"

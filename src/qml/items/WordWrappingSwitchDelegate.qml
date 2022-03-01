@@ -22,9 +22,9 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-// This is a version of ItemDelegate that does word wrapping in the text
+// This is a version of SwitchDelegate that does word wrapping in the text
 
-ItemDelegate {
+SwitchDelegate {
     id: itemDelegate
 
     contentItem: RowLayout {
@@ -36,12 +36,15 @@ ItemDelegate {
         Item { // Spacer
             width: 5
         }
-
         Label { // Text
             id: b
             Layout.fillWidth: true
             text: itemDelegate.text
             wrapMode: Text.Wrap
+        }
+
+        Item { // Spacer
+            width: itemDelegate.indicator.implicitWidth
         }
     }
 

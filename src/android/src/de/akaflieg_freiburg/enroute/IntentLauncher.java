@@ -132,14 +132,16 @@ public class IntentLauncher {
         //
         ShareUtils.setShareUri(uri);
 
-        return openOrSave(new File(filePath).getName(), mimeType, Intent.ACTION_CREATE_DOCUMENT, ShareUtils.getSaveRequestCode());
+        return openOrSave(new File(filePath).getName(), mimeType, Intent.ACTION_CREATE_DOCUMENT,
+                ShareUtils.getSaveRequestCode());
     }
 
     /**
      * common implementation for both the sendFile() and viewFile() methods.
      *
      * Creates an appropriate intent and does the necessary settings.
-     * Creates a chooser with the intent and calls startActivity() to fire the intent.
+     * Creates a chooser with the intent and calls startActivity() to fire the
+     * intent.
      *
      * This method does _not_ block until the content has been share with another
      * app but rather returns immediately (if action == 0). Therefore the receiving
@@ -149,7 +151,7 @@ public class IntentLauncher {
      *
      * @param filePath the path of the file to send.
      * @param mimeType the mime type of the file to send.
-     * @param action either Intent.ACTION_SEND or Intent.ACTION_VIEW
+     * @param action   either Intent.ACTION_SEND or Intent.ACTION_VIEW
      *
      * @return true if the intent was launched otherwise false
      */
@@ -201,7 +203,8 @@ public class IntentLauncher {
 
         File fileToShare = new File(filePath);
 
-        // Using FileProvider you must get the URI from FileProvider using your AUTHORITY
+        // Using FileProvider you must get the URI from FileProvider using your
+        // AUTHORITY
         // Uri uri = Uri.fromFile(imageFileToShare);
         Uri uri;
         try {
@@ -236,16 +239,15 @@ public class IntentLauncher {
         // MATCH_DEFAULT_ONLY: Resolution and querying flag. if set, only filters
         // that support the CATEGORY_DEFAULT will be considered for matching. Check
         // if there is a default app for this type of content.
-        ResolveInfo defaultAppInfo =
-                packageManager.resolveActivity(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        ResolveInfo defaultAppInfo = packageManager.resolveActivity(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
         if (defaultAppInfo == null) {
             Log.d(TAG, "PackageManager cannot resolve Activity");
             return false;
         }
 
         // Retrieve all apps for our intent. Check if there are any apps returned
-        List<ResolveInfo> appInfoList =
-                packageManager.queryIntentActivities(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        List<ResolveInfo> appInfoList = packageManager.queryIntentActivities(theIntent,
+                PackageManager.MATCH_DEFAULT_ONLY);
         if (appInfoList.isEmpty()) {
             Log.d(TAG, "appInfoList.isEmpty");
             return false;
@@ -261,7 +263,6 @@ public class IntentLauncher {
                 return firstName.compareToIgnoreCase(secondName);
             }
         });
-
 
         // find own package and blacklist it
         //
@@ -296,15 +297,17 @@ public class IntentLauncher {
      * common implementation for both the openFile() and saveFile() methods.
      *
      * Creates an appropriate intent and does the necessary settings.
-     * Creates a chooser with the intent and calls startActivity() to fire the intent.
+     * Creates a chooser with the intent and calls startActivity() to fire the
+     * intent.
      *
      * This method will block until the user has chosen to open or save a file.
      * On return of the file chooser ShareActivity.onActivityResult() will do
      * the actual opening or saving of the file.
      *
-     * @param fileName the (suggested) name of the file (null for OPEN action)
-     * @param mimeType the mime type of the file to open or save
-     * @param action either Intent.ACTION_CREATE_DOCUMENT or Intent.ACTION_OPEN_DOCUMENT
+     * @param fileName    the (suggested) name of the file (null for OPEN action)
+     * @param mimeType    the mime type of the file to open or save
+     * @param action      either Intent.ACTION_CREATE_DOCUMENT or
+     *                    Intent.ACTION_OPEN_DOCUMENT
      * @param requestCode request code common to IntentLauncher and ShareActivity
      *
      * @return true if the intent was launched otherwise false

@@ -87,17 +87,7 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: hideGlidingSectors
-                text: qsTr("Hide Gliding Sectors") + (
-                          global.settings().hideGlidingSectors ? (
-                                                                     `<br><font color="#606060" size="2">`
-                                                                     + qsTr("Gliding sectors hidden")
-                                                                     +"</font>"
-                                                                     ) : (
-                                                                     `<br><font color="#606060" size="2">`
-                                                                     + qsTr("Gliding sectors shown")
-                                                                     + `</font>`
-                                                                     )
-                          )
+                text: qsTr("Hide Gliding Sectors")
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
@@ -119,7 +109,7 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: trafficDataReceiverPositioning
-                text: qsTr("Use traffic data receiver for positioning")
+                text: qsTr("Prefer position data from traffic data receiver")
                 icon.source: "/icons/material/ic_satellite.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {

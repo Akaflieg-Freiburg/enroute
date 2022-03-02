@@ -22,6 +22,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
+#include "Settings.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "units/Units.h"
@@ -82,19 +83,39 @@ void Positioning::PositionProvider::onPositionUpdated()
     PositionInfo info;
     QString source;
 
-#warning This depends on Setting positioningByTrafficDataReceiver
 
-    // Priority #1: Traffic data provider
-    auto* trafficDataProvider = GlobalObject::trafficDataProvider();
-    if (trafficDataProvider != nullptr) {
-        info = trafficDataProvider->positionInfo();
-        source = trafficDataProvider->sourceName();
-    }
+    if (GlobalObject::settings()->positioningByTrafficDataReceiver()) {
 
-    // Priority #2: Built-in sat receiver
-    if (!info.isValid()) {
+        // Priority #1: Traffic data provider
+        auto* trafficDataProvider = GlobalObject::trafficDataProvider();
+        if (trafficDataProvider != nullptr) {
+            info = trafficDataProvider->positionInfo();
+            source = trafficDataProvider->sourceName();
+        }
+
+        // Priority #2: Built-in sat receiver
+        if (!info.isValid()) {
+            info = satelliteSource.positionInfo();
+            source = satelliteSource.sourceName();
+        }
+
+    } else {
+
+        // Priority #1: Built-in sat receiver
         info = satelliteSource.positionInfo();
         source = satelliteSource.sourceName();
+
+
+        // Priority #2: Traffic data provider
+        if (!info.isValid()) {
+            auto* trafficDataProvider = GlobalObject::trafficDataProvider();
+            if (trafficDataProvider != nullptr) {
+                info = trafficDataProvider->positionInfo();
+                source = trafficDataProvider->sourceName();
+            }
+
+        }
+
     }
 
     // If no vertical speed has been provided by the system, we compute our own.

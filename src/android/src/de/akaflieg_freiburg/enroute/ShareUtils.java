@@ -22,7 +22,8 @@ package de.akaflieg_freiburg.enroute;
 import android.net.Uri;
 
 /**
- * here goes stuff which is shared between ShareActivity and the IntentLauncher classes.
+ * here goes stuff which is shared between ShareActivity and the IntentLauncher
+ * classes.
  *
  * Both classes need to use the same OPEN_REQUEST_CODE.
  * Both classes need to use the same SAVE_REQUEST_CODE.

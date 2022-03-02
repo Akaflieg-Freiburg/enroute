@@ -38,7 +38,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.String;
 
-
 /**
  * This class handles different sorts of "incoming" intents
  * with "file URL's" whose data is then sent back to Qt using
@@ -73,7 +72,7 @@ public class ShareActivity extends QtActivity {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-	Log.d(TAG, "onCreate");
+        Log.d(TAG, "onCreate");
 
         super.onCreate(savedInstanceState);
 
@@ -98,7 +97,8 @@ public class ShareActivity extends QtActivity {
     /**
      * Called when the activity is brought into foreground.
      *
-     * When the activity is re-launched while at the top of the activity stack instead
+     * When the activity is re-launched while at the top of the activity stack
+     * instead
      * of a new instance of the activity being started, onNewIntent() will be called
      * on the _existing_ instance with the Intent that was used to re-launch it.
      *
@@ -111,7 +111,7 @@ public class ShareActivity extends QtActivity {
     // if we are opened from other apps:
     @Override
     public void onNewIntent(Intent intent) {
-	Log.d(TAG, "onNewIntent");
+        Log.d(TAG, "onNewIntent");
 
         super.onNewIntent(intent);
         setIntent(intent);
@@ -131,21 +131,24 @@ public class ShareActivity extends QtActivity {
         }
     }
 
-    /** Called when an activity _we_ launched ourselves from IntentLauncher exits,
+    /**
+     * Called when an activity _we_ launched ourselves from IntentLauncher exits,
      * giving us the requestCode we started it with, a resultCode and any additional
      * data from it.
      *
      * The resultCode will be RESULT_CANCELED if the activity explicitly returned
      * that, didn't return any result, or crashed during its operation.
      *
-     * In our case onActivityResult() will be called to handle the ACTION_OPEN_DOCUMENT
-     * or ACTION_CREATE_DOCUMENT intents which wer launched from IntentLauncher to open
+     * In our case onActivityResult() will be called to handle the
+     * ACTION_OPEN_DOCUMENT
+     * or ACTION_CREATE_DOCUMENT intents which wer launched from IntentLauncher to
+     * open
      * or to save to a file URL.
      * We extract the file URL from the intent and process it with setUriReceived().
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-	Log.d(TAG, "onActivityResult");
+        Log.d(TAG, "onActivityResult");
 
         super.onActivityResult(requestCode, resultCode, intent);
 
@@ -162,14 +165,15 @@ public class ShareActivity extends QtActivity {
         }
     }
 
-    /** Called from c++ to process pending intents.
-      *
-      * Calling this method from c++ indicates that QML/Qt is initialized
-      * and ready for getting results from processIntent().
-      * Check if intents are pending and process them.
-      */
+    /**
+     * Called from c++ to process pending intents.
+     *
+     * Calling this method from c++ indicates that QML/Qt is initialized
+     * and ready for getting results from processIntent().
+     * Check if intents are pending and process them.
+     */
     public void checkPendingIntents(String tmpDir) {
-	Log.d(TAG, "checkPendingIntents");
+        Log.d(TAG, "checkPendingIntents");
 
         isInitialized = true;
         this.tmpDir = new File(tmpDir);
@@ -180,13 +184,14 @@ public class ShareActivity extends QtActivity {
         }
     }
 
-    /** process the (pending) Intent if Action is SEND or VIEW.
+    /**
+     * process the (pending) Intent if Action is SEND or VIEW.
      *
      * Extract intent URL from intent and process it further
      * in setUriReceived().
      */
     private void processIntent() {
-	Log.d(TAG, "processIntent()");
+        Log.d(TAG, "processIntent()");
 
         Intent intent = getIntent();
 
@@ -196,7 +201,7 @@ public class ShareActivity extends QtActivity {
             return;
         }
 
-    Log.d(TAG, "processIntent() " + intent.getAction());
+        Log.d(TAG, "processIntent() " + intent.getAction());
 
         // we are listening to android.intent.action.SEND or VIEW (see Manifest)
         if (intent.getAction().equals("android.intent.action.VIEW")) {
@@ -213,20 +218,21 @@ public class ShareActivity extends QtActivity {
         setUriReceived(intentUri);
     }
 
-    /** copy received URI to temporary file in cache directory and
+    /**
+     * copy received URI to temporary file in cache directory and
      * send the file name to c++ by setFileReceived().
      *
      * Extract intent URL from intent and process it further
      * in setUriReceived().
      */
     private void setUriReceived(Uri src) {
-	String pth = src.getPath();
-	String ending = null;
-	int lastIndexOfDot = pth.lastIndexOf('.');
-	if (lastIndexOfDot >= 0) {
-	    ending = pth.substring(lastIndexOfDot);
-	}
-	Log.d(TAG, "setUriReceived");
+        String pth = src.getPath();
+        String ending = null;
+        int lastIndexOfDot = pth.lastIndexOf('.');
+        if (lastIndexOfDot >= 0) {
+            ending = pth.substring(lastIndexOfDot);
+        }
+        Log.d(TAG, "setUriReceived");
 
         try {
             File tmpFile = File.createTempFile("tmp", ending, tmpDir);
@@ -237,10 +243,11 @@ public class ShareActivity extends QtActivity {
         }
     }
 
-    /** copy src URI to dst URI.
+    /**
+     * copy src URI to dst URI.
      */
     private void copyContent(Uri src, Uri dst) {
-	Log.d(TAG, "copyContent");
+        Log.d(TAG, "copyContent");
 
         // Log.d(TAG, "ShareActivity.copyContent " + src + " --> " + dst);
 

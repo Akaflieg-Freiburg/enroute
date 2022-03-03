@@ -275,8 +275,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == ":text/whatsnew.html") {
-        return tr("<p>The openAIP aviation database has seen a major update, and much of our infrastructure had to be rebuilt. "
-                  "<strong>Please contact us if you spot any inconsistencies and errors!</strong><p>");
+        return tr("<p>Users can now choose the primary position data source. "
+                  "<strong>If you use this app together with a flight simulator, you must select the 'traffic data receiver' as the primary position data source.</strong> "
+                  "Open the 'Settings' page in the main menu to make the choice.<p>") +
+                tr("<p>The openAIP aviation database has seen a major update, and much of our infrastructure had to be rebuilt. "
+                   "<strong>Please contact us if you spot any inconsistencies and errors!</strong><p>");
     }
 
     QFile file(name);

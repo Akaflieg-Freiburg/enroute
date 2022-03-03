@@ -51,7 +51,7 @@ Page {
                 color: Material.accent
             }
 
-            WordWrappingSwitchDelegate {
+            WordWrappingItemDelegate {
                 id: hideUpperAsp
                 text: {
                     var secondLineString = ""
@@ -64,7 +64,7 @@ Page {
 
                         var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
                         var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-                        secondLineString =  qsTr("Showing airspaces up to %1").arg(airspaceAltitudeLimitString)
+                        secondLineString = qsTr("Showing airspaces up to %1").arg(airspaceAltitudeLimitString)
                     }
                     return qsTr("Airspace Altitude Limit") +
                             `<br><font color="#606060" size="2">` +
@@ -74,14 +74,9 @@ Page {
                 }
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
-                Component.onCompleted: hideUpperAsp.checked = global.settings().airspaceAltitudeLimit.isFinite()
-                onToggled: {
+                onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    if (hideUpperAsp.checked) {
-                        heightLimitDialog.open()
-                    } else {
-                        global.settings().airspaceAltitudeLimit = distance.nan()
-                    }
+                    heightLimitDialog.open()
                 }
             }
 
@@ -107,17 +102,25 @@ Page {
                 color: Material.accent
             }
 
-            WordWrappingSwitchDelegate {
+            WordWrappingItemDelegate {
                 id: trafficDataReceiverPositioning
-                text: qsTr("Prefer position data from traffic data receiver")
+                text: {
+                    var secondLineString = ""
+                    if (global.settings().positioningByTrafficDataReceiver) {
+                        secondLineString = qsTr("Traffic data receiver")
+                    } else {
+                        secondLineString = qsTr("Built-in satnav receiver")
+                    }
+                    return qsTr("Primary position data source") +
+                            `<br><font color="#606060" size="2">` +
+                            secondLineString +
+                            `</font>`
+                }
                 icon.source: "/icons/material/ic_satellite.svg"
                 Layout.fillWidth: true
-                Component.onCompleted: {
-                    trafficDataReceiverPositioning.checked = global.settings().positioningByTrafficDataReceiver
-                }
-                onToggled: {
+                onClicked: {
                     global.mobileAdaptor().vibrateBrief()
-                    global.settings().positioningByTrafficDataReceiver = trafficDataReceiverPositioning.checked
+                    primaryPositionDataSourceDialog.open()
                 }
             }
 
@@ -153,7 +156,7 @@ Page {
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_lock.svg"
-                text: `<font size="4">` + qsTr("Clear password storage") + "</font>"
+                text: qsTr("Clear password storage")
                 onClicked: clearPasswordDialog.open()
                 visible: !global.passwordDB().empty
             }
@@ -251,30 +254,30 @@ Page {
         modal: true
 
         title: qsTr("Airspace Altitude Limit")
-        standardButtons: slider.enabled ? Dialog.Ok|Dialog.Cancel : Dialog.Cancel
+        standardButtons: (slider.from < slider.to) ? Dialog.Ok|Dialog.Cancel : Dialog.Cancel
 
 
         ColumnLayout {
             width: heightLimitDialog.availableWidth
 
             Label {
-                visible: slider.enabled
-                text: qsTr("Show airspaces up to %1 ft / %2 m.").arg(slider.value.toLocaleString()).arg( (slider.value/3.2808).toLocaleString(Qt.locale(),'f',0) )
-                Layout.fillWidth: true
-                wrapMode: Text.Wrap
-            }
-
-            Label {
-                visible: !slider.enabled
+                visible: slider.from >= slider.to
                 text: qsTr("Cannot set reasonable airspaces altitude limit because the present own altitude is too high.")
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
             }
 
+            SwitchDelegate {
+                id: altLimitCheck
+                enabled: slider.from < slider.to
+                text: qsTr("Set altitude limit")
+                Layout.fillWidth: true
+            }
+
             Slider {
                 id: slider
                 Layout.fillWidth: true
-                enabled: from < to
+                enabled: (from < to) && (altLimitCheck.checked)
                 from: {
                     var positionInfo = global.positionProvider().positionInfo
                     if (!positionInfo.isValid())
@@ -289,13 +292,86 @@ Page {
                 stepSize: 500
             }
 
+            Label {
+                enabled: slider.from < slider.to
+                text: {
+                    if (altLimitCheck.checked) {
+                        return qsTr("Show airspaces up to %1 ft / %2 m.").arg(slider.value.toLocaleString()).arg( (slider.value/3.2808).toLocaleString(Qt.locale(),'f',0) )
+                    } else {
+                        return qsTr("No limit, all airspaces shown")
+                    }
+                }
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+
         }
 
-        Component.onCompleted: slider.value = global.settings().lastValidAirspaceAltitudeLimit.toFeet()
+        onAccepted: {
+            if (altLimitCheck.checked) {
+                global.settings().airspaceAltitudeLimit = distance.fromFT(slider.value)
+            } else {
+                global.settings().airspaceAltitudeLimit = distance.fromFT(99999)
+            }
+        }
 
-        onAccepted: global.settings().airspaceAltitudeLimit = distance.fromFT(slider.value)
-        onRejected: hideUpperAsp.checked = false
+        onAboutToShow: {
+            altLimitCheck.checked = (global.settings().airspaceAltitudeLimit.toM() < global.settings().airspaceAltitudeLimit_max.toM())
+            slider.value = global.settings().lastValidAirspaceAltitudeLimit.toFeet()
+        }
 
     } // Dialog
+
+
+    Dialog {
+        id: primaryPositionDataSourceDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        topMargin: Qt.application.font.pixelSize/2.0
+        bottomMargin: Qt.application.font.pixelSize/2.0
+
+        modal: true
+
+        title: qsTr("Position data source")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+
+        ColumnLayout {
+            width: primaryPositionDataSourceDialog.availableWidth
+
+            Label {
+                text: qsTr("Most users will choose the built-in satnav receiver. Choose the traffic data receiver when the satnav receiver of your device has reception problems, or when you use this app together with a flight simulator.")
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            WordWrappingCheckDelegate {
+                id: a
+                text: qsTr("Built-in satnav receiver")
+                Layout.fillWidth: true
+                checked: !global.settings().positioningByTrafficDataReceiver
+                onCheckedChanged: b.checked = !checked
+            }
+
+            WordWrappingCheckDelegate {
+                id: b
+                text: qsTr("Traffic data reveiver (when available)")
+                Layout.fillWidth: true
+                onCheckedChanged: a.checked = !checked
+            }
+        }
+
+        onAccepted: global.settings().positioningByTrafficDataReceiver = b.checked
+
+    }
 
 } // Page

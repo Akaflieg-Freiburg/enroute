@@ -159,7 +159,8 @@ Page {
             fileError.open()
             return
         }
-        stackView.push("Aircraft.qml")
+        toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
+        stackView.pop()
     }
 
     function reloadFlightRouteList() {

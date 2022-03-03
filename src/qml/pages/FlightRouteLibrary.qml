@@ -330,7 +330,8 @@ Page {
             fileError.open()
             return
         }
-        stackView.push("FlightRouteEditor.qml")
+        toast.doToast( qsTr("Loading flight route <strong>%1</strong>").arg(finalFileName) )
+        stackView.pop()
     }
 
     function reloadFlightRouteList() {

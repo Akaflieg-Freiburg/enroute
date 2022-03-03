@@ -27,7 +27,9 @@
         <file alias="items/StandardHeader.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/StandardHeader.qml</file>	
         <file alias="items/Traffic.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/Traffic.qml</file>
         <file alias="items/TrafficLabel.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/TrafficLabel.qml</file>
+        <file alias="items/WordWrappingCheckDelegate.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/WordWrappingCheckDelegate.qml</file>	
         <file alias="items/WordWrappingItemDelegate.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/WordWrappingItemDelegate.qml</file>	
+        <file alias="items/WordWrappingSwitchDelegate.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/WordWrappingSwitchDelegate.qml</file>
         <file alias="pages/Aircraft.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/Aircraft.qml</file>
         <file alias="pages/AircraftLibrary.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/AircraftLibrary.qml</file>
         <file alias="pages/BugReportPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/BugReportPage.qml</file>

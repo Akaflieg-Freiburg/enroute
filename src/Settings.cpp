@@ -18,14 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
-#include <QLibraryInfo>
-#include <QLocale>
-#include <QSettings>
-
-#include "GlobalObject.h"
 #include "Settings.h"
 
+
+//
+// Constructor and destructor
+//
 
 Settings::Settings(QObject *parent)
     : QObject(parent)
@@ -46,11 +44,9 @@ Settings::Settings(QObject *parent)
 }
 
 
-auto Settings::acceptedWeatherTermsStatic() -> bool
-{
-    return GlobalObject::settings()->acceptedWeatherTerms();
-}
-
+//
+// Getter Methods
+//
 
 auto Settings::airspaceAltitudeLimit() const -> Units::Distance
 {
@@ -62,6 +58,50 @@ auto Settings::airspaceAltitudeLimit() const -> Units::Distance
         aspAlttLimit = Units::Distance::fromFT( qInf() );
     }
     return aspAlttLimit;
+}
+
+
+auto Settings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
+{
+    auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
+    return qBound(airspaceAltitudeLimit_min, result, airspaceAltitudeLimit_max);
+}
+
+
+auto Settings::mapBearingPolicy() const -> Settings::MapBearingPolicy
+{
+    auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
+    if (intVal == 0) {
+        return NUp;
+    }
+    if (intVal == 1) {
+        return TTUp;
+    }
+    return UserDefinedBearingUp;
+}
+
+
+//
+// Setter Methods
+//
+
+void Settings::setAcceptedTerms(int terms)
+{
+    if (terms == acceptedTerms()) {
+        return;
+    }
+    settings.setValue("acceptedTerms", terms);
+    emit acceptedTermsChanged();
+}
+
+
+void Settings::setAcceptedWeatherTerms(bool terms)
+{
+    if (terms == acceptedWeatherTerms()) {
+        return;
+    }
+    settings.setValue("acceptedWeatherTerms", terms);
+    emit acceptedWeatherTermsChanged();
 }
 
 
@@ -84,33 +124,6 @@ void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit
         settings.setValue("Map/lastValidAirspaceAltitudeLimit_ft", newAirspaceAltitudeLimit.toFeet());
         emit lastValidAirspaceAltitudeLimitChanged();
     }
-}
-
-
-auto Settings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
-{
-    auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
-    return qBound(airspaceAltitudeLimit_min, result, airspaceAltitudeLimit_max);
-}
-
-
-void Settings::setAcceptedTerms(int terms)
-{
-    if (terms == acceptedTerms()) {
-        return;
-    }
-    settings.setValue("acceptedTerms", terms);
-    emit acceptedTermsChanged();
-}
-
-
-void Settings::setAcceptedWeatherTerms(bool terms)
-{
-    if (terms == acceptedWeatherTerms()) {
-        return;
-    }
-    settings.setValue("acceptedWeatherTerms", terms);
-    emit acceptedWeatherTermsChanged();
 }
 
 
@@ -154,20 +167,7 @@ void Settings::setLastWhatsNewInMapsHash(uint lwnh)
 }
 
 
-auto Settings::mapBearingPolicy() const -> Settings::MapBearingPolicyValues
-{
-    auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
-    if (intVal == 0) {
-        return NUp;
-    }
-    if (intVal == 1) {
-        return TTUp;
-    }
-    return UserDefinedBearingUp;
-}
-
-
-void Settings::setMapBearingPolicy(MapBearingPolicyValues policy)
+void Settings::setMapBearingPolicy(MapBearingPolicy policy)
 {
     if (policy == mapBearingPolicy()) {
         return;
@@ -188,12 +188,6 @@ void Settings::setMapBearingPolicy(MapBearingPolicyValues policy)
 }
 
 
-auto Settings::nightMode() const -> bool
-{
-    return settings.value("Map/nightMode", false).toBool();
-}
-
-
 void Settings::setNightMode(bool newNightMode)
 {
     if (newNightMode == nightMode()) {
@@ -202,4 +196,15 @@ void Settings::setNightMode(bool newNightMode)
 
     settings.setValue("Map/nightMode", newNightMode);
     emit nightModeChanged();
+}
+
+
+void Settings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
+{
+    if (newPositioningByTrafficDataReceiver == positioningByTrafficDataReceiver()) {
+        return;
+    }
+
+    settings.setValue("positioningByTrafficDataReceiver", newPositioningByTrafficDataReceiver);
+    emit positioningByTrafficDataReceiverChanged();
 }

@@ -32,7 +32,7 @@ namespace Weather {
   class Wind : public QObject
   {
     Q_OBJECT
-    
+
   public:
     /*! \brief Default constructor
      *

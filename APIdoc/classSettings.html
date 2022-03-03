@@ -44,7 +44,6 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classSettings-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -70,12 +69,12 @@ Collaboration diagram for Settings:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aba8a7872e3e37f70d8f8200496f57503"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">MapBearingPolicyValues</a> { <a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503a6b7d62c25ca40a1df274fb07f20d5671">NUp</a>, 
-<a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503a65bd5644276a179303542fe48ad085de">TTUp</a>, 
-<a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503a003ebfc6d326e202b710c9b8a8567a16">UserDefinedBearingUp</a>
+<tr class="memitem:a5acf8e905e6a27dd05e698b75720d12b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">MapBearingPolicy</a> { <a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12ba6b7d62c25ca40a1df274fb07f20d5671">NUp</a>, 
+<a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12ba65bd5644276a179303542fe48ad085de">TTUp</a>, 
+<a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12ba003ebfc6d326e202b710c9b8a8567a16">UserDefinedBearingUp</a>
  }</td></tr>
-<tr class="memdesc:aba8a7872e3e37f70d8f8200496f57503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible map bearing policies.  <a href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">More...</a><br /></td></tr>
-<tr class="separator:aba8a7872e3e37f70d8f8200496f57503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a5acf8e905e6a27dd05e698b75720d12b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible map bearing policies.  <a href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">More...</a><br /></td></tr>
+<tr class="separator:a5acf8e905e6a27dd05e698b75720d12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
@@ -119,6 +118,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#abf3f9b7c592b03b27ae1c640b4cc3fce">nightModeChanged</a> ()</td></tr>
 <tr class="memdesc:abf3f9b7c592b03b27ae1c640b4cc3fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 <tr class="separator:abf3f9b7c592b03b27ae1c640b4cc3fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af21662ef099184f5f3ed6fc6c78e3f2e"><td class="memItemLeft" align="right" valign="top"><a id="af21662ef099184f5f3ed6fc6c78e3f2e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#af21662ef099184f5f3ed6fc6c78e3f2e">positioningByTrafficDataReceiverChanged</a> ()</td></tr>
+<tr class="memdesc:af21662ef099184f5f3ed6fc6c78e3f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:af21662ef099184f5f3ed6fc6c78e3f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -128,69 +131,66 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9856bf26bce232939925a9accdf9c7e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a9856bf26bce232939925a9accdf9c7e2">acceptedTerms</a> () const</td></tr>
 <tr class="memdesc:a9856bf26bce232939925a9accdf9c7e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a9856bf26bce232939925a9accdf9c7e2">More...</a><br /></td></tr>
 <tr class="separator:a9856bf26bce232939925a9accdf9c7e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16829a6ad926fd1b81c1ec7221dbb4dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a16829a6ad926fd1b81c1ec7221dbb4dc">setAcceptedTerms</a> (int terms)</td></tr>
-<tr class="memdesc:a16829a6ad926fd1b81c1ec7221dbb4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a16829a6ad926fd1b81c1ec7221dbb4dc">More...</a><br /></td></tr>
-<tr class="separator:a16829a6ad926fd1b81c1ec7221dbb4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f02fccdcd13c44a1905c3edb08b8288"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a4f02fccdcd13c44a1905c3edb08b8288">acceptedWeatherTerms</a> () const</td></tr>
 <tr class="memdesc:a4f02fccdcd13c44a1905c3edb08b8288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a4f02fccdcd13c44a1905c3edb08b8288">More...</a><br /></td></tr>
 <tr class="separator:a4f02fccdcd13c44a1905c3edb08b8288"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d4228b4851b4d78c800c107908f6bf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a5d4228b4851b4d78c800c107908f6bf2">setAcceptedWeatherTerms</a> (bool terms)</td></tr>
-<tr class="memdesc:a5d4228b4851b4d78c800c107908f6bf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a5d4228b4851b4d78c800c107908f6bf2">More...</a><br /></td></tr>
-<tr class="separator:a5d4228b4851b4d78c800c107908f6bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4c92a1d88307ab8f1dcbd726ad436bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#ad4c92a1d88307ab8f1dcbd726ad436bf">airspaceAltitudeLimit</a> () const</td></tr>
 <tr class="memdesc:ad4c92a1d88307ab8f1dcbd726ad436bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#ad4c92a1d88307ab8f1dcbd726ad436bf">More...</a><br /></td></tr>
 <tr class="separator:ad4c92a1d88307ab8f1dcbd726ad436bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae94edf763b61bcf6539592dc2492c8ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#ae94edf763b61bcf6539592dc2492c8ca">setAirspaceAltitudeLimit</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> newAirspaceAltitudeLimit)</td></tr>
-<tr class="memdesc:ae94edf763b61bcf6539592dc2492c8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#ae94edf763b61bcf6539592dc2492c8ca">More...</a><br /></td></tr>
-<tr class="separator:ae94edf763b61bcf6539592dc2492c8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69fdef63293ac0dcb1caff422210fa1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a69fdef63293ac0dcb1caff422210fa1f">lastValidAirspaceAltitudeLimit</a> () const</td></tr>
-<tr class="memdesc:a69fdef63293ac0dcb1caff422210fa1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="classSettings.html#a69fdef63293ac0dcb1caff422210fa1f">More...</a><br /></td></tr>
-<tr class="separator:a69fdef63293ac0dcb1caff422210fa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fc350cab8eeed79659cad18fc8e787d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a2fc350cab8eeed79659cad18fc8e787d">hasTranslation</a> () const</td></tr>
-<tr class="memdesc:a2fc350cab8eeed79659cad18fc8e787d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="classSettings.html#a2fc350cab8eeed79659cad18fc8e787d">More...</a><br /></td></tr>
-<tr class="separator:a2fc350cab8eeed79659cad18fc8e787d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a698c23d3cadc156033cc82a020465eda"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a698c23d3cadc156033cc82a020465eda">hideGlidingSectors</a> () const</td></tr>
 <tr class="memdesc:a698c23d3cadc156033cc82a020465eda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a698c23d3cadc156033cc82a020465eda">More...</a><br /></td></tr>
 <tr class="separator:a698c23d3cadc156033cc82a020465eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ae1334bf84e9759048d1816a6b28c0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a4ae1334bf84e9759048d1816a6b28c0c">setHideGlidingSectors</a> (bool hide)</td></tr>
-<tr class="memdesc:a4ae1334bf84e9759048d1816a6b28c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a4ae1334bf84e9759048d1816a6b28c0c">More...</a><br /></td></tr>
-<tr class="separator:a4ae1334bf84e9759048d1816a6b28c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22b88c43ced63b6263222721b4ba59ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a22b88c43ced63b6263222721b4ba59ec">ignoreSSLProblems</a> () const</td></tr>
 <tr class="memdesc:a22b88c43ced63b6263222721b4ba59ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a22b88c43ced63b6263222721b4ba59ec">More...</a><br /></td></tr>
 <tr class="separator:a22b88c43ced63b6263222721b4ba59ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d64bb761b07bd34599f77b00a465422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a6d64bb761b07bd34599f77b00a465422">setIgnoreSSLProblems</a> (bool ignore)</td></tr>
-<tr class="memdesc:a6d64bb761b07bd34599f77b00a465422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a6d64bb761b07bd34599f77b00a465422">More...</a><br /></td></tr>
-<tr class="separator:a6d64bb761b07bd34599f77b00a465422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69fdef63293ac0dcb1caff422210fa1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a69fdef63293ac0dcb1caff422210fa1f">lastValidAirspaceAltitudeLimit</a> () const</td></tr>
+<tr class="memdesc:a69fdef63293ac0dcb1caff422210fa1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <a href="classSettings.html#a69fdef63293ac0dcb1caff422210fa1f">More...</a><br /></td></tr>
+<tr class="separator:a69fdef63293ac0dcb1caff422210fa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a878132f3db043f5d264b986f1731713b"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a878132f3db043f5d264b986f1731713b">lastWhatsNewHash</a> () const</td></tr>
 <tr class="memdesc:a878132f3db043f5d264b986f1731713b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a878132f3db043f5d264b986f1731713b">More...</a><br /></td></tr>
 <tr class="separator:a878132f3db043f5d264b986f1731713b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b99c1d3c7f6db0dbf8598e43eff7dea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a4b99c1d3c7f6db0dbf8598e43eff7dea">setLastWhatsNewHash</a> (uint lwnh)</td></tr>
-<tr class="memdesc:a4b99c1d3c7f6db0dbf8598e43eff7dea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a4b99c1d3c7f6db0dbf8598e43eff7dea">More...</a><br /></td></tr>
-<tr class="separator:a4b99c1d3c7f6db0dbf8598e43eff7dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a966c59c68a229ae3121980ff736a2884"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a966c59c68a229ae3121980ff736a2884">lastWhatsNewInMapsHash</a> () const</td></tr>
 <tr class="memdesc:a966c59c68a229ae3121980ff736a2884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a966c59c68a229ae3121980ff736a2884">More...</a><br /></td></tr>
 <tr class="separator:a966c59c68a229ae3121980ff736a2884"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d6de7843655f31c42aa731fe556a601"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a3d6de7843655f31c42aa731fe556a601">setLastWhatsNewInMapsHash</a> (uint lwnh)</td></tr>
-<tr class="memdesc:a3d6de7843655f31c42aa731fe556a601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a3d6de7843655f31c42aa731fe556a601">More...</a><br /></td></tr>
-<tr class="separator:a3d6de7843655f31c42aa731fe556a601"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27bb99cdc958e76277cc137e9942c179"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">MapBearingPolicyValues</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a27bb99cdc958e76277cc137e9942c179">mapBearingPolicy</a> () const</td></tr>
-<tr class="memdesc:a27bb99cdc958e76277cc137e9942c179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a27bb99cdc958e76277cc137e9942c179">More...</a><br /></td></tr>
-<tr class="separator:a27bb99cdc958e76277cc137e9942c179"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63b47523760496f7eb42a3e1a24d13fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a63b47523760496f7eb42a3e1a24d13fe">setMapBearingPolicy</a> (<a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">MapBearingPolicyValues</a> policy)</td></tr>
-<tr class="memdesc:a63b47523760496f7eb42a3e1a24d13fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a63b47523760496f7eb42a3e1a24d13fe">More...</a><br /></td></tr>
-<tr class="separator:a63b47523760496f7eb42a3e1a24d13fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf16938e18d2b83035cd0948abb61788"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">MapBearingPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#acf16938e18d2b83035cd0948abb61788">mapBearingPolicy</a> () const</td></tr>
+<tr class="memdesc:acf16938e18d2b83035cd0948abb61788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#acf16938e18d2b83035cd0948abb61788">More...</a><br /></td></tr>
+<tr class="separator:acf16938e18d2b83035cd0948abb61788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16bf19080ab35175b43ecb9d4d50be71"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a16bf19080ab35175b43ecb9d4d50be71">nightMode</a> () const</td></tr>
 <tr class="memdesc:a16bf19080ab35175b43ecb9d4d50be71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a16bf19080ab35175b43ecb9d4d50be71">More...</a><br /></td></tr>
 <tr class="separator:a16bf19080ab35175b43ecb9d4d50be71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44e6b927d50b43dc3a090b50ddab51cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a44e6b927d50b43dc3a090b50ddab51cf">positioningByTrafficDataReceiver</a> () const</td></tr>
+<tr class="memdesc:a44e6b927d50b43dc3a090b50ddab51cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a44e6b927d50b43dc3a090b50ddab51cf">More...</a><br /></td></tr>
+<tr class="separator:a44e6b927d50b43dc3a090b50ddab51cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16829a6ad926fd1b81c1ec7221dbb4dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a16829a6ad926fd1b81c1ec7221dbb4dc">setAcceptedTerms</a> (int terms)</td></tr>
+<tr class="memdesc:a16829a6ad926fd1b81c1ec7221dbb4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a16829a6ad926fd1b81c1ec7221dbb4dc">More...</a><br /></td></tr>
+<tr class="separator:a16829a6ad926fd1b81c1ec7221dbb4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d4228b4851b4d78c800c107908f6bf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a5d4228b4851b4d78c800c107908f6bf2">setAcceptedWeatherTerms</a> (bool terms)</td></tr>
+<tr class="memdesc:a5d4228b4851b4d78c800c107908f6bf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a5d4228b4851b4d78c800c107908f6bf2">More...</a><br /></td></tr>
+<tr class="separator:a5d4228b4851b4d78c800c107908f6bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae94edf763b61bcf6539592dc2492c8ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#ae94edf763b61bcf6539592dc2492c8ca">setAirspaceAltitudeLimit</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> newAirspaceAltitudeLimit)</td></tr>
+<tr class="memdesc:ae94edf763b61bcf6539592dc2492c8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#ae94edf763b61bcf6539592dc2492c8ca">More...</a><br /></td></tr>
+<tr class="separator:ae94edf763b61bcf6539592dc2492c8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ae1334bf84e9759048d1816a6b28c0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a4ae1334bf84e9759048d1816a6b28c0c">setHideGlidingSectors</a> (bool hide)</td></tr>
+<tr class="memdesc:a4ae1334bf84e9759048d1816a6b28c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a4ae1334bf84e9759048d1816a6b28c0c">More...</a><br /></td></tr>
+<tr class="separator:a4ae1334bf84e9759048d1816a6b28c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d64bb761b07bd34599f77b00a465422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a6d64bb761b07bd34599f77b00a465422">setIgnoreSSLProblems</a> (bool ignore)</td></tr>
+<tr class="memdesc:a6d64bb761b07bd34599f77b00a465422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a6d64bb761b07bd34599f77b00a465422">More...</a><br /></td></tr>
+<tr class="separator:a6d64bb761b07bd34599f77b00a465422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b99c1d3c7f6db0dbf8598e43eff7dea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a4b99c1d3c7f6db0dbf8598e43eff7dea">setLastWhatsNewHash</a> (uint lwnh)</td></tr>
+<tr class="memdesc:a4b99c1d3c7f6db0dbf8598e43eff7dea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a4b99c1d3c7f6db0dbf8598e43eff7dea">More...</a><br /></td></tr>
+<tr class="separator:a4b99c1d3c7f6db0dbf8598e43eff7dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d6de7843655f31c42aa731fe556a601"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a3d6de7843655f31c42aa731fe556a601">setLastWhatsNewInMapsHash</a> (uint lwnh)</td></tr>
+<tr class="memdesc:a3d6de7843655f31c42aa731fe556a601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a3d6de7843655f31c42aa731fe556a601">More...</a><br /></td></tr>
+<tr class="separator:a3d6de7843655f31c42aa731fe556a601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e52c8c527f586da76bc228fe42e49c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a1e52c8c527f586da76bc228fe42e49c5">setMapBearingPolicy</a> (<a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">MapBearingPolicy</a> policy)</td></tr>
+<tr class="memdesc:a1e52c8c527f586da76bc228fe42e49c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a1e52c8c527f586da76bc228fe42e49c5">More...</a><br /></td></tr>
+<tr class="separator:a1e52c8c527f586da76bc228fe42e49c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a343a49b86224260b0485de96993a7be3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a343a49b86224260b0485de96993a7be3">setNightMode</a> (bool newNightMode)</td></tr>
 <tr class="memdesc:a343a49b86224260b0485de96993a7be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a343a49b86224260b0485de96993a7be3">More...</a><br /></td></tr>
 <tr class="separator:a343a49b86224260b0485de96993a7be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a51209137a17a8584c1b5970fce2af52d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a51209137a17a8584c1b5970fce2af52d">acceptedWeatherTermsStatic</a> ()</td></tr>
-<tr class="memdesc:a51209137a17a8584c1b5970fce2af52d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classSettings.html#a51209137a17a8584c1b5970fce2af52d">More...</a><br /></td></tr>
-<tr class="separator:a51209137a17a8584c1b5970fce2af52d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a618c68f348c511e1cdf27ad2004e14e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a618c68f348c511e1cdf27ad2004e14e5">setPositioningByTrafficDataReceiver</a> (bool newPositioningByTrafficDataReceiver)</td></tr>
+<tr class="memdesc:a618c68f348c511e1cdf27ad2004e14e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classSettings.html#a618c68f348c511e1cdf27ad2004e14e5">More...</a><br /></td></tr>
+<tr class="separator:a618c68f348c511e1cdf27ad2004e14e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -209,36 +209,36 @@ Properties</h2></td></tr>
 <tr class="memitem:a1179a673c0b44de7ff7b95f7e0a12e07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a1179a673c0b44de7ff7b95f7e0a12e07">airspaceAltitudeLimit_max</a></td></tr>
 <tr class="memdesc:a1179a673c0b44de7ff7b95f7e0a12e07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum acceptable value for property airspaceAltitudeLimit.  <a href="classSettings.html#a1179a673c0b44de7ff7b95f7e0a12e07">More...</a><br /></td></tr>
 <tr class="separator:a1179a673c0b44de7ff7b95f7e0a12e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cf4ef9699a04d2acbec0550c1cba82d"><td class="memItemLeft" align="right" valign="top"><a id="a8cf4ef9699a04d2acbec0550c1cba82d"></a>
-<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a8cf4ef9699a04d2acbec0550c1cba82d">lastValidAirspaceAltitudeLimit</a></td></tr>
-<tr class="memdesc:a8cf4ef9699a04d2acbec0550c1cba82d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last finite value of airspaceAltitudeLimit. <br /></td></tr>
-<tr class="separator:a8cf4ef9699a04d2acbec0550c1cba82d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9866936b5b309e532147efabb4289ff3"><td class="memItemLeft" align="right" valign="top"><a id="a9866936b5b309e532147efabb4289ff3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a9866936b5b309e532147efabb4289ff3">hasTranslation</a></td></tr>
-<tr class="memdesc:a9866936b5b309e532147efabb4289ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if translation files exist for the system language. <br /></td></tr>
-<tr class="separator:a9866936b5b309e532147efabb4289ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4fac7dfd769d79587e7ef04f307eebb"><td class="memItemLeft" align="right" valign="top"><a id="ab4fac7dfd769d79587e7ef04f307eebb"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#ab4fac7dfd769d79587e7ef04f307eebb">hideGlidingSectors</a></td></tr>
 <tr class="memdesc:ab4fac7dfd769d79587e7ef04f307eebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hide gliding sectors. <br /></td></tr>
 <tr class="separator:ab4fac7dfd769d79587e7ef04f307eebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add7496cc9567578d32e592a9d69ad313"><td class="memItemLeft" align="right" valign="top"><a id="add7496cc9567578d32e592a9d69ad313"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#add7496cc9567578d32e592a9d69ad313">ignoreSSLProblems</a></td></tr>
-<tr class="memdesc:add7496cc9567578d32e592a9d69ad313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ignore SSL securitry problems. <br /></td></tr>
+<tr class="memdesc:add7496cc9567578d32e592a9d69ad313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ignore SSL security problems. <br /></td></tr>
 <tr class="separator:add7496cc9567578d32e592a9d69ad313"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cf4ef9699a04d2acbec0550c1cba82d"><td class="memItemLeft" align="right" valign="top"><a id="a8cf4ef9699a04d2acbec0550c1cba82d"></a>
+<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a8cf4ef9699a04d2acbec0550c1cba82d">lastValidAirspaceAltitudeLimit</a></td></tr>
+<tr class="memdesc:a8cf4ef9699a04d2acbec0550c1cba82d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last finite value of airspaceAltitudeLimit. <br /></td></tr>
+<tr class="separator:a8cf4ef9699a04d2acbec0550c1cba82d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab45e2da2c84987873dd7cd9524390a8d"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#ab45e2da2c84987873dd7cd9524390a8d">lastWhatsNewHash</a></td></tr>
 <tr class="memdesc:ab45e2da2c84987873dd7cd9524390a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash of the last "what's new" message that was shown to the user.  <a href="classSettings.html#ab45e2da2c84987873dd7cd9524390a8d">More...</a><br /></td></tr>
 <tr class="separator:ab45e2da2c84987873dd7cd9524390a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99179403bd36f5ff260eca48b5735cbd"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a99179403bd36f5ff260eca48b5735cbd">lastWhatsNewInMapsHash</a></td></tr>
 <tr class="memdesc:a99179403bd36f5ff260eca48b5735cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash of the last "what's new in maps" message that was shown to the user.  <a href="classSettings.html#a99179403bd36f5ff260eca48b5735cbd">More...</a><br /></td></tr>
 <tr class="separator:a99179403bd36f5ff260eca48b5735cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e57e7002df5b0a81ca60bbdff5ed2e7"><td class="memItemLeft" align="right" valign="top"><a id="a5e57e7002df5b0a81ca60bbdff5ed2e7"></a>
-<a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">MapBearingPolicyValues</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a5e57e7002df5b0a81ca60bbdff5ed2e7">mapBearingPolicy</a></td></tr>
-<tr class="memdesc:a5e57e7002df5b0a81ca60bbdff5ed2e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map bearing policy. <br /></td></tr>
-<tr class="separator:a5e57e7002df5b0a81ca60bbdff5ed2e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59a033b58cd50812f75d7f3a5c5959ee"><td class="memItemLeft" align="right" valign="top"><a id="a59a033b58cd50812f75d7f3a5c5959ee"></a>
+<a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">MapBearingPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a59a033b58cd50812f75d7f3a5c5959ee">mapBearingPolicy</a></td></tr>
+<tr class="memdesc:a59a033b58cd50812f75d7f3a5c5959ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map bearing policy. <br /></td></tr>
+<tr class="separator:a59a033b58cd50812f75d7f3a5c5959ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f9130af9d8c307ee832472d35c1fa7e"><td class="memItemLeft" align="right" valign="top"><a id="a8f9130af9d8c307ee832472d35c1fa7e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a8f9130af9d8c307ee832472d35c1fa7e">nightMode</a></td></tr>
 <tr class="memdesc:a8f9130af9d8c307ee832472d35c1fa7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Night mode. <br /></td></tr>
 <tr class="separator:a8f9130af9d8c307ee832472d35c1fa7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13df53213215caec9eb3f3e03f6d5cef"><td class="memItemLeft" align="right" valign="top"><a id="a13df53213215caec9eb3f3e03f6d5cef"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSettings.html#a13df53213215caec9eb3f3e03f6d5cef">positioningByTrafficDataReceiver</a></td></tr>
+<tr class="memdesc:a13df53213215caec9eb3f3e03f6d5cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use traffic data receiver for positioning. <br /></td></tr>
+<tr class="separator:a13df53213215caec9eb3f3e03f6d5cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Global <a class="el" href="classSettings.html" title="Global Settings Manager.">Settings</a> Manager. </p>
@@ -246,32 +246,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>There exists one static instance of this class, which can be accessed via the Global functions. No other instance of this class should be used.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00044">44</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00040">40</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="aba8a7872e3e37f70d8f8200496f57503"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba8a7872e3e37f70d8f8200496f57503">&#9670;&nbsp;</a></span>MapBearingPolicyValues</h2>
+<a id="a5acf8e905e6a27dd05e698b75720d12b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5acf8e905e6a27dd05e698b75720d12b">&#9670;&nbsp;</a></span>MapBearingPolicy</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">Settings::MapBearingPolicyValues</a></td>
+          <td class="memname">enum <a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">Settings::MapBearingPolicy</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Possible map bearing policies. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aba8a7872e3e37f70d8f8200496f57503a6b7d62c25ca40a1df274fb07f20d5671"></a>NUp&#160;</td><td class="fielddoc"><p>North is up. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5acf8e905e6a27dd05e698b75720d12ba6b7d62c25ca40a1df274fb07f20d5671"></a>NUp&#160;</td><td class="fielddoc"><p>North is up. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aba8a7872e3e37f70d8f8200496f57503a65bd5644276a179303542fe48ad085de"></a>TTUp&#160;</td><td class="fielddoc"><p>True Track is up. <br  />
+<tr><td class="fieldname"><a id="a5acf8e905e6a27dd05e698b75720d12ba65bd5644276a179303542fe48ad085de"></a>TTUp&#160;</td><td class="fielddoc"><p>True Track is up. <br  />
  </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aba8a7872e3e37f70d8f8200496f57503a003ebfc6d326e202b710c9b8a8567a16"></a>UserDefinedBearingUp&#160;</td><td class="fielddoc"><p>User-defined bearing is up. </p>
+<tr><td class="fieldname"><a id="a5acf8e905e6a27dd05e698b75720d12ba003ebfc6d326e202b710c9b8a8567a16"></a>UserDefinedBearingUp&#160;</td><td class="fielddoc"><p>User-defined bearing is up. </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00074">74</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00064">64</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -337,7 +337,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property acceptedTerms </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00095">95</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00166">166</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -367,36 +367,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property acceptedWeatherTerms </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00115">115</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
-
-</div>
-</div>
-<a id="a51209137a17a8584c1b5970fce2af52d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51209137a17a8584c1b5970fce2af52d">&#9670;&nbsp;</a></span>acceptedWeatherTermsStatic()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Settings::acceptedWeatherTermsStatic </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for property of the same name. </p>
-<p>This function differs from <a class="el" href="classSettings.html#a153a77b2354ad8d39df2b12d8ac48892" title="Find out if Weather Terms have been accepted.">acceptedWeatherTerms()</a> only in that it is static.</p>
-<dl class="section return"><dt>Returns</dt><dd>Property acceptedWeatherTerms </dd></dl>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00172">172</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -417,36 +388,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property airspaceAltitudeLimit </dd></dl>
-
-</div>
-</div>
-<a id="a2fc350cab8eeed79659cad18fc8e787d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fc350cab8eeed79659cad18fc8e787d">&#9670;&nbsp;</a></span>hasTranslation()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Settings::hasTranslation </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property hasTranslation </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00185">185</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -476,7 +417,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hideGlidingSectors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00194">194</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00184">184</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -506,7 +447,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ignoreSSLProblems </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00209">209</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00190">190</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -556,7 +497,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00228">228</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00202">202</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -586,18 +527,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewInMapsHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00247">247</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00208">208</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
-<a id="a27bb99cdc958e76277cc137e9942c179"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27bb99cdc958e76277cc137e9942c179">&#9670;&nbsp;</a></span>mapBearingPolicy()</h2>
+<a id="acf16938e18d2b83035cd0948abb61788"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf16938e18d2b83035cd0948abb61788">&#9670;&nbsp;</a></span>mapBearingPolicy()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">MapBearingPolicyValues</a> Settings::mapBearingPolicy </td>
+          <td class="memname"><a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">MapBearingPolicy</a> Settings::mapBearingPolicy </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -615,6 +556,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool Settings::nightMode </td>
@@ -623,10 +567,47 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property night mode </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00220">220</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+
+</div>
+</div>
+<a id="a44e6b927d50b43dc3a090b50ddab51cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44e6b927d50b43dc3a090b50ddab51cf">&#9670;&nbsp;</a></span>positioningByTrafficDataReceiver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Settings::positioningByTrafficDataReceiver </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property positioningByTrafficDataReceiver </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00226">226</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -813,8 +794,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a63b47523760496f7eb42a3e1a24d13fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63b47523760496f7eb42a3e1a24d13fe">&#9670;&nbsp;</a></span>setMapBearingPolicy()</h2>
+<a id="a1e52c8c527f586da76bc228fe42e49c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e52c8c527f586da76bc228fe42e49c5">&#9670;&nbsp;</a></span>setMapBearingPolicy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -822,7 +803,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void Settings::setMapBearingPolicy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSettings.html#aba8a7872e3e37f70d8f8200496f57503">MapBearingPolicyValues</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12b">MapBearingPolicy</a>&#160;</td>
           <td class="paramname"><em>policy</em></td><td>)</td>
           <td></td>
         </tr>
@@ -865,6 +846,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a618c68f348c511e1cdf27ad2004e14e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a618c68f348c511e1cdf27ad2004e14e5">&#9670;&nbsp;</a></span>setPositioningByTrafficDataReceiver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Settings::setPositioningByTrafficDataReceiver </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>newPositioningByTrafficDataReceiver</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter function for property of the same name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newPositioningByTrafficDataReceiver</td><td>Property positioningByTrafficDataReceiver </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a0d6cafe99bda20fbd868a23ee2b698a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d6cafe99bda20fbd868a23ee2b698a4">&#9670;&nbsp;</a></span>acceptedTerms</h2>
@@ -889,7 +896,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Find out if Terms &amp; Conditions have been accepted. </p>
 <p>This property says which version of our "terms and conditions" have been accepted by the user; this is used to determine whether the first-use-dialog should be shown. If nothing has been accepted yet, 0 is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00089">89</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00095">95</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -916,7 +923,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Find out if Weather Terms have been accepted. </p>
 <p>This property says if the user has agreed to share its location and route with aviationweather.gov (US government website providing weather data). If nothing has been accepted yet, false is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00109">109</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00103">103</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -943,7 +950,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Airspace altitude limit for map display. </p>
 <p>This property holds an altitude. The moving map will ony display airspaces whose lower boundary is lower than this altitude. The altitude value lies in the range [airspaceHeightLimit_min, airspaceHeightLimit_max] or takes a non-finite value to indicate that all airspaces shall be shown. </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00137">137</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00111">111</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -962,7 +969,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Maximum acceptable value for property airspaceAltitudeLimit. </p>
 <p>This is currently set to 15.000 ft </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00166">166</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00123">123</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -981,7 +988,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Minimum acceptable value for property airspaceAltitudeLimit. </p>
 <p>This is currently set to 3.000 ft </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00159">159</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00117">117</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -1008,7 +1015,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Hash of the last "what's new" message that was shown to the user. </p>
 <p>This property is used in the app to determine if the message has been shown or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00222">222</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00139">139</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1042,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Hash of the last "what's new in maps" message that was shown to the user. </p>
 <p>This property is used in the app to determine if the message has been shown or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00241">241</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Settings_8h_source.html#l00146">146</a> of file <a class="el" href="Settings_8h_source.html">Settings.h</a>.</p>
 
 </div>
 </div>

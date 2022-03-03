@@ -261,8 +261,7 @@ Page {
             width: heightLimitDialog.availableWidth
 
             Label {
-                visible: slider.from >= slider.to
-                text: qsTr("Cannot set reasonable airspaces altitude limit because the present own altitude is too high.")
+                text: qsTr("Set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit.")
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
             }
@@ -305,6 +304,15 @@ Page {
                 wrapMode: Text.Wrap
             }
 
+            Label {
+                visible: slider.from >= slider.to
+                text: qsTr("Cannot set reasonable airspaces altitude limit because the present own altitude is too high.")
+                color: "red"
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+
 
         }
 
@@ -321,7 +329,7 @@ Page {
             slider.value = global.settings().lastValidAirspaceAltitudeLimit.toFeet()
         }
 
-    } // Dialog
+    }
 
 
     Dialog {
@@ -368,6 +376,11 @@ Page {
                 Layout.fillWidth: true
                 onCheckedChanged: a.checked = !checked
             }
+        }
+
+        onAboutToShow: {
+            a.checked = !global.settings().positioningByTrafficDataReceiver
+            b.checked = !a.checked
         }
 
         onAccepted: global.settings().positioningByTrafficDataReceiver = b.checked

@@ -68,8 +68,8 @@ auto Navigation::FlightRoute::Leg::GS() const -> Units::Speed
     }
 
     auto TASInKN = _aircraft->cruiseSpeed().toKN();
-    auto WSInKN  = _wind->windSpeed().toKN();
-    auto WD      = _wind->windDirection();
+    auto WSInKN  = _wind->speed().toKN();
+    auto WD      = _wind->directionFrom();
 
     // Law of cosine for wind triangle
     auto GSInKT = qSqrt( TASInKN*TASInKN + WSInKN*WSInKN - 2.0*TASInKN*WSInKN*(WD-TH()).cos() );
@@ -100,8 +100,8 @@ auto Navigation::FlightRoute::Leg::WCA() const -> Units::Angle
     }
 
     Units::Speed TAS = _aircraft->cruiseSpeed();
-    Units::Speed WS  = _wind->windSpeed();
-    Units::Angle WD  = _wind->windDirection();
+    Units::Speed WS  = _wind->speed();
+    Units::Angle WD  = _wind->directionFrom();
 
     // Law of sine for wind triangle
     return Units::Angle::asin(-(TC()-WD).sin() *(WS/TAS));
@@ -157,13 +157,13 @@ auto Navigation::FlightRoute::Leg::hasDataForWindTriangle() const -> bool
     if (_wind.isNull()) {
         return false;
     }
-    if ( !_wind->windSpeed().isFinite() ) {
+    if ( !_wind->speed().isFinite() ) {
         return false;
     }
-    if ( !_wind->windDirection().isFinite() ) {
+    if ( !_wind->directionFrom().isFinite() ) {
         return false;
     }
-    if (_wind->windSpeed().toKN() > 0.75*_aircraft->cruiseSpeed().toKN() ) {
+    if (_wind->speed().toKN() > 0.75*_aircraft->cruiseSpeed().toKN() ) {
         return false;
     }
 

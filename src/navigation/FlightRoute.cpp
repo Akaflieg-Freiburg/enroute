@@ -444,10 +444,10 @@ auto Navigation::FlightRoute::summary() const -> QString
     if (!GlobalObject::navigator()->aircraft()->fuelConsumption().isFinite()) {
         complaints += tr("Fuel consumption not specified.");
     }
-    if (!GlobalObject::navigator()->wind()->windSpeed().isFinite()) {
+    if (!GlobalObject::navigator()->wind()->speed().isFinite()) {
         complaints += tr("Wind speed not specified.");
     }
-    if (!GlobalObject::navigator()->wind()->windDirection().isFinite()) {
+    if (!GlobalObject::navigator()->wind()->directionFrom().isFinite()) {
         complaints += tr("Wind direction not specified.");
     }
 

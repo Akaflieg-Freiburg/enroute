@@ -199,7 +199,11 @@ void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 auto Navigation::Navigator::wind() -> Weather::Wind*
 {
     if (m_wind.isNull()) {
+        QSettings settings;
+
         m_wind = new Weather::Wind(this);
+        m_wind->setSpeed(Units::Speed::fromKN(settings.value("Wind/windSpeedInKT", qQNaN()).toDouble()));
+        m_wind->setDirectionFrom( Units::Angle::fromDEG(settings.value("Wind/windDirectionInDEG", qQNaN()).toDouble()) );
         QQmlEngine::setObjectOwnership(m_wind, QQmlEngine::CppOwnership);
     }
     return m_wind;

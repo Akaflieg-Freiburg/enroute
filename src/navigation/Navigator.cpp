@@ -99,7 +99,7 @@ void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
     // Save aircraft
     QFile file(m_aircraftFileName);
     file.open(QIODevice::WriteOnly);
-    file.write(m_aircraft.toJSON());
+    file.write(newAircraft.toJSON());
 
     // Set new wind
     m_aircraft = newAircraft;

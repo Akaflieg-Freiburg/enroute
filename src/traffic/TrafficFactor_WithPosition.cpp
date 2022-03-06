@@ -109,7 +109,7 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
     }
 
     if (vDist().isFinite()) {       
-        QString result = GlobalObject::navigator()->aircraft()->verticalDistanceToString(vDist(), true);
+        QString result = GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
         auto climbRateMPS = m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed);
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {

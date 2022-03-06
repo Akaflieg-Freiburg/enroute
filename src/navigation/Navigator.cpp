@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,80 +27,52 @@
 #include "positioning/PositionProvider.h"
 
 
-Navigation::Navigator::Navigator(QObject *parent) : QObject(parent)
+//
+// Constructors and destructors
+//
+
+Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 {
     m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft.json";
 
-    QTimer::singleShot(0, this, &Navigation::Navigator::deferredInitialization);
-}
+    // Restore wind
+    QSettings settings;
+    m_wind.setSpeed(Units::Speed::fromKN(settings.value("Wind/windSpeedInKT", qQNaN()).toDouble()));
+    m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value("Wind/windDirectionInDEG", qQNaN()).toDouble()) );
 
-
-Navigation::Navigator::~Navigator()
-{
-    saveAircraft();
-}
-
-
-auto Navigation::Navigator::aircraft() -> Navigation::Aircraft*
-{
-    if (m_aircraft.isNull()) {
-        m_aircraft = new Navigation::Aircraft(this);
-        QQmlEngine::setObjectOwnership(m_aircraft, QQmlEngine::CppOwnership);
-
-        QFile file(m_aircraftFileName);
-        if (file.open(QIODevice::ReadOnly)) {
-            m_aircraft->loadFromJSON(file.readAll());
-        } else {
-            QSettings settings;
-            auto cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
-            auto descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
-            auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
-            m_aircraft->setCruiseSpeed(cruiseSpeed);
-            m_aircraft->setDescentSpeed(descentSpeed);
-            m_aircraft->setFuelConsumption(fuelConsumption);
-        }
-
-        connect(m_aircraft, &Navigation::Aircraft::cruiseSpeedChanged, this, &Navigation::Navigator::saveAircraft);
-        connect(m_aircraft, &Navigation::Aircraft::descentSpeedChanged, this, &Navigation::Navigator::saveAircraft);
-        connect(m_aircraft, &Navigation::Aircraft::fuelConsumptionChanged, this, &Navigation::Navigator::saveAircraft);
-        connect(m_aircraft, &Navigation::Aircraft::fuelConsumptionUnitChanged, this, &Navigation::Navigator::saveAircraft);
-        connect(m_aircraft, &Navigation::Aircraft::horizontalDistanceUnitChanged, this, &Navigation::Navigator::saveAircraft);
-        connect(m_aircraft, &Navigation::Aircraft::minimumSpeedChanged, this, &Navigation::Navigator::saveAircraft);
-        connect(m_aircraft, &Navigation::Aircraft::nameChanged, this, &Navigation::Navigator::saveAircraft);
-        connect(m_aircraft, &Navigation::Aircraft::verticalDistanceUnitChanged, this, &Navigation::Navigator::saveAircraft);
+    // Restore aircraft
+    QFile file(m_aircraftFileName);
+    if (file.open(QIODevice::ReadOnly)) {
+        m_aircraft.loadFromJSON(file.readAll());
+    } else {
+        auto cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
+        auto descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
+        auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
+        m_aircraft.setCruiseSpeed(cruiseSpeed);
+        m_aircraft.setDescentSpeed(descentSpeed);
+        m_aircraft.setFuelConsumption(fuelConsumption);
     }
-    return m_aircraft;
 }
 
+
+void Navigation::Navigator::deferredInitialization()
+{
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
+}
+
+
+//
+// Getter Methods
+//
 
 auto Navigation::Navigator::clock() -> Navigation::Clock*
 {
     if (m_clock.isNull()) {
         m_clock = new Navigation::Clock(this);
+        QQmlEngine::setObjectOwnership(m_clock, QQmlEngine::CppOwnership);
     }
     return m_clock;
-}
-
-
-auto Navigation::Navigator::describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) -> QString
-{
-    // Paranoid safety checks
-    if (!from.isValid()) {
-        return {};
-    }
-    if (!to.isValid()) {
-        return {};
-    }
-
-    auto dist = Units::Distance::fromM(from.distanceTo(to));
-    auto QUJ = qRound(from.azimuthTo(to));
-    return QStringLiteral("DIST %1 • QUJ %2°").arg(GlobalObject::navigator()->aircraft()->horizontalDistanceToString(dist)).arg(QUJ);
-}
-
-
-void Navigation::Navigator::deferredInitialization() const
-{
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::onPositionUpdated);
 }
 
 
@@ -108,56 +80,97 @@ auto Navigation::Navigator::flightRoute() -> FlightRoute*
 {
     if (m_flightRoute.isNull()) {
         m_flightRoute = new FlightRoute(this);
+        QQmlEngine::setObjectOwnership(m_flightRoute, QQmlEngine::CppOwnership);
     }
     return m_flightRoute;
 }
 
 
-void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& info)
-{  
-    //
-    // Check if altitude limit for flight maps needs to be lifted
-    //
-    if (info.isValid()) {
-        auto altLimit = GlobalObject::settings()->airspaceAltitudeLimit();
-        auto trueAltitude = info.trueAltitude();
-        if (altLimit.isFinite() &&
-                trueAltitude.isFinite() &&
-                (trueAltitude + Units::Distance::fromFT(1000) > altLimit)) {
+//
+// Setter Methods
+//
 
-            // Round trueAltitude+1000ft up to nearest 500ft and set that as a new limit
-            auto newAltLimit = Units::Distance::fromFT(500.0*qCeil(trueAltitude.toFeet()/500.0+2.0));
-            GlobalObject::settings()->setAirspaceAltitudeLimit(newAltLimit);
-            emit airspaceAltitudeLimitAdjusted();
-        }
-    }
-
-
-    //
-    // Compute flight status
-    //
-
-    // Paranoid safety checks
-    if (m_aircraft.isNull()) {
-        setFlightStatus(Unknown);
+void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
+{
+    if (newAircraft == m_aircraft) {
         return;
     }
 
+    // Save aircraft
+    QFile file(m_aircraftFileName);
+    file.open(QIODevice::WriteOnly);
+    file.write(m_aircraft.toJSON());
+
+    // Set new wind
+    m_aircraft = newAircraft;
+    emit aircraftChanged();
+}
+
+
+void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
+{
+    if (m_flightStatus == newFlightStatus) {
+        return;
+    }
+
+    m_flightStatus = newFlightStatus;
+    emit flightStatusChanged();
+}
+
+
+void Navigation::Navigator::setWind(const Weather::Wind& newWind)
+{
+    if (newWind == m_wind) {
+        return;
+    }
+
+    // Save wind
+    QSettings settings;
+    settings.setValue("Wind/windSpeedInKT", newWind.speed().toKN());
+    settings.setValue("Wind/windDirectionInDEG", newWind.directionFrom().toDEG());
+
+    // Set new wind
+    m_wind = newWind;
+    emit windChanged();
+
+}
+
+
+//
+// Slots
+//
+
+void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo& info)
+{  
+    if (!info.isValid()) {
+        return;
+    }
+
+    auto altLimit = GlobalObject::settings()->airspaceAltitudeLimit();
+    auto trueAltitude = info.trueAltitude();
+    if (altLimit.isFinite() &&
+            trueAltitude.isFinite() &&
+            (trueAltitude + Units::Distance::fromFT(1000) > altLimit)) {
+
+        // Round trueAltitude+1000ft up to nearest 500ft and set that as a new limit
+        auto newAltLimit = Units::Distance::fromFT(500.0*qCeil(trueAltitude.toFeet()/500.0+2.0));
+        GlobalObject::settings()->setAirspaceAltitudeLimit(newAltLimit);
+        emit airspaceAltitudeLimitAdjusted();
+    }
+}
+
+
+void Navigation::Navigator::updateFlightStatus(const Positioning::PositionInfo& info)
+{
     if (!info.isValid()) {
         setFlightStatus(Unknown);
         return;
     }
 
-    // Get ground speed
+    // Get ground speed and aircraft minimum speed
     auto GS = info.groundSpeed();
-    if (!GS.isFinite()) {
-        setFlightStatus(Unknown);
-        return;
-    }
-
-    // Get aircraft minimum speed
-    auto aircraftMinSpeed = m_aircraft->minimumSpeed();
-    if (!aircraftMinSpeed.isFinite()) {
+    auto aircraftMinSpeed = m_aircraft.minimumSpeed();
+    if (!GS.isFinite() || !aircraftMinSpeed.isFinite()) {
         setFlightStatus(Unknown);
         return;
     }
@@ -175,32 +188,4 @@ void Navigation::Navigator::onPositionUpdated(const Positioning::PositionInfo& i
     if ( GS > aircraftMinSpeed ) {
         setFlightStatus(Flight);
     }
-}
-
-
-void Navigation::Navigator::saveAircraft() const
-{
-    QFile file(m_aircraftFileName);
-    file.open(QIODevice::WriteOnly);
-    file.write(m_aircraft->toJSON());
-}
-
-
-void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
-{
-    if (m_flightStatus == newFlightStatus) {
-        return;
-    }
-    m_flightStatus = newFlightStatus;
-    emit flightStatusChanged();
-}
-
-
-auto Navigation::Navigator::wind() -> Weather::Wind*
-{
-    if (m_wind.isNull()) {
-        m_wind = new Weather::Wind(this);
-        QQmlEngine::setObjectOwnership(m_wind, QQmlEngine::CppOwnership);
-    }
-    return m_wind;
 }

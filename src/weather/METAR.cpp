@@ -227,7 +227,7 @@ void Weather::METAR::setupSignals() const
     connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
     connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
 
-    connect(GlobalObject::navigator()->aircraft(), &Navigation::Aircraft::horizontalDistanceUnitChanged, this, &Weather::METAR::summaryChanged);
+    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Weather::METAR::summaryChanged);
 }
 
 
@@ -258,7 +258,7 @@ auto Weather::METAR::summary() const -> QString {
 
     // Wind and Gusts
     if (_gust.toKN() > 15) {
-        switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
         case Navigation::Aircraft::Kilometer:
             resultList << tr("gusts of %1 km/h").arg( qRound(_gust.toKMH()) );
             break;
@@ -270,7 +270,7 @@ auto Weather::METAR::summary() const -> QString {
             break;
         }
     } else if (_wind.toKN() > 10) {
-        switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
         case Navigation::Aircraft::Kilometer:
             resultList << tr("wind at %1 km/h").arg( qRound(_wind.toKMH()) );
             break;

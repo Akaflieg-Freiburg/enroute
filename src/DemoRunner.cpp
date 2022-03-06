@@ -249,11 +249,15 @@ void DemoRunner::run()
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("WUR") );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDQD") );
 
-        GlobalObject::navigator()->wind()->setWindDirection( Units::Angle::fromDEG(210) );
-        GlobalObject::navigator()->wind()->setWindSpeed( Units::Speed::fromKN(10) );
+        Weather::Wind wind;
+        wind.setDirectionFrom( Units::Angle::fromDEG(210) );
+        wind.setSpeed( Units::Speed::fromKN(10) );
+        GlobalObject::navigator()->setWind(wind);
 
-        GlobalObject::navigator()->aircraft()->setCruiseSpeed( Units::Speed::fromKN(90) );
-        GlobalObject::navigator()->aircraft()->setFuelConsumption( Units::VolumeFlow::fromLPH(18) );
+        Navigation::Aircraft aircraft;
+        aircraft.setCruiseSpeed( Units::Speed::fromKN(90) );
+        aircraft.setFuelConsumption( Units::VolumeFlow::fromLPH(18) );
+        GlobalObject::navigator()->setAircraft(aircraft);
 
         delay(2s);
         applicationWindow->grabWindow().save("02-02-02-RouteNonEmpty.png");

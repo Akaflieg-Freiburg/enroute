@@ -151,7 +151,7 @@ void Traffic::TrafficFactor_Abstract::updateDescription()
 
     // Vertical distance
     if (vDist().isFinite()) {
-        results << GlobalObject::navigator()->aircraft()->verticalDistanceToString(vDist(), true);
+        results << GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
     }
 
     // Set property value

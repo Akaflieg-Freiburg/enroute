@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,49 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QPointer>
-#include <QtGlobal>
+#include <QSettings>
 
 #include "weather/Wind.h"
 
 
-Weather::Wind::Wind(QObject *parent)
-    : QObject(parent)
-{
-    _windSpeed = Units::Speed::fromKN(settings.value("Wind/windSpeedInKT", -1.0).toDouble());
-    if ((_windSpeed < minWindSpeed) || (_windSpeed > maxWindSpeed)) {
-        _windSpeed = Units::Speed();
-    }
-
-    _windDirection = Units::Angle::fromDEG(settings.value("Wind/windDirectionInDEG", 0.0).toDouble());
-}
-
-
-void Weather::Wind::setWindSpeed(Units::Speed newWindSpeed)
+void Weather::Wind::setSpeed(Units::Speed newSpeed)
 {
 
-    if ((newWindSpeed < minWindSpeed) || (newWindSpeed > maxWindSpeed)) {
-        newWindSpeed = Units::Speed();
+    if ((newSpeed < minWindSpeed) || (newSpeed > maxWindSpeed)) {
+        newSpeed = Units::Speed();
     }
 
-    if (newWindSpeed == _windSpeed) {
+    if (newSpeed == m_speed) {
         return;
     }
 
-    _windSpeed = newWindSpeed;
-    settings.setValue("Wind/windSpeedInKT", _windSpeed.toKN());
-    emit valChanged();
+    m_speed = newSpeed;
 }
 
 
-void Weather::Wind::setWindDirection(Units::Angle newWindDirection)
+void Weather::Wind::setDirectionFrom(Units::Angle newDirectionFrom)
 {
 
-    if (newWindDirection == _windDirection) {
+    if (newDirectionFrom == m_directionFrom) {
         return;
     }
 
-    _windDirection = newWindDirection;
-    settings.setValue("Wind/windDirectionInDEG", _windDirection.toDEG());
-    emit valChanged();
+    m_directionFrom = newDirectionFrom;
 }

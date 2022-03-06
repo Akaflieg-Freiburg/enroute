@@ -42,7 +42,7 @@ Weather::Decoder::Decoder(QObject *parent)
     connect(GlobalObject::navigator()->clock(), &Navigation::Clock::dateChanged, this, &Weather::Decoder::parse);
 
     // Re-parse whenever the preferred unit system changes
-    connect(GlobalObject::navigator()->aircraft(), &Navigation::Aircraft::horizontalDistanceUnitChanged, this, &Weather::Decoder::parse);
+    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Weather::Decoder::parse);
 }
 
 
@@ -186,7 +186,7 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         break;
 
     case metaf::Distance::Modifier::DISTANT:
-        switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
         case Navigation::Aircraft::Kilometer:
             results << tr("19 to 55 km");
             break;
@@ -200,7 +200,7 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         break;
 
     case metaf::Distance::Modifier::VICINITY:
-        switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
         case Navigation::Aircraft::Kilometer:
             results << tr("9 to 19 km");
             break;
@@ -253,7 +253,7 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         results << distanceUnitToString(distance.unit());
     }
 
-    if ((GlobalObject::navigator()->aircraft()->horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) && (distance.unit() != metaf::Distance::Unit::METERS)) {
+    if ((GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) && (distance.unit() != metaf::Distance::Unit::METERS)) {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
         if (d.has_value()) {
             if ((*d) < 5000) {
@@ -378,7 +378,7 @@ auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString {
         return tr("not reported");
     }
 
-    if (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) {
+    if (GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) {
         const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
         if (s.has_value()) {
             return QString("%1 km/h").arg(qRound(*s));

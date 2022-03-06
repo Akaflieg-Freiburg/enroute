@@ -133,7 +133,7 @@ Page {
 
                     if (leg === null)
                         return ""
-                    return leg.description
+                    return leg.description(global.navigator().wind, global.navigator().aircraft)
                 }
             }
 
@@ -463,7 +463,7 @@ Page {
 
                 Label {
                     Layout.alignment: Qt.AlignBaseline
-                    text: qsTr("Direction")
+                    text: qsTr("Direction from")
                 }
                 TextField {
                     id: windDirection
@@ -476,16 +476,16 @@ Page {
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        global.navigator().wind.windDirection = angle.fromDEG(text)
+                        global.navigator().wind.directionFrom = angle.fromDEG(text)
                         windSpeed.focus = true
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
-                        if (!global.navigator().wind.windSpeed.isFinite()) {
+                        if (!global.navigator().wind.speed.isFinite()) {
                             return ""
                         }
-                        return Math.round( global.navigator().wind.windDirection.toDEG() )
+                        return Math.round( global.navigator().wind.directionFrom.toDEG() )
                     }
                     placeholderText: qsTr("undefined")
                 }
@@ -498,7 +498,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windDirection.text !== ""
                     onClicked: {
-                        global.navigator().wind.windDirection = angle.nan()
+                        global.navigator().wind.directionFrom = angle.nan()
                         windDirection.clear()
                     }
                 }
@@ -541,29 +541,29 @@ Page {
                     onEditingFinished: {
                         switch(global.navigator().aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            global.navigator().wind.windSpeed = speed.fromKN(text)
+                            global.navigator().wind.speed = speed.fromKN(text)
                             break;
                         case Aircraft.Kilometer:
-                            global.navigator().wind.windSpeed = speed.fromKMH(text)
+                            global.navigator().wind.speed = speed.fromKMH(text)
                             break;
                         case Aircraft.StatuteMile :
-                            global.navigator().wind.windSpeed = speed.fromMPH(text)
+                            global.navigator().wind.speed = speed.fromMPH(text)
                             break;
                         }
                         focus = false
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     text: {
-                        if (!global.navigator().wind.windSpeed.isFinite()) {
+                        if (!global.navigator().wind.speed.isFinite()) {
                             return ""
                         }
                         switch(global.navigator().aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Math.round( global.navigator().wind.windSpeed.toKN() )
+                            return Math.round( global.navigator().wind.speed.toKN() )
                         case Aircraft.Kilometer:
-                            return Math.round( global.navigator().wind.windSpeed.toKMH() )
+                            return Math.round( global.navigator().wind.speed.toKMH() )
                         case Aircraft.StatuteMile :
-                            return Math.round( global.navigator().wind.windSpeed.toMPH() )
+                            return Math.round( global.navigator().wind.speed.toMPH() )
                         }
                         return NaN
                     }
@@ -589,7 +589,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windSpeed.text !== ""
                     onClicked: {
-                        global.navigator().wind.windSpeed = speed.fromKN(-1)
+                        global.navigator().wind.speed = speed.fromKN(-1)
                         windSpeed.clear()
                     }
                 }
@@ -611,13 +611,7 @@ Page {
                 id: summary
 
                 Layout.fillWidth: true
-                text: {
-                    // Mention units
-                    global.navigator().aircraft.horizontalDistanceUnit
-                    global.navigator().aircraft.fuelConsumptionUnit
-
-                    return global.navigator().flightRoute.summary
-                }
+                text: global.navigator().flightRoute.summary
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText

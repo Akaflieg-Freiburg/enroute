@@ -66,8 +66,7 @@ public:
   */
   explicit DataManager(QObject *parent=nullptr);
 
-    /*! \brief deferredInitialization
-     */
+    // deferred initialization
     void deferredInitialization();
 
   /*! \brief Destructor

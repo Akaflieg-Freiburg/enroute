@@ -191,29 +191,3 @@ void Weather::Station::setTAF(Weather::TAF *taf)
     }
     emit tafChanged();
 }
-
-
-auto Weather::Station::wayTo(const QGeoCoordinate& fromCoordinate) const -> QString
-{
-    // Paranoid safety checks
-    if (!fromCoordinate.isValid()) {
-        return {};
-    }
-    auto _coordinate = coordinate();
-    if (!_coordinate.isValid()) {
-        return {};
-    }
-
-    auto dist = Units::Distance::fromM(fromCoordinate.distanceTo(_coordinate));
-    auto QUJ = qRound(fromCoordinate.azimuthTo(_coordinate));
-
-    switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
-    case Navigation::Aircraft::Kilometer:
-        return QString("DIST %1 km • QUJ %2°").arg(dist.toKM(), 0, 'f', 1).arg(QUJ);
-    case Navigation::Aircraft::StatuteMile:
-        return QString("DIST %1 mil • QUJ %2°").arg(dist.toMIL(), 0, 'f', 1).arg(QUJ);
-    case Navigation::Aircraft::NauticalMile:
-        return QString("DIST %1 nm • QUJ %2°").arg(dist.toNM(), 0, 'f', 1).arg(QUJ);
-    }
-    return {};
-}

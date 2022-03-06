@@ -91,7 +91,7 @@ set(SOURCES
     navigation/Aircraft.h
     navigation/Clock.h
     navigation/FlightRoute.h
-    navigation/FlightRoute_Leg.h
+    navigation/Leg.h
     navigation/Navigator.h
     platform/Notifier.h
     positioning/Geoid.h
@@ -150,7 +150,7 @@ set(SOURCES
     navigation/Clock.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp
-    navigation/FlightRoute_Leg.cpp
+    navigation/Leg.cpp
     navigation/Navigator.cpp
     platform/Notifier.cpp
     positioning/Geoid.cpp

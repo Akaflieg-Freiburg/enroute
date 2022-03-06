@@ -49,7 +49,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2020 by Stefan Kebekus                             *</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2022 by Stefan Kebekus                             *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *                                                                         *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -70,77 +70,81 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QSettings&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;units/Angle.h&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;units/Speed.h&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;units/Angle.h&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;units/Speed.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>Weather {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>Weather {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">class </span>Wind : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classWeather_1_1Wind.html#a1ca7f125e21b262945e19ded7b257fda">Wind</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    ~<a class="code" href="classWeather_1_1Wind.html#a1ca7f125e21b262945e19ded7b257fda">Wind</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#aaaa0cb3e76f0a547c786838aed16226e">windSpeed</a> READ <a class="code" href="classWeather_1_1Wind.html#aaaa0cb3e76f0a547c786838aed16226e">windSpeed</a> WRITE <a class="code" href="classWeather_1_1Wind.html#a81090946dd3fb4654a6a5b0e9703d46b">setWindSpeed</a> NOTIFY <a class="code" href="classWeather_1_1Wind.html#a3359ff494720756dc5a531ae7d079f0f">valChanged</a>)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#aaaa0cb3e76f0a547c786838aed16226e">windSpeed</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">return</span> _windSpeed;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1Wind.html#a81090946dd3fb4654a6a5b0e9703d46b">setWindSpeed</a>(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> newWindSpeed);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classWeather_1_1Wind.html#a2cb9a5b68ce202d50099e5b9abcd1e4c">windDirection</a> READ <a class="code" href="classWeather_1_1Wind.html#a2cb9a5b68ce202d50099e5b9abcd1e4c">windDirection</a> WRITE <a class="code" href="classWeather_1_1Wind.html#ac4fc899c852e2e80c9f5524116bc01ff">setWindDirection</a> NOTIFY <a class="code" href="classWeather_1_1Wind.html#a3359ff494720756dc5a531ae7d079f0f">valChanged</a>)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classWeather_1_1Wind.html#a2cb9a5b68ce202d50099e5b9abcd1e4c">windDirection</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keywordflow">return</span> _windDirection;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classWeather_1_1Wind.html#aaaa0cb3e76f0a547c786838aed16226e">   92</a></span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1Wind.html#ac4fc899c852e2e80c9f5524116bc01ff">setWindDirection</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> newWindDirection);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">minWindSpeed</a> MEMBER <a class="code" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">minWindSpeed</a> CONSTANT)</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">maxWindSpeed</a> MEMBER <a class="code" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">maxWindSpeed</a> CONSTANT)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  signals:</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1Wind.html#a3359ff494720756dc5a531ae7d079f0f">valChanged</a>();</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classWeather_1_1Wind.html">Wind</a>)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">minWindSpeed</a> = <a class="code" href="classUnits_1_1Speed.html#a7470253f3349343f965d7a7ed345b4f7">Units::Speed::fromKN</a>(0.0);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">maxWindSpeed</a> = <a class="code" href="classUnits_1_1Speed.html#a7470253f3349343f965d7a7ed345b4f7">Units::Speed::fromKN</a>(100.0);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> _windSpeed {};</div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classWeather_1_1Wind.html#a2cb9a5b68ce202d50099e5b9abcd1e4c">  118</a></span>&#160;    <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> _windDirection {};</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    QSettings settings;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  };</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">class </span>Wind {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    Q_GADGET</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="comment">// Properties</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">minWindSpeed</a> MEMBER <a class="code" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">minWindSpeed</a> CONSTANT)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">maxWindSpeed</a> MEMBER <a class="code" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">maxWindSpeed</a> CONSTANT)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classWeather_1_1Wind.html#af9156d503d3385cc6469500f541a0468">directionFrom</a> READ <a class="code" href="classWeather_1_1Wind.html#af9156d503d3385cc6469500f541a0468">directionFrom</a> WRITE <a class="code" href="classWeather_1_1Wind.html#aa4535ea6618618f2e5466895e2620f5c">setDirectionFrom</a>)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#adc766346c4a623a91b09fc85c7ac15fc">speed</a> READ <a class="code" href="classWeather_1_1Wind.html#adc766346c4a623a91b09fc85c7ac15fc">speed</a> WRITE <a class="code" href="classWeather_1_1Wind.html#af4334f78aad064f8f9f565ed78cf30ee">setSpeed</a>)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classWeather_1_1Wind.html#af9156d503d3385cc6469500f541a0468">directionFrom</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_directionFrom; }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#adc766346c4a623a91b09fc85c7ac15fc">speed</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_speed; }</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">   76</a></span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">   79</a></span>&#160;    <span class="comment">// Setter Methods</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1Wind.html#af4334f78aad064f8f9f565ed78cf30ee">setSpeed</a>(<a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> newSpeed);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1Wind.html#aa4535ea6618618f2e5466895e2620f5c">setDirectionFrom</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> newDirectionFrom);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="comment">// Methods</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1Wind.html#a64f20d1f62921a1ae1a801b3297f3826">operator==</a>(<span class="keyword">const</span> <a class="code" href="classWeather_1_1Wind.html">Weather::Wind</a>&amp; other) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="classWeather_1_1Wind.html#a64ba2d1f337b5cd8532e472bfdc71ea7">  111</a></span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">minWindSpeed</a> = <a class="code" href="classUnits_1_1Speed.html#a7470253f3349343f965d7a7ed345b4f7">Units::Speed::fromKN</a>(0.0);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> <a class="code" href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">maxWindSpeed</a> = <a class="code" href="classUnits_1_1Speed.html#a7470253f3349343f965d7a7ed345b4f7">Units::Speed::fromKN</a>(100.0);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> m_speed {};</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> m_directionFrom {};</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;};</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">// Declare meta types</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classWeather_1_1Wind.html">Weather::Wind</a>)</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassWeather_1_1Wind_html_a2cb9a5b68ce202d50099e5b9abcd1e4c"><div class="ttname"><a href="classWeather_1_1Wind.html#a2cb9a5b68ce202d50099e5b9abcd1e4c">Weather::Wind::windDirection</a></div><div class="ttdeci">Units::Angle windDirection</div><div class="ttdoc">Wind Direction.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00118">Wind.h:118</a></div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html_a1ca7f125e21b262945e19ded7b257fda"><div class="ttname"><a href="classWeather_1_1Wind.html#a1ca7f125e21b262945e19ded7b257fda">Weather::Wind::Wind</a></div><div class="ttdeci">Wind(QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html_aa4535ea6618618f2e5466895e2620f5c"><div class="ttname"><a href="classWeather_1_1Wind.html#aa4535ea6618618f2e5466895e2620f5c">Weather::Wind::setDirectionFrom</a></div><div class="ttdeci">void setDirectionFrom(Units::Angle newDirectionFrom)</div><div class="ttdoc">Setter function for property of the same name.</div></div>
 <div class="ttc" id="aclassUnits_1_1Speed_html_a7470253f3349343f965d7a7ed345b4f7"><div class="ttname"><a href="classUnits_1_1Speed.html#a7470253f3349343f965d7a7ed345b4f7">Units::Speed::fromKN</a></div><div class="ttdeci">static constexpr Q_INVOKABLE Units::Speed fromKN(double speedInKT)</div><div class="ttdoc">Constructs a speed.</div><div class="ttdef"><b>Definition:</b> <a href="Speed_8h_source.html#l00121">Speed.h:121</a></div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html_aaaa0cb3e76f0a547c786838aed16226e"><div class="ttname"><a href="classWeather_1_1Wind.html#aaaa0cb3e76f0a547c786838aed16226e">Weather::Wind::windSpeed</a></div><div class="ttdeci">Units::Speed windSpeed</div><div class="ttdoc">Wind Speed.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00092">Wind.h:92</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Speed_html"><div class="ttname"><a href="classUnits_1_1Speed.html">Units::Speed</a></div><div class="ttdoc">Convenience class for speed computations.</div><div class="ttdef"><b>Definition:</b> <a href="Speed_8h_source.html#l00053">Speed.h:53</a></div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html_a64f20d1f62921a1ae1a801b3297f3826"><div class="ttname"><a href="classWeather_1_1Wind.html#a64f20d1f62921a1ae1a801b3297f3826">Weather::Wind::operator==</a></div><div class="ttdeci">Q_INVOKABLE bool operator==(const Weather::Wind &amp;other) const =default</div><div class="ttdoc">Equality check.</div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html_adc766346c4a623a91b09fc85c7ac15fc"><div class="ttname"><a href="classWeather_1_1Wind.html#adc766346c4a623a91b09fc85c7ac15fc">Weather::Wind::speed</a></div><div class="ttdeci">Units::Speed speed</div><div class="ttdoc">Wind Speed.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00094">Wind.h:94</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Angle_html"><div class="ttname"><a href="classUnits_1_1Angle.html">Units::Angle</a></div><div class="ttdoc">Convenience class for angle computations.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00058">Angle.h:58</a></div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html_ac4fc899c852e2e80c9f5524116bc01ff"><div class="ttname"><a href="classWeather_1_1Wind.html#ac4fc899c852e2e80c9f5524116bc01ff">Weather::Wind::setWindDirection</a></div><div class="ttdeci">void setWindDirection(Units::Angle newWindDirection)</div><div class="ttdoc">Setter function for property of the same name.</div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html_a2768ae32d32e658b9a4b1881c377dc87"><div class="ttname"><a href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">Weather::Wind::maxWindSpeed</a></div><div class="ttdeci">Units::Speed maxWindSpeed</div><div class="ttdoc">Maximal wind speed that is considered valid.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00141">Wind.h:141</a></div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html_a78e5097c0dba922f75db0b51ac76ce65"><div class="ttname"><a href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">Weather::Wind::minWindSpeed</a></div><div class="ttdeci">Units::Speed minWindSpeed</div><div class="ttdoc">Minimal wind speed that is considered valid.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00138">Wind.h:138</a></div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html_a81090946dd3fb4654a6a5b0e9703d46b"><div class="ttname"><a href="classWeather_1_1Wind.html#a81090946dd3fb4654a6a5b0e9703d46b">Weather::Wind::setWindSpeed</a></div><div class="ttdeci">void setWindSpeed(Units::Speed newWindSpeed)</div><div class="ttdoc">Setter function for property of the same name.</div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html_a3359ff494720756dc5a531ae7d079f0f"><div class="ttname"><a href="classWeather_1_1Wind.html#a3359ff494720756dc5a531ae7d079f0f">Weather::Wind::valChanged</a></div><div class="ttdeci">void valChanged()</div><div class="ttdoc">Notifier signal.</div></div>
-<div class="ttc" id="aclassWeather_1_1Wind_html"><div class="ttname"><a href="classWeather_1_1Wind.html">Weather::Wind</a></div><div class="ttdoc">This extremely simple class holds the wind speed and direction.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00050">Wind.h:50</a></div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html_af9156d503d3385cc6469500f541a0468"><div class="ttname"><a href="classWeather_1_1Wind.html#af9156d503d3385cc6469500f541a0468">Weather::Wind::directionFrom</a></div><div class="ttdeci">Units::Angle directionFrom</div><div class="ttdoc">Wind Direction.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00086">Wind.h:86</a></div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html_a2768ae32d32e658b9a4b1881c377dc87"><div class="ttname"><a href="classWeather_1_1Wind.html#a2768ae32d32e658b9a4b1881c377dc87">Weather::Wind::maxWindSpeed</a></div><div class="ttdeci">Units::Speed maxWindSpeed</div><div class="ttdoc">Maximal wind speed that is considered valid.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00079">Wind.h:79</a></div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html_a78e5097c0dba922f75db0b51ac76ce65"><div class="ttname"><a href="classWeather_1_1Wind.html#a78e5097c0dba922f75db0b51ac76ce65">Weather::Wind::minWindSpeed</a></div><div class="ttdeci">Units::Speed minWindSpeed</div><div class="ttdoc">Minimal wind speed that is considered valid.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00076">Wind.h:76</a></div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html_af4334f78aad064f8f9f565ed78cf30ee"><div class="ttname"><a href="classWeather_1_1Wind.html#af4334f78aad064f8f9f565ed78cf30ee">Weather::Wind::setSpeed</a></div><div class="ttdeci">void setSpeed(Units::Speed newSpeed)</div><div class="ttdoc">Setter function for property of the same name.</div></div>
+<div class="ttc" id="aclassWeather_1_1Wind_html"><div class="ttname"><a href="classWeather_1_1Wind.html">Weather::Wind</a></div><div class="ttdoc">This extremely simple class holds the wind speed and direction.</div><div class="ttdef"><b>Definition:</b> <a href="Wind_8h_source.html#l00048">Wind.h:48</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

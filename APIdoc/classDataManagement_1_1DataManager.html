@@ -108,9 +108,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2ed55a60c00c77d00b88c7fc00f1c2a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#aa2ed55a60c00c77d00b88c7fc00f1c2a">DataManager</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:aa2ed55a60c00c77d00b88c7fc00f1c2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classDataManagement_1_1DataManager.html#aa2ed55a60c00c77d00b88c7fc00f1c2a">More...</a><br /></td></tr>
 <tr class="separator:aa2ed55a60c00c77d00b88c7fc00f1c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13b1075e6450a346e2788a63dd9a5ae0"><td class="memItemLeft" align="right" valign="top"><a id="a13b1075e6450a346e2788a63dd9a5ae0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a13b1075e6450a346e2788a63dd9a5ae0">deferredInitialization</a> ()</td></tr>
-<tr class="memdesc:a13b1075e6450a346e2788a63dd9a5ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">deferredInitialization <br /></td></tr>
+<tr class="memitem:a13b1075e6450a346e2788a63dd9a5ae0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a13b1075e6450a346e2788a63dd9a5ae0">deferredInitialization</a> ()</td></tr>
+<tr class="memdesc:a13b1075e6450a346e2788a63dd9a5ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-constructor initialization.  <a href="classDataManagement_1_1DataManager.html#a13b1075e6450a346e2788a63dd9a5ae0">More...</a><br /></td></tr>
 <tr class="separator:a13b1075e6450a346e2788a63dd9a5ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5217a6e0fc580cc39cc1b4a8c6ed06db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a5217a6e0fc580cc39cc1b4a8c6ed06db">cleanUp</a> ()</td></tr>
 <tr class="memdesc:a5217a6e0fc580cc39cc1b4a8c6ed06db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classDataManagement_1_1DataManager.html#a5217a6e0fc580cc39cc1b4a8c6ed06db">More...</a><br /></td></tr>
@@ -307,7 +306,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property aviationMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00127">127</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00126">126</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -337,7 +336,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property baseMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00140">140</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00139">139</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -387,7 +386,37 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property databases </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00152">152</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00151">151</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+
+</div>
+</div>
+<a id="a13b1075e6450a346e2788a63dd9a5ae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b1075e6450a346e2788a63dd9a5ae0">&#9670;&nbsp;</a></span>deferredInitialization()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DataManagement::DataManager::deferredInitialization </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non-constructor initialization. </p>
+<p>This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-implemented to perform initialization steps that refer to other singleton objects. </p>
+
+<p>Reimplemented from <a class="el" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">GlobalObject</a>.</p>
 
 </div>
 </div>
@@ -454,7 +483,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property downloadingGeoMapList </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00177">177</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00176">176</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -520,7 +549,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property geoMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00190">190</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00189">189</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -550,7 +579,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>hasGeoMapList </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00199">199</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00198">198</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -608,7 +637,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNew </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00208">208</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00207">207</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -638,7 +667,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00217">217</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00216">216</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -666,7 +695,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Pointer to the <a class="el" href="classDataManagement_1_1DownloadableGroup.html" title="Manages a set of downloadable objects.">DownloadableGroup</a> that holds all aviation maps. </p>
 <p>The is a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all aviation maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00121">121</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00120">120</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -693,7 +722,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Pointer to the <a class="el" href="classDataManagement_1_1DownloadableGroup.html" title="Manages a set of downloadable objects.">DownloadableGroup</a> that holds all base maps. </p>
 <p>The is a <a class="el" href="classDataManagement_1_1DownloadableGroup.html" title="Manages a set of downloadable objects.">DownloadableGroup</a> that holds all base maps. The maps also appear in geoMaps, which is the union of aviation maps and base maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00134">134</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00133">133</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -720,7 +749,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Pointer to the <a class="el" href="classDataManagement_1_1DownloadableGroup.html" title="Manages a set of downloadable objects.">DownloadableGroup</a> that holds all data items. </p>
 <p>This is a <a class="el" href="classDataManagement_1_1DownloadableGroup.html" title="Manages a set of downloadable objects.">DownloadableGroup</a> that holds all base maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00140">140</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00139">139</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -747,7 +776,7 @@ no longer available at the server", possibly translated. </td></tr>
 <p>Pointer to group of all geographic maps. </p>
 <p>The is a <a class="el" href="classDataManagement_1_1DownloadableGroup.html" title="Manages a set of downloadable objects.">DownloadableGroup</a> that holds all maps. This is the union of aviation maps and base maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00177">177</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00176">176</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>

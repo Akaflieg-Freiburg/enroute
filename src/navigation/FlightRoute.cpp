@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
 #include <QJsonArray>
-#include <QQmlEngine>
 #include <QStandardPaths>
 
 #include "FlightRoute.h"
-#include "FlightRoute_Leg.h"
 #include "GlobalObject.h"
-#include "Settings.h"
 #include "navigation/Navigator.h"
 
+
+//
+// Constructors and destructors
+//
 
 Navigation::FlightRoute::FlightRoute(QObject *parent)
     : QObject(parent)
@@ -41,27 +41,14 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
 
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
-
-    connect(GlobalObject::navigator()->aircraft(), &Aircraft::cruiseSpeedChanged, this, &Navigation::FlightRoute::summaryChanged);
-    connect(GlobalObject::navigator()->aircraft(), &Aircraft::fuelConsumptionChanged, this, &Navigation::FlightRoute::summaryChanged);
-    connect(GlobalObject::navigator()->wind(), &Weather::Wind::valChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Navigation::FlightRoute::summaryChanged);
+    connect(GlobalObject::navigator(), &Navigation::Navigator::windChanged, this, &Navigation::FlightRoute::summaryChanged);
 }
 
 
-void Navigation::FlightRoute::append(const GeoMaps::Waypoint &waypoint)
-{
-    m_waypoints.append(waypoint);
-
-    updateLegs();
-    emit waypointsChanged();
-}
-
-
-void Navigation::FlightRoute::append(const QGeoCoordinate& position)
-{
-    append( GeoMaps::Waypoint(position) );
-}
-
+//
+// Getter Methods
+//
 
 auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
 {
@@ -82,6 +69,133 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
     }
 
     return bbox;
+}
+
+
+auto Navigation::FlightRoute::geoPath() const -> QVariantList
+{
+    // Paranoid safety checks
+    if (m_waypoints.size() < 2) {
+        return QVariantList();
+    }
+
+    QVariantList result;
+    for(const auto& _waypoint : m_waypoints) {
+        if (!_waypoint.isValid()) {
+            return QVariantList();
+        }
+        result.append(QVariant::fromValue(_waypoint.coordinate()));
+    }
+
+    return result;
+}
+
+
+auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
+{
+    QVariantList result;
+
+    if (m_waypoints.isEmpty()) {
+        return result;
+    }
+
+    foreach(auto wpt, m_waypoints) {
+        if (wpt.category() == "WP") {
+            result << QVariant::fromValue(wpt);
+        }
+    }
+
+    return result;
+}
+
+
+auto Navigation::FlightRoute::summary() const -> QString
+{
+
+    if (m_legs.empty()) {
+        return {};
+    }
+
+    QString result;
+
+    const auto aircraft = GlobalObject::navigator()->aircraft();
+    const auto wind = GlobalObject::navigator()->wind();
+    auto dist = Units::Distance::fromM(0.0);
+    auto time = Units::Time::fromS(0.0);
+    auto fuel = Units::Volume::fromL(0.0);
+
+    for(const auto& _leg : m_legs) {
+        dist += _leg.distance();
+        if (dist.toM() > 100) {
+            time += _leg.ETE(wind, aircraft);
+            fuel += _leg.Fuel(wind, aircraft);
+        }
+    }
+    if (!dist.isFinite()) {
+        return {};
+    }
+
+    result += tr("Total: %1").arg( aircraft.horizontalDistanceToString(dist) );
+
+    if (time.isFinite()) {
+        result += QStringLiteral(" • ETE %1 h").arg(time.toHoursAndMinutes());
+    }
+    if (fuel.isFinite()) {
+        result += QStringLiteral(" • %1").arg(aircraft.volumeToString(fuel));
+    }
+
+
+    QStringList complaints;
+    if ( !aircraft.cruiseSpeed().isFinite() ) {
+        complaints += tr("Cruise speed not specified.");
+    }
+    if (!aircraft.fuelConsumption().isFinite()) {
+        complaints += tr("Fuel consumption not specified.");
+    }
+    if (!wind.speed().isFinite()) {
+        complaints += tr("Wind speed not specified.");
+    }
+    if (!wind.directionFrom().isFinite()) {
+        complaints += tr("Wind direction not specified.");
+    }
+
+    if (!complaints.isEmpty()) {
+        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(QStringLiteral(" ")));
+    }
+
+    return result;
+
+}
+
+
+auto Navigation::FlightRoute::waypoints() const -> QVariantList
+{
+    QVariantList result;
+
+    foreach(auto wpt, m_waypoints) {
+        result << QVariant::fromValue(wpt);
+    }
+
+    return result;
+}
+
+
+//
+// METHODS
+//
+
+void Navigation::FlightRoute::append(const GeoMaps::Waypoint &waypoint)
+{
+    m_waypoints.append(waypoint);
+
+    updateLegs();
+    emit waypointsChanged();
+}
+
+
+void Navigation::FlightRoute::append(const QGeoCoordinate& position)
+{
+    append( GeoMaps::Waypoint(position) );
 }
 
 
@@ -135,25 +249,6 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
 }
 
 
-auto Navigation::FlightRoute::geoPath() const -> QVariantList
-{
-    // Paranoid safety checks
-    if (m_waypoints.size() < 2) {
-        return QVariantList();
-    }
-
-    QVariantList result;
-    for(const auto& _waypoint : m_waypoints) {
-        if (!_waypoint.isValid()) {
-            return QVariantList();
-        }
-        result.append(QVariant::fromValue(_waypoint.coordinate()));
-    }
-
-    return result;
-}
-
-
 auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
 {
     if (fileName.isEmpty()) {
@@ -192,24 +287,6 @@ auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
     emit waypointsChanged();
 
     return QString();
-}
-
-
-auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
-{
-    QVariantList result;
-
-    if (m_waypoints.isEmpty()) {
-        return result;
-    }
-
-    foreach(auto wpt, m_waypoints) {
-        if (wpt.category() == "WP") {
-            result << QVariant::fromValue(wpt);
-        }
-    }
-
-    return result;
 }
 
 
@@ -304,19 +381,6 @@ void Navigation::FlightRoute::reverse()
 }
 
 
-auto Navigation::FlightRoute::legs() const -> QList<QObject*>
-{
-    QList<QObject*> result;
-    result.reserve(m_legs.size());
-
-    for(auto *_leg : m_legs) {
-        result.append(_leg);
-    }
-
-    return result;
-}
-
-
 auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
 {
     QFile file(fileName);
@@ -403,63 +467,6 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
 }
 
 
-auto Navigation::FlightRoute::summary() const -> QString
-{
-
-    if (m_legs.empty()) {
-        return {};
-    }
-
-    QString result;
-
-    auto dist = Units::Distance::fromM(0.0);
-    auto time = Units::Time::fromS(0.0);
-    auto fuel = Units::Volume::fromL(0.0);
-
-    for(auto *_leg : m_legs) {
-        dist += _leg->distance();
-        if (dist.toM() > 100) {
-            time += _leg->Time();
-            fuel += _leg->Fuel();
-        }
-    }
-    if (!dist.isFinite()) {
-        return {};
-    }
-
-    result += tr("Total: %1").arg( GlobalObject::navigator()->aircraft()->horizontalDistanceToString(dist) );
-
-    if (time.isFinite()) {
-        result += QStringLiteral(" • %1 h").arg(time.toHoursAndMinutes());
-    }
-    if (fuel.isFinite()) {
-        result += QStringLiteral(" • %1").arg(GlobalObject::navigator()->aircraft()->volumeToString(fuel));
-    }
-
-
-    QStringList complaints;
-    if ( !GlobalObject::navigator()->aircraft()->cruiseSpeed().isFinite() ) {
-        complaints += tr("Cruise speed not specified.");
-    }
-    if (!GlobalObject::navigator()->aircraft()->fuelConsumption().isFinite()) {
-        complaints += tr("Fuel consumption not specified.");
-    }
-    if (!GlobalObject::navigator()->wind()->speed().isFinite()) {
-        complaints += tr("Wind speed not specified.");
-    }
-    if (!GlobalObject::navigator()->wind()->directionFrom().isFinite()) {
-        complaints += tr("Wind direction not specified.");
-    }
-
-    if (!complaints.isEmpty()) {
-        result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(QStringLiteral(" ")));
-    }
-
-    return result;
-
-}
-
-
 auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
@@ -477,24 +484,10 @@ auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
 
 void Navigation::FlightRoute::updateLegs()
 {
-    foreach(auto _leg, m_legs)
-        _leg->deleteLater();
     m_legs.clear();
 
     for(int i=0; i<m_waypoints.size()-1; i++) {
-        m_legs.append(new Leg(m_waypoints.at(i), m_waypoints.at(i+1), GlobalObject::navigator()->aircraft(), GlobalObject::navigator()->wind(), this));
+        m_legs.append(Leg(m_waypoints.at(i), m_waypoints.at(i+1)));
     }
-}
-
-
-auto Navigation::FlightRoute::waypoints() const -> QVariantList
-{
-    QVariantList result;
-
-    foreach(auto wpt, m_waypoints) {
-        result << QVariant::fromValue(wpt);
-    }
-
-    return result;
 }
 

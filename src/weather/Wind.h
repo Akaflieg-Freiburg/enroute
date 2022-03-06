@@ -27,28 +27,10 @@ namespace Weather {
 
 /*! \brief This extremely simple class holds the wind speed and direction */
 
-class Wind : public QObject
-{
-    Q_OBJECT
+class Wind {
+    Q_GADGET
 
 public:
-
-    //
-    // Constructor and destructor
-    //
-
-    /*! \brief Default constructor
-     *
-     *  This constructor reads the values of the properties listed below via
-     *  QSettings. The values are set to NaN if no valid numbers can be found in
-     *  the settings object.
-     *
-     *  @param parent The standard QObject parent pointer
-     */
-    explicit Wind(QObject *parent = nullptr);
-    
-    // Standard destructor
-    ~Wind() override = default;
 
     //
     // Properties
@@ -65,7 +47,7 @@ public:
      *  This property holds the wind direction. This is NaN if no value has been
      *  set.
      */
-    Q_PROPERTY(Units::Angle directionFrom READ directionFrom WRITE setDirectionFrom NOTIFY valChanged)
+    Q_PROPERTY(Units::Angle directionFrom READ directionFrom WRITE setDirectionFrom)
 
     /*! \brief Wind Speed
      *
@@ -73,7 +55,7 @@ public:
      *  interval [minWindSpeed, maxWindSpeed] or NaN if the wind speed has not
      *  been set.
      */
-    Q_PROPERTY(Units::Speed speed READ speed WRITE setSpeed NOTIFY valChanged)
+    Q_PROPERTY(Units::Speed speed READ speed WRITE setSpeed)
 
 
     //
@@ -112,14 +94,21 @@ public:
      *  @param newDirectionFrom Property directionFrom
      */
     void setDirectionFrom(Units::Angle newDirectionFrom);
+    
 
-signals:
-    /*! \brief Notifier signal */
-    void valChanged();
-    
+    //
+    // Methods
+    //
+
+    /*! \brief Equality check
+     *
+     *  @param other Wind that is compared to this
+     *
+     *  @result equality
+     */
+    Q_INVOKABLE bool operator==(const Weather::Wind& other) const = default;
+
 private:
-    Q_DISABLE_COPY_MOVE(Wind)
-    
     static constexpr Units::Speed minWindSpeed = Units::Speed::fromKN(0.0);
     static constexpr Units::Speed maxWindSpeed = Units::Speed::fromKN(100.0);
     
@@ -128,3 +117,6 @@ private:
 };
 
 }
+
+// Declare meta types
+Q_DECLARE_METATYPE(Weather::Wind)

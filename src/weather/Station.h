@@ -225,16 +225,6 @@ public:
         return _taf;
     }
 
-    /*! \brief Description of the way from a given point to the weather station
-     *
-     * @param from Starting point of the way
-     *
-     * @returns A string such as "DIST 65.2 NM • QUJ 276°".  If the way cannot
-     * be described (e.g. because one of the coordinates is invalid or unknown),
-     * then an empty string is returned.
-     */
-    Q_INVOKABLE QString wayTo(const QGeoCoordinate& from) const;
-
 signals:
     /* \brief Notifier signal */
     void coordinateChanged();

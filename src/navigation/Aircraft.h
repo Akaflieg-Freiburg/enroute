@@ -20,21 +20,20 @@
 
 #pragma once
 
-#include <QSettings>
-
 #include "units/Distance.h"
 #include "units/Speed.h"
 #include "units/Volume.h"
 #include "units/VolumeFlow.h"
 
+#include <QGeoCoordinate>
+
 
 namespace Navigation {
 
-/*! \brief This extremely simple class holds a few numbers that describe an
-    aircraft */
+/*! \brief This extremely simple class holds a few numbers that describe an aircraft */
 
-class Aircraft : public QObject {
-    Q_OBJECT
+class Aircraft {
+    Q_GADGET
 
 public:
     /*! \brief Units of measurement for volumes */
@@ -70,23 +69,6 @@ public:
     };
     Q_ENUM(VerticalDistanceUnit)
 
-    //
-    // Constructor and destructor
-    //
-
-    /*! \brief Default constructor
-     *
-     * This constructor reads the values of the properties listed below via
-     * QSettings. The values are set to NaN if no valid numbers can be found
-     * in the settings object.
-     *
-     * @param parent The standard QObject parent pointer
-     */
-    explicit Aircraft(QObject *parent = nullptr);
-
-    // Standard destructor
-    ~Aircraft() override = default;
-
 
     //
     // Properties
@@ -97,7 +79,7 @@ public:
      * This property holds the cruise speed of the aircraft. This lies in the interval [minAircraftSpeed,
      * maxAircraftSpeed] or if NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(Units::Speed cruiseSpeed READ cruiseSpeed WRITE setCruiseSpeed NOTIFY cruiseSpeedChanged)
+    Q_PROPERTY(Units::Speed cruiseSpeed READ cruiseSpeed WRITE setCruiseSpeed)
 
     /*! \brief Decent Speed
      *
@@ -105,7 +87,7 @@ public:
      * number that lies in the interval [minAircraftSpeed, maxAircraftSpeed]
      * or NaN if the cruise speed has not been set.
      */
-    Q_PROPERTY(Units::Speed descentSpeed READ descentSpeed WRITE setDescentSpeed NOTIFY descentSpeedChanged)
+    Q_PROPERTY(Units::Speed descentSpeed READ descentSpeed WRITE setDescentSpeed)
 
     /*! \brief Fuel Consumption
      *
@@ -113,13 +95,13 @@ public:
      * number that lies in the interval [minFuelConsumption,
      * maxFuelConsumption] or NaN if no value has been set.
      */
-    Q_PROPERTY(Units::VolumeFlow fuelConsumption READ fuelConsumption WRITE setFuelConsumption NOTIFY fuelConsumptionChanged)
+    Q_PROPERTY(Units::VolumeFlow fuelConsumption READ fuelConsumption WRITE setFuelConsumption)
 
     /*! \brief Preferred units of measurement for fuel consumption */
-    Q_PROPERTY(FuelConsumptionUnit fuelConsumptionUnit READ fuelConsumptionUnit WRITE setFuelConsumptionUnit NOTIFY fuelConsumptionUnitChanged)
+    Q_PROPERTY(FuelConsumptionUnit fuelConsumptionUnit READ fuelConsumptionUnit WRITE setFuelConsumptionUnit)
 
     /*! \brief Preferred units of measurement for horizontal distances */
-    Q_PROPERTY(HorizontalDistanceUnit horizontalDistanceUnit READ horizontalDistanceUnit WRITE setHorizontalDistanceUnit NOTIFY horizontalDistanceUnitChanged)
+    Q_PROPERTY(HorizontalDistanceUnit horizontalDistanceUnit READ horizontalDistanceUnit WRITE setHorizontalDistanceUnit)
 
     /*! \brief Maximal speed of the aircraft that is considered valid */
     Q_PROPERTY(Units::Speed maxValidSpeed MEMBER maxValidSpeed CONSTANT)
@@ -132,7 +114,7 @@ public:
      * This property holds the minimum speed of the aircraft. This lies in the interval [minAircraftSpeed,
      * maxAircraftSpeed] or if NaN if the minimum speed has not been set.
      */
-    Q_PROPERTY(Units::Speed minimumSpeed READ minimumSpeed WRITE setMinimumSpeed NOTIFY minimumSpeedChanged)
+    Q_PROPERTY(Units::Speed minimumSpeed READ minimumSpeed WRITE setMinimumSpeed)
 
     /*! \brief Minimal fuel consumption that is considered valid */
     Q_PROPERTY(Units::VolumeFlow minValidFuelConsumption MEMBER minValidFuelConsumption CONSTANT)
@@ -144,10 +126,10 @@ public:
      *
      * This property holds the name.
      */
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString name READ name WRITE setName)
 
     /*! \brief Preferred units of measurement for vertical distances */
-    Q_PROPERTY(VerticalDistanceUnit verticalDistanceUnit READ verticalDistanceUnit WRITE setVerticalDistanceUnit NOTIFY verticalDistanceUnitChanged)
+    Q_PROPERTY(VerticalDistanceUnit verticalDistanceUnit READ verticalDistanceUnit WRITE setVerticalDistanceUnit)
 
 
     //
@@ -158,49 +140,49 @@ public:
      *
      * @returns Property cruise speed
      */
-    Units::Speed cruiseSpeed() const { return _cruiseSpeed; }
+    Units::Speed cruiseSpeed() const { return m_cruiseSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property descentSpeed
      */
-    Units::Speed descentSpeed() const { return _descentSpeed; }
+    Units::Speed descentSpeed() const { return m_descentSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property fuelConsumptionInLPH
      */
-    Units::VolumeFlow fuelConsumption() const { return _fuelConsumption; }
+    Units::VolumeFlow fuelConsumption() const { return m_fuelConsumption; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredVolumeUnit
      */
-    FuelConsumptionUnit fuelConsumptionUnit() const { return _fuelConsumptionUnit; }
+    FuelConsumptionUnit fuelConsumptionUnit() const { return m_fuelConsumptionUnit; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredHorizontalDistanceUnit
      */
-    HorizontalDistanceUnit horizontalDistanceUnit() const { return _horizontalDistanceUnit; }
+    HorizontalDistanceUnit horizontalDistanceUnit() const { return m_horizontalDistanceUnit; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property minimum speed
      */
-    Units::Speed minimumSpeed() const { return _minimumSpeed; }
+    Units::Speed minimumSpeed() const { return m_minimumSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property name
      */
-    QString name() const { return _name; }
+    QString name() const { return m_name; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredVertialDistanceUnit
      */
-    VerticalDistanceUnit verticalDistanceUnit() const { return _verticalDistanceUnit; }
+    VerticalDistanceUnit verticalDistanceUnit() const { return m_verticalDistanceUnit; }
 
 
     //
@@ -267,6 +249,16 @@ public:
     // Methods
     //
 
+    /*! \brief Description of the way between two points
+     *
+     * @param from Starting point of the way
+     *
+     * @param to Endpoint of the way
+     *
+     * @returns A string such as "DIST 65.2 nm • QUJ 276°" or "DIST 65.2 km • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
+     */
+    Q_INVOKABLE QString describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) const;
+
     /*! \brief Convert horizontal distance to string
      *
      *  This method converts a horizontal distance to a localized string, taking horizontalDistanceUnit into account.
@@ -312,6 +304,14 @@ public:
      * error message otherwise.
      */
     Q_INVOKABLE QString loadFromJSON(const QByteArray &JSON);
+
+    /*! \brief Equality check
+     *
+     *  @param other Aircraft that is compared to this
+     *
+     *  @result equality
+     */
+    Q_INVOKABLE bool operator==(const Navigation::Aircraft& other) const = default;
 
     /*! \brief Saves aircraft to a file
      *
@@ -365,49 +365,23 @@ public:
      */
     Q_INVOKABLE QString volumeToString(Units::Volume volume) const;
 
-signals:   
-    /*! \brief Notifier signal */
-    void cruiseSpeedChanged();
-
-    /*! \brief Notifier signal */
-    void descentSpeedChanged();
-
-    /*! \brief Notifier signal */
-    void fuelConsumptionChanged();
-
-    /*! \brief Notifier signal */
-    void fuelConsumptionUnitChanged();
-
-    /*! \brief Notifier signal */
-    void horizontalDistanceUnitChanged();
-
-    /*! \brief Notifier signal */
-    void minimumSpeedChanged();
-
-    /*! \brief Notifier signal */
-    void nameChanged();
-
-    /*! \brief Notifier signal */
-    void verticalDistanceUnitChanged();
-
 private:
-    Q_DISABLE_COPY_MOVE(Aircraft)
-
     static constexpr Units::Speed minValidSpeed = Units::Speed::fromKN(10.0);
     static constexpr Units::Speed maxValidSpeed = Units::Speed::fromKN(400.0);
     static constexpr Units::VolumeFlow minValidFuelConsumption = Units::VolumeFlow::fromLPH(0.0);
     static constexpr Units::VolumeFlow maxValidFuelConsumption = Units::VolumeFlow::fromLPH(300.0);
 
-    Units::Speed _cruiseSpeed {};
-    Units::Speed _descentSpeed {};
-    Units::VolumeFlow _fuelConsumption {};
-    FuelConsumptionUnit _fuelConsumptionUnit {LiterPerHour};
-    HorizontalDistanceUnit _horizontalDistanceUnit {NauticalMile};
-    Units::Speed _minimumSpeed {};
-    QString _name {};
-    VerticalDistanceUnit _verticalDistanceUnit {Feet};
-
-    QSettings settings;
+    Units::Speed m_cruiseSpeed {};
+    Units::Speed m_descentSpeed {};
+    Units::VolumeFlow m_fuelConsumption {};
+    FuelConsumptionUnit m_fuelConsumptionUnit {LiterPerHour};
+    HorizontalDistanceUnit m_horizontalDistanceUnit {NauticalMile};
+    Units::Speed m_minimumSpeed {};
+    QString m_name {};
+    VerticalDistanceUnit m_verticalDistanceUnit {Feet};
 };
 
 }
+
+// Declare meta types
+Q_DECLARE_METATYPE(Navigation::Aircraft)

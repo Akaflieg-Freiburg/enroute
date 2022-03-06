@@ -133,7 +133,7 @@ Page {
 
                     if (leg === null)
                         return ""
-                    return leg.description
+                    return leg.description(global.navigator().wind, global.navigator().aircraft)
                 }
             }
 
@@ -611,13 +611,7 @@ Page {
                 id: summary
 
                 Layout.fillWidth: true
-                text: {
-                    // Mention units
-                    global.navigator().aircraft.horizontalDistanceUnit
-                    global.navigator().aircraft.fuelConsumptionUnit
-
-                    return global.navigator().flightRoute.summary
-                }
+                text: global.navigator().flightRoute.summary
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText

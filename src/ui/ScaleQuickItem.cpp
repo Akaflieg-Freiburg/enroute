@@ -32,7 +32,7 @@ Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
 
-    connect(GlobalObject::navigator()->aircraft(), &Navigation::Aircraft::horizontalDistanceUnitChanged, this, &QQuickItem::update);
+    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &QQuickItem::update);
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
 
 }
@@ -47,7 +47,7 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
 
     // Pre-compute a few numbers that will be used when drawing
     qreal pixelPerUnit   = NAN;
-    switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
     case Navigation::Aircraft::Kilometer:
         pixelPerUnit = _pixelPer10km * 0.1;
         break;
@@ -73,7 +73,7 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
     }
     painter->setFont(font);
     QString text;
-    switch (GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+    switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
     case Navigation::Aircraft::Kilometer:
         text = QString("%1 km").arg(sizeOfScaleInUnit);
         break;

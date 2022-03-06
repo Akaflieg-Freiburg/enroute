@@ -23,12 +23,6 @@
 #include "weather/Wind.h"
 
 
-Weather::Wind::Wind(QObject *parent)
-    : QObject(parent)
-{
-}
-
-
 void Weather::Wind::setSpeed(Units::Speed newSpeed)
 {
 
@@ -41,11 +35,6 @@ void Weather::Wind::setSpeed(Units::Speed newSpeed)
     }
 
     m_speed = newSpeed;
-#warning WRONG
-    QSettings settings;
-    settings.setValue("Wind/windSpeedInKT", m_speed.toKN());
-    emit valChanged();
-
 }
 
 
@@ -57,8 +46,4 @@ void Weather::Wind::setDirectionFrom(Units::Angle newDirectionFrom)
     }
 
     m_directionFrom = newDirectionFrom;
-#warning WRONG
-    QSettings settings;
-    settings.setValue("Wind/windDirectionInDEG", m_directionFrom.toDEG());
-    emit valChanged();
 }

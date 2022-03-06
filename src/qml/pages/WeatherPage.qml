@@ -142,7 +142,7 @@ Page {
                 text: {
                     var result = model.modelData.twoLineTitle
 
-                    var wayTo  = model.modelData.wayTo(global.positionProvider().positionInfo.coordinate())
+                    var wayTo  = global.navigator().aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), model.modelData.coordinate)
                     if (wayTo !== "")
                         result = result + "<br>" + wayTo
 

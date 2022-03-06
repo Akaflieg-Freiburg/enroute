@@ -88,7 +88,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
-    qmlRegisterType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft");
+    qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", "Aircraft objects cannot be created in QML");
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
     qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", "SSLErrorHandler objects cannot be created in QML");
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");

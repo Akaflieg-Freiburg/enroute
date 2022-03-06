@@ -112,7 +112,7 @@ auto Traffic::Warning::description() const -> QString
     // Horizontal distance
     if (m_hDist.isFinite() && !m_hDist.isNegative()) {
 
-        switch(GlobalObject::navigator()->aircraft()->horizontalDistanceUnit()) {
+        switch(GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
         case Navigation::Aircraft::Kilometer:
             result << QCoreApplication::translate("Traffic::Warning", "Distance %1 km").arg(qRound(m_hDist.toKM()*10.0)/10.0);
             break;
@@ -128,7 +128,7 @@ auto Traffic::Warning::description() const -> QString
 
     // Vertical distance
     if (m_vDist.isFinite()) {
-        QString vDistString = GlobalObject::navigator()->aircraft()->verticalDistanceToString(m_vDist, true);
+        QString vDistString = GlobalObject::navigator()->aircraft().verticalDistanceToString(m_vDist, true);
 
         if (qAbs(m_vDist.toFeet()) < 100) {
             result << QCoreApplication::translate("Traffic::Warning", "Same altitude");

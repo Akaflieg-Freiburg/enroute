@@ -23,6 +23,10 @@
 #include "weather/Wind.h"
 
 
+//
+// Setter Methods
+//
+
 void Weather::Wind::setSpeed(Units::Speed newSpeed)
 {
 
@@ -46,4 +50,15 @@ void Weather::Wind::setDirectionFrom(Units::Angle newDirectionFrom)
     }
 
     m_directionFrom = newDirectionFrom;
+}
+
+
+//
+// Methods
+//
+
+bool Weather::Wind::operator==(const Weather::Wind& other) const
+{
+    return (m_speed == other.m_speed) &&
+            (m_directionFrom == other.m_directionFrom);
 }

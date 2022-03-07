@@ -311,7 +311,7 @@ public:
      *
      *  @result equality
      */
-    Q_INVOKABLE bool operator==(const Navigation::Aircraft& other) const = default;
+    Q_INVOKABLE bool operator==(const Navigation::Aircraft& other) const;
 
     /*! \brief Saves aircraft to a file
      *

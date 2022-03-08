@@ -24,22 +24,63 @@
 #include "Settings.h"
 
 
+//
+// Constructors and destructors
+//
+
 Navigation::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end) :
     m_start(start), m_end(end)
 {
+    m_geoPath.addCoordinate(m_start.coordinate());
+    m_geoPath.addCoordinate(m_end.coordinate());
+    m_geoPath.setWidth( nearThreshold.toM() );
 }
 
+
+//
+// Getter Methods
+//
 
 auto Navigation::Leg::distance() const -> Units::Distance
 {
     // Paranoid safety checks
-    if (!valid()) {
+    if (!isValid()) {
         return {};
     }
 
     return Units::Distance::fromM( m_start.coordinate().distanceTo( m_end.coordinate() ));
 }
 
+
+auto Navigation::Leg::isValid() const -> bool
+{
+    if (!m_start.coordinate().isValid()) {
+        return false;
+    }
+    if (!m_end.coordinate().isValid()) {
+        return false;
+    }
+    return true;
+}
+
+
+auto Navigation::Leg::TC() const -> Units::Angle
+{
+    // Paranoid safety checks
+    if (!isValid()) {
+        return {};
+    }
+    if( Units::Distance::fromM(m_start.coordinate().distanceTo(m_end.coordinate())) < minLegLength ) {
+        return {};
+    }
+
+    return Units::Angle::fromDEG( m_start.coordinate().azimuthTo(m_end.coordinate()) );
+}
+
+
+//
+// Methods
+//
 
 auto Navigation::Leg::Fuel(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const -> Units::Volume
 {
@@ -70,17 +111,46 @@ auto Navigation::Leg::GS(const Weather::Wind& wind, const Navigation::Aircraft& 
 }
 
 
-auto Navigation::Leg::TC() const -> Units::Angle
+auto Navigation::Leg::isFollowing(const Positioning::PositionInfo& positionInfo) const -> bool
 {
-    // Paranoid safety checks
-    if (!valid()) {
-        return {};
-    }
-    if( Units::Distance::fromM(m_start.coordinate().distanceTo(m_end.coordinate())) < minLegLength ) {
-        return {};
+    if (!isNear(positionInfo)) {
+        return false;
     }
 
-    return Units::Angle::fromDEG( m_start.coordinate().azimuthTo(m_end.coordinate()) );
+    auto TT = positionInfo.trueTrack();
+    if (!TT.isFinite()) {
+        return false;
+    }
+
+    auto delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_start.coordinate()));
+    auto deltaDeg = delta.toDEG();
+    if ((deltaDeg < 300.0) && (deltaDeg > 60.0)) {
+        return false;
+    }
+
+    delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_end.coordinate()));
+    deltaDeg = delta.toDEG();
+    if ((deltaDeg < 120.0) || (deltaDeg > 240.0)) {
+        return false;
+    }
+
+    return true;
+}
+
+
+auto Navigation::Leg::isNear(const Positioning::PositionInfo& positionInfo) const -> bool
+{
+    if (!isValid() || !positionInfo.isValid()) {
+        return false;
+    }
+
+    if (m_start.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM()) {
+        return true;
+    }
+    if (m_end.coordinate().distanceTo(positionInfo.coordinate()) < nearThreshold.toM()) {
+        return true;
+    }
+    return m_geoPath.contains(positionInfo.coordinate());
 }
 
 
@@ -100,21 +170,9 @@ auto Navigation::Leg::WCA(const Weather::Wind& wind, const Navigation::Aircraft&
 }
 
 
-auto Navigation::Leg::valid() const -> bool
-{
-    if (!m_start.coordinate().isValid()) {
-        return false;
-    }
-    if (!m_end.coordinate().isValid()) {
-        return false;
-    }
-    return true;
-}
-
-
 auto Navigation::Leg::description(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const -> QString
 {
-    if (!valid()) {
+    if (!isValid()) {
         return QString();
     }
 

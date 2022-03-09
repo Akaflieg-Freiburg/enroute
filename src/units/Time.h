@@ -46,7 +46,7 @@ namespace Units {
          */
         static Time fromMS(double timeInMS) {
             Time result;
-            result._timeInS = timeInMS/1000.0;
+            result.m_timeInS = timeInMS/1000.0;
             return result;
         }
 
@@ -58,7 +58,7 @@ namespace Units {
          */
         static Time fromS(double timeInS) {
             Time result;
-            result._timeInS = timeInS;
+            result.m_timeInS = timeInS;
             return result;
         }
 
@@ -68,7 +68,7 @@ namespace Units {
          */
         Q_INVOKABLE bool isFinite() const
         {
-            return std::isfinite(_timeInS);
+            return std::isfinite(m_timeInS);
         }
 
         /*! \brief Checks if the time is negative
@@ -77,7 +77,7 @@ namespace Units {
          */
         Q_INVOKABLE bool isNegative() const
         {
-            return _timeInS < 0.0;
+            return m_timeInS < 0.0;
         }
 
         /*! \brief Add time to this time
@@ -88,8 +88,19 @@ namespace Units {
          */
         Q_INVOKABLE Units::Time &operator+=(Units::Time other)
         {
-            _timeInS += other._timeInS;
+            m_timeInS += other.m_timeInS;
             return *this;
+        }
+
+        /*! \brief Comparison: not equal
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        Q_INVOKABLE auto operator!=(Units::Time rhs) const
+        {
+            return m_timeInS != rhs.m_timeInS;
         }
 
         /*! \brief Convert time to seconds
@@ -98,7 +109,7 @@ namespace Units {
          */
         Q_INVOKABLE double toS() const
         {
-            return _timeInS;
+            return m_timeInS;
         }
 
         /*! \brief Convert time to minutes
@@ -107,7 +118,7 @@ namespace Units {
          */
         Q_INVOKABLE double toM() const
         {
-            return _timeInS / Seconds_per_Minute;
+            return m_timeInS / Seconds_per_Minute;
         }
 
         /*! \brief Convert time to hours
@@ -116,7 +127,7 @@ namespace Units {
          */
         Q_INVOKABLE double toH() const
         {
-            return _timeInS / Seconds_per_Hour;
+            return m_timeInS / Seconds_per_Hour;
         }
 
         /*! \brief Convert time to string
@@ -130,7 +141,7 @@ namespace Units {
         static constexpr double Seconds_per_Hour = 60.0 * 60.0;
 
         // Speed in meters per second
-        double _timeInS{qQNaN()};
+        double m_timeInS{qQNaN()};
     };
 };
 

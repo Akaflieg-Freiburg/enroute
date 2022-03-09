@@ -24,6 +24,7 @@
 #include "GlobalObject.h"
 #include "navigation/Clock.h"
 #include "navigation/FlightRoute.h"
+#include "navigation/RemainingRouteInfo.h"
 #include "positioning/PositionInfo.h"
 
 
@@ -100,6 +101,9 @@ public:
      */
     Q_PROPERTY(FlightStatus flightStatus READ flightStatus NOTIFY flightStatusChanged)
 
+#warning
+    Q_PROPERTY(Navigation::RemainingRouteInfo remainingRouteInfo READ remainingRouteInfo NOTIFY remainingRouteInfoChanged)
+
     /*! \brief Current wind */
     Q_PROPERTY(Weather::Wind wind READ wind WRITE setWind NOTIFY windChanged)
 
@@ -131,6 +135,9 @@ public:
      *  @returns Property flightStatus
      */
     FlightStatus flightStatus() const { return m_flightStatus; }
+
+#warning
+    Navigation::RemainingRouteInfo remainingRouteInfo() const { return m_remainingRouteInfo; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -173,6 +180,9 @@ signals:
     /*! \brief Notifier signal */
     void flightStatusChanged();
 
+#warning
+    void remainingRouteInfoChanged();
+
     /*! \brief Notifier signal */
     void windChanged();
 
@@ -184,7 +194,7 @@ private slots:
     void updateFlightStatus(const Positioning::PositionInfo& info);
 
 #warning Tentative implementation
-    void updateNextWaypoint(const Positioning::PositionInfo& info);
+    void updateRemainingRouteInfo(const Positioning::PositionInfo& info);
 
 private:
     Q_DISABLE_COPY_MOVE(Navigator)
@@ -203,6 +213,7 @@ private:
     Weather::Wind m_wind {};
 
     QString m_aircraftFileName;
+    RemainingRouteInfo m_remainingRouteInfo;
 };
 
 }

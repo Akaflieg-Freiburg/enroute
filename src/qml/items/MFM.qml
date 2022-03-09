@@ -491,11 +491,37 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
+    RemainingRoute {
+        id: remainingRoute
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+    }
+
+    RoundButton {
+        id: menuButton
+        icon.source: "/icons/material/ic_menu.svg"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0.5*Qt.application.font.pixelSize
+        anchors.top: remainingRoute.bottom
+        anchors.topMargin: 0.5*Qt.application.font.pixelSize
+
+        height: 66
+        width: 66
+
+        onClicked: {
+            global.mobileAdaptor().vibrateBrief()
+            drawer.open()
+        }
+    }
+
     Label {
         id: airspaceAltLimitLabel
 
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
+        anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.4*Qt.application.font.pixelSize
 
         text: {
@@ -514,7 +540,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
-        anchors.top: page.top
+        anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
         height: 66

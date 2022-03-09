@@ -26,6 +26,7 @@
 #include "navigation/Aircraft.h"
 #include "positioning/PositionInfo.h"
 #include "units/Angle.h"
+#include "units/Time.h"
 #include "units/Units.h"
 #include "weather/Wind.h"
 
@@ -53,27 +54,44 @@ public:
     // PROPERTIES
     //
 
-    // ...
+    Q_PROPERTY(GeoMaps::Waypoint nextWP MEMBER nextWP)
+    Q_PROPERTY(Units::Distance nextWP_DIST MEMBER nextWP_DIST)
+    Q_PROPERTY(Units::Time nextWP_ETE MEMBER nextWP_ETE)
+    Q_PROPERTY(QDateTime nextWP_ETA MEMBER nextWP_ETA)
 
+    Q_PROPERTY(GeoMaps::Waypoint finalWP MEMBER finalWP)
+    Q_PROPERTY(Units::Distance finalWP_DIST MEMBER finalWP_DIST)
+    Q_PROPERTY(Units::Time finalWP_ETE MEMBER finalWP_ETE)
+    Q_PROPERTY(QDateTime finalWP_ETA MEMBER finalWP_ETA)
+
+    Q_PROPERTY(QDateTime issueTime MEMBER issueTime)
+
+    Q_PROPERTY(bool isValid READ isValid)
 
     //
     // Getter Methods
     //
 
-    // ...
+    bool isValid() const {
+        return finalWP.isValid();
+    }
 
 
     //
-    // Methods
+    // Members
     //
 
-    // ...
+    GeoMaps::Waypoint nextWP;
+    Units::Distance nextWP_DIST;
+    Units::Time nextWP_ETE;
+    QDateTime nextWP_ETA;
 
-private:
-    // ...
+    GeoMaps::Waypoint finalWP;
+    Units::Distance finalWP_DIST;
+    Units::Time finalWP_ETE;
+    QDateTime finalWP_ETA;
 
-    GeoMaps::Waypoint m_start;
-    GeoMaps::Waypoint m_end;
+    QDateTime issueTime;
 };
 
 }

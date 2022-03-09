@@ -59,7 +59,7 @@ void Navigation::Navigator::deferredInitialization()
 {
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateNextWaypoint);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
 }
 
 
@@ -192,26 +192,51 @@ void Navigation::Navigator::updateFlightStatus(const Positioning::PositionInfo& 
 }
 
 
-void Navigation::Navigator::updateNextWaypoint(const Positioning::PositionInfo& info)
+void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::PositionInfo& info)
 {
     qWarning() << "updateNextWaypoint";
 
-    auto legs = m_flightRoute->legs();
+    //
+    // Figure out what the current leg is
+    //
+
+    auto legs = flightRoute()->legs();
     if (legs.isEmpty()) {
         return;
     }
+    int currentLeg = -1;
 
+    // Check legs that we are following, and take the last one
     for(int i=legs.size()-1; i>=0; i--) {
         if (legs[i].isFollowing(info)) {
-            qWarning() << "Following leg" << legs[i].startPoint().ICAOCode() << legs[i].endPoint().ICAOCode();
-            return;
+            currentLeg = i;
+            break;
         }
     }
 
-    for(int i=legs.size()-1; i>=0; i--) {
-        if (legs[i].isNear(info)) {
-            qWarning() << "Near leg" << legs[i].startPoint().ICAOCode() << legs[i].endPoint().ICAOCode();
-            return;
+    // If no current leg found, check legs that we are near to, and take the last one.q
+    if (currentLeg < 0) {
+        for(int i=legs.size()-1; i>=0; i--) {
+            if (legs[i].isNear(info)) {
+                currentLeg = i;
+                break;
+            }
         }
     }
+
+    // If still no current leg found, then abort
+    if (currentLeg < 0) {
+        return;
+    }
+
+    //
+    //
+    //
+    RemainingRouteInfo rri;
+    rri.nextWP = legs[currentLeg].endPoint();
+    rri.finalWP = legs.last().endPoint();
+
+    m_remainingRouteInfo = rri;
+    emit remainingRouteInfoChanged();
+
 }

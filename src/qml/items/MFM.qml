@@ -492,6 +492,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
     }
 
     Label {
+        id: airspaceAltLimitLabel
+
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 0.4*Qt.application.font.pixelSize

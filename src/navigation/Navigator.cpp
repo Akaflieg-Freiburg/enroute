@@ -59,6 +59,7 @@ void Navigation::Navigator::deferredInitialization()
 {
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateNextWaypoint);
 }
 
 
@@ -187,5 +188,30 @@ void Navigation::Navigator::updateFlightStatus(const Positioning::PositionInfo& 
     // Go to flight mode if ground speed is more than aircraftMinSpeed
     if ( GS > aircraftMinSpeed ) {
         setFlightStatus(Flight);
+    }
+}
+
+
+void Navigation::Navigator::updateNextWaypoint(const Positioning::PositionInfo& info)
+{
+    qWarning() << "updateNextWaypoint";
+
+    auto legs = m_flightRoute->legs();
+    if (legs.isEmpty()) {
+        return;
+    }
+
+    for(int i=legs.size()-1; i>=0; i--) {
+        if (legs[i].isFollowing(info)) {
+            qWarning() << "Following leg" << legs[i].startPoint().ICAOCode() << legs[i].endPoint().ICAOCode();
+            return;
+        }
+    }
+
+    for(int i=legs.size()-1; i>=0; i--) {
+        if (legs[i].isNear(info)) {
+            qWarning() << "Near leg" << legs[i].startPoint().ICAOCode() << legs[i].endPoint().ICAOCode();
+            return;
+        }
     }
 }

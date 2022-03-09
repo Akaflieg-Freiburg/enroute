@@ -183,6 +183,8 @@ private slots:
     // Update flight status. Connected to positioning source.
     void updateFlightStatus(const Positioning::PositionInfo& info);
 
+#warning Tentative implementation
+    void updateNextWaypoint(const Positioning::PositionInfo& info);
 
 private:
     Q_DISABLE_COPY_MOVE(Navigator)

@@ -67,12 +67,16 @@ public:
     Q_PROPERTY(QDateTime issueTime MEMBER issueTime)
 
     Q_PROPERTY(bool isValid READ isValid)
+    Q_PROPERTY(bool hasFinalWP READ hasFinalWP)
 
     //
     // Getter Methods
     //
 
     bool isValid() const {
+        return nextWP.isValid();
+    }
+    bool hasFinalWP() const {
         return finalWP.isValid();
     }
 

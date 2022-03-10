@@ -26,8 +26,7 @@ import enroute 1.0
 
 Rectangle {   
     color: "#AA000000"
-    height: grid.rri.isValid ? grid.implicitHeight : 0
-    visible: grid.rri.isValid
+    height: grid.implicitHeight // grid.rri.isValid ? grid.implicitHeight : 0
 
     GridLayout {
         id: grid
@@ -38,46 +37,117 @@ Rectangle {
 
         property var rri: global.navigator().remainingRouteInfo
 
+
         Label {
-            text: grid.rri.nextWP.name
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            visible: grid.rri.isValid
+        }
+        Label {
+            text: "DIST"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            visible: grid.rri.isValid
+        }
+        Label {
+            text: "ETE"
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            visible: grid.rri.isValid
+        }
+        Label {
+            text: "ETA"
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            visible: grid.rri.isValid
+        }
+
+        Label {
+            text: grid.rri.nextWP.name
+            elide: Text.ElideRight
+            color: "white"
+//            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.maximumWidth: implicitWidth
+            visible: grid.rri.isValid
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: global.navigator().aircraft.horizontalDistanceToString(grid.rri.nextWP_DIST)
             color: "white"
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.minimumWidth: implicitWidth+Qt.application.font.pixelSize
+            visible: grid.rri.isValid
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
-            text: "ETE %1 h".arg(grid.rri.nextWP_ETE.toHoursAndMinutes())
+            text: "%1 h".arg(grid.rri.nextWP_ETE.toHoursAndMinutes())
             color: "white"
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.minimumWidth: implicitWidth+Qt.application.font.pixelSize
+            visible: grid.rri.isValid
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
-            text: "ETA %1".arg(grid.rri.nextWP_ETA.timeAsUTCString)
+            text: Qt.formatDateTime(grid.rri.nextWP_ETA, "h:mm")
             color: "white"
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.minimumWidth: implicitWidth+Qt.application.font.pixelSize
+            visible: grid.rri.isValid
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
+
 
         Label {
             text: grid.rri.finalWP.name
+            elide: Text.ElideRight
             color: "white"
-            Layout.alignment: Qt.AlignHCenter
+//            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.maximumWidth: implicitWidth
+            visible: grid.rri.hasFinalWP
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: global.navigator().aircraft.horizontalDistanceToString(grid.rri.finalWP_DIST)
             color: "white"
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.minimumWidth: implicitWidth+Qt.application.font.pixelSize
+            visible: grid.rri.hasFinalWP
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
-            text: "ETE %1 h".arg(grid.rri.finalWP_ETE.toHoursAndMinutes())
+            text: "%1 h".arg(grid.rri.finalWP_ETE.toHoursAndMinutes())
             color: "white"
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.minimumWidth: implicitWidth+Qt.application.font.pixelSize
+            visible: grid.rri.hasFinalWP
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
-            text: "ETA %1".arg(grid.rri.finalWP_ETA.timeAsUTCString)
+            text: Qt.formatDateTime(grid.rri.finalWP_ETA, "h:mm")
             color: "white"
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.minimumWidth: implicitWidth+Qt.application.font.pixelSize
+            visible: grid.rri.hasFinalWP
+            font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
 
     }

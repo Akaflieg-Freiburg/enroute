@@ -194,6 +194,7 @@ private slots:
     void updateFlightStatus(const Positioning::PositionInfo& info);
 
 #warning Tentative implementation
+    void updateRemainingRouteInfoNA();
     void updateRemainingRouteInfo(const Positioning::PositionInfo& info);
 
 private:

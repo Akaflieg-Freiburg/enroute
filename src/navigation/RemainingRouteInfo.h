@@ -41,6 +41,9 @@ namespace Navigation {
 class RemainingRouteInfo {
     Q_GADGET
 
+    /*! \brief Comparison */
+    friend bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&);
+
 public:
 
     //
@@ -48,7 +51,7 @@ public:
     //
 
     /*! \brief Constructs a remaining route info */
-    explicit RemainingRouteInfo();
+    RemainingRouteInfo();
 
     //
     // PROPERTIES
@@ -63,8 +66,6 @@ public:
     Q_PROPERTY(Units::Distance finalWP_DIST MEMBER finalWP_DIST)
     Q_PROPERTY(Units::Time finalWP_ETE MEMBER finalWP_ETE)
     Q_PROPERTY(QDateTime finalWP_ETA MEMBER finalWP_ETA)
-
-    Q_PROPERTY(QDateTime issueTime MEMBER issueTime)
 
     Q_PROPERTY(bool isValid READ isValid)
     Q_PROPERTY(bool hasFinalWP READ hasFinalWP)
@@ -85,18 +86,21 @@ public:
     // Members
     //
 
-    GeoMaps::Waypoint nextWP;
-    Units::Distance nextWP_DIST;
-    Units::Time nextWP_ETE;
-    QDateTime nextWP_ETA;
+    GeoMaps::Waypoint nextWP {};
+    Units::Distance nextWP_DIST {};
+    Units::Time nextWP_ETE {};
+    QDateTime nextWP_ETA {};
 
-    GeoMaps::Waypoint finalWP;
-    Units::Distance finalWP_DIST;
-    Units::Time finalWP_ETE;
-    QDateTime finalWP_ETA;
-
-    QDateTime issueTime;
+    GeoMaps::Waypoint finalWP {};
+    Units::Distance finalWP_DIST {};
+    Units::Time finalWP_ETE {};
+    QDateTime finalWP_ETA {};
 };
+
+
+/*! \brief Comparison */
+bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&);
+
 
 }
 

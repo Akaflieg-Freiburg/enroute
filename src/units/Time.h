@@ -92,6 +92,17 @@ namespace Units {
             return *this;
         }
 
+        /*! \brief Comparison: equal
+         *
+         *  @param rhs Right hand side of the comparison
+         *
+         *  @returns Result of the comparison
+         */
+        Q_INVOKABLE auto operator==(Units::Time rhs) const
+        {
+            return m_timeInS == rhs.m_timeInS;
+        }
+
         /*! \brief Comparison: not equal
          *
          *  @param rhs Right hand side of the comparison
@@ -102,7 +113,6 @@ namespace Units {
         {
             return m_timeInS != rhs.m_timeInS;
         }
-
         /*! \brief Convert time to seconds
          *
          * @return time in seconds

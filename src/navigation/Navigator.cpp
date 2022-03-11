@@ -60,9 +60,14 @@ void Navigation::Navigator::deferredInitialization()
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
-    connect(this, &Navigation::Navigator::aircraftChanged, this, &Navigation::Navigator::updateRemainingRouteInfoNA);
-    connect(this, &Navigation::Navigator::windChanged, this, &Navigation::Navigator::updateRemainingRouteInfoNA);
-    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &Navigation::Navigator::updateRemainingRouteInfoNA);
+    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo({}); });
+    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo({}); });
+    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo({}); });
+
+    m_remainingRouteInfoTimer.setInterval(1min);
+    m_remainingRouteInfoTimer.setSingleShot(true);
+    connect(&m_remainingRouteInfoTimer, &QTimer::timeout, this, [this](){ setRemainingRouteInfo({}); });
+
 }
 
 
@@ -195,9 +200,17 @@ void Navigation::Navigator::updateFlightStatus(const Positioning::PositionInfo& 
 }
 
 
-void Navigation::Navigator::updateRemainingRouteInfoNA()
+void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo)
 {
-    updateRemainingRouteInfo( GlobalObject::positionProvider()->positionInfo() );
+    if (rrInfo == m_remainingRouteInfo) {
+        return;
+    }
+    m_remainingRouteInfo = rrInfo;
+    emit remainingRouteInfoChanged();
+
+    if (m_remainingRouteInfo.isValid()) {
+        m_remainingRouteInfoTimer.start();
+    }
 }
 
 
@@ -211,8 +224,8 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
 
     auto legs = flightRoute()->legs();
     if (legs.isEmpty()) {
-        m_remainingRouteInfo = RemainingRouteInfo();
-        emit remainingRouteInfoChanged();
+        setRemainingRouteInfo({});
+        return;
     }
     int currentLeg = -1;
 
@@ -224,7 +237,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
         }
     }
 
-    // If no current leg found, check legs that we are near to, and take the last one.q
+    // If no current leg found, check legs that we are near to, and take the last one.
     if (currentLeg < 0) {
         for(int i=legs.size()-1; i>=0; i--) {
             if (legs[i].isNear(info)) {
@@ -236,6 +249,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
 
     // If still no current leg found, then abort
     if (currentLeg < 0) {
+        setRemainingRouteInfo({});
         return;
     }
 

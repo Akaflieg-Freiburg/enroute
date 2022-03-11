@@ -41,6 +41,9 @@ class Waypoint
     /*! \brief Comparison */
     friend bool operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
 
+    /*! \brief Comparison */
+    friend bool operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
+
 public:
     /*! \brief Constructs an invalid way point
      *
@@ -236,6 +239,23 @@ public:
         return m_properties.value("NAM").toString();
     }
 
+    /*! \brief Short name of the waypoint
+     *
+     *  This property holds the ICAO code if it exists, or else the name of the waypoint.
+     */
+    Q_PROPERTY(QString shortName READ shortName CONSTANT)
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property shortName
+     */
+    QString shortName() const
+    {
+        if (ICAOCode().isEmpty())
+            return name();
+        return ICAOCode();
+    }
+
     /* \brief Verbose description of waypoint properties
      *
      * This property holds a list of strings in meaningful order that describe the
@@ -297,6 +317,9 @@ protected:
 
 /*! \brief Comparison */
 bool operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
+
+/*! \brief Comparison */
+bool operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
 
 /*! \brief Hash function for airspaces
  *

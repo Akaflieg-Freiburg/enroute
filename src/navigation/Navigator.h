@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QTimer>
+
 #include "FlightRoute.h"
 #include "GlobalObject.h"
 #include "navigation/Clock.h"
@@ -194,7 +196,7 @@ private slots:
     void updateFlightStatus(const Positioning::PositionInfo& info);
 
 #warning Tentative implementation
-    void updateRemainingRouteInfoNA();
+    void setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo);
     void updateRemainingRouteInfo(const Positioning::PositionInfo& info);
 
 private:
@@ -214,6 +216,8 @@ private:
     Weather::Wind m_wind {};
 
     QString m_aircraftFileName;
+
+    QTimer m_remainingRouteInfoTimer;
     RemainingRouteInfo m_remainingRouteInfo;
 };
 

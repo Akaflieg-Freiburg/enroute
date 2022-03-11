@@ -60,14 +60,9 @@ void Navigation::Navigator::deferredInitialization()
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
-    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo({}); });
-    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo({}); });
-    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo({}); });
-
-    m_remainingRouteInfoTimer.setInterval(1min);
-    m_remainingRouteInfoTimer.setSingleShot(true);
-    connect(&m_remainingRouteInfoTimer, &QTimer::timeout, this, [this](){ setRemainingRouteInfo({}); });
-
+    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
+    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
+    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
 }
 
 
@@ -207,29 +202,27 @@ void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRou
     }
     m_remainingRouteInfo = rrInfo;
     emit remainingRouteInfoChanged();
-
-    if (m_remainingRouteInfo.isValid()) {
-        m_remainingRouteInfoTimer.start();
-    }
 }
 
 
 void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::PositionInfo& info)
 {
-    qWarning() << "updateNextWaypoint";
-
     //
     // Figure out what the current leg is
     //
 
     auto legs = flightRoute()->legs();
-    if (legs.isEmpty()) {
-        setRemainingRouteInfo({});
-        return;
+
+    // If the flight route contains one waypoint only, then create an artificial leg from the current position
+    // to the one waypoint of the route.
+    if (flightRoute()->size() == 1) {
+        auto start = GlobalObject::positionProvider()->lastValidCoordinate();
+        auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>().coordinate();
+        legs += Leg(start, end);
     }
-    int currentLeg = -1;
 
     // Check legs that we are following, and take the last one
+    int currentLeg = -1;
     for(int i=legs.size()-1; i>=0; i--) {
         if (legs[i].isFollowing(info)) {
             currentLeg = i;

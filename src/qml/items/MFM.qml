@@ -367,6 +367,16 @@ Item {
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
+        MapPolyline {
+            id: toNextWP
+
+            line.width: 2
+            line.color: '#800000' //'green'
+            path: [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate]
+            opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
+        }
+
+
         MapItemView { // Traffic opponents
             model: global.trafficDataProvider().trafficObjects4QML
             delegate: Component {

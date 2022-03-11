@@ -457,7 +457,6 @@ Dialog {
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
             global.navigator().flightRoute.clear()
-            global.navigator().flightRoute.append(global.positionProvider().lastValidCoordinate)
             global.navigator().flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))

@@ -369,10 +369,10 @@ Item {
 
         MapPolyline {
             id: toNextWP
-
+            visible: global.positionProvider().lastValidCoordinate.isValid && global.navigator().remainingRouteInfo.nextWP.coordinate.isValid
             line.width: 2
             line.color: '#800000' //'green'
-            path: [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate]
+            path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 

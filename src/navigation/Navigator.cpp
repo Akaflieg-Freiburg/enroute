@@ -257,7 +257,9 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     rri.nextWP = legToNextWP.endPoint();
     rri.nextWP_DIST = dist;
     rri.nextWP_ETE  = ETE;
-    rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.nextWP_ETE.toS() );
+    if (ETE.isFinite()) {
+        rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.nextWP_ETE.toS() );
+    }
 
     if (currentLeg < legs.size()-1) {
         for(int i=currentLeg+1; i<legs.size(); i++) {
@@ -268,7 +270,9 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
         rri.finalWP = legs.last().endPoint();
         rri.finalWP_DIST = dist;
         rri.finalWP_ETE  = ETE;
-        rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() );
+        if (ETE.isFinite()) {
+            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() );
+        }
     }
 
     m_remainingRouteInfo = rri;

@@ -92,7 +92,7 @@ Rectangle {
             font.weight: Font.Bold
         }
         Label {
-            text: Qt.formatDateTime(grid.rri.nextWP_ETA, "h:mm")
+            text: grid.rri.nextWP_ETE.isFinite() ? Qt.formatDateTime(grid.rri.nextWP_ETA, "h:mm") : "-:--"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
@@ -127,7 +127,7 @@ Rectangle {
             font.weight: Font.Bold
         }
         Label {
-            text: Qt.formatDateTime(grid.rri.finalWP_ETA, "h:mm")
+            text: grid.rri.finalWP_ETE.isFinite() ? Qt.formatDateTime(grid.rri.finalWP_ETA, "h:mm") : "-:--"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth

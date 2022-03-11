@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include <QTimer>
-
 #include "FlightRoute.h"
 #include "GlobalObject.h"
 #include "navigation/Clock.h"

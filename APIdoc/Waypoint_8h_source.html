@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.15.90</span>
+   &#160;<span id="projectnumber">2.15.91</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -83,152 +83,169 @@ $(function() {
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a4e09f3e4d995569ee6d971046837b2fa">operator==</a>(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;, <span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html">   55</a></span>&#160;    <a class="code" href="classGeoMaps_1_1Waypoint.html#a02c5e9ec88d8f38e08d8bf5e54f76180">Waypoint</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classGeoMaps_1_1Waypoint.html#a02c5e9ec88d8f38e08d8bf5e54f76180">Waypoint</a>(<span class="keyword">const</span> QGeoCoordinate&amp; <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a>);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a02c5e9ec88d8f38e08d8bf5e54f76180">Waypoint</a>(<span class="keyword">const</span> QJsonObject &amp;geoJSONObject);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// METHODS</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a243d66b3119e5f90c954eaf1d0d595f2">equals</a>(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;other)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span> == other;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a683918b7bf7606722d42fee6f6cab466">isNear</a>(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp; other) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    Q_REQUIRED_RESULT Q_INVOKABLE <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1Waypoint.html#a23179d2ba2b5a978d0392f15cd4df046">relocated</a>(<span class="keyword">const</span> QGeoCoordinate&amp; newCoordinate) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    Q_REQUIRED_RESULT Q_INVOKABLE <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1Waypoint.html#a7b1f5c3826fb26bf0c2ef9f5b970b041">renamed</a>(<span class="keyword">const</span> QString &amp;newName) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    QJsonObject <a class="code" href="classGeoMaps_1_1Waypoint.html#a56fa902c7e9434028e675b2e4a3208cd">toJSON</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="comment">// PROPERTIES</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">category</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">category</a> CONSTANT)</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">category</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;CAT&quot;</span>).toString();</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    Q_PROPERTY(QGeoCoordinate <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a> CONSTANT)</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    QGeoCoordinate <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">return</span> m_coordinate;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">extendedName</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">extendedName</a> CONSTANT)</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    </div>
-<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">  177</a></span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">extendedName</a>() const;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a> CONSTANT)</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00192"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">  192</a></span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;COD&quot;</span>).toString();</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">icon</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">icon</a> CONSTANT)</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">icon</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">  207</a></span>&#160;    <span class="comment">/* \brief Validity</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">     * This property is set to true if the waypoint has a valid coordinate and if the</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment">     * properties satisfy the specifications outlined</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> isValid READ isValid CONSTANT)</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    </div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">bool</span> isValid()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">  220</a></span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keywordflow">return</span> m_isValid;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    }</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">name</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">name</a> CONSTANT)</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">name</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">  235</a></span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;NAM&quot;</span>).toString();</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="comment">/* \brief Verbose description of waypoint properties</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">     * This property holds a list of strings in meaningful order that describe the</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment">     * waypoint properties.  This includes airport frequency, runway</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">     * information, etc. The data is returned as a list of strings where the</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment">     * first four letters of each string indicate the type of data with an</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">     * abbreviation that will be understood by pilots (&quot;RWY &quot;, &quot;ELEV&quot;,</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">     * etc.). The rest of the string will then contain the actual data.</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    Q_PROPERTY(QList&lt;QString&gt; tabularDescription READ tabularDescription)</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    QList&lt;QString&gt; tabularDescription() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00255"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#ab48aee759f64dc37820667aed2e5c219">  255</a></span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">twoLineTitle</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">twoLineTitle</a> CONSTANT)</div>
-<div class="line"><a name="l00264"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">  264</a></span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">twoLineTitle</a>() const;</div>
-<div class="line"><a name="l00270"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a7742171553e996e0a00711c2250995bd">  270</a></span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">type</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">type</a> CONSTANT)</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">type</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;TYP&quot;</span>).toString();</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    }</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="comment">// Computes the property isValid; this is used by the constructors to set the cached value</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keywordtype">bool</span> computeIsValid() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordtype">bool</span> m_isValid {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    QGeoCoordinate m_coordinate;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    QMultiMap&lt;QString, QVariant&gt; m_properties;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;};</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">  299</a></span>&#160;<span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;, <span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;uint qHash(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp; wp);</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;}</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">// Declare meta types</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#ae97a5ff0f6b54c5a37d4a2e5faaf7fcd">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;, <span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="classGeoMaps_1_1Waypoint.html#a02c5e9ec88d8f38e08d8bf5e54f76180">Waypoint</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="classGeoMaps_1_1Waypoint.html#a02c5e9ec88d8f38e08d8bf5e54f76180">Waypoint</a>(<span class="keyword">const</span> QGeoCoordinate&amp; <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a02c5e9ec88d8f38e08d8bf5e54f76180">Waypoint</a>(<span class="keyword">const</span> QJsonObject &amp;geoJSONObject);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// METHODS</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a243d66b3119e5f90c954eaf1d0d595f2">equals</a>(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;other)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span> == other;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a683918b7bf7606722d42fee6f6cab466">isNear</a>(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp; other) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    Q_REQUIRED_RESULT Q_INVOKABLE <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1Waypoint.html#a23179d2ba2b5a978d0392f15cd4df046">relocated</a>(<span class="keyword">const</span> QGeoCoordinate&amp; newCoordinate) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    Q_REQUIRED_RESULT Q_INVOKABLE <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1Waypoint.html#a7b1f5c3826fb26bf0c2ef9f5b970b041">renamed</a>(<span class="keyword">const</span> QString &amp;newName) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    QJsonObject <a class="code" href="classGeoMaps_1_1Waypoint.html#a56fa902c7e9434028e675b2e4a3208cd">toJSON</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="comment">// PROPERTIES</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">category</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">category</a> CONSTANT)</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">category</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;CAT&quot;</span>).toString();</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    Q_PROPERTY(QGeoCoordinate <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a> CONSTANT)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    QGeoCoordinate <a class="code" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordflow">return</span> m_coordinate;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">extendedName</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">extendedName</a> CONSTANT)</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    </div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">  180</a></span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">extendedName</a>() const;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a> CONSTANT)</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">  195</a></span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;COD&quot;</span>).toString();</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    }</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">icon</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">icon</a> CONSTANT)</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">icon</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">  210</a></span>&#160;    <span class="comment">/* \brief Validity</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">     * This property is set to true if the waypoint has a valid coordinate and if the</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment">     * properties satisfy the specifications outlined</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> isValid READ isValid CONSTANT)</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordtype">bool</span> isValid()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">  223</a></span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="keywordflow">return</span> m_isValid;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">name</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">name</a> CONSTANT)</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    </div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">name</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">  238</a></span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;NAM&quot;</span>).toString();</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#ac435c32e1d3ab56082ba570f99f86592">shortName</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#ac435c32e1d3ab56082ba570f99f86592">shortName</a> CONSTANT)</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#ac435c32e1d3ab56082ba570f99f86592">shortName</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a>().isEmpty())</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">name</a>();</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">ICAOCode</a>();</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    }</div>
+<div class="line"><a name="l00258"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#ab48aee759f64dc37820667aed2e5c219">  258</a></span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="comment">/* \brief Verbose description of waypoint properties</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment">     * This property holds a list of strings in meaningful order that describe the</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">     * waypoint properties.  This includes airport frequency, runway</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">     * information, etc. The data is returned as a list of strings where the</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">     * first four letters of each string indicate the type of data with an</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">     * abbreviation that will be understood by pilots (&quot;RWY &quot;, &quot;ELEV&quot;,</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">     * etc.). The rest of the string will then contain the actual data.</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">  267</a></span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    Q_PROPERTY(QList&lt;QString&gt; tabularDescription READ tabularDescription)</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    QList&lt;QString&gt; tabularDescription() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">twoLineTitle</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">twoLineTitle</a> CONSTANT)</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">twoLineTitle</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">type</a> READ <a class="code" href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">type</a> CONSTANT)</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    QString <a class="code" href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">type</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="keywordflow">return</span> m_properties.value(<span class="stringliteral">&quot;TYP&quot;</span>).toString();</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    }</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="comment">// Computes the property isValid; this is used by the constructors to set the cached value</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordtype">bool</span> computeIsValid() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordtype">bool</span> m_isValid {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    QGeoCoordinate m_coordinate;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    QMultiMap&lt;QString, QVariant&gt; m_properties;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;};</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">  319</a></span>&#160;<span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;, <span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;, <span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp;);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;uint qHash(<span class="keyword">const</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp; wp);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;}</div>
+<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">  333</a></span>&#160; </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">// Declare meta types</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>)</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a243d66b3119e5f90c954eaf1d0d595f2"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a243d66b3119e5f90c954eaf1d0d595f2">GeoMaps::Waypoint::equals</a></div><div class="ttdeci">Q_INVOKABLE bool equals(const GeoMaps::Waypoint &amp;other) const</div><div class="ttdoc">Equality check.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00126">Waypoint.h:126</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a243d66b3119e5f90c954eaf1d0d595f2"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a243d66b3119e5f90c954eaf1d0d595f2">GeoMaps::Waypoint::equals</a></div><div class="ttdeci">Q_INVOKABLE bool equals(const GeoMaps::Waypoint &amp;other) const</div><div class="ttdoc">Equality check.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00129">Waypoint.h:129</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a7b1f5c3826fb26bf0c2ef9f5b970b041"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a7b1f5c3826fb26bf0c2ef9f5b970b041">GeoMaps::Waypoint::renamed</a></div><div class="ttdeci">Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint renamed(const QString &amp;newName) const</div><div class="ttdoc">Copy waypoint and change location.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a23179d2ba2b5a978d0392f15cd4df046"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a23179d2ba2b5a978d0392f15cd4df046">GeoMaps::Waypoint::relocated</a></div><div class="ttdeci">Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint relocated(const QGeoCoordinate &amp;newCoordinate) const</div><div class="ttdoc">Copy waypoint and change location.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a1db88686f2a51c5357f1843d3a0ec9f5"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">GeoMaps::Waypoint::type</a></div><div class="ttdeci">QString type</div><div class="ttdoc">Type of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00313">Waypoint.h:313</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a5b7f412339a14eb3ebd734cf08990f40"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">GeoMaps::Waypoint::twoLineTitle</a></div><div class="ttdeci">QString twoLineTitle</div><div class="ttdoc">Two-line description of the waypoint name, for use in GUI.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00299">Waypoint.h:299</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a0ebf0906b5d461c0ec2e57e0e49f1ffb"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">GeoMaps::Waypoint::category</a></div><div class="ttdeci">QString category</div><div class="ttdoc">Category of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00177">Waypoint.h:177</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_aa20cec1548e4b1fe9bbcf6ceb1d72841"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">GeoMaps::Waypoint::ICAOCode</a></div><div class="ttdeci">QString ICAOCode</div><div class="ttdoc">ICAO Code of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00220">Waypoint.h:220</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a4db75300ab2543f3e9e6c92be0fa697c"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">GeoMaps::Waypoint::extendedName</a></div><div class="ttdeci">QString extendedName</div><div class="ttdoc">Extended name of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00207">Waypoint.h:207</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_ab8c0c80b5e2fbb1b89b07d6796c65ed2"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">GeoMaps::Waypoint::coordinate</a></div><div class="ttdeci">QGeoCoordinate coordinate</div><div class="ttdoc">Coordinate of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00192">Waypoint.h:192</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a1db88686f2a51c5357f1843d3a0ec9f5"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a1db88686f2a51c5357f1843d3a0ec9f5">GeoMaps::Waypoint::type</a></div><div class="ttdeci">QString type</div><div class="ttdoc">Type of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00333">Waypoint.h:333</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a5b7f412339a14eb3ebd734cf08990f40"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">GeoMaps::Waypoint::twoLineTitle</a></div><div class="ttdeci">QString twoLineTitle</div><div class="ttdoc">Two-line description of the waypoint name, for use in GUI.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00319">Waypoint.h:319</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_ae97a5ff0f6b54c5a37d4a2e5faaf7fcd"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#ae97a5ff0f6b54c5a37d4a2e5faaf7fcd">GeoMaps::Waypoint::operator!=</a></div><div class="ttdeci">friend bool operator!=(const GeoMaps::Waypoint &amp;, const GeoMaps::Waypoint &amp;)</div><div class="ttdoc">Comparison.</div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a0ebf0906b5d461c0ec2e57e0e49f1ffb"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a0ebf0906b5d461c0ec2e57e0e49f1ffb">GeoMaps::Waypoint::category</a></div><div class="ttdeci">QString category</div><div class="ttdoc">Category of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00180">Waypoint.h:180</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_aa20cec1548e4b1fe9bbcf6ceb1d72841"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#aa20cec1548e4b1fe9bbcf6ceb1d72841">GeoMaps::Waypoint::ICAOCode</a></div><div class="ttdeci">QString ICAOCode</div><div class="ttdoc">ICAO Code of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00223">Waypoint.h:223</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a4db75300ab2543f3e9e6c92be0fa697c"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a4db75300ab2543f3e9e6c92be0fa697c">GeoMaps::Waypoint::extendedName</a></div><div class="ttdeci">QString extendedName</div><div class="ttdoc">Extended name of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00210">Waypoint.h:210</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_ab8c0c80b5e2fbb1b89b07d6796c65ed2"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#ab8c0c80b5e2fbb1b89b07d6796c65ed2">GeoMaps::Waypoint::coordinate</a></div><div class="ttdeci">QGeoCoordinate coordinate</div><div class="ttdoc">Coordinate of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00195">Waypoint.h:195</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a02c5e9ec88d8f38e08d8bf5e54f76180"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a02c5e9ec88d8f38e08d8bf5e54f76180">GeoMaps::Waypoint::Waypoint</a></div><div class="ttdeci">Waypoint()</div><div class="ttdoc">Constructs an invalid way point.</div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_ac435c32e1d3ab56082ba570f99f86592"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#ac435c32e1d3ab56082ba570f99f86592">GeoMaps::Waypoint::shortName</a></div><div class="ttdeci">QString shortName</div><div class="ttdoc">Short name of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00282">Waypoint.h:282</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a56fa902c7e9434028e675b2e4a3208cd"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a56fa902c7e9434028e675b2e4a3208cd">GeoMaps::Waypoint::toJSON</a></div><div class="ttdeci">QJsonObject toJSON() const</div><div class="ttdoc">Serialization to GeoJSON object.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a0acccec9ad0362211e58a8018f96a608"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">GeoMaps::Waypoint::name</a></div><div class="ttdeci">QString name</div><div class="ttdoc">Name of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00264">Waypoint.h:264</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a0acccec9ad0362211e58a8018f96a608"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a0acccec9ad0362211e58a8018f96a608">GeoMaps::Waypoint::name</a></div><div class="ttdeci">QString name</div><div class="ttdoc">Name of the waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00267">Waypoint.h:267</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a683918b7bf7606722d42fee6f6cab466"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a683918b7bf7606722d42fee6f6cab466">GeoMaps::Waypoint::isNear</a></div><div class="ttdeci">Q_INVOKABLE bool isNear(const GeoMaps::Waypoint &amp;other) const</div><div class="ttdoc">Check if other waypoint is geographically near *this.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a4e09f3e4d995569ee6d971046837b2fa"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a4e09f3e4d995569ee6d971046837b2fa">GeoMaps::Waypoint::operator==</a></div><div class="ttdeci">Q_GADGET friend bool operator==(const GeoMaps::Waypoint &amp;, const GeoMaps::Waypoint &amp;)</div><div class="ttdoc">Comparison.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a></div><div class="ttdoc">Waypoint, such as an airfield, a navaid station or a reporting point.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00055">Waypoint.h:55</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a02b1a8b281db59ca503d45b610d1f243"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">GeoMaps::Waypoint::icon</a></div><div class="ttdeci">QString icon</div><div class="ttdoc">Suggested icon for use in GUI.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00235">Waypoint.h:235</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1Waypoint_html_a02b1a8b281db59ca503d45b610d1f243"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html#a02b1a8b281db59ca503d45b610d1f243">GeoMaps::Waypoint::icon</a></div><div class="ttdeci">QString icon</div><div class="ttdoc">Suggested icon for use in GUI.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00238">Waypoint.h:238</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

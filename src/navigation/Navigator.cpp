@@ -207,10 +207,35 @@ void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRou
 
 void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::PositionInfo& info)
 {
+    // If there is no valid positionInfo, then there is no remaining route info
+    if (!info.isValid()) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    // If we are not flying, then there is no remaining route info
+    if (flightStatus() != Flight) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    // If there are no waypoints, then there is no remaining route info
+    auto geoPath = flightRoute()->geoPath();
+    if (geoPath.isEmpty()) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    // If we are closer than 3 nm from endpoint, then we do not give a remaining route info
+    auto finalCoordinate = geoPath[geoPath.size()-1].value<QGeoCoordinate>();
+    if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Units::Distance::fromNM(3.0)) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
     //
     // Figure out what the current leg is
     //
-
     auto legs = flightRoute()->legs();
 
     // If the flight route contains one waypoint only, then create an artificial leg from the current position

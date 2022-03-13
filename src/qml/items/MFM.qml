@@ -509,6 +509,27 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.right: parent.right
     }
 
+    Label {
+        id: airspaceAltLimitLabel
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: remainingRoute.bottom
+        anchors.topMargin: 0.4*Qt.application.font.pixelSize
+
+        Material.elevation: 6
+
+        text: {
+            // Mention
+            global.navigator().aircraft.verticalDistanceUnit
+
+            var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+            var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+            return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
+        }
+        background: Rectangle { color: "white"; opacity: Material.theme === Material.Dark ? 0.1 : 0.8}
+        visible: global.settings().airspaceAltitudeLimit.isFinite()
+    }
+
     RoundButton {
         id: menuButton
         icon.source: "/icons/material/ic_menu.svg"
@@ -525,25 +546,6 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             global.mobileAdaptor().vibrateBrief()
             drawer.open()
         }
-    }
-
-    Label {
-        id: airspaceAltLimitLabel
-
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: remainingRoute.bottom
-        anchors.topMargin: 0.4*Qt.application.font.pixelSize
-
-        text: {
-            // Mention
-            global.navigator().aircraft.verticalDistanceUnit
-
-            var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
-            var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-            return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
-        }
-        background: Rectangle { color: "white"; opacity: Material.theme === Material.Dark ? 0.1 : 0.8}
-        visible: global.settings().airspaceAltitudeLimit.isFinite()
     }
 
     RoundButton {

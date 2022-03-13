@@ -24,6 +24,7 @@
 #include "GlobalObject.h"
 #include "navigation/Clock.h"
 #include "navigation/FlightRoute.h"
+#include "navigation/RemainingRouteInfo.h"
 #include "positioning/PositionInfo.h"
 
 
@@ -100,6 +101,9 @@ public:
      */
     Q_PROPERTY(FlightStatus flightStatus READ flightStatus NOTIFY flightStatusChanged)
 
+    /*! \brief Up-to-date information about the remaining route */
+    Q_PROPERTY(Navigation::RemainingRouteInfo remainingRouteInfo READ remainingRouteInfo NOTIFY remainingRouteInfoChanged)
+
     /*! \brief Current wind */
     Q_PROPERTY(Weather::Wind wind READ wind WRITE setWind NOTIFY windChanged)
 
@@ -131,6 +135,12 @@ public:
      *  @returns Property flightStatus
      */
     FlightStatus flightStatus() const { return m_flightStatus; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property remaining route info
+     */
+    Navigation::RemainingRouteInfo remainingRouteInfo() const { return m_remainingRouteInfo; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -174,6 +184,9 @@ signals:
     void flightStatusChanged();
 
     /*! \brief Notifier signal */
+    void remainingRouteInfoChanged();
+
+    /*! \brief Notifier signal */
     void windChanged();
 
 private slots:
@@ -183,6 +196,11 @@ private slots:
     // Update flight status. Connected to positioning source.
     void updateFlightStatus(const Positioning::PositionInfo& info);
 
+    // Setter method. Only use this method to write to m_remainingRouteInfo
+    void setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo);
+
+    // Re-computes the Remaining Route Info. The argument must be the current position info of the own aircraft.
+    void updateRemainingRouteInfo(const Positioning::PositionInfo& info);
 
 private:
     Q_DISABLE_COPY_MOVE(Navigator)
@@ -201,6 +219,9 @@ private:
     Weather::Wind m_wind {};
 
     QString m_aircraftFileName;
+
+    // RemainingRouteInfo only use the setter method to write to m_remainingRouteInfo
+    RemainingRouteInfo m_remainingRouteInfo;
 };
 
 }

@@ -357,6 +357,12 @@ bool GeoMaps::operator==(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B)
 }
 
 
+bool GeoMaps::operator!=(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B)
+{
+    return ((A.m_coordinate != B.m_coordinate) ||
+            (A.m_properties != B.m_properties));
+}
+
 uint GeoMaps::qHash(const GeoMaps::Waypoint& wp)
 {
     return qHash(wp.coordinate());

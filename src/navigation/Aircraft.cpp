@@ -200,6 +200,19 @@ auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
 }
 
 
+bool Navigation::Aircraft::operator==(const Navigation::Aircraft& other) const
+{
+    return (m_cruiseSpeed == other.m_cruiseSpeed) &&
+            (m_descentSpeed == other.m_descentSpeed) &&
+            (m_fuelConsumption == other.m_fuelConsumption) &&
+            (m_fuelConsumptionUnit == other.m_fuelConsumptionUnit) &&
+            (m_horizontalDistanceUnit == other.m_horizontalDistanceUnit) &&
+            (m_minimumSpeed == other.m_minimumSpeed) &&
+            (m_name == other.m_name) &&
+            (m_verticalDistanceUnit == other.m_verticalDistanceUnit);
+}
+
+
 auto Navigation::Aircraft::save(const QString& fileName) const -> QString
 {
     // Make directory, if it does not yet exist.

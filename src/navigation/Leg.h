@@ -20,8 +20,11 @@
 
 #pragma once
 
+#include <QGeoPath>
+
 #include "geomaps/Waypoint.h"
 #include "navigation/Aircraft.h"
+#include "positioning/PositionInfo.h"
 #include "units/Angle.h"
 #include "units/Units.h"
 #include "weather/Wind.h"
@@ -60,6 +63,9 @@ public:
     /*! \brief End point of the leg */
     Q_PROPERTY(GeoMaps::Waypoint endPoint READ endPoint CONSTANT)
 
+    /*! \brief Validity */
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+
     /*! \brief Start point of the leg */
     Q_PROPERTY(GeoMaps::Waypoint startPoint READ startPoint CONSTANT)
 
@@ -69,9 +75,6 @@ public:
      * invalid or shorter than 100m
      */
     Q_PROPERTY(Units::Angle TC READ TC CONSTANT)
-
-    /*! \brief Validity */
-    Q_PROPERTY(bool valid READ valid CONSTANT)
 
 
     //
@@ -92,6 +95,12 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property valid
+     */
+    bool isValid() const;
+
+    /*! \brief Getter function for property of the same name
+     *
      *  @returns Property startPoint
      */
     GeoMaps::Waypoint startPoint()  const { return m_start; }
@@ -101,12 +110,6 @@ public:
      * @returns Property TC
      */
     Units::Angle TC() const;
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property valid
-     */
-    bool valid() const;
 
 
     //
@@ -153,6 +156,29 @@ public:
      */
     Q_INVOKABLE Units::Speed GS(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
 
+    /*! \brief Check if positionInfo is travelling on this leg
+     *
+     *  The positionInfo is considered to be travelling along this leg if
+     *
+     *  - isNear() is true, and
+     *  - the true track (TT) is known, and
+     *  - the difference TT-QUJ(endPoint) is in [-60, 60] degrees
+     *  - the difference TT-QUJ(startPoint) is in [120, 240] degrees
+     *
+     *  @param positionInfo PositionInfo that is checked to be following
+     *
+     *  @return True if the conditions are met
+     */
+    Q_INVOKABLE bool isFollowing(const Positioning::PositionInfo& positionInfo) const;
+
+    /*! \brief Check if position is closer than nearThreshold to this leg
+     *
+     *  @param positionInfo Position that is checked to be near
+     *
+     *  @return True if all data is valid and position is closer than nearThreshold to this leg.
+     */
+    Q_INVOKABLE bool isNear(const Positioning::PositionInfo& positionInfo) const;
+
     /*! \brief Estimated true heading on leg
      *
      *  @param wind Estimated wind
@@ -180,8 +206,12 @@ private:
     // Minimum length of the leg in meters. If shorter, no courses are computed.
     static constexpr Units::Distance minLegLength = Units::Distance::fromM(100.0);
 
+    // Width of the leg. A position is considered near the leg if the distance is less.
+    static constexpr Units::Distance nearThreshold = Units::Distance::fromNM(3.0);
+
     GeoMaps::Waypoint m_start;
     GeoMaps::Waypoint m_end;
+    QGeoPath m_geoPath;
 };
 
 }

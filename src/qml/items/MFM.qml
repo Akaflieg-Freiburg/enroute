@@ -366,6 +366,16 @@ Item {
             opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
+        MapPolyline {
+            id: toNextWP
+            visible: global.positionProvider().lastValidCoordinate.isValid && global.navigator().remainingRouteInfo.nextWP.coordinate.isValid
+            line.width: 2
+            line.color: '#800000' //'green'
+            path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
+            opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
+        }
+
+
         MapItemView { // Traffic opponents
             model: global.trafficDataProvider().trafficObjects4QML
             delegate: Component {
@@ -491,9 +501,19 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    Label {
-        anchors.horizontalCenter: parent.horizontalCenter
+    RemainingRoute {
+        id: remainingRoute
+
         anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+    }
+
+    Label {
+        id: airspaceAltLimitLabel
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.4*Qt.application.font.pixelSize
 
         text: {
@@ -509,10 +529,28 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
     }
 
     RoundButton {
+        id: menuButton
+        icon.source: "/icons/material/ic_menu.svg"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0.5*Qt.application.font.pixelSize
+        anchors.top: remainingRoute.bottom
+        anchors.topMargin: 0.5*Qt.application.font.pixelSize
+
+        height: 66
+        width: 66
+
+        onClicked: {
+            global.mobileAdaptor().vibrateBrief()
+            drawer.open()
+        }
+    }
+
+    RoundButton {
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
-        anchors.top: page.top
+        anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.5*Qt.application.font.pixelSize
 
         height: 66

@@ -106,7 +106,7 @@ public:
      *
      *  @result equality
      */
-    Q_INVOKABLE bool operator==(const Weather::Wind& other) const = default;
+    Q_INVOKABLE bool operator==(const Weather::Wind& other) const;
 
 private:
     static constexpr Units::Speed minWindSpeed = Units::Speed::fromKN(0.0);

@@ -59,6 +59,10 @@ void Navigation::Navigator::deferredInitialization()
 {
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
+    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
+    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
+    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
 }
 
 
@@ -188,4 +192,115 @@ void Navigation::Navigator::updateFlightStatus(const Positioning::PositionInfo& 
     if ( GS > aircraftMinSpeed ) {
         setFlightStatus(Flight);
     }
+}
+
+
+void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo)
+{
+    if (rrInfo == m_remainingRouteInfo) {
+        return;
+    }
+    m_remainingRouteInfo = rrInfo;
+    emit remainingRouteInfoChanged();
+}
+
+
+void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::PositionInfo& info)
+{
+    // If there is no valid positionInfo, then there is no remaining route info
+    if (!info.isValid()) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    // If we are not flying, then there is no remaining route info
+    if (flightStatus() != Flight) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    // If there are no waypoints, then there is no remaining route info
+    auto geoPath = flightRoute()->geoPath();
+    if (geoPath.isEmpty()) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    // If we are closer than 3 nm from endpoint, then we do not give a remaining route info
+    auto finalCoordinate = geoPath[geoPath.size()-1].value<QGeoCoordinate>();
+    if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Units::Distance::fromNM(3.0)) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    //
+    // Figure out what the current leg is
+    //
+    auto legs = flightRoute()->legs();
+
+    // If the flight route contains one waypoint only, then create an artificial leg from the current position
+    // to the one waypoint of the route.
+    if (flightRoute()->size() == 1) {
+        auto start = GlobalObject::positionProvider()->lastValidCoordinate();
+        auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>().coordinate();
+        legs += Leg(start, end);
+    }
+
+    // Check legs that we are following, and take the last one
+    int currentLeg = -1;
+    for(int i=legs.size()-1; i>=0; i--) {
+        if (legs[i].isFollowing(info)) {
+            currentLeg = i;
+            break;
+        }
+    }
+
+    // If no current leg found, check legs that we are near to, and take the last one.
+    if (currentLeg < 0) {
+        for(int i=legs.size()-1; i>=0; i--) {
+            if (legs[i].isNear(info)) {
+                currentLeg = i;
+                break;
+            }
+        }
+    }
+
+    // If still no current leg found, then abort
+    if (currentLeg < 0) {
+        setRemainingRouteInfo({});
+        return;
+    }
+
+    //
+    //
+    //
+    RemainingRouteInfo rri;
+    Leg legToNextWP(info.coordinate(), legs[currentLeg].endPoint());
+    auto dist = legToNextWP.distance();
+    auto ETE = legToNextWP.ETE(m_wind, m_aircraft);
+
+    rri.nextWP = legToNextWP.endPoint();
+    rri.nextWP_DIST = dist;
+    rri.nextWP_ETE  = ETE;
+    if (ETE.isFinite()) {
+        rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.nextWP_ETE.toS() );
+    }
+
+    if (currentLeg < legs.size()-1) {
+        for(int i=currentLeg+1; i<legs.size(); i++) {
+            dist += legs[i].distance();
+            ETE += legs[i].ETE(m_wind, m_aircraft);
+        }
+
+        rri.finalWP = legs.last().endPoint();
+        rri.finalWP_DIST = dist;
+        rri.finalWP_ETE  = ETE;
+        if (ETE.isFinite()) {
+            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() );
+        }
+    }
+
+    m_remainingRouteInfo = rri;
+    emit remainingRouteInfoChanged();
+
 }

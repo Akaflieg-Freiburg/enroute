@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,47 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QSettings>
-
-#include "weather/Wind.h"
+#include "RemainingRouteInfo.h"
 
 
 //
-// Setter Methods
+// Constructors and destructors
 //
 
-void Weather::Wind::setSpeed(Units::Speed newSpeed)
+Navigation::RemainingRouteInfo::RemainingRouteInfo()
 {
-
-    if ((newSpeed < minWindSpeed) || (newSpeed > maxWindSpeed)) {
-        newSpeed = Units::Speed();
-    }
-
-    if (newSpeed == m_speed) {
-        return;
-    }
-
-    m_speed = newSpeed;
 }
 
-
-void Weather::Wind::setDirectionFrom(Units::Angle newDirectionFrom)
+bool Navigation::operator==(const Navigation::RemainingRouteInfo& A, const Navigation::RemainingRouteInfo& B)
 {
+    return ((A.nextWP == B.nextWP) &&
+            (A.nextWP_DIST == B.nextWP_DIST) &&
+            (A.nextWP_ETE == B.nextWP_ETE) &&
+            (A.nextWP_ETA == B.nextWP_ETA) &&
 
-    if (newDirectionFrom == m_directionFrom) {
-        return;
-    }
-
-    m_directionFrom = newDirectionFrom;
+            (A.finalWP == B.finalWP) &&
+            (A.finalWP_DIST == B.finalWP_DIST) &&
+            (A.finalWP_ETE == B.finalWP_ETE) &&
+            (A.finalWP_ETA == B.finalWP_ETA));
 }
+
+//
+// Getter Methods
+//
+
+// ...
 
 
 //
 // Methods
 //
 
-bool Weather::Wind::operator==(const Weather::Wind& other) const
-{
-    return (m_speed == other.m_speed) &&
-            (m_directionFrom == other.m_directionFrom);
-}
+// ...
+

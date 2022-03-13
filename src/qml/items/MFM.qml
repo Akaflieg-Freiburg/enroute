@@ -516,8 +516,6 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.4*Qt.application.font.pixelSize
 
-        Material.elevation: 6
-
         text: {
             // Mention
             global.navigator().aircraft.verticalDistanceUnit

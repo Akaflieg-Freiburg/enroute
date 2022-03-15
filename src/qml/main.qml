@@ -520,10 +520,10 @@ ApplicationWindow {
             // Start accepting files
             global.mobileAdaptor().startReceiveOpenFileRequests()
 
-//            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
+            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return
-//            }
+            }
 
             if ((global.settings().lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
                     (global.dataManager().whatsNew !== "") &&

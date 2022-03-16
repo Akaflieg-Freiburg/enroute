@@ -153,12 +153,14 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = global.navigator().aircraft.loadFromJSON(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
+        var acft = global.navigator().aircraft.clone() // Get a copy of the current aircraft that we can modify and write back
+        var errorString = acft.loadFromJSON(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
             return
         }
+        global.navigator().aircraft = acft
         toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
         stackView.pop()
     }

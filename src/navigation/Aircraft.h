@@ -249,6 +249,14 @@ public:
     // Methods
     //
 
+    /*! \brief Return copy of this object
+     *
+     *  This is a helper function, used in QML to create explicit copies of this object.
+     *
+     *  @returns Copy of this object
+     */
+    Q_INVOKABLE Navigation::Aircraft clone() const { return Navigation::Aircraft(*this); }
+
     /*! \brief Description of the way between two points
      *
      * @param from Starting point of the way

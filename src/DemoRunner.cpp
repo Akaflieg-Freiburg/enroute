@@ -93,17 +93,16 @@ void DemoRunner::run()
     //
 
     {
-        applicationWindow->setProperty("width", 1080/2);
-        applicationWindow->setProperty("height", 1920/2);
-
         QStringList languages = {"de-DE", "en-US", "fr-FR", "it-IT", "pl-PL"};
         QStringList devices = {"phone", "sevenInch", "tenInch"};
 
         foreach(auto device, devices) {
             foreach(auto language, languages) {
                 if (device == "phone") {
-                    applicationWindow->setProperty("width", 1080/2);
-                    applicationWindow->setProperty("height", 1920/2);
+//                    applicationWindow->setProperty("width", 1080/2);
+//                    applicationWindow->setProperty("height", 1920/2);
+                    applicationWindow->setProperty("width", 1080/2.5);
+                    applicationWindow->setProperty("height", 1920/2.5);
                 }
                 if (device == "sevenInch") {
                     applicationWindow->setProperty("width", 1920/2);
@@ -128,11 +127,12 @@ void DemoRunner::run()
                 // Enroute near EDSB
                 {
                     qWarning() << "… En route near EDSB";
-                    trafficSimulator->setCoordinate( {48.6923, 8.2002, Units::Distance::fromFT(7512).toM()} );
+                    trafficSimulator->setCoordinate( {48.8442094, 8.45, Units::Distance::fromFT(7512).toM()} );
                     trafficSimulator->setBarometricHeight( Units::Distance::fromFT(7480) );
-                    trafficSimulator->setTT( Units::Angle::fromDEG(38) );
+                    trafficSimulator->setTT( Units::Angle::fromDEG(30) );
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
 
+                    GlobalObject::navigator()->flightRoute()->clear();
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTL") );
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTY") );
@@ -141,7 +141,6 @@ void DemoRunner::run()
                     GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
                     delay(4s);
                     applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
-#warning
                     return;
                 }
 
@@ -265,6 +264,7 @@ void DemoRunner::run()
         applicationWindow->grabWindow().save("02-02-01-RouteEmpty.png");
 
         // Set data for a reasonable route
+        GlobalObject::navigator()->flightRoute()->clear();
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTF") );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDFW") );

@@ -30,7 +30,7 @@ import "../items"
 
 Page {
     id: flightRoutePage
-    title: qsTr("Flight Route")
+    title: qsTr("Route and Wind")
 
     Component {
         id: waypointComponent

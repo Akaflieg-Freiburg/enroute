@@ -81,6 +81,7 @@ void DemoRunner::run()
     Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
+    GlobalObject::settings()->setPositioningByTrafficDataReceiver(true);
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
@@ -123,6 +124,26 @@ void DemoRunner::run()
 
                 // Set language
                 setLanguage(language);
+
+                // Enroute near EDSB
+                {
+                    qWarning() << "… En route near EDSB";
+                    trafficSimulator->setCoordinate( {48.6923, 8.2002, Units::Distance::fromFT(7512).toM()} );
+                    trafficSimulator->setBarometricHeight( Units::Distance::fromFT(7480) );
+                    trafficSimulator->setTT( Units::Angle::fromDEG(38) );
+                    trafficSimulator->setGS( Units::Speed::fromKN(91) );
+
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTL") );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTY") );
+
+                    flightMap->setProperty("zoomLevel", 11);
+                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    delay(4s);
+                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+#warning
+                    return;
+                }
 
                 // Approaching EDDR
                 {
@@ -246,7 +267,7 @@ void DemoRunner::run()
         // Set data for a reasonable route
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTF") );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("WUR") );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDFW") );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDQD") );
 
         Weather::Wind wind;

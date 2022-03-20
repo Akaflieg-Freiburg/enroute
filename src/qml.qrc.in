@@ -26,6 +26,7 @@
         <file alias="items/NavBar.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/NavBar.qml</file>
         <file alias="items/RemainingRoute.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/RemainingRoute.qml</file>
         <file alias="items/StandardHeader.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/StandardHeader.qml</file>	
+        <file alias="items/SwipeToDeleteDelegate.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/SwipeToDeleteDelegate.qml</file>	
         <file alias="items/Traffic.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/Traffic.qml</file>
         <file alias="items/TrafficLabel.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/TrafficLabel.qml</file>
         <file alias="items/WordWrappingCheckDelegate.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/WordWrappingCheckDelegate.qml</file>	

@@ -122,13 +122,13 @@ auto Navigation::Leg::isFollowing(const Positioning::PositionInfo& positionInfo)
         return false;
     }
 
-    auto delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_start.coordinate()));
+    auto delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_end.coordinate()));
     auto deltaDeg = delta.toDEG();
     if ((deltaDeg < 300.0) && (deltaDeg > 60.0)) {
         return false;
     }
 
-    delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_end.coordinate()));
+    delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_start.coordinate()));
     deltaDeg = delta.toDEG();
     if ((deltaDeg < 120.0) || (deltaDeg > 240.0)) {
         return false;

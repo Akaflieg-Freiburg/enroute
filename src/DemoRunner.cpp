@@ -81,28 +81,47 @@ void DemoRunner::run()
     Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
+    GlobalObject::settings()->setPositioningByTrafficDataReceiver(true);
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
     delay(5s);
 
+    // Set up aircraft
+    Navigation::Aircraft acft;
+    acft.setName("D-EULL");
+    acft.setHorizontalDistanceUnit(Navigation::Aircraft::NauticalMile);
+    acft.setVerticalDistanceUnit(Navigation::Aircraft::Feet);
+    acft.setFuelConsumptionUnit(Navigation::Aircraft::LiterPerHour);
+    acft.setCruiseSpeed(Units::Speed::fromKN(90));
+    acft.setDescentSpeed(Units::Speed::fromKN(120));
+    acft.setMinimumSpeed(Units::Speed::fromKN(65));
+    acft.setFuelConsumption(Units::VolumeFlow::fromLPH(18));
+    GlobalObject::navigator()->setAircraft(acft);
+
+    // Set up wind
+    Weather::Wind wind;
+    wind.setDirectionFrom( Units::Angle::fromDEG(210) );
+    wind.setSpeed( Units::Speed::fromKN(10) );
+    GlobalObject::navigator()->setWind(wind);
+
+    // Settings
+    GlobalObject::settings()->setAirspaceAltitudeLimit({});
+    GlobalObject::settings()->setHideGlidingSectors(true);
 
     //
     // GENERATE SCREENSHOTS FOR GOOGLE PLAY
     //
 
     {
-        applicationWindow->setProperty("width", 1080/2);
-        applicationWindow->setProperty("height", 1920/2);
-
         QStringList languages = {"de-DE", "en-US", "fr-FR", "it-IT", "pl-PL"};
         QStringList devices = {"phone", "sevenInch", "tenInch"};
 
         foreach(auto device, devices) {
             foreach(auto language, languages) {
                 if (device == "phone") {
-                    applicationWindow->setProperty("width", 1080/2);
-                    applicationWindow->setProperty("height", 1920/2);
+                    applicationWindow->setProperty("width", 1080/2.5);
+                    applicationWindow->setProperty("height", 1920/2.5);
                 }
                 if (device == "sevenInch") {
                     applicationWindow->setProperty("width", 1920/2);
@@ -123,6 +142,25 @@ void DemoRunner::run()
 
                 // Set language
                 setLanguage(language);
+
+                // Enroute near EDSB
+                {
+                    qWarning() << "… En route near EDSB";
+                    trafficSimulator->setCoordinate( {48.8442094, 8.45, Units::Distance::fromFT(7512).toM()} );
+                    trafficSimulator->setBarometricHeight( Units::Distance::fromFT(7480) );
+                    trafficSimulator->setTT( Units::Angle::fromDEG(30) );
+                    trafficSimulator->setGS( Units::Speed::fromKN(91) );
+
+                    GlobalObject::navigator()->flightRoute()->clear();
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTL") );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTY") );
+
+                    flightMap->setProperty("zoomLevel", 11);
+                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    delay(4s);
+                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                }
 
                 // Approaching EDDR
                 {
@@ -239,25 +277,17 @@ void DemoRunner::run()
     // Route page
     {
         qWarning() << "… Route Page";
+        GlobalObject::navigator()->flightRoute()->clear();
         emit requestOpenRoutePage();
         delay(2s);
         applicationWindow->grabWindow().save("02-02-01-RouteEmpty.png");
 
         // Set data for a reasonable route
+        GlobalObject::navigator()->flightRoute()->clear();
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTF") );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("WUR") );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDFW") );
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDQD") );
-
-        Weather::Wind wind;
-        wind.setDirectionFrom( Units::Angle::fromDEG(210) );
-        wind.setSpeed( Units::Speed::fromKN(10) );
-        GlobalObject::navigator()->setWind(wind);
-
-        Navigation::Aircraft aircraft;
-        aircraft.setCruiseSpeed( Units::Speed::fromKN(90) );
-        aircraft.setFuelConsumption( Units::VolumeFlow::fromLPH(18) );
-        GlobalObject::navigator()->setAircraft(aircraft);
 
         delay(2s);
         applicationWindow->grabWindow().save("02-02-02-RouteNonEmpty.png");
@@ -267,6 +297,25 @@ void DemoRunner::run()
         applicationWindow->grabWindow().save("02-02-03-AddWP.png");
         emit requestClosePages();
         GlobalObject::navigator()->flightRoute()->clear();
+    }
+
+    // Enroute near EDSB
+    {
+        qWarning() << "… En route near EDSB";
+        trafficSimulator->setCoordinate( {48.8442094, 8.45, Units::Distance::fromFT(7512).toM()} );
+        trafficSimulator->setBarometricHeight( Units::Distance::fromFT(7480) );
+        trafficSimulator->setTT( Units::Angle::fromDEG(30) );
+        trafficSimulator->setGS( Units::Speed::fromKN(91) );
+
+        GlobalObject::navigator()->flightRoute()->clear();
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTL") );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTY") );
+
+        flightMap->setProperty("zoomLevel", 11);
+        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+        delay(4s);
+        applicationWindow->grabWindow().save("02-02-04-EnRoute.png");
     }
 
     // Aircraft page

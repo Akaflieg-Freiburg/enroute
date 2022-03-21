@@ -133,7 +133,7 @@ Page {
             Layout.fillWidth: true
             height: iDel.heigt
 
-            ItemDelegate {
+            SwipeToDeleteDelegate {
                 id: iDel
                 Layout.fillWidth: true
 
@@ -147,6 +147,12 @@ Page {
                         overwriteDialog.open()
                     else
                         openFromLibrary()
+                }
+
+                swipe.onCompleted: {
+                    global.mobileAdaptor().vibrateBrief()
+                    finalFileName = modelData
+                    removeDialog.open()
                 }
 
             }
@@ -471,6 +477,7 @@ Page {
         }
         onRejected: {
             global.mobileAdaptor().vibrateBrief()
+            page.reloadFlightRouteList()
             close()
         }
 

@@ -105,6 +105,9 @@ void DemoRunner::run()
     wind.setSpeed( Units::Speed::fromKN(10) );
     GlobalObject::navigator()->setWind(wind);
 
+    // Set up route
+    GlobalObject::navigator()->flightRoute()->clear();
+
     // Settings
     GlobalObject::settings()->setAirspaceAltitudeLimit({});
     GlobalObject::settings()->setHideGlidingSectors(true);
@@ -160,6 +163,7 @@ void DemoRunner::run()
                     GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
                     delay(4s);
                     applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    GlobalObject::navigator()->flightRoute()->clear();
                 }
 
                 // Approaching EDDR
@@ -316,6 +320,7 @@ void DemoRunner::run()
         GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save("02-02-04-EnRoute.png");
+        GlobalObject::navigator()->flightRoute()->clear();
     }
 
     // Aircraft page

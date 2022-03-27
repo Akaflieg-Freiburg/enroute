@@ -209,27 +209,27 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
 {
     // If there is no valid positionInfo, then there is no remaining route info
     if (!info.isValid()) {
-        setRemainingRouteInfo({});
-        return;
-    }
-
-    // If we are not flying, then there is no remaining route info
-    if (flightStatus() != Flight) {
-        setRemainingRouteInfo({});
+        RemainingRouteInfo rrInfo;
+        rrInfo.status = RemainingRouteInfo::PositionUnknown;
+        setRemainingRouteInfo(rrInfo);
         return;
     }
 
     // If there are no waypoints, then there is no remaining route info
     auto geoPath = flightRoute()->geoPath();
     if (geoPath.isEmpty()) {
-        setRemainingRouteInfo({});
+        RemainingRouteInfo rrInfo;
+        rrInfo.status = RemainingRouteInfo::NoRoute;
+        setRemainingRouteInfo(rrInfo);
         return;
     }
 
     // If we are closer than 3 nm from endpoint, then we do not give a remaining route info
     auto finalCoordinate = geoPath[geoPath.size()-1].value<QGeoCoordinate>();
-    if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Units::Distance::fromNM(3.0)) {
-        setRemainingRouteInfo({});
+    if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Leg::nearThreshold) {
+        RemainingRouteInfo rrInfo;
+        rrInfo.status = RemainingRouteInfo::NearDestination;
+        setRemainingRouteInfo(rrInfo);
         return;
     }
 
@@ -267,7 +267,9 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
 
     // If still no current leg found, then abort
     if (currentLeg < 0) {
-        setRemainingRouteInfo({});
+        RemainingRouteInfo rrInfo;
+        rrInfo.status = RemainingRouteInfo::OffRoute;
+        setRemainingRouteInfo(rrInfo);
         return;
     }
 
@@ -275,6 +277,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     //
     //
     RemainingRouteInfo rri;
+    rri.status = RemainingRouteInfo::OnRoute;
     Leg legToNextWP(info.coordinate(), legs[currentLeg].endPoint());
     auto dist = legToNextWP.distance();
     auto ETE = legToNextWP.ETE(m_wind, m_aircraft);
@@ -299,8 +302,5 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
             rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() );
         }
     }
-
-    m_remainingRouteInfo = rri;
-    emit remainingRouteInfoChanged();
-
+    setRemainingRouteInfo(rri);
 }

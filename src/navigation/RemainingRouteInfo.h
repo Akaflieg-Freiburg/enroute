@@ -20,22 +20,23 @@
 
 #pragma once
 
-#include <QGeoPath>
-
 #include "geomaps/Waypoint.h"
-#include "navigation/Aircraft.h"
-#include "positioning/PositionInfo.h"
-#include "units/Angle.h"
+#include "units/Distance.h"
 #include "units/Time.h"
-#include "units/Units.h"
-#include "weather/Wind.h"
+
 
 namespace Navigation {
+
+class Navigator;
 
 /*! \brief Info about remaining route
  *
  *  This class bundles information about the remainder of the present flight. This includes
- *  next waypoint, final waypoint, as well as ETE, distance and expected fuel consumption.
+ *  next waypoint, final waypoint, as well as distance, ETE and ETA.
+ *
+ *  Consumers of this class can expect the properties nextWP* to be valid if status equals OnRoute.
+ *  The properties finalWP* need not be valid in this case. They are valid only if the next
+ *  waypoint differs from the final waypoint of the route.
  */
 
 class RemainingRouteInfo {
@@ -43,48 +44,61 @@ class RemainingRouteInfo {
 
     /*! \brief Comparison */
     friend bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&);
+    friend class Navigation::Navigator;
 
 public:
+    /*! \brief Status */
+    enum Status {
+        /*! \brief No valid route has been set */
+        NoRoute,
 
-    //
-    // Constructors and destructors
-    //
+        /*! \brief Valid route has been set, but no position info available */
+        PositionUnknown,
 
-    /*! \brief Constructs a remaining route info */
-    RemainingRouteInfo();
+        /*! \brief Current position is further than Leg::nearThreshold nm away from route */
+        OffRoute,
+
+        /*! \brief Current position is closer than Leg::nearThreshold to destination */
+        NearDestination,
+
+        /*! \brief Currently travelling along the route */
+        OnRoute
+    };
+    Q_ENUM(Status)
 
     //
     // PROPERTIES
     //
 
-    Q_PROPERTY(GeoMaps::Waypoint nextWP MEMBER nextWP)
-    Q_PROPERTY(Units::Distance nextWP_DIST MEMBER nextWP_DIST)
-    Q_PROPERTY(Units::Time nextWP_ETE MEMBER nextWP_ETE)
-    Q_PROPERTY(QDateTime nextWP_ETA MEMBER nextWP_ETA)
+    /*! \brief Next waypoint in the route */
+    Q_PROPERTY(GeoMaps::Waypoint nextWP MEMBER nextWP CONSTANT)
 
-    Q_PROPERTY(GeoMaps::Waypoint finalWP MEMBER finalWP)
-    Q_PROPERTY(Units::Distance finalWP_DIST MEMBER finalWP_DIST)
-    Q_PROPERTY(Units::Time finalWP_ETE MEMBER finalWP_ETE)
-    Q_PROPERTY(QDateTime finalWP_ETA MEMBER finalWP_ETA)
+    /*! \brief Distance to next waypoint in the route */
+    Q_PROPERTY(Units::Distance nextWP_DIST MEMBER nextWP_DIST CONSTANT)
 
-    Q_PROPERTY(bool isValid READ isValid)
-    Q_PROPERTY(bool hasFinalWP READ hasFinalWP)
+    /*! \brief ETE for flight to next waypoint in the route */
+    Q_PROPERTY(Units::Time nextWP_ETE MEMBER nextWP_ETE CONSTANT)
 
-    //
-    // Getter Methods
-    //
+    /*! \brief ETA for flight to next waypoint in the route */
+    Q_PROPERTY(QDateTime nextWP_ETA MEMBER nextWP_ETA CONSTANT)
 
-    bool isValid() const {
-        return nextWP.isValid();
-    }
-    bool hasFinalWP() const {
-        return finalWP.isValid();
-    }
+    /*! \brief Final waypoint in the route */
+    Q_PROPERTY(GeoMaps::Waypoint finalWP MEMBER finalWP CONSTANT)
 
+    /*! \brief Final waypoint in the route */
+    Q_PROPERTY(Units::Distance finalWP_DIST MEMBER finalWP_DIST CONSTANT)
 
-    //
-    // Members
-    //
+    /*! \brief Final waypoint in the route */
+    Q_PROPERTY(Units::Time finalWP_ETE MEMBER finalWP_ETE CONSTANT)
+
+    /*! \brief Final waypoint in the route */
+    Q_PROPERTY(QDateTime finalWP_ETA MEMBER finalWP_ETA CONSTANT)
+
+    /*! \brief Status */
+    Q_PROPERTY(Navigation::RemainingRouteInfo::Status status MEMBER status CONSTANT)
+
+private:
+    Status status {NoRoute};
 
     GeoMaps::Waypoint nextWP {};
     Units::Distance nextWP_DIST {};

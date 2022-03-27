@@ -90,6 +90,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
     qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", "Aircraft objects cannot be created in QML");
+    qmlRegisterUncreatableType<Navigation::RemainingRouteInfo>("enroute", 1, 0, "RemainingRouteInfo", "RemainingRouteInfo objects cannot be created in QML");
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
     qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", "SSLErrorHandler objects cannot be created in QML");
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
@@ -194,6 +195,7 @@ auto main(int argc, char *argv[]) -> int
     engine.rootContext()->setContextProperty("distance", QVariant::fromValue(Units::Distance()) );
     engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
     engine.rootContext()->setContextProperty("global", new GlobalObject(&engine) );
+    engine.rootContext()->setContextProperty("leg", QVariant::fromValue(Navigation::Leg()) );
     engine.rootContext()->setContextProperty("speed", QVariant::fromValue(Units::Speed()) );
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 

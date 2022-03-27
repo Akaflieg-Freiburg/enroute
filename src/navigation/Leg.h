@@ -66,6 +66,12 @@ public:
     /*! \brief Validity */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
+    /*! \brief Distance threshold
+     *
+     *   A position is considered near the leg if the distance is less than this threshold
+     */
+    Q_PROPERTY(Units::Distance nearThreshold MEMBER nearThreshold CONSTANT)
+
     /*! \brief Start point of the leg */
     Q_PROPERTY(GeoMaps::Waypoint startPoint READ startPoint CONSTANT)
 
@@ -199,15 +205,20 @@ public:
      */
     Q_INVOKABLE Units::Angle WCA(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
 
+
+    //
+    // Members and constants
+    //
+
+    // Width of the leg. A position is considered near the leg if the distance is less.
+    static constexpr Units::Distance nearThreshold = Units::Distance::fromNM(3.0);
+
 private:
     // Necessary data for computation of wind triangle?
     bool hasDataForWindTriangle(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
 
     // Minimum length of the leg in meters. If shorter, no courses are computed.
     static constexpr Units::Distance minLegLength = Units::Distance::fromM(100.0);
-
-    // Width of the leg. A position is considered near the leg if the distance is less.
-    static constexpr Units::Distance nearThreshold = Units::Distance::fromNM(3.0);
 
     GeoMaps::Waypoint m_start;
     GeoMaps::Waypoint m_end;

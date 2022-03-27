@@ -37,6 +37,26 @@ Rectangle {
 
         property var rri: global.navigator().remainingRouteInfo
 
+        Label {
+            Layout.columnSpan: 4
+            Layout.alignment: Qt.AlignHCenter
+            visible: text !== ""
+            color: "white"
+
+            text: {
+                switch (grid.rri.status) {
+                    case RemainingRouteInfo.PositionUnknown:
+                        return qsTr("Position unknown.");
+                    case RemainingRouteInfo.OffRoute:
+                        return qsTr("More than %1 off route.").arg(global.navigator().aircraft.horizontalDistanceToString(leg.nearThreshold));
+                    case RemainingRouteInfo.NearDestination:
+                        return qsTr("Near destination.");
+                }
+                return ""
+            }
+
+        }
+
         Item { width: 1 }
         Item { Layout.fillWidth: true }
         Item { Layout.fillWidth: true }
@@ -45,25 +65,25 @@ Rectangle {
         Label {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
         }
         Label {
             text: "DIST"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
         }
         Label {
             text: "ETE"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
         }
         Label {
             text: "ETA"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
         }
 
         Label {
@@ -72,7 +92,7 @@ Rectangle {
             color: "white"
             Layout.fillWidth: true
             Layout.maximumWidth: implicitWidth
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
         }
         Label {
@@ -80,7 +100,7 @@ Rectangle {
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
         }
         Label {
@@ -88,7 +108,7 @@ Rectangle {
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
         }
         Label {
@@ -96,7 +116,7 @@ Rectangle {
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.isValid
+            visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
         }
 
@@ -107,7 +127,7 @@ Rectangle {
             color: "white"
             Layout.fillWidth: true
             Layout.maximumWidth: implicitWidth
-            visible: grid.rri.hasFinalWP
+            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
         }
         Label {
@@ -115,7 +135,7 @@ Rectangle {
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.hasFinalWP
+            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
         }
         Label {
@@ -123,7 +143,7 @@ Rectangle {
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.hasFinalWP
+            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
         }
         Label {
@@ -131,7 +151,7 @@ Rectangle {
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.hasFinalWP
+            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
         }
 

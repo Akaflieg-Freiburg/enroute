@@ -22,16 +22,14 @@
 
 
 //
-// Constructors and destructors
+// Methods
 //
-
-Navigation::RemainingRouteInfo::RemainingRouteInfo()
-{
-}
 
 bool Navigation::operator==(const Navigation::RemainingRouteInfo& A, const Navigation::RemainingRouteInfo& B)
 {
-    return ((A.nextWP == B.nextWP) &&
+    return ((A.status == B.status) &&
+
+            (A.nextWP == B.nextWP) &&
             (A.nextWP_DIST == B.nextWP_DIST) &&
             (A.nextWP_ETE == B.nextWP_ETE) &&
             (A.nextWP_ETA == B.nextWP_ETA) &&
@@ -41,17 +39,3 @@ bool Navigation::operator==(const Navigation::RemainingRouteInfo& A, const Navig
             (A.finalWP_ETE == B.finalWP_ETE) &&
             (A.finalWP_ETA == B.finalWP_ETA));
 }
-
-//
-// Getter Methods
-//
-
-// ...
-
-
-//
-// Methods
-//
-
-// ...
-

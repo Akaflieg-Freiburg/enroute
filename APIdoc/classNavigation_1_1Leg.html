@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.15.93</span>
+   &#160;<span id="projectnumber">2.15.94</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -57,6 +57,15 @@ $(function() {
  <a href="classNavigation_1_1Leg.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Leg_8h_source.html">Leg.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for Navigation::Leg:</div>
+<div class="dyncontent">
+<div class="center"><img src="classNavigation_1_1Leg__coll__graph.png" border="0" usemap="#Navigation_1_1Leg_coll__map" alt="Collaboration graph"/></div>
+<map name="Navigation_1_1Leg_coll__map" id="Navigation_1_1Leg_coll__map">
+<area shape="rect" title="Leg in a flight route." alt="" coords="5,95,129,121"/>
+<area shape="rect" href="classUnits_1_1Distance.html" title="Convenience class for distance computations." alt="" coords="7,5,128,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -117,6 +126,9 @@ Properties</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Leg.html#ae91da85abe5fed8d94938839d204fa75">isValid</a></td></tr>
 <tr class="memdesc:ae91da85abe5fed8d94938839d204fa75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validity. <br /></td></tr>
 <tr class="separator:ae91da85abe5fed8d94938839d204fa75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6fec34c8088250338e247347705a022"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Leg.html#aa6fec34c8088250338e247347705a022">nearThreshold</a></td></tr>
+<tr class="memdesc:aa6fec34c8088250338e247347705a022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance threshold.  <a href="classNavigation_1_1Leg.html#aa6fec34c8088250338e247347705a022">More...</a><br /></td></tr>
+<tr class="separator:aa6fec34c8088250338e247347705a022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a454765d0b32ed32b23c90e7b147c01ea"><td class="memItemLeft" align="right" valign="top"><a id="a454765d0b32ed32b23c90e7b147c01ea"></a>
 <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1Leg.html#a454765d0b32ed32b23c90e7b147c01ea">startPoint</a></td></tr>
 <tr class="memdesc:a454765d0b32ed32b23c90e7b147c01ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start point of the leg. <br /></td></tr>
@@ -260,7 +272,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property endPoint </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00130">130</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00136">136</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
 
 </div>
 </div>
@@ -308,7 +320,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ETE for leg </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00173">173</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00179">179</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
 
 </div>
 </div>
@@ -495,7 +507,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property startPoint </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00142">142</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00148">148</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +575,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Estimated true heading on leg </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00226">226</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00232">232</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
 
 </div>
 </div>
@@ -606,6 +618,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="aa6fec34c8088250338e247347705a022"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6fec34c8088250338e247347705a022">&#9670;&nbsp;</a></span>nearThreshold</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> Navigation::Leg::nearThreshold</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Distance threshold. </p>
+<p>A position is considered near the leg if the distance is less than this threshold </p>
+
+<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00109">109</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
+
+</div>
+</div>
 <a id="a8888e935c027c951f4c1fa60e04b86e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8888e935c027c951f4c1fa60e04b86e0">&#9670;&nbsp;</a></span>TC</h2>
 
@@ -629,7 +660,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>True course. </p>
 <p>This property holds the true course for the leg. It holds NaN if the leg is invalid or shorter than 100m </p>
 
-<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00113">113</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Leg_8h_source.html#l00119">119</a> of file <a class="el" href="Leg_8h_source.html">Leg.h</a>.</p>
 
 </div>
 </div>

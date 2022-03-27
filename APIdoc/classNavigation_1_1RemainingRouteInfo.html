@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.15.93</span>
+   &#160;<span id="projectnumber">2.15.94</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -45,7 +45,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classNavigation_1_1RemainingRouteInfo-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -58,15 +59,64 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="RemainingRouteInfo_8h_source.html">RemainingRouteInfo.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a754f745bac36567e6a1119aaf6679bdd"><td class="memItemLeft" align="right" valign="top"><a id="a754f745bac36567e6a1119aaf6679bdd"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a754f745bac36567e6a1119aaf6679bdd">RemainingRouteInfo</a> ()</td></tr>
-<tr class="memdesc:a754f745bac36567e6a1119aaf6679bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a remaining route info. <br /></td></tr>
-<tr class="separator:a754f745bac36567e6a1119aaf6679bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a329de1ea6561c80389ec046b75b31934"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934">Status</a> { <br />
+&#160;&#160;<a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934a7e76e960d40304494e4deb9af9667758">NoRoute</a>, 
+<a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934a1ff473b46042d0b12b8cf2eb55fe3117">PositionUnknown</a>, 
+<a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934aca6ac5db4ce6f3b5984fc3e67f71f6ea">OffRoute</a>, 
+<a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934aa87c055c6623126a32c333656daac93a">NearDestination</a>, 
+<br />
+&#160;&#160;<a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934a9f5e89909f8c73f4e57795e002f94337">OnRoute</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a329de1ea6561c80389ec046b75b31934"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status.  <a href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934">More...</a><br /></td></tr>
+<tr class="separator:a329de1ea6561c80389ec046b75b31934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:ae328cef0d5d9462bfaa31477e9671174"><td class="memItemLeft" align="right" valign="top"><a id="ae328cef0d5d9462bfaa31477e9671174"></a>
+<a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#ae328cef0d5d9462bfaa31477e9671174">nextWP</a> {}</td></tr>
+<tr class="memdesc:ae328cef0d5d9462bfaa31477e9671174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Next waypoint in the route. <br /></td></tr>
+<tr class="separator:ae328cef0d5d9462bfaa31477e9671174"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a775d0fb6eeff07dd2d38b3512de1c909"><td class="memItemLeft" align="right" valign="top"><a id="a775d0fb6eeff07dd2d38b3512de1c909"></a>
+<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a775d0fb6eeff07dd2d38b3512de1c909">nextWP_DIST</a> {}</td></tr>
+<tr class="memdesc:a775d0fb6eeff07dd2d38b3512de1c909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to next waypoint in the route. <br /></td></tr>
+<tr class="separator:a775d0fb6eeff07dd2d38b3512de1c909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e40ba643c30e3825d63d642d803c5a9"><td class="memItemLeft" align="right" valign="top"><a id="a1e40ba643c30e3825d63d642d803c5a9"></a>
+<a class="el" href="classUnits_1_1Time.html">Units::Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a1e40ba643c30e3825d63d642d803c5a9">nextWP_ETE</a> {}</td></tr>
+<tr class="memdesc:a1e40ba643c30e3825d63d642d803c5a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ETE for flight to next waypoint in the route. <br /></td></tr>
+<tr class="separator:a1e40ba643c30e3825d63d642d803c5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a4f1ffca1d578713359e0300ea0c51d"><td class="memItemLeft" align="right" valign="top"><a id="a8a4f1ffca1d578713359e0300ea0c51d"></a>
+QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a8a4f1ffca1d578713359e0300ea0c51d">nextWP_ETA</a> {}</td></tr>
+<tr class="memdesc:a8a4f1ffca1d578713359e0300ea0c51d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ETA for flight to next waypoint in the route. <br /></td></tr>
+<tr class="separator:a8a4f1ffca1d578713359e0300ea0c51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8777b4dc1c2cdf0f796d438d96493a52"><td class="memItemLeft" align="right" valign="top"><a id="a8777b4dc1c2cdf0f796d438d96493a52"></a>
+<a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a8777b4dc1c2cdf0f796d438d96493a52">finalWP</a> {}</td></tr>
+<tr class="memdesc:a8777b4dc1c2cdf0f796d438d96493a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final waypoint in the route. <br /></td></tr>
+<tr class="separator:a8777b4dc1c2cdf0f796d438d96493a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69a2d5bda24e1102f024fd5614eb8f29"><td class="memItemLeft" align="right" valign="top"><a id="a69a2d5bda24e1102f024fd5614eb8f29"></a>
+<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a69a2d5bda24e1102f024fd5614eb8f29">finalWP_DIST</a> {}</td></tr>
+<tr class="memdesc:a69a2d5bda24e1102f024fd5614eb8f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final waypoint in the route. <br /></td></tr>
+<tr class="separator:a69a2d5bda24e1102f024fd5614eb8f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa1cbbf8361d276f5118f5f3bd63260c"><td class="memItemLeft" align="right" valign="top"><a id="afa1cbbf8361d276f5118f5f3bd63260c"></a>
+<a class="el" href="classUnits_1_1Time.html">Units::Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#afa1cbbf8361d276f5118f5f3bd63260c">finalWP_ETE</a> {}</td></tr>
+<tr class="memdesc:afa1cbbf8361d276f5118f5f3bd63260c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final waypoint in the route. <br /></td></tr>
+<tr class="separator:afa1cbbf8361d276f5118f5f3bd63260c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b00398a24b824cb6704cb67fb2124b9"><td class="memItemLeft" align="right" valign="top"><a id="a7b00398a24b824cb6704cb67fb2124b9"></a>
+QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a7b00398a24b824cb6704cb67fb2124b9">finalWP_ETA</a> {}</td></tr>
+<tr class="memdesc:a7b00398a24b824cb6704cb67fb2124b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final waypoint in the route. <br /></td></tr>
+<tr class="separator:a7b00398a24b824cb6704cb67fb2124b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a199870f75cfbdbd68ec6d3d242c11128"><td class="memItemLeft" align="right" valign="top"><a id="a199870f75cfbdbd68ec6d3d242c11128"></a>
+<a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934">Navigation::RemainingRouteInfo::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a199870f75cfbdbd68ec6d3d242c11128">status</a></td></tr>
+<tr class="memdesc:a199870f75cfbdbd68ec6d3d242c11128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status. <br /></td></tr>
+<tr class="separator:a199870f75cfbdbd68ec6d3d242c11128"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
+<tr class="memitem:a8f96ffa33f90c6540179a364a234dffd"><td class="memItemLeft" align="right" valign="top"><a id="a8f96ffa33f90c6540179a364a234dffd"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Navigation::Navigator</b></td></tr>
+<tr class="separator:a8f96ffa33f90c6540179a364a234dffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a449a62e17f1a93597b38e5563296a1cc"><td class="memItemLeft" align="right" valign="top"><a id="a449a62e17f1a93597b38e5563296a1cc"></a>
 Q_GADGET friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a449a62e17f1a93597b38e5563296a1cc">operator==</a> (const <a class="el" href="classNavigation_1_1RemainingRouteInfo.html">Navigation::RemainingRouteInfo</a> &amp;, const <a class="el" href="classNavigation_1_1RemainingRouteInfo.html">Navigation::RemainingRouteInfo</a> &amp;)</td></tr>
 <tr class="memdesc:a449a62e17f1a93597b38e5563296a1cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
@@ -74,10 +124,42 @@ Q_GADGET friend bool&#160;</td><td class="memItemRight" valign="bottom"><a class
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Info about remaining route. </p>
-<p>This class bundles information about the remainder of the present flight. This includes next waypoint, final waypoint, as well as ETE, distance and expected fuel consumption. </p>
+<p>This class bundles information about the remainder of the present flight. This includes next waypoint, final waypoint, as well as distance, ETE and ETA.</p>
+<p>Consumers of this class can expect the properties nextWP* to be valid if status equals OnRoute. The properties finalWP* need not be valid in this case. They are valid only if the next waypoint differs from the final waypoint of the route. </p>
 
-<p class="definition">Definition at line <a class="el" href="RemainingRouteInfo_8h_source.html#l00059">59</a> of file <a class="el" href="RemainingRouteInfo_8h_source.html">RemainingRouteInfo.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p class="definition">Definition at line <a class="el" href="RemainingRouteInfo_8h_source.html#l00060">60</a> of file <a class="el" href="RemainingRouteInfo_8h_source.html">RemainingRouteInfo.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a329de1ea6561c80389ec046b75b31934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a329de1ea6561c80389ec046b75b31934">&#9670;&nbsp;</a></span>Status</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934">Navigation::RemainingRouteInfo::Status</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Status. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a329de1ea6561c80389ec046b75b31934a7e76e960d40304494e4deb9af9667758"></a>NoRoute&#160;</td><td class="fielddoc"><p>No valid route has been set. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a329de1ea6561c80389ec046b75b31934a1ff473b46042d0b12b8cf2eb55fe3117"></a>PositionUnknown&#160;</td><td class="fielddoc"><p>Valid route has been set, but no position info available. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a329de1ea6561c80389ec046b75b31934aca6ac5db4ce6f3b5984fc3e67f71f6ea"></a>OffRoute&#160;</td><td class="fielddoc"><p>Current position is further than <a class="el" href="classNavigation_1_1Leg.html#aa6fec34c8088250338e247347705a022" title="Distance threshold.">Leg::nearThreshold</a> nm away from route. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a329de1ea6561c80389ec046b75b31934aa87c055c6623126a32c333656daac93a"></a>NearDestination&#160;</td><td class="fielddoc"><p>Current position is closer than <a class="el" href="classNavigation_1_1Leg.html#aa6fec34c8088250338e247347705a022" title="Distance threshold.">Leg::nearThreshold</a> to destination. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a329de1ea6561c80389ec046b75b31934a9f5e89909f8c73f4e57795e002f94337"></a>OnRoute&#160;</td><td class="fielddoc"><p>Currently travelling along the route. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="RemainingRouteInfo_8h_source.html#l00069">69</a> of file <a class="el" href="RemainingRouteInfo_8h_source.html">RemainingRouteInfo.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/enroute/enroute/src/navigation/<a class="el" href="RemainingRouteInfo_8h_source.html">RemainingRouteInfo.h</a></li>
 </ul>
 </div><!-- contents -->

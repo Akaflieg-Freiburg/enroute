@@ -33,6 +33,7 @@ Rectangle {
 
         anchors.fill: parent
         anchors.leftMargin: Qt.application.font.pixelSize
+        rowSpacing: 0
         columns: 4
 
         property var rri: global.navigator().remainingRouteInfo
@@ -66,24 +67,28 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: Qt.application.font.pixelSize*0.9
         }
         Label {
             text: "DIST"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: Qt.application.font.pixelSize*0.9
         }
         Label {
             text: "ETE"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: Qt.application.font.pixelSize*0.9
         }
         Label {
             text: "ETA"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: Qt.application.font.pixelSize*0.9
         }
 
         Label {
@@ -94,6 +99,7 @@ Rectangle {
             Layout.maximumWidth: implicitWidth
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: global.navigator().aircraft.horizontalDistanceToString(grid.rri.nextWP_DIST)
@@ -102,6 +108,7 @@ Rectangle {
             Layout.minimumWidth: implicitWidth
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: "%1 h".arg(grid.rri.nextWP_ETE.toHoursAndMinutes())
@@ -110,6 +117,7 @@ Rectangle {
             Layout.minimumWidth: implicitWidth
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: grid.rri.nextWP_ETE.isFinite() ? Qt.formatDateTime(grid.rri.nextWP_ETA, "h:mm") : "-:--"
@@ -118,6 +126,7 @@ Rectangle {
             Layout.minimumWidth: implicitWidth
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
 
 
@@ -129,6 +138,7 @@ Rectangle {
             Layout.maximumWidth: implicitWidth
             visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: global.navigator().aircraft.horizontalDistanceToString(grid.rri.finalWP_DIST)
@@ -137,6 +147,7 @@ Rectangle {
             Layout.minimumWidth: implicitWidth
             visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: "%1 h".arg(grid.rri.finalWP_ETE.toHoursAndMinutes())
@@ -145,6 +156,7 @@ Rectangle {
             Layout.minimumWidth: implicitWidth
             visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
             text: grid.rri.finalWP_ETE.isFinite() ? Qt.formatDateTime(grid.rri.finalWP_ETA, "h:mm") : "-:--"
@@ -153,6 +165,7 @@ Rectangle {
             Layout.minimumWidth: implicitWidth
             visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
+            font.pixelSize: Qt.application.font.pixelSize*1.3
         }
 
     }

@@ -33,7 +33,7 @@ Navigation::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& en
 {
     m_geoPath.addCoordinate(m_start.coordinate());
     m_geoPath.addCoordinate(m_end.coordinate());
-    m_geoPath.setWidth( nearThreshold.toM() );
+    m_geoPath.setWidth( 2.0*nearThreshold.toM() );
 }
 
 

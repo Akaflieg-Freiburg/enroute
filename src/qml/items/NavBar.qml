@@ -105,6 +105,7 @@ Rectangle {
 
                 color: "white"
                 text: "FL"
+                font.pixelSize: Qt.application.font.pixelSize*0.9
             }
         }
 
@@ -132,6 +133,7 @@ Rectangle {
 
                 text: "GS"
                 color: "white"
+                font.pixelSize: Qt.application.font.pixelSize*0.9
             }
         }
 
@@ -164,6 +166,7 @@ Rectangle {
 
                 text: "TT"
                 color: "white"
+                font.pixelSize: Qt.application.font.pixelSize*0.9
             }
         }
 
@@ -191,6 +194,7 @@ Rectangle {
 
                 text: "UTC"
                 color: "white"
+                font.pixelSize: Qt.application.font.pixelSize*0.9
             }
         }
 

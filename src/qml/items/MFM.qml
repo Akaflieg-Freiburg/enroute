@@ -361,18 +361,19 @@ Item {
             id: flightPath
 
             line.width: 3
-            line.color: '#008000' //'green'
+            line.color: 'darkgreen' // '#037003' //'green'
             path: global.navigator().flightRoute.geoPath
-            opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
+            //opacity: 1.0
         }
 
         MapPolyline {
             id: toNextWP
-            visible: global.positionProvider().lastValidCoordinate.isValid && global.navigator().remainingRouteInfo.nextWP.coordinate.isValid
-            line.width: 2
-            line.color: '#800000' //'green'
+            visible: global.positionProvider().lastValidCoordinate.isValid &&
+                     (global.navigator().remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
+            line.width: 3
+            line.color: 'darkred' //'green'
             path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
-            opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
+            //opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
 

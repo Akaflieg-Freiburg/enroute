@@ -31,6 +31,8 @@
 #include "TileHandler.h"
 #include "dataManagement/Downloadable.h"
 
+QRegularExpression tileQueryPattern("[0-9]{1,2}/[0-9]{1,4}/[0-9]{1,4}");
+
 GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
@@ -141,7 +143,6 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
     }
 
     // Serve tile, if requested
-    QRegularExpression tileQueryPattern("[0-9]{1,2}/[0-9]{1,4}/[0-9]{1,4}");
     QRegularExpressionMatch match = tileQueryPattern.match(path);
     if (match.hasMatch()) {
         // Retrieve tile data from the database

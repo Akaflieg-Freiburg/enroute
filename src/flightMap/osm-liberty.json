@@ -29,7 +29,7 @@
       "paint": {
         "fill-color": "#d8e8c8",
         "fill-opacity": 0.7,
-        "fill-outline-color": "rgba(95, 208, 100, 1)"
+        "fill-outline-color": "rgb(95, 208, 100)"
       }
     },
     {
@@ -43,7 +43,7 @@
           1,
           1.5
         ],
-        "line-color": "rgba(228, 241, 215, 1)",
+        "line-color": "rgb(228, 241, 215)",
         "line-opacity": 1
       }
     },
@@ -68,11 +68,24 @@
           "stops": [
             [
               9,
-              "hsla(0, 3%, 85%, 0.84)"
+              "hsl(0, 3%, 85%)"
             ],
             [
               12,
-              "hsla(35, 57%, 88%, 0.49)"
+              "hsl(35, 57%, 88%)"
+            ]
+          ]
+        },
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              9,
+              0.84
+            ],
+            [
+              12,
+              0.49
             ]
           ]
         }
@@ -94,8 +107,8 @@
       ],
       "paint": {
         "fill-antialias": false,
-        "fill-color": "hsla(98, 61%, 72%, 0.7)",
-        "fill-opacity": 0.4
+        "fill-color": "hsl(98, 61%, 72%)",
+        "fill-opacity": 0.28
       }
     },
     {
@@ -114,7 +127,7 @@
       ],
       "paint": {
         "fill-antialias": false,
-        "fill-color": "rgba(176, 213, 154, 1)",
+        "fill-color": "rgb(176, 213, 154)",
         "fill-opacity": 0.3
       }
     },
@@ -256,7 +269,7 @@
         ]
       ],
       "paint": {
-        "fill-color": "rgba(247, 239, 195, 1)"
+        "fill-color": "rgb(247, 239, 195)"
       }
     },
     {
@@ -272,7 +285,7 @@
         "Polygon"
       ],
       "paint": {
-        "fill-color": "rgba(229, 228, 224, 1)",
+        "fill-color": "rgb(229, 228, 224)",
         "fill-opacity": 0.7
       }
     },

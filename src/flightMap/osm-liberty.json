@@ -3525,30 +3525,12 @@
       "type": "symbol",
       "metadata": {},
       "source": "openmaptiles",
-      "source-layer": "poi",
-      "minzoom": 14,
-      "filter": [
-        "all",
-        [
-          "==",
-          "$type",
-          "Point"
-        ],
-        [
-          ">=",
-          "rank",
-          1
-        ],
-        [
-          "<",
-          "rank",
-          7
-        ]
-      ],
+      "source-layer": "mountain_peak",
+      "minzoom": 1,
       "layout": {
-        "icon-image": "{class}_11",
+        "icon-image": "bus_11",
         "text-anchor": "top",
-        "text-field": "{name}",
+        "text-field": "{name_en}",
         "text-font": [
           "Roboto Condensed Italic"
         ],

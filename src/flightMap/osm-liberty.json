@@ -2256,6 +2256,57 @@
       }
     },
     {
+      "id": "aerialway",
+      "type": "line",
+      "metadata": {},
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": [
+        "all",
+        [
+          "==",
+          "$type",
+          "LineString"
+        ],
+        [
+          "==",
+          "class",
+          "aerialway"
+        ]
+      ],
+      "paint": {
+        "line-color": "#ff0000",
+        "line-opacity": 1,
+        "line-width": 2
+      }
+    },
+    {
+      "id": "aerialway_2",
+      "type": "line",
+      "metadata": {},
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": [
+        "all",
+        [
+          "==",
+          "$type",
+          "LineString"
+        ],
+        [
+          "==",
+          "class",
+          "aerialway"
+        ]
+      ],
+      "paint": {
+        "line-color": "#ff0000",
+        "line-opacity": 1,
+        "line-width": 5,
+        "line-dasharray": [ 0.2, 1 ]
+      }
+    },
+    {
       "id": "bridge_motorway_link_casing",
       "type": "line",
       "metadata": {},

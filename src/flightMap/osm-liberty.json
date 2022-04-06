@@ -86,6 +86,46 @@
       }
     },
     {
+      "id": "landcover_rock",
+      "type": "fill",
+      "metadata": {},
+      "source": "openmaptiles",
+      "source-layer": "landcover",
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "rock"
+        ]
+      ],
+      "paint": {
+        "fill-antialias": false,
+        "fill-color": "#808080",
+        "fill-opacity": 0.1
+      }
+    },
+    {
+      "id": "landcover_ice",
+      "type": "fill",
+      "metadata": {},
+      "source": "openmaptiles",
+      "source-layer": "landcover",
+      "filter": [
+        "all",
+        [
+          "==",
+          "class",
+          "ice"
+        ]
+      ],
+      "paint": {
+        "fill-antialias": false,
+        "fill-color": "#e8e8ff",
+        "fill-opacity": 1
+      }
+    },
+    {
       "id": "landcover_grass",
       "type": "fill",
       "metadata": {},

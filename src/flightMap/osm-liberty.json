@@ -863,7 +863,7 @@
       "source-layer": "mountain_peak",
       "minzoom": 1,
       "layout": {
-        "icon-image": "bus_11",
+        "icon-image": "triangle_11",
         "text-anchor": "top",
         "text-field": "{name_en}",
         "text-font": [

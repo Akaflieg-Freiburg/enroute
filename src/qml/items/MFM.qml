@@ -361,9 +361,8 @@ Item {
             id: flightPath
 
             line.width: 3
-            line.color: 'darkgreen' // '#037003' //'green'
+            line.color: 'darkgreen'
             path: global.navigator().flightRoute.geoPath
-            //opacity: 1.0
         }
 
         MapPolyline {
@@ -371,9 +370,8 @@ Item {
             visible: global.positionProvider().lastValidCoordinate.isValid &&
                      (global.navigator().remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
             line.width: 3
-            line.color: 'darkred' //'green'
+            line.color: 'darkred'
             path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
-            //opacity: (flightMap.zoomLevel < 11.0) ? 1.0 : 0.3
         }
 
 

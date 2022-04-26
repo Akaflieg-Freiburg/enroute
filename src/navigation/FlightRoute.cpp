@@ -74,11 +74,6 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
 
 auto Navigation::FlightRoute::geoPath() const -> QVariantList
 {
-    // Paranoid safety checks
-    if (m_waypoints.size() < 2) {
-        return QVariantList();
-    }
-
     QVariantList result;
     for(const auto& _waypoint : m_waypoints) {
         if (!_waypoint.isValid()) {

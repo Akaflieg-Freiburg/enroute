@@ -120,7 +120,7 @@ Rectangle {
             font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
-            text: grid.rri.nextWP_ETE.isFinite() ? Qt.formatDateTime(grid.rri.nextWP_ETA, "h:mm") : "-:--"
+            text: grid.rri.nextWP_ETAAsUTCString
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
@@ -159,7 +159,7 @@ Rectangle {
             font.pixelSize: Qt.application.font.pixelSize*1.3
         }
         Label {
-            text: grid.rri.finalWP_ETE.isFinite() ? Qt.formatDateTime(grid.rri.finalWP_ETA, "h:mm") : "-:--"
+            text: grid.rri.finalWP_ETAAsUTCString
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth

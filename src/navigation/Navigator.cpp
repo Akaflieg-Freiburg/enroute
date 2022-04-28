@@ -299,7 +299,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
         rri.finalWP_DIST = dist;
         rri.finalWP_ETE  = ETE;
         if (ETE.isFinite()) {
-            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() );
+            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() ).toUTC();
         }
     }
     setRemainingRouteInfo(rri);

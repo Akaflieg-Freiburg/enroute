@@ -79,9 +79,9 @@ please get in touch with us by opening a GitHub issue.</p>
 ")
                 width: pg.width
                 wrapMode: Text.Wrap
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
             }
         } // Item

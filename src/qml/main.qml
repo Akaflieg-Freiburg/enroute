@@ -589,7 +589,7 @@ ApplicationWindow {
     Label {
         id: toast
 
-        width: Math.min(parent.width-4*Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        width: Math.min(parent.width-4*view.font.pixelSize, 40*view.font.pixelSize)
         x: (parent.width-width)/2.0
         y: parent.height*(3.0/4.0)-height/2.0
 

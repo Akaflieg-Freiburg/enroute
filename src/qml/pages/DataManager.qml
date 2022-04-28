@@ -36,9 +36,9 @@ Page {
         id: sectionHeading
 
         Label {
-            x: Qt.application.font.pixelSize
+            x: view.font.pixelSize
             text: section
-            font.pixelSize: Qt.application.font.pixelSize*1.2
+            font.pixelSize: view.font.pixelSize*1.2
             font.bold: true
             color: Material.accent
         }
@@ -417,7 +417,7 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
-        anchors.topMargin: Qt.application.font.pixelSize*0.2
+        anchors.topMargin: view.font.pixelSize*0.2
 
         SwipeView{
             id: sv
@@ -547,9 +547,9 @@ Page {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.topMargin: Qt.application.font.pixelSize*2
-            anchors.leftMargin: Qt.application.font.pixelSize*2
-            anchors.rightMargin: Qt.application.font.pixelSize*2
+            anchors.topMargin: view.font.pixelSize*2
+            anchors.leftMargin: view.font.pixelSize*2
+            anchors.rightMargin: view.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.RichText
@@ -575,9 +575,9 @@ Page {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.topMargin: Qt.application.font.pixelSize*2
-            anchors.leftMargin: Qt.application.font.pixelSize*2
-            anchors.rightMargin: Qt.application.font.pixelSize*2
+            anchors.topMargin: view.font.pixelSize*2
+            anchors.leftMargin: view.font.pixelSize*2
+            anchors.rightMargin: view.font.pixelSize*2
 
             horizontalAlignment: Text.AlignHCenter
             textFormat: Text.RichText

@@ -64,9 +64,9 @@ Page {
 
             clip: true
 
-            topPadding: Qt.application.font.pixelSize*1
-            leftPadding: Qt.application.font.pixelSize*0.5
-            rightPadding: Qt.application.font.pixelSize*0.5
+            topPadding: view.font.pixelSize*1
+            leftPadding: view.font.pixelSize*0.5
+            rightPadding: view.font.pixelSize*0.5
 
             contentHeight: cL.height
             contentWidth: pg.width-leftPadding-rightPadding
@@ -236,9 +236,9 @@ below.</p>
 
                 clip: true
 
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
 
                 contentHeight: cL.height
                 contentWidth: pg.width-leftPadding-rightPadding
@@ -344,9 +344,9 @@ comes first!</p>
 
                 clip: true
 
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
 
                 contentHeight: cL.height
                 contentWidth: pg.width-leftPadding-rightPadding
@@ -442,9 +442,9 @@ time. Peter speaks English and German.</p>
 
                 clip: true
 
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
 
                 contentHeight: cL.height
                 contentWidth: pg.width-leftPadding-rightPadding
@@ -510,9 +510,9 @@ discuss your issue in the forum there.</p>
 
                 clip: true
 
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
 
                 contentHeight: cL.height
                 contentWidth: pg.width-leftPadding-rightPadding
@@ -611,9 +611,9 @@ following countries?</p>
 
                 clip: true
 
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
 
                 contentHeight: cL.height
                 contentWidth: pg.width-leftPadding-rightPadding
@@ -698,9 +698,9 @@ computer, you can also send yourself a link by e-mail.</p>
 
                 clip: true
 
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
 
                 contentHeight: cL.height
                 contentWidth: pg.width-leftPadding-rightPadding

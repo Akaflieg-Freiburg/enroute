@@ -482,7 +482,7 @@ Page {
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
-                        if (!global.navigator().wind.speed.isFinite()) {
+                        if (!global.navigator().wind.direction.isFinite()) {
                             return ""
                         }
                         return Math.round( global.navigator().wind.directionFrom.toDEG() )

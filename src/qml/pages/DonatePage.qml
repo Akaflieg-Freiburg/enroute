@@ -37,9 +37,9 @@ Page {
         clip: true
         anchors.fill: parent
 
-        topPadding: Qt.application.font.pixelSize
-        leftPadding: Qt.application.font.pixelSize
-        rightPadding: Qt.application.font.pixelSize
+        topPadding: view.font.pixelSize
+        leftPadding: view.font.pixelSize
+        rightPadding: view.font.pixelSize
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -88,9 +88,9 @@ with the bank account data.
 ").arg(bankAccountData)
                 width: pg.width
                 wrapMode: Text.Wrap
-                topPadding: Qt.application.font.pixelSize*1
-                leftPadding: Qt.application.font.pixelSize*0.5
-                rightPadding: Qt.application.font.pixelSize*0.5
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
             }
 

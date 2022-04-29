@@ -73,9 +73,9 @@ Page {
                     width: pg.width
 
                     wrapMode: Text.Wrap
-                    topPadding: Qt.application.font.pixelSize*1
-                    leftPadding: Qt.application.font.pixelSize*0.5
-                    rightPadding: Qt.application.font.pixelSize*0.5
+                    topPadding: view.font.pixelSize*1
+                    leftPadding: view.font.pixelSize*0.5
+                    rightPadding: view.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }
@@ -97,9 +97,9 @@ Page {
                     textFormat: Text.RichText // Link OK
                     width: pg.width
                     wrapMode: Text.Wrap
-                    topPadding: Qt.application.font.pixelSize*1
-                    leftPadding: Qt.application.font.pixelSize*0.5
-                    rightPadding: Qt.application.font.pixelSize*0.5
+                    topPadding: view.font.pixelSize*1
+                    leftPadding: view.font.pixelSize*0.5
+                    rightPadding: view.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }
@@ -122,9 +122,9 @@ Page {
                     linkColor: Material.accent
                     width: pg.width
                     wrapMode: Text.Wrap
-                    topPadding: Qt.application.font.pixelSize*1
-                    leftPadding: Qt.application.font.pixelSize*0.5
-                    rightPadding: Qt.application.font.pixelSize*0.5
+                    topPadding: view.font.pixelSize*1
+                    leftPadding: view.font.pixelSize*0.5
+                    rightPadding: view.font.pixelSize*0.5
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }

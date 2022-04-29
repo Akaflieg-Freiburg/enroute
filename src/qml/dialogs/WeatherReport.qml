@@ -38,8 +38,8 @@ Dialog {
     onWeatherStationChanged: sv.ScrollBar.vertical.position = 0.0 // Reset scroll bar if station changes
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
+    width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+    height: Math.min(view.height-view.font.pixelSize, implicitHeight)
 
     // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
     // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -63,7 +63,7 @@ Dialog {
             Label {
                 text: (weatherStation !== null) ? weatherStation.extendedName : ""
                 font.bold: true
-                font.pixelSize: 1.2*Qt.application.font.pixelSize
+                font.pixelSize: 1.2*view.font.pixelSize
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
@@ -102,7 +102,7 @@ Dialog {
                     visible: (weatherStation !== null) && weatherStation.hasMETAR
                     text: (weatherStation !== null) && weatherStation.hasMETAR ? (weatherStation.metar.messageType + " " + weatherStation.metar.relativeObservationTime) : ""
                     font.bold: true
-                    font.pixelSize: 1.2*Qt.application.font.pixelSize
+                    font.pixelSize: 1.2*view.font.pixelSize
                 }
 
                 Label { // raw METAR text
@@ -113,10 +113,10 @@ Dialog {
                     Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
-                    bottomPadding: 0.2*Qt.application.font.pixelSize
-                    topPadding: 0.2*Qt.application.font.pixelSize
-                    leftPadding: 0.2*Qt.application.font.pixelSize
-                    rightPadding: 0.2*Qt.application.font.pixelSize
+                    bottomPadding: 0.2*view.font.pixelSize
+                    topPadding: 0.2*view.font.pixelSize
+                    leftPadding: 0.2*view.font.pixelSize
+                    rightPadding: 0.2*view.font.pixelSize
 
                     leftInset: -4
                     rightInset: -4
@@ -142,7 +142,7 @@ Dialog {
                     visible: (weatherStation !== null) && weatherStation.hasTAF
                     text: "TAF"
                     font.bold: true
-                    font.pixelSize: 1.2*Qt.application.font.pixelSize
+                    font.pixelSize: 1.2*view.font.pixelSize
                 }
 
                 Label { // raw TAF text
@@ -153,10 +153,10 @@ Dialog {
                     Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
-                    bottomPadding: 0.2*Qt.application.font.pixelSize
-                    topPadding: 0.2*Qt.application.font.pixelSize
-                    leftPadding: 0.2*Qt.application.font.pixelSize
-                    rightPadding: 0.2*Qt.application.font.pixelSize
+                    bottomPadding: 0.2*view.font.pixelSize
+                    topPadding: 0.2*view.font.pixelSize
+                    leftPadding: 0.2*view.font.pixelSize
+                    rightPadding: 0.2*view.font.pixelSize
 
                     leftInset: -4
                     rightInset: -4

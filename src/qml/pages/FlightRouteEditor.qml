@@ -446,9 +446,9 @@ Page {
 
             GridLayout {
                 anchors.left: parent.left
-                anchors.leftMargin: Qt.application.font.pixelSize
+                anchors.leftMargin: view.font.pixelSize
                 anchors.right: parent.right
-                anchors.rightMargin: Qt.application.font.pixelSize
+                anchors.rightMargin: view.font.pixelSize
 
                 columns: 4
 
@@ -456,7 +456,7 @@ Page {
                 Label {
                     text: qsTr("Wind")
                     Layout.columnSpan: 4
-                    font.pixelSize: Qt.application.font.pixelSize*1.2
+                    font.pixelSize: view.font.pixelSize*1.2
                     font.bold: true
                     color: Material.accent
                 }
@@ -469,7 +469,7 @@ Page {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: Qt.application.font.pixelSize*5
+                    Layout.minimumWidth: view.font.pixelSize*5
                     validator: IntValidator {
                         bottom: 0
                         top: 360
@@ -482,7 +482,7 @@ Page {
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
-                        if (!global.navigator().wind.speed.isFinite()) {
+                        if (!global.navigator().wind.direction.isFinite()) {
                             return ""
                         }
                         return Math.round( global.navigator().wind.directionFrom.toDEG() )
@@ -511,7 +511,7 @@ Page {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: Qt.application.font.pixelSize*5
+                    Layout.minimumWidth: view.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: {
                             switch(global.navigator().aircraft.horizontalDistanceUnit) {
@@ -664,8 +664,8 @@ Page {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         Label {
             width: clearDialog.availableWidth
@@ -708,7 +708,7 @@ Page {
         parent: Overlay.overlay
 
         title: qsTr("Error exporting data…")
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
 
         Label {
             id: shareErrorDialogLabel

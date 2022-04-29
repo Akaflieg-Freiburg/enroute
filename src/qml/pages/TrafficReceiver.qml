@@ -42,10 +42,10 @@ Page {
         anchors.fill: parent
         clip: true
 
-        anchors.topMargin: Qt.application.font.pixelSize
-        anchors.bottomMargin: Qt.application.font.pixelSize
-        anchors.leftMargin: Qt.application.font.pixelSize
-        anchors.rightMargin: Qt.application.font.pixelSize
+        anchors.topMargin: view.font.pixelSize
+        anchors.bottomMargin: view.font.pixelSize
+        anchors.leftMargin: view.font.pixelSize
+        anchors.rightMargin: view.font.pixelSize
 
         contentWidth: width
 
@@ -62,7 +62,7 @@ Page {
                 Layout.fillWidth: true
 
                 text: qsTr("Connection Status")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -77,10 +77,10 @@ Page {
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
 
-                bottomPadding: 0.6*Qt.application.font.pixelSize
-                topPadding: 0.6*Qt.application.font.pixelSize
-                leftPadding: 0.2*Qt.application.font.pixelSize
-                rightPadding: 0.2*Qt.application.font.pixelSize
+                bottomPadding: 0.6*view.font.pixelSize
+                topPadding: 0.6*view.font.pixelSize
+                leftPadding: 0.2*view.font.pixelSize
+                rightPadding: 0.2*view.font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -99,7 +99,7 @@ Page {
                 visible: global.trafficDataProvider().receivingHeartbeat
 
                 text: qsTr("Traffic Data Receiver Status")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -111,10 +111,10 @@ Page {
 
                 visible: global.trafficDataProvider().receivingHeartbeat
 
-                bottomPadding: 0.6*Qt.application.font.pixelSize
-                topPadding: 0.6*Qt.application.font.pixelSize
-                leftPadding: 0.2*Qt.application.font.pixelSize
-                rightPadding: 0.2*Qt.application.font.pixelSize
+                bottomPadding: 0.6*view.font.pixelSize
+                topPadding: 0.6*view.font.pixelSize
+                leftPadding: 0.2*view.font.pixelSize
+                rightPadding: 0.2*view.font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -157,7 +157,7 @@ Page {
             }
 
             Item {
-                height: Qt.application.font.pixelSize*0.5
+                height: view.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
@@ -166,7 +166,7 @@ Page {
                 visible: !global.trafficDataProvider().receivingHeartbeat
 
                 text: qsTr("Help")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }

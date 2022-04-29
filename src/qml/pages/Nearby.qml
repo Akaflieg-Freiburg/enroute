@@ -115,7 +115,7 @@ Page {
 
             Label {
                 anchors.fill: parent
-                anchors.topMargin: Qt.application.font.pixelSize*2
+                anchors.topMargin: view.font.pixelSize*2
                 visible: parent.count == 0
 
                 horizontalAlignment: Text.AlignHCenter
@@ -137,7 +137,7 @@ Page {
 
             Label {
                 anchors.fill: parent
-                anchors.topMargin: Qt.application.font.pixelSize*2
+                anchors.topMargin: view.font.pixelSize*2
                 visible: parent.count == 0
 
                 horizontalAlignment: Text.AlignHCenter
@@ -159,7 +159,7 @@ Page {
             
             Label {
                 anchors.fill: parent
-                anchors.topMargin: Qt.application.font.pixelSize*2
+                anchors.topMargin: view.font.pixelSize*2
                 visible: parent.count == 0
 
                 horizontalAlignment: Text.AlignHCenter

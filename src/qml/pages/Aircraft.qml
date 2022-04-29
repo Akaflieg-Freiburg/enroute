@@ -121,21 +121,21 @@ Page {
         GridLayout {
             id: aircraftTab
             anchors.left: parent.left
-            anchors.leftMargin: Qt.application.font.pixelSize
+            anchors.leftMargin: view.font.pixelSize
             anchors.right: parent.right
-            anchors.rightMargin: Qt.application.font.pixelSize
+            anchors.rightMargin: view.font.pixelSize
 
             columns: 4
 
 
             Rectangle {
                 Layout.columnSpan: 4
-                height: Qt.application.font.pixelSize
+                height: view.font.pixelSize
             }
             Label {
                 text: qsTr("Name")
                 Layout.columnSpan: 4
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -150,7 +150,7 @@ Page {
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: Qt.application.font.pixelSize*5
+                Layout.minimumWidth: view.font.pixelSize*5
                 KeyNavigation.tab: horizontalUOM
 
                 onEditingFinished: {
@@ -164,7 +164,7 @@ Page {
             Label {
                 text: qsTr("Units")
                 Layout.columnSpan: 4
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -224,7 +224,7 @@ Page {
             Label {
                 text: qsTr("True Airspeed")
                 Layout.columnSpan: 4
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -237,7 +237,7 @@ Page {
                 id: cruiseSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: Qt.application.font.pixelSize*5
+                Layout.minimumWidth: view.font.pixelSize*5
                 KeyNavigation.tab: descentSpeed
 
                 validator: DoubleValidator {
@@ -325,7 +325,7 @@ Page {
                 id: descentSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: Qt.application.font.pixelSize*5
+                Layout.minimumWidth: view.font.pixelSize*5
                 KeyNavigation.tab: minimumSpeed
 
                 validator: DoubleValidator {
@@ -413,7 +413,7 @@ Page {
                 id: minimumSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: Qt.application.font.pixelSize*5
+                Layout.minimumWidth: view.font.pixelSize*5
                 KeyNavigation.tab: fuelConsumption
 
                 validator: DoubleValidator {
@@ -497,7 +497,7 @@ Page {
             Label {
                 text: qsTr("Fuel Consumption")
                 Layout.columnSpan: 4
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -510,7 +510,7 @@ Page {
                 id: fuelConsumption
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: Qt.application.font.pixelSize*5
+                Layout.minimumWidth: view.font.pixelSize*5
                 KeyNavigation.tab: name
 
                 validator: DoubleValidator {

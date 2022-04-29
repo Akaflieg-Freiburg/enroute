@@ -57,7 +57,7 @@ MapQuickItem {
         text: trafficInfo.description
         textFormat: Text.RichText
 
-        font.pixelSize: 0.8*Qt.application.font.pixelSize
+        font.pixelSize: 0.8*view.font.pixelSize
 
         leftInset: -4
         rightInset: -4

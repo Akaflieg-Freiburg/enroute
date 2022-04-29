@@ -36,8 +36,8 @@ Dialog {
     property int index: -1 // Index of waypoint in flight route
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
+    width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+    height: Math.min(view.height-view.font.pixelSize, implicitHeight)
 
     // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
     // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -65,7 +65,7 @@ Dialog {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            Layout.minimumWidth: Qt.application.font.pixelSize*5
+            Layout.minimumWidth: view.font.pixelSize*5
 
             text: waypoint.extendedName
             focus: true

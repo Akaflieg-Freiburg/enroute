@@ -26,8 +26,8 @@ Dialog {
     id: dlg
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+    width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+    height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
     modal: true
     title: dialogLoader.title

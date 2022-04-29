@@ -38,10 +38,10 @@ Page {
         id: view
         clip: true
         anchors.fill: parent
-        anchors.topMargin: Qt.application.font.pixelSize
-        anchors.bottomMargin: Qt.application.font.pixelSize
-        anchors.leftMargin: Qt.application.font.pixelSize
-        anchors.rightMargin: Qt.application.font.pixelSize
+        anchors.topMargin: view.font.pixelSize
+        anchors.bottomMargin: view.font.pixelSize
+        anchors.leftMargin: view.font.pixelSize
+        anchors.rightMargin: view.font.pixelSize
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -60,7 +60,7 @@ Page {
                 Layout.columnSpan: 2
 
                 text: qsTr("Status")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -76,10 +76,10 @@ Page {
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
 
-                bottomPadding: 0.6*Qt.application.font.pixelSize
-                topPadding: 0.6*Qt.application.font.pixelSize
-                leftPadding: 0.2*Qt.application.font.pixelSize
-                rightPadding: 0.2*Qt.application.font.pixelSize
+                bottomPadding: 0.6*view.font.pixelSize
+                topPadding: 0.6*view.font.pixelSize
+                leftPadding: 0.2*view.font.pixelSize
+                rightPadding: 0.2*view.font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -93,7 +93,7 @@ Page {
             }
 
             Item {
-                height: Qt.application.font.pixelSize*0.5
+                height: view.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
@@ -101,7 +101,7 @@ Page {
                 Layout.columnSpan: 2
 
                 text: qsTr("Position Data")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }

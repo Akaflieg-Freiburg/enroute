@@ -607,6 +607,17 @@ Page {
         ColumnLayout {
             width: parent.width
 
+
+            Label {
+                Layout.fillWidth: true
+                text: qsTr("One waypoint: direct route from ownship position")
+
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.WordWrap
+                textFormat: Text.StyledText
+                visible: (global.navigator().flightRoute.size === 1)&&(sv.currentIndex === 0)
+            }
+
             Label {
                 id: summary
 

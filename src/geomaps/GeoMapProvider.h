@@ -141,7 +141,7 @@ public:
      */
     QString copyrightNotice() const
     {
-        return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://maptiler.com/copyright/'>© MapTiler</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
+        return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
     }
 
     /*! \brief Waypoints containing a given substring

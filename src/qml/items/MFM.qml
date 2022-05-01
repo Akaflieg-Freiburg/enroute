@@ -508,23 +508,29 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.right: parent.right
     }
 
-    Label {
-        id: airspaceAltLimitLabel
+    Pane {
+        id: airspaceAltLabel
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.4*view.font.pixelSize
-
-        text: {
-            // Mention
-            global.navigator().aircraft.verticalDistanceUnit
-
-            var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
-            var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-            return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
-        }
-        background: Rectangle { color: "white"; opacity: Material.theme === Material.Dark ? 0.1 : 0.8}
+        topPadding: 0
+        bottomPadding: 0
+        Material.elevation: 2
+        opacity: 0.8
         visible: global.settings().airspaceAltitudeLimit.isFinite()
+
+        Label {
+
+            text: {
+                // Mention
+                global.navigator().aircraft.verticalDistanceUnit
+
+                var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+                var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
+            }
+        }
     }
 
     RoundButton {

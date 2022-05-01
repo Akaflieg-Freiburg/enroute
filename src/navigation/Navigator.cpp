@@ -282,6 +282,19 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     auto dist = legToNextWP.distance();
     auto ETE = legToNextWP.ETE(m_wind, m_aircraft);
 
+    // If bearing is less than +/- 30°, then use current ground speed to
+    // estimate ETE for leg to next waypoint
+    if (legToNextWP.TC().isFinite() &&
+            info.trueTrack().isFinite() &&
+            info.groundSpeed().isFinite() &&
+            (info.groundSpeed() > Units::Speed::fromKN(10.0)) ) {
+        auto bearing = legToNextWP.TC()-info.trueTrack();
+        auto bearingDEG = bearing.toDEG();
+        if ((bearingDEG < 30) || (bearingDEG > 360-30)) {
+            ETE = dist/(bearing.cos()*info.groundSpeed());
+        }
+    }
+
     rri.nextWP = legToNextWP.endPoint();
     rri.nextWP_DIST = dist;
     rri.nextWP_ETE  = ETE;

@@ -302,5 +302,20 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
             rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() ).toUTC();
         }
     }
+
+    QStringList complaints;
+    if (!m_aircraft.cruiseSpeed().isFinite()) {
+        complaints += tr("Cruise speed not specified.");
+    }
+    if (!m_wind.speed().isFinite()) {
+        complaints += tr("Wind speed not specified.");
+    }
+    if (!m_wind.directionFrom().isFinite()) {
+        complaints += tr("Wind direction not specified.");
+    }
+    if (!complaints.isEmpty()) {
+        rri.note = tr("<font color='red'>Computation incomplete. %1</font>").arg(complaints.join(QStringLiteral(" ")));
+    }
+
     setRemainingRouteInfo(rri);
 }

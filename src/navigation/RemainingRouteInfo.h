@@ -100,6 +100,13 @@ public:
     /*! \brief ETA for flight to final waypoint in the route, in UTC and as a string */
     Q_PROPERTY(QString finalWP_ETAAsUTCString READ finalWP_ETAAsUTCString CONSTANT)
 
+    /*! \brief Note
+     *
+     * This property contains an optional localozed warning, if ETE cannot be computed because
+     * wind or aircraft data are missing. If no warning, then this field remains empty.
+     */
+    Q_PROPERTY(QString note MEMBER note CONSTANT)
+
     /*! \brief Status */
     Q_PROPERTY(Navigation::RemainingRouteInfo::Status status MEMBER status CONSTANT)
 
@@ -132,6 +139,7 @@ public:
 
 private:
     Status status {NoRoute};
+    QString note;
 
     GeoMaps::Waypoint nextWP {};
     Units::Distance nextWP_DIST {};

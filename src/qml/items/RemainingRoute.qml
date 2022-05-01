@@ -38,26 +38,6 @@ Rectangle {
 
         property var rri: global.navigator().remainingRouteInfo
 
-        Label {
-            Layout.columnSpan: 4
-            Layout.alignment: Qt.AlignHCenter
-            visible: text !== ""
-            color: "white"
-
-            text: {
-                switch (grid.rri.status) {
-                    case RemainingRouteInfo.PositionUnknown:
-                        return qsTr("Position unknown.");
-                    case RemainingRouteInfo.OffRoute:
-                        return qsTr("More than %1 off route.").arg(global.navigator().aircraft.horizontalDistanceToString(leg.nearThreshold));
-                    case RemainingRouteInfo.NearDestination:
-                        return qsTr("Near destination.");
-                }
-                return ""
-            }
-
-        }
-
         Item { width: 1 }
         Item { Layout.fillWidth: true }
         Item { Layout.fillWidth: true }
@@ -166,6 +146,26 @@ Rectangle {
             visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
             font.pixelSize: view.font.pixelSize*1.3
+        }
+
+        Label {
+            Layout.columnSpan: 4
+            Layout.alignment: Qt.AlignHCenter
+            visible: text !== ""
+            color: "white"
+
+            text: {
+                switch (grid.rri.status) {
+                    case RemainingRouteInfo.PositionUnknown:
+                        return qsTr("Position unknown.");
+                    case RemainingRouteInfo.OffRoute:
+                        return qsTr("More than %1 off route.").arg(global.navigator().aircraft.horizontalDistanceToString(leg.nearThreshold));
+                    case RemainingRouteInfo.NearDestination:
+                        return qsTr("Near destination.");
+                }
+                return grid.rri.note
+            }
+
         }
 
     }

@@ -33,6 +33,7 @@ Rectangle {
 
         anchors.fill: parent
         anchors.leftMargin: view.font.pixelSize
+        anchors.rightMargin: view.font.pixelSize
         rowSpacing: 0
         columns: 4
 
@@ -150,9 +151,11 @@ Rectangle {
 
         Label {
             Layout.columnSpan: 4
-            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
             visible: text !== ""
             color: "white"
+            wrapMode: Text.Wrap
+            horizontalAlignment:  Text.AlignHCenter
 
             text: {
                 switch (grid.rri.status) {
@@ -167,6 +170,13 @@ Rectangle {
             }
 
         }
+
+        Item {
+            Layout.columnSpan: 4
+            Layout.fillWidth: true
+            height: 0.2*view.font.pixelSize
+        }
+
 
     }
 

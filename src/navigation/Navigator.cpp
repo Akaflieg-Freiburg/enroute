@@ -327,7 +327,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
         complaints += tr("Wind direction not specified.");
     }
     if (!complaints.isEmpty()) {
-        rri.note = tr("<font color='red'>Computation incomplete. %1</font>").arg(complaints.join(QStringLiteral(" ")));
+        rri.note = tr("Computation incomplete. %1").arg(complaints.join(QStringLiteral(" ")));
     }
 
     setRemainingRouteInfo(rri);

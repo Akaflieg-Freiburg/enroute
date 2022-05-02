@@ -360,8 +360,8 @@ Item {
         MapPolyline {
             id: flightPath
 
-            line.width: 3
-            line.color: 'darkgreen'
+            line.width: 4
+            line.color: "#ff00ff"
             path: global.navigator().flightRoute.geoPath
         }
 
@@ -369,7 +369,7 @@ Item {
             id: toNextWP
             visible: global.positionProvider().lastValidCoordinate.isValid &&
                      (global.navigator().remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
-            line.width: 3
+            line.width: 2
             line.color: 'darkred'
             path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
         }

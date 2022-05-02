@@ -141,7 +141,7 @@ void DemoRunner::run()
 
                 // Generate directory
                 QDir dir;
-                dir.mkpath(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
+                dir.mkpath(QString("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
 
                 // Set language
                 setLanguage(language);
@@ -162,7 +162,7 @@ void DemoRunner::run()
                     flightMap->setProperty("zoomLevel", 11);
                     GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
 
@@ -176,7 +176,7 @@ void DemoRunner::run()
                     flightMap->setProperty("zoomLevel", 12);
                     GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
 
                 // Approaching EDTF w/ traffic
@@ -217,7 +217,7 @@ void DemoRunner::run()
                     trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     trafficFactor1->setHDist( {} );
                     trafficSimulator->removeTraffic();
                     trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
@@ -231,7 +231,7 @@ void DemoRunner::run()
                     waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
                     QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
                 }
 
@@ -246,7 +246,7 @@ void DemoRunner::run()
                     weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
                     QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
 
@@ -255,7 +255,7 @@ void DemoRunner::run()
                     qWarning() << "… Nearby Waypoints Page";
                     emit requestOpenNearbyPage();
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("generatedSources/fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
             }

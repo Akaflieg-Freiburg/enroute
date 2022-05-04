@@ -122,7 +122,7 @@ Item {
         standardButtons: Dialog.Cancel
         modal: true
 
-        title: qsTr("Error importing flight route")
+        title: qsTr("Data import error")
 
         Label {
             id: errLbl

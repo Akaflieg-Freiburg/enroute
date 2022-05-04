@@ -81,6 +81,7 @@ set(SOURCES
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/GeoMapProvider.h
+    geomaps/MBTILES.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
     geomaps/Waypoint.h
@@ -138,6 +139,7 @@ set(SOURCES
     DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/GeoMapProvider.cpp
+    geomaps/MBTILES.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp

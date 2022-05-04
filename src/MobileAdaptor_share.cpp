@@ -30,6 +30,8 @@
 #include <QDesktopServices>
 #include <QFile>
 #include <QMimeDatabase>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 #include <QUrl>
 
 #if defined(Q_OS_ANDROID)
@@ -40,6 +42,35 @@
 #include <QFileDialog>
 #include <QProcess>
 #endif
+
+
+auto isRasterMBTILES(QString fileName) -> bool
+{
+    bool result = false;
+
+    { // Parenthesis necessary, because testDB needs to me deconstructed before QSqlDatabase::removeDatabase is called
+        auto testDB = QSqlDatabase::addDatabase("QSQLITE", "import test: "+fileName);
+        testDB.setDatabaseName(fileName);
+
+        if (testDB.open()) {
+            QSqlQuery query(testDB);
+            if (query.exec("select name, value from metadata where name='format';")) {
+                if (query.first()) {
+                    auto format = query.value(1).toString();
+                    if ((format == "jpg") || (format == "png") || (format == "webp")) {
+                        result = true;
+                    }
+                }
+            }
+            testDB.close();
+        }
+    }
+    QSqlDatabase::removeDatabase("import test: "+fileName);
+
+    return result;
+}
+
+
 
 
 void MobileAdaptor::importContent()
@@ -228,6 +259,14 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         source->connectToTrafficReceiver();
         return;
     }
+
+    // MBTiles containing raster map
+#warning need to implement
+    if (isRasterMBTILES(myPath)) {
+        qWarning() << "Raster MBTILES" << myPath;
+    }
+
+
 
     emit openFileRequest(myPath, UnknownFunction);
 }

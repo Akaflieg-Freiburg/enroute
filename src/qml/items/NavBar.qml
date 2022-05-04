@@ -33,10 +33,10 @@ Rectangle {
     
 
     function numVisibleItems() {
-        var w = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + utc.m_implicitWidth + 4*Qt.application.font.pixelSize
+        var w = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + utc.m_implicitWidth + 4*view.font.pixelSize
         if (w > grid.width)
             return 3
-        w = w + flightLevel.m_implicitWidth + Qt.application.font.pixelSize
+        w = w + flightLevel.m_implicitWidth + view.font.pixelSize
         if (w > grid.width)
             return 4
         return 5
@@ -66,7 +66,7 @@ Rectangle {
                     return global.navigator().aircraft.verticalDistanceToString(talt)
                 }
                 font.weight: Font.Bold
-                font.pixelSize: Qt.application.font.pixelSize*1.3
+                font.pixelSize: view.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -76,6 +76,7 @@ Rectangle {
 
                 color: "white"
                 text: "T.ALT"
+                font.pixelSize: view.font.pixelSize*0.9
             }
         }
 
@@ -95,7 +96,7 @@ Rectangle {
 
                 text: global.positionProvider().pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(global.positionProvider().pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 font.weight: Font.Bold
-                font.pixelSize: Qt.application.font.pixelSize*1.3
+                font.pixelSize: view.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -105,7 +106,8 @@ Rectangle {
 
                 color: "white"
                 text: "FL"
-                font.pixelSize: Qt.application.font.pixelSize*0.9
+                font.pixelSize: view.font.pixelSize*0.9
+
             }
         }
 
@@ -124,7 +126,7 @@ Rectangle {
 
                 text: global.navigator().aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() )
                 font.weight: Font.Bold
-                font.pixelSize: Qt.application.font.pixelSize*1.3
+                font.pixelSize: view.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -133,7 +135,7 @@ Rectangle {
 
                 text: "GS"
                 color: "white"
-                font.pixelSize: Qt.application.font.pixelSize*0.9
+                font.pixelSize: view.font.pixelSize*0.9
             }
         }
 
@@ -156,7 +158,7 @@ Rectangle {
                 }
 
                 font.weight: Font.Bold
-                font.pixelSize: Qt.application.font.pixelSize*1.3
+                font.pixelSize: view.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -166,7 +168,7 @@ Rectangle {
 
                 text: "TT"
                 color: "white"
-                font.pixelSize: Qt.application.font.pixelSize*0.9
+                font.pixelSize: view.font.pixelSize*0.9
             }
         }
 
@@ -185,7 +187,7 @@ Rectangle {
 
                 text: global.navigator().clock.timeAsUTCString
                 font.weight: Font.Bold
-                font.pixelSize: Qt.application.font.pixelSize*1.3
+                font.pixelSize: view.font.pixelSize*1.3
                 color: "white"
             } // Label
             Label {
@@ -194,7 +196,7 @@ Rectangle {
 
                 text: "UTC"
                 color: "white"
-                font.pixelSize: Qt.application.font.pixelSize*0.9
+                font.pixelSize: view.font.pixelSize*0.9
             }
         }
 

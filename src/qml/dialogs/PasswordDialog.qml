@@ -29,8 +29,8 @@ Dialog {
 
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+    width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+    height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
     // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
     // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.

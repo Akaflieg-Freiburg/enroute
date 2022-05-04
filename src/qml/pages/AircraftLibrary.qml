@@ -40,12 +40,12 @@ Page {
         id: textInput
 
         anchors.right: parent.right
-        anchors.rightMargin: Qt.application.font.pixelSize*2.0
+        anchors.rightMargin: view.font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: Qt.application.font.pixelSize*2.0
+        anchors.leftMargin: view.font.pixelSize*2.0
 
         placeholderText: qsTr("Filter Aircraft Names")
-        font.pixelSize: Qt.application.font.pixelSize*1.5
+        font.pixelSize: view.font.pixelSize*1.5
     }
 
     Component {
@@ -139,13 +139,13 @@ Page {
 
     Label {
         anchors.fill: wpList
-        anchors.topMargin: Qt.application.font.pixelSize*2
+        anchors.topMargin: view.font.pixelSize*2
 
         visible: (wpList.count === 0)
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        leftPadding: Qt.application.font.pixelSize*2
-        rightPadding: Qt.application.font.pixelSize*2
+        leftPadding: view.font.pixelSize*2
+        rightPadding: view.font.pixelSize*2
 
         textFormat: Text.StyledText
         wrapMode: Text.Wrap
@@ -181,8 +181,8 @@ Page {
         id: fileError
 
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
         // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -240,8 +240,8 @@ Page {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         Label {
             width: overwriteDialog.availableWidth
@@ -277,8 +277,8 @@ Page {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         Label {
             width: overwriteDialog.availableWidth
@@ -322,8 +322,8 @@ Page {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
 
         ColumnLayout {

@@ -82,20 +82,53 @@ public:
     /*! \brief ETA for flight to next waypoint in the route */
     Q_PROPERTY(QDateTime nextWP_ETA MEMBER nextWP_ETA CONSTANT)
 
+    /*! \brief ETA for flight to next waypoint in the route, in UTC and as a string */
+    Q_PROPERTY(QString nextWP_ETAAsUTCString READ nextWP_ETAAsUTCString CONSTANT)
+
     /*! \brief Final waypoint in the route */
     Q_PROPERTY(GeoMaps::Waypoint finalWP MEMBER finalWP CONSTANT)
 
-    /*! \brief Final waypoint in the route */
+    /*! \brief Distance to final waypoint in the route */
     Q_PROPERTY(Units::Distance finalWP_DIST MEMBER finalWP_DIST CONSTANT)
 
-    /*! \brief Final waypoint in the route */
+    /*! \brief ETE for flight to final waypoint in the route */
     Q_PROPERTY(Units::Time finalWP_ETE MEMBER finalWP_ETE CONSTANT)
 
-    /*! \brief Final waypoint in the route */
+    /*! \brief ETA for flight to final waypoint in the route */
     Q_PROPERTY(QDateTime finalWP_ETA MEMBER finalWP_ETA CONSTANT)
+
+    /*! \brief ETA for flight to final waypoint in the route, in UTC and as a string */
+    Q_PROPERTY(QString finalWP_ETAAsUTCString READ finalWP_ETAAsUTCString CONSTANT)
 
     /*! \brief Status */
     Q_PROPERTY(Navigation::RemainingRouteInfo::Status status MEMBER status CONSTANT)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property nextWP_ETAAsUTCString
+     */
+    QString nextWP_ETAAsUTCString() const {
+        if (nextWP_ETE.isFinite()) {
+            return nextWP_ETA.toString("H:mm");
+        }
+        return "-:--";
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property nextWP_ETAAsUTCString
+     */
+    QString finalWP_ETAAsUTCString() const {
+        if (finalWP_ETE.isFinite()) {
+            return finalWP_ETA.toString("H:mm");
+        }
+        return "-:--";
+    }
 
 private:
     Status status {NoRoute};

@@ -38,8 +38,8 @@ Dialog {
     y: (parent.height-height)/2.0
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: parent.height-2*Qt.application.font.pixelSize
+    width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+    height: parent.height-2*view.font.pixelSize
     implicitHeight: height
 
     standardButtons: DialogButtonBox.Cancel
@@ -80,7 +80,7 @@ Dialog {
             Layout.fillWidth: true
 
             placeholderText: qsTr("Filter Waypoint Names")
-            font.pixelSize: Qt.application.font.pixelSize*1.5
+            font.pixelSize: view.font.pixelSize*1.5
             focus: true
 
             onAccepted: {
@@ -107,7 +107,7 @@ Dialog {
 
             Label {
                 anchors.fill: wpList
-                anchors.topMargin: Qt.application.font.pixelSize*2
+                anchors.topMargin: view.font.pixelSize*2
 
                 visible: (wpList.count === 0)
                 horizontalAlignment: Text.AlignHCenter

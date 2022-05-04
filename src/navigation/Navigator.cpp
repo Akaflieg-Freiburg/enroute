@@ -242,7 +242,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     // to the one waypoint of the route.
     if (flightRoute()->size() == 1) {
         auto start = GlobalObject::positionProvider()->lastValidCoordinate();
-        auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>().coordinate();
+        auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>();
         legs += Leg(start, end);
     }
 
@@ -299,7 +299,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
         rri.finalWP_DIST = dist;
         rri.finalWP_ETE  = ETE;
         if (ETE.isFinite()) {
-            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() );
+            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() ).toUTC();
         }
     }
     setRemainingRouteInfo(rri);

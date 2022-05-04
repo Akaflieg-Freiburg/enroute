@@ -60,8 +60,8 @@ Dialog {
 
 
     // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(Overlay.overlay.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
+    width: Math.min(Overlay.overlay.width-view.font.pixelSize, 40*view.font.pixelSize)
+    height: Math.min(view.height-view.font.pixelSize, implicitHeight)
 
     // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
     // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -88,10 +88,10 @@ Dialog {
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
-            bottomPadding: 0.2*Qt.application.font.pixelSize
-            topPadding: 0.2*Qt.application.font.pixelSize
-            leftPadding: 0.2*Qt.application.font.pixelSize
-            rightPadding: 0.2*Qt.application.font.pixelSize
+            bottomPadding: 0.2*view.font.pixelSize
+            topPadding: 0.2*view.font.pixelSize
+            leftPadding: 0.2*view.font.pixelSize
+            rightPadding: 0.2*view.font.pixelSize
             onLinkActivated: {
                 global.mobileAdaptor().vibrateBrief()
                 weatherReport.open()
@@ -121,7 +121,7 @@ Dialog {
 
             Label {
                 text: rowLYO.text.substring(0,4)
-                Layout.preferredWidth: Qt.application.font.pixelSize*3
+                Layout.preferredWidth: view.font.pixelSize*3
                 Layout.alignment: Qt.AlignTop
                 font.bold: true
 
@@ -153,8 +153,8 @@ Dialog {
             Item {
                 id: box
 
-                Layout.preferredWidth: Qt.application.font.pixelSize*3
-                Layout.preferredHeight: Qt.application.font.pixelSize*2.5
+                Layout.preferredWidth: view.font.pixelSize*3
+                Layout.preferredHeight: view.font.pixelSize*2.5
                 Layout.rowSpan: 3
                 Layout.alignment: Qt.AlignLeft
 
@@ -295,7 +295,7 @@ Dialog {
                 Layout.alignment: Qt.AlignHCenter
                 color: Material.foreground
                 height: 1
-                width: Qt.application.font.pixelSize*5
+                width: view.font.pixelSize*5
             }
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
@@ -326,7 +326,7 @@ Dialog {
             Label {
                 text: waypoint.extendedName
                 font.bold: true
-                font.pixelSize: 1.2*Qt.application.font.pixelSize
+                font.pixelSize: 1.2*view.font.pixelSize
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
@@ -440,8 +440,8 @@ Dialog {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(view.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
 
         Label {
             width: overwriteDialog.availableWidth

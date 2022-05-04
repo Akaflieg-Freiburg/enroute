@@ -24,7 +24,8 @@
   
   <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
   
-  <application android:hardwareAccelerated="true"
+  <application android:allowBackup="false"
+               android:hardwareAccelerated="true"
 	       android:name="org.qtproject.qt.android.bindings.QtApplication"
 	       android:label="Enroute Flight Navigation"
                android:icon="@mipmap/ic_launcher"

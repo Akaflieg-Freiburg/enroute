@@ -33,8 +33,8 @@ Dialog {
     focus: true
 
     // Width and height are chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-    height: parent.height-2*Qt.application.font.pixelSize
+    width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+    height: parent.height-2*view.font.pixelSize
 
     // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
     // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -150,8 +150,8 @@ Dialog {
         id: fileError
 
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         anchors.centerIn: parent
         parent: Overlay.overlay
@@ -192,8 +192,8 @@ Dialog {
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
-        height: Math.min(parent.height-Qt.application.font.pixelSize, implicitHeight)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         title: qsTr("Overwrite aircraft?")
         standardButtons: Dialog.No | Dialog.Yes

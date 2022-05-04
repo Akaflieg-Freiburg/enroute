@@ -35,7 +35,7 @@ Page {
     ScrollView {
         id: view
         anchors.fill: parent
-        anchors.topMargin: Qt.application.font.pixelSize
+        anchors.topMargin: view.font.pixelSize
         contentWidth: availableWidth
 
         ColumnLayout {
@@ -43,10 +43,10 @@ Page {
             implicitWidth: settingsPage.width
 
             Label {
-                Layout.leftMargin: Qt.application.font.pixelSize
+                Layout.leftMargin: view.font.pixelSize
                 Layout.fillWidth: true
                 text: qsTr("Moving Map")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -95,9 +95,9 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: Qt.application.font.pixelSize
+                Layout.leftMargin: view.font.pixelSize
                 text: qsTr("System")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -162,9 +162,9 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: Qt.application.font.pixelSize
+                Layout.leftMargin: view.font.pixelSize
                 text: qsTr("Help")
-                font.pixelSize: Qt.application.font.pixelSize*1.2
+                font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -194,7 +194,7 @@ Page {
         id: clearPasswordDialog
 
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
         // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -202,8 +202,8 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        topMargin: Qt.application.font.pixelSize/2.0
-        bottomMargin: Qt.application.font.pixelSize/2.0
+        topMargin: view.font.pixelSize/2.0
+        bottomMargin: view.font.pixelSize/2.0
 
         modal: true
 
@@ -240,7 +240,7 @@ Page {
         id: heightLimitDialog
 
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
         // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -248,8 +248,8 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        topMargin: Qt.application.font.pixelSize/2.0
-        bottomMargin: Qt.application.font.pixelSize/2.0
+        topMargin: view.font.pixelSize/2.0
+        bottomMargin: view.font.pixelSize/2.0
 
         modal: true
 
@@ -336,7 +336,7 @@ Page {
         id: primaryPositionDataSourceDialog
 
         // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-Qt.application.font.pixelSize, 40*Qt.application.font.pixelSize)
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
         // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
@@ -344,8 +344,8 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        topMargin: Qt.application.font.pixelSize/2.0
-        bottomMargin: Qt.application.font.pixelSize/2.0
+        topMargin: view.font.pixelSize/2.0
+        bottomMargin: view.font.pixelSize/2.0
 
         modal: true
 

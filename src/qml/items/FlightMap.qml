@@ -523,7 +523,7 @@ Map {
 
     MapParameter {
         type: "layer"
-        
+
         property string name: "TFCLabels"
         property string layerType: "symbol"
         property string source: "aviationData"
@@ -532,11 +532,12 @@ Map {
     }
     MapParameter {
         type: "layout"
-        
+
         property string layer: "TFCLabels"
         property string symbolPlacement: "line"
         property var textField: ["get", "NAM"]
         property real textSize: 16
+        property real symbolSpacing: 140
     }
     MapParameter {
         type: "paint"

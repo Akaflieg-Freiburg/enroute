@@ -18,5 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QVariant>
+
 #include "geomaps/MBTILES.h"
 
+GeoMaps::MBTILES::Format GeoMaps::MBTILES::format(const QString& fileName)
+{
+    GeoMaps::MBTILES::Format result = Unknown;
+
+    { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
+        auto testDB = QSqlDatabase::addDatabase("QSQLITE", "import test: "+fileName);
+        testDB.setDatabaseName(fileName);
+
+        if (testDB.open()) {
+            QSqlQuery query(testDB);
+            if (query.exec("select name, value from metadata where name='format';")) {
+                if (query.first()) {
+                    auto format = query.value(1).toString();
+                    if (format == "pbf") {
+                        result = Vector;
+                    }
+                    if ((format == "jpg") || (format == "png") || (format == "webp")) {
+                        result = Raster;
+                    }
+                }
+            }
+            testDB.close();
+        }
+    }
+    QSqlDatabase::removeDatabase("import test: "+fileName);
+
+    return result;
+
+}

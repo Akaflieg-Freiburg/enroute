@@ -35,33 +35,85 @@ Item {
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
             view.requestActivate()
+            importManager.filePath = fileName
+            importManager.fileFunction = fileFunction
             if (fileName === "")
                 return
-            if (fileFunction === MobileAdaptor.UnknownFunction) {
-                errLbl.text = qsTr("The file type of the file <strong>%1</strong> could not be recognized.").arg(fileName)
+
+            if (fileFunction === MobileAdaptor.VectorMap) {
+                errLbl.text = qsTr("The file <strong>%1</strong> contains a vector map. <strong>Enroute Flight Navigation</strong> can only import raster maps.").arg(fileName)
                 errorDialog.open()
                 return
             }
+            if (fileFunction === MobileAdaptor.RasterMap) {
+                importRasterMapDialog.open()
+                return
+            }
+            if ((fileFunction === MobileAdaptor.FlightRoute_GPX) || (fileFunction === MobileAdaptor.FlightRoute_GeoJSON)) {
+                if (global.navigator().flightRoute.size > 0)
+                    importFlightRouteDialog.open()
+                else
+                    importFlightRouteDialog.onAccepted()
+                return
+            }
 
-            importManager.filePath = fileName
-            importManager.fileFunction = fileFunction
-            if (global.navigator().flightRoute.size > 0)
-                importDialog.open()
-            else
-                importDialog.onAccepted()
-      }
+            errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
+            errorDialog.open()
+            return
+        }
     } // Connections
 
 
     Dialog {
-        id: importDialog
+        id: importRasterMapDialog
 
         // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
         height: Math.min(view.height-view.font.pixelSize, implicitHeight)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        title: qsTr("Import Raster Map")
+
+        Label {
+            width: importFlightRouteDialog.availableWidth
+
+            text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
+            wrapMode: Text.Wrap
+            textFormat: Text.StyledText
+        }
+
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+
+            var errorString = ""
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            toast.doToast( qsTr("Raster map imported") )
+        }
+
+    } // importDialog
+
+
+    Dialog {
+        id: importFlightRouteDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
         parent: Overlay.overlay
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
@@ -71,7 +123,7 @@ Item {
         Label {
             id: lbl
 
-            width: importDialog.availableWidth
+            width: importFlightRouteDialog.availableWidth
 
             text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
             wrapMode: Text.Wrap
@@ -127,7 +179,7 @@ Item {
         Label {
             id: errLbl
 
-            width: importDialog.availableWidth
+            width: importFlightRouteDialog.availableWidth
 
             wrapMode: Text.Wrap
             textFormat: Text.StyledText

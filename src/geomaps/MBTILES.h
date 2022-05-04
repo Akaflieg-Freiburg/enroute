@@ -24,12 +24,26 @@
 
 namespace GeoMaps {
 
+#warning docu
 /*! \brief Utility class for databases in MBTILES format */
 
 class MBTILES {
 
+public:
+    /*! \brief Units of measurement for volumes */
+    enum Format {
+        /*! \brief Liter per hour */
+        Unknown,
+
+        /*! \brief Gallon per hour */
+        Vector,
+
+        /*! \brief Gallon per hour */
+        Raster,
+    };
+#warning docu
     /*! \brief Comparison */
-    static bool isRasterMBTILES(QString fileName);
+    static Format format(const QString& fileName);
 
 };
 

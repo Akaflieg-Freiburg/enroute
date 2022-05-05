@@ -28,24 +28,32 @@ namespace DataManagement {
 
 /*! \brief Manages the list of geographic maps
  *
- *  This class manages a list of available and installed geographic maps.  It
- *  retrieves the list of geographic maps from a remote server on a regular basis,
- *  updates the list automatically once a week, and maintains a list of
- *  Downloadable objects that correspond to these geographic maps.  It informs
- *  the user if updates are available for one or several of these geographic maps.
+ *  This class manages a list of remotely available and locally installed
+ *  databases and geographic maps.  More specifically, it manages the following
+ *  objects.
  *
- *  The list of available maps is downloaded from a remote server whose address is
- *  hardcoded into the binary. The list is downloaded to a file "maps.json" in
- *  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The format
- *  of the file is described at this URL:
+ *  - Aviation maps (in GeoJSON format)
+ *  - Base maps (in MBTILES format)
+ *  - FLARM Databases (as a text file)
+ *
+ *  The class retrieves the list of available objects from a remote server on a
+ *  regular basis, updates the list automatically once a week, and maintains a
+ *  list of Downloadable objects that corresponds to the remotely available and
+ *  locally installed items.
+ *
+ *  The address of the remote server is hardcoded into the binary. The list is
+ *  downloaded to a file "maps.json" in
+ *  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation). The
+ *  format of the file is described at this URL:
+ *
  *  https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/The-file-maps.json
  *
- *  Those geographic maps that are downloaded will be installed into the directory
- *  "aviation_maps" in QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a
+ *  Locally installed items are saved in the directory "aviation_maps" in
+ *  QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a
  *  suitable subdirectory of this.
  *
- *  This class assumes that no other program interferes with the file "maps.json"
- *  and with the directory "aviation_maps".
+ *  The implementation assumes that no other program interferes with the file
+ *  "maps.json" and with the directory "aviation_maps".
  */
 
 class DataManager : public GlobalObject
@@ -55,9 +63,9 @@ class DataManager : public GlobalObject
 public:
     /*! \brief Standard constructor
      *
-     *  This constructor reads the file "maps.json" and initiates a download of the
-     *  file if no file is available or if the last download is more than one week
-     *  old.
+     *  This constructor reads the file "maps.json" and initiates a download of
+     *  the file if no file is available or if the last download is more than
+     *  one week old.
      *
      *  @param parent The standard QObject parent pointer.
      */
@@ -71,38 +79,43 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Pointer to a DownloadableGroupWatcher that holds all aviation maps
+    /*! \brief DownloadableGroupWatcher that holds all aviation maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all aviation maps. The maps
-     *  also appear in geoMaps, which is the union of aviation maps and base maps.
+     *  Pointer to a DownloadableGroupWatcher that holds all aviation maps. The
+     *  maps also appear in geoMaps, which is the union of aviation maps and
+     *  base maps.
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* aviationMaps READ aviationMaps CONSTANT)
 
-    /*! \brief Pointer to a DownloadableGroupWatcher that holds all base maps
+    /*! \brief DownloadableGroupWatcher that holds all base maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all base maps. The maps also appear in
-     *  geoMaps, which is the union of aviation maps and base maps.
+     *  Pointer to a DownloadableGroupWatcher that holds all base maps. The maps
+     *  also appear in geoMaps, which is the union of aviation maps and base
+     *  maps.
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMaps READ baseMaps CONSTANT)
 
-    /*! \brief Pointer to a DownloadableGroupWatcher that holds all data items
+    /*! \brief DownloadableGroupWatcher that holds all data items
      *
      *  Pointer to a DownloadableGroupWatcher that holds all data items.
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* databases READ databases CONSTANT)
 
-    /*! \brief Indicates whether the file "maps.json" is currently being downloaded */
+    /*! \brief Indicates whether the file "maps.json" is currently being
+     * downloaded */
+    #warning name misleading
     Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
 
-    /*! \brief Pointer to a DownloadableGroupWatcher that holds all geographic maps
+    /*! \brief DownloadableGroupWatcher that holds all geographic maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all maps.  This is the union of
-     *  aviation maps and base maps.
+     *  Pointer to a DownloadableGroupWatcher that holds all maps.  This is the
+     *  union of aviation maps and base maps.
      */
 #warning check if correct. Are data items also included?
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* geoMaps READ geoMaps CONSTANT)
 
-    /*! \brief True if the list of available geo maps has already been downloaded */
+    /*! \brief True if the list of available geo maps has already been
+     * downloaded */
 #warning also includes data items. might want to change name
     Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
 
@@ -153,6 +166,7 @@ public:
      * @returns A human-readable HTML string, or an empty string if no data is
      * available
      */
+    #warning is docu correct?
     Q_INVOKABLE static QString describeMapFile(const QString& fileName);
 
     /*! \brief Getter function for the property with the same name

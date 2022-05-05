@@ -29,17 +29,17 @@ Settings::Settings(QObject *parent)
     : QObject(parent)
 {
     // Save some values
-    settings.setValue("lastVersion", PROJECT_VERSION);
+    settings.setValue(QStringLiteral("lastVersion"), PROJECT_VERSION);
 
     // Convert old setting to new system
-    if (settings.contains("Map/hideUpperAirspaces")) {
+    if (settings.contains(QStringLiteral("Map/hideUpperAirspaces"))) {
         auto hide = settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool();
         if (hide) {
             setAirspaceAltitudeLimit( Units::Distance::fromFT(10000) );
         } else {
             setAirspaceAltitudeLimit( Units::Distance::fromFT(qInf()) );
         }
-        settings.remove("Map/hideUpperAirspaces");
+        settings.remove(QStringLiteral("Map/hideUpperAirspaces"));
     }
 }
 
@@ -70,7 +70,7 @@ auto Settings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 
 auto Settings::mapBearingPolicy() const -> Settings::MapBearingPolicy
 {
-    auto intVal = settings.value("Map/bearingPolicy", 0).toInt();
+    auto intVal = settings.value(QStringLiteral("Map/bearingPolicy"), 0).toInt();
     if (intVal == 0) {
         return NUp;
     }
@@ -90,7 +90,7 @@ void Settings::setAcceptedTerms(int terms)
     if (terms == acceptedTerms()) {
         return;
     }
-    settings.setValue("acceptedTerms", terms);
+    settings.setValue(QStringLiteral("acceptedTerms"), terms);
     emit acceptedTermsChanged();
 }
 
@@ -100,7 +100,7 @@ void Settings::setAcceptedWeatherTerms(bool terms)
     if (terms == acceptedWeatherTerms()) {
         return;
     }
-    settings.setValue("acceptedWeatherTerms", terms);
+    settings.setValue(QStringLiteral("acceptedWeatherTerms"), terms);
     emit acceptedWeatherTermsChanged();
 }
 
@@ -115,13 +115,13 @@ void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit
     }
 
     if (newAirspaceAltitudeLimit != airspaceAltitudeLimit()) {
-        settings.setValue("Map/airspaceAltitudeLimit_ft", newAirspaceAltitudeLimit.toFeet());
+        settings.setValue(QStringLiteral("Map/airspaceAltitudeLimit_ft"), newAirspaceAltitudeLimit.toFeet());
         emit airspaceAltitudeLimitChanged();
     }
 
     if (newAirspaceAltitudeLimit.isFinite() &&
             (newAirspaceAltitudeLimit != lastValidAirspaceAltitudeLimit())) {
-        settings.setValue("Map/lastValidAirspaceAltitudeLimit_ft", newAirspaceAltitudeLimit.toFeet());
+        settings.setValue(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), newAirspaceAltitudeLimit.toFeet());
         emit lastValidAirspaceAltitudeLimitChanged();
     }
 }
@@ -132,7 +132,7 @@ void Settings::setHideGlidingSectors(bool hide)
     if (hide == hideGlidingSectors()) {
         return;
     }
-    settings.setValue("Map/hideGlidingSectors", hide);
+    settings.setValue(QStringLiteral("Map/hideGlidingSectors"), hide);
     emit hideGlidingSectorsChanged();
 }
 
@@ -142,7 +142,7 @@ void Settings::setIgnoreSSLProblems(bool ignore)
     if (ignore == ignoreSSLProblems()) {
         return;
     }
-    settings.setValue("ignoreSSLProblems", ignore);
+    settings.setValue(QStringLiteral("ignoreSSLProblems"), ignore);
     emit ignoreSSLProblemsChanged();
 }
 
@@ -152,7 +152,7 @@ void Settings::setLastWhatsNewHash(uint lwnh)
     if (lwnh == lastWhatsNewHash()) {
         return;
     }
-    settings.setValue("lastWhatsNewHash", lwnh);
+    settings.setValue(QStringLiteral("lastWhatsNewHash"), lwnh);
     emit lastWhatsNewHashChanged();
 }
 
@@ -162,7 +162,7 @@ void Settings::setLastWhatsNewInMapsHash(uint lwnh)
     if (lwnh == lastWhatsNewInMapsHash()) {
         return;
     }
-    settings.setValue("lastWhatsNewInMapsHash", lwnh);
+    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), lwnh);
     emit lastWhatsNewInMapsHashChanged();
 }
 
@@ -175,13 +175,13 @@ void Settings::setMapBearingPolicy(MapBearingPolicy policy)
 
     switch(policy){
     case NUp:
-        settings.setValue("Map/bearingPolicy", 0);
+        settings.setValue(QStringLiteral("Map/bearingPolicy"), 0);
         break;
     case TTUp:
-        settings.setValue("Map/bearingPolicy", 1);
+        settings.setValue(QStringLiteral("Map/bearingPolicy"), 1);
         break;
     default:
-        settings.setValue("Map/bearingPolicy", 2);
+        settings.setValue(QStringLiteral("Map/bearingPolicy"), 2);
         break;
     }
     emit mapBearingPolicyChanged();
@@ -194,7 +194,7 @@ void Settings::setNightMode(bool newNightMode)
         return;
     }
 
-    settings.setValue("Map/nightMode", newNightMode);
+    settings.setValue(QStringLiteral("Map/nightMode"), newNightMode);
     emit nightModeChanged();
 }
 
@@ -205,6 +205,6 @@ void Settings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficD
         return;
     }
 
-    settings.setValue("positioningByTrafficDataReceiver", newPositioningByTrafficDataReceiver);
+    settings.setValue(QStringLiteral("positioningByTrafficDataReceiver"), newPositioningByTrafficDataReceiver);
     emit positioningByTrafficDataReceiverChanged();
 }

@@ -73,11 +73,11 @@ void DemoRunner::run()
     Q_ASSERT(m_engine != nullptr);
 
     // Obtain pointers to QML items
-    auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem("applicationWindow", m_engine));
+    auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
     Q_ASSERT(applicationWindow != nullptr);
-    auto* flightMap = findQQuickItem("flightMap", m_engine);
+    auto* flightMap = findQQuickItem(QStringLiteral("flightMap"), m_engine);
     Q_ASSERT(flightMap != nullptr);
-    auto *waypointDescription = findQQuickItem("waypointDescription", m_engine);
+    auto *waypointDescription = findQQuickItem(QStringLiteral("waypointDescription"), m_engine);
     Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
@@ -89,7 +89,7 @@ void DemoRunner::run()
 
     // Set up aircraft
     Navigation::Aircraft acft;
-    acft.setName("D-EULL");
+    acft.setName(QStringLiteral("D-EULL"));
     acft.setHorizontalDistanceUnit(Navigation::Aircraft::NauticalMile);
     acft.setVerticalDistanceUnit(Navigation::Aircraft::Feet);
     acft.setFuelConsumptionUnit(Navigation::Aircraft::LiterPerHour);
@@ -122,15 +122,15 @@ void DemoRunner::run()
 
         foreach(auto device, devices) {
             foreach(auto language, languages) {
-                if (device == "phone") {
+                if (device == QLatin1String("phone")) {
                     applicationWindow->setProperty("width", 1080/2.5);
                     applicationWindow->setProperty("height", 1920/2.5);
                 }
-                if (device == "sevenInch") {
+                if (device == QLatin1String("sevenInch")) {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
-                if (device == "tenInch") {
+                if (device == QLatin1String("tenInch")) {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
@@ -141,7 +141,7 @@ void DemoRunner::run()
 
                 // Generate directory
                 QDir dir;
-                dir.mkpath(QString("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
+                dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
 
                 // Set language
                 setLanguage(language);
@@ -155,14 +155,14 @@ void DemoRunner::run()
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
 
                     GlobalObject::navigator()->flightRoute()->clear();
-                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTL") );
-                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
-                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTY") );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTL")) );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
+                    GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
                     flightMap->setProperty("zoomLevel", 11);
                     GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
 
@@ -176,7 +176,7 @@ void DemoRunner::run()
                     flightMap->setProperty("zoomLevel", 12);
                     GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
 
                 // Approaching EDTF w/ traffic
@@ -200,7 +200,7 @@ void DemoRunner::run()
                     trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
                     auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
                     trafficFactor1->setAlarmLevel(0);
-                    trafficFactor1->setID("newID");
+                    trafficFactor1->setID(QStringLiteral("newID"));
                     trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
                     trafficFactor1->setPositionInfo(trafficInfo);
                     trafficFactor1->setHDist( Units::Distance::fromM(1000) );
@@ -209,7 +209,7 @@ void DemoRunner::run()
 
                     auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
                     trafficFactor2->setAlarmLevel(1);
-                    trafficFactor2->setID("newID");
+                    trafficFactor2->setID(QStringLiteral("newID"));
                     trafficFactor2->setHDist( Units::Distance::fromM(1000) );
                     trafficFactor2->setType( Traffic::TrafficFactor_Abstract::Aircraft );
                     trafficFactor2->setCallSign({});
@@ -217,7 +217,7 @@ void DemoRunner::run()
                     trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     trafficFactor1->setHDist( {} );
                     trafficSimulator->removeTraffic();
                     trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
@@ -227,11 +227,11 @@ void DemoRunner::run()
                 // Erfurt Airport Info
                 {
                     qWarning() << "… EDDE Info Page";
-                    auto waypoint = GlobalObject::geoMapProvider()->findByID("EDDE");
+                    auto waypoint = GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDDE"));
                     waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
                     QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
                 }
 
@@ -239,14 +239,14 @@ void DemoRunner::run()
                 {
                     qWarning() << "… LFSB Weather Dialog";
                     emit requestOpenWeatherPage();
-                    auto *weatherReport = findQQuickItem("weatherReport", m_engine);
+                    auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
                     Q_ASSERT(weatherReport != nullptr);
-                    auto station = GlobalObject::weatherDataProvider()->findWeatherStation("LFSB");
+                    auto station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
                     Q_ASSERT(station != nullptr);
                     weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
                     QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
 
@@ -255,7 +255,7 @@ void DemoRunner::run()
                     qWarning() << "… Nearby Waypoints Page";
                     emit requestOpenNearbyPage();
                     delay(4s);
-                    applicationWindow->grabWindow().save(QString("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
             }
@@ -269,7 +269,7 @@ void DemoRunner::run()
     qWarning() << "Generating screenshots for manual";
 
     // Set language
-    setLanguage("en");
+    setLanguage(QStringLiteral("en"));
 
     // Resize window
     applicationWindow->setProperty("width", 400);
@@ -284,21 +284,21 @@ void DemoRunner::run()
         GlobalObject::navigator()->flightRoute()->clear();
         emit requestOpenRoutePage();
         delay(2s);
-        applicationWindow->grabWindow().save("02-02-01-RouteEmpty.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-02-01-RouteEmpty.png"));
 
         // Set data for a reasonable route
         GlobalObject::navigator()->flightRoute()->clear();
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTF") );
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDFW") );
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDQD") );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTF")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDFW")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDQD")) );
 
         delay(2s);
-        applicationWindow->grabWindow().save("02-02-02-RouteNonEmpty.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-02-02-RouteNonEmpty.png"));
 
         emit requestOpenFlightRouteAddWPDialog();
         delay(2s);
-        applicationWindow->grabWindow().save("02-02-03-AddWP.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-02-03-AddWP.png"));
         emit requestClosePages();
         GlobalObject::navigator()->flightRoute()->clear();
     }
@@ -312,14 +312,14 @@ void DemoRunner::run()
         trafficSimulator->setGS( Units::Speed::fromKN(91) );
 
         GlobalObject::navigator()->flightRoute()->clear();
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTL") );
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("KRH") );
-        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID("EDTY") );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTL")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("KRH")) );
+        GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
         flightMap->setProperty("zoomLevel", 11);
         GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
         delay(4s);
-        applicationWindow->grabWindow().save("02-02-04-EnRoute.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-02-04-EnRoute.png"));
         GlobalObject::navigator()->flightRoute()->clear();
     }
 
@@ -328,7 +328,7 @@ void DemoRunner::run()
         qWarning() << "… Aircraft Page";
         emit requestOpenAircraftPage();
         delay(2s);
-        applicationWindow->grabWindow().save("01-03-04-Aircraft.png");
+        applicationWindow->grabWindow().save(QStringLiteral("01-03-04-Aircraft.png"));
         emit requestClosePages();
     }
 
@@ -337,7 +337,7 @@ void DemoRunner::run()
         qWarning() << "… Nearby Waypoints Page";
         emit requestOpenNearbyPage();
         delay(2s);
-        applicationWindow->grabWindow().save("02-02-01-Nearby.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-02-01-Nearby.png"));
         emit requestClosePages();
     }
 
@@ -346,20 +346,20 @@ void DemoRunner::run()
         qWarning() << "… Weather Page";
         emit requestOpenWeatherPage();
         delay(2s);
-        applicationWindow->grabWindow().save("02-03-01-Weather.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-03-01-Weather.png"));
     }
 
     // Weather Dialog
     {
         qWarning() << "… Weather Dialog";
-        auto *weatherReport = findQQuickItem("weatherReport", m_engine);
+        auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
         Q_ASSERT(weatherReport != nullptr);
-        auto station = GlobalObject::weatherDataProvider()->findWeatherStation("LSZB");
+        auto station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LSZB"));
         Q_ASSERT(station != nullptr);
         weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
         QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
         delay(4s);
-        applicationWindow->grabWindow().save("02-03-02-WeatherDialog.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-03-02-WeatherDialog.png"));
         emit requestClosePages();
     }
 
@@ -374,7 +374,7 @@ void DemoRunner::run()
         flightMap->setProperty("followGPS", true);
         GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
         delay(4s);
-        applicationWindow->grabWindow().save("01-03-01-ground.png");
+        applicationWindow->grabWindow().save(QStringLiteral("01-03-01-ground.png"));
     }
 
     // Approaching EDDR
@@ -387,19 +387,19 @@ void DemoRunner::run()
         flightMap->setProperty("zoomLevel", 11);
         GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
         delay(4s);
-        applicationWindow->grabWindow().save("01-03-02-flight.png");
+        applicationWindow->grabWindow().save(QStringLiteral("01-03-02-flight.png"));
     }
 
     // Egelsbach Airport Info
     {
         qWarning() << "… EDFE Info Page";
-        auto waypoint = GlobalObject::geoMapProvider()->findByID("EDFE");
+        auto waypoint = GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDFE"));
         Q_ASSERT(waypoint.isValid());
         waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
         QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
         GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
         delay(4s);
-        applicationWindow->grabWindow().save("01-03-03-EDFEinfo.png");
+        applicationWindow->grabWindow().save(QStringLiteral("01-03-03-EDFEinfo.png"));
         QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
     }
 
@@ -423,7 +423,7 @@ void DemoRunner::run()
         trafficInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
         auto* trafficFactor1 = new Traffic::TrafficFactor_WithPosition(this);
         trafficFactor1->setAlarmLevel(0);
-        trafficFactor1->setID("newID");
+        trafficFactor1->setID(QStringLiteral("newID"));
         trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
         trafficFactor1->setPositionInfo(trafficInfo);
         trafficFactor1->setHDist( Units::Distance::fromM(1000) );
@@ -432,7 +432,7 @@ void DemoRunner::run()
 
         auto* trafficFactor2 = new Traffic::TrafficFactor_DistanceOnly(this);
         trafficFactor2->setAlarmLevel(1);
-        trafficFactor2->setID("newID");
+        trafficFactor2->setID(QStringLiteral("newID"));
         trafficFactor2->setHDist( Units::Distance::fromM(1000) );
         trafficFactor2->setType( Traffic::TrafficFactor_Abstract::Aircraft );
         trafficFactor2->setCallSign({});
@@ -440,7 +440,7 @@ void DemoRunner::run()
         trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
         delay(4s);
-        applicationWindow->grabWindow().save("02-01-01-traffic.png");
+        applicationWindow->grabWindow().save(QStringLiteral("02-01-01-traffic.png"));
         trafficFactor1->setHDist( {} );
         trafficSimulator->removeTraffic();
         trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
@@ -464,7 +464,7 @@ void DemoRunner::setLanguage(const QString &language){
     }
 
     auto* enrouteTranslator = new QTranslator(qApp);
-    if ( enrouteTranslator->load(QString(":enroute_%1.qm").arg(language.left(2))) ) {
+    if ( enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(language.left(2))) ) {
         QCoreApplication::installTranslator(enrouteTranslator);
     }
     m_engine->retranslate();

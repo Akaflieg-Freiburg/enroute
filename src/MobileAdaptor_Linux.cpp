@@ -52,5 +52,5 @@ void MobileAdaptor::vibrateBrief()
 
 auto MobileAdaptor::getSSID() -> QString
 {
-    return "<unknown ssid>";
+    return QStringLiteral("<unknown ssid>");
 }

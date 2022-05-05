@@ -131,7 +131,7 @@ private slots:
 
 private:
     // Explanation functions
-    static QString explainCloudType(const metaf::CloudType ct);
+    static QString explainCloudType(const metaf::CloudType &ct);
     static QString explainDirection(metaf::Direction direction, bool trueCardinalDirections=true);
     static QString explainDirectionSector(const std::vector<metaf::Direction>& dir);
     static QString explainDistance(metaf::Distance distance);

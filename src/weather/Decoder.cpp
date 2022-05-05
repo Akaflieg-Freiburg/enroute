@@ -51,13 +51,13 @@ auto Weather::Decoder::messageType() const -> QString
     switch(parseResult.reportMetadata.type) {
     case ReportType::METAR:
         if (parseResult.reportMetadata.isSpeci) {
-            return "METAR/SPECI";
+            return QStringLiteral("METAR/SPECI");
         }
-        return "METAR";
+        return QStringLiteral("METAR");
     case ReportType::TAF:
-        return "TAF";
+        return QStringLiteral("TAF");
     default:
-        return "UNKNOWN";
+        return QStringLiteral("UNKNOWN");
     }
 }
 
@@ -82,18 +82,18 @@ void Weather::Decoder::parse()
     parseResult = metaf::Parser::parse(_rawText.toStdString());
     QStringList decodedStrings;
     decodedStrings.reserve(64);
-    QString listStart = "<ul style=\"margin-left:-25px;\">";
-    QString listEnd = "</ul>";
+    QString listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
+    QString listEnd = QStringLiteral("</ul>");
     for (const auto &groupInfo : parseResult.groups) {
         auto decodedString = visit(groupInfo);
-        if (decodedString.contains("<strong>")) {
+        if (decodedString.contains(QLatin1String("<strong>"))) {
             decodedStrings << listEnd+"<li>"+decodedString+"</li>"+listStart;
         }
         else {
             decodedStrings << "<li>"+decodedString+"</li>";
         }
     }
-    _decodedText = listStart+decodedStrings.join("\n")+listEnd;
+    _decodedText = listStart+decodedStrings.join(QStringLiteral("\n"))+listEnd;
 
     if (_decodedText != oldDecodedText) {
         emit decodedTextChanged();
@@ -103,7 +103,7 @@ void Weather::Decoder::parse()
 
 // explanation Methods
 
-auto Weather::Decoder::explainCloudType(const metaf::CloudType ct) -> QString {
+auto Weather::Decoder::explainCloudType(const metaf::CloudType &ct) -> QString {
     const auto h = ct.height();
     if (h.isReported()) {
         return tr("Cloud cover %1/8, %2, base height %3")
@@ -130,14 +130,14 @@ auto Weather::Decoder::explainDirection(metaf::Direction direction, bool trueCar
 
     case metaf::Direction::Type::VALUE_DEGREES:
         if (const auto d = direction.degrees(); d.has_value()) {
-            return QString("%1°").arg(*d);
+            return QStringLiteral("%1°").arg(*d);
         }
         return tr("[unable to produce value in °]");
 
     case metaf::Direction::Type::VALUE_CARDINAL:
         if (auto c = cardinalDirectionToString(direction.cardinal(trueCardinalDirections)); !c.isEmpty()) {
             if (direction.type() == metaf::Direction::Type::VALUE_DEGREES) {
-                return QString("(%1)").arg(c);
+                return QStringLiteral("(%1)").arg(c);
             }
             return c;
         }
@@ -178,11 +178,11 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         break;
 
     case metaf::Distance::Modifier::LESS_THAN:
-        results << "<";
+        results << QStringLiteral("<");
         break;
 
     case metaf::Distance::Modifier::MORE_THAN:
-        results << ">";
+        results << QStringLiteral(">");
         break;
 
     case metaf::Distance::Modifier::DISTANT:
@@ -215,7 +215,7 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
     }
 
     if (!distance.isValue()) {
-        return results.join(" ");
+        return results.join(QStringLiteral(" "));
     }
 
     // Give distance in natural units
@@ -237,9 +237,9 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
         if (d.has_value()) {
             if ((*d) < 5000) {
-                results << QString("%1 m").arg(qRound(*d));
+                results << QStringLiteral("%1 m").arg(qRound(*d));
             } else {
-                results << QString("%1 km").arg( QString::number( *d/1000.0, 'f', 1));
+                results << QStringLiteral("%1 km").arg( QString::number( *d/1000.0, 'f', 1));
             }
         } else {
             results << tr("[unable to convert distance to meters]");
@@ -257,15 +257,15 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
         if (d.has_value()) {
             if ((*d) < 5000) {
-                results << QString("(%1 m)").arg(qRound(*d));
+                results << QStringLiteral("(%1 m)").arg(qRound(*d));
             } else {
-                results << QString("(%1 km)").arg( QString::number( *d/1000.0, 'f', 1));
+                results << QStringLiteral("(%1 km)").arg( QString::number( *d/1000.0, 'f', 1));
             }
         } else {
             results << tr("[unable to convert distance to meters]");
         }
     }
-    return results.join(" ");
+    return results.join(QStringLiteral(" "));
 }
 
 auto Weather::Decoder::explainDistance_FT(metaf::Distance distance) -> QString {
@@ -277,11 +277,11 @@ auto Weather::Decoder::explainDistance_FT(metaf::Distance distance) -> QString {
     QString modifier;
     switch (distance.modifier()) {
     case metaf::Distance::Modifier::LESS_THAN:
-        modifier = "≤ ";
+        modifier = QStringLiteral("≤ ");
         break;
 
     case metaf::Distance::Modifier::MORE_THAN:
-        modifier = "≥ ";
+        modifier = QStringLiteral("≥ ");
         break;
 
     default:
@@ -294,10 +294,10 @@ auto Weather::Decoder::explainDistance_FT(metaf::Distance distance) -> QString {
 
     const auto d = distance.toUnit(metaf::Distance::Unit::FEET);
     if (d.has_value()) {
-        return modifier + QString("%1 ft").arg(qRound(*d));
+        return modifier + QStringLiteral("%1 ft").arg(qRound(*d));
     }
 
-    return "[unable to convert distance to feet]";
+    return QStringLiteral("[unable to convert distance to feet]");
 }
 
 auto Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime) -> QString
@@ -320,7 +320,7 @@ auto Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime) -> QString
 auto Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation) -> QString
 {
     if (!precipitation.isReported()) {
-        return "not reported";
+        return QStringLiteral("not reported");
     }
 
     if (const auto p = precipitation.amount(); p.has_value() && (*p == 0.0F)) {
@@ -329,7 +329,7 @@ auto Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation) 
 
     const auto p = precipitation.toUnit(metaf::Precipitation::Unit::MM);
     if (p.has_value()) {
-        return QString("%1 mm").arg(QString::number(*p, 'f', 2));
+        return QStringLiteral("%1 mm").arg(QString::number(*p, 'f', 2));
     }
     return tr("[unable to convert precipitation to mm]");
 }
@@ -342,7 +342,7 @@ auto Weather::Decoder::explainPressure(metaf::Pressure pressure) -> QString {
 
     const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
     if (phpa.has_value()) {
-        return QString("%1 hPa").arg(qRound(*phpa));
+        return QStringLiteral("%1 hPa").arg(qRound(*phpa));
     }
     return tr("[unable to convert pressure to hPa]");
 }
@@ -381,14 +381,14 @@ auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString {
     if (GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) {
         const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
         if (s.has_value()) {
-            return QString("%1 km/h").arg(qRound(*s));
+            return QStringLiteral("%1 km/h").arg(qRound(*s));
         }
         return tr("[unable to convert speed to km/h]");
     }
 
     const auto s = speed.toUnit(metaf::Speed::Unit::KNOTS);
     if (s.has_value()) {
-        return QString("%1 kt").arg(qRound(*s));
+        return QStringLiteral("%1 kt").arg(qRound(*s));
     }
     return tr("[unable to convert speed to knots]");
 }
@@ -425,7 +425,7 @@ auto Weather::Decoder::explainTemperature(metaf::Temperature temperature) -> QSt
     QString temperatureString = tr("[unable to convert temperature to °C]");
     const auto t = temperature.toUnit(metaf::Temperature::Unit::C);
     if (t.has_value()) {
-        temperatureString = QString("%1 °C").arg(qRound(*t));
+        temperatureString = QStringLiteral("%1 °C").arg(qRound(*t));
     }
 
     if (((*temperature.temperature()) == 0.0F) && !temperature.isPrecise()) {
@@ -492,7 +492,7 @@ auto Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & w
         weatherPhenomena << tr("thunderstorm");
         descriptor = QString();
     }
-    result += weatherPhenomena.join(", ");
+    result += weatherPhenomena.join(QStringLiteral(", "));
 
     // Handle special qualifiers
 
@@ -513,9 +513,9 @@ auto Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & w
     if (!descriptor.isEmpty()) {
         parenthesisTexts << descriptor;
     }
-    auto parenthesisText = parenthesisTexts.join(", ");
+    auto parenthesisText = parenthesisTexts.join(QStringLiteral(", "));
     if (!parenthesisText.isEmpty()) {
-        result += QString(" (%1)").arg(parenthesisText);
+        result += QStringLiteral(" (%1)").arg(parenthesisText);
     }
 
 
@@ -619,16 +619,16 @@ auto Weather::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal card
         return tr("no directional variations");
 
     case metaf::Direction::Cardinal::VRB:
-        return "variable";
+        return QStringLiteral("variable");
 
     case metaf::Direction::Cardinal::OHD:
-        return "overhead";
+        return QStringLiteral("overhead");
 
     case metaf::Direction::Cardinal::ALQDS:
-        return "all quadrants (in all directions)";
+        return QStringLiteral("all quadrants (in all directions)");
 
     case metaf::Direction::Cardinal::UNKNOWN:
-        return "unknown direction";
+        return QStringLiteral("unknown direction");
     }
     return QString();
 }
@@ -746,7 +746,7 @@ auto Weather::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLay
         return tr("Cumulus and Stratocumulus with bases at different levels");
 
     case metaf::LowMidHighCloudGroup::LowLayer::CB_CAP:
-        return "Cumulonimbus capillatus or Cumulonimbus capillatus incus)";
+        return QStringLiteral("Cumulonimbus capillatus or Cumulonimbus capillatus incus)");
 
     case metaf::LowMidHighCloudGroup::LowLayer::NOT_OBSERVABLE:
         return tr("Clouds are not observable due to fog, blowing dust or sand, or other similar phenomena");
@@ -905,37 +905,37 @@ auto Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFract
 {
     switch (f) {
     case metaf::Distance::MilesFraction::NONE:
-        return "";
+        return QLatin1String("");
 
     case metaf::Distance::MilesFraction::F_1_16:
-        return "1/16";
+        return QStringLiteral("1/16");
 
     case metaf::Distance::MilesFraction::F_1_8:
-        return "1/8";
+        return QStringLiteral("1/8");
 
     case metaf::Distance::MilesFraction::F_3_16:
-        return "3/16";
+        return QStringLiteral("3/16");
 
     case metaf::Distance::MilesFraction::F_1_4:
-        return "1/4";
+        return QStringLiteral("1/4");
 
     case metaf::Distance::MilesFraction::F_5_16:
-        return "5/16";
+        return QStringLiteral("5/16");
 
     case metaf::Distance::MilesFraction::F_3_8:
-        return "3/8";
+        return QStringLiteral("3/8");
 
     case metaf::Distance::MilesFraction::F_1_2:
-        return "1/2";
+        return QStringLiteral("1/2");
 
     case metaf::Distance::MilesFraction::F_5_8:
-        return "5/8";
+        return QStringLiteral("5/8");
 
     case metaf::Distance::MilesFraction::F_3_4:
-        return "3/4";
+        return QStringLiteral("3/4");
 
     case metaf::Distance::MilesFraction::F_7_8:
-        return "7/8";
+        return QStringLiteral("7/8");
     }
     return QString();
 }
@@ -944,13 +944,13 @@ auto Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit) -> QStri
 {
     switch (unit) {
     case metaf::Distance::Unit::METERS:
-        return "m";
+        return QStringLiteral("m");
 
     case metaf::Distance::Unit::STATUTE_MILES:
         return tr("statute miles");
 
     case metaf::Distance::Unit::FEET:
-        return "ft";
+        return QStringLiteral("ft");
     }
     return QString();
 }
@@ -1159,16 +1159,16 @@ auto Weather::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Extent
         return tr("none");
 
     case metaf::RunwayStateGroup::Extent::LESS_THAN_10_PERCENT:
-        return QString("< 10%");
+        return QStringLiteral("< 10%");
 
     case metaf::RunwayStateGroup::Extent::FROM_11_TO_25_PERCENT:
-        return QString("11% -- 25%");
+        return QStringLiteral("11% -- 25%");
 
     case metaf::RunwayStateGroup::Extent::FROM_26_TO_50_PERCENT:
-        return QString("26% -- 50%");
+        return QStringLiteral("26% -- 50%");
 
     case metaf::RunwayStateGroup::Extent::MORE_THAN_51_PERCENT:
-        return QString(">51%");
+        return QStringLiteral(">51%");
     }
     return QString();
 }
@@ -1804,7 +1804,7 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
         return QString();
     }
 
-    return results.join(" • ");
+    return results.join(QStringLiteral(" • "));
 }
 
 auto Weather::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface) -> QString
@@ -1910,10 +1910,10 @@ auto Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena
         return QString();
 
     case metaf::WeatherPhenomena::Qualifier::RECENT:
-        return QString("recent");
+        return QStringLiteral("recent");
 
     case metaf::WeatherPhenomena::Qualifier::VICINITY:
-        return QString("in vicinity");
+        return QStringLiteral("in vicinity");
 
     case metaf::WeatherPhenomena::Qualifier::LIGHT:
         return tr("light");
@@ -2115,7 +2115,7 @@ auto Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, Repor
     for (const auto & cloud : clouds) {
         layers << explainCloudType(cloud);
     }
-    return tr("Cloud layers: %1").arg(layers.join(" • "));
+    return tr("Cloud layers: %1").arg(layers.join(QStringLiteral(" • ")));
 }
 
 auto Weather::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2238,7 +2238,7 @@ auto Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportP
             typeList << tr("cloud-to-air without strike to ground");
         }
         if (!typeList.isEmpty()) {
-            result << tr("Lightning types: %1.").arg(typeList.join(", "));
+            result << tr("Lightning types: %1.").arg(typeList.join(QStringLiteral(", ")));
         }
     }
 
@@ -2251,10 +2251,10 @@ auto Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportP
         directionList << explainDirectionSector(directions);
     }
     if (!directionList.isEmpty()) {
-        result << tr("Lightning strikes observed in the following directions: %1").arg(directionList.join(", "));
+        result << tr("Lightning strikes observed in the following directions: %1").arg(directionList.join(QStringLiteral(", ")));
     }
 
-    return result.join(" ");
+    return result.join(QStringLiteral(" "));
 }
 
 auto Weather::Decoder::visitLocationGroup(const LocationGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2344,7 +2344,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_BLUE:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
         return result;
@@ -2353,7 +2353,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_BLUE_PLUS:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code BLUE+: visibility >8000 m or lowest cloud base height >2000 ft");
         return result;
@@ -2362,7 +2362,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code YELLOW: visibility 1600-3700 m or lowest cloud base height 300-700 ft");
         return result;
@@ -2371,7 +2371,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_WHITE:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code WHITE: visibility >5000 m and lowest cloud base height >1500 ft");
         return result;
@@ -2380,7 +2380,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_GREEN:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code GREEN: visibility >3700 m and lowest cloud base height >700 ft");
         return result;
@@ -2389,7 +2389,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW1:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code YELLOW 1: visibility >2500 m and lowest cloud base height >500 ft");
         return result;
@@ -2398,7 +2398,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW2:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code YELLOW 2: visibility >1600 m and lowest cloud base height >300 ft");
         return result;
@@ -2407,7 +2407,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_AMBER:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code AMBER: visibility >800 m and lowest cloud base height >200 ft");
         return result;
@@ -2416,7 +2416,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
         result = colourCodeBlack;
     case metaf::MiscGroup::Type::COLOUR_CODE_RED:
         if (!result.isEmpty()) {
-            result += " ";
+            result += QLatin1String(" ");
         }
         result += tr("Colour code RED: visibility <800 m or lowest cloud base height <200 ft");
         return result;
@@ -2696,7 +2696,7 @@ auto Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /*re
             result += " " + tr("at %1").arg(explainMetafTime(*timeAt));
         }
         if (group.probability() != metaf::TrendGroup::Probability::NONE) {
-            result += QString(" (%1)").arg(probabilityToString(group.probability()));
+            result += QStringLiteral(" (%1)").arg(probabilityToString(group.probability()));
         }
         return "<strong>" + result + "</strong>";
 
@@ -2845,7 +2845,7 @@ auto Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPar
         results << tr("Moving towards %1.").arg(cardinalDirectionToString(group.movingDirection().cardinal()));
     }
 
-    return results.join(" ");
+    return results.join(QStringLiteral(" "));
 }
 
 auto Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2978,7 +2978,7 @@ auto Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart 
     for (const auto p : group.weatherPhenomena()) {
         phenomenaList << Weather::Decoder::explainWeatherPhenomena(p);
     }
-    auto phenomenaString = phenomenaList.join(" • ");
+    auto phenomenaString = phenomenaList.join(QStringLiteral(" • "));
 
     // If this is a METAR, then save the current weather
     if (part == ReportPart::METAR) {

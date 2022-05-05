@@ -36,44 +36,44 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
         QString name = xml.name().toString();
 
         // Read Station_ID
-        if (xml.isStartElement() && name == "station_id") {
+        if (xml.isStartElement() && name == QLatin1String("station_id")) {
             _ICAOCode = xml.readElementText();
             continue;
         }
 
         // Read location
-        if (xml.isStartElement() && name == "latitude") {
+        if (xml.isStartElement() && name == QLatin1String("latitude")) {
             _location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == "longitude") {
+        if (xml.isStartElement() && name == QLatin1String("longitude")) {
             _location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == "elevation_m") {
+        if (xml.isStartElement() && name == QLatin1String("elevation_m")) {
             _location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
-        if (xml.isStartElement() && name == "raw_text") {
+        if (xml.isStartElement() && name == QLatin1String("raw_text")) {
             _raw_text = xml.readElementText();
             continue;
         }
 
         // Read issue time
-        if (xml.isStartElement() && name == "issue_time") {
+        if (xml.isStartElement() && name == QLatin1String("issue_time")) {
             _issueTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
         // Read expiration date
-        if (xml.isStartElement() && name == "valid_time_to") {
+        if (xml.isStartElement() && name == QLatin1String("valid_time_to")) {
             _expirationTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
-        if (xml.isEndElement() && name == "TAF") {
+        if (xml.isEndElement() && name == QLatin1String("TAF")) {
             break;
         }
 

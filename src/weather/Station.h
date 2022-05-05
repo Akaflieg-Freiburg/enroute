@@ -286,7 +286,7 @@ private:
     QString _ICAOCode;
 
     // Icon for this weather station
-    QString _icon {"/icons/waypoints/WP.svg"};
+    QString _icon {QStringLiteral("/icons/waypoints/WP.svg")};
 
     // METAR
     QPointer<Weather::METAR> _metar;

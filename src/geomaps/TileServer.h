@@ -87,7 +87,7 @@ public:
 
     @returns URL under which this server is presently reachable
   */
-  QString serverUrl() const;
+  [[nodiscard]] auto serverUrl() const -> QString;
 			   
 public slots:
   /*! \brief Add a new set of tile files

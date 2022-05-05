@@ -51,7 +51,7 @@ public:
       
       @returns Property downloadables
     */
-    QVector<QPointer<DataManagement::Downloadable>> downloadables() const;
+    [[nodiscard]] auto downloadables() const -> QVector<QPointer<DataManagement::Downloadable>>;
 
     /*! \brief List of Downloadables in this group, as a list of QObjects
 
@@ -64,7 +64,7 @@ public:
 
     @returns Property downloadables
     */
-    QVector<QObject*> downloadablesAsObjectList() const;
+    [[nodiscard]] auto downloadablesAsObjectList() const -> QVector<QObject*>;
 
     /*! \brief List of Downloadable objects in this group that have local files
       
@@ -79,7 +79,7 @@ public:
 
     @returns Property downloadablesWithFiles
     */
-    QVector<QPointer<DataManagement::Downloadable>> downloadablesWithFile() const;
+    [[nodiscard]] auto downloadablesWithFile() const -> QVector<QPointer<DataManagement::Downloadable>>;
 
     /*! \brief Indicates whether a download process is currently running
 
@@ -92,7 +92,7 @@ public:
 
       @returns Property downloading
     */
-    bool downloading() const;
+    [[nodiscard]] auto downloading() const -> bool;
 
     /*! \brief Names of all files that have been downloaded by any of the Downloadble objects in this group */
     Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
@@ -101,7 +101,7 @@ public:
 
     @returns Property files
     */
-    QStringList files() const;
+    [[nodiscard]] auto files() const -> QStringList;
 
     /*! \brief True is one of the Downloadable objects has a local file */
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
@@ -110,7 +110,7 @@ public:
 
     @returns Property hasFile
     */
-    bool hasFile() const;
+    [[nodiscard]] auto hasFile() const -> bool;
 
     /*! \brief Indicates any one of Downloadable objects is updatable
 
@@ -122,7 +122,7 @@ public:
       
       @returns Property updatable
     */
-    bool updatable() const;
+    [[nodiscard]] auto updatable() const -> bool;
 
     /*! \brief Gives an estimate for the download size for all updates in this group, as a localized string
 
@@ -134,13 +134,13 @@ public:
 
     @returns Property updateSize
     */
-    QString updateSize() const;
+    [[nodiscard]] auto updateSize() const -> QString;
 
     /*! \brief total number of files that are either downloaded or currently downloading.
 
       @returns int nFilesTotal
     */
-    Q_INVOKABLE int numberOfFilesTotal() const;
+    Q_INVOKABLE [[nodiscard]] auto numberOfFilesTotal() const -> int;
 
 public slots:
     /*! Update all updatable Downloadable objects */

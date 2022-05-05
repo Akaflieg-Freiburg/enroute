@@ -116,7 +116,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 }
 
 
-QString GeoMaps::Airspace::makeMetric(const QString& standard) const
+auto GeoMaps::Airspace::makeMetric(const QString& standard) const -> QString
 {
     QStringList list = standard.split(' ', Qt::SkipEmptyParts);
     if (list.isEmpty()) {
@@ -146,7 +146,7 @@ QString GeoMaps::Airspace::makeMetric(const QString& standard) const
 }
 
 
-bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
+auto GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B) -> bool
 {
     return ((A._name == B._name) &&
             (A._CAT == B._CAT) &&
@@ -156,7 +156,7 @@ bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
 }
 
 
-uint GeoMaps::qHash(const GeoMaps::Airspace& A)
+auto GeoMaps::qHash(const GeoMaps::Airspace& A) -> uint
 {
     uint result = 0;
     result += qHash(A.name());

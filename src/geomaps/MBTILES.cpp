@@ -24,7 +24,7 @@
 
 #include "geomaps/MBTILES.h"
 
-GeoMaps::MBTILES::Format GeoMaps::MBTILES::format(const QString& fileName)
+auto GeoMaps::MBTILES::format(const QString& fileName) -> GeoMaps::MBTILES::Format
 {
     GeoMaps::MBTILES::Format result = Unknown;
 

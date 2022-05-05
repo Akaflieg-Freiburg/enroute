@@ -350,20 +350,20 @@ auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 }
 
 
-bool GeoMaps::operator==(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B)
+auto GeoMaps::operator==(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B) -> bool
 {
     return ((A.m_coordinate == B.m_coordinate) &&
             (A.m_properties == B.m_properties));
 }
 
 
-bool GeoMaps::operator!=(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B)
+auto GeoMaps::operator!=(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B) -> bool
 {
     return ((A.m_coordinate != B.m_coordinate) ||
             (A.m_properties != B.m_properties));
 }
 
-uint GeoMaps::qHash(const GeoMaps::Waypoint& wp)
+auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> uint
 {
     return qHash(wp.coordinate());
 }

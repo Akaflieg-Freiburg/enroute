@@ -33,7 +33,7 @@ class Airspace {
     Q_GADGET
 
     /*! \brief Comparison */
-    friend bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&);
+    friend auto operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&) -> bool;
 
 public:
     /*! \brief Constructs an invalid airspace */
@@ -58,7 +58,7 @@ public:
      * @returns Estimated lower bound of the airspace, above main sea
      * level
      */
-    Units::Distance estimatedLowerBoundMSL() const;
+    [[nodiscard]] auto estimatedLowerBoundMSL() const -> Units::Distance;
 
     /*! \brief Validity */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
@@ -67,7 +67,7 @@ public:
      *
      * @returns Property isValid
      */
-    bool isValid() const { return !_polygon.isEmpty(); }
+    [[nodiscard]] auto isValid() const -> bool { return !_polygon.isEmpty(); }
 
     /*! \brief Lower limit of the airspace
      *
@@ -81,7 +81,7 @@ public:
      *
      * @returns Property lowerBound
      */
-    QString lowerBound() const { return _lowerBound; }
+    [[nodiscard]] auto lowerBound() const -> QString { return _lowerBound; }
 
     /*! \brief Lower limit of the airspace
      *
@@ -93,7 +93,7 @@ public:
      *
      * @returns Property lowerBoundMetric
      */
-    QString lowerBoundMetric() const { return makeMetric(_lowerBound); }
+    [[nodiscard]] auto lowerBoundMetric() const -> QString { return makeMetric(_lowerBound); }
 
     /* \brief Name of the airspace, such as "ED-R 31" */
     Q_PROPERTY(QString name READ name CONSTANT)
@@ -102,7 +102,7 @@ public:
      *
      * @returns Property name
      */
-    QString name() const { return _name; }
+    [[nodiscard]] auto name() const -> QString { return _name; }
 
     /*! \brief QGeoPolygon that describes the lateral limits of the airspace */
     Q_PROPERTY(QGeoPolygon polygon READ polygon CONSTANT)
@@ -111,7 +111,7 @@ public:
      *
      * @returns Property polygon
      */
-    QGeoPolygon polygon() const { return _polygon; }
+    [[nodiscard]] auto polygon() const -> QGeoPolygon { return _polygon; }
 
     /* \brief Category of the airspace
      *
@@ -125,7 +125,7 @@ public:
      *
      * @returns Property CAT
      */
-    QString CAT() const { return _CAT; }
+    [[nodiscard]] auto CAT() const -> QString { return _CAT; }
 
     /*! \brief Upper limit of the airspace
      *
@@ -137,7 +137,7 @@ public:
      *
      * @returns Property upperBound
      */
-    QString upperBound() const { return _upperBound; }
+    [[nodiscard]] auto upperBound() const -> QString { return _upperBound; }
 
     /*! \brief Upper limit of the airspace
      *
@@ -149,12 +149,12 @@ public:
      *
      * @returns Property upperBoundMetric
      */
-    QString upperBoundMetric() const { return makeMetric(_upperBound); }
+    [[nodiscard]] auto upperBoundMetric() const -> QString { return makeMetric(_upperBound); }
 
 private:
     // Transforms a height string such as "4500", "1500 GND" or "FL 130" into a string that describes the height
     // in meters. If the height string cannot be parsed, returns the original string
-    QString makeMetric(const QString& standard) const;
+    [[nodiscard]] auto makeMetric(const QString& standard) const -> QString;
 
     QString _name{};
     QString _CAT{};
@@ -164,7 +164,7 @@ private:
 };
 
 /*! \brief Comparison */
-bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&);
+auto operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&) -> bool;
 
 /*! \brief Hash function for airspaces
  *
@@ -172,7 +172,7 @@ bool operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&);
  *
  * @returns Hash value
  */
-uint qHash(const GeoMaps::Airspace& as);
+auto qHash(const GeoMaps::Airspace& as) -> uint;
 
 }
 

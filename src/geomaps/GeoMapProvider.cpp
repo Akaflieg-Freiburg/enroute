@@ -111,7 +111,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     }
 
     if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
-        return Waypoint(position);
+        return {position};
     }
 
     return result;

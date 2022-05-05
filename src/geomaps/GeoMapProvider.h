@@ -82,7 +82,7 @@ public:
     explicit GeoMapProvider(QObject *parent = nullptr);
 
     /*! \brief Destructor */
-    ~GeoMapProvider() = default;
+    ~GeoMapProvider() override = default;
 
 
     //
@@ -95,7 +95,7 @@ public:
      *
      *  @returns An invalid waypoint
      */
-    Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
+    Q_INVOKABLE static auto createWaypoint() -> GeoMaps::Waypoint
     {
         return {};
     }
@@ -113,7 +113,7 @@ public:
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate& position);
+    Q_INVOKABLE auto airspaces(const QGeoCoordinate& position) -> QVariantList;
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -126,7 +126,7 @@ public:
      * sufficiently close waypoint is found, a generic Waypoint with the
      * appropriate coordinate is returned.
      */
-    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
+    Q_INVOKABLE auto closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> GeoMaps::Waypoint;
 
     /*! \brief Copyright notice for the map
      *
@@ -139,7 +139,7 @@ public:
      *
      * @returns Property copyrightNotice
      */
-    QString copyrightNotice() const
+    auto copyrightNotice() const -> QString
     {
         return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
     }
@@ -153,7 +153,7 @@ public:
      * list is returned as QList<QObject*>. It can thus be used as a data model
      * in QML.
      */
-    Q_INVOKABLE QVariantList filteredWaypointObjects(const QString &filter);
+    Q_INVOKABLE auto filteredWaypointObjects(const QString &filter) -> QVariantList;
 
     /*! Find a waypoint by its ICAO code
      *
@@ -164,7 +164,7 @@ public:
      * Waypoint, but ratherof type QObject. The object is owned by this class
      * and must not be deleted.
      */
-    Waypoint findByID(const QString& id);
+    auto findByID(const QString& id) -> Waypoint;
 
     /*! \brief Union of all aviation maps in GeoJSON format
      *
@@ -177,7 +177,7 @@ public:
      *
      * @returns Property geoJSON
      */
-    QByteArray geoJSON() {
+    auto geoJSON() -> QByteArray {
         QMutexLocker lock(&_aviationDataMutex);
         return _combinedGeoJSON_;
     }
@@ -192,7 +192,7 @@ public:
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
+    Q_INVOKABLE auto nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QVariantList;
 
     /*! \brief URL where a style file for the base map can be retrieved
      *
@@ -209,14 +209,14 @@ public:
      *
      * @returns Property styleFileURL
      */
-    QString styleFileURL() const;
+    auto styleFileURL() const -> QString;
 
     /*! \brief Waypoints
      *
      * @returns a list of all waypoints known to this GeoMapProvider (that is,
      * the union of all waypoints in any of the installed maps)
      */
-    QVector<Waypoint> waypoints() {
+    auto waypoints() -> QVector<Waypoint> {
         QMutexLocker locker(&_aviationDataMutex);
         return _waypoints_;
     }

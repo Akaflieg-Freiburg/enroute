@@ -72,7 +72,7 @@ public:
     explicit DataManager(QObject *parent=nullptr);
 
     // deferred initialization
-    void deferredInitialization();
+    void deferredInitialization() override;
 
 
     //
@@ -138,19 +138,19 @@ public:
 
     @returns Property aviationMaps
   */
-    DataManagement::DownloadableGroupWatcher *aviationMaps() { return &_aviationMaps; }
+    auto aviationMaps() -> DataManagement::DownloadableGroupWatcher * { return &_aviationMaps; }
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property baseMaps
   */
-    DataManagement::DownloadableGroupWatcher *baseMaps() { return &_baseMaps; };
+    auto baseMaps() -> DataManagement::DownloadableGroupWatcher * { return &_baseMaps; };
 
     /*! \brief Getter function for the property with the same name
    *
    *  @returns Property databases
    */
-    DataManagement::DownloadableGroupWatcher *databases() { return &_databases; };
+    auto databases() -> DataManagement::DownloadableGroupWatcher * { return &_databases; };
 
     /*! \brief Describe installed map
      *
@@ -167,37 +167,37 @@ public:
      * available
      */
     #warning is docu correct?
-    Q_INVOKABLE static QString describeMapFile(const QString& fileName);
+    Q_INVOKABLE static auto describeMapFile(const QString& fileName) -> QString;
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property downloadingGeoMapList
    */
-    bool downloadingGeoMapList() const { return _maps_json.downloading(); };
+    [[nodiscard]] auto downloadingGeoMapList() const -> bool { return _maps_json.downloading(); };
 
     /*! \brief Getter function for the property with the same name
 
     @returns Property geoMaps
   */
-    DataManagement::DownloadableGroupWatcher *geoMaps() { return &_geoMaps; }
+    auto geoMaps() -> DataManagement::DownloadableGroupWatcher * { return &_geoMaps; }
 
     /*! \brief Getter function for the property with the same name
 
     @returns hasGeoMapList
    */
-    bool hasGeoMapList() const { return !_geoMaps.downloadables().isEmpty(); }
+    [[nodiscard]] auto hasGeoMapList() const -> bool { return !_geoMaps.downloadables().isEmpty(); }
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property lastWhatsNew
    */
-    QString whatsNew() const { return _whatsNew; }
+    [[nodiscard]] auto whatsNew() const -> QString { return _whatsNew; }
 
     /*! \brief Getter function for property of the same name
    *
    * @returns Property lastWhatsNewHash
    */
-    uint whatsNewHash() const { return qHash(_whatsNew, 0); }
+    [[nodiscard]] auto whatsNewHash() const -> uint { return qHash(_whatsNew, 0); }
 
 public slots:
     /*! \brief Triggers an update of the list of available maps
@@ -262,7 +262,7 @@ private:
 
     // This method returns a list of files in the download directory that have no
     // corresponding entry in _aviationMaps.
-    QList<QString> unattachedFiles() const;
+    [[nodiscard]] auto unattachedFiles() const -> QList<QString>;
 
     // The current whats new string from _aviationMaps.
     QString _whatsNew {};

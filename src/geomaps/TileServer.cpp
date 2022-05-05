@@ -38,7 +38,7 @@ auto GeoMaps::TileServer::serverUrl() const -> QString
     if (isListening()) {
         return QStringLiteral("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
     }
-    return QString();
+    return {};
 }
 
 

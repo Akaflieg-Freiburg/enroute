@@ -58,7 +58,7 @@ namespace DataManagement
     Q_DISABLE_COPY_MOVE(SSLErrorHandler)
 
     // Re-implemented from base class. See documentation there.
-    void deferredInitialization();
+    void deferredInitialization() override;
   };
 
 };

@@ -43,7 +43,7 @@ public:
     };
 #warning docu
     /*! \brief Comparison */
-    static Format format(const QString& fileName);
+    static auto format(const QString& fileName) -> Format;
 
 };
 

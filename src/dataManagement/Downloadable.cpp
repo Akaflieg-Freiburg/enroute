@@ -90,7 +90,7 @@ auto DataManagement::Downloadable::fileContent() const -> QByteArray {
 
     QFile file(_fileName);
     if (!file.exists()) {
-        return QByteArray();
+        return {};
     }
 
     QLockFile lockFile(_fileName + ".lock");

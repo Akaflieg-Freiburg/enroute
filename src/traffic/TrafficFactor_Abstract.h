@@ -261,12 +261,12 @@ public:
     QString color() const
     {
         if (m_alarmLevel == 0) {
-            return "green";
+            return QStringLiteral("green");
         }
         if (m_alarmLevel == 1) {
-            return "yellow";
+            return QStringLiteral("yellow");
         }
-        return "red";
+        return QStringLiteral("red");
     }
 
     /*! \brief Description of the traffic, for use in GUI

@@ -84,7 +84,7 @@ Platform::Notifier_Linux::Notifier_Linux(QObject *parent)
     connect(&notificationInterface, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(onNotificationClosed(uint,uint)));
 
     // Construct iconVariant, which contains the app icon in a format that can be transferred via QDBus
-    QImage icon(":/icons/appIcon.png");
+    QImage icon(QStringLiteral(":/icons/appIcon.png"));
     QImage image = icon.convertToFormat(QImage::Format_RGBA8888);
     QByteArray data((const char *)image.constBits(), image.sizeInBytes());
     qDBusRegisterMetaType<FreeDesktopImageStructure>();
@@ -106,7 +106,7 @@ Platform::Notifier_Linux::~Notifier_Linux()
         if (notificationID == 0) {
             continue;
         }
-        notificationInterface.call("CloseNotification", notificationID);
+        notificationInterface.call(QStringLiteral("CloseNotification"), notificationID);
     }
 }
 
@@ -119,21 +119,21 @@ void Platform::Notifier_Linux::hideNotification(Platform::Notifier::Notification
         return;
     }
 
-    notificationInterface.call("CloseNotification", notificationID);
+    notificationInterface.call(QStringLiteral("CloseNotification"), notificationID);
     notificationIDs.remove(notificationType);
 
 }
 
 
-void Platform::Notifier_Linux::onActionInvoked(uint, QString key)
+void Platform::Notifier_Linux::onActionInvoked(uint, const QString &key)
 {
 
-    if (key == "GeoMap_Dismiss") {
+    if (key == QLatin1String("GeoMap_Dismiss")) {
         // The method onNotificationClosed will later be called. The following line ensures
         // that the signal notificationClicked() is then no longer emitted.
         notificationIDs.remove(GeoMapUpdatePending);
     }
-    if (key == "GeoMap_Update") {
+    if (key == QLatin1String("GeoMap_Update")) {
         emit action(GeoMapUpdatePending_UpdateRequested);
 
         // The method onNotificationClosed will later be called. The following line ensures
@@ -193,12 +193,12 @@ void Platform::Notifier_Linux::showNotification(NotificationTypes notificationTy
 
     QStringList actions;
     if (notificationType == GeoMapUpdatePending) {
-        actions << "GeoMap_Update" << tr("Update");
-        actions << "GeoMap_Dismiss" << tr("Dismiss");
+        actions << QStringLiteral("GeoMap_Update") << tr("Update");
+        actions << QStringLiteral("GeoMap_Dismiss") << tr("Dismiss");
     }
     QMap<QString,QVariant> hints;
-    hints["image-data"] = iconVariant;
-    QDBusReply<uint> reply = notificationInterface.call("Notify",
+    hints[QStringLiteral("image-data")] = iconVariant;
+    QDBusReply<uint> reply = notificationInterface.call(QStringLiteral("Notify"),
                                                         "Enroute Flight Navigation",
                                                         notificationIDs.value(notificationType, 0), // Notification to replace. 0 means: do not replace
                                                         "", // Icon

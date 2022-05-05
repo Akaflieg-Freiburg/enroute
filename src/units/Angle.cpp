@@ -26,7 +26,7 @@
 auto Units::Angle::toClock() const -> QString
 {
     if (!isFinite()) {
-        return "-";
+        return QStringLiteral("-");
     }
 
     int result = qRound(toDEG()/30.0);

@@ -113,13 +113,13 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
         auto climbRateMPS = m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed);
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {
-                result += " ↘";
+                result += QStringLiteral(" ↘");
             }
             if ((climbRateMPS >= -1.0) && (climbRateMPS <= +1.0)) {
-                result += " →";
+                result += QStringLiteral(" →");
             }
             if (climbRateMPS > 1.0) {
-                result += " ↗";
+                result += QStringLiteral(" ↗");
             }
         }
         results << result;

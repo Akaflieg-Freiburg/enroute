@@ -253,7 +253,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         if ((status & 1<<3) != 0) {
             results += tr("GPS Battery low voltage");
         }
-        setTrafficReceiverRuntimeError(results.join(" • "));
+        setTrafficReceiverRuntimeError(results.join(QStringLiteral(" • ")));
 
         setReceivingHeartbeat(true);
         return;
@@ -411,7 +411,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto callSign = QString::fromLatin1(message.mid(18,8)).simplified();
 
         // Expose data
-        if ((callSign.compare("MODE S", Qt::CaseInsensitive) == 0) || (callSign.compare("MODE-S", Qt::CaseInsensitive) == 0)) {
+        if ((callSign.compare(QLatin1String("MODE S"), Qt::CaseInsensitive) == 0) || (callSign.compare(QLatin1String("MODE-S"), Qt::CaseInsensitive) == 0)) {
             m_factorDistanceOnly.setAlarmLevel(alert);
             m_factorDistanceOnly.setCallSign(callSign);
             m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());

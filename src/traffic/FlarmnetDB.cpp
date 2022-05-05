@@ -52,7 +52,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     if (QCoreApplication::instance() != nullptr) {
         auto downloadables = GlobalObject::dataManager()->databases()->downloadables();
         foreach(auto downloadable, downloadables) {
-            if (downloadable->fileName().contains("Flarm")) {
+            if (downloadable->fileName().contains(QLatin1String("Flarm"))) {
                 newFlarmnetDBDownloadable = downloadable;
                 break;
             }
@@ -91,7 +91,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
 
 auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
 {
-    if (key.contains("!")) {
+    if (key.contains(QLatin1String("!"))) {
         auto result = key.section('!', -1, -1);
         return result;
     }

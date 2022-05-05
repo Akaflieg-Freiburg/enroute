@@ -42,7 +42,7 @@ namespace Units {
          *
          * @returns speed
          */
-        Q_INVOKABLE static constexpr auto fromFPM(double speedInFPM) -> Units::Speed
+        Q_INVOKABLE static constexpr Units::Speed fromFPM(double speedInFPM)
         {
             Speed result;
             result._speedInMPS = speedInFPM/FPM_per_MPS;
@@ -55,7 +55,7 @@ namespace Units {
          *
          * @returns speed
          */
-        Q_INVOKABLE static constexpr auto fromMPS(double speedInMPS) -> Units::Speed
+        Q_INVOKABLE static constexpr Units::Speed fromMPS(double speedInMPS)
         {
             Speed result;
             result._speedInMPS = speedInMPS;
@@ -69,7 +69,7 @@ namespace Units {
          *
          * @returns speed
          */
-        Q_INVOKABLE static constexpr auto fromMPH(double speedInMPH) -> Units::Speed
+        Q_INVOKABLE static constexpr Units::Speed fromMPH(double speedInMPH)
         {
             Speed result;
             result._speedInMPS = speedInMPH*MPS_per_MPH;
@@ -82,7 +82,7 @@ namespace Units {
          *
          * @returns speed
          */
-        Q_INVOKABLE static constexpr auto fromKN(double speedInKT) -> Units::Speed
+        Q_INVOKABLE static constexpr Units::Speed fromKN(double speedInKT)
         {
             Speed result;
             result._speedInMPS = speedInKT / KN_per_MPS;
@@ -95,7 +95,7 @@ namespace Units {
          *
          * @returns speed
          */
-        Q_INVOKABLE static constexpr auto fromKMH(double speedInKMH) -> Units::Speed
+        Q_INVOKABLE static constexpr Units::Speed fromKMH(double speedInKMH)
         {
             Speed result;
             result._speedInMPS = speedInKMH / KMH_per_MPS;
@@ -106,7 +106,7 @@ namespace Units {
          *
          * @returns True is the speed is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] auto isFinite() const -> bool
+        Q_INVOKABLE [[nodiscard]] bool isFinite() const
         {
             return std::isfinite(_speedInMPS);
         }
@@ -115,7 +115,7 @@ namespace Units {
          *
          * @returns True is the distance is negative
          */
-        Q_INVOKABLE [[nodiscard]] auto isNegative() const -> bool
+        Q_INVOKABLE [[nodiscard]] bool isNegative() const
         {
             return _speedInMPS < 0.0;
         }
@@ -126,7 +126,7 @@ namespace Units {
          *
          * @returns Quotient as a dimension-less number
          */
-        Q_INVOKABLE auto operator/(Units::Speed rhs) -> double
+        Q_INVOKABLE double operator/(Units::Speed rhs)
         {
             if (qFuzzyIsNull(rhs._speedInMPS))
                 return qQNaN();
@@ -139,7 +139,7 @@ namespace Units {
          *
          * @returns Sum
          */
-        Q_INVOKABLE auto operator+(Units::Speed rhs) -> Units::Speed
+        Q_INVOKABLE Units::Speed operator+(Units::Speed rhs)
         {
             return Units::Speed::fromMPS(_speedInMPS + rhs._speedInMPS);
         }
@@ -150,7 +150,7 @@ namespace Units {
          *
          * @returns Difference
          */
-        Q_INVOKABLE auto operator-(Units::Speed rhs) -> Units::Speed
+        Q_INVOKABLE Units::Speed operator-(Units::Speed rhs)
         {
             return Units::Speed::fromMPS(_speedInMPS - rhs._speedInMPS);
         }
@@ -161,7 +161,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(Units::Speed rhs) const -> bool
+        Q_INVOKABLE bool operator==(Units::Speed rhs) const
         {
             return _speedInMPS == rhs._speedInMPS;
         }
@@ -172,7 +172,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(Units::Speed rhs) const -> bool
+        Q_INVOKABLE bool operator!=(Units::Speed rhs) const
         {
             return _speedInMPS != rhs._speedInMPS;
         }
@@ -183,7 +183,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator<(Units::Speed rhs) const -> bool
+        Q_INVOKABLE bool operator<(Units::Speed rhs) const
         {
             return _speedInMPS < rhs._speedInMPS;
         }
@@ -194,7 +194,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator>(Units::Speed rhs) const -> bool
+        Q_INVOKABLE bool operator>(Units::Speed rhs) const
         {
             return _speedInMPS > rhs._speedInMPS;
         }
@@ -203,7 +203,7 @@ namespace Units {
          *
          * @returns Speed in feet per minute
          */
-        Q_INVOKABLE [[nodiscard]] auto toFPM() const -> double
+        Q_INVOKABLE [[nodiscard]] double toFPM() const
         {
             return _speedInMPS * FPM_per_MPS;
         }
@@ -212,7 +212,7 @@ namespace Units {
          *
          * @returns speed in meters per second
          */
-        Q_INVOKABLE [[nodiscard]] auto toMPS() const -> double
+        Q_INVOKABLE [[nodiscard]] double toMPS() const
         {
             return _speedInMPS;
         }
@@ -221,7 +221,7 @@ namespace Units {
          *
          * @returns speed in status miles per hour
          */
-        Q_INVOKABLE [[nodiscard]] auto toMPH() const -> double
+        Q_INVOKABLE [[nodiscard]] double toMPH() const
         {
             return _speedInMPS/MPS_per_MPH;
         }
@@ -230,7 +230,7 @@ namespace Units {
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        Q_INVOKABLE [[nodiscard]] auto toKN() const -> double
+        Q_INVOKABLE [[nodiscard]] double toKN() const
         {
             return _speedInMPS * KN_per_MPS;
         }
@@ -239,7 +239,7 @@ namespace Units {
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        Q_INVOKABLE [[nodiscard]] auto toKMH() const -> double
+        Q_INVOKABLE [[nodiscard]] double toKMH() const
         {
             return _speedInMPS * KMH_per_MPS;
         }

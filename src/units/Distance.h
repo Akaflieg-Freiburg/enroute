@@ -51,7 +51,7 @@ namespace Units {
          *
          * @returns distance
          */
-        Q_INVOKABLE static constexpr auto fromM(double distanceInM) -> Units::Distance
+        Q_INVOKABLE static constexpr Units::Distance fromM(double distanceInM)
         {
             Distance result;
             result.m_distanceInM = distanceInM;
@@ -64,7 +64,7 @@ namespace Units {
          *
          * @returns distance
          */
-        Q_INVOKABLE static constexpr auto fromKM(double distanceInKM) -> Units::Distance
+        Q_INVOKABLE static constexpr Units::Distance fromKM(double distanceInKM)
         {
             Distance result;
             result.m_distanceInM = 1000.0*distanceInKM;
@@ -77,7 +77,7 @@ namespace Units {
          *
          * @returns distance
          */
-        Q_INVOKABLE static constexpr auto fromNM(double distanceInNM) -> Units::Distance
+        Q_INVOKABLE static constexpr Units::Distance fromNM(double distanceInNM)
         {
             Distance result;
             result.m_distanceInM = distanceInNM*MetersPerNauticalMile;
@@ -90,7 +90,7 @@ namespace Units {
          *
          * @returns distance
          */
-        Q_INVOKABLE static constexpr auto fromMIL(double distanceInMIL) -> Units::Distance
+        Q_INVOKABLE static constexpr Units::Distance fromMIL(double distanceInMIL)
         {
             Distance result;
             result.m_distanceInM = distanceInMIL*MetersPerMile;
@@ -103,7 +103,7 @@ namespace Units {
          *
          * @returns distance
          */
-        Q_INVOKABLE static constexpr auto fromFT(double distanceInFT) -> Units::Distance
+        Q_INVOKABLE static constexpr Units::Distance fromFT(double distanceInFT)
         {
             Distance result;
             result.m_distanceInM = distanceInFT * MetersPerFeet;
@@ -114,7 +114,7 @@ namespace Units {
          *
          * @returns Invalid distance
          */
-        Q_INVOKABLE static constexpr auto nan() -> Units::Distance
+        Q_INVOKABLE static constexpr Units::Distance nan()
         {
             return {};
         }
@@ -125,7 +125,7 @@ namespace Units {
          *
          * @returns reference to this distance
          */
-        Q_INVOKABLE auto operator+=(Units::Distance other) -> Units::Distance &
+        Q_INVOKABLE Units::Distance& operator+=(Units::Distance other)
         {
             m_distanceInM += other.m_distanceInM;
             return *this;
@@ -135,7 +135,7 @@ namespace Units {
          *
          * @returns True is the distance is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] auto isFinite() const -> bool
+        Q_INVOKABLE [[nodiscard]] bool isFinite() const
         {
             return std::isfinite(m_distanceInM);
         }
@@ -144,7 +144,7 @@ namespace Units {
          *
          * @returns True is the distance is negative
          */
-        Q_INVOKABLE [[nodiscard]] auto isNegative() const -> bool
+        Q_INVOKABLE [[nodiscard]] bool isNegative() const
         {
             return m_distanceInM < 0.0;
         }
@@ -155,7 +155,7 @@ namespace Units {
          *
          *  @returns Result of the addition
          */
-        Q_INVOKABLE auto operator+(Units::Distance rhs) const -> Units::Distance
+        Q_INVOKABLE Units::Distance operator+(Units::Distance rhs) const
         {
             return fromM(m_distanceInM + rhs.m_distanceInM);
         }
@@ -166,7 +166,7 @@ namespace Units {
          *
          *  @returns Result of the subtraction
          */
-        Q_INVOKABLE auto operator-(Units::Distance rhs) const -> Units::Distance
+        Q_INVOKABLE Units::Distance operator-(Units::Distance rhs) const
         {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
@@ -177,7 +177,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator<(Units::Distance rhs) const
+        Q_INVOKABLE bool operator<(Units::Distance rhs) const
         {
             return m_distanceInM < rhs.m_distanceInM;
         }
@@ -188,7 +188,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator>(Units::Distance rhs) const
+        Q_INVOKABLE bool operator>(Units::Distance rhs) const
         {
             return m_distanceInM > rhs.m_distanceInM;
         }
@@ -199,7 +199,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(Units::Distance rhs) const
+        Q_INVOKABLE bool operator!=(Units::Distance rhs) const
         {
             return m_distanceInM != rhs.m_distanceInM;
         }
@@ -210,7 +210,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(Units::Distance rhs) const
+        Q_INVOKABLE bool operator==(Units::Distance rhs) const
         {
             return m_distanceInM == rhs.m_distanceInM;
         }
@@ -219,7 +219,7 @@ namespace Units {
          *
          * @returns distance in feet
          */
-        Q_INVOKABLE [[nodiscard]] auto toFeet() const -> double
+        Q_INVOKABLE [[nodiscard]] double toFeet() const
         {
             return m_distanceInM / MetersPerFeet;
         }
@@ -228,7 +228,7 @@ namespace Units {
          *
          * @returns distance in meters
          */
-        Q_INVOKABLE [[nodiscard]] auto toKM() const -> double
+        Q_INVOKABLE [[nodiscard]] double toKM() const
         {
             return m_distanceInM / 1000.;
         }
@@ -237,7 +237,7 @@ namespace Units {
          *
          * @returns distance in meters
          */
-        Q_INVOKABLE [[nodiscard]] auto toM() const -> double
+        Q_INVOKABLE [[nodiscard]] double toM() const
         {
             return m_distanceInM;
         }
@@ -246,7 +246,7 @@ namespace Units {
          *
          * @returns distance in international miles
          */
-        Q_INVOKABLE [[nodiscard]] auto toMIL() const -> double
+        Q_INVOKABLE [[nodiscard]] double toMIL() const
         {
             return m_distanceInM / MetersPerMile;
         }
@@ -255,7 +255,7 @@ namespace Units {
          *
          * @returns distance in nautical miles
          */
-        Q_INVOKABLE [[nodiscard]] auto toNM() const -> double
+        Q_INVOKABLE [[nodiscard]] double toNM() const
         {
             return m_distanceInM / MetersPerNauticalMile;
         }
@@ -275,7 +275,7 @@ namespace Units {
          *  @returns A string that describes the distance, or an empty string if
          *  no reasonable distance is set.
          */
-        Q_INVOKABLE [[nodiscard]] auto toString(Units::Distance::DistanceUnit units, bool roundBigNumbers=false, bool forceSign=false) const -> QString;
+        Q_INVOKABLE [[nodiscard]] QString toString(Units::Distance::DistanceUnit units, bool roundBigNumbers=false, bool forceSign=false) const;
 
     private:
         static constexpr double MetersPerFeet = 0.3048;

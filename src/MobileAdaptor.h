@@ -79,7 +79,7 @@ public:
      *
      * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
     */
-    Q_INVOKABLE static auto manufacturer() -> QString;
+    Q_INVOKABLE static QString manufacturer();
 
     /*! \brief Checks if all requred permissions have been granted
      *
@@ -89,8 +89,7 @@ public:
      * @returns On Android, returns 'true' if not all required permissions have
      * been granted. On other systems, always returns 'false'
     */
-    Q_INVOKABLE auto missingPermissionsExist() -> bool;
-
+    Q_INVOKABLE bool missingPermissionsExist();
 
     /*! \brief Export content to file or to file sending app
      *
@@ -110,7 +109,7 @@ public:
      *
      * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
-    Q_INVOKABLE auto exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString;
+    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
     /*! \brief Lock connection to Wi-Fi network
      *
@@ -126,7 +125,7 @@ public:
      * @returns The SSID of the current Wi-Fi networks, or an empty of generic string
      * if the device is not connected to a Wi-Fi or if the SSID could not be determined.
      */
-    Q_INVOKABLE static auto getSSID() -> QString;
+    Q_INVOKABLE static QString getSSID();
 
     /*! \brief Import content from file
      *
@@ -154,7 +153,7 @@ public:
      *
      * @returns Empty string on success, a translated error message otherwise
      */
-    Q_INVOKABLE auto viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString;
+    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
     /*! \brief Start receiving "open file" requests from platform
      *

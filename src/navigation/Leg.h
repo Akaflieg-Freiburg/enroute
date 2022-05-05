@@ -130,7 +130,7 @@ public:
      *
      *  @returns Estimated WCA on leg
      */
-    Q_INVOKABLE [[nodiscard]] auto description(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> QString;
+    Q_INVOKABLE [[nodiscard]] QString description(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
     /*! \brief ETE for leg
      *
@@ -140,7 +140,10 @@ public:
      *
      *  @returns ETE for leg
      */
-    Q_INVOKABLE [[nodiscard]] auto ETE(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Time{ return distance()/GS(wind, aircraft); }
+    Q_INVOKABLE [[nodiscard]] Units::Time ETE(Weather::Wind wind, const Navigation::Aircraft& aircraft) const
+    {
+        return distance()/GS(wind, aircraft);
+    }
 
     /*! \brief Estimated fuel consumption on leg
      *
@@ -150,7 +153,7 @@ public:
      *
      *  @returns Estimated fuel consumption on leg
      */
-    Q_INVOKABLE [[nodiscard]] auto Fuel(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Volume;
+    Q_INVOKABLE [[nodiscard]] Units::Volume Fuel(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
     /*! \brief Estimated ground speed on leg
      *
@@ -160,7 +163,7 @@ public:
      *
      *  @returns Estimated ground speed on leg
      */
-    Q_INVOKABLE [[nodiscard]] auto GS(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Speed;
+    Q_INVOKABLE [[nodiscard]] Units::Speed GS(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
     /*! \brief Check if positionInfo is travelling on this leg
      *
@@ -175,7 +178,7 @@ public:
      *
      *  @return True if the conditions are met
      */
-    Q_INVOKABLE [[nodiscard]] auto isFollowing(const Positioning::PositionInfo& positionInfo) const -> bool;
+    Q_INVOKABLE [[nodiscard]] bool isFollowing(const Positioning::PositionInfo& positionInfo) const;
 
     /*! \brief Check if position is closer than nearThreshold to this leg
      *
@@ -183,7 +186,7 @@ public:
      *
      *  @return True if all data is valid and position is closer than nearThreshold to this leg.
      */
-    Q_INVOKABLE [[nodiscard]] auto isNear(const Positioning::PositionInfo& positionInfo) const -> bool;
+    Q_INVOKABLE [[nodiscard]] bool isNear(const Positioning::PositionInfo& positionInfo) const;
 
     /*! \brief Estimated true heading on leg
      *
@@ -193,7 +196,10 @@ public:
      *
      *  @returns Estimated true heading on leg
      */
-    Q_INVOKABLE [[nodiscard]] auto TH(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Angle { return TC()+WCA(wind, aircraft); }
+    Q_INVOKABLE [[nodiscard]] Units::Angle TH(Weather::Wind wind, const Navigation::Aircraft& aircraft) const
+    {
+        return TC()+WCA(wind, aircraft);
+    }
 
     /*! \brief Estimated WCA on leg
      *
@@ -203,7 +209,7 @@ public:
      *
      *  @returns Estimated WCA on leg
      */
-    Q_INVOKABLE [[nodiscard]] auto WCA(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Angle;
+    Q_INVOKABLE [[nodiscard]] Units::Angle WCA(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
 
     //

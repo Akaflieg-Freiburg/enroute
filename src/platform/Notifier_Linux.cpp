@@ -125,7 +125,7 @@ void Platform::Notifier_Linux::hideNotification(Platform::Notifier::Notification
 }
 
 
-void Platform::Notifier_Linux::onActionInvoked(uint, const QString &key)
+void Platform::Notifier_Linux::onActionInvoked(uint /*unused*/, const QString &key)
 {
 
     if (key == QLatin1String("GeoMap_Dismiss")) {

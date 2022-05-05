@@ -55,7 +55,7 @@ public:
      *
      *  @returns Name of the directory, without trailing slash
      */
-    Q_INVOKABLE [[nodiscard]] auto directory(Librarian::Library library) const -> QString;
+    Q_INVOKABLE [[nodiscard]] QString directory(Librarian::Library library) const;
 
     /*! \brief Lists all entries in the library whose name contains the string 'filter'
      *
@@ -69,7 +69,7 @@ public:
      *
      * @see permissiveFilter
      */
-    Q_INVOKABLE auto entries(Librarian::Library library, const QString &filter=QString()) -> QStringList;
+    Q_INVOKABLE QStringList entries(Librarian::Library library, const QString &filter=QString());
 
     /*! \brief Check if an entry with the given name exists in the library
      *
@@ -79,7 +79,7 @@ public:
      *
      *  @returns True if the file exists
      */
-    Q_INVOKABLE [[nodiscard]] auto exists(Librarian::Library library, const QString &baseName) const -> bool;
+    Q_INVOKABLE [[nodiscard]] bool exists(Librarian::Library library, const QString &baseName) const;
 
     /*! \brief Full path of a library entry
      *
@@ -90,7 +90,7 @@ public:
      *
      *  @returns Full path of the entry, with extension
      */
-    Q_INVOKABLE [[nodiscard]] auto fullPath(Librarian::Library library, const QString &baseName) const -> QString;
+    Q_INVOKABLE [[nodiscard]] QString fullPath(Librarian::Library library, const QString &baseName) const;
 
     /*! \brief Constructs an object from library entry
      *
@@ -111,7 +111,7 @@ public:
      *
      * @returns Pointer to the object, or a nullptr in case of error.
      */
-    Q_INVOKABLE [[nodiscard]] auto get(Librarian::Library library, const QString &baseName) const -> QObject *;
+    Q_INVOKABLE [[nodiscard]] QObject* get(Librarian::Library library, const QString &baseName) const;
 
     /*! \brief Exposes string stored in QRessource to QML
      *
@@ -129,7 +129,7 @@ public:
      *
      * @returns File content as a QString
      */
-    Q_INVOKABLE static auto getStringFromRessource(const QString &name) -> QString ;
+    Q_INVOKABLE static QString getStringFromRessource(const QString &name);
 
     /*! \brief Exposes the hash of string stored in QRessource to QML
      *
@@ -141,7 +141,7 @@ public:
      *
      * @returns Hash of file content
      */
-    Q_INVOKABLE static auto getStringHashFromRessource(const QString &name) -> uint ;
+    Q_INVOKABLE static uint getStringHashFromRessource(const QString &name);
 
     /*! \brief Removes an entry from a library
      *

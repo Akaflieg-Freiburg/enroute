@@ -199,13 +199,13 @@ public:
      *
      * @returns Property night mode
      */
-    bool nightMode() const { return settings.value("Map/nightMode", false).toBool(); }
+    bool nightMode() const { return settings.value(QStringLiteral("Map/nightMode"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property positioningByTrafficDataReceiver
      */
-    bool positioningByTrafficDataReceiver() const { return settings.value("positioningByTrafficDataReceiver", false).toBool(); }
+    bool positioningByTrafficDataReceiver() const { return settings.value(QStringLiteral("positioningByTrafficDataReceiver"), false).toBool(); }
 
 
     //

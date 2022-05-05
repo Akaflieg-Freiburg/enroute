@@ -140,7 +140,7 @@ public:
      *
      *  @returns ETE for leg
      */
-    Q_INVOKABLE Units::Time ETE(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const{ return distance()/GS(wind, aircraft); }
+    Q_INVOKABLE Units::Time ETE(Weather::Wind wind, const Navigation::Aircraft& aircraft) const{ return distance()/GS(wind, aircraft); }
 
     /*! \brief Estimated fuel consumption on leg
      *
@@ -193,7 +193,7 @@ public:
      *
      *  @returns Estimated true heading on leg
      */
-    Q_INVOKABLE Units::Angle TH(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const { return TC()+WCA(wind, aircraft); }
+    Q_INVOKABLE Units::Angle TH(Weather::Wind wind, const Navigation::Aircraft& aircraft) const { return TC()+WCA(wind, aircraft); }
 
     /*! \brief Estimated WCA on leg
      *

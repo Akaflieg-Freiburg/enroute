@@ -288,7 +288,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
         file.close();
         lockFile.unlock();
 
-        foreach(auto value, document.object()["features"].toArray()) {
+        foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
             auto object = value.toObject();
             objectSet += object;
         }
@@ -327,7 +327,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
         // and that are gliding sectors
         if (hideGlidingSectors) {
             Airspace airspaceTest(object);
-            if (airspaceTest.CAT() == "GLD") {
+            if (airspaceTest.CAT() == QLatin1String("GLD")) {
                 continue;
             }
         }

@@ -29,18 +29,18 @@ GeoMaps::MBTILES::Format GeoMaps::MBTILES::format(const QString& fileName)
     GeoMaps::MBTILES::Format result = Unknown;
 
     { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
-        auto testDB = QSqlDatabase::addDatabase("QSQLITE", "import test: "+fileName);
+        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), "import test: "+fileName);
         testDB.setDatabaseName(fileName);
 
         if (testDB.open()) {
             QSqlQuery query(testDB);
-            if (query.exec("select name, value from metadata where name='format';")) {
+            if (query.exec(QStringLiteral("select name, value from metadata where name='format';"))) {
                 if (query.first()) {
                     auto format = query.value(1).toString();
-                    if (format == "pbf") {
+                    if (format == QLatin1String("pbf")) {
                         result = Vector;
                     }
-                    if ((format == "jpg") || (format == "png") || (format == "webp")) {
+                    if ((format == QLatin1String("jpg")) || (format == QLatin1String("png")) || (format == QLatin1String("webp"))) {
                         result = Raster;
                     }
                 }

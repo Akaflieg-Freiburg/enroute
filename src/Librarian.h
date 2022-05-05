@@ -193,7 +193,7 @@ private:
     Q_DISABLE_COPY_MOVE(Librarian)
 
     // Caches used to speed up the method simplifySpecialChars
-    QRegularExpression specialChars {"[^a-zA-Z0-9]"};
+    QRegularExpression specialChars {QStringLiteral("[^a-zA-Z0-9]")};
     QHash<QString, QString> simplifySpecialChars_cache;
 
 };

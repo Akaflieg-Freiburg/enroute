@@ -100,7 +100,7 @@ public:
      */
     Q_INVOKABLE QString timestampString() const
     {
-        return m_positionInfo.timestamp().toUTC().time().toString("HH:mm:ss")+ " UTC";
+        return m_positionInfo.timestamp().toUTC().time().toString(QStringLiteral("HH:mm:ss"))+ " UTC";
     }
 
     /*! \brief True Altitude

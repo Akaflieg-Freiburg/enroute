@@ -149,7 +149,7 @@ public:
      */
     QString category() const
     {
-        return m_properties.value("CAT").toString();
+        return m_properties.value(QStringLiteral("CAT")).toString();
     }
 
     /*! \brief Coordinate of the waypoint
@@ -192,7 +192,7 @@ public:
      */
     QString ICAOCode() const
     {
-        return m_properties.value("COD").toString();
+        return m_properties.value(QStringLiteral("COD")).toString();
     }
 
     /*! \brief Suggested icon for use in GUI
@@ -236,7 +236,7 @@ public:
      */
     QString name() const
     {
-        return m_properties.value("NAM").toString();
+        return m_properties.value(QStringLiteral("NAM")).toString();
     }
 
     /*! \brief Short name of the waypoint
@@ -302,7 +302,7 @@ public:
      */
     QString type() const
     {
-        return m_properties.value("TYP").toString();
+        return m_properties.value(QStringLiteral("TYP")).toString();
     }
 
 private:

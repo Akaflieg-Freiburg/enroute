@@ -121,9 +121,9 @@ public:
      */
     QString nextWP_ETAAsUTCString() const {
         if (nextWP_ETE.isFinite()) {
-            return nextWP_ETA.toString("H:mm");
+            return nextWP_ETA.toString(QStringLiteral("H:mm"));
         }
-        return "-:--";
+        return QStringLiteral("-:--");
     }
 
     /*! \brief Getter function for the property with the same name
@@ -132,9 +132,9 @@ public:
      */
     QString finalWP_ETAAsUTCString() const {
         if (finalWP_ETE.isFinite()) {
-            return finalWP_ETA.toString("H:mm");
+            return finalWP_ETA.toString(QStringLiteral("H:mm"));
         }
-        return "-:--";
+        return QStringLiteral("-:--");
     }
 
 private:

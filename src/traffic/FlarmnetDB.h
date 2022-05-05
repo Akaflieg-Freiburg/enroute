@@ -46,7 +46,7 @@ public:
      */
     FlarmnetDB(QObject* parent);
 
-    ~FlarmnetDB() = default;
+    ~FlarmnetDB() override = default;
 
     //
     // Methods
@@ -59,7 +59,7 @@ public:
      *  @returns Aircraft registration, or an empty string if the database does
      *  not contain the key
      */
-    Q_INVOKABLE QString getRegistration(const QString& key);
+    Q_INVOKABLE auto getRegistration(const QString& key) -> QString;
 
 private slots:
     // The title says everything
@@ -72,7 +72,7 @@ private slots:
     void findFlarmnetDBDownloadable();
 
 private:
-    QString getRegistrationFromFile(const QString& key);
+    auto getRegistrationFromFile(const QString& key) -> QString;
 
     QPointer<DataManagement::Downloadable> flarmnetDBDownloadable;
 

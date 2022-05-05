@@ -61,7 +61,7 @@ public:
      *
      *  @returns Property sourceName
      */
-    QString sourceName() const override
+    [[nodiscard]] auto sourceName() const -> QString override
     {
         return tr("UDP connection to port %1").arg(m_port);
     }

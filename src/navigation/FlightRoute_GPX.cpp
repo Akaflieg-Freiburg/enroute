@@ -299,5 +299,5 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
 
     updateLegs();
     emit waypointsChanged();
-    return QString();
+    return {};
 }

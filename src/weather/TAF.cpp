@@ -133,7 +133,7 @@ auto Weather::TAF::isValid() const -> bool
 auto Weather::TAF::relativeIssueTime() const -> QString
 {
     if (!_issueTime.isValid()) {
-        return QString();
+        return {};
     }
 
     return Navigation::Clock::describeTimeDifference(_issueTime);

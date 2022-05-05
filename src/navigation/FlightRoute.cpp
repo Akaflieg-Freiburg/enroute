@@ -77,7 +77,7 @@ auto Navigation::FlightRoute::geoPath() const -> QVariantList
     QVariantList result;
     for(const auto& _waypoint : m_waypoints) {
         if (!_waypoint.isValid()) {
-            return QVariantList();
+            return {};
         }
         result.append(QVariant::fromValue(_waypoint.coordinate()));
     }
@@ -281,7 +281,7 @@ auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
     updateLegs();
     emit waypointsChanged();
 
-    return QString();
+    return {};
 }
 
 
@@ -390,7 +390,7 @@ auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
         return tr("Unable to write to file '%1'.").arg(fileName);
     }
     file.close();
-    return QString();
+    return {};
 }
 
 

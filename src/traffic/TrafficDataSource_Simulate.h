@@ -52,7 +52,7 @@ public:
      *
      *  @returns Property sourceName
      */
-    QString sourceName() const override
+    [[nodiscard]] auto sourceName() const -> QString override
     {
         return tr("Simulator data");
     }

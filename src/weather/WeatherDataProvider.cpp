@@ -345,7 +345,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
     // Paranoid safety checks
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {
-        return QString();
+        return {};
     }
     if (!positionProvider->positionInfo().isValid()) {
         return tr("Waiting for precise position…");
@@ -403,7 +403,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         }
         return tr("SR %1, %2").arg(Navigation::Clock::describePointInTime(sunriseTomorrow), Navigation::Clock::describeTimeDifference(sunriseTomorrow));
     }
-    return QString();
+    return {};
 }
 
 
@@ -412,7 +412,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     // Paranoid safety checks
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {
-        return QString();
+        return {};
     }
 
     // Find QNH of nearest airfield
@@ -447,7 +447,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
                 .arg(closestReportWithQNH->ICAOCode(),
                      Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }
-    return QString();
+    return {};
 }
 
 

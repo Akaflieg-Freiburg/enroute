@@ -153,7 +153,7 @@ auto Weather::Decoder::explainDirection(metaf::Direction direction, bool trueCar
         return tr("unknown direction");
     }
 
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::explainDirectionSector(const std::vector<metaf::Direction>& dir) -> QString
@@ -369,7 +369,7 @@ auto Weather::Decoder::explainRunway(metaf::Runway runway) -> QString {
         return tr("runway %1 RIGHT").arg(runway.number(), 2, 10, QChar('0'));
 
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString {
@@ -413,7 +413,7 @@ auto Weather::Decoder::explainSurfaceFriction(metaf::SurfaceFriction surfaceFric
     case metaf::SurfaceFriction::Type::UNRELIABLE:
         return tr("unreliable or unmeasurable");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::explainTemperature(metaf::Temperature temperature) -> QString
@@ -456,7 +456,7 @@ auto Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight) -> QStrin
         }
         return tr("wave height not reported");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp) -> QString
@@ -570,7 +570,7 @@ auto Weather::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingActi
     case metaf::SurfaceFriction::BrakingAction::GOOD:
         return tr("good (friction coefficient 0.40 to 1.00)");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal cardinal) -> QString
@@ -630,7 +630,7 @@ auto Weather::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal card
     case metaf::Direction::Cardinal::UNKNOWN:
         return QStringLiteral("unknown direction");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount) -> QString
@@ -673,7 +673,7 @@ auto Weather::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount) -> 
     case metaf::CloudGroup::Amount::VARIABLE_BROKEN_OVERCAST:
         return tr("Broken -- overcast clouds");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer) -> QString
@@ -712,7 +712,7 @@ auto Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighL
     case metaf::LowMidHighCloudGroup::HighLayer::NOT_OBSERVABLE:
         return tr("Clouds are not observable");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer) -> QString
@@ -751,7 +751,7 @@ auto Weather::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLay
     case metaf::LowMidHighCloudGroup::LowLayer::NOT_OBSERVABLE:
         return tr("Clouds are not observable due to fog, blowing dust or sand, or other similar phenomena");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer) -> QString
@@ -790,7 +790,7 @@ auto Weather::Decoder::cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLay
     case metaf::LowMidHighCloudGroup::MidLayer::NOT_OBSERVABLE:
         return tr("Clouds are not observable");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type) -> QString
@@ -880,14 +880,14 @@ auto Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type) -> QString
     case metaf::CloudType::Type::VOLCANIC_ASH:
         return tr("volcanic ash");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveType type) -> QString
 {
     switch (type) {
     case metaf::CloudGroup::ConvectiveType::NONE:
-        return QString();
+        return {};
 
     case metaf::CloudGroup::ConvectiveType::NOT_REPORTED:
         return tr("not reported");
@@ -898,7 +898,7 @@ auto Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveType 
     case metaf::CloudGroup::ConvectiveType::CUMULONIMBUS:
         return tr("cumulonimbus");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFraction f) -> QString
@@ -937,7 +937,7 @@ auto Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFract
     case metaf::Distance::MilesFraction::F_7_8:
         return QStringLiteral("7/8");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit) -> QString
@@ -952,7 +952,7 @@ auto Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit) -> QStri
     case metaf::Distance::Unit::FEET:
         return QStringLiteral("ft");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type) -> QString
@@ -1021,7 +1021,7 @@ auto Weather::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGroup:
     case metaf::LayerForecastGroup::Type::TURBULENCE_EXTREME:
         return tr("Extreme turbulence");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend) -> QString
@@ -1045,7 +1045,7 @@ auto Weather::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyGrou
     case metaf::PressureTendencyGroup::Trend::LOWER:
         return tr("lower than");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type) -> QString
@@ -1087,7 +1087,7 @@ auto Weather::Decoder::pressureTendencyTypeToString(metaf::PressureTendencyGroup
     case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
         return tr("falling rapidly");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::probabilityToString(metaf::TrendGroup::Probability prob) -> QString
@@ -1100,9 +1100,9 @@ auto Weather::Decoder::probabilityToString(metaf::TrendGroup::Probability prob) 
         return tr("Probability 40%");
 
     case metaf::TrendGroup::Probability::NONE:
-        return QString();
+        return {};
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits) -> QString
@@ -1141,7 +1141,7 @@ auto Weather::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::Depo
     case metaf::RunwayStateGroup::Deposits::FROZEN_RUTS_OR_RIDGES:
         return tr("frozen ruts or ridges");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent) -> QString
@@ -1170,7 +1170,7 @@ auto Weather::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Extent
     case metaf::RunwayStateGroup::Extent::MORE_THAN_51_PERCENT:
         return QStringLiteral(">51%");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp) -> QString
@@ -1271,7 +1271,7 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
                 results << tr("shallow fog");
                 break;
             default:
-                return QString();
+                return {};
             }
             continue;
         }
@@ -1801,7 +1801,7 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
             continue;
         }
 
-        return QString();
+        return {};
     }
 
     return results.join(QStringLiteral(" • "));
@@ -1843,14 +1843,14 @@ auto Weather::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurfa
     case metaf::WaveHeight::StateOfSurface::PHENOMENAL:
         return tr("phenomenal, wave height >14 meters");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visTrendToString(metaf::VisibilityGroup::Trend trend) -> QString
 {
     switch(trend) {
     case metaf::VisibilityGroup::Trend::NONE:
-        return QString();
+        return {};
 
     case metaf::VisibilityGroup::Trend::NOT_REPORTED:
         return tr("not reported");
@@ -1867,14 +1867,14 @@ auto Weather::Decoder::visTrendToString(metaf::VisibilityGroup::Trend trend) -> 
         //: visibility trend
         return tr("downward");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor) -> QString
 {
     switch(descriptor) {
     case metaf::WeatherPhenomena::Descriptor::NONE:
-        return QString();
+        return {};
 
     case metaf::WeatherPhenomena::Descriptor::SHALLOW:
         return tr("shallow");
@@ -1900,14 +1900,14 @@ auto Weather::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomen
     case metaf::WeatherPhenomena::Descriptor::FREEZING:
         return tr("freezing");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier) -> QString
 {
     switch (qualifier) {
     case metaf::WeatherPhenomena::Qualifier::NONE:
-        return QString();
+        return {};
 
     case metaf::WeatherPhenomena::Qualifier::RECENT:
         return QStringLiteral("recent");
@@ -1924,14 +1924,14 @@ auto Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena
     case metaf::WeatherPhenomena::Qualifier::HEAVY:
         return tr("heavy");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather) -> QString
 {
     switch (weather) {
     case metaf::WeatherPhenomena::Weather::NOT_REPORTED:
-        return QString();
+        return {};
 
     case metaf::WeatherPhenomena::Weather::DRIZZLE:
         return tr("drizzle");
@@ -1999,7 +1999,7 @@ auto Weather::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::
     case metaf::WeatherPhenomena::Weather::DUSTSTORM:
         return tr("dust storm");
     }
-    return QString();
+    return {};
 }
 
 
@@ -2100,7 +2100,7 @@ auto Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /*re
         }
         return explainCloudType(ct.value());
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2173,7 +2173,7 @@ auto Weather::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPart 
     case metaf::KeywordGroup::Type::NOSPECI:
         return tr("Manual station, does not issue SPECI reports");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2309,7 +2309,7 @@ auto Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup 
         }
         return result;
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2333,7 +2333,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
 
     case metaf::MiscGroup::Type::DENSITY_ALTITUDE:
         if (!group.data().has_value()) {
-            return QString();
+            return {};
         }
         return tr("Density altitude is %1 feet").arg(qRound(*group.data()));
 
@@ -2430,7 +2430,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
     case metaf::MiscGroup::Type::ISSUER_ID_FS:
         return tr("Report issuer identifier is %1. This forecast is issued at The Fleet Weather Center San Diego, CA (FS).").arg(static_cast<int>(*group.data()));
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2511,7 +2511,7 @@ auto Weather::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group,
         return tr("Precipitation data is missing.");
     }
 
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2543,7 +2543,7 @@ auto Weather::Decoder::visitPressureGroup(const PressureGroup & group, ReportPar
     case metaf::PressureGroup::Type::PRES_MISG:
         return tr("Atmospheric pressure data is missing");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2568,7 +2568,7 @@ auto Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup & 
                 .arg(pressureTendencyTypeToString(group.type()),
                      pressureTendencyTrendToString(metaf::PressureTendencyGroup::trend(group.type())),explainPressure(group.difference()));
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitReportTimeGroup(const ReportTimeGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2652,7 +2652,7 @@ auto Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, Rep
     case metaf::TemperatureGroup::Type::TD_MISG:
         return tr("Dew point data is missing");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -2732,7 +2732,7 @@ auto Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /*re
         return tr("Forecast %1")
                 .arg(probabilityToString(group.probability()));
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitUnknownGroup(const UnknownGroup & group, ReportPart /*reportPart*/, const std::string & rawString) -> QString
@@ -2875,7 +2875,7 @@ auto Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Repor
 
     case metaf::VisibilityGroup::Type::RVR:
         if (!group.runway().has_value()) {
-            return QString();
+            return {};
         }
         if (group.trend() != metaf::VisibilityGroup::Trend::NONE) {
             return tr("Runway visual range for %1 is %2 and the trend is %3")
@@ -2963,7 +2963,7 @@ auto Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Repor
         }
         return tr("Visibility data not awailable");
     }
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart part, const std::string & /*rawString*/) -> QString
@@ -3011,7 +3011,7 @@ auto Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart 
         return tr("Thunderstorm / lightning data is missing");
     }
 
-    return QString();
+    return {};
 }
 
 auto Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
@@ -3099,5 +3099,5 @@ auto Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*repo
     case metaf::WindGroup::Type::WND_MISG:
         return tr("Wind data is missing");
     }
-    return QString();
+    return {};
 }

@@ -66,7 +66,7 @@ public:
      *
      * @returns Property coordiante
      */
-    QGeoCoordinate coordinate() const
+    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
     {
         return _location;
     }
@@ -81,7 +81,7 @@ public:
      *
      * @returns Property expiration
      */
-    QDateTime expiration() const
+    [[nodiscard]] auto expiration() const -> QDateTime
     {
         return _expirationTime;
     }
@@ -97,7 +97,7 @@ public:
      *
      * @returns Property ICAOCode
      */
-    QString ICAOCode() const
+    [[nodiscard]] auto ICAOCode() const -> QString
     {
         return _ICAOCode;
     }
@@ -106,7 +106,7 @@ public:
      *
      * @returns true if an expiration date/time is known and if the current time is larger than the expiration
      */
-    Q_INVOKABLE bool isExpired() const;
+    Q_INVOKABLE [[nodiscard]] auto isExpired() const -> bool;
 
     /*! Indicates if the class represents a valid TAF report */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
@@ -115,7 +115,7 @@ public:
      *
      * @returns Property isValid
      */
-    bool isValid() const;
+    [[nodiscard]] auto isValid() const -> bool;
 
     /*! \brief Issue time of this TAF */
     Q_PROPERTY(QDateTime issueTime READ issueTime CONSTANT)
@@ -124,7 +124,7 @@ public:
      *
      * @returns Property observationTime
      */
-    QDateTime issueTime() const
+    [[nodiscard]] auto issueTime() const -> QDateTime
     {
         return _issueTime;
     }
@@ -139,7 +139,7 @@ public:
      *
      * @returns Property extendedName
      */
-    QString rawText() const
+    [[nodiscard]] auto rawText() const -> QString
     {
         return _raw_text;
     }
@@ -155,7 +155,7 @@ public:
      *
      * @returns Property relativeObservationTime
      */
-    QString relativeIssueTime() const;
+    [[nodiscard]] auto relativeIssueTime() const -> QString;
 
 signals:
     /*! \brief Notifier signal */

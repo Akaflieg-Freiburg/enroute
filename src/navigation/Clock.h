@@ -57,7 +57,7 @@ public:
      *
      * @returns Property date
      */
-    QDate date() const
+    [[nodiscard]] auto date() const -> QDate
     {
         return QDateTime::currentDateTime().date();
     }
@@ -70,7 +70,7 @@ public:
      *
      * @returns A localized string such as "just now" (if the pointInTime is rougly equal to the current time), "3 minutes ago" (if the pointInTime is in the past), or "in 1 hour 5 minutes"  (if the pointInTime is in the future)
      */
-    Q_INVOKABLE static QString describeTimeDifference(const QDateTime& pointInTime);
+    Q_INVOKABLE static auto describeTimeDifference(const QDateTime& pointInTime) -> QString;
 
     /*! Describe a point in time in human-readable form
      *
@@ -82,7 +82,7 @@ public:
      *
      * \return String with the description
      */
-    Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime);
+    Q_INVOKABLE static auto describePointInTime(QDateTime pointInTime) -> QString;
 
     /*! \brief Current time in UTC as a string
      *
@@ -95,7 +95,7 @@ public:
      *
      * @returns Property time
      */
-    static QString timeAsUTCString() ;
+    static auto timeAsUTCString() -> QString ;
 
     /*! \brief Current time
      *
@@ -108,7 +108,7 @@ public:
      *
      * @returns Property time
      */
-    QDateTime time() const
+    [[nodiscard]] auto time() const -> QDateTime
     {
         return QDateTime::currentDateTime();
     }

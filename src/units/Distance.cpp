@@ -21,7 +21,7 @@
 #include "units/Distance.h"
 
 
-QString Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const
+auto Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const -> QString
 {
     if (!isFinite()) {
         return {};

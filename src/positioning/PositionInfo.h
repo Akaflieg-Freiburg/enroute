@@ -61,7 +61,7 @@ public:
      *
      *  @returns Coordinate
      */
-    Q_INVOKABLE QGeoCoordinate coordinate() const
+    Q_INVOKABLE [[nodiscard]] auto coordinate() const -> QGeoCoordinate
     {
         return m_positionInfo.coordinate();
     }
@@ -70,26 +70,26 @@ public:
      *
      *  @returns Ground speed or NaN if unknown.
      */
-    Q_INVOKABLE Units::Speed groundSpeed() const;
+    Q_INVOKABLE [[nodiscard]] auto groundSpeed() const -> Units::Speed;
 
     /*! \brief Validity
      *
      *  @returns True if the underlying QGeoPositionInfo is valid and if
      *  its age is less then PositionInfo::lifetime.
      */
-    Q_INVOKABLE bool isValid() const;
+    Q_INVOKABLE [[nodiscard]] auto isValid() const -> bool;
 
     /*! \brief Position error estimate
      *
      *  @returns Position error estimate or NaN if unknown.
      */
-    Q_INVOKABLE Units::Distance positionErrorEstimate() const;
+    Q_INVOKABLE [[nodiscard]] auto positionErrorEstimate() const -> Units::Distance;
 
     /*! \brief Timestamp
      *
      *  @returns Timestamp of the position info.
      */
-    Q_INVOKABLE QDateTime timestamp() const
+    Q_INVOKABLE [[nodiscard]] auto timestamp() const -> QDateTime
     {
         return m_positionInfo.timestamp().toUTC();
     }
@@ -98,7 +98,7 @@ public:
      *
      *  @returns Timestamp of the position info, as a string.
      */
-    Q_INVOKABLE QString timestampString() const
+    Q_INVOKABLE [[nodiscard]] auto timestampString() const -> QString
     {
         return m_positionInfo.timestamp().toUTC().time().toString(QStringLiteral("HH:mm:ss"))+ " UTC";
     }
@@ -108,31 +108,31 @@ public:
      *  @returns True altitude with geoid correction taken into account or NaN
      *  if unknown.
      */
-    Q_INVOKABLE Units::Distance trueAltitude() const;
+    Q_INVOKABLE [[nodiscard]] auto trueAltitude() const -> Units::Distance;
 
     /*! \brief True altitude error estimate
      *
      *  @returns True altitude error estimate or NaN if unknown.
      */
-    Q_INVOKABLE Units::Distance trueAltitudeErrorEstimate() const;
+    Q_INVOKABLE [[nodiscard]] auto trueAltitudeErrorEstimate() const -> Units::Distance;
 
     /*! \brief True track
      *
      *  @returns True track or NaN if unknown.
      */
-    Q_INVOKABLE Units::Angle trueTrack() const;
+    Q_INVOKABLE [[nodiscard]] auto trueTrack() const -> Units::Angle;
 
     /*! \brief Magnetic variation
      *
      *  @returns Magnetic variation or NaN if unknown.
      */
-    Q_INVOKABLE Units::Angle variation() const;
+    Q_INVOKABLE [[nodiscard]] auto variation() const -> Units::Angle;
 
     /*! \brief Vertical speed
      *
      *  @returns Vertical speed or NaN if unknown.
      */
-    Q_INVOKABLE Units::Speed verticalSpeed() const;
+    Q_INVOKABLE [[nodiscard]] auto verticalSpeed() const -> Units::Speed;
 
     /*! \brief Comparison: equal
      *

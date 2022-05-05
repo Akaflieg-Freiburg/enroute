@@ -38,14 +38,14 @@ public:
     explicit Notifier_Linux(QObject* parent = nullptr);
 
     // Destructor
-    ~Notifier_Linux();
+    ~Notifier_Linux() override;
 
 public slots:
     // Implementation of pure virtual function
-    Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType);
+    Q_INVOKABLE void hideNotification(Platform::Notifier::NotificationTypes notificationType) override;
 
     // Implementation of pure virtual function
-    virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
+    void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText) override;
 
 private slots:
     // This slot receives ActionInvoked messages from the DBus

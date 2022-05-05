@@ -43,7 +43,7 @@ class RemainingRouteInfo {
     Q_GADGET
 
     /*! \brief Comparison */
-    friend bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&);
+    friend auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
     friend class Navigation::Navigator;
 
 public:
@@ -119,7 +119,7 @@ public:
      *
      *  @returns Property nextWP_ETAAsUTCString
      */
-    QString nextWP_ETAAsUTCString() const {
+    [[nodiscard]] auto nextWP_ETAAsUTCString() const -> QString {
         if (nextWP_ETE.isFinite()) {
             return nextWP_ETA.toString(QStringLiteral("H:mm"));
         }
@@ -130,7 +130,7 @@ public:
      *
      *  @returns Property nextWP_ETAAsUTCString
      */
-    QString finalWP_ETAAsUTCString() const {
+    [[nodiscard]] auto finalWP_ETAAsUTCString() const -> QString {
         if (finalWP_ETE.isFinite()) {
             return finalWP_ETA.toString(QStringLiteral("H:mm"));
         }
@@ -154,7 +154,7 @@ private:
 
 
 /*! \brief Comparison */
-bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&);
+auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
 
 
 }

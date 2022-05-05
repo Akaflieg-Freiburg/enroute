@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "Leg.h"
+
+#include <utility>
 #include "GlobalObject.h"
 #include "navigation/Navigator.h"
 #include "Settings.h"
@@ -28,8 +30,8 @@
 // Constructors and destructors
 //
 
-Navigation::Leg::Leg(const GeoMaps::Waypoint& start, const GeoMaps::Waypoint& end) :
-    m_start(start), m_end(end)
+Navigation::Leg::Leg(GeoMaps::Waypoint  start, GeoMaps::Waypoint  end) :
+    m_start(std::move(start)), m_end(std::move(end))
 {
     m_geoPath.addCoordinate(m_start.coordinate());
     m_geoPath.addCoordinate(m_end.coordinate());
@@ -173,7 +175,7 @@ auto Navigation::Leg::WCA(Weather::Wind wind, const Navigation::Aircraft& aircra
 auto Navigation::Leg::description(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> QString
 {
     if (!isValid()) {
-        return QString();
+        return {};
     }
 
     QString result;

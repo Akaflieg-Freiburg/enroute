@@ -48,7 +48,7 @@ struct FreeDesktopImageStructure {
 };
 Q_DECLARE_METATYPE(FreeDesktopImageStructure)
 
-QDBusArgument& operator<<(QDBusArgument& argument, const FreeDesktopImageStructure& fdImage)
+auto operator<<(QDBusArgument& argument, const FreeDesktopImageStructure& fdImage) -> QDBusArgument&
 {
     argument.beginStructure();
     argument << fdImage.width
@@ -62,7 +62,7 @@ QDBusArgument& operator<<(QDBusArgument& argument, const FreeDesktopImageStructu
     return argument;
 }
 
-const QDBusArgument& operator>>(const QDBusArgument &argument, FreeDesktopImageStructure& fdImage)
+auto operator>>(const QDBusArgument &argument, FreeDesktopImageStructure& fdImage) -> const QDBusArgument&
 {
     argument.beginStructure();
     argument >> fdImage.width

@@ -85,7 +85,7 @@ public:
      *
      *  @returns Property coordinate
      */
-    QGeoCoordinate coordinate() const
+    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
     {
         return m_coordinate;
     }
@@ -115,7 +115,7 @@ signals:
 private:
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
-    virtual void updateValid() override;
+    void updateValid() override;
 
     //
     // Property values

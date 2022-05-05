@@ -63,10 +63,10 @@ public:
     explicit Navigator(QObject *parent = nullptr);
 
     /*! \brief Standard destructor */
-    ~Navigator() = default;
+    ~Navigator() override = default;
 
     // deferred initialization
-    void deferredInitialization();
+    void deferredInitialization() override;
 
 
     //
@@ -116,37 +116,37 @@ public:
      *
      *  @returns Property aircraft
      */
-    Navigation::Aircraft aircraft() const { return m_aircraft; }
+    [[nodiscard]] auto aircraft() const -> Navigation::Aircraft { return m_aircraft; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property clock
      */
-    Navigation::Clock* clock();
+    auto clock() -> Navigation::Clock*;
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property flightRoute
      */
-    FlightRoute* flightRoute();
+    auto flightRoute() -> FlightRoute*;
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property flightStatus
      */
-    FlightStatus flightStatus() const { return m_flightStatus; }
+    [[nodiscard]] auto flightStatus() const -> FlightStatus { return m_flightStatus; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property remaining route info
      */
-    Navigation::RemainingRouteInfo remainingRouteInfo() const { return m_remainingRouteInfo; }
+    [[nodiscard]] auto remainingRouteInfo() const -> Navigation::RemainingRouteInfo { return m_remainingRouteInfo; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property wind
      */
-    Weather::Wind wind() const { return m_wind; }
+    [[nodiscard]] auto wind() const -> Weather::Wind { return m_wind; }
 
 
     //

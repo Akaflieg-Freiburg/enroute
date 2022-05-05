@@ -87,7 +87,7 @@ public:
      *
      * @returns Property backgroundUpdate
      */
-    bool backgroundUpdate() const { return _backgroundUpdate; };
+    [[nodiscard]] auto backgroundUpdate() const -> bool { return _backgroundUpdate; };
 
     /*! \brief Downloading flag
      *
@@ -100,7 +100,7 @@ public:
      *
      * @returns Property downloading
      */
-    bool downloading() const;
+    [[nodiscard]] auto downloading() const -> bool;
 
     /*! \brief Find WeatherStation by ICAO code
      *
@@ -116,7 +116,7 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    Q_INVOKABLE Weather::Station *findWeatherStation(const QString &ICAOCode) const
+    Q_INVOKABLE [[nodiscard]] auto findWeatherStation(const QString &ICAOCode) const -> Weather::Station *
     {
         return _weatherStationsByICAOCode.value(ICAOCode, nullptr);
     }
@@ -134,7 +134,7 @@ public:
      *
      * @returns Property QNHInfo
      */
-    QString QNHInfo() const;
+    [[nodiscard]] auto QNHInfo() const -> QString;
 
     /*! \brief sunInfo
      *
@@ -149,7 +149,7 @@ public:
      *
      * @returns Property infoString
      */
-    static QString sunInfo() ;
+    static auto sunInfo() -> QString ;
 
     /*! \brief Update method
      *
@@ -189,7 +189,7 @@ public:
      *
      * @returns Property weatherStations
      */
-    QList<Weather::Station *> weatherStations() const;
+    [[nodiscard]] auto weatherStations() const -> QList<Weather::Station *>;
 
 signals:
     /*! \brief Notifier signal */
@@ -238,13 +238,13 @@ private:
 
     // Similar to findWeatherStation, but will create a weather station if no
     // station with the given code is known
-    Weather::Station *findOrConstructWeatherStation(const QString &ICAOCode);
+    auto findOrConstructWeatherStation(const QString &ICAOCode) -> Weather::Station *;
 
     // This method loads METAR/TAFs from a file "weather.dat" in
     // QStandardPaths::AppDataLocation.  There is locking to ensure that no two
     // processes access the file. The method will fail silently on error.
     // Returns true on success and false on failure.
-    bool load();
+    auto load() -> bool;
 
     // This method saves all METAR/TAFs that are valid and not yet expired to a
     // file "weather.dat" in QStandardPaths::AppDataLocation.  There is locking

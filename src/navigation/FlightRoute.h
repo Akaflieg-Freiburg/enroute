@@ -138,43 +138,43 @@ public:
      *
      *  @returns Property boundingRectangle
      */
-    QGeoRectangle boundingRectangle() const;
+    [[nodiscard]] auto boundingRectangle() const -> QGeoRectangle;
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property geoPath
      */
-    QVariantList geoPath() const;
+    [[nodiscard]] auto geoPath() const -> QVariantList;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property midFieldWaypoints
      */
-    QVariantList midFieldWaypoints() const;
+    [[nodiscard]] auto midFieldWaypoints() const -> QVariantList;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property legs
      */
-    QVector<Navigation::Leg> legs() const { return m_legs; }
+    [[nodiscard]] auto legs() const -> QVector<Navigation::Leg> { return m_legs; }
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property size
      */
-    int size() const { return m_waypoints.size(); }
+    [[nodiscard]] auto size() const -> int { return m_waypoints.size(); }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property summary
      */
-    QString summary() const;
+    [[nodiscard]] auto summary() const -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property waypoints
      */
-    QVariantList waypoints() const;
+    [[nodiscard]] auto waypoints() const -> QVariantList;
 
 
     //
@@ -201,7 +201,7 @@ public:
      *
      *  @returns True if route is emptry or if other waypoint is not near the current end of the route.
      */
-    Q_INVOKABLE bool canAppend(const GeoMaps::Waypoint& other) const;
+    Q_INVOKABLE [[nodiscard]] auto canAppend(const GeoMaps::Waypoint& other) const -> bool;
 
     /*! \brief Deletes all waypoints in the current route */
     Q_INVOKABLE void clear();
@@ -212,7 +212,7 @@ public:
      *
      * @returns bool Returns true if waypoint geographically close to a waypoint in the route
      */
-    Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const;
+    Q_INVOKABLE [[nodiscard]] auto contains(const GeoMaps::Waypoint& waypoint) const -> bool;
 
     /*! \brief Index for last occurrence of the waypoint in the flight route
      *
@@ -223,7 +223,7 @@ public:
      *
      *  @returns Index position of the last waypoint in the route close to the given waypoint. Returns -1 if no waypoint is close.
      */
-    Q_INVOKABLE int lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
+    Q_INVOKABLE [[nodiscard]] auto lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> int;
 
     /*! \brief Loads the route from a GeoJSON document
      *
@@ -235,7 +235,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGeoJSON(QString fileName);
+    Q_INVOKABLE auto loadFromGeoJSON(QString fileName) -> QString;
 
     /*! \brief Loads the route from a GPX document
      *
@@ -248,7 +248,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider);
+    Q_INVOKABLE auto loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider) -> QString;
 
     /*! \brief Loads the route from a GPX document
      *
@@ -261,7 +261,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    QString loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider);
+    auto loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider) -> QString;
 
     /*! \brief Loads the route from a GPX document
      *
@@ -274,7 +274,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    QString loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider);
+    auto loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider) -> QString;
 
     /*! \brief Move waypoint one position down in the list of waypoints
      *
@@ -338,7 +338,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString save(const QString& fileName=QString()) const;
+    Q_INVOKABLE [[nodiscard]] auto save(const QString& fileName=QString()) const -> QString;
 
     /*! \brief Suggests a name for saving this route
      *
@@ -348,7 +348,7 @@ public:
      * @returns Suggested name for saving the file. If no useful suggestion can
      * be made, the returned string is a translation of "Flight Route"
      */
-    Q_INVOKABLE QString suggestedFilename() const;
+    Q_INVOKABLE [[nodiscard]] auto suggestedFilename() const -> QString;
 
     /*! \brief Exports to route to GeoJSON
      *
@@ -358,7 +358,7 @@ public:
      *
      * @returns QByteArray describing the flight route
      */
-    Q_INVOKABLE QByteArray toGeoJSON() const;
+    Q_INVOKABLE [[nodiscard]] auto toGeoJSON() const -> QByteArray;
 
     /*! \brief Exports to route to GPX
      *
@@ -368,7 +368,7 @@ public:
      *
      * @returns QByteArray containing GPX data describing the flight route
      */
-    Q_INVOKABLE QByteArray toGpx() const;
+    Q_INVOKABLE [[nodiscard]] auto toGpx() const -> QByteArray;
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -389,7 +389,7 @@ private:
     Q_DISABLE_COPY_MOVE(FlightRoute)
 
     // Helper function for method toGPX
-    QString gpxElements(const QString& indent, const QString& tag) const;
+    [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
 
     // File name where the flight route is loaded upon startup are stored.  This
     // member is filled in in the constructor to

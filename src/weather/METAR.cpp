@@ -214,7 +214,7 @@ auto Weather::METAR::isValid() const -> bool
 auto Weather::METAR::relativeObservationTime() const -> QString
 {
     if (!_observationTime.isValid()) {
-        return QString();
+        return {};
     }
 
     return Navigation::Clock::describeTimeDifference(_observationTime);
@@ -290,7 +290,7 @@ auto Weather::METAR::summary() const -> QString {
     }
 
     if (resultList.isEmpty()) {
-        return QString();
+        return {};
     }
 
     return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(_observationTime), resultList.join(QStringLiteral(" • ")));

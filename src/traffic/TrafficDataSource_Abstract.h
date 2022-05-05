@@ -65,7 +65,7 @@ public:
      *
      * @returns Property errorString
      */
-    QString errorString()
+    auto errorString() -> QString
     {
         return m_errorString;
     }
@@ -87,7 +87,7 @@ public:
      *
      * @returns Property connectivityStatus
      */
-    QString connectivityStatus() const
+    [[nodiscard]] auto connectivityStatus() const -> QString
     {
         return m_connectivityStatus;
     }
@@ -108,7 +108,7 @@ public:
      *
      * @returns Property receivingHeartbeat
      */
-    bool receivingHeartbeat()
+    auto receivingHeartbeat() -> bool
     {
         return m_heartbeatTimer.isActive();
     }
@@ -125,7 +125,7 @@ public:
      *
      * @returns Property sourceName
      */
-    virtual QString sourceName() const = 0;
+    [[nodiscard]] virtual auto sourceName() const -> QString = 0;
 
     /*! \brief String describing the last traffic data receiver runtime error
      *
@@ -140,7 +140,7 @@ public:
      *
      * @returns Property errorString
      */
-    QString trafficReceiverRuntimeError()
+    auto trafficReceiverRuntimeError() -> QString
     {
         return m_trafficReceiverRuntimeError;
     }
@@ -158,7 +158,7 @@ public:
      *
      * @returns Property errorString
      */
-    QString trafficReceiverSelfTestError()
+    auto trafficReceiverSelfTestError() -> QString
     {
         return m_trafficReceiverSelfTestError;
     }

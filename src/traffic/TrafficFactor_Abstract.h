@@ -118,7 +118,7 @@ public:
      *
      * @returns Boolean with the result
      */
-    bool hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const;
+    [[nodiscard]] auto hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const -> bool;
 
     /*! \brief Starts or extends the lifetime of this object
      *
@@ -158,7 +158,7 @@ public:
      *
      *  @returns Property alarmLevel
      */
-    int alarmLevel() const
+    [[nodiscard]] auto alarmLevel() const -> int
     {
         return m_alarmLevel;
     }
@@ -200,7 +200,7 @@ public:
      *
      *  @returns Property animate
      */
-    bool animate() const
+    [[nodiscard]] auto animate() const -> bool
     {
         return m_animate;
     }
@@ -227,7 +227,7 @@ public:
      *
      *  @returns Property callSign
      */
-    QString callSign() const
+    [[nodiscard]] auto callSign() const -> QString
     {
         return m_callSign;
     }
@@ -258,7 +258,7 @@ public:
      *
      *  @returns Property color
      */
-    QString color() const
+    [[nodiscard]] auto color() const -> QString
     {
         if (m_alarmLevel == 0) {
             return QStringLiteral("green");
@@ -281,7 +281,7 @@ public:
      *
      *  @returns Property description
      */
-    QString description() const
+    [[nodiscard]] auto description() const -> QString
     {
         return m_description;
     }
@@ -298,7 +298,7 @@ public:
      *
      *  @returns Property hDist
      */
-    Units::Distance hDist() const
+    [[nodiscard]] auto hDist() const -> Units::Distance
     {
         return m_hDist;
     }
@@ -329,7 +329,7 @@ public:
      *
      *  @returns Property ID
      */
-    QString ID() const
+    [[nodiscard]] auto ID() const -> QString
     {
         return m_ID;
     }
@@ -353,7 +353,7 @@ public:
      *
      *  @returns Property type
      */
-    AircraftType type() const
+    [[nodiscard]] auto type() const -> AircraftType
     {
         return m_type;
     }
@@ -381,7 +381,7 @@ public:
      *
      *  @returns Property valid
      */
-    bool valid() const
+    [[nodiscard]] auto valid() const -> bool
     {
         return m_valid;
     }
@@ -398,7 +398,7 @@ public:
      *
      *  @returns Property vDist
      */
-    Units::Distance vDist() const
+    [[nodiscard]] auto vDist() const -> Units::Distance
     {
         return m_vDist;
     }

@@ -200,7 +200,7 @@ auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
 }
 
 
-bool Navigation::Aircraft::operator==(const Navigation::Aircraft& other) const
+auto Navigation::Aircraft::operator==(const Navigation::Aircraft& other) const -> bool
 {
     return (m_cruiseSpeed == other.m_cruiseSpeed) &&
             (m_descentSpeed == other.m_descentSpeed) &&

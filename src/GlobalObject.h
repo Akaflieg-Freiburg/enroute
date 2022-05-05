@@ -96,7 +96,7 @@ class GlobalObject : public QObject
      * This destructor will destruct all application-wide static instances
      * managed by this class.
      */
-    ~GlobalObject() = default;
+    ~GlobalObject() override = default;
 
     /*! \brief Indicates if the static methods are ready to be used
      *
@@ -106,97 +106,97 @@ class GlobalObject : public QObject
      *
      *  @returns False if the app is in constructing state where the pointer-returning methods should not be used.
      */
-    Q_INVOKABLE static bool canConstruct();
+    Q_INVOKABLE static auto canConstruct() -> bool;
 
     /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static DataManagement::DataManager* dataManager();
+    Q_INVOKABLE static auto dataManager() -> DataManagement::DataManager*;
 
     /*! \brief Pointer to appplication-wide static DemoRunner instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static DemoRunner* demoRunner();
+    Q_INVOKABLE static auto demoRunner() -> DemoRunner*;
 
     /*! \brief Pointer to appplication-wide static FlarmnetDB instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Traffic::FlarmnetDB* flarmnetDB();
+    Q_INVOKABLE static auto flarmnetDB() -> Traffic::FlarmnetDB*;
 
     /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static GeoMaps::GeoMapProvider* geoMapProvider();
+    Q_INVOKABLE static auto geoMapProvider() -> GeoMaps::GeoMapProvider*;
 
     /*! \brief Pointer to appplication-wide static librarian instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Librarian* librarian();
+    Q_INVOKABLE static auto librarian() -> Librarian*;
 
     /*! \brief Pointer to appplication-wide static MobileAdaptor instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static MobileAdaptor* mobileAdaptor();
+    Q_INVOKABLE static auto mobileAdaptor() -> MobileAdaptor*;
 
     /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Navigation::Navigator* navigator();
+    Q_INVOKABLE static auto navigator() -> Navigation::Navigator*;
 
     /*! \brief Pointer to appplication-wide static PasswordDB instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Traffic::PasswordDB* passwordDB();
+    Q_INVOKABLE static auto passwordDB() -> Traffic::PasswordDB*;
 
     /*! \brief Pointer to appplication-wide static PositionProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Positioning::PositionProvider* positionProvider();
+    Q_INVOKABLE static auto positionProvider() -> Positioning::PositionProvider*;
 
     /*! \brief Pointer to appplication-wide static notification manager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Platform::Notifier* notifier();
+    Q_INVOKABLE static auto notifier() -> Platform::Notifier*;
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static QNetworkAccessManager* networkAccessManager();
+    Q_INVOKABLE static auto networkAccessManager() -> QNetworkAccessManager*;
 
     /*! \brief Pointer to appplication-wide static Settings instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Settings* settings();
+    Q_INVOKABLE static auto settings() -> Settings*;
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static DataManagement::SSLErrorHandler* sslErrorHandler();
+    Q_INVOKABLE static auto sslErrorHandler() -> DataManagement::SSLErrorHandler*;
 
     /*! \brief Pointer to appplication-wide static TrafficDataProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Traffic::TrafficDataProvider* trafficDataProvider();
+    Q_INVOKABLE static auto trafficDataProvider() -> Traffic::TrafficDataProvider*;
 
     /*! \brief Pointer to appplication-wide static WeatherDataProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Weather::WeatherDataProvider* weatherDataProvider();
+    Q_INVOKABLE static auto weatherDataProvider() -> Weather::WeatherDataProvider*;
 
 protected:
    /*! \brief Non-constructor initialization
@@ -213,5 +213,5 @@ protected:
 private:
     Q_DISABLE_COPY_MOVE(GlobalObject)
 
-    template<typename T> static T* allocateInternal(QPointer<T>& pointer);
+    template<typename T> static auto allocateInternal(QPointer<T>& pointer) -> T*;
 };

@@ -95,7 +95,7 @@ public:
      *
      *  @returns Property receiving
      */
-    bool receivingHeartbeat() const
+    [[nodiscard]] auto receivingHeartbeat() const -> bool
     {
         return m_receivingHeartbeat;
     }
@@ -114,9 +114,9 @@ public:
      *
      *  @returns Property trafficObjects4QML
      */
-    QQmlListProperty<Traffic::TrafficFactor_WithPosition> trafficObjects4QML()
+    auto trafficObjects4QML() -> QQmlListProperty<Traffic::TrafficFactor_WithPosition>
     {
-        return QQmlListProperty(this, &m_trafficObjects);
+        return {this, &m_trafficObjects};
     }
 
     /*! \brief Most relevant traffic object whose position is not known
@@ -131,7 +131,7 @@ public:
      *
      *  @returns Property trafficObjectWithoutPosition
      */
-    Traffic::TrafficFactor_DistanceOnly *trafficObjectWithoutPosition()
+    auto trafficObjectWithoutPosition() -> Traffic::TrafficFactor_DistanceOnly *
     {
         return m_trafficObjectWithoutPosition;
     }
@@ -149,7 +149,7 @@ public:
      *
      * @returns Property trafficReceiverRuntimeError
      */
-    QString trafficReceiverRuntimeError()
+    auto trafficReceiverRuntimeError() -> QString
     {
         return m_trafficReceiverRuntimeError;
     }
@@ -167,7 +167,7 @@ public:
      *
      * @returns Property trafficReceiverSelfTestError
      */
-    QString trafficReceiverSelfTestError()
+    auto trafficReceiverSelfTestError() -> QString
     {
         return m_trafficReceiverSelfTestError;
     }
@@ -184,7 +184,7 @@ public:
      *
      *  @returns Property Warning
      */
-    Traffic::Warning warning() const
+    [[nodiscard]] auto warning() const -> Traffic::Warning
     {
         return m_Warning;
     }

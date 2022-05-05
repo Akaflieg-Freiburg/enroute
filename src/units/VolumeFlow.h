@@ -41,7 +41,7 @@ namespace Units {
          *
          * @returns volume flow
          */
-        Q_INVOKABLE static constexpr Units::VolumeFlow fromLPH(double volumeFlowInLPH)
+        Q_INVOKABLE static constexpr auto fromLPH(double volumeFlowInLPH) -> Units::VolumeFlow
         {
             VolumeFlow result;
             result.m_volumeFlowInLPH = volumeFlowInLPH;
@@ -54,7 +54,7 @@ namespace Units {
          *
          * @returns volume flow
          */
-        Q_INVOKABLE static constexpr Units::VolumeFlow fromGPH(double volumeFlowInGPH)
+        Q_INVOKABLE static constexpr auto fromGPH(double volumeFlowInGPH) -> Units::VolumeFlow
         {
             VolumeFlow result;
             result.m_volumeFlowInLPH = LitersPerGallon*volumeFlowInGPH;
@@ -65,7 +65,7 @@ namespace Units {
          *
          * @returns True is the volume is a finite number
          */
-        Q_INVOKABLE bool isFinite() const
+        Q_INVOKABLE [[nodiscard]] auto isFinite() const -> bool
         {
             return std::isfinite(m_volumeFlowInLPH);
         }
@@ -118,7 +118,7 @@ namespace Units {
          *
          * @returns volume flow in liters per hour
          */
-        Q_INVOKABLE double toLPH() const
+        Q_INVOKABLE [[nodiscard]] auto toLPH() const -> double
         {
             return m_volumeFlowInLPH;
         }
@@ -127,7 +127,7 @@ namespace Units {
          *
          * @returns volume flow in gallons per hour
          */
-        Q_INVOKABLE double toGPH() const
+        Q_INVOKABLE [[nodiscard]] auto toGPH() const -> double
         {
             return m_volumeFlowInLPH/LitersPerGallon;
         }

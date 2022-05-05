@@ -52,7 +52,7 @@ public:
     */
     explicit MobileAdaptor(QObject *parent = nullptr);
 
-    ~MobileAdaptor() = default;
+    ~MobileAdaptor() override = default;
 
     /*! \brief Function and type of a file that we have been requested to
      * open */
@@ -79,7 +79,7 @@ public:
      *
      * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
     */
-    Q_INVOKABLE static QString manufacturer();
+    Q_INVOKABLE static auto manufacturer() -> QString;
 
     /*! \brief Checks if all requred permissions have been granted
      *
@@ -89,7 +89,7 @@ public:
      * @returns On Android, returns 'true' if not all required permissions have
      * been granted. On other systems, always returns 'false'
     */
-    Q_INVOKABLE bool missingPermissionsExist();
+    Q_INVOKABLE auto missingPermissionsExist() -> bool;
 
 
     /*! \brief Export content to file or to file sending app
@@ -110,7 +110,7 @@ public:
      *
      * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
-    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE auto exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString;
 
     /*! \brief Lock connection to Wi-Fi network
      *
@@ -126,7 +126,7 @@ public:
      * @returns The SSID of the current Wi-Fi networks, or an empty of generic string
      * if the device is not connected to a Wi-Fi or if the SSID could not be determined.
      */
-    Q_INVOKABLE static QString getSSID();
+    Q_INVOKABLE static auto getSSID() -> QString;
 
     /*! \brief Import content from file
      *
@@ -154,7 +154,7 @@ public:
      *
      * @returns Empty string on success, a translated error message otherwise
      */
-    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE auto viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString;
 
     /*! \brief Start receiving "open file" requests from platform
      *
@@ -249,7 +249,7 @@ private:
   
     // Helper function. Saves content to a file in a directory from where
     // sharing to other android apps is possible
-    QString contentToTempFile(const QByteArray& content, const QString& fileNameTemplate);
+    auto contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString;
 
     // Name of a subdirectory within the AppDataLocation for sending and
     // receiving files.

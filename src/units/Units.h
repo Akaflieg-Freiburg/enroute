@@ -38,7 +38,7 @@
  *
  *  @return Speed
  */
-inline Units::Speed operator/(Units::Distance dist, Units::Time time)
+inline auto operator/(Units::Distance dist, Units::Time time) -> Units::Speed
 {
     if ((!dist.isFinite()) || (!time.isFinite()) || (qFuzzyIsNull(time.toS())))
         return {};
@@ -55,7 +55,7 @@ inline Units::Speed operator/(Units::Distance dist, Units::Time time)
  *
  * @returns Time
  */
-inline Units::Time operator/(Units::Distance dist, Units::Speed speed)
+inline auto operator/(Units::Distance dist, Units::Speed speed) -> Units::Time
 {
     if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS())))
         return {};
@@ -72,7 +72,7 @@ inline Units::Time operator/(Units::Distance dist, Units::Speed speed)
  *
  * @returns Volume
  */
-inline Units::Volume operator*(Units::VolumeFlow volumeFlow, Units::Time time)
+inline auto operator*(Units::VolumeFlow volumeFlow, Units::Time time) -> Units::Volume
 {
     if (!volumeFlow.isFinite() || !time.isFinite())
         return {};

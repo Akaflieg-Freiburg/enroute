@@ -140,49 +140,49 @@ public:
      *
      * @returns Property cruise speed
      */
-    Units::Speed cruiseSpeed() const { return m_cruiseSpeed; }
+    [[nodiscard]] auto cruiseSpeed() const -> Units::Speed { return m_cruiseSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property descentSpeed
      */
-    Units::Speed descentSpeed() const { return m_descentSpeed; }
+    [[nodiscard]] auto descentSpeed() const -> Units::Speed { return m_descentSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property fuelConsumptionInLPH
      */
-    Units::VolumeFlow fuelConsumption() const { return m_fuelConsumption; }
+    [[nodiscard]] auto fuelConsumption() const -> Units::VolumeFlow { return m_fuelConsumption; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredVolumeUnit
      */
-    FuelConsumptionUnit fuelConsumptionUnit() const { return m_fuelConsumptionUnit; }
+    [[nodiscard]] auto fuelConsumptionUnit() const -> FuelConsumptionUnit { return m_fuelConsumptionUnit; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredHorizontalDistanceUnit
      */
-    HorizontalDistanceUnit horizontalDistanceUnit() const { return m_horizontalDistanceUnit; }
+    [[nodiscard]] auto horizontalDistanceUnit() const -> HorizontalDistanceUnit { return m_horizontalDistanceUnit; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property minimum speed
      */
-    Units::Speed minimumSpeed() const { return m_minimumSpeed; }
+    [[nodiscard]] auto minimumSpeed() const -> Units::Speed { return m_minimumSpeed; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property name
      */
-    QString name() const { return m_name; }
+    [[nodiscard]] auto name() const -> QString { return m_name; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property preferredVertialDistanceUnit
      */
-    VerticalDistanceUnit verticalDistanceUnit() const { return m_verticalDistanceUnit; }
+    [[nodiscard]] auto verticalDistanceUnit() const -> VerticalDistanceUnit { return m_verticalDistanceUnit; }
 
 
     //
@@ -255,7 +255,7 @@ public:
      *
      *  @returns Copy of this object
      */
-    Q_INVOKABLE Navigation::Aircraft clone() const { return Navigation::Aircraft(*this); }
+    Q_INVOKABLE [[nodiscard]] auto clone() const -> Navigation::Aircraft { return {*this}; }
 
     /*! \brief Description of the way between two points
      *
@@ -265,7 +265,7 @@ public:
      *
      * @returns A string such as "DIST 65.2 nm • QUJ 276°" or "DIST 65.2 km • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
      */
-    Q_INVOKABLE QString describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) const;
+    Q_INVOKABLE [[nodiscard]] auto describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) const -> QString;
 
     /*! \brief Convert horizontal distance to string
      *
@@ -275,7 +275,7 @@ public:
      *
      *  @returns A string of the form "280 km", or "-" for an invalid distance
      */
-    Q_INVOKABLE QString horizontalDistanceToString(Units::Distance distance) const;
+    Q_INVOKABLE [[nodiscard]] auto horizontalDistanceToString(Units::Distance distance) const -> QString;
 
     /*! \brief Convert horizontal speed to string
      *
@@ -285,7 +285,7 @@ public:
      *
      *  @returns A string of the form "98 kn", "154 km/h", or "-"
      */
-    Q_INVOKABLE QString horizontalSpeedToString(Units::Speed speed) const;
+    Q_INVOKABLE [[nodiscard]] auto horizontalSpeedToString(Units::Speed speed) const -> QString;
 
     /*! \brief Reads aircraft data from a JSON document
      *
@@ -298,7 +298,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromJSON(const QString& fileName);
+    Q_INVOKABLE auto loadFromJSON(const QString& fileName) -> QString;
 
     /*! \brief Reads aircraft data from a JSON document
      *
@@ -311,7 +311,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromJSON(const QByteArray &JSON);
+    Q_INVOKABLE auto loadFromJSON(const QByteArray &JSON) -> QString;
 
     /*! \brief Equality check
      *
@@ -319,7 +319,7 @@ public:
      *
      *  @result equality
      */
-    Q_INVOKABLE bool operator==(const Navigation::Aircraft& other) const;
+    Q_INVOKABLE auto operator==(const Navigation::Aircraft& other) const -> bool;
 
     /*! \brief Saves aircraft to a file
      *
@@ -330,7 +330,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString save(const QString& fileName) const;
+    Q_INVOKABLE [[nodiscard]] auto save(const QString& fileName) const -> QString;
 
     /*! \brief Exports to route to JSON
      *
@@ -339,7 +339,7 @@ public:
      *
      * @returns QByteArray containing JSON code
      */
-    Q_INVOKABLE QByteArray toJSON() const;
+    Q_INVOKABLE [[nodiscard]] auto toJSON() const -> QByteArray;
 
     /*! \brief Convert vertical distance to string
      *
@@ -351,7 +351,7 @@ public:
      *
      *  @returns A string of the form "1.280 m", "3.500 ft", or "-" for an invalid distance
      */
-    Q_INVOKABLE QString verticalDistanceToString(Units::Distance distance, bool forceSign=false) const;
+    Q_INVOKABLE [[nodiscard]] auto verticalDistanceToString(Units::Distance distance, bool forceSign=false) const -> QString;
 
     /*! \brief Convert vertical speed to string
      *
@@ -361,7 +361,7 @@ public:
      *
      *  @returns A string of the form "500 ft/min", "2,5 m/s", or "-"
      */
-    Q_INVOKABLE QString verticalSpeedToString(Units::Speed speed) const;
+    Q_INVOKABLE [[nodiscard]] auto verticalSpeedToString(Units::Speed speed) const -> QString;
 
     /*! \brief Convert volume to string
      *
@@ -371,7 +371,7 @@ public:
      *
      *  @returns A string of the form "5.2 l", or "-"
      */
-    Q_INVOKABLE QString volumeToString(Units::Volume volume) const;
+    Q_INVOKABLE [[nodiscard]] auto volumeToString(Units::Volume volume) const -> QString;
 
 private:
     static constexpr Units::Speed minValidSpeed = Units::Speed::fromKN(10.0);

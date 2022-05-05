@@ -41,7 +41,7 @@ using namespace std::chrono_literals;
 
 DataManagement::DataManager::DataManager(QObject *parent) :
     GlobalObject(parent),
-    _maps_json(QUrl("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json"),
+    _maps_json(QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")),
                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/maps.json", this)
 {
     // Earlier versions of this program constructed files with names ending in ".geojson.geojson"
@@ -52,7 +52,7 @@ DataManagement::DataManager::DataManager(QObject *parent) :
                                   QDir::Files, QDirIterator::Subdirectories);
         while (fileIterator.hasNext()) {
             fileIterator.next();
-            if (fileIterator.filePath().endsWith(".geojson.geojson") || fileIterator.filePath().endsWith(".mbtiles.mbtiles")) {
+            if (fileIterator.filePath().endsWith(QLatin1String(".geojson.geojson")) || fileIterator.filePath().endsWith(QLatin1String(".mbtiles.mbtiles"))) {
                 offendingFiles += fileIterator.filePath();
             }
         }
@@ -201,7 +201,7 @@ auto DataManagement::DataManager::describeMapFile(const QString& fileName) -> QS
         QFile dataFile(fileName);
         dataFile.open(QIODevice::ReadOnly);
         auto description = dataFile.readLine();
-        result += QString("<p>%1</p>").arg( QString::fromLatin1(description));
+        result += QStringLiteral("<p>%1</p>").arg( QString::fromLatin1(description));
     }
 
     return result;
@@ -262,20 +262,20 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
     }
 
     auto top = doc.object();
-    auto baseURL = top.value("url").toString();
+    auto baseURL = top.value(QStringLiteral("url")).toString();
 
-    foreach(auto map, top.value("maps").toArray()) {
+    foreach(auto map, top.value(QStringLiteral("maps")).toArray()) {
         auto obj = map.toObject();
-        auto mapFileName = obj.value("path").toString();
+        auto mapFileName = obj.value(QStringLiteral("path")).toString();
         auto mapName = mapFileName.section('.',-2,-2);
-        auto mapUrlName = baseURL + "/"+ obj.value("path").toString();
-        auto fileModificationDateTime = QDateTime::fromString(obj.value("time").toString(), "yyyyMMdd");
-        auto fileSize = obj.value("size").toInt();
+        auto mapUrlName = baseURL + "/"+ obj.value(QStringLiteral("path")).toString();
+        auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
+        auto fileSize = obj.value(QStringLiteral("size")).toInt();
 
         // If a map with the given name already exists, update that element, delete its entry in oldMaps
         DataManagement::Downloadable *mapPtr = nullptr;
         foreach(auto geoMapPtr, oldMaps) {
-            if (geoMapPtr->objectName() == mapName.section("/", -1 , -1)) {
+            if (geoMapPtr->objectName() == mapName.section(QStringLiteral("/"), -1 , -1)) {
                 mapPtr = geoMapPtr;
                 break;
             }
@@ -292,18 +292,18 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
 
             // Construct a new downloadable object.
             auto *downloadable = new DataManagement::Downloadable(QUrl(mapUrlName), localFileName, this);
-            downloadable->setObjectName(mapName.section("/", -1, -1));
-            downloadable->setSection(mapName.section("/", -2, -2));
+            downloadable->setObjectName(mapName.section(QStringLiteral("/"), -1, -1));
+            downloadable->setSection(mapName.section(QStringLiteral("/"), -2, -2));
             downloadable->setRemoteFileDate(fileModificationDateTime);
             downloadable->setRemoteFileSize(fileSize);
             _geoMaps.addToGroup(downloadable);
-            if (localFileName.endsWith("geojson")) {
+            if (localFileName.endsWith(QLatin1String("geojson"))) {
                 _aviationMaps.addToGroup(downloadable);
             }
-            if (localFileName.endsWith("mbtiles")) {
+            if (localFileName.endsWith(QLatin1String("mbtiles"))) {
                 _baseMaps.addToGroup(downloadable);
             }
-            if (localFileName.endsWith("txt")) {
+            if (localFileName.endsWith(QLatin1String("txt"))) {
                 _databases.addToGroup(downloadable);
             }
         }
@@ -331,13 +331,13 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
                                        "/aviation_maps/").section('.', 0, 0);
 
         auto *downloadable = new DataManagement::Downloadable(QUrl(), path, this);
-        downloadable->setSection("Unsupported Maps");
+        downloadable->setSection(QStringLiteral("Unsupported Maps"));
         downloadable->setObjectName(objectName);
         _geoMaps.addToGroup(downloadable);
     }
 
     // Update the whatsNew property
-    auto newWhatsNew = top.value("whatsNew").toString();
+    auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();
     if (!newWhatsNew.isEmpty() && (newWhatsNew != _whatsNew)) {
         _whatsNew = newWhatsNew;
         emit whatsNewChanged();
@@ -349,7 +349,7 @@ void DataManagement::DataManager::setTimeOfLastUpdateToNow()
 {
     // Save timestamp, so that we know when an automatic update is due
     QSettings settings;
-    settings.setValue("DataManager/MapListTimeStamp", QDateTime::currentDateTimeUtc());
+    settings.setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc());
 
     // Now that we downloaded successfully, we need to check for updates only once
     // a day
@@ -362,7 +362,7 @@ void DataManagement::DataManager::autoUpdateGeoMapList()
     // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     QSettings settings;
-    QDateTime lastUpdate = settings.value("DataManager/MapListTimeStamp", QDateTime()).toDateTime();
+    QDateTime lastUpdate = settings.value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
 
     if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)) ) {
         // Updates are due. Check again in one hour if the update went well or

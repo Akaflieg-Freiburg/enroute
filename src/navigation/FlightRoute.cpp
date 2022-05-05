@@ -95,7 +95,7 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
     }
 
     foreach(auto wpt, m_waypoints) {
-        if (wpt.category() == "WP") {
+        if (wpt.category() == QLatin1String("WP")) {
             result << QVariant::fromValue(wpt);
         }
     }
@@ -268,7 +268,7 @@ auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
     }
 
     QVector<GeoMaps::Waypoint> newWaypoints;
-    foreach(auto value, document.object()["features"].toArray()) {
+    foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
         auto wp = GeoMaps::Waypoint(value.toObject());
         if (!wp.isValid()) {
             return tr("Cannot parse content of file '%1'.").arg(fileName);
@@ -408,8 +408,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     //
     QString start = m_waypoints.constFirst().ICAOCode(); // ICAO code of start point
     QString name = m_waypoints.constFirst().name(); // Name of start point
-    name.replace("(", "");
-    name.replace(")", "");
+    name.replace(QLatin1String("("), QLatin1String(""));
+    name.replace(QLatin1String(")"), QLatin1String(""));
     if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"_";
     }
@@ -426,8 +426,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     //
     QString end = m_waypoints.constLast().ICAOCode(); // ICAO code of end point
     name = m_waypoints.constLast().name(); // Name of end point
-    name.replace("(", "");
-    name.replace(")", "");
+    name.replace(QLatin1String("("), QLatin1String(""));
+    name.replace(QLatin1String(")"), QLatin1String(""));
     if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"_";
     }
@@ -440,8 +440,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     }
 
     // Remove some problematic characters
-    start.replace("/", "-");
-    end.replace("/", "-");
+    start.replace(QLatin1String("/"), QLatin1String("-"));
+    end.replace(QLatin1String("/"), QLatin1String("-"));
 
     // Compile final result
 

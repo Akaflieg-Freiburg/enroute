@@ -130,7 +130,7 @@ public:
      *
      *  @returns Estimated WCA on leg
      */
-    Q_INVOKABLE QString description(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
+    Q_INVOKABLE QString description(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
     /*! \brief ETE for leg
      *
@@ -150,7 +150,7 @@ public:
      *
      *  @returns Estimated fuel consumption on leg
      */
-    Q_INVOKABLE Units::Volume Fuel(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
+    Q_INVOKABLE Units::Volume Fuel(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
     /*! \brief Estimated ground speed on leg
      *
@@ -160,7 +160,7 @@ public:
      *
      *  @returns Estimated ground speed on leg
      */
-    Q_INVOKABLE Units::Speed GS(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
+    Q_INVOKABLE Units::Speed GS(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
     /*! \brief Check if positionInfo is travelling on this leg
      *
@@ -203,7 +203,7 @@ public:
      *
      *  @returns Estimated WCA on leg
      */
-    Q_INVOKABLE Units::Angle WCA(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
+    Q_INVOKABLE Units::Angle WCA(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
 
     //
@@ -215,7 +215,7 @@ public:
 
 private:
     // Necessary data for computation of wind triangle?
-    bool hasDataForWindTriangle(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const;
+    bool hasDataForWindTriangle(Weather::Wind wind, const Navigation::Aircraft& aircraft) const;
 
     // Minimum length of the leg in meters. If shorter, no courses are computed.
     static constexpr Units::Distance minLegLength = Units::Distance::fromM(100.0);

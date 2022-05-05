@@ -82,7 +82,7 @@ auto Navigation::Leg::TC() const -> Units::Angle
 // Methods
 //
 
-auto Navigation::Leg::Fuel(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const -> Units::Volume
+auto Navigation::Leg::Fuel(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Volume
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle(wind, aircraft)) {
@@ -93,7 +93,7 @@ auto Navigation::Leg::Fuel(const Weather::Wind& wind, const Navigation::Aircraft
 }
 
 
-auto Navigation::Leg::GS(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const -> Units::Speed
+auto Navigation::Leg::GS(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Speed
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle(wind, aircraft)) {
@@ -154,7 +154,7 @@ auto Navigation::Leg::isNear(const Positioning::PositionInfo& positionInfo) cons
 }
 
 
-auto Navigation::Leg::WCA(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const -> Units::Angle
+auto Navigation::Leg::WCA(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> Units::Angle
 {
     // This also checks for _aircraft and _wind to be non-nullptr
     if (!hasDataForWindTriangle(wind, aircraft)) {
@@ -170,32 +170,32 @@ auto Navigation::Leg::WCA(const Weather::Wind& wind, const Navigation::Aircraft&
 }
 
 
-auto Navigation::Leg::description(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const -> QString
+auto Navigation::Leg::description(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> QString
 {
     if (!isValid()) {
         return QString();
     }
 
     QString result;
-    result += QString("%1").arg( aircraft.horizontalDistanceToString(distance()) );
+    result += QStringLiteral("%1").arg( aircraft.horizontalDistanceToString(distance()) );
     auto _time = ETE(wind, aircraft);
     if (_time.isFinite()) {
-        result += QString(" • ETE %1 h").arg(_time.toHoursAndMinutes());
+        result += QStringLiteral(" • ETE %1 h").arg(_time.toHoursAndMinutes());
     }
     auto TCInDEG = TC().toDEG();
     if (qIsFinite(TCInDEG)) {
-        result += QString(" • TC %1°").arg(qRound(TCInDEG));
+        result += QStringLiteral(" • TC %1°").arg(qRound(TCInDEG));
     }
     double THInDEG = TH(wind, aircraft).toDEG();
     if (qIsFinite(THInDEG)) {
-        result += QString(" • TH %1°").arg(qRound(THInDEG));
+        result += QStringLiteral(" • TH %1°").arg(qRound(THInDEG));
     }
 
     return result;
 }
 
 
-auto Navigation::Leg::hasDataForWindTriangle(const Weather::Wind& wind, const Navigation::Aircraft& aircraft) const -> bool
+auto Navigation::Leg::hasDataForWindTriangle(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> bool
 {
 
     if ( !aircraft.cruiseSpeed().isFinite() ) {

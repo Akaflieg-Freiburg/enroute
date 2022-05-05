@@ -37,17 +37,17 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 
     // Restore wind
     QSettings settings;
-    m_wind.setSpeed(Units::Speed::fromKN(settings.value("Wind/windSpeedInKT", qQNaN()).toDouble()));
-    m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value("Wind/windDirectionInDEG", qQNaN()).toDouble()) );
+    m_wind.setSpeed(Units::Speed::fromKN(settings.value(QStringLiteral("Wind/windSpeedInKT"), qQNaN()).toDouble()));
+    m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value(QStringLiteral("Wind/windDirectionInDEG"), qQNaN()).toDouble()) );
 
     // Restore aircraft
     QFile file(m_aircraftFileName);
     if (file.open(QIODevice::ReadOnly)) {
         m_aircraft.loadFromJSON(file.readAll());
     } else {
-        auto cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
-        auto descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
-        auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
+        auto cruiseSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/cruiseSpeedInKTS"), 0.0).toDouble());
+        auto descentSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/descentSpeedInKTS"), 0.0).toDouble());
+        auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value(QStringLiteral("Aircraft/fuelConsumptionInLPH"), 0.0).toDouble());
         m_aircraft.setCruiseSpeed(cruiseSpeed);
         m_aircraft.setDescentSpeed(descentSpeed);
         m_aircraft.setFuelConsumption(fuelConsumption);
@@ -122,7 +122,7 @@ void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 }
 
 
-void Navigation::Navigator::setWind(const Weather::Wind& newWind)
+void Navigation::Navigator::setWind(Weather::Wind newWind)
 {
     if (newWind == m_wind) {
         return;
@@ -130,8 +130,8 @@ void Navigation::Navigator::setWind(const Weather::Wind& newWind)
 
     // Save wind
     QSettings settings;
-    settings.setValue("Wind/windSpeedInKT", newWind.speed().toKN());
-    settings.setValue("Wind/windDirectionInDEG", newWind.directionFrom().toDEG());
+    settings.setValue(QStringLiteral("Wind/windSpeedInKT"), newWind.speed().toKN());
+    settings.setValue(QStringLiteral("Wind/windDirectionInDEG"), newWind.directionFrom().toDEG());
 
     // Set new wind
     m_wind = newWind;

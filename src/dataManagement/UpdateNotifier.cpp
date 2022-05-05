@@ -68,7 +68,7 @@ void DataManagement::UpdateNotifier::updateNotification()
     // Check if last notification is less than four hours ago. In that case, do not notify again,
     // and ask again in 11min.
     QSettings settings;
-    auto lastGeoMapUpdateNotification = settings.value("lastGeoMapUpdateNotification").toDateTime();
+    auto lastGeoMapUpdateNotification = settings.value(QStringLiteral("lastGeoMapUpdateNotification")).toDateTime();
     if (lastGeoMapUpdateNotification.isValid()) {
         auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
         if (secsSinceLastNotification < 4*60*60) {
@@ -80,6 +80,6 @@ void DataManagement::UpdateNotifier::updateNotification()
     // Notify!
     auto text = tr("The estimated download size is %1.").arg(geoMaps->updateSize());
     GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);
-    settings.setValue("lastGeoMapUpdateNotification", QDateTime::currentDateTimeUtc());
+    settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
 
 }

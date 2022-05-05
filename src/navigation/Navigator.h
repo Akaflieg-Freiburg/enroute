@@ -163,7 +163,7 @@ public:
      *
      *  @param newWind Property wind
      */
-    void setWind(const Weather::Wind& newWind);
+    void setWind(Weather::Wind newWind);
 
 signals:
     /*! \brief Notifier signal */

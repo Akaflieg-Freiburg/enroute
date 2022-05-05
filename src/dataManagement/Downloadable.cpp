@@ -74,7 +74,7 @@ auto DataManagement::Downloadable::infoText() const -> QString {
     } else {
         displayText += tr("not installed") + " • ";
         if (remoteFileSize() >= 0) {
-            displayText += QString("%1").arg(QLocale::system().formattedDataSize(
+            displayText += QStringLiteral("%1").arg(QLocale::system().formattedDataSize(
                                                  remoteFileSize(), 1, QLocale::DataSizeSIFormat));
         } else {
             displayText += tr("file size unknown");
@@ -228,7 +228,7 @@ void DataManagement::Downloadable::startFileDownload() {
     // Create directory that will hold the local file, if it does not yet exist
     QDir dir(QFileInfo(_fileName).dir());
     if (!dir.exists()) {
-        dir.mkpath(".");
+        dir.mkpath(QStringLiteral("."));
     }
 
     // Copy the temporary file to the local file

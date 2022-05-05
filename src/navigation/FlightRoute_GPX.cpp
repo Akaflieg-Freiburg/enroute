@@ -29,7 +29,7 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
 {
     // now in UTC, ISO 8601 alike
     //
-    QString now = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd HH:mm:ssZ");
+    QString now = QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyy-MM-dd HH:mm:ssZ"));
 
     // gpx header
     //
@@ -50,11 +50,11 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
                                                                                                                                                                                                                             " maxlon='" + QString::number(bbox.topRight().longitude(), 'f', 8) + "'/>\n";
     }
 
-    gpx += "  </metadata>\n";
+    gpx += QLatin1String("  </metadata>\n");
 
     // 2 spaces additional indent
     //
-    gpx += gpxElements(QString("  "), "wpt");
+    gpx += gpxElements(QStringLiteral("  "), QStringLiteral("wpt"));
 
     // start gpx rte
     // rte does _not_ contain segments
@@ -64,11 +64,11 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
 
     // 4 spaces additional indent
     //
-    gpx += gpxElements(QString("    "), "rtept");
+    gpx += gpxElements(QStringLiteral("    "), QStringLiteral("rtept"));
 
     // close gpx
     //
-    gpx += "  </rte>\n";
+    gpx += QLatin1String("  </rte>\n");
 
     // the next few lines export the route as gpx track.
     // We leave this disabled right now. If we discover later
@@ -94,7 +94,7 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
            "  </trk>\n";
 #endif
 
-    gpx += "</gpx>\n";
+    gpx += QLatin1String("</gpx>\n");
 
     return gpx.toUtf8();
 }
@@ -102,7 +102,7 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
 
 auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& tag) const -> QString
 {
-    QString gpx = "";
+    QString gpx = QLatin1String("");
 
     // waypoints
     //
@@ -177,21 +177,21 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
         // capture rtept, trkpt or wpt
 
         QXmlStreamAttributes attrs = xml.attributes();
-        if (!attrs.hasAttribute("lon") || !attrs.hasAttribute("lat")) {
+        if (!attrs.hasAttribute(QStringLiteral("lon")) || !attrs.hasAttribute(QStringLiteral("lat"))) {
             qDebug() << "missing lat or lon attribute";
             return;
         }
 
         bool ok = false;
-        double lon = xml.attributes().value("lon").toFloat(&ok);
+        double lon = xml.attributes().value(QStringLiteral("lon")).toFloat(&ok);
         if (!ok) {
-            qDebug() << "Unable to convert lon to float: " << xml.attributes().value("lon");
+            qDebug() << "Unable to convert lon to float: " << xml.attributes().value(QStringLiteral("lon"));
             return;
         }
 
-        double lat = xml.attributes().value("lat").toFloat(&ok);
+        double lat = xml.attributes().value(QStringLiteral("lat")).toFloat(&ok);
         if (!ok) {
-            qDebug() << "Unable to convert lat to float: " << xml.attributes().value("lat");
+            qDebug() << "Unable to convert lat to float: " << xml.attributes().value(QStringLiteral("lat"));
             return;
         }
 
@@ -210,7 +210,7 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
 
             if (xml.isStartElement()) {
 
-                if (xmlTag == "ele") {
+                if (xmlTag == QLatin1String("ele")) {
                     QString alt_s = xml.readElementText(QXmlStreamReader::SkipChildElements);
                     double alt = alt_s.toFloat(&ok);
                     if (!ok) {
@@ -218,11 +218,11 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
                         return;
                     }
                     pos.setAltitude(alt);
-                } else if (xmlTag == "name") {
+                } else if (xmlTag == QLatin1String("name")) {
                     name = xml.readElementText(QXmlStreamReader::SkipChildElements);
-                } else if (xmlTag == "desc") {
+                } else if (xmlTag == QLatin1String("desc")) {
                     desc = xml.readElementText(QXmlStreamReader::SkipChildElements);
-                } else if (xmlTag == "cmt") {
+                } else if (xmlTag == QLatin1String("cmt")) {
                     cmt = xml.readElementText(QXmlStreamReader::SkipChildElements);
                 }
 
@@ -256,7 +256,7 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
             wpt = nearest;
         }
 
-        if (wpt.type() == "WP" && wpt.category() == "WP" && name.length() > 0) {
+        if (wpt.type() == QLatin1String("WP") && wpt.category() == QLatin1String("WP") && name.length() > 0) {
             wpt = wpt.renamed(name);
         }
 
@@ -273,12 +273,12 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
         auto name = xml.name().toString();
 
         if (xml.isStartElement()) {
-            if (name == "rtept") {
-                addPoint("rtept", rtept);
-            } else if (name == "trkpt") {
-                addPoint("trkpt", trkpt);
-            } else if (name == "wpt") {
-                addPoint("wpt", wpt);
+            if (name == QLatin1String("rtept")) {
+                addPoint(QStringLiteral("rtept"), rtept);
+            } else if (name == QLatin1String("trkpt")) {
+                addPoint(QStringLiteral("trkpt"), trkpt);
+            } else if (name == QLatin1String("wpt")) {
+                addPoint(QStringLiteral("wpt"), wpt);
             }
         }
     }

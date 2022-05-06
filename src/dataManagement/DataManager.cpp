@@ -229,7 +229,7 @@ void DataManagement::DataManager::updateGeoMapList()
     _maps_json.startFileDownload();
 }
 
-void DataManagement::DataManager::errorReceiver(const QString & /*unused*/, QString message)
+void DataManagement::DataManager::errorReceiver(const QString& /*unused*/, QString message)
 {
     emit error(std::move(message));
 }

@@ -154,7 +154,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.dataManager().describeMapFile(model.modelData.fileName)
+                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
                                 infoDialog.open()
                             }
                         }
@@ -272,7 +272,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.dataManager().describeMapFile(model.modelData.fileName)
+                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
                                 infoDialog.open()
                             }
                         }
@@ -377,12 +377,12 @@ Page {
                 id: downloadUpdatesMenu
 
                 text: qsTr("Download all updates…")
-                enabled: global.dataManager().geoMaps.updatable
+                enabled: global.dataManager().items.updatable
 
                 onTriggered: {
                     global.mobileAdaptor().vibrateBrief()
                     highlighted = false
-                    global.dataManager().geoMaps.updateAll()
+                    global.dataManager().items.updateAll()
                 }
             }
 
@@ -541,7 +541,7 @@ Page {
         anchors.bottom: parent.bottom
 
         color: "white"
-        visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasGeoMapList
+        visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList
 
         Label {
             anchors.left: parent.left
@@ -616,13 +616,13 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: (!global.dataManager().downloadingRemoteItemList && !global.dataManager().hasGeoMapList) || (!global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable)
+        visible: (!global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList) || (!global.dataManager().items.downloading && global.dataManager().items.updatable)
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
 
         ToolButton {
             id: downloadMapListActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasGeoMapList
+            visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList
 
             text: qsTr("Download list of maps…")
             icon.source: "/icons/material/ic_file_download.svg"
@@ -636,14 +636,14 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable
+            visible: !global.dataManager().items.downloading && global.dataManager().items.updatable
 
             text: qsTr("Update")
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                global.dataManager().geoMaps.updateAll()
+                global.dataManager().items.updateAll()
             }
         }
     }

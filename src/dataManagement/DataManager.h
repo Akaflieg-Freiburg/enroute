@@ -30,13 +30,13 @@ namespace DataManagement {
  *
  *  This class manages a list of remotely available and locally installed
  *  databases and geographic maps.  More specifically, it manages the following
- *  objects.
+ *  items.
  *
  *  - Aviation maps (in GeoJSON format)
  *  - Base maps (in MBTILES format)
  *  - FLARM Databases (as a text file)
  *
- *  The class retrieves the list of available objects from a remote server on a
+ *  The class retrieves the list of available items from a remote server on a
  *  regular basis, updates the list automatically once a week, and maintains a
  *  list of Downloadable objects that corresponds to the remotely available and
  *  locally installed items.
@@ -69,7 +69,7 @@ public:
      *
      *  @param parent The standard QObject parent pointer.
      */
-    explicit DataManager(QObject *parent=nullptr);
+    explicit DataManager(QObject* parent=nullptr);
 
     // deferred initialization
     void deferredInitialization() override;
@@ -81,49 +81,93 @@ public:
 
     /*! \brief DownloadableGroupWatcher that holds all aviation maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all aviation maps. The
-     *  maps also appear in geoMaps, which is the union of aviation maps and
-     *  base maps.
+     *  Pointer to a DownloadableGroupWatcher that holds all aviation maps.
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* aviationMaps READ aviationMaps CONSTANT)
 
     /*! \brief DownloadableGroupWatcher that holds all base maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all base maps. The maps
-     *  also appear in geoMaps, which is the union of aviation maps and base
-     *  maps.
+     *  Pointer to a DownloadableGroupWatcher that holds all base maps.
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMaps READ baseMaps CONSTANT)
 
     /*! \brief DownloadableGroupWatcher that holds all data items
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all data items.
+     *  Pointer to a DownloadableGroupWatcher that holds all databases.
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* databases READ databases CONSTANT)
 
-    /*! \brief Indicates whether the file "maps.json" is currently being
-     * downloaded */
-    #warning name misleading
+    /*! \brief True while the list of remotely available items is retrieved */
     Q_PROPERTY(bool downloadingRemoteItemList READ downloadingRemoteItemList NOTIFY downloadingRemoteItemListChanged)
 
-    /*! \brief DownloadableGroupWatcher that holds all geographic maps
+    /*! \brief DownloadableGroupWatcher that holds all data items
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all maps.  This is the
-     *  union of aviation maps and base maps.
+     *  Pointer to a DownloadableGroupWatcher that holds all data items.  This
+     *  includes aviation maps, base maps, and databases.
      */
-#warning check if correct. Are data items also included?
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* geoMaps READ geoMaps CONSTANT)
+    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* items READ items CONSTANT)
 
-    /*! \brief True if the list of available geo maps has already been
-     * downloaded */
-#warning also includes data items. might want to change name
-    Q_PROPERTY(bool hasGeoMapList READ hasGeoMapList NOTIFY geoMapListChanged)
+    /*! \brief True if list of remotely available items has been downloaded */
+    Q_PROPERTY(bool hasRemoteItemList READ hasRemoteItemList NOTIFY geoMapListChanged)
 
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
     /*! \brief Hash of the current "what's new" message */
     Q_PROPERTY(uint whatsNewHash READ whatsNewHash NOTIFY whatsNewChanged)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property aviationMaps
+     */
+    [[nodiscard]] auto aviationMaps() -> DataManagement::DownloadableGroupWatcher* { return &_aviationMaps; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property baseMaps
+     */
+    [[nodiscard]] auto baseMaps() -> DataManagement::DownloadableGroupWatcher* { return &_baseMaps; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property databases
+     */
+    [[nodiscard]] auto databases() -> DataManagement::DownloadableGroupWatcher* { return &_databases; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property downloadingRemoteItemList
+     */
+    [[nodiscard]] auto downloadingRemoteItemList() const -> bool { return _maps_json.downloading(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property items
+     */
+    [[nodiscard]] auto items() -> DataManagement::DownloadableGroupWatcher* { return &_items; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns hasRemoteItemList
+     */
+    [[nodiscard]] auto hasRemoteItemList() const -> bool { return !_items.downloadables().isEmpty(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property whatsNew
+     */
+    [[nodiscard]] auto whatsNew() const -> QString { return _whatsNew; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property lastWhatsNewHash
+     */
+    [[nodiscard]] auto whatsNewHash() const -> uint { return qHash(_whatsNew, 0); }
 
     // ------------------------------------------
 
@@ -134,70 +178,25 @@ public:
      */
     void cleanUp();
 
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property aviationMaps
-  */
-    auto aviationMaps() -> DataManagement::DownloadableGroupWatcher * { return &_aviationMaps; }
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property baseMaps
-  */
-    auto baseMaps() -> DataManagement::DownloadableGroupWatcher * { return &_baseMaps; };
-
-    /*! \brief Getter function for the property with the same name
-   *
-   *  @returns Property databases
-   */
-    auto databases() -> DataManagement::DownloadableGroupWatcher * { return &_databases; };
 
     /*! \brief Describe installed map
      *
-     * This method describes installed GeoJSON map files.
+     * This method describes a data item, by inspecting the locally installed
+     * map file.
      *
-     * @warning The data is only updated after the maps have been parsed in the
-     * GeoJSON parsing process. It is therefore possible that the method returns
-     * wrong information if it is called directly after a new map has been
-     * installed.
+     * @warning The description not always available right after installation --
+     * information about aviation maps is only updated after the maps have been
+     * parsed in the GeoJSON parsing process. It is therefore possible that the
+     * method returns wrong information if it is called directly after a new map
+     * has been installed.
      *
-     * @param fileName Name of a GeoJSON file.
+     * @param fileName File name of locally installed file.
      *
      * @returns A human-readable HTML string, or an empty string if no data is
      * available
      */
     #warning is docu correct?
-    Q_INVOKABLE static QString describeMapFile(const QString& fileName);
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property downloadingRemoteItemList
-   */
-    [[nodiscard]] auto downloadingRemoteItemList() const -> bool { return _maps_json.downloading(); };
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns Property geoMaps
-  */
-    auto geoMaps() -> DataManagement::DownloadableGroupWatcher * { return &_geoMaps; }
-
-    /*! \brief Getter function for the property with the same name
-
-    @returns hasGeoMapList
-   */
-    [[nodiscard]] auto hasGeoMapList() const -> bool { return !_geoMaps.downloadables().isEmpty(); }
-
-    /*! \brief Getter function for property of the same name
-   *
-   * @returns Property lastWhatsNew
-   */
-    [[nodiscard]] auto whatsNew() const -> QString { return _whatsNew; }
-
-    /*! \brief Getter function for property of the same name
-   *
-   * @returns Property lastWhatsNewHash
-   */
-    [[nodiscard]] auto whatsNewHash() const -> uint { return qHash(_whatsNew, 0); }
+    Q_INVOKABLE static QString describeDataItem(const QString& fileName);
 
 public slots:
     /*! \brief Triggers an update of the list of available maps
@@ -278,7 +277,7 @@ private:
 
     // List of geographic maps
     DataManagement::DownloadableGroup _databases;
-    DataManagement::DownloadableGroup _geoMaps;
+    DataManagement::DownloadableGroup _items;
     DataManagement::DownloadableGroup _baseMaps;
     DataManagement::DownloadableGroup _aviationMaps;
 };

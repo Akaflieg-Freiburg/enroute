@@ -104,7 +104,7 @@ public:
     /*! \brief Indicates whether the file "maps.json" is currently being
      * downloaded */
     #warning name misleading
-    Q_PROPERTY(bool downloadingGeoMapList READ downloadingGeoMapList NOTIFY downloadingGeoMapListChanged)
+    Q_PROPERTY(bool downloadingRemoteItemList READ downloadingRemoteItemList NOTIFY downloadingRemoteItemListChanged)
 
     /*! \brief DownloadableGroupWatcher that holds all geographic maps
      *
@@ -171,9 +171,9 @@ public:
 
     /*! \brief Getter function for the property with the same name
 
-    @returns Property downloadingGeoMapList
+    @returns Property downloadingRemoteItemList
    */
-    [[nodiscard]] auto downloadingGeoMapList() const -> bool { return _maps_json.downloading(); };
+    [[nodiscard]] auto downloadingRemoteItemList() const -> bool { return _maps_json.downloading(); };
 
     /*! \brief Getter function for the property with the same name
 
@@ -211,7 +211,7 @@ signals:
     void geoMapListChanged();
 
     /*! \brief Notification signal for the property with the same name */
-    void downloadingGeoMapListChanged();
+    void downloadingRemoteItemListChanged();
 
     /*! \brief Download error
 

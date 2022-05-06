@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -62,7 +62,7 @@ DataManagement::DataManager::DataManager(QObject *parent) :
 
     // Construct the Dowloadable object "_maps_json". Let it point to the remote
     // file "maps.json" and wire it up.
-    connect(&_maps_json, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingGeoMapListChanged);
+    connect(&_maps_json, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
     connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::readGeoMapListFromJSONFile);
     connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::setTimeOfLastUpdateToNow);
     connect(&_maps_json, &DataManagement::Downloadable::error, this, &DataManager::errorReceiver);

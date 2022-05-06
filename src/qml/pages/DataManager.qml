@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -541,7 +541,7 @@ Page {
         anchors.bottom: parent.bottom
 
         color: "white"
-        visible: !global.dataManager().downloadingGeoMapList && !global.dataManager().hasGeoMapList
+        visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasGeoMapList
 
         Label {
             anchors.left: parent.left
@@ -567,7 +567,7 @@ Page {
         anchors.bottom: parent.bottom
 
         color: "white"
-        visible: global.dataManager().downloadingGeoMapList
+        visible: global.dataManager().downloadingRemoteItemList
 
         Label {
             id: downloadIndicatorLabel
@@ -596,8 +596,8 @@ Page {
         // without any feedback if the download did actually take place.
         Connections {
             target: global.dataManager()
-            function onDownloadingGeoMapListChanged () {
-                if (global.dataManager().downloadingGeoMapList) {
+            function ondownloadingRemoteItemListChanged () {
+                if (global.dataManager().downloadingRemoteItemList) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -616,13 +616,13 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: (!global.dataManager().downloadingGeoMapList && !global.dataManager().hasGeoMapList) || (!global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable)
+        visible: (!global.dataManager().downloadingRemoteItemList && !global.dataManager().hasGeoMapList) || (!global.dataManager().geoMaps.downloading && global.dataManager().geoMaps.updatable)
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
 
         ToolButton {
             id: downloadMapListActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().downloadingGeoMapList && !global.dataManager().hasGeoMapList
+            visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasGeoMapList
 
             text: qsTr("Download list of maps…")
             icon.source: "/icons/material/ic_file_download.svg"

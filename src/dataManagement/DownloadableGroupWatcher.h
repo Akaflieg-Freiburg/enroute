@@ -140,7 +140,7 @@ public:
 
       @returns int nFilesTotal
     */
-    Q_INVOKABLE [[nodiscard]] auto numberOfFilesTotal() const -> int;
+    Q_INVOKABLE [[nodiscard]] int numberOfFilesTotal() const;
 
 public slots:
     /*! Update all updatable Downloadable objects */

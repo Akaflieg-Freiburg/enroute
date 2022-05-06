@@ -90,7 +90,7 @@ public:
      *
      * @returns True if the coordinates and all properties agree.
      */
-    Q_INVOKABLE [[nodiscard]] auto equals(const GeoMaps::Waypoint &other) const -> bool
+    Q_INVOKABLE [[nodiscard]] bool equals(const GeoMaps::Waypoint &other) const
     {
         return *this == other;
     }
@@ -101,7 +101,7 @@ public:
      *
      *  @returns True if both waypoints are valid and if tge distance between them is less than 2km
      */
-    Q_INVOKABLE [[nodiscard]] auto isNear(const GeoMaps::Waypoint& other) const -> bool;
+    Q_INVOKABLE [[nodiscard]] bool isNear(const GeoMaps::Waypoint& other) const;
 
     /*! \brief Copy waypoint and change location
      *
@@ -109,7 +109,7 @@ public:
      *
      *  @returns Copy of the waypoints with name changed
      */
-    Q_REQUIRED_RESULT Q_INVOKABLE auto relocated(const QGeoCoordinate& newCoordinate) const -> GeoMaps::Waypoint;
+    Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint relocated(const QGeoCoordinate& newCoordinate) const;
 
     /*! \brief Copy waypoint and change location
      *
@@ -117,7 +117,7 @@ public:
      *
      *  @returns Copy of the waypoints with name changed
      */
-    Q_REQUIRED_RESULT Q_INVOKABLE auto renamed(const QString &newName) const -> GeoMaps::Waypoint;
+    Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint renamed(const QString &newName) const;
 
     /*! \brief Serialization to GeoJSON object
      *
@@ -128,7 +128,7 @@ public:
      *
      * @returns QJsonObject describing the waypoint
      */
-    [[nodiscard]] auto toJSON() const -> QJsonObject;
+    [[nodiscard]] QJsonObject toJSON() const;
 
 
     //

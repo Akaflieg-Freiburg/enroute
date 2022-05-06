@@ -59,7 +59,7 @@ public:
      *  @returns Aircraft registration, or an empty string if the database does
      *  not contain the key
      */
-    Q_INVOKABLE auto getRegistration(const QString& key) -> QString;
+    Q_INVOKABLE QString getRegistration(const QString& key);
 
 private slots:
     // The title says everything

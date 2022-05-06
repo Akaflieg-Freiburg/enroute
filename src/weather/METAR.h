@@ -153,7 +153,7 @@ public:
      * @returns true if an expiration date/time is known and if the current time
      * is larger than the expiration
      */
-    Q_INVOKABLE [[nodiscard]] auto isExpired() const -> bool;
+    Q_INVOKABLE [[nodiscard]] bool isExpired() const;
 
     /*! \brief Indicates if the class represents a valid METAR report */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)

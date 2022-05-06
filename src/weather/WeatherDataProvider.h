@@ -116,7 +116,7 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    Q_INVOKABLE [[nodiscard]] auto findWeatherStation(const QString &ICAOCode) const -> Weather::Station *
+    Q_INVOKABLE [[nodiscard]] Weather::Station* findWeatherStation(const QString &ICAOCode) const
     {
         return _weatherStationsByICAOCode.value(ICAOCode, nullptr);
     }

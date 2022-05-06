@@ -66,7 +66,7 @@ namespace Units {
          *
          * @returns True is the time is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] auto isFinite() const -> bool
+        Q_INVOKABLE [[nodiscard]] bool isFinite() const
         {
             return std::isfinite(m_timeInS);
         }
@@ -75,7 +75,7 @@ namespace Units {
          *
          * @returns True is the time is negative
          */
-        Q_INVOKABLE [[nodiscard]] auto isNegative() const -> bool
+        Q_INVOKABLE [[nodiscard]] bool isNegative() const
         {
             return m_timeInS < 0.0;
         }
@@ -86,7 +86,7 @@ namespace Units {
          *
          * @returns reference to this time
          */
-        Q_INVOKABLE auto operator+=(Units::Time other) -> Units::Time &
+        Q_INVOKABLE Units::Time& operator+=(Units::Time other)
         {
             m_timeInS += other.m_timeInS;
             return *this;
@@ -98,7 +98,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(Units::Time rhs) const
+        Q_INVOKABLE bool operator==(Units::Time rhs) const
         {
             return m_timeInS == rhs.m_timeInS;
         }
@@ -109,7 +109,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(Units::Time rhs) const
+        Q_INVOKABLE bool operator!=(Units::Time rhs) const
         {
             return m_timeInS != rhs.m_timeInS;
         }
@@ -117,7 +117,7 @@ namespace Units {
          *
          * @return time in seconds
          */
-        Q_INVOKABLE [[nodiscard]] auto toS() const -> double
+        Q_INVOKABLE [[nodiscard]] double toS() const
         {
             return m_timeInS;
         }
@@ -126,7 +126,7 @@ namespace Units {
          *
          * @return time in minutes
          */
-        Q_INVOKABLE [[nodiscard]] auto toM() const -> double
+        Q_INVOKABLE [[nodiscard]] double toM() const
         {
             return m_timeInS / Seconds_per_Minute;
         }
@@ -135,7 +135,7 @@ namespace Units {
          *
          * @return time in hours
          */
-        Q_INVOKABLE [[nodiscard]] auto toH() const -> double
+        Q_INVOKABLE [[nodiscard]] double toH() const
         {
             return m_timeInS / Seconds_per_Hour;
         }
@@ -144,7 +144,7 @@ namespace Units {
          *
          * @returns time in hours and minutes, as a string of the form 7:12 or -0:05
          */
-        Q_INVOKABLE [[nodiscard]] auto toHoursAndMinutes() const -> QString;
+        Q_INVOKABLE [[nodiscard]] QString toHoursAndMinutes() const;
 
     private:
         static constexpr double Seconds_per_Minute = 60.0;

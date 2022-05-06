@@ -201,7 +201,7 @@ public:
      *
      *  @returns True if route is emptry or if other waypoint is not near the current end of the route.
      */
-    Q_INVOKABLE [[nodiscard]] auto canAppend(const GeoMaps::Waypoint& other) const -> bool;
+    Q_INVOKABLE [[nodiscard]] bool canAppend(const GeoMaps::Waypoint& other) const;
 
     /*! \brief Deletes all waypoints in the current route */
     Q_INVOKABLE void clear();
@@ -212,7 +212,7 @@ public:
      *
      * @returns bool Returns true if waypoint geographically close to a waypoint in the route
      */
-    Q_INVOKABLE [[nodiscard]] auto contains(const GeoMaps::Waypoint& waypoint) const -> bool;
+    Q_INVOKABLE [[nodiscard]] bool contains(const GeoMaps::Waypoint& waypoint) const;
 
     /*! \brief Index for last occurrence of the waypoint in the flight route
      *
@@ -223,7 +223,7 @@ public:
      *
      *  @returns Index position of the last waypoint in the route close to the given waypoint. Returns -1 if no waypoint is close.
      */
-    Q_INVOKABLE [[nodiscard]] auto lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> int;
+    Q_INVOKABLE [[nodiscard]] int lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
 
     /*! \brief Loads the route from a GeoJSON document
      *
@@ -235,7 +235,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE auto loadFromGeoJSON(QString fileName) -> QString;
+    Q_INVOKABLE QString loadFromGeoJSON(QString fileName);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -248,7 +248,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE auto loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider) -> QString;
+    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -261,7 +261,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    auto loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider) -> QString;
+    QString loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -338,7 +338,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE [[nodiscard]] auto save(const QString& fileName=QString()) const -> QString;
+    Q_INVOKABLE [[nodiscard]] QString save(const QString& fileName=QString()) const;
 
     /*! \brief Suggests a name for saving this route
      *
@@ -348,7 +348,7 @@ public:
      * @returns Suggested name for saving the file. If no useful suggestion can
      * be made, the returned string is a translation of "Flight Route"
      */
-    Q_INVOKABLE [[nodiscard]] auto suggestedFilename() const -> QString;
+    Q_INVOKABLE [[nodiscard]] QString suggestedFilename() const;
 
     /*! \brief Exports to route to GeoJSON
      *
@@ -358,7 +358,7 @@ public:
      *
      * @returns QByteArray describing the flight route
      */
-    Q_INVOKABLE [[nodiscard]] auto toGeoJSON() const -> QByteArray;
+    Q_INVOKABLE [[nodiscard]] QByteArray toGeoJSON() const;
 
     /*! \brief Exports to route to GPX
      *
@@ -368,7 +368,7 @@ public:
      *
      * @returns QByteArray containing GPX data describing the flight route
      */
-    Q_INVOKABLE [[nodiscard]] auto toGpx() const -> QByteArray;
+    Q_INVOKABLE [[nodiscard]] QByteArray toGpx() const;
 
 signals:
     /*! \brief Notification signal for the property with the same name */

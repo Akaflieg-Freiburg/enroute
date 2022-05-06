@@ -95,7 +95,7 @@ public:
      *
      *  @returns An invalid waypoint
      */
-    Q_INVOKABLE static auto createWaypoint() -> GeoMaps::Waypoint
+    Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
     {
         return {};
     }
@@ -113,7 +113,7 @@ public:
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    Q_INVOKABLE auto airspaces(const QGeoCoordinate& position) -> QVariantList;
+    Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate& position);
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -126,7 +126,7 @@ public:
      * sufficiently close waypoint is found, a generic Waypoint with the
      * appropriate coordinate is returned.
      */
-    Q_INVOKABLE auto closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> GeoMaps::Waypoint;
+    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
 
     /*! \brief Copyright notice for the map
      *
@@ -153,7 +153,7 @@ public:
      * list is returned as QList<QObject*>. It can thus be used as a data model
      * in QML.
      */
-    Q_INVOKABLE auto filteredWaypointObjects(const QString &filter) -> QVariantList;
+    Q_INVOKABLE QVariantList filteredWaypointObjects(const QString &filter);
 
     /*! Find a waypoint by its ICAO code
      *
@@ -192,7 +192,7 @@ public:
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE auto nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QVariantList;
+    Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
     /*! \brief URL where a style file for the base map can be retrieved
      *

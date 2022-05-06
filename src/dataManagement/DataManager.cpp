@@ -87,12 +87,12 @@ void DataManagement::DataManager::deferredInitialization()
     // value for the timer and start it.
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &DataManager::autoUpdateGeoMapList);
     connect(GlobalObject::settings(), &Settings::acceptedTermsChanged, this, &DataManager::updateGeoMapList);
-    if (GlobalObject::settings()->acceptedTerms()) {
+    if (GlobalObject::settings()->acceptedTerms() != 0) {
 
         autoUpdateGeoMapList();
 
         // If there is no downloaded maps.json file, be sure to start a download.
-        if (!_maps_json.hasFile() && GlobalObject::settings()->acceptedTerms()) {
+        if (!_maps_json.hasFile() && (GlobalObject::settings()->acceptedTerms() != 0)) {
             _maps_json.startFileDownload();
         }
     }

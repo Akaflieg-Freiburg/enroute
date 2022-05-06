@@ -41,7 +41,7 @@ namespace Units {
          *
          * @returns volume flow
          */
-        Q_INVOKABLE static constexpr auto fromLPH(double volumeFlowInLPH) -> Units::VolumeFlow
+        Q_INVOKABLE static constexpr Units::VolumeFlow fromLPH(double volumeFlowInLPH)
         {
             VolumeFlow result;
             result.m_volumeFlowInLPH = volumeFlowInLPH;
@@ -54,7 +54,7 @@ namespace Units {
          *
          * @returns volume flow
          */
-        Q_INVOKABLE static constexpr auto fromGPH(double volumeFlowInGPH) -> Units::VolumeFlow
+        Q_INVOKABLE static constexpr Units::VolumeFlow fromGPH(double volumeFlowInGPH)
         {
             VolumeFlow result;
             result.m_volumeFlowInLPH = LitersPerGallon*volumeFlowInGPH;
@@ -65,7 +65,7 @@ namespace Units {
          *
          * @returns True is the volume is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] auto isFinite() const -> bool
+        Q_INVOKABLE [[nodiscard]] bool isFinite() const
         {
             return std::isfinite(m_volumeFlowInLPH);
         }
@@ -76,7 +76,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator<(Units::VolumeFlow rhs) const
+        Q_INVOKABLE bool operator<(Units::VolumeFlow rhs) const
         {
             return m_volumeFlowInLPH < rhs.m_volumeFlowInLPH;
         }
@@ -87,7 +87,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator>(Units::VolumeFlow rhs) const
+        Q_INVOKABLE bool operator>(Units::VolumeFlow rhs) const
         {
             return m_volumeFlowInLPH > rhs.m_volumeFlowInLPH;
         }
@@ -98,7 +98,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(Units::VolumeFlow rhs) const
+        Q_INVOKABLE bool operator!=(Units::VolumeFlow rhs) const
         {
             return m_volumeFlowInLPH != rhs.m_volumeFlowInLPH;
         }
@@ -109,7 +109,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(Units::VolumeFlow rhs) const
+        Q_INVOKABLE bool operator==(Units::VolumeFlow rhs) const
         {
             return m_volumeFlowInLPH == rhs.m_volumeFlowInLPH;
         }
@@ -118,7 +118,7 @@ namespace Units {
          *
          * @returns volume flow in liters per hour
          */
-        Q_INVOKABLE [[nodiscard]] auto toLPH() const -> double
+        Q_INVOKABLE [[nodiscard]] double toLPH() const
         {
             return m_volumeFlowInLPH;
         }
@@ -127,7 +127,7 @@ namespace Units {
          *
          * @returns volume flow in gallons per hour
          */
-        Q_INVOKABLE [[nodiscard]] auto toGPH() const -> double
+        Q_INVOKABLE [[nodiscard]] double toGPH() const
         {
             return m_volumeFlowInLPH/LitersPerGallon;
         }

@@ -167,7 +167,7 @@ public:
      * available
      */
     #warning is docu correct?
-    Q_INVOKABLE static auto describeMapFile(const QString& fileName) -> QString;
+    Q_INVOKABLE static QString describeMapFile(const QString& fileName);
 
     /*! \brief Getter function for the property with the same name
 

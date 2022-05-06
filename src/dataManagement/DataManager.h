@@ -178,7 +178,6 @@ public:
      */
     void cleanUp();
 
-
     /*! \brief Describe installed map
      *
      * This method describes a data item, by inspecting the locally installed
@@ -195,14 +194,13 @@ public:
      * @returns A human-readable HTML string, or an empty string if no data is
      * available
      */
-    #warning is docu correct?
-    Q_INVOKABLE static QString describeDataItem(const QString& fileName);
+    Q_INVOKABLE [[nodiscard]] static QString describeDataItem(const QString& fileName);
 
 public slots:
     /*! \brief Triggers an update of the list of available maps
-
-    This will trigger a download the file maps.json from the remote server.
-  */
+     *
+     *  This will trigger a download the file maps.json from the remote server.
+     */
     void updateGeoMapList();
 
 signals:

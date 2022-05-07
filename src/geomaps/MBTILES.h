@@ -43,7 +43,15 @@ public:
     };
 #warning docu
     /*! \brief Comparison */
-    static auto format(const QString& fileName) -> Format;
+    [[nodiscard]] static GeoMaps::MBTILES::Format format(const QString& fileName);
+
+    /*! \brief Information about an MBTILES file
+     *
+     *  @param fileName Name of the file
+     *
+     *  @returns A human-readable HTML-String with information about the file, or an empty string on error.
+     */
+    [[nodiscard]] static QString info(const QString& fileName);
 
 };
 

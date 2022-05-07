@@ -28,8 +28,9 @@ auto GeoMaps::MBTILES::format(const QString& fileName) -> GeoMaps::MBTILES::Form
 {
     GeoMaps::MBTILES::Format result = Unknown;
 
+    auto databaseConnectionName = "GeoMaps::MBTILES::format " + fileName;
     { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
-        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), "import test: "+fileName);
+        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
         testDB.setDatabaseName(fileName);
 
         if (testDB.open()) {
@@ -48,8 +49,45 @@ auto GeoMaps::MBTILES::format(const QString& fileName) -> GeoMaps::MBTILES::Form
             testDB.close();
         }
     }
-    QSqlDatabase::removeDatabase("import test: "+fileName);
+    QSqlDatabase::removeDatabase(databaseConnectionName);
 
     return result;
+}
 
+
+auto GeoMaps::MBTILES::info(const QString& fileName) -> QString
+{
+    QString result;
+
+    auto databaseConnectionName = "GeoMaps::MBTILES::info " + fileName;
+    { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
+        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
+        testDB.setDatabaseName(fileName);
+        if (testDB.open())
+        {
+            // Read metadata from database
+            QSqlQuery query(testDB);
+            QString intResult;
+            if (query.exec(QStringLiteral("select name, value from metadata;")))
+            {
+                while (query.next())
+                {
+                    QString key = query.value(0).toString();
+                    if (key == u"json")
+                    {
+                        continue;
+                    }
+                    intResult += QStringLiteral("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
+                            .arg(key, query.value(1).toString());
+                }
+            }
+            if (!intResult.isEmpty())
+            {
+                result += QStringLiteral("<h4>%1</h4><table>%2</table>").arg(QObject::tr("Internal Map Data", "GeoMaps::MBTILES"), intResult);
+            }
+            testDB.close();
+        }
+    }
+    QSqlDatabase::removeDatabase(databaseConnectionName);
+    return result;
 }

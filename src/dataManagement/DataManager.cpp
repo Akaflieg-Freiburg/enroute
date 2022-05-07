@@ -18,25 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <chrono>
 #include <QApplication>
 #include <QDirIterator>
-#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonArray>
 #include <QJsonObject>
 #include <QLockFile>
-#include <QSettings>
-#include <QSqlDatabase>
-#include <QSqlQuery>
 #include <QStandardPaths>
 
-#include <chrono>
-#include <utility>
+#include "dataManagement/UpdateNotifier.h"
+#include "dataManagement/DataManager.h"
+#include "geomaps/MBTILES.h"
+#include "Settings.h"
 
 using namespace std::chrono_literals;
-
-#include "dataManagement/UpdateNotifier.h"
-#include "DataManager.h"
-#include "Settings.h"
 
 DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent),
                                                             _maps_json(QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")),
@@ -78,6 +74,7 @@ DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent)
     readGeoMapListFromJSONFile();
 }
 
+
 void DataManagement::DataManager::deferredInitialization()
 {
 
@@ -101,6 +98,7 @@ void DataManagement::DataManager::deferredInitialization()
     // Set up and start the updateNotifier
     new DataManagement::UpdateNotifier(this);
 }
+
 
 void DataManagement::DataManager::cleanUp()
 {
@@ -140,6 +138,7 @@ void DataManagement::DataManager::cleanUp()
         delete geoMapPtr;
 }
 
+
 auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> QString
 {
     QFileInfo fi(fileName);
@@ -177,38 +176,7 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     // Extract infomation from MBTILES
     if (fileName.endsWith(u".mbtiles"))
     {
-        // Open database
-        auto databaseConnectionName = "GeoMapProvider::describeDataItem " + fileName;
-
-        { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
-            auto db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
-            db.setDatabaseName(fileName);
-            if (db.open())
-            {
-                // Read metadata from database
-                QSqlQuery query(db);
-                QString intResult;
-                if (query.exec(QStringLiteral("select name, value from metadata;")))
-                {
-                    while (query.next())
-                    {
-                        QString key = query.value(0).toString();
-                        if (key == u"json")
-                        {
-                            continue;
-                        }
-                        intResult += QStringLiteral("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
-                                         .arg(key, query.value(1).toString());
-                    }
-                }
-                if (!intResult.isEmpty())
-                {
-                    result += QStringLiteral("<h4>%1</h4><table>%2</table>").arg(tr("Internal Map Data"), intResult);
-                }
-                db.close();
-            }
-        }
-        QSqlDatabase::removeDatabase(databaseConnectionName);
+        result += GeoMaps::MBTILES::info(fileName);
     }
 
     // Extract infomation from text file - this is simply the first line
@@ -267,7 +235,7 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
     }
 
     // List of maps as we have them now
-    QVector<QPointer<DataManagement::Downloadable>> oldMaps = _items.downloadables();
+    auto oldMaps = _items.downloadables();
 
     // To begin, we handle the maps described in the maps.json file. If these
     // maps were already present in the old list, we re-use them. Otherwise, we

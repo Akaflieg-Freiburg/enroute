@@ -116,7 +116,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 }
 
 
-auto GeoMaps::Airspace::makeMetric(const QString& standard) const -> QString
+auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
 {
     QStringList list = standard.split(' ', Qt::SkipEmptyParts);
     if (list.isEmpty()) {

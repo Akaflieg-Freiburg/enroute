@@ -251,8 +251,9 @@ public:
      */
     [[nodiscard]] auto shortName() const -> QString
     {
-        if (ICAOCode().isEmpty())
+        if (ICAOCode().isEmpty()) {
             return name();
+}
         return ICAOCode();
     }
 

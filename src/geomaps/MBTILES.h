@@ -24,25 +24,33 @@
 
 namespace GeoMaps {
 
-#warning docu
-/*! \brief Utility class for databases in MBTILES format */
+/*! \brief Utility class for databases in MBTILES format
+ *
+ *  MBTILES are SQLite databases whose schema is specified here:
+ *  https://github.com/mapbox/mbtiles-spec
+ */
 
 class MBTILES {
 
 public:
-    /*! \brief Units of measurement for volumes */
+    /*! \brief Format of data tiles */
     enum Format {
-        /*! \brief Liter per hour */
+        /*! \brief Unknown format */
         Unknown,
 
-        /*! \brief Gallon per hour */
+        /*! \brief Vector data in PBF format */
         Vector,
 
-        /*! \brief Gallon per hour */
+        /*! \brief Raster data in JPG, PNG or WEBP format */
         Raster,
     };
-#warning docu
-    /*! \brief Comparison */
+
+    /*! \brief Determine type of data contain in an MBTILES file
+     *
+     *  @param fileName Name of the file
+     *
+     *  @returns Type of data, or Unknown on error.
+     */
     [[nodiscard]] static GeoMaps::MBTILES::Format format(const QString& fileName);
 
     /*! \brief Information about an MBTILES file

@@ -139,7 +139,7 @@ public:
      *
      * @returns Property copyrightNotice
      */
-    auto copyrightNotice() const -> QString
+    static auto copyrightNotice() -> QString
     {
         return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
     }

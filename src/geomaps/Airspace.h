@@ -154,7 +154,7 @@ public:
 private:
     // Transforms a height string such as "4500", "1500 GND" or "FL 130" into a string that describes the height
     // in meters. If the height string cannot be parsed, returns the original string
-    [[nodiscard]] auto makeMetric(const QString& standard) const -> QString;
+    [[nodiscard]] static auto makeMetric(const QString& standard) -> QString;
 
     QString _name{};
     QString _CAT{};

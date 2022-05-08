@@ -197,11 +197,11 @@ public:
     Q_INVOKABLE [[nodiscard]] static QString describeDataItem(const QString& fileName);
 
 public slots:
-    /*! \brief Triggers an update of the list of available maps
+    /*! \brief Triggers an update of the list of remotely available data items
      *
      *  This will trigger a download the file maps.json from the remote server.
      */
-    void updateGeoMapList();
+    void updateRemoteDataItemList();
 
 signals:
     /*! \brief Notification signal for the property with the same name */

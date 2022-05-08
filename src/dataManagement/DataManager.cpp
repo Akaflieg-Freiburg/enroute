@@ -82,7 +82,7 @@ void DataManagement::DataManager::deferredInitialization()
     // due. The method "autoUpdateGeoMapList" will also set a reasonable timeout
     // value for the timer and start it.
     connect(&_autoUpdateTimer, &QTimer::timeout, this, &DataManager::autoUpdateGeoMapList);
-    connect(GlobalObject::settings(), &Settings::acceptedTermsChanged, this, &DataManager::updateGeoMapList);
+    connect(GlobalObject::settings(), &Settings::acceptedTermsChanged, this, &DataManager::updateRemoteDataItemList);
     if (GlobalObject::settings()->acceptedTerms() != 0)
     {
 
@@ -139,7 +139,7 @@ void DataManagement::DataManager::cleanUp()
 }
 
 
-auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> QString
+auto DataManagement::DataManager::describeDataItem(const QString& fileName) -> QString
 {
     QFileInfo fi(fileName);
     if (!fi.exists())
@@ -192,7 +192,7 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     return result;
 }
 
-void DataManagement::DataManager::updateGeoMapList()
+void DataManagement::DataManager::updateRemoteDataItemList()
 {
     _maps_json.startFileDownload();
 }
@@ -263,7 +263,7 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
         DataManagement::Downloadable *mapPtr = nullptr;
         foreach (auto geoMapPtr, oldMaps)
         {
-            if (geoMapPtr->objectName() == mapName.section(QStringLiteral("/"), -1, -1))
+            if (geoMapPtr->fileName().endsWith(mapFileName))
             {
                 mapPtr = geoMapPtr;
                 break;
@@ -303,6 +303,8 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
             }
         }
     }
+
+#warning Check for unattachedFiles
 
     // Now go through all the leftover objects in the old list of aviation maps.
     // These are now aviation maps that are no longer supported. If they have no
@@ -366,7 +368,7 @@ void DataManagement::DataManager::autoUpdateGeoMapList()
         // Updates are due. Check again in one hour if the update went well or
         // if we need to try again.
         _autoUpdateTimer.start(1h);
-        updateGeoMapList();
+        updateRemoteDataItemList();
         return;
     }
 

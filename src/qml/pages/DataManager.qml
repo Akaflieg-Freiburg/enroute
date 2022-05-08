@@ -369,7 +369,7 @@ Page {
                 onTriggered: {
                     global.mobileAdaptor().vibrateBrief()
                     highlighted = false
-                    global.dataManager().updateGeoMapList()
+                    global.dataManager().updateRemoteDataItemList()
                 }
             }
 
@@ -474,7 +474,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         global.mobileAdaptor().vibrateBrief()
-                        global.dataManager().updateGeoMapList()
+                        global.dataManager().updateRemoteDataItemList()
                     }
                 }
             } // ListView
@@ -498,7 +498,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         global.mobileAdaptor().vibrateBrief()
-                        global.dataManager().updateGeoMapList()
+                        global.dataManager().updateRemoteDataItemList()
                     }
                 }
             } // ListView
@@ -522,7 +522,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         global.mobileAdaptor().vibrateBrief()
-                        global.dataManager().updateGeoMapList()
+                        global.dataManager().updateRemoteDataItemList()
                     }
                 }
             } // ListView
@@ -629,7 +629,7 @@ Page {
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                global.dataManager().updateGeoMapList()
+                global.dataManager().updateRemoteDataItemList()
             }
         }
 

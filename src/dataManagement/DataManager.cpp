@@ -35,8 +35,8 @@
 using namespace std::chrono_literals;
 
 DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent),
-                                                            _maps_json(QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")),
-                                                                       QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json", this)
+    _maps_json(QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")),
+               QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json", this)
 {
     // Earlier versions of this program constructed files with names ending in ".geojson.geojson"
     // or ".mbtiles.mbtiles". We correct those file names here.
@@ -102,6 +102,7 @@ void DataManagement::DataManager::deferredInitialization()
 
 void DataManagement::DataManager::cleanUp()
 {
+    qWarning() << "CLEANUP";
 
     // It might be possible for whatever reason that our download directory
     // contains files that we do not know whom they belong to. We hunt down
@@ -118,7 +119,7 @@ void DataManagement::DataManager::cleanUp()
     {
         didDelete = false;
         QDirIterator dirIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-                                     "/aviation_maps",
+                                 "/aviation_maps",
                                  QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
         while (dirIterator.hasNext())
         {
@@ -134,8 +135,7 @@ void DataManagement::DataManager::cleanUp()
     } while (didDelete);
 
     // Clear and delete everything
-    foreach (auto geoMapPtr, _items.downloadables())
-        delete geoMapPtr;
+    qDeleteAll(_items.downloadables());
 }
 
 
@@ -147,10 +147,10 @@ auto DataManagement::DataManager::describeDataItem(const QString& fileName) -> Q
         return tr("No information available.");
     }
     QString result = QStringLiteral("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
-                         .arg(tr("Installed"),
-                              fi.lastModified().toUTC().toString(),
-                              tr("File Size"),
-                              QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
+            .arg(tr("Installed"),
+                 fi.lastModified().toUTC().toString(),
+                 tr("File Size"),
+                 QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
 
     // Extract infomation from GeoJSON
     if (fileName.endsWith(u".geojson"))
@@ -227,12 +227,59 @@ void DataManagement::DataManager::localFileOfGeoMapChanged()
     }
 }
 
+DataManagement::Downloadable* DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName)
+{
+    // If a data item with the given local file name and the given URL already exists,
+    // update that remoteFileDate and remoteFileSize of that element, annd delete its
+    // entry in oldMaps
+    foreach (auto mapPtr, _items.downloadables())
+    {
+        if (mapPtr.isNull())
+        {
+            continue;
+        }
+        if ((mapPtr->fileName() == localFileName) && (mapPtr->url() == url))
+        {
+            return mapPtr;
+        }
+    }
+
+    // Construct a new downloadable object and add to appropriate groups
+    auto *downloadable = new DataManagement::Downloadable(url, localFileName, this);
+    _items.addToGroup(downloadable);
+    if (localFileName.endsWith(QLatin1String("geojson")))
+    {
+        _aviationMaps.addToGroup(downloadable);
+    }
+    if (localFileName.endsWith(QLatin1String("mbtiles")))
+    {
+        _baseMaps.addToGroup(downloadable);
+    }
+    if (localFileName.endsWith(QLatin1String("txt")))
+    {
+        _databases.addToGroup(downloadable);
+    }
+    return downloadable;
+}
+
+
 void DataManagement::DataManager::readGeoMapListFromJSONFile()
 {
     if (!_maps_json.hasFile())
     {
         return;
     }
+
+    // Get List of file in the directory
+    QList<QString> files;
+    QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps",
+                              QDir::Files, QDirIterator::Subdirectories);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        files.append(fileIterator.filePath());
+    }
+
 
     // List of maps as we have them now
     auto oldMaps = _items.downloadables();
@@ -254,87 +301,33 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
     {
         auto obj = map.toObject();
         auto mapFileName = obj.value(QStringLiteral("path")).toString();
+        auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps/" + mapFileName;
         auto mapName = mapFileName.section('.', -2, -2);
         auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
+        QUrl mapUrl(mapUrlName);
         auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
         auto fileSize = obj.value(QStringLiteral("size")).toInt();
 
-        // If a map with the given name already exists, update that element, delete its entry in oldMaps
-        DataManagement::Downloadable *mapPtr = nullptr;
-        foreach (auto geoMapPtr, oldMaps)
-        {
-            if (geoMapPtr->fileName().endsWith(mapFileName))
-            {
-                mapPtr = geoMapPtr;
-                break;
-            }
-        }
+        auto* downloadable = createOrRecycleItem(mapUrl, localFileName);
+        oldMaps.removeAll(downloadable);
+        downloadable->setRemoteFileDate(fileModificationDateTime);
+        downloadable->setRemoteFileSize(fileSize);
+        downloadable->setObjectName(mapName.section(QStringLiteral("/"), -1, -1));
+        downloadable->setSection(mapName.section(QStringLiteral("/"), -2, -2));
 
-        if (mapPtr != nullptr)
-        {
-            // Map exists
-            oldMaps.removeAll(mapPtr);
-            mapPtr->setRemoteFileDate(fileModificationDateTime);
-            mapPtr->setRemoteFileSize(fileSize);
-        }
-        else
-        {
-            // Construct local file name
-            auto localFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps/" + mapFileName;
-
-            // Construct a new downloadable object.
-            auto *downloadable = new DataManagement::Downloadable(QUrl(mapUrlName), localFileName, this);
-            downloadable->setObjectName(mapName.section(QStringLiteral("/"), -1, -1));
-            downloadable->setSection(mapName.section(QStringLiteral("/"), -2, -2));
-            downloadable->setRemoteFileDate(fileModificationDateTime);
-            downloadable->setRemoteFileSize(fileSize);
-            _items.addToGroup(downloadable);
-            if (localFileName.endsWith(QLatin1String("geojson")))
-            {
-                _aviationMaps.addToGroup(downloadable);
-            }
-            if (localFileName.endsWith(QLatin1String("mbtiles")))
-            {
-                _baseMaps.addToGroup(downloadable);
-            }
-            if (localFileName.endsWith(QLatin1String("txt")))
-            {
-                _databases.addToGroup(downloadable);
-            }
-        }
+        files.removeAll(localFileName);
     }
 
-#warning Check for unattachedFiles
 
-    // Now go through all the leftover objects in the old list of aviation maps.
-    // These are now aviation maps that are no longer supported. If they have no
-    // local file to them, we simply delete them.  If they have a local file, we
-    // keep them, but set their QUrl to invalid; this will mark them as
-    // unsupported in the GUI.
-    foreach (auto geoMapPtr, oldMaps)
+    foreach(auto localFileName, files)
     {
-        if (geoMapPtr->hasFile())
-        {
-            continue;
-        }
-        delete geoMapPtr;
+        auto* downloadable = createOrRecycleItem(QUrl(), localFileName);
+        oldMaps.removeAll(downloadable);
+        downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1));
+        downloadable->setSection(tr("Unsupported"));
     }
 
-    // Now it is still possible that the download directory contains files
-    // beloning to unsupported maps. Add those to newMaps.
-    foreach (auto path, unattachedFiles())
-    {
-        // Generate proper object name from path
-        QString objectName = path;
-        objectName = objectName.remove(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-                                       "/aviation_maps/")
-                         .section('.', 0, 0);
-
-        auto *downloadable = new DataManagement::Downloadable(QUrl(), path, this);
-        downloadable->setSection(QStringLiteral("Unsupported Maps"));
-        downloadable->setObjectName(objectName);
-        _items.addToGroup(downloadable);
-    }
+    qDeleteAll(oldMaps);
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();
@@ -344,6 +337,7 @@ void DataManagement::DataManager::readGeoMapListFromJSONFile()
         emit whatsNewChanged();
     }
 }
+
 
 void DataManagement::DataManager::setTimeOfLastUpdateToNow()
 {

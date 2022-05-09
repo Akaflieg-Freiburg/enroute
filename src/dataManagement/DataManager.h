@@ -169,14 +169,10 @@ public:
      */
     [[nodiscard]] auto whatsNewHash() const -> uint { return qHash(_whatsNew, 0); }
 
-    // ------------------------------------------
 
-    /*! \brief Destructor
-     *
-     *  This destructor purges the download directory "aviation_map", by deleting
-     *  all files that do not belong to any of the maps.
-     */
-    void cleanUp();
+    //
+    // Methods
+    //
 
     /*! \brief Describe installed map
      *
@@ -203,6 +199,8 @@ public slots:
      */
     void updateRemoteDataItemList();
 
+    // ------------------------------------------
+
 signals:
     /*! \brief Notification signal for the property with the same name */
     void geoMapListChanged();
@@ -225,19 +223,23 @@ signals:
     void whatsNewChanged();
 
 private slots:
+     // This method purges the directory "aviation_maps", by deleting all files
+     // that do not belong to any of the maps.
+    void cleanUp();
+
     // Trivial method that re-sends the signal, but without the parameter
     // 'objectName'
     void errorReceiver(const QString& objectName, QString message);
 
     // This slot is called when a local file of one of the geo maps changes
-    // content or existence. If the geo map in question is unsupported, it is then
-    // removed. The signals aviationMapListChanged() and
+    // content or existence. If the geo map in question is unsupported, it is
+    // then removed. The signals aviationMapListChanged() and
     // aviationMapUpdatesAvailableChanged() are emitted as appropriate.
     void localFileOfGeoMapChanged();
 
     // This slot is called when the file "maps.json" is meant to be read.  It is
-    // called by the constructor to interpret an existing "maps.json". It is also
-    // connected to the signal &Downloadable::localFileChanged of
+    // called by the constructor to interpret an existing "maps.json". It is
+    // also connected to the signal &Downloadable::localFileChanged of
     // _availableMapsDescription, which is emitted whenever the file "maps.json"
     // changes in the file system.
     void readGeoMapListFromJSONFile();
@@ -257,20 +259,28 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(DataManager)
 
-    // This method returns a list of files in the download directory that have no
-    // corresponding entry in _aviationMaps.
+    // This method checks if a Downloadable item with the given url and
+    // localFileName already exists in _items. If so, it returns a pointer to
+    // that item. If not, then a Downloadable with the url and localFileName is
+    // created and added to _items. Depending on localFileName, it will also be
+    // added to _aviationMap, _baseMaps, or _databases. A point to that item is
+    // then returned.
+    DataManagement::Downloadable* createOrRecycleItem(const QUrl& url, const QString& localFileName);
+
+    // This method returns a list of files in the download directory that have
+    // no corresponding entry in _aviationMaps.
     [[nodiscard]] auto unattachedFiles() const -> QList<QString>;
 
     // The current whats new string from _aviationMaps.
     QString _whatsNew {};
 
-    // This timer is used to trigger automatic updates. Its signal QTimer::timeout
-    // is connected to the slot autoUpdateGeoMapList.
+    // This timer is used to trigger automatic updates. Its signal
+    // QTimer::timeout is connected to the slot autoUpdateGeoMapList.
     QTimer _autoUpdateTimer;
 
     // This Downloadable object manages the central text file that describes the
-    // remotely available aviation maps. It is set in the constructor to point to
-    // the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
+    // remotely available aviation maps. It is set in the constructor to point
+    // to the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
     DataManagement::Downloadable _maps_json;
 
     // List of geographic maps

@@ -209,24 +209,20 @@ signals:
     void downloadingRemoteItemListChanged();
 
     /*! \brief Download error
-
-    This signal is emitted if the download process for the file "maps.json"
-    fails for whatever reason.  Since the DataManager updates the list
-    regularly, this signal can be emitted anytime.
-
-    @param message A brief error message of the form "the requested resource is
-    no longer available at the server", possibly translated.
-  */
+     *
+     *  This signal is emitted if the download process for the file "maps.json"
+     *  fails for whatever reason.  Since the DataManager updates the list
+     *  regularly, this signal can be emitted anytime.
+     *
+     *  @param message A brief error message of the form "the requested resource
+     *  is no longer available at the server", possibly translated.
+     */
     void error(QString message);
 
     /*! \brief Notification signal for the property with the same name */
     void whatsNewChanged();
 
 private slots:
-     // This method purges the directory "aviation_maps", by deleting all files
-     // that do not belong to any of the maps.
-    void cleanUp();
-
     // Trivial method that re-sends the signal, but without the parameter
     // 'objectName'
     void errorReceiver(const QString& objectName, QString message);

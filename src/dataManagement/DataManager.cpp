@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include <chrono>
-#include <QApplication>
 #include <QDirIterator>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -38,10 +37,18 @@ DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent)
     _maps_json(QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")),
                QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json", this)
 {
-    // Earlier versions of this program constructed files with names ending in ".geojson.geojson"
-    // or ".mbtiles.mbtiles". We correct those file names here.
+    // Clean the data directory.
+    //
+    // - delete all files with unexpected file names
+    //
+    // - earlier versions of this program constructed files with names ending in
+    //   ".geojson.geojson" or ".mbtiles.mbtiles". We correct those file names
+    //   here.
+    //
+    // - remove all empty sub directories
     {
-        QStringList offendingFiles;
+        QStringList misnamedFiles;
+        QStringList unexpectedFiles;
         QDirIterator fileIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps",
                                   QDir::Files, QDirIterator::Subdirectories);
         while (fileIterator.hasNext())
@@ -49,11 +56,39 @@ DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent)
             fileIterator.next();
             if (fileIterator.filePath().endsWith(QLatin1String(".geojson.geojson")) || fileIterator.filePath().endsWith(QLatin1String(".mbtiles.mbtiles")))
             {
-                offendingFiles += fileIterator.filePath();
+                misnamedFiles += fileIterator.filePath();
+            }
+            if (!fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
+                    !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")))
+            {
+                unexpectedFiles += fileIterator.filePath();
             }
         }
-        foreach (auto offendingFile, offendingFiles)
-            QFile::rename(offendingFile, offendingFile.section('.', 0, -2));
+        foreach (auto misnamedFile, misnamedFiles)
+            QFile::rename(misnamedFile, misnamedFile.section('.', 0, -2));
+        foreach (auto unexpectedFile, unexpectedFiles)
+            QFile::remove(unexpectedFile);
+
+        // delete all empty directories
+        bool didDelete = false;
+        do
+        {
+            didDelete = false;
+            QDirIterator dirIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+                                     "/aviation_maps",
+                                     QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+            while (dirIterator.hasNext())
+            {
+                dirIterator.next();
+
+                QDir dir(dirIterator.filePath());
+                if (dir.isEmpty())
+                {
+                    dir.removeRecursively();
+                    didDelete = true;
+                }
+            }
+        } while (didDelete);
     }
 
     // Construct the Dowloadable object "_maps_json". Let it point to the remote
@@ -62,9 +97,6 @@ DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent)
     connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::readGeoMapListFromJSONFile);
     connect(&_maps_json, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::setTimeOfLastUpdateToNow);
     connect(&_maps_json, &DataManagement::Downloadable::error, this, &DataManager::errorReceiver);
-
-    // Cleanup
-    connect(qApp, &QApplication::aboutToQuit, this, &DataManagement::DataManager::cleanUp);
 
     // Wire up the DownloadableGroup _items
 #warning potentially wrong
@@ -98,45 +130,6 @@ void DataManagement::DataManager::deferredInitialization()
 
     // Set up and start the updateNotifier
     new DataManagement::UpdateNotifier(this);
-}
-
-
-void DataManagement::DataManager::cleanUp()
-{
-    qWarning() << "CLEANUP";
-
-    // It might be possible for whatever reason that our download directory
-    // contains files that we do not know whom they belong to. We hunt down
-    // those files and silently delete them.
-    foreach (auto path, unattachedFiles())
-    {
-        QFile::remove(path);
-    }
-
-    // It might be possible that our download directory contains empty
-    // subdirectories. We we remove them all.
-    bool didDelete = false;
-    do
-    {
-        didDelete = false;
-        QDirIterator dirIterator(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-                                 "/aviation_maps",
-                                 QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-        while (dirIterator.hasNext())
-        {
-            dirIterator.next();
-
-            QDir dir(dirIterator.filePath());
-            if (dir.isEmpty())
-            {
-                dir.removeRecursively();
-                didDelete = true;
-            }
-        }
-    } while (didDelete);
-
-    // Clear and delete everything
-    qDeleteAll(_items.downloadables());
 }
 
 

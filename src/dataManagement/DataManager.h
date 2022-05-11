@@ -36,6 +36,10 @@ namespace DataManagement {
  *  - Base maps (in MBTILES format)
  *  - FLARM Databases (as a text file)
  *
+ *  In addition, it allows access to the following data.
+ *
+ *  - "What's new"-message from remove server
+ *
  *  The class retrieves the list of available items from a remote server on a
  *  regular basis, updates the list automatically once a week, and maintains a
  *  list of Downloadable objects that corresponds to the remotely available and
@@ -108,7 +112,7 @@ public:
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* items READ items CONSTANT)
 
     /*! \brief True if list of remotely available items has been downloaded */
-    Q_PROPERTY(bool hasRemoteItemList READ hasRemoteItemList NOTIFY geoMapListChanged)
+    Q_PROPERTY(bool hasRemoteItemList READ hasRemoteItemList NOTIFY hasRemoteItemListChanged)
 
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
@@ -199,42 +203,39 @@ public slots:
      */
     void updateRemoteDataItemList();
 
-    // ------------------------------------------
-
 signals:
     /*! \brief Notification signal for the property with the same name */
-    void geoMapListChanged();
+    void hasRemoteItemListChanged();
 
     /*! \brief Notification signal for the property with the same name */
     void downloadingRemoteItemListChanged();
 
-    /*! \brief Download error
-
-    This signal is emitted if the download process for the file "maps.json"
-    fails for whatever reason.  Since the DataManager updates the list
-    regularly, this signal can be emitted anytime.
-
-    @param message A brief error message of the form "the requested resource is
-    no longer available at the server", possibly translated.
-  */
-    void error(QString message);
+    /*! \brief Error message for user
+     *
+     *  This signal is emitted if an error occurs and the GUI should display a
+     *  prominent error message. This signal can be emitted anytime.
+     *
+     *  @param message A brief, human-readable, translated error message.
+     */
+    void error(const QString& message);
 
     /*! \brief Notification signal for the property with the same name */
     void whatsNewChanged();
 
-private slots:
-     // This method purges the directory "aviation_maps", by deleting all files
-     // that do not belong to any of the maps.
+private:
+    Q_DISABLE_COPY_MOVE(DataManager)
+
+    // This method purges the directory "aviation_maps", by deleting all files
+    // that do not belong to any of the maps.
     void cleanUp();
 
     // Trivial method that re-sends the signal, but without the parameter
     // 'objectName'
     void errorReceiver(const QString& objectName, QString message);
 
-    // This slot is called when a local file of one of the geo maps changes
-    // content or existence. If the geo map in question is unsupported, it is
-    // then removed. The signals aviationMapListChanged() and
-    // aviationMapUpdatesAvailableChanged() are emitted as appropriate.
+    // This slot is called when a local file of one of the Downloadables changes
+    // content or existence. If the Downloadable in question has no file
+    // anymore, and has an invalid URL, it is then removed.
     void localFileOfGeoMapChanged();
 
     // This slot is called when the file "maps.json" is meant to be read.  It is
@@ -255,9 +256,6 @@ private slots:
     // also sets a reasonable timeout value the timer _autoUpdateTime to fire up
     // when the next autmatic update is due. It will then start the timer.
     void autoUpdateGeoMapList();
-
-private:
-    Q_DISABLE_COPY_MOVE(DataManager)
 
     // This method checks if a Downloadable item with the given url and
     // localFileName already exists in _items. If so, it returns a pointer to

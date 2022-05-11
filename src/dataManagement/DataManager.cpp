@@ -67,7 +67,8 @@ DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent)
     connect(qApp, &QApplication::aboutToQuit, this, &DataManagement::DataManager::cleanUp);
 
     // Wire up the DownloadableGroup _items
-    connect(&_items, &DataManagement::DownloadableGroup::downloadablesChanged, this, &DataManager::geoMapListChanged);
+#warning potentially wrong
+    connect(&_items, &DataManagement::DownloadableGroup::downloadablesChanged, this, &DataManager::hasRemoteItemListChanged);
     connect(&_items, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::localFileOfGeoMapChanged);
 
     // If there is a downloaded maps.json file, we read it.

@@ -90,7 +90,7 @@ public:
      *
      *  @returns Full path of the entry, with extension
      */
-    Q_INVOKABLE [[nodiscard]] QString fullPath(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE [[nodiscard]] static QString fullPath(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Constructs an object from library entry
      *

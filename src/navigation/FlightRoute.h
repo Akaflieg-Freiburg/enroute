@@ -338,7 +338,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString save(const QString& fileName=QString()) const;
+    Q_INVOKABLE [[nodiscard]] QString save(const QString& fileName=QString()) const;
 
     /*! \brief Suggests a name for saving this route
      *
@@ -381,7 +381,7 @@ private slots:
     // Saves the route into the file stdFileName. This slot is called whenever
     // the route changes, so that the file will always contain the current
     // route.
-    void saveToStdLocation() { save(stdFileName); };
+    void saveToStdLocation() { (void)save(stdFileName); };
 
     void updateLegs();
 

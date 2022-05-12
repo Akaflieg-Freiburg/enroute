@@ -298,7 +298,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromJSON(const QString& fileName);
+    Q_INVOKABLE [[nodiscard]] QString loadFromJSON(const QString& fileName);
 
     /*! \brief Reads aircraft data from a JSON document
      *
@@ -311,7 +311,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromJSON(const QByteArray &JSON);
+    Q_INVOKABLE [[nodiscard]] QString loadFromJSON(const QByteArray &JSON);
 
     /*! \brief Equality check
      *

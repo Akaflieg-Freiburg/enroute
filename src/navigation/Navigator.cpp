@@ -43,7 +43,7 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
     // Restore aircraft
     QFile file(m_aircraftFileName);
     if (file.open(QIODevice::ReadOnly)) {
-        m_aircraft.loadFromJSON(file.readAll());
+        (void)m_aircraft.loadFromJSON(file.readAll());
     } else {
         auto cruiseSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/cruiseSpeedInKTS"), 0.0).toDouble());
         auto descentSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/descentSpeedInKTS"), 0.0).toDouble());

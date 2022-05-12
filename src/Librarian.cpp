@@ -325,7 +325,7 @@ auto Librarian::get(Librarian::Library library, const QString &baseName) const -
 }
 
 
-auto Librarian::fullPath(Librarian::Library library, const QString &baseName) const -> QString
+auto Librarian::fullPath(Librarian::Library library, const QString &baseName) -> QString
 {
     switch (library) {
     case Aircraft:

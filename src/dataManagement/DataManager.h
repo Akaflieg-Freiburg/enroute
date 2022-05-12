@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QStandardPaths>
+
 #include "GlobalObject.h"
 #include "dataManagement/DownloadableGroup.h"
 
@@ -129,49 +131,49 @@ public:
      *
      *  @returns Property aviationMaps
      */
-    [[nodiscard]] auto aviationMaps() -> DataManagement::DownloadableGroupWatcher* { return &_aviationMaps; }
+    [[nodiscard]] auto aviationMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_aviationMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property baseMaps
      */
-    [[nodiscard]] auto baseMaps() -> DataManagement::DownloadableGroupWatcher* { return &_baseMaps; }
+    [[nodiscard]] auto baseMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_baseMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property databases
      */
-    [[nodiscard]] auto databases() -> DataManagement::DownloadableGroupWatcher* { return &_databases; }
+    [[nodiscard]] auto databases() -> DataManagement::DownloadableGroupWatcher* { return &m_databases; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property downloadingRemoteItemList
      */
-    [[nodiscard]] auto downloadingRemoteItemList() const -> bool { return _maps_json.downloading(); }
+    [[nodiscard]] auto downloadingRemoteItemList() const -> bool { return m_mapsJSON.downloading(); }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property items
      */
-    [[nodiscard]] auto items() -> DataManagement::DownloadableGroupWatcher* { return &_items; }
+    [[nodiscard]] auto items() -> DataManagement::DownloadableGroupWatcher* { return &m_items; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns hasRemoteItemList
      */
-    [[nodiscard]] auto hasRemoteItemList() const -> bool { return !_items.downloadables().isEmpty(); }
+    [[nodiscard]] auto hasRemoteItemList() const -> bool { return m_mapsJSON.hasFile(); }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property whatsNew
      */
-    [[nodiscard]] auto whatsNew() const -> QString { return _whatsNew; }
+    [[nodiscard]] auto whatsNew() const -> QString { return m_whatsNew; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto whatsNewHash() const -> uint { return qHash(_whatsNew, 0); }
+    [[nodiscard]] auto whatsNewHash() const -> uint { return qHash(m_whatsNew, 0); }
 
 
     //
@@ -201,7 +203,10 @@ public slots:
      *
      *  This will trigger a download the file maps.json from the remote server.
      */
-    void updateRemoteDataItemList();
+    void updateRemoteDataItemList()
+    {
+        m_mapsJSON.startFileDownload();
+    }
 
 signals:
     /*! \brief Notification signal for the property with the same name */
@@ -225,37 +230,24 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(DataManager)
 
-    // This method purges the directory "aviation_maps", by deleting all files
-    // that do not belong to any of the maps.
-    void cleanUp();
-
-    // Trivial method that re-sends the signal, but without the parameter
-    // 'objectName'
-    void errorReceiver(const QString& objectName, QString message);
+    // Clean the data directory.
+    //
+    // - delete all files with unexpected file names
+    // - earlier versions of this program constructed files with names ending in
+    //   ".geojson.geojson" or ".mbtiles.mbtiles". We correct those file names
+    //   here.
+    // - remove all empty sub directories
+    void cleanDataDirectory();
 
     // This slot is called when a local file of one of the Downloadables changes
     // content or existence. If the Downloadable in question has no file
     // anymore, and has an invalid URL, it is then removed.
-    void localFileOfGeoMapChanged();
+    void onItemFileChanged();
 
-    // This slot is called when the file "maps.json" is meant to be read.  It is
-    // called by the constructor to interpret an existing "maps.json". It is
-    // also connected to the signal &Downloadable::localFileChanged of
-    // _availableMapsDescription, which is emitted whenever the file "maps.json"
-    // changes in the file system.
-    void readGeoMapListFromJSONFile();
-
-    // This method records the current time as the time when the last update
-    // succeeded, and sets the autoUpdateTimer to check again in one day. This
-    // slot is connected to the signal &Downloadable::localFileChanged of
-    // _availableMapsDescription, which is emitted whenever the file "maps.json"
-    // changes in the file system.
-    void setTimeOfLastUpdateToNow();
-
-    // This method calls 'updateGeoMapList()' if an automatic update is due. It
-    // also sets a reasonable timeout value the timer _autoUpdateTime to fire up
-    // when the next autmatic update is due. It will then start the timer.
-    void autoUpdateGeoMapList();
+    // This slot updates the DownloadableGroups as well as the propery
+    // 'whatsNew', by reading the file 'maps.json' and by checking the data
+    // directory for locally installed, unsupported files.
+    void updateDataItemListAndWhatsNew();
 
     // This method checks if a Downloadable item with the given url and
     // localFileName already exists in _items. If so, it returns a pointer to
@@ -265,27 +257,22 @@ private:
     // then returned.
     DataManagement::Downloadable* createOrRecycleItem(const QUrl& url, const QString& localFileName);
 
-    // This method returns a list of files in the download directory that have
-    // no corresponding entry in _aviationMaps.
-    [[nodiscard]] auto unattachedFiles() const -> QList<QString>;
+    // Full path name of data directory, without trailing slash
+    QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};
 
     // The current whats new string from _aviationMaps.
-    QString _whatsNew {};
-
-    // This timer is used to trigger automatic updates. Its signal
-    // QTimer::timeout is connected to the slot autoUpdateGeoMapList.
-    QTimer _autoUpdateTimer;
+    QString m_whatsNew {};
 
     // This Downloadable object manages the central text file that describes the
     // remotely available aviation maps. It is set in the constructor to point
     // to the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
-    DataManagement::Downloadable _maps_json;
+    DataManagement::Downloadable m_mapsJSON { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
-    DataManagement::DownloadableGroup _databases;
-    DataManagement::DownloadableGroup _items;
-    DataManagement::DownloadableGroup _baseMaps;
-    DataManagement::DownloadableGroup _aviationMaps;
+    DataManagement::DownloadableGroup m_databases;
+    DataManagement::DownloadableGroup m_items;
+    DataManagement::DownloadableGroup m_baseMaps;
+    DataManagement::DownloadableGroup m_aviationMaps;
 };
 
 };

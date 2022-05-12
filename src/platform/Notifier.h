@@ -109,7 +109,7 @@ signals:
 
 protected:
     // Get translated title for specific notification
-    auto title(Platform::Notifier::NotificationTypes notificationType) -> QString;
+    static auto title(Platform::Notifier::NotificationTypes notificationType) -> QString;
 
 private:
     Q_DISABLE_COPY_MOVE(Notifier)

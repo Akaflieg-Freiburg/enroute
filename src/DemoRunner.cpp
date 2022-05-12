@@ -241,7 +241,7 @@ void DemoRunner::run()
                     emit requestOpenWeatherPage();
                     auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
                     Q_ASSERT(weatherReport != nullptr);
-                    auto station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
+                    auto *station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
                     Q_ASSERT(station != nullptr);
                     weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
                     QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
@@ -354,7 +354,7 @@ void DemoRunner::run()
         qWarning() << "… Weather Dialog";
         auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
         Q_ASSERT(weatherReport != nullptr);
-        auto station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LSZB"));
+        auto *station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LSZB"));
         Q_ASSERT(station != nullptr);
         weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
         QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);

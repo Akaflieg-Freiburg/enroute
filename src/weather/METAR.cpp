@@ -23,7 +23,6 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
 #include "navigation/Clock.h"
-#include "navigation/Navigator.h"
 #include "weather/METAR.h"
 
 

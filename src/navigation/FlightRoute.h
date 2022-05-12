@@ -338,7 +338,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE [[nodiscard]] QString save(const QString& fileName=QString()) const;
+    Q_INVOKABLE QString save(const QString& fileName=QString()) const;
 
     /*! \brief Suggests a name for saving this route
      *

@@ -202,7 +202,7 @@ auto Navigation::FlightRoute::loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMap
         QString cmt;
         while (!xml.atEnd() && !xml.hasError())
         {
-            if (xml.readNext() == 0u) {
+            if (xml.readNext() == 0U) {
                 break;
             }
 

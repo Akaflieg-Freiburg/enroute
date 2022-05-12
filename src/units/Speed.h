@@ -126,10 +126,11 @@ namespace Units {
          *
          * @returns Quotient as a dimension-less number
          */
-        Q_INVOKABLE double operator/(Units::Speed rhs)
+        Q_INVOKABLE double operator/(Units::Speed rhs) const
         {
-            if (qFuzzyIsNull(rhs._speedInMPS))
+            if (qFuzzyIsNull(rhs._speedInMPS)) {
                 return qQNaN();
+}
             return _speedInMPS / rhs._speedInMPS;
         }
 
@@ -139,7 +140,7 @@ namespace Units {
          *
          * @returns Sum
          */
-        Q_INVOKABLE Units::Speed operator+(Units::Speed rhs)
+        Q_INVOKABLE Units::Speed operator+(Units::Speed rhs) const
         {
             return Units::Speed::fromMPS(_speedInMPS + rhs._speedInMPS);
         }
@@ -150,7 +151,7 @@ namespace Units {
          *
          * @returns Difference
          */
-        Q_INVOKABLE Units::Speed operator-(Units::Speed rhs)
+        Q_INVOKABLE Units::Speed operator-(Units::Speed rhs) const
         {
             return Units::Speed::fromMPS(_speedInMPS - rhs._speedInMPS);
         }

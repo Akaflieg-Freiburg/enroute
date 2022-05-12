@@ -221,7 +221,7 @@ public:
 
 private:
     // Necessary data for computation of wind triangle?
-    [[nodiscard]] auto hasDataForWindTriangle(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> bool;
+    [[nodiscard]] static auto hasDataForWindTriangle(Weather::Wind wind, const Navigation::Aircraft& aircraft) -> bool;
 
     // Minimum length of the leg in meters. If shorter, no courses are computed.
     static constexpr Units::Distance minLegLength = Units::Distance::fromM(100.0);

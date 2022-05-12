@@ -55,7 +55,7 @@ public:
      *
      *  @returns Name of the directory, without trailing slash
      */
-    Q_INVOKABLE [[nodiscard]] QString directory(Librarian::Library library) const;
+    Q_INVOKABLE [[nodiscard]] static QString directory(Librarian::Library library) ;
 
     /*! \brief Lists all entries in the library whose name contains the string 'filter'
      *

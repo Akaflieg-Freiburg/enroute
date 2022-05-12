@@ -132,11 +132,7 @@ auto Navigation::Leg::isFollowing(const Positioning::PositionInfo& positionInfo)
 
     delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_start.coordinate()));
     deltaDeg = delta.toDEG();
-    if ((deltaDeg < 120.0) || (deltaDeg > 240.0)) {
-        return false;
-    }
-
-    return true;
+    return !((deltaDeg < 120.0) || (deltaDeg > 240.0));
 }
 
 
@@ -197,7 +193,7 @@ auto Navigation::Leg::description(Weather::Wind wind, const Navigation::Aircraft
 }
 
 
-auto Navigation::Leg::hasDataForWindTriangle(Weather::Wind wind, const Navigation::Aircraft& aircraft) const -> bool
+auto Navigation::Leg::hasDataForWindTriangle(Weather::Wind wind, const Navigation::Aircraft& aircraft) -> bool
 {
 
     if ( !aircraft.cruiseSpeed().isFinite() ) {

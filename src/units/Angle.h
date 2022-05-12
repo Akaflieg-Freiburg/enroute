@@ -91,7 +91,7 @@ namespace Units {
          *
          * @returns Sum of the two angles
          */
-        Q_INVOKABLE Units::Angle operator+(Units::Angle rhs)
+        Q_INVOKABLE Units::Angle operator+(Units::Angle rhs) const
         {
             Angle result;
             result.m_angleInRAD = m_angleInRAD + rhs.m_angleInRAD;
@@ -104,7 +104,7 @@ namespace Units {
          *
          * @returns Difference of the two angles
          */
-        Q_INVOKABLE Units::Angle operator-(Units::Angle rhs)
+        Q_INVOKABLE Units::Angle operator-(Units::Angle rhs) const
         {
             Angle result;
             result.m_angleInRAD = m_angleInRAD - rhs.m_angleInRAD;
@@ -180,8 +180,9 @@ namespace Units {
             }
 
             auto d = std::fmod(qRadiansToDegrees(m_angleInRAD), 360.0);
-            if (d > 0)
+            if (d > 0) {
                 return d;
+}
             return d+360.0;
         }
 

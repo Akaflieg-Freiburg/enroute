@@ -349,7 +349,7 @@ void Librarian::rename(Librarian::Library library, const QString &oldName, const
 }
 
 
-auto Librarian::directory(Library library) const -> QString
+auto Librarian::directory(Library library) -> QString
 {
     QString path;
     switch (library) {

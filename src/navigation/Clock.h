@@ -57,7 +57,7 @@ public:
      *
      * @returns Property date
      */
-    [[nodiscard]] auto date() const -> QDate
+    [[nodiscard]] static auto date() -> QDate
     {
         return QDateTime::currentDateTime().date();
     }
@@ -108,7 +108,7 @@ public:
      *
      * @returns Property time
      */
-    [[nodiscard]] auto time() const -> QDateTime
+    [[nodiscard]] static auto time() -> QDateTime
     {
         return QDateTime::currentDateTime();
     }

@@ -300,13 +300,13 @@ auto Librarian::getStringHashFromRessource(const QString &name) -> uint
 }
 
 
-auto Librarian::exists(Librarian::Library library, const QString &baseName) const -> bool
+auto Librarian::exists(Librarian::Library library, const QString &baseName) -> bool
 {
     return QFile::exists(fullPath(library, baseName));
 }
 
 
-auto Librarian::get(Librarian::Library library, const QString &baseName) const -> QObject *
+auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObject *
 {
     if (library == Routes) {
         auto *route = new Navigation::FlightRoute();
@@ -337,13 +337,13 @@ auto Librarian::fullPath(Librarian::Library library, const QString &baseName) ->
 }
 
 
-void Librarian::remove(Librarian::Library library, const QString& baseName) const
+void Librarian::remove(Librarian::Library library, const QString& baseName) 
 {
     QFile::remove(fullPath(library, baseName));
 }
 
 
-void Librarian::rename(Librarian::Library library, const QString &oldName, const QString &newName) const
+void Librarian::rename(Librarian::Library library, const QString &oldName, const QString &newName) 
 {
     QFile::rename(fullPath(library, oldName), fullPath(library, newName));
 }

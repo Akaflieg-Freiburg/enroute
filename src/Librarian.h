@@ -79,7 +79,7 @@ public:
      *
      *  @returns True if the file exists
      */
-    Q_INVOKABLE [[nodiscard]] bool exists(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE [[nodiscard]] static bool exists(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Full path of a library entry
      *
@@ -111,7 +111,7 @@ public:
      *
      * @returns Pointer to the object, or a nullptr in case of error.
      */
-    Q_INVOKABLE [[nodiscard]] QObject* get(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE [[nodiscard]] static QObject* get(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Exposes string stored in QRessource to QML
      *
@@ -149,7 +149,7 @@ public:
      *
      *  @param baseName File name, without path and without extension
      */
-    Q_INVOKABLE void remove(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE static void remove(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Renames an entry in a library
      *
@@ -161,7 +161,7 @@ public:
      * @param newName New file name, without path and without extension. A file
      * with that name must not exist in the library
      */
-    Q_INVOKABLE void rename(Librarian::Library library, const QString &oldName, const QString &newName) const;
+    Q_INVOKABLE static void rename(Librarian::Library library, const QString &oldName, const QString &newName) ;
 
     /*! \brief Filters a QStringList in a fuzzy way
      *

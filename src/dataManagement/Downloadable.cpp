@@ -69,7 +69,7 @@ auto DataManagement::Downloadable::infoText() const -> QString {
             displayText += " • " + tr("update available");
         }
         if (!url().isValid()) {
-            displayText += " • " + tr("no longer supported");
+            displayText += " • " + tr("manally imported");
         }
     } else {
         displayText += tr("not installed") + " • ";

@@ -2,6 +2,7 @@
     <qresource>
         <!-- MapBox style files -->
         <file alias="flightMap/empty.json">${CMAKE_CURRENT_SOURCE_DIR}/flightMap/empty.json</file>
+        <file alias="flightMap/mapstyle-raster.json">${CMAKE_CURRENT_SOURCE_DIR}/flightMap/mapstyle-raster.json</file>
         <file alias="flightMap/osm-liberty.json">${CMAKE_CURRENT_SOURCE_DIR}/flightMap/osm-liberty.json</file>
 
 	<!-- Sprites -->

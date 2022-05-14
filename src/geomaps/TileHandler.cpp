@@ -36,16 +36,6 @@ QRegularExpression tileQueryPattern(QStringLiteral("[0-9]{1,2}/[0-9]{1,4}/[0-9]{
 GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
-    // Initialize with default values
-    _name        = QStringLiteral("empty");
-    _format      = QStringLiteral("pbf");
-    _description = QStringLiteral("empty tile set");
-    _version     = QStringLiteral("3.6.1");
-    _attribution = QLatin1String("");
-    _maxzoom     = 10;
-    _minzoom     = 0;
-    _tiles       = baseURL+"/{z}/{x}/{y}."+_format;
-
     // Go through mbtile files and find real values
     foreach (auto mbtileFile, mbtileFiles) {
         // Check that file really exists
@@ -168,7 +158,10 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
 
             // Set the headers and write the content
             socket->setHeader("Content-Type", "application/octet-stream");
-            socket->setHeader("Content-Encoding", "gzip");
+            if (_format == QLatin1String("pbf"))
+            {
+                socket->setHeader("Content-Encoding", "gzip");
+            }
             socket->setHeader("Content-Length", QByteArray::number(tileData.length()));
             socket->write(tileData);
             socket->close();

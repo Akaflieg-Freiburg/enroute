@@ -54,7 +54,6 @@ Item {
 
         anchors.fill: parent
 
-        geoJSON: global.geoMapProvider().geoJSON
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true

@@ -59,7 +59,7 @@ void GeoMaps::TileServer::removeMbtilesFileSet(const QString& path)
 void GeoMaps::TileServer::setUpTileHandlers()
 {
     // Create new file system handler and delete old one
-    auto *newFileSystemHandler = new QHttpEngine::FilesystemHandler(QStringLiteral(":"), this);
+    auto* newFileSystemHandler = new QHttpEngine::FilesystemHandler(QStringLiteral(":"), this);
     newFileSystemHandler->addRedirect(QRegExp("^$"), QStringLiteral("/index.html"));
     setHandler(newFileSystemHandler);
     delete currentFileSystemHandler;
@@ -78,7 +78,7 @@ void GeoMaps::TileServer::setUpTileHandlers()
             URL = _baseUrl.toString()+"/"+iterator.key();
         }
 
-        auto *handler = new TileHandler(iterator.value(), URL, newFileSystemHandler);
+        auto* handler = new TileHandler(iterator.value(), URL, newFileSystemHandler);
         newFileSystemHandler->addSubHandler(QRegExp("^"+iterator.key()), handler);
     }
 

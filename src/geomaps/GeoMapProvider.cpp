@@ -242,6 +242,20 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
 void GeoMaps::GeoMapProvider::baseMapsChanged()
 {
 
+    bool hasRaster = false;
+    foreach(auto baseMap, GlobalObject::dataManager()->baseMaps()->downloadablesWithFile())
+    {
+        if (baseMap.isNull())
+        {
+            continue;
+        }
+        if (baseMap->fileName().endsWith(QLatin1String("raster")))
+        {
+            hasRaster = true;
+            break;
+        }
+    }
+
     // Delete old style file, stop serving tiles
     delete _styleFile;
     _tileServer.removeMbtilesFileSet(_currentPath);
@@ -252,7 +266,8 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
     // Generate new mapbox style file
     _styleFile = new QTemporaryFile(this);
-    QFile file(QStringLiteral(":/flightMap/osm-liberty.json"));
+    QString mapStyleUrl = hasRaster ? QStringLiteral(":/flightMap/mapstyle-raster.json") : QStringLiteral(":/flightMap/osm-liberty.json");
+    QFile file(mapStyleUrl);
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
@@ -263,6 +278,11 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
     emit styleFileURLChanged();
 
+    if (_hasRasterMap != hasRaster)
+    {
+        _hasRasterMap = hasRaster;
+        emit hasRasterMapChanged();
+    }
 }
 
 

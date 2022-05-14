@@ -29,9 +29,9 @@
 #include <QRegularExpression>
 #include <QTemporaryFile>
 
+#include "dataManagement/DataManager.h"
 #include "Airspace.h"
 #include "Librarian.h"
-#include "dataManagement/DataManager.h"
 #include "Settings.h"
 #include "Waypoint.h"
 #include "TileServer.h"
@@ -100,6 +100,15 @@ public:
         return {};
     }
 
+#warning docu
+    Q_INVOKABLE static QByteArray emptyGeoJSON()
+    {
+        QJsonObject resultObject;
+        resultObject.insert(QStringLiteral("type"), "FeatureCollection");
+        resultObject.insert(QStringLiteral("features"), QJsonArray());
+        QJsonDocument geoDoc(resultObject);
+        return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
+    }
 
     //
     // Properties
@@ -135,10 +144,14 @@ public:
      */
     Q_PROPERTY(QString copyrightNotice READ copyrightNotice CONSTANT)
 
+#warning
+    Q_PROPERTY(bool hasRasterMap READ hasRasterMap NOTIFY hasRasterMapChanged)
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property copyrightNotice
      */
+#warning Need to adjust
     static auto copyrightNotice() -> QString
     {
         return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
@@ -221,7 +234,14 @@ public:
         return _waypoints_;
     }
 
+#warning
+    bool hasRasterMap() const {return _hasRasterMap;}
+
+
 signals:
+#warning
+    void hasRasterMapChanged();
+
     /*! \brief Notification signal for the property with the same name */
     void geoJSONChanged();
 
@@ -262,6 +282,9 @@ private:
     // Tile Server
     TileServer _tileServer;
 
+#warning
+    bool _hasRasterMap {false};
+
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> _styleFile;
 
@@ -275,7 +298,7 @@ private:
     // (whose names ends in an underscore) are therefore
     // protected by this mutex.
     QMutex           _aviationDataMutex;
-    QByteArray       _combinedGeoJSON_; // Cache: GeoJSON
+    QByteArray       _combinedGeoJSON_;  // Cache: GeoJSON
     QVector<Waypoint> _waypoints_;       // Cache: Waypoints
     QVector<Airspace> _airspaces_;       // Cache: Airspaces
 };

@@ -77,7 +77,8 @@ void DataManagement::DataManager::cleanDataDirectory()
             misnamedFiles += fileIterator.filePath();
         }
         if (!fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
-            !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")))
+            !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
+                !fileIterator.filePath().endsWith(QLatin1String(".raster")))
         {
             unexpectedFiles += fileIterator.filePath();
         }
@@ -205,7 +206,8 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
     {
         m_aviationMaps.addToGroup(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("mbtiles")))
+    if (localFileName.endsWith(QLatin1String("mbtiles")) ||
+            localFileName.endsWith(QLatin1String("raster")))
     {
         m_baseMaps.addToGroup(downloadable);
     }

@@ -67,6 +67,9 @@ public:
      */
     explicit GeoMapProvider(QObject *parent = nullptr);
 
+    // deferred initialization
+    void deferredInitialization() override;
+
     /*! \brief Destructor */
     ~GeoMapProvider() override = default;
 
@@ -215,12 +218,6 @@ signals:
 
     /*! \brief Notification signal for the property with the same name */
     void styleFileURLChanged();
-
-private slots:
-    // Intializations that are moved out of the constructor, in order to avoid
-    // nested uses of constructors in Global.
-    void deferredInitialization();
-
 
 private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)

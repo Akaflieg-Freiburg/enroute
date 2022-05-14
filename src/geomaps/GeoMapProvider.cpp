@@ -34,7 +34,6 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 }
 
-
 void GeoMaps::GeoMapProvider::deferredInitialization()
 {
     connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
@@ -50,6 +49,36 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     onBaseMapsChanged();
 }
 
+
+//
+// Getter Methods
+//
+
+auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
+{
+#warning Need to adjust
+    return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
+}
+
+auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
+{
+    QMutexLocker lock(&_aviationDataMutex);
+    return _combinedGeoJSON_;
+}
+
+auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
+{
+    if (_styleFile.isNull())
+    {
+        return QStringLiteral(":/flightMap/empty.json");
+    }
+    return "file://"+_styleFile->fileName();
+}
+
+
+//
+// Methods
+//
 
 auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVariantList
 {
@@ -73,7 +102,6 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
 
     return final;
 }
-
 
 auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> Waypoint
 {
@@ -110,6 +138,14 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     return result;
 }
 
+auto GeoMaps::GeoMapProvider::emptyGeoJSON() -> QByteArray
+{
+    QJsonObject resultObject;
+    resultObject.insert(QStringLiteral("type"), "FeatureCollection");
+    resultObject.insert(QStringLiteral("features"), QJsonArray());
+    QJsonDocument geoDoc(resultObject);
+    return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
+}
 
 auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QVariantList
 {
@@ -148,7 +184,6 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
     return result;
 }
 
-
 auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint
 {
     auto wps = waypoints();
@@ -163,7 +198,6 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint
     }
     return {};
 }
-
 
 auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QVariantList
 {
@@ -195,15 +229,16 @@ auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, co
     return result;
 }
 
-
-auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
+auto GeoMaps::GeoMapProvider::waypoints() -> QVector<Waypoint>
 {
-    if (_styleFile.isNull()) {
-        return QStringLiteral(":/flightMap/empty.json");
-    }
-    return "file://"+_styleFile->fileName();
+    QMutexLocker locker(&_aviationDataMutex);
+    return _waypoints_;
 }
 
+
+//
+// Private Methods and Slots
+//
 
 void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 {
@@ -230,7 +265,6 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 
     _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->airspaceAltitudeLimit(), GlobalObject::settings()->hideGlidingSectors());
 }
-
 
 void GeoMaps::GeoMapProvider::onBaseMapsChanged()
 {
@@ -270,7 +304,6 @@ void GeoMaps::GeoMapProvider::onBaseMapsChanged()
 
     emit styleFileURLChanged();
 }
-
 
 void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
 {
@@ -356,33 +389,4 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     _aviationDataMutex.unlock();
 
     emit geoJSONChanged();
-}
-
-
-QByteArray GeoMaps::GeoMapProvider::emptyGeoJSON()
-{
-    QJsonObject resultObject;
-    resultObject.insert(QStringLiteral("type"), "FeatureCollection");
-    resultObject.insert(QStringLiteral("features"), QJsonArray());
-    QJsonDocument geoDoc(resultObject);
-    return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
-}
-
-
-auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
-{
-#warning Need to adjust
-    return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
-}
-
-auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
-{
-    QMutexLocker lock(&_aviationDataMutex);
-    return _combinedGeoJSON_;
-}
-
-auto GeoMaps::GeoMapProvider::waypoints() -> QVector<Waypoint>
-{
-    QMutexLocker locker(&_aviationDataMutex);
-    return _waypoints_;
 }

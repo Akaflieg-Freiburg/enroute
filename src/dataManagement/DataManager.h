@@ -91,6 +91,12 @@ public:
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* aviationMaps READ aviationMaps CONSTANT)
 
+    /*! \brief DownloadableGroupWatcher that holds all base maps in raster format
+     *
+     *  Pointer to a DownloadableGroupWatcher that holds all base maps in raster format.
+     */
+    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMapsRaster READ baseMapsRaster CONSTANT)
+
     /*! \brief DownloadableGroupWatcher that holds all base maps
      *
      *  Pointer to a DownloadableGroupWatcher that holds all base maps.
@@ -138,6 +144,18 @@ public:
      *  @returns Property baseMaps
      */
     [[nodiscard]] auto baseMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_baseMaps; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property baseMapsRaster
+     */
+    [[nodiscard]] auto baseMapsRaster() -> DataManagement::DownloadableGroupWatcher* { return &m_baseMapsRaster; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property baseMapsVector
+     */
+    [[nodiscard]] auto baseMapsVector() -> DataManagement::DownloadableGroupWatcher* { return &m_baseMapsVector; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -272,6 +290,8 @@ private:
     DataManagement::DownloadableGroup m_databases;
     DataManagement::DownloadableGroup m_items;
     DataManagement::DownloadableGroup m_baseMaps;
+    DataManagement::DownloadableGroup m_baseMapsRaster;
+    DataManagement::DownloadableGroup m_baseMapsVector;
     DataManagement::DownloadableGroup m_aviationMaps;
 };
 

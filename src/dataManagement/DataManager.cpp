@@ -206,10 +206,15 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
     {
         m_aviationMaps.addToGroup(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("mbtiles")) ||
-            localFileName.endsWith(QLatin1String("raster")))
+    if (localFileName.endsWith(QLatin1String("raster")))
     {
         m_baseMaps.addToGroup(downloadable);
+        m_baseMapsRaster.addToGroup(downloadable);
+    }
+    if (localFileName.endsWith(QLatin1String("mbtiles")))
+    {
+        m_baseMaps.addToGroup(downloadable);
+        m_baseMapsVector.addToGroup(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("txt")))
     {

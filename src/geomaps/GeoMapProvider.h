@@ -144,9 +144,6 @@ public:
      */
     Q_PROPERTY(QString copyrightNotice READ copyrightNotice CONSTANT)
 
-#warning
-    Q_PROPERTY(bool hasRasterMap READ hasRasterMap NOTIFY hasRasterMapChanged)
-
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property copyrightNotice
@@ -234,14 +231,8 @@ public:
         return _waypoints_;
     }
 
-#warning
-    bool hasRasterMap() const {return _hasRasterMap;}
-
 
 signals:
-#warning
-    void hasRasterMapChanged();
-
     /*! \brief Notification signal for the property with the same name */
     void geoJSONChanged();
 
@@ -281,9 +272,6 @@ private:
 
     // Tile Server
     TileServer _tileServer;
-
-#warning
-    bool _hasRasterMap {false};
 
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> _styleFile;

@@ -242,19 +242,7 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
 void GeoMaps::GeoMapProvider::baseMapsChanged()
 {
 
-    bool hasRaster = false;
-    foreach(auto baseMap, GlobalObject::dataManager()->baseMaps()->downloadablesWithFile())
-    {
-        if (baseMap.isNull())
-        {
-            continue;
-        }
-        if (baseMap->fileName().endsWith(QLatin1String("raster")))
-        {
-            hasRaster = true;
-            break;
-        }
-    }
+    bool hasRaster = GlobalObject::dataManager()->baseMapsRaster()->hasFile();
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
@@ -262,12 +250,23 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
 
     // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+    if (hasRaster)
+    {
+        _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentPath);
+    } else {
+        _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+    }
 
     // Generate new mapbox style file
+    delete _styleFile;
     _styleFile = new QTemporaryFile(this);
-    QString mapStyleUrl = hasRaster ? QStringLiteral(":/flightMap/mapstyle-raster.json") : QStringLiteral(":/flightMap/osm-liberty.json");
-    QFile file(mapStyleUrl);
+    QFile file;
+    if (hasRaster)
+    {
+        file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
+    } else {
+        file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
+    }
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
@@ -277,12 +276,6 @@ void GeoMaps::GeoMapProvider::baseMapsChanged()
     _styleFile->close();
 
     emit styleFileURLChanged();
-
-    if (_hasRasterMap != hasRaster)
-    {
-        _hasRasterMap = hasRaster;
-        emit hasRasterMapChanged();
-    }
 }
 
 

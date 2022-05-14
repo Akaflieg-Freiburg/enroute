@@ -70,7 +70,11 @@ Map {
         
         property string name: "aviationData"
         property string sourceType: "geojson"
-        property string data: global.geoMapProvider().hasRasterMap ? global.geoMapProvider().emptyGeoJSON() : global.geoMapProvider().geoJSON
+        property string data: {
+            if (global.dataManager().baseMapsRaster.hasFile)
+                return global.geoMapProvider().emptyGeoJSON()
+            return global.geoMapProvider().geoJSON
+        }
     }
 
     /*************************************

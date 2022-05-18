@@ -20,6 +20,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 import enroute 1.0
 import "../pages"
@@ -32,6 +33,7 @@ Item {
 
     Connections {
         target: global.mobileAdaptor()
+
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
             view.requestActivate()
@@ -79,21 +81,60 @@ Item {
 
         title: qsTr("Import Raster Map")
 
-        Label {
-            width: importFlightRouteDialog.availableWidth
+        ColumnLayout {
+            anchors.fill: parent
 
-            text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name or choose an existing name from the list below.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            TextField {
+                id: mapName
+
+                Layout.fillWidth: true
+                focus: true
+                placeholderText: qsTr("Map Name")
+
+                onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+
+                onAccepted: {
+                    if (mapName.text === "")
+                        return
+                    importRasterMapDialog.accept()
+                }
+            }
+
+            CheckBox {
+                Layout.fillWidth: true
+                text: qsTr("Remove file after import")
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: global.dataManager().baseMapsVector.hasFile
+                text: qsTr("To avoid conflicts, all vector maps will be uninstalled.")
+
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
+        standardButtons: Dialog.Ok | Dialog.Cancel
         modal: true
+
+        Component.onCompleted: {
+            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false //(mapName.displayText !== "")
+        }
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
 
             var errorString = ""
+            global.dataManager().import(importManager.filePath, mapName.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

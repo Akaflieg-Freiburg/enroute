@@ -24,6 +24,7 @@
 #include <QRandomGenerator>
 
 #include "geomaps/GeoMapProvider.h"
+#include "geomaps/MBTILES.h"
 #include "navigation/Navigator.h"
 
 
@@ -56,8 +57,21 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
 
 auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
 {
-#warning Need to adjust
-    return QStringLiteral("<a href='https://openAIP.net'>© openAIP</a> • <a href='https://openflightmaps.org'>© open flightmaps</a> • <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>");
+    QString result;
+    if (GlobalObject::dataManager()->aviationMaps()->hasFile())
+    {
+        result += "<h4>"+tr("Aviation maps")+"</h4>";
+        result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br><a href='https://openflightmaps.org'>© open flightmaps</a>");
+    }
+
+    foreach(auto baseMap, GlobalObject::dataManager()->baseMaps()->downloadablesWithFile())
+    {
+        auto name = baseMap->fileName().split(QStringLiteral("aviation_maps/")).last();
+        result += ("<h4>"+tr("Basemap")+ " %1</h4>").arg(name);
+        result += MBTILES::attribution(baseMap->fileName());
+    }
+
+    return result;
 }
 
 auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
@@ -269,35 +283,35 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 void GeoMaps::GeoMapProvider::onBaseMapsChanged()
 {
 
-    bool hasRaster = GlobalObject::dataManager()->baseMapsRaster()->hasFile();
-
     // Delete old style file, stop serving tiles
     delete _styleFile;
     _tileServer.removeMbtilesFileSet(_currentPath);
-
-    // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    if (hasRaster)
+
+    QFile file;
+    if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
-        _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentPath);
-    } else {
-        _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+        bool hasRaster = GlobalObject::dataManager()->baseMapsRaster()->hasFile();
+        // Serve new tile set under new name
+        if (hasRaster)
+        {
+            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentPath);
+            file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
+        } else
+        {
+            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+            file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
+        }
+    } else
+    {
+        file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
 
-    // Generate new mapbox style file
-    delete _styleFile;
-    _styleFile = new QTemporaryFile(this);
-    QFile file;
-    if (hasRaster)
-    {
-        file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
-    } else {
-        file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
-    }
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
     data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+    _styleFile = new QTemporaryFile(this);
     _styleFile->open();
     _styleFile->write(data);
     _styleFile->close();

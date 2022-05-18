@@ -97,6 +97,12 @@ public:
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMapsRaster READ baseMapsRaster CONSTANT)
 
+    /*! \brief DownloadableGroupWatcher that holds all base maps in vector format
+     *
+     *  Pointer to a DownloadableGroupWatcher that holds all base maps in vector format.
+     */
+    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMapsVector READ baseMapsVector CONSTANT)
+
     /*! \brief DownloadableGroupWatcher that holds all base maps
      *
      *  Pointer to a DownloadableGroupWatcher that holds all base maps.
@@ -198,6 +204,9 @@ public:
     // Methods
     //
 
+#warning
+    Q_INVOKABLE QString import(const QString& fileName, const QString& newName);
+
     /*! \brief Describe installed map
      *
      * This method describes a data item, by inspecting the locally installed
@@ -271,7 +280,7 @@ private:
     // localFileName already exists in _items. If so, it returns a pointer to
     // that item. If not, then a Downloadable with the url and localFileName is
     // created and added to _items. Depending on localFileName, it will also be
-    // added to _aviationMap, _baseMaps, or _databases. A point to that item is
+    // added to _aviationMap, _baseMaps, or _databases. A pointer to that item is
     // then returned.
     DataManagement::Downloadable* createOrRecycleItem(const QUrl& url, const QString& localFileName);
 

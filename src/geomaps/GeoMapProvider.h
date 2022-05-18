@@ -112,7 +112,7 @@ public:
      *
      * @returns Property copyrightNotice
      */
-    auto copyrightNotice() -> QString;
+    static auto copyrightNotice() -> QString;
 
     /*! \brief Getter function for the property with the same name
      *

@@ -24,6 +24,30 @@
 
 #include "geomaps/MBTILES.h"
 
+auto GeoMaps::MBTILES::attribution(const QString& fileName) -> QString
+{
+    QString result;
+
+    auto databaseConnectionName = "GeoMaps::MBTILES::format " + fileName;
+    { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
+        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
+        testDB.setDatabaseName(fileName);
+
+        if (testDB.open()) {
+            QSqlQuery query(testDB);
+            if (query.exec(QStringLiteral("select name, value from metadata where name='attribution';"))) {
+                if (query.first()) {
+                    result = query.value(1).toString();
+                }
+            }
+            testDB.close();
+        }
+    }
+    QSqlDatabase::removeDatabase(databaseConnectionName);
+
+    return result;
+}
+
 auto GeoMaps::MBTILES::format(const QString& fileName) -> GeoMaps::MBTILES::Format
 {
     GeoMaps::MBTILES::Format result = Unknown;

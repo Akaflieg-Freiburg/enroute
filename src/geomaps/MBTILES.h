@@ -45,6 +45,14 @@ public:
         Raster,
     };
 
+    /*! \brief Attribution of MBTILES file
+     *
+     *  @param fileName Name of the file
+     *
+     *  @returns A human-readable HTML-String with attribution, or an empty string on error.
+     */
+    [[nodiscard]] static QString attribution(const QString& fileName);
+
     /*! \brief Determine type of data contain in an MBTILES file
      *
      *  @param fileName Name of the file

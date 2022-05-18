@@ -27,15 +27,25 @@ DataManagement::DownloadableGroup::DownloadableGroup(QObject *parent)
 }
 
 
-void DataManagement::DownloadableGroup::addToGroup(Downloadable *downloadable)
+void DataManagement::DownloadableGroup::addToGroup(Downloadable* downloadable)
 {
     // Avoid double entries
-    if (_downloadables.contains(downloadable)) {
+    if (_downloadables.contains(downloadable))
+    {
         return;
     }
 
     // Add element to group
     _downloadables.append(downloadable);
+    std::sort(_downloadables.begin(), _downloadables.end(), [](Downloadable* a, Downloadable* b)
+    {
+        if (a->section() != b->section()) {
+            return (a->section() < b->section());
+        }
+        return (a->fileName() < b->fileName());
+    }
+    );
+
 
     connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::checkAndEmitSignals);
     connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::checkAndEmitSignals);
@@ -45,6 +55,10 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable *downloadable)
     checkAndEmitSignals();
 
     emit downloadablesChanged();
+    if (downloadable->hasFile())
+    {
+        emit localFileContentChanged();
+    }
 }
 
 

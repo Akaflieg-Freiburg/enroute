@@ -216,6 +216,7 @@ auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> 
 auto DataManagement::DownloadableGroupWatcher::downloadablesAsObjectList() const -> QVector<QObject*>
 {
     QVector<QObject*> result;
+    result.reserve(_downloadables.size());
     foreach(auto downloadablePtr, downloadables())
         result.append(downloadablePtr);
     return result;

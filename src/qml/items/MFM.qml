@@ -465,8 +465,6 @@ Item {
             // the write-once property 'plugin' on language changes
             plugin = mapPlugin
         }
-
-        onCopyrightLinkActivated: Qt.openUrlExternally(link)
     }
 
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
@@ -711,32 +709,27 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         height: 30
     }
 
-    Label {
-        id: copyrightInfo
+    Pane {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
         anchors.bottomMargin: 0.4*view.font.pixelSize
+        topPadding: 0
+        bottomPadding: 0
+        Material.elevation: 2
+        opacity: 0.8
 
-        text: global.geoMapProvider().copyrightNotice
-        visible: width < parent.width
-        onLinkActivated: Qt.openUrlExternally(link)
-    }
-
-    Label {
+        Label {
         id: noCopyrightInfo
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: navBar.top
-        anchors.bottomMargin: 0.4*view.font.pixelSize
         text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-        visible: !copyrightInfo.visible
         onLinkActivated: copyrightDialog.open()
 
         LongTextDialog {
             id: copyrightDialog
             title: qsTr("Map Data Copyright Information")
-            text: global.geoMapProvider().copyrightNotice.replace("•", "<br><br>").replace("•", "<br><br>").replace("•", "<br><br>")
+            text: global.geoMapProvider().copyrightNotice
             standardButtons: Dialog.Cancel
         }
+    }
     }
 
     NavBar {

@@ -39,9 +39,9 @@ DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent)
     connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
     connect(&m_mapsJSON, &DataManagement::Downloadable::hasFileChanged, this, &DataManager::hasRemoteItemListChanged);
     connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, [this]()
-            { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
+    { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
     connect(&m_mapsJSON, &DataManagement::Downloadable::error, this, [this](const QString & /*unused*/, QString message)
-            { emit error(std::move(message)); });
+    { emit error(std::move(message)); });
 
     // Wire up the DownloadableGroup _items
     connect(&m_items, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::onItemFileChanged);
@@ -77,7 +77,7 @@ void DataManagement::DataManager::cleanDataDirectory()
             misnamedFiles += fileIterator.filePath();
         }
         if (!fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
-            !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
+                !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".raster")))
         {
             unexpectedFiles += fileIterator.filePath();
@@ -116,10 +116,10 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
         return tr("No information available.");
     }
     QString result = QStringLiteral("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
-                         .arg(tr("Installed"),
-                              fi.lastModified().toUTC().toString(),
-                              tr("File Size"),
-                              QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
+            .arg(tr("Installed"),
+                 fi.lastModified().toUTC().toString(),
+                 tr("File Size"),
+                 QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
 
     // Extract infomation from GeoJSON
     if (fileName.endsWith(u".geojson"))
@@ -161,6 +161,53 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     return result;
 }
 
+auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
+{
+    qWarning() << fileName << newName;
+#warning This handles only raster files
+
+    auto path = m_dataDirectory+"/Unsupported";
+    auto newFileName = path + "/" + newName;
+    switch(GeoMaps::MBTILES::format(fileName))
+    {
+    case GeoMaps::MBTILES::Raster:
+        newFileName += QLatin1String(".raster");
+        foreach(auto downloadable, m_baseMapsVector.downloadablesWithFile()) {
+            if (!downloadable.isNull())
+            {
+                downloadable->deleteFile();
+            }
+        }
+        break;
+    case GeoMaps::MBTILES::Vector:
+        newFileName += QLatin1String(".vector");
+        foreach(auto downloadable, m_baseMapsRaster.downloadablesWithFile()) {
+            if (!downloadable.isNull())
+            {
+                downloadable->deleteFile();
+            }
+        }
+        break;
+    case GeoMaps::MBTILES::Unknown:
+        return tr("Unable to recognize map file format.");
+    }
+
+    if (!QDir().mkpath(path))
+    {
+        return tr("Unable to create directory '%1'.").arg(path);
+    }
+    QFile::remove(newFileName);
+    if (!QFile::copy(fileName, newFileName))
+    {
+        QFile::remove(newFileName);
+        updateDataItemListAndWhatsNew();
+        return tr("Unable to copy map file to data directory.");
+    }
+    updateDataItemListAndWhatsNew();
+
+    return {};
+}
+
 void DataManagement::DataManager::onItemFileChanged()
 {
     auto items = m_items.downloadables();
@@ -200,7 +247,20 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
     }
 
     // Construct a new downloadable object and add to appropriate groups
-    auto *downloadable = new DataManagement::Downloadable(url, localFileName, this);
+    auto* downloadable = new DataManagement::Downloadable(url, localFileName, this);
+    if (localFileName.endsWith(QLatin1String("geojson")) || localFileName.endsWith(QLatin1String("mbtiles")) || localFileName.endsWith(QLatin1String("raster")))
+    {
+        if (url.isValid())
+        {
+            downloadable->setSection(url.path().section(QStringLiteral("/"), -2, -2));
+        }
+        else
+        {
+            // The noope tag "<a name>" guarantees that this section will come first alphabetically
+            downloadable->setSection("<a name>"+tr("Manually Imported"));
+        }
+    }
+
     m_items.addToGroup(downloadable);
     if (localFileName.endsWith(QLatin1String("geojson")))
     {
@@ -271,7 +331,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);
         downloadable->setObjectName(mapName.section(QStringLiteral("/"), -1, -1));
-        downloadable->setSection(mapName.section(QStringLiteral("/"), -2, -2));
 
         files.removeAll(localFileName);
     }
@@ -281,7 +340,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         auto *downloadable = createOrRecycleItem(QUrl(), localFileName);
         oldMaps.removeAll(downloadable);
         downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1));
-        downloadable->setSection(tr("Unsupported"));
     }
 
     qDeleteAll(oldMaps);

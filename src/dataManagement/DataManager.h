@@ -204,9 +204,6 @@ public:
     // Methods
     //
 
-#warning
-    Q_INVOKABLE QString import(const QString& fileName, const QString& newName);
-
     /*! \brief Describe installed map
      *
      * This method describes a data item, by inspecting the locally installed
@@ -224,6 +221,28 @@ public:
      * available
      */
     Q_INVOKABLE [[nodiscard]] static QString describeDataItem(const QString& fileName);
+
+    /*! \brief Import raster or vector map into the library of locally installed
+     * maps
+     *
+     * This method imports a raster or vector map in MBTILES format into the
+     * library of locally installed maps. To avoid clashes and inconsistencies,
+     * the map will delete all locally install vector maps when importing a
+     * raster map, and all raster maps when importing a vector map.
+     *
+     * @param fileName File name of locally raster or vector map, in MBTILES
+     * format.
+     *
+     * @param newName Name under which the map is available in the library. If
+     * the name exists, the library entry will be replaced.
+     *
+     * @param moveFile If true, the file will be moved rather than copied, in
+     * order to save file system space.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success
+     */
+    Q_INVOKABLE QString import(const QString& fileName, const QString& newName, bool moveFile=false);
 
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items

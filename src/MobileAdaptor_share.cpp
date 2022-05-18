@@ -231,7 +231,6 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     }
 
     // MBTiles containing raster map
-#warning need to implement
     if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector) {
         emit openFileRequest(myPath, VectorMap);
         return;

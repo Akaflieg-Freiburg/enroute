@@ -161,10 +161,8 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     return result;
 }
 
-auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
+auto DataManagement::DataManager::import(const QString& fileName, const QString& newName, bool moveFile) -> QString
 {
-    qWarning() << fileName << newName;
-#warning This handles only raster files
 
     auto path = m_dataDirectory+"/Unsupported";
     auto newFileName = path + "/" + newName;
@@ -197,12 +195,29 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
         return tr("Unable to create directory '%1'.").arg(path);
     }
     QFile::remove(newFileName);
-    if (!QFile::copy(fileName, newFileName))
+
+    if (moveFile)
     {
-        QFile::remove(newFileName);
-        updateDataItemListAndWhatsNew();
-        return tr("Unable to copy map file to data directory.");
+        if (!QFile::rename(fileName, newFileName))
+        {
+            if (!QFile::copy(fileName, newFileName))
+            {
+                QFile::remove(newFileName);
+                updateDataItemListAndWhatsNew();
+                return tr("Unable to copy map file to data directory.");
+            }
+        }
     }
+    else
+    {
+        if (!QFile::copy(fileName, newFileName))
+        {
+            QFile::remove(newFileName);
+            updateDataItemListAndWhatsNew();
+            return tr("Unable to copy map file to data directory.");
+        }
+    }
+
     updateDataItemListAndWhatsNew();
 
     return {};

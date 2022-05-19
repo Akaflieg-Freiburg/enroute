@@ -87,7 +87,7 @@ Item {
             Label {
                 Layout.fillWidth: true
 
-                text: qsTr("Enter a name or choose an existing name from the list below.")
+                text: qsTr("Enter a name for this map.")
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
             }
@@ -109,6 +109,7 @@ Item {
             }
 
             CheckBox {
+                id: removeFile
                 Layout.fillWidth: true
                 text: qsTr("Remove file after import")
             }
@@ -116,7 +117,7 @@ Item {
             Label {
                 Layout.fillWidth: true
                 visible: global.dataManager().baseMapsVector.hasFile
-                text: qsTr("To avoid conflicts, all vector maps will be uninstalled.")
+                text: qsTr("To avoid conflicts between raster and vector maps, all vector maps will be uninstalled.")
 
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
@@ -126,15 +127,16 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         modal: true
 
-        Component.onCompleted: {
-            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false //(mapName.displayText !== "")
+        onAboutToShow: {
+            mapName.text = ""
+            removeFile.checked = false
+            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
 
-            var errorString = ""
-            global.dataManager().import(importManager.filePath, mapName.text)
+            var errorString = global.dataManager().import(importManager.filePath, mapName.text, removeFile.checked)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

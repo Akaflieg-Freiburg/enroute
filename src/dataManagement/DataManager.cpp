@@ -178,7 +178,7 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
         }
         break;
     case GeoMaps::MBTILES::Vector:
-        newFileName += QLatin1String(".vector");
+        newFileName += QLatin1String(".mbtiles");
         foreach(auto downloadable, m_baseMapsRaster.downloadablesWithFile()) {
             if (!downloadable.isNull())
             {

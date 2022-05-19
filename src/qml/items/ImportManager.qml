@@ -43,8 +43,7 @@ Item {
                 return
 
             if (fileFunction === MobileAdaptor.VectorMap) {
-                errLbl.text = qsTr("The file <strong>%1</strong> contains a vector map. <strong>Enroute Flight Navigation</strong> can only import raster maps.").arg(fileName)
-                errorDialog.open()
+                importVectorMapDialog.open()
                 return
             }
             if (fileFunction === MobileAdaptor.RasterMap) {
@@ -93,7 +92,7 @@ Item {
             }
 
             TextField {
-                id: mapName
+                id: mapNameRaster
 
                 Layout.fillWidth: true
                 focus: true
@@ -102,14 +101,14 @@ Item {
                 onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
 
                 onAccepted: {
-                    if (mapName.text === "")
+                    if (mapNameRaster.text === "")
                         return
                     importRasterMapDialog.accept()
                 }
             }
 
             CheckBox {
-                id: removeFile
+                id: removeFileRaster
                 Layout.fillWidth: true
                 text: qsTr("Remove file after import")
             }
@@ -128,21 +127,103 @@ Item {
         modal: true
 
         onAboutToShow: {
-            mapName.text = ""
-            removeFile.checked = false
+            mapNameRaster.text = ""
+            removeFileRaster.checked = false
             importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
 
-            var errorString = global.dataManager().import(importManager.filePath, mapName.text, removeFile.checked)
+            var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text, removeFileRaster.checked)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
                 return
             }
             toast.doToast( qsTr("Raster map imported") )
+        }
+
+    } // importDialog
+
+
+    Dialog {
+        id: importVectorMapDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        title: qsTr("Import Vector Map")
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name for this map.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            TextField {
+                id: mapNameVector
+
+                Layout.fillWidth: true
+                focus: true
+                placeholderText: qsTr("Map Name")
+
+                onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+
+                onAccepted: {
+                    if (mapNameVector.text === "")
+                        return
+                    importVectorMapDialog.accept()
+                }
+            }
+
+            CheckBox {
+                id: removeFileVector
+                Layout.fillWidth: true
+                text: qsTr("Remove file after import")
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: global.dataManager().baseMapsRaster.hasFile
+                text: qsTr("To avoid conflicts between raster and vector maps, all raster maps will be uninstalled.")
+
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+        }
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+
+        onAboutToShow: {
+            mapNameVector.text = ""
+            removeFileVector.checked = false
+            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
+        }
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+
+            var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text, removeFileVector.checked)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            toast.doToast( qsTr("Vector map imported") )
         }
 
     } // importDialog

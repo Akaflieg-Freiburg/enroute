@@ -211,7 +211,7 @@ signals:
      *
      *  @param SSID Name of the WiFi network that is currently in use.
      */
-    void passwordRequest(const QString&);
+    void passwordRequest(const QString& SSID);
 
     /*! \brief Password storage request
      *

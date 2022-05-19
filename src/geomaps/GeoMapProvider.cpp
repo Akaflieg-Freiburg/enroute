@@ -48,6 +48,8 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
 
     onAviationMapsChanged();
     onBaseMapsChanged();
+    GlobalObject::dataManager()->aviationMaps()->killLocalFileContentChanged_delayed();
+    GlobalObject::dataManager()->baseMaps()->killLocalFileContentChanged_delayed();
 }
 
 

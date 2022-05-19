@@ -275,15 +275,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>The style of the basemap has been updated. Aerialways, such as cable cars or gondolas, are now shown very prominently in bright red. Railway lines have become more visible.</p>") +
-                tr("<p>If you are following a route, the app will now show the remaining distances to the next and the final waypoint, "
-                   "as well as ETE and ETA.</p>") +
-                tr("<p><strong>Please test this new feature and report any issues!</strong></p>") +
-                tr("<p>Users can now choose the primary position data source. "
-                   "<strong>If you use this app together with a flight simulator, you must select the 'traffic data receiver' as the primary position data source.</strong> "
-                   "Open the 'Settings' page in the main menu to make the choice.</p>") +
-                tr("<p>The openAIP aviation database has seen a major update, and much of our infrastructure had to be rebuilt. "
-                   "<strong>Please contact us if you spot any inconsistencies and errors!</strong></p>");
+        return tr("<p>You can now import raster or vector maps into this app. Typically, this could be an official ICAO map of your country or a high-detail map for a particular region. If you are interested, look at the section 'Advanced Use' of the manual.</p>");
     }
 
     QFile file(name);

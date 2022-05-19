@@ -29,7 +29,7 @@
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 
-DataManagement::DataManager::DataManager(QObject *parent) : GlobalObject(parent)
+DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 {
     // Delete funny files that might have made their way into our data directory
     cleanDataDirectory();

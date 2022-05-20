@@ -27,17 +27,17 @@
 namespace DataManagement
 {
 
-  /*! \brief Watches a group of Downloadable objects
+/*! \brief Watches a group of Downloadable objects
    *
    *  This convenience class collects signals and properties from a set of
    *  Downloadable objects, and forwards summarized information.
    */
 
-  class DownloadableGroupWatcher : public QObject
-  {
+class DownloadableGroupWatcher : public QObject
+{
     Q_OBJECT
 
-  public:
+public:
     //
     // PROPERTIES
     //
@@ -151,6 +151,12 @@ namespace DataManagement
     // Methods
     //
 
+    /*! \brief Kill pending emission of signal localFileContentChanged_delayed */
+    void killLocalFileContentChanged_delayed()
+    {
+        emitLocalFileContentChanged_delayedTimer.stop();
+    }
+
     /*! \brief Number of files that are either downloaded or currently
      *  downloading.
      *
@@ -158,17 +164,17 @@ namespace DataManagement
      */
     Q_INVOKABLE [[nodiscard]] int numberOfFilesTotal() const;
 
-    /*! \brief Kill pending emission of signal localFileContentChanged_delayed */
-    void killLocalFileContentChanged_delayed()
-    {
-        emitLocalFileContentChanged_delayedTimer.stop();
-    }
+    /*! \brief Deletes all local files
+     *
+     *  This method call deleteFile() on all Downloadable objects in this group.
+     */
+    Q_INVOKABLE void deleteAllFiles();
 
-  public slots:
+public slots:
     /*! Update all updatable Downloadable objects */
     void updateAll();
 
-  signals:
+signals:
     /*! \brief Notifier signal for property downloading */
     void downloadablesWithFileChanged(QVector<QPointer<DataManagement::Downloadable>>);
 
@@ -207,7 +213,7 @@ namespace DataManagement
     /*! \brief Notifier signal for the property downloadables */
     void downloadablesChanged();
 
-  protected slots:
+protected slots:
     // This slot is called whenever a Downloadable in this group changes. It
     // compares if one of the _cached… values has changed and emits the
     // appropriate notification signals.
@@ -216,7 +222,7 @@ namespace DataManagement
     // Remove all instances of nullptr from _downloadables
     void cleanUp();
 
-  protected:
+protected:
     /*! \brief Constructs an empty group
      *
      *  @param parent The standard QObject parent pointer.
@@ -226,7 +232,7 @@ namespace DataManagement
     // List of QPointers to the Downloadable objects in this group
     QList<QPointer<Downloadable>> _downloadables;
 
-  private:
+private:
     Q_DISABLE_COPY_MOVE(DownloadableGroupWatcher)
 
     // Provisions to provide the signal localFileContentChanged_delayed
@@ -239,6 +245,6 @@ namespace DataManagement
     bool _cachedHasFile{false};                                     // Cached value for the 'hasLocalFile' property
     bool _cachedUpdatable{false};                                   // Cached value for the 'updatable' property
     QString _cachedUpdateSize{};                                    // Cached value for the 'updateSize' property
-  };
+};
 
 };

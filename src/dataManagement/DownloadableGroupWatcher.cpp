@@ -265,3 +265,15 @@ auto DataManagement::DownloadableGroupWatcher::numberOfFilesTotal() const -> int
     }
     return nFilesTotal;
 }
+
+
+void DataManagement::DownloadableGroupWatcher::deleteAllFiles()
+{
+    foreach(auto _downloadable, _downloadables)
+    {
+        if (_downloadable.isNull()) {
+            continue;
+        }
+        _downloadable->deleteFile();
+    }
+}

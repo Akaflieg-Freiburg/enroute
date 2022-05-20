@@ -702,6 +702,7 @@ Page {
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
+            global.dataManager().baseMapsRaster.deleteAllFiles()
             vectorMap.startFileDownload()
             toast.doToast( qsTr("Raster maps uninstalled") )
         }

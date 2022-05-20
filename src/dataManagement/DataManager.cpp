@@ -49,6 +49,10 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     // If there is a downloaded maps.json file, we read it.
     updateDataItemListAndWhatsNew();
 
+}
+
+void DataManagement::DataManager::deferredInitialization()
+{
     // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     auto lastUpdate = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
@@ -56,10 +60,7 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     {
         updateRemoteDataItemList();
     }
-}
 
-void DataManagement::DataManager::deferredInitialization()
-{
     // Set up and start the updateNotifier
     new DataManagement::UpdateNotifier(this);
 }

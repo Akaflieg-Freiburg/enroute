@@ -162,7 +162,7 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     return result;
 }
 
-auto DataManagement::DataManager::import(const QString& fileName, const QString& newName, bool moveFile) -> QString
+auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
 {
 
     auto path = m_dataDirectory+"/Unsupported";
@@ -196,28 +196,11 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
         return tr("Unable to create directory '%1'.").arg(path);
     }
     QFile::remove(newFileName);
-
-    if (moveFile)
+    if (!QFile::copy(fileName, newFileName))
     {
-        if (!QFile::rename(fileName, newFileName))
-        {
-            if (!QFile::copy(fileName, newFileName))
-            {
-                QFile::remove(newFileName);
-                updateDataItemListAndWhatsNew();
-                return tr("Unable to copy map file to data directory.");
-            }
-            QFile::remove(fileName);
-        }
-    }
-    else
-    {
-        if (!QFile::copy(fileName, newFileName))
-        {
-            QFile::remove(newFileName);
-            updateDataItemListAndWhatsNew();
-            return tr("Unable to copy map file to data directory.");
-        }
+        QFile::remove(newFileName);
+        updateDataItemListAndWhatsNew();
+        return tr("Unable to copy map file to data directory.");
     }
 
     updateDataItemListAndWhatsNew();

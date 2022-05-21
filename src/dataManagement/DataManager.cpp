@@ -38,7 +38,7 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     connect(&m_mapsJSON, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
     connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
     connect(&m_mapsJSON, &DataManagement::Downloadable::hasFileChanged, this, &DataManager::hasRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, [this]()
+    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, []()
     { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
     connect(&m_mapsJSON, &DataManagement::Downloadable::error, this, [this](const QString & /*unused*/, QString message)
     { emit error(std::move(message)); });

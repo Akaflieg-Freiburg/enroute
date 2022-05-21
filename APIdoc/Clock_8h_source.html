@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -89,8 +89,8 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classNavigation_1_1Clock.html">   54</a></span>&#160;    Q_PROPERTY(QDate <a class="code" href="classNavigation_1_1Clock.html#a62927e3cdefe87d342ccc877164559d1">date</a> READ <a class="code" href="classNavigation_1_1Clock.html#a62927e3cdefe87d342ccc877164559d1">date</a> NOTIFY <a class="code" href="classNavigation_1_1Clock.html#aa8e950e400abd584ae8790a54772de58">dateChanged</a>)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    QDate <a class="code" href="classNavigation_1_1Clock.html#a62927e3cdefe87d342ccc877164559d1">date</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="classNavigation_1_1Clock.html#a62927e3cdefe87d342ccc877164559d1">date</a>() -&gt; QDate</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">return</span> QDateTime::currentDateTime().date();</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
@@ -101,13 +101,13 @@ $(function() {
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    Q_PROPERTY(QString <a class="code" href="classNavigation_1_1Clock.html#abd592ec5a45317ebd2b34cf6657b2063">timeAsUTCString</a> READ <a class="code" href="classNavigation_1_1Clock.html#abd592ec5a45317ebd2b34cf6657b2063">timeAsUTCString</a> NOTIFY <a class="code" href="classNavigation_1_1Clock.html#a3e50182f6bf3cc5521aef04245204909">timeChanged</a>)</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">static</span> QString <a class="code" href="classNavigation_1_1Clock.html#abd592ec5a45317ebd2b34cf6657b2063">timeAsUTCString</a>() ;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="classNavigation_1_1Clock.html#abd592ec5a45317ebd2b34cf6657b2063">timeAsUTCString</a>() -&gt; QString ;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    Q_PROPERTY(QDateTime <a class="code" href="classNavigation_1_1Clock.html#a63f02193c74b4f1bdb75fb94e193798c">time</a> READ <a class="code" href="classNavigation_1_1Clock.html#a63f02193c74b4f1bdb75fb94e193798c">time</a> NOTIFY <a class="code" href="classNavigation_1_1Clock.html#a3e50182f6bf3cc5521aef04245204909">timeChanged</a>)</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    QDateTime <a class="code" href="classNavigation_1_1Clock.html#a63f02193c74b4f1bdb75fb94e193798c">time</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="classNavigation_1_1Clock.html#a63f02193c74b4f1bdb75fb94e193798c">time</a>() -&gt; QDateTime</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    {</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">return</span> QDateTime::currentDateTime();</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>

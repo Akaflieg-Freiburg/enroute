@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -88,7 +88,7 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// Standard destructor</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    ~<a class="code" href="classTraffic_1_1TrafficDataSource__Udp.html#af27cac20b02e31c6f84f93d781cb25d7">TrafficDataSource_Udp</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__Udp.html#aff3ba7d4cf09c65e3280b241977bd39f">sourceName</a>()<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">sourceName</a>() const -&gt; QString<span class="keyword"> override</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;UDP connection to port %1&quot;</span>).arg(m_port);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
@@ -114,7 +114,7 @@ $(function() {
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">int</span> nextHashIndex {0};</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">// GPS altitude of owncraft</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#aff3ba7d4cf09c65e3280b241977bd39f">  100</a></span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">  100</a></span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude_FOM;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    QTimer m_trueAltitudeTimer;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
@@ -123,8 +123,8 @@ $(function() {
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_af27cac20b02e31c6f84f93d781cb25d7"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#af27cac20b02e31c6f84f93d781cb25d7">Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp</a></div><div class="ttdeci">TrafficDataSource_Udp(quint16 port, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_aff3ba7d4cf09c65e3280b241977bd39f"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#aff3ba7d4cf09c65e3280b241977bd39f">Traffic::TrafficDataSource_Udp::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__Udp_8h_source.html#l00100">TrafficDataSource_Udp.h:100</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a5d242bfe4cb10fbee153c0248683c308"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a5d242bfe4cb10fbee153c0248683c308">Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver</a></div><div class="ttdeci">void disconnectFromTrafficReceiver() override</div><div class="ttdoc">Disconnect from traffic receiver.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a6e9c1e5d7f15fc7e377f3f7abc66ba7b"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">Traffic::TrafficDataSource_Udp::sourceName</a></div><div class="ttdeci">auto sourceName() const -&gt; QString override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__Udp_8h_source.html#l00100">TrafficDataSource_Udp.h:100</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Distance_html"><div class="ttname"><a href="classUnits_1_1Distance.html">Units::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition:</b> <a href="Distance_8h_source.html#l00052">Distance.h:52</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a9d89bccaf317c811c3e5234587ac944c"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a9d89bccaf317c811c3e5234587ac944c">Traffic::TrafficDataSource_Udp::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver() override</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
 <!-- start footer part -->

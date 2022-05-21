@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -105,8 +105,8 @@ $(function() {
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Q_PROPERTY(QGeoCoordinate <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#afb88b434b910850126924d279c4bea38">coordinate</a> READ <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#afb88b434b910850126924d279c4bea38">coordinate</a> WRITE <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#aed748d651683b113df785ade1a9928ab">setCoordinate</a> NOTIFY <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#a7104e6e70786c7519855d09deb48c2fb">coordinateChanged</a>)</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    QGeoCoordinate <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#afb88b434b910850126924d279c4bea38">coordinate</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#afb88b434b910850126924d279c4bea38">coordinate</a>() const -&gt; QGeoCoordinate</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">return</span> m_coordinate;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
@@ -128,13 +128,13 @@ $(function() {
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">// Setter function for the property valid. Implementors of this class must bind this to the</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// notifier signals of all the properties that validity depends on.</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#afb88b434b910850126924d279c4bea38">  118</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> updateValid() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#afb88b434b910850126924d279c4bea38">  118</a></span>&#160;    <span class="keywordtype">void</span> updateValid() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">// Property values</span></div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    QGeoCoordinate m_coordinate {};</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#a300a93941a14556332d76d9fe34b058a">  124</a></span>&#160;};</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#a4b74f01e9b3e1dbd45fa6fb5cdbc6b1f">  124</a></span>&#160;};</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->

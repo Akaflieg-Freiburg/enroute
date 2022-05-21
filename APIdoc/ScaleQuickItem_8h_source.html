@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -84,7 +84,7 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  Q_PROPERTY(qreal <a class="code" href="classUi_1_1ScaleQuickItem.html#a240269c3e33154d53d413df6deeee073">pixelPer10km</a> READ <a class="code" href="classUi_1_1ScaleQuickItem.html#a240269c3e33154d53d413df6deeee073">pixelPer10km</a> WRITE <a class="code" href="classUi_1_1ScaleQuickItem.html#a1919554d31ffe008c64537bfeb92835f">setPixelPer10km</a> NOTIFY <a class="code" href="classUi_1_1ScaleQuickItem.html#acb7ded18c71cd130dd516937dcc2bae4">pixelPer10kmChanged</a>)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classUi_1_1ScaleQuickItem.html">   55</a></span>&#160;  qreal <a class="code" href="classUi_1_1ScaleQuickItem.html#a240269c3e33154d53d413df6deeee073">pixelPer10km</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _pixelPer10km;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classUi_1_1ScaleQuickItem.html">   55</a></span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#a240269c3e33154d53d413df6deeee073">pixelPer10km</a>() const -&gt; qreal {<span class="keywordflow">return</span> _pixelPer10km;}</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#a1919554d31ffe008c64537bfeb92835f">setPixelPer10km</a>(qreal _pxp10k);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
@@ -93,12 +93,12 @@ $(function() {
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#aa04a12f55a48af3156eea25906437208">vertical</a> READ <a class="code" href="classUi_1_1ScaleQuickItem.html#aa04a12f55a48af3156eea25906437208">vertical</a> WRITE <a class="code" href="classUi_1_1ScaleQuickItem.html#a6282839357d1216a0daf3154c64f9d5f">setVertical</a> NOTIFY <a class="code" href="classUi_1_1ScaleQuickItem.html#a38b10516c31fc37cde7e479c747734eb">verticalChanged</a>)</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#aa04a12f55a48af3156eea25906437208">vertical</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _vertical;}</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#aa04a12f55a48af3156eea25906437208">vertical</a>() const -&gt; <span class="keywordtype">bool</span> {<span class="keywordflow">return</span> _vertical;}</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#a6282839357d1216a0daf3154c64f9d5f">setVertical</a>(<span class="keywordtype">bool</span> newVertical);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;signals:</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classUi_1_1ScaleQuickItem.html#a4122e339678591655d5e88b3967a02c2">   91</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#acb7ded18c71cd130dd516937dcc2bae4">pixelPer10kmChanged</a>();</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classUi_1_1ScaleQuickItem.html#ad5d97370ec4ba41e252399460c4fa53e">   91</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#acb7ded18c71cd130dd516937dcc2bae4">pixelPer10kmChanged</a>();</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classUi_1_1ScaleQuickItem.html#ab4782b6e161d43bd88fada343c579c53">useMetricUnitsChanged</a>();</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>

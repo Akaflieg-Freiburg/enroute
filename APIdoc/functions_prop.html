@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -82,6 +82,12 @@ $(function() {
 </li>
 <li>baseMaps
 : <a class="el" href="classDataManagement_1_1DataManager.html#aab1f4bb39633f66f801c0482b831dd2d">DataManagement::DataManager</a>
+</li>
+<li>baseMapsRaster
+: <a class="el" href="classDataManagement_1_1DataManager.html#a4f39b3494b372ff4b94625b92d344b5a">DataManagement::DataManager</a>
+</li>
+<li>baseMapsVector
+: <a class="el" href="classDataManagement_1_1DataManager.html#a1fc8f2c69cafd1eacf83cceed4b4e43f">DataManagement::DataManager</a>
 </li>
 <li>boundingRectangle
 : <a class="el" href="classNavigation_1_1FlightRoute.html#a8d42cd2b85a05f615bde2a6955748e50">Navigation::FlightRoute</a>
@@ -148,15 +154,15 @@ $(function() {
 : <a class="el" href="classNavigation_1_1Leg.html#a9f202009b38a19b46205abe817dc50c0">Navigation::Leg</a>
 </li>
 <li>downloadablesAsObjectList
-: <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html#a26e44202344420dabc90ee349ac9ebb9">DataManagement::DownloadableGroupWatcher</a>
+: <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html#a0e70066a12aba105b753b84c208f2fcc">DataManagement::DownloadableGroupWatcher</a>
 </li>
 <li>downloading
 : <a class="el" href="classDataManagement_1_1Downloadable.html#a3323e4da411f9cfd191ba2034125fe90">DataManagement::Downloadable</a>
 , <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html#a016b30969ff7c90e79159b011ac3cd4c">DataManagement::DownloadableGroupWatcher</a>
 , <a class="el" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">Weather::WeatherDataProvider</a>
 </li>
-<li>downloadingGeoMapList
-: <a class="el" href="classDataManagement_1_1DataManager.html#a97a3ffc472a5b77e927cd1faf07016e8">DataManagement::DataManager</a>
+<li>downloadingRemoteItemList
+: <a class="el" href="classDataManagement_1_1DataManager.html#a959730778ce8bf4d18188d7a2811d2f8">DataManagement::DataManager</a>
 </li>
 <li>downloadProgress
 : <a class="el" href="classDataManagement_1_1Downloadable.html#a30386c2d0ca0c104dd812b3bd309fe9e">DataManagement::Downloadable</a>
@@ -238,9 +244,6 @@ $(function() {
 <li>geoJSON
 : <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">GeoMaps::GeoMapProvider</a>
 </li>
-<li>geoMaps
-: <a class="el" href="classDataManagement_1_1DataManager.html#a51cb5063388db6ed51af9b98f747b4e1">DataManagement::DataManager</a>
-</li>
 <li>geoPath
 : <a class="el" href="classNavigation_1_1FlightRoute.html#acbc76376d38950e6c20b68f6b01dcf7b">Navigation::FlightRoute</a>
 </li>
@@ -252,11 +255,11 @@ $(function() {
 : <a class="el" href="classDataManagement_1_1Downloadable.html#ad499a19c4c606f01043194dcf9ca7be4">DataManagement::Downloadable</a>
 , <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html#a07d574ecd8f920ef5315ea7123d4f82f">DataManagement::DownloadableGroupWatcher</a>
 </li>
-<li>hasGeoMapList
-: <a class="el" href="classDataManagement_1_1DataManager.html#a22083f6a023cf748587c384fdfdb8e5e">DataManagement::DataManager</a>
-</li>
 <li>hasMETAR
 : <a class="el" href="classWeather_1_1Station.html#ac07dbbf24723923c7a66af3a60c2fab5">Weather::Station</a>
+</li>
+<li>hasRemoteItemList
+: <a class="el" href="classDataManagement_1_1DataManager.html#a4bf1884d503851cac1e459bdfb6b0db3">DataManagement::DataManager</a>
 </li>
 <li>hasTAF
 : <a class="el" href="classWeather_1_1Station.html#a4d92b6fcefc4ed5cef7bafa125ff16f0">Weather::Station</a>
@@ -303,6 +306,9 @@ $(function() {
 , <a class="el" href="classWeather_1_1METAR.html#a0a202203300afef144220573b289f1c0">Weather::METAR</a>
 , <a class="el" href="classWeather_1_1Station.html#ac8c46eaccf99aa3dcfae8d762c3263f6">Weather::Station</a>
 , <a class="el" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">Weather::TAF</a>
+</li>
+<li>items
+: <a class="el" href="classDataManagement_1_1DataManager.html#a0e71c62d60f511e09511403813604379">DataManagement::DataManager</a>
 </li>
 </ul>
 
@@ -404,6 +410,9 @@ $(function() {
 </li>
 <li>nightMode
 : <a class="el" href="classSettings.html#a8f9130af9d8c307ee832472d35c1fa7e">Settings</a>
+</li>
+<li>note
+: <a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a8689b3eeadc6de709fec5f2ae0581b80">Navigation::RemainingRouteInfo</a>
 </li>
 </ul>
 

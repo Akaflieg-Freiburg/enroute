@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -94,7 +94,7 @@ $(function() {
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    Q_PROPERTY(QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">errorString</a> READ <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">errorString</a> WRITE <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">setErrorString</a> NOTIFY <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a287d4c6523682facee4e2ef8a3f703db">errorStringChanged</a>)</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">errorString</a>()</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ad5c337d3284f03c1beaaf0da7e494618">errorString</a>() -&gt; QString</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> m_errorString;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
@@ -102,15 +102,15 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    Q_PROPERTY(QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a> READ <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a> WRITE <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">setConnectivityStatus</a> NOTIFY <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a29175a0a6310a645e7ba34e26fcf42ca">connectivityStatusChanged</a>)</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab81961d198aa8f53cf1d6935394a6a6f">connectivityStatus</a>() const -&gt; QString</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    {</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">return</span> m_connectivityStatus;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">receivingHeartbeat</a> READ <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">receivingHeartbeat</a> WRITE <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">setReceivingHeartbeat</a> RESET <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5edbc4d5d739e95eff16c39358b10c6e">resetReceivingHeartbeat</a> NOTIFY <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a91a00e00db640da40c1eb40887b7d82b">receivingHeartbeatChanged</a>)</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">receivingHeartbeat</a>()</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a13a3c0bfa4d3819adea943c564018e55">receivingHeartbeat</a>() -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    {</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">return</span> m_heartbeatTimer.isActive();</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
@@ -118,20 +118,19 @@ $(function() {
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    Q_PROPERTY(QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a> READ <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a> CONSTANT)</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">virtual</span> QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    [[nodiscard]] <span class="keyword">virtual</span> <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#afc6b13feeee5bd9ea1011eaeed6fb2a2">sourceName</a>() const -&gt; QString = 0;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    Q_PROPERTY(QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a90d1b6ff4762390477c05e0404e32060">trafficReceiverRuntimeError</a> READ <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a90d1b6ff4762390477c05e0404e32060">trafficReceiverRuntimeError</a> WRITE <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#adf4777529f39b5e2c226d7370968ea4d">setTrafficReceiverRuntimeError</a> NOTIFY <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a80fe941b024f6b2d56cc3052d17a5e91">trafficReceiverRuntimeErrorChanged</a>)</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a90d1b6ff4762390477c05e0404e32060">trafficReceiverRuntimeError</a>()</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    auto <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a90d1b6ff4762390477c05e0404e32060">trafficReceiverRuntimeError</a>() -&gt; QString</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    {</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keywordflow">return</span> m_trafficReceiverRuntimeError;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
-<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Abstract.html#ab4a3e8d63be6f3b6a95b543529c36e89">  147</a></span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Abstract.html#a8ee7f4238f5ef15646db3b614d50494d">  147</a></span>&#160; </div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    Q_PROPERTY(QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae9e66e5600baf14b4ef7503a6f5e3191">trafficReceiverSelfTestError</a> READ <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae9e66e5600baf14b4ef7503a6f5e3191">trafficReceiverSelfTestError</a> WRITE <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a8361236d0d61cbb169b348ca726ba404">setTrafficReceiverSelfTestError</a> NOTIFY <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#a08309a5047f8f7f014c3db85e064cea5">trafficReceiverSelfTestErrorChanged</a>)</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae9e66e5600baf14b4ef7503a6f5e3191">trafficReceiverSelfTestError</a>()</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae9e66e5600baf14b4ef7503a6f5e3191">trafficReceiverSelfTestError</a>() -&gt; QString</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    {</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">return</span> m_trafficReceiverSelfTestError;</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
@@ -151,7 +150,7 @@ $(function() {
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">     *  password. Note that this is not the WiFi-Password.</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">     *</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">     *  @param SSID Name of the WiFi network that is currently in use.</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Abstract.html#aea76b8d0bb5a6aa6badda6aa9919bc82">  197</a></span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Abstract.html#a7e58ccf885ce56a067e9685a533d1799">  197</a></span>&#160;<span class="comment">     */</span></div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordtype">void</span> passwordRequest(<span class="keyword">const</span> QString&amp; SSID);</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">/* \brief Password storage request</span></div>

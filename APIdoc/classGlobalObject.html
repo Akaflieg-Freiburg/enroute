@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -59,10 +59,11 @@ Inheritance diagram for GlobalObject:</div>
 <div class="dyncontent">
 <div class="center"><img src="classGlobalObject__inherit__graph.png" border="0" usemap="#GlobalObject_inherit__map" alt="Inheritance graph"/></div>
 <map name="GlobalObject_inherit__map" id="GlobalObject_inherit__map">
-<area shape="rect" title="Base class for global singleton objects." alt="" coords="312,5,419,32"/>
-<area shape="rect" href="classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps." alt="" coords="5,87,240,114"/>
-<area shape="rect" href="classDataManagement_1_1SSLErrorHandler.html" title="Handles SSL error." alt="" coords="265,80,466,121"/>
-<area shape="rect" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="491,87,656,114"/>
+<area shape="rect" title="Base class for global singleton objects." alt="" coords="5,93,112,120"/>
+<area shape="rect" href="classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps." alt="" coords="160,5,395,32"/>
+<area shape="rect" href="classDataManagement_1_1SSLErrorHandler.html" title="Handles SSL error." alt="" coords="177,57,378,98"/>
+<area shape="rect" href="classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information." alt="" coords="178,123,377,149"/>
+<area shape="rect" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="195,173,360,200"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -71,9 +72,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">More...</a><br /></td></tr>
 <tr class="separator:ac8dfa53c492975de42fa7972e77abbc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af947d711bb37c93ea010da66cd3a8e1d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#af947d711bb37c93ea010da66cd3a8e1d">~GlobalObject</a> ()=default</td></tr>
-<tr class="memdesc:af947d711bb37c93ea010da66cd3a8e1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard deconstructor.  <a href="classGlobalObject.html#af947d711bb37c93ea010da66cd3a8e1d">More...</a><br /></td></tr>
-<tr class="separator:af947d711bb37c93ea010da66cd3a8e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c4d476061f33a53b8c7de446c639eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">~GlobalObject</a> () override=default</td></tr>
+<tr class="memdesc:a96c4d476061f33a53b8c7de446c639eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard deconstructor.  <a href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">More...</a><br /></td></tr>
+<tr class="separator:a96c4d476061f33a53b8c7de446c639eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -90,7 +91,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:adbce86b691abd0b44c6853bdbe3fd680"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static FlarmnetDB instance.  <a href="classGlobalObject.html#adbce86b691abd0b44c6853bdbe3fd680">More...</a><br /></td></tr>
 <tr class="separator:adbce86b691abd0b44c6853bdbe3fd680"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab12da0d2ab30cc15a28dfa9e78ab578d"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">geoMapProvider</a> ()</td></tr>
-<tr class="memdesc:ab12da0d2ab30cc15a28dfa9e78ab578d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.">GeoMaps::GeoMapProvider</a> instance.  <a href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">More...</a><br /></td></tr>
+<tr class="memdesc:ab12da0d2ab30cc15a28dfa9e78ab578d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information.">GeoMaps::GeoMapProvider</a> instance.  <a href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">More...</a><br /></td></tr>
 <tr class="separator:ab12da0d2ab30cc15a28dfa9e78ab578d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a125125a1bb055656a679d39e393a7e8f"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classLibrarian.html">Librarian</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a125125a1bb055656a679d39e393a7e8f">librarian</a> ()</td></tr>
 <tr class="memdesc:a125125a1bb055656a679d39e393a7e8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static librarian instance.  <a href="classGlobalObject.html#a125125a1bb055656a679d39e393a7e8f">More...</a><br /></td></tr>
@@ -176,8 +177,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af947d711bb37c93ea010da66cd3a8e1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af947d711bb37c93ea010da66cd3a8e1d">&#9670;&nbsp;</a></span>~GlobalObject()</h2>
+<a id="a96c4d476061f33a53b8c7de446c639eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96c4d476061f33a53b8c7de446c639eb">&#9670;&nbsp;</a></span>~GlobalObject()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,7 +195,7 @@ Protected Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -288,7 +289,7 @@ Protected Member Functions</h2></td></tr>
 <p>Non-constructor initialization. </p>
 <p>This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-implemented to perform initialization steps that refer to other singleton objects. </p>
 
-<p>Reimplemented in <a class="el" href="classDataManagement_1_1DataManager.html#a13b1075e6450a346e2788a63dd9a5ae0">DataManagement::DataManager</a>, and <a class="el" href="classNavigation_1_1Navigator.html#af2ecfa4f3e7c20d7eedf05b65cbb9acd">Navigation::Navigator</a>.</p>
+<p>Reimplemented in <a class="el" href="classDataManagement_1_1DataManager.html#a32d353064fd94a0af5173e4951a241e7">DataManagement::DataManager</a>, <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider</a>, and <a class="el" href="classNavigation_1_1Navigator.html#a9f95457f009e0c581a3703b69f04b63d">Navigation::Navigator</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00208">208</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
 
@@ -373,7 +374,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Serves GeoMaps, as MBTiles via an embedded HTTP server, and as GeoJSON.">GeoMaps::GeoMapProvider</a> instance. </p>
+<p>Pointer to appplication-wide static <a class="el" href="classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information.">GeoMaps::GeoMapProvider</a> instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
 
 </div>

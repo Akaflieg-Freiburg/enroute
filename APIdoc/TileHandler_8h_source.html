@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -96,40 +96,40 @@ $(function() {
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1TileHandler.html#afa90c799e6927a74e3da98925bcfcdc2">attribution</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#afa90c799e6927a74e3da98925bcfcdc2">attribution</a> CONSTANT)</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  QString <a class="code" href="classGeoMaps_1_1TileHandler.html#afa90c799e6927a74e3da98925bcfcdc2">attribution</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _attribution;}</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#afa90c799e6927a74e3da98925bcfcdc2">attribution</a>() const -&gt; QString {<span class="keywordflow">return</span> _attribution;}</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1TileHandler.html#af1d68313be01f2051599d2a49e70a6ac">description</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#af1d68313be01f2051599d2a49e70a6ac">description</a> CONSTANT)</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  </div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  </div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#afa90c799e6927a74e3da98925bcfcdc2">  100</a></span>&#160;  QString <a class="code" href="classGeoMaps_1_1TileHandler.html#af1d68313be01f2051599d2a49e70a6ac">description</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _description;}</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#afa90c799e6927a74e3da98925bcfcdc2">  100</a></span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#af1d68313be01f2051599d2a49e70a6ac">description</a>() const -&gt; QString {<span class="keywordflow">return</span> _description;}</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1TileHandler.html#a633a585c79301881189f7a8c04a77ef4">format</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#a633a585c79301881189f7a8c04a77ef4">format</a> CONSTANT)</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  QString <a class="code" href="classGeoMaps_1_1TileHandler.html#a633a585c79301881189f7a8c04a77ef4">format</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _format;}</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a633a585c79301881189f7a8c04a77ef4">format</a>() const -&gt; QString {<span class="keywordflow">return</span> _format;}</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  </div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  Q_PROPERTY(<span class="keywordtype">int</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a24873cb9391b52e72fdfd2f1ed5c7a17">maxzoom</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#a24873cb9391b52e72fdfd2f1ed5c7a17">maxzoom</a> CONSTANT)</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  </div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a633a585c79301881189f7a8c04a77ef4">  121</a></span>&#160;  int <a class="code" href="classGeoMaps_1_1TileHandler.html#a24873cb9391b52e72fdfd2f1ed5c7a17">maxzoom</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _maxzoom;}</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a633a585c79301881189f7a8c04a77ef4">  121</a></span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a24873cb9391b52e72fdfd2f1ed5c7a17">maxzoom</a>() const -&gt; <span class="keywordtype">int</span> {<span class="keywordflow">return</span> _maxzoom;}</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  </div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#aadec0ee1a7917e4d84ab32e7bb58c9bb">  127</a></span>&#160;  Q_PROPERTY(<span class="keywordtype">int</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a4641c30d5d592151e49ea884dfd54557">minzoom</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#a4641c30d5d592151e49ea884dfd54557">minzoom</a> CONSTANT)</div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a244d8e8d408c606efd5ba9160d019493">  127</a></span>&#160;  Q_PROPERTY(<span class="keywordtype">int</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a4641c30d5d592151e49ea884dfd54557">minzoom</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#a4641c30d5d592151e49ea884dfd54557">minzoom</a> CONSTANT)</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  </div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  </div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a24873cb9391b52e72fdfd2f1ed5c7a17">  133</a></span>&#160;  int <a class="code" href="classGeoMaps_1_1TileHandler.html#a4641c30d5d592151e49ea884dfd54557">minzoom</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _minzoom;}</div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a24873cb9391b52e72fdfd2f1ed5c7a17">  133</a></span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a4641c30d5d592151e49ea884dfd54557">minzoom</a>() const -&gt; <span class="keywordtype">int</span> {<span class="keywordflow">return</span> _minzoom;}</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  </div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1TileHandler.html#a3fded7c8e387470d88c6ba1ea09d32b8">name</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#a3fded7c8e387470d88c6ba1ea09d32b8">name</a> CONSTANT)</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  </div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  QString <a class="code" href="classGeoMaps_1_1TileHandler.html#a3fded7c8e387470d88c6ba1ea09d32b8">name</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _name;}</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a3fded7c8e387470d88c6ba1ea09d32b8">name</a>() const -&gt; QString {<span class="keywordflow">return</span> _name;}</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  Q_PROPERTY(QByteArray <a class="code" href="classGeoMaps_1_1TileHandler.html#a54c6bea1aa49fe3b4b213476cad50f5a">tileJSON</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#a54c6bea1aa49fe3b4b213476cad50f5a">tileJSON</a> CONSTANT)</div>
-<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#ae347bbb653eaf8e7a286566c7fd28ad6">  151</a></span>&#160;  </div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a15d481efbb1153ccbd650bba599c0a76">  151</a></span>&#160;  </div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="comment">/* \brief Getter function for property with the same name</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a3fded7c8e387470d88c6ba1ea09d32b8">  154</a></span>&#160;<span class="comment">     @returns Property tileJSON</span></div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">  */</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  QByteArray <a class="code" href="classGeoMaps_1_1TileHandler.html#a54c6bea1aa49fe3b4b213476cad50f5a">tileJSON</a>() const;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a54c6bea1aa49fe3b4b213476cad50f5a">tileJSON</a>() const -&gt; QByteArray;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1TileHandler.html#ab081bd60f780d3f2a3bf3fc6ac4e5c81">tiles</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#ab081bd60f780d3f2a3bf3fc6ac4e5c81">tiles</a> CONSTANT)</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  </div>
@@ -137,12 +137,12 @@ $(function() {
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a54c6bea1aa49fe3b4b213476cad50f5a">  168</a></span>&#160;<span class="comment">     @returns Property tiles</span></div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">  */</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  QString <a class="code" href="classGeoMaps_1_1TileHandler.html#ab081bd60f780d3f2a3bf3fc6ac4e5c81">tiles</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _tiles;}</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  [[nodiscard]] auto <a class="code" href="classGeoMaps_1_1TileHandler.html#ab081bd60f780d3f2a3bf3fc6ac4e5c81">tiles</a>() const -&gt; QString {<span class="keywordflow">return</span> _tiles;}</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  </div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1TileHandler.html#a447085490d12c028cd613bc3e729fc97">version</a> READ <a class="code" href="classGeoMaps_1_1TileHandler.html#a447085490d12c028cd613bc3e729fc97">version</a> CONSTANT)</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  </div>
-<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#ab081bd60f780d3f2a3bf3fc6ac4e5c81">  182</a></span>&#160;  QString <a class="code" href="classGeoMaps_1_1TileHandler.html#a447085490d12c028cd613bc3e729fc97">version</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _version;}</div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#ab081bd60f780d3f2a3bf3fc6ac4e5c81">  182</a></span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileHandler.html#a447085490d12c028cd613bc3e729fc97">version</a>() const -&gt; QString {<span class="keywordflow">return</span> _version;}</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  </div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="comment">/*</span></div>
@@ -160,7 +160,7 @@ $(function() {
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  Q_DISABLE_COPY_MOVE(<a class="code" href="classGeoMaps_1_1TileHandler.html">TileHandler</a>)</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  QSet&lt;QString&gt; databaseConnections;</div>
-<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#a38e589b37820dfdf9b5d1baf67369bdc">  200</a></span>&#160;  </div>
+<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileHandler.html#abbbeaad5d10d3328dad45e871f0bb557">  200</a></span>&#160;  </div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  QString _name;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  QString _format;</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  QString _tiles;</div>

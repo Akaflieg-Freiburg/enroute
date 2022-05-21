@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -87,9 +87,9 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// Standard destructor</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    ~<a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a91623b1e7fda4afdbb8e4c53985ac4d9">TrafficDataSource_File</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#aa67c8f49b9726f0199bafca483e9fb7d">containsFLARMSimulationData</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#aa2bd6426fe8fa765478e295d72ad6f94">containsFLARMSimulationData</a>(<span class="keyword">const</span> QString&amp; fileName) -&gt; bool;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    QString <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">sourceName</a>()<span class="keyword"> const override</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classTraffic_1_1TrafficDataSource__File.html#ab7a2c1a9292eb55b3abcc084d7735d8a">sourceName</a>() const -&gt; QString<span class="keyword"> override</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;Simulator file %1&quot;</span>).arg(simulatorFile.fileName());</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
@@ -115,15 +115,15 @@ $(function() {
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    QFile simulatorFile;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    QTextStream simulatorTextStream;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    QTimer simulatorTimer;</div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">  102</a></span>&#160;    <span class="keywordtype">int</span> lastTime {0};</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__File.html#ab7a2c1a9292eb55b3abcc084d7735d8a">  102</a></span>&#160;    <span class="keywordtype">int</span> lastTime {0};</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    QString lastPayload;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a547c442589e2fdd7872996c5f159650b"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a547c442589e2fdd7872996c5f159650b">Traffic::TrafficDataSource_File::sourceName</a></div><div class="ttdeci">QString sourceName() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__File_8h_source.html#l00102">TrafficDataSource_File.h:102</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_aa2bd6426fe8fa765478e295d72ad6f94"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#aa2bd6426fe8fa765478e295d72ad6f94">Traffic::TrafficDataSource_File::containsFLARMSimulationData</a></div><div class="ttdeci">static auto containsFLARMSimulationData(const QString &amp;fileName) -&gt; bool</div><div class="ttdoc">Reads file and checks if the file contains FLARM simulation data.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_aebff0f62f13269c098faa64f11a19be1"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#aebff0f62f13269c098faa64f11a19be1">Traffic::TrafficDataSource_File::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver() override</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_aa67c8f49b9726f0199bafca483e9fb7d"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#aa67c8f49b9726f0199bafca483e9fb7d">Traffic::TrafficDataSource_File::containsFLARMSimulationData</a></div><div class="ttdeci">static bool containsFLARMSimulationData(const QString &amp;fileName)</div><div class="ttdoc">Reads file and checks if the file contains FLARM simulation data.</div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_ab7a2c1a9292eb55b3abcc084d7735d8a"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#ab7a2c1a9292eb55b3abcc084d7735d8a">Traffic::TrafficDataSource_File::sourceName</a></div><div class="ttdeci">auto sourceName() const -&gt; QString override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataSource__File_8h_source.html#l00102">TrafficDataSource_File.h:102</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a33dbbbc0cc638310d92f3dc0481d6b9f"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a33dbbbc0cc638310d92f3dc0481d6b9f">Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver</a></div><div class="ttdeci">void disconnectFromTrafficReceiver() override</div><div class="ttdoc">Disconnect from traffic receiver.</div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__File_html_a91623b1e7fda4afdbb8e4c53985ac4d9"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__File.html#a91623b1e7fda4afdbb8e4c53985ac4d9">Traffic::TrafficDataSource_File::TrafficDataSource_File</a></div><div class="ttdeci">TrafficDataSource_File(const QString &amp;fileName, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
 <!-- start footer part -->

@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -96,55 +96,55 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    Q_PROPERTY(QGeoCoordinate <a class="code" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a> READ <a class="code" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a> CONSTANT)</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    QGeoCoordinate <a class="code" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a>() const -&gt; QGeoCoordinate</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    {</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">return</span> _location;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    Q_PROPERTY(QDateTime <a class="code" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a> READ <a class="code" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a> CONSTANT)</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    QDateTime <a class="code" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a>() const -&gt; QDateTime</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">return</span> _expirationTime;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#ae819f699af6aeecebad715c50a3c1196">   87</a></span>&#160;    }</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#adf1c25caa20f4cd9ca51a30dc93cba11">   87</a></span>&#160;    }</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a> READ <a class="code" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a> CONSTANT)</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">   96</a></span>&#160;    </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    QString <a class="code" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a57149c4720f06cc39fb892a53c5e309e">  102</a></span>&#160;        <span class="keywordflow">return</span> _ICAOCode;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a>() const -&gt; QString</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    {</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a0b66f0def80f7ea0d56ca66ad7aea8d9">  102</a></span>&#160;        <span class="keywordflow">return</span> _ICAOCode;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1TAF.html#a155986b42f5ff978f794e7ecb8f35b8c">isExpired</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1TAF.html#a155986b42f5ff978f794e7ecb8f35b8c">isExpired</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 <div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">  112</a></span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a> READ <a class="code" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a> CONSTANT)</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    </div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a08430b20a84f3653992a0c3d16c2fff0">  118</a></span>&#160;    bool <a class="code" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a>() const;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#acced0b8619bd61e9f15a6c341daa3a9b">  118</a></span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a>() const -&gt; <span class="keywordtype">bool</span>;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    Q_PROPERTY(QDateTime <a class="code" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a> READ <a class="code" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a> CONSTANT)</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    QDateTime <a class="code" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    [[nodiscard]] auto <a class="code" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a>() const -&gt; QDateTime</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    {</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> _issueTime;</div>
 <div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">  130</a></span>&#160;    }</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a> READ <a class="code" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a> CONSTANT)</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    QString <a class="code" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a>() const -&gt; QString</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    {</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">return</span> _raw_text;</div>
-<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#af858256c1953388a20cc383421864f00">  145</a></span>&#160;    }</div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a43b78c153903902f3043a22cf3fd3d69">  145</a></span>&#160;    }</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">relativeIssueTime</a> READ <a class="code" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">relativeIssueTime</a> NOTIFY <a class="code" href="classWeather_1_1TAF.html#a5a563ecc3240ebdfcaa1f26e6cea63df">relativeIssueTimeChanged</a>)</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
 <div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">  154</a></span>&#160;    </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    QString <a class="code" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">relativeIssueTime</a>() const;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">relativeIssueTime</a>() const -&gt; QString;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a235358b2f216e662bc55101d3ee25a60">  160</a></span>&#160;signals:</div>
+<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#aab6b87da5632346cecc7ae2a01e5ca0c">  160</a></span>&#160;signals:</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classWeather_1_1TAF.html#a5a563ecc3240ebdfcaa1f26e6cea63df">relativeIssueTimeChanged</a>();</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;private:</div>

@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.16.5</span>
+   &#160;<span id="projectnumber">2.16.90</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -81,7 +81,7 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPlatform_1_1Notifier.html#a4513130b1d6331b4c052b63392e06de8">Notifier</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    ~<a class="code" href="classPlatform_1_1Notifier.html#a4513130b1d6331b4c052b63392e06de8">Notifier</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    ~<a class="code" href="classPlatform_1_1Notifier.html#a4513130b1d6331b4c052b63392e06de8">Notifier</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classPlatform_1_1Notifier.html">   53</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">NotificationTypes</a></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    {</div>
@@ -115,7 +115,7 @@ $(function() {
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">// Get translated title for specific notification</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    QString title(<a class="code" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a> notificationType);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> title(<a class="code" href="classPlatform_1_1Notifier.html#a8d97475ebccb109f98ba33e5e6ed3cf3">Platform::Notifier::NotificationTypes</a> notificationType) -&gt; QString;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1Notifier.html">Notifier</a>)</div>

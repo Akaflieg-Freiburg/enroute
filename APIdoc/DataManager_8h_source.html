@@ -152,74 +152,74 @@ $(function() {
 <div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="classDataManagement_1_1DataManager.html#a6c460ad17020e7f4b9d88968b33da1a4">  206</a></span>&#160; </div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    Q_INVOKABLE [[nodiscard]] <span class="keyword">static</span> QString <a class="code" href="classDataManagement_1_1DataManager.html#ad1e27d500de3e258ab85743c000b3b2d">describeDataItem</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
 <div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="classDataManagement_1_1DataManager.html#a577c339d65c3e79473bcd1e0f5c2d0b3">  224</a></span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    Q_INVOKABLE QString <span class="keyword">import</span>(<span class="keyword">const</span> QString&amp; fileName, <span class="keyword">const</span> QString&amp; newName, <span class="keywordtype">bool</span> moveFile=<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#ae64687ed56050c4c25e85e4dc1a1c64c">updateRemoteDataItemList</a>()</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    {</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        m_mapsJSON.<a class="code" href="classDataManagement_1_1Downloadable.html#a04ba568124db2f3a1780cd5a6f56359a">startFileDownload</a>();</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    }</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;signals:</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#ab0b24e53accc95cd757cc85645138bf8">hasRemoteItemListChanged</a>();</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    Q_INVOKABLE QString <span class="keyword">import</span>(<span class="keyword">const</span> QString&amp; fileName, <span class="keyword">const</span> QString&amp; newName);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#ae64687ed56050c4c25e85e4dc1a1c64c">updateRemoteDataItemList</a>()</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        m_mapsJSON.<a class="code" href="classDataManagement_1_1Downloadable.html#a04ba568124db2f3a1780cd5a6f56359a">startFileDownload</a>();</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;signals:</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#ab0b24e53accc95cd757cc85645138bf8">hasRemoteItemListChanged</a>();</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#a65229f36e4f653e4959c160cd97a2be7">downloadingRemoteItemListChanged</a>();</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#a65229f36e4f653e4959c160cd97a2be7">downloadingRemoteItemListChanged</a>();</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#ae3e074e441db9809c0ebd0023d465299">error</a>(<span class="keyword">const</span> QString&amp; message);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#ae3e074e441db9809c0ebd0023d465299">error</a>(<span class="keyword">const</span> QString&amp; message);</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#a97df0120eda2544197b32668eefab30f">whatsNewChanged</a>();</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classDataManagement_1_1DataManager.html#a97df0120eda2544197b32668eefab30f">whatsNewChanged</a>();</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classDataManagement_1_1DataManager.html">DataManager</a>)</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classDataManagement_1_1DataManager.html">DataManager</a>)</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="comment">// Clean the data directory.</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="comment">// - delete all files with unexpected file names</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="comment">// - earlier versions of this program constructed files with names ending in</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="comment">//   &quot;.geojson.geojson&quot; or &quot;.mbtiles.mbtiles&quot;. We correct those file names</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="comment">//   here.</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="comment">// - remove all empty sub directories</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordtype">void</span> cleanDataDirectory();</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
-<div class="line"><a name="l00288"></a><span class="lineno"><a class="line" href="classDataManagement_1_1DataManager.html#ae64687ed56050c4c25e85e4dc1a1c64c">  288</a></span>&#160;    <span class="comment">// This slot is called when a local file of one of the Downloadables changes</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="comment">// content or existence. If the Downloadable in question has no file</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">// anymore, and has an invalid URL, it is then removed.</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keywordtype">void</span> onItemFileChanged();</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="comment">// This slot updates the DownloadableGroups as well as the propery</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="comment">// &#39;whatsNew&#39;, by reading the file &#39;maps.json&#39; and by checking the data</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="comment">// directory for locally installed, unsupported files.</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="keywordtype">void</span> updateDataItemListAndWhatsNew();</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="comment">// This method checks if a Downloadable item with the given url and</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="comment">// localFileName already exists in _items. If so, it returns a pointer to</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="comment">// that item. If not, then a Downloadable with the url and localFileName is</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="comment">// created and added to _items. Depending on localFileName, it will also be</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="comment">// added to _aviationMap, _baseMaps, or _databases. A pointer to that item is</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="comment">// then returned.</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <a class="code" href="classDataManagement_1_1Downloadable.html">DataManagement::Downloadable</a>* createOrRecycleItem(<span class="keyword">const</span> QUrl&amp; url, <span class="keyword">const</span> QString&amp; localFileName);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="comment">// Clean the data directory.</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="comment">// - delete all files with unexpected file names</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="comment">// - earlier versions of this program constructed files with names ending in</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="comment">//   &quot;.geojson.geojson&quot; or &quot;.mbtiles.mbtiles&quot;. We correct those file names</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="comment">//   here.</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="comment">// - remove all empty sub directories</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordtype">void</span> cleanDataDirectory();</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="classDataManagement_1_1DataManager.html#ae64687ed56050c4c25e85e4dc1a1c64c">  285</a></span>&#160;    <span class="comment">// This slot is called when a local file of one of the Downloadables changes</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="comment">// content or existence. If the Downloadable in question has no file</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="comment">// anymore, and has an invalid URL, it is then removed.</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keywordtype">void</span> onItemFileChanged();</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">// This slot updates the DownloadableGroups as well as the propery</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="comment">// &#39;whatsNew&#39;, by reading the file &#39;maps.json&#39; and by checking the data</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="comment">// directory for locally installed, unsupported files.</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordtype">void</span> updateDataItemListAndWhatsNew();</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="comment">// This method checks if a Downloadable item with the given url and</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="comment">// localFileName already exists in _items. If so, it returns a pointer to</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="comment">// that item. If not, then a Downloadable with the url and localFileName is</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="comment">// created and added to _items. Depending on localFileName, it will also be</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="comment">// added to _aviationMap, _baseMaps, or _databases. A pointer to that item is</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="comment">// then returned.</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <a class="code" href="classDataManagement_1_1Downloadable.html">DataManagement::Downloadable</a>* createOrRecycleItem(<span class="keyword">const</span> QUrl&amp; url, <span class="keyword">const</span> QString&amp; localFileName);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="comment">// Full path name of data directory, without trailing slash</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + <span class="stringliteral">&quot;/aviation_maps&quot;</span>};</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="comment">// Full path name of data directory, without trailing slash</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + <span class="stringliteral">&quot;/aviation_maps&quot;</span>};</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="comment">// The current whats new string from _aviationMaps.</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    QString m_whatsNew {};</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="comment">// The current whats new string from _aviationMaps.</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    QString m_whatsNew {};</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="comment">// This Downloadable object manages the central text file that describes the</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="comment">// remotely available aviation maps. It is set in the constructor to point</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="comment">// to the URL &quot;https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json&quot;</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <a class="code" href="classDataManagement_1_1Downloadable.html">DataManagement::Downloadable</a> m_mapsJSON { QUrl(QStringLiteral(<span class="stringliteral">&quot;https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json&quot;</span>)), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + <span class="stringliteral">&quot;/maps.json&quot;</span> };</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="comment">// List of geographic maps</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_databases;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_items;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_baseMaps;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_baseMapsRaster;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_baseMapsVector;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_aviationMaps;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;};</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;};</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="comment">// This Downloadable object manages the central text file that describes the</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="comment">// remotely available aviation maps. It is set in the constructor to point</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="comment">// to the URL &quot;https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json&quot;</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <a class="code" href="classDataManagement_1_1Downloadable.html">DataManagement::Downloadable</a> m_mapsJSON { QUrl(QStringLiteral(<span class="stringliteral">&quot;https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json&quot;</span>)), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + <span class="stringliteral">&quot;/maps.json&quot;</span> };</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="comment">// List of geographic maps</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_databases;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_items;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_baseMaps;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_baseMapsRaster;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_baseMapsVector;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a> m_aviationMaps;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;};</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassDataManagement_1_1DataManager_html_a1548309ab91adb800d198b8967f10b3e"><div class="ttname"><a href="classDataManagement_1_1DataManager.html#a1548309ab91adb800d198b8967f10b3e">DataManagement::DataManager::aviationMaps</a></div><div class="ttdeci">DataManagement::DownloadableGroupWatcher aviationMaps</div><div class="ttdoc">DownloadableGroupWatcher that holds all aviation maps.</div><div class="ttdef"><b>Definition:</b> <a href="DataManager_8h_source.html#l00128">DataManager.h:128</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1DataManager_html_a1fc8f2c69cafd1eacf83cceed4b4e43f"><div class="ttname"><a href="classDataManagement_1_1DataManager.html#a1fc8f2c69cafd1eacf83cceed4b4e43f">DataManagement::DataManager::baseMapsVector</a></div><div class="ttdeci">DataManagement::DownloadableGroupWatcher baseMapsVector</div><div class="ttdoc">DownloadableGroupWatcher that holds all base maps in vector format.</div><div class="ttdef"><b>Definition:</b> <a href="DataManager_8h_source.html#l00140">DataManager.h:140</a></div></div>
@@ -238,7 +238,7 @@ $(function() {
 <div class="ttc" id="aclassDataManagement_1_1DataManager_html_ab0b24e53accc95cd757cc85645138bf8"><div class="ttname"><a href="classDataManagement_1_1DataManager.html#ab0b24e53accc95cd757cc85645138bf8">DataManagement::DataManager::hasRemoteItemListChanged</a></div><div class="ttdeci">void hasRemoteItemListChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
 <div class="ttc" id="aclassDataManagement_1_1DataManager_html_a4bf1884d503851cac1e459bdfb6b0db3"><div class="ttname"><a href="classDataManagement_1_1DataManager.html#a4bf1884d503851cac1e459bdfb6b0db3">DataManagement::DataManager::hasRemoteItemList</a></div><div class="ttdeci">bool hasRemoteItemList</div><div class="ttdoc">True if list of remotely available items has been downloaded.</div><div class="ttdef"><b>Definition:</b> <a href="DataManager_8h_source.html#l00165">DataManager.h:165</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1DataManager_html"><div class="ttname"><a href="classDataManagement_1_1DataManager.html">DataManagement::DataManager</a></div><div class="ttdoc">Manages the list of geographic maps.</div><div class="ttdef"><b>Definition:</b> <a href="DataManager_8h_source.html#l00083">DataManager.h:83</a></div></div>
-<div class="ttc" id="aclassDataManagement_1_1DataManager_html_ae64687ed56050c4c25e85e4dc1a1c64c"><div class="ttname"><a href="classDataManagement_1_1DataManager.html#ae64687ed56050c4c25e85e4dc1a1c64c">DataManagement::DataManager::updateRemoteDataItemList</a></div><div class="ttdeci">void updateRemoteDataItemList()</div><div class="ttdoc">Triggers an update of the list of remotely available data items.</div><div class="ttdef"><b>Definition:</b> <a href="DataManager_8h_source.html#l00288">DataManager.h:288</a></div></div>
+<div class="ttc" id="aclassDataManagement_1_1DataManager_html_ae64687ed56050c4c25e85e4dc1a1c64c"><div class="ttname"><a href="classDataManagement_1_1DataManager.html#ae64687ed56050c4c25e85e4dc1a1c64c">DataManagement::DataManager::updateRemoteDataItemList</a></div><div class="ttdeci">void updateRemoteDataItemList()</div><div class="ttdoc">Triggers an update of the list of remotely available data items.</div><div class="ttdef"><b>Definition:</b> <a href="DataManager_8h_source.html#l00285">DataManager.h:285</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1DownloadableGroupWatcher_html"><div class="ttname"><a href="classDataManagement_1_1DownloadableGroupWatcher.html">DataManagement::DownloadableGroupWatcher</a></div><div class="ttdoc">Watches a group of Downloadable objects.</div><div class="ttdef"><b>Definition:</b> <a href="DownloadableGroupWatcher_8h_source.html#l00054">DownloadableGroupWatcher.h:54</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1DownloadableGroup_html"><div class="ttname"><a href="classDataManagement_1_1DownloadableGroup.html">DataManagement::DownloadableGroup</a></div><div class="ttdoc">Manages a set of downloadable objects.</div><div class="ttdef"><b>Definition:</b> <a href="DownloadableGroup_8h_source.html#l00052">DownloadableGroup.h:52</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1DataManager_html_a97df0120eda2544197b32668eefab30f"><div class="ttname"><a href="classDataManagement_1_1DataManager.html#a97df0120eda2544197b32668eefab30f">DataManagement::DataManager::whatsNewChanged</a></div><div class="ttdeci">void whatsNewChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>

@@ -25,9 +25,10 @@
 // Methods
 //
 
-bool Navigation::operator==(const Navigation::RemainingRouteInfo& A, const Navigation::RemainingRouteInfo& B)
+auto Navigation::operator==(const Navigation::RemainingRouteInfo& A, const Navigation::RemainingRouteInfo& B) -> bool
 {
     return ((A.status == B.status) &&
+            (A.note == B.note) &&
 
             (A.nextWP == B.nextWP) &&
             (A.nextWP_DIST == B.nextWP_DIST) &&

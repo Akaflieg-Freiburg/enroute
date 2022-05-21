@@ -55,7 +55,7 @@ public:
      *
      *  @returns Name of the directory, without trailing slash
      */
-    Q_INVOKABLE QString directory(Librarian::Library library) const;
+    Q_INVOKABLE [[nodiscard]] static QString directory(Librarian::Library library) ;
 
     /*! \brief Lists all entries in the library whose name contains the string 'filter'
      *
@@ -79,7 +79,7 @@ public:
      *
      *  @returns True if the file exists
      */
-    Q_INVOKABLE bool exists(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE [[nodiscard]] static bool exists(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Full path of a library entry
      *
@@ -90,7 +90,7 @@ public:
      *
      *  @returns Full path of the entry, with extension
      */
-    Q_INVOKABLE QString fullPath(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE [[nodiscard]] static QString fullPath(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Constructs an object from library entry
      *
@@ -111,7 +111,7 @@ public:
      *
      * @returns Pointer to the object, or a nullptr in case of error.
      */
-    Q_INVOKABLE QObject *get(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE [[nodiscard]] static QObject* get(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Exposes string stored in QRessource to QML
      *
@@ -129,7 +129,7 @@ public:
      *
      * @returns File content as a QString
      */
-    Q_INVOKABLE static QString getStringFromRessource(const QString &name) ;
+    Q_INVOKABLE static QString getStringFromRessource(const QString &name);
 
     /*! \brief Exposes the hash of string stored in QRessource to QML
      *
@@ -141,7 +141,7 @@ public:
      *
      * @returns Hash of file content
      */
-    Q_INVOKABLE static uint getStringHashFromRessource(const QString &name) ;
+    Q_INVOKABLE static uint getStringHashFromRessource(const QString &name);
 
     /*! \brief Removes an entry from a library
      *
@@ -149,7 +149,7 @@ public:
      *
      *  @param baseName File name, without path and without extension
      */
-    Q_INVOKABLE void remove(Librarian::Library library, const QString &baseName) const;
+    Q_INVOKABLE static void remove(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Renames an entry in a library
      *
@@ -161,7 +161,7 @@ public:
      * @param newName New file name, without path and without extension. A file
      * with that name must not exist in the library
      */
-    Q_INVOKABLE void rename(Librarian::Library library, const QString &oldName, const QString &newName) const;
+    Q_INVOKABLE static void rename(Librarian::Library library, const QString &oldName, const QString &newName) ;
 
     /*! \brief Filters a QStringList in a fuzzy way
      *
@@ -175,7 +175,7 @@ public:
      *
      * @returns Filteres QStringList
      */
-    QStringList permissiveFilter(const QStringList &in, const QString &filter);
+    auto permissiveFilter(const QStringList &in, const QString &filter) -> QStringList;
 
     /*! \brief Simplifies string by transforming and removing special characters
      *
@@ -187,13 +187,13 @@ public:
      *
      * @return Simplified string
      */
-    QString simplifySpecialChars(const QString &string);
+    auto simplifySpecialChars(const QString &string) -> QString;
 
 private:
     Q_DISABLE_COPY_MOVE(Librarian)
 
     // Caches used to speed up the method simplifySpecialChars
-    QRegularExpression specialChars {"[^a-zA-Z0-9]"};
+    QRegularExpression specialChars {QStringLiteral("[^a-zA-Z0-9]")};
     QHash<QString, QString> simplifySpecialChars_cache;
 
 };

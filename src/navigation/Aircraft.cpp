@@ -118,25 +118,25 @@ auto Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeoCoo
 auto Navigation::Aircraft::horizontalDistanceToString(Units::Distance distance) const -> QString
 {
     if (!distance.isFinite()) {
-        return "-";
+        return QStringLiteral("-");
     }
 
     switch(m_horizontalDistanceUnit) {
     case Navigation::Aircraft::NauticalMile:
         if (distance > Units::Distance::fromNM(10.0)) {
-            return QString("%L1 nm").arg(distance.toNM(), 0, 'f', 0);
+            return QStringLiteral("%L1 nm").arg(distance.toNM(), 0, 'f', 0);
         }
-        return QString("%L1 nm").arg(distance.toNM(), 0, 'f', 1);
+        return QStringLiteral("%L1 nm").arg(distance.toNM(), 0, 'f', 1);
     case Navigation::Aircraft::Kilometer:
         if (distance > Units::Distance::fromKM(10.0)) {
-            return QString("%L1 km").arg(distance.toKM(), 0, 'f', 0);
+            return QStringLiteral("%L1 km").arg(distance.toKM(), 0, 'f', 0);
         }
-        return QString("%L1 km").arg(distance.toKM(), 0, 'f', 1);
+        return QStringLiteral("%L1 km").arg(distance.toKM(), 0, 'f', 1);
     case Navigation::Aircraft::StatuteMile:
         if (distance > Units::Distance::fromMIL(10.0)) {
-            return QString("%L1 mil").arg(distance.toMIL(), 0, 'f', 0);
+            return QStringLiteral("%L1 mil").arg(distance.toMIL(), 0, 'f', 0);
         }
-        return QString("%L1 mil").arg(distance.toMIL(), 0, 'f', 1);
+        return QStringLiteral("%L1 mil").arg(distance.toMIL(), 0, 'f', 1);
     }
     return {};
 }
@@ -145,16 +145,16 @@ auto Navigation::Aircraft::horizontalDistanceToString(Units::Distance distance) 
 auto Navigation::Aircraft::horizontalSpeedToString(Units::Speed speed) const -> QString
 {
     if (!speed.isFinite()) {
-        return "-";
+        return QStringLiteral("-");
     }
 
     switch(m_horizontalDistanceUnit) {
     case Navigation::Aircraft::NauticalMile:
-        return QString("%L1 kn").arg(qRound( speed.toKN() ));
+        return QStringLiteral("%L1 kn").arg(qRound( speed.toKN() ));
     case Navigation::Aircraft::Kilometer:
-        return QString("%L1 km/h").arg(qRound( speed.toKMH() ));
+        return QStringLiteral("%L1 km/h").arg(qRound( speed.toKMH() ));
     case Navigation::Aircraft::StatuteMile:
-        return QString("%L1 mph").arg(qRound( speed.toMPH() ));
+        return QStringLiteral("%L1 mph").arg(qRound( speed.toMPH() ));
     }
     return {};
 }
@@ -183,24 +183,24 @@ auto Navigation::Aircraft::loadFromJSON(const QByteArray &JSON) -> QString
         return QObject::tr("JSON document contains no data.");
     }
 
-    if (content["content"] != "aircraft") {
+    if (content[QStringLiteral("content")] != "aircraft") {
         return QObject::tr("JSON document does not describe an aircraft.");
     }
 
-    setCruiseSpeed( Units::Speed::fromMPS( content["cruiseSpeed_mps"].toDouble(NAN) ));
-    setDescentSpeed( Units::Speed::fromMPS( content["descentSpeed_mps"].toDouble(NAN) ));
-    setFuelConsumption( Units::VolumeFlow::fromLPH( content["fuelConsumption_lph"].toDouble(NAN) ));
-    setFuelConsumptionUnit( static_cast<FuelConsumptionUnit>(content["fuelConsumptionUnit"].toInt(LiterPerHour)) );
-    setHorizontalDistanceUnit( static_cast<HorizontalDistanceUnit>(content["horizontalDistanceUnit"].toInt(NauticalMile)) );
-    setMinimumSpeed( Units::Speed::fromMPS( content["minimumSpeed_mps"].toDouble(NAN) ));
-    setName( content["name"].toString() );
-    setVerticalDistanceUnit( static_cast<VerticalDistanceUnit>(content["verticalDistanceUnit"].toInt(Feet)) );
+    setCruiseSpeed( Units::Speed::fromMPS( content[QStringLiteral("cruiseSpeed_mps")].toDouble(NAN) ));
+    setDescentSpeed( Units::Speed::fromMPS( content[QStringLiteral("descentSpeed_mps")].toDouble(NAN) ));
+    setFuelConsumption( Units::VolumeFlow::fromLPH( content[QStringLiteral("fuelConsumption_lph")].toDouble(NAN) ));
+    setFuelConsumptionUnit( static_cast<FuelConsumptionUnit>(content[QStringLiteral("fuelConsumptionUnit")].toInt(LiterPerHour)) );
+    setHorizontalDistanceUnit( static_cast<HorizontalDistanceUnit>(content[QStringLiteral("horizontalDistanceUnit")].toInt(NauticalMile)) );
+    setMinimumSpeed( Units::Speed::fromMPS( content[QStringLiteral("minimumSpeed_mps")].toDouble(NAN) ));
+    setName( content[QStringLiteral("name")].toString() );
+    setVerticalDistanceUnit( static_cast<VerticalDistanceUnit>(content[QStringLiteral("verticalDistanceUnit")].toInt(Feet)) );
 
     return {};
 }
 
 
-bool Navigation::Aircraft::operator==(const Navigation::Aircraft& other) const
+auto Navigation::Aircraft::operator==(const Navigation::Aircraft& other) const -> bool
 {
     return (m_cruiseSpeed == other.m_cruiseSpeed) &&
             (m_descentSpeed == other.m_descentSpeed) &&
@@ -217,7 +217,7 @@ auto Navigation::Aircraft::save(const QString& fileName) const -> QString
 {
     // Make directory, if it does not yet exist.
     QDir dir;
-    dir.mkpath(GlobalObject::librarian()->directory(Librarian::Aircraft));
+    dir.mkpath(Librarian::directory(Librarian::Aircraft));
 
     QFile file(fileName);
     auto success = file.open(QIODevice::WriteOnly);
@@ -258,17 +258,17 @@ auto Navigation::Aircraft::toJSON() const -> QByteArray
 auto Navigation::Aircraft::verticalDistanceToString(Units::Distance distance, bool forceSign) const -> QString
 {
     if (!distance.isFinite()) {
-        return "-";
+        return QStringLiteral("-");
     }
     QString signString;
     if (forceSign && (distance.toM() >= 0.0)) {
-        signString = "+";
+        signString = QStringLiteral("+");
     }
     switch(m_verticalDistanceUnit) {
     case Navigation::Aircraft::Feet:
-        return signString+QString("%L1 ft").arg(qRound(distance.toFeet()));
+        return signString+QStringLiteral("%L1 ft").arg(qRound(distance.toFeet()));
     case Navigation::Aircraft::Meters:
-        return signString+QString("%L1 m").arg(qRound(distance.toM()));
+        return signString+QStringLiteral("%L1 m").arg(qRound(distance.toM()));
     }
     return {};
 }
@@ -277,13 +277,13 @@ auto Navigation::Aircraft::verticalDistanceToString(Units::Distance distance, bo
 auto Navigation::Aircraft::verticalSpeedToString(Units::Speed speed) const -> QString
 {
     if (!speed.isFinite()) {
-        return "-";
+        return QStringLiteral("-");
     }
     switch(m_verticalDistanceUnit) {
     case Navigation::Aircraft::Feet:
-        return QString("%L1 ft/min").arg(qRound( speed.toFPM() ));
+        return QStringLiteral("%L1 ft/min").arg(qRound( speed.toFPM() ));
     case Navigation::Aircraft::Meters:
-        return QString("%L1 m/s").arg(qRound( speed.toMPS() ));
+        return QStringLiteral("%L1 m/s").arg(qRound( speed.toMPS() ));
     }
     return {};
 }
@@ -292,19 +292,19 @@ auto Navigation::Aircraft::verticalSpeedToString(Units::Speed speed) const -> QS
 auto Navigation::Aircraft::volumeToString(Units::Volume volume) const -> QString
 {
     if (!volume.isFinite()) {
-        return "-";
+        return QStringLiteral("-");
     }
     switch(m_fuelConsumptionUnit) {
     case Navigation::Aircraft::LiterPerHour:
         if (volume.toL() < 10.0) {
-            return QString("%L1 l").arg(volume.toL(), 0, 'f', 1);
+            return QStringLiteral("%L1 l").arg(volume.toL(), 0, 'f', 1);
         }
-        return QString("%L1 l").arg(qRound( volume.toL() ));
+        return QStringLiteral("%L1 l").arg(qRound( volume.toL() ));
     case Navigation::Aircraft::GallonPerHour:
         if (volume.toGAL() < 10.0) {
-            return QString("%L1 gal").arg(volume.toGAL(), 0, 'f', 1);
+            return QStringLiteral("%L1 gal").arg(volume.toGAL(), 0, 'f', 1);
         }
-        return QString("%L1 gal").arg(qRound( volume.toGAL() ));
+        return QStringLiteral("%L1 gal").arg(qRound( volume.toGAL() ));
     }
     return {};
 }

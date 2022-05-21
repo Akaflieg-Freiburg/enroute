@@ -20,6 +20,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 import enroute 1.0
 import "../pages"
@@ -32,36 +33,211 @@ Item {
 
     Connections {
         target: global.mobileAdaptor()
+
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
             view.requestActivate()
+            importManager.filePath = fileName
+            importManager.fileFunction = fileFunction
             if (fileName === "")
                 return
-            if (fileFunction === MobileAdaptor.UnknownFunction) {
-                errLbl.text = qsTr("The file type of the file <strong>%1</strong> could not be recognized.").arg(fileName)
-                errorDialog.open()
+
+            if (fileFunction === MobileAdaptor.VectorMap) {
+                importVectorMapDialog.open()
+                return
+            }
+            if (fileFunction === MobileAdaptor.RasterMap) {
+                importRasterMapDialog.open()
+                return
+            }
+            if ((fileFunction === MobileAdaptor.FlightRoute_GPX) || (fileFunction === MobileAdaptor.FlightRoute_GeoJSON)) {
+                if (global.navigator().flightRoute.size > 0)
+                    importFlightRouteDialog.open()
+                else
+                    importFlightRouteDialog.onAccepted()
                 return
             }
 
-            importManager.filePath = fileName
-            importManager.fileFunction = fileFunction
-            if (global.navigator().flightRoute.size > 0)
-                importDialog.open()
-            else
-                importDialog.onAccepted()
-      }
+            errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
+            errorDialog.open()
+            return
+        }
     } // Connections
 
 
     Dialog {
-        id: importDialog
+        id: importRasterMapDialog
 
         // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
         height: Math.min(view.height-view.font.pixelSize, implicitHeight)
 
         // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        title: qsTr("Import Raster Map")
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name for this map.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            TextField {
+                id: mapNameRaster
+
+                Layout.fillWidth: true
+                focus: true
+                placeholderText: qsTr("Map Name")
+
+                onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+
+                onAccepted: {
+                    if (mapNameRaster.text === "")
+                        return
+                    importRasterMapDialog.accept()
+                }
+            }
+
+            CheckBox {
+                id: removeFileRaster
+                Layout.fillWidth: true
+                text: qsTr("Remove file after import")
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: global.dataManager().baseMapsVector.hasFile
+                text: qsTr("To avoid conflicts between raster and vector maps, all vector maps will be uninstalled.")
+
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+        }
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+
+        onAboutToShow: {
+            mapNameRaster.text = ""
+            removeFileRaster.checked = false
+            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
+        }
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+
+            var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text, removeFileRaster.checked)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            toast.doToast( qsTr("Raster map imported") )
+        }
+
+    } // importDialog
+
+
+    Dialog {
+        id: importVectorMapDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        title: qsTr("Import Vector Map")
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name for this map.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            TextField {
+                id: mapNameVector
+
+                Layout.fillWidth: true
+                focus: true
+                placeholderText: qsTr("Map Name")
+
+                onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+
+                onAccepted: {
+                    if (mapNameVector.text === "")
+                        return
+                    importVectorMapDialog.accept()
+                }
+            }
+
+            CheckBox {
+                id: removeFileVector
+                Layout.fillWidth: true
+                text: qsTr("Remove file after import")
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: global.dataManager().baseMapsRaster.hasFile
+                text: qsTr("To avoid conflicts between raster and vector maps, all raster maps will be uninstalled.")
+
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+        }
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+
+        onAboutToShow: {
+            mapNameVector.text = ""
+            removeFileVector.checked = false
+            importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
+        }
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+
+            var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text, removeFileVector.checked)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            toast.doToast( qsTr("Vector map imported") )
+        }
+
+    } // importDialog
+
+
+    Dialog {
+        id: importFlightRouteDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
         parent: Overlay.overlay
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
@@ -71,7 +247,7 @@ Item {
         Label {
             id: lbl
 
-            width: importDialog.availableWidth
+            width: importFlightRouteDialog.availableWidth
 
             text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
             wrapMode: Text.Wrap
@@ -122,12 +298,12 @@ Item {
         standardButtons: Dialog.Cancel
         modal: true
 
-        title: qsTr("Error importing flight route")
+        title: qsTr("Data import error")
 
         Label {
             id: errLbl
 
-            width: importDialog.availableWidth
+            width: importFlightRouteDialog.availableWidth
 
             wrapMode: Text.Wrap
             textFormat: Text.StyledText

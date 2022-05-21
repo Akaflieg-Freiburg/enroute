@@ -1,0 +1,18 @@
+{
+  "sources": {
+    "raster-tiles": {
+    "type": "raster",
+    "url": "%URL%"
+    }
+  },
+  "glyphs": "%URL2%/flightMap/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+    "id": "simple-tiles",
+    "type": "raster",
+    "source": "raster-tiles",
+    "minzoom": 0,
+    "maxzoom": 22
+    }
+  ]
+}

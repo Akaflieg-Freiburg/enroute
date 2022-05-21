@@ -69,7 +69,7 @@ public:
      *  See the FLARM "Data Port Interface Control Document" for a further
      *  description.
      */
-    Q_INVOKABLE int alarmLevel() const
+    Q_INVOKABLE [[nodiscard]] int alarmLevel() const
     {
         return m_alarmLevel;
     }
@@ -90,7 +90,7 @@ public:
      *  See the FLARM "Data Port Interface Control Document" for a further
      *  description.
      */
-    Q_INVOKABLE int alarmType() const
+    Q_INVOKABLE [[nodiscard]] int alarmType() const
     {
         return m_alarmType;
     }
@@ -100,13 +100,13 @@ public:
      *  @returns A string of the form "Traffic • 10 o'clock position • 
      *  Distance 0.4 nm • 700 ft below."
      */
-    Q_INVOKABLE QString description() const;
+    Q_INVOKABLE [[nodiscard]] QString description() const;
 
     /*! \brief Horizontal distance to obstacle or aircraft
      *
      *  @returns Horizontal distance, might be NaN
      */
-    Q_INVOKABLE Units::Distance hDist() const
+    Q_INVOKABLE [[nodiscard]] Units::Distance hDist() const
     {
         return m_hDist;
     }
@@ -123,7 +123,7 @@ public:
      *
      *  @returns Relative bearing, might be NaN
      */
-    Q_INVOKABLE Units::Angle relativeBearing() const
+    Q_INVOKABLE [[nodiscard]] Units::Angle relativeBearing() const
     {
         return m_relativeBearing;
     }
@@ -132,7 +132,7 @@ public:
      *
      *  @returns Vertical distance, might be NaN
      */
-    Q_INVOKABLE Units::Distance vDist() const
+    Q_INVOKABLE [[nodiscard]] Units::Distance vDist() const
     {
         return m_vDist;
     }

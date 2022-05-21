@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,32 +30,78 @@
 #include <QSqlQuery>
 #include <chrono>
 
-#include "GeoMapProvider.h"
-#include "GlobalObject.h"
-#include "navigation/Clock.h"
+#include "geomaps/GeoMapProvider.h"
+#include "geomaps/MBTILES.h"
 #include "navigation/Navigator.h"
-
-using namespace std::chrono_literals;
 
 
 GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
-    : QObject(parent),
-      _tileServer(QUrl()),
-      _styleFile(nullptr)
+    : GlobalObject(parent)
 {
-    // Initialize _combinedGeoJSON_ with an empty document
-    QJsonObject resultObject;
-    resultObject.insert(QStringLiteral("type"), "FeatureCollection");
-    resultObject.insert(QStringLiteral("features"), QJsonArray());
-    QJsonDocument geoDoc(resultObject);
-    _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
-
+    _combinedGeoJSON_ = emptyGeoJSON();
     _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
-
-    // Deferred initializsation
-    QTimer::singleShot(0, this, &GeoMaps::GeoMapProvider::deferredInitialization);
 }
 
+void GeoMaps::GeoMapProvider::deferredInitialization()
+{
+    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onBaseMapsChanged);
+    connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+
+    _aviationDataCacheTimer.setSingleShot(true);
+    _aviationDataCacheTimer.setInterval(3s);
+    connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+
+    onAviationMapsChanged();
+    onBaseMapsChanged();
+    GlobalObject::dataManager()->aviationMaps()->killLocalFileContentChanged_delayed();
+    GlobalObject::dataManager()->baseMaps()->killLocalFileContentChanged_delayed();
+}
+
+
+//
+// Getter Methods
+//
+
+auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
+{
+    QString result;
+    if (GlobalObject::dataManager()->aviationMaps()->hasFile())
+    {
+        result += "<h4>"+tr("Aviation maps")+"</h4>";
+        result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br><a href='https://openflightmaps.org'>© open flightmaps</a>");
+    }
+
+    foreach(auto baseMap, GlobalObject::dataManager()->baseMaps()->downloadablesWithFile())
+    {
+        auto name = baseMap->fileName().split(QStringLiteral("aviation_maps/")).last();
+        result += ("<h4>"+tr("Basemap")+ " %1</h4>").arg(name);
+        result += MBTILES::attribution(baseMap->fileName());
+    }
+
+    return result;
+}
+
+auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
+{
+    QMutexLocker lock(&_aviationDataMutex);
+    return _combinedGeoJSON_;
+}
+
+auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
+{
+    if (_styleFile.isNull())
+    {
+        return QStringLiteral(":/flightMap/empty.json");
+    }
+    return "file://"+_styleFile->fileName();
+}
+
+
+//
+// Methods
+//
 
 auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVariantList
 {
@@ -79,7 +125,6 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
 
     return final;
 }
-
 
 auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> Waypoint
 {
@@ -110,12 +155,20 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     }
 
     if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
-        return Waypoint(position);
+        return {position};
     }
 
     return result;
 }
 
+auto GeoMaps::GeoMapProvider::emptyGeoJSON() -> QByteArray
+{
+    QJsonObject resultObject;
+    resultObject.insert(QStringLiteral("type"), "FeatureCollection");
+    resultObject.insert(QStringLiteral("features"), QJsonArray());
+    QJsonDocument geoDoc(resultObject);
+    return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
+}
 
 auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QVariantList
 {
@@ -154,7 +207,6 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
     return result;
 }
 
-
 auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint
 {
     auto wps = waypoints();
@@ -169,7 +221,6 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint
     }
     return {};
 }
-
 
 auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QVariantList
 {
@@ -201,17 +252,18 @@ auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, co
     return result;
 }
 
-
-auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
+auto GeoMaps::GeoMapProvider::waypoints() -> QVector<Waypoint>
 {
-    if (_styleFile.isNull()) {
-        return QStringLiteral(":/flightMap/empty.json");
-    }
-    return "file://"+_styleFile->fileName();
+    QMutexLocker locker(&_aviationDataMutex);
+    return _waypoints_;
 }
 
 
-void GeoMaps::GeoMapProvider::aviationMapsChanged()
+//
+// Private Methods and Slots
+//
+
+void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 {
     // Paranoid safety checks
     if (_aviationDataCacheFuture.isRunning()) {
@@ -237,33 +289,44 @@ void GeoMaps::GeoMapProvider::aviationMapsChanged()
     _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::settings()->airspaceAltitudeLimit(), GlobalObject::settings()->hideGlidingSectors());
 }
 
-
-void GeoMaps::GeoMapProvider::baseMapsChanged()
+void GeoMaps::GeoMapProvider::onBaseMapsChanged()
 {
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
     _tileServer.removeMbtilesFileSet(_currentPath);
-
-    // Serve new tile set under new name
     _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
-    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
 
-    // Generate new mapbox style file
-    _styleFile = new QTemporaryFile(this);
-    QFile file(QStringLiteral(":/flightMap/osm-liberty.json"));
+    QFile file;
+    if (GlobalObject::dataManager()->baseMaps()->hasFile())
+    {
+        bool hasRaster = GlobalObject::dataManager()->baseMapsRaster()->hasFile();
+        // Serve new tile set under new name
+        if (hasRaster)
+        {
+            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentPath);
+            file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
+        } else
+        {
+            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+            file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
+        }
+    } else
+    {
+        file.setFileName(QStringLiteral(":/flightMap/empty.json"));
+    }
+
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
     data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+    _styleFile = new QTemporaryFile(this);
     _styleFile->open();
     _styleFile->write(data);
     _styleFile->close();
 
     emit styleFileURLChanged();
-
 }
-
 
 void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
 {
@@ -287,7 +350,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
         file.close();
         lockFile.unlock();
 
-        foreach(auto value, document.object()["features"].toArray()) {
+        foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
             auto object = value.toObject();
             objectSet += object;
         }
@@ -326,7 +389,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
         // and that are gliding sectors
         if (hideGlidingSectors) {
             Airspace airspaceTest(object);
-            if (airspaceTest.CAT() == "GLD") {
+            if (airspaceTest.CAT() == QLatin1String("GLD")) {
                 continue;
             }
         }
@@ -349,21 +412,4 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     _aviationDataMutex.unlock();
 
     emit geoJSONChanged();
-}
-
-
-void GeoMaps::GeoMapProvider::deferredInitialization()
-{
-    // Connect the WeatherProvider, so aviation maps will be generated
-    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
-    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::baseMapsChanged);
-    connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
-    connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
-
-    _aviationDataCacheTimer.setSingleShot(true);
-    _aviationDataCacheTimer.setInterval(3s);
-    connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMaps::GeoMapProvider::aviationMapsChanged);
-
-    aviationMapsChanged();
-    baseMapsChanged();
 }

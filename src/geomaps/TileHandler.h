@@ -85,7 +85,7 @@ public:
     
     @returns Property attribution
   */
-  QString attribution() const {return _attribution;}
+  [[nodiscard]] auto attribution() const -> QString {return _attribution;}
   
   /*! \brief Description property, as found in the metadata table of the mbtile file
     
@@ -97,7 +97,7 @@ public:
     
     @returns Property description
   */
-  QString description() const {return _description;}
+  [[nodiscard]] auto description() const -> QString {return _description;}
   
   /*! \brief Format property, as found in the metadata table of the mbtile file */
   Q_PROPERTY(QString format READ format CONSTANT)
@@ -106,7 +106,7 @@ public:
     
     @returns Property format
   */
-  QString format() const {return _format;}
+  [[nodiscard]] auto format() const -> QString {return _format;}
   
   /*! \brief Maxzoom property, as found in the metadata table of the mbtile file
     
@@ -118,7 +118,7 @@ public:
     
     @returns Property maxzoom
   */
-  int maxzoom() const {return _maxzoom;}
+  [[nodiscard]] auto maxzoom() const -> int {return _maxzoom;}
   
   /*! \brief Minzoom property, as found in the metadata table of the mbtile file
     
@@ -130,7 +130,7 @@ public:
     
     @returns Property minzoom
   */
-  int minzoom() const {return _minzoom;}
+  [[nodiscard]] auto minzoom() const -> int {return _minzoom;}
   
   /*! \brief Name property, as found in the metadata table of the mbtile file */
   Q_PROPERTY(QString name READ name CONSTANT)
@@ -139,7 +139,7 @@ public:
     
     @returns Property name
   */
-  QString name() const {return _name;}
+  [[nodiscard]] auto name() const -> QString {return _name;}
   
   /*! \brief TileJSON source
     
@@ -153,7 +153,7 @@ public:
 
      @returns Property tileJSON
   */
-  QByteArray tileJSON() const;
+  [[nodiscard]] auto tileJSON() const -> QByteArray;
   
   /*! \brief Tile URL endpoints
     
@@ -167,7 +167,7 @@ public:
 
      @returns Property tiles
   */
-  QString tiles() const {return _tiles;}
+  [[nodiscard]] auto tiles() const -> QString {return _tiles;}
   
   /*! \brief Version property, as found in the metadata table of the mbtile file
     
@@ -179,7 +179,7 @@ public:
    
     @returns Property version
   */
-  QString version() const {return _version;}
+  [[nodiscard]] auto version() const -> QString {return _version;}
   
 protected:
   /*

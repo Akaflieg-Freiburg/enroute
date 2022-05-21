@@ -228,19 +228,19 @@ auto Positioning::PositionProvider::lastValidTT() -> Units::Angle
 void Positioning::PositionProvider::updateStatusString()
 {
     if (receivingPositionInfo()) {
-        QString result = QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(sourceName());
-        result += QString("<li>%1</li>").arg(tr("Receiving position information."));
+        QString result = QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(sourceName());
+        result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position information."));
         if (pressureAltitude().isFinite()) {
-            result += QString("<li>%1</li>").arg(tr("Receiving pressure altitude."));
+            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving pressure altitude."));
         }
-        result += "</ul>";
+        result += QLatin1String("</ul>");
         setStatusString(result);
         return;
     }
 
-    QString result = QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(tr("Not receiving position information"));
-    result += QString("<li>%1: %2</li>").arg( satelliteSource.sourceName(), satelliteSource.statusString());
-    result += QString("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
-    result += "</ul>";
+    QString result = QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(tr("Not receiving position information"));
+    result += QStringLiteral("<li>%1: %2</li>").arg( satelliteSource.sourceName(), satelliteSource.statusString());
+    result += QStringLiteral("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
+    result += QLatin1String("</ul>");
     setStatusString(result);
 }

@@ -93,7 +93,7 @@ public:
      *
      * @returns Property downloading
      */
-    bool downloading() const { return !_networkReplyDownloadFile.isNull(); }
+    [[nodiscard]] auto downloading() const -> bool { return !_networkReplyDownloadFile.isNull(); }
 
     /*! \brief Download progress
      *
@@ -106,7 +106,7 @@ public:
      *
      * @returns Property downloadProgress
      */
-    int downloadProgress() const { return _downloadProgress; }
+    [[nodiscard]] auto downloadProgress() const -> int { return _downloadProgress; }
 
     /*! \brief File name, as set in the constructor */
     Q_PROPERTY(QString fileName READ fileName CONSTANT)
@@ -115,7 +115,7 @@ public:
      *
      * @returns Property fileName
      */
-    QString fileName() const { return _fileName; }
+    [[nodiscard]] auto fileName() const -> QString { return _fileName; }
 
     /*! \brief Convenience property, returns 'true' if the file has been downloaded
      *
@@ -129,7 +129,7 @@ public:
      *
      * @returns Property hasFile
      */
-    bool hasFile() const { return QFile::exists(_fileName); }
+    [[nodiscard]] auto hasFile() const -> bool { return QFile::exists(_fileName); }
 
     /*! \brief Short info text describing the state of the downloadable
      *
@@ -147,7 +147,7 @@ public:
      *
      * @returns Property infoText
      */
-    QString infoText() const;
+    [[nodiscard]] auto infoText() const -> QString;
 
     /*! \brief Content of the downloaded file
      *
@@ -160,7 +160,7 @@ public:
      *
      * @returns Property fileContent
      */
-    QByteArray fileContent() const;
+    [[nodiscard]] auto fileContent() const -> QByteArray;
 
     /*! \brief Modification date of the remote file
      *
@@ -180,7 +180,7 @@ public:
      *
      * @returns Property remoteFileDate
      */
-    QDateTime remoteFileDate() const { return _remoteFileDate; }
+    [[nodiscard]] auto remoteFileDate() const -> QDateTime { return _remoteFileDate; }
 
     /*! \brief Size of the remote file
      *
@@ -194,7 +194,7 @@ public:
      *
      * @returns Property remoteFileSize
      */
-    qint64 remoteFileSize() const { return _remoteFileSize; }
+    [[nodiscard]] auto remoteFileSize() const -> qint64 { return _remoteFileSize; }
 
     /*! \brief Setter function for the property with the same name
      *
@@ -215,7 +215,7 @@ public:
      *
      * @returns Property section
      */
-    QString section() const { return _section; }
+    [[nodiscard]] auto section() const -> QString { return _section; }
 
     /*! \brief Setter function for the property with the same name
      *
@@ -243,7 +243,7 @@ public:
      *
      * @returns Property updatable
      */
-    bool updatable() const;
+    [[nodiscard]] auto updatable() const -> bool;
 
     /*! \brief URL, as set in the constructor */
     Q_PROPERTY(QUrl url READ url CONSTANT)
@@ -252,7 +252,7 @@ public:
      *
      * @returns Property url
      */
-    QUrl url() const { return _url; }
+    [[nodiscard]] auto url() const -> QUrl { return _url; }
 
 public slots:
     /*! \brief The convenience method deletes the local file.

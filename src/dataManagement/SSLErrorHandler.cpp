@@ -54,11 +54,11 @@ void DataManagement::SSLErrorHandler::onSSLError(QNetworkReply *reply, const QLi
     result += "<p>" +
               tr("Enroute is unable to establish a secure internet connection to one or several servers.") +
               "</p>";
-    result += "<ul style='margin-left:-25px;'>";
+    result += QLatin1String("<ul style='margin-left:-25px;'>");
     foreach(auto error, errors) {
         result += "<li>" + error.errorString() + "</li>";
     }
-    result += "</ul>";
+    result += QLatin1String("</ul>");
     result += "<p>" +
               tr("You can choose to ignore this warning in the future and to connect anyway. "
                  "This will however leave the data transfer open to tampering and manipulation.") +

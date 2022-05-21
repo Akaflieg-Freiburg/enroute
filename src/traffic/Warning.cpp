@@ -35,27 +35,27 @@ Traffic::Warning::Warning(
 {  
 
     // Alarm level
-    if (AlarmLevel == "0") {
+    if (AlarmLevel == QLatin1String("0")) {
         m_alarmLevel = 0;
     }
-    if (AlarmLevel == "1") {
+    if (AlarmLevel == QLatin1String("1")) {
         m_alarmLevel = 1;
     }
-    if (AlarmLevel == "2") {
+    if (AlarmLevel == QLatin1String("2")) {
         m_alarmLevel = 2;
     }
-    if (AlarmLevel == "3") {
+    if (AlarmLevel == QLatin1String("3")) {
         m_alarmLevel = 3;
     }
 
     // Alarm Type
-    if (AlarmType == "2") {
+    if (AlarmType == QLatin1String("2")) {
         m_alarmType = 2;
     }
-    if (AlarmType == "3") {
+    if (AlarmType == QLatin1String("3")) {
         m_alarmType = 3;
     }
-    if (AlarmType == "4") {
+    if (AlarmType == QLatin1String("4")) {
         m_alarmType = 4;
     }
 
@@ -141,7 +141,7 @@ auto Traffic::Warning::description() const -> QString
         }
     }
 
-    return result.join(" • ");
+    return result.join(QStringLiteral(" • "));
 }
 
 

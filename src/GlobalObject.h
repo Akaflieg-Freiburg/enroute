@@ -96,7 +96,7 @@ class GlobalObject : public QObject
      * This destructor will destruct all application-wide static instances
      * managed by this class.
      */
-    ~GlobalObject() = default;
+    ~GlobalObject() override = default;
 
     /*! \brief Indicates if the static methods are ready to be used
      *
@@ -213,5 +213,5 @@ protected:
 private:
     Q_DISABLE_COPY_MOVE(GlobalObject)
 
-    template<typename T> static T* allocateInternal(QPointer<T>& pointer);
+    template<typename T> static auto allocateInternal(QPointer<T>& pointer) -> T*;
 };

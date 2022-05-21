@@ -52,7 +52,7 @@ public:
 
     @returns Property pixelPer10km
   */
-  qreal pixelPer10km() const {return _pixelPer10km;}
+  [[nodiscard]] auto pixelPer10km() const -> qreal {return _pixelPer10km;}
 
   /*! \brief Setter function for the property with the same name
 
@@ -78,7 +78,7 @@ public:
    *
    *  @returns Property vertical
    */
-  bool vertical() const {return _vertical;}
+  [[nodiscard]] auto vertical() const -> bool {return _vertical;}
 
   /*! \brief Setter function for the property with the same name
    *

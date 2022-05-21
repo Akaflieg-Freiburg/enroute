@@ -60,8 +60,8 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     foreFlightBroadcastTimer.start();
 
     // Real data sources in order of preference, preferred sources first
-    addDataSource( new Traffic::TrafficDataSource_Tcp("192.168.1.1", 2000, this));
-    addDataSource( new Traffic::TrafficDataSource_Tcp("192.168.10.1", 2000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.1.1"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.10.1"), 2000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(4000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(49002, this));
 
@@ -392,16 +392,16 @@ void Traffic::TrafficDataProvider::updateStatusString()
     if (receivingHeartbeat()) {
         QString result;
         if (!m_currentSource.isNull()) {
-            result += QString("<p>%1</p><ul style='margin-left:-25px;'>").arg(m_currentSource->sourceName());
+            result += QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(m_currentSource->sourceName());
         }
-        result += QString("<li>%1</li>").arg(tr("Receiving heartbeat."));
+        result += QStringLiteral("<li>%1</li>").arg(tr("Receiving heartbeat."));
         if (positionInfo().isValid()) {
-            result += QString("<li>%1</li>").arg(tr("Receiving position info."));
+            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position info."));
         }
         if (pressureAltitude().isFinite()) {
-            result += QString("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
+            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
         }
-        result += "</ul>";
+        result += QLatin1String("</ul>");
         setStatusString(result);
         return;
     }
@@ -412,14 +412,14 @@ void Traffic::TrafficDataProvider::updateStatusString()
             continue;
         }
 
-        result += "<li>";
+        result += QLatin1String("<li>");
         result += source->sourceName() + ": " + source->connectivityStatus();
         if (!source->errorString().isEmpty()) {
             result += " " + source->errorString();
         }
-        result += "</li>";
+        result += QLatin1String("</li>");
     }
-    result += "</ul>";
+    result += QLatin1String("</ul>");
 
     setStatusString(result);
 }

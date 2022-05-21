@@ -83,7 +83,7 @@ public:
      *
      *  @returns Property icon
      */
-    QString icon() const
+    [[nodiscard]] auto icon() const -> QString
     {
         return m_icon;
     }
@@ -95,7 +95,7 @@ public:
      *
      *  @returns Property positionInfo
      */
-    Positioning::PositionInfo positionInfo() const
+    [[nodiscard]] auto positionInfo() const -> Positioning::PositionInfo
     {
         return Positioning::PositionInfo(m_positionInfo);
     }
@@ -119,7 +119,7 @@ signals:
 
 protected:
     // See documentation in base class
-    virtual void updateDescription() override;
+    void updateDescription() override;
 
     // Updates property icon
     void updateIcon();
@@ -127,7 +127,7 @@ protected:
 private:
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
-    virtual void updateValid() override;
+    void updateValid() override;
 
     //
     // Property values

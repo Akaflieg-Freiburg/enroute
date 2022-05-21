@@ -145,67 +145,67 @@ public:
      *
      * @returns Property acceptedTerms
      */
-    int acceptedTerms() const { return settings.value(QStringLiteral("acceptedTerms"), 0).toInt(); }
+    [[nodiscard]] auto acceptedTerms() const -> int { return settings.value(QStringLiteral("acceptedTerms"), 0).toInt(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property acceptedWeatherTerms
      */
-    bool acceptedWeatherTerms() const { return settings.value(QStringLiteral("acceptedWeatherTerms"), false).toBool(); }
+    [[nodiscard]] auto acceptedWeatherTerms() const -> bool { return settings.value(QStringLiteral("acceptedWeatherTerms"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property airspaceAltitudeLimit
      */
-    Units::Distance airspaceAltitudeLimit() const;
+    [[nodiscard]] auto airspaceAltitudeLimit() const -> Units::Distance;
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property hideGlidingSectors
      */
-    bool hideGlidingSectors() const { return settings.value(QStringLiteral("Map/hideGlidingSectors"), true).toBool(); }
+    [[nodiscard]] auto hideGlidingSectors() const -> bool { return settings.value(QStringLiteral("Map/hideGlidingSectors"), true).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property ignoreSSLProblems
      */
-    bool ignoreSSLProblems() const { return settings.value(QStringLiteral("ignoreSSLProblems"), false).toBool(); }
+    [[nodiscard]] auto ignoreSSLProblems() const -> bool { return settings.value(QStringLiteral("ignoreSSLProblems"), false).toBool(); }
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property hasTranslation
      */
-    Units::Distance lastValidAirspaceAltitudeLimit() const;
+    [[nodiscard]] auto lastValidAirspaceAltitudeLimit() const -> Units::Distance;
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property lastWhatsNewHash
      */
-    uint lastWhatsNewHash() const { return settings.value(QStringLiteral("lastWhatsNewHash"), 0).toUInt(); }
+    [[nodiscard]] auto lastWhatsNewHash() const -> uint { return settings.value(QStringLiteral("lastWhatsNewHash"), 0).toUInt(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property lastWhatsNewInMapsHash
      */
-    uint lastWhatsNewInMapsHash() const { return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).toUInt(); }
+    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> uint { return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).toUInt(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property mapBearingPolicy
      */
-    MapBearingPolicy mapBearingPolicy() const;
+    [[nodiscard]] auto mapBearingPolicy() const -> MapBearingPolicy;
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property night mode
      */
-    bool nightMode() const { return settings.value("Map/nightMode", false).toBool(); }
+    [[nodiscard]] auto nightMode() const -> bool { return settings.value(QStringLiteral("Map/nightMode"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property positioningByTrafficDataReceiver
      */
-    bool positioningByTrafficDataReceiver() const { return settings.value("positioningByTrafficDataReceiver", false).toBool(); }
+    [[nodiscard]] auto positioningByTrafficDataReceiver() const -> bool { return settings.value(QStringLiteral("positioningByTrafficDataReceiver"), false).toBool(); }
 
 
     //

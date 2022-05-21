@@ -54,7 +54,7 @@ public:
      *
      *  @returns True if the file is likely to contain FLARM simulation data
      */
-    static bool containsFLARMSimulationData(const QString& fileName);
+    static auto containsFLARMSimulationData(const QString& fileName) -> bool;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -63,7 +63,7 @@ public:
      *
      *  @returns Property sourceName
      */
-    QString sourceName() const override
+    [[nodiscard]] auto sourceName() const -> QString override
     {
         return tr("Simulator file %1").arg(simulatorFile.fileName());
     }

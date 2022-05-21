@@ -80,7 +80,7 @@ namespace Units {
          *
          * @returns True is the angle is a finite number
          */
-        Q_INVOKABLE bool isFinite() const
+        Q_INVOKABLE [[nodiscard]] bool isFinite() const
         {
             return std::isfinite(m_angleInRAD);
         }
@@ -91,7 +91,7 @@ namespace Units {
          *
          * @returns Sum of the two angles
          */
-        Q_INVOKABLE Units::Angle operator+(Units::Angle rhs)
+        Q_INVOKABLE Units::Angle operator+(Units::Angle rhs) const
         {
             Angle result;
             result.m_angleInRAD = m_angleInRAD + rhs.m_angleInRAD;
@@ -104,7 +104,7 @@ namespace Units {
          *
          * @returns Difference of the two angles
          */
-        Q_INVOKABLE Units::Angle operator-(Units::Angle rhs)
+        Q_INVOKABLE Units::Angle operator-(Units::Angle rhs) const
         {
             Angle result;
             result.m_angleInRAD = m_angleInRAD - rhs.m_angleInRAD;
@@ -117,7 +117,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(Units::Angle rhs) const
+        Q_INVOKABLE bool operator==(Units::Angle rhs) const
         {
             return m_angleInRAD == rhs.m_angleInRAD;
         }
@@ -128,7 +128,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(Units::Angle rhs) const
+        Q_INVOKABLE bool operator!=(Units::Angle rhs) const
         {
             return m_angleInRAD != rhs.m_angleInRAD;
         }
@@ -137,7 +137,7 @@ namespace Units {
          *
          * @returns Cosine of the angle
          */
-        Q_INVOKABLE double cos() const
+        Q_INVOKABLE [[nodiscard]] double cos() const
         {
             return std::cos(m_angleInRAD);
         }
@@ -146,7 +146,7 @@ namespace Units {
          *
          * @returns Sine of the angle
          */
-        Q_INVOKABLE double sin() const
+        Q_INVOKABLE [[nodiscard]] double sin() const
         {
             return std::sin(m_angleInRAD);
         }
@@ -167,21 +167,22 @@ namespace Units {
          *
          * @returns Translated, human-readable string of of the form "12 o'clock", or "-" if the angle is not finite.
          */
-        Q_INVOKABLE QString toClock() const;
+        Q_INVOKABLE [[nodiscard]] QString toClock() const;
 
         /*! \brief Convert angle to degrees
          *
          * @returns Angle, as a number in degrees. The result is NaN, or lies in the interval [0.0, 360.0]
          */
-        Q_INVOKABLE double toDEG() const
+        Q_INVOKABLE [[nodiscard]] double toDEG() const
         {
             if (!qIsFinite(m_angleInRAD)) {
                 return qQNaN();
             }
 
             auto d = std::fmod(qRadiansToDegrees(m_angleInRAD), 360.0);
-            if (d > 0)
+            if (d > 0) {
                 return d;
+}
             return d+360.0;
         }
 
@@ -189,7 +190,7 @@ namespace Units {
          *
          * @returns Angle, as a number in radian
          */
-        Q_INVOKABLE double toRAD() const
+        Q_INVOKABLE [[nodiscard]] double toRAD() const
         {
             return m_angleInRAD;
         }

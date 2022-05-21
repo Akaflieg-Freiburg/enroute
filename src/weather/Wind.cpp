@@ -57,7 +57,7 @@ void Weather::Wind::setDirectionFrom(Units::Angle newDirectionFrom)
 // Methods
 //
 
-bool Weather::Wind::operator==(const Weather::Wind& other) const
+auto Weather::Wind::operator==(Weather::Wind other) const -> bool
 {
     return (m_speed == other.m_speed) &&
             (m_directionFrom == other.m_directionFrom);

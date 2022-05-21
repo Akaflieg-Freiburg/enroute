@@ -43,7 +43,7 @@ class RemainingRouteInfo {
     Q_GADGET
 
     /*! \brief Comparison */
-    friend bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&);
+    friend auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
     friend class Navigation::Navigator;
 
 public:
@@ -100,6 +100,13 @@ public:
     /*! \brief ETA for flight to final waypoint in the route, in UTC and as a string */
     Q_PROPERTY(QString finalWP_ETAAsUTCString READ finalWP_ETAAsUTCString CONSTANT)
 
+    /*! \brief Note
+     *
+     * This property contains an optional localozed warning, if ETE cannot be computed because
+     * wind or aircraft data are missing. If no warning, then this field remains empty.
+     */
+    Q_PROPERTY(QString note MEMBER note CONSTANT)
+
     /*! \brief Status */
     Q_PROPERTY(Navigation::RemainingRouteInfo::Status status MEMBER status CONSTANT)
 
@@ -112,26 +119,27 @@ public:
      *
      *  @returns Property nextWP_ETAAsUTCString
      */
-    QString nextWP_ETAAsUTCString() const {
+    [[nodiscard]] auto nextWP_ETAAsUTCString() const -> QString {
         if (nextWP_ETE.isFinite()) {
-            return nextWP_ETA.toString("H:mm");
+            return nextWP_ETA.toString(QStringLiteral("H:mm"));
         }
-        return "-:--";
+        return QStringLiteral("-:--");
     }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property nextWP_ETAAsUTCString
      */
-    QString finalWP_ETAAsUTCString() const {
+    [[nodiscard]] auto finalWP_ETAAsUTCString() const -> QString {
         if (finalWP_ETE.isFinite()) {
-            return finalWP_ETA.toString("H:mm");
+            return finalWP_ETA.toString(QStringLiteral("H:mm"));
         }
-        return "-:--";
+        return QStringLiteral("-:--");
     }
 
 private:
     Status status {NoRoute};
+    QString note;
 
     GeoMaps::Waypoint nextWP {};
     Units::Distance nextWP_DIST {};
@@ -146,7 +154,7 @@ private:
 
 
 /*! \brief Comparison */
-bool operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&);
+auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
 
 
 }

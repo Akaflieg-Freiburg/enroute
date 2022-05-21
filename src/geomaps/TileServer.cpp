@@ -37,9 +37,9 @@ GeoMaps::TileServer::TileServer(QUrl baseUrl, QObject *parent)
 auto GeoMaps::TileServer::serverUrl() const -> QString
 {
     if (isListening()) {
-        return QString("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
+        return QStringLiteral("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
     }
-    return QString();
+    return {};
 }
 
 
@@ -60,8 +60,8 @@ void GeoMaps::TileServer::removeMbtilesFileSet(const QString& path)
 void GeoMaps::TileServer::setUpTileHandlers()
 {
     // Create new file system handler and delete old one
-    auto *newFileSystemHandler = new QHttpEngine::FilesystemHandler(":", this);
-    newFileSystemHandler->addRedirect(QRegExp("^$"), "/index.html");
+    auto* newFileSystemHandler = new QHttpEngine::FilesystemHandler(QStringLiteral(":"), this);
+    newFileSystemHandler->addRedirect(QRegExp("^$"), QStringLiteral("/index.html"));
     setHandler(newFileSystemHandler);
     delete currentFileSystemHandler;
     currentFileSystemHandler = newFileSystemHandler;
@@ -79,7 +79,7 @@ void GeoMaps::TileServer::setUpTileHandlers()
             URL = _baseUrl.toString()+"/"+iterator.key();
         }
 
-        auto *handler = new TileHandler(iterator.value(), URL, newFileSystemHandler);
+        auto* handler = new TileHandler(iterator.value(), URL, newFileSystemHandler);
         newFileSystemHandler->addSubHandler(QRegExp("^"+iterator.key()), handler);
     }
 

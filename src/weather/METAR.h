@@ -54,7 +54,7 @@ public:
     explicit METAR(QObject *parent = nullptr);
 
     // Standard destructor
-    ~METAR() = default;
+    ~METAR() override = default;
 
     /*! \brief Flight category
      *
@@ -82,7 +82,7 @@ public:
      *
      * @returns Property coordiante
      */
-    QGeoCoordinate coordinate() const
+    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
     {
         return _location;
     }
@@ -98,7 +98,7 @@ public:
      *
      * @returns Property expiration
      */
-    QDateTime expiration() const;
+    [[nodiscard]] auto expiration() const -> QDateTime;
 
     /*! \brief Suggested color describing the flight category for this METAR
      *
@@ -118,7 +118,7 @@ public:
      *
      * @returns Property color
      */
-    QString flightCategoryColor() const;
+    [[nodiscard]] auto flightCategoryColor() const -> QString;
 
     /*! \brief Flight category for this METAR */
     Q_PROPERTY(FlightCategory flightCategory READ flightCategory CONSTANT)
@@ -127,7 +127,7 @@ public:
      *
      * @returns Property flightCategory
      */
-    FlightCategory flightCategory() const
+    [[nodiscard]] auto flightCategory() const -> FlightCategory
     {
         return _flightCategory;
     }
@@ -143,7 +143,7 @@ public:
      *
      * @returns Property ICAOCode
      */
-    QString ICAOCode() const
+    [[nodiscard]] auto ICAOCode() const -> QString
     {
         return _ICAOCode;
     }
@@ -153,7 +153,7 @@ public:
      * @returns true if an expiration date/time is known and if the current time
      * is larger than the expiration
      */
-    Q_INVOKABLE bool isExpired() const;
+    Q_INVOKABLE [[nodiscard]] bool isExpired() const;
 
     /*! \brief Indicates if the class represents a valid METAR report */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
@@ -162,7 +162,7 @@ public:
      *
      * @returns Property isValid
      */
-    bool isValid() const;
+    [[nodiscard]] auto isValid() const -> bool;
 
     /*! \brief Observation time of this METAR */
     Q_PROPERTY(QDateTime observationTime READ observationTime CONSTANT)
@@ -171,7 +171,7 @@ public:
      *
      * @returns Property observationTime
      */
-    QDateTime observationTime() const
+    [[nodiscard]] auto observationTime() const -> QDateTime
     {
         return _observationTime;
     }
@@ -187,7 +187,7 @@ public:
      *
      * @returns Property qnh
      */
-    quint16 QNH() const
+    [[nodiscard]] auto QNH() const -> quint16
     {
         return _qnh;
     }
@@ -203,7 +203,7 @@ public:
      *
      * @returns Property extendedName
      */
-    QString rawText() const
+    [[nodiscard]] auto rawText() const -> QString
     {
         return _raw_text;
     }
@@ -219,7 +219,7 @@ public:
      *
      * @returns Property relativeObservationTime
      */
-    QString relativeObservationTime() const;
+    [[nodiscard]] auto relativeObservationTime() const -> QString;
 
     /*! \brief One-line summary of the METAR
      *
@@ -232,7 +232,7 @@ public:
      *
      * @returns Property summary
      */
-    QString summary() const;
+    [[nodiscard]] auto summary() const -> QString;
 
 
 signals:

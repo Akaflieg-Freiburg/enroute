@@ -33,30 +33,11 @@ Rectangle {
 
         anchors.fill: parent
         anchors.leftMargin: view.font.pixelSize
+        anchors.rightMargin: view.font.pixelSize
         rowSpacing: 0
         columns: 4
 
         property var rri: global.navigator().remainingRouteInfo
-
-        Label {
-            Layout.columnSpan: 4
-            Layout.alignment: Qt.AlignHCenter
-            visible: text !== ""
-            color: "white"
-
-            text: {
-                switch (grid.rri.status) {
-                    case RemainingRouteInfo.PositionUnknown:
-                        return qsTr("Position unknown.");
-                    case RemainingRouteInfo.OffRoute:
-                        return qsTr("More than %1 off route.").arg(global.navigator().aircraft.horizontalDistanceToString(leg.nearThreshold));
-                    case RemainingRouteInfo.NearDestination:
-                        return qsTr("Near destination.");
-                }
-                return ""
-            }
-
-        }
 
         Item { width: 1 }
         Item { Layout.fillWidth: true }
@@ -167,6 +148,35 @@ Rectangle {
             font.weight: Font.Bold
             font.pixelSize: view.font.pixelSize*1.3
         }
+
+        Label {
+            Layout.columnSpan: 4
+            Layout.fillWidth: true
+            visible: text !== ""
+            color: "white"
+            wrapMode: Text.Wrap
+            horizontalAlignment:  Text.AlignHCenter
+
+            text: {
+                switch (grid.rri.status) {
+                    case RemainingRouteInfo.PositionUnknown:
+                        return qsTr("Position unknown.");
+                    case RemainingRouteInfo.OffRoute:
+                        return qsTr("More than %1 off route.").arg(global.navigator().aircraft.horizontalDistanceToString(leg.nearThreshold));
+                    case RemainingRouteInfo.NearDestination:
+                        return qsTr("Near destination.");
+                }
+                return grid.rri.note
+            }
+
+        }
+
+        Item {
+            Layout.columnSpan: 4
+            Layout.fillWidth: true
+            height: 0.2*view.font.pixelSize
+        }
+
 
     }
 

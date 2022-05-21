@@ -58,7 +58,7 @@ public:
     explicit Station(QObject *parent = nullptr);
 
     // Standard destructor
-    ~Station() = default;
+    ~Station() override = default;
 
     /*! \brief Geographical coordinate of the WeatherStation reporting this METAR
      *
@@ -71,7 +71,7 @@ public:
      *
      * @returns Property coordiante
      */
-    QGeoCoordinate coordinate() const
+    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
     {
         return _coordinate;
     }
@@ -86,7 +86,7 @@ public:
      *
      * @returns Property extendedName
     */
-    QString extendedName() const
+    [[nodiscard]] auto extendedName() const -> QString
     {
         return _extendedName;
     }
@@ -103,7 +103,7 @@ public:
      *
      * @returns Property hasMetar
      */
-    bool hasMETAR() const
+    [[nodiscard]] auto hasMETAR() const -> bool
     {
         return !_metar.isNull();
     }
@@ -120,7 +120,7 @@ public:
      *
      * @returns Property isValid
      */
-    bool hasTAF() const
+    [[nodiscard]] auto hasTAF() const -> bool
     {
         return !_taf.isNull();
     }
@@ -136,7 +136,7 @@ public:
      *
      * @returns Property ICAOCode
      */
-    QString ICAOCode() const
+    [[nodiscard]] auto ICAOCode() const -> QString
     {
         return _ICAOCode;
     }
@@ -152,7 +152,7 @@ public:
      *
      * @returns Property id
      */
-    QString icon() const
+    [[nodiscard]] auto icon() const -> QString
     {
         return _icon;
     }
@@ -164,7 +164,7 @@ public:
      *
      * @returns Property isValid
      */
-    bool isValid() const
+    [[nodiscard]] auto isValid() const -> bool
     {
         return (_ICAOCode.length() == 4);
     }
@@ -182,7 +182,7 @@ public:
      *
      * @returns Property metar
      */
-    Weather::METAR *metar() const
+    [[nodiscard]] auto metar() const -> Weather::METAR *
     {
         return _metar;
     }
@@ -202,7 +202,7 @@ public:
      *
      * @returns Property twoLineTitle
      */
-    QString twoLineTitle() const
+    [[nodiscard]] auto twoLineTitle() const -> QString
     {
         return _twoLineTitle;
     }
@@ -220,7 +220,7 @@ public:
      *
      * @returns Property taf
      */
-    Weather::TAF *taf() const
+    [[nodiscard]] auto taf() const -> Weather::TAF *
     {
         return _taf;
     }
@@ -286,7 +286,7 @@ private:
     QString _ICAOCode;
 
     // Icon for this weather station
-    QString _icon {"/icons/waypoints/WP.svg"};
+    QString _icon {QStringLiteral("/icons/waypoints/WP.svg")};
 
     // METAR
     QPointer<Weather::METAR> _metar;

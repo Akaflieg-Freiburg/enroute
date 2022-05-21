@@ -46,7 +46,7 @@ public:
      */
     FlarmnetDB(QObject* parent);
 
-    ~FlarmnetDB() = default;
+    ~FlarmnetDB() override = default;
 
     //
     // Methods
@@ -72,7 +72,7 @@ private slots:
     void findFlarmnetDBDownloadable();
 
 private:
-    QString getRegistrationFromFile(const QString& key);
+    auto getRegistrationFromFile(const QString& key) -> QString;
 
     QPointer<DataManagement::Downloadable> flarmnetDBDownloadable;
 

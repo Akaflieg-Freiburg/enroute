@@ -70,7 +70,7 @@ public:
      *
      *  @returns Property positionInfo
      */
-    Positioning::PositionInfo positionInfo() const
+    [[nodiscard]] auto positionInfo() const -> Positioning::PositionInfo
     {
         return m_positionInfo;
     }
@@ -89,7 +89,7 @@ public:
      *
      *  @returns Property pressureAltitude
      */
-    Units::Distance pressureAltitude() const
+    [[nodiscard]] auto pressureAltitude() const -> Units::Distance
     {
         return m_pressureAltitude;
     }
@@ -104,7 +104,7 @@ public:
      *
      *  @returns Property receivingPositionInfo
      */
-    bool receivingPositionInfo() const
+    [[nodiscard]] auto receivingPositionInfo() const -> bool
     {
         return _receivingPositionInfo;
     }
@@ -121,7 +121,7 @@ public:
      *
      *  @returns Property sourceName
      */
-    QString sourceName() const
+    [[nodiscard]] auto sourceName() const -> QString
     {
         return m_sourceName;
     }
@@ -138,7 +138,7 @@ public:
      *
      *  @returns Property statusString
      */
-    QString statusString() const
+    [[nodiscard]] auto statusString() const -> QString
     {
         return m_statusString;
     }

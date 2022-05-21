@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -212,7 +212,7 @@ ApplicationWindow {
 
                         ItemDelegate {
                             text: qsTr("Maps and Data")
-                                  + (global.dataManager().geoMaps.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + (global.dataManager().items.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
                                   + ( (global.navigator().flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
@@ -700,8 +700,8 @@ ApplicationWindow {
     // Connections
     //
 
-    Connections { // GeoMaps
-        target: global.dataManager().geoMaps
+    Connections { // items
+        target: global.dataManager().items
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
@@ -744,7 +744,7 @@ ApplicationWindow {
                 stackView.push("pages/DataManager.qml")
             }
             if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
-                global.dataManager().geoMaps.updateAll()
+                global.dataManager().items.updateAll()
                 toast.doToast(qsTr("Starting map update"))
             }
         }

@@ -75,13 +75,13 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
     QString text;
     switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
     case Navigation::Aircraft::Kilometer:
-        text = QString("%1 km").arg(sizeOfScaleInUnit);
+        text = QStringLiteral("%1 km").arg(sizeOfScaleInUnit);
         break;
     case Navigation::Aircraft::StatuteMile:
-        text = QString("%1 mil").arg(sizeOfScaleInUnit);
+        text = QStringLiteral("%1 mil").arg(sizeOfScaleInUnit);
         break;
     case Navigation::Aircraft::NauticalMile:
-        text = QString("%1 nm").arg(sizeOfScaleInUnit);
+        text = QStringLiteral("%1 nm").arg(sizeOfScaleInUnit);
         break;
     }
     int textWidth  = painter->fontMetrics().horizontalAdvance(text);

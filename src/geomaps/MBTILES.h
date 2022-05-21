@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,45 +20,55 @@
 
 #pragma once
 
-#include <QNetworkReply>
-#include <QSslError>
+#include <QObject>
 
-#include "GlobalObject.h"
+namespace GeoMaps {
 
-namespace DataManagement
-{
+/*! \brief Utility class for databases in MBTILES format
+ *
+ *  MBTILES are SQLite databases whose schema is specified here:
+ *  https://github.com/mapbox/mbtiles-spec
+ */
 
-  /*! \brief Handles SSL error
-   *
-   *  This class watches for SSL errors that are reported by the global
-   *  QNetworkAccessManager instance.  Depending on the settings, errors are
-   *  either ignored or reported via the SSLError() signal.
-   */
+class MBTILES {
 
-  class SSLErrorHandler : public GlobalObject
-  {
-    Q_OBJECT
+public:
+    /*! \brief Format of data tiles */
+    enum Format {
+        /*! \brief Unknown format */
+        Unknown,
 
-  public:
-    /*! \brief Standard constructor
+        /*! \brief Vector data in PBF format */
+        Vector,
+
+        /*! \brief Raster data in JPG, PNG or WEBP format */
+        Raster,
+    };
+
+    /*! \brief Attribution of MBTILES file
      *
-     *  @param parent The standard QObject parent pointer.
+     *  @param fileName Name of the file
+     *
+     *  @returns A human-readable HTML-String with attribution, or an empty string on error.
      */
-    explicit SSLErrorHandler(QObject *parent = nullptr);
+    [[nodiscard]] static QString attribution(const QString& fileName);
 
-  signals:
-    /*! \brief Notification signal for the property with the same name */
-    void sslError(QString description);
+    /*! \brief Determine type of data contain in an MBTILES file
+     *
+     *  @param fileName Name of the file
+     *
+     *  @returns Type of data, or Unknown on error.
+     */
+    [[nodiscard]] static GeoMaps::MBTILES::Format format(const QString& fileName);
 
-  private slots:
-    // This is the actual error handler.
-    void onSSLError(QNetworkReply *reply, const QList<QSslError> &errors);
-
-  private:
-    Q_DISABLE_COPY_MOVE(SSLErrorHandler)
-
-    // Re-implemented from base class. See documentation there.
-    void deferredInitialization() override;
-  };
+    /*! \brief Information about an MBTILES file
+     *
+     *  @param fileName Name of the file
+     *
+     *  @returns A human-readable HTML-String with information about the file, or an empty string on error.
+     */
+    [[nodiscard]] static QString info(const QString& fileName);
 
 };
+
+}

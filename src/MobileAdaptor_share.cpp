@@ -21,6 +21,7 @@
 
 #include "GlobalObject.h"
 #include "MobileAdaptor.h"
+#include "geomaps/MBTILES.h"
 #include "navigation/FlightRoute.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
@@ -82,7 +83,7 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
                                                   tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix())
                                                   );
     if (fileNameX.isEmpty()) {
-        return "abort";
+        return QStringLiteral("abort");
     }
     QFile file(fileNameX);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -93,7 +94,7 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
         return tr("Unable to write to file <strong>%1</strong>.").arg(fileNameX);
     }
     file.close();
-    return QString();
+    return {};
 #endif
 }
 
@@ -114,7 +115,7 @@ auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeTy
 #else
     bool success = QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
     if (success) {
-        return QString();
+        return {};
     }
     return tr("Unable to open data in other app.");
 #endif
@@ -134,7 +135,7 @@ auto MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& 
 
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        return QString();
+        return {};
     }
 
     file.write(content);
@@ -228,6 +229,18 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         source->connectToTrafficReceiver();
         return;
     }
+
+    // MBTiles containing raster map
+    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector) {
+        emit openFileRequest(myPath, VectorMap);
+        return;
+    }
+    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Raster) {
+        emit openFileRequest(myPath, RasterMap);
+        return;
+    }
+
+
 
     emit openFileRequest(myPath, UnknownFunction);
 }

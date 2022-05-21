@@ -63,7 +63,7 @@ public:
      *
      *  @returns Property sourceName
      */
-    QString sourceName() const override
+    [[nodiscard]] auto sourceName() const -> QString override
     {
         return tr("TCP connection to %1 port %2").arg(m_hostName).arg(m_port);
     }

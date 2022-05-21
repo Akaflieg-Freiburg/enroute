@@ -39,10 +39,10 @@ class Waypoint
     Q_GADGET
 
     /*! \brief Comparison */
-    friend bool operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
+    friend auto operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
 
     /*! \brief Comparison */
-    friend bool operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
+    friend auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
 
 public:
     /*! \brief Constructs an invalid way point
@@ -90,7 +90,7 @@ public:
      *
      * @returns True if the coordinates and all properties agree.
      */
-    Q_INVOKABLE bool equals(const GeoMaps::Waypoint &other) const
+    Q_INVOKABLE [[nodiscard]] bool equals(const GeoMaps::Waypoint &other) const
     {
         return *this == other;
     }
@@ -101,7 +101,7 @@ public:
      *
      *  @returns True if both waypoints are valid and if tge distance between them is less than 2km
      */
-    Q_INVOKABLE bool isNear(const GeoMaps::Waypoint& other) const;
+    Q_INVOKABLE [[nodiscard]] bool isNear(const GeoMaps::Waypoint& other) const;
 
     /*! \brief Copy waypoint and change location
      *
@@ -128,7 +128,7 @@ public:
      *
      * @returns QJsonObject describing the waypoint
      */
-    QJsonObject toJSON() const;
+    [[nodiscard]] QJsonObject toJSON() const;
 
 
     //
@@ -147,9 +147,9 @@ public:
      *
      *  @returns Property category
      */
-    QString category() const
+    [[nodiscard]] auto category() const -> QString
     {
-        return m_properties.value("CAT").toString();
+        return m_properties.value(QStringLiteral("CAT")).toString();
     }
 
     /*! \brief Coordinate of the waypoint
@@ -162,7 +162,7 @@ public:
      *
      * @returns Property coordinate
      */
-    QGeoCoordinate coordinate() const
+    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
     {
         return m_coordinate;
     }
@@ -177,7 +177,7 @@ public:
      *
      * @returns Property extendedName
     */
-    QString extendedName() const;
+    [[nodiscard]] auto extendedName() const -> QString;
 
     /*! \brief ICAO Code of the waypoint
      *
@@ -190,9 +190,9 @@ public:
      *
      *  @returns Property ICAOCode
      */
-    QString ICAOCode() const
+    [[nodiscard]] auto ICAOCode() const -> QString
     {
-        return m_properties.value("COD").toString();
+        return m_properties.value(QStringLiteral("COD")).toString();
     }
 
     /*! \brief Suggested icon for use in GUI
@@ -205,7 +205,7 @@ public:
      *
      * @returns Property icon
      */
-    QString icon() const;
+    [[nodiscard]] auto icon() const -> QString;
 
     /* \brief Validity
      *
@@ -219,7 +219,7 @@ public:
      *
      *  @returns Property isValid
      */
-    bool isValid() const
+    [[nodiscard]] auto isValid() const -> bool
     {
         return m_isValid;
     }
@@ -234,9 +234,9 @@ public:
      *
      *  @returns Property name
      */
-    QString name() const
+    [[nodiscard]] auto name() const -> QString
     {
-        return m_properties.value("NAM").toString();
+        return m_properties.value(QStringLiteral("NAM")).toString();
     }
 
     /*! \brief Short name of the waypoint
@@ -249,10 +249,11 @@ public:
      *
      *  @returns Property shortName
      */
-    QString shortName() const
+    [[nodiscard]] auto shortName() const -> QString
     {
-        if (ICAOCode().isEmpty())
+        if (ICAOCode().isEmpty()) {
             return name();
+}
         return ICAOCode();
     }
 
@@ -271,7 +272,7 @@ public:
      *
      * @returns Property tabularDescription
      */
-    QList<QString> tabularDescription() const;
+    [[nodiscard]] auto tabularDescription() const -> QList<QString>;
 
     /*! \brief Two-line description of the waypoint name, for use in GUI
      *
@@ -286,7 +287,7 @@ public:
      *
      * @returns Property twoLineTitle
      */
-    QString twoLineTitle() const;
+    [[nodiscard]] auto twoLineTitle() const -> QString;
 
     /*! \brief Type of the waypoint
      *
@@ -300,14 +301,14 @@ public:
      *
      *  @returns Property type
      */
-    QString type() const
+    [[nodiscard]] auto type() const -> QString
     {
-        return m_properties.value("TYP").toString();
+        return m_properties.value(QStringLiteral("TYP")).toString();
     }
 
 private:
     // Computes the property isValid; this is used by the constructors to set the cached value
-    bool computeIsValid() const;
+    [[nodiscard]] auto computeIsValid() const -> bool;
 
 protected:
     bool m_isValid {false};
@@ -316,10 +317,10 @@ protected:
 };
 
 /*! \brief Comparison */
-bool operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
+auto operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
 
 /*! \brief Comparison */
-bool operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
+auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
 
 /*! \brief Hash function for airspaces
  *
@@ -327,7 +328,7 @@ bool operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&);
  *
  * @returns Hash value
  */
-uint qHash(const GeoMaps::Waypoint& wp);
+auto qHash(const GeoMaps::Waypoint& wp) -> uint;
 
 }
 

@@ -52,7 +52,7 @@ public:
     */
     explicit MobileAdaptor(QObject *parent = nullptr);
 
-    ~MobileAdaptor() = default;
+    ~MobileAdaptor() override = default;
 
     /*! \brief Function and type of a file that we have been requested to
      * open */
@@ -60,7 +60,9 @@ public:
       {
         UnknownFunction,
         FlightRoute_GPX, /*!< File contains a flight route, stored as GeoJSON. */
-        FlightRoute_GeoJSON /*!< File contains a flight route, stored as GPX. */
+        FlightRoute_GeoJSON, /*!< File contains a flight route, stored as GPX. */
+        VectorMap, /*!< File contains a vector map. */
+        RasterMap /*!< File contains a raster map. */
       };
     Q_ENUM(FileFunction)
 
@@ -88,7 +90,6 @@ public:
      * been granted. On other systems, always returns 'false'
     */
     Q_INVOKABLE bool missingPermissionsExist();
-
 
     /*! \brief Export content to file or to file sending app
      *
@@ -247,7 +248,7 @@ private:
   
     // Helper function. Saves content to a file in a directory from where
     // sharing to other android apps is possible
-    QString contentToTempFile(const QByteArray& content, const QString& fileNameTemplate);
+    auto contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString;
 
     // Name of a subdirectory within the AppDataLocation for sending and
     // receiving files.

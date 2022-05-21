@@ -43,7 +43,7 @@ public:
     */
     explicit Notifier(QObject* parent = nullptr);
 
-    ~Notifier() = default;
+    ~Notifier() override = default;
 
     /*! \brief Notification types
      *
@@ -109,7 +109,7 @@ signals:
 
 protected:
     // Get translated title for specific notification
-    QString title(Platform::Notifier::NotificationTypes notificationType);
+    static auto title(Platform::Notifier::NotificationTypes notificationType) -> QString;
 
 private:
     Q_DISABLE_COPY_MOVE(Notifier)

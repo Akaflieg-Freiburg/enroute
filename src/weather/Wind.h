@@ -66,13 +66,13 @@ public:
      *
      *  @returns Property windDirection
      */
-    Units::Angle directionFrom() const { return m_directionFrom; }
+    [[nodiscard]] auto directionFrom() const -> Units::Angle { return m_directionFrom; }
 
     /*! \brief Getter function for property of the same name
      *
      *  @returns Property windSpeed
      */
-    Units::Speed speed() const { return m_speed; }
+    [[nodiscard]] auto speed() const -> Units::Speed { return m_speed; }
 
 
     //
@@ -106,7 +106,7 @@ public:
      *
      *  @result equality
      */
-    Q_INVOKABLE bool operator==(const Weather::Wind& other) const;
+    Q_INVOKABLE bool operator==(Weather::Wind other) const;
 
 private:
     static constexpr Units::Speed minWindSpeed = Units::Speed::fromKN(0.0);

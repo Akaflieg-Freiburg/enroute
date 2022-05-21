@@ -88,26 +88,26 @@ auto main(int argc, char *argv[]) -> int
 
     qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
-    qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", "DemoRunner objects cannot be created in QML");
-    qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", "Aircraft objects cannot be created in QML");
-    qmlRegisterUncreatableType<Navigation::RemainingRouteInfo>("enroute", 1, 0, "RemainingRouteInfo", "RemainingRouteInfo objects cannot be created in QML");
+    qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", QStringLiteral("Aircraft objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Navigation::RemainingRouteInfo>("enroute", 1, 0, "RemainingRouteInfo", QStringLiteral("RemainingRouteInfo objects cannot be created in QML"));
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
-    qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", "SSLErrorHandler objects cannot be created in QML");
+    qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", QStringLiteral("SSLErrorHandler objects cannot be created in QML"));
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
-    qmlRegisterUncreatableType<Librarian>("enroute", 1, 0, "Librarian", "Librarian objects cannot be created in QML");
-    qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", "GeoMapProvider objects cannot be created in QML");
-    qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", "DataManager objects cannot be created in QML");
+    qmlRegisterUncreatableType<Librarian>("enroute", 1, 0, "Librarian", QStringLiteral("Librarian objects cannot be created in QML"));
+    qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", QStringLiteral("GeoMapProvider objects cannot be created in QML"));
+    qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
-    qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", "MobileAdaptor objects cannot be created in QML");
-    qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", "Navigator objects cannot be created in QML");
-    qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", "PasswordDB objects cannot be created in QML");
-    qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", "TrafficDataProvider objects cannot be created in QML");
-    qmlRegisterUncreatableType<Platform::Notifier>("enroute", 1, 0, "Notifier", "Notifier objects cannot be created in QML");
-    qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "PositionProvider", "PositionProvider objects cannot be created in QML");
-    qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", "TrafficFactor_WithPosition objects cannot be created in QML");
+    qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", QStringLiteral("MobileAdaptor objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", QStringLiteral("Navigator objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", QStringLiteral("PasswordDB objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Platform::Notifier>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "PositionProvider", QStringLiteral("PositionProvider objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
-    qmlRegisterUncreatableType<Weather::WeatherDataProvider>("enroute", 1, 0, "WeatherProvider", "Weather::WeatherProvider objects cannot be created in QML");
+    qmlRegisterUncreatableType<Weather::WeatherDataProvider>("enroute", 1, 0, "WeatherProvider", QStringLiteral("Weather::WeatherProvider objects cannot be created in QML"));
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 
     // Initialize web view on platforms where we use it
@@ -126,18 +126,18 @@ auto main(int argc, char *argv[]) -> int
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
     QGuiApplication app(argc, argv);
 #endif
-    QCoreApplication::setOrganizationName("Akaflieg Freiburg");
-    QCoreApplication::setOrganizationDomain("akaflieg_freiburg.de");
-    QCoreApplication::setApplicationName("enroute flight navigation");
-    QCoreApplication::setApplicationVersion(PROJECT_VERSION);
+    QCoreApplication::setOrganizationName(QStringLiteral("Akaflieg Freiburg"));
+    QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));
+    QCoreApplication::setApplicationName(QStringLiteral("enroute flight navigation"));
+    QCoreApplication::setApplicationVersion(QStringLiteral(PROJECT_VERSION));
     QGuiApplication::setWindowIcon(QIcon(":/icons/appIcon.png"));
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    QGuiApplication::setDesktopFileName("de.akaflieg_freiburg.enroute");
+    QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
 #endif
 
     // Install translator
     auto* enrouteTranslator = new QTranslator(&app);
-    if (enrouteTranslator->load(QString(":enroute_%1.qm").arg(QLocale::system().name().left(2)))) {
+    if (enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2)))) {
         QCoreApplication::installTranslator(enrouteTranslator);
     } else {
         delete enrouteTranslator;
@@ -156,9 +156,9 @@ auto main(int argc, char *argv[]) -> int
     parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));
     parser.addHelpOption();
     parser.addVersionOption();
-    QCommandLineOption screenshotOption("s", QCoreApplication::translate("main", "Run simulator and generate screenshots for manual"));
+    QCommandLineOption screenshotOption(QStringLiteral("s"), QCoreApplication::translate("main", "Run simulator and generate screenshots for manual"));
     parser.addOption(screenshotOption);
-    parser.addPositionalArgument("[fileName]", QCoreApplication::translate("main", "File to import."));
+    parser.addPositionalArgument(QStringLiteral("[fileName]"), QCoreApplication::translate("main", "File to import."));
     parser.process(app);
     auto positionalArguments = parser.positionalArguments();
     if (positionalArguments.length() > 1) {
@@ -191,12 +191,12 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("angle", QVariant::fromValue(Units::Angle()) );
-    engine.rootContext()->setContextProperty("distance", QVariant::fromValue(Units::Distance()) );
-    engine.rootContext()->setContextProperty("manual_location", MANUAL_LOCATION );
-    engine.rootContext()->setContextProperty("global", new GlobalObject(&engine) );
-    engine.rootContext()->setContextProperty("leg", QVariant::fromValue(Navigation::Leg()) );
-    engine.rootContext()->setContextProperty("speed", QVariant::fromValue(Units::Speed()) );
+    engine.rootContext()->setContextProperty(QStringLiteral("angle"), QVariant::fromValue(Units::Angle()) );
+    engine.rootContext()->setContextProperty(QStringLiteral("distance"), QVariant::fromValue(Units::Distance()) );
+    engine.rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
+    engine.rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(&engine) );
+    engine.rootContext()->setContextProperty(QStringLiteral("leg"), QVariant::fromValue(Navigation::Leg()) );
+    engine.rootContext()->setContextProperty(QStringLiteral("speed"), QVariant::fromValue(Units::Speed()) );
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption)) {

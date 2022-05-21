@@ -36,9 +36,6 @@ Map {
     @warning The value is only a rough approximation and can be wrong at times.
     */
     property real pixelPer10km: 0.0
-
-    /*! \brief Name of a GeoJSON file containing airspace and waypoint information */
-    property string geoJSON
     
     /*! \brief Width of thick lines around airspaces, such as class D */
     property real airspaceLineWidth: 7.0
@@ -73,7 +70,11 @@ Map {
         
         property string name: "aviationData"
         property string sourceType: "geojson"
-        property string data: flightMap.geoJSON
+        property string data: {
+            if (global.dataManager().baseMapsRaster.hasFile)
+                return global.geoMapProvider().emptyGeoJSON()
+            return global.geoMapProvider().geoJSON
+        }
     }
 
     /*************************************
@@ -420,7 +421,6 @@ Map {
         property string layer: "AirspaceLabels"
         property bool symbolAvoidEdges: true
         property string symbolPlacement: "line"
-//        property real symbolSpacing: 800
         property bool textAllowOverlap: false
         property string textAnchor: "center"
         property var textField: ["get", "NAM"]

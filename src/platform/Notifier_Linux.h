@@ -38,18 +38,18 @@ public:
     explicit Notifier_Linux(QObject* parent = nullptr);
 
     // Destructor
-    ~Notifier_Linux();
+    ~Notifier_Linux() override;
 
 public slots:
     // Implementation of pure virtual function
-    Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType);
+    Q_INVOKABLE void hideNotification(Platform::Notifier::NotificationTypes notificationType) override;
 
     // Implementation of pure virtual function
-    virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
+    void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText) override;
 
 private slots:
     // This slot receives ActionInvoked messages from the DBus
-    void onActionInvoked(uint id, QString key);
+    void onActionInvoked(uint id, const QString &key);
 
     // This slot receives NotificationClosed messages from the DBus
     void onNotificationClosed(uint id, uint reason);
@@ -69,7 +69,7 @@ private:
     //
     // Help with DBus programming is found here:
     // https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/
-    QDBusInterface notificationInterface {"org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", QDBusConnection::sessionBus()};
+    QDBusInterface notificationInterface {QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QStringLiteral("org.freedesktop.Notifications"), QDBusConnection::sessionBus()};
 };
 
 }

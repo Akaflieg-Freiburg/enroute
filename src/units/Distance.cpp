@@ -21,7 +21,7 @@
 #include "units/Distance.h"
 
 
-QString Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const
+auto Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const -> QString
 {
     if (!isFinite()) {
         return {};
@@ -33,23 +33,23 @@ QString Units::Distance::toString(Units::Distance::DistanceUnit units, bool roun
     switch (units) {
     case Feet:
         roundedDist = qRound(toFeet());
-        unit = "ft";
+        unit = QStringLiteral("ft");
         break;
     case Meter:
         roundedDist = qRound(toM());
-        unit = "m";
+        unit = QStringLiteral("m");
         break;
     case Kilometer:
         roundedDist = qRound(toKM()*10.0)/10.0;
-        unit = "km";
+        unit = QStringLiteral("km");
         break;
     case StatuteMile:
         roundedDist = qRound(toMIL()*10.0)/10.0;
-        unit = "mil";
+        unit = QStringLiteral("mil");
         break;
     case NauticalMile:
         roundedDist = qRound(toNM()*10.0)/10.0;
-        unit = "nm";
+        unit = QStringLiteral("nm");
         break;
     }
 
@@ -64,7 +64,7 @@ QString Units::Distance::toString(Units::Distance::DistanceUnit units, bool roun
 
     QString signString;
     if (forceSign && roundedDist > 0.0) {
-        signString += "+";
+        signString += QLatin1String("+");
     }
     return signString + QString::number(roundedDist) + " " + unit;
 }

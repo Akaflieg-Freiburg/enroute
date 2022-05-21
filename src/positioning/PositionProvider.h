@@ -63,7 +63,7 @@ public:
      *
      *  @returns Property lastValidCoordinate
      */
-    static QGeoCoordinate lastValidCoordinate();
+    static auto lastValidCoordinate() -> QGeoCoordinate;
 
     /*! \brief Last valid true track
      *
@@ -77,7 +77,7 @@ public:
      *
      *  @returns Property lastValidTrack
      */
-    static Units::Angle lastValidTT();
+    static auto lastValidTT() -> Units::Angle;
 
 signals:
     /*! \brief Notifier signal */

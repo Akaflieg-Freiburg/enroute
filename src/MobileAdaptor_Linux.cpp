@@ -32,13 +32,13 @@ void MobileAdaptor::lockWifi(bool lock)
 }
 
 
-Q_INVOKABLE auto MobileAdaptor::manufacturer() -> QString
+auto MobileAdaptor::manufacturer() -> QString
 {
     return {};
 }
 
 
-Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
+auto MobileAdaptor::missingPermissionsExist() -> bool
 {
     Q_UNUSED(this);
     return false;
@@ -52,5 +52,5 @@ void MobileAdaptor::vibrateBrief()
 
 auto MobileAdaptor::getSSID() -> QString
 {
-    return "<unknown ssid>";
+    return QStringLiteral("<unknown ssid>");
 }

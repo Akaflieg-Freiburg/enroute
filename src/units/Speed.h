@@ -106,7 +106,7 @@ namespace Units {
          *
          * @returns True is the speed is a finite number
          */
-        Q_INVOKABLE bool isFinite() const
+        Q_INVOKABLE [[nodiscard]] bool isFinite() const
         {
             return std::isfinite(_speedInMPS);
         }
@@ -115,7 +115,7 @@ namespace Units {
          *
          * @returns True is the distance is negative
          */
-        Q_INVOKABLE bool isNegative() const
+        Q_INVOKABLE [[nodiscard]] bool isNegative() const
         {
             return _speedInMPS < 0.0;
         }
@@ -126,10 +126,11 @@ namespace Units {
          *
          * @returns Quotient as a dimension-less number
          */
-        Q_INVOKABLE double operator/(Units::Speed rhs)
+        Q_INVOKABLE double operator/(Units::Speed rhs) const
         {
-            if (qFuzzyIsNull(rhs._speedInMPS))
+            if (qFuzzyIsNull(rhs._speedInMPS)) {
                 return qQNaN();
+}
             return _speedInMPS / rhs._speedInMPS;
         }
 
@@ -139,7 +140,7 @@ namespace Units {
          *
          * @returns Sum
          */
-        Q_INVOKABLE Units::Speed operator+(Units::Speed rhs)
+        Q_INVOKABLE Units::Speed operator+(Units::Speed rhs) const
         {
             return Units::Speed::fromMPS(_speedInMPS + rhs._speedInMPS);
         }
@@ -150,7 +151,7 @@ namespace Units {
          *
          * @returns Difference
          */
-        Q_INVOKABLE Units::Speed operator-(Units::Speed rhs)
+        Q_INVOKABLE Units::Speed operator-(Units::Speed rhs) const
         {
             return Units::Speed::fromMPS(_speedInMPS - rhs._speedInMPS);
         }
@@ -203,7 +204,7 @@ namespace Units {
          *
          * @returns Speed in feet per minute
          */
-        Q_INVOKABLE double toFPM() const
+        Q_INVOKABLE [[nodiscard]] double toFPM() const
         {
             return _speedInMPS * FPM_per_MPS;
         }
@@ -212,7 +213,7 @@ namespace Units {
          *
          * @returns speed in meters per second
          */
-        Q_INVOKABLE double toMPS() const
+        Q_INVOKABLE [[nodiscard]] double toMPS() const
         {
             return _speedInMPS;
         }
@@ -221,7 +222,7 @@ namespace Units {
          *
          * @returns speed in status miles per hour
          */
-        Q_INVOKABLE double toMPH() const
+        Q_INVOKABLE [[nodiscard]] double toMPH() const
         {
             return _speedInMPS/MPS_per_MPH;
         }
@@ -230,7 +231,7 @@ namespace Units {
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        Q_INVOKABLE double toKN() const
+        Q_INVOKABLE [[nodiscard]] double toKN() const
         {
             return _speedInMPS * KN_per_MPS;
         }
@@ -239,7 +240,7 @@ namespace Units {
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        Q_INVOKABLE double toKMH() const
+        Q_INVOKABLE [[nodiscard]] double toKMH() const
         {
             return _speedInMPS * KMH_per_MPS;
         }
@@ -281,7 +282,7 @@ namespace Units {
  *
  *  @returns Multiplies speed
  */
-inline Units::Speed operator*(double lhs, Units::Speed rhs )
+inline auto operator*(double lhs, Units::Speed rhs ) -> Units::Speed
 {
     return Units::Speed::fromMPS( lhs*rhs.toMPS() );
 }
@@ -295,7 +296,7 @@ inline Units::Speed operator*(double lhs, Units::Speed rhs )
  *
  * @returns Reference to the QDataStream
  */
-QDataStream &operator<<(QDataStream &out, Units::Speed speed);
+auto operator<<(QDataStream &out, Units::Speed speed) -> QDataStream &;
 
 
 /*! \brief Deserialization of a speed object into a QDataStream
@@ -306,7 +307,7 @@ QDataStream &operator<<(QDataStream &out, Units::Speed speed);
  *
  * @returns Reference to the QDataStream
  */
-QDataStream &operator>>(QDataStream &in, Units::Speed &speed);
+auto operator>>(QDataStream &in, Units::Speed &speed) -> QDataStream &;
 
 
 // Declare meta types

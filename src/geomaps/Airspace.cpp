@@ -26,22 +26,22 @@
 
 GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     // Paranoid safety checks
-    if (geoJSONObject["type"] != "Feature") {
+    if (geoJSONObject[QStringLiteral("type")] != "Feature") {
         return;
     }
 
     // Get geometry
-    if (!geoJSONObject.contains("geometry")) {
+    if (!geoJSONObject.contains(QStringLiteral("geometry"))) {
         return;
     }
-    auto geometry = geoJSONObject["geometry"].toObject();
-    if (geometry["type"] != "Polygon") {
+    auto geometry = geoJSONObject[QStringLiteral("geometry")].toObject();
+    if (geometry[QStringLiteral("type")] != "Polygon") {
         return;
     }
-    if (!geometry.contains("coordinates")) {
+    if (!geometry.contains(QStringLiteral("coordinates"))) {
         return;
     }
-    auto polygonArray = geometry["coordinates"].toArray();
+    auto polygonArray = geometry[QStringLiteral("coordinates")].toArray();
     if (polygonArray.size() != 1) {
         return;
     }
@@ -54,29 +54,29 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     }
 
     // Get properties
-    if (!geoJSONObject.contains("properties")) {
+    if (!geoJSONObject.contains(QStringLiteral("properties"))) {
         return;
     }
-    auto properties = geoJSONObject["properties"].toObject();
-    if (!properties.contains("CAT")) {
+    auto properties = geoJSONObject[QStringLiteral("properties")].toObject();
+    if (!properties.contains(QStringLiteral("CAT"))) {
         return;
     }
-    _CAT = properties["CAT"].toString();
+    _CAT = properties[QStringLiteral("CAT")].toString();
 
-    if (!properties.contains("NAM")) {
+    if (!properties.contains(QStringLiteral("NAM"))) {
         return;
     }
-    _name = properties["NAM"].toString();
+    _name = properties[QStringLiteral("NAM")].toString();
 
-    if (!properties.contains("TOP")) {
+    if (!properties.contains(QStringLiteral("TOP"))) {
         return;
     }
-    _upperBound = properties["TOP"].toString();
+    _upperBound = properties[QStringLiteral("TOP")].toString();
 
-    if (!properties.contains("BOT")) {
+    if (!properties.contains(QStringLiteral("BOT"))) {
         return;
     }
-    _lowerBound = properties["BOT"].toString();
+    _lowerBound = properties[QStringLiteral("BOT")].toString();
 }
 
 
@@ -87,7 +87,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 
     QString AL = _lowerBound.simplified();
 
-    if (AL.startsWith("FL", Qt::CaseInsensitive)) {
+    if (AL.startsWith(QLatin1String("FL"), Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
         if (ok) {
             return Units::Distance::fromFT(100*result);
@@ -95,15 +95,15 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
         return Units::Distance::fromFT(0.0);
     }
 
-    if (AL.endsWith("msl")) {
+    if (AL.endsWith(QLatin1String("msl"))) {
         AL.chop(3);
         AL = AL.simplified();
     }
-    if (AL.endsWith("agl")) {
+    if (AL.endsWith(QLatin1String("agl"))) {
         AL.chop(3);
         AL = AL.simplified();
     }
-    if (AL.endsWith("ft")) {
+    if (AL.endsWith(QLatin1String("ft"))) {
         AL.chop(2);
         AL = AL.simplified();
     }
@@ -116,14 +116,14 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 }
 
 
-QString GeoMaps::Airspace::makeMetric(const QString& standard) const
+auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
 {
     QStringList list = standard.split(' ', Qt::SkipEmptyParts);
     if (list.isEmpty()) {
         return standard;
     }
 
-    if (list[0] == "FL") {
+    if (list[0] == QLatin1String("FL")) {
         if (list.size() < 2) {
             return standard;
         }
@@ -132,7 +132,7 @@ QString GeoMaps::Airspace::makeMetric(const QString& standard) const
         if (!ok) {
             return standard;
         }
-        list[1] =QString("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
+        list[1] =QStringLiteral("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
         return list.join(' ');
     }
 
@@ -141,12 +141,12 @@ QString GeoMaps::Airspace::makeMetric(const QString& standard) const
     if (!ok) {
         return standard;
     }
-    list[0] = QString("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
+    list[0] = QStringLiteral("%1 m").arg(qRound(Units::Distance::fromFT(feetHeight).toM()));
     return list.join(' ');
 }
 
 
-bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
+auto GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B) -> bool
 {
     return ((A._name == B._name) &&
             (A._CAT == B._CAT) &&
@@ -156,7 +156,7 @@ bool GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
 }
 
 
-uint GeoMaps::qHash(const GeoMaps::Airspace& A)
+auto GeoMaps::qHash(const GeoMaps::Airspace& A) -> uint
 {
     uint result = 0;
     result += qHash(A.name());

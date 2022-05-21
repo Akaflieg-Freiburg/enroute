@@ -41,7 +41,7 @@ namespace Units {
          *
          * @returns volume
          */
-        static constexpr Volume fromL(double volumeInL)
+        static constexpr auto fromL(double volumeInL) -> Volume
         {
             Volume result;
             result.m_volumeInL = volumeInL;
@@ -54,7 +54,7 @@ namespace Units {
          *
          * @returns volume
          */
-        static constexpr Volume fromGAL(double volumeInGAL)
+        static constexpr auto fromGAL(double volumeInGAL) -> Volume
         {
             Volume result;
             result.m_volumeInL = LitersPerGallon*volumeInGAL;
@@ -65,7 +65,7 @@ namespace Units {
          *
          * @returns True is the volume is a finite number
          */
-        Q_INVOKABLE bool isFinite() const
+        Q_INVOKABLE [[nodiscard]] bool isFinite() const
         {
             return std::isfinite(m_volumeInL);
         }
@@ -76,7 +76,7 @@ namespace Units {
          *
          * @returns reference to this volume
          */
-        Q_INVOKABLE Units::Volume &operator+=(Units::Volume other)
+        Q_INVOKABLE Units::Volume& operator+=(Units::Volume other)
         {
             m_volumeInL += other.m_volumeInL;
             return *this;
@@ -88,7 +88,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator<(Units::Volume rhs) const
+        Q_INVOKABLE bool operator<(Units::Volume rhs) const
         {
             return m_volumeInL < rhs.m_volumeInL;
         }
@@ -99,7 +99,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator>(Units::Volume rhs) const
+        Q_INVOKABLE bool operator>(Units::Volume rhs) const
         {
             return m_volumeInL > rhs.m_volumeInL;
         }
@@ -110,7 +110,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator!=(Units::Volume rhs) const
+        Q_INVOKABLE bool operator!=(Units::Volume rhs) const
         {
             return m_volumeInL != rhs.m_volumeInL;
         }
@@ -121,7 +121,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE auto operator==(Units::Volume rhs) const
+        Q_INVOKABLE bool operator==(Units::Volume rhs) const
         {
             return m_volumeInL == rhs.m_volumeInL;
         }
@@ -130,7 +130,7 @@ namespace Units {
          *
          * @returns volume in liters
          */
-        Q_INVOKABLE double toL() const
+        Q_INVOKABLE [[nodiscard]] double toL() const
         {
             return m_volumeInL;
         }
@@ -139,7 +139,7 @@ namespace Units {
          *
          * @returns volume in gallons
          */
-        Q_INVOKABLE double toGAL() const
+        Q_INVOKABLE [[nodiscard]] double toGAL() const
         {
             return m_volumeInL/LitersPerGallon;
         }

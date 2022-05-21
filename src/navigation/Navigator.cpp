@@ -37,17 +37,17 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 
     // Restore wind
     QSettings settings;
-    m_wind.setSpeed(Units::Speed::fromKN(settings.value("Wind/windSpeedInKT", qQNaN()).toDouble()));
-    m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value("Wind/windDirectionInDEG", qQNaN()).toDouble()) );
+    m_wind.setSpeed(Units::Speed::fromKN(settings.value(QStringLiteral("Wind/windSpeedInKT"), qQNaN()).toDouble()));
+    m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value(QStringLiteral("Wind/windDirectionInDEG"), qQNaN()).toDouble()) );
 
     // Restore aircraft
     QFile file(m_aircraftFileName);
     if (file.open(QIODevice::ReadOnly)) {
-        m_aircraft.loadFromJSON(file.readAll());
+        (void)m_aircraft.loadFromJSON(file.readAll());
     } else {
-        auto cruiseSpeed = Units::Speed::fromKN(settings.value("Aircraft/cruiseSpeedInKTS", 0.0).toDouble());
-        auto descentSpeed = Units::Speed::fromKN(settings.value("Aircraft/descentSpeedInKTS", 0.0).toDouble());
-        auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value("Aircraft/fuelConsumptionInLPH", 0.0).toDouble());
+        auto cruiseSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/cruiseSpeedInKTS"), 0.0).toDouble());
+        auto descentSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/descentSpeedInKTS"), 0.0).toDouble());
+        auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value(QStringLiteral("Aircraft/fuelConsumptionInLPH"), 0.0).toDouble());
         m_aircraft.setCruiseSpeed(cruiseSpeed);
         m_aircraft.setDescentSpeed(descentSpeed);
         m_aircraft.setFuelConsumption(fuelConsumption);
@@ -122,7 +122,7 @@ void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 }
 
 
-void Navigation::Navigator::setWind(const Weather::Wind& newWind)
+void Navigation::Navigator::setWind(Weather::Wind newWind)
 {
     if (newWind == m_wind) {
         return;
@@ -130,8 +130,8 @@ void Navigation::Navigator::setWind(const Weather::Wind& newWind)
 
     // Save wind
     QSettings settings;
-    settings.setValue("Wind/windSpeedInKT", newWind.speed().toKN());
-    settings.setValue("Wind/windDirectionInDEG", newWind.directionFrom().toDEG());
+    settings.setValue(QStringLiteral("Wind/windSpeedInKT"), newWind.speed().toKN());
+    settings.setValue(QStringLiteral("Wind/windDirectionInDEG"), newWind.directionFrom().toDEG());
 
     // Set new wind
     m_wind = newWind;
@@ -241,7 +241,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     // If the flight route contains one waypoint only, then create an artificial leg from the current position
     // to the one waypoint of the route.
     if (flightRoute()->size() == 1) {
-        auto start = GlobalObject::positionProvider()->lastValidCoordinate();
+        auto start = Positioning::PositionProvider::lastValidCoordinate();
         auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>();
         legs += Leg(start, end);
     }
@@ -282,6 +282,19 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     auto dist = legToNextWP.distance();
     auto ETE = legToNextWP.ETE(m_wind, m_aircraft);
 
+    // If bearing is less than +/- 30°, then use current ground speed to
+    // estimate ETE for leg to next waypoint
+    if (legToNextWP.TC().isFinite() &&
+            info.trueTrack().isFinite() &&
+            info.groundSpeed().isFinite() &&
+            (info.groundSpeed() > Units::Speed::fromKN(10.0)) ) {
+        auto bearing = legToNextWP.TC()-info.trueTrack();
+        auto bearingDEG = bearing.toDEG();
+        if ((bearingDEG < 30) || (bearingDEG > 360-30)) {
+            ETE = dist/(bearing.cos()*info.groundSpeed());
+        }
+    }
+
     rri.nextWP = legToNextWP.endPoint();
     rri.nextWP_DIST = dist;
     rri.nextWP_ETE  = ETE;
@@ -302,5 +315,20 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
             rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() ).toUTC();
         }
     }
+
+    QStringList complaints;
+    if (!m_aircraft.cruiseSpeed().isFinite()) {
+        complaints += tr("Cruise speed not specified.");
+    }
+    if (!m_wind.speed().isFinite()) {
+        complaints += tr("Wind speed not specified.");
+    }
+    if (!m_wind.directionFrom().isFinite()) {
+        complaints += tr("Wind direction not specified.");
+    }
+    if (!complaints.isEmpty()) {
+        rri.note = tr("Computation incomplete. %1").arg(complaints.join(QStringLiteral(" ")));
+    }
+
     setRemainingRouteInfo(rri);
 }

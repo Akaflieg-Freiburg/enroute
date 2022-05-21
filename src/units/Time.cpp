@@ -24,7 +24,7 @@
 auto Units::Time::toHoursAndMinutes() const -> QString {
     // Paranoid safety checks
     if (!isFinite()) {
-        return "-:--";
+        return QStringLiteral("-:--");
     }
 
     auto minutes = qRound(qAbs(toM()));
@@ -33,8 +33,8 @@ auto Units::Time::toHoursAndMinutes() const -> QString {
 
     QString result;
     if (isNegative()) {
-        result += "-";
+        result += QLatin1String("-");
     }
-    result += QString("%1:%2").arg(hours, 1, 10, QLatin1Char('0')).arg(minutes, 2, 10, QLatin1Char('0'));
+    result += QStringLiteral("%1:%2").arg(hours, 1, 10, QLatin1Char('0')).arg(minutes, 2, 10, QLatin1Char('0'));
     return result;
 }

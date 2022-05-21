@@ -345,7 +345,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
     // Paranoid safety checks
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {
-        return QString();
+        return {};
     }
     if (!positionProvider->positionInfo().isValid()) {
         return tr("Waiting for precise position…");
@@ -403,7 +403,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         }
         return tr("SR %1, %2").arg(Navigation::Clock::describePointInTime(sunriseTomorrow), Navigation::Clock::describeTimeDifference(sunriseTomorrow));
     }
-    return QString();
+    return {};
 }
 
 
@@ -412,7 +412,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     // Paranoid safety checks
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {
-        return QString();
+        return {};
     }
 
     // Find QNH of nearest airfield
@@ -447,7 +447,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
                 .arg(closestReportWithQNH->ICAOCode(),
                      Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }
-    return QString();
+    return {};
 }
 
 
@@ -482,8 +482,8 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
     const QVariantList& steerpts = GlobalObject::navigator()->flightRoute()->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
-        queries.push_back(QString("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
-        queries.push_back(QString("dataSource=tafs&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
+        queries.push_back(QStringLiteral("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
+        queries.push_back(QStringLiteral("dataSource=tafs&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
     }
     if (!steerpts.empty()) {
         QString qpos;
@@ -491,13 +491,13 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
             auto posit = var.value<QGeoCoordinate>();
             qpos += ";" + QString::number(posit.longitude()) + "," + QString::number(posit.latitude());
         }
-        queries.push_back(QString("dataSource=metars&flightPath=85%1").arg(qpos));
-        queries.push_back(QString("dataSource=tafs&flightPath=85%1").arg(qpos));
+        queries.push_back(QStringLiteral("dataSource=metars&flightPath=85%1").arg(qpos));
+        queries.push_back(QStringLiteral("dataSource=tafs&flightPath=85%1").arg(qpos));
     }
 
     // Fetch data
     foreach(auto query, queries) {
-        QUrl url = QUrl(QString("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
+        QUrl url = QUrl(QStringLiteral("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
         QNetworkRequest request(url);
         QPointer<QNetworkReply> reply = GlobalObject::networkAccessManager()->get(request);
         _networkReplies.push_back(reply);

@@ -64,9 +64,9 @@ auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> 
 
     QString result;
     if (hours == 0) {
-        result = QString("%1 min").arg(minutes);
+        result = QStringLiteral("%1 min").arg(minutes);
     } else {
-        result = QString("%1:%2 h").arg(hours).arg(minutes, 2, 10, QChar('0'));
+        result = QStringLiteral("%1:%2 h").arg(hours).arg(minutes, 2, 10, QChar('0'));
     }
 
     if (past) {
@@ -90,16 +90,16 @@ auto Navigation::Clock::describePointInTime(QDateTime pointInTime) -> QString
     auto dayDelta = currentDateLocal.daysTo(pointInTimeDateLocal);
     switch(dayDelta) {
     case -1:
-        return tr("yesterday %1").arg(pointInTime.toString("H:mm"));
+        return tr("yesterday %1").arg(pointInTime.toString(QStringLiteral("H:mm")));
     case 0:
-        return pointInTime.toString("H:mm");
+        return pointInTime.toString(QStringLiteral("H:mm"));
     case 1:
-        return tr("tomorrow %1").arg(pointInTime.toString("H:mm"));
+        return tr("tomorrow %1").arg(pointInTime.toString(QStringLiteral("H:mm")));
     default:
-        return pointInTime.toString("d. MMM, H:mm");
+        return pointInTime.toString(QStringLiteral("d. MMM, H:mm"));
     }
 
-    return pointInTime.toString("d. MMM, H:mm");
+    return pointInTime.toString(QStringLiteral("d. MMM, H:mm"));
 }
 
 
@@ -116,5 +116,5 @@ void Navigation::Clock::setSingleShotTimer()
 
 auto Navigation::Clock::timeAsUTCString() -> QString
 {
-    return QDateTime::currentDateTimeUtc().toString("H:mm");
+    return QDateTime::currentDateTimeUtc().toString(QStringLiteral("H:mm"));
 }

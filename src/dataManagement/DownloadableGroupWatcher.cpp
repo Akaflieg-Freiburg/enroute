@@ -216,6 +216,7 @@ auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> 
 auto DataManagement::DownloadableGroupWatcher::downloadablesAsObjectList() const -> QVector<QObject*>
 {
     QVector<QObject*> result;
+    result.reserve(_downloadables.size());
     foreach(auto downloadablePtr, downloadables())
         result.append(downloadablePtr);
     return result;
@@ -263,4 +264,16 @@ auto DataManagement::DownloadableGroupWatcher::numberOfFilesTotal() const -> int
         }
     }
     return nFilesTotal;
+}
+
+
+void DataManagement::DownloadableGroupWatcher::deleteAllFiles()
+{
+    foreach(auto _downloadable, _downloadables)
+    {
+        if (_downloadable.isNull()) {
+            continue;
+        }
+        _downloadable->deleteFile();
+    }
 }

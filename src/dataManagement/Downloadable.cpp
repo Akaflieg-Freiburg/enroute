@@ -69,12 +69,12 @@ auto DataManagement::Downloadable::infoText() const -> QString {
             displayText += " • " + tr("update available");
         }
         if (!url().isValid()) {
-            displayText += " • " + tr("no longer supported");
+            displayText += " • " + tr("manually imported");
         }
     } else {
         displayText += tr("not installed") + " • ";
         if (remoteFileSize() >= 0) {
-            displayText += QString("%1").arg(QLocale::system().formattedDataSize(
+            displayText += QStringLiteral("%1").arg(QLocale::system().formattedDataSize(
                                                  remoteFileSize(), 1, QLocale::DataSizeSIFormat));
         } else {
             displayText += tr("file size unknown");
@@ -90,7 +90,7 @@ auto DataManagement::Downloadable::fileContent() const -> QByteArray {
 
     QFile file(_fileName);
     if (!file.exists()) {
-        return QByteArray();
+        return {};
     }
 
     QLockFile lockFile(_fileName + ".lock");
@@ -228,7 +228,7 @@ void DataManagement::Downloadable::startFileDownload() {
     // Create directory that will hold the local file, if it does not yet exist
     QDir dir(QFileInfo(_fileName).dir());
     if (!dir.exists()) {
-        dir.mkpath(".");
+        dir.mkpath(QStringLiteral("."));
     }
 
     // Copy the temporary file to the local file

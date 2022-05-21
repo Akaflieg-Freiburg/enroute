@@ -44,7 +44,7 @@ public:
      */
     PasswordDB(QObject* parent);
 
-    ~PasswordDB() = default;
+    ~PasswordDB() override = default;
 
 
     //
@@ -61,7 +61,7 @@ public:
      *
      *  @returns Property empty
      */
-    bool empty() const
+    [[nodiscard]] auto empty() const -> bool
     {
         return m_empty;
     }
@@ -83,7 +83,7 @@ public:
      *
      *  @returns True if database contains the key
      */
-    Q_INVOKABLE bool contains(const QString& key) const
+    Q_INVOKABLE [[nodiscard]] bool contains(const QString& key) const
     {
         return m_passwordDB.contains(key);
     }
@@ -95,7 +95,7 @@ public:
      *  @returns Password, or an empty string if the database does not contain
      *  the key
      */
-    Q_INVOKABLE QString getPassword(const QString& key) const
+    Q_INVOKABLE [[nodiscard]] QString getPassword(const QString& key) const
     {
         return m_passwordDB.value(key);
     }

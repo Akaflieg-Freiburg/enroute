@@ -207,6 +207,7 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
                 updateDataItemListAndWhatsNew();
                 return tr("Unable to copy map file to data directory.");
             }
+            QFile::remove(fileName);
         }
     }
     else

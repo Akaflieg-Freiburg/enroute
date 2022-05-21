@@ -109,7 +109,7 @@ public:
      *
      * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
-    Q_INVOKABLE static QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
     /*! \brief Lock connection to Wi-Fi network
      *

@@ -99,7 +99,7 @@ Page {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
                             global.mobileAdaptor().vibrateBrief()
 
-                            if (global.dataManager().baseMapsRaster.hasFile) {
+                            if (model.modelData.fileName.endsWith("mbtiles") && global.dataManager().baseMapsRaster.hasFile) {
                                 uninstallRasterMapDialog.vectorMap = element
                                 uninstallRasterMapDialog.open()
                             } else

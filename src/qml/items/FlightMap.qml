@@ -65,7 +65,7 @@ Map {
      * Aviation Data
      *************************************/
     
-    MapParameter {
+    DynamicParameter {
         type: "source"
         
         property string name: "aviationData"
@@ -86,7 +86,7 @@ Map {
      * FIS - Flight Information Sector
      */
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "FIS"
@@ -95,7 +95,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "FIS"]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "FIS"
         property string lineColor: "lightgreen"
@@ -107,7 +107,7 @@ Map {
      * Gliding Sectors
      */
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "glidingSector"
@@ -116,14 +116,14 @@ Map {
         property var filter: ["==", ["get", "CAT"], "GLD"]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "glidingSector"
         property string fillColor: "yellow"
         property real fillOpacity: 0.1
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "glidingSectorOutlines"
@@ -132,7 +132,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "GLD"]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "glidingSectorOutlines"
         property string lineColor: "yellow"
@@ -145,7 +145,7 @@ Map {
      * RMZ - Radio Mandatory Zone
      */
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "RMZ"
@@ -154,14 +154,14 @@ Map {
         property var filter: ["==", ["get", "CAT"], "RMZ"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "RMZ"
         property string fillColor: "blue"
         property real fillOpacity: 0.2
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "RMZoutline"
@@ -170,7 +170,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "RMZ"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "RMZoutline"
         property string lineColor: "blue"
@@ -183,7 +183,7 @@ Map {
      * TMZ - Transponder Mandatory Zone
      */
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "TMZ"
@@ -192,7 +192,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "TMZ"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "TMZ"
         property string lineColor: "black"
@@ -205,7 +205,7 @@ Map {
      * Danger Zone - PJE
      */
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "PJE"
@@ -214,7 +214,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "PJE"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "PJE"
         property string lineColor: "red"
@@ -227,7 +227,7 @@ Map {
      * Airspaces A, B, C, D that are not control zones
      */
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "ABCDOutlines"
@@ -236,14 +236,14 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "ABCDOutlines"
         property string lineColor: "blue"
         property real lineWidth: 2.0
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "ABCDs"
@@ -252,7 +252,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "A"], ["==", ["get", "CAT"], "B"], ["==", ["get", "CAT"], "C"], ["==", ["get", "CAT"], "D"]]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "ABCDs"
         property string lineColor: "blue"
@@ -266,7 +266,7 @@ Map {
      * Airspaces E, F, G
      */
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "EFGOutlines"
@@ -275,7 +275,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "E"], ["==", ["get", "CAT"], "F"], ["==", ["get", "CAT"], "G"]]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "EFGOutlines"
         property string lineColor: "blue"
@@ -287,7 +287,7 @@ Map {
      * Control Zones
      */
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "controlZones"
@@ -296,14 +296,14 @@ Map {
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "controlZones"
         property string fillColor: "red"
         property real fillOpacity: 0.2
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "controlZoneOutlines"
@@ -312,7 +312,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "CTR"]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "controlZoneOutlines"
         property string lineColor: "blue"
@@ -325,7 +325,7 @@ Map {
      * Nature Reserve Area
      */
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "natureReserveAreas"
@@ -334,7 +334,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "NRA"]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "natureReserveAreas"
         property string lineColor: "green"
@@ -343,7 +343,7 @@ Map {
         property real lineOffset: airspaceLineWidth/2.0
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "natureReserveAreaOutlines"
@@ -352,7 +352,7 @@ Map {
         property var filter: ["==", ["get", "CAT"], "NRA"]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "natureReserveAreaOutlines"
         property string lineColor: "green"
@@ -365,7 +365,7 @@ Map {
      * Danger Zone, Prohibited Zone, Restricted Zone
      */
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "dangerZones"
@@ -374,7 +374,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "dangerZones"
         property string lineColor: "red"
@@ -383,7 +383,7 @@ Map {
         property real lineOffset: airspaceLineWidth/2.0
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "dangerZoneOutlines"
@@ -392,7 +392,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "DNG"], ["==", ["get", "CAT"], "R"], ["==", ["get", "CAT"], "P"]]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "dangerZoneOutlines"
         property string lineColor: "red"
@@ -405,7 +405,7 @@ Map {
      * Airspace labels
      */
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "AirspaceLabels"
@@ -415,7 +415,7 @@ Map {
         property int minzoom: 10
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "AirspaceLabels"
@@ -432,7 +432,7 @@ Map {
 
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "AirspaceLabels"
         property real textHaloWidth: 2
@@ -445,7 +445,7 @@ Map {
      * Procedures
      */
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "PRC_DEP"
@@ -454,7 +454,7 @@ Map {
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "DEP"]]
         property int minzoom: 10
     }
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "PRC_DEP"
         property var lineColor: ["get", "GAC"]
@@ -462,7 +462,7 @@ Map {
         property var lineDasharray: [3.0, 3.0]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "PRC_ARR"
@@ -471,7 +471,7 @@ Map {
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "ARR"]]
         property int minzoom: 10
     }
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "PRC_ARR"
         property var lineColor: ["get", "GAC"]
@@ -479,7 +479,7 @@ Map {
         property var lineDasharray: [9.0, 3.0]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "PRC_OTH"
@@ -488,7 +488,7 @@ Map {
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "ARR"], ["!=", ["get", "USE"], "DEP"]]
         property int minzoom: 10
     }
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "PRC_OTH"
         property var lineColor: ["get", "GAC"]
@@ -497,7 +497,7 @@ Map {
 
     // We print PRC labels first and then label the traffic circuits. This way,
     // traffic circuit labels will be printed with higher priority
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "PRCLabels"
@@ -506,7 +506,7 @@ Map {
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "TFC"]]
         property int minzoom: 10
     }
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "PRCLabels"
@@ -514,14 +514,14 @@ Map {
         property var textField: ["get", "NAM"]
         property real textSize: 16
     }
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "PRCLabels"
         property real textHaloWidth: 10
         property string textHaloColor: "white"
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "layer"
 
         property string name: "TFCLabels"
@@ -530,7 +530,7 @@ Map {
         property var filter: ["all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "TFC"]]
         property int minzoom: 10
     }
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "TFCLabels"
@@ -539,7 +539,7 @@ Map {
         property real textSize: 16
         property real symbolSpacing: 140
     }
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "TFCLabels"
         property real textHaloWidth: 10
@@ -552,115 +552,115 @@ Map {
 
     // Define the necessary images
     
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD"
         property string sprite: ":flightMap/sprites/AD"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-GLD"
         property string sprite: ":flightMap/sprites/AD-GLD"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-GRASS"
         property string sprite: ":flightMap/sprites/AD-GRASS"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-INOP"
         property string sprite: ":flightMap/sprites/AD-INOP"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-MIL"
         property string sprite: ":flightMap/sprites/AD-MIL"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-MIL-GRASS"
         property string sprite: ":flightMap/sprites/AD-MIL-GRASS"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-MIL-PAVED"
         property string sprite: ":flightMap/sprites/AD-MIL-PAVED"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-PAVED"
         property string sprite: ":flightMap/sprites/AD-PAVED"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-UL"
         property string sprite: ":flightMap/sprites/AD-UL"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "AD-WATER"
         property string sprite: ":flightMap/sprites/AD-WATER"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "MRP"
         property string sprite: ":flightMap/sprites/MRP"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "NDB"
         property string sprite: ":flightMap/sprites/NDB"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "RP"
         property string sprite: ":flightMap/sprites/RP"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "VOR"
         property string sprite: ":flightMap/sprites/VOR"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "VOR-DME"
         property string sprite: ":flightMap/sprites/VORDME"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "VORTAC"
         property string sprite: ":flightMap/sprites/VORTAC"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "DVOR"
         property string sprite: ":flightMap/sprites/VOR"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "DVOR-DME"
         property string sprite: ":flightMap/sprites/VORDME"
     }
-    MapParameter {
+    DynamicParameter {
         type: "image"
         
         property string name: "DVORTAC"
@@ -670,7 +670,7 @@ Map {
     
     // NavAids - Text. Will be drawn with least priority
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "optionalText"
@@ -679,7 +679,7 @@ Map {
         property var filter: ["==", ["get", "TYP"], "NAV"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "optionalText"
@@ -690,7 +690,7 @@ Map {
         property bool textOptional: true
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "optionalText"
         property real textHaloWidth: 2
@@ -700,7 +700,7 @@ Map {
     
     // Gliding and UL Airfields
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "WPs"
@@ -709,7 +709,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
     }
 
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "WPs"
@@ -721,7 +721,7 @@ Map {
         property var iconImage: ["get", "CAT"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "WPs"
         property real textHaloWidth: 2
@@ -731,7 +731,7 @@ Map {
 
     // Reporting points
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "RPs"
@@ -741,7 +741,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "RPs"
@@ -753,7 +753,7 @@ Map {
         property var iconImage: ["get", "CAT"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "RPs"
         property real textHaloWidth: 2
@@ -763,7 +763,7 @@ Map {
     
     // GA Airfields with grass runway
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "AD-GRASS"
@@ -772,7 +772,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "AD-GRASS"
@@ -786,7 +786,7 @@ Map {
         property string iconRotationAlignment: "map"
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "AD-GRASS"
         property real textHaloWidth: 2
@@ -796,7 +796,7 @@ Map {
     
     // NavAids - Icons. Will always be drawn, but might be overdrawn by other stuff.
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "NavAidIcons"
@@ -805,7 +805,7 @@ Map {
         property var filter: ["==", ["get", "TYP"], "NAV"]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "NavAidIcons"
@@ -817,7 +817,7 @@ Map {
     
     // GA Airfields with paved or unknown runway
     
-    MapParameter {
+    DynamicParameter {
         type: "layer"
         
         property string name: "AD-PAVED"
@@ -826,7 +826,7 @@ Map {
         property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "layout"
 
         property string layer: "AD-PAVED"
@@ -840,7 +840,7 @@ Map {
         property string iconRotationAlignment: "map"
     }
     
-    MapParameter {
+    DynamicParameter {
         type: "paint"
         property string layer: "AD-PAVED"
         property real textHaloWidth: 2

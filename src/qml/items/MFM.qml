@@ -472,6 +472,7 @@ Item {
         source: flightMap
         brightness: Material.theme == Material.Dark ? -0.9 : -0.2
         contrast: Material.theme == Material.Dark ? 0.6 : 0.2
+        visible: !global.dataManager().baseMapsRaster.hasFile
     }
 
     Rectangle {
@@ -515,7 +516,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         bottomPadding: 0
         Material.elevation: 2
         opacity: 0.8
-        visible: global.settings().airspaceAltitudeLimit.isFinite()
+        visible: global.settings().airspaceAltitudeLimit.isFinite() && !global.dataManager().baseMapsRaster.hasFile
 
         Label {
 

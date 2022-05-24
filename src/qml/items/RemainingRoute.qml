@@ -28,6 +28,11 @@ Rectangle {
     color: "#AA000000"
     height: grid.implicitHeight // grid.rri.isValid ? grid.implicitHeight : 0
 
+    visible: {
+        console.log(grid.rri.status)
+        return grid.rri.status !== RemainingRouteInfo.NoRoute
+    }
+
     GridLayout {
         id: grid
 

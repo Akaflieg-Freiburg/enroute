@@ -79,7 +79,8 @@ void DataManagement::DataManager::cleanDataDirectory()
         }
         if (!fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".raster")))
+                !fileIterator.filePath().endsWith(QLatin1String(".raster")) &&
+                !fileIterator.filePath().endsWith(QLatin1String(".txt")))
         {
             unexpectedFiles += fileIterator.filePath();
         }

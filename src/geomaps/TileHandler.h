@@ -30,8 +30,6 @@
 
 namespace GeoMaps {
 
-class Downloadable;
-
 
 /*! \brief Implementation of QHttpEngine::Handler that serves mbtile files
  

@@ -56,7 +56,7 @@ public:
      *  This property is identical to downloadables, but returns the pointers to
      *  the Downloadable objects in the form of a QObjectList
      */
-    Q_PROPERTY(QVector<QObject *> downloadablesAsObjectList READ downloadablesAsObjectList NOTIFY downloadablesChanged)
+    Q_PROPERTY(QVector<QObject*> downloadablesAsObjectList READ downloadablesAsObjectList NOTIFY downloadablesChanged)
 
     /*! \brief List of Downloadable objects in this group that have local files
      *
@@ -109,7 +109,7 @@ public:
      *
      *  @returns Property downloadables
      */
-    [[nodiscard]] auto downloadablesAsObjectList() const -> QVector<QObject *>;
+    [[nodiscard]] auto downloadablesAsObjectList() const -> QVector<QObject*>;
 
     /*! \brief Getter function for the property with the same name
      *

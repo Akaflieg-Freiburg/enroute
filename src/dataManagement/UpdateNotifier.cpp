@@ -24,6 +24,9 @@
 #include "platform/Notifier.h"
 #include "GlobalObject.h"
 #include "UpdateNotifier.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 
@@ -34,7 +37,7 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
     connect(GlobalObject::dataManager()->items(), &DataManagement::DownloadableGroup::updatableChanged, this, &DataManagement::UpdateNotifier::updateNotification);
     connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotification);
 
-    notificationTimer.setInterval(11*60*1000);
+    notificationTimer.setInterval(11min);
     notificationTimer.setSingleShot(true);
 
     updateNotification();
@@ -71,7 +74,7 @@ void DataManagement::UpdateNotifier::updateNotification()
     auto lastGeoMapUpdateNotification = settings.value(QStringLiteral("lastGeoMapUpdateNotification")).toDateTime();
     if (lastGeoMapUpdateNotification.isValid()) {
         auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
-        if (secsSinceLastNotification < 4*60*60) {
+        if (secsSinceLastNotification < static_cast<qint64>(4*60*60)) {
             notificationTimer.start();
             return;
         }

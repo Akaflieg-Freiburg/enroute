@@ -9,6 +9,16 @@
     "openmaptiles": {
     "type": "vector",
     "url": "%URL%"
+    },
+    "terrarium": {
+      "type": "raster-dem",
+      "tiles": [
+            "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+      ],
+      "minzoom": 0,
+      "maxzoom": 15,
+      "tileSize": 256,
+      "encoding": "terrarium"
     }
   },
   "sprite": "%URL2%/flightMap/sprites/sprite",
@@ -19,6 +29,16 @@
       "type": "background",
       "paint": {
         "background-color": "rgb(239,239,239)"
+      }
+    },
+    {
+      "id": "terrain-rgb",
+      "source": "terrarium",
+      "type": "hillshade",
+      "paint": {
+        "hillshade-shadow-color": "hsl(39, 21%, 33%)",
+        "hillshade-illumination-direction": 315,
+        "hillshade-exaggeration": 0.8
       }
     },
     {

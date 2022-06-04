@@ -236,13 +236,10 @@ public:
      * @param newName Name under which the map is available in the library. If
      * the name exists, the library entry will be replaced.
      *
-     * @param moveFile If true, the file will be moved rather than copied, in
-     * order to save file system space.
-     *
      * @returns A human-readable HTML string on error, or an empty string on
      * success
      */
-    Q_INVOKABLE QString import(const QString& fileName, const QString& newName, bool moveFile=false);
+    Q_INVOKABLE QString import(const QString& fileName, const QString& newName);
 
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items

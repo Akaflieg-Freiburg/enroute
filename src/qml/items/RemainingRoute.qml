@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +27,8 @@ import enroute 1.0
 Rectangle {   
     color: "#AA000000"
     height: grid.implicitHeight // grid.rri.isValid ? grid.implicitHeight : 0
+
+    visible: grid.rri.status !== RemainingRouteInfo.NoRoute
 
     GridLayout {
         id: grid

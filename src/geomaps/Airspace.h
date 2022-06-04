@@ -67,7 +67,7 @@ public:
      *
      * @returns Property isValid
      */
-    [[nodiscard]] auto isValid() const -> bool { return !_polygon.isEmpty(); }
+    [[nodiscard]] auto isValid() const -> bool { return !m_polygon.isEmpty(); }
 
     /*! \brief Lower limit of the airspace
      *
@@ -81,7 +81,7 @@ public:
      *
      * @returns Property lowerBound
      */
-    [[nodiscard]] auto lowerBound() const -> QString { return _lowerBound; }
+    [[nodiscard]] auto lowerBound() const -> QString { return m_lowerBound; }
 
     /*! \brief Lower limit of the airspace
      *
@@ -93,7 +93,7 @@ public:
      *
      * @returns Property lowerBoundMetric
      */
-    [[nodiscard]] auto lowerBoundMetric() const -> QString { return makeMetric(_lowerBound); }
+    [[nodiscard]] auto lowerBoundMetric() const -> QString { return makeMetric(m_lowerBound); }
 
     /* \brief Name of the airspace, such as "ED-R 31" */
     Q_PROPERTY(QString name READ name CONSTANT)
@@ -102,7 +102,7 @@ public:
      *
      * @returns Property name
      */
-    [[nodiscard]] auto name() const -> QString { return _name; }
+    [[nodiscard]] auto name() const -> QString { return m_name; }
 
     /*! \brief QGeoPolygon that describes the lateral limits of the airspace */
     Q_PROPERTY(QGeoPolygon polygon READ polygon CONSTANT)
@@ -111,7 +111,7 @@ public:
      *
      * @returns Property polygon
      */
-    [[nodiscard]] auto polygon() const -> QGeoPolygon { return _polygon; }
+    [[nodiscard]] auto polygon() const -> QGeoPolygon { return m_polygon; }
 
     /* \brief Category of the airspace
      *
@@ -125,7 +125,7 @@ public:
      *
      * @returns Property CAT
      */
-    [[nodiscard]] auto CAT() const -> QString { return _CAT; }
+    [[nodiscard]] auto CAT() const -> QString { return m_CAT; }
 
     /*! \brief Upper limit of the airspace
      *
@@ -137,7 +137,7 @@ public:
      *
      * @returns Property upperBound
      */
-    [[nodiscard]] auto upperBound() const -> QString { return _upperBound; }
+    [[nodiscard]] auto upperBound() const -> QString { return m_upperBound; }
 
     /*! \brief Upper limit of the airspace
      *
@@ -149,18 +149,18 @@ public:
      *
      * @returns Property upperBoundMetric
      */
-    [[nodiscard]] auto upperBoundMetric() const -> QString { return makeMetric(_upperBound); }
+    [[nodiscard]] auto upperBoundMetric() const -> QString { return makeMetric(m_upperBound); }
 
 private:
     // Transforms a height string such as "4500", "1500 GND" or "FL 130" into a string that describes the height
     // in meters. If the height string cannot be parsed, returns the original string
     [[nodiscard]] static auto makeMetric(const QString& standard) -> QString;
 
-    QString _name{};
-    QString _CAT{};
-    QString _upperBound{};
-    QString _lowerBound{};
-    QGeoPolygon _polygon{};
+    QString m_name{};
+    QString m_CAT{};
+    QString m_upperBound{};
+    QString m_lowerBound{};
+    QGeoPolygon m_polygon{};
 };
 
 /*! \brief Comparison */

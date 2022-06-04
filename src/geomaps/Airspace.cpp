@@ -50,7 +50,7 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
         auto coordinateArray = coordinate.toArray();
         auto geoCoordinate =
                 QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble());
-        _polygon.addCoordinate(geoCoordinate);
+        m_polygon.addCoordinate(geoCoordinate);
     }
 
     // Get properties
@@ -61,22 +61,22 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     if (!properties.contains(QStringLiteral("CAT"))) {
         return;
     }
-    _CAT = properties[QStringLiteral("CAT")].toString();
+    m_CAT = properties[QStringLiteral("CAT")].toString();
 
     if (!properties.contains(QStringLiteral("NAM"))) {
         return;
     }
-    _name = properties[QStringLiteral("NAM")].toString();
+    m_name = properties[QStringLiteral("NAM")].toString();
 
     if (!properties.contains(QStringLiteral("TOP"))) {
         return;
     }
-    _upperBound = properties[QStringLiteral("TOP")].toString();
+    m_upperBound = properties[QStringLiteral("TOP")].toString();
 
     if (!properties.contains(QStringLiteral("BOT"))) {
         return;
     }
-    _lowerBound = properties[QStringLiteral("BOT")].toString();
+    m_lowerBound = properties[QStringLiteral("BOT")].toString();
 }
 
 
@@ -85,7 +85,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
     double result = 0.0;
     bool ok = false;
 
-    QString AL = _lowerBound.simplified();
+    QString AL = m_lowerBound.simplified();
 
     if (AL.startsWith(QLatin1String("FL"), Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
@@ -148,11 +148,11 @@ auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
 
 auto GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B) -> bool
 {
-    return ((A._name == B._name) &&
-            (A._CAT == B._CAT) &&
-            (A._upperBound == B._upperBound) &&
-            (A._lowerBound == B._lowerBound) &&
-            (A._polygon == B._polygon) );
+    return ((A.m_name == B.m_name) &&
+            (A.m_CAT == B.m_CAT) &&
+            (A.m_upperBound == B.m_upperBound) &&
+            (A.m_lowerBound == B.m_lowerBound) &&
+            (A.m_polygon == B.m_polygon) );
 }
 
 

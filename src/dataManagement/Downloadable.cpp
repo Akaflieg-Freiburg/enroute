@@ -518,7 +518,7 @@ void DataManagement::Downloadable::downloadFileProgressReceiver(qint64 bytesRece
     if (bytesTotal <= 0) {
         _downloadProgress = 0;
     } else {
-        _downloadProgress = qRound((100.0 * bytesReceived) / bytesTotal);
+        _downloadProgress = qRound((100.0 * static_cast<double>(bytesReceived)) / static_cast<double>(bytesTotal));
     }
 
     // Whatever, make sure that the number computed is between 0 and 100

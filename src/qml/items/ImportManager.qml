@@ -107,12 +107,6 @@ Item {
                 }
             }
 
-            CheckBox {
-                id: removeFileRaster
-                Layout.fillWidth: true
-                text: qsTr("Remove file after import")
-            }
-
             Label {
                 Layout.fillWidth: true
                 visible: global.dataManager().baseMapsVector.hasFile
@@ -128,14 +122,13 @@ Item {
 
         onAboutToShow: {
             mapNameRaster.text = ""
-            removeFileRaster.checked = false
             importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
 
-            var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text, removeFileRaster.checked)
+            var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
@@ -189,12 +182,6 @@ Item {
                 }
             }
 
-            CheckBox {
-                id: removeFileVector
-                Layout.fillWidth: true
-                text: qsTr("Remove file after import")
-            }
-
             Label {
                 Layout.fillWidth: true
                 visible: global.dataManager().baseMapsRaster.hasFile
@@ -210,14 +197,13 @@ Item {
 
         onAboutToShow: {
             mapNameVector.text = ""
-            removeFileVector.checked = false
             importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
 
-            var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text, removeFileVector.checked)
+            var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

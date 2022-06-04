@@ -2,6 +2,7 @@
   "sources": {
     "raster-tiles": {
     "type": "raster",
+    "tileSize": 256,
     "url": "%URL%"
     }
   },

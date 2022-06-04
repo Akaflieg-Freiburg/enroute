@@ -133,7 +133,7 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
 
     auto getKey = [firstEntry, lineSize](QFile& dataFile, qint64 entry) {
         dataFile.seek(firstEntry + entry*lineSize);
-        return QString::fromLatin1(dataFile.readLine(6));
+        return QString::fromLatin1(dataFile.readLine(7));
     };
     auto getVal = [firstEntry, lineSize](QFile& dataFile, qint64 entry) {
         dataFile.seek(firstEntry + entry*lineSize + 7);
@@ -155,7 +155,7 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
         if (midIndex == startIndex) {
             return {};
         }
-        if (getKey(dataFile, endIndex) > key) {
+        if (getKey(dataFile, midIndex) > key) {
             endIndex = midIndex;
         } else {
             startIndex = midIndex;

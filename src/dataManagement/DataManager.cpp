@@ -38,7 +38,7 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     connect(&m_mapsJSON, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
     connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
     connect(&m_mapsJSON, &DataManagement::Downloadable::hasFileChanged, this, &DataManager::hasRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, [this]()
+    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, []()
     { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
     connect(&m_mapsJSON, &DataManagement::Downloadable::error, this, [this](const QString & /*unused*/, QString message)
     { emit error(std::move(message)); });
@@ -79,7 +79,8 @@ void DataManagement::DataManager::cleanDataDirectory()
         }
         if (!fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".raster")))
+                !fileIterator.filePath().endsWith(QLatin1String(".raster")) &&
+                !fileIterator.filePath().endsWith(QLatin1String(".txt")))
         {
             unexpectedFiles += fileIterator.filePath();
         }
@@ -162,7 +163,7 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     return result;
 }
 
-auto DataManagement::DataManager::import(const QString& fileName, const QString& newName, bool moveFile) -> QString
+auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
 {
 
     auto path = m_dataDirectory+"/Unsupported";
@@ -196,28 +197,11 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
         return tr("Unable to create directory '%1'.").arg(path);
     }
     QFile::remove(newFileName);
-
-    if (moveFile)
+    if (!QFile::copy(fileName, newFileName))
     {
-        if (!QFile::rename(fileName, newFileName))
-        {
-            if (!QFile::copy(fileName, newFileName))
-            {
-                QFile::remove(newFileName);
-                updateDataItemListAndWhatsNew();
-                return tr("Unable to copy map file to data directory.");
-            }
-            QFile::remove(fileName);
-        }
-    }
-    else
-    {
-        if (!QFile::copy(fileName, newFileName))
-        {
-            QFile::remove(newFileName);
-            updateDataItemListAndWhatsNew();
-            return tr("Unable to copy map file to data directory.");
-        }
+        QFile::remove(newFileName);
+        updateDataItemListAndWhatsNew();
+        return tr("Unable to copy map file to data directory.");
     }
 
     updateDataItemListAndWhatsNew();

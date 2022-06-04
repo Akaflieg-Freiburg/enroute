@@ -114,7 +114,7 @@ Page {
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        startFileDownload()
+                        model.modelData.startFileDownload()
                     }
                 }
 
@@ -124,7 +124,7 @@ Page {
                     visible: model.modelData.updatable
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        startFileDownload()
+                        model.modelData.startFileDownload()
                     }
                 }
 
@@ -232,7 +232,7 @@ Page {
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        startFileDownload()
+                        model.modelData.startFileDownload()
                     }
                 }
 
@@ -242,7 +242,7 @@ Page {
                     visible: model.modelData.updatable
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        startFileDownload()
+                        model.modelData.startFileDownload()
                     }
                 }
 

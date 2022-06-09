@@ -101,7 +101,7 @@ Dialog {
             clip: true
 
 
-            model: global.geoMapProvider().filteredWaypointObjects(textInput.displayText)
+            model: global.geoMapProvider().filteredWaypoints(textInput.displayText)
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 

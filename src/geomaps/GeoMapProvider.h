@@ -149,7 +149,8 @@ public:
      * @returns The Waypoint that is closest to the given position, provided
      * that the distance is not bigger than that to distPosition. If no
      * sufficiently close waypoint is found, a generic Waypoint with the
-     * appropriate coordinate is returned.
+     * appropriate coordinate is returned. The method checks waypoints from the map, and waypoints
+     * from the library.
      */
     Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition);
 
@@ -178,9 +179,11 @@ public:
      * @returns all those waypoints whose fullName or codeName contains each of
      * the words in filter.  In order to make the result accessible to QML, the
      * list is returned as QList<QObject*>. It can thus be used as a data model
-     * in QML.
+     * in QML. The list contains both waypoints from the map, and waypoints
+     * from the library.
      */
-    Q_INVOKABLE QVariantList filteredWaypointObjects(const QString &filter);
+#warning document
+    Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString& filter);
 
     /*! Find a waypoint by its ICAO code
      *

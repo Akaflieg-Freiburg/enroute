@@ -30,6 +30,7 @@
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
+#include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
@@ -64,6 +65,7 @@ QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<Settings> g_settings {};
 QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
+QPointer<GeoMaps::WaypointLibrary> g_waypointLibrary {};
 QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
 
 
@@ -190,6 +192,12 @@ auto GlobalObject::sslErrorHandler() -> DataManagement::SSLErrorHandler*
 auto GlobalObject::trafficDataProvider() -> Traffic::TrafficDataProvider*
 {
     return allocateInternal<Traffic::TrafficDataProvider>(g_trafficDataProvider);
+}
+
+
+auto GlobalObject::waypointLibrary() -> GeoMaps::WaypointLibrary*
+{
+    return allocateInternal<GeoMaps::WaypointLibrary>(g_waypointLibrary);
 }
 
 

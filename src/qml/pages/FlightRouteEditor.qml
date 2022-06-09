@@ -748,6 +748,14 @@ Page {
 
     WaypointEditor {
         id: wpEditor
+
+        property int index: -1 // Index of waypoint in flight route
+
+        onAccepted: {
+            global.navigator().flightRoute.renameWaypoint(index, newName)
+            global.navigator().flightRoute.relocateWaypoint(index, newLatitude, newLongitude)
+            close()
+        }
     }
 
 } // Page

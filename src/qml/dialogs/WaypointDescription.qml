@@ -570,7 +570,7 @@ Dialog {
             var newWP = waypoint.renamed(newName)
             newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
             global.waypointLibrary().add(newWP)
-            toast.doToast(qsTr("Added %1 to library.").arg(newWP.extendedName))
+            toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
 

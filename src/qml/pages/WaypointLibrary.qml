@@ -67,6 +67,8 @@ Page {
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
+                    waypointDescription.waypoint = modelData
+                    waypointDescription.open()
                 }
 
                 swipe.onCompleted: {
@@ -75,6 +77,17 @@ Page {
                     removeDialog.open()
                 }
 
+            }
+
+            ToolButton {
+                id: editButton
+
+                icon.source: "/icons/material/ic_mode_edit.svg"
+                onClicked: {
+                    global.mobileAdaptor().vibrateBrief()
+                    wpEditor.waypoint = modelData
+                    wpEditor.open()
+                }
             }
 
             ToolButton {
@@ -89,17 +102,6 @@ Page {
 
                 AutoSizingMenu {
                     id: cptMenu
-
-                    Action {
-                        id: editAction
-                        text: qsTr("Edit …")
-                        onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
-                            wpEditor.waypoint = modelData
-                            wpEditor.open()
-                        }
-
-                    } // renameAction
 
                     Action {
                         id: removeAction
@@ -127,7 +129,12 @@ Page {
 
         clip: true
 
-        model: global.waypointLibrary().filteredWaypoints(textInput.text)
+        model: {
+            // Mention waypoints to ensure that the list gets updated
+            global.waypointLibrary().waypoints
+
+            return global.waypointLibrary().filteredWaypoints(textInput.text)
+        }
         delegate: waypointDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
@@ -216,5 +223,9 @@ Page {
 
     }
 
+
+    WaypointDescription {
+        id: waypointDescription
+    }
 
 } // Page

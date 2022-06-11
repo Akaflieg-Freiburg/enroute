@@ -18,31 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtConcurrent/QtConcurrentRun>
+#include <QFile>
 #include <QJsonArray>
-#include <QLockFile>
-#include <QRandomGenerator>
+#include <QJsonDocument>
 
 #include "Librarian.h"
 #include "geomaps/WaypointLibrary.h"
-#include "geomaps/MBTILES.h"
-#include "navigation/Navigator.h"
 
 
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
     : GlobalObject(parent)
 {
-
-#warning Demo only
-    Waypoint wp( QGeoCoordinate(48.1259185, 8.0229407) );
-    wp = wp.renamed("Hörnlisberg");
-    m_waypoints.append(wp);
+    loadFromGeoJSON();
+    connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this](){save();});
 }
 
+/*
 void GeoMaps::WaypointLibrary::deferredInitialization()
 {
 }
-
+*/
 
 //
 // Getter Methods
@@ -53,6 +48,92 @@ void GeoMaps::WaypointLibrary::deferredInitialization()
 //
 // Private Methods and Slots
 //
+
+auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
+{
+    if (fileName.isEmpty()) {
+        fileName = stdFileName;
+    }
+
+    QFile file(fileName);
+    auto success = file.open(QIODevice::ReadOnly);
+    if (!success) {
+        return tr("Cannot open file '%1' for reading.").arg(fileName);
+    }
+    auto fileContent = file.readAll();
+    if (fileContent.isEmpty()) {
+        return tr("Cannot read data from file '%1'.").arg(fileName);
+    }
+    file.close();
+
+    QJsonParseError parseError{};
+    auto document = QJsonDocument::fromJson(fileContent, &parseError);
+    if (parseError.error != QJsonParseError::NoError) {
+        return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
+    }
+
+    QVector<GeoMaps::Waypoint> newWaypoints;
+    foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
+        auto wp = GeoMaps::Waypoint(value.toObject());
+        if (!wp.isValid()) {
+            return tr("Cannot parse content of file '%1'.").arg(fileName);
+        }
+
+        newWaypoints.append(wp);
+    }
+
+    m_waypoints = newWaypoints;
+    emit waypointsChanged();
+
+    return {};
+}
+
+
+auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
+{
+    if (fileName.isEmpty())
+    {
+        fileName = stdFileName;
+    }
+
+    QFile file(fileName);
+    auto success = file.open(QIODevice::WriteOnly);
+    if (!success)
+    {
+        return tr("Unable to open the file '%1' for writing.").arg(fileName);
+    }
+    auto numBytesWritten = file.write(toGeoJSON());
+    if (numBytesWritten == -1)
+    {
+        file.close();
+        QFile::remove(fileName);
+        return tr("Unable to write to file '%1'.").arg(fileName);
+    }
+    file.close();
+    return {};
+}
+
+
+auto GeoMaps::WaypointLibrary::toGeoJSON() const -> QByteArray
+{
+    QJsonArray waypointArray;
+    foreach(auto waypoint, m_waypoints)
+    {
+        if (waypoint.isValid())
+        {
+            waypointArray.append(waypoint.toJSON());
+        }
+    }
+    QJsonObject jsonObj;
+    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
+    jsonObj.insert(QStringLiteral("enroute"), QStringLiteral("waypoint library"));
+    jsonObj.insert(QStringLiteral("features"), waypointArray);
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    return doc.toJson();
+}
+
+
 
 QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QString& filter) const
 {
@@ -69,30 +150,27 @@ QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QSt
     return result;
 }
 
-void GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint& waypoint)
+
+bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint& waypoint)
 {
-    auto oldLen = m_waypoints.size();
-#warning use return value
-    m_waypoints.removeOne(waypoint);
-    if (oldLen != m_waypoints.size())
+    if (m_waypoints.removeOne(waypoint))
     {
         emit waypointsChanged();
+        return true;
     }
-#warning should have return value
+    return false;
 }
 
-void GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint& oldWaypoint, const GeoMaps::Waypoint& newWaypoint)
-{
-    auto oldLen = m_waypoints.size();
-    m_waypoints.removeOne(oldWaypoint);
-#warning use return value
-    if (oldLen == m_waypoints.size())
-    {
-        return;
-    }
 
-    m_waypoints.append(newWaypoint);
-    emit waypointsChanged();
-#warning should have return value
+bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint& oldWaypoint, const GeoMaps::Waypoint& newWaypoint)
+{
+    if (m_waypoints.removeOne(oldWaypoint))
+    {
+        m_waypoints.append(newWaypoint);
+#warning need to sort
+        emit waypointsChanged();
+        return true;
+    }
+    return false;
 }
 

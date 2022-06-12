@@ -275,7 +275,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>You can now import raster or vector maps into this app. Typically, this could be an official ICAO map of your country or a high-detail map for a particular region. If you are interested, look at the section 'Advanced Use' of the manual.</p>");
+        return tr("<p>As requested by many users, it is now possible to save waypoints and to build a small waypoint library.</p>") +
+                tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 
     QFile file(name);

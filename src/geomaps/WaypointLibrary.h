@@ -25,142 +25,174 @@
 #include "geomaps/Waypoint.h"
 #include "GlobalObject.h"
 
-
-namespace GeoMaps {
-
-#warning Documentation
-/*! \brief Library of user-defined waypoints
- *
- *  This simple class that is little more than a list of waypoints, together with some auxiliary methods.
- *  The list is automatically loaded on startup, and saved every time that a change is made.
- */
-
-class WaypointLibrary : public GlobalObject
+namespace GeoMaps
 {
-    Q_OBJECT
 
-public:
-    /*! \brief Creates a new waypoin library
+    /*! \brief Library of user-defined waypoints
      *
-     * This constructor creates a new WaypointLibrary instance. The library is loaded from a GeoJSON file whose name is found in the private member stdFileName.
-     *
-     * @param parent The standard QObject parent
+     *  This simple class that is little more than a list of waypoints, together
+     *  with some auxiliary methods. The list is automatically loaded on startup,
+     *  and saved every time that a change is made.
      */
-    explicit WaypointLibrary(QObject* parent = nullptr);
 
-
-    //
-    // Properties
-    //
-
-    /*! \brief List of waypoints
-     *
-     *  This property holds the list of waypoints, in alphabetical order
-     */
-    Q_PROPERTY(QVector<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
-
-
-    //
-    // Getter Methods
-    //
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property waypoints
-     */
-    [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const
+    class WaypointLibrary : public GlobalObject
     {
-        return m_waypoints;
-    }
+        Q_OBJECT
 
+    public:
+        /*! \brief Creates a new waypoin library
+         *
+         * This constructor creates a new WaypointLibrary instance. The library
+         * is loaded from a GeoJSON file whose name is found in the private
+         * member stdFileName.
+         *
+         * @param parent The standard QObject parent
+         */
+        explicit WaypointLibrary(QObject *parent = nullptr);
 
-    //
-    // Methods
-    //
+        //
+        // Properties
+        //
 
-    /*! \brief Checks if library contains an given waypoint
-     *
-     * @param waypoint Waypoint
-     *
-     * @returns True if an exact copy of the waypoint is found in the library
-     */
-    [[nodiscard]] Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const
-    {
-        return m_waypoints.contains(waypoint);
-    }
+        /*! \brief List of waypoints
+         *
+         *  This property holds the list of waypoints, in alphabetical order
+         */
+        Q_PROPERTY(QVector<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
-    /*! \brief Lists all entries in the waypoint library whose name contains the string 'filter'
-     *
-     * The check for string containment is done in a fuzzy way.
-     *
-     * @param filter String used to filter the list
-     *
-     * @returns A filtered list with of waypoint, in alphabetical order
-     */
-    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString& filter) const;
+        //
+        // Getter Methods
+        //
 
-    /*! \brief Remove waypoint
-     *
-     * Removes the first waypoint from the list that matches the given waypoint exactly. If no waypoint
-     * matches, this method does nothing.
-     *
-     * @param waypoint Waypoint to be removed
-     *
-     * @returns True if a waypoint has indeed been removed.
-     */
-    [[nodiscard]] Q_INVOKABLE bool remove(const GeoMaps::Waypoint& waypoint);
-
-    /*! \brief Replace waypoint
-     *
-     * Replaces the first waypoint from the list that matches the given oldWaypoint exactly. If no waypoint
-     * matches, this method does nothing.
-     *
-     * @param oldWaypoint Waypoint that shall be replaced
-     *
-     * @param newWaypoint Waypoint replacement
-     *
-     * @returns True if a waypoint has indeed been replaced.
-     */
-    [[nodiscard]] Q_INVOKABLE bool replace(const GeoMaps::Waypoint& oldWaypoint, const GeoMaps::Waypoint& newWaypoint);
-
-    // -----------------------------------
-
-
-    [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint& waypoint) const
-    {
-        for(const auto& wp : qAsConst(m_waypoints))
+        /*! \brief Getter function for property with the same name
+         *
+         * @returns Property waypoints
+         */
+        [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const
         {
-            if (wp.isNear(waypoint))
-            {
-                return true;
-            }
+            return m_waypoints;
         }
-        return false;
-    }
 
-    Q_INVOKABLE void add(const GeoMaps::Waypoint& waypoint)
-    {
-        m_waypoints.append(waypoint);
-        emit waypointsChanged();
-#warning need to sort
-    }
+        //
+        // Methods
+        //
 
-    QString stdFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/waypoint library.geojson"};
+        /*! \brief Adds a waypoint to the library
+         *
+         *  @param waypoint Waypoint to be added. If that waypoint is invalid,
+         *  this method will not do anything
+         */
+        Q_INVOKABLE void add(const GeoMaps::Waypoint &waypoint);
 
-    [[nodiscard]] QString save(QString fileName={}) const;
+        /*! \brief Checks if library contains an given waypoint
+         *
+         * @param waypoint Waypoint
+         *
+         * @returns True if an exact copy of the waypoint is found in the
+         * library
+         */
+        [[nodiscard]] Q_INVOKABLE bool contains(const GeoMaps::Waypoint &waypoint) const
+        {
+            return m_waypoints.contains(waypoint);
+        }
 
-    [[nodiscard]] QByteArray toGeoJSON() const;
+        /*! \brief Lists all entries in the waypoint library whose name contains
+         * the string 'filter'
+         *
+         * The check for string containment is done in a fuzzy way.
+         *
+         * @param filter String used to filter the list
+         *
+         * @returns A filtered list with of waypoint, in alphabetical order
+         */
+        [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString &filter) const;
 
-    [[nodiscard]] QString loadFromGeoJSON(QString fileName={});
+        /*! \brief Check if the library contains a waypoint near to a given one
+         *
+         *  The method checks proximity with the method GeoMaps::Waypoint::isNear
+         *
+         *  @param waypoint Waypoint
+         *
+         *  @returns True if yes
+         */
+        [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const;
 
-signals:
-    void waypointsChanged();
+        /*! \brief Read from file
+         *
+         * Reads the library from a file in GeoJSON format. On sucess, the
+         * current library is replaced in full. On error, the current library is
+         * not touched at all.
+         *
+         * @param fileName File name. If emty, a standard file name will be
+         * used, in QStandardPaths::AppDataLocation. See the private member
+         * stdFileName for details.
+         *
+         * @returns An empty string on success and a human-readable tranlated
+         * error message otherwise.
+         */
+        [[nodiscard]] Q_INVOKABLE QString loadFromGeoJSON(QString fileName = {});
 
+        /*! \brief Remove waypoint
+         *
+         * Removes the first waypoint from the list that matches the given
+         * waypoint exactly. If no waypoint matches, this method does nothing.
+         *
+         * @param waypoint Waypoint to be removed
+         *
+         * @returns True if a waypoint has indeed been removed.
+         */
+        [[nodiscard]] Q_INVOKABLE bool remove(const GeoMaps::Waypoint &waypoint);
 
-private:
-    Q_DISABLE_COPY_MOVE(WaypointLibrary)
+        /*! \brief Replace waypoint
+         *
+         * Replaces the first waypoint from the list that matches the given
+         * oldWaypoint exactly. If no waypoint matches, this method does
+         * nothing.
+         *
+         * @param oldWaypoint Waypoint that shall be replaced
+         *
+         * @param newWaypoint Waypoint replacement. If this waypoint is invalid,
+         * the method returns immediately and does nothing.
+         *
+         * @returns True if a waypoint has indeed been replaced.
+         */
+        [[nodiscard]] Q_INVOKABLE bool replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint);
 
-    QVector<GeoMaps::Waypoint> m_waypoints;
-};
+        /*! \brief Save to file
+         *
+         * Saves the library in GeoJSON format.
+         *
+         * @param fileName File name. If emty, a standard file name will be
+         * used, in QStandardPaths::AppDataLocation. See the private member
+         * stdFileName for details.
+         *
+         * @returns An empty string on success and a human-readable tranlated
+         * error message otherwise.
+         */
+        [[nodiscard]] Q_INVOKABLE QString save(QString fileName = {}) const;
+
+        /*! \brief Convert to GeoJSON
+         *
+         * Converts the library to a GeoJSON file. The resulting file contains a
+         * FeatureArray, where each member is of the form described in the
+         * documentation of the method GeoMaps::Waypoint::toJSON()
+         *
+         * @returns GeoJSON data
+         */
+        [[nodiscard]] Q_INVOKABLE QByteArray toGeoJSON() const;
+
+    signals:
+        /*! \brief Notification signal for the property with the same name */
+        void waypointsChanged();
+
+    private:
+        Q_DISABLE_COPY_MOVE(WaypointLibrary)
+
+        // Standard file name for save() and loadFromGeoJGON() methods
+        QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/waypoint library.geojson"};
+
+        // Acutual list of waypoints.
+        QVector<GeoMaps::Waypoint> m_waypoints;
+    };
 
 };

@@ -25,60 +25,94 @@
 #include "Librarian.h"
 #include "geomaps/WaypointLibrary.h"
 
-
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
     : GlobalObject(parent)
 {
-    loadFromGeoJSON();
-    connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this](){save();});
+    (void)loadFromGeoJSON();
+    connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this]()
+            { (void)save(); });
 }
 
-/*
-void GeoMaps::WaypointLibrary::deferredInitialization()
+//
+// Methods
+//
+
+void GeoMaps::WaypointLibrary::add(const GeoMaps::Waypoint &waypoint)
 {
+    if (!waypoint.isValid())
+    {
+        return;
+    }
+
+    m_waypoints.append(waypoint);
+    std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
+              { return a.name() < b.name(); });
+    emit waypointsChanged();
 }
-*/
 
-//
-// Getter Methods
-//
+QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QString &filter) const
+{
+    QVector<GeoMaps::Waypoint> result;
 
+    QString simplifiedFilter = GlobalObject::librarian()->simplifySpecialChars(filter);
+    foreach (auto waypoint, m_waypoints)
+    {
+        auto simplifiedName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
+        if (simplifiedName.contains(simplifiedFilter, Qt::CaseInsensitive))
+        {
+            result.append(waypoint);
+        }
+    }
+    return result;
+}
 
-
-//
-// Private Methods and Slots
-//
+bool GeoMaps::WaypointLibrary::hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const
+{
+    for (const auto &wp : qAsConst(m_waypoints))
+    {
+        if (wp.isNear(waypoint))
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
 {
-    if (fileName.isEmpty()) {
+    if (fileName.isEmpty())
+    {
         fileName = stdFileName;
     }
 
     QFile file(fileName);
     auto success = file.open(QIODevice::ReadOnly);
-    if (!success) {
+    if (!success)
+    {
         return tr("Cannot open file '%1' for reading.").arg(fileName);
     }
     auto fileContent = file.readAll();
-    if (fileContent.isEmpty()) {
+    if (fileContent.isEmpty())
+    {
         return tr("Cannot read data from file '%1'.").arg(fileName);
     }
     file.close();
 
     QJsonParseError parseError{};
     auto document = QJsonDocument::fromJson(fileContent, &parseError);
-    if (parseError.error != QJsonParseError::NoError) {
+    if (parseError.error != QJsonParseError::NoError)
+    {
         return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
     }
 
     QVector<GeoMaps::Waypoint> newWaypoints;
-    foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
+    foreach (auto value, document.object()[QStringLiteral("features")].toArray())
+    {
         auto wp = GeoMaps::Waypoint(value.toObject());
-        if (!wp.isValid()) {
+        if (!wp.isValid())
+        {
             return tr("Cannot parse content of file '%1'.").arg(fileName);
         }
-
         newWaypoints.append(wp);
     }
 
@@ -88,6 +122,33 @@ auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
     return {};
 }
 
+bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint)
+{
+    if (m_waypoints.removeOne(waypoint))
+    {
+        emit waypointsChanged();
+        return true;
+    }
+    return false;
+}
+
+bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint)
+{
+    if (!newWaypoint.isValid())
+    {
+        return false;
+    }
+
+    if (m_waypoints.removeOne(oldWaypoint))
+    {
+        m_waypoints.append(newWaypoint);
+        std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
+                  { return a.name() < b.name(); });
+        emit waypointsChanged();
+        return true;
+    }
+    return false;
+}
 
 auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
 {
@@ -113,11 +174,10 @@ auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
     return {};
 }
 
-
 auto GeoMaps::WaypointLibrary::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
-    foreach(auto waypoint, m_waypoints)
+    foreach (auto waypoint, m_waypoints)
     {
         if (waypoint.isValid())
         {
@@ -132,45 +192,3 @@ auto GeoMaps::WaypointLibrary::toGeoJSON() const -> QByteArray
     doc.setObject(jsonObj);
     return doc.toJson();
 }
-
-
-
-QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QString& filter) const
-{
-    QVector<GeoMaps::Waypoint> result;
-
-    QString simplifiedFilter = GlobalObject::librarian()->simplifySpecialChars(filter);
-    foreach(auto waypoint, m_waypoints) {
-        auto simplifiedName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
-        if (simplifiedName.contains(simplifiedFilter, Qt::CaseInsensitive)) {
-            result.append(waypoint);
-        }
-    }
-#warning need to sort
-    return result;
-}
-
-
-bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint& waypoint)
-{
-    if (m_waypoints.removeOne(waypoint))
-    {
-        emit waypointsChanged();
-        return true;
-    }
-    return false;
-}
-
-
-bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint& oldWaypoint, const GeoMaps::Waypoint& newWaypoint)
-{
-    if (m_waypoints.removeOne(oldWaypoint))
-    {
-        m_waypoints.append(newWaypoint);
-#warning need to sort
-        emit waypointsChanged();
-        return true;
-    }
-    return false;
-}
-

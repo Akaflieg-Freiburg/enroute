@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,12 +28,21 @@ import enroute 1.0
 
 import "../items"
 
+/* Waypoint dialog
+ *
+ * Short description: set property waypoint, then open. Re-implement onAccepted and read the new values from newName, newLatitude
+ * and newLongitude.
+ */
+
 Dialog {
     id: waypointEditorDialog
 
     // Property waypoint, and code to handle waypoint changes
     property var waypoint: global.geoMapProvider().createWaypoint()
-    property int index: -1 // Index of waypoint in flight route
+
+    readonly property string newName: wpNameField.text
+    readonly property double newLatitude: latInput.value
+    readonly property double newLongitude: longInput.value
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
@@ -122,12 +131,6 @@ Dialog {
 
     function enableOk() {
         waypointEditorDialog.standardButton(DialogButtonBox.Ok).enabled = latInput.acceptableInput && longInput.acceptableInput
-    }
-
-    onAccepted: {
-        global.navigator().flightRoute.renameWaypoint(index, wpNameField.text)
-        global.navigator().flightRoute.relocateWaypoint(index, latInput.value, longInput.value)
-        close()
     }
 
 } // Dialog

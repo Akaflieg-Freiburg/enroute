@@ -106,6 +106,29 @@ Page {
                             global.navigator().flightRoute.removeWaypoint(index)
                         }
                     }
+
+                    Rectangle {
+                        height: 1
+                        Layout.fillWidth: true
+                        color: Material.primary
+                    }
+
+                    Action {
+                        text: qsTr("Add to waypoint library")
+                        enabled: {
+                            // Mention waypoints, in order to update
+                            global.waypointLibrary().waypoints
+
+                            return !global.waypointLibrary().hasNearbyEntry(waypoint)
+                        }
+
+                        onTriggered: {
+                            global.mobileAdaptor().vibrateBrief()
+                            global.waypointLibrary().add(waypoint)
+                            toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
+                        }
+                    }
+
                 }
             }
 
@@ -748,6 +771,14 @@ Page {
 
     WaypointEditor {
         id: wpEditor
+
+        property int index: -1 // Index of waypoint in flight route
+
+        onAccepted: {
+            global.navigator().flightRoute.renameWaypoint(index, newName)
+            global.navigator().flightRoute.relocateWaypoint(index, newLatitude, newLongitude)
+            close()
+        }
     }
 
 } // Page

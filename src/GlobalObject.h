@@ -35,6 +35,7 @@ class SSLErrorHandler;
 
 namespace GeoMaps {
 class GeoMapProvider;
+class WaypointLibrary;
 };
 
 namespace Navigation {
@@ -191,6 +192,12 @@ class GlobalObject : public QObject
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Traffic::TrafficDataProvider* trafficDataProvider();
+
+    /*! \brief Pointer to appplication-wide static WaypointLibrary instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static GeoMaps::WaypointLibrary* waypointLibrary();
 
     /*! \brief Pointer to appplication-wide static WeatherDataProvider instance
      *

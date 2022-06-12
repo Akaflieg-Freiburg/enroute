@@ -32,6 +32,7 @@
 
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MBTILES.h"
+#include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
 
 
@@ -144,6 +145,19 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
         }
     }
 
+    const auto wpLibrary = GlobalObject::waypointLibrary()->waypoints();
+    for(const auto& wp : wpLibrary) {
+        if (!wp.isValid()) {
+            continue;
+        }
+        if (!result.isValid()) {
+            result = wp;
+        }
+        if (position.distanceTo(wp.coordinate()) < position.distanceTo(result.coordinate())) {
+            result = wp;
+        }
+    }
+
     for(auto& variant : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() ) {
         auto wp = variant.value<GeoMaps::Waypoint>();
         if (!wp.isValid()) {
@@ -170,9 +184,8 @@ auto GeoMaps::GeoMapProvider::emptyGeoJSON() -> QByteArray
     return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 }
 
-auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> QVariantList
+auto GeoMaps::GeoMapProvider::filteredWaypoints(const QString &filter) -> QVector<GeoMaps::Waypoint>
 {
-    auto wps = waypoints();
 
     QStringList filterWords;
     foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
@@ -183,26 +196,45 @@ auto GeoMaps::GeoMapProvider::filteredWaypointObjects(const QString &filter) -> 
         filterWords.append(simplifiedWord);
     }
 
-    QVariantList result;
-    foreach(auto wp, wps) {
+    QVector<GeoMaps::Waypoint> result;
+
+    const auto wps = waypoints();
+    for(const auto& wp : wps) {
         if (!wp.isValid()) {
             continue;
         }
         bool allWordsFound = true;
         foreach(auto word, filterWords) {
             QString fullName = GlobalObject::librarian()->simplifySpecialChars(wp.name());
-            QString codeName = GlobalObject::librarian()->simplifySpecialChars(wp.ICAOCode());
-            QString wordx = GlobalObject::librarian()->simplifySpecialChars(word);
-
-            if (!fullName.contains(wordx, Qt::CaseInsensitive) && !codeName.contains(wordx, Qt::CaseInsensitive)) {
+            if (!fullName.contains(word, Qt::CaseInsensitive) && !wp.ICAOCode().contains(word, Qt::CaseInsensitive)) {
                 allWordsFound = false;
                 break;
             }
         }
         if (allWordsFound) {
-            result.append( QVariant::fromValue(wp) );
+            result.append( wp );
         }
     }
+
+    const auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
+    for(const auto& wp : wpsLib) {
+        if (!wp.isValid()) {
+            continue;
+        }
+        bool allWordsFound = true;
+        foreach(auto word, filterWords) {
+            QString fullName = GlobalObject::librarian()->simplifySpecialChars(wp.name());
+            if (!fullName.contains(word, Qt::CaseInsensitive) && !wp.ICAOCode().contains(word, Qt::CaseInsensitive)) {
+                allWordsFound = false;
+                break;
+            }
+        }
+        if (allWordsFound) {
+            result.append( wp );
+        }
+    }
+
+    std::sort(result.begin(), result.end(), [](const Waypoint& a, const Waypoint& b) {return a.name() < b.name(); });
 
     return result;
 }

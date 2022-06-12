@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtPositioning 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
@@ -373,59 +374,133 @@ Dialog {
     footer: DialogButtonBox {
 
         ToolButton {
-            text: qsTr("Direct")
-            icon.source: "/icons/material/ic_keyboard_tab.svg"
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: global.positionProvider().receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
+            text: qsTr("Route")
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                if (global.navigator().flightRoute.size > 0)
-                    overwriteDialog.open()
-                else {
-                    global.navigator().flightRoute.clear()
-                    global.navigator().flightRoute.append(global.positionProvider().lastValidCoordinate)
-                    global.navigator().flightRoute.append(waypoint)
-                    toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
+                addMenu.open()
+            }
+
+            Menu {
+                id: addMenu
+
+                Action {
+                    text: qsTr("Direct")
+                    enabled: global.positionProvider().receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        if (global.navigator().flightRoute.size > 0)
+                            overwriteDialog.open()
+                        else {
+                            global.navigator().flightRoute.clear()
+                            global.navigator().flightRoute.append(global.positionProvider().lastValidCoordinate)
+                            global.navigator().flightRoute.append(waypoint)
+                            toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
+                        }
+                        close()
+                    }
+
+                }
+
+                Rectangle {
+                    height: 1
+                    Layout.fillWidth: true
+                    color: Material.primary
+                }
+
+                Action {
+                    text: qsTr("Append to route")
+                    enabled: {
+                        // Mention Object to ensure that property gets updated
+                        // when flight route changes
+                        global.navigator().flightRoute.size
+
+                        return global.navigator().flightRoute.canAppend(waypoint)
+                    }
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        global.navigator().flightRoute.append(waypoint)
+                        close()
+                        toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
+                    }
+                }
+
+                Action {
+                    text: qsTr("Remove from route")
+
+                    enabled:  {
+                        // Mention to ensure that property gets updated
+                        // when flight route changes
+                        global.navigator().flightRoute.size
+
+                        return global.navigator().flightRoute.contains(waypoint)
+                    }
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        close()
+                        var index = global.navigator().flightRoute.lastIndexOf(waypoint)
+                        if (index < 0)
+                            return
+                        global.navigator().flightRoute.removeWaypoint(index)
+                        toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
+                    }
                 }
             }
+
         }
 
         ToolButton {
-            enabled: {
-                // Mention Object to ensure that property gets updated
-                // when flight route changes
-                global.navigator().flightRoute.size
+            text: qsTr("Library")
+            enabled: waypoint.category === "WP"
 
-                return global.navigator().flightRoute.canAppend(waypoint)
-            }
-            icon.source: "/icons/material/ic_add_circle.svg"
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                global.navigator().flightRoute.append(waypoint)
-                close()
-                toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
+                libraryMenu.open()
             }
-        }
 
-        ToolButton {
-            icon.source: "/icons/material/ic_remove_circle.svg"
-            enabled:  {
-                // Mention to ensure that property gets updated
-                // when flight route changes
-                global.navigator().flightRoute.size
+            Menu {
+                id: libraryMenu
 
-                return global.navigator().flightRoute.contains(waypoint)
+                Action {
+                    text: qsTr("Add to library")
+                    enabled: !global.waypointLibrary().hasNearbyEntry(waypoint)
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        wpAdd.waypoint = waypoint
+                        wpAdd.open()
+                        close()
+                    }
+                }
+
+                Action {
+                    text: qsTr("Edit in library")
+                    enabled: global.waypointLibrary().contains(waypoint)
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        wpEdit.waypoint = waypoint
+                        wpEdit.open()
+                        close()
+                    }
+                }
+
+                Action {
+                    text: qsTr("Remove from library")
+                    enabled: global.waypointLibrary().contains(waypoint)
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        removeDialog.waypoint = waypoint
+                        removeDialog.open()
+                        close()
+                    }
+                }
+
             }
-            onClicked: {
-                global.mobileAdaptor().vibrateBrief()
-                close()
-                var index = global.navigator().flightRoute.lastIndexOf(waypoint)
-                if (index < 0)
-                    return
-                toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
-                global.navigator().flightRoute.removeWaypoint(index)
-            }
+
         }
 
         onRejected: close()
@@ -472,4 +547,76 @@ Dialog {
         id: weatherReport
         weatherStation: waypointDescriptionDialog.weatherStation
     }
+
+    WaypointEditor {
+        id: wpEdit
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+            var newWP = waypoint.renamed(newName)
+            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
+            global.waypointLibrary().replace(waypoint, newWP)
+            toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
+        }
+    }
+
+    WaypointEditor {
+        id: wpAdd
+
+        title: qsTr("Add waypoint to library")
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+            var newWP = waypoint.renamed(newName)
+            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
+            global.waypointLibrary().add(newWP)
+            toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
+        }
+    }
+
+
+    Dialog {
+        id: removeDialog
+
+        property var waypoint: global.geoMapProvider().createWaypoint()
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        title: qsTr("Remove from device?")
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+
+        Label {
+            width: removeDialog.availableWidth
+
+            text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
+            wrapMode: Text.Wrap
+            textFormat: Text.StyledText
+        }
+
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+            global.waypointLibrary().remove(removeDialog.waypoint)
+            page.reloadWaypointList()
+            toast.doToast(qsTr("Waypoint removed from device"))
+        }
+        onRejected: {
+            global.mobileAdaptor().vibrateBrief()
+            page.reloadWaypointList() // Re-display aircraft that have been swiped out
+            close()
+        }
+
+    }
+
+
 } // Dialog

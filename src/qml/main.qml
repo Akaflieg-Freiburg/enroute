@@ -133,7 +133,6 @@ ApplicationWindow {
                     }
                 }
 
-
                 ItemDelegate {
                     id: menuItemNearby
 
@@ -209,7 +208,6 @@ ApplicationWindow {
                             }
                         }
 
-
                         ItemDelegate {
                             text: qsTr("Maps and Data")
                                   + (global.dataManager().items.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
@@ -225,6 +223,20 @@ ApplicationWindow {
                                 drawer.close()
                             }
                         }
+
+                        ItemDelegate {
+                            text: qsTr("Waypoints")
+                            icon.source: "/icons/waypoints/WP.svg"
+                            Layout.fillWidth: true
+
+                            onClicked: {
+                                global.mobileAdaptor().vibrateBrief()
+                                stackView.push("pages/WaypointLibrary.qml")
+                                libraryMenu.close()
+                                drawer.close()
+                            }
+                        }
+
 
                     }
 

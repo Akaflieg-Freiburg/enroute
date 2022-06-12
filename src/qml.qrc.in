@@ -47,6 +47,7 @@
         <file alias="pages/Positioning.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/Positioning.qml</file>
         <file alias="pages/SettingsPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/SettingsPage.qml</file>
         <file alias="pages/TrafficReceiver.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/TrafficReceiver.qml</file>
+        <file alias="pages/WaypointLibrary.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/WaypointLibrary.qml</file>
         <file alias="pages/WeatherPage.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/pages/WeatherPage.qml</file>
     </qresource>
 </RCC>

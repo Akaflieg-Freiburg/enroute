@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -373,7 +373,6 @@ Item {
             path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
         }
 
-
         MapItemView { // Traffic opponents
             model: global.trafficDataProvider().trafficObjects4QML
             delegate: Component {
@@ -383,55 +382,64 @@ Item {
             }
         }
 
-        MapItemView {
-            id: midFieldWaypoints
-            model: global.navigator().flightRoute.midFieldWaypoints
-            delegate: Component {
+        Component {
+            id: waypointComponent
 
-                MapQuickItem {
-                    id: midFieldWP
+            MapQuickItem {
+                id: midFieldWP
 
-                    anchorPoint.x: image.width/2
-                    anchorPoint.y: image.height/2
-                    coordinate: model.modelData.coordinate
+                anchorPoint.x: image.width/2
+                anchorPoint.y: image.height/2
+                coordinate: model.modelData.coordinate
 
-                    Connections {
-                        // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
-                        // is not updated when the height of the map changes. It does get updated when the
-                        // width of the map changes. We use the undocumented method polishAndUpdate() here.
-                        target: flightMap
-                        function onHeightChanged() { midFieldWP.polishAndUpdate() }
+                Connections {
+                    // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+                    // is not updated when the height of the map changes. It does get updated when the
+                    // width of the map changes. We use the undocumented method polishAndUpdate() here.
+                    target: flightMap
+                    function onHeightChanged() { midFieldWP.polishAndUpdate() }
+                }
+
+                sourceItem: Item{
+                    Image {
+                        id: image
+
+                        source:  "/icons/waypoints/WP-map.svg"
+                        sourceSize.width: 10
+                        sourceSize.height: 10
                     }
-
-                    sourceItem: Item{
-                        Image {
-                            id: image
-
-                            source:  "/icons/waypoints/WP-map.svg"
-                            sourceSize.width: 10
-                            sourceSize.height: 10
-                        }
-                        Label {
-                            anchors.verticalCenter: image.verticalCenter
-                            anchors.left: image.right
-                            anchors.leftMargin: 5
-                            text: model.modelData.extendedName
-                            visible: (flightMap.zoomLevel > 11.0) && (model.modelData.extendedName !== "Waypoint")
-                            leftInset: -4
-                            rightInset: -4
-                            topInset: -2
-                            bottomInset: -2
-                            background: Rectangle {
-                                opacity: 0.8
-                                border.color: "black"
-                                border.width: 0.5
-                                color: "white"
-                            }
+                    Label {
+                        anchors.verticalCenter: image.verticalCenter
+                        anchors.left: image.right
+                        anchors.leftMargin: 5
+                        text: model.modelData.extendedName
+                        visible: (flightMap.zoomLevel > 11.0) && (model.modelData.extendedName !== "Waypoint")
+                        leftInset: -4
+                        rightInset: -4
+                        topInset: -2
+                        bottomInset: -2
+                        background: Rectangle {
+                            opacity: 0.8
+                            border.color: "black"
+                            border.width: 0.5
+                            color: "white"
                         }
                     }
                 }
-
             }
+
+        }
+
+        MapItemView {
+            id: midFieldWaypoints
+            model: global.navigator().flightRoute.midFieldWaypoints
+            delegate: waypointComponent
+        }
+
+        MapItemView {
+            id: waypointLibrary
+            model: global.waypointLibrary().waypoints
+            delegate: waypointComponent
         }
 
         // Mouse Area, in order to receive mouse clicks
@@ -449,8 +457,8 @@ Item {
             onDoubleClicked: {
                 global.mobileAdaptor().vibrateBrief()
                 var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                        flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
-                                                        global.navigator().flightRoute)
+                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
+                                                                 global.navigator().flightRoute)
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
@@ -720,17 +728,17 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         opacity: 0.8
 
         Label {
-        id: noCopyrightInfo
-        text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-        onLinkActivated: copyrightDialog.open()
+            id: noCopyrightInfo
+            text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
+            onLinkActivated: copyrightDialog.open()
 
-        LongTextDialog {
-            id: copyrightDialog
-            title: qsTr("Map Data Copyright Information")
-            text: global.geoMapProvider().copyrightNotice
-            standardButtons: Dialog.Cancel
+            LongTextDialog {
+                id: copyrightDialog
+                title: qsTr("Map Data Copyright Information")
+                text: global.geoMapProvider().copyrightNotice
+                standardButtons: Dialog.Cancel
+            }
         }
-    }
     }
 
     NavBar {

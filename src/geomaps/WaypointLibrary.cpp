@@ -50,6 +50,17 @@ void GeoMaps::WaypointLibrary::add(const GeoMaps::Waypoint &waypoint)
     emit waypointsChanged();
 }
 
+void GeoMaps::WaypointLibrary::clear()
+{
+    if (m_waypoints.isEmpty())
+    {
+        return;
+    }
+
+    m_waypoints.clear();
+    emit waypointsChanged();
+}
+
 QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QString &filter) const
 {
     QVector<GeoMaps::Waypoint> result;

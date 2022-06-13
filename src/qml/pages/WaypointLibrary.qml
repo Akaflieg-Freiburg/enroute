@@ -35,7 +35,181 @@ Page {
     focus: true
 
 
-    header: StandardHeader {}
+    header: ToolBar {
+
+        Material.foreground: "white"
+        height: 60
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                global.mobileAdaptor().vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_more_vert.svg"
+            onClicked: {
+                global.mobileAdaptor().vibrateBrief()
+                headerMenuX.popup()
+            }
+
+            AutoSizingMenu {
+                id: headerMenuX
+                cascade: true
+
+                MenuSeparator { }
+
+                MenuItem {
+                    text: qsTr("Import …")
+                    enabled: Qt.platform.os !== "android"
+                    height: Qt.platform.os !== "android" ? undefined : 0
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        highlighted = false
+
+                        global.mobileAdaptor().importContent()
+                    }
+                }
+
+                AutoSizingMenu {
+                    title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
+                    enabled: (global.navigator().flightRoute.size > 0)
+
+                    MenuItem {
+                        text: qsTr("… to GeoJSON file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            global.mobileAdaptor().vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
+                            if (errorString === "abort") {
+                                toast.doToast(qsTr("Aborted"))
+                                return
+                            }
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                                return
+                            }
+                            if (Qt.platform.os === "android")
+                                toast.doToast(qsTr("Flight route shared"))
+                            else
+                                toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… to GPX file")
+                        onTriggered: {
+                            headerMenuX.close()
+                            global.mobileAdaptor().vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
+                            if (errorString === "abort") {
+                                toast.doToast(qsTr("Aborted"))
+                                return
+                            }
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                                return
+                            }
+                            if (Qt.platform.os === "android")
+                                toast.doToast(qsTr("Flight route shared"))
+                            else
+                                toast.doToast(qsTr("Flight route exported"))
+                        }
+                    }
+                }
+
+                AutoSizingMenu {
+                    title: qsTr("Open in other app …")
+                    enabled: (global.navigator().flightRoute.size > 0)
+
+                    MenuItem {
+                        text: qsTr("… in GeoJSON format")
+
+                        onTriggered: {
+                            global.mobileAdaptor().vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+
+                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                            } else
+                                toast.doToast(qsTr("Flight route opened in other app"))
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("… in GPX format")
+
+                        onTriggered: {
+                            global.mobileAdaptor().vibrateBrief()
+                            highlighted = false
+                            parent.highlighted = false
+
+                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            if (errorString !== "") {
+                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.open()
+                            } else
+                                toast.doToast(qsTr("Flight route opened in other app"))
+                        }
+                    }
+
+                }
+
+                MenuSeparator { }
+
+                MenuItem {
+                    text: qsTr("Clear")
+                    enabled: global.waypointLibrary().waypoints.length > 0
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        highlighted = false
+                        clearDialog.open()
+                    }
+
+                }
+
+            }
+        }
+    }
 
     TextField {
         id: textInput
@@ -209,6 +383,40 @@ Page {
 
     }
 
+    Dialog {
+        id: clearDialog
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        title: qsTr("Clear waypoint library?")
+
+        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+
+        Label {
+            width: removeDialog.availableWidth
+
+            text: qsTr("Once cleared, the library cannot be restored.")
+            wrapMode: Text.Wrap
+            textFormat: Text.StyledText
+        }
+
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+            global.waypointLibrary().clear()
+            page.reloadWaypointList()
+            toast.doToast(qsTr("Waypoint library cleared"))
+        }
+    }
 
     WaypointEditor {
         id: wpEditor
@@ -222,7 +430,6 @@ Page {
         }
 
     }
-
 
     WaypointDescription {
         id: waypointDescription

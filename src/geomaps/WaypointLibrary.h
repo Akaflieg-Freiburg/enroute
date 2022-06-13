@@ -84,6 +84,9 @@ namespace GeoMaps
          */
         Q_INVOKABLE void add(const GeoMaps::Waypoint &waypoint);
 
+        /*! \brief Clears the waypoint library */
+        Q_INVOKABLE void clear();
+
         /*! \brief Checks if library contains an given waypoint
          *
          * @param waypoint Waypoint

@@ -111,7 +111,7 @@ Page {
                             global.mobileAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = global.mobileAdaptor().exportContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -122,9 +122,9 @@ Page {
                                 return
                             }
                             if (Qt.platform.os === "android")
-                                toast.doToast(qsTr("Flight route shared"))
+                                toast.doToast(qsTr("Waypoint library shared"))
                             else
-                                toast.doToast(qsTr("Flight route exported"))
+                                toast.doToast(qsTr("Waypoint library exported"))
                         }
                     }
 
@@ -135,7 +135,7 @@ Page {
                             global.mobileAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = global.mobileAdaptor().exportContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -146,9 +146,9 @@ Page {
                                 return
                             }
                             if (Qt.platform.os === "android")
-                                toast.doToast(qsTr("Flight route shared"))
+                                toast.doToast(qsTr("Waypoint library shared"))
                             else
-                                toast.doToast(qsTr("Flight route exported"))
+                                toast.doToast(qsTr("Waypoint library exported"))
                         }
                     }
                 }
@@ -165,12 +165,12 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            var errorString = global.mobileAdaptor().viewContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                toast.doToast(qsTr("Waypoint library opened in other app"))
                         }
                     }
 
@@ -182,12 +182,12 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.mobileAdaptor().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            var errorString = global.mobileAdaptor().viewContent(global.waypointLibrary().toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
                             } else
-                                toast.doToast(qsTr("Flight route opened in other app"))
+                                toast.doToast(qsTr("Waypoint library opened in other app"))
                         }
                     }
 

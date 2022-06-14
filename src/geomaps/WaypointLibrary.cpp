@@ -21,6 +21,7 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QXmlStreamWriter>
 
 #include "Librarian.h"
 #include "geomaps/WaypointLibrary.h"
@@ -204,109 +205,48 @@ auto GeoMaps::WaypointLibrary::toGeoJSON() const -> QByteArray
     return doc.toJson();
 }
 
-#warning documentation
-
 auto GeoMaps::WaypointLibrary::toGpx() const -> QByteArray
 {
-    // now in UTC, ISO 8601 alike
-    //
-    QString now = QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyy-MM-dd HH:mm:ssZ"));
+    QByteArray result;
 
-    // gpx header
-    //
-    QString gpx = QString("<?xml version='1.0' encoding='UTF-8'?>\n"
-                          "<gpx version='1.1' creator='Enroute - https://akaflieg-freiburg.github.io/enroute'\n"
-                          "     xmlns='http://www.topografix.com/GPX/1/1'\n"
-                          "     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>\n"
-                          "  <metadata>\n"
-                          "    <name>Enroute " + now + "</name>\n"
-                          "    <time>" + now + "</time>\n"
-                          "  </metadata>\n");
+    QXmlStreamWriter stream(&result);
+    stream.setAutoFormatting(true);
+    stream.writeStartDocument();
 
-    // 2 spaces additional indent
-    //
-    // waypoints
-    //
-    QString tag = "wpt";
-    QString indent = "  ";
+    stream.writeStartElement(QStringLiteral("gpx"));
+    stream.writeAttribute(QStringLiteral("version"), QStringLiteral("1.1"));
+    stream.writeAttribute(QStringLiteral("creator"), QStringLiteral("Enroute Flight Navigation"));
+    stream.writeAttribute(QStringLiteral("xmlns"), QStringLiteral("http://www.topografix.com/GPX/1/1"));
+    stream.writeAttribute(QStringLiteral("xmlns:xsi"), QStringLiteral("http://www.w3.org/2001/XMLSchema-instance"));
+
+    stream.writeStartElement(QStringLiteral("metadata"));
+    stream.writeTextElement(QStringLiteral("name"), QStringLiteral("Waypoint Library"));
+    stream.writeEndElement(); // metadata
+
     for(const auto& _waypoint : m_waypoints) {
 
-        if (!_waypoint.isValid()) {
-            continue; // skip silently
+        if (!_waypoint.isValid())
+        {
+            continue;
         }
 
         QGeoCoordinate position = _waypoint.coordinate();
-        auto code = _waypoint.ICAOCode();
-        auto name = _waypoint.extendedName();
-
-        if (code.isEmpty()) {
-            code = name;
-        }
-
         auto lat = QString::number(position.latitude(), 'f', 8);
         auto lon = QString::number(position.longitude(), 'f', 8);
-        gpx += indent + "<" + tag + " lat='" + lat + "' lon='" + lon + "'>\n";
 
+        stream.writeStartElement(QStringLiteral("wpt"));
+        stream.writeAttribute(QStringLiteral("lat"), lat);
+        stream.writeAttribute(QStringLiteral("lon"), lon);
         if (_waypoint.coordinate().type() == QGeoCoordinate::Coordinate3D) {
-
-            // elevation in meters always for gpx
-            //
             auto elevation = QString::number(_waypoint.coordinate().altitude(), 'f', 2);
-            gpx += indent + "  <ele>" + elevation + "</ele>\n";
+            stream.writeTextElement(QStringLiteral("ele"), elevation);
         }
-
-        gpx += indent + "  <name>" + code + "</name>\n" +
-                indent + "  <cmt>" + name + "</cmt>\n" +
-                indent + "  <desc>" + name + "</desc>\n" +
-                indent + "</" + tag + ">\n";
+        stream.writeTextElement(QStringLiteral("name"), _waypoint.extendedName());
+        stream.writeEndElement(); // wpt
     }
 
-//    gpx += gpxElements(QStringLiteral("  "), QStringLiteral("wpt"));
+    stream.writeEndElement(); // gpx
+    stream.writeEndDocument();
 
-    gpx += QLatin1String("</gpx>\n");
-
-    return gpx.toUtf8();
+    return result;
 }
-
-/*
-auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& tag) const -> QString
-{
-    QString gpx = QLatin1String("");
-
-    // waypoints
-    //
-    for(const auto& _waypoint : m_waypoints) {
-
-        if (!_waypoint.isValid()) {
-            continue; // skip silently
-        }
-
-        QGeoCoordinate position = _waypoint.coordinate();
-        auto code = _waypoint.ICAOCode();
-        auto name = _waypoint.extendedName();
-
-        if (code.isEmpty()) {
-            code = name;
-        }
-
-        auto lat = QString::number(position.latitude(), 'f', 8);
-        auto lon = QString::number(position.longitude(), 'f', 8);
-        gpx += indent + "<" + tag + " lat='" + lat + "' lon='" + lon + "'>\n";
-
-        if (_waypoint.coordinate().type() == QGeoCoordinate::Coordinate3D) {
-
-            // elevation in meters always for gpx
-            //
-            auto elevation = QString::number(_waypoint.coordinate().altitude(), 'f', 2);
-            gpx += indent + "  <ele>" + elevation + "</ele>\n";
-        }
-
-        gpx += indent + "  <name>" + code + "</name>\n" +
-                indent + "  <cmt>" + name + "</cmt>\n" +
-                indent + "  <desc>" + name + "</desc>\n" +
-                indent + "</" + tag + ">\n";
-    }
-
-    return gpx;
-}
-*/

@@ -84,14 +84,7 @@ Dialog {
 
         Label {
             Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Format")
-        }
-        ComboBox {
-            id: formatChoice
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBaseline
-
-            model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+            Layout.columnSpan: 2
         }
 
         Label {
@@ -126,6 +119,53 @@ Dialog {
 
             onAcceptableInputChanged: enableOk()
         }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Format")
+        }
+        ComboBox {
+            id: formatChoice
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+
+            model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            Layout.columnSpan: 2
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Elevation")
+        }
+        ElevationInput {
+            id: eleField
+
+            valueMeter: waypoint.coordinate.altitude
+            currentIndex: eleFormatChoice.currentIndex
+
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+            Layout.minimumWidth: view.font.pixelSize*5
+
+            focus: true
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Unit")
+        }
+        ComboBox {
+            id: eleFormatChoice
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+
+            model: [ qsTr("Feet"), qsTr("Meter") ]
+        }
+
 
     }
 

@@ -43,6 +43,7 @@ Dialog {
     readonly property string newName: wpNameField.text
     readonly property double newLatitude: latInput.value
     readonly property double newLongitude: longInput.value
+    readonly property double newAltitudeMeter: eleField.valueMeter
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
@@ -144,14 +145,9 @@ Dialog {
         ElevationInput {
             id: eleField
 
-            valueMeter: waypoint.coordinate.altitude
-            currentIndex: eleFormatChoice.currentIndex
-
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBaseline
-            Layout.minimumWidth: view.font.pixelSize*5
-
-            focus: true
+            currentIndex: eleFormatChoice.currentIndex
+            valueMeter: waypoint.coordinate.altitude
         }
 
         Label {

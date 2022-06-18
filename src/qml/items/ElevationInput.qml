@@ -29,20 +29,17 @@ StackLayout {
     property double valueMeter: NaN
 
     function setTexts() {
-        console.warn("XXX")
         if (isNaN(valueMeter)) {
-            console.warn("A")
             ft_d.text = ""
             m_d.text = ""
             return
         }
 
-        console.warn(valueMeter)
         ft_d.text = Math.round(valueMeter*3.281)
         m_d.text = Math.round(valueMeter)
     }
 
-    Component.onCompleted: {console.info("A"); setTexts() }
+    Component.onCompleted: setTexts()
     onCurrentIndexChanged: setTexts()
     onValueMeterChanged: setTexts()
 
@@ -68,7 +65,7 @@ StackLayout {
                 if (ft_d.acceptableInput)
                     valueMeter = Number.fromLocaleString(Qt.locale(), ft_d.text)/3.281
                 else
-                    valueMeter = undefined
+                    valueMeter = NaN
             }
         }
         Label { text: "ft" }
@@ -78,18 +75,6 @@ StackLayout {
         id: d
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
-
-        function setValue() {
-            if (!dm_d.acceptableInput || !dm_m.acceptableInput)
-                return
-
-            var dVal = Number.fromLocaleString(Qt.locale(), dm_d.text)
-            var mVal = Number.fromLocaleString(Qt.locale(), dm_m.text)
-            if (dVal >= 0)
-                value = dVal + mVal/60.0
-            else
-                value = dVal - mVal/60.0
-        }
 
         TextField {
             id: m_d
@@ -105,7 +90,10 @@ StackLayout {
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
-                dm.setValue()
+                if (ft_d.acceptableInput)
+                    valueMeter = Number.fromLocaleString(Qt.locale(), m_d.text)
+                else
+                    valueMeter = NaN
             }
         }
         Label { text: "m" }

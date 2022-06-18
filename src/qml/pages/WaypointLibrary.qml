@@ -85,17 +85,14 @@ Page {
                 id: headerMenuX
                 cascade: true
 
-                MenuSeparator { }
-
                 MenuItem {
                     text: qsTr("Import …")
                     enabled: Qt.platform.os !== "android"
-                    height: Qt.platform.os !== "android" ? undefined : 0
+                    height: enabled ? undefined : 0
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
-
                         global.mobileAdaptor().importContent()
                     }
                 }
@@ -423,7 +420,7 @@ Page {
 
         onAccepted: {
             var newWP = waypoint.renamed(newName)
-            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
+            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter) )
             global.waypointLibrary().replace(waypoint, newWP)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint modified"))

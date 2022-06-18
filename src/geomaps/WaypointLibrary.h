@@ -120,6 +120,9 @@ namespace GeoMaps
          */
         [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const;
 
+#warning docu
+        [[nodiscard]] Q_INVOKABLE QString importCUP(const QString& fileName);
+
         /*! \brief Read from file
          *
          * Reads the library from a file in GeoJSON format. On sucess, the

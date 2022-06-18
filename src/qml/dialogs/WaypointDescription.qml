@@ -410,7 +410,7 @@ Dialog {
                 }
 
                 Action {
-                    text: qsTr("Append to route")
+                    text: qsTr("Append")
                     enabled: {
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
@@ -428,7 +428,7 @@ Dialog {
                 }
 
                 Action {
-                    text: qsTr("Remove from route")
+                    text: qsTr("Remove")
 
                     enabled:  {
                         // Mention to ensure that property gets updated
@@ -464,7 +464,7 @@ Dialog {
                 id: libraryMenu
 
                 Action {
-                    text: qsTr("Add to library")
+                    text: qsTr("Add…")
                     enabled: !global.waypointLibrary().hasNearbyEntry(waypoint)
 
                     onTriggered: {
@@ -476,7 +476,7 @@ Dialog {
                 }
 
                 Action {
-                    text: qsTr("Edit in library")
+                    text: qsTr("Edit…")
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
@@ -488,7 +488,7 @@ Dialog {
                 }
 
                 Action {
-                    text: qsTr("Remove from library")
+                    text: qsTr("Remove…")
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
@@ -554,7 +554,7 @@ Dialog {
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
             var newWP = waypoint.renamed(newName)
-            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
+            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter) )
             global.waypointLibrary().replace(waypoint, newWP)
             toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
@@ -573,7 +573,6 @@ Dialog {
             toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
-
 
     Dialog {
         id: removeDialog
@@ -607,12 +606,10 @@ Dialog {
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
             global.waypointLibrary().remove(removeDialog.waypoint)
-            page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
             global.mobileAdaptor().vibrateBrief()
-            page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
 

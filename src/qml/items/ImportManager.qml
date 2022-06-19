@@ -42,10 +42,15 @@ Item {
             if (fileName === "")
                 return
 
-            if (fileFunction === MobileAdaptor.CUP) {
-                importCUPDialog.open()
+            if (fileFunction === MobileAdaptor.WaypointLibrary) {
+                importWPLibraryDialog.open()
                 return
             }
+            if (fileFunction === MobileAdaptor.FlightRouteOrWaypointLibrary) {
+                chooseFRorWPDialog.open()
+                return
+            }
+
             if (fileFunction === MobileAdaptor.VectorMap) {
                 importVectorMapDialog.open()
                 return
@@ -68,6 +73,63 @@ Item {
         }
     } // Connections
 
+    Dialog {
+        id: chooseFRorWPDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
+        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        title: qsTr("Import Waypoint Data")
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("The file contains a list of waypoints. Import as a flight route or add to the waypoint library?")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+        }
+
+        footer: DialogButtonBox {
+
+            ToolButton {
+                text: qsTr("Route")
+
+                onClicked: {
+                    global.mobileAdaptor().vibrateBrief()
+                    chooseFRorWPDialog.close()
+                    importFlightRouteDialog.open()
+                }
+            }
+
+            ToolButton {
+                    text: qsTr("Library")
+
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        chooseFRorWPDialog.close()
+                        importWPLibraryDialog.open()
+                    }
+                }
+
+            onRejected: close()
+        }
+
+
+        standardButtons: Dialog.Abort
+        modal: true
+    }
 
     Dialog {
         id: importRasterMapDialog
@@ -141,8 +203,7 @@ Item {
             toast.doToast( qsTr("Raster map imported") )
         }
 
-    } // importDialog
-
+    }
 
     Dialog {
         id: importVectorMapDialog
@@ -216,11 +277,10 @@ Item {
             toast.doToast( qsTr("Vector map imported") )
         }
 
-    } // importDialog
-
+    }
 
     Dialog {
-        id: importCUPDialog
+        id: importWPLibraryDialog
 
         // Size is chosen so that the dialog does not cover the parent in full
         width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
@@ -258,11 +318,15 @@ Item {
                 errorDialog.open()
                 return
             }
+
+            if (!(stackView.currentItem instanceof WaypointLibrary)) {
+                stackView.pop()
+                stackView.push("../pages/WaypointLibrary.qml")
+            }
             toast.doToast( qsTr("Waypoints imported") )
         }
 
-    } // importDialog
-
+    }
 
     Dialog {
         id: importFlightRouteDialog
@@ -315,7 +379,7 @@ Item {
             toast.doToast( qsTr("Flight route imported") )
         }
 
-    } // importDialog
+    }
 
     Dialog {
         id: errorDialog
@@ -344,6 +408,6 @@ Item {
             textFormat: Text.StyledText
         }
 
-    } // errorDialog
+    }
 
 }

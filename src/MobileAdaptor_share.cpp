@@ -24,6 +24,7 @@
 #include "GlobalObject.h"
 #include "MobileAdaptor.h"
 #include "geomaps/CUP.h"
+#include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "navigation/FlightRoute.h"
 #include "traffic/TrafficDataProvider.h"
@@ -209,20 +210,21 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         return;
     }
 
-    // Flight Route in GeoJSON format
-    if ((mimeType.name() == u"application/geo+json")
-            || myPath.endsWith(u".geojson", Qt::CaseInsensitive)) {
-        // We assume that the file contains a flight route in GeoJSON format
+    // GeoJSON file
+    auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
+    if (fileContent == GeoMaps::GeoJSON::flightRoute)
+    {
         emit openFileRequest(myPath, FlightRoute_GeoJSON);
         return;
     }
-
-    // Flight Route in GeoJSON format, without proper file name suffix
-    Navigation::FlightRoute testRoute;
-    auto errorMessage = testRoute.loadFromGeoJSON(myPath);
-    if (errorMessage.isEmpty()) {
-        // Ok, now that does look like a GeoJSON file to me.
-        emit openFileRequest(myPath, FlightRoute_GeoJSON);
+    if (fileContent == GeoMaps::GeoJSON::waypointLibrary)
+    {
+        emit openFileRequest(myPath, WaypointLibrary);
+        return;
+    }
+    if (fileContent == GeoMaps::GeoJSON::valid)
+    {
+        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
         return;
     }
 
@@ -235,13 +237,15 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     }
 
     // MBTiles containing a vector map
-    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector) {
+    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector)
+    {
         emit openFileRequest(myPath, VectorMap);
         return;
     }
 
     // MBTiles containing a raster map
-    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Raster) {
+    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Raster)
+    {
         emit openFileRequest(myPath, RasterMap);
         return;
     }
@@ -249,7 +253,7 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     // CUP file
     if (GeoMaps::CUP::isValid(myPath))
     {
-        emit openFileRequest(myPath, CUP);
+        emit openFileRequest(myPath, WaypointLibrary);
         return;
     }
 

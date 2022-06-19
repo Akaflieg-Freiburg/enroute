@@ -25,6 +25,7 @@
 
 #include "Librarian.h"
 #include "geomaps/CUP.h"
+#include "geomaps/GeoJSON.h"
 #include "geomaps/WaypointLibrary.h"
 
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
@@ -140,6 +141,10 @@ auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QSt
     auto result = GeoMaps::CUP::read(fileName);
     if (result.isEmpty())
     {
+        result = GeoMaps::GeoJSON::read(fileName);
+    }
+    if (result.isEmpty())
+    {
         return tr("Error reading waypoints from file '%1'.").arg(fileName);
     }
 
@@ -229,17 +234,19 @@ auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
 auto GeoMaps::WaypointLibrary::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
-    foreach (auto waypoint, m_waypoints)
+    foreach (const auto& waypoint, m_waypoints)
     {
         if (waypoint.isValid())
         {
             waypointArray.append(waypoint.toJSON());
         }
     }
+
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
-    jsonObj.insert(QStringLiteral("enroute"), QStringLiteral("waypoint library"));
+    jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorWaypointLibrary());
     jsonObj.insert(QStringLiteral("features"), waypointArray);
+
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc.toJson();

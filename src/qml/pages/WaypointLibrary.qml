@@ -224,9 +224,7 @@ Page {
         id: waypointDelegate
 
         RowLayout {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            Layout.fillWidth: true
+            width: wpList.width
             height: iDel.heigt
 
             SwipeToDeleteDelegate {

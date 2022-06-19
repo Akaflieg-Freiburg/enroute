@@ -80,6 +80,7 @@ set(SOURCES
     dataManagement/UpdateNotifier.h
     DemoRunner.h
     geomaps/Airspace.h
+    geomaps/CUP.h
     geomaps/GeoMapProvider.h
     geomaps/MBTILES.h
     geomaps/TileHandler.h
@@ -139,6 +140,7 @@ set(SOURCES
     dataManagement/UpdateNotifier.cpp
     DemoRunner.cpp
     geomaps/Airspace.cpp
+    geomaps/CUP.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/MBTILES.cpp
     geomaps/TileHandler.cpp

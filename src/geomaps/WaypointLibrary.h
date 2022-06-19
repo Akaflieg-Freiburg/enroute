@@ -120,8 +120,17 @@ namespace GeoMaps
          */
         [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const;
 
-#warning docu
-        [[nodiscard]] Q_INVOKABLE QString importCUP(const QString& fileName);
+        /*! \brief Import waypoints into the library
+         *
+         *  This method adds waypoints to the library
+         *
+         *  @param fileName Name of file to import
+         *
+         *  @param skip If true, skip over waypoints that already exist in the library
+         *
+         *  @return Humean-readable error message, or an empty string on success
+         */
+        [[nodiscard]] Q_INVOKABLE QString import(const QString& fileName, bool skip);
 
         /*! \brief Read from file
          *

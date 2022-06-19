@@ -21,6 +21,7 @@
 
 #include "GlobalObject.h"
 #include "MobileAdaptor.h"
+#include "geomaps/CUP.h"
 #include "geomaps/MBTILES.h"
 #include "navigation/FlightRoute.h"
 #include "traffic/TrafficDataProvider.h"
@@ -230,17 +231,24 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         return;
     }
 
-    // MBTiles containing raster map
+    // MBTiles containing a vector map
     if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector) {
         emit openFileRequest(myPath, VectorMap);
         return;
     }
+
+    // MBTiles containing a raster map
     if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Raster) {
         emit openFileRequest(myPath, RasterMap);
         return;
     }
 
-
+    // CUP file
+    if (GeoMaps::CUP::isValid(myPath))
+    {
+        emit openFileRequest(myPath, CUP);
+        return;
+    }
 
     emit openFileRequest(myPath, UnknownFunction);
 }

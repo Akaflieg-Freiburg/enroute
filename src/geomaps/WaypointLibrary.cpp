@@ -24,6 +24,7 @@
 #include <QXmlStreamWriter>
 
 #include "Librarian.h"
+#include "geomaps/CUP.h"
 #include "geomaps/WaypointLibrary.h"
 
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
@@ -31,7 +32,7 @@ GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
 {
     (void)loadFromGeoJSON();
     connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this]()
-            { (void)save(); });
+    { (void)save(); });
 }
 
 //
@@ -47,7 +48,7 @@ void GeoMaps::WaypointLibrary::add(const GeoMaps::Waypoint &waypoint)
 
     m_waypoints.append(waypoint);
     std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
-              { return a.name() < b.name(); });
+    { return a.name() < b.name(); });
     emit waypointsChanged();
 }
 
@@ -88,114 +89,6 @@ bool GeoMaps::WaypointLibrary::hasNearbyEntry(const GeoMaps::Waypoint &waypoint)
         }
     }
     return false;
-}
-
-QStringList parseCSV(const QString& string)
-{
-    // Thanks to https://stackoverflow.com/questions/27318631/parsing-through-a-csv-file-in-qt
-
-    enum State {Normal, Quote} state = Normal;
-    QStringList fields;
-    QString value;
-
-    for (int i = 0; i < string.size(); i++)
-    {
-        const QChar current = string.at(i);
-
-        // Normal state
-        if (state == Normal)
-        {
-            // Comma
-            if (current == ',')
-            {
-                // Save field
-                fields.append(value.trimmed());
-                value.clear();
-            }
-
-            // Double-quote
-            else if (current == '"')
-            {
-                state = Quote;
-                value += current;
-            }
-
-            // Other character
-            else
-                value += current;
-        }
-
-        // In-quote state
-        else if (state == Quote)
-        {
-            // Another double-quote
-            if (current == '"')
-            {
-                if (i < string.size())
-                {
-                    // A double double-quote?
-                    if (i+1 < string.size() && string.at(i+1) == '"')
-                    {
-                        value += '"';
-
-                        // Skip a second quote character in a row
-                        i++;
-                    }
-                    else
-                    {
-                        state = Normal;
-                        value += '"';
-                    }
-                }
-            }
-
-            // Other character
-            else
-                value += current;
-        }
-    }
-
-    if (!value.isEmpty())
-        fields.append(value.trimmed());
-
-    // Quotes are left in until here; so when fields are trimmed, only whitespace outside of
-    // quotes is removed.  The outermost quotes are removed here.
-    for (int i=0; i<fields.size(); ++i)
-        if (fields[i].length()>=1 && fields[i].left(1)=='"')
-        {
-            fields[i]=fields[i].mid(1);
-            if (fields[i].length()>=1 && fields[i].right(1)=='"')
-                fields[i]=fields[i].left(fields[i].length()-1);
-        }
-
-    return fields;
-}
-
-auto GeoMaps::WaypointLibrary::importCUP(const QString& fileName) -> QString
-{
-    QFile file(fileName);
-    auto success = file.open(QIODevice::ReadOnly);
-    if (!success)
-    {
-        return tr("Cannot open file '%1' for reading.").arg(fileName);
-    }
-
-    QTextStream stream(&file);
-    QString line;
-    while (stream.readLineInto(&line))
-    {
-        if (line.contains("-----Related Tasks-----"))
-        {
-            break;
-        }
-
-        auto fields = parseCSV(line);
-
-#warning implement
-
-    }
-
-    return "not implemented";
 }
 
 auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
@@ -242,6 +135,45 @@ auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
     return {};
 }
 
+auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QString
+{
+    auto result = GeoMaps::CUP::read(fileName);
+    if (result.isEmpty())
+    {
+        return tr("Error reading waypoints from file '%1'.").arg(fileName);
+    }
+
+    if (skip)
+    {
+        foreach(const auto& newWaypoint, result)
+        {
+            bool skip = false;
+            foreach(const auto& existingWaypoint, m_waypoints)
+            {
+                if (newWaypoint.isNear(existingWaypoint))
+                {
+                    skip = true;
+                    break;
+                }
+            }
+            if (!skip)
+            {
+                m_waypoints.append(newWaypoint);
+            }
+        }
+    }
+    else
+    {
+        m_waypoints += result;
+    }
+
+    std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
+    { return a.name() < b.name(); });
+
+    emit waypointsChanged();
+    return {};
+}
+
 bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint)
 {
     if (m_waypoints.removeOne(waypoint))
@@ -263,7 +195,7 @@ bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint &oldWaypoint, con
     {
         m_waypoints.append(newWaypoint);
         std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
-                  { return a.name() < b.name(); });
+        { return a.name() < b.name(); });
         emit waypointsChanged();
         return true;
     }

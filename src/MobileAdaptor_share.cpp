@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2020 by Johannes Zellner                                *
  *   johannes@zellner.org                                                  *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -61,11 +63,12 @@ void MobileAdaptor::importContent()
 
 auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    //#warning Need to handle user abort!
-
+    // Avoids warnings on Linux/Desktop
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
+    (void)this;
+
 
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForName(mimeType);

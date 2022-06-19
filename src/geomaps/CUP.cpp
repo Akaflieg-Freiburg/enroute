@@ -22,12 +22,19 @@
 
 #include "geomaps/CUP.h"
 
+//
+// Private helper functions
+//
 
-QStringList parseCSV(const QString& string)
+QStringList GeoMaps::CUP::parseCSV(const QString& string)
 {
     // Thanks to https://stackoverflow.com/questions/27318631/parsing-through-a-csv-file-in-qt
 
-    enum State {Normal, Quote} state = Normal;
+    enum State
+    {
+        Normal,
+        Quote
+    } state = Normal;
     QStringList fields;
     QString value;
 
@@ -55,7 +62,9 @@ QStringList parseCSV(const QString& string)
 
             // Other character
             else
+            {
                 value += current;
+            }
         }
 
         // In-quote state
@@ -67,7 +76,7 @@ QStringList parseCSV(const QString& string)
                 if (i < string.size())
                 {
                     // A double double-quote?
-                    if (i+1 < string.size() && string.at(i+1) == '"')
+                    if (i + 1 < string.size() && string.at(i + 1) == '"')
                     {
                         value += '"';
 
@@ -84,36 +93,149 @@ QStringList parseCSV(const QString& string)
 
             // Other character
             else
+            {
                 value += current;
+            }
         }
     }
 
     if (!value.isEmpty())
+    {
         fields.append(value.trimmed());
+    }
 
     // Quotes are left in until here; so when fields are trimmed, only whitespace outside of
     // quotes is removed.  The outermost quotes are removed here.
-    for (int i=0; i<fields.size(); ++i)
-        if (fields[i].length()>=1 && fields[i].left(1)=='"')
+    for (int i = 0; i < fields.size(); ++i)
+    {
+        if (fields[i].length() >= 1 && fields[i].at(0) == '"')
         {
-            fields[i]=fields[i].mid(1);
-            if (fields[i].length()>=1 && fields[i].right(1)=='"')
-                fields[i]=fields[i].left(fields[i].length()-1);
+            fields[i] = fields[i].mid(1);
+            if (fields[i].length() >= 1 && fields[i].right(1) == '"')
+            {
+                fields[i] = fields[i].left(fields[i].length() - 1);
+            }
         }
+    }
 
     return fields;
 }
 
-bool GeoMaps::CUP::isValid(const QString& fileName)
+GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
 {
-#warning Replace by efficient implementation
-    return !read(fileName).isEmpty();
+    auto fields = parseCSV(line);
+    if (fields.size() < 6)
+    {
+        return {};
+    }
+
+    // Get Name
+    auto name = fields[0];
+
+    // Get Latitude
+    double lat;
+    {
+        auto latString = fields[3];
+        if (latString.size() != 9)
+        {
+            return {};
+        }
+        if ((latString[8] != 'N') && (latString[8] != 'S'))
+        {
+            return {};
+        }
+        bool ok = false;
+        lat = latString.leftRef(2).toDouble(&ok);
+        if (!ok)
+        {
+            return {};
+        }
+        lat = lat + latString.midRef(2, 6).toDouble(&ok) / 60.0;
+        if (!ok)
+        {
+            return {};
+        }
+        if (latString[8] == 'S')
+        {
+            lat = -lat;
+        }
+    }
+
+    // Get Longitude
+    double lon;
+    {
+        auto longString = fields[4];
+        if (longString.size() != 10)
+        {
+            return {};
+        }
+        if ((longString[9] != 'W') && (longString[9] != 'E'))
+        {
+            return {};
+        }
+        bool ok = false;
+        lon = longString.leftRef(3).toDouble(&ok);
+        if (!ok)
+        {
+            return {};
+        }
+        lon = lon + longString.midRef(3, 6).toDouble(&ok) / 60.0;
+        if (!ok)
+        {
+            return {};
+        }
+        if (longString[9] == 'W')
+        {
+            lon = -lon;
+        }
+    }
+
+    double ele;
+    {
+        auto eleString = fields[5];
+        bool ok = false;
+        if (eleString.endsWith(QLatin1String("m")))
+        {
+            ele = eleString.chopped(1).toDouble(&ok);
+        }
+        if (eleString.endsWith(QLatin1String("ft")))
+        {
+            ele = eleString.chopped(1).toDouble(&ok) * 0.3048;
+        }
+        if (!ok)
+        {
+            return {};
+        }
+    }
+
+    return GeoMaps::Waypoint(QGeoCoordinate(lat, lon, ele)).renamed(name);
 }
 
-auto GeoMaps::CUP::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
+
+//
+// Methods
+//
+
+bool GeoMaps::CUP::isValid(const QString &fileName)
+{
+
+    QFile file(fileName);
+    auto success = file.open(QIODevice::ReadOnly);
+    if (!success)
+    {
+        return {};
+    }
+
+    QTextStream stream(&file);
+    QString line;
+    stream.readLineInto(&line);
+    stream.readLineInto(&line);
+    return readWaypoint(line).isValid();
+}
+
+auto GeoMaps::CUP::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
 {
     QVector<GeoMaps::Waypoint> result;
-
 
     QFile file(fileName);
     auto success = file.open(QIODevice::ReadOnly);
@@ -127,99 +249,16 @@ auto GeoMaps::CUP::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
     stream.readLineInto(&line);
     while (stream.readLineInto(&line))
     {
-        if (line.contains("-----Related Tasks-----"))
+        if (line.contains(QLatin1String("-----Related Tasks-----")))
         {
             break;
         }
-
-        auto fields = parseCSV(line);
-        if (fields.size() < 6)
+        auto wp = readWaypoint(line);
+        if (!wp.isValid())
         {
             return {};
         }
-
-        // Get Name
-        auto name = fields[0];
-
-        // Get Latitude
-        double lat;
-        {
-            auto latString = fields[3];
-            if (latString.size() != 9)
-            {
-                return {};
-            }
-            if ((latString[8] != 'N') && (latString[8] != 'S'))
-            {
-                return {};
-            }
-            bool ok = false;
-            lat = latString.left(2).toDouble(&ok);
-            if (!ok)
-            {
-                return {};
-            }
-            lat = lat + latString.mid(2,6).toDouble(&ok)/60.0;
-            if (!ok)
-            {
-                return {};
-            }
-            if (latString[8] == 'S')
-            {
-                lat = -lat;
-            }
-        }
-
-        // Get Longitude
-        double lon;
-        {
-            auto longString = fields[4];
-            if (longString.size() != 10)
-            {
-                return {};
-            }
-            if ((longString[9] != 'W') && (longString[9] != 'E'))
-            {
-                return {};
-            }
-            bool ok = false;
-            lon = longString.left(3).toDouble(&ok);
-            if (!ok)
-            {
-                return {};
-            }
-            lon = lon + longString.mid(3,6).toDouble(&ok)/60.0;
-            if (!ok)
-            {
-                return {};
-            }
-            if (longString[9] == 'W')
-            {
-                lon = -lon;
-            }
-        }
-
-        double ele;
-        {
-            auto eleString = fields[5];
-            bool ok = false;
-            if (eleString.endsWith("m"))
-            {
-                ele = eleString.chopped(1).toDouble(&ok);
-            }
-            if (eleString.endsWith("ft"))
-            {
-                ele = eleString.chopped(1).toDouble(&ok)*0.3048;
-            }
-            if (!ok)
-            {
-                return {};
-            }
-        }
-
-        auto pos = QGeoCoordinate(lat, lon, ele);
-        result << GeoMaps::Waypoint(pos).renamed(name);
+        result << wp;
     }
-    qWarning() << stream.status();
     return result;
 }

@@ -25,62 +25,26 @@
 namespace GeoMaps
 {
 
-    /*! \brief GeoJSON file support class
+    /*! \brief GPX file support class
      *
-     *  The methods of this class read GeoJSON waypoint files, as specified here:
-     *  https://geojson.org/
+     *  The methods of this class read GPX waypoint files, as specified here:
      */
 
-    class GeoJSON
+    class GPX
     {
 
     public:
-        /*! File type */
-        enum fileContent {
-            flightRoute, /* <-- File is valid and contains a flight route */
-            invalid, /* <-- File is invalid */
-            valid, /* <-- File is valid, content unspecified */
-            waypointLibrary /* <-- File is valid and contains a waypoint library */
-        };
-
-        /*! Indicator string for flight routes
-         *
-         *  A GeoJSON file is expected to contain a flight route if this string appears
-         *  as 'enroute' in the top-level JSON objects.
-         *
-         *  @returns Indicator string
-         */
-        static QString indicatorFlightRoute()
-        {
-            return QStringLiteral("flight route");
-        }
-
-        /*! Indicator string for flight routes
-         *
-         *  A GeoJSON file is expected to contain a waypoint library if this string appears
-         *  as 'enroute' in the top-level JSON objects.
-         *
-         *  @returns Indicator string
-         */
-        static QString indicatorWaypointLibrary()
-        {
-            return QStringLiteral("waypoint library");
-        }
-
-        /*! \brief Inspect file
-         *
-         *  This method reads a file, to check if it contains GeoJSON data. If so, it
-         *  tries to determine the type of the datat
+        /*! \brief Check if file contains valid GPX data
          *
          *  @param fileName Name of a file
          *
-         *  @returns Most probably file type
+         *  @returns True if the file is likely to contain valid GPX data.
          */
-        static fileContent inspect(const QString& fileName);
+        static bool isValid(const QString &fileName);
 
-        /*! \brief Read a GeoJSON file
+        /*! \brief Read a GPX file
          *
-         *  This method reads a GeoJSON file and generates a vector of waypoints.
+         *  This method reads a GPX file and generates a vector of waypoints.
          *
          *  @param fileName Name of a CUP file
          *

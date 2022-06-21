@@ -361,11 +361,8 @@ Item {
 
             var errorString = ""
 
-            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GeoJSON)
-                errorString = global.navigator().flightRoute.loadFromGeoJSON(importManager.filePath)
-            if (importManager.fileFunction === MobileAdaptor.FlightRoute_GPX) {
-                errorString = global.navigator().flightRoute.loadFromGpx(importManager.filePath, global.geoMapProvider())
-            }
+            if (importManager.fileFunction === MobileAdaptor.FlightRoute)
+                errorString = global.navigator().flightRoute.load(importManager.filePath)
 
             if (errorString !== "") {
                 errLbl.text = errorString

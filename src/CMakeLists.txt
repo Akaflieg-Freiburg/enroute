@@ -83,6 +83,7 @@ set(SOURCES
     geomaps/CUP.h
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
+    geomaps/GPX.h
     geomaps/MBTILES.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
@@ -144,6 +145,7 @@ set(SOURCES
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
+    geomaps/GPX.cpp
     geomaps/MBTILES.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp

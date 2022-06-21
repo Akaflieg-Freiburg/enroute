@@ -306,7 +306,7 @@ auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObj
         if (route == nullptr) {
             return nullptr;
         }
-        auto error = route->loadFromGeoJSON(fullPath(Routes, baseName));
+        auto error = route->load(fullPath(Routes, baseName));
         if (error.isEmpty()) {
             return route;
         }

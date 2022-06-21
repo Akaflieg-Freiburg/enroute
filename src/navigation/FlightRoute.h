@@ -225,21 +225,9 @@ public:
      */
     Q_INVOKABLE [[nodiscard]] int lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
 
-    /*! \brief Loads the route from a GeoJSON document
+    /*! \brief Loads the route from a GeoJSON or GPX document
      *
-     * This method loads the flight route from a GeoJSON document that has been
-     * created with the method save()
-     *
-     * @param fileName File name, needs to include path and extension
-     *
-     * @returns Empty string in case of success, human-readable, translated
-     * error message otherwise.
-     */
-    Q_INVOKABLE QString loadFromGeoJSON(QString fileName);
-
-    /*! \brief Loads the route from a GPX document
-     *
-     * This method loads the flight route from a GPX. This method can optionally use a GeoMapProvider to detect waypoints (such as airfields) by looking at the coordinates
+     * This method loads the flight route from a GeoJSON or GPX file. The method detects waypoints (such as airfields) by looking at the coordinates.
      *
      * @param fileName File name, needs to include path and extension
      *
@@ -248,20 +236,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE QString loadFromGpx(const QString& fileName, GeoMaps::GeoMapProvider *geoMapProvider);
-
-    /*! \brief Loads the route from a GPX document
-     *
-     * Overloaded for convenience
-     *
-     * @param data GPX route data
-     *
-     * @param geoMapProvider Pointer to a geoMapProvider or nullptr
-     *
-     * @returns Empty string in case of success, human-readable, translated
-     * error message otherwise.
-     */
-    QString loadFromGpx(const QByteArray& data, GeoMaps::GeoMapProvider *geoMapProvider);
+    Q_INVOKABLE QString load(const QString& fileName);
 
     /*! \brief Loads the route from a GPX document
      *
@@ -274,7 +249,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    auto loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider) -> QString;
+//    auto loadFromGpx(QXmlStreamReader& xml, GeoMaps::GeoMapProvider *geoMapProvider) -> QString;
 
     /*! \brief Move waypoint one position down in the list of waypoints
      *

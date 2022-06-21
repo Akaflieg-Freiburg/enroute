@@ -203,10 +203,8 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
      */
 
     // Flight Route in GPX format
-    if ((mimeType.inherits(QStringLiteral("application/xml")))
-            || (mimeType.name() == u"application/x-gpx+xml")) {
-        // We assume that the file contains a flight route in GPX format
-        emit openFileRequest(myPath, FlightRoute_GPX);
+    if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml")) {
+        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
         return;
     }
 
@@ -214,7 +212,7 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
     if (fileContent == GeoMaps::GeoJSON::flightRoute)
     {
-        emit openFileRequest(myPath, FlightRoute_GeoJSON);
+        emit openFileRequest(myPath, FlightRoute);
         return;
     }
     if (fileContent == GeoMaps::GeoJSON::waypointLibrary)

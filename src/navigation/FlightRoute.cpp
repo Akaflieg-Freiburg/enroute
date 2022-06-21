@@ -38,7 +38,8 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
     // Load last flightRoute
-    loadFromGeoJSON(stdFileName);
+    m_waypoints = GeoMaps::GeoJSON::read(stdFileName);
+    updateLegs();
 
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
@@ -242,27 +243,6 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
     }
     return -1;
 
-}
-
-
-auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
-{
-    if (fileName.isEmpty())
-    {
-        fileName = stdFileName;
-    }
-
-    auto newWaypoints = GeoMaps::GeoJSON::read(fileName);
-    if (newWaypoints.isEmpty())
-    {
-        return tr("Cannot read data from file '%1'.").arg(fileName);
-    }
-
-    m_waypoints = newWaypoints;
-    updateLegs();
-    emit waypointsChanged();
-
-    return {};
 }
 
 

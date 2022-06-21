@@ -37,10 +37,10 @@ namespace GeoMaps
     public:
         /*! File type */
         enum fileContent {
-            flightRoute, /* <-- File is valid and contains a flight route */
-            invalid, /* <-- File is invalid */
-            valid, /* <-- File is valid, content unspecified */
-            waypointLibrary /* <-- File is valid and contains a waypoint library */
+            flightRoute, /*< File is valid and contains a flight route */
+            invalid, /*< File is invalid */
+            valid, /*< File is valid, content unspecified */
+            waypointLibrary /*< File is valid and contains a waypoint library */
         };
 
         /*! Indicator string for flight routes

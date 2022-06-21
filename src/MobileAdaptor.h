@@ -59,11 +59,11 @@ public:
     enum FileFunction
       {
         UnknownFunction,
-        FlightRouteOrWaypointLibrary, /*!< File contains a flight route or a waypoint library. */
-        FlightRoute, /*!< File contains a flight route. */
-        VectorMap, /*!< File contains a vector map. */
-        RasterMap, /*!< File contains a raster map. */
-        WaypointLibrary /*!< Waypoint library in CUP or GeoJSON format */
+        FlightRouteOrWaypointLibrary, /*< File contains a flight route or a waypoint library. */
+        FlightRoute, /*< File contains a flight route. */
+        VectorMap, /*< File contains a vector map. */
+        RasterMap, /*< File contains a raster map. */
+        WaypointLibrary /*< Waypoint library in CUP or GeoJSON format */
       };
     Q_ENUM(FileFunction)
 

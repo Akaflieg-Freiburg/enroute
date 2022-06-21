@@ -61,12 +61,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:adb0ba1b9426a75fafc69e03e887b36c7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">FileFunction</a> { , <a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aeeb95fa5803e78f789502457d621e6a2">FlightRoute_GPX</a>, 
-<a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7a55afbcedec2669fa124520dbce692ada">FlightRoute_GeoJSON</a>, 
-<a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aaf2cfbf79d8b532fe90f8addd21fa6e8">VectorMap</a>, 
-<a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7a286f1d3fb9783101a7d350f924f81259">RasterMap</a>
- }</td></tr>
-<tr class="memdesc:adb0ba1b9426a75fafc69e03e887b36c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function and type of a file that we have been requested to open.  <a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">More...</a><br /></td></tr>
+<tr class="memitem:adb0ba1b9426a75fafc69e03e887b36c7"><td class="memItemLeft" align="right" valign="top"><a id="adb0ba1b9426a75fafc69e03e887b36c7"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">FileFunction</a> </td></tr>
+<tr class="memdesc:adb0ba1b9426a75fafc69e03e887b36c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function and type of a file that we have been requested to open. <br /></td></tr>
 <tr class="separator:adb0ba1b9426a75fafc69e03e887b36c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace6b2af4402ac8f45cdc95ff9b4001b4"><td class="memItemLeft" align="right" valign="top"><a id="ace6b2af4402ac8f45cdc95ff9b4001b4"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">NotificationType</a> </td></tr>
 <tr class="memdesc:ace6b2af4402ac8f45cdc95ff9b4001b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notification types. <br /></td></tr>
@@ -135,36 +131,7 @@ Static Public Member Functions</h2></td></tr>
 <p>This class also receives platform-specific requests to open files and exposes these requests to C++ and QML via the signal <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a>. The signal <a class="el" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d" title="Emitted when platform asks this app to open a file.">openFileRequest()</a> is however only emitted after the method <a class="el" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d" title="Start receiving &quot;open file&quot; requests from platform.">startReceiveOpenFileRequests()</a> has been called, requests that come in earlier will be put on hold. This allows apps to set up their GUI before processing file open requests (that might need user interaction). </p>
 
 <p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00041">41</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="adb0ba1b9426a75fafc69e03e887b36c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb0ba1b9426a75fafc69e03e887b36c7">&#9670;&nbsp;</a></span>FileFunction</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Function and type of a file that we have been requested to open. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adb0ba1b9426a75fafc69e03e887b36c7aeeb95fa5803e78f789502457d621e6a2"></a>FlightRoute_GPX&#160;</td><td class="fielddoc"><p>File contains a flight route, stored as GeoJSON. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adb0ba1b9426a75fafc69e03e887b36c7a55afbcedec2669fa124520dbce692ada"></a>FlightRoute_GeoJSON&#160;</td><td class="fielddoc"><p>File contains a flight route, stored as GPX. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adb0ba1b9426a75fafc69e03e887b36c7aaf2cfbf79d8b532fe90f8addd21fa6e8"></a>VectorMap&#160;</td><td class="fielddoc"><p>File contains a vector map. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adb0ba1b9426a75fafc69e03e887b36c7a286f1d3fb9783101a7d350f924f81259"></a>RasterMap&#160;</td><td class="fielddoc"><p>File contains a raster map. </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="MobileAdaptor_8h_source.html#l00077">77</a> of file <a class="el" href="MobileAdaptor_8h_source.html">MobileAdaptor.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a302e1db70ef90d5e0881a4117adb2b51"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a302e1db70ef90d5e0881a4117adb2b51">&#9670;&nbsp;</a></span>MobileAdaptor()</h2>
 

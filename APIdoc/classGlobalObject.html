@@ -59,11 +59,12 @@ Inheritance diagram for GlobalObject:</div>
 <div class="dyncontent">
 <div class="center"><img src="classGlobalObject__inherit__graph.png" border="0" usemap="#GlobalObject_inherit__map" alt="Inheritance graph"/></div>
 <map name="GlobalObject_inherit__map" id="GlobalObject_inherit__map">
-<area shape="rect" title="Base class for global singleton objects." alt="" coords="5,93,112,120"/>
+<area shape="rect" title="Base class for global singleton objects." alt="" coords="5,123,112,149"/>
 <area shape="rect" href="classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps." alt="" coords="160,5,395,32"/>
 <area shape="rect" href="classDataManagement_1_1SSLErrorHandler.html" title="Handles SSL error." alt="" coords="177,57,378,98"/>
 <area shape="rect" href="classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information." alt="" coords="178,123,377,149"/>
-<area shape="rect" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="195,173,360,200"/>
+<area shape="rect" href="classGeoMaps_1_1WaypointLibrary.html" title="Library of user&#45;defined waypoints." alt="" coords="179,173,376,200"/>
+<area shape="rect" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="195,224,360,251"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -123,6 +124,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a06c131e4d5f9851ea5d8002e3c30990f"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">trafficDataProvider</a> ()</td></tr>
 <tr class="memdesc:a06c131e4d5f9851ea5d8002e3c30990f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static TrafficDataProvider instance.  <a href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">More...</a><br /></td></tr>
 <tr class="separator:a06c131e4d5f9851ea5d8002e3c30990f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d26ff8fb994fc5ee86c05b066228ed6"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1WaypointLibrary.html">GeoMaps::WaypointLibrary</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a9d26ff8fb994fc5ee86c05b066228ed6">waypointLibrary</a> ()</td></tr>
+<tr class="memdesc:a9d26ff8fb994fc5ee86c05b066228ed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static WaypointLibrary instance.  <a href="classGlobalObject.html#a9d26ff8fb994fc5ee86c05b066228ed6">More...</a><br /></td></tr>
+<tr class="separator:a9d26ff8fb994fc5ee86c05b066228ed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1136ba32f7718808167124422be955cd"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a1136ba32f7718808167124422be955cd">weatherDataProvider</a> ()</td></tr>
 <tr class="memdesc:a1136ba32f7718808167124422be955cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static WeatherDataProvider instance.  <a href="classGlobalObject.html#a1136ba32f7718808167124422be955cd">More...</a><br /></td></tr>
 <tr class="separator:a1136ba32f7718808167124422be955cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,7 +145,7 @@ Protected Member Functions</h2></td></tr>
 <p>Objects that inherit from this class MUST NOT call any of the static methods from their constructors. Instead, the method <a class="el" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f" title="Non-constructor initialization.">deferredInitialization()</a> can be used, which is called immediately after the constructor returns.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00083">83</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00084">84</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac8dfa53c492975de42fa7972e77abbc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8dfa53c492975de42fa7972e77abbc1">&#9670;&nbsp;</a></span>GlobalObject()</h2>
@@ -291,7 +295,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classDataManagement_1_1DataManager.html#a32d353064fd94a0af5173e4951a241e7">DataManagement::DataManager</a>, <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider</a>, and <a class="el" href="classNavigation_1_1Navigator.html#a9f95457f009e0c581a3703b69f04b63d">Navigation::Navigator</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00208">208</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00215">215</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
 
 </div>
 </div>
@@ -655,6 +659,34 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to appplication-wide static TrafficDataProvider instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
+<a id="a9d26ff8fb994fc5ee86c05b066228ed6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d26ff8fb994fc5ee86c05b066228ed6">&#9670;&nbsp;</a></span>waypointLibrary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classGeoMaps_1_1WaypointLibrary.html">GeoMaps::WaypointLibrary</a>* GlobalObject::waypointLibrary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to appplication-wide static WaypointLibrary instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
 
 </div>

@@ -87,105 +87,102 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">enum</span> <a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">FileFunction</a></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        UnknownFunction,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aeeb95fa5803e78f789502457d621e6a2">FlightRoute_GPX</a>, </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7a55afbcedec2669fa124520dbce692ada">FlightRoute_GeoJSON</a>, </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aaf2cfbf79d8b532fe90f8addd21fa6e8">VectorMap</a>, </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7a286f1d3fb9783101a7d350f924f81259">RasterMap</a> </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      };</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    Q_ENUM(<a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">FileFunction</a>)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">enum</span> <a class="code" href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">NotificationType</a></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        DownloadInfo = 0,                 <span class="comment">/*&lt; Info that  download is in progress */</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        TrafficReceiverSelfTestError = 1, <span class="comment">/*&lt; Traffic receiver reports problem on self-test */</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        TrafficReceiverProblem = 2        <span class="comment">/*&lt; Traffic receiver reports problem while running */</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    Q_ENUM(<a class="code" href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">NotificationType</a>)</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">   77</a></span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    </div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aaf2cfbf79d8b532fe90f8addd21fa6e8">   82</a></span>&#160;    Q_INVOKABLE static QString <a class="code" href="classMobileAdaptor.html#a7941cfb64580e28b37b7a29f5380eb8f">manufacturer</a>();</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7a286f1d3fb9783101a7d350f924f81259">   83</a></span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classMobileAdaptor.html#a07ba3b9b2ec586b91b3075f57ba3d77a">missingPermissionsExist</a>();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    Q_INVOKABLE QString <a class="code" href="classMobileAdaptor.html#afbd615337a5fe83f6a3dca3d6b6f4d51">exportContent</a>(const QByteArray&amp; content, const QString&amp; mimeType, const QString&amp; fileNameTemplate);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    Q_INVOKABLE static <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#a3ad8589f3cb29aa284c7e52af490ed1d">lockWifi</a>(<span class="keywordtype">bool</span> lock);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    Q_INVOKABLE static QString <a class="code" href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">getSSID</a>();</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#ab4156c8abd391d141ffc6fdac41c75f5">importContent</a>();</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    Q_INVOKABLE QString <a class="code" href="classMobileAdaptor.html#a67751a7c1b4975630ba1e9f927beebb3">viewContent</a>(const QByteArray&amp; content, const QString&amp; mimeType, const QString&amp; fileNameTemplate);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;     Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d">startReceiveOpenFileRequests</a>();</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="preprocessor">#if defined (Q_OS_ANDROID)</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">// Emits the signal &quot;WifiConnected&quot;.</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordtype">void</span> emitWifiConnected() {</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        emit <a class="code" href="classMobileAdaptor.html#afcf4b5c5ea51cedec6ba52d3d7a23484">wifiConnected</a>();</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#a5edd413a1c2346b59ac7fb532cc9ff1a">hideSplashScreen</a>();</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#ac9aeebb931553a70f0432aa9d8f4491c">vibrateBrief</a>();</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">processFileOpenRequest</a>(<span class="keyword">const</span> QString &amp;path);</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">processFileOpenRequest</a>(<span class="keyword">const</span> QByteArray &amp;path);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;signals:</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d">openFileRequest</a>(QString fileName, <a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a> fileFunction);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#afcf4b5c5ea51cedec6ba52d3d7a23484">wifiConnected</a>();</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="comment">// Intializations that are moved out of the constructor, in order to avoid</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="comment">// nested uses of Global.</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordtype">void</span> deferredInitialization();</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classMobileAdaptor.html">MobileAdaptor</a>)</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="comment">// Helper function. Saves content to a file in a directory from where</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="comment">// sharing to other android apps is possible</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keyword">auto</span> contentToTempFile(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; fileNameTemplate) -&gt; QString;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// Name of a subdirectory within the AppDataLocation for sending and</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="comment">// receiving files.</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    QString fileExchangeDirectoryName;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor">#if defined (Q_OS_ANDROID)</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="comment">// @returns True if an app could be started, false if no app was found</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> outgoingIntent(<span class="keyword">const</span> QString&amp; methodName, <span class="keyword">const</span> QString&amp; filePath, <span class="keyword">const</span> QString&amp; mimeType);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    QStringList permissions;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keywordtype">bool</span> receiveOpenFileRequestsStarted {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    QString pendingReceiveOpenFileRequest {};</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">bool</span> splashScreenHidden {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        FlightRouteOrWaypointLibrary, <span class="comment">/*&lt; File contains a flight route or a waypoint library. */</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        FlightRoute, <span class="comment">/*&lt; File contains a flight route. */</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        VectorMap, <span class="comment">/*&lt; File contains a vector map. */</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        RasterMap, <span class="comment">/*&lt; File contains a raster map. */</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        WaypointLibrary <span class="comment">/*&lt; Waypoint library in CUP or GeoJSON format */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      };</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    Q_ENUM(<a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">FileFunction</a>)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">enum</span> <a class="code" href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">NotificationType</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        DownloadInfo = 0,                 <span class="comment">/*&lt; Info that  download is in progress */</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        TrafficReceiverSelfTestError = 1, <span class="comment">/*&lt; Traffic receiver reports problem on self-test */</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        TrafficReceiverProblem = 2        <span class="comment">/*&lt; Traffic receiver reports problem while running */</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">   77</a></span>&#160;    Q_ENUM(<a class="code" href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">NotificationType</a>)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QString <a class="code" href="classMobileAdaptor.html#a7941cfb64580e28b37b7a29f5380eb8f">manufacturer</a>();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classMobileAdaptor.html#a07ba3b9b2ec586b91b3075f57ba3d77a">missingPermissionsExist</a>();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    Q_INVOKABLE QString <a class="code" href="classMobileAdaptor.html#afbd615337a5fe83f6a3dca3d6b6f4d51">exportContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#a3ad8589f3cb29aa284c7e52af490ed1d">lockWifi</a>(<span class="keywordtype">bool</span> lock);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QString <a class="code" href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">getSSID</a>();</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#ab4156c8abd391d141ffc6fdac41c75f5">importContent</a>();</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    Q_INVOKABLE QString <a class="code" href="classMobileAdaptor.html#a67751a7c1b4975630ba1e9f927beebb3">viewContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;     Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d">startReceiveOpenFileRequests</a>();</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">#if defined (Q_OS_ANDROID)</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="comment">// Emits the signal &quot;WifiConnected&quot;.</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">void</span> emitWifiConnected() {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        emit <a class="code" href="classMobileAdaptor.html#afcf4b5c5ea51cedec6ba52d3d7a23484">wifiConnected</a>();</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#a5edd413a1c2346b59ac7fb532cc9ff1a">hideSplashScreen</a>();</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#ac9aeebb931553a70f0432aa9d8f4491c">vibrateBrief</a>();</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">processFileOpenRequest</a>(<span class="keyword">const</span> QString &amp;path);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">processFileOpenRequest</a>(<span class="keyword">const</span> QByteArray &amp;path);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;signals:</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d">openFileRequest</a>(QString fileName, <a class="code" href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a> fileFunction);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMobileAdaptor.html#afcf4b5c5ea51cedec6ba52d3d7a23484">wifiConnected</a>();</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="comment">// Intializations that are moved out of the constructor, in order to avoid</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="comment">// nested uses of Global.</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordtype">void</span> deferredInitialization();</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classMobileAdaptor.html">MobileAdaptor</a>)</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="comment">// Helper function. Saves content to a file in a directory from where</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">// sharing to other android apps is possible</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">auto</span> contentToTempFile(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; fileNameTemplate) -&gt; QString;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="comment">// Name of a subdirectory within the AppDataLocation for sending and</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="comment">// receiving files.</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    QString fileExchangeDirectoryName;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="preprocessor">#if defined (Q_OS_ANDROID)</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="comment">// @returns True if an app could be started, false if no app was found</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> outgoingIntent(<span class="keyword">const</span> QString&amp; methodName, <span class="keyword">const</span> QString&amp; filePath, <span class="keyword">const</span> QString&amp; mimeType);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    QStringList permissions;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordtype">bool</span> receiveOpenFileRequestsStarted {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    QString pendingReceiveOpenFileRequest {};</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordtype">bool</span> splashScreenHidden {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassMobileAdaptor_html_ac9aeebb931553a70f0432aa9d8f4491c"><div class="ttname"><a href="classMobileAdaptor.html#ac9aeebb931553a70f0432aa9d8f4491c">MobileAdaptor::vibrateBrief</a></div><div class="ttdeci">static void vibrateBrief()</div><div class="ttdoc">Make the device briefly vibrate.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_a5edd413a1c2346b59ac7fb532cc9ff1a"><div class="ttname"><a href="classMobileAdaptor.html#a5edd413a1c2346b59ac7fb532cc9ff1a">MobileAdaptor::hideSplashScreen</a></div><div class="ttdeci">void hideSplashScreen()</div><div class="ttdoc">Hides the android splash screen.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_adb0ba1b9426a75fafc69e03e887b36c7"><div class="ttname"><a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7">MobileAdaptor::FileFunction</a></div><div class="ttdeci">FileFunction</div><div class="ttdoc">Function and type of a file that we have been requested to open.</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00077">MobileAdaptor.h:77</a></div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_a3ad8589f3cb29aa284c7e52af490ed1d"><div class="ttname"><a href="classMobileAdaptor.html#a3ad8589f3cb29aa284c7e52af490ed1d">MobileAdaptor::lockWifi</a></div><div class="ttdeci">static Q_INVOKABLE void lockWifi(bool lock)</div><div class="ttdoc">Lock connection to Wi-Fi network.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_abe1bf2a456b5e8a6b9f41d237401f89d"><div class="ttname"><a href="classMobileAdaptor.html#abe1bf2a456b5e8a6b9f41d237401f89d">MobileAdaptor::openFileRequest</a></div><div class="ttdeci">void openFileRequest(QString fileName, MobileAdaptor::FileFunction fileFunction)</div><div class="ttdoc">Emitted when platform asks this app to open a file.</div></div>
-<div class="ttc" id="aclassMobileAdaptor_html_adb0ba1b9426a75fafc69e03e887b36c7a55afbcedec2669fa124520dbce692ada"><div class="ttname"><a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7a55afbcedec2669fa124520dbce692ada">MobileAdaptor::FlightRoute_GeoJSON</a></div><div class="ttdeci">@ FlightRoute_GeoJSON</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00081">MobileAdaptor.h:81</a></div></div>
-<div class="ttc" id="aclassMobileAdaptor_html_adb0ba1b9426a75fafc69e03e887b36c7aaf2cfbf79d8b532fe90f8addd21fa6e8"><div class="ttname"><a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aaf2cfbf79d8b532fe90f8addd21fa6e8">MobileAdaptor::VectorMap</a></div><div class="ttdeci">@ VectorMap</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00082">MobileAdaptor.h:82</a></div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_a8c8a0a63217342abd1260f764af0535d"><div class="ttname"><a href="classMobileAdaptor.html#a8c8a0a63217342abd1260f764af0535d">MobileAdaptor::startReceiveOpenFileRequests</a></div><div class="ttdeci">Q_INVOKABLE void startReceiveOpenFileRequests()</div><div class="ttdoc">Start receiving &quot;open file&quot; requests from platform.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_a67751a7c1b4975630ba1e9f927beebb3"><div class="ttname"><a href="classMobileAdaptor.html#a67751a7c1b4975630ba1e9f927beebb3">MobileAdaptor::viewContent</a></div><div class="ttdeci">Q_INVOKABLE QString viewContent(const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)</div><div class="ttdoc">View content in other app.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html"><div class="ttname"><a href="classMobileAdaptor.html">MobileAdaptor</a></div><div class="ttdoc">Interface to platform-specific capabilities of mobile devices.</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00041">MobileAdaptor.h:41</a></div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_a302e1db70ef90d5e0881a4117adb2b51"><div class="ttname"><a href="classMobileAdaptor.html#a302e1db70ef90d5e0881a4117adb2b51">MobileAdaptor::MobileAdaptor</a></div><div class="ttdeci">MobileAdaptor(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
-<div class="ttc" id="aclassMobileAdaptor_html_adb0ba1b9426a75fafc69e03e887b36c7a286f1d3fb9783101a7d350f924f81259"><div class="ttname"><a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7a286f1d3fb9783101a7d350f924f81259">MobileAdaptor::RasterMap</a></div><div class="ttdeci">@ RasterMap</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00083">MobileAdaptor.h:83</a></div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_a37277b7e33761b37eddd381a14950d27"><div class="ttname"><a href="classMobileAdaptor.html#a37277b7e33761b37eddd381a14950d27">MobileAdaptor::getSSID</a></div><div class="ttdeci">static Q_INVOKABLE QString getSSID()</div><div class="ttdoc">Get SSID of current Wi-Fi network.</div></div>
-<div class="ttc" id="aclassMobileAdaptor_html_ace6b2af4402ac8f45cdc95ff9b4001b4"><div class="ttname"><a href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">MobileAdaptor::NotificationType</a></div><div class="ttdeci">NotificationType</div><div class="ttdoc">Notification types.</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00088">MobileAdaptor.h:88</a></div></div>
+<div class="ttc" id="aclassMobileAdaptor_html_ace6b2af4402ac8f45cdc95ff9b4001b4"><div class="ttname"><a href="classMobileAdaptor.html#ace6b2af4402ac8f45cdc95ff9b4001b4">MobileAdaptor::NotificationType</a></div><div class="ttdeci">NotificationType</div><div class="ttdoc">Notification types.</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00089">MobileAdaptor.h:89</a></div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_aec045b31cb9780f701c4c00886e7bcec"><div class="ttname"><a href="classMobileAdaptor.html#aec045b31cb9780f701c4c00886e7bcec">MobileAdaptor::processFileOpenRequest</a></div><div class="ttdeci">void processFileOpenRequest(const QString &amp;path)</div><div class="ttdoc">Helper function, not for public consumption.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_afbd615337a5fe83f6a3dca3d6b6f4d51"><div class="ttname"><a href="classMobileAdaptor.html#afbd615337a5fe83f6a3dca3d6b6f4d51">MobileAdaptor::exportContent</a></div><div class="ttdeci">Q_INVOKABLE QString exportContent(const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)</div><div class="ttdoc">Export content to file or to file sending app.</div></div>
-<div class="ttc" id="aclassMobileAdaptor_html_adb0ba1b9426a75fafc69e03e887b36c7aeeb95fa5803e78f789502457d621e6a2"><div class="ttname"><a href="classMobileAdaptor.html#adb0ba1b9426a75fafc69e03e887b36c7aeeb95fa5803e78f789502457d621e6a2">MobileAdaptor::FlightRoute_GPX</a></div><div class="ttdeci">@ FlightRoute_GPX</div><div class="ttdef"><b>Definition:</b> <a href="MobileAdaptor_8h_source.html#l00080">MobileAdaptor.h:80</a></div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_a07ba3b9b2ec586b91b3075f57ba3d77a"><div class="ttname"><a href="classMobileAdaptor.html#a07ba3b9b2ec586b91b3075f57ba3d77a">MobileAdaptor::missingPermissionsExist</a></div><div class="ttdeci">Q_INVOKABLE bool missingPermissionsExist()</div><div class="ttdoc">Checks if all requred permissions have been granted.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_ab4156c8abd391d141ffc6fdac41c75f5"><div class="ttname"><a href="classMobileAdaptor.html#ab4156c8abd391d141ffc6fdac41c75f5">MobileAdaptor::importContent</a></div><div class="ttdeci">Q_INVOKABLE void importContent()</div><div class="ttdoc">Import content from file.</div></div>
 <div class="ttc" id="aclassMobileAdaptor_html_afcf4b5c5ea51cedec6ba52d3d7a23484"><div class="ttname"><a href="classMobileAdaptor.html#afcf4b5c5ea51cedec6ba52d3d7a23484">MobileAdaptor::wifiConnected</a></div><div class="ttdeci">void wifiConnected()</div><div class="ttdoc">Emitted when a new WiFi connections becomes available.</div></div>

@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2020 by Johannes Zellner                                *
  *   johannes@zellner.org                                                  *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,6 +23,8 @@
 
 #include "GlobalObject.h"
 #include "MobileAdaptor.h"
+#include "geomaps/CUP.h"
+#include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "navigation/FlightRoute.h"
 #include "traffic/TrafficDataProvider.h"
@@ -60,11 +64,12 @@ void MobileAdaptor::importContent()
 
 auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    //#warning Need to handle user abort!
-
+    // Avoids warnings on Linux/Desktop
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
+    (void)this;
+
 
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForName(mimeType);
@@ -198,27 +203,26 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
      */
 
     // Flight Route in GPX format
-    if ((mimeType.inherits(QStringLiteral("application/xml")))
-            || (mimeType.name() == u"application/x-gpx+xml")) {
-        // We assume that the file contains a flight route in GPX format
-        emit openFileRequest(myPath, FlightRoute_GPX);
+    if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml")) {
+        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
         return;
     }
 
-    // Flight Route in GeoJSON format
-    if ((mimeType.name() == u"application/geo+json")
-            || myPath.endsWith(u".geojson", Qt::CaseInsensitive)) {
-        // We assume that the file contains a flight route in GeoJSON format
-        emit openFileRequest(myPath, FlightRoute_GeoJSON);
+    // GeoJSON file
+    auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
+    if (fileContent == GeoMaps::GeoJSON::flightRoute)
+    {
+        emit openFileRequest(myPath, FlightRoute);
         return;
     }
-
-    // Flight Route in GeoJSON format, without proper file name suffix
-    Navigation::FlightRoute testRoute;
-    auto errorMessage = testRoute.loadFromGeoJSON(myPath);
-    if (errorMessage.isEmpty()) {
-        // Ok, now that does look like a GeoJSON file to me.
-        emit openFileRequest(myPath, FlightRoute_GeoJSON);
+    if (fileContent == GeoMaps::GeoJSON::waypointLibrary)
+    {
+        emit openFileRequest(myPath, WaypointLibrary);
+        return;
+    }
+    if (fileContent == GeoMaps::GeoJSON::valid)
+    {
+        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
         return;
     }
 
@@ -230,17 +234,26 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
         return;
     }
 
-    // MBTiles containing raster map
-    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector) {
+    // MBTiles containing a vector map
+    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector)
+    {
         emit openFileRequest(myPath, VectorMap);
         return;
     }
-    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Raster) {
+
+    // MBTiles containing a raster map
+    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Raster)
+    {
         emit openFileRequest(myPath, RasterMap);
         return;
     }
 
-
+    // CUP file
+    if (GeoMaps::CUP::isValid(myPath))
+    {
+        emit openFileRequest(myPath, WaypointLibrary);
+        return;
+    }
 
     emit openFileRequest(myPath, UnknownFunction);
 }

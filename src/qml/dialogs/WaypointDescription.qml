@@ -428,6 +428,26 @@ Dialog {
                 }
 
                 Action {
+                    text: qsTr("Insert")
+                    enabled: {
+                        return false
+
+                        // Mention Object to ensure that property gets updated
+                        // when flight route changes
+                        global.navigator().flightRoute.size
+
+                        return global.navigator().flightRoute.canAppend(waypoint)
+                    }
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        global.navigator().flightRoute.append(waypoint)
+                        close()
+                        toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
+                    }
+                }
+
+                Action {
                     text: qsTr("Remove")
 
                     enabled:  {

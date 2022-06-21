@@ -21,8 +21,11 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QXmlStreamWriter>
 
 #include "Librarian.h"
+#include "geomaps/CUP.h"
+#include "geomaps/GeoJSON.h"
 #include "geomaps/WaypointLibrary.h"
 
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
@@ -30,7 +33,7 @@ GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
 {
     (void)loadFromGeoJSON();
     connect(this, &GeoMaps::WaypointLibrary::waypointsChanged, this, [this]()
-            { (void)save(); });
+    { (void)save(); });
 }
 
 //
@@ -46,7 +49,18 @@ void GeoMaps::WaypointLibrary::add(const GeoMaps::Waypoint &waypoint)
 
     m_waypoints.append(waypoint);
     std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
-              { return a.name() < b.name(); });
+    { return a.name() < b.name(); });
+    emit waypointsChanged();
+}
+
+void GeoMaps::WaypointLibrary::clear()
+{
+    if (m_waypoints.isEmpty())
+    {
+        return;
+    }
+
+    m_waypoints.clear();
     emit waypointsChanged();
 }
 
@@ -122,6 +136,49 @@ auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
     return {};
 }
 
+auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QString
+{
+    auto result = GeoMaps::CUP::read(fileName);
+    if (result.isEmpty())
+    {
+        result = GeoMaps::GeoJSON::read(fileName);
+    }
+    if (result.isEmpty())
+    {
+        return tr("Error reading waypoints from file '%1'.").arg(fileName);
+    }
+
+    if (skip)
+    {
+        foreach(const auto& newWaypoint, result)
+        {
+            bool skip = false;
+            foreach(const auto& existingWaypoint, m_waypoints)
+            {
+                if (newWaypoint.isNear(existingWaypoint))
+                {
+                    skip = true;
+                    break;
+                }
+            }
+            if (!skip)
+            {
+                m_waypoints.append(newWaypoint);
+            }
+        }
+    }
+    else
+    {
+        m_waypoints += result;
+    }
+
+    std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
+    { return a.name() < b.name(); });
+
+    emit waypointsChanged();
+    return {};
+}
+
 bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint)
 {
     if (m_waypoints.removeOne(waypoint))
@@ -143,7 +200,7 @@ bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint &oldWaypoint, con
     {
         m_waypoints.append(newWaypoint);
         std::sort(m_waypoints.begin(), m_waypoints.end(), [](const Waypoint &a, const Waypoint &b)
-                  { return a.name() < b.name(); });
+        { return a.name() < b.name(); });
         emit waypointsChanged();
         return true;
     }
@@ -177,18 +234,49 @@ auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
 auto GeoMaps::WaypointLibrary::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
-    foreach (auto waypoint, m_waypoints)
+    foreach (const auto& waypoint, m_waypoints)
     {
         if (waypoint.isValid())
         {
             waypointArray.append(waypoint.toJSON());
         }
     }
+
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
-    jsonObj.insert(QStringLiteral("enroute"), QStringLiteral("waypoint library"));
+    jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorWaypointLibrary());
     jsonObj.insert(QStringLiteral("features"), waypointArray);
+
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc.toJson();
+}
+
+auto GeoMaps::WaypointLibrary::toGpx() const -> QByteArray
+{
+    QByteArray result;
+
+    QXmlStreamWriter stream(&result);
+    stream.setAutoFormatting(true);
+    stream.writeStartDocument();
+
+    stream.writeStartElement(QStringLiteral("gpx"));
+    stream.writeAttribute(QStringLiteral("version"), QStringLiteral("1.1"));
+    stream.writeAttribute(QStringLiteral("creator"), QStringLiteral("Enroute Flight Navigation"));
+    stream.writeAttribute(QStringLiteral("xmlns"), QStringLiteral("http://www.topografix.com/GPX/1/1"));
+    stream.writeAttribute(QStringLiteral("xmlns:xsi"), QStringLiteral("http://www.w3.org/2001/XMLSchema-instance"));
+
+    stream.writeStartElement(QStringLiteral("metadata"));
+    stream.writeTextElement(QStringLiteral("name"), QStringLiteral("Waypoint Library"));
+    stream.writeEndElement(); // metadata
+
+    for(const auto& _waypoint : m_waypoints)
+    {
+        _waypoint.toGPX(stream);
+    }
+
+    stream.writeEndElement(); // gpx
+    stream.writeEndDocument();
+
+    return result;
 }

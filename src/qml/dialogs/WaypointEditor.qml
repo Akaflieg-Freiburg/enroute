@@ -43,6 +43,7 @@ Dialog {
     readonly property string newName: wpNameField.text
     readonly property double newLatitude: latInput.value
     readonly property double newLongitude: longInput.value
+    readonly property double newAltitudeMeter: eleField.valueMeter
 
     // Size is chosen so that the dialog does not cover the parent in full
     width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
@@ -84,14 +85,7 @@ Dialog {
 
         Label {
             Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Format")
-        }
-        ComboBox {
-            id: formatChoice
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBaseline
-
-            model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+            Layout.columnSpan: 2
         }
 
         Label {
@@ -126,6 +120,48 @@ Dialog {
 
             onAcceptableInputChanged: enableOk()
         }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Format")
+        }
+        ComboBox {
+            id: formatChoice
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+
+            model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            Layout.columnSpan: 2
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Elevation")
+        }
+        ElevationInput {
+            id: eleField
+
+            Layout.fillWidth: true
+            currentIndex: eleFormatChoice.currentIndex
+            valueMeter: waypoint.coordinate.altitude
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+            text: qsTr("Unit")
+        }
+        ComboBox {
+            id: eleFormatChoice
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignBaseline
+
+            model: [ qsTr("Feet"), qsTr("Meter") ]
+        }
+
 
     }
 

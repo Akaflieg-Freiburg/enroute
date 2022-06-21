@@ -84,6 +84,9 @@ namespace GeoMaps
          */
         Q_INVOKABLE void add(const GeoMaps::Waypoint &waypoint);
 
+        /*! \brief Clears the waypoint library */
+        Q_INVOKABLE void clear();
+
         /*! \brief Checks if library contains an given waypoint
          *
          * @param waypoint Waypoint
@@ -116,6 +119,18 @@ namespace GeoMaps
          *  @returns True if yes
          */
         [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const;
+
+        /*! \brief Import waypoints into the library
+         *
+         *  This method reads waypoints from a file and adds them to the library.
+         *
+         *  @param fileName Name of file to import. Must be in CUP or GeoJSON format.
+         *
+         *  @param skip If true, skip over waypoints that already exist in the library
+         *
+         *  @return Human-readable error message, or an empty string on success
+         */
+        [[nodiscard]] Q_INVOKABLE QString import(const QString& fileName, bool skip);
 
         /*! \brief Read from file
          *
@@ -171,15 +186,25 @@ namespace GeoMaps
          */
         [[nodiscard]] Q_INVOKABLE QString save(QString fileName = {}) const;
 
-        /*! \brief Convert to GeoJSON
+        /*! \brief Serialize into GeoJSON document
          *
-         * Converts the library to a GeoJSON file. The resulting file contains a
+         * Serializes the library to as GeoJSON file. The resulting file contains a
          * FeatureArray, where each member is of the form described in the
          * documentation of the method GeoMaps::Waypoint::toJSON()
          *
          * @returns GeoJSON data
          */
         [[nodiscard]] Q_INVOKABLE QByteArray toGeoJSON() const;
+
+        /*! \brief Serialize into GPX document
+         *
+         * This method serialises the current library as a GPX document. The
+         * document conforms to the specification outlined
+         * [here](https://www.topografix.com/gpx.asp)
+         *
+         * @returns QByteArray containing GPX data describing the flight route
+         */
+        [[nodiscard]] Q_INVOKABLE QByteArray toGpx() const;
 
     signals:
         /*! \brief Notification signal for the property with the same name */

@@ -254,6 +254,28 @@ auto GeoMaps::Waypoint::toJSON() const -> QJsonObject
 }
 
 
+void GeoMaps::Waypoint::toGPX(QXmlStreamWriter& stream) const
+{
+    if (!isValid())
+    {
+        return;
+    }
+
+    auto lat = QString::number(m_coordinate.latitude(), 'f', 8);
+    auto lon = QString::number(m_coordinate.longitude(), 'f', 8);
+
+    stream.writeStartElement(QStringLiteral("wpt"));
+    stream.writeAttribute(QStringLiteral("lat"), lat);
+    stream.writeAttribute(QStringLiteral("lon"), lon);
+    if (m_coordinate.type() == QGeoCoordinate::Coordinate3D) {
+        auto elevation = QString::number(m_coordinate.altitude(), 'f', 2);
+        stream.writeTextElement(QStringLiteral("ele"), elevation);
+    }
+    stream.writeTextElement(QStringLiteral("name"), extendedName());
+    stream.writeEndElement(); // wpt
+}
+
+
 //
 // PROPERTIES
 //

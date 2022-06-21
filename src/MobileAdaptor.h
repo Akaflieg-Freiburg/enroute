@@ -59,10 +59,11 @@ public:
     enum FileFunction
       {
         UnknownFunction,
-        FlightRoute_GPX, /*!< File contains a flight route, stored as GeoJSON. */
-        FlightRoute_GeoJSON, /*!< File contains a flight route, stored as GPX. */
-        VectorMap, /*!< File contains a vector map. */
-        RasterMap /*!< File contains a raster map. */
+        FlightRouteOrWaypointLibrary, /*< File contains a flight route or a waypoint library. */
+        FlightRoute, /*< File contains a flight route. */
+        VectorMap, /*< File contains a vector map. */
+        RasterMap, /*< File contains a raster map. */
+        WaypointLibrary /*< Waypoint library in CUP or GeoJSON format */
       };
     Q_ENUM(FileFunction)
 

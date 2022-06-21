@@ -23,6 +23,7 @@
 #include <QGeoCoordinate>
 #include <QMap>
 #include <QJsonObject>
+#include <QXmlStreamWriter>
 
 
 namespace GeoMaps {
@@ -132,6 +133,15 @@ public:
      * @returns QJsonObject describing the waypoint
      */
     [[nodiscard]] QJsonObject toJSON() const;
+
+    /*! \brief Serialization to GPX object
+     *
+     * This method serialises the waypoint as a GPX object and writes the object
+     * to an XmlStream. If the waypoint is invalid, this method does nothing.
+     *
+     * @param stream XmlStream that the waypoint is written to, as a wpt element
+     */
+    void toGPX(QXmlStreamWriter& stream) const;
 
 
     //

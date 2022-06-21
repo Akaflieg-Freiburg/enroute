@@ -23,6 +23,7 @@
 
 #include "FlightRoute.h"
 #include "GlobalObject.h"
+#include "geomaps/GeoJSON.h"
 #include "navigation/Navigator.h"
 
 
@@ -37,7 +38,8 @@ Navigation::FlightRoute::FlightRoute(QObject *parent)
     stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
 
     // Load last flightRoute
-    loadFromGeoJSON(stdFileName);
+    m_waypoints = GeoMaps::GeoJSON::read(stdFileName);
+    updateLegs();
 
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
@@ -244,47 +246,6 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
 }
 
 
-auto Navigation::FlightRoute::loadFromGeoJSON(QString fileName) -> QString
-{
-    if (fileName.isEmpty()) {
-        fileName = stdFileName;
-    }
-
-    QFile file(fileName);
-    auto success = file.open(QIODevice::ReadOnly);
-    if (!success) {
-        return tr("Cannot open file '%1' for reading.").arg(fileName);
-    }
-    auto fileContent = file.readAll();
-    if (fileContent.isEmpty()) {
-        return tr("Cannot read data from file '%1'.").arg(fileName);
-    }
-    file.close();
-
-    QJsonParseError parseError{};
-    auto document = QJsonDocument::fromJson(fileContent, &parseError);
-    if (parseError.error != QJsonParseError::NoError) {
-        return tr("Cannot parse file '%1'. Reason: %2.").arg(fileName, parseError.errorString());
-    }
-
-    QVector<GeoMaps::Waypoint> newWaypoints;
-    foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
-        auto wp = GeoMaps::Waypoint(value.toObject());
-        if (!wp.isValid()) {
-            return tr("Cannot parse content of file '%1'.").arg(fileName);
-        }
-
-        newWaypoints.append(wp);
-    }
-
-    m_waypoints = newWaypoints;
-    updateLegs();
-    emit waypointsChanged();
-
-    return {};
-}
-
-
 void Navigation::FlightRoute::moveDown(int idx)
 {
     // Paranoid safety checks
@@ -465,12 +426,18 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
 auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
-    foreach(auto waypoint, m_waypoints) {
-        waypointArray.append(waypoint.toJSON());
+    foreach(const auto& waypoint, m_waypoints) {
+        if (waypoint.isValid())
+        {
+            waypointArray.append(waypoint.toJSON());
+        }
     }
+
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
+    jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorFlightRoute());
     jsonObj.insert(QStringLiteral("features"), waypointArray);
+
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc.toJson();

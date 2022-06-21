@@ -26,6 +26,7 @@
 #include "Librarian.h"
 #include "geomaps/CUP.h"
 #include "geomaps/GeoJSON.h"
+#include "geomaps/GPX.h"
 #include "geomaps/WaypointLibrary.h"
 
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
@@ -142,6 +143,10 @@ auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QSt
     if (result.isEmpty())
     {
         result = GeoMaps::GeoJSON::read(fileName);
+    }
+    if (result.isEmpty())
+    {
+        result = GeoMaps::GPX::read(fileName);
     }
     if (result.isEmpty())
     {

@@ -121,12 +121,12 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
 // Methods
 //
 
-bool GeoMaps::GPX::isValid(const QString &fileName)
+bool GeoMaps::GPX::isValid(const QString& fileName)
 {
-    return false;
+    return !read(fileName).isEmpty();
 }
 
-auto GeoMaps::GPX::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
+auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))

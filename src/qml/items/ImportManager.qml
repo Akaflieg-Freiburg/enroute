@@ -59,7 +59,7 @@ Item {
                 importRasterMapDialog.open()
                 return
             }
-            if ((fileFunction === MobileAdaptor.FlightRoute_GPX) || (fileFunction === MobileAdaptor.FlightRoute_GeoJSON)) {
+            if (fileFunction === MobileAdaptor.FlightRoute) {
                 if (global.navigator().flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
@@ -108,6 +108,7 @@ Item {
 
                 onClicked: {
                     global.mobileAdaptor().vibrateBrief()
+                    importManager.fileFunction = MobileAdaptor.FlightRoute
                     chooseFRorWPDialog.close()
                     importFlightRouteDialog.open()
                 }
@@ -118,6 +119,7 @@ Item {
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
+                        importManager.fileFunction = MobileAdaptor.WaypointLibrary
                         chooseFRorWPDialog.close()
                         importWPLibraryDialog.open()
                     }

@@ -407,9 +407,9 @@ Page {
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
-                textFormat: Text.StyledText
+                textFormat: Text.RichText
 
-                text: qsTr("<h2>Empty Route</h2><p>Use the button <strong>Add Waypoint</strong> below.</p>")
+                text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below.</p>")
             }
 
             ScrollView {

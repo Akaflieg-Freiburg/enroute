@@ -124,7 +124,7 @@ namespace GeoMaps
          *
          *  This method reads waypoints from a file and adds them to the library.
          *
-         *  @param fileName Name of file to import. Must be in CUP or GeoJSON format.
+         *  @param fileName Name of file to import. Must be in CUP, GPX or GeoJSON format.
          *
          *  @param skip If true, skip over waypoints that already exist in the library
          *

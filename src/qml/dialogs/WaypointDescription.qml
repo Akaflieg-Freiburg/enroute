@@ -430,20 +430,18 @@ Dialog {
                 Action {
                     text: qsTr("Insert")
                     enabled: {
-                        return false
-
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
                         global.navigator().flightRoute.size
 
-                        return global.navigator().flightRoute.canAppend(waypoint)
+                        return global.navigator().flightRoute.canInsert(waypoint)
                     }
 
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
-                        global.navigator().flightRoute.append(waypoint)
+                        global.navigator().flightRoute.insert(waypoint)
                         close()
-                        toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
+                        toast.doToast(qsTr("Inserted %1 into route.").arg(waypoint.extendedName))
                     }
                 }
 
@@ -496,18 +494,6 @@ Dialog {
                 }
 
                 Action {
-                    text: qsTr("Edit…")
-                    enabled: global.waypointLibrary().contains(waypoint)
-
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        wpEdit.waypoint = waypoint
-                        wpEdit.open()
-                        close()
-                    }
-                }
-
-                Action {
                     text: qsTr("Remove…")
                     enabled: global.waypointLibrary().contains(waypoint)
 
@@ -515,6 +501,24 @@ Dialog {
                         global.mobileAdaptor().vibrateBrief()
                         removeDialog.waypoint = waypoint
                         removeDialog.open()
+                        close()
+                    }
+                }                
+
+                Rectangle {
+                    height: 1
+                    Layout.fillWidth: true
+                    color: Material.primary
+                }
+
+                Action {
+                    text: qsTr("Edit…")
+                    enabled: global.waypointLibrary().contains(waypoint)
+
+                    onTriggered: {
+                        global.mobileAdaptor().vibrateBrief()
+                        wpEdit.waypoint = waypoint
+                        wpEdit.open()
                         close()
                     }
                 }

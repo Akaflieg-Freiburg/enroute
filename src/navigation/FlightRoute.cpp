@@ -73,7 +73,6 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
     return bbox;
 }
 
-
 auto Navigation::FlightRoute::geoPath() const -> QVariantList
 {
     QVariantList result;
@@ -86,7 +85,6 @@ auto Navigation::FlightRoute::geoPath() const -> QVariantList
 
     return result;
 }
-
 
 auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
 {
@@ -104,7 +102,6 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
 
     return result;
 }
-
 
 auto Navigation::FlightRoute::summary() const -> QString
 {
@@ -164,7 +161,6 @@ auto Navigation::FlightRoute::summary() const -> QString
 
 }
 
-
 auto Navigation::FlightRoute::waypoints() const -> QVariantList
 {
     QVariantList result;
@@ -189,12 +185,10 @@ void Navigation::FlightRoute::append(const GeoMaps::Waypoint &waypoint)
     emit waypointsChanged();
 }
 
-
 void Navigation::FlightRoute::append(const QGeoCoordinate& position)
 {
     append( GeoMaps::Waypoint(position) );
 }
-
 
 auto Navigation::FlightRoute::canAppend(const GeoMaps::Waypoint &other) const -> bool
 {
@@ -205,6 +199,21 @@ auto Navigation::FlightRoute::canAppend(const GeoMaps::Waypoint &other) const ->
     return !m_waypoints.last().isNear(other);
 }
 
+auto Navigation::FlightRoute::canInsert(const GeoMaps::Waypoint &other) const -> bool
+{
+    if (m_waypoints.size() < 2)
+    {
+        return false;
+    }
+    foreach(const auto& wp, m_waypoints)
+    {
+        if (wp.isNear(other))
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 void Navigation::FlightRoute::clear()
 {
@@ -213,7 +222,6 @@ void Navigation::FlightRoute::clear()
     updateLegs();
     emit waypointsChanged();
 }
-
 
 auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const -> bool
 {
@@ -228,6 +236,43 @@ auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const 
     return false;
 }
 
+void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& wp)
+{
+    if (!canInsert(wp))
+    {
+        return;
+    }
+
+    int shortestIndex = 0;
+    double shortestRoute = 10e9;
+
+    for(int idx=0; idx<m_waypoints.size()-1;  idx++)
+    {
+        double routeSize = 0.0;
+        for(int i=0; i<m_waypoints.size()-1; i++)
+        {
+            if (i == idx)
+            {
+                routeSize += m_waypoints[i].coordinate().distanceTo(wp.coordinate());
+                routeSize += wp.coordinate().distanceTo(m_waypoints[i+1].coordinate());
+            }
+            else
+            {
+                routeSize += m_waypoints[i].coordinate().distanceTo(m_waypoints[i+1].coordinate());
+            }
+        }
+
+        if (routeSize < shortestRoute)
+        {
+            shortestRoute = routeSize;
+            shortestIndex = idx;
+        }
+    }
+
+    m_waypoints.insert(shortestIndex+1, wp);
+    updateLegs();
+    emit waypointsChanged();
+}
 
 auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> int
 {
@@ -245,7 +290,6 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
 
 }
 
-
 void Navigation::FlightRoute::moveDown(int idx)
 {
     // Paranoid safety checks
@@ -258,7 +302,6 @@ void Navigation::FlightRoute::moveDown(int idx)
     updateLegs();
     emit waypointsChanged();
 }
-
 
 void Navigation::FlightRoute::moveUp(int idx)
 {
@@ -273,7 +316,6 @@ void Navigation::FlightRoute::moveUp(int idx)
     emit waypointsChanged();
 }
 
-
 void Navigation::FlightRoute::removeWaypoint(int idx)
 {
     // Paranoid safety checks
@@ -285,7 +327,6 @@ void Navigation::FlightRoute::removeWaypoint(int idx)
     updateLegs();
     emit waypointsChanged();
 }
-
 
 void Navigation::FlightRoute::relocateWaypoint(int idx, double latitude, double longitude)
 {
@@ -310,7 +351,6 @@ void Navigation::FlightRoute::relocateWaypoint(int idx, double latitude, double 
     emit waypointsChanged();
 }
 
-
 void Navigation::FlightRoute::renameWaypoint(int idx, const QString& newName)
 {
     // Paranoid safety checks
@@ -328,14 +368,12 @@ void Navigation::FlightRoute::renameWaypoint(int idx, const QString& newName)
     emit waypointsChanged();
 }
 
-
 void Navigation::FlightRoute::reverse()
 {
     std::reverse(m_waypoints.begin(), m_waypoints.end());
     updateLegs();
     emit waypointsChanged();
 }
-
 
 auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
 {
@@ -353,7 +391,6 @@ auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
     file.close();
     return {};
 }
-
 
 auto Navigation::FlightRoute::suggestedFilename() const -> QString
 {
@@ -422,7 +459,6 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     return start + " - " + end;
 }
 
-
 auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
@@ -442,7 +478,6 @@ auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
     doc.setObject(jsonObj);
     return doc.toJson();
 }
-
 
 void Navigation::FlightRoute::updateLegs()
 {

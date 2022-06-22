@@ -198,20 +198,20 @@ namespace Navigation
         /*! \brief Checks if waypoint can be added as the new end of this
          *  route
          *
-         *  @param waypoint Waypoint to be appended
+         *  @param other Waypoint to be appended
          *
          *  @returns True if route is empty or if other waypoint is not near
          *  the current end of the route.
          */
-        Q_INVOKABLE [[nodiscard]] bool canAppend(const GeoMaps::Waypoint& waypoint) const;
+        Q_INVOKABLE [[nodiscard]] bool canAppend(const GeoMaps::Waypoint& other) const;
 
         /*! \brief Checks if waypoint can reasonably be inserted into this route
          *
-         *  @param waypoint Waypoint to be inserted
+         *  @param other Waypoint to be inserted
          *
          *  @returns True if it makes sense to insert the waypoint.
          */
-        Q_INVOKABLE [[nodiscard]] bool canInsert(const GeoMaps::Waypoint& waypoint) const;
+        Q_INVOKABLE [[nodiscard]] bool canInsert(const GeoMaps::Waypoint& other) const;
 
         /*! \brief Deletes all waypoints in the current route */
         Q_INVOKABLE void clear();

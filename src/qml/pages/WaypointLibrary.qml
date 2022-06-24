@@ -99,7 +99,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-                    enabled: (global.navigator().flightRoute.size > 0)
+                    enabled: global.waypointLibrary().waypoints.length > 0
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -152,7 +152,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in other app …")
-                    enabled: (global.navigator().flightRoute.size > 0)
+                    enabled: global.waypointLibrary().waypoints.length > 0
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")

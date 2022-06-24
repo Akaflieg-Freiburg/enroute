@@ -336,6 +336,26 @@ Page {
     }
 
     Dialog {
+        id: shareErrorDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Error exporting data…")
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+
+        Label {
+            id: shareErrorDialogLabel
+            width: shareErrorDialog.availableWidth
+            wrapMode: Text.Wrap
+            textFormat: Text.StyledText
+        }
+
+        standardButtons: Dialog.Ok
+        modal: true
+
+    }
+
+    Dialog {
         id: removeDialog
 
         property var waypoint: global.geoMapProvider().createWaypoint()

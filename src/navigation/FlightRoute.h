@@ -185,7 +185,7 @@ namespace Navigation
          *
          * @param waypoint Waypoint to be added
          */
-        Q_INVOKABLE void append(const GeoMaps::Waypoint &waypoint);
+        Q_INVOKABLE void append(const GeoMaps::Waypoint& waypoint);
 
         /*! \brief Adds a waypoint to the end of the route
          *
@@ -195,15 +195,23 @@ namespace Navigation
          */
         Q_INVOKABLE void append(const QGeoCoordinate &position);
 
-        /*! \brief Checks if other waypoint can be added as the new end of this
+        /*! \brief Checks if waypoint can be added as the new end of this
          *  route
          *
-         *  @param other Pointer to other waypoint (may be nullptr)
+         *  @param other Waypoint to be appended
          *
-         *  @returns True if route is emptry or if other waypoint is not near
+         *  @returns True if route is empty or if other waypoint is not near
          *  the current end of the route.
          */
-        Q_INVOKABLE [[nodiscard]] bool canAppend(const GeoMaps::Waypoint &other) const;
+        Q_INVOKABLE [[nodiscard]] bool canAppend(const GeoMaps::Waypoint& other) const;
+
+        /*! \brief Checks if waypoint can reasonably be inserted into this route
+         *
+         *  @param other Waypoint to be inserted
+         *
+         *  @returns True if it makes sense to insert the waypoint.
+         */
+        Q_INVOKABLE [[nodiscard]] bool canInsert(const GeoMaps::Waypoint& other) const;
 
         /*! \brief Deletes all waypoints in the current route */
         Q_INVOKABLE void clear();
@@ -215,7 +223,16 @@ namespace Navigation
          * @returns bool Returns true if waypoint geographically close to a
          * waypoint in the route
          */
-        Q_INVOKABLE [[nodiscard]] bool contains(const GeoMaps::Waypoint &waypoint) const;
+        Q_INVOKABLE [[nodiscard]] bool contains(const GeoMaps::Waypoint& waypoint) const;
+
+        /*! \brief Inserts a waypoint into the route
+         *
+         *  Inserts the waypoint into the route, at the place that minimizes the
+         *  overall route length. If canInsert() is false, this method does nothing.
+         *
+         * @param wp Waypoint to be inserted.
+         */
+        Q_INVOKABLE void insert(const GeoMaps::Waypoint& wp);
 
         /*! \brief Index for last occurrence of the waypoint in the flight route
          *
@@ -227,7 +244,7 @@ namespace Navigation
          *  @returns Index position of the last waypoint in the route close to
          *  the given waypoint. Returns -1 if no waypoint is close.
          */
-        Q_INVOKABLE [[nodiscard]] int lastIndexOf(const GeoMaps::Waypoint &waypoint) const;
+        Q_INVOKABLE [[nodiscard]] int lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
 
         /*! \brief Loads the route from a GeoJSON or GPX document
          *
@@ -240,7 +257,7 @@ namespace Navigation
          * @returns Empty string in case of success, human-readable, translated
          * error message otherwise.
          */
-        Q_INVOKABLE QString load(const QString &fileName);
+        Q_INVOKABLE QString load(const QString& fileName);
 
         /*! \brief Move waypoint one position down in the list of waypoints
          *
@@ -355,7 +372,7 @@ namespace Navigation
         Q_DISABLE_COPY_MOVE(FlightRoute)
 
         // Helper function for method toGPX
-        [[nodiscard]] auto gpxElements(const QString &indent, const QString &tag) const -> QString;
+        [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
 
         // File name where the flight route is loaded upon startup are stored.
         // This member is filled in in the constructor to

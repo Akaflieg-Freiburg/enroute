@@ -22,7 +22,10 @@
 #include <QJsonArray>
 #include <QUrl>
 
+#include "GlobalObject.h"
 #include "Waypoint.h"
+#include "navigation/Aircraft.h"
+#include "navigation/Navigator.h"
 #include "units/Distance.h"
 
 
@@ -313,9 +316,6 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
     if (m_properties.value(QStringLiteral("TYP")).toString() == QLatin1String("NAV")) {
         result.append("ID  " + m_properties.value(QStringLiteral("COD")).toString() + " " + m_properties.value(QStringLiteral("MOR")).toString());
         result.append("NAV " + m_properties.value(QStringLiteral("NAV")).toString());
-        if (m_properties.contains(QStringLiteral("ELE"))) {
-            result.append(QStringLiteral("ELEV%1 ft AMSL").arg(qRound(Units::Distance::fromM(m_properties.value(QStringLiteral("ELE")).toDouble()).toFeet())));
-        }
     }
 
     if (m_properties.value(QStringLiteral("TYP")).toString() == QLatin1String("AD")) {
@@ -337,8 +337,6 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
         if (m_properties.contains(QStringLiteral("RWY"))) {
             result.append("RWY " + m_properties.value(QStringLiteral("RWY")).toString().replace(QLatin1String("\n"), QLatin1String("<br>")));
         }
-
-        result.append( QStringLiteral("ELEV%1 ft AMSL").arg(qRound(Units::Distance::fromM(m_properties.value(QStringLiteral("ELE")).toDouble()).toFeet())));
     }
 
     if (m_properties.value(QStringLiteral("TYP")).toString() == QLatin1String("WP")) {
@@ -348,6 +346,12 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
         if (m_properties.contains(QStringLiteral("COM"))) {
             result.append("COM " + m_properties.value(QStringLiteral("COM")).toString());
         }
+    }
+
+    if (m_properties.contains(QStringLiteral("ELE"))) {
+        auto ele = Units::Distance::fromM( m_properties.value(QStringLiteral("ELE")).toDouble() );
+        auto eleString = GlobalObject::navigator()->aircraft().verticalDistanceToString(ele);
+        result.append(QStringLiteral("ELEV%1 AMSL").arg(eleString));
     }
 
     return result;

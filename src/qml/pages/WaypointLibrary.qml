@@ -99,7 +99,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
-                    enabled: (global.navigator().flightRoute.size > 0)
+                    enabled: global.waypointLibrary().waypoints.length > 0
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -152,7 +152,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in other app …")
-                    enabled: (global.navigator().flightRoute.size > 0)
+                    enabled: global.waypointLibrary().waypoints.length > 0
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
@@ -333,6 +333,26 @@ Page {
         var cache = textInput.text
         textInput.text = textInput.text+"XXXXX"
         textInput.text = cache
+    }
+
+    Dialog {
+        id: shareErrorDialog
+        anchors.centerIn: parent
+        parent: Overlay.overlay
+
+        title: qsTr("Error exporting data…")
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+
+        Label {
+            id: shareErrorDialogLabel
+            width: shareErrorDialog.availableWidth
+            wrapMode: Text.Wrap
+            textFormat: Text.StyledText
+        }
+
+        standardButtons: Dialog.Ok
+        modal: true
+
     }
 
     Dialog {

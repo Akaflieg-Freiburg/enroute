@@ -330,7 +330,7 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = global.navigator().flightRoute.loadFromGeoJSON(global.librarian().fullPath(Librarian.Routes, finalFileName))
+        var errorString = global.navigator().flightRoute.load(global.librarian().fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

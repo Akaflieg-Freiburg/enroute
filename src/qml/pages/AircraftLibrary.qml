@@ -100,7 +100,7 @@ Page {
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
-                            renameName.text = ""
+                            renameName.text = modelData
                             renameDialog.open()
                         }
 

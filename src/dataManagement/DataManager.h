@@ -35,7 +35,9 @@ namespace DataManagement {
  *  items.
  *
  *  - Aviation maps (in GeoJSON format)
- *  - Base maps (in MBTILES format)
+ *  - Base maps/raster (in MBTILES format)
+ *  - Base maps/vector (in MBTILES format)
+ *  - Digital elevation models (in MBTILES format)
  *  - FLARM Databases (as a text file)
  *
  *  In addition, it allows access to the following data.
@@ -115,6 +117,12 @@ public:
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* databases READ databases CONSTANT)
 
+    /*! \brief DownloadableGroupWatcher that holds all digital elevation model items
+     *
+     *  Pointer to a DownloadableGroupWatcher that holds all DEMs.
+     */
+    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* DEMs READ DEMs CONSTANT)
+
     /*! \brief True while the list of remotely available items is retrieved */
     Q_PROPERTY(bool downloadingRemoteItemList READ downloadingRemoteItemList NOTIFY downloadingRemoteItemListChanged)
 
@@ -168,6 +176,12 @@ public:
      *  @returns Property databases
      */
     [[nodiscard]] auto databases() -> DataManagement::DownloadableGroupWatcher* { return &m_databases; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property databases
+     */
+    [[nodiscard]] auto DEMs() -> DataManagement::DownloadableGroupWatcher* { return &m_DEMs; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -313,6 +327,7 @@ private:
 
     // List of geographic maps
     DataManagement::DownloadableGroup m_databases;
+    DataManagement::DownloadableGroup m_DEMs;
     DataManagement::DownloadableGroup m_items;
     DataManagement::DownloadableGroup m_baseMaps;
     DataManagement::DownloadableGroup m_baseMapsRaster;

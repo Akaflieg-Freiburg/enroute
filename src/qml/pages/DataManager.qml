@@ -664,7 +664,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.dataManager().baseMaps.downloadablesAsObjectList
+                model: global.dataManager().terrainMaps.downloadablesAsObjectList
                 delegate: terrainItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 

@@ -197,6 +197,7 @@ private:
   QSet<QString> databaseConnections;
   
   QString _name;
+  QString _encoding;
   QString _format;
   QString _tiles;
   QString _description;

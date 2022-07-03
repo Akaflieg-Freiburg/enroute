@@ -247,12 +247,7 @@ Page {
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
                             global.mobileAdaptor().vibrateBrief()
-
-                            if (model.modelData.fileName.endsWith("mbtiles") && global.dataManager().baseMapsRaster.hasFile) {
-                                uninstallRasterMapDialog.vectorMap = element
-                                uninstallRasterMapDialog.open()
-                            } else
-                                startFileDownload()
+                            startFileDownload()
                         }
                     }
                 }

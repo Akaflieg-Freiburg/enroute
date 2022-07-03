@@ -146,7 +146,7 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     }
 
     // Extract infomation from MBTILES
-    if (fileName.endsWith(u".mbtiles"))
+    if (fileName.endsWith(u".mbtiles") || fileName.endsWith(u".terrain"))
     {
         result += GeoMaps::MBTILES::info(fileName);
     }

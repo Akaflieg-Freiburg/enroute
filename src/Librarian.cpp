@@ -275,7 +275,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>As requested by many users, it is now possible to save waypoints and to build a small waypoint library.</p>") +
+        return tr("<p>The app can now show a shaded terrain relief. To download terrain data for your region, open the main menu and go to 'Library/Maps and Data'.</p>") +
                 tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

@@ -207,26 +207,29 @@ void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRou
 
 void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::PositionInfo& info)
 {
-    // If there is no valid positionInfo, then there is no remaining route info
-    if (!info.isValid()) {
-        RemainingRouteInfo rrInfo;
-        rrInfo.status = RemainingRouteInfo::PositionUnknown;
-        setRemainingRouteInfo(rrInfo);
-        return;
-    }
-
     // If there are no waypoints, then there is no remaining route info
     auto geoPath = flightRoute()->geoPath();
-    if (geoPath.isEmpty()) {
+    if (geoPath.isEmpty())
+    {
         RemainingRouteInfo rrInfo;
         rrInfo.status = RemainingRouteInfo::NoRoute;
         setRemainingRouteInfo(rrInfo);
         return;
     }
 
+    // If there is no valid positionInfo, then there is no remaining route info
+    if (!info.isValid())
+    {
+        RemainingRouteInfo rrInfo;
+        rrInfo.status = RemainingRouteInfo::PositionUnknown;
+        setRemainingRouteInfo(rrInfo);
+        return;
+    }
+
     // If we are closer than 3 nm from endpoint, then we do not give a remaining route info
     auto finalCoordinate = geoPath[geoPath.size()-1].value<QGeoCoordinate>();
-    if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Leg::nearThreshold) {
+    if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Leg::nearThreshold)
+    {
         RemainingRouteInfo rrInfo;
         rrInfo.status = RemainingRouteInfo::NearDestination;
         setRemainingRouteInfo(rrInfo);
@@ -240,7 +243,8 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
 
     // If the flight route contains one waypoint only, then create an artificial leg from the current position
     // to the one waypoint of the route.
-    if (flightRoute()->size() == 1) {
+    if (flightRoute()->size() == 1)
+    {
         auto start = Positioning::PositionProvider::lastValidCoordinate();
         auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>();
         legs += Leg(start, end);
@@ -248,17 +252,22 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
 
     // Check legs that we are following, and take the last one
     int currentLeg = -1;
-    for(int i=legs.size()-1; i>=0; i--) {
-        if (legs[i].isFollowing(info)) {
+    for(int i=legs.size()-1; i>=0; i--)
+    {
+        if (legs[i].isFollowing(info))
+        {
             currentLeg = i;
             break;
         }
     }
 
     // If no current leg found, check legs that we are near to, and take the last one.
-    if (currentLeg < 0) {
-        for(int i=legs.size()-1; i>=0; i--) {
-            if (legs[i].isNear(info)) {
+    if (currentLeg < 0)
+    {
+        for(int i=legs.size()-1; i>=0; i--)
+        {
+            if (legs[i].isNear(info))
+            {
                 currentLeg = i;
                 break;
             }
@@ -266,7 +275,8 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     }
 
     // If still no current leg found, then abort
-    if (currentLeg < 0) {
+    if (currentLeg < 0)
+    {
         RemainingRouteInfo rrInfo;
         rrInfo.status = RemainingRouteInfo::OffRoute;
         setRemainingRouteInfo(rrInfo);
@@ -287,10 +297,12 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     if (legToNextWP.TC().isFinite() &&
             info.trueTrack().isFinite() &&
             info.groundSpeed().isFinite() &&
-            (info.groundSpeed() > Units::Speed::fromKN(10.0)) ) {
+            (info.groundSpeed() > Units::Speed::fromKN(10.0)) )
+    {
         auto bearing = legToNextWP.TC()-info.trueTrack();
         auto bearingDEG = bearing.toDEG();
-        if ((bearingDEG < 30) || (bearingDEG > 360-30)) {
+        if ((bearingDEG < 30) || (bearingDEG > 360-30))
+        {
             ETE = dist/(bearing.cos()*info.groundSpeed());
         }
     }
@@ -298,12 +310,15 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     rri.nextWP = legToNextWP.endPoint();
     rri.nextWP_DIST = dist;
     rri.nextWP_ETE  = ETE;
-    if (ETE.isFinite()) {
-        rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.nextWP_ETE.toS() );
+    if (ETE.isFinite())
+    {
+        rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.nextWP_ETE.toS()) );
     }
 
-    if (currentLeg < legs.size()-1) {
-        for(int i=currentLeg+1; i<legs.size(); i++) {
+    if (currentLeg < legs.size()-1)
+    {
+        for(int i=currentLeg+1; i<legs.size(); i++)
+        {
             dist += legs[i].distance();
             ETE += legs[i].ETE(m_wind, m_aircraft);
         }
@@ -311,22 +326,27 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
         rri.finalWP = legs.last().endPoint();
         rri.finalWP_DIST = dist;
         rri.finalWP_ETE  = ETE;
-        if (ETE.isFinite()) {
-            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( rri.finalWP_ETE.toS() ).toUTC();
+        if (ETE.isFinite())
+        {
+            rri.finalWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.finalWP_ETE.toS()) ).toUTC();
         }
     }
 
     QStringList complaints;
-    if (!m_aircraft.cruiseSpeed().isFinite()) {
+    if (!m_aircraft.cruiseSpeed().isFinite())
+    {
         complaints += tr("Cruise speed not specified.");
     }
-    if (!m_wind.speed().isFinite()) {
+    if (!m_wind.speed().isFinite())
+    {
         complaints += tr("Wind speed not specified.");
     }
-    if (!m_wind.directionFrom().isFinite()) {
+    if (!m_wind.directionFrom().isFinite())
+    {
         complaints += tr("Wind direction not specified.");
     }
-    if (!complaints.isEmpty()) {
+    if (!complaints.isEmpty())
+    {
         rri.note = tr("Computation incomplete. %1").arg(complaints.join(QStringLiteral(" ")));
     }
 

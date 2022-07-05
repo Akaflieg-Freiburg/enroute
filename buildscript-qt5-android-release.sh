@@ -31,6 +31,7 @@ $Qt5_DIR_SOURCE/configure \
     -no-feature-quickcontrols2-imagine \
     -no-feature-quicktemplates2-hover \
     -no-separate-debug-info \
+    -qt-webp \
     -release \
     -skip qt3d \
     -skip qtcharts \
@@ -38,7 +39,6 @@ $Qt5_DIR_SOURCE/configure \
     -skip qtdatavis3d \
     -skip qtdoc \
     -skip qtgamepad \
-    -skip qtimageformats \
     -skip qtlottie \
     -skip qtmultimedia \
     -skip qtnetworkauth \
@@ -62,6 +62,6 @@ $Qt5_DIR_SOURCE/configure \
     -I /home/kebekus/Software/buildsystems/openssl-1.1.1k/include \
     -no-warnings-are-errors
 
-nice make
+nice make -j8
 rm -rf $Qt5_DIR_ANDROID
 nice make install

@@ -250,7 +250,10 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
 
     // Construct a new downloadable object and add to appropriate groups
     auto* downloadable = new DataManagement::Downloadable(url, localFileName, this);
-    if (localFileName.endsWith(QLatin1String("geojson")) || localFileName.endsWith(QLatin1String("mbtiles")) || localFileName.endsWith(QLatin1String("raster")))
+    if (localFileName.endsWith(QLatin1String("geojson")) ||
+            localFileName.endsWith(QLatin1String("mbtiles")) ||
+            localFileName.endsWith(QLatin1String("raster")) ||
+            localFileName.endsWith(QLatin1String("terrain")))
     {
         if (url.isValid())
         {

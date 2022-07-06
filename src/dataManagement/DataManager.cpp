@@ -77,7 +77,8 @@ void DataManagement::DataManager::cleanDataDirectory()
         {
             misnamedFiles += fileIterator.filePath();
         }
-        if (!fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
+        if (!fileIterator.filePath().endsWith(QLatin1String(".terrain")) &&
+                !fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".raster")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".txt")))
@@ -145,7 +146,7 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     }
 
     // Extract infomation from MBTILES
-    if (fileName.endsWith(u".mbtiles"))
+    if (fileName.endsWith(u".mbtiles") || fileName.endsWith(u".terrain"))
     {
         result += GeoMaps::MBTILES::info(fileName);
     }
@@ -249,7 +250,10 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
 
     // Construct a new downloadable object and add to appropriate groups
     auto* downloadable = new DataManagement::Downloadable(url, localFileName, this);
-    if (localFileName.endsWith(QLatin1String("geojson")) || localFileName.endsWith(QLatin1String("mbtiles")) || localFileName.endsWith(QLatin1String("raster")))
+    if (localFileName.endsWith(QLatin1String("geojson")) ||
+            localFileName.endsWith(QLatin1String("mbtiles")) ||
+            localFileName.endsWith(QLatin1String("raster")) ||
+            localFileName.endsWith(QLatin1String("terrain")))
     {
         if (url.isValid())
         {
@@ -263,6 +267,10 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
     }
 
     m_items.addToGroup(downloadable);
+    if (localFileName.endsWith(QLatin1String("terrain")))
+    {
+        m_terrainMaps.addToGroup(downloadable);
+    }
     if (localFileName.endsWith(QLatin1String("geojson")))
     {
         m_aviationMaps.addToGroup(downloadable);

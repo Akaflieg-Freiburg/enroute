@@ -156,7 +156,7 @@ $(function() {
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="comment">// This slot is called every time the the set of MBTile files changes.</span></div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="comment">// It sets up the tile server to and generates a new style file.</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordtype">void</span> onBaseMapsChanged();</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordtype">void</span> onMBTILESChanged();</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="comment">// Interal function that does most of the work for aviationMapsChanged()</span></div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="comment">// emits geoJSONChanged() when done. This function is meant to be run in</span></div>
@@ -167,33 +167,34 @@ $(function() {
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        QRegularExpression specialChars{QStringLiteral(<span class="stringliteral">&quot;[^a-zA-Z0-9]&quot;</span>)};</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        QHash&lt;QString, QString&gt; simplifySpecialChars_cache;</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <span class="comment">// This is the path under which bas mape tiles are available on the</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <span class="comment">// This is the path under which map tiles are available on the</span></div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="comment">// _tileServer. This is set to a random number that changes every time</span></div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="comment">// the set of MBTile files changes</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        QString _currentPath;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <span class="comment">// Tile Server</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        TileServer _tileServer;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="comment">// Temporary file that holds the current style file</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        QPointer&lt;QTemporaryFile&gt; _styleFile;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="comment">//</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="comment">// Aviation Data Cache</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="comment">//</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        QFuture&lt;void&gt; _aviationDataCacheFuture; <span class="comment">// Future; indicates if fillAviationDataCache() is currently running</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        QTimer _aviationDataCacheTimer;         <span class="comment">// Timer used to start another run of fillAviationDataCache()</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="comment">// The data in this group is accessed by several threads. The following</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="comment">// classes (whose names ends in an underscore) are therefore protected</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="comment">// by this mutex.</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        QMutex _aviationDataMutex;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        QByteArray _combinedGeoJSON_;  <span class="comment">// Cache: GeoJSON</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        QVector&lt;Waypoint&gt; _waypoints_; <span class="comment">// Cache: Waypoints</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        QVector&lt;Airspace&gt; _airspaces_; <span class="comment">// Cache: Airspaces</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    };</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;};</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        QString _currentBaseMapPath;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        QString _currentTerrainMapPath;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="comment">// Tile Server</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        TileServer _tileServer;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="comment">// Temporary file that holds the current style file</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        QPointer&lt;QTemporaryFile&gt; _styleFile;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="comment">//</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="comment">// Aviation Data Cache</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="comment">//</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        QFuture&lt;void&gt; _aviationDataCacheFuture; <span class="comment">// Future; indicates if fillAviationDataCache() is currently running</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        QTimer _aviationDataCacheTimer;         <span class="comment">// Timer used to start another run of fillAviationDataCache()</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="comment">// The data in this group is accessed by several threads. The following</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="comment">// classes (whose names ends in an underscore) are therefore protected</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="comment">// by this mutex.</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        QMutex _aviationDataMutex;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        QByteArray _combinedGeoJSON_;  <span class="comment">// Cache: GeoJSON</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        QVector&lt;Waypoint&gt; _waypoints_; <span class="comment">// Cache: Waypoints</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        QVector&lt;Airspace&gt; _airspaces_; <span class="comment">// Cache: Airspaces</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    };</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a85ae3b15fa2f5833af0b79ed20bc1f3b"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a85ae3b15fa2f5833af0b79ed20bc1f3b">GeoMaps::GeoMapProvider::geoJSONChanged</a></div><div class="ttdeci">void geoJSONChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_ae548d8d722c7cc995ec40302849894b8"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">GeoMaps::GeoMapProvider::styleFileURL</a></div><div class="ttdeci">QString styleFileURL</div><div class="ttdoc">URL where a style file for the base map can be retrieved.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00138">GeoMapProvider.h:138</a></div></div>

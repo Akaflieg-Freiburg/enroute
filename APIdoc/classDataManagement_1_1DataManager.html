@@ -135,6 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a577c339d65c3e79473bcd1e0f5c2d0b3"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a577c339d65c3e79473bcd1e0f5c2d0b3">hasRemoteItemList</a> () const -&gt; bool</td></tr>
 <tr class="memdesc:a577c339d65c3e79473bcd1e0f5c2d0b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classDataManagement_1_1DataManager.html#a577c339d65c3e79473bcd1e0f5c2d0b3">More...</a><br /></td></tr>
 <tr class="separator:a577c339d65c3e79473bcd1e0f5c2d0b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a17800d0d74377b21040d2f78fb3025"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a7a17800d0d74377b21040d2f78fb3025">terrainMaps</a> () -&gt; <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html">DataManagement::DownloadableGroupWatcher</a> *</td></tr>
+<tr class="memdesc:a7a17800d0d74377b21040d2f78fb3025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classDataManagement_1_1DataManager.html#a7a17800d0d74377b21040d2f78fb3025">More...</a><br /></td></tr>
+<tr class="separator:a7a17800d0d74377b21040d2f78fb3025"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cf07bc34e037ac477d16b202ed3da53"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a2cf07bc34e037ac477d16b202ed3da53">whatsNew</a> () const -&gt; QString</td></tr>
 <tr class="memdesc:a2cf07bc34e037ac477d16b202ed3da53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classDataManagement_1_1DataManager.html#a2cf07bc34e037ac477d16b202ed3da53">More...</a><br /></td></tr>
 <tr class="separator:a2cf07bc34e037ac477d16b202ed3da53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,6 +241,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a4bf1884d503851cac1e459bdfb6b0db3">hasRemoteItemList</a></td></tr>
 <tr class="memdesc:a4bf1884d503851cac1e459bdfb6b0db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if list of remotely available items has been downloaded. <br /></td></tr>
 <tr class="separator:a4bf1884d503851cac1e459bdfb6b0db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c3b61370f238c67c4481617fe6307b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html">DataManagement::DownloadableGroupWatcher</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a57c3b61370f238c67c4481617fe6307b">terrainMaps</a></td></tr>
+<tr class="memdesc:a57c3b61370f238c67c4481617fe6307b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all terrain maps.  <a href="classDataManagement_1_1DataManager.html#a57c3b61370f238c67c4481617fe6307b">More...</a><br /></td></tr>
+<tr class="separator:a57c3b61370f238c67c4481617fe6307b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3f9f93e3016a6eecc34606ecd07a7ef"><td class="memItemLeft" align="right" valign="top"><a id="af3f9f93e3016a6eecc34606ecd07a7ef"></a>
 QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#af3f9f93e3016a6eecc34606ecd07a7ef">whatsNew</a></td></tr>
 <tr class="memdesc:af3f9f93e3016a6eecc34606ecd07a7ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current "what's new" message. <br /></td></tr>
@@ -254,9 +260,11 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Manages the list of geographic maps. </p>
 <p>This class manages a list of remotely available and locally installed databases and geographic maps. More specifically, it manages the following items.</p>
 <ul>
-<li>Aviation maps (in GeoJSON format)</li>
-<li>Base maps (in MBTILES format)</li>
-<li>FLARM Databases (as a text file)</li>
+<li>Aviation maps (in GeoJSON format, file name ends in "geojson")</li>
+<li>Base maps/raster (in MBTILES format, file name ends in "mbtiles")</li>
+<li>Base maps/vector (in MBTILES format, file name ends in "raster")</li>
+<li>Terrain maps (in MBTILES format, file name ends in "terrain")</li>
+<li>FLARM Databases (as a text file, file name ends in "data")</li>
 </ul>
 <p>In addition, it allows access to the following data.</p>
 <ul>
@@ -268,7 +276,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Locally installed items are saved in the directory "aviation_maps" in QStandardPaths::writableLocation(QStandardPaths::AppDataLocation), or into a suitable subdirectory of this.</p>
 <p>The implementation assumes that no other program interferes with the file "maps.json" and with the directory "aviation_maps". </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00083">83</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00085">85</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa2ed55a60c00c77d00b88c7fc00f1c2a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2ed55a60c00c77d00b88c7fc00f1c2a">&#9670;&nbsp;</a></span>DataManager()</h2>
@@ -332,7 +340,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property aviationMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00182">182</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00190">190</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -362,7 +370,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property baseMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00188">188</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00196">196</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -392,7 +400,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property baseMapsRaster </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00194">194</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00202">202</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -422,7 +430,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property baseMapsVector </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00200">200</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00208">208</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -452,7 +460,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property databases </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00206">206</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00214">214</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -549,7 +557,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property downloadingRemoteItemList </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00212">212</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00220">220</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -614,7 +622,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>hasRemoteItemList </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00224">224</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00232">232</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -683,7 +691,37 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property items </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00218">218</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00226">226</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+
+</div>
+</div>
+<a id="a7a17800d0d74377b21040d2f78fb3025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a17800d0d74377b21040d2f78fb3025">&#9670;&nbsp;</a></span>terrainMaps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto DataManagement::DataManager::terrainMaps </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html">DataManagement::DownloadableGroupWatcher</a>* </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property terrainMaps </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00238">238</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -713,7 +751,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Triggers an update of the list of remotely available data items. </p>
 <p>This will trigger a download the file maps.json from the remote server. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00285">285</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00299">299</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -743,7 +781,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property whatsNew </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00230">230</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00244">244</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -773,7 +811,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00236">236</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00250">250</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -801,7 +839,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all aviation maps. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all aviation maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00128">128</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00130">130</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -828,7 +866,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all base maps. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all base maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00146">146</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00148">148</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -855,7 +893,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all base maps in raster format. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all base maps in raster format. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00134">134</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00136">136</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -882,7 +920,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all base maps in vector format. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all base maps in vector format. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00140">140</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00142">142</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -909,7 +947,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all data items. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all databases. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00152">152</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00154">154</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -936,7 +974,34 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all data items. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all data items. This includes aviation maps, base maps, and databases. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00162">162</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00164">164</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+
+</div>
+</div>
+<a id="a57c3b61370f238c67c4481617fe6307b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57c3b61370f238c67c4481617fe6307b">&#9670;&nbsp;</a></span>terrainMaps</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html">DataManagement::DownloadableGroupWatcher</a> DataManagement::DataManager::terrainMaps</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all terrain maps. </p>
+<p>Pointer to a <a class="el" href="classDataManagement_1_1DownloadableGroupWatcher.html" title="Watches a group of Downloadable objects.">DownloadableGroupWatcher</a> that holds all terrain maps. </p>
+
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00173">173</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>

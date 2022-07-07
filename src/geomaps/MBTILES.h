@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <QObject>
+#include <QMap>
 #include <QSqlDatabase>
 
 namespace GeoMaps {
@@ -68,7 +68,7 @@ public:
 
     /*! \brief Information about an MBTILES file
      *
-     *  @returns A human-readable HTML-String with information about the file, or an empty string on error.
+     *  @returns A human-readable HTML-String with information about the MBTILES file, or an empty string on error.
      */
     [[nodiscard]] QString info();
 
@@ -80,14 +80,21 @@ public:
      *
      *  @param y y-Coordinate of the tile
      *
-     *  @returns A QByteArray with the tile data, or an QByteArray on error.
+     *  @returns A QByteArray with the tile data, or an empty QByteArray on error.
      */
     [[nodiscard]] QByteArray tile(int zoom, int x, int y);
+
+#warning
+    [[nodiscard]] QMap<QString, QString> metaData() const
+    {
+        return m_metadata;
+    }
 
 private:
 #warning
     QString m_databaseConnectionName;
     QSqlDatabase m_dataBase;
+    QMap<QString, QString> m_metadata;
 };
 
 }

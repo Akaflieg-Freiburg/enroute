@@ -72,7 +72,6 @@ auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
     return Unknown;
 }
 
-
 auto GeoMaps::MBTILES::info() -> QString
 {
     QString result;
@@ -100,7 +99,6 @@ auto GeoMaps::MBTILES::info() -> QString
 
     return result;
 }
-
 
 auto GeoMaps::MBTILES::tile(int zoom, int x, int y) -> QByteArray
 {

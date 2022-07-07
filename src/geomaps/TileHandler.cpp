@@ -61,11 +61,13 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloa
 
         // Read metadata from database
         QSqlQuery query(db);
-        if (!query.exec(QStringLiteral("select name, value from metadata;"))) {
+        if (!query.exec(QStringLiteral("select name, value from metadata;")))
+        {
             hasDBError = true;
             return;
         }
-        while(query.next()) {
+        while(query.next())
+        {
             QString key = query.value(0).toString();
             if (key == QLatin1String("name")) {
                 _name = query.value(1).toString();

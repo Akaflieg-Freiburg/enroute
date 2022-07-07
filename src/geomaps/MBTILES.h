@@ -69,6 +69,20 @@ public:
      */
     [[nodiscard]] static QString info(const QString& fileName);
 
+    /*! \brief Retrieve tile from an MBTILES file
+     *
+     *  @param fileName Name of the file
+     *
+     *  @param zoom Zoom level of the tile
+     *
+     *  @param x x-Coordinate of the tile
+     *
+     *  @param y y-Coordinate of the tile
+     *
+     *  @returns A QByteArray with the tile data, or an QByteArray on error.
+     */
+    [[nodiscard]] static QByteArray tile(const QString& fileName, int zoom, int x, int y);
+
 };
 
 }

@@ -115,3 +115,30 @@ auto GeoMaps::MBTILES::info(const QString& fileName) -> QString
     QSqlDatabase::removeDatabase(databaseConnectionName);
     return result;
 }
+
+
+auto GeoMaps::MBTILES::tile(const QString& fileName, int zoom, int x, int y) -> QByteArray
+{
+    QByteArray result;
+
+    auto databaseConnectionName = "GeoMaps::MBTILES::tile " + fileName;
+    { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
+        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
+        testDB.setDatabaseName(fileName);
+
+        if (testDB.open()) {
+            QSqlQuery query(testDB);
+            auto yflipped = (1<<zoom)-1-y;
+            auto queryString = QStringLiteral("select tile_data from tiles where zoom_level='%1' and tile_row='%2' and tile_column='%3';").arg(zoom, x, yflipped);
+            if (query.exec(queryString)) {
+                if (query.first()) {
+                    result = query.value(0).toByteArray();
+                }
+            }
+            testDB.close();
+        }
+    }
+    QSqlDatabase::removeDatabase(databaseConnectionName);
+
+    return result;
+}

@@ -34,9 +34,11 @@ namespace DataManagement {
  *  databases and geographic maps.  More specifically, it manages the following
  *  items.
  *
- *  - Aviation maps (in GeoJSON format)
- *  - Base maps (in MBTILES format)
- *  - FLARM Databases (as a text file)
+ *  - Aviation maps (in GeoJSON format, file name ends in "geojson")
+ *  - Base maps/raster (in MBTILES format, file name ends in "mbtiles")
+ *  - Base maps/vector (in MBTILES format, file name ends in "raster")
+ *  - Terrain maps (in MBTILES format, file name ends in "terrain")
+ *  - FLARM Databases (as a text file, file name ends in "data")
  *
  *  In addition, it allows access to the following data.
  *
@@ -128,6 +130,12 @@ public:
     /*! \brief True if list of remotely available items has been downloaded */
     Q_PROPERTY(bool hasRemoteItemList READ hasRemoteItemList NOTIFY hasRemoteItemListChanged)
 
+    /*! \brief DownloadableGroupWatcher that holds all terrain maps
+     *
+     *  Pointer to a DownloadableGroupWatcher that holds all terrain maps.
+     */
+    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* terrainMaps READ terrainMaps CONSTANT)
+
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
@@ -186,6 +194,12 @@ public:
      *  @returns hasRemoteItemList
      */
     [[nodiscard]] auto hasRemoteItemList() const -> bool { return m_mapsJSON.hasFile(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property terrainMaps
+     */
+    [[nodiscard]] auto terrainMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_terrainMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -312,12 +326,13 @@ private:
     DataManagement::Downloadable m_mapsJSON { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
-    DataManagement::DownloadableGroup m_databases;
-    DataManagement::DownloadableGroup m_items;
+    DataManagement::DownloadableGroup m_aviationMaps;
     DataManagement::DownloadableGroup m_baseMaps;
     DataManagement::DownloadableGroup m_baseMapsRaster;
     DataManagement::DownloadableGroup m_baseMapsVector;
-    DataManagement::DownloadableGroup m_aviationMaps;
+    DataManagement::DownloadableGroup m_databases;
+    DataManagement::DownloadableGroup m_items;
+    DataManagement::DownloadableGroup m_terrainMaps;
 };
 
 };

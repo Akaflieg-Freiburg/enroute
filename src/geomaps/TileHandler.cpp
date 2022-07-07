@@ -67,8 +67,11 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloa
             if (key == QLatin1String("name")) {
                 _name = query.value(1).toString();
             }
+            if (key == QLatin1String("encoding")) {
+                _encoding = query.value(1).toString();
+            }
             if (key == QLatin1String("format")) {
-                _format= query.value(1).toString();
+                _format = query.value(1).toString();
             }
             if (key == QLatin1String("description")) {
                 _description = query.value(1).toString();
@@ -190,6 +193,12 @@ auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
     }
     if (!_description.isEmpty()) {
         result.insert(QStringLiteral("description"), _description);
+    }
+    if (!_encoding.isEmpty()) {
+        result.insert(QStringLiteral("encoding"), _encoding);
+    }
+    if (!_format.isEmpty()) {
+        result.insert(QStringLiteral("format"), _format);
     }
     if (!_version.isEmpty()) {
         result.insert(QStringLiteral("version"), _version);

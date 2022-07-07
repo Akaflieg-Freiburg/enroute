@@ -194,6 +194,150 @@ Page {
     }
 
     Component {
+        id: terrainItem
+
+        Item {
+            id: element
+            width: pg.width
+            height: gridLayout.height
+
+            function startFileDownload() {
+                // check how many files are already downloaded:
+                var nFilesTotal;
+                var mapTypeString;
+                if (sv.currentIndex == 0) {  // swipe view shows aviation maps
+                    nFilesTotal = global.dataManager().aviationMaps.numberOfFilesTotal();
+                    mapTypeString = qsTr("aviation maps")
+                } else {  // swipe view shows base maps
+                    nFilesTotal = global.dataManager().baseMaps.numberOfFilesTotal();
+                    mapTypeString = qsTr("base maps")
+                }
+
+                // if the user downloads more than 8 files, show them a dialog telling them that
+                // the bandwidth is sponsored and they shouldn't over-consume.
+                if (nFilesTotal > 7) {
+                    dialogLoader.active = false;
+                    dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startFileDownload,
+                        nFilesTotal: nFilesTotal,
+                        mapTypeString: mapTypeString};
+                    dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
+                    dialogLoader.active = true;
+                } else {
+                    model.modelData.startFileDownload();
+                }
+            }
+
+            GridLayout {
+                id: gridLayout
+
+                columnSpacing: 0
+                rowSpacing: 0
+
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                columns: 6
+
+                ItemDelegate {
+                    text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
+                    icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_terrain.svg"
+                    Layout.fillWidth: true
+                    enabled: !model.modelData.hasFile
+                    onClicked: {
+                        if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
+                            global.mobileAdaptor().vibrateBrief()
+                            startFileDownload()
+                        }
+                    }
+                }
+
+                ToolButton {
+                    id: downloadButton
+                    icon.source: "/icons/material/ic_file_download.svg"
+                    visible: !model.modelData.hasFile && !model.modelData.downloading
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        model.modelData.startFileDownload()
+                    }
+                }
+
+                ToolButton {
+                    id: updateButton
+                    icon.source: "/icons/material/ic_refresh.svg"
+                    visible: model.modelData.updatable
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        model.modelData.startFileDownload()
+                    }
+                }
+
+                ToolButton {
+                    id: cancelButton
+                    icon.source: "/icons/material/ic_cancel.svg"
+                    visible: model.modelData.downloading
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        model.modelData.stopFileDownload()
+                    }
+                }
+
+                ToolButton {
+                    id: removeButton
+                    icon.source: "/icons/material/ic_more_horiz.svg"
+
+                    visible: model.modelData.hasFile & !model.modelData.downloading
+                    onClicked: {
+                        global.mobileAdaptor().vibrateBrief()
+                        removeMenu.popup()
+                    }
+
+                    AutoSizingMenu {
+                        id: removeMenu
+
+                        Action {
+                            id: infoAction
+
+                            text: qsTr("Info")
+
+                            onTriggered: {
+                                global.mobileAdaptor().vibrateBrief()
+                                infoDialog.title = model.modelData.objectName
+                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
+                                infoDialog.open()
+                            }
+                        }
+                        Action {
+                            id: removeAction
+
+                            text: qsTr("Uninstall")
+
+                            onTriggered: {
+                                global.mobileAdaptor().vibrateBrief()
+                                model.modelData.deleteFile()
+                            }
+                        }
+                    }
+
+                } // ToolButton
+            }
+
+            Connections {
+                target: model.modelData
+                function onError(objectName, message) {
+                    dialogLoader.active = false
+                    dialogLoader.title = qsTr("Download Error")
+                    dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
+                    dialogLoader.source = "../dialogs/ErrorDialog.qml"
+                    dialogLoader.active = true
+                }
+            }
+
+        }
+
+    }
+
+    Component {
         id: databaseItem
 
         Item {
@@ -369,7 +513,7 @@ Page {
             MenuItem {
                 id: updateMenu
 
-                text: qsTr("Update list of maps")
+                text: qsTr("Update list of maps and data")
 
                 onTriggered: {
                     global.mobileAdaptor().vibrateBrief()
@@ -405,10 +549,13 @@ Page {
 
         currentIndex: sv.currentIndex
         TabButton {
-            text: qsTr("Aviation Maps")
+            text: qsTr("Aviation maps")
         }
         TabButton {
-            text: qsTr("Base Maps")
+            text: qsTr("Base maps")
+        }
+        TabButton {
+            text: qsTr("Terrain")
         }
         TabButton {
             text: qsTr("Data")
@@ -482,7 +629,7 @@ Page {
                         global.dataManager().updateRemoteDataItemList()
                     }
                 }
-            } // ListView
+            }
 
             ListView {
                 Layout.fillHeight: true
@@ -506,7 +653,31 @@ Page {
                         global.dataManager().updateRemoteDataItemList()
                     }
                 }
-            } // ListView
+            }
+
+            ListView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                clip: true
+                model: global.dataManager().terrainMaps.downloadablesAsObjectList
+                delegate: terrainItem
+                ScrollIndicator.vertical: ScrollIndicator {}
+
+                section.property: "modelData.section"
+                section.delegate: sectionHeading
+
+                // Refresh list of maps on overscroll
+                property int refreshFlick: 0
+                onFlickStarted: {
+                    refreshFlick = atYBeginning
+                }
+                onFlickEnded: {
+                    if ( atYBeginning && refreshFlick ) {
+                        global.mobileAdaptor().vibrateBrief()
+                        global.dataManager().updateRemoteDataItemList()
+                    }
+                }
+            }
 
             ListView {
                 Layout.fillHeight: true
@@ -530,7 +701,7 @@ Page {
                         global.dataManager().updateRemoteDataItemList()
                     }
                 }
-            } // ListView
+            }
 
         } // SwipeView
 

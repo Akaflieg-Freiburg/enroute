@@ -46,7 +46,8 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
 void GeoMaps::GeoMapProvider::deferredInitialization()
 {
     connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onBaseMapsChanged);
+    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
 
@@ -55,9 +56,10 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
 
     onAviationMapsChanged();
-    onBaseMapsChanged();
+    onMBTILESChanged();
     GlobalObject::dataManager()->aviationMaps()->killLocalFileContentChanged_delayed();
     GlobalObject::dataManager()->baseMaps()->killLocalFileContentChanged_delayed();
+    GlobalObject::dataManager()->terrainMaps()->killLocalFileContentChanged_delayed();
 }
 
 
@@ -321,13 +323,14 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
     _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::settings()->airspaceAltitudeLimit(), GlobalObject::settings()->hideGlidingSectors());
 }
 
-void GeoMaps::GeoMapProvider::onBaseMapsChanged()
+void GeoMaps::GeoMapProvider::onMBTILESChanged()
 {
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
-    _tileServer.removeMbtilesFileSet(_currentPath);
-    _currentPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
+    _tileServer.removeMbtilesFileSet(_currentBaseMapPath);
+    _currentBaseMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
+    _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
     QFile file;
     if (GlobalObject::dataManager()->baseMaps()->hasFile())
@@ -336,21 +339,23 @@ void GeoMaps::GeoMapProvider::onBaseMapsChanged()
         // Serve new tile set under new name
         if (hasRaster)
         {
-            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentPath);
+            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
         } else
         {
-            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentPath);
+            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
     } else
     {
         file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
+    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->terrainMaps()->downloadablesWithFile(), _currentTerrainMapPath);
 
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
-    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentPath).toLatin1());
+    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
+    data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
     data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
     _styleFile = new QTemporaryFile(this);
     _styleFile->open();

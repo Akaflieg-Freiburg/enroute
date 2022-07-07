@@ -9,6 +9,10 @@
     "openmaptiles": {
     "type": "vector",
     "url": "%URL%"
+    },
+  "terrarium": {
+    "type": "raster-dem",
+    "url": "%URLT%"
     }
   },
   "sprite": "%URL2%/flightMap/sprites/sprite",
@@ -27,7 +31,7 @@
       "metadata": {},
       "source": "openmaptiles",
       "source-layer": "landuse",
-      "maxzoom": 11,
+      "maxzoom": 10,
       "filter": [
         "==",
         "class",
@@ -38,7 +42,7 @@
       },
       "paint": {
         "fill-color": "hsl(0, 3%, 85%)",
-        "fill-opacity": 0.84
+        "fill-opacity": 0.6
       }
     },
     {
@@ -98,7 +102,7 @@
       "paint": {
         "fill-antialias": false,
         "fill-color": "#e8e8ff",
-        "fill-opacity": 1
+        "fill-opacity": 0.3
       }
     },
     {
@@ -119,6 +123,15 @@
         "fill-antialias": false,
         "fill-color": "rgb(176, 213, 154)",
         "fill-opacity": 0.3
+      }
+    },
+    {
+      "id": "terrain-rgb",
+      "source": "terrarium",
+      "type": "hillshade",
+      "paint": {
+        "hillshade-shadow-color": "hsl(39, 21%, 33%)",
+        "hillshade-exaggeration": 0.8
       }
     },
     {

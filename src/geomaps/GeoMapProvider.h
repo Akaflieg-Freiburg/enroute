@@ -226,7 +226,7 @@ namespace GeoMaps
 
         // This slot is called every time the the set of MBTile files changes.
         // It sets up the tile server to and generates a new style file.
-        void onBaseMapsChanged();
+        void onMBTILESChanged();
 
         // Interal function that does most of the work for aviationMapsChanged()
         // emits geoJSONChanged() when done. This function is meant to be run in
@@ -237,10 +237,11 @@ namespace GeoMaps
         QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};
         QHash<QString, QString> simplifySpecialChars_cache;
 
-        // This is the path under which bas mape tiles are available on the
+        // This is the path under which map tiles are available on the
         // _tileServer. This is set to a random number that changes every time
         // the set of MBTile files changes
-        QString _currentPath;
+        QString _currentBaseMapPath;
+        QString _currentTerrainMapPath;
 
         // Tile Server
         TileServer _tileServer;

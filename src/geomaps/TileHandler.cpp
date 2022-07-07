@@ -37,9 +37,11 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloa
     : Handler(parent)
 {
     // Go through mbtile files and find real values
-    foreach (auto mbtileFile, mbtileFiles) {
+    foreach (auto mbtileFile, mbtileFiles)
+    {
         // Check that file really exists
-        if (!QFile::exists(mbtileFile->fileName())) {
+        if (!QFile::exists(mbtileFile->fileName()))
+        {
             hasDBError = true;
             return;
         }
@@ -50,7 +52,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloa
         auto db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
         db.setDatabaseName(mbtileFile->fileName());
         db.open();
-        if (db.isOpenError()) {
+        if (db.isOpenError())
+        {
             hasDBError = true;
             return;
         }
@@ -92,7 +95,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloa
         _tiles = baseURL+"/{z}/{x}/{y}."+_format;
 
         // Safety check
-        if (_minzoom > _maxzoom) {
+        if (_minzoom > _maxzoom)
+        {
             _maxzoom = -1;
             _minzoom = -1;
         }
@@ -110,8 +114,10 @@ GeoMaps::TileHandler::~TileHandler()
 void GeoMaps::TileHandler::removeFile(const QString& localFileName)
 {
     QString connectionToRemove;
-    foreach(auto databaseConnectionName, databaseConnections) {
-        if (!databaseConnectionName.endsWith(localFileName)) {
+    foreach(auto databaseConnectionName, databaseConnections)
+    {
+        if (!databaseConnectionName.endsWith(localFileName))
+        {
             continue;
         }
         connectionToRemove = databaseConnectionName;
@@ -126,7 +132,8 @@ void GeoMaps::TileHandler::removeFile(const QString& localFileName)
 void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
 {
     // Serve tileJSON file, if requested
-    if (path.isEmpty() || path.endsWith(QLatin1String("json"), Qt::CaseInsensitive)) {
+    if (path.isEmpty() || path.endsWith(QLatin1String("json"), Qt::CaseInsensitive))
+    {
         socket->setHeader("Content-Type", "application/json");
         QByteArray json = tileJSON();
         socket->setHeader("Content-Length", QByteArray::number(json.length()));
@@ -137,7 +144,8 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
 
     // Serve tile, if requested
     QRegularExpressionMatch match = tileQueryPattern.match(path);
-    if (match.hasMatch()) {
+    if (match.hasMatch())
+    {
         // Retrieve tile data from the database
         quint32 z       = path.section('/', 1, 1).toInt();
         QString x       = path.section('/', 2, 2);
@@ -145,14 +153,16 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
         quint32 yflipped = ((quint32(1) <<z)-1)-y;
         QString queryString = QStringLiteral("select zoom_level, tile_column, tile_row, tile_data from tiles where zoom_level=%1 and tile_column=%2 and tile_row=%3;").arg(z).arg(x).arg(yflipped);
 
-        foreach(auto databaseConnection, databaseConnections) {
+        foreach(auto databaseConnection, databaseConnections)
+        {
             auto db = QSqlDatabase::database(databaseConnection);
 
             QSqlQuery query(db);
             query.exec(queryString);
 
             // Error handling
-            if (!query.first()) {
+            if (!query.first())
+            {
                 continue;
             }
 
@@ -188,28 +198,36 @@ auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
     tiles.append(_tiles);
     result.insert(QStringLiteral("tiles"), tiles);
 
-    if (!_name.isEmpty()) {
+    if (!_name.isEmpty())
+    {
         result.insert(QStringLiteral("name"), _name);
     }
-    if (!_description.isEmpty()) {
+    if (!_description.isEmpty())
+    {
         result.insert(QStringLiteral("description"), _description);
     }
-    if (!_encoding.isEmpty()) {
+    if (!_encoding.isEmpty())
+    {
         result.insert(QStringLiteral("encoding"), _encoding);
     }
-    if (!_format.isEmpty()) {
+    if (!_format.isEmpty())
+    {
         result.insert(QStringLiteral("format"), _format);
     }
-    if (!_version.isEmpty()) {
+    if (!_version.isEmpty())
+    {
         result.insert(QStringLiteral("version"), _version);
     }
-    if (!_attribution.isEmpty()) {
+    if (!_attribution.isEmpty())
+    {
         result.insert(QStringLiteral("attribution"), _attribution);
     }
-    if (_maxzoom >= 0) {
+    if (_maxzoom >= 0)
+    {
         result.insert(QStringLiteral("maxzoom"), _maxzoom);
     }
-    if (_minzoom >= 0) {
+    if (_minzoom >= 0)
+    {
         result.insert(QStringLiteral("minzoom"), _minzoom);
     }
 

@@ -71,9 +71,11 @@ auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
 
     foreach(auto baseMap, GlobalObject::dataManager()->baseMaps()->downloadablesWithFile())
     {
+        GeoMaps::MBTILES mbtiles(baseMap->fileName());
+
         auto name = baseMap->fileName().split(QStringLiteral("aviation_maps/")).last();
         result += ("<h4>"+tr("Basemap")+ " %1</h4>").arg(name);
-        result += MBTILES::attribution(baseMap->fileName());
+        result += mbtiles.attribution();
     }
 
     return result;

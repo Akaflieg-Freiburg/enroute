@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QSqlDatabase>
 
 namespace GeoMaps {
 
@@ -45,33 +46,33 @@ public:
         Raster,
     };
 
+#warning
+    MBTILES(const QString& fileName);
+
+#warning
+    ~MBTILES();
+
+
+
     /*! \brief Attribution of MBTILES file
-     *
-     *  @param fileName Name of the file
      *
      *  @returns A human-readable HTML-String with attribution, or an empty string on error.
      */
-    [[nodiscard]] static QString attribution(const QString& fileName);
+    [[nodiscard]] QString attribution();
 
     /*! \brief Determine type of data contain in an MBTILES file
      *
-     *  @param fileName Name of the file
-     *
      *  @returns Type of data, or Unknown on error.
      */
-    [[nodiscard]] static GeoMaps::MBTILES::Format format(const QString& fileName);
+    [[nodiscard]] GeoMaps::MBTILES::Format format();
 
     /*! \brief Information about an MBTILES file
      *
-     *  @param fileName Name of the file
-     *
      *  @returns A human-readable HTML-String with information about the file, or an empty string on error.
      */
-    [[nodiscard]] static QString info(const QString& fileName);
+    [[nodiscard]] QString info();
 
     /*! \brief Retrieve tile from an MBTILES file
-     *
-     *  @param fileName Name of the file
      *
      *  @param zoom Zoom level of the tile
      *
@@ -81,8 +82,12 @@ public:
      *
      *  @returns A QByteArray with the tile data, or an QByteArray on error.
      */
-    [[nodiscard]] static QByteArray tile(const QString& fileName, int zoom, int x, int y);
+    [[nodiscard]] QByteArray tile(int zoom, int x, int y);
 
+private:
+#warning
+    QString m_databaseConnectionName;
+    QSqlDatabase m_dataBase;
 };
 
 }

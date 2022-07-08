@@ -115,12 +115,13 @@ auto GeoMaps::MBTILES::info() -> QString
     return result;
 }
 
+
 auto GeoMaps::MBTILES::tile(int zoom, int x, int y) -> QByteArray
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);
     auto yflipped = (1<<zoom)-1-y;
-    auto queryString = QStringLiteral("select tile_data from tiles where zoom_level='%1' and tile_row='%2' and tile_column='%3';").arg(zoom, x, yflipped);
+    auto queryString = QStringLiteral("select tile_data from tiles where zoom_level=%1 and tile_row=%3 and tile_column=%2;").arg(zoom).arg(x).arg(yflipped);
     if (query.exec(queryString))
     {
         if (query.first())

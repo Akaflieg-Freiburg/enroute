@@ -20,12 +20,12 @@
 
 #pragma once
 
-#include <QSet>
-#include <QSqlDatabase>
+#include <QVector>
 
 #include <qhttpengine/handler.h>
 
 #include <dataManagement/Downloadable.h>
+#include <geomaps/MBTILES.h>
 
 
 namespace GeoMaps {
@@ -194,7 +194,7 @@ private slots:
 private:
   Q_DISABLE_COPY_MOVE(TileHandler)
 
-  QSet<QString> databaseConnections;
+  QSet<GeoMaps::MBTILES*> m_mbtiles;
   
   QString _name;
   QString _encoding;

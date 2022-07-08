@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QVariant>
 
@@ -26,19 +27,19 @@
 GeoMaps::MBTILES::MBTILES(const QString& fileName)
 {
     m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg((quintptr)this);
-    m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);
+    auto m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);
     m_dataBase.setDatabaseName(fileName);
-    m_dataBase.open();
 }
 
 GeoMaps::MBTILES::~MBTILES()
 {
-    m_dataBase.close();
+    QSqlDatabase::database(m_databaseConnectionName).close();
     QSqlDatabase::removeDatabase(m_databaseConnectionName);
 }
 
 auto GeoMaps::MBTILES::attribution() -> QString
 {
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);
     if (query.exec(QStringLiteral("select name, value from metadata where name='attribution';")))
     {
@@ -52,6 +53,7 @@ auto GeoMaps::MBTILES::attribution() -> QString
 
 auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
 {
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);
     if (query.exec(QStringLiteral("select name, value from metadata where name='format';")))
     {
@@ -77,6 +79,7 @@ auto GeoMaps::MBTILES::info() -> QString
     QString result;
 
     // Read metadata from database
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);
     QString intResult;
     if (query.exec(QStringLiteral("select name, value from metadata;")))
@@ -102,6 +105,7 @@ auto GeoMaps::MBTILES::info() -> QString
 
 auto GeoMaps::MBTILES::tile(int zoom, int x, int y) -> QByteArray
 {
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);
     auto yflipped = (1<<zoom)-1-y;
     auto queryString = QStringLiteral("select tile_data from tiles where zoom_level='%1' and tile_row='%2' and tile_column='%3';").arg(zoom, x, yflipped);

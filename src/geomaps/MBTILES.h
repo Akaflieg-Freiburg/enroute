@@ -21,7 +21,6 @@
 #pragma once
 
 #include <QMap>
-#include <QSqlDatabase>
 
 namespace GeoMaps {
 
@@ -93,7 +92,6 @@ public:
 private:
 #warning
     QString m_databaseConnectionName;
-    QSqlDatabase m_dataBase;
     QMap<QString, QString> m_metadata;
 };
 

@@ -26,8 +26,9 @@ namespace GeoMaps {
 
 /*! \brief Utility class for databases in MBTILES format
  *
- *  MBTILES are SQLite databases whose schema is specified here:
+ *  MBTILES contain tiled map data. Internally, MBTILES are SQLite databases whose schema is specified here:
  *  https://github.com/mapbox/mbtiles-spec
+ *  This class handles MBTILES and allows easy access to the data.
  */
 
 class MBTILES {
@@ -45,13 +46,17 @@ public:
         Raster,
     };
 
-#warning
+    /*! \brief Standard constructor
+     *
+     * Constructs an object from an MBTILES file. The file is supposed to exist and remain intact throughout the existence of this class instance.
+     */
     MBTILES(const QString& fileName);
 
-#warning
+    /*! \brief Standard destructor
+     *
+     * Constructs an object from an MBTILES file.
+     */
     ~MBTILES();
-
-
 
     /*! \brief Attribution of MBTILES file
      *
@@ -83,14 +88,33 @@ public:
      */
     [[nodiscard]] QByteArray tile(int zoom, int x, int y);
 
-#warning
+    /*! \brief Retrieve metadata of the MBTILES file
+     *
+     *  MBTILES files contain metadata, in the form of a list of key/value pairs.
+     *
+     *  @returns A QMap containing the metadata, or an empty QMap on error.
+     */
     [[nodiscard]] QMap<QString, QString> metaData() const
     {
         return m_metadata;
     }
 
+    /*! \brief Retrieve name of the MBTILES file
+     *
+     *  @returns Filename, as given in the constructor
+     */
+    [[nodiscard]] QString fileName() const
+    {
+        return m_fileName;
+    }
 private:
-#warning
+    //
+    Q_DISABLE_COPY_MOVE(MBTILES)
+
+    // Name of the MBTILES file
+    QString m_fileName;
+
+    // Name of the data base connection. This name is unique to each instance of this class, and should therefore not be copied.
     QString m_databaseConnectionName;
     QMap<QString, QString> m_metadata;
 };

@@ -25,10 +25,23 @@
 #include "geomaps/MBTILES.h"
 
 GeoMaps::MBTILES::MBTILES(const QString& fileName)
+    : m_fileName(fileName)
 {
     m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg((quintptr)this);
     auto m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);
     m_dataBase.setDatabaseName(fileName);
+    m_dataBase.open();
+
+    QSqlQuery query(m_dataBase);
+    if (query.exec(QStringLiteral("select name, value from metadata;")))
+    {
+        while(query.next())
+        {
+            QString key = query.value(0).toString();
+            QString value = query.value(1).toString();
+            m_metadata.insert(key, value);
+        }
+    }
 }
 
 GeoMaps::MBTILES::~MBTILES()
@@ -70,7 +83,6 @@ auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
             }
         }
     }
-
     return Unknown;
 }
 

@@ -52,8 +52,8 @@ Dialog {
     // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
     // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
     parent: Overlay.overlay
-    x: (parent.width-width)/2.0
-    y: (parent.height-height)/2.0
+    x: parent == null ? 0 : (parent.width-width)/2.0
+    y: parent == null ? 0 : (parent.height-height)/2.0
 
     modal: true
     title: qsTr("Edit waypoint")

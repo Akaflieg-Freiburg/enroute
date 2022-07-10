@@ -47,14 +47,14 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloa
         auto* mbtPtr = new GeoMaps::MBTILES(mbtileFile->fileName());
         m_mbtiles.insert(mbtPtr);
 
-        _name = mbtPtr->metaData().value("name");
-        _encoding = mbtPtr->metaData().value("encoding");
-        _format = mbtPtr->metaData().value("format");
-        _description = mbtPtr->metaData().value("description");
-        _version = mbtPtr->metaData().value("version");
-        _attribution = mbtPtr->metaData().value("attribution");
-        _maxzoom = mbtPtr->metaData().value("maxzoom").toInt();
-        _minzoom = mbtPtr->metaData().value("minzoom").toInt();
+        _name = mbtPtr->metaData().value(QStringLiteral("name"));
+        _encoding = mbtPtr->metaData().value(QStringLiteral("encoding"));
+        _format = mbtPtr->metaData().value(QStringLiteral("format"));
+        _description = mbtPtr->metaData().value(QStringLiteral("description"));
+        _version = mbtPtr->metaData().value(QStringLiteral("version"));
+        _attribution = mbtPtr->metaData().value(QStringLiteral("attribution"));
+        _maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt();
+        _minzoom = mbtPtr->metaData().value(QStringLiteral("minzoom")).toInt();
     }
 
     _tiles = baseURL+"/{z}/{x}/{y}."+_format;

@@ -184,7 +184,7 @@ protected:
    * @brief Reimplementation of
    * [Handler::process()](QHttpEngine::Handler::process)
    */
-  void process(QHttpEngine::Socket *socket, const QString &path) override;
+  void process(QHttpEngine::Socket* socket, const QString& path) override;
   
 private slots:
   // This slot is connected to aboutToChangeLocalFile of the Downloadables, in

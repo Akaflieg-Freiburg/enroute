@@ -329,6 +329,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     // Delete old style file, stop serving tiles
     delete _styleFile;
     _tileServer.removeMbtilesFileSet(_currentBaseMapPath);
+    _tileServer.removeMbtilesFileSet(_currentTerrainMapPath);
     _currentBaseMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
     _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
@@ -341,12 +342,14 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
         {
             _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
-        } else
+        }
+        else
         {
             _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
-    } else
+    }
+    else
     {
         file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }

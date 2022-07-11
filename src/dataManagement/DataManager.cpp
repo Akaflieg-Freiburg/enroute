@@ -333,7 +333,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
         QUrl mapUrl(mapUrlName);
         auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
-        auto fileSize = obj.value(QStringLiteral("size")).toInt();
+        qint64 fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
         auto *downloadable = createOrRecycleItem(mapUrl, localFileName);
         oldMaps.removeAll(downloadable);

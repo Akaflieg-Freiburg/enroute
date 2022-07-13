@@ -320,6 +320,27 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 
 void GeoMaps::GeoMapProvider::onMBTILESChanged()
 {
+    qDeleteAll(m_baseMapRasterTiles);
+    m_baseMapRasterTiles.clear();
+    foreach(auto downloadable, GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile())
+    {
+        m_baseMapRasterTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+    }
+    qDeleteAll(m_baseMapVectorTiles);
+    m_baseMapVectorTiles.clear();
+    foreach(auto downloadable, GlobalObject::dataManager()->baseMapsVector()->downloadablesWithFile())
+    {
+        m_baseMapVectorTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+    }
+    emit baseMapTilesChanged();
+
+    qDeleteAll(m_terrainMapTiles);
+    m_terrainMapTiles.clear();
+    foreach(auto downloadable, GlobalObject::dataManager()->terrainMaps()->downloadablesWithFile())
+    {
+        m_terrainMapTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+    }
+    emit terrainMapTilesChanged();
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
@@ -329,18 +350,18 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
     QFile file;
+#warning
     if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
-        bool hasRaster = GlobalObject::dataManager()->baseMapsRaster()->hasFile();
         // Serve new tile set under new name
-        if (hasRaster)
+        if (!m_baseMapRasterTiles.isEmpty())
         {
-            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(m_baseMapRasterTiles, _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
         }
         else
         {
-            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(m_baseMapVectorTiles, _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
     }
@@ -348,7 +369,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     {
         file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
-    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->terrainMaps()->downloadablesWithFile(), _currentTerrainMapPath);
+    _tileServer.addMbtilesFileSet(m_terrainMapTiles, _currentTerrainMapPath);
 
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();

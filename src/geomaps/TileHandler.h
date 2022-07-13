@@ -68,7 +68,7 @@ public:
     
     @param parent The standard QObject parent
   */
-  explicit TileHandler(const QVector<QPointer<DataManagement::Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
+  explicit TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
   // Destructor
   ~TileHandler() override;
@@ -194,7 +194,7 @@ private slots:
 private:
   Q_DISABLE_COPY_MOVE(TileHandler)
 
-  QSet<GeoMaps::MBTILES*> m_mbtiles;
+  QVector<QPointer<GeoMaps::MBTILES>> m_mbtiles;
   
   QString _name;
   QString _encoding;

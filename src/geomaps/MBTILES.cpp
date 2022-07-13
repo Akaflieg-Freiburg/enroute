@@ -24,8 +24,8 @@
 
 #include "geomaps/MBTILES.h"
 
-GeoMaps::MBTILES::MBTILES(const QString& fileName)
-    : m_fileName(fileName)
+GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
+    : QObject(parent), m_fileName(fileName)
 {
     m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg((quintptr)this);
     auto m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);

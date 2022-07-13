@@ -27,26 +27,17 @@
 #include <qhttpengine/socket.h>
 
 #include "TileHandler.h"
-#include "dataManagement/Downloadable.h"
 
 QRegularExpression tileQueryPattern(QStringLiteral("[0-9]{1,2}/[0-9]{1,4}/[0-9]{1,4}"));
 
-GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloadable>>& mbtileFiles, const QString& baseURL, QObject *parent)
+GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL, QObject *parent)
     : Handler(parent)
 {
+    m_mbtiles = mbtileFiles;
+
     // Go through mbtile files and find real values
-    foreach (auto mbtileFile, mbtileFiles)
+    foreach (auto mbtPtr, mbtileFiles)
     {
-        // Check that file really exists
-        if (!QFile::exists(mbtileFile->fileName()))
-        {
-            return;
-        }
-        connect(mbtileFile, &DataManagement::Downloadable::aboutToChangeFile, this, &TileHandler::removeFile);
-
-        auto* mbtPtr = new GeoMaps::MBTILES(mbtileFile->fileName());
-        m_mbtiles.insert(mbtPtr);
-
         _name = mbtPtr->metaData().value(QStringLiteral("name"));
         _encoding = mbtPtr->metaData().value(QStringLiteral("encoding"));
         _format = mbtPtr->metaData().value(QStringLiteral("format"));
@@ -70,12 +61,14 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<DataManagement::Downloa
 
 GeoMaps::TileHandler::~TileHandler()
 {
-    qDeleteAll(m_mbtiles);
+#warning
 }
 
 
 void GeoMaps::TileHandler::removeFile(const QString& localFileName)
 {
+#warning
+    /*
     GeoMaps::MBTILES* mbtToRemove;
     foreach(auto mbtPtr, m_mbtiles)
     {
@@ -89,7 +82,7 @@ void GeoMaps::TileHandler::removeFile(const QString& localFileName)
 
     m_mbtiles.remove(mbtToRemove);
     delete mbtToRemove;
-
+*/
 }
 
 
@@ -115,7 +108,7 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
         auto x = path.section('/', 2, 2).toInt();
         auto y = path.section('/', 3, 3).section('.', 0, 0).toInt();
 
-        foreach(auto* mbtilesPtr, m_mbtiles)
+        foreach(auto mbtilesPtr, m_mbtiles)
         {
             // Get data
             QByteArray tileData = mbtilesPtr->tile(z,x,y);

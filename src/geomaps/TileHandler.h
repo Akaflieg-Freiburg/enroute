@@ -70,9 +70,6 @@ public:
   */
   explicit TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
-  // Destructor
-  ~TileHandler() override;
-  
   /*! \brief Attribution property, as found in the metadata table of the mbtile file
     
     This property is empty if no attribution is found.
@@ -186,11 +183,6 @@ protected:
    */
   void process(QHttpEngine::Socket* socket, const QString& path) override;
   
-private slots:
-  // This slot is connected to aboutToChangeLocalFile of the Downloadables, in
-  // order to make sure that databases are closed before the file changes.
-  void removeFile(const QString& localFileName);
-
 private:
   Q_DISABLE_COPY_MOVE(TileHandler)
 

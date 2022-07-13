@@ -38,6 +38,11 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
     // Go through mbtile files and find real values
     foreach (auto mbtPtr, mbtileFiles)
     {
+        if (mbtPtr.isNull())
+        {
+            continue;
+        }
+
         _name = mbtPtr->metaData().value(QStringLiteral("name"));
         _encoding = mbtPtr->metaData().value(QStringLiteral("encoding"));
         _format = mbtPtr->metaData().value(QStringLiteral("format"));
@@ -56,33 +61,6 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
         _maxzoom = -1;
         _minzoom = -1;
     }
-}
-
-
-GeoMaps::TileHandler::~TileHandler()
-{
-#warning
-}
-
-
-void GeoMaps::TileHandler::removeFile(const QString& localFileName)
-{
-#warning
-    /*
-    GeoMaps::MBTILES* mbtToRemove;
-    foreach(auto mbtPtr, m_mbtiles)
-    {
-        if (mbtPtr->fileName() != localFileName)
-        {
-            continue;
-        }
-        mbtToRemove = mbtPtr;
-        break;
-    }
-
-    m_mbtiles.remove(mbtToRemove);
-    delete mbtToRemove;
-*/
 }
 
 
@@ -110,6 +88,11 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
 
         foreach(auto mbtilesPtr, m_mbtiles)
         {
+            if (mbtilesPtr.isNull())
+            {
+                continue;
+            }
+
             // Get data
             QByteArray tileData = mbtilesPtr->tile(z,x,y);
             if (tileData.isEmpty())

@@ -172,6 +172,12 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     return result;
 }
 
+auto GeoMaps::GeoMapProvider::elevationOfTerrain(const QGeoCoordinate& coordinate) -> Units::Distance
+{
+#warning not implemented
+    return {};
+}
+
 auto GeoMaps::GeoMapProvider::emptyGeoJSON() -> QByteArray
 {
     QJsonObject resultObject;
@@ -382,6 +388,10 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     _styleFile->close();
 
     emit styleFileURLChanged();
+
+#warning debug code
+    QGeoCoordinate EDTF(48.022222222222, 7.8327777777778);
+    qWarning() << "EDTF" << elevationOfTerrain(EDTF).toM() << "m";
 }
 
 void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QtConcurrent/QtConcurrentRun>
+#include <QImage>
 #include <QJsonArray>
 #include <QLockFile>
 #include <QRandomGenerator>
@@ -166,57 +167,41 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     }
 
     if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
+        position.setAltitude( elevationOfTerrain(position).toM() );
         return {position};
     }
 
     return result;
 }
 
-
-
-double long2tilex(double lon, int z)
-{
-    return (lon + 180.0) / 360.0 * (1 << z);
-}
-
-double lat2tiley(double lat, int z)
-{
-    double latrad = lat * M_PI/180.0;
-    return (1.0 - asinh(tan(latrad)) / M_PI) / 2.0 * (1 << z);
-}
-#include <QImage>
-
 auto GeoMaps::GeoMapProvider::elevationOfTerrain(const QGeoCoordinate& coordinate) -> Units::Distance
 {
     int zoom = 10;
-    auto tilex = long2tilex(coordinate.longitude(), zoom);
-    auto tiley = lat2tiley(coordinate.latitude(), zoom);
+    auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
+    auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
     auto intraTileX = qRound(256.0*(tilex-floor(tilex)));
     auto intraTileY = qRound(256.0*(tiley-floor(tiley)));
 
-    QImage tileImg;
     foreach(auto mbtPtr, m_terrainMapTiles)
     {
         if (mbtPtr.isNull())
         {
             continue;
         }
-        qWarning() << mbtPtr->fileName() << zoom << tilex << tiley;
-        auto tile = mbtPtr->tile(zoom, qFloor(tilex), qFloor(tiley));
-        if (!tile.isEmpty())
+        auto tileData = mbtPtr->tile(zoom, qFloor(tilex), qFloor(tiley));
+        if (!tileData.isEmpty())
         {
-            qWarning() << "Found tile";
-            tileImg = QImage::fromData(tile);
-            break;
+            auto tileImg = QImage::fromData(tileData);
+            if (tileImg.isNull())
+            {
+                continue;
+            }
+            auto pix = tileImg.pixel(intraTileX, intraTileY);
+            double elevation = (qRed(pix)*256.0 + qGreen(pix) + qBlue(pix)/256.0) - 32768.0;
+            qWarning() << "Elevation" << elevation;
+            return Units::Distance::fromM(elevation);
         }
     }
-    qWarning() << tileImg;
-    tileImg.save("x.png");
-
-    auto pix = tileImg.pixel(intraTileX, intraTileY);
-    qWarning() << "Elevation" << (qRed(pix)*256.0 + qGreen(pix) + qBlue(pix)/256.0) - 32768.0;
-
-#warning not implemented
     return {};
 }
 

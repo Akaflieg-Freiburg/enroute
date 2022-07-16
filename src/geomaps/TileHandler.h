@@ -20,12 +20,12 @@
 
 #pragma once
 
-#include <QSet>
-#include <QSqlDatabase>
+#include <QVector>
 
 #include <qhttpengine/handler.h>
 
 #include <dataManagement/Downloadable.h>
+#include <geomaps/MBTILES.h>
 
 
 namespace GeoMaps {
@@ -68,10 +68,7 @@ public:
     
     @param parent The standard QObject parent
   */
-  explicit TileHandler(const QVector<QPointer<DataManagement::Downloadable>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
-  
-  // Destructor
-  ~TileHandler() override;
+  explicit TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
   /*! \brief Attribution property, as found in the metadata table of the mbtile file
     
@@ -184,17 +181,12 @@ protected:
    * @brief Reimplementation of
    * [Handler::process()](QHttpEngine::Handler::process)
    */
-  void process(QHttpEngine::Socket *socket, const QString &path) override;
+  void process(QHttpEngine::Socket* socket, const QString& path) override;
   
-private slots:
-  // This slot is connected to aboutToChangeLocalFile of the Downloadables, in
-  // order to make sure that databases are closed before the file changes.
-  void removeFile(const QString& localFileName);
-
 private:
   Q_DISABLE_COPY_MOVE(TileHandler)
 
-  QSet<QString> databaseConnections;
+  QVector<QPointer<GeoMaps::MBTILES>> m_mbtiles;
   
   QString _name;
   QString _encoding;

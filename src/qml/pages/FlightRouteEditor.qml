@@ -119,7 +119,7 @@ Page {
                             // Mention waypoints, in order to update
                             global.waypointLibrary().waypoints
 
-                            return !global.waypointLibrary().hasNearbyEntry(waypoint)
+                            return (waypoint.category === "WP") && !global.waypointLibrary().hasNearbyEntry(waypoint)
                         }
 
                         onTriggered: {

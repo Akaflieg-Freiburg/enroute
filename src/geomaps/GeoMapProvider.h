@@ -202,14 +202,14 @@ namespace GeoMaps
       return {};
     }
 
-    /*! \brief Elevation of terrain at a given coordinate
+    /*! \brief Elevation of terrain at a given coordinate, above sea level
      *
      *  @param coordinate Coordinate
      *
      *  @return Elevation of the terrain at coordinate over MSP, or
      *  NaN if the terrain elevation is unknown
      */
-    [[nodiscard]] Q_INVOKABLE Units::Distance elevationOfTerrain(const QGeoCoordinate& coordinate);
+    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
 
     /*! \brief Create empty GeoJSON document
      *

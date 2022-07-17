@@ -119,8 +119,8 @@ void Positioning::PositionProvider::onPositionUpdated()
     }
 
     // If no vertical speed has been provided by the system, we compute our own.
-    if (!info.verticalSpeed().isFinite() && info.trueAltitude().isFinite() && positionInfo().trueAltitude().isFinite()) {
-        auto deltaV = (info.trueAltitude() - positionInfo().trueAltitude());
+    if (!info.verticalSpeed().isFinite() && info.trueAltitudeAMSL().isFinite() && positionInfo().trueAltitudeAMSL().isFinite()) {
+        auto deltaV = (info.trueAltitudeAMSL() - positionInfo().trueAltitudeAMSL());
         auto deltaT = Units::Time::fromMS( static_cast<double>(positionInfo().timestamp().msecsTo(info.timestamp())) );
         auto vSpeed = deltaV/deltaT;
         if (vSpeed.isFinite()) {

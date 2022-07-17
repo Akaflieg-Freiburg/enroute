@@ -96,6 +96,29 @@ Page {
 
             Label {
                 Layout.leftMargin: view.font.pixelSize
+                Layout.fillWidth: true
+                text: qsTr("Navigation")
+                font.pixelSize: view.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
+            }
+
+            WordWrappingSwitchDelegate {
+                id: showAltAGL
+                text: qsTr("Show altitude AGL")
+                icon.source: "/icons/material/ic_speed.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    showAltAGL.checked = global.settings().showAltitudeAGL
+                }
+                onToggled: {
+                    global.mobileAdaptor().vibrateBrief()
+                    global.settings().showAltitudeAGL = showAltAGL.checked
+                }
+            }
+
+            Label {
+                Layout.leftMargin: view.font.pixelSize
                 text: qsTr("System")
                 font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
@@ -281,7 +304,7 @@ Page {
                     var positionInfo = global.positionProvider().positionInfo
                     if (!positionInfo.isValid())
                         return global.settings().airspaceAltitudeLimit_min.toFeet()
-                    var trueAlt = positionInfo.trueAltitude()
+                    var trueAlt = positionInfo.trueAltitudeAMSL()
                     if (!trueAlt.isFinite())
                         return global.settings().airspaceAltitudeLimit_min.toFeet()
                     return Math.min(global.settings().airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
@@ -330,7 +353,6 @@ Page {
         }
 
     }
-
 
     Dialog {
         id: primaryPositionDataSourceDialog

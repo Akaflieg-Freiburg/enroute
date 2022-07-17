@@ -208,3 +208,14 @@ void Settings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficD
     settings.setValue(QStringLiteral("positioningByTrafficDataReceiver"), newPositioningByTrafficDataReceiver);
     emit positioningByTrafficDataReceiverChanged();
 }
+
+
+void Settings::setShowAltitudeAGL(bool newShowAltitudeAGL)
+{
+    if (newShowAltitudeAGL == showAltitudeAGL())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("showAltitudeAGL"), newShowAltitudeAGL);
+    emit showAltitudeAGLChanged();
+}

@@ -167,20 +167,22 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     }
 
     if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
-        position.setAltitude( elevationOfTerrain(position).toM() );
+        position.setAltitude( terrainElevationAMSL(position).toM() );
         return {position};
     }
 
     return result;
 }
 
-auto GeoMaps::GeoMapProvider::elevationOfTerrain(const QGeoCoordinate& coordinate) -> Units::Distance
+auto GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate) -> Units::Distance
 {
+#warning need to cache data
+#warning need to work for different zoom levels
     int zoom = 10;
     auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
     auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
-    auto intraTileX = qRound(256.0*(tilex-floor(tilex)));
-    auto intraTileY = qRound(256.0*(tiley-floor(tiley)));
+    auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
+    auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
 
     foreach(auto mbtPtr, m_terrainMapTiles)
     {
@@ -198,7 +200,6 @@ auto GeoMaps::GeoMapProvider::elevationOfTerrain(const QGeoCoordinate& coordinat
             }
             auto pix = tileImg.pixel(intraTileX, intraTileY);
             double elevation = (qRed(pix)*256.0 + qGreen(pix) + qBlue(pix)/256.0) - 32768.0;
-            qWarning() << "Elevation" << elevation;
             return Units::Distance::fromM(elevation);
         }
     }
@@ -383,7 +384,6 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
     QFile file;
-#warning
     if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
         // Serve new tile set under new name
@@ -415,10 +415,6 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     _styleFile->close();
 
     emit styleFileURLChanged();
-
-#warning debug code
-    QGeoCoordinate EDTF(48.022222222222, 7.8327777777778);
-    qWarning() << "EDTF" << elevationOfTerrain(EDTF).toM() << "m";
 }
 
 void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)

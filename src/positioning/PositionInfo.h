@@ -103,12 +103,19 @@ public:
         return m_positionInfo.timestamp().toUTC().time().toString(QStringLiteral("HH:mm:ss"))+ " UTC";
     }
 
-    /*! \brief True Altitude
+    /*! \brief True Altitude above ground level
      *
      *  @returns True altitude with geoid correction taken into account or NaN
      *  if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Distance trueAltitude() const;
+    Q_INVOKABLE [[nodiscard]] Units::Distance trueAltitudeAGL();
+
+    /*! \brief True Altitude above main sea level
+     *
+     *  @returns True altitude with geoid correction taken into account or NaN
+     *  if unknown.
+     */
+    Q_INVOKABLE [[nodiscard]] Units::Distance trueAltitudeAMSL() const;
 
     /*! \brief True altitude error estimate
      *
@@ -161,6 +168,8 @@ public:
 
 private:
     QGeoPositionInfo m_positionInfo {};
+    Units::Distance m_terrainAMSL {};
+    Units::Distance m_trueAltitudeAGL {};
 };
 
 }

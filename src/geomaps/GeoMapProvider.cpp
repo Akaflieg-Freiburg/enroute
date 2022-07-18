@@ -177,12 +177,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
 auto GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate) -> Units::Distance
 {
 #warning need to cache data
-#warning need to work for different zoom levels
-    int zoom = 10;
-    auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
-    auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
-    auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
-    auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
+
 
     foreach(auto mbtPtr, m_terrainMapTiles)
     {
@@ -190,17 +185,28 @@ auto GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordin
         {
             continue;
         }
-        auto tileData = mbtPtr->tile(zoom, qFloor(tilex), qFloor(tiley));
-        if (!tileData.isEmpty())
+        int zoomMin = qBound(6, mbtPtr->metaData().value(QStringLiteral("zoomMin")).toInt(), 14);
+        int zoomMax = qBound(zoomMin, mbtPtr->metaData().value(QStringLiteral("zoomMax")).toInt(), 14);
+
+        for(int zoom = zoomMax; zoom >= zoomMin; zoom--)
         {
-            auto tileImg = QImage::fromData(tileData);
-            if (tileImg.isNull())
+            auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
+            auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
+            auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
+            auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
+
+            auto tileData = mbtPtr->tile(zoom, qFloor(tilex), qFloor(tiley));
+            if (!tileData.isEmpty())
             {
-                continue;
+                auto tileImg = QImage::fromData(tileData);
+                if (tileImg.isNull())
+                {
+                    continue;
+                }
+                auto pix = tileImg.pixel(intraTileX, intraTileY);
+                double elevation = (qRed(pix)*256.0 + qGreen(pix) + qBlue(pix)/256.0) - 32768.0;
+                return Units::Distance::fromM(elevation);
             }
-            auto pix = tileImg.pixel(intraTileX, intraTileY);
-            double elevation = (qRed(pix)*256.0 + qGreen(pix) + qBlue(pix)/256.0) - 32768.0;
-            return Units::Distance::fromM(elevation);
         }
     }
     return {};

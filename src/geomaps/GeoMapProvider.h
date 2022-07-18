@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QCache>
 #include <QFuture>
 #include <QTimer>
 #include <QTemporaryFile>
@@ -322,6 +323,9 @@ namespace GeoMaps
     QByteArray _combinedGeoJSON_;  // Cache: GeoJSON
     QVector<Waypoint> _waypoints_; // Cache: Waypoints
     QVector<Airspace> _airspaces_; // Cache: Airspaces
+
+    // TerrainImageCache
+    QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB
   };
 
 };

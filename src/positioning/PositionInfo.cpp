@@ -103,9 +103,6 @@ auto Positioning::PositionInfo::trueAltitudeAGL() -> Units::Distance
 
     m_trueAltitudeAGL = qMax(tAltAMSL - m_terrainAMSL, Units::Distance::fromM(0));
 
-#warning Debug code.
-    qWarning() << "AMSL" << tAltAMSL.toM() << "Terrain" << m_terrainAMSL.toM();
-
     return m_trueAltitudeAGL;
 }
 

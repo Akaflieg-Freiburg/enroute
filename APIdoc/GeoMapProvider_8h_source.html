@@ -70,198 +70,202 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QFuture&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QTimer&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QTemporaryFile&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;dataManagement/DataManager.h&quot;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;geomaps/MBTILES.h&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;Librarian.h&quot;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;Airspace.h&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;Settings.h&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;TileServer.h&quot;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;Waypoint.h&quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>GeoMaps</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">class </span>GeoMapProvider : <span class="keyword">public</span> <a class="code" href="classGlobalObject.html">GlobalObject</a></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">GeoMapProvider</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// deferred initialization</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">deferredInitialization</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a46297d0e04a54c0f8ce441d1a0f6ff3c">~GeoMapProvider</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html">   75</a></span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// Properties</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    Q_PROPERTY(QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">baseMapRasterTiles</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">baseMapRasterTiles</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a05d5efe93e112f160fc0a3ccf10e9247">baseMapTilesChanged</a>)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    Q_PROPERTY(QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">baseMapVectorTiles</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">baseMapVectorTiles</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a05d5efe93e112f160fc0a3ccf10e9247">baseMapTilesChanged</a>)</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">copyrightNotice</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">copyrightNotice</a> CONSTANT)</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    Q_PROPERTY(QByteArray <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">geoJSON</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">geoJSON</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a85ae3b15fa2f5833af0b79ed20bc1f3b">geoJSONChanged</a>)</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">styleFileURL</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">styleFileURL</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a5b84ce07f9f38a7960ae435c218a9a31">styleFileURLChanged</a>)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    Q_PROPERTY(QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">terrainMapTiles</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">terrainMapTiles</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a131c37192a4d80ac6a54a837cb43a869">terrainMapTilesChanged</a>)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QCache&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QFuture&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QTimer&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QTemporaryFile&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;dataManagement/DataManager.h&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;geomaps/MBTILES.h&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;Librarian.h&quot;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;Airspace.h&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;Settings.h&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;TileServer.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;Waypoint.h&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>GeoMaps</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">class </span>GeoMapProvider : <span class="keyword">public</span> <a class="code" href="classGlobalObject.html">GlobalObject</a></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">GeoMapProvider</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// deferred initialization</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">deferredInitialization</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a46297d0e04a54c0f8ce441d1a0f6ff3c">~GeoMapProvider</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html">   76</a></span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">// Properties</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Q_PROPERTY(QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">baseMapRasterTiles</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">baseMapRasterTiles</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a05d5efe93e112f160fc0a3ccf10e9247">baseMapTilesChanged</a>)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    Q_PROPERTY(QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">baseMapVectorTiles</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">baseMapVectorTiles</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a05d5efe93e112f160fc0a3ccf10e9247">baseMapTilesChanged</a>)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">copyrightNotice</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">copyrightNotice</a> CONSTANT)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Q_PROPERTY(QByteArray <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">geoJSON</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">geoJSON</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a85ae3b15fa2f5833af0b79ed20bc1f3b">geoJSONChanged</a>)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">styleFileURL</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">styleFileURL</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a5b84ce07f9f38a7960ae435c218a9a31">styleFileURLChanged</a>)</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    Q_PROPERTY(QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">terrainMapTiles</a> READ <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">terrainMapTiles</a> NOTIFY <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a131c37192a4d80ac6a54a837cb43a869">terrainMapTilesChanged</a>)</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">// Getter Methods</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">  117</a></span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    QVector&lt;<a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">QPointer</a>&lt;GeoMaps::<a class="code" href="classGeoMaps_1_1MBTILES.html">MBTILES</a>&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">baseMapRasterTiles</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordflow">return</span> m_baseMapRasterTiles;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">  127</a></span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">baseMapVectorTiles</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">  134</a></span>&#160;        <span class="keywordflow">return</span> m_baseMapVectorTiles;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">  118</a></span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    QVector&lt;<a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">QPointer</a>&lt;GeoMaps::<a class="code" href="classGeoMaps_1_1MBTILES.html">MBTILES</a>&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">baseMapRasterTiles</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">return</span> m_baseMapRasterTiles;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">  128</a></span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">baseMapVectorTiles</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">  135</a></span>&#160;        <span class="keywordflow">return</span> m_baseMapVectorTiles;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">copyrightNotice</a>() -&gt; QString;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">geoJSON</a>() -&gt; QByteArray;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">styleFileURL</a>() const -&gt; QString;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    QVector&lt;<a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">QPointer</a>&lt;GeoMaps::<a class="code" href="classGeoMaps_1_1MBTILES.html">MBTILES</a>&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">terrainMapTiles</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">return</span> m_terrainMapTiles;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">// Methods</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">  168</a></span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    Q_INVOKABLE QVariantList <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a0cee1fd088c20e2ef4b9afb8640a8d98">airspaces</a>(<span class="keyword">const</span> QGeoCoordinate &amp;position);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    Q_INVOKABLE <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#afc75ee5b84f9ae1c5056037ac7875c02">closestWaypoint</a>(QGeoCoordinate position, <span class="keyword">const</span> QGeoCoordinate &amp;distPosition);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a460d0b8845cc06219d31c2560fddf9b0">createWaypoint</a>()</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    {</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    [[nodiscard]] Q_INVOKABLE <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a7401e0e4196a332bc49aeaba8790083b">terrainElevationAMSL</a>(<span class="keyword">const</span> QGeoCoordinate&amp; coordinate);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QByteArray <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a4c83c65837369b4e91dd32550bb5941d">emptyGeoJSON</a>();</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    Q_INVOKABLE QVector&lt;GeoMaps::Waypoint&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a3fbf6682a20c9e596e74878881b0e1c5">filteredWaypoints</a>(<span class="keyword">const</span> QString &amp;filter);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a5abf61462b087e121a22e09f3d297ae6">findByID</a>(<span class="keyword">const</span> QString &amp;<span class="keywordtype">id</span>) -&gt; Waypoint;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    Q_INVOKABLE QVariantList <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#aab48a9697490dc84fa65e201cd155e46">nearbyWaypoints</a>(<span class="keyword">const</span> QGeoCoordinate &amp;position, <span class="keyword">const</span> QString &amp;type);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a10af32d9a1f0ee3db557e676d1816465">waypoints</a>() -&gt; QVector&lt;Waypoint&gt;;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  signals:</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a05d5efe93e112f160fc0a3ccf10e9247">baseMapTilesChanged</a>();</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a85ae3b15fa2f5833af0b79ed20bc1f3b">geoJSONChanged</a>();</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a5b84ce07f9f38a7960ae435c218a9a31">styleFileURLChanged</a>();</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a131c37192a4d80ac6a54a837cb43a869">terrainMapTilesChanged</a>();</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">GeoMapProvider</a>)</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="comment">// This slot is called every time the the set of aviation maps qchanges. It</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">// fills the aviation data cache.</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keywordtype">void</span> onAviationMapsChanged();</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="comment">// This slot is called every time the the set of MBTile files changes. It</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="comment">// sets up the tile server to and generates a new style file.</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keywordtype">void</span> onMBTILESChanged();</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="comment">// Interal function that does most of the work for aviationMapsChanged()</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="comment">// emits geoJSONChanged() when done. This function is meant to be run in a</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="comment">// separate thread.</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordtype">void</span> fillAviationDataCache(<span class="keyword">const</span> QStringList &amp;JSONFileNames, <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> airspaceAltitudeLimit, <span class="keywordtype">bool</span> hideGlidingSectors);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="comment">// Caches used to speed up the method simplifySpecialChars</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    QRegularExpression specialChars{QStringLiteral(<span class="stringliteral">&quot;[^a-zA-Z0-9]&quot;</span>)};</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    QHash&lt;QString, QString&gt; simplifySpecialChars_cache;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="comment">// This is the path under which map tiles are available on the _tileServer.</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="comment">// This is set to a random number that changes every time the set of MBTile</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="comment">// files changes</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    QString _currentBaseMapPath;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    QString _currentTerrainMapPath;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="comment">// Tile Server</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    TileServer _tileServer;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="comment">// Temporary file that holds the current style file</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    QPointer&lt;QTemporaryFile&gt; _styleFile;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="comment">// Aviation Data Cache</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    QFuture&lt;void&gt; _aviationDataCacheFuture; <span class="comment">// Future; indicates if fillAviationDataCache() is currently running</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    QTimer _aviationDataCacheTimer;         <span class="comment">// Timer used to start another run of fillAviationDataCache()</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="comment">// MBTILES</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; m_baseMapVectorTiles;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; m_baseMapRasterTiles;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; m_terrainMapTiles;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="comment">// The data in this group is accessed by several threads. The following</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">// classes (whose names ends in an underscore) are therefore protected by</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="comment">// this mutex.</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    QMutex _aviationDataMutex;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    QByteArray _combinedGeoJSON_;  <span class="comment">// Cache: GeoJSON</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    QVector&lt;Waypoint&gt; _waypoints_; <span class="comment">// Cache: Waypoints</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    QVector&lt;Airspace&gt; _airspaces_; <span class="comment">// Cache: Airspaces</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  };</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">copyrightNotice</a>() -&gt; QString;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">geoJSON</a>() -&gt; QByteArray;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">styleFileURL</a>() const -&gt; QString;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    QVector&lt;<a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">QPointer</a>&lt;GeoMaps::<a class="code" href="classGeoMaps_1_1MBTILES.html">MBTILES</a>&gt;&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">terrainMapTiles</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">return</span> m_terrainMapTiles;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">// Methods</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">  169</a></span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    Q_INVOKABLE QVariantList <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a0cee1fd088c20e2ef4b9afb8640a8d98">airspaces</a>(<span class="keyword">const</span> QGeoCoordinate &amp;position);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    Q_INVOKABLE <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#afc75ee5b84f9ae1c5056037ac7875c02">closestWaypoint</a>(QGeoCoordinate position, <span class="keyword">const</span> QGeoCoordinate &amp;distPosition);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a460d0b8845cc06219d31c2560fddf9b0">createWaypoint</a>()</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    }</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    [[nodiscard]] Q_INVOKABLE <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a7401e0e4196a332bc49aeaba8790083b">terrainElevationAMSL</a>(<span class="keyword">const</span> QGeoCoordinate&amp; coordinate);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QByteArray <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a4c83c65837369b4e91dd32550bb5941d">emptyGeoJSON</a>();</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    Q_INVOKABLE QVector&lt;GeoMaps::Waypoint&gt; <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a3fbf6682a20c9e596e74878881b0e1c5">filteredWaypoints</a>(<span class="keyword">const</span> QString &amp;filter);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a5abf61462b087e121a22e09f3d297ae6">findByID</a>(<span class="keyword">const</span> QString &amp;<span class="keywordtype">id</span>) -&gt; Waypoint;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    Q_INVOKABLE QVariantList <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#aab48a9697490dc84fa65e201cd155e46">nearbyWaypoints</a>(<span class="keyword">const</span> QGeoCoordinate &amp;position, <span class="keyword">const</span> QString &amp;type);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a10af32d9a1f0ee3db557e676d1816465">waypoints</a>() -&gt; QVector&lt;Waypoint&gt;;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  signals:</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a05d5efe93e112f160fc0a3ccf10e9247">baseMapTilesChanged</a>();</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a85ae3b15fa2f5833af0b79ed20bc1f3b">geoJSONChanged</a>();</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a5b84ce07f9f38a7960ae435c218a9a31">styleFileURLChanged</a>();</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a131c37192a4d80ac6a54a837cb43a869">terrainMapTilesChanged</a>();</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">GeoMapProvider</a>)</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">// This slot is called every time the the set of aviation maps qchanges. It</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="comment">// fills the aviation data cache.</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keywordtype">void</span> onAviationMapsChanged();</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="comment">// This slot is called every time the the set of MBTile files changes. It</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="comment">// sets up the tile server to and generates a new style file.</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordtype">void</span> onMBTILESChanged();</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="comment">// Interal function that does most of the work for aviationMapsChanged()</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="comment">// emits geoJSONChanged() when done. This function is meant to be run in a</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="comment">// separate thread.</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keywordtype">void</span> fillAviationDataCache(<span class="keyword">const</span> QStringList &amp;JSONFileNames, <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> airspaceAltitudeLimit, <span class="keywordtype">bool</span> hideGlidingSectors);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">// Caches used to speed up the method simplifySpecialChars</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    QRegularExpression specialChars{QStringLiteral(<span class="stringliteral">&quot;[^a-zA-Z0-9]&quot;</span>)};</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    QHash&lt;QString, QString&gt; simplifySpecialChars_cache;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="comment">// This is the path under which map tiles are available on the _tileServer.</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="comment">// This is set to a random number that changes every time the set of MBTile</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="comment">// files changes</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    QString _currentBaseMapPath;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    QString _currentTerrainMapPath;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="comment">// Tile Server</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    TileServer _tileServer;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="comment">// Temporary file that holds the current style file</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    QPointer&lt;QTemporaryFile&gt; _styleFile;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="comment">// Aviation Data Cache</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    QFuture&lt;void&gt; _aviationDataCacheFuture; <span class="comment">// Future; indicates if fillAviationDataCache() is currently running</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    QTimer _aviationDataCacheTimer;         <span class="comment">// Timer used to start another run of fillAviationDataCache()</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="comment">// MBTILES</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; m_baseMapVectorTiles;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; m_baseMapRasterTiles;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt; m_terrainMapTiles;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">// The data in this group is accessed by several threads. The following</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="comment">// classes (whose names ends in an underscore) are therefore protected by</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="comment">// this mutex.</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    QMutex _aviationDataMutex;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    QByteArray _combinedGeoJSON_;  <span class="comment">// Cache: GeoJSON</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    QVector&lt;Waypoint&gt; _waypoints_; <span class="comment">// Cache: Waypoints</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    QVector&lt;Airspace&gt; _airspaces_; <span class="comment">// Cache: Airspaces</span></div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; </div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;};</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="comment">// TerrainImageCache</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    QCache&lt;qint64,QImage&gt; terrainTileCache {6}; <span class="comment">// Hold 6 tiles, roughly 1.2MB</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  };</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a85ae3b15fa2f5833af0b79ed20bc1f3b"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a85ae3b15fa2f5833af0b79ed20bc1f3b">GeoMaps::GeoMapProvider::geoJSONChanged</a></div><div class="ttdeci">void geoJSONChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_ae548d8d722c7cc995ec40302849894b8"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">GeoMaps::GeoMapProvider::styleFileURL</a></div><div class="ttdeci">QString styleFileURL</div><div class="ttdoc">URL where a style file for the base map can be retrieved.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00145">GeoMapProvider.h:145</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_ae548d8d722c7cc995ec40302849894b8"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">GeoMaps::GeoMapProvider::styleFileURL</a></div><div class="ttdeci">QString styleFileURL</div><div class="ttdoc">URL where a style file for the base map can be retrieved.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00146">GeoMapProvider.h:146</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1MBTILES_html"><div class="ttname"><a href="classGeoMaps_1_1MBTILES.html">GeoMaps::MBTILES</a></div><div class="ttdoc">Utility class for databases in MBTILES format.</div><div class="ttdef"><b>Definition:</b> <a href="MBTILES_8h_source.html#l00053">MBTILES.h:53</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a0cee1fd088c20e2ef4b9afb8640a8d98"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a0cee1fd088c20e2ef4b9afb8640a8d98">GeoMaps::GeoMapProvider::airspaces</a></div><div class="ttdeci">Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &amp;position)</div><div class="ttdoc">List of airspaces at a given location.</div></div>
 <div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00093">GlobalObject.h:93</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a4c83c65837369b4e91dd32550bb5941d"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a4c83c65837369b4e91dd32550bb5941d">GeoMaps::GeoMapProvider::emptyGeoJSON</a></div><div class="ttdeci">static Q_INVOKABLE QByteArray emptyGeoJSON()</div><div class="ttdoc">Create empty GeoJSON document.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_ad2b0640861db6e1383da6a0461e9936c"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider::deferredInitialization</a></div><div class="ttdeci">void deferredInitialization() override</div><div class="ttdoc">Non-constructor initialization.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a05d5efe93e112f160fc0a3ccf10e9247"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a05d5efe93e112f160fc0a3ccf10e9247">GeoMaps::GeoMapProvider::baseMapTilesChanged</a></div><div class="ttdeci">void baseMapTilesChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a460d0b8845cc06219d31c2560fddf9b0"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a460d0b8845cc06219d31c2560fddf9b0">GeoMaps::GeoMapProvider::createWaypoint</a></div><div class="ttdeci">static Q_INVOKABLE GeoMaps::Waypoint createWaypoint()</div><div class="ttdoc">Create invalid waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00236">GeoMapProvider.h:236</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a1c187bb09b966ce56ad831cb7ebd7792"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">GeoMaps::GeoMapProvider::baseMapRasterTiles</a></div><div class="ttdeci">QVector&lt; QPointer&lt; GeoMaps::MBTILES &gt; &gt; baseMapRasterTiles() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00159">GeoMapProvider.h:159</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a460d0b8845cc06219d31c2560fddf9b0"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a460d0b8845cc06219d31c2560fddf9b0">GeoMaps::GeoMapProvider::createWaypoint</a></div><div class="ttdeci">static Q_INVOKABLE GeoMaps::Waypoint createWaypoint()</div><div class="ttdoc">Create invalid waypoint.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00237">GeoMapProvider.h:237</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a1c187bb09b966ce56ad831cb7ebd7792"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a1c187bb09b966ce56ad831cb7ebd7792">GeoMaps::GeoMapProvider::baseMapRasterTiles</a></div><div class="ttdeci">QVector&lt; QPointer&lt; GeoMaps::MBTILES &gt; &gt; baseMapRasterTiles() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00160">GeoMapProvider.h:160</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a10af32d9a1f0ee3db557e676d1816465"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a10af32d9a1f0ee3db557e676d1816465">GeoMaps::GeoMapProvider::waypoints</a></div><div class="ttdeci">auto waypoints() -&gt; QVector&lt; Waypoint &gt;</div><div class="ttdoc">Waypoints.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a8c10e32b9b38a7174e632475c1dc2002"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">GeoMaps::GeoMapProvider::copyrightNotice</a></div><div class="ttdeci">QString copyrightNotice</div><div class="ttdoc">Copyright notice for the map.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00127">GeoMapProvider.h:127</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a8c10e32b9b38a7174e632475c1dc2002"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a8c10e32b9b38a7174e632475c1dc2002">GeoMaps::GeoMapProvider::copyrightNotice</a></div><div class="ttdeci">QString copyrightNotice</div><div class="ttdoc">Copyright notice for the map.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00128">GeoMapProvider.h:128</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a7b0f04d852a4d5947b9eacebecfb3716"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a7b0f04d852a4d5947b9eacebecfb3716">GeoMaps::GeoMapProvider::GeoMapProvider</a></div><div class="ttdeci">GeoMapProvider(QObject *parent=nullptr)</div><div class="ttdoc">Creates a new GeoMap provider.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a131c37192a4d80ac6a54a837cb43a869"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a131c37192a4d80ac6a54a837cb43a869">GeoMaps::GeoMapProvider::terrainMapTilesChanged</a></div><div class="ttdeci">void terrainMapTilesChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_acd2d662734dee58502a506728e64b23a"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">GeoMaps::GeoMapProvider::terrainMapTiles</a></div><div class="ttdeci">QVector&lt; QPointer&lt; GeoMaps::MBTILES &gt; &gt; terrainMapTiles() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00196">GeoMapProvider.h:196</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_acd2d662734dee58502a506728e64b23a"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#acd2d662734dee58502a506728e64b23a">GeoMaps::GeoMapProvider::terrainMapTiles</a></div><div class="ttdeci">QVector&lt; QPointer&lt; GeoMaps::MBTILES &gt; &gt; terrainMapTiles() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00197">GeoMapProvider.h:197</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_aab48a9697490dc84fa65e201cd155e46"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#aab48a9697490dc84fa65e201cd155e46">GeoMaps::GeoMapProvider::nearbyWaypoints</a></div><div class="ttdeci">Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate &amp;position, const QString &amp;type)</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a5abf61462b087e121a22e09f3d297ae6"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a5abf61462b087e121a22e09f3d297ae6">GeoMaps::GeoMapProvider::findByID</a></div><div class="ttdeci">auto findByID(const QString &amp;id) -&gt; Waypoint</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a3fbf6682a20c9e596e74878881b0e1c5"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a3fbf6682a20c9e596e74878881b0e1c5">GeoMaps::GeoMapProvider::filteredWaypoints</a></div><div class="ttdeci">Q_INVOKABLE QVector&lt; GeoMaps::Waypoint &gt; filteredWaypoints(const QString &amp;filter)</div><div class="ttdoc">Waypoints containing a given substring.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a6491d4bf230e15554c189552aa243e56"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">GeoMaps::GeoMapProvider::baseMapVectorTiles</a></div><div class="ttdeci">QVector&lt; QPointer&lt; GeoMaps::MBTILES &gt; &gt; baseMapVectorTiles() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00168">GeoMapProvider.h:168</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a6491d4bf230e15554c189552aa243e56"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a6491d4bf230e15554c189552aa243e56">GeoMaps::GeoMapProvider::baseMapVectorTiles</a></div><div class="ttdeci">QVector&lt; QPointer&lt; GeoMaps::MBTILES &gt; &gt; baseMapVectorTiles() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00169">GeoMapProvider.h:169</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a></div><div class="ttdoc">Waypoint, such as an airfield, a navaid station or a reporting point.</div><div class="ttdef"><b>Definition:</b> <a href="Waypoint_8h_source.html#l00057">Waypoint.h:57</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a5b84ce07f9f38a7960ae435c218a9a31"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a5b84ce07f9f38a7960ae435c218a9a31">GeoMaps::GeoMapProvider::styleFileURLChanged</a></div><div class="ttdeci">void styleFileURLChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
 <div class="ttc" id="aclassUnits_1_1Distance_html"><div class="ttname"><a href="classUnits_1_1Distance.html">Units::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition:</b> <a href="Distance_8h_source.html#l00052">Distance.h:52</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a54c3286040d622453e26e5580a7f5898"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">GeoMaps::GeoMapProvider::geoJSON</a></div><div class="ttdeci">QByteArray geoJSON</div><div class="ttdoc">Union of all aviation maps in GeoJSON format.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00134">GeoMapProvider.h:134</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a54c3286040d622453e26e5580a7f5898"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a54c3286040d622453e26e5580a7f5898">GeoMaps::GeoMapProvider::geoJSON</a></div><div class="ttdeci">QByteArray geoJSON</div><div class="ttdoc">Union of all aviation maps in GeoJSON format.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00135">GeoMapProvider.h:135</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a7401e0e4196a332bc49aeaba8790083b"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a7401e0e4196a332bc49aeaba8790083b">GeoMaps::GeoMapProvider::terrainElevationAMSL</a></div><div class="ttdeci">Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate &amp;coordinate)</div><div class="ttdoc">Elevation of terrain at a given coordinate, above sea level.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_afc75ee5b84f9ae1c5056037ac7875c02"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#afc75ee5b84f9ae1c5056037ac7875c02">GeoMaps::GeoMapProvider::closestWaypoint</a></div><div class="ttdeci">Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate &amp;distPosition)</div><div class="ttdoc">Find closest waypoint to a given position.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a875f6cdc0d4abd9b3aa3e66d568f4869"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">GeoMaps::GeoMapProvider::QPointer</a></div><div class="ttdeci">QVector QPointer</div><div class="ttdoc">List of base map MBTILES.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00117">GeoMapProvider.h:117</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a875f6cdc0d4abd9b3aa3e66d568f4869"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a875f6cdc0d4abd9b3aa3e66d568f4869">GeoMaps::GeoMapProvider::QPointer</a></div><div class="ttdeci">QVector QPointer</div><div class="ttdoc">List of base map MBTILES.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00118">GeoMapProvider.h:118</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html_a46297d0e04a54c0f8ce441d1a0f6ff3c"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html#a46297d0e04a54c0f8ce441d1a0f6ff3c">GeoMaps::GeoMapProvider::~GeoMapProvider</a></div><div class="ttdeci">~GeoMapProvider() override=default</div><div class="ttdoc">Destructor.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

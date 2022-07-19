@@ -114,6 +114,12 @@ Page {
                 onToggled: {
                     global.mobileAdaptor().vibrateBrief()
                     global.settings().showAltitudeAGL = showAltAGL.checked
+                    var pInfo = global.positionProvider().positionInfo
+                    if (showAltAGL.checked &&
+                            pInfo.isValid() &&
+                            !pInfo.terrainElevationAMSL().isFinite()) {
+                        missingTerrainDataWarning.open()
+                    }
                 }
             }
 
@@ -211,6 +217,37 @@ Page {
             }
 
         } // ColumnLayout
+    }
+
+    LongTextDialog {
+        id: missingTerrainDataWarning
+
+        title: qsTr("Terrain Data Missing")
+        text: qsTr("The height above ground level cannot be computed for your current position, because the relevant terrain maps for your region have not been installed.")
+
+        footer: DialogButtonBox {
+            ToolButton {
+                text: qsTr("Install now")
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            }
+            ToolButton {
+                text: qsTr("Cancel")
+                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            }
+        } // DialogButtonBox
+
+        onRejected: {
+            global.mobileAdaptor().vibrateBrief()
+            showAltAGL.checked = false
+            close()
+        }
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+            close()
+            stackView.pop()
+            stackView.push("../pages/DataManager.qml")
+        }
     }
 
     Dialog {

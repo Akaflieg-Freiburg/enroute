@@ -85,6 +85,13 @@ public:
      */
     Q_INVOKABLE [[nodiscard]] Units::Distance positionErrorEstimate() const;
 
+    /*! \brief Elevation of terrain at a given coordinate, above sea level
+     *
+     *  @returns Elevation of the terrain at position, or
+     *  NaN if the terrain elevation is unknown
+     */
+    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL();
+
     /*! \brief Timestamp
      *
      *  @returns Timestamp of the position info.

@@ -66,6 +66,18 @@ auto Positioning::PositionInfo::positionErrorEstimate() const -> Units::Distance
 }
 
 
+auto Positioning::PositionInfo::terrainElevationAMSL() -> Units::Distance
+{
+    if (m_terrainAMSL.isFinite())
+    {
+        return m_terrainAMSL;
+    }
+
+    m_terrainAMSL = GlobalObject::geoMapProvider()->terrainElevationAMSL(m_positionInfo.coordinate());
+    return m_terrainAMSL;
+}
+
+
 auto Positioning::PositionInfo::trueAltitudeAMSL() const -> Units::Distance
 {
     if (!m_positionInfo.isValid()) {

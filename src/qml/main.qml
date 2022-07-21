@@ -424,7 +424,7 @@ ApplicationWindow {
 
                         }
 
-                        ItemDelegate { // Manual … download as ebook
+                        ItemDelegate { // Manual… download as ebook
                             text: qsTr("Download as ebook")
                             icon.source: "/icons/material/ic_file_download.svg"
                             Layout.fillWidth: true
@@ -438,7 +438,7 @@ ApplicationWindow {
                             }
                         }
 
-                        ItemDelegate { // Manual … download as ebook
+                        ItemDelegate { // Manual… download as ebook
                             text: qsTr("Download as PDF")
                             icon.source: "/icons/material/ic_file_download.svg"
                             Layout.fillWidth: true
@@ -684,7 +684,7 @@ ApplicationWindow {
         id: whatsNewDialog
         standardButtons: Dialog.Ok
         
-        title: qsTr("What's new …?")
+        title: qsTr("What's new…?")
         text: global.librarian().getStringFromRessource(":text/whatsnew.html")
         onOpened: global.settings().lastWhatsNewHash = global.librarian().getStringHashFromRessource(":text/whatsnew.html")
     }
@@ -693,7 +693,7 @@ ApplicationWindow {
         id: whatsNewInMapsDialog
         standardButtons: Dialog.Ok
 
-        title: qsTr("What's new …?")
+        title: qsTr("What's new…?")
         text: global.dataManager().whatsNew
         onOpened: global.settings().lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
     }

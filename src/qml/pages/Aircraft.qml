@@ -87,7 +87,7 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("View Library …")
+                    text: qsTr("View Library…")
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
@@ -96,7 +96,7 @@ Page {
                 }
 
                 MenuItem {
-                    text: qsTr("Save to library …")
+                    text: qsTr("Save to library…")
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false

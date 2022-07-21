@@ -157,7 +157,7 @@ Dialog {
         parent: Overlay.overlay
 
         modal: true
-        title: qsTr("An error occurred…")
+        title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
         ScrollView{
@@ -195,7 +195,7 @@ Dialog {
         width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
         height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
-        title: qsTr("Overwrite flight route?")
+        title: qsTr("Overwrite Flight Route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 

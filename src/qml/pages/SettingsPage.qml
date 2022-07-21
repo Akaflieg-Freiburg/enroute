@@ -82,7 +82,13 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: hideGlidingSectors
-                text: qsTr("Hide Gliding Sectors")
+                text: {
+                    const firstLine = qsTr("Hide Gliding Sectors")
+                    if (!checked) {
+                        return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently showing gliding sectors") + `</font>`
+                    }
+                    return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently hiding gliding sectors") + `</font>`
+                }
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
@@ -105,7 +111,14 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: showAltAGL
-                text: qsTr("Show altitude AGL")
+                text: {
+                    const firstLine = qsTr("Show Altitude AGL")
+                    if (!checked) {
+                        return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently showing altitude AMSL") + `</font>`
+                    }
+                    return firstLine
+                }
+
                 icon.source: "/icons/material/ic_speed.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
@@ -136,9 +149,9 @@ Page {
                 text: {
                     var secondLineString = ""
                     if (global.settings().positioningByTrafficDataReceiver) {
-                        secondLineString = qsTr("Traffic data receiver")
+                        secondLineString = qsTr("Traffic Data Receiver")
                     } else {
-                        secondLineString = qsTr("Built-in satnav receiver")
+                        secondLineString = qsTr("Built-in Satnav Receiver")
                     }
                     return qsTr("Primary position data source") +
                             `<br><font color="#606060" size="2">` +
@@ -155,7 +168,7 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: nightMode
-                text: qsTr("Night mode")
+                text: qsTr("Night Mode")
                 icon.source: "/icons/material/ic_brightness_3.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
@@ -169,7 +182,7 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: ignoreSSL
-                text: qsTr("Ignore network security errors")
+                text: qsTr("Ignore Network Security Errors")
                 icon.source: "/icons/material/ic_lock.svg"
                 Layout.fillWidth: true
                 visible: global.settings().ignoreSSLProblems
@@ -185,7 +198,7 @@ Page {
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_lock.svg"
-                text: qsTr("Clear password storage")
+                text: qsTr("Clear Password Storage")
                 onClicked: clearPasswordDialog.open()
                 visible: !global.passwordDB().empty
             }
@@ -267,7 +280,7 @@ Page {
 
         modal: true
 
-        title: qsTr("Clear password storage?")
+        title: qsTr("Clear Password Storage?")
 
         Label {
             width: heightLimitDialog.availableWidth
@@ -408,7 +421,7 @@ Page {
 
         modal: true
 
-        title: qsTr("Position data source")
+        title: qsTr("Position Data Source")
         standardButtons: Dialog.Ok|Dialog.Cancel
 
 

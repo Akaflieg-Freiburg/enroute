@@ -535,7 +535,7 @@ Dialog {
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Overwrite current flight route?")
+        title: qsTr("Overwrite Current Flight Route?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
@@ -587,7 +587,7 @@ Dialog {
     WaypointEditor {
         id: wpAdd
 
-        title: qsTr("Add waypoint to library")
+        title: qsTr("Add Waypoint to Library")
 
         onAccepted: {
             global.mobileAdaptor().vibrateBrief()
@@ -609,7 +609,7 @@ Dialog {
         x: parent == null ? 0 : (parent.width-width)/2.0
         y: parent == null ? 0 : (parent.height-height)/2.0
 
-        title: qsTr("Remove from device?")
+        title: qsTr("Remove from Device?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full

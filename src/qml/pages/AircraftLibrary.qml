@@ -96,7 +96,7 @@ Page {
 
                     Action {
                         id: renameAction
-                        text: qsTr("Rename …")
+                        text: qsTr("Rename…")
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
@@ -108,7 +108,7 @@ Page {
 
                     Action {
                         id: removeAction
-                        text: qsTr("Remove …")
+                        text: qsTr("Remove…")
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
@@ -191,7 +191,7 @@ Page {
         y: (view.height-height)/2.0
 
         modal: true
-        title: qsTr("An error occurred…")
+        title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
         ScrollView{
@@ -236,7 +236,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Overwrite current aircraft?")
+        title: qsTr("Overwrite Current Aircraft?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
@@ -273,7 +273,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Remove from device?")
+        title: qsTr("Remove from Device?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full

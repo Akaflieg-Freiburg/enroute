@@ -86,7 +86,7 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("Import …")
+                    text: qsTr("Import…")
                     enabled: Qt.platform.os !== "android"
                     height: enabled ? undefined : 0
 
@@ -98,7 +98,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
+                    title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
                     enabled: global.waypointLibrary().waypoints.length > 0
 
                     MenuItem {
@@ -151,7 +151,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: qsTr("Open in other app …")
+                    title: qsTr("Open in Other App…")
                     enabled: global.waypointLibrary().waypoints.length > 0
 
                     MenuItem {
@@ -274,7 +274,7 @@ Page {
 
                     Action {
                         id: removeAction
-                        text: qsTr("Remove …")
+                        text: qsTr("Remove…")
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             removeDialog.waypoint = modelData
@@ -340,7 +340,7 @@ Page {
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Error exporting data…")
+        title: qsTr("Error Exporting Data…")
         width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
 
         Label {
@@ -366,7 +366,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Remove from device?")
+        title: qsTr("Remove from Device?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
@@ -407,7 +407,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Clear waypoint library?")
+        title: qsTr("Clear Waypoint Library?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full

@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "GlobalObject.h"
+#include "geomaps/GeoMapProvider.h"
 #include "positioning/PositionInfo.h"
 
 
@@ -64,7 +66,19 @@ auto Positioning::PositionInfo::positionErrorEstimate() const -> Units::Distance
 }
 
 
-auto Positioning::PositionInfo::trueAltitude() const -> Units::Distance
+auto Positioning::PositionInfo::terrainElevationAMSL() -> Units::Distance
+{
+    if (m_terrainAMSL.isFinite())
+    {
+        return m_terrainAMSL;
+    }
+
+    m_terrainAMSL = GlobalObject::geoMapProvider()->terrainElevationAMSL(m_positionInfo.coordinate());
+    return m_terrainAMSL;
+}
+
+
+auto Positioning::PositionInfo::trueAltitudeAMSL() const -> Units::Distance
 {
     if (!m_positionInfo.isValid()) {
         return {};
@@ -77,6 +91,32 @@ auto Positioning::PositionInfo::trueAltitude() const -> Units::Distance
 
 }
 
+auto Positioning::PositionInfo::trueAltitudeAGL() -> Units::Distance
+{
+    if (m_trueAltitudeAGL.isFinite())
+    {
+        return m_trueAltitudeAGL;
+    }
+
+    auto tAltAMSL = trueAltitudeAMSL();
+    if (!tAltAMSL.isFinite())
+    {
+        return {};
+    }
+
+    if (!m_terrainAMSL.isFinite())
+    {
+        m_terrainAMSL = GlobalObject::geoMapProvider()->terrainElevationAMSL(m_positionInfo.coordinate());
+    }
+    if (!m_terrainAMSL.isFinite())
+    {
+        return {};
+    }
+
+    m_trueAltitudeAGL = qMax(tAltAMSL - m_terrainAMSL, Units::Distance::fromM(0));
+
+    return m_trueAltitudeAGL;
+}
 
 auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> Units::Distance
 {

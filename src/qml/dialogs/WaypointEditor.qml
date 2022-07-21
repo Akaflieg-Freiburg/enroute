@@ -56,7 +56,7 @@ Dialog {
     y: parent == null ? 0 : (parent.height-height)/2.0
 
     modal: true
-    title: qsTr("Edit waypoint")
+    title: qsTr("Edit Waypoint")
 
     standardButtons: Dialog.Cancel|Dialog.Ok
     focus: true

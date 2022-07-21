@@ -166,7 +166,7 @@ application.</p>
 
 <p>If you would like to report problems with other aviation
 data (such as wrong airfield frequencies, outdated traffic
-patterns, missing navaids, …), then please use the buttons
+patterns, missing navaids,…), then please use the buttons
 below.</p>
 ")
                     textFormat: Text.StyledText

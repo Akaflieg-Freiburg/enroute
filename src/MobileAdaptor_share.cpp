@@ -235,14 +235,15 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
     }
 
     // MBTiles containing a vector map
-    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Vector)
+    GeoMaps::MBTILES mbtiles(myPath);
+    if (mbtiles.format() == GeoMaps::MBTILES::Vector)
     {
         emit openFileRequest(myPath, VectorMap);
         return;
     }
 
     // MBTiles containing a raster map
-    if (GeoMaps::MBTILES::format(myPath) == GeoMaps::MBTILES::Raster)
+    if (mbtiles.format() == GeoMaps::MBTILES::Raster)
     {
         emit openFileRequest(myPath, RasterMap);
         return;

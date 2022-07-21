@@ -85,7 +85,7 @@ Page {
                 id: headerMenuX
 
                 MenuItem {
-                    text: qsTr("Info …")
+                    text: qsTr("Info…")
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         infoDialog.open()
@@ -94,7 +94,7 @@ Page {
                 } // ToolButton
 
                 MenuItem {
-                    text: qsTr("Import …")
+                    text: qsTr("Import…")
                     enabled: Qt.platform.os !== "android"
                     visible: Qt.platform.os !== "android"
                     height: Qt.platform.os !== "android" ? undefined : 0
@@ -171,7 +171,7 @@ Page {
                     id: cptMenu
 
                     AutoSizingMenu {
-                        title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
+                        title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
 
                         MenuItem {
                             text: qsTr("… to GeoJSON file")
@@ -225,7 +225,7 @@ Page {
                     }
 
                     AutoSizingMenu {
-                        title: qsTr("Open in other app …")
+                        title: qsTr("Open in Other App…")
 
                         MenuItem {
                             text: qsTr("… in GeoJSON format")
@@ -267,7 +267,7 @@ Page {
 
                     Action {
                         id: renameAction
-                        text: qsTr("Rename …")
+                        text: qsTr("Rename…")
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
@@ -279,7 +279,7 @@ Page {
 
                     Action {
                         id: removeAction
-                        text: qsTr("Remove …")
+                        text: qsTr("Remove…")
                         onTriggered: {
                             global.mobileAdaptor().vibrateBrief()
                             finalFileName = modelData
@@ -360,7 +360,7 @@ Page {
         y: (view.height-height)/2.0
 
         modal: true
-        title: qsTr("An error occurred…")
+        title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
         ScrollView{
@@ -413,7 +413,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Overwrite current flight route?")
+        title: qsTr("Overwrite Current Flight Route?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
@@ -451,7 +451,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Remove from device?")
+        title: qsTr("Remove from Device?")
 
         // Width is chosen so that the dialog does not cover the parent in full, height is automatic
         // Size is chosen so that the dialog does not cover the parent in full
@@ -565,7 +565,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Error exporting data…")
+        title: qsTr("Error Exporting Data…")
         width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
 
         Label {

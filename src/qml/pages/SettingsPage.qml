@@ -82,7 +82,13 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: hideGlidingSectors
-                text: qsTr("Hide Gliding Sectors")
+                text: {
+                    const firstLine = qsTr("Hide Gliding Sectors")
+                    if (!checked) {
+                        return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently showing gliding sectors") + `</font>`
+                    }
+                    return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently hiding gliding sectors") + `</font>`
+                }
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
@@ -91,6 +97,42 @@ Page {
                 onToggled: {
                     global.mobileAdaptor().vibrateBrief()
                     global.settings().hideGlidingSectors = hideGlidingSectors.checked
+                }
+            }
+
+            Label {
+                Layout.leftMargin: view.font.pixelSize
+                Layout.fillWidth: true
+                text: qsTr("Navigation")
+                font.pixelSize: view.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
+            }
+
+            WordWrappingSwitchDelegate {
+                id: showAltAGL
+                text: {
+                    const firstLine = qsTr("Show Altitude AGL")
+                    if (!checked) {
+                        return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently showing altitude AMSL") + `</font>`
+                    }
+                    return firstLine
+                }
+
+                icon.source: "/icons/material/ic_speed.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    showAltAGL.checked = global.settings().showAltitudeAGL
+                }
+                onToggled: {
+                    global.mobileAdaptor().vibrateBrief()
+                    global.settings().showAltitudeAGL = showAltAGL.checked
+                    var pInfo = global.positionProvider().positionInfo
+                    if (showAltAGL.checked &&
+                            pInfo.isValid() &&
+                            !pInfo.terrainElevationAMSL().isFinite()) {
+                        missingTerrainDataWarning.open()
+                    }
                 }
             }
 
@@ -107,9 +149,9 @@ Page {
                 text: {
                     var secondLineString = ""
                     if (global.settings().positioningByTrafficDataReceiver) {
-                        secondLineString = qsTr("Traffic data receiver")
+                        secondLineString = qsTr("Traffic Data Receiver")
                     } else {
-                        secondLineString = qsTr("Built-in satnav receiver")
+                        secondLineString = qsTr("Built-in Satnav Receiver")
                     }
                     return qsTr("Primary position data source") +
                             `<br><font color="#606060" size="2">` +
@@ -126,7 +168,7 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: nightMode
-                text: qsTr("Night mode")
+                text: qsTr("Night Mode")
                 icon.source: "/icons/material/ic_brightness_3.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
@@ -140,7 +182,7 @@ Page {
 
             WordWrappingSwitchDelegate {
                 id: ignoreSSL
-                text: qsTr("Ignore network security errors")
+                text: qsTr("Ignore Network Security Errors")
                 icon.source: "/icons/material/ic_lock.svg"
                 Layout.fillWidth: true
                 visible: global.settings().ignoreSSLProblems
@@ -156,7 +198,7 @@ Page {
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_lock.svg"
-                text: qsTr("Clear password storage")
+                text: qsTr("Clear Password Storage")
                 onClicked: clearPasswordDialog.open()
                 visible: !global.passwordDB().empty
             }
@@ -190,6 +232,37 @@ Page {
         } // ColumnLayout
     }
 
+    LongTextDialog {
+        id: missingTerrainDataWarning
+
+        title: qsTr("Terrain Data Missing")
+        text: qsTr("The height above ground level cannot be computed for your current position, because the relevant terrain maps for your region have not been installed.")
+
+        footer: DialogButtonBox {
+            ToolButton {
+                text: qsTr("Install now")
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            }
+            ToolButton {
+                text: qsTr("Cancel")
+                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            }
+        } // DialogButtonBox
+
+        onRejected: {
+            global.mobileAdaptor().vibrateBrief()
+            showAltAGL.checked = false
+            close()
+        }
+
+        onAccepted: {
+            global.mobileAdaptor().vibrateBrief()
+            close()
+            stackView.pop()
+            stackView.push("../pages/DataManager.qml")
+        }
+    }
+
     Dialog {
         id: clearPasswordDialog
 
@@ -207,7 +280,7 @@ Page {
 
         modal: true
 
-        title: qsTr("Clear password storage?")
+        title: qsTr("Clear Password Storage?")
 
         Label {
             width: heightLimitDialog.availableWidth
@@ -281,7 +354,7 @@ Page {
                     var positionInfo = global.positionProvider().positionInfo
                     if (!positionInfo.isValid())
                         return global.settings().airspaceAltitudeLimit_min.toFeet()
-                    var trueAlt = positionInfo.trueAltitude()
+                    var trueAlt = positionInfo.trueAltitudeAMSL()
                     if (!trueAlt.isFinite())
                         return global.settings().airspaceAltitudeLimit_min.toFeet()
                     return Math.min(global.settings().airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
@@ -331,7 +404,6 @@ Page {
 
     }
 
-
     Dialog {
         id: primaryPositionDataSourceDialog
 
@@ -349,7 +421,7 @@ Page {
 
         modal: true
 
-        title: qsTr("Position data source")
+        title: qsTr("Position Data Source")
         standardButtons: Dialog.Ok|Dialog.Cancel
 
 

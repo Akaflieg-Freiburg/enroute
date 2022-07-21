@@ -606,7 +606,7 @@ Page {
                             id: ltd
                             standardButtons: Dialog.Ok
 
-                            title: qsTr("Request additional aviation maps")
+                            title: qsTr("Request Additional Aviation Maps")
                             text: global.librarian().getStringFromRessource(":text/aviationMapMissing.html")
                         }
 

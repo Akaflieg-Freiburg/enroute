@@ -20,55 +20,118 @@
 
 #pragma once
 
-#include <QObject>
+#include <QMap>
 
-namespace GeoMaps {
+namespace GeoMaps
+{
 
-/*! \brief Utility class for databases in MBTILES format
- *
- *  MBTILES are SQLite databases whose schema is specified here:
- *  https://github.com/mapbox/mbtiles-spec
- */
+  /*! \brief Utility class for databases in MBTILES format
+   *
+   *  MBTILES contain tiled map data. Internally, MBTILES are SQLite databases
+   *  whose schema is specified here: https://github.com/mapbox/mbtiles-spec
+   *  This class handles MBTILES and allows easy access to the data.
+   */
 
-class MBTILES {
+  class MBTILES : public QObject
+  {
+    Q_OBJECT
 
-public:
+  public:
     /*! \brief Format of data tiles */
-    enum Format {
-        /*! \brief Unknown format */
-        Unknown,
+    enum Format
+    {
+      /*! \brief Unknown format */
+      Unknown,
 
-        /*! \brief Vector data in PBF format */
-        Vector,
+      /*! \brief Vector data in PBF format */
+      Vector,
 
-        /*! \brief Raster data in JPG, PNG or WEBP format */
-        Raster,
+      /*! \brief Raster data in JPG, PNG or WEBP format */
+      Raster,
     };
+
+    /*! \brief Standard constructor
+     *
+     * Constructs an object from an MBTILES file. The file is supposed to exist
+     * and remain intact throughout the existence of this class instance.
+     *
+     * @param fileName Name of the MBTILES file
+     *
+     * @param parent The standard QObject parent pointer
+     */
+    MBTILES(const QString &fileName, QObject *parent = nullptr);
+
+    /*! \brief Standard destructor
+     *
+     * Constructs an object from an MBTILES file.
+     */
+    ~MBTILES() override;
 
     /*! \brief Attribution of MBTILES file
      *
-     *  @param fileName Name of the file
-     *
-     *  @returns A human-readable HTML-String with attribution, or an empty string on error.
+     *  @returns A human-readable HTML-String with attribution, or an empty
+     *  string on error.
      */
-    [[nodiscard]] static QString attribution(const QString& fileName);
+    [[nodiscard]] QString attribution();
 
     /*! \brief Determine type of data contain in an MBTILES file
      *
-     *  @param fileName Name of the file
-     *
      *  @returns Type of data, or Unknown on error.
      */
-    [[nodiscard]] static GeoMaps::MBTILES::Format format(const QString& fileName);
+    [[nodiscard]] GeoMaps::MBTILES::Format format();
 
     /*! \brief Information about an MBTILES file
      *
-     *  @param fileName Name of the file
-     *
-     *  @returns A human-readable HTML-String with information about the file, or an empty string on error.
+     *  @returns A human-readable HTML-String with information about the MBTILES
+     *  file, or an empty string on error.
      */
-    [[nodiscard]] static QString info(const QString& fileName);
+    [[nodiscard]] QString info();
 
-};
+    /*! \brief Retrieve tile from an MBTILES file
+     *
+     *  @param zoom Zoom level of the tile
+     *
+     *  @param x x-Coordinate of the tile
+     *
+     *  @param y y-Coordinate of the tile
+     *
+     *  @returns A QByteArray with the tile data, or an empty QByteArray on
+     *  error.
+     */
+    [[nodiscard]] QByteArray tile(int zoom, int x, int y);
+
+    /*! \brief Retrieve metadata of the MBTILES file
+     *
+     *  MBTILES files contain metadata, in the form of a list of key/value
+     *  pairs.
+     *
+     *  @returns A QMap containing the metadata, or an empty QMap on error.
+     */
+    [[nodiscard]] QMap<QString, QString> metaData() const
+    {
+      return m_metadata;
+    }
+
+    /*! \brief Retrieve name of the MBTILES file
+     *
+     *  @returns Filename, as given in the constructor
+     */
+    [[nodiscard]] QString fileName() const
+    {
+      return m_fileName;
+    }
+
+  private:
+    //
+    Q_DISABLE_COPY_MOVE(MBTILES)
+
+    // Name of the MBTILES file
+    QString m_fileName;
+
+    // Name of the data base connection. This name is unique to each instance of
+    // this class, and should therefore not be copied.
+    QString m_databaseConnectionName;
+    QMap<QString, QString> m_metadata;
+  };
 
 }

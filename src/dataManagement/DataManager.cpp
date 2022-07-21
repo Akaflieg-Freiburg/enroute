@@ -148,7 +148,8 @@ auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> Q
     // Extract infomation from MBTILES
     if (fileName.endsWith(u".mbtiles") || fileName.endsWith(u".terrain"))
     {
-        result += GeoMaps::MBTILES::info(fileName);
+        GeoMaps::MBTILES mbtiles(fileName);
+        result += mbtiles.info();
     }
 
     // Extract infomation from text file - this is simply the first line
@@ -169,11 +170,14 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
 
     auto path = m_dataDirectory+"/Unsupported";
     auto newFileName = path + "/" + newName;
-    switch(GeoMaps::MBTILES::format(fileName))
+
+    GeoMaps::MBTILES mbtiles(fileName);
+    switch(mbtiles.format())
     {
     case GeoMaps::MBTILES::Raster:
         newFileName += QLatin1String(".raster");
-        foreach(auto downloadable, m_baseMapsVector.downloadablesWithFile()) {
+        foreach(auto downloadable, m_baseMapsVector.downloadablesWithFile())
+        {
             if (!downloadable.isNull())
             {
                 downloadable->deleteFile();
@@ -182,7 +186,8 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
         break;
     case GeoMaps::MBTILES::Vector:
         newFileName += QLatin1String(".mbtiles");
-        foreach(auto downloadable, m_baseMapsRaster.downloadablesWithFile()) {
+        foreach(auto downloadable, m_baseMapsRaster.downloadablesWithFile())
+        {
             if (!downloadable.isNull())
             {
                 downloadable->deleteFile();

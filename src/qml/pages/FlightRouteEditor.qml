@@ -119,7 +119,7 @@ Page {
                             // Mention waypoints, in order to update
                             global.waypointLibrary().waypoints
 
-                            return !global.waypointLibrary().hasNearbyEntry(waypoint)
+                            return (waypoint.category === "WP") && !global.waypointLibrary().hasNearbyEntry(waypoint)
                         }
 
                         onTriggered: {
@@ -216,7 +216,7 @@ Page {
                 cascade: true
 
                 MenuItem {
-                    text: qsTr("View Library …")
+                    text: qsTr("View Library…")
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
                         highlighted = false
@@ -225,7 +225,7 @@ Page {
                 }
 
                 MenuItem {
-                    text: qsTr("Save to library …")
+                    text: qsTr("Save to library…")
                     enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
                     onTriggered: {
                         global.mobileAdaptor().vibrateBrief()
@@ -239,7 +239,7 @@ Page {
                 MenuSeparator { }
 
                 MenuItem {
-                    text: qsTr("Import …")
+                    text: qsTr("Import…")
                     enabled: Qt.platform.os !== "android"
                     height: Qt.platform.os !== "android" ? undefined : 0
 
@@ -252,7 +252,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: Qt.platform.os === "android" ? qsTr("Share …") : qsTr("Export …")
+                    title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
                     enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
@@ -305,7 +305,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: qsTr("Open in other app …")
+                    title: qsTr("Open in Other App…")
                     enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
@@ -692,7 +692,7 @@ Page {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Clear route?")
+        title: qsTr("Clear Route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
@@ -741,7 +741,7 @@ Page {
         anchors.centerIn: parent
         parent: Overlay.overlay
 
-        title: qsTr("Error exporting data…")
+        title: qsTr("Error Exporting Data…")
         width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
 
         Label {

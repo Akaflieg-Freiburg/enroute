@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtConcurrent>
-#include <QGeoCoordinate>
+#include <QtConcurrent/QtConcurrentRun>
+#include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -78,9 +78,11 @@ auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
 
     foreach(auto baseMap, GlobalObject::dataManager()->baseMaps()->downloadablesWithFile())
     {
+        GeoMaps::MBTILES mbtiles(baseMap->fileName());
+
         auto name = baseMap->fileName().split(QStringLiteral("aviation_maps/")).last();
         result += ("<h4>"+tr("Basemap")+ " %1</h4>").arg(name);
-        result += MBTILES::attribution(baseMap->fileName());
+        result += mbtiles.attribution();
     }
 
     return result;
@@ -171,10 +173,80 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     }
 
     if (position.distanceTo(result.coordinate()) > position.distanceTo(distPosition)) {
+        position.setAltitude( terrainElevationAMSL(position).toM() );
         return {position};
     }
 
     return result;
+}
+
+auto GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate) -> Units::Distance
+{
+    int zoomMin = 6;
+    int zoomMax = 10;
+
+    for(int zoom = zoomMax; zoom >= zoomMin; zoom--)
+    {
+        auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
+        auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
+        auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
+        auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
+
+        qint64 keyA = qFloor(tilex)&0xFFFF;
+        qint64 keyB = qFloor(tiley)&0xFFFF;
+        qint64 key = (keyA<<32) + (keyB<<16) + zoom;
+
+        if (terrainTileCache.contains(key))
+        {
+            auto* tileImg = terrainTileCache.object(key);
+            if (tileImg->isNull())
+            {
+                continue;
+            }
+            auto pix = tileImg->pixel(intraTileX, intraTileY);
+            double elevation = (qRed(pix)*256.0 + qGreen(pix) + qBlue(pix)/256.0) - 32768.0;
+            return Units::Distance::fromM(elevation);
+        }
+    }
+
+
+    foreach(auto mbtPtr, m_terrainMapTiles)
+    {
+        if (mbtPtr.isNull())
+        {
+            continue;
+        }
+
+        for(int zoom = zoomMax; zoom >= zoomMin; zoom--)
+        {
+            auto tilex = (coordinate.longitude()+180.0)/360.0 * (1<<zoom);
+            auto tiley = (1.0 - asinh(tan(qDegreesToRadians(coordinate.latitude())))/M_PI)/2.0 * (1<<zoom);
+            auto intraTileX = qRound(255.0*(tilex-floor(tilex)));
+            auto intraTileY = qRound(255.0*(tiley-floor(tiley)));
+
+            qint64 keyA = qFloor(tilex)&0xFFFF;
+            qint64 keyB = qFloor(tiley)&0xFFFF;
+            qint64 key = (keyA<<32) + (keyB<<16) + zoom;
+
+            auto tileData = mbtPtr->tile(zoom, qFloor(tilex), qFloor(tiley));
+            if (!tileData.isEmpty())
+            {
+                auto* tileImg = new QImage();
+                tileImg->loadFromData(tileData);
+                if (tileImg->isNull())
+                {
+                    delete tileImg;
+                    continue;
+                }
+                terrainTileCache.insert(key,tileImg);
+
+                auto pix = tileImg->pixel(intraTileX, intraTileY);
+                double elevation = (qRed(pix)*256.0 + qGreen(pix) + qBlue(pix)/256.0) - 32768.0;
+                return Units::Distance::fromM(elevation);
+            }
+        }
+    }
+    return {};
 }
 
 auto GeoMaps::GeoMapProvider::emptyGeoJSON() -> QByteArray
@@ -325,6 +397,29 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 
 void GeoMaps::GeoMapProvider::onMBTILESChanged()
 {
+    terrainTileCache.clear();
+
+    qDeleteAll(m_baseMapRasterTiles);
+    m_baseMapRasterTiles.clear();
+    foreach(auto downloadable, GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile())
+    {
+        m_baseMapRasterTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+    }
+    qDeleteAll(m_baseMapVectorTiles);
+    m_baseMapVectorTiles.clear();
+    foreach(auto downloadable, GlobalObject::dataManager()->baseMapsVector()->downloadablesWithFile())
+    {
+        m_baseMapVectorTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+    }
+    emit baseMapTilesChanged();
+
+    qDeleteAll(m_terrainMapTiles);
+    m_terrainMapTiles.clear();
+    foreach(auto downloadable, GlobalObject::dataManager()->terrainMaps()->downloadablesWithFile())
+    {
+        m_terrainMapTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+    }
+    emit terrainMapTilesChanged();
 
     // Delete old style file, stop serving tiles
     delete _styleFile;
@@ -336,16 +431,15 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     QFile file;
     if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
-        bool hasRaster = GlobalObject::dataManager()->baseMapsRaster()->hasFile();
         // Serve new tile set under new name
-        if (hasRaster)
+        if (!m_baseMapRasterTiles.isEmpty())
         {
-            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile(), _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(m_baseMapRasterTiles, _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
         }
         else
         {
-            _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->baseMaps()->downloadablesWithFile(), _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(m_baseMapVectorTiles, _currentBaseMapPath);
             file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
     }
@@ -353,7 +447,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     {
         file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
-    _tileServer.addMbtilesFileSet(GlobalObject::dataManager()->terrainMaps()->downloadablesWithFile(), _currentTerrainMapPath);
+    _tileServer.addMbtilesFileSet(m_terrainMapTiles, _currentTerrainMapPath);
 
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();

@@ -2,29 +2,31 @@
  *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  * it
- *   under the terms of the GNU General Public License as published by  * the
- *   Free Software Foundation; either version 3 of the License, or     * (at
- *   your option) any later version.                                   *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
  *                                                                         *
- *   This program is distributed in the hope that it will be useful,       * but
- *   WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         * GNU
- *   General Public License for more details.                          *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       * 59
- *   Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #pragma once
 
+#include <QCache>
 #include <QFuture>
 #include <QTimer>
 #include <QTemporaryFile>
 
 #include "dataManagement/DataManager.h"
+#include "geomaps/MBTILES.h"
 #include "Librarian.h"
 #include "Airspace.h"
 #include "Settings.h"
@@ -34,234 +36,296 @@
 namespace GeoMaps
 {
 
-    /*! \brief Provides geographic information
+  /*! \brief Provides geographic information
+   *
+   * This class works closely with dataManagement/DataManager.  It takes the
+   * data provided by the DataManager, and serves it for use in MapBoxGL powered
+   * maps. Additional data is served via the API.
+   *
+   * - The class ensures that the currently available base maps are served via
+   *   the embedded TileServer.
+   *
+   * - The class generates a mapbox style file whose source element points to
+   *   the URL of the embedded TileServer. The style file automatically adjusts
+   *   when raster maps or vector maps are installed.
+   *
+   * - All available aviation data is provided in GeoJSON.
+   *
+   * - Waypoints and airspaces are accessible via the API.
+   *
+   */
+
+  class GeoMapProvider : public GlobalObject
+  {
+    Q_OBJECT
+
+  public:
+    /*! \brief Creates a new GeoMap provider
      *
-     * This class works closely with dataManagement/DataManager.  It takes the
-     * data provided by the DataManager, and serves it for use in MapBoxGL
-     * powered maps. Additional data is served via the API.
+     * This constructor creates a new GeoMapProvider instance.
      *
-     * - The class ensures that the currently available base maps are served via
-     *   the embedded TileServer.
-     *
-     * - The class generates a mapbox style file whose source element points to
-     *   the URL of the embedded TileServer. The style file automatically
-     *   adjusts when raster maps or vector maps are installed.
-     *
-     * - All available aviation data is provided in GeoJSON.
-     *
-     * - Waypoints and airspaces are accessible via the API.
-     *
+     * @param parent The standard QObject parent
      */
+    explicit GeoMapProvider(QObject *parent = nullptr);
 
-    class GeoMapProvider : public GlobalObject
+    // deferred initialization
+    void deferredInitialization() override;
+
+    /*! \brief Destructor */
+    ~GeoMapProvider() override = default;
+
+    //
+    // Properties
+    //
+
+    /*! \brief List of base map MBTILES */
+    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
+
+    /*! \brief List of base map MBTILES */
+    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
+
+    /*! \brief Copyright notice for the map
+     *
+     * This property holds the copyright notice for the installed aviation and
+     * base maps as a HTML string, ready to be shown to the user.
+     */
+    Q_PROPERTY(QString copyrightNotice READ copyrightNotice CONSTANT)
+
+    /*! \brief Union of all aviation maps in GeoJSON format
+     *
+     * This property holds all installed aviation maps in GeoJSON format,
+     * combined into one GeoJSON document.
+     */
+    Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
+
+    /*! \brief URL where a style file for the base map can be retrieved
+     *
+     * This property holds a URL where a mapbox style file for the base map can
+     * be retrieved. The style file is adjusted, so that its source element
+     * points to the local TileServer URL where the base map is served. Whenever
+     * the base map changes (e.g. because new maps have been downloaded or
+     * removed), the style file is deleted, a new style file is generated and a
+     * notification signal is emitted.
+     */
+    Q_PROPERTY(QString styleFileURL READ styleFileURL NOTIFY styleFileURLChanged)
+
+    /*! \brief List of terrain map MBTILES */
+    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property baseMapRasterTiles
+     */
+    QVector<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
     {
-        Q_OBJECT
+        return m_baseMapRasterTiles;
+    }
 
-    public:
-        /*! \brief Creates a new GeoMap provider
-         *
-         * This constructor creates a new GeoMapProvider instance.
-         *
-         * @param parent The standard QObject parent
-         */
-        explicit GeoMapProvider(QObject *parent = nullptr);
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property baseMapVectorTiles
+     */
+    QVector<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
+    {
+        return m_baseMapVectorTiles;
+    }
 
-        // deferred initialization
-        void deferredInitialization() override;
 
-        /*! \brief Destructor */
-        ~GeoMapProvider() override = default;
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property copyrightNotice
+     */
+    static auto copyrightNotice() -> QString;
 
-        //
-        // Properties
-        //
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property geoJSON
+     */
+    auto geoJSON() -> QByteArray;
 
-        /*! \brief Copyright notice for the map
-         *
-         * This property holds the copyright notice for the installed aviation
-         * and base maps as a HTML string, ready to be shown to the user.
-         */
-        Q_PROPERTY(QString copyrightNotice READ copyrightNotice CONSTANT)
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property styleFileURL
+     */
+    auto styleFileURL() const -> QString;
 
-        /*! \brief Union of all aviation maps in GeoJSON format
-         *
-         * This property holds all installed aviation maps in GeoJSON format,
-         * combined into one GeoJSON document.
-         */
-        Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property terrainMapTiles
+     */
+    QVector<QPointer<GeoMaps::MBTILES>> terrainMapTiles() const
+    {
+        return m_terrainMapTiles;
+    }
 
-        /*! \brief URL where a style file for the base map can be retrieved
-         *
-         * This property holds a URL where a mapbox style file for the base map
-         * can be retrieved. The style file is adjusted, so that its source
-         * element points to the local TileServer URL where the base map is
-         * served. Whenever the base map changes (e.g. because new maps have
-         * been downloaded or removed), the style file is deleted, a new style
-         * file is generated and a notification signal is emitted.
-         */
-        Q_PROPERTY(QString styleFileURL READ styleFileURL NOTIFY styleFileURLChanged)
+    //
+    // Methods
+    //
 
-        //
-        // Getter Methods
-        //
+    /*! \brief List of airspaces at a given location
+     *
+     * @param position Position over which airspaces are searched for
+     *
+     * @returns all airspaces that exist over a given position. For better
+     * cooperation with QML the list returns contains elements of type QObject*,
+     * and not Airspace*.
+     */
+    Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
 
-        /*! \brief Getter function for the property with the same name
-         *
-         * @returns Property copyrightNotice
-         */
-        static auto copyrightNotice() -> QString;
+    /*! \brief Find closest waypoint to a given position
+     *
+     * @param position Position near which waypoints are searched for
+     *
+     * @param distPosition Reference position
+     *
+     * @returns The Waypoint that is closest to the given position, provided
+     * that the distance is not bigger than that to distPosition. If no
+     * sufficiently close waypoint is found, a generic Waypoint with the
+     * appropriate coordinate is returned. The method checks waypoints from the
+     * map, and waypoints from the library.
+     */
+    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate &distPosition);
 
-        /*! \brief Getter function for the property with the same name
-         *
-         * @returns Property geoJSON
-         */
-        auto geoJSON() -> QByteArray;
+    /*! \brief Create invalid waypoint
+     *
+     *  This is a helper method for QML, where creation of waypoint objects
+     *  is difficult.
+     *
+     *  @returns An invalid waypoint
+     */
+    Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
+    {
+      return {};
+    }
 
-        /*! \brief Getter function for the property with the same name
-         *
-         * @returns Property styleFileURL
-         */
-        auto styleFileURL() const -> QString;
+    /*! \brief Elevation of terrain at a given coordinate, above sea level
+     *
+     *  @param coordinate Coordinate
+     *
+     *  @return Elevation of the terrain at coordinate over MSP, or
+     *  NaN if the terrain elevation is unknown
+     */
+    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
 
-        //
-        // Methods
-        //
+    /*! \brief Create empty GeoJSON document
+     *
+     *  @returns Empty, but valid GeoJSON document
+     */
+    Q_INVOKABLE static QByteArray emptyGeoJSON();
 
-        /*! \brief List of airspaces at a given location
-         *
-         * @param position Position over which airspaces are searched for
-         *
-         * @returns all airspaces that exist over a given position. For better
-         * cooperation with QML the list returns contains elements of type
-         * QObject*, and not Airspace*.
-         */
-        Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
+    /*! \brief Waypoints containing a given substring
+     *
+     * @param filter List of words
+     *
+     * @returns all those waypoints whose fullName or codeName contains each of
+     * the words in filter. The list contains both waypoints from the map, and
+     * waypoints from the library and is sorted alphabetically.
+     */
+    Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString &filter);
 
-        /*! \brief Find closest waypoint to a given position
-         *
-         * @param position Position near which waypoints are searched for
-         *
-         * @param distPosition Reference position
-         *
-         * @returns The Waypoint that is closest to the given position, provided
-         * that the distance is not bigger than that to distPosition. If no
-         * sufficiently close waypoint is found, a generic Waypoint with the
-         * appropriate coordinate is returned. The method checks waypoints from
-         * the map, and waypoints from the library.
-         */
-        Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate &distPosition);
+    /*! Find a waypoint by its ICAO code
+     *
+     * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
+     *
+     * @returns a nullpointer if no waypoint has been found, or else a pointer
+     * to the waypoint. For better cooperation with QML is not a pointer of type
+     * Waypoint, but ratherof type QObject. The object is owned by this class
+     * and must not be deleted.
+     */
+    auto findByID(const QString &id) -> Waypoint;
 
-        /*! \brief Create invalid waypoint
-         *
-         *  This is a helper method for QML, where creation of waypoint objects
-         *  is difficult.
-         *
-         *  @returns An invalid waypoint
-         */
-        Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
-        {
-            return {};
-        }
+    /*! List of nearby waypoints
+     *
+     * @param position Position near which waypoints are searched for
+     * @param type Type of waypoints (AD, NAV, WP)
+     *
+     * @returns a list of the 20 waypoints of requested type that are closest to
+     * the given position; the list may however be empty or contain fewer than
+     * 20 items.  For better cooperation with QML the list does not contain
+     * elements of type Waypoint*, but elements of type QObject*
+     */
+    Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
 
-        /*! \brief Create empty GeoJSON document
-         *
-         *  @returns Empty, but valid GeoJSON document
-         */
-        Q_INVOKABLE static QByteArray emptyGeoJSON();
+    /*! \brief Waypoints
+     *
+     * @returns a list of all waypoints known to this GeoMapProvider (that is,
+     * the union of all waypoints in any of the installed maps)
+     */
+    auto waypoints() -> QVector<Waypoint>;
 
-        /*! \brief Waypoints containing a given substring
-         *
-         * @param filter List of words
-         *
-         * @returns all those waypoints whose fullName or codeName contains each
-         * of the words in filter. The list contains both waypoints from the
-         * map, and waypoints from the library and is sorted alphabetically.
-         */
-        Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString &filter);
+  signals:
+    /*! \brief Notification signal for the property with the same name */
+    void baseMapTilesChanged();
 
-        /*! Find a waypoint by its ICAO code
-         *
-         * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
-         *
-         * @returns a nullpointer if no waypoint has been found, or else a
-         * pointer to the waypoint. For better cooperation with QML is not a
-         * pointer of type Waypoint, but ratherof type QObject. The object is
-         * owned by this class and must not be deleted.
-         */
-        auto findByID(const QString &id) -> Waypoint;
+    /*! \brief Notification signal for the property with the same name */
+    void geoJSONChanged();
 
-        /*! List of nearby waypoints
-         *
-         * @param position Position near which waypoints are searched for
-         * @param type Type of waypoints (AD, NAV, WP)
-         *
-         * @returns a list of the 20 waypoints of requested type that are
-         * closest to the given position; the list may however be empty or
-         * contain fewer than 20 items.  For better cooperation with QML the
-         * list does not contain elements of type Waypoint*, but elements of
-         * type QObject*
-         */
-        Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
+    /*! \brief Notification signal for the property with the same name */
+    void styleFileURLChanged();
 
-        /*! \brief Waypoints
-         *
-         * @returns a list of all waypoints known to this GeoMapProvider (that
-         * is, the union of all waypoints in any of the installed maps)
-         */
-        auto waypoints() -> QVector<Waypoint>;
+    /*! \brief Notification signal for the property with the same name */
+    void terrainMapTilesChanged();
 
-    signals:
-        /*! \brief Notification signal for the property with the same name */
-        void geoJSONChanged();
+  private:
+    Q_DISABLE_COPY_MOVE(GeoMapProvider)
 
-        /*! \brief Notification signal for the property with the same name */
-        void styleFileURLChanged();
+    // This slot is called every time the the set of aviation maps qchanges. It
+    // fills the aviation data cache.
+    void onAviationMapsChanged();
 
-    private:
-        Q_DISABLE_COPY_MOVE(GeoMapProvider)
+    // This slot is called every time the the set of MBTile files changes. It
+    // sets up the tile server to and generates a new style file.
+    void onMBTILESChanged();
 
-        // This slot is called every time the the set of aviation maps qchanges.
-        // It fills the aviation data cache.
-        void onAviationMapsChanged();
+    // Interal function that does most of the work for aviationMapsChanged()
+    // emits geoJSONChanged() when done. This function is meant to be run in a
+    // separate thread.
+    void fillAviationDataCache(const QStringList &JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors);
 
-        // This slot is called every time the the set of MBTile files changes.
-        // It sets up the tile server to and generates a new style file.
-        void onMBTILESChanged();
+    // Caches used to speed up the method simplifySpecialChars
+    QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};
+    QHash<QString, QString> simplifySpecialChars_cache;
 
-        // Interal function that does most of the work for aviationMapsChanged()
-        // emits geoJSONChanged() when done. This function is meant to be run in
-        // a separate thread.
-        void fillAviationDataCache(const QStringList &JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors);
+    // This is the path under which map tiles are available on the _tileServer.
+    // This is set to a random number that changes every time the set of MBTile
+    // files changes
+    QString _currentBaseMapPath;
+    QString _currentTerrainMapPath;
 
-        // Caches used to speed up the method simplifySpecialChars
-        QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};
-        QHash<QString, QString> simplifySpecialChars_cache;
+    // Tile Server
+    TileServer _tileServer;
 
-        // This is the path under which map tiles are available on the
-        // _tileServer. This is set to a random number that changes every time
-        // the set of MBTile files changes
-        QString _currentBaseMapPath;
-        QString _currentTerrainMapPath;
+    // Temporary file that holds the current style file
+    QPointer<QTemporaryFile> _styleFile;
 
-        // Tile Server
-        TileServer _tileServer;
+    //
+    // Aviation Data Cache
+    //
+    QFuture<void> _aviationDataCacheFuture; // Future; indicates if fillAviationDataCache() is currently running
+    QTimer _aviationDataCacheTimer;         // Timer used to start another run of fillAviationDataCache()
 
-        // Temporary file that holds the current style file
-        QPointer<QTemporaryFile> _styleFile;
+    //
+    // MBTILES
+    //
+    QVector<QPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
+    QVector<QPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
+    QVector<QPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
 
-        //
-        // Aviation Data Cache
-        //
-        QFuture<void> _aviationDataCacheFuture; // Future; indicates if fillAviationDataCache() is currently running
-        QTimer _aviationDataCacheTimer;         // Timer used to start another run of fillAviationDataCache()
+    // The data in this group is accessed by several threads. The following
+    // classes (whose names ends in an underscore) are therefore protected by
+    // this mutex.
+    QMutex _aviationDataMutex;
+    QByteArray _combinedGeoJSON_;  // Cache: GeoJSON
+    QVector<Waypoint> _waypoints_; // Cache: Waypoints
+    QVector<Airspace> _airspaces_; // Cache: Airspaces
 
-        // The data in this group is accessed by several threads. The following
-        // classes (whose names ends in an underscore) are therefore protected
-        // by this mutex.
-        QMutex _aviationDataMutex;
-        QByteArray _combinedGeoJSON_;  // Cache: GeoJSON
-        QVector<Waypoint> _waypoints_; // Cache: Waypoints
-        QVector<Airspace> _airspaces_; // Cache: Airspaces
-    };
+    // TerrainImageCache
+    QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB
+  };
 
 };

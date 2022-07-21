@@ -24,94 +24,111 @@
 
 #include "geomaps/MBTILES.h"
 
-auto GeoMaps::MBTILES::attribution(const QString& fileName) -> QString
+GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
+    : QObject(parent), m_fileName(fileName)
 {
-    QString result;
+    m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg((quintptr)this);
+    auto m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);
+    m_dataBase.setDatabaseName(fileName);
+    m_dataBase.open();
 
-    auto databaseConnectionName = "GeoMaps::MBTILES::format " + fileName;
-    { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
-        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
-        testDB.setDatabaseName(fileName);
-
-        if (testDB.open()) {
-            QSqlQuery query(testDB);
-            if (query.exec(QStringLiteral("select name, value from metadata where name='attribution';"))) {
-                if (query.first()) {
-                    result = query.value(1).toString();
-                }
-            }
-            testDB.close();
-        }
-    }
-    QSqlDatabase::removeDatabase(databaseConnectionName);
-
-    return result;
-}
-
-auto GeoMaps::MBTILES::format(const QString& fileName) -> GeoMaps::MBTILES::Format
-{
-    GeoMaps::MBTILES::Format result = Unknown;
-
-    auto databaseConnectionName = "GeoMaps::MBTILES::format " + fileName;
-    { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
-        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
-        testDB.setDatabaseName(fileName);
-
-        if (testDB.open()) {
-            QSqlQuery query(testDB);
-            if (query.exec(QStringLiteral("select name, value from metadata where name='format';"))) {
-                if (query.first()) {
-                    auto format = query.value(1).toString();
-                    if (format == QLatin1String("pbf")) {
-                        result = Vector;
-                    }
-                    if ((format == QLatin1String("jpg")) || (format == QLatin1String("png")) || (format == QLatin1String("webp"))) {
-                        result = Raster;
-                    }
-                }
-            }
-            testDB.close();
-        }
-    }
-    QSqlDatabase::removeDatabase(databaseConnectionName);
-
-    return result;
-}
-
-
-auto GeoMaps::MBTILES::info(const QString& fileName) -> QString
-{
-    QString result;
-
-    auto databaseConnectionName = "GeoMaps::MBTILES::info " + fileName;
-    { // Parenthesis necessary, because testDB needs to be deconstructed before QSqlDatabase::removeDatabase is called
-        auto testDB = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), databaseConnectionName);
-        testDB.setDatabaseName(fileName);
-        if (testDB.open())
+    QSqlQuery query(m_dataBase);
+    if (query.exec(QStringLiteral("select name, value from metadata;")))
+    {
+        while(query.next())
         {
-            // Read metadata from database
-            QSqlQuery query(testDB);
-            QString intResult;
-            if (query.exec(QStringLiteral("select name, value from metadata;")))
-            {
-                while (query.next())
-                {
-                    QString key = query.value(0).toString();
-                    if (key == u"json")
-                    {
-                        continue;
-                    }
-                    intResult += QStringLiteral("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
-                            .arg(key, query.value(1).toString());
-                }
-            }
-            if (!intResult.isEmpty())
-            {
-                result += QStringLiteral("<h4>%1</h4><table>%2</table>").arg(QObject::tr("Internal Map Data", "GeoMaps::MBTILES"), intResult);
-            }
-            testDB.close();
+            QString key = query.value(0).toString();
+            QString value = query.value(1).toString();
+            m_metadata.insert(key, value);
         }
     }
-    QSqlDatabase::removeDatabase(databaseConnectionName);
+}
+
+GeoMaps::MBTILES::~MBTILES()
+{
+    QSqlDatabase::database(m_databaseConnectionName).close();
+    QSqlDatabase::removeDatabase(m_databaseConnectionName);
+}
+
+auto GeoMaps::MBTILES::attribution() -> QString
+{
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    QSqlQuery query(m_dataBase);
+    if (query.exec(QStringLiteral("select name, value from metadata where name='attribution';")))
+    {
+        if (query.first())
+        {
+            return query.value(1).toString();
+        }
+    }
+    return {};
+}
+
+auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
+{
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    QSqlQuery query(m_dataBase);
+    if (query.exec(QStringLiteral("select name, value from metadata where name='format';")))
+    {
+        if (query.first())
+        {
+            auto format = query.value(1).toString();
+            if (format == QLatin1String("pbf"))
+            {
+                return Vector;
+            }
+            if ((format == QLatin1String("jpg")) || (format == QLatin1String("png")) || (format == QLatin1String("webp")))
+            {
+                return Raster;
+            }
+        }
+    }
+    return Unknown;
+}
+
+auto GeoMaps::MBTILES::info() -> QString
+{
+    QString result;
+
+    // Read metadata from database
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    QSqlQuery query(m_dataBase);
+    QString intResult;
+    if (query.exec(QStringLiteral("select name, value from metadata;")))
+    {
+        while (query.next())
+        {
+            QString key = query.value(0).toString();
+            if (key == u"json")
+            {
+                continue;
+            }
+            intResult += QStringLiteral("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
+                    .arg(key, query.value(1).toString());
+        }
+    }
+    if (!intResult.isEmpty())
+    {
+        result += QStringLiteral("<h4>%1</h4><table>%2</table>").arg(QObject::tr("Internal Map Data", "GeoMaps::MBTILES"), intResult);
+    }
+
     return result;
+}
+
+
+auto GeoMaps::MBTILES::tile(int zoom, int x, int y) -> QByteArray
+{
+    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    QSqlQuery query(m_dataBase);
+    auto yflipped = (1<<zoom)-1-y;
+    auto queryString = QStringLiteral("select tile_data from tiles where zoom_level=%1 and tile_row=%3 and tile_column=%2;").arg(zoom).arg(x).arg(yflipped);
+    if (query.exec(queryString))
+    {
+        if (query.first())
+        {
+            return query.value(0).toByteArray();
+        }
+    }
+
+    return {};
 }

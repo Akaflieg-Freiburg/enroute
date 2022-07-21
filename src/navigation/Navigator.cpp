@@ -23,6 +23,7 @@
 
 #include "GlobalObject.h"
 #include "Settings.h"
+#include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
 
@@ -151,7 +152,7 @@ void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo&
     }
 
     auto altLimit = GlobalObject::settings()->airspaceAltitudeLimit();
-    auto trueAltitude = info.trueAltitude();
+    auto trueAltitude = info.trueAltitudeAMSL();
     if (altLimit.isFinite() &&
             trueAltitude.isFinite() &&
             (trueAltitude + Units::Distance::fromFT(1000) > altLimit)) {

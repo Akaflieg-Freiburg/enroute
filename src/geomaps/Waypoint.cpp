@@ -46,6 +46,9 @@ GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate)
     m_properties.insert(QStringLiteral("CAT"), QStringLiteral("WP"));
     m_properties.insert(QStringLiteral("NAM"), QStringLiteral("Waypoint"));
     m_properties.insert(QStringLiteral("TYP"), QStringLiteral("WP"));
+    if (coordinate.type() == QGeoCoordinate::Coordinate3D) {
+        m_properties.insert(QStringLiteral("ELE"), coordinate.altitude() );
+    }
 
     // Set cached property
     m_isValid = computeIsValid();

@@ -275,7 +275,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>The app can now show a shaded terrain relief. To download terrain data for your region, open the main menu and go to 'Library/Maps and Data'.</p>") +
+        return tr("<p>The altimeter can now show your altitude above ground level. To try this new feature, open the main menu and go to 'Settings'. Make sure that terrain data is installed.</p>") +
+                tr("<p>The app can now show a shaded terrain relief. To download terrain data for your region, open the main menu and go to 'Library/Maps and Data'.</p>") +
                 tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

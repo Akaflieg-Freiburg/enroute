@@ -133,6 +133,9 @@ public:
     /*! \brief Night mode */
     Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
 
+    /*! \brief Show Altitude AGL */
+    Q_PROPERTY(bool showAltitudeAGL READ showAltitudeAGL WRITE setShowAltitudeAGL NOTIFY showAltitudeAGLChanged)
+
     /*! \brief Use traffic data receiver for positioning */
     Q_PROPERTY(bool positioningByTrafficDataReceiver READ positioningByTrafficDataReceiver WRITE setPositioningByTrafficDataReceiver NOTIFY positioningByTrafficDataReceiverChanged)
 
@@ -207,6 +210,12 @@ public:
      */
     [[nodiscard]] auto positioningByTrafficDataReceiver() const -> bool { return settings.value(QStringLiteral("positioningByTrafficDataReceiver"), false).toBool(); }
 
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property positioningByTrafficDataReceiver
+     */
+    [[nodiscard]] auto showAltitudeAGL() const -> bool { return settings.value(QStringLiteral("showAltitudeAGL"), false).toBool(); }
+
 
     //
     // Setter Methods
@@ -276,6 +285,12 @@ public:
      */
     void setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver);
 
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newPositioningByTrafficDataReceiver Property positioningByTrafficDataReceiver
+     */
+    void setShowAltitudeAGL(bool newShowAltitudeAGL);
+
 
     //
     // Constants
@@ -317,6 +332,9 @@ signals:
 
     /*! \brief Notifier signal */
     void positioningByTrafficDataReceiverChanged();
+
+    /*! \brief Notifier signal */
+    void showAltitudeAGLChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(Settings)

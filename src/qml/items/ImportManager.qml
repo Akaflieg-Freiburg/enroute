@@ -294,7 +294,7 @@ Item {
         x: (parent.width-width)/2.0
         y: (parent.height-height)/2.0
 
-        title: qsTr("Import waypoint library")
+        title: qsTr("Import Waypoint Library")
 
         ColumnLayout {
             anchors.fill: parent
@@ -396,7 +396,7 @@ Item {
         standardButtons: Dialog.Cancel
         modal: true
 
-        title: qsTr("Data import error")
+        title: qsTr("Data Import Error")
 
         Label {
             id: errLbl

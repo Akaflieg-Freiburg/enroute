@@ -36,6 +36,7 @@ QStringList GeoMaps::CUP::parseCSV(const QString& string)
         Quote
     } state = Normal;
     QStringList fields;
+    fields.reserve(10);
     QString value;
 
     for (int i = 0; i < string.size(); i++)

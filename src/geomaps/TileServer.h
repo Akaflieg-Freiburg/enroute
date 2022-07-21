@@ -21,6 +21,7 @@
 #pragma once
 
 #include "dataManagement/Downloadable.h"
+#include "geomaps/MBTILES.h"
 #include <qhttpengine/filesystemhandler.h>
 #include <qhttpengine/server.h>
 
@@ -108,7 +109,7 @@ public slots:
      
     @param baseName The path under which the tiles willconst be available.
   */
-  void addMbtilesFileSet(const QVector<QPointer<DataManagement::Downloadable>>& baseMapsWithFiles, const QString& baseName);
+  void addMbtilesFileSet(const QVector<QPointer<GeoMaps::MBTILES>>& baseMapsWithFiles, const QString& baseName);
 
   /*! \brief Removes a set of tile files
    
@@ -123,7 +124,7 @@ private:
   
   QPointer<QHttpEngine::FilesystemHandler> currentFileSystemHandler;
   
-  QMap<QString,QVector<QPointer<DataManagement::Downloadable>>> mbtileFileNameSets;
+  QMap<QString,QVector<QPointer<GeoMaps::MBTILES>>> mbtileFileNameSets;
   
   QUrl _baseUrl;
 };

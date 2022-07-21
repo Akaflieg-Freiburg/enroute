@@ -62,7 +62,12 @@ Rectangle {
                     // Mention
                     global.navigator().aircraft.verticalDistanceUnit
 
-                    const talt= global.positionProvider().positionInfo.trueAltitude();
+                    if (global.settings().showAltitudeAGL) {
+                        const talt = global.positionProvider().positionInfo.trueAltitudeAGL();
+                        return global.navigator().aircraft.verticalDistanceToString(talt)
+                    }
+
+                    const talt = global.positionProvider().positionInfo.trueAltitudeAMSL();
                     return global.navigator().aircraft.verticalDistanceToString(talt)
                 }
                 font.weight: Font.Bold
@@ -75,7 +80,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 color: "white"
-                text: "T.ALT"
+                text: global.settings().showAltitudeAGL ? "T.ALT AGL" : "T.ALT AMSL"
                 font.pixelSize: view.font.pixelSize*0.9
             }
         }

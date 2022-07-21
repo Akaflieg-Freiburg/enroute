@@ -50,7 +50,7 @@ Navigation::Clock::Clock(QObject *parent) : QObject(parent)
 
 auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
 {
-    auto minutes = qRound(QDateTime::currentDateTime().secsTo(pointInTime)/60.0);
+    auto minutes = qRound( ((double)QDateTime::currentDateTime().secsTo(pointInTime))/60.0);
 
     bool past = minutes < 0;
     minutes = qAbs(minutes);

@@ -22,6 +22,7 @@
 
 #include <QCache>
 #include <QFuture>
+#include <QImage>
 #include <QTimer>
 #include <QTemporaryFile>
 

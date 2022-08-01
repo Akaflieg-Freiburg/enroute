@@ -16,7 +16,7 @@ jobs:
       with:
         submodules: true    
     - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v2
       with:
         target: 'android'
         version: '5.15.2'

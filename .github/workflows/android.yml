@@ -15,18 +15,11 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true    
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v2
-      with:
-        path: ../Qt
-        key: ${{ runner.os }}-QtCache
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
         target: 'android'
         version: '5.15.2'
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
     - name: Install Additional Software
       run: |
         sudo apt install doxygen graphviz librsvg2-bin
@@ -34,7 +27,7 @@ jobs:
       run: |
         ls $ANDROID_SDK_ROOT
         ls $ANDROID_SDK_ROOT/ndk
-        ls $ANDROID_SDK_ROOT/ndk-bundle/toolchains
+        ls $ANDROID_SDK_ROOT/ndk/21.4.7075529
         mkdir -p build
         cd build
         cmake .. \
@@ -44,21 +37,22 @@ jobs:
           -DANDROID_BUILD_ABI_x86:BOOL=OFF \
           -DANDROID_BUILD_ABI_x86_64:BOOL=OFF \
           -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-          -DANDROID_NDK:PATH=$ANDROID_SDK_ROOT/ndk-bundle \
+          -DANDROID_NDK:PATH=$ANDROID_SDK_ROOT/ndk/21.4.7075529 \
           -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
           -DANDROID_STL:STRING=c++_shared \
           -DCMAKE_BUILD_TYPE:STRING=Debug \
-          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-          -DCMAKE_C_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
+          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
+          -DCMAKE_C_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
           -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR \
           -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR \
-          -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_SDK_ROOT/ndk-bundle/build/cmake/android.toolchain.cmake \
+          -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_SDK_ROOT/ndk/21.4.7075529/build/cmake/android.toolchain.cmake \
           -DQT_QMAKE_EXECUTABLE:STRING=$Qt5_DIR/bin/qmake
         cmake ..
     - name: Compile
       run: |
         cd build
         make
+        make apk
     - uses: actions/upload-artifact@v2
       with:
         name: enroute-debug.apk

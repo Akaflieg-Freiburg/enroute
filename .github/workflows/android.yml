@@ -25,9 +25,6 @@ jobs:
         sudo apt install doxygen graphviz librsvg2-bin
     - name: Configure
       run: |
-        ls $ANDROID_SDK_ROOT
-        ls $ANDROID_SDK_ROOT/ndk
-        ls $ANDROID_SDK_ROOT/ndk/21.4.7075529
         mkdir -p build
         cd build
         cmake .. \

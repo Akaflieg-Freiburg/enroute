@@ -287,7 +287,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param newPositioningByTrafficDataReceiver Property positioningByTrafficDataReceiver
+     * @param newShowAltitudeAGL Property showAltitudeAGL
      */
     void setShowAltitudeAGL(bool newShowAltitudeAGL);
 

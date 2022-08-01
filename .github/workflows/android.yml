@@ -33,7 +33,7 @@ jobs:
     - name: Configure
       run: |
         ls $ANDROID_SDK_ROOT
-        ls $ANDROID_SDK_ROOT/ndk-bundle
+        ls $ANDROID_SDK_ROOT/ndk
         ls $ANDROID_SDK_ROOT/ndk-bundle/toolchains
         mkdir -p build
         cd build

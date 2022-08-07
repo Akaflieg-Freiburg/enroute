@@ -91,7 +91,8 @@ Dialog {
         Label {
             Layout.alignment: Qt.AlignBaseline
             text: qsTr("Latitude")
-        }        
+        }
+
         DegreeInput {
             id: latInput
 
@@ -125,6 +126,7 @@ Dialog {
             Layout.alignment: Qt.AlignBaseline
             text: qsTr("Format")
         }
+
         ComboBox {
             id: formatChoice
             Layout.fillWidth: true
@@ -142,6 +144,7 @@ Dialog {
             Layout.alignment: Qt.AlignBaseline
             text: qsTr("Elevation")
         }
+
         ElevationInput {
             id: eleField
 
@@ -154,6 +157,7 @@ Dialog {
             Layout.alignment: Qt.AlignBaseline
             text: qsTr("Unit")
         }
+
         ComboBox {
             id: eleFormatChoice
             Layout.fillWidth: true

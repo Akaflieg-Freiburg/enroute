@@ -55,6 +55,7 @@ StackLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
             placeholderText: qsTr("undefined")
+            inputMethodHints: Qt.ImhDigitsOnly
             validator: IntValidator {
                 bottom: -3000
                 top: 24000

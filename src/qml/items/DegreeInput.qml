@@ -77,6 +77,7 @@ StackLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
             placeholderText: qsTr("undefined")
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: minValue
                 top: maxValue
@@ -114,6 +115,7 @@ StackLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
             placeholderText: qsTr("undefined")
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: minValue
                 top: maxValue
@@ -133,6 +135,7 @@ StackLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
             placeholderText: qsTr("undefined")
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999
@@ -173,6 +176,7 @@ StackLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
             placeholderText: qsTr("undefined")
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: minValue
                 top: maxValue
@@ -191,6 +195,7 @@ StackLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
             placeholderText: qsTr("undefined")
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: 0
                 top: 59
@@ -209,6 +214,7 @@ StackLayout {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
             placeholderText: qsTr("undefined")
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999

@@ -57,14 +57,14 @@ Page {
                     var secondLineString = ""
                     var altitudeLimit = global.settings().airspaceAltitudeLimit
                     if (!altitudeLimit.isFinite()) {
-                        secondLineString = qsTr("No limit, all airspaces shown")
+                        secondLineString = qsTr("Currently showing all airspaces")
                     } else {
                         // Mention
                         global.navigator().aircraft.verticalDistanceUnit
 
                         var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
                         var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-                        secondLineString = qsTr("Showing airspaces up to %1").arg(airspaceAltitudeLimitString)
+                        secondLineString = qsTr("Currently showing airspaces up to %1").arg(airspaceAltitudeLimitString)
                     }
                     return qsTr("Airspace Altitude Limit") +
                             `<br><font color="#606060" size="2">` +
@@ -149,9 +149,9 @@ Page {
                 text: {
                     var secondLineString = ""
                     if (global.settings().positioningByTrafficDataReceiver) {
-                        secondLineString = qsTr("Traffic Data Receiver")
+                        secondLineString = qsTr("Currently using traffic data receiver")
                     } else {
-                        secondLineString = qsTr("Built-in Satnav Receiver")
+                        secondLineString = qsTr("Currently using built-in satnav receiver")
                     }
                     return qsTr("Primary position data source") +
                             `<br><font color="#606060" size="2">` +

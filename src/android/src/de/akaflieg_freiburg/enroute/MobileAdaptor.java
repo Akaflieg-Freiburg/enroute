@@ -31,6 +31,7 @@ import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.MulticastLock;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 	private static WifiLock m_wifiLock;
 	private static WifiManager m_wifiManager;
+	private static MulticastLock m_multicastLock;
 	private static BroadcastReceiver m_wifiStateChangeReceiver;
 	private static BroadcastReceiver m_notifyClickReceiver;
 
@@ -65,6 +67,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		m_wifiManager = (WifiManager) m_instance.getSystemService(Context.WIFI_SERVICE);
 		m_wifiStateChangeReceiver = new WifiStateChangeReceiver();
 
+		// Acquire Multicast lock
+		m_multicastLock = m_wifiManager.createMulticastLock("multicastLock");
+		m_multicastLock.setReferenceCounted(true);
+		m_multicastLock.acquire();
+
 		m_notifyClickReceiver = new NotifyClickReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
@@ -78,6 +85,12 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 			if (m_wifiLock.isHeld() == true) {
 				m_wifiLock.release();
 			}
+		}
+
+		// Release multicast lock
+		if (m_multicastLock != null) {
+			m_multicastLock.release();
+			m_multicastLock = null;
 		}
 
 		// Unregister the WiFi state change receiver

@@ -152,6 +152,10 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     {
         return tr("Error reading file '%1'").arg(fileName);
     }
+    if (result.length() > 100)
+    {
+        return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(fileName);
+    }
 
     m_waypoints.clear();
     foreach(auto wp, result)

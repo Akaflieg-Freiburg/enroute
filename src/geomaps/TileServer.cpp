@@ -23,7 +23,6 @@
 
 #include "TileHandler.h"
 #include "TileServer.h"
-#include "dataManagement/Downloadable.h"
 
 
 GeoMaps::TileServer::TileServer(QUrl baseUrl, QObject *parent)

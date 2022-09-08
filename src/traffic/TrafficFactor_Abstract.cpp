@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "Settings.h"
 #include "navigation/Navigator.h"
 #include "traffic/TrafficFactor_Abstract.h"
 

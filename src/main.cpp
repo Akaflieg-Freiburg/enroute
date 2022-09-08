@@ -63,7 +63,6 @@
 #include "units/Volume.h"
 #include "units/VolumeFlow.h"
 #include "weather/WeatherDataProvider.h"
-#include "weather/Wind.h"
 #include <chrono>
 
 using namespace std::chrono_literals;

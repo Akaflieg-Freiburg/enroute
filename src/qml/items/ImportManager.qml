@@ -110,7 +110,10 @@ Item {
                     global.mobileAdaptor().vibrateBrief()
                     importManager.fileFunction = MobileAdaptor.FlightRoute
                     chooseFRorWPDialog.close()
-                    importFlightRouteDialog.open()
+                    if (global.navigator().flightRoute.size > 0)
+                        importFlightRouteDialog.open()
+                    else
+                        importFlightRouteDialog.onAccepted()
                 }
             }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -138,7 +138,7 @@ public:
      */
     [[nodiscard]] auto ICAOCode() const -> QString
     {
-        return _ICAOCode;
+        return m_ICAOCode;
     }
 
     /*! \brief Suggested icon for this weather station
@@ -166,7 +166,7 @@ public:
      */
     [[nodiscard]] auto isValid() const -> bool
     {
-        return (_ICAOCode.length() == 4);
+        return (m_ICAOCode.length() == 4);
     }
 
     /*! \brief Last METAR provided by this WeatherStation
@@ -283,7 +283,7 @@ private:
     QString _extendedName;
 
     // ICAO code of this weather station
-    QString _ICAOCode;
+    QString m_ICAOCode;
 
     // Icon for this weather station
     QString _icon {QStringLiteral("/icons/waypoints/WP.svg")};

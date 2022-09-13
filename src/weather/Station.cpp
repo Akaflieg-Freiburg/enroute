@@ -35,11 +35,11 @@ Weather::Station::Station(QObject *parent)
 
 Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent)
     : QObject(parent),
-      _ICAOCode(std::move(id)),
+      m_ICAOCode(std::move(id)),
       _geoMapProvider(geoMapProvider)
 {
-    _extendedName = _ICAOCode;
-    _twoLineTitle = _ICAOCode;
+    _extendedName = m_ICAOCode;
+    _twoLineTitle = m_ICAOCode;
 
     // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
     connect(_geoMapProvider, &GeoMaps::GeoMapProvider::geoJSONChanged, this, &Weather::Station::readDataFromWaypoint);
@@ -58,7 +58,7 @@ void Weather::Station::readDataFromWaypoint()
         return;
     }
 
-    auto waypoint = _geoMapProvider->findByID(_ICAOCode);
+    auto waypoint = _geoMapProvider->findByID(m_ICAOCode);
     if (!waypoint.isValid()) {
         return;
     }
@@ -97,7 +97,7 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
 {
     // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
     if (metar != nullptr) {
-        if (!metar->isValid() || metar->isExpired() || (metar->ICAOCode() != _ICAOCode)) {
+        if (!metar->isValid() || metar->isExpired() || (metar->ICAOCode() != m_ICAOCode)) {
             metar->deleteLater();
             return;
         }
@@ -147,7 +147,7 @@ void Weather::Station::setTAF(Weather::TAF *taf)
 {
     // Ignore invalid and expired TAFs. Also ignore TAFs whose ICAO code does not match with this weather station
     if (taf != nullptr) {
-        if (!taf->isValid() || taf->isExpired() || (taf->ICAOCode() != _ICAOCode)) {
+        if (!taf->isValid() || taf->isExpired() || (taf->ICAOCode() != m_ICAOCode)) {
             taf->deleteLater();
             return;
         }

@@ -49,7 +49,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2020 by Stefan Kebekus                             *</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2022 by Stefan Kebekus                             *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *                                                                         *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -133,7 +133,7 @@ $(function() {
 <div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#ae95f45f5587dd3adeac389a1dcd60d03">  142</a></span>&#160;    </div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1METAR.html#a82c5f343374f9f52bb87e676e2dbaa10">ICAOCode</a>() const -&gt; QString</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    {</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#ab46b16afdda25e43564e9894a9c17de0">  148</a></span>&#160;        <span class="keywordflow">return</span> _ICAOCode;</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#ab46b16afdda25e43564e9894a9c17de0">  148</a></span>&#160;        <span class="keywordflow">return</span> m_ICAOCode;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1METAR.html#a2141d9630a2a09d46d986761aefe46c8">isExpired</a>() <span class="keyword">const</span>;</div>
@@ -208,7 +208,7 @@ $(function() {
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> _gust;</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="comment">// Station ID, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    QString _ICAOCode;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    QString m_ICAOCode;</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="comment">// Station coordinate, as returned by the Aviation Weather Center</span></div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    QGeoCoordinate _location;</div>

@@ -49,7 +49,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2020 by Stefan Kebekus                                  *</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2020-2022 by Stefan Kebekus                             *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *                                                                         *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -133,7 +133,7 @@ $(function() {
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    </div>
 <div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="classWeather_1_1Station.html#a2e2f184071e80b88d4b8d3b6971fb192">  139</a></span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1Station.html#a2e2f184071e80b88d4b8d3b6971fb192">ICAOCode</a>() const -&gt; QString</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    {</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">return</span> _ICAOCode;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">return</span> m_ICAOCode;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
 <div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="classWeather_1_1Station.html#aef58d2a5822040ac83898150c621bd45">  149</a></span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1Station.html#aef58d2a5822040ac83898150c621bd45">icon</a> READ <a class="code" href="classWeather_1_1Station.html#aef58d2a5822040ac83898150c621bd45">icon</a> NOTIFY iconChanged)</div>
@@ -149,7 +149,7 @@ $(function() {
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    </div>
 <div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="classWeather_1_1Station.html#a658466a9fda9c9658012439db94aea6b">  167</a></span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1Station.html#a658466a9fda9c9658012439db94aea6b">isValid</a>() const -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    {</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">return</span> (_ICAOCode.length() == 4);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">return</span> (m_ICAOCode.length() == 4);</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
 <div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="classWeather_1_1Station.html#a54425914d664d5a8fe6d2b7d3eb42f31">  179</a></span>&#160;    Q_PROPERTY(<a class="code" href="classWeather_1_1METAR.html">Weather::METAR</a> *<a class="code" href="classWeather_1_1Station.html#a54425914d664d5a8fe6d2b7d3eb42f31">metar</a> READ <a class="code" href="classWeather_1_1Station.html#a54425914d664d5a8fe6d2b7d3eb42f31">metar</a> NOTIFY metarChanged)</div>
@@ -234,7 +234,7 @@ $(function() {
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    QString _extendedName;</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="comment">// ICAO code of this weather station</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    QString _ICAOCode;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    QString m_ICAOCode;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="comment">// Icon for this weather station</span></div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    QString _icon {QStringLiteral(<span class="stringliteral">&quot;/icons/waypoints/WP.svg&quot;</span>)};</div>
@@ -265,7 +265,7 @@ $(function() {
 <div class="ttc" id="aclassWeather_1_1Station_html_a43053c73128fc4fa7899a0b4b309cdf4"><div class="ttname"><a href="classWeather_1_1Station.html#a43053c73128fc4fa7899a0b4b309cdf4">Weather::Station::hasTAF</a></div><div class="ttdeci">auto hasTAF() const -&gt; bool</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="Station_8h_source.html#l00123">Station.h:123</a></div></div>
 <div class="ttc" id="aclassWeather_1_1Station_html_a54425914d664d5a8fe6d2b7d3eb42f31"><div class="ttname"><a href="classWeather_1_1Station.html#a54425914d664d5a8fe6d2b7d3eb42f31">Weather::Station::metar</a></div><div class="ttdeci">Weather::METAR metar</div><div class="ttdoc">Last METAR provided by this WeatherStation.</div><div class="ttdef"><b>Definition:</b> <a href="Station_8h_source.html#l00179">Station.h:179</a></div></div>
 <div class="ttc" id="aclassWeather_1_1Station_html_a2e2f184071e80b88d4b8d3b6971fb192"><div class="ttname"><a href="classWeather_1_1Station.html#a2e2f184071e80b88d4b8d3b6971fb192">Weather::Station::ICAOCode</a></div><div class="ttdeci">auto ICAOCode() const -&gt; QString</div><div class="ttdoc">Getter method for property of the same name.</div><div class="ttdef"><b>Definition:</b> <a href="Station_8h_source.html#l00139">Station.h:139</a></div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00064">WeatherDataProvider.h:64</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00063">WeatherDataProvider.h:63</a></div></div>
 <div class="ttc" id="aclassWeather_1_1Station_html_ac525db954177d4e4df3b92cc1ce565f2"><div class="ttname"><a href="classWeather_1_1Station.html#ac525db954177d4e4df3b92cc1ce565f2">Weather::Station::coordinate</a></div><div class="ttdeci">auto coordinate() const -&gt; QGeoCoordinate</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="Station_8h_source.html#l00074">Station.h:74</a></div></div>
 <div class="ttc" id="aclassWeather_1_1Station_html_aa5bf0deae617b1da218d943dba9d9bef"><div class="ttname"><a href="classWeather_1_1Station.html#aa5bf0deae617b1da218d943dba9d9bef">Weather::Station::twoLineTitle</a></div><div class="ttdeci">auto twoLineTitle() const -&gt; QString</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="Station_8h_source.html#l00205">Station.h:205</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html"><div class="ttname"><a href="classWeather_1_1METAR.html">Weather::METAR</a></div><div class="ttdoc">METAR report.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00060">METAR.h:60</a></div></div>

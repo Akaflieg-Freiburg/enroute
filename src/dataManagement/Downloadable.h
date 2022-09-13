@@ -269,7 +269,7 @@ public slots:
      * already in progress, nothing will happen.  Otherwise, the following will
      * take place.
      *
-     * -# Data is retrieved from the remote server and stored in temporary
+     * -# Data is retrieved from the remote server and stored in a temporary
      *    file. The signal downloadProgress() will be emitted regularly.
      *
      * -# In case of an error, the signal error() is emitted and the download
@@ -362,8 +362,7 @@ signals:
     /*! \brief Notifier signal for the property infoText */
     void infoTextChanged();
 
-    /*! \brief Notifier signal for the property hasFile
-     */
+    /*! \brief Notifier signal for the property hasFile */
     void hasFileChanged();
 
     /*! \brief Notifier signal for the properties fileContent

@@ -349,14 +349,41 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         files.removeAll(localFileName);
     }
 
+    // Next, we create or recycle items for all files that that we have found in the directory.
     foreach (auto localFileName, files)
     {
         auto *downloadable = createOrRecycleItem(QUrl(), localFileName);
         oldMaps.removeAll(downloadable);
         downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1));
     }
-
     qDeleteAll(oldMaps);
+
+
+    // Now the lists of downloadable items should be complete. finally, we find and match up buddy downloadables.
+    QVector<QPointer<Downloadable>> buddies;
+    foreach (auto downloadableBaseMap, m_baseMapsVector.downloadables())
+    {
+        if (downloadableBaseMap.isNull())
+        {
+            continue;
+        }
+        buddies.resize(0);
+        auto mapName = downloadableBaseMap->objectName();
+
+        foreach (auto downloadableTerrain, m_terrainMaps.downloadables())
+        {
+            if (downloadableTerrain.isNull())
+            {
+                continue;
+            }
+            if (mapName == downloadableTerrain->objectName())
+            {
+                buddies << downloadableTerrain;
+            }
+        }
+
+        qWarning() << "Buddies for" << mapName << buddies;
+    }
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();

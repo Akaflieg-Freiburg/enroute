@@ -82,7 +82,7 @@ public:
     /*! \brief True iF one of the Downloadable objects has a local file */
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
-    /*! \brief Indicates any one of Downloadable objects is updatable
+    /*! \brief Indicates that one of Downloadable objects is updatable
      *
      *  By definition, an empty group is not updatable
      */
@@ -94,6 +94,7 @@ public:
      *  The string returned is typically of the form "23.7 MB"
      */
     Q_PROPERTY(QString updateSize READ updateSize NOTIFY updateSizeChanged)
+
 
     //
     // Getter Methods
@@ -147,6 +148,7 @@ public:
      */
     [[nodiscard]] auto updateSize() const -> QString;
 
+
     //
     // Methods
     //
@@ -170,8 +172,7 @@ public:
      */
     Q_INVOKABLE void deleteAllFiles();
 
-public slots:
-    /*! Update all updatable Downloadable objects */
+    /*! Update all updatable downloadable objects */
     void updateAll();
 
 signals:

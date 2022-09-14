@@ -76,6 +76,7 @@ set(SOURCES
     dataManagement/Downloadable.h
     dataManagement/DownloadableGroup.h
     dataManagement/DownloadableGroupWatcher.h
+    dataManagement/MapSet.h
     dataManagement/SSLErrorHandler.h
     dataManagement/UpdateNotifier.h
     DemoRunner.h
@@ -138,6 +139,7 @@ set(SOURCES
     dataManagement/Downloadable.cpp
     dataManagement/DownloadableGroup.cpp
     dataManagement/DownloadableGroupWatcher.cpp
+    dataManagement/MapSet.cpp
     dataManagement/SSLErrorHandler.cpp
     dataManagement/UpdateNotifier.cpp
     DemoRunner.cpp

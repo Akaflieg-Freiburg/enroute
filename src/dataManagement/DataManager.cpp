@@ -359,16 +359,19 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     qDeleteAll(oldMaps);
 
 
-    // Now the lists of downloadable items should be complete. finally, we find and match up buddy downloadables.
-    QVector<QPointer<Downloadable>> buddies;
+    // Now the lists of downloadable items should be complete. Finally, we find and match up map sets.
+    qDeleteAll(m_mapSets);
+    m_mapSets.clear();
     foreach (auto downloadableBaseMap, m_baseMapsVector.downloadables())
     {
         if (downloadableBaseMap.isNull())
         {
             continue;
         }
-        buddies.resize(0);
         auto mapName = downloadableBaseMap->objectName();
+
+        auto* mapSet = new MapSet(this);
+        mapSet->baseMap = downloadableBaseMap;
 
         foreach (auto downloadableTerrain, m_terrainMaps.downloadables())
         {
@@ -378,11 +381,11 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             }
             if (mapName == downloadableTerrain->objectName())
             {
-                buddies << downloadableTerrain;
+                mapSet->terrainMap = downloadableTerrain;
+                break;
             }
         }
-
-        qWarning() << "Buddies for" << mapName << buddies;
+        m_mapSets.append(mapSet);
     }
 
     // Update the whatsNew property

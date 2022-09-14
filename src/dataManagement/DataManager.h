@@ -24,6 +24,7 @@
 
 #include "GlobalObject.h"
 #include "dataManagement/DownloadableGroup.h"
+#include "dataManagement/MapSet.h"
 
 
 namespace DataManagement {
@@ -333,6 +334,9 @@ private:
     DataManagement::DownloadableGroup m_databases;
     DataManagement::DownloadableGroup m_items;
     DataManagement::DownloadableGroup m_terrainMaps;
+
+    // List of geographic map sets
+    QVector<QPointer<DataManagement::MapSet>> m_mapSets;
 };
 
 };

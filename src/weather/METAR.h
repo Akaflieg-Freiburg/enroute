@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -145,7 +145,7 @@ public:
      */
     [[nodiscard]] auto ICAOCode() const -> QString
     {
-        return _ICAOCode;
+        return m_ICAOCode;
     }
 
     /*! \brief Convenience method to check if this METAR is already expired
@@ -269,7 +269,7 @@ private:
     Units::Speed _gust;
 
     // Station ID, as returned by the Aviation Weather Center
-    QString _ICAOCode;
+    QString m_ICAOCode;
 
     // Station coordinate, as returned by the Aviation Weather Center
     QGeoCoordinate _location;

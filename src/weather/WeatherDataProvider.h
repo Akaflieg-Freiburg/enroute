@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +32,6 @@ class QNetworkReply;
 
 class Clock;
 class FlightRoute;
-class GeoMapProvider;
 class Settings;
 
 namespace Weather {
@@ -183,13 +182,13 @@ public:
      * can be deleted anytime. Store it in a QPointer to avoid dangling
      * pointers.
      */
-    Q_PROPERTY(QList<Weather::Station *> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
+    Q_PROPERTY(QList<Weather::Station*> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property weatherStations
      */
-    [[nodiscard]] auto weatherStations() const -> QList<Weather::Station *>;
+    [[nodiscard]] auto weatherStations() const -> QList<Weather::Station*>;
 
 signals:
     /*! \brief Notifier signal */

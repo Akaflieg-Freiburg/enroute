@@ -37,7 +37,7 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
 
         // Read Station_ID
         if (xml.isStartElement() && name == QLatin1String("station_id")) {
-            _ICAOCode = xml.readElementText();
+            m_ICAOCode = xml.readElementText();
             continue;
         }
 
@@ -89,7 +89,7 @@ Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
     : Weather::Decoder(parent)
 {
     inputStream >> _expirationTime;
-    inputStream >> _ICAOCode;
+    inputStream >> m_ICAOCode;
     inputStream >> _issueTime;
     inputStream >> _location;
     inputStream >> _raw_text;
@@ -119,7 +119,7 @@ auto Weather::TAF::isValid() const -> bool
     if (!_issueTime.isValid()) {
         return false;
     }
-    if (_ICAOCode.isEmpty()) {
+    if (m_ICAOCode.isEmpty()) {
         return false;
     }
     if (hasParseError()) {
@@ -150,7 +150,7 @@ void Weather::TAF::setupSignals() const
 void Weather::TAF::write(QDataStream &out)
 {
     out << _expirationTime;
-    out << _ICAOCode;
+    out << m_ICAOCode;
     out << _issueTime;
     out << _location;
     out << _raw_text;

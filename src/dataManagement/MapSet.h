@@ -28,56 +28,75 @@ class MapSet : public QObject {
     Q_OBJECT
 
 public:
-    explicit MapSet(QObject *parent = nullptr);
+    explicit MapSet(DataManagement::Downloadable* baseMap, DataManagement::Downloadable* terrainMap, QObject *parent = nullptr);
 
-    /*! \brief Indicates if the file the has been downloaded is known to be updatable
-     *
-     * This property is true if all of the following conditions are met.
-     *
-     * - No download is in progress
-     *
-     * - The file has been downloaded
-     *
-     * - The modification date of the file on the remote server
-     *   is newer than the modification date of the local file.
-     *
-     * @warning The notification signal is not emitted when another process
-     * touches the local file.
-     */
+
+    //
+    // PROPERTIES
+    //
+
+    Q_PROPERTY(QString section MEMBER m_section)
+
+    Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
+
     Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
-    /*! \brief Indicates whether a download process is currently running
-     *
-     * This property indicates whether a download process is currently running
-     *
-     * @see startFileDownload(), stopFileDownload()
-     */
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloading
-     */
+
+    //
+    // Getter Methods
+    //
+
     [[nodiscard]] auto downloading() const -> bool;
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property updatable
-     */
+    [[nodiscard]] auto hasFile() const -> bool;
+
+    [[nodiscard]] auto infoText() const -> QString;
+
     [[nodiscard]] auto updatable() const -> bool;
 
-    QPointer<DataManagement::Downloadable> baseMap;
-    QPointer<DataManagement::Downloadable> terrainMap;
+
+    //
+    // Methods
+    //
+
+    Q_INVOKABLE void startFileDownload();
+
+private:
+    QPointer<DataManagement::Downloadable> m_baseMap;
+    QPointer<DataManagement::Downloadable> m_terrainMap;
+
+    QString m_section;
 
 signals:
-
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged();
 
+    /*! \brief Download error
+     *
+     * This signal is emitted if the download process fails for whatever
+     * reason. Once the signal is emitted, the download process is deleted and
+     * no further actions will take place. The local file will not be touched.
+     *
+     * @param objectName Name of this QObject, as obtained by the method
+     * objectName()
+     *
+     * @param message A brief error message of the form "the requested resource
+     * is no longer available at the server", possibly translated.
+     */
+    void error(QString objectName, QString message);
+
+    /*! \brief Notifier signal for property hasFile */
+    void hasFileChanged();
+
+    /*! \brief Notifier signal for property downloading */
+    void infoTextChanged();
+
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
-
-
 };
 
 };

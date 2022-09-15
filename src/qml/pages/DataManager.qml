@@ -98,12 +98,7 @@ Page {
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
                             global.mobileAdaptor().vibrateBrief()
-
-                            if (model.modelData.fileName.endsWith("mbtiles") && global.dataManager().baseMapsRaster.hasFile) {
-                                uninstallRasterMapDialog.vectorMap = element
-                                uninstallRasterMapDialog.open()
-                            } else
-                                startFileDownload()
+                            startFileDownload()
                         }
                     }
                 }
@@ -842,42 +837,5 @@ Page {
         text: ""
         standardButtons: Dialog.Ok
     }
-
-    Dialog {
-        id: uninstallRasterMapDialog
-
-        property var vectorMap
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        title: qsTr("Uninstall Raster Maps")
-
-        Label {
-            width: uninstallRasterMapDialog.availableWidth
-            text: qsTr("To avoid conflicts between raster and vector maps, all raster maps will be uninstalled before new vector maps are downloaded.")
-
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
-
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-
-        onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
-            global.dataManager().baseMapsRaster.deleteAllFiles()
-            vectorMap.startFileDownload()
-            toast.doToast( qsTr("Raster maps uninstalled") )
-        }
-
-    } // importDialog
 
 } // Page

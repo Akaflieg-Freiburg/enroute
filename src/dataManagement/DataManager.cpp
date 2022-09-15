@@ -370,10 +370,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
         auto mapName = downloadableBaseMap->objectName();
 
-        auto* mapSet = new MapSet(this);
-        mapSet->setObjectName(mapName);
-        mapSet->baseMap = downloadableBaseMap;
-
+        DataManagement::Downloadable* terrainMap = nullptr;
         foreach (auto downloadableTerrain, m_terrainMaps.downloadables())
         {
             if (downloadableTerrain.isNull())
@@ -382,10 +379,13 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             }
             if (mapName == downloadableTerrain->objectName())
             {
-                mapSet->terrainMap = downloadableTerrain;
+                terrainMap = downloadableTerrain;
                 break;
             }
         }
+
+        auto* mapSet = new MapSet(downloadableBaseMap, terrainMap, this);
+
         m_mapSets.append(mapSet);
     }
 

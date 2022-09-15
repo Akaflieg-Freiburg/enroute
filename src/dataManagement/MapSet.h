@@ -30,8 +30,54 @@ class MapSet : public QObject {
 public:
     explicit MapSet(QObject *parent = nullptr);
 
+    /*! \brief Indicates if the file the has been downloaded is known to be updatable
+     *
+     * This property is true if all of the following conditions are met.
+     *
+     * - No download is in progress
+     *
+     * - The file has been downloaded
+     *
+     * - The modification date of the file on the remote server
+     *   is newer than the modification date of the local file.
+     *
+     * @warning The notification signal is not emitted when another process
+     * touches the local file.
+     */
+    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
+
+    /*! \brief Indicates whether a download process is currently running
+     *
+     * This property indicates whether a download process is currently running
+     *
+     * @see startFileDownload(), stopFileDownload()
+     */
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property downloading
+     */
+    [[nodiscard]] auto downloading() const -> bool;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property updatable
+     */
+    [[nodiscard]] auto updatable() const -> bool;
+
     QPointer<DataManagement::Downloadable> baseMap;
     QPointer<DataManagement::Downloadable> terrainMap;
+
+signals:
+
+    /*! \brief Notifier signal for property downloading */
+    void downloadingChanged();
+
+    /*! \brief Notifier signal for the property updatable */
+    void updatableChanged();
+
+
 };
 
 };

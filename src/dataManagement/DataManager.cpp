@@ -371,6 +371,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         auto mapName = downloadableBaseMap->objectName();
 
         auto* mapSet = new MapSet(this);
+        mapSet->setObjectName(mapName);
         mapSet->baseMap = downloadableBaseMap;
 
         foreach (auto downloadableTerrain, m_terrainMaps.downloadables())

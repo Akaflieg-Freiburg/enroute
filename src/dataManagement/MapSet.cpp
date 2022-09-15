@@ -25,3 +25,30 @@ DataManagement::MapSet::MapSet(QObject *parent)
     : QObject(parent) {
 
 }
+
+auto DataManagement::MapSet::downloading() const -> bool
+{
+    return baseMap->downloading() || terrainMap->downloading();
+}
+
+
+auto DataManagement::MapSet::updatable() const -> bool
+{
+    if (baseMap->updatable() || terrainMap->updatable())
+    {
+        return true;
+    }
+    if (baseMap->hasFile() || terrainMap->hasFile())
+    {
+        if (!baseMap->hasFile())
+        {
+            return true;
+        }
+        if (!terrainMap->hasFile())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

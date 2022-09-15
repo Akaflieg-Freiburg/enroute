@@ -131,6 +131,13 @@ public:
     /*! \brief True if list of remotely available items has been downloaded */
     Q_PROPERTY(bool hasRemoteItemList READ hasRemoteItemList NOTIFY hasRemoteItemListChanged)
 
+    /*! \brief List of all map sets
+     *
+     *  QVector with all map sets.
+     */
+#warning docu
+    Q_PROPERTY(QVector<DataManagement::MapSet*> mapSets READ mapSets NOTIFY mapSetsChanged)
+
     /*! \brief DownloadableGroupWatcher that holds all terrain maps
      *
      *  Pointer to a DownloadableGroupWatcher that holds all terrain maps.
@@ -201,6 +208,16 @@ public:
      *  @returns Property terrainMaps
      */
     [[nodiscard]] auto terrainMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_terrainMaps; }
+
+#warning
+    auto mapSets() -> QVector<DataManagement::MapSet*> {
+        QVector<DataManagement::MapSet*> result;
+        foreach(auto mapSet, m_mapSets)
+        {
+            result.append(mapSet);
+        }
+        return result;
+    }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -281,6 +298,9 @@ signals:
      *  @param message A brief, human-readable, translated error message.
      */
     void error(const QString& message);
+
+#warning
+    void mapSetsChanged();
 
     /*! \brief Notification signal for the property with the same name */
     void whatsNewChanged();

@@ -236,24 +236,6 @@ public:
     // Methods
     //
 
-    /*! \brief Describe installed map
-     *
-     * This method describes a data item, by inspecting the locally installed
-     * map file.
-     *
-     * @warning The description not always available right after installation --
-     * information about aviation maps is only updated after the maps have been
-     * parsed in the GeoJSON parsing process. It is therefore possible that the
-     * method returns wrong information if it is called directly after a new map
-     * has been installed.
-     *
-     * @param fileName File name of locally installed file.
-     *
-     * @returns A human-readable HTML string, or an empty string if no data is
-     * available
-     */
-    Q_INVOKABLE [[nodiscard]] static QString describeDataItem(const QString& fileName);
-
     /*! \brief Import raster or vector map into the library of locally installed
      * maps
      *

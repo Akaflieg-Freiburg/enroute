@@ -20,10 +20,13 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QLocale>
 #include <QLockFile>
 #include <utility>
 
+#include "geomaps/MBTILES.h"
 #include "Downloadable.h"
 #include "GlobalObject.h"
 #include "Settings.h"
@@ -52,6 +55,60 @@ DataManagement::Downloadable::~Downloadable() {
     delete _saveFile;
 }
 
+
+auto DataManagement::Downloadable::description() const -> QString
+{
+    QFileInfo fi(_fileName);
+    if (!fi.exists())
+    {
+        return tr("No information available.");
+    }
+    QString result = QStringLiteral("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
+            .arg(tr("Installed"),
+                 fi.lastModified().toUTC().toString(),
+                 tr("File Size"),
+                 QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
+
+    // Extract infomation from GeoJSON
+    if (_fileName.endsWith(u".geojson"))
+    {
+        QLockFile lockFile(_fileName + ".lock");
+        lockFile.lock();
+        QFile file(_fileName);
+        file.open(QIODevice::ReadOnly);
+        auto document = QJsonDocument::fromJson(file.readAll());
+        file.close();
+        lockFile.unlock();
+        QString concatInfoString = document.object()[QStringLiteral("info")].toString();
+        if (!concatInfoString.isEmpty())
+        {
+            result += "<p>" + tr("The map data was compiled from the following sources.") + "</p><ul>";
+            auto infoStrings = concatInfoString.split(QStringLiteral(";"));
+            foreach (auto infoString, infoStrings)
+                result += "<li>" + infoString + "</li>";
+            result += u"</ul>";
+        }
+    }
+
+    // Extract infomation from MBTILES
+    if (_fileName.endsWith(u".mbtiles") || _fileName.endsWith(u".terrain"))
+    {
+        GeoMaps::MBTILES mbtiles(_fileName);
+        result += mbtiles.info();
+    }
+
+    // Extract infomation from text file - this is simply the first line
+    if (_fileName.endsWith(u".txt"))
+    {
+        // Open file and read first line
+        QFile dataFile(_fileName);
+        dataFile.open(QIODevice::ReadOnly);
+        auto description = dataFile.readLine();
+        result += QStringLiteral("<p>%1</p>").arg(QString::fromLatin1(description));
+    }
+
+    return result;
+}
 
 auto DataManagement::Downloadable::infoText() const -> QString {
     if (downloading()) {

@@ -24,12 +24,15 @@
 DataManagement::MapSet::MapSet(DataManagement::Downloadable* baseMap, DataManagement::Downloadable* terrainMap, QObject* parent)
     : m_baseMap(baseMap), m_terrainMap(terrainMap), QObject(parent)
 {
+#warning signals are emitted too often
+
     if (!m_baseMap.isNull()) {
         setObjectName(m_baseMap->objectName());
         m_section = m_baseMap->section();
 
         connect(m_baseMap, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
         connect(m_baseMap, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
+        connect(m_baseMap, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
         connect(m_baseMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
         connect(m_baseMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
         connect(m_baseMap, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
@@ -42,6 +45,7 @@ DataManagement::MapSet::MapSet(DataManagement::Downloadable* baseMap, DataManage
 
         connect(m_terrainMap, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
         connect(m_terrainMap, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
+        connect(m_terrainMap, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
         connect(m_terrainMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
         connect(m_terrainMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
         connect(m_terrainMap, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
@@ -50,6 +54,23 @@ DataManagement::MapSet::MapSet(DataManagement::Downloadable* baseMap, DataManage
 
 }
 
+auto DataManagement::MapSet::description() const -> QString
+{
+    QString result;
+
+    if (!m_baseMap.isNull())
+    {
+        result += "<h3>"+m_baseMap->fileName().section('/', -1, -1)+"</h3>";
+        result += m_baseMap->description();
+    }
+
+    if (!m_terrainMap.isNull())
+    {
+        result += "<h3>"+m_terrainMap->fileName().section('/', -1, -1)+"</h3>";
+        result += m_terrainMap->description();
+    }
+    return result;
+}
 
 auto DataManagement::MapSet::downloading() const -> bool
 {
@@ -166,5 +187,19 @@ void DataManagement::MapSet::startFileDownload()
         {
             m_terrainMap->startFileDownload();
         }
+    }
+}
+
+
+void DataManagement::MapSet::stopFileDownload()
+{
+    if (!m_baseMap.isNull())
+    {
+        m_baseMap->stopFileDownload();
+    }
+
+    if (!m_terrainMap.isNull())
+    {
+        m_terrainMap->stopFileDownload();
     }
 }

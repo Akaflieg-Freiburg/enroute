@@ -43,12 +43,16 @@ public:
 
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
+    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
+
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
 
     //
     // Getter Methods
     //
+
+    [[nodiscard]] auto description() const -> QString;
 
     [[nodiscard]] auto downloading() const -> bool;
 
@@ -65,6 +69,7 @@ public:
 
     Q_INVOKABLE void deleteFile();
     Q_INVOKABLE void startFileDownload();
+    Q_INVOKABLE void stopFileDownload();
 
 private:
     QPointer<DataManagement::Downloadable> m_baseMap;
@@ -73,6 +78,9 @@ private:
     QString m_section;
 
 signals:
+    /*! \brief Notifier signal for property downloading */
+    void descriptionChanged();
+
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged();
 

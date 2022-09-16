@@ -81,6 +81,26 @@ public:
      */
     ~Downloadable() override;
 
+    /*! \brief Describe installed map
+     *
+     * This method describes a data item, by inspecting the locally installed
+     * map file.
+     *
+     * @warning The description not always available right after installation --
+     * information about aviation maps is only updated after the maps have been
+     * parsed in the GeoJSON parsing process. It is therefore possible that the
+     * method returns wrong information if it is called directly after a new map
+     * has been installed.
+     *
+     * @param fileName File name of locally installed file.
+     *
+     * @returns A human-readable HTML string, or an empty string if no data is
+     * available
+     */
+#warning
+    Q_PROPERTY(QString description READ description NOTIFY fileContentChanged)
+    [[nodiscard]] auto description() const -> QString;
+
     /*! \brief Indicates whether a download process is currently running
      *
      * This property indicates whether a download process is currently running

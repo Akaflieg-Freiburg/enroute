@@ -154,7 +154,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
+                                infoDialog.text = model.modelData.description
                                 infoDialog.open()
                             }
                         }
@@ -416,7 +416,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
+                                infoDialog.text = model.modelData.description
                                 infoDialog.open()
                             }
                         }

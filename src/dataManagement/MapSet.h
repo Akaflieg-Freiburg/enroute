@@ -63,6 +63,7 @@ public:
     // Methods
     //
 
+    Q_INVOKABLE void deleteFile();
     Q_INVOKABLE void startFileDownload();
 
 private:

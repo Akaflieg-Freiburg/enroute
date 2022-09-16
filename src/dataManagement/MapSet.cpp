@@ -31,7 +31,9 @@ DataManagement::MapSet::MapSet(DataManagement::Downloadable* baseMap, DataManage
         connect(m_baseMap, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
         connect(m_baseMap, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
         connect(m_baseMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
+        connect(m_baseMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
         connect(m_baseMap, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
+        connect(m_baseMap, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
     }
 
     if (!m_terrainMap.isNull()) {
@@ -41,7 +43,9 @@ DataManagement::MapSet::MapSet(DataManagement::Downloadable* baseMap, DataManage
         connect(m_terrainMap, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
         connect(m_terrainMap, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
         connect(m_terrainMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
+        connect(m_terrainMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
         connect(m_terrainMap, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
+        connect(m_terrainMap, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
     }
 
 }
@@ -107,25 +111,42 @@ auto DataManagement::MapSet::infoText() const -> QString
 
 auto DataManagement::MapSet::updatable() const -> bool
 {
-#warning Need to check for null pointers!
-
-    if (m_baseMap->updatable() || m_terrainMap->updatable())
+    if (!m_baseMap.isNull() && m_baseMap->updatable())
     {
         return true;
     }
-    if (m_baseMap->hasFile() || m_terrainMap->hasFile())
+    if (!m_terrainMap.isNull() && m_terrainMap->updatable())
     {
-        if (!m_baseMap->hasFile())
-        {
-            return true;
-        }
-        if (!m_terrainMap->hasFile())
-        {
-            return true;
-        }
+        return true;
+    }
+
+    if (!hasFile())
+    {
+        return false;
+    }
+    if (!m_baseMap.isNull() && !m_baseMap->hasFile())
+    {
+        return true;
+    }
+    if (!m_terrainMap.isNull() && !m_terrainMap->hasFile())
+    {
+        return true;
     }
 
     return false;
+}
+
+
+void DataManagement::MapSet::deleteFile()
+{
+    if (!m_baseMap.isNull())
+    {
+        m_baseMap->deleteFile();
+    }
+    if (!m_terrainMap.isNull())
+    {
+        m_terrainMap->deleteFile();
+    }
 }
 
 
@@ -133,11 +154,17 @@ void DataManagement::MapSet::startFileDownload()
 {
     if (!m_baseMap.isNull())
     {
-        m_baseMap->startFileDownload();
+        if (!m_baseMap->hasFile() || m_baseMap->updatable())
+        {
+            m_baseMap->startFileDownload();
+        }
     }
 
     if (!m_terrainMap.isNull())
     {
-        m_terrainMap->startFileDownload();
+        if (!m_terrainMap->hasFile() || m_terrainMap->updatable())
+        {
+            m_terrainMap->startFileDownload();
+        }
     }
 }

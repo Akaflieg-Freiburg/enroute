@@ -28,39 +28,43 @@ class MapSet : public QObject {
     Q_OBJECT
 
 public:
-    explicit MapSet(DataManagement::Downloadable* baseMap, DataManagement::Downloadable* terrainMap, QObject *parent = nullptr);
+    explicit MapSet(QVector<DataManagement::Downloadable*> maps, QObject *parent = nullptr);
 
 
     //
     // PROPERTIES
     //
 
-    Q_PROPERTY(QString section MEMBER m_section)
-
-    Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
-
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
-
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
-
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
 
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+
+    Q_PROPERTY(QString icon READ icon NOTIFY updatableChanged)
+
+    Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
+
+    Q_PROPERTY(QString section MEMBER m_section)
+
+    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
 
     //
     // Getter Methods
     //
 
-    [[nodiscard]] auto description() const -> QString;
+    [[nodiscard]] auto description() -> QString;
 
-    [[nodiscard]] auto downloading() const -> bool;
+    [[nodiscard]] auto downloading() -> bool;
 
-    [[nodiscard]] auto hasFile() const -> bool;
+    [[nodiscard]] auto hasFile() -> bool;
 
-    [[nodiscard]] auto infoText() const -> QString;
+    [[nodiscard]] auto icon() -> QString;
 
-    [[nodiscard]] auto updatable() const -> bool;
+    [[nodiscard]] auto infoText() -> QString;
+
+    [[nodiscard]] auto updatable() -> bool;
 
 
     //
@@ -70,12 +74,6 @@ public:
     Q_INVOKABLE void deleteFile();
     Q_INVOKABLE void startFileDownload();
     Q_INVOKABLE void stopFileDownload();
-
-private:
-    QPointer<DataManagement::Downloadable> m_baseMap;
-    QPointer<DataManagement::Downloadable> m_terrainMap;
-
-    QString m_section;
 
 signals:
     /*! \brief Notifier signal for property downloading */
@@ -106,6 +104,10 @@ signals:
 
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
+
+private:
+    QVector<QPointer<DataManagement::Downloadable>> m_maps;
+    QString m_section;
 };
 
 };

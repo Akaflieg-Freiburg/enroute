@@ -21,185 +21,145 @@
 #include "MapSet.h"
 
 
-DataManagement::MapSet::MapSet(DataManagement::Downloadable* baseMap, DataManagement::Downloadable* terrainMap, QObject* parent)
-    : m_baseMap(baseMap), m_terrainMap(terrainMap), QObject(parent)
+DataManagement::MapSet::MapSet(QVector<DataManagement::Downloadable*> maps, QObject* parent)
+    : QObject(parent)
 {
+    foreach(auto map, maps)
+    {
+        m_maps.append(map);
+    }
+    m_maps.removeAll(nullptr);
+
 #warning signals are emitted too often
+    foreach(auto map, m_maps)
+    {
+        setObjectName(map->objectName());
+        m_section = map->section();
 
-    if (!m_baseMap.isNull()) {
-        setObjectName(m_baseMap->objectName());
-        m_section = m_baseMap->section();
-
-        connect(m_baseMap, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
-        connect(m_baseMap, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
-        connect(m_baseMap, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
-        connect(m_baseMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
-        connect(m_baseMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
-        connect(m_baseMap, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
-        connect(m_baseMap, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
+        connect(map, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
+        connect(map, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
+        connect(map, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
+        connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
+        connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
+        connect(map, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
+        connect(map, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
     }
-
-    if (!m_terrainMap.isNull()) {
-        setObjectName(m_terrainMap->objectName());
-        m_section = m_terrainMap->section();
-
-        connect(m_terrainMap, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
-        connect(m_terrainMap, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
-        connect(m_terrainMap, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
-        connect(m_terrainMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
-        connect(m_terrainMap, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
-        connect(m_terrainMap, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
-        connect(m_terrainMap, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
-    }
-
 }
 
-auto DataManagement::MapSet::description() const -> QString
+
+auto DataManagement::MapSet::description() -> QString
 {
     QString result;
 
-    if (!m_baseMap.isNull())
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
     {
-        result += "<h3>"+m_baseMap->fileName().section('/', -1, -1)+"</h3>";
-        result += m_baseMap->description();
-    }
-
-    if (!m_terrainMap.isNull())
-    {
-        result += "<h3>"+m_terrainMap->fileName().section('/', -1, -1)+"</h3>";
-        result += m_terrainMap->description();
+        result += "<h4>"+map->fileTypeString()+"</h4>";
+        result += map->description();
     }
     return result;
 }
 
-auto DataManagement::MapSet::downloading() const -> bool
+
+auto DataManagement::MapSet::downloading() -> bool
 {
-    if (!m_baseMap.isNull() && m_baseMap->downloading())
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
     {
-        return true;
+        if (map->downloading())
+        {
+            return true;
+        }
     }
-
-    if (!m_terrainMap.isNull() && m_terrainMap->downloading())
-    {
-        return true;
-    }
-
     return false;
 }
 
 
-auto DataManagement::MapSet::hasFile() const -> bool
+auto DataManagement::MapSet::hasFile() -> bool
 {
-    if (!m_baseMap.isNull() && m_baseMap->hasFile())
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
     {
-        return true;
+        if (map->hasFile())
+        {
+            return true;
+        }
     }
-
-    if (!m_terrainMap.isNull() && m_terrainMap->hasFile())
-    {
-        return true;
-    }
-
     return false;
 }
 
 
-auto DataManagement::MapSet::infoText() const -> QString
+auto DataManagement::MapSet::icon() -> QString
+{
+    if (updatable())
+    {
+        return QStringLiteral("/icons/material/ic_new_releases.svg");
+    }
+    return QStringLiteral("/icons/material/ic_map.svg");
+}
+
+
+auto DataManagement::MapSet::infoText() -> QString
 {
     QString result;
 
-    if (!m_baseMap.isNull())
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
     {
         if (!result.isEmpty())
         {
             result += QLatin1String("<br>");
         }
-        result += QStringLiteral("%1: %2").arg(tr("Base Map"), m_baseMap->infoText());
+        result += QStringLiteral("%1: %2").arg(map->fileTypeString(), map->infoText());
     }
-
-    if (!m_terrainMap.isNull())
-    {
-        if (!result.isEmpty())
-        {
-            result += QLatin1String("<br>");
-        }
-        result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), m_terrainMap->infoText());
-    }
-
     return result;
 }
 
 
-auto DataManagement::MapSet::updatable() const -> bool
+auto DataManagement::MapSet::updatable() -> bool
 {
-    if (!m_baseMap.isNull() && m_baseMap->updatable())
-    {
-        return true;
-    }
-    if (!m_terrainMap.isNull() && m_terrainMap->updatable())
-    {
-        return true;
-    }
-
     if (!hasFile())
     {
         return false;
     }
-    if (!m_baseMap.isNull() && !m_baseMap->hasFile())
-    {
-        return true;
-    }
-    if (!m_terrainMap.isNull() && !m_terrainMap->hasFile())
-    {
-        return true;
-    }
 
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
+    {
+        if (map->updatable() || !map->hasFile())
+        {
+            return true;
+        }
+    }
     return false;
 }
 
 
 void DataManagement::MapSet::deleteFile()
 {
-    if (!m_baseMap.isNull())
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
     {
-        m_baseMap->deleteFile();
-    }
-    if (!m_terrainMap.isNull())
-    {
-        m_terrainMap->deleteFile();
+        map->deleteFile();
     }
 }
 
 
 void DataManagement::MapSet::startFileDownload()
 {
-    if (!m_baseMap.isNull())
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
     {
-        if (!m_baseMap->hasFile() || m_baseMap->updatable())
-        {
-            m_baseMap->startFileDownload();
-        }
-    }
-
-    if (!m_terrainMap.isNull())
-    {
-        if (!m_terrainMap->hasFile() || m_terrainMap->updatable())
-        {
-            m_terrainMap->startFileDownload();
-        }
+        map->startFileDownload();
     }
 }
 
 
 void DataManagement::MapSet::stopFileDownload()
 {
-    if (!m_baseMap.isNull())
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
     {
-        m_baseMap->stopFileDownload();
-    }
-
-    if (!m_terrainMap.isNull())
-    {
-        m_terrainMap->stopFileDownload();
+        map->stopFileDownload();
     }
 }

@@ -329,8 +329,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
                 break;
             }
         }
-
-        auto* mapSet = new MapSet(downloadableBaseMap, terrainMap, this);
+        auto* mapSet = new MapSet({downloadableBaseMap, terrainMap}, this);
 
         m_mapSets.append(mapSet);
     }

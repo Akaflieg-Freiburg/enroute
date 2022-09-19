@@ -137,6 +137,12 @@ public:
      */
     [[nodiscard]] auto fileName() const -> QString { return _fileName; }
 
+#warning
+    Q_PROPERTY(QString fileTypeString READ fileTypeString CONSTANT)
+    [[nodiscard]] auto fileTypeString() const -> QString;
+    Q_PROPERTY(QString icon READ icon NOTIFY updatableChanged)
+    [[nodiscard]] auto icon() const -> QString;
+
     /*! \brief Convenience property, returns 'true' if the file has been downloaded
      *
      * @warning The notification signal is emitted whenever this class changes

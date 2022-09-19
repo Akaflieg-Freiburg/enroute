@@ -49,17 +49,26 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
         _description = mbtPtr->metaData().value(QStringLiteral("description"));
         _version = mbtPtr->metaData().value(QStringLiteral("version"));
         _attribution = mbtPtr->metaData().value(QStringLiteral("attribution"));
-        _maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt();
-        _minzoom = mbtPtr->metaData().value(QStringLiteral("minzoom")).toInt();
+        bool ok;
+        _maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt(&ok);
+        if (!ok)
+        {
+            _maxzoom = 20;
+        }
+        _minzoom = mbtPtr->metaData().value(QStringLiteral("minzoom")).toInt(&ok);
+        if (!ok)
+        {
+            _minzoom = 1;
+        }
     }
 
     _tiles = baseURL+"/{z}/{x}/{y}."+_format;
 
     // Safety check
-    if (_minzoom > _maxzoom)
+    if (_minzoom >= _maxzoom)
     {
-        _maxzoom = -1;
-        _minzoom = -1;
+        _maxzoom = 20;
+        _minzoom = 1;
     }
 }
 

@@ -54,7 +54,21 @@ auto DataManagement::MapSet::description() -> QString
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
     {
-        result += "<h4>"+map->fileTypeString()+"</h4>";
+        switch(map->contentType())
+        {
+        case Downloadable::AviationMap:
+            result += "<h4>"+tr("Aviation Map")+"</h4>";
+            break;
+        case Downloadable::BaseMap:
+            result += "<h4>"+tr("Base Map")+"</h4>";
+            break;
+        case Downloadable::TerrainMap:
+            result += "<h4>"+tr("Terrain Map")+"</h4>";
+            break;
+        case Downloadable::Data:
+            result += "<h4>"+tr("Data")+"</h4>";
+            break;
+        }
         result += map->description();
     }
     return result;
@@ -110,7 +124,21 @@ auto DataManagement::MapSet::infoText() -> QString
         {
             result += QLatin1String("<br>");
         }
-        result += QStringLiteral("%1: %2").arg(map->fileTypeString(), map->infoText());
+        switch(map->contentType())
+        {
+        case Downloadable::AviationMap:
+            result += QStringLiteral("%1: %2").arg(tr("Aviation Map"), map->infoText());
+            break;
+        case Downloadable::BaseMap:
+            result += QStringLiteral("%1: %2").arg(tr("Base Map"), map->infoText());
+            break;
+        case Downloadable::TerrainMap:
+            result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
+            break;
+        case Downloadable::Data:
+            result += QStringLiteral("%1: %2").arg(tr("Data"), map->infoText());
+            break;
+        }
     }
     return result;
 }

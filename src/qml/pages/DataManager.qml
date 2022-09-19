@@ -23,6 +23,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
+import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -92,7 +93,15 @@ Page {
 
                 ItemDelegate {
                     text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
-                    icon.source: model.modelData.icon
+                    icon.source: {
+                        if (model.modelData.updatable)
+                            return "/icons/material/ic_new_releases.svg";
+                        if (model.modelData.contentType === Downloadable.TerrainMap)
+                            return "/icons/material/ic_terrain.svg";
+                        if (model.modelData.contentType === Downloadable.Data)
+                            return "/icons/material/ic_library_books.svg"
+                        return "/icons/material/ic_map.svg";
+                    }
                     Layout.fillWidth: true
                     enabled: !model.modelData.hasFile
                     onClicked: {

@@ -49,6 +49,22 @@ class Downloadable : public QObject {
     Q_OBJECT
 
 public:
+    /*! \brief Potential content of the managed by this Downloadble */
+    enum ContentType {
+        /*! \brief Aviation Map */
+        AviationMap = 0,
+
+        /*! \brief Base Map */
+        BaseMap = 1,
+
+        /*! \brief Terrain Map */
+        TerrainMap = 2,
+
+        /*! \brief Data */
+        Data = 3
+    };
+    Q_ENUM(ContentType)
+
     /*! \brief Standard constructor
      *
      * @param url The address in the internet where the newest version of the
@@ -138,10 +154,8 @@ public:
     [[nodiscard]] auto fileName() const -> QString { return _fileName; }
 
 #warning
-    Q_PROPERTY(QString fileTypeString READ fileTypeString CONSTANT)
-    [[nodiscard]] auto fileTypeString() const -> QString;
-    Q_PROPERTY(QString icon READ icon NOTIFY updatableChanged)
-    [[nodiscard]] auto icon() const -> QString;
+    Q_PROPERTY(DataManagement::Downloadable::ContentType contentType READ contentType CONSTANT)
+    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable::ContentType;
 
     /*! \brief Convenience property, returns 'true' if the file has been downloaded
      *

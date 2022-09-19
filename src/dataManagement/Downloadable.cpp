@@ -140,22 +140,23 @@ auto DataManagement::Downloadable::infoText() const -> QString {
     return displayText;
 }
 
-auto DataManagement::Downloadable::fileTypeString() const -> QString
+auto DataManagement::Downloadable::contentType() const -> ContentType
 {
     if (_url.path().endsWith(QLatin1String("geojson")))
     {
-        return tr("Aviation Map");
+        return AviationMap;
     }
     if (_url.path().endsWith(QLatin1String("mbtiles")))
     {
-        return tr("Base Map");
+        return BaseMap;
     }
     if (_url.path().endsWith(QLatin1String("terrain")))
     {
-        return tr("Terrain Map");
+        return TerrainMap;
     }
-    return tr("Data");
+    return Data;
 }
+/*
 auto DataManagement::Downloadable::icon() const -> QString
 {
     if (updatable())
@@ -176,7 +177,7 @@ auto DataManagement::Downloadable::icon() const -> QString
     }
     return QStringLiteral("/icons/material/ic_library_books.svg");
 }
-
+*/
 auto DataManagement::Downloadable::fileContent() const -> QByteArray {
     // Paranoid safety checks
     Q_ASSERT(!_fileName.isEmpty());

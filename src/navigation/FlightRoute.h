@@ -27,10 +27,8 @@
 #include <QPointer>
 #include <QXmlStreamReader>
 
-#include "Aircraft.h"
 #include "navigation/Leg.h"
 #include "geomaps/Waypoint.h"
-#include "weather/Wind.h"
 
 namespace GeoMaps
 {

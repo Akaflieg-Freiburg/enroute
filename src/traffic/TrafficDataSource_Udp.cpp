@@ -20,7 +20,6 @@
 
 #include <QNetworkDatagram>
 
-#include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Udp.h"
 
 

@@ -43,7 +43,7 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
 
         // Read Station_ID
         if (xml.isStartElement() && name == QLatin1String("station_id")) {
-            _ICAOCode = xml.readElementText();
+            m_ICAOCode = xml.readElementText();
             continue;
         }
 
@@ -143,7 +143,7 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
     : Weather::Decoder(parent)
 {
     inputStream >> _flightCategory;
-    inputStream >> _ICAOCode;
+    inputStream >> m_ICAOCode;
     inputStream >> _location;
     inputStream >> _observationTime;
     inputStream >> _qnh;
@@ -160,7 +160,7 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
 auto Weather::METAR::expiration() const -> QDateTime
 {
     if (_raw_text.contains(QLatin1String("NOSIG"))) {
-        return _observationTime.addSecs(3*60*60);
+        return _observationTime.addSecs(3LL*60LL*60LL);
     }
     return _observationTime.addSecs(1.5*60*60);
 }
@@ -199,7 +199,7 @@ auto Weather::METAR::isValid() const -> bool
     if (!_observationTime.isValid()) {
         return false;
     }
-    if (_ICAOCode.isEmpty()) {
+    if (m_ICAOCode.isEmpty()) {
         return false;
     }
     if (hasParseError()) {
@@ -299,7 +299,7 @@ auto Weather::METAR::summary() const -> QString {
 void Weather::METAR::write(QDataStream &out)
 {
     out << _flightCategory;
-    out << _ICAOCode;
+    out << m_ICAOCode;
     out << _location;
     out << _observationTime;
     out << _qnh;

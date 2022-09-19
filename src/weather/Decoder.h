@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus                                  *
+ *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,6 +28,7 @@
 #include <QDate>
 #include <QObject>
 
+#include <cstring> // Necessary to work around an issue in metaf
 #include "../3rdParty/metaf/include/metaf.hpp"
 using namespace metaf;
 

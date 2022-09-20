@@ -98,7 +98,7 @@ Map {
     DynamicParameter {
         type: "paint"
         property string layer: "FIS"
-        property string lineColor: "lightgreen"
+        property string lineColor: "green"
         property real lineWidth: 1.5
     }
 

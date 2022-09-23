@@ -243,6 +243,20 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
     return downloadable;
 }
 
+void DataManagement::DataManager::updateAllItems()
+{
+    m_mapSets.removeAll(nullptr);
+    foreach(auto mapSet, m_mapSets)
+    {
+        if (mapSet->updatable())
+        {
+            mapSet->update();
+        }
+    }
+
+    m_databases.updateAll();
+}
+
 void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 {
     if (!m_mapsJSON.hasFile())

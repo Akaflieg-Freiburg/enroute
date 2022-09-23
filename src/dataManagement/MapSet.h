@@ -41,8 +41,6 @@ public:
 
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
-    Q_PROPERTY(QString icon READ icon NOTIFY updatableChanged)
-
     Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
 
     Q_PROPERTY(QString section MEMBER m_section)
@@ -60,8 +58,6 @@ public:
 
     [[nodiscard]] auto hasFile() -> bool;
 
-    [[nodiscard]] auto icon() -> QString;
-
     [[nodiscard]] auto infoText() -> QString;
 
     [[nodiscard]] auto updatable() -> bool;
@@ -74,6 +70,7 @@ public:
     Q_INVOKABLE void deleteFile();
     Q_INVOKABLE void startFileDownload();
     Q_INVOKABLE void stopFileDownload();
+    Q_INVOKABLE void update();
 
 signals:
     /*! \brief Notifier signal for property downloading */

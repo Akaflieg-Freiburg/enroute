@@ -375,6 +375,7 @@ Page {
 
     }
 
+
     TabBar {
         id: bar
         anchors.top: parent.top
@@ -409,7 +410,7 @@ Page {
                 verticalAlignment : Text.AlignVCenter
                 textFormat: Text.RichText
 
-                text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below.</p>")
+                text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
             ScrollView {
@@ -622,6 +623,7 @@ Page {
         }
 
     }
+
 
     footer: Pane {
         width: parent.width

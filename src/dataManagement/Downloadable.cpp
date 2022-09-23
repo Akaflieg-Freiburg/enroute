@@ -156,28 +156,7 @@ auto DataManagement::Downloadable::contentType() const -> ContentType
     }
     return Data;
 }
-/*
-auto DataManagement::Downloadable::icon() const -> QString
-{
-    if (updatable())
-    {
-        return QStringLiteral("/icons/material/ic_new_releases.svg");
-    }
-    if (_url.path().endsWith(QLatin1String("geojson")))
-    {
-        return QStringLiteral("/icons/material/ic_map.svg");
-    }
-    if (_url.path().endsWith(QLatin1String("mbtiles")))
-    {
-        return QStringLiteral("/icons/material/ic_map.svg");
-    }
-    if (_url.path().endsWith(QLatin1String("terrain")))
-    {
-        return QStringLiteral("/icons/material/ic_terrain.svg");
-    }
-    return QStringLiteral("/icons/material/ic_library_books.svg");
-}
-*/
+
 auto DataManagement::Downloadable::fileContent() const -> QByteArray {
     // Paranoid safety checks
     Q_ASSERT(!_fileName.isEmpty());

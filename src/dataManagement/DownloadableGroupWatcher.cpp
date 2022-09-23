@@ -172,7 +172,7 @@ auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<
         result += _downloadable;
     }
 
-    // Sort Downloadables according to lower boundary
+    // Sort Downloadables according to section name and file name
     std::sort(result.begin(), result.end(), [](Downloadable* a, Downloadable* b)
     {
         if (a->section() != b->section()) {

@@ -103,16 +103,6 @@ auto DataManagement::MapSet::hasFile() -> bool
 }
 
 
-auto DataManagement::MapSet::icon() -> QString
-{
-    if (updatable())
-    {
-        return QStringLiteral("/icons/material/ic_new_releases.svg");
-    }
-    return QStringLiteral("/icons/material/ic_map.svg");
-}
-
-
 auto DataManagement::MapSet::infoText() -> QString
 {
     QString result;
@@ -191,3 +181,22 @@ void DataManagement::MapSet::stopFileDownload()
         map->stopFileDownload();
     }
 }
+
+
+void DataManagement::MapSet::update()
+{
+    if (!updatable())
+    {
+        return;
+    }
+
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
+    {
+        if (map->updatable() || !map->hasFile())
+        {
+            map->startFileDownload();
+        }
+    }
+}
+

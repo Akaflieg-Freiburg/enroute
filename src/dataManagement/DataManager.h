@@ -265,6 +265,9 @@ public slots:
         m_mapsJSON.startFileDownload();
     }
 
+    /*! \brief Updates all maps sets and data items */
+    void updateAllItems();
+
 signals:
     /*! \brief Notification signal for the property with the same name */
     void hasRemoteItemListChanged();

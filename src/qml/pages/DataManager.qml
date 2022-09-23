@@ -444,68 +444,61 @@ Page {
                 }
             }
 
-        } // SwipeView
+        }
 
     }
 
-
-    Rectangle {
+    Label {
         id: noMapListWarning
 
-        anchors.top: bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
 
-        color: "white"
+        background: Rectangle {color: "white"}
         visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList
 
-        Label {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: view.font.pixelSize*2
-            anchors.leftMargin: view.font.pixelSize*2
-            anchors.rightMargin: view.font.pixelSize*2
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment : Text.AlignVCenter
+        textFormat: Text.RichText
+        wrapMode: Text.Wrap
 
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
-        }
+        text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
     }
 
     Rectangle {
         id: downloadIndicator
 
-        anchors.top: bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
 
         color: "white"
         visible: global.dataManager().downloadingRemoteItemList
 
-        Label {
-            id: downloadIndicatorLabel
+        ColumnLayout {
+            anchors.fill: parent
 
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: view.font.pixelSize*2
-            anchors.leftMargin: view.font.pixelSize*2
-            anchors.rightMargin: view.font.pixelSize*2
+            Item {
+                Layout.fillHeight: true
+            }
 
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
-        }
+            Label {
+                id: downloadIndicatorLabel
 
-        BusyIndicator {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: downloadIndicatorLabel.bottom
-            anchors.topMargin: 10
+                Layout.fillWidth: true
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment : Text.AlignVCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+                text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
+            }
+
+            BusyIndicator {
+                Layout.fillWidth: true
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+
         }
 
         // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.
@@ -528,6 +521,7 @@ Page {
             NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
         }
     }
+
 
     footer: Pane {
         width: parent.width
@@ -560,7 +554,7 @@ Page {
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                global.dataManager().items.updateAll()
+                global.dataManager().updateAllItems()
             }
         }
     }

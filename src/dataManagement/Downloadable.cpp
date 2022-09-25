@@ -56,6 +56,58 @@ DataManagement::Downloadable::~Downloadable() {
 }
 
 
+auto DataManagement::Downloadable::contentType() const -> ContentType
+{
+    QString tmpName = _url.path();
+    if (tmpName.isEmpty())
+    {
+        tmpName = _fileName;
+    }
+
+    if (tmpName.endsWith(QLatin1String("geojson")))
+    {
+        return AviationMap;
+    }
+    if (tmpName.endsWith(QLatin1String("mbtiles")))
+    {
+        return BaseMap;
+    }
+    if (tmpName.endsWith(QLatin1String("raster")))
+    {
+        return RasterMap;
+    }
+    if (tmpName.endsWith(QLatin1String("terrain")))
+    {
+        return TerrainMap;
+    }
+    return Data;
+}
+
+
+void DataManagement::Downloadable::deleteFile() {
+    // If the local file does not exist, there is nothing to do
+    if (!QFile::exists(_fileName)) {
+        return;
+    }
+
+    // Save old value to see if anything changed
+    bool oldUpdatable = updatable();
+
+    emit aboutToChangeFile(_fileName);
+    QLockFile lockFile(_fileName + ".lock");
+    lockFile.lock();
+    QFile::remove(_fileName);
+    lockFile.unlock();
+    emit hasFileChanged();
+    emit fileContentChanged();
+
+    // Emit signals as appropriate
+    if (oldUpdatable != updatable()) {
+        emit updatableChanged();
+    }
+}
+
+
 auto DataManagement::Downloadable::description() const -> QString
 {
     QFileInfo fi(_fileName);
@@ -108,249 +160,6 @@ auto DataManagement::Downloadable::description() const -> QString
     }
 
     return result;
-}
-
-auto DataManagement::Downloadable::infoText() const -> QString {
-    if (downloading()) {
-        return tr("downloading … %1% complete").arg(_downloadProgress);
-    }
-
-    QString displayText;
-    if (hasFile()) {
-        QFileInfo info(_fileName);
-        displayText = tr("installed • %1")
-                .arg(QLocale::system().formattedDataSize(info.size(), 1,
-                                                         QLocale::DataSizeSIFormat));
-
-        if (updatable()) {
-            displayText += " • " + tr("update available");
-        }
-        if (!url().isValid()) {
-            displayText += " • " + tr("manually imported");
-        }
-    } else {
-        displayText += tr("not installed") + " • ";
-        if (remoteFileSize() >= 0) {
-            displayText += QStringLiteral("%1").arg(QLocale::system().formattedDataSize(
-                                                 remoteFileSize(), 1, QLocale::DataSizeSIFormat));
-        } else {
-            displayText += tr("file size unknown");
-        }
-    }
-    return displayText;
-}
-
-auto DataManagement::Downloadable::contentType() const -> ContentType
-{
-    if (_url.path().endsWith(QLatin1String("geojson")))
-    {
-        return AviationMap;
-    }
-    if (_url.path().endsWith(QLatin1String("mbtiles")))
-    {
-        return BaseMap;
-    }
-    if (_url.path().endsWith(QLatin1String("terrain")))
-    {
-        return TerrainMap;
-    }
-    return Data;
-}
-
-auto DataManagement::Downloadable::fileContent() const -> QByteArray {
-    // Paranoid safety checks
-    Q_ASSERT(!_fileName.isEmpty());
-
-    QFile file(_fileName);
-    if (!file.exists()) {
-        return {};
-    }
-
-    QLockFile lockFile(_fileName + ".lock");
-    lockFile.lock();
-    file.open(QIODevice::ReadOnly);
-    QByteArray result = file.readAll();
-    file.close();
-    lockFile.unlock();
-
-    return result;
-}
-
-
-void DataManagement::Downloadable::setRemoteFileDate(const QDateTime &date) {
-    // Do nothing if old and new data agrees
-    if (date == _remoteFileDate) {
-        return;
-    }
-
-    // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
-
-    _remoteFileDate = date;
-
-    // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
-    }
-    emit remoteFileDateChanged();
-}
-
-
-void DataManagement::Downloadable::setRemoteFileSize(qint64 size) {
-    // Paranoid safety checks
-    Q_ASSERT(size >= -1);
-    if (size < -1) {
-        size = -1;
-    }
-
-    // Do nothing if old and new data agrees
-    if (size == _remoteFileSize) {
-        return;
-    }
-
-    // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
-
-    _remoteFileSize = size;
-
-    // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
-    }
-    emit remoteFileSizeChanged();
-}
-
-
-void DataManagement::Downloadable::setSection(const QString& sectionName)
-{
-    if (sectionName == _section) {
-        return;
-    }
-    _section = sectionName;
-    emit sectionChanged();
-}
-
-
-auto DataManagement::Downloadable::updatable() const -> bool {
-    if (downloading()) {
-        return false;
-    }
-    if (!QFile::exists(_fileName)) {
-        return false;
-    }
-
-    QFileInfo info(_fileName);
-    return _remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate);
-}
-
-
-void DataManagement::Downloadable::deleteFile() {
-    // If the local file does not exist, there is nothing to do
-    if (!QFile::exists(_fileName)) {
-        return;
-    }
-
-    // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
-
-    emit aboutToChangeFile(_fileName);
-    QLockFile lockFile(_fileName + ".lock");
-    lockFile.lock();
-    QFile::remove(_fileName);
-    lockFile.unlock();
-    emit hasFileChanged();
-    emit fileContentChanged();
-
-    // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
-    }
-}
-
-
-void DataManagement::Downloadable::startInfoDownload() {
-
-    // Do not start a new check if an old one is still running
-    if (!_networkReplyDownloadHeader.isNull()) {
-        return;
-    }
-
-    // Start the download process for the remote file info
-    _networkReplyDownloadHeader = GlobalObject::networkAccessManager()->head(QNetworkRequest(_url));
-    connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
-            &Downloadable::downloadHeaderFinished);
-
-}
-
-
-void DataManagement::Downloadable::startFileDownload() {
-
-    // Do not begin a new download if one is already running
-    if (downloading()) {
-        return;
-    }
-
-    // Save old value to see if anything changed
-    auto oldUpdatable = updatable();
-    auto oldDownloadProgress =_downloadProgress;
-    auto oldIsDownloading = downloading();
-
-    // Clear temporary file
-    delete _saveFile;
-
-    // Create directory that will hold the local file, if it does not yet exist
-    QDir dir(QFileInfo(_fileName).dir());
-    if (!dir.exists()) {
-        dir.mkpath(QStringLiteral("."));
-    }
-
-    // Copy the temporary file to the local file
-    _saveFile = new QSaveFile(_fileName, this);
-    _saveFile->open(QIODevice::WriteOnly);
-
-    // Start download
-    QNetworkRequest request(_url);
-    _networkReplyDownloadFile = GlobalObject::networkAccessManager()->get(request);
-    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable::downloadFileFinished);
-    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable::downloadFilePartialDataReceiver);
-    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable::downloadFileProgressReceiver);
-    connect(_networkReplyDownloadFile, &QNetworkReply::errorOccurred, this, &Downloadable::downloadFileErrorReceiver);
-    _downloadProgress = 0;
-
-    // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
-    }
-    if (_downloadProgress != oldDownloadProgress) {
-        emit downloadProgressChanged(_downloadProgress);
-    }
-    if (downloading() != oldIsDownloading) {
-        emit downloadingChanged();
-    }
-}
-
-
-void DataManagement::Downloadable::stopFileDownload() {
-
-    // Do stop a new download if none is already running
-    if (!downloading()) {
-        return;
-    }
-
-    // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
-
-    // Stop the download
-    _networkReplyDownloadFile->deleteLater();
-    _networkReplyDownloadFile = nullptr;
-    delete _saveFile;
-
-    // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
-    }
-    emit downloadingChanged();
-
 }
 
 
@@ -649,4 +458,208 @@ void DataManagement::Downloadable::downloadHeaderFinished() {
     if (oldUpdatable != updatable()) {
         emit updatableChanged();
     }
+}
+
+
+auto DataManagement::Downloadable::infoText() const -> QString {
+    if (downloading()) {
+        return tr("downloading … %1% complete").arg(_downloadProgress);
+    }
+
+    QString displayText;
+    if (hasFile()) {
+        QFileInfo info(_fileName);
+        displayText = tr("installed • %1")
+                .arg(QLocale::system().formattedDataSize(info.size(), 1,
+                                                         QLocale::DataSizeSIFormat));
+
+        if (updatable()) {
+            displayText += " • " + tr("update available");
+        }
+        if (!url().isValid()) {
+            displayText += " • " + tr("manually imported");
+        }
+    } else {
+        displayText += tr("not installed") + " • ";
+        if (remoteFileSize() >= 0) {
+            displayText += QStringLiteral("%1").arg(QLocale::system().formattedDataSize(
+                                                 remoteFileSize(), 1, QLocale::DataSizeSIFormat));
+        } else {
+            displayText += tr("file size unknown");
+        }
+    }
+    return displayText;
+}
+
+
+auto DataManagement::Downloadable::fileContent() const -> QByteArray {
+    // Paranoid safety checks
+    Q_ASSERT(!_fileName.isEmpty());
+
+    QFile file(_fileName);
+    if (!file.exists()) {
+        return {};
+    }
+
+    QLockFile lockFile(_fileName + ".lock");
+    lockFile.lock();
+    file.open(QIODevice::ReadOnly);
+    QByteArray result = file.readAll();
+    file.close();
+    lockFile.unlock();
+
+    return result;
+}
+
+
+void DataManagement::Downloadable::setRemoteFileDate(const QDateTime &date) {
+    // Do nothing if old and new data agrees
+    if (date == _remoteFileDate) {
+        return;
+    }
+
+    // Save old value to see if anything changed
+    bool oldUpdatable = updatable();
+
+    _remoteFileDate = date;
+
+    // Emit signals as appropriate
+    if (oldUpdatable != updatable()) {
+        emit updatableChanged();
+    }
+    emit remoteFileDateChanged();
+}
+
+
+void DataManagement::Downloadable::setRemoteFileSize(qint64 size) {
+    // Paranoid safety checks
+    Q_ASSERT(size >= -1);
+    if (size < -1) {
+        size = -1;
+    }
+
+    // Do nothing if old and new data agrees
+    if (size == _remoteFileSize) {
+        return;
+    }
+
+    // Save old value to see if anything changed
+    bool oldUpdatable = updatable();
+
+    _remoteFileSize = size;
+
+    // Emit signals as appropriate
+    if (oldUpdatable != updatable()) {
+        emit updatableChanged();
+    }
+    emit remoteFileSizeChanged();
+}
+
+
+void DataManagement::Downloadable::setSection(const QString& sectionName)
+{
+    if (sectionName == _section) {
+        return;
+    }
+    _section = sectionName;
+    emit sectionChanged();
+}
+
+
+void DataManagement::Downloadable::startInfoDownload() {
+
+    // Do not start a new check if an old one is still running
+    if (!_networkReplyDownloadHeader.isNull()) {
+        return;
+    }
+
+    // Start the download process for the remote file info
+    _networkReplyDownloadHeader = GlobalObject::networkAccessManager()->head(QNetworkRequest(_url));
+    connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
+            &Downloadable::downloadHeaderFinished);
+
+}
+
+
+void DataManagement::Downloadable::startFileDownload() {
+
+    // Do not begin a new download if one is already running
+    if (downloading()) {
+        return;
+    }
+
+    // Save old value to see if anything changed
+    auto oldUpdatable = updatable();
+    auto oldDownloadProgress =_downloadProgress;
+    auto oldIsDownloading = downloading();
+
+    // Clear temporary file
+    delete _saveFile;
+
+    // Create directory that will hold the local file, if it does not yet exist
+    QDir dir(QFileInfo(_fileName).dir());
+    if (!dir.exists()) {
+        dir.mkpath(QStringLiteral("."));
+    }
+
+    // Copy the temporary file to the local file
+    _saveFile = new QSaveFile(_fileName, this);
+    _saveFile->open(QIODevice::WriteOnly);
+
+    // Start download
+    QNetworkRequest request(_url);
+    _networkReplyDownloadFile = GlobalObject::networkAccessManager()->get(request);
+    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable::downloadFileFinished);
+    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable::downloadFilePartialDataReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable::downloadFileProgressReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::errorOccurred, this, &Downloadable::downloadFileErrorReceiver);
+    _downloadProgress = 0;
+
+    // Emit signals as appropriate
+    if (oldUpdatable != updatable()) {
+        emit updatableChanged();
+    }
+    if (_downloadProgress != oldDownloadProgress) {
+        emit downloadProgressChanged(_downloadProgress);
+    }
+    if (downloading() != oldIsDownloading) {
+        emit downloadingChanged();
+    }
+}
+
+
+void DataManagement::Downloadable::stopFileDownload() {
+
+    // Do stop a new download if none is already running
+    if (!downloading()) {
+        return;
+    }
+
+    // Save old value to see if anything changed
+    bool oldUpdatable = updatable();
+
+    // Stop the download
+    _networkReplyDownloadFile->deleteLater();
+    _networkReplyDownloadFile = nullptr;
+    delete _saveFile;
+
+    // Emit signals as appropriate
+    if (oldUpdatable != updatable()) {
+        emit updatableChanged();
+    }
+    emit downloadingChanged();
+
+}
+
+
+auto DataManagement::Downloadable::updatable() const -> bool {
+    if (downloading()) {
+        return false;
+    }
+    if (!QFile::exists(_fileName)) {
+        return false;
+    }
+
+    QFileInfo info(_fileName);
+    return _remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate);
 }

@@ -253,8 +253,7 @@ void DataManagement::DataManager::updateAllItems()
             mapSet->update();
         }
     }
-
-    m_databases.updateAll();
+    m_items.updateAll();
 }
 
 void DataManagement::DataManager::updateDataItemListAndWhatsNew()
@@ -322,30 +321,36 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     // Now the lists of downloadable items should be complete. Finally, we find and match up map sets.
     qDeleteAll(m_mapSets);
     m_mapSets.clear();
-    foreach (auto downloadableBaseMap, m_baseMapsVector.downloadables())
+    QMap<QString, MapSet*> mapSetsByName;
+    foreach (auto item, m_items.downloadables())
     {
-        if (downloadableBaseMap.isNull())
+        if (item.isNull())
         {
             continue;
         }
-        auto mapName = downloadableBaseMap->objectName();
-
-        DataManagement::Downloadable* terrainMap = nullptr;
-        foreach (auto downloadableTerrain, m_terrainMaps.downloadables())
+        if (item->contentType() == Downloadable::Data)
         {
-            if (downloadableTerrain.isNull())
-            {
-                continue;
-            }
-            if (mapName == downloadableTerrain->objectName())
-            {
-                terrainMap = downloadableTerrain;
-                break;
-            }
+            continue;
         }
-        auto* mapSet = new MapSet({downloadableBaseMap, terrainMap}, this);
 
-        m_mapSets.append(mapSet);
+        QString key = item->section() + "/" + item->objectName();
+        DataManagement::MapSet* mapSet = nullptr;
+        if (mapSetsByName.contains(key))
+        {
+            mapSet = mapSetsByName[key];
+        }
+        else
+        {
+            mapSet = new MapSet(this);
+            m_mapSets.append(mapSet);
+            mapSetsByName[key] = mapSet;
+        }
+
+        if (mapSet == nullptr)
+        {
+            continue;
+        }
+        mapSet->add(item);
     }
 
     // Update the whatsNew property

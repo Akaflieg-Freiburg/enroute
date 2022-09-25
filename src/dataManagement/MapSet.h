@@ -28,7 +28,7 @@ class MapSet : public QObject {
     Q_OBJECT
 
 public:
-    explicit MapSet(QVector<DataManagement::Downloadable*> maps, QObject *parent = nullptr);
+    explicit MapSet(QObject *parent = nullptr);
 
 
     //
@@ -67,6 +67,7 @@ public:
     // Methods
     //
 
+    Q_INVOKABLE void add(DataManagement::Downloadable*);
     Q_INVOKABLE void deleteFile();
     Q_INVOKABLE void startFileDownload();
     Q_INVOKABLE void stopFileDownload();

@@ -21,29 +21,9 @@
 #include "MapSet.h"
 
 
-DataManagement::MapSet::MapSet(QVector<DataManagement::Downloadable*> maps, QObject* parent)
+DataManagement::MapSet::MapSet(QObject* parent)
     : QObject(parent)
 {
-    foreach(auto map, maps)
-    {
-        m_maps.append(map);
-    }
-    m_maps.removeAll(nullptr);
-
-#warning signals are emitted too often
-    foreach(auto map, m_maps)
-    {
-        setObjectName(map->objectName());
-        m_section = map->section();
-
-        connect(map, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
-        connect(map, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
-        connect(map, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
-        connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
-        connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
-        connect(map, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
-        connect(map, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
-    }
 }
 
 
@@ -200,3 +180,26 @@ void DataManagement::MapSet::update()
     }
 }
 
+
+void DataManagement::MapSet::add(DataManagement::Downloadable* map)
+{
+    if ((map == nullptr) || m_maps.contains(map))
+    {
+        return;
+    }
+
+    m_maps.append(map);
+
+    setObjectName(map->objectName());
+    m_section = map->section();
+
+    connect(map, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
+    connect(map, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
+    connect(map, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
+    connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
+    connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
+    connect(map, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
+    connect(map, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
+
+#warning This emits too many signals
+}

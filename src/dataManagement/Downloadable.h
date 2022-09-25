@@ -57,11 +57,14 @@ public:
         /*! \brief Base Map */
         BaseMap = 1,
 
+        /*! \brief Base Map */
+        RasterMap = 2,
+
         /*! \brief Terrain Map */
-        TerrainMap = 2,
+        TerrainMap = 3,
 
         /*! \brief Data */
-        Data = 3
+        Data = 4
     };
     Q_ENUM(ContentType)
 

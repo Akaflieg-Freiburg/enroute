@@ -125,10 +125,10 @@ Page {
                 ToolButton {
                     id: updateButton
                     icon.source: "/icons/material/ic_refresh.svg"
-                    visible: model.modelData.updatable
+                    visible: model.modelData.updatable && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
+                        model.modelData.update()
                     }
                 }
 
@@ -290,13 +290,7 @@ Page {
 
         currentIndex: sv.currentIndex
         TabButton {
-            text: qsTr("Aviation maps")
-        }
-        TabButton {
-            text: qsTr("Base maps")
-        }
-        TabButton {
-            text: qsTr("Terrain")
+            text: qsTr("Maps")
         }
         TabButton {
             text: qsTr("Data")
@@ -320,87 +314,10 @@ Page {
             Layout.fillHeight: true
 
             ListView {
-                clip: true
-                model: global.dataManager().aviationMaps.downloadablesAsObjectList
-                delegate: mapItem
-                ScrollIndicator.vertical: ScrollIndicator {}
-
-                section.property: "modelData.section"
-                section.delegate: sectionHeading
-
-                footer: ColumnLayout {
-                    width: parent.width
-
-                    Rectangle {
-                        Layout.fillWidth: true
-                        height: 1
-                        color: "gray"
-                    }
-
-                    WordWrappingItemDelegate {
-                        Layout.fillWidth: true
-                        icon.source: "/icons/material/ic_info_outline.svg"
-                        text: qsTr("How to request additional aviation maps…")
-                        onClicked: ltd.open()
-
-                        LongTextDialog {
-                            id: ltd
-                            standardButtons: Dialog.Ok
-
-                            title: qsTr("Request Additional Aviation Maps")
-                            text: global.librarian().getStringFromRessource(":text/aviationMapMissing.html")
-                        }
-
-                    }
-
-                    Item { // Spacer
-                        height: 3
-                    }
-
-                }
-
-                // Refresh list of maps on overscroll
-                property int refreshFlick: 0
-                onFlickStarted: {
-                    refreshFlick = atYBeginning
-                }
-                onFlickEnded: {
-                    if ( atYBeginning && refreshFlick ) {
-                        global.mobileAdaptor().vibrateBrief()
-                        global.dataManager().updateRemoteDataItemList()
-                    }
-                }
-            }
-
-            ListView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
                 model: global.dataManager().mapSets
-                delegate: mapItem
-                ScrollIndicator.vertical: ScrollIndicator {}
-
-                section.property: "modelData.section"
-                section.delegate: sectionHeading
-
-                // Refresh list of maps on overscroll
-                property int refreshFlick: 0
-                onFlickStarted: {
-                    refreshFlick = atYBeginning
-                }
-                onFlickEnded: {
-                    if ( atYBeginning && refreshFlick ) {
-                        global.mobileAdaptor().vibrateBrief()
-                        global.dataManager().updateRemoteDataItemList()
-                    }
-                }
-            }
-
-            ListView {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                clip: true
-                model: global.dataManager().terrainMaps.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 

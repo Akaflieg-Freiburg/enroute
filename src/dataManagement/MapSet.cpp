@@ -42,6 +42,9 @@ auto DataManagement::MapSet::description() -> QString
         case Downloadable::BaseMap:
             result += "<h4>"+tr("Base Map")+"</h4>";
             break;
+        case Downloadable::RasterMap:
+            result += "<h4>"+tr("Raster Map")+"</h4>";
+            break;
         case Downloadable::TerrainMap:
             result += "<h4>"+tr("Terrain Map")+"</h4>";
             break;
@@ -101,6 +104,9 @@ auto DataManagement::MapSet::infoText() -> QString
             break;
         case Downloadable::BaseMap:
             result += QStringLiteral("%1: %2").arg(tr("Base Map"), map->infoText());
+            break;
+        case Downloadable::RasterMap:
+            result += QStringLiteral("%1: %2").arg(tr("Raster Map"), map->infoText());
             break;
         case Downloadable::TerrainMap:
             result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
@@ -162,6 +168,7 @@ void DataManagement::MapSet::stopFileDownload()
     }
 }
 
+#warning need to handle case that map vanishes or gets deinstalled
 
 void DataManagement::MapSet::update()
 {

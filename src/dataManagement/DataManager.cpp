@@ -122,27 +122,14 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
     {
     case GeoMaps::MBTILES::Raster:
         newFileName += QLatin1String(".raster");
-        foreach(auto downloadable, m_baseMapsVector.downloadablesWithFile())
-        {
-            if (!downloadable.isNull())
-            {
-                downloadable->deleteFile();
-            }
-        }
         break;
     case GeoMaps::MBTILES::Vector:
         newFileName += QLatin1String(".mbtiles");
-        foreach(auto downloadable, m_baseMapsRaster.downloadablesWithFile())
-        {
-            if (!downloadable.isNull())
-            {
-                downloadable->deleteFile();
-            }
-        }
         break;
     case GeoMaps::MBTILES::Unknown:
         return tr("Unable to recognize map file format.");
     }
+#warning need to test import of vector maps
 
     if (!QDir().mkpath(path))
     {
@@ -179,6 +166,7 @@ void DataManagement::DataManager::onItemFileChanged()
         // that.
         m_items.removeFromGroup(geoMapPtr);
         geoMapPtr->deleteLater();
+        QTimer::singleShot(100, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
 }
 
@@ -352,6 +340,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
         mapSet->add(item);
     }
+    emit mapSetsChanged();
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();
@@ -360,4 +349,22 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         m_whatsNew = newWhatsNew;
         emit whatsNewChanged();
     }
+}
+
+#warning
+auto DataManagement::DataManager::updatable() -> bool
+{
+    m_mapSets.removeAll(nullptr);
+    foreach(auto mapSet, m_mapSets)
+    {
+        if (mapSet->updatable())
+        {
+            return true;
+        }
+    }
+    if (m_items.updatable())
+    {
+        return true;
+    }
+    return false;
 }

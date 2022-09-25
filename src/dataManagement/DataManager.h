@@ -144,6 +144,9 @@ public:
      */
     Q_PROPERTY(DataManagement::DownloadableGroupWatcher* terrainMaps READ terrainMaps CONSTANT)
 
+#warning docu
+    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
+
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
@@ -219,6 +222,9 @@ public:
         return result;
     }
 
+#warning
+    [[nodiscard]] auto updatable() -> bool;
+
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property whatsNew
@@ -284,8 +290,12 @@ signals:
      */
     void error(const QString& message);
 
-#warning
+#warning docu
     void mapSetsChanged();
+
+#warning docu
+#warning Not emitted properly
+    void updatableChanged();
 
     /*! \brief Notification signal for the property with the same name */
     void whatsNewChanged();

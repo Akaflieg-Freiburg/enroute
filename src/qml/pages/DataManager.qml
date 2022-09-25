@@ -443,7 +443,7 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: (!global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList) || (!global.dataManager().items.downloading && global.dataManager().items.updatable)
+        visible: (!global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList) || (!global.dataManager().items.downloading && global.dataManager().updatable)
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
 
         ToolButton {
@@ -463,7 +463,7 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().items.downloading && global.dataManager().items.updatable
+            visible: !global.dataManager().items.downloading && global.dataManager().updatable
 
             text: qsTr("Update")
             icon.source: "/icons/material/ic_file_download.svg"

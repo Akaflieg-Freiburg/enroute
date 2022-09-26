@@ -368,3 +368,21 @@ auto DataManagement::DataManager::updatable() -> bool
     }
     return false;
 }
+
+auto DataManagement::DataManager::updateSizeString() -> QString
+{
+
+    qsizetype size = 0;
+    foreach(auto mapSet, m_mapSets)
+    {
+        size += mapSet->updatableSize();
+    }
+    size += m_databases.updateSize();
+
+    return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
+
+
+
+#warning not implemented
+    return "Not implemented";
+}

@@ -88,12 +88,8 @@ public:
      */
     Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
-    /*! \brief Gives an estimate for the download size for all updates in this
-     *  group, as a localized string
-     *
-     *  The string returned is typically of the form "23.7 MB"
-     */
-    Q_PROPERTY(QString updateSize READ updateSize NOTIFY updateSizeChanged)
+    /*! \brief Gives an estimate for the download size for all updates in this group */
+    Q_PROPERTY(qsizetype updateSize READ updateSize NOTIFY updateSizeChanged)
 
 
     //
@@ -146,7 +142,7 @@ public:
      *
      *  @returns Property updateSize
      */
-    [[nodiscard]] auto updateSize() const -> QString;
+    [[nodiscard]] auto updateSize() const -> qsizetype;
 
 
     //
@@ -192,7 +188,7 @@ signals:
     void updatableChanged(bool);
 
     /*! \brief Notifier signal for the property updatable */
-    void updateSizeChanged(QString);
+    void updateSizeChanged(qsizetype);
 
     /*! \brief Emitted if the content of one of the local files changes.
      *
@@ -245,7 +241,7 @@ private:
     QStringList _cachedFiles{};                                     // Cached value for the 'files' property
     bool _cachedHasFile{false};                                     // Cached value for the 'hasLocalFile' property
     bool _cachedUpdatable{false};                                   // Cached value for the 'updatable' property
-    QString _cachedUpdateSize{};                                    // Cached value for the 'updateSize' property
+    qsizetype _cachedUpdateSize{};                                    // Cached value for the 'updateSize' property
 };
 
 };

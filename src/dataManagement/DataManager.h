@@ -147,6 +147,9 @@ public:
 #warning docu
     Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
+#warning docu
+    Q_PROPERTY(QString updateSizeString READ updateSizeString NOTIFY updateSizeStringChanged)
+
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
@@ -225,6 +228,9 @@ public:
 #warning
     [[nodiscard]] auto updatable() -> bool;
 
+#warning
+    [[nodiscard]] auto updateSizeString() -> QString;
+
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property whatsNew
@@ -296,6 +302,7 @@ signals:
 #warning docu
 #warning Not emitted properly
     void updatableChanged();
+    void updateSizeStringChanged();
 
     /*! \brief Notification signal for the property with the same name */
     void whatsNewChanged();

@@ -47,6 +47,8 @@ public:
 
     Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
+    Q_PROPERTY(qsizetype updatableSize READ updatableSize NOTIFY updatableSizeChanged)
+
 
     //
     // Getter Methods
@@ -61,6 +63,8 @@ public:
     [[nodiscard]] auto infoText() -> QString;
 
     [[nodiscard]] auto updatable() -> bool;
+
+    [[nodiscard]] auto updatableSize() -> qsizetype;
 
 
     //
@@ -102,6 +106,9 @@ signals:
 
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
+
+    /*! \brief Notifier signal for the property updatableSize */
+    void updatableSizeChanged();
 
 private:
     QVector<QPointer<DataManagement::Downloadable>> m_maps;

@@ -123,7 +123,7 @@ void DataManagement::DownloadableGroupWatcher::checkAndEmitSignals()
     QStringList                   newFiles                 = files();
     bool                          newHasFile               = hasFile();
     bool                          newUpdatable             = updatable();
-    QString                       newUpdateSize            = updateSize();
+    qsizetype                     newUpdateSize            = updateSize();
 
     if (newDownloadablesWithFile != _cachedDownloadablesWithFile) {
         _cachedDownloadablesWithFile = newDownloadablesWithFile;
@@ -236,15 +236,17 @@ void DataManagement::DownloadableGroupWatcher::updateAll()
 }
 
 
-auto DataManagement::DownloadableGroupWatcher::updateSize() const -> QString
+auto DataManagement::DownloadableGroupWatcher::updateSize() const -> qsizetype
 {
-    qint64 downloadSize = 0;
+    qsizetype size = 0;
     foreach(auto downloadable, _downloadables)
-        if (downloadable->updatable()) {
-            downloadSize += downloadable->remoteFileSize();
+    {
+        if (downloadable->updatable())
+        {
+            size += downloadable->remoteFileSize();
         }
-
-    return QLocale::system().formattedDataSize(downloadSize, 1, QLocale::DataSizeSIFormat);
+    }
+    return size;
 }
 
 

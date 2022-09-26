@@ -139,6 +139,26 @@ auto DataManagement::MapSet::updatable() -> bool
 }
 
 
+auto DataManagement::MapSet::updatableSize() -> qsizetype
+{
+    if (!updatable())
+    {
+        return 0;
+    }
+
+    qsizetype result = 0;
+    m_maps.removeAll(nullptr);
+    foreach(auto map, m_maps)
+    {
+        if (map->updatable() || !map->hasFile())
+        {
+            result += map->remoteFileSize();
+        }
+    }
+    return result;
+}
+
+
 void DataManagement::MapSet::deleteFile()
 {
     m_maps.removeAll(nullptr);
@@ -168,7 +188,6 @@ void DataManagement::MapSet::stopFileDownload()
     }
 }
 
-#warning need to handle case that map vanishes or gets deinstalled
 
 void DataManagement::MapSet::update()
 {
@@ -207,6 +226,8 @@ void DataManagement::MapSet::add(DataManagement::Downloadable* map)
     connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
     connect(map, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
     connect(map, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
+    connect(map, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableSizeChanged);
+    connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableSizeChanged);
 
 #warning This emits too many signals
 }

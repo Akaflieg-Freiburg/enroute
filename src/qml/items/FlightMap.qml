@@ -104,6 +104,27 @@ Map {
 
 
     /*
+     * SUA - Special Use Airspace
+     */
+
+    DynamicParameter {
+        type: "layer"
+
+        property string name: "FIS"
+        property string layerType: "line"
+        property string source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "SUA"]
+    }
+
+    DynamicParameter {
+        type: "paint"
+        property string layer: "FIS"
+        property string lineColor: "green"
+        property real lineWidth: 1.5
+    }
+
+
+    /*
      * Gliding Sectors
      */
 

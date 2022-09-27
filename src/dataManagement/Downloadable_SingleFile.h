@@ -139,10 +139,6 @@ public:
      */
     [[nodiscard]] auto fileName() const -> QString { return _fileName; }
 
-#warning
-    Q_PROPERTY(DataManagement::Downloadable_SingleFile::ContentType contentType READ contentType CONSTANT)
-    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_SingleFile::ContentType;
-
     /*! \brief Convenience property, returns 'true' if the file has been downloaded
      *
      * @warning The notification signal is emitted whenever this class changes

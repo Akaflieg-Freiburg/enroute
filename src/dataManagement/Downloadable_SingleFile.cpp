@@ -45,6 +45,31 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
     connect(this, &Downloadable_SingleFile::fileContentChanged, this, &Downloadable_SingleFile::infoTextChanged);
     connect(this, &Downloadable_SingleFile::downloadingChanged, this, &Downloadable_SingleFile::infoTextChanged);
     connect(this, &Downloadable_SingleFile::downloadProgressChanged, this, &Downloadable_SingleFile::infoTextChanged);
+
+    {   // set m_contentType
+        QString tmpName = _url.path();
+        if (tmpName.isEmpty())
+        {
+            tmpName = _fileName;
+        }
+
+        if (tmpName.endsWith(QLatin1String("geojson")))
+        {
+            m_contentType = AviationMap;
+        }
+        else if (tmpName.endsWith(QLatin1String("mbtiles")))
+        {
+            m_contentType = BaseMapVector;
+        }
+        else if (tmpName.endsWith(QLatin1String("raster")))
+        {
+            m_contentType = BaseMapRaster;
+        }
+        else if (tmpName.endsWith(QLatin1String("terrain")))
+        {
+            m_contentType = TerrainMap;
+        }
+    }
 }
 
 
@@ -53,34 +78,6 @@ DataManagement::Downloadable_SingleFile::~Downloadable_SingleFile() {
     delete _networkReplyDownloadFile;
     delete _networkReplyDownloadHeader;
     delete _saveFile;
-}
-
-
-auto DataManagement::Downloadable_SingleFile::contentType() const -> ContentType
-{
-    QString tmpName = _url.path();
-    if (tmpName.isEmpty())
-    {
-        tmpName = _fileName;
-    }
-
-    if (tmpName.endsWith(QLatin1String("geojson")))
-    {
-        return AviationMap;
-    }
-    if (tmpName.endsWith(QLatin1String("mbtiles")))
-    {
-        return BaseMapVector;
-    }
-    if (tmpName.endsWith(QLatin1String("raster")))
-    {
-        return BaseMapRaster;
-    }
-    if (tmpName.endsWith(QLatin1String("terrain")))
-    {
-        return TerrainMap;
-    }
-    return Data;
 }
 
 

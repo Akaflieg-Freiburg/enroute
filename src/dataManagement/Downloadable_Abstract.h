@@ -53,8 +53,32 @@ public:
      */
     explicit Downloadable_Abstract(QObject *parent = nullptr);
 
+
+
+    //
+    // PROPERTIES
+    //
+
+    /*! \brief Most probable content of file(s) managed by this object */
+    Q_PROPERTY(DataManagement::Downloadable_Abstract::ContentType contentType READ contentType CONSTANT)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property contentType
+     */
+    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_Abstract::ContentType {return m_contentType;}
+
+protected:
+    ContentType m_contentType {Data};
+
 private:
-     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
+    Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 };
 
 };

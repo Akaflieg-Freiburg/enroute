@@ -24,6 +24,7 @@
 DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(QObject* parent)
     : Downloadable_Abstract(parent)
 {
+    m_contentType = MapSet;
 }
 
 

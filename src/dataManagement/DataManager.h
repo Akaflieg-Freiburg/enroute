@@ -335,7 +335,7 @@ private:
     // created and added to _items. Depending on localFileName, it will also be
     // added to _aviationMap, _baseMaps, or _databases. A pointer to that item is
     // then returned.
-    DataManagement::Downloadable* createOrRecycleItem(const QUrl& url, const QString& localFileName);
+    DataManagement::Downloadable_SingleFile* createOrRecycleItem(const QUrl& url, const QString& localFileName);
 
     // Full path name of data directory, without trailing slash
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};
@@ -346,7 +346,7 @@ private:
     // This Downloadable object manages the central text file that describes the
     // remotely available aviation maps. It is set in the constructor to point
     // to the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
-    DataManagement::Downloadable m_mapsJSON { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
+    DataManagement::Downloadable_SingleFile m_mapsJSON { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
     DataManagement::DownloadableGroup m_aviationMaps;

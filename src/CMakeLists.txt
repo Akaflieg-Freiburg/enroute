@@ -73,7 +73,8 @@ set(SOURCES
 
     # Header files
     dataManagement/DataManager.h
-    dataManagement/Downloadable.h
+    dataManagement/Downloadable_Abstract.h
+    dataManagement/Downloadable_SingleFile.h
     dataManagement/DownloadableGroup.h
     dataManagement/DownloadableGroupWatcher.h
     dataManagement/MapSet.h
@@ -136,7 +137,8 @@ set(SOURCES
 
     # C++ files
     dataManagement/DataManager.cpp
-    dataManagement/Downloadable.cpp
+    dataManagement/Downloadable_Abstract.cpp
+    dataManagement/Downloadable_SingleFile.cpp
     dataManagement/DownloadableGroup.cpp
     dataManagement/DownloadableGroupWatcher.cpp
     dataManagement/MapSet.cpp

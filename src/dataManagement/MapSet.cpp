@@ -36,19 +36,19 @@ auto DataManagement::MapSet::description() -> QString
     {
         switch(map->contentType())
         {
-        case Downloadable::AviationMap:
+        case Downloadable_SingleFile::AviationMap:
             result += "<h4>"+tr("Aviation Map")+"</h4>";
             break;
-        case Downloadable::BaseMap:
+        case Downloadable_SingleFile::BaseMap:
             result += "<h4>"+tr("Base Map")+"</h4>";
             break;
-        case Downloadable::RasterMap:
+        case Downloadable_SingleFile::RasterMap:
             result += "<h4>"+tr("Raster Map")+"</h4>";
             break;
-        case Downloadable::TerrainMap:
+        case Downloadable_SingleFile::TerrainMap:
             result += "<h4>"+tr("Terrain Map")+"</h4>";
             break;
-        case Downloadable::Data:
+        case Downloadable_SingleFile::Data:
             result += "<h4>"+tr("Data")+"</h4>";
             break;
         }
@@ -99,19 +99,19 @@ auto DataManagement::MapSet::infoText() -> QString
         }
         switch(map->contentType())
         {
-        case Downloadable::AviationMap:
+        case Downloadable_SingleFile::AviationMap:
             result += QStringLiteral("%1: %2").arg(tr("Aviation Map"), map->infoText());
             break;
-        case Downloadable::BaseMap:
+        case Downloadable_SingleFile::BaseMap:
             result += QStringLiteral("%1: %2").arg(tr("Base Map"), map->infoText());
             break;
-        case Downloadable::RasterMap:
+        case Downloadable_SingleFile::RasterMap:
             result += QStringLiteral("%1: %2").arg(tr("Raster Map"), map->infoText());
             break;
-        case Downloadable::TerrainMap:
+        case Downloadable_SingleFile::TerrainMap:
             result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
             break;
-        case Downloadable::Data:
+        case Downloadable_SingleFile::Data:
             result += QStringLiteral("%1: %2").arg(tr("Data"), map->infoText());
             break;
         }
@@ -207,7 +207,7 @@ void DataManagement::MapSet::update()
 }
 
 
-void DataManagement::MapSet::add(DataManagement::Downloadable* map)
+void DataManagement::MapSet::add(DataManagement::Downloadable_SingleFile* map)
 {
     if ((map == nullptr) || m_maps.contains(map))
     {
@@ -219,15 +219,15 @@ void DataManagement::MapSet::add(DataManagement::Downloadable* map)
     setObjectName(map->objectName());
     m_section = map->section();
 
-    connect(map, &DataManagement::Downloadable::error, this, &DataManagement::MapSet::error);
-    connect(map, &DataManagement::Downloadable::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
-    connect(map, &DataManagement::Downloadable::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
-    connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
-    connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
-    connect(map, &DataManagement::Downloadable::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
-    connect(map, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
-    connect(map, &DataManagement::Downloadable::updatableChanged, this, &DataManagement::MapSet::updatableSizeChanged);
-    connect(map, &DataManagement::Downloadable::hasFileChanged, this, &DataManagement::MapSet::updatableSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::error, this, &DataManagement::MapSet::error);
+    connect(map, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::MapSet::updatableSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::MapSet::updatableSizeChanged);
 
 #warning This emits too many signals
 }

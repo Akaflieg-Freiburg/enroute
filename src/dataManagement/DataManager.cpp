@@ -28,6 +28,9 @@
 #include "dataManagement/UpdateNotifier.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 {
@@ -35,12 +38,12 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     cleanDataDirectory();
 
     // Wire up the Dowloadable object "_maps_json"
-    connect(&m_mapsJSON, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::hasFileChanged, this, &DataManager::hasRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, []()
+    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
+    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
+    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManager::hasRemoteItemListChanged);
+    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, []()
     { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
-    connect(&m_mapsJSON, &DataManagement::Downloadable::error, this, [this](const QString & /*unused*/, QString message)
+    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::error, this, [this](const QString & /*unused*/, QString message)
     { emit error(std::move(message)); });
 
     // Wire up the DownloadableGroup _items
@@ -166,11 +169,11 @@ void DataManagement::DataManager::onItemFileChanged()
         // that.
         m_items.removeFromGroup(geoMapPtr);
         geoMapPtr->deleteLater();
-        QTimer::singleShot(100, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
+        QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
 }
 
-DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName)
+DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName)
 {
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its
@@ -188,7 +191,7 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
     }
 
     // Construct a new downloadable object and add to appropriate groups
-    auto* downloadable = new DataManagement::Downloadable(url, localFileName, this);
+    auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, this);
     if (localFileName.endsWith(QLatin1String("geojson")) ||
             localFileName.endsWith(QLatin1String("mbtiles")) ||
             localFileName.endsWith(QLatin1String("raster")) ||
@@ -316,7 +319,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         {
             continue;
         }
-        if (item->contentType() == Downloadable::Data)
+        if (item->contentType() == Downloadable_SingleFile::Data)
         {
             continue;
         }
@@ -362,11 +365,7 @@ auto DataManagement::DataManager::updatable() -> bool
             return true;
         }
     }
-    if (m_items.updatable())
-    {
-        return true;
-    }
-    return false;
+    return m_items.updatable();
 }
 
 auto DataManagement::DataManager::updateSizeString() -> QString
@@ -384,5 +383,5 @@ auto DataManagement::DataManager::updateSizeString() -> QString
 
 
 #warning not implemented
-    return "Not implemented";
+    return QStringLiteral("Not implemented");
 }

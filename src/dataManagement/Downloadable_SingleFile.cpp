@@ -27,28 +27,28 @@
 #include <utility>
 
 #include "geomaps/MBTILES.h"
-#include "Downloadable.h"
+#include "Downloadable_SingleFile.h"
 #include "GlobalObject.h"
 #include "Settings.h"
 
-DataManagement::Downloadable::Downloadable(QUrl url, const QString &fileName, QObject *parent)
-    : QObject(parent), _url(std::move(url)) {
+DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const QString &fileName, QObject *parent)
+    : Downloadable_Abstract(parent), _url(std::move(url)) {
     // Paranoid safety checks
     Q_ASSERT(!fileName.isEmpty());
 
     QFileInfo info(fileName);
     _fileName = info.absoluteFilePath();
 
-    connect(this, &Downloadable::remoteFileDateChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::remoteFileSizeChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::hasFileChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::fileContentChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::downloadingChanged, this, &Downloadable::infoTextChanged);
-    connect(this, &Downloadable::downloadProgressChanged, this, &Downloadable::infoTextChanged);
+    connect(this, &Downloadable_SingleFile::remoteFileDateChanged, this, &Downloadable_SingleFile::infoTextChanged);
+    connect(this, &Downloadable_SingleFile::remoteFileSizeChanged, this, &Downloadable_SingleFile::infoTextChanged);
+    connect(this, &Downloadable_SingleFile::hasFileChanged, this, &Downloadable_SingleFile::infoTextChanged);
+    connect(this, &Downloadable_SingleFile::fileContentChanged, this, &Downloadable_SingleFile::infoTextChanged);
+    connect(this, &Downloadable_SingleFile::downloadingChanged, this, &Downloadable_SingleFile::infoTextChanged);
+    connect(this, &Downloadable_SingleFile::downloadProgressChanged, this, &Downloadable_SingleFile::infoTextChanged);
 }
 
 
-DataManagement::Downloadable::~Downloadable() {
+DataManagement::Downloadable_SingleFile::~Downloadable_SingleFile() {
     // Free all ressources
     delete _networkReplyDownloadFile;
     delete _networkReplyDownloadHeader;
@@ -56,7 +56,7 @@ DataManagement::Downloadable::~Downloadable() {
 }
 
 
-auto DataManagement::Downloadable::contentType() const -> ContentType
+auto DataManagement::Downloadable_SingleFile::contentType() const -> ContentType
 {
     QString tmpName = _url.path();
     if (tmpName.isEmpty())
@@ -84,7 +84,7 @@ auto DataManagement::Downloadable::contentType() const -> ContentType
 }
 
 
-void DataManagement::Downloadable::deleteFile() {
+void DataManagement::Downloadable_SingleFile::deleteFile() {
     // If the local file does not exist, there is nothing to do
     if (!QFile::exists(_fileName)) {
         return;
@@ -108,7 +108,7 @@ void DataManagement::Downloadable::deleteFile() {
 }
 
 
-auto DataManagement::Downloadable::description() const -> QString
+auto DataManagement::Downloadable_SingleFile::description() const -> QString
 {
     QFileInfo fi(_fileName);
     if (!fi.exists())
@@ -163,7 +163,7 @@ auto DataManagement::Downloadable::description() const -> QString
 }
 
 
-void DataManagement::Downloadable::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
+void DataManagement::Downloadable_SingleFile::downloadFileErrorReceiver(QNetworkReply::NetworkError code)
 {
 
     // Do nothing if there is no error
@@ -341,7 +341,7 @@ void DataManagement::Downloadable::downloadFileErrorReceiver(QNetworkReply::Netw
 }
 
 
-void DataManagement::Downloadable::downloadFileFinished() {
+void DataManagement::Downloadable_SingleFile::downloadFileFinished() {
     // Paranoid safety checks
     //  Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_tmpFile.isNull());
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
@@ -390,7 +390,7 @@ void DataManagement::Downloadable::downloadFileFinished() {
 }
 
 
-void DataManagement::Downloadable::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
+void DataManagement::Downloadable_SingleFile::downloadFileProgressReceiver(qint64 bytesReceived, qint64 bytesTotal) {
     auto oldDownloadProgress = _downloadProgress;
 
     // If the content is compressed, then Qt does not know the total size and will set 'bytesTotal' to -1. In that case, the number _remoteFileSize might be a better estimate.
@@ -412,7 +412,7 @@ void DataManagement::Downloadable::downloadFileProgressReceiver(qint64 bytesRece
 }
 
 
-void DataManagement::Downloadable::downloadFilePartialDataReceiver() {
+void DataManagement::Downloadable_SingleFile::downloadFilePartialDataReceiver() {
     // Paranoid safety checks
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
         stopFileDownload();
@@ -427,7 +427,7 @@ void DataManagement::Downloadable::downloadFilePartialDataReceiver() {
 }
 
 
-void DataManagement::Downloadable::downloadHeaderFinished() {
+void DataManagement::Downloadable_SingleFile::downloadHeaderFinished() {
     // Paranoid safety checks
     Q_ASSERT(!_networkReplyDownloadHeader.isNull());
     if (_networkReplyDownloadHeader.isNull()) {
@@ -461,7 +461,7 @@ void DataManagement::Downloadable::downloadHeaderFinished() {
 }
 
 
-auto DataManagement::Downloadable::infoText() const -> QString {
+auto DataManagement::Downloadable_SingleFile::infoText() const -> QString {
     if (downloading()) {
         return tr("downloading … %1% complete").arg(_downloadProgress);
     }
@@ -492,7 +492,7 @@ auto DataManagement::Downloadable::infoText() const -> QString {
 }
 
 
-auto DataManagement::Downloadable::fileContent() const -> QByteArray {
+auto DataManagement::Downloadable_SingleFile::fileContent() const -> QByteArray {
     // Paranoid safety checks
     Q_ASSERT(!_fileName.isEmpty());
 
@@ -512,7 +512,7 @@ auto DataManagement::Downloadable::fileContent() const -> QByteArray {
 }
 
 
-void DataManagement::Downloadable::setRemoteFileDate(const QDateTime &date) {
+void DataManagement::Downloadable_SingleFile::setRemoteFileDate(const QDateTime &date) {
     // Do nothing if old and new data agrees
     if (date == _remoteFileDate) {
         return;
@@ -531,7 +531,7 @@ void DataManagement::Downloadable::setRemoteFileDate(const QDateTime &date) {
 }
 
 
-void DataManagement::Downloadable::setRemoteFileSize(qint64 size) {
+void DataManagement::Downloadable_SingleFile::setRemoteFileSize(qint64 size) {
     // Paranoid safety checks
     Q_ASSERT(size >= -1);
     if (size < -1) {
@@ -556,7 +556,7 @@ void DataManagement::Downloadable::setRemoteFileSize(qint64 size) {
 }
 
 
-void DataManagement::Downloadable::setSection(const QString& sectionName)
+void DataManagement::Downloadable_SingleFile::setSection(const QString& sectionName)
 {
     if (sectionName == _section) {
         return;
@@ -566,7 +566,7 @@ void DataManagement::Downloadable::setSection(const QString& sectionName)
 }
 
 
-void DataManagement::Downloadable::startInfoDownload() {
+void DataManagement::Downloadable_SingleFile::startInfoDownload() {
 
     // Do not start a new check if an old one is still running
     if (!_networkReplyDownloadHeader.isNull()) {
@@ -576,12 +576,12 @@ void DataManagement::Downloadable::startInfoDownload() {
     // Start the download process for the remote file info
     _networkReplyDownloadHeader = GlobalObject::networkAccessManager()->head(QNetworkRequest(_url));
     connect(_networkReplyDownloadHeader, &QNetworkReply::finished, this,
-            &Downloadable::downloadHeaderFinished);
+            &Downloadable_SingleFile::downloadHeaderFinished);
 
 }
 
 
-void DataManagement::Downloadable::startFileDownload() {
+void DataManagement::Downloadable_SingleFile::startFileDownload() {
 
     // Do not begin a new download if one is already running
     if (downloading()) {
@@ -609,10 +609,10 @@ void DataManagement::Downloadable::startFileDownload() {
     // Start download
     QNetworkRequest request(_url);
     _networkReplyDownloadFile = GlobalObject::networkAccessManager()->get(request);
-    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable::downloadFileFinished);
-    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable::downloadFilePartialDataReceiver);
-    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable::downloadFileProgressReceiver);
-    connect(_networkReplyDownloadFile, &QNetworkReply::errorOccurred, this, &Downloadable::downloadFileErrorReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable_SingleFile::downloadFileFinished);
+    connect(_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable_SingleFile::downloadFilePartialDataReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::downloadProgress, this, &Downloadable_SingleFile::downloadFileProgressReceiver);
+    connect(_networkReplyDownloadFile, &QNetworkReply::errorOccurred, this, &Downloadable_SingleFile::downloadFileErrorReceiver);
     _downloadProgress = 0;
 
     // Emit signals as appropriate
@@ -628,7 +628,7 @@ void DataManagement::Downloadable::startFileDownload() {
 }
 
 
-void DataManagement::Downloadable::stopFileDownload() {
+void DataManagement::Downloadable_SingleFile::stopFileDownload() {
 
     // Do stop a new download if none is already running
     if (!downloading()) {
@@ -652,7 +652,7 @@ void DataManagement::Downloadable::stopFileDownload() {
 }
 
 
-auto DataManagement::Downloadable::updatable() const -> bool {
+auto DataManagement::Downloadable_SingleFile::updatable() const -> bool {
     if (downloading()) {
         return false;
     }

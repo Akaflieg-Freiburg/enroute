@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "dataManagement/Downloadable.h"
+#include "dataManagement/Downloadable_SingleFile.h"
 #include "geomaps/MBTILES.h"
 #include <qhttpengine/filesystemhandler.h>
 #include <qhttpengine/server.h>

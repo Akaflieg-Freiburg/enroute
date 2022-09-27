@@ -27,6 +27,8 @@
 #include <QPointer>
 #include <QSaveFile>
 
+#include "Downloadable_Abstract.h"
+
 
 namespace DataManagement {
 
@@ -45,7 +47,7 @@ namespace DataManagement {
   downloads work.
 */
 
-class Downloadable : public QObject {
+class Downloadable_SingleFile : public Downloadable_Abstract {
     Q_OBJECT
 
 public:
@@ -91,14 +93,14 @@ public:
      *
      * Use the method startFileDownload() to initiate the download process.
      */
-    explicit Downloadable(QUrl url, const QString &localFileName, QObject *parent = nullptr);
+    explicit Downloadable_SingleFile(QUrl url, const QString &localFileName, QObject *parent = nullptr);
 
     /*! \brief Standard destructor
      *
      * This destructor will stop all running downloads and delete all temporary
      * files.  It will not delete the local file.
      */
-    ~Downloadable() override;
+    ~Downloadable_SingleFile() override;
 
     /*! \brief Describe installed map
      *
@@ -157,8 +159,8 @@ public:
     [[nodiscard]] auto fileName() const -> QString { return _fileName; }
 
 #warning
-    Q_PROPERTY(DataManagement::Downloadable::ContentType contentType READ contentType CONSTANT)
-    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable::ContentType;
+    Q_PROPERTY(DataManagement::Downloadable_SingleFile::ContentType contentType READ contentType CONSTANT)
+    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_SingleFile::ContentType;
 
     /*! \brief Convenience property, returns 'true' if the file has been downloaded
      *
@@ -471,7 +473,7 @@ private slots:
     void downloadHeaderFinished();
 
 private:
-     Q_DISABLE_COPY_MOVE(Downloadable)
+     Q_DISABLE_COPY_MOVE(Downloadable_SingleFile)
 
     // This member holds the download progress.
     int _downloadProgress{0};

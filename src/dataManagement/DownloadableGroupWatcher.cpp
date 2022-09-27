@@ -119,7 +119,7 @@ void DataManagement::DownloadableGroupWatcher::cleanUp()
 void DataManagement::DownloadableGroupWatcher::checkAndEmitSignals()
 {
     bool                          newDownloading           = downloading();
-    QVector<QPointer<Downloadable>> newDownloadablesWithFile = downloadablesWithFile();
+    QVector<QPointer<Downloadable_SingleFile>> newDownloadablesWithFile = downloadablesWithFile();
     QStringList                   newFiles                 = files();
     bool                          newHasFile               = hasFile();
     bool                          newUpdatable             = updatable();
@@ -162,9 +162,9 @@ void DataManagement::DownloadableGroupWatcher::checkAndEmitSignals()
 }
 
 
-auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloadable>>
+auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloadable_SingleFile>>
 {
-    QVector<QPointer<Downloadable>> result;
+    QVector<QPointer<Downloadable_SingleFile>> result;
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull()) {
             continue;
@@ -173,7 +173,7 @@ auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<
     }
 
     // Sort Downloadables according to section name and file name
-    std::sort(result.begin(), result.end(), [](Downloadable* a, Downloadable* b)
+    std::sort(result.begin(), result.end(), [](Downloadable_SingleFile* a, Downloadable_SingleFile* b)
     {
         if (a->section() != b->section()) {
             return (a->section() < b->section());
@@ -186,9 +186,9 @@ auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<
 }
 
 
-auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> QVector<QPointer<Downloadable>>
+auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> QVector<QPointer<Downloadable_SingleFile>>
 {
-    QVector<QPointer<Downloadable>> result;
+    QVector<QPointer<Downloadable_SingleFile>> result;
     foreach(auto _downloadable, _downloadables) {
         if (_downloadable.isNull()) {
             continue;
@@ -200,7 +200,7 @@ auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> 
     }
 
     // Sort Downloadables according to lower boundary
-    std::sort(result.begin(), result.end(), [](Downloadable* a, Downloadable* b)
+    std::sort(result.begin(), result.end(), [](Downloadable_SingleFile* a, Downloadable_SingleFile* b)
     {
         if (a->section() != b->section()) {
             return (a->section() < b->section());

@@ -27,7 +27,7 @@ DataManagement::DownloadableGroup::DownloadableGroup(QObject *parent)
 }
 
 
-void DataManagement::DownloadableGroup::addToGroup(Downloadable* downloadable)
+void DataManagement::DownloadableGroup::addToGroup(Downloadable_SingleFile* downloadable)
 {
     // Avoid double entries
     if (_downloadables.contains(downloadable))
@@ -37,7 +37,7 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable* downloadable)
 
     // Add element to group
     _downloadables.append(downloadable);
-    std::sort(_downloadables.begin(), _downloadables.end(), [](Downloadable* a, Downloadable* b)
+    std::sort(_downloadables.begin(), _downloadables.end(), [](Downloadable_SingleFile* a, Downloadable_SingleFile* b)
     {
         if (a->section() != b->section()) {
             return (a->section() < b->section());
@@ -47,10 +47,10 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable* downloadable)
     );
 
 
-    connect(downloadable, &Downloadable::downloadingChanged, this, &DownloadableGroup::checkAndEmitSignals);
-    connect(downloadable, &Downloadable::updatableChanged, this, &DownloadableGroup::checkAndEmitSignals);
-    connect(downloadable, &Downloadable::hasFileChanged, this, &DownloadableGroup::checkAndEmitSignals);
-    connect(downloadable, &Downloadable::fileContentChanged, this, &DownloadableGroup::localFileContentChanged);
+    connect(downloadable, &Downloadable_SingleFile::downloadingChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable_SingleFile::updatableChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable_SingleFile::hasFileChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable_SingleFile::fileContentChanged, this, &DownloadableGroup::localFileContentChanged);
     connect(downloadable, &QObject::destroyed, this, &DownloadableGroup::cleanUp);
     checkAndEmitSignals();
 
@@ -62,7 +62,7 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable* downloadable)
 }
 
 
-void DataManagement::DownloadableGroup::removeFromGroup(Downloadable *downloadable)
+void DataManagement::DownloadableGroup::removeFromGroup(Downloadable_SingleFile *downloadable)
 {
     auto index = _downloadables.indexOf(downloadable);
 

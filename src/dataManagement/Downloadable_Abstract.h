@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,51 +20,29 @@
 
 #pragma once
 
-#include "DownloadableGroupWatcher.h"
+#include <QObject>
+
 
 namespace DataManagement {
 
-/*! \brief Manages a set of downloadable objects
-
-  This class inherits from DownloadableGroupWatcher, but has a public
-  constructor and two methods (addToGroup, removeFromGroup) that allow to
-  manipulate the group.
+/*! \brief Abstract base class Downloadable_SingleFile and Downloadable_MultiFile
+ *
+ *  This is an abstract base class Downloadable_SingleFile and Downloadable_MultiFile, ensuring that the two classes share a common API.
+ *
  */
 
-class DownloadableGroup : public DownloadableGroupWatcher
-{
+class Downloadable_Abstract : public QObject {
     Q_OBJECT
 
 public:
-    /*! \brief Constructs an empty group
-      
-      @param parent The standard QObject parent pointer.
-    */
-    explicit DownloadableGroup(QObject *parent=nullptr);
-
-    /*! \brief Adds a Downloadable to the group
-
-      This method adds a Downloadable object to the group.
-
-      The DownloadableGroup does not take ownership of the Downloadable, and it
-      is safe to delete the Downloadable after it has been added, without
-      removing it first. It is perfectly fine for Downloadable objects to be
-      members of several groups.
-
-      @param downloadable Pointer to the Downloadable to be added.
-    */
-    void addToGroup(DataManagement::Downloadable_SingleFile* downloadable);
-
-    /*! \brief Remove a downloadable from the group
-
-      This method removes a Downloadable from the group.
-
-      @param downloadable Pointer to the Downloadable to be removed.
+    /*! \brief Standard constructor
+     *
+     * @param parent The standard QObject parent pointer.
      */
-    void removeFromGroup(DataManagement::Downloadable_SingleFile* downloadable);
+    explicit Downloadable_Abstract(QObject *parent = nullptr);
 
 private:
-    Q_DISABLE_COPY_MOVE(DownloadableGroup)
+     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 };
 
 };

@@ -22,7 +22,7 @@
 
 #include <QTimer>
 
-#include "Downloadable.h"
+#include "Downloadable_SingleFile.h"
 
 namespace DataManagement
 {
@@ -49,7 +49,7 @@ public:
      *  by section() and then secondly by file name. The nullptr is never
      *  contained in the list.
      */
-    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable>> downloadables READ downloadables NOTIFY downloadablesChanged)
+    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable_SingleFile>> downloadables READ downloadables NOTIFY downloadablesChanged)
 
     /*! \brief List of Downloadables in this group, as a list of QObjects
      *
@@ -65,7 +65,7 @@ public:
      *  ascending order, first by section() and then secondly by file name. The
      *  nullptr is never contained in the list.
      */
-    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
+    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable_SingleFile>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
 
     /*! \brief Indicates whether a download process is currently running
      *
@@ -100,7 +100,7 @@ public:
      *
      *   @returns Property downloadables
      */
-    [[nodiscard]] auto downloadables() const -> QVector<QPointer<DataManagement::Downloadable>>;
+    [[nodiscard]] auto downloadables() const -> QVector<QPointer<DataManagement::Downloadable_SingleFile>>;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -112,7 +112,7 @@ public:
      *
      *  @returns Property downloadablesWithFiles
      */
-    [[nodiscard]] auto downloadablesWithFile() const -> QVector<QPointer<DataManagement::Downloadable>>;
+    [[nodiscard]] auto downloadablesWithFile() const -> QVector<QPointer<DataManagement::Downloadable_SingleFile>>;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -173,7 +173,7 @@ public:
 
 signals:
     /*! \brief Notifier signal for property downloading */
-    void downloadablesWithFileChanged(QVector<QPointer<DataManagement::Downloadable>>);
+    void downloadablesWithFileChanged(QVector<QPointer<DataManagement::Downloadable_SingleFile>>);
 
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged(bool);
@@ -227,7 +227,7 @@ protected:
     explicit DownloadableGroupWatcher(QObject *parent = nullptr);
 
     // List of QPointers to the Downloadable objects in this group
-    QList<QPointer<Downloadable>> _downloadables;
+    QList<QPointer<Downloadable_SingleFile>> _downloadables;
 
 private:
     Q_DISABLE_COPY_MOVE(DownloadableGroupWatcher)
@@ -237,7 +237,7 @@ private:
     QTimer emitLocalFileContentChanged_delayedTimer;
 
     bool _cachedDownloading{false};                                 // Cached value for the 'downloading' property
-    QVector<QPointer<Downloadable>> _cachedDownloadablesWithFile{}; // Cached value for the 'downloadablesWithFiles' property
+    QVector<QPointer<Downloadable_SingleFile>> _cachedDownloadablesWithFile{}; // Cached value for the 'downloadablesWithFiles' property
     QStringList _cachedFiles{};                                     // Cached value for the 'files' property
     bool _cachedHasFile{false};                                     // Cached value for the 'hasLocalFile' property
     bool _cachedUpdatable{false};                                   // Cached value for the 'updatable' property

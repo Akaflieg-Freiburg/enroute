@@ -24,7 +24,7 @@
 
 #include <qhttpengine/handler.h>
 
-#include <dataManagement/Downloadable.h>
+#include <dataManagement/Downloadable_SingleFile.h>
 #include <geomaps/MBTILES.h>
 
 

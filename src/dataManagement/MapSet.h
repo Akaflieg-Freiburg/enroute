@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "dataManagement/Downloadable.h"
+#include "dataManagement/Downloadable_SingleFile.h"
 
 namespace DataManagement {
 
@@ -71,7 +71,7 @@ public:
     // Methods
     //
 
-    Q_INVOKABLE void add(DataManagement::Downloadable*);
+    Q_INVOKABLE void add(DataManagement::Downloadable_SingleFile*);
     Q_INVOKABLE void deleteFile();
     Q_INVOKABLE void startFileDownload();
     Q_INVOKABLE void stopFileDownload();
@@ -111,7 +111,7 @@ signals:
     void updatableSizeChanged();
 
 private:
-    QVector<QPointer<DataManagement::Downloadable>> m_maps;
+    QVector<QPointer<DataManagement::Downloadable_SingleFile>> m_maps;
     QString m_section;
 };
 

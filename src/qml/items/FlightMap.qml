@@ -98,8 +98,30 @@ Map {
     DynamicParameter {
         type: "paint"
         property string layer: "FIS"
-        property string lineColor: "lightgreen"
+        property string lineColor: "green"
         property real lineWidth: 1.5
+    }
+
+
+    /*
+     * SUA - Special Use Airspace
+     */
+
+    DynamicParameter {
+        type: "layer"
+
+        property string name: "SUA"
+        property string layerType: "line"
+        property string source: "aviationData"
+        property var filter: ["==", ["get", "CAT"], "SUA"]
+    }
+
+    DynamicParameter {
+        type: "paint"
+        property string layer: "SUA"
+        property string lineColor: "lightgreen"
+        property real lineWidth: 2
+        property var lineDasharray: [4.0, 3.0]
     }
 
 

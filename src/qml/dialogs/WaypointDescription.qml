@@ -112,7 +112,6 @@ Dialog {
     Component {
         id: waypointPropertyDelegate
 
-
         RowLayout {
             id: rowLYO
 
@@ -191,6 +190,8 @@ Dialog {
                             case "FIS":
                             case "NRA":
                                 return "green";
+                            case "SUA":
+                                return "lightgreen";
                             }
                             return "transparent"
                         }

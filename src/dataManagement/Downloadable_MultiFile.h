@@ -20,15 +20,16 @@
 
 #pragma once
 
+#include "dataManagement/Downloadable_Abstract.h"
 #include "dataManagement/Downloadable_SingleFile.h"
 
 namespace DataManagement {
 
-class MapSet : public QObject {
+class Downloadable_MultiFile : public Downloadable_Abstract {
     Q_OBJECT
 
 public:
-    explicit MapSet(QObject *parent = nullptr);
+    explicit Downloadable_MultiFile(QObject *parent = nullptr);
 
 
     //

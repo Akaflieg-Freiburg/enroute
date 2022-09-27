@@ -18,16 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "MapSet.h"
+#include "Downloadable_MultiFile.h"
 
 
-DataManagement::MapSet::MapSet(QObject* parent)
-    : QObject(parent)
+DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(QObject* parent)
+    : Downloadable_Abstract(parent)
 {
 }
 
 
-auto DataManagement::MapSet::description() -> QString
+auto DataManagement::Downloadable_MultiFile::description() -> QString
 {
     QString result;
 
@@ -58,7 +58,7 @@ auto DataManagement::MapSet::description() -> QString
 }
 
 
-auto DataManagement::MapSet::downloading() -> bool
+auto DataManagement::Downloadable_MultiFile::downloading() -> bool
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
@@ -72,7 +72,7 @@ auto DataManagement::MapSet::downloading() -> bool
 }
 
 
-auto DataManagement::MapSet::hasFile() -> bool
+auto DataManagement::Downloadable_MultiFile::hasFile() -> bool
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
@@ -86,7 +86,7 @@ auto DataManagement::MapSet::hasFile() -> bool
 }
 
 
-auto DataManagement::MapSet::infoText() -> QString
+auto DataManagement::Downloadable_MultiFile::infoText() -> QString
 {
     QString result;
 
@@ -120,7 +120,7 @@ auto DataManagement::MapSet::infoText() -> QString
 }
 
 
-auto DataManagement::MapSet::updatable() -> bool
+auto DataManagement::Downloadable_MultiFile::updatable() -> bool
 {
     if (!hasFile())
     {
@@ -139,7 +139,7 @@ auto DataManagement::MapSet::updatable() -> bool
 }
 
 
-auto DataManagement::MapSet::updatableSize() -> qsizetype
+auto DataManagement::Downloadable_MultiFile::updatableSize() -> qsizetype
 {
     if (!updatable())
     {
@@ -159,7 +159,7 @@ auto DataManagement::MapSet::updatableSize() -> qsizetype
 }
 
 
-void DataManagement::MapSet::deleteFile()
+void DataManagement::Downloadable_MultiFile::deleteFile()
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
@@ -169,7 +169,7 @@ void DataManagement::MapSet::deleteFile()
 }
 
 
-void DataManagement::MapSet::startFileDownload()
+void DataManagement::Downloadable_MultiFile::startFileDownload()
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
@@ -179,7 +179,7 @@ void DataManagement::MapSet::startFileDownload()
 }
 
 
-void DataManagement::MapSet::stopFileDownload()
+void DataManagement::Downloadable_MultiFile::stopFileDownload()
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
@@ -189,7 +189,7 @@ void DataManagement::MapSet::stopFileDownload()
 }
 
 
-void DataManagement::MapSet::update()
+void DataManagement::Downloadable_MultiFile::update()
 {
     if (!updatable())
     {
@@ -207,7 +207,7 @@ void DataManagement::MapSet::update()
 }
 
 
-void DataManagement::MapSet::add(DataManagement::Downloadable_SingleFile* map)
+void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_SingleFile* map)
 {
     if ((map == nullptr) || m_maps.contains(map))
     {
@@ -219,15 +219,15 @@ void DataManagement::MapSet::add(DataManagement::Downloadable_SingleFile* map)
     setObjectName(map->objectName());
     m_section = map->section();
 
-    connect(map, &DataManagement::Downloadable_SingleFile::error, this, &DataManagement::MapSet::error);
-    connect(map, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManagement::MapSet::downloadingChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::MapSet::descriptionChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::MapSet::hasFileChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::MapSet::updatableChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::infoTextChanged, this, &DataManagement::MapSet::infoTextChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::MapSet::updatableChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::MapSet::updatableSizeChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::MapSet::updatableSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::error, this, &DataManagement::Downloadable_MultiFile::error);
+    connect(map, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::downloadingChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::hasFileChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updatableChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::Downloadable_MultiFile::updatableChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
 
 #warning This emits too many signals
 }

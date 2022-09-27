@@ -312,7 +312,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     // Now the lists of downloadable items should be complete. Finally, we find and match up map sets.
     qDeleteAll(m_mapSets);
     m_mapSets.clear();
-    QMap<QString, MapSet*> mapSetsByName;
+    QMap<QString, Downloadable_MultiFile*> mapSetsByName;
     foreach (auto item, m_items.downloadables())
     {
         if (item.isNull())
@@ -325,14 +325,14 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
 
         QString key = item->section() + "/" + item->objectName();
-        DataManagement::MapSet* mapSet = nullptr;
+        DataManagement::Downloadable_MultiFile* mapSet = nullptr;
         if (mapSetsByName.contains(key))
         {
             mapSet = mapSetsByName[key];
         }
         else
         {
-            mapSet = new MapSet(this);
+            mapSet = new Downloadable_MultiFile(this);
             m_mapSets.append(mapSet);
             mapSetsByName[key] = mapSet;
         }

@@ -24,7 +24,7 @@
 
 #include "GlobalObject.h"
 #include "dataManagement/DownloadableGroup.h"
-#include "dataManagement/MapSet.h"
+#include "dataManagement/Downloadable_MultiFile.h"
 
 
 namespace DataManagement {
@@ -136,7 +136,7 @@ public:
      *  QVector with all map sets.
      */
 #warning docu
-    Q_PROPERTY(QVector<DataManagement::MapSet*> mapSets READ mapSets NOTIFY mapSetsChanged)
+    Q_PROPERTY(QVector<DataManagement::Downloadable_MultiFile*> mapSets READ mapSets NOTIFY mapSetsChanged)
 
     /*! \brief DownloadableGroupWatcher that holds all terrain maps
      *
@@ -216,8 +216,8 @@ public:
     [[nodiscard]] auto terrainMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_terrainMaps; }
 
 #warning
-    auto mapSets() -> QVector<DataManagement::MapSet*> {
-        QVector<DataManagement::MapSet*> result;
+    auto mapSets() -> QVector<DataManagement::Downloadable_MultiFile*> {
+        QVector<DataManagement::Downloadable_MultiFile*> result;
         foreach(auto mapSet, m_mapSets)
         {
             result.append(mapSet);
@@ -358,7 +358,7 @@ private:
     DataManagement::DownloadableGroup m_terrainMaps;
 
     // List of geographic map sets
-    QVector<QPointer<DataManagement::MapSet>> m_mapSets;
+    QVector<QPointer<DataManagement::Downloadable_MultiFile>> m_mapSets;
 };
 
 };

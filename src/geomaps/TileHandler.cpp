@@ -36,6 +36,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
     m_mbtiles = mbtileFiles;
 
     // Go through mbtile files and find real values
+    _maxzoom = 10;
+    _minzoom = 6;
     foreach (auto mbtPtr, mbtileFiles)
     {
         if (mbtPtr.isNull())
@@ -50,26 +52,19 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
         _version = mbtPtr->metaData().value(QStringLiteral("version"));
         _attribution = mbtPtr->metaData().value(QStringLiteral("attribution"));
         bool ok;
-        _maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt(&ok);
-        if (!ok)
+        auto tmp_maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt(&ok);
+        if (ok)
         {
-            _maxzoom = 20;
+            _maxzoom = qMax(_maxzoom, tmp_maxzoom);
         }
-        _minzoom = mbtPtr->metaData().value(QStringLiteral("minzoom")).toInt(&ok);
-        if (!ok)
+        auto tmp_minzoom = mbtPtr->metaData().value(QStringLiteral("minzoom")).toInt(&ok);
+        if (ok)
         {
-            _minzoom = 1;
+            _minzoom = qMin(_minzoom, tmp_minzoom);
         }
     }
 
     _tiles = baseURL+"/{z}/{x}/{y}."+_format;
-
-    // Safety check
-    if (_minzoom >= _maxzoom)
-    {
-        _maxzoom = 20;
-        _minzoom = 1;
-    }
 }
 
 

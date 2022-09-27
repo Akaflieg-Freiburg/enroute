@@ -25,16 +25,28 @@
 
 namespace DataManagement {
 
-/*! \brief Abstract base class Downloadable_SingleFile and Downloadable_MultiFile
+/*! \brief Abstract base class Downloadable_SingleFile and
+ *  Downloadable_MultiFile
  *
- *  This is an abstract base class Downloadable_SingleFile and Downloadable_MultiFile, ensuring that the two classes share a common API.
- *
+ *  This is an abstract base class Downloadable_SingleFile and
+ *  Downloadable_MultiFile, ensuring that the two classes share a common API.
  */
 
 class Downloadable_Abstract : public QObject {
     Q_OBJECT
 
 public:
+    /*! \brief Type of content managed by this instance */
+    enum ContentType {
+        AviationMap,    /*!< \brief Aviation Map */
+        BaseMapVector,  /*!< \brief Base Map, in vector format */
+        BaseMapRaster,  /*!< \brief Base Map, in raster format */
+        Data,           /*!< \brief Data */
+        MapSet,         /*!< \brief Set of maps */
+        TerrainMap      /*!< \brief Terrain Map */
+    };
+    Q_ENUM(ContentType)
+
     /*! \brief Standard constructor
      *
      * @param parent The standard QObject parent pointer.

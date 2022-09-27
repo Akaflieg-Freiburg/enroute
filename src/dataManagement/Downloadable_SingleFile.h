@@ -51,25 +51,6 @@ class Downloadable_SingleFile : public Downloadable_Abstract {
     Q_OBJECT
 
 public:
-    /*! \brief Potential content of the managed by this Downloadble */
-    enum ContentType {
-        /*! \brief Aviation Map */
-        AviationMap = 0,
-
-        /*! \brief Base Map */
-        BaseMap = 1,
-
-        /*! \brief Base Map */
-        RasterMap = 2,
-
-        /*! \brief Terrain Map */
-        TerrainMap = 3,
-
-        /*! \brief Data */
-        Data = 4
-    };
-    Q_ENUM(ContentType)
-
     /*! \brief Standard constructor
      *
      * @param url The address in the internet where the newest version of the

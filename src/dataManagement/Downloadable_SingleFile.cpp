@@ -70,11 +70,11 @@ auto DataManagement::Downloadable_SingleFile::contentType() const -> ContentType
     }
     if (tmpName.endsWith(QLatin1String("mbtiles")))
     {
-        return BaseMap;
+        return BaseMapVector;
     }
     if (tmpName.endsWith(QLatin1String("raster")))
     {
-        return RasterMap;
+        return BaseMapRaster;
     }
     if (tmpName.endsWith(QLatin1String("terrain")))
     {

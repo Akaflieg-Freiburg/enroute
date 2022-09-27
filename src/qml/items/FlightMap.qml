@@ -110,7 +110,7 @@ Map {
     DynamicParameter {
         type: "layer"
 
-        property string name: "FIS"
+        property string name: "SUA"
         property string layerType: "line"
         property string source: "aviationData"
         property var filter: ["==", ["get", "CAT"], "SUA"]
@@ -118,9 +118,10 @@ Map {
 
     DynamicParameter {
         type: "paint"
-        property string layer: "FIS"
-        property string lineColor: "green"
-        property real lineWidth: 1.5
+        property string layer: "SUA"
+        property string lineColor: "lightgreen"
+        property real lineWidth: 2
+        property var lineDasharray: [4.0, 3.0]
     }
 
 

@@ -224,10 +224,9 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Si
     m_maps.append(map);
 
     setObjectName(map->objectName());
-    m_section = map->section();
+    setSection(map->section());
 
     connect(map, &DataManagement::Downloadable_SingleFile::error, this, &DataManagement::Downloadable_MultiFile::error);
-    connect(map, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::downloadingChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::hasFileChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updatableChanged);
@@ -240,4 +239,6 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Si
     connect(map, &Downloadable_Abstract::descriptionChanged, this, &Downloadable_Abstract::descriptionChanged);
 
 #warning This emits too many signals
+    connect(map, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::downloadingChanged);
+
 }

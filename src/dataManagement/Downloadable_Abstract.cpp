@@ -30,3 +30,14 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
 //
 // Setter methods
 //
+
+
+void DataManagement::Downloadable_Abstract::setSection(const QString& sectionName)
+{
+    if (sectionName == _section) {
+        return;
+    }
+    _section = sectionName;
+    emit sectionChanged();
+}
+

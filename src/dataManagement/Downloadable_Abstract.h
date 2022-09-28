@@ -25,9 +25,9 @@
 
 namespace DataManagement {
 
-/*! \brief Abstract base class Downloadable_SingleFile and Downloadable_MultiFile
+/*! \brief Abstract base class for Downloadable_SingleFile and Downloadable_MultiFile
  *
- *  This is an abstract base class Downloadable_SingleFile and Downloadable_MultiFile, ensuring that the two classes share a common API.
+ *  This is an abstract base class for Downloadable_SingleFile and Downloadable_MultiFile, ensuring that the two classes share a common API.
  */
 
 class Downloadable_Abstract : public QObject {
@@ -67,6 +67,35 @@ public:
      */
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
 
+    /*! \brief Indicates whether a download process is currently running */
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+
+    /*! \brief Indicates if (at least one) local file exists */
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+
+    /*! \brief Short info text describing the state of the downloadable(s)
+     *
+     * The text is typically one or more lines of the form
+     *
+     * - "downloading … 47% complete"
+     *
+     * - "installed • 203 kB • update available"
+     *
+     * It might be translated to the local language.
+     */
+    Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
+
+    /*! \brief Headline name for the Downloadable
+     *
+     * This property is a convenience storing one string along with the
+     * Downloadable. The enroute app uses this to store the continent name for a
+     * Dowloadable that represents a geographic map.  The GUI then generate
+     * section headings in the list of downloadable aviation maps.
+     */
+    Q_PROPERTY(QString section READ section WRITE setSection NOTIFY sectionChanged)
+
+
+
 
     //
     // Getter Methods
@@ -78,20 +107,71 @@ public:
      */
     [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_Abstract::ContentType {return m_contentType;}
 
-    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+    /*! \brief Getter method for the property with the same name
      *
      *  @returns Property description
      */
     [[nodiscard]] virtual auto description() -> QString = 0;
 
+    /*! \brief Getter method for the property with the same name
+     *
+     * @returns Property downloading
+     */
+    [[nodiscard]] virtual auto downloading() -> bool = 0;
+
+    /*! \brief Getter method for the property with the same name
+     *
+     * @returns Property hasFile
+     */
+    [[nodiscard]] virtual auto hasFile() -> bool = 0;
+
+    /*! \brief Getter method for the property with the same name
+     *
+     * @returns Property infoText
+     */
+    [[nodiscard]] virtual auto infoText() -> QString = 0;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property section
+     */
+    [[nodiscard]] auto section() const -> QString { return _section; }
+
+
+
+    //
+    // Setter Methods
+    //
+
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param sectionName Property section
+     */
+    void setSection(const QString& sectionName);
+
+
 signals:
     /*! \brief Notifier signal */
     void descriptionChanged();
+
+    /*! \brief Notifier signal */
+    void downloadingChanged();
+
+    /*! \brief Notifier signal */
+    void hasFileChanged();
+
+    /*! \brief Notifier signal */
+    void infoTextChanged();
+
+    /*! \brief Notifier signal for the property section */
+    void sectionChanged();
 
 protected:
     // Property contentType
     ContentType m_contentType {Data};
 
+    // Property section
+    QString _section;
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 };

@@ -462,7 +462,7 @@ void DataManagement::Downloadable_SingleFile::downloadHeaderFinished() {
 }
 
 
-auto DataManagement::Downloadable_SingleFile::infoText() const -> QString {
+auto DataManagement::Downloadable_SingleFile::infoText() -> QString {
     if (downloading()) {
         return tr("downloading … %1% complete").arg(_downloadProgress);
     }
@@ -557,16 +557,6 @@ void DataManagement::Downloadable_SingleFile::setRemoteFileSize(qint64 size) {
 }
 
 
-void DataManagement::Downloadable_SingleFile::setSection(const QString& sectionName)
-{
-    if (sectionName == _section) {
-        return;
-    }
-    _section = sectionName;
-    emit sectionChanged();
-}
-
-
 void DataManagement::Downloadable_SingleFile::startInfoDownload() {
 
     // Do not start a new check if an old one is still running
@@ -653,11 +643,14 @@ void DataManagement::Downloadable_SingleFile::stopFileDownload() {
 }
 
 
-auto DataManagement::Downloadable_SingleFile::updatable() const -> bool {
-    if (downloading()) {
+auto DataManagement::Downloadable_SingleFile::updatable() -> bool
+{
+    if (downloading())
+    {
         return false;
     }
-    if (!QFile::exists(_fileName)) {
+    if (!QFile::exists(_fileName))
+    {
         return false;
     }
 

@@ -36,14 +36,6 @@ public:
     // PROPERTIES
     //
 
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
-
-    Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
-
-    Q_PROPERTY(QString section MEMBER m_section)
-
     Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
     Q_PROPERTY(qsizetype updatableSize READ updatableSize NOTIFY updatableSizeChanged)
@@ -57,13 +49,25 @@ public:
      *
      *  @returns Property description
      */
-    [[nodiscard]] virtual auto description() -> QString override;
+    [[nodiscard]] auto description() -> QString override;
 
-    [[nodiscard]] auto downloading() -> bool;
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property downloading
+     */
+    [[nodiscard]] auto downloading() -> bool override;
 
-    [[nodiscard]] auto hasFile() -> bool;
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property hasFile
+     */
+    [[nodiscard]] auto hasFile() -> bool override;
 
-    [[nodiscard]] auto infoText() -> QString;
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property infoText
+     */
+    [[nodiscard]] auto infoText() -> QString override;
 
     [[nodiscard]] auto updatable() -> bool;
 
@@ -81,9 +85,6 @@ public:
     Q_INVOKABLE void update();
 
 signals:
-    /*! \brief Notifier signal for property downloading */
-    void downloadingChanged();
-
     /*! \brief Download error
      *
      * This signal is emitted if the download process fails for whatever
@@ -98,12 +99,6 @@ signals:
      */
     void error(QString objectName, QString message);
 
-    /*! \brief Notifier signal for property hasFile */
-    void hasFileChanged();
-
-    /*! \brief Notifier signal for property downloading */
-    void infoTextChanged();
-
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
 
@@ -112,7 +107,6 @@ signals:
 
 private:
     QVector<QPointer<DataManagement::Downloadable_SingleFile>> m_maps;
-    QString m_section;
 };
 
 };

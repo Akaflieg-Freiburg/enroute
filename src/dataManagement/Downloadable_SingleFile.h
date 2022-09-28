@@ -83,20 +83,6 @@ public:
      */
     ~Downloadable_SingleFile() override;
 
-    /*! \brief Indicates whether a download process is currently running
-     *
-     * This property indicates whether a download process is currently running
-     *
-     * @see startFileDownload(), stopFileDownload()
-     */
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloading
-     */
-    [[nodiscard]] auto downloading() const -> bool { return !_networkReplyDownloadFile.isNull(); }
-
     /*! \brief Download progress
      *
      * This property holds the download progress in percent, if a download is
@@ -118,38 +104,6 @@ public:
      * @returns Property fileName
      */
     [[nodiscard]] auto fileName() const -> QString { return _fileName; }
-
-    /*! \brief Convenience property, returns 'true' if the file has been downloaded
-     *
-     * @warning The notification signal is emitted whenever this class changes
-     * the downloaded file. The signal is not emitted when another process touches
-     * the file.
-     */
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property hasFile
-     */
-    [[nodiscard]] auto hasFile() const -> bool { return QFile::exists(_fileName); }
-
-    /*! \brief Short info text describing the state of the downloadable
-     *
-     * The text is typically of the form
-     *
-     * - "downloading … 47% complete"
-     *
-     * - "installed • 203 kB • update available"
-     *
-     * It might be translated to the local language.
-     */
-    Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property infoText
-     */
-    [[nodiscard]] auto infoText() const -> QString;
 
     /*! \brief Content of the downloaded file
      *
@@ -204,27 +158,6 @@ public:
      */
     void setRemoteFileSize(qint64 size);
 
-    /*! \brief Headline name for the Downloadable
-     *
-     * This property is a convenience storing one string along with the
-     * Downloadable. The enroute app uses this to store the continent name for a
-     * Dowloadable that represents a geographic map.  The GUI then generate
-     * section headings in the list of downloadable aviation maps.
-     */
-    Q_PROPERTY(QString section READ section NOTIFY sectionChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property section
-     */
-    [[nodiscard]] auto section() const -> QString { return _section; }
-
-    /*! \brief Setter function for the property with the same name
-     *
-     * @param sectionName Property section
-     */
-    void setSection(const QString& sectionName);
-
     /*! \brief Indicates if the file the has been downloaded is known to be updatable
      *
      * This property is true if all of the following conditions are met.
@@ -245,7 +178,7 @@ public:
      *
      * @returns Property updatable
      */
-    [[nodiscard]] auto updatable() const -> bool;
+    [[nodiscard]] auto updatable() -> bool;
 
     /*! \brief URL, as set in the constructor */
     Q_PROPERTY(QUrl url READ url CONSTANT)
@@ -261,8 +194,29 @@ public:
     // Getter methods
     //
 
-    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract */
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property description
+     */
     [[nodiscard]] auto description() -> QString override;
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property downloading
+     */
+    [[nodiscard]] auto downloading() -> bool override { return !_networkReplyDownloadFile.isNull(); }
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property hasFile
+     */
+    [[nodiscard]] auto hasFile() -> bool override { return QFile::exists(_fileName); }
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property infoText
+     */
+    [[nodiscard]] auto infoText() -> QString override;
 
 
 public slots:
@@ -344,9 +298,6 @@ signals:
      */
     void aboutToChangeFile(QString localFileName);
 
-    /*! \brief Notifier signal for property downloading */
-    void downloadingChanged();
-
     /*! \brief Download progress
      *
      * While the download process is running, this signal is emitted at regular
@@ -369,12 +320,6 @@ signals:
      * is no longer available at the server", possibly translated.
      */
     void error(QString objectName, QString message);
-
-    /*! \brief Notifier signal for the property infoText */
-    void infoTextChanged();
-
-    /*! \brief Notifier signal for the property hasFile */
-    void hasFileChanged();
 
     /*! \brief Notifier signal for the properties fileContent
      *
@@ -401,9 +346,6 @@ signals:
      * the server.
      */
     void remoteFileSizeChanged();
-
-    /*! \brief Notifier signal for the property section */
-    void sectionChanged();
 
     /*! \brief Notifier signal for the property updatable */
     void updatableChanged();
@@ -469,9 +411,6 @@ private:
     // Size of the remote file, set directly via a setter method or by calling
     // downloadRemoteFileInfo().
     qint64 _remoteFileSize{-1};
-
-    // Section name
-    QString _section {};
 };
 
 };

@@ -195,7 +195,7 @@ public:
      *
      *  @returns Property downloadingRemoteItemList
      */
-    [[nodiscard]] auto downloadingRemoteItemList() const -> bool { return m_mapsJSON.downloading(); }
+    [[nodiscard]] auto downloadingRemoteItemList() -> bool { return m_mapsJSON.downloading(); }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -207,7 +207,7 @@ public:
      *
      *  @returns hasRemoteItemList
      */
-    [[nodiscard]] auto hasRemoteItemList() const -> bool { return m_mapsJSON.hasFile(); }
+    [[nodiscard]] auto hasRemoteItemList() -> bool { return m_mapsJSON.hasFile(); }
 
     /*! \brief Getter function for the property with the same name
      *

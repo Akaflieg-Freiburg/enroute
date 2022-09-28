@@ -46,7 +46,8 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
     connect(this, &Downloadable_SingleFile::downloadingChanged, this, &Downloadable_SingleFile::infoTextChanged);
     connect(this, &Downloadable_SingleFile::downloadProgressChanged, this, &Downloadable_SingleFile::infoTextChanged);
 
-    {   // set m_contentType
+    // set m_contentType
+    {
         QString tmpName = _url.path();
         if (tmpName.isEmpty())
         {

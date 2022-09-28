@@ -62,23 +62,46 @@ public:
     /*! \brief Most probable content of file(s) managed by this object */
     Q_PROPERTY(DataManagement::Downloadable_Abstract::ContentType contentType READ contentType CONSTANT)
 
+    /*! \brief Describe installed file(s)
+     *
+     * This property contains a localized description of the locally installed file(s), localized and in HTML format.
+     * If no description is available, then the property contains an empty string.
+     */
+    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
 
 
     //
     // Getter Methods
     //
 
-    /*! \brief Getter function for the property with the same name
+    /*! \brief Getter method for the property with the same name
      *
      *  @returns Property contentType
      */
     [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_Abstract::ContentType {return m_contentType;}
 
+    /*! \brief Getter method for the property with the same name
+     *
+     *  @returns Property description
+     */
+    [[nodiscard]] auto description() const -> QString {return m_description;}
+
+signals:
+    /*! \brief Notifier signal */
+    void descriptionChanged(QString description);
+
 protected:
+    // Setter method
+    void setDescription(const QString& description);
+
+    // Property contentType
     ContentType m_contentType {Data};
 
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
+
+    // Property description
+    QString m_description;
 };
 
 };

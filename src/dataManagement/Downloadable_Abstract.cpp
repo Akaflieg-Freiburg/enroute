@@ -24,3 +24,20 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
     : QObject(parent)
 {
 }
+
+
+
+//
+// Setter methods
+//
+
+void DataManagement::Downloadable_Abstract::setDescription(const QString& description)
+{
+    if (description == m_description)
+    {
+        return;
+    }
+
+    m_description = description;
+    emit descriptionChanged(description);
+}

@@ -28,7 +28,6 @@ namespace DataManagement {
 /*! \brief Abstract base class Downloadable_SingleFile and Downloadable_MultiFile
  *
  *  This is an abstract base class Downloadable_SingleFile and Downloadable_MultiFile, ensuring that the two classes share a common API.
- *
  */
 
 class Downloadable_Abstract : public QObject {

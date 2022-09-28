@@ -34,14 +34,66 @@ class Downloadable_Abstract : public QObject {
     Q_OBJECT
 
 public:
+    /*! \brief Type of content managed by this instance */
+    enum ContentType {
+        AviationMap,    /*!< \brief Aviation Map */
+        BaseMapVector,  /*!< \brief Base Map, in vector format */
+        BaseMapRaster,  /*!< \brief Base Map, in raster format */
+        Data,           /*!< \brief Data */
+        MapSet,         /*!< \brief Set of maps */
+        TerrainMap      /*!< \brief Terrain Map */
+    };
+    Q_ENUM(ContentType)
+
     /*! \brief Standard constructor
      *
      * @param parent The standard QObject parent pointer.
      */
     explicit Downloadable_Abstract(QObject *parent = nullptr);
 
+
+
+    //
+    // PROPERTIES
+    //
+
+    /*! \brief Most probable content of file(s) managed by this object */
+    Q_PROPERTY(DataManagement::Downloadable_Abstract::ContentType contentType READ contentType CONSTANT)
+
+    /*! \brief Describe installed file(s)
+     *
+     * This property contains a localized description of the locally installed file(s), localized and in HTML format.
+     * If no description is available, then the property contains an empty string.
+     */
+    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter method for the property with the same name
+     *
+     *  @returns Property contentType
+     */
+    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_Abstract::ContentType {return m_contentType;}
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     *  @returns Property description
+     */
+    [[nodiscard]] virtual auto description() -> QString = 0;
+
+signals:
+    /*! \brief Notifier signal */
+    void descriptionChanged();
+
+protected:
+    // Property contentType
+    ContentType m_contentType {Data};
+
 private:
-     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
+    Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 };
 
 };

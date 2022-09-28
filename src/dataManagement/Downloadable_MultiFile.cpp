@@ -24,6 +24,7 @@
 DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(QObject* parent)
     : Downloadable_Abstract(parent)
 {
+    m_contentType = MapSet;
 }
 
 
@@ -37,19 +38,22 @@ auto DataManagement::Downloadable_MultiFile::description() -> QString
         switch(map->contentType())
         {
         case Downloadable_SingleFile::AviationMap:
-            result += "<h4>"+tr("Aviation Map")+"</h4>";
+            result += "<h3>"+tr("Aviation Map")+"</h3>";
             break;
-        case Downloadable_SingleFile::BaseMap:
-            result += "<h4>"+tr("Base Map")+"</h4>";
+        case Downloadable_SingleFile::BaseMapVector:
+            result += "<h3>"+tr("Base Map (Vector)")+"</h3>";
             break;
-        case Downloadable_SingleFile::RasterMap:
-            result += "<h4>"+tr("Raster Map")+"</h4>";
-            break;
-        case Downloadable_SingleFile::TerrainMap:
-            result += "<h4>"+tr("Terrain Map")+"</h4>";
+        case Downloadable_SingleFile::BaseMapRaster:
+            result += "<h3>"+tr("Base Map (Raster)")+"</h3>";
             break;
         case Downloadable_SingleFile::Data:
-            result += "<h4>"+tr("Data")+"</h4>";
+            result += "<h3>"+tr("Data")+"</h3>";
+            break;
+        case Downloadable_SingleFile::TerrainMap:
+            result += "<h3>"+tr("Terrain Map")+"</h3>";
+            break;
+        case Downloadable_SingleFile::MapSet:
+            result += "<h3>"+tr("Map Set")+"</h3>";
             break;
         }
         result += map->description();
@@ -102,17 +106,20 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
         case Downloadable_SingleFile::AviationMap:
             result += QStringLiteral("%1: %2").arg(tr("Aviation Map"), map->infoText());
             break;
-        case Downloadable_SingleFile::BaseMap:
-            result += QStringLiteral("%1: %2").arg(tr("Base Map"), map->infoText());
+        case Downloadable_SingleFile::BaseMapRaster:
+            result += QStringLiteral("%1: %2").arg(tr("Base Map (Raster)"), map->infoText());
             break;
-        case Downloadable_SingleFile::RasterMap:
-            result += QStringLiteral("%1: %2").arg(tr("Raster Map"), map->infoText());
-            break;
-        case Downloadable_SingleFile::TerrainMap:
-            result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
+        case Downloadable_SingleFile::BaseMapVector:
+            result += QStringLiteral("%1: %2").arg(tr("Base Map (Vector)"), map->infoText());
             break;
         case Downloadable_SingleFile::Data:
             result += QStringLiteral("%1: %2").arg(tr("Data"), map->infoText());
+            break;
+        case Downloadable_SingleFile::MapSet:
+            result += QStringLiteral("%1: %2").arg(tr("Map Set"), map->infoText());
+            break;
+        case Downloadable_SingleFile::TerrainMap:
+            result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
             break;
         }
     }
@@ -228,6 +235,9 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Si
     connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::Downloadable_MultiFile::updatableChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
+
+    // Wire up signals
+    connect(map, &Downloadable_Abstract::descriptionChanged, this, &Downloadable_Abstract::descriptionChanged);
 
 #warning This emits too many signals
 }

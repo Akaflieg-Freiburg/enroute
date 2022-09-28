@@ -24,3 +24,9 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
     : QObject(parent)
 {
 }
+
+
+
+//
+// Setter methods
+//

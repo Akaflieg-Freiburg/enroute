@@ -36,8 +36,6 @@ public:
     // PROPERTIES
     //
 
-    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
-
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
@@ -55,7 +53,11 @@ public:
     // Getter Methods
     //
 
-    [[nodiscard]] auto description() -> QString;
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     *  @returns Property description
+     */
+    [[nodiscard]] virtual auto description() -> QString override;
 
     [[nodiscard]] auto downloading() -> bool;
 
@@ -79,9 +81,6 @@ public:
     Q_INVOKABLE void update();
 
 signals:
-    /*! \brief Notifier signal for property downloading */
-    void descriptionChanged();
-
     /*! \brief Notifier signal for property downloading */
     void downloadingChanged();
 

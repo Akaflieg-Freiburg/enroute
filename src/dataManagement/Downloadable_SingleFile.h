@@ -51,25 +51,6 @@ class Downloadable_SingleFile : public Downloadable_Abstract {
     Q_OBJECT
 
 public:
-    /*! \brief Potential content of the managed by this Downloadble */
-    enum ContentType {
-        /*! \brief Aviation Map */
-        AviationMap = 0,
-
-        /*! \brief Base Map */
-        BaseMap = 1,
-
-        /*! \brief Base Map */
-        RasterMap = 2,
-
-        /*! \brief Terrain Map */
-        TerrainMap = 3,
-
-        /*! \brief Data */
-        Data = 4
-    };
-    Q_ENUM(ContentType)
-
     /*! \brief Standard constructor
      *
      * @param url The address in the internet where the newest version of the
@@ -101,26 +82,6 @@ public:
      * files.  It will not delete the local file.
      */
     ~Downloadable_SingleFile() override;
-
-    /*! \brief Describe installed map
-     *
-     * This method describes a data item, by inspecting the locally installed
-     * map file.
-     *
-     * @warning The description not always available right after installation --
-     * information about aviation maps is only updated after the maps have been
-     * parsed in the GeoJSON parsing process. It is therefore possible that the
-     * method returns wrong information if it is called directly after a new map
-     * has been installed.
-     *
-     * @param fileName File name of locally installed file.
-     *
-     * @returns A human-readable HTML string, or an empty string if no data is
-     * available
-     */
-#warning
-    Q_PROPERTY(QString description READ description NOTIFY fileContentChanged)
-    [[nodiscard]] auto description() const -> QString;
 
     /*! \brief Indicates whether a download process is currently running
      *
@@ -157,10 +118,6 @@ public:
      * @returns Property fileName
      */
     [[nodiscard]] auto fileName() const -> QString { return _fileName; }
-
-#warning
-    Q_PROPERTY(DataManagement::Downloadable_SingleFile::ContentType contentType READ contentType CONSTANT)
-    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_SingleFile::ContentType;
 
     /*! \brief Convenience property, returns 'true' if the file has been downloaded
      *
@@ -298,6 +255,15 @@ public:
      * @returns Property url
      */
     [[nodiscard]] auto url() const -> QUrl { return _url; }
+
+
+    //
+    // Getter methods
+    //
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract */
+    [[nodiscard]] auto description() -> QString override;
+
 
 public slots:
     /*! \brief The convenience method deletes the local file.

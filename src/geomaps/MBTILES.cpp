@@ -109,7 +109,7 @@ auto GeoMaps::MBTILES::info() -> QString
     }
     if (!intResult.isEmpty())
     {
-        result += QStringLiteral("<h4>%1</h4><table>%2</table>").arg(QObject::tr("Internal Map Data", "GeoMaps::MBTILES"), intResult);
+        result += QStringLiteral("<table>%1</table>").arg(intResult);
     }
 
     return result;

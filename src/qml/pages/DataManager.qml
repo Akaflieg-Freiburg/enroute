@@ -96,9 +96,9 @@ Page {
                     icon.source: {
                         if (model.modelData.updatable)
                             return "/icons/material/ic_new_releases.svg";
-                        if (model.modelData.contentType === Downloadable.TerrainMap)
+                        if (model.modelData.contentType === Downloadable_Abstract.TerrainMap)
                             return "/icons/material/ic_terrain.svg";
-                        if (model.modelData.contentType === Downloadable.Data)
+                        if (model.modelData.contentType === Downloadable_Abstract.Data)
                             return "/icons/material/ic_library_books.svg"
                         return "/icons/material/ic_map.svg";
                     }

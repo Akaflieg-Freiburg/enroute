@@ -45,6 +45,35 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
     connect(this, &Downloadable_SingleFile::fileContentChanged, this, &Downloadable_SingleFile::infoTextChanged);
     connect(this, &Downloadable_SingleFile::downloadingChanged, this, &Downloadable_SingleFile::infoTextChanged);
     connect(this, &Downloadable_SingleFile::downloadProgressChanged, this, &Downloadable_SingleFile::infoTextChanged);
+
+    // Wire up signals
+    connect(this, &Downloadable_SingleFile::fileContentChanged, this, &Downloadable_Abstract::descriptionChanged);
+
+    // set m_contentType
+    {
+        QString tmpName = _url.path();
+        if (tmpName.isEmpty())
+        {
+            tmpName = _fileName;
+        }
+
+        if (tmpName.endsWith(QLatin1String("geojson")))
+        {
+            m_contentType = AviationMap;
+        }
+        else if (tmpName.endsWith(QLatin1String("mbtiles")))
+        {
+            m_contentType = BaseMapVector;
+        }
+        else if (tmpName.endsWith(QLatin1String("raster")))
+        {
+            m_contentType = BaseMapRaster;
+        }
+        else if (tmpName.endsWith(QLatin1String("terrain")))
+        {
+            m_contentType = TerrainMap;
+        }
+    }
 }
 
 
@@ -53,34 +82,6 @@ DataManagement::Downloadable_SingleFile::~Downloadable_SingleFile() {
     delete _networkReplyDownloadFile;
     delete _networkReplyDownloadHeader;
     delete _saveFile;
-}
-
-
-auto DataManagement::Downloadable_SingleFile::contentType() const -> ContentType
-{
-    QString tmpName = _url.path();
-    if (tmpName.isEmpty())
-    {
-        tmpName = _fileName;
-    }
-
-    if (tmpName.endsWith(QLatin1String("geojson")))
-    {
-        return AviationMap;
-    }
-    if (tmpName.endsWith(QLatin1String("mbtiles")))
-    {
-        return BaseMap;
-    }
-    if (tmpName.endsWith(QLatin1String("raster")))
-    {
-        return RasterMap;
-    }
-    if (tmpName.endsWith(QLatin1String("terrain")))
-    {
-        return TerrainMap;
-    }
-    return Data;
 }
 
 
@@ -108,7 +109,7 @@ void DataManagement::Downloadable_SingleFile::deleteFile() {
 }
 
 
-auto DataManagement::Downloadable_SingleFile::description() const -> QString
+auto DataManagement::Downloadable_SingleFile::description() -> QString
 {
     QFileInfo fi(_fileName);
     if (!fi.exists())
@@ -146,7 +147,7 @@ auto DataManagement::Downloadable_SingleFile::description() const -> QString
     if (_fileName.endsWith(u".mbtiles") || _fileName.endsWith(u".raster") || _fileName.endsWith(u".terrain"))
     {
         GeoMaps::MBTILES mbtiles(_fileName);
-        result += mbtiles.info();
+        result += "<p>"+mbtiles.info()+"</p>";
     }
 
     // Extract infomation from text file - this is simply the first line

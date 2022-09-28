@@ -92,7 +92,8 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Navigation::RemainingRouteInfo>("enroute", 1, 0, "RemainingRouteInfo", QStringLiteral("RemainingRouteInfo objects cannot be created in QML"));
     qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
     qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", QStringLiteral("SSLErrorHandler objects cannot be created in QML"));
-    qmlRegisterUncreatableType<DataManagement::Downloadable_SingleFile>("enroute", 1, 0, "Downloadable_SingleFile", QStringLiteral("Downloadable objects cannot be created in QML"));
+    qmlRegisterUncreatableType<DataManagement::Downloadable_Abstract>("enroute", 1, 0, "Downloadable_Abstract", QStringLiteral("Downloadable_Abstract objects cannot be created in QML"));
+    qmlRegisterUncreatableType<DataManagement::Downloadable_SingleFile>("enroute", 1, 0, "Downloadable_SingleFile", QStringLiteral("Downloadable_SingleFile objects cannot be created in QML"));
     qmlRegisterType<DataManagement::DownloadableGroup>("enroute", 1, 0, "DownloadableGroup");
     qmlRegisterType<DataManagement::DownloadableGroupWatcher>("enroute", 1, 0, "DownloadableGroupWatcher");
     qmlRegisterUncreatableType<Librarian>("enroute", 1, 0, "Librarian", QStringLiteral("Librarian objects cannot be created in QML"));

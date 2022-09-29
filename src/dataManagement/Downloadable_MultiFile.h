@@ -36,8 +36,6 @@ public:
     // PROPERTIES
     //
 
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
-
     Q_PROPERTY(qsizetype updatableSize READ updatableSize NOTIFY updatableSizeChanged)
 
 
@@ -69,7 +67,11 @@ public:
      */
     [[nodiscard]] auto infoText() -> QString override;
 
-    [[nodiscard]] auto updatable() -> bool;
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property updatable
+     */
+    [[nodiscard]] auto updatable() -> bool override;
 
     [[nodiscard]] auto updatableSize() -> qsizetype;
 
@@ -98,9 +100,6 @@ signals:
      * is no longer available at the server", possibly translated.
      */
     void error(QString objectName, QString message);
-
-    /*! \brief Notifier signal for the property updatable */
-    void updatableChanged();
 
     /*! \brief Notifier signal for the property updatableSize */
     void updatableSizeChanged();

@@ -158,28 +158,6 @@ public:
      */
     void setRemoteFileSize(qint64 size);
 
-    /*! \brief Indicates if the file the has been downloaded is known to be updatable
-     *
-     * This property is true if all of the following conditions are met.
-     *
-     * - No download is in progress
-     *
-     * - The file has been downloaded
-     *
-     * - The modification date of the file on the remote server
-     *   is newer than the modification date of the local file.
-     *
-     * @warning The notification signal is not emitted when another process
-     * touches the local file.
-     */
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property updatable
-     */
-    [[nodiscard]] auto updatable() -> bool;
-
     /*! \brief URL, as set in the constructor */
     Q_PROPERTY(QUrl url READ url CONSTANT)
 
@@ -217,6 +195,12 @@ public:
      * @returns Property infoText
      */
     [[nodiscard]] auto infoText() -> QString override;
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property updatable
+     */
+    [[nodiscard]] auto updatable() -> bool override;
 
 
 public slots:

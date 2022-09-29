@@ -94,6 +94,8 @@ public:
      */
     Q_PROPERTY(QString section READ section WRITE setSection NOTIFY sectionChanged)
 
+    /*! \brief Indicates that local files exist and update(s) are available */
+    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
 
 
@@ -137,6 +139,12 @@ public:
      */
     [[nodiscard]] auto section() const -> QString { return _section; }
 
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property updatable
+     */
+    [[nodiscard]] virtual auto updatable() -> bool = 0;
+
 
 
     //
@@ -165,6 +173,9 @@ signals:
 
     /*! \brief Notifier signal for the property section */
     void sectionChanged();
+
+    /*! \brief Notifier signal for the property updatable */
+    void updatableChanged();
 
 protected:
     // Property contentType

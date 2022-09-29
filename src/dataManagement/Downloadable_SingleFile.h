@@ -203,14 +203,17 @@ public:
     [[nodiscard]] auto updateSize() -> qint64 override;
 
 
-public slots:
-    /*! \brief The convenience method deletes the local file.
+    //
+    // Methods
+    //
+
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract
      *
-     * This convenience method deletes the local file. The singals
+     * This method deletes the local file. The singals
      * aboutToChangeLocalFile() and localFileChanged() are emitted
      * appropriately, and a QLockFile is used at fileName()+".lock".
      */
-    void deleteFile();
+    Q_INVOKABLE void deleteFile() override;
 
     /*! \brief Initiate a download
      *
@@ -243,7 +246,7 @@ public slots:
      * -# The signal fileChanged() is emitted to indicate that the file is
      *    again ready to be used.
      */
-    void startFileDownload();
+    Q_INVOKABLE void startFileDownload() override;
 
     /*! \brief Contacts the server and downloads information about the remote
      *  file
@@ -257,7 +260,7 @@ public slots:
      * @warning This method fails silently if the server cannot be contacted or
      * if the server is unable to provide the requested data.
      */
-    void startInfoDownload();
+    Q_INVOKABLE void startInfoDownload();
 
     /*! \brief Stops download process
      *
@@ -265,7 +268,10 @@ public slots:
      * deletes any partially downloaded data. No signal will be emitted.  If no
      * download is in progress, nothing will happen.
      */
-    void stopFileDownload();
+    Q_INVOKABLE void stopFileDownload() override;
+
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void update() override;
 
 signals:
     /*! \brief Warning that local file is about to change
@@ -290,20 +296,6 @@ signals:
      * @param percentage An integer between 0 and 100
      */
     void downloadProgressChanged(int percentage);
-
-    /*! \brief Download error
-     *
-     * This signal is emitted if the download process fails for whatever
-     * reason. Once the signal is emitted, the download process is deleted and
-     * no further actions will take place. The local file will not be touched.
-     *
-     * @param objectName Name of this QObject, as obtained by the method
-     * objectName()
-     *
-     * @param message A brief error message of the form "the requested resource
-     * is no longer available at the server", possibly translated.
-     */
-    void error(QString objectName, QString message);
 
     /*! \brief Notifier signal for the properties fileContent
      *

@@ -210,8 +210,8 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Si
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
 
     // Wire up signals
     connect(map, &Downloadable_Abstract::descriptionChanged, this, &Downloadable_Abstract::descriptionChanged);

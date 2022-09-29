@@ -149,6 +149,7 @@ public:
     [[nodiscard]] virtual auto updateSize() -> qint64 = 0;
 
 
+
     //
     // Setter Methods
     //
@@ -160,12 +161,43 @@ public:
     void setSection(const QString& sectionName);
 
 
+
+    //
+    // Methods
+    //
+
+    /*! \brief Deletes the local file(s) */
+    Q_INVOKABLE virtual void deleteFile() = 0;
+
+    /*! \brief Initiate download(s) */
+    Q_INVOKABLE virtual void startFileDownload() = 0;
+
+    /*! \brief Stops download process(es) */
+    Q_INVOKABLE virtual void stopFileDownload() = 0;
+
+    /*! \brief Starts download(s) if updatable */
+    Q_INVOKABLE virtual void update() = 0;
+
 signals:
     /*! \brief Notifier signal */
     void descriptionChanged();
 
     /*! \brief Notifier signal */
     void downloadingChanged();
+
+    /*! \brief Download error
+     *
+     * This signal is emitted if the download process fails for whatever
+     * reason. Once the signal is emitted, the download process is deleted and
+     * no further actions will take place. The local file will not be touched.
+     *
+     * @param objectName Name of this QObject, as obtained by the method
+     * objectName()
+     *
+     * @param message A brief error message of the form "the requested resource
+     * is no longer available at the server", possibly translated.
+     */
+    void error(QString objectName, QString message);
 
     /*! \brief Notifier signal */
     void hasFileChanged();

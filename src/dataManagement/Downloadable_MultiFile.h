@@ -71,29 +71,20 @@ public:
     // Methods
     //
 
+#warning
     Q_INVOKABLE void add(DataManagement::Downloadable_SingleFile*);
-    Q_INVOKABLE void deleteFile();
-    Q_INVOKABLE void startFileDownload();
-    Q_INVOKABLE void stopFileDownload();
-    Q_INVOKABLE void update();
 
-signals:
-    /*! \brief Download error
-     *
-     * This signal is emitted if the download process fails for whatever
-     * reason. Once the signal is emitted, the download process is deleted and
-     * no further actions will take place. The local file will not be touched.
-     *
-     * @param objectName Name of this QObject, as obtained by the method
-     * objectName()
-     *
-     * @param message A brief error message of the form "the requested resource
-     * is no longer available at the server", possibly translated.
-     */
-    void error(QString objectName, QString message);
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void deleteFile() override;
 
-    /*! \brief Notifier signal for the property updatableSize */
-    void updatableSizeChanged();
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void startFileDownload() override;
+
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void stopFileDownload() override;
+
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void update() override;
 
 private:
     QVector<QPointer<DataManagement::Downloadable_SingleFile>> m_maps;

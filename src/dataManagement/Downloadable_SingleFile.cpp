@@ -661,3 +661,12 @@ auto DataManagement::Downloadable_SingleFile::updateSize() -> qsizetype
     }
     return 0;
 }
+
+
+void DataManagement::Downloadable_SingleFile::update()
+{
+    if (updateSize() != 0)
+    {
+        startFileDownload();
+    }
+}

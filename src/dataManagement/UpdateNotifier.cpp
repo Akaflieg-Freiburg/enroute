@@ -52,7 +52,7 @@ void DataManagement::UpdateNotifier::updateNotification()
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
         return;
     }
-/*
+
     // Do not notify when in flight, but ask again in 11min
     if (GlobalObject::navigator()->flightStatus() == Navigation::Navigator::Flight) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
@@ -71,8 +71,7 @@ void DataManagement::UpdateNotifier::updateNotification()
             return;
         }
     }
-*/
-    QSettings settings;
+
     // Notify!
     auto text = tr("The estimated download size is %1.").arg(GlobalObject::dataManager()->updateSizeString());
     GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);

@@ -41,10 +41,10 @@ auto DataManagement::Downloadable_MultiFile::description() -> QString
             result += "<h3>"+tr("Aviation Map")+"</h3>";
             break;
         case Downloadable_SingleFile::BaseMapVector:
-            result += "<h3>"+tr("Base Map (Vector)")+"</h3>";
+            result += "<h3>"+tr("Base Map")+"</h3>";
             break;
         case Downloadable_SingleFile::BaseMapRaster:
-            result += "<h3>"+tr("Base Map (Raster)")+"</h3>";
+            result += "<h3>"+tr("Raster Map")+"</h3>";
             break;
         case Downloadable_SingleFile::Data:
             result += "<h3>"+tr("Data")+"</h3>";
@@ -107,10 +107,10 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
             result += QStringLiteral("%1: %2").arg(tr("Aviation Map"), map->infoText());
             break;
         case Downloadable_SingleFile::BaseMapRaster:
-            result += QStringLiteral("%1: %2").arg(tr("Base Map (Raster)"), map->infoText());
+            result += QStringLiteral("%1: %2").arg(tr("Raster Map"), map->infoText());
             break;
         case Downloadable_SingleFile::BaseMapVector:
-            result += QStringLiteral("%1: %2").arg(tr("Base Map (Vector)"), map->infoText());
+            result += QStringLiteral("%1: %2").arg(tr("Base Map"), map->infoText());
             break;
         case Downloadable_SingleFile::Data:
             result += QStringLiteral("%1: %2").arg(tr("Data"), map->infoText());

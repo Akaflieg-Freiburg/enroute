@@ -33,13 +33,6 @@ public:
 
 
     //
-    // PROPERTIES
-    //
-
-    Q_PROPERTY(qsizetype updatableSize READ updatableSize NOTIFY updatableSizeChanged)
-
-
-    //
     // Getter Methods
     //
 
@@ -69,11 +62,9 @@ public:
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
-     * @returns Property updatable
+     * @returns Property updateSize
      */
-    [[nodiscard]] auto updatable() -> bool override;
-
-    [[nodiscard]] auto updatableSize() -> qsizetype;
+    [[nodiscard]] auto updateSize() -> qint64 override;
 
 
     //

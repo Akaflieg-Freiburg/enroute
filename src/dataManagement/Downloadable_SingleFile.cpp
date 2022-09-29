@@ -92,7 +92,7 @@ void DataManagement::Downloadable_SingleFile::deleteFile() {
     }
 
     // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
+    auto oldUpdateSize = updateSize();
 
     emit aboutToChangeFile(_fileName);
     QLockFile lockFile(_fileName + ".lock");
@@ -103,8 +103,8 @@ void DataManagement::Downloadable_SingleFile::deleteFile() {
     emit fileContentChanged();
 
     // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
+    if (oldUpdateSize != updateSize()) {
+        emit updateSizeChanged();
     }
 }
 
@@ -364,7 +364,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished() {
     }
 
     // Save old value to see if anything changed
-    bool oldIsUpdatable = updatable();
+    auto oldUpdateSize = updateSize();
     bool oldHasLocalFile = hasFile();
 
     // Copy the temporary file to the local file
@@ -381,8 +381,8 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished() {
     _networkReplyDownloadFile = nullptr;
 
     // Emit signals as appropriate
-    if (oldIsUpdatable != updatable()) {
-        emit updatableChanged();
+    if (oldUpdateSize != updateSize()) {
+        emit updateSizeChanged();
     }
     if (oldHasLocalFile != hasFile()) {
         emit hasFileChanged();
@@ -439,7 +439,7 @@ void DataManagement::Downloadable_SingleFile::downloadHeaderFinished() {
     }
 
     // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
+    auto oldUpdateSize = updateSize();
 
     // Update remote file information
     auto old_remoteFileDate = _remoteFileDate;
@@ -456,8 +456,8 @@ void DataManagement::Downloadable_SingleFile::downloadHeaderFinished() {
     if (_remoteFileSize != old_remoteFileSize) {
         emit remoteFileSizeChanged();
     }
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
+    if (oldUpdateSize != updateSize()) {
+        emit updateSizeChanged();
     }
 }
 
@@ -474,7 +474,7 @@ auto DataManagement::Downloadable_SingleFile::infoText() -> QString {
                 .arg(QLocale::system().formattedDataSize(info.size(), 1,
                                                          QLocale::DataSizeSIFormat));
 
-        if (updatable()) {
+        if (updateSize() != 0) {
             displayText += " • " + tr("update available");
         }
         if (!url().isValid()) {
@@ -520,13 +520,13 @@ void DataManagement::Downloadable_SingleFile::setRemoteFileDate(const QDateTime 
     }
 
     // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
+    auto oldUpdateSize = updateSize();
 
     _remoteFileDate = date;
 
     // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
+    if (oldUpdateSize != updateSize()) {
+        emit updateSizeChanged();
     }
     emit remoteFileDateChanged();
 }
@@ -545,13 +545,13 @@ void DataManagement::Downloadable_SingleFile::setRemoteFileSize(qint64 size) {
     }
 
     // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
+    auto oldUpdateSize = updateSize();
 
     _remoteFileSize = size;
 
     // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
+    if (oldUpdateSize != updateSize()) {
+        emit updateSizeChanged();
     }
     emit remoteFileSizeChanged();
 }
@@ -580,7 +580,7 @@ void DataManagement::Downloadable_SingleFile::startFileDownload() {
     }
 
     // Save old value to see if anything changed
-    auto oldUpdatable = updatable();
+    auto oldUpdateSize = updateSize();
     auto oldDownloadProgress =_downloadProgress;
     auto oldIsDownloading = downloading();
 
@@ -607,8 +607,8 @@ void DataManagement::Downloadable_SingleFile::startFileDownload() {
     _downloadProgress = 0;
 
     // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
+    if (oldUpdateSize != updateSize()) {
+        emit updateSizeChanged();
     }
     if (_downloadProgress != oldDownloadProgress) {
         emit downloadProgressChanged(_downloadProgress);
@@ -627,7 +627,7 @@ void DataManagement::Downloadable_SingleFile::stopFileDownload() {
     }
 
     // Save old value to see if anything changed
-    bool oldUpdatable = updatable();
+    auto oldUpdateSize = updateSize();
 
     // Stop the download
     _networkReplyDownloadFile->deleteLater();
@@ -635,25 +635,29 @@ void DataManagement::Downloadable_SingleFile::stopFileDownload() {
     delete _saveFile;
 
     // Emit signals as appropriate
-    if (oldUpdatable != updatable()) {
-        emit updatableChanged();
+    if (oldUpdateSize != updateSize()) {
+        emit updateSizeChanged();
     }
     emit downloadingChanged();
 
 }
 
 
-auto DataManagement::Downloadable_SingleFile::updatable() -> bool
+auto DataManagement::Downloadable_SingleFile::updateSize() -> qsizetype
 {
     if (downloading())
     {
-        return false;
+        return 0;
     }
     if (!QFile::exists(_fileName))
     {
-        return false;
+        return 0;
     }
 
     QFileInfo info(_fileName);
-    return _remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate);
+    if (_remoteFileDate.isValid() && (info.lastModified() < _remoteFileDate))
+    {
+        return _remoteFileSize;
+    }
+    return 0;
 }

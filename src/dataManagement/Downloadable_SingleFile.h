@@ -198,9 +198,9 @@ public:
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
-     * @returns Property updatable
+     * @returns Property updateSize
      */
-    [[nodiscard]] auto updatable() -> bool override;
+    [[nodiscard]] auto updateSize() -> qint64 override;
 
 
 public slots:
@@ -331,9 +331,6 @@ signals:
      */
     void remoteFileSizeChanged();
 
-    /*! \brief Notifier signal for the property updatable */
-    void updatableChanged();
-
 private slots:
     // Called when an error occurs during the download of the remote file, this
     // method deletes QTemporaryFile _tmpFile, emits the signal error() and
@@ -394,7 +391,7 @@ private:
 
     // Size of the remote file, set directly via a setter method or by calling
     // downloadRemoteFileInfo().
-    qint64 _remoteFileSize{-1};
+    qsizetype _remoteFileSize{-1};
 };
 
 };

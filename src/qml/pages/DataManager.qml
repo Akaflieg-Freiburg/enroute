@@ -125,7 +125,7 @@ Page {
                 ToolButton {
                     id: updateButton
                     icon.source: "/icons/material/ic_refresh.svg"
-                    visible: model.modelData.updatable && !model.modelData.downloading
+                    visible: (model.modelData.updateSize !== 0) && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
                         model.modelData.update()

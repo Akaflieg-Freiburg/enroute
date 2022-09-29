@@ -239,7 +239,7 @@ void DataManagement::DataManager::updateAllItems()
     m_mapSets.removeAll(nullptr);
     foreach(auto mapSet, m_mapSets)
     {
-        if (mapSet->updatable())
+        if (mapSet->updateSize() != 0)
         {
             mapSet->update();
         }
@@ -360,7 +360,7 @@ auto DataManagement::DataManager::updatable() -> bool
     m_mapSets.removeAll(nullptr);
     foreach(auto mapSet, m_mapSets)
     {
-        if (mapSet->updatable())
+        if (mapSet->updateSize() != 0)
         {
             return true;
         }
@@ -374,7 +374,7 @@ auto DataManagement::DataManager::updateSizeString() -> QString
     qsizetype size = 0;
     foreach(auto mapSet, m_mapSets)
     {
-        size += mapSet->updatableSize();
+        size += mapSet->updateSize();
     }
     size += m_databases.updateSize();
 

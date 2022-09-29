@@ -97,7 +97,7 @@ auto DataManagement::DownloadableGroupWatcher::updatable() const -> bool
         if (_downloadable.isNull()) {
             continue;
         }
-        if (_downloadable->updatable()) {
+        if (_downloadable->updateSize() != 0) {
             return true;
         }
     }
@@ -229,7 +229,7 @@ void DataManagement::DownloadableGroupWatcher::updateAll()
         if (downloadablePtr.isNull()) {
             continue;
         }
-        if (downloadablePtr->updatable()) {
+        if (downloadablePtr->updateSize() != 0) {
             downloadablePtr->startFileDownload();
         }
     }
@@ -241,7 +241,7 @@ auto DataManagement::DownloadableGroupWatcher::updateSize() const -> qsizetype
     qsizetype size = 0;
     foreach(auto downloadable, _downloadables)
     {
-        if (downloadable->updatable())
+        if (downloadable->updateSize() != 0)
         {
             size += downloadable->remoteFileSize();
         }

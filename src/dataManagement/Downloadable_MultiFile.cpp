@@ -127,40 +127,18 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
 }
 
 
-auto DataManagement::Downloadable_MultiFile::updatable() -> bool
+auto DataManagement::Downloadable_MultiFile::updateSize() -> qsizetype
 {
     if (!hasFile())
-    {
-        return false;
-    }
-
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
-    {
-        if (map->updatable() || !map->hasFile())
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-auto DataManagement::Downloadable_MultiFile::updatableSize() -> qsizetype
-{
-    if (!updatable())
     {
         return 0;
     }
 
-    qsizetype result = 0;
     m_maps.removeAll(nullptr);
+    qsizetype result = 0;
     foreach(auto map, m_maps)
     {
-        if (map->updatable() || !map->hasFile())
-        {
-            result += map->remoteFileSize();
-        }
+        result += map->updateSize();
     }
     return result;
 }
@@ -198,7 +176,7 @@ void DataManagement::Downloadable_MultiFile::stopFileDownload()
 
 void DataManagement::Downloadable_MultiFile::update()
 {
-    if (!updatable())
+    if (updateSize() == 0)
     {
         return;
     }
@@ -206,7 +184,7 @@ void DataManagement::Downloadable_MultiFile::update()
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
     {
-        if (map->updatable() || !map->hasFile())
+        if ((map->updateSize() != 0) || !map->hasFile())
         {
             map->startFileDownload();
         }
@@ -229,10 +207,10 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Si
     connect(map, &DataManagement::Downloadable_SingleFile::error, this, &DataManagement::Downloadable_MultiFile::error);
     connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::hasFileChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updatableChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::Downloadable_MultiFile::updatableChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::updatableChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updatableSizeChanged);
 
     // Wire up signals

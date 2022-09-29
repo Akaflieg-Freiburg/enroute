@@ -94,9 +94,12 @@ public:
      */
     Q_PROPERTY(QString section READ section WRITE setSection NOTIFY sectionChanged)
 
-    /*! \brief Indicates that local files exist and update(s) are available */
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
-
+    /*! \brief Update size
+     *
+     *  If local files exist and update(s) are available, this property
+     *  holds the size of the update. If no updates are available, this property holds 0.
+     */
+    Q_PROPERTY(qint64 updateSize READ updateSize NOTIFY updateSizeChanged)
 
 
     //
@@ -141,10 +144,9 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property updatable
+     * @returns Property updateSize
      */
-    [[nodiscard]] virtual auto updatable() -> bool = 0;
-
+    [[nodiscard]] virtual auto updateSize() -> qint64 = 0;
 
 
     //
@@ -171,11 +173,11 @@ signals:
     /*! \brief Notifier signal */
     void infoTextChanged();
 
-    /*! \brief Notifier signal for the property section */
+    /*! \brief Notifier signal */
     void sectionChanged();
 
-    /*! \brief Notifier signal for the property updatable */
-    void updatableChanged();
+    /*! \brief Notifier signal */
+    void updateSizeChanged();
 
 protected:
     // Property contentType

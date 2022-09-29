@@ -48,7 +48,7 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable_SingleFile* down
 
 
     connect(downloadable, &Downloadable_SingleFile::downloadingChanged, this, &DownloadableGroup::checkAndEmitSignals);
-    connect(downloadable, &Downloadable_SingleFile::updatableChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable_SingleFile::updateSizeChanged, this, &DownloadableGroup::checkAndEmitSignals);
     connect(downloadable, &Downloadable_SingleFile::hasFileChanged, this, &DownloadableGroup::checkAndEmitSignals);
     connect(downloadable, &Downloadable_SingleFile::fileContentChanged, this, &DownloadableGroup::localFileContentChanged);
     connect(downloadable, &QObject::destroyed, this, &DownloadableGroup::cleanUp);

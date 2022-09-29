@@ -235,7 +235,7 @@ void DataManagement::DownloadableGroupWatcher::updateAll()
             continue;
         }
         if (downloadablePtr->updateSize() != 0) {
-            downloadablePtr->startFileDownload();
+            downloadablePtr->startDownload();
         }
     }
 }
@@ -278,6 +278,6 @@ void DataManagement::DownloadableGroupWatcher::deleteAllFiles()
         if (_downloadable.isNull()) {
             continue;
         }
-        _downloadable->deleteFile();
+        _downloadable->deleteFiles();
     }
 }

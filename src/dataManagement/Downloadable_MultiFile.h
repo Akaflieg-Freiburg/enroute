@@ -20,15 +20,31 @@
 
 #pragma once
 
-#include "dataManagement/Downloadable_Abstract.h"
 #include "dataManagement/Downloadable_SingleFile.h"
 
 namespace DataManagement {
+
+
+/*! \brief Group of closely related downloadable items
+ *
+ *  This class implements a group of downloadable item, that is of
+ *  Downloadable_SingleFile objects.
+ *
+ *  The members of the group are closely related: the Downloadable_MultiFile is
+ *  considered updatable if one of its members are updatable, or if one (but not
+ *  all) of its members has a local file. Calling update() will then update all
+ *  updatable members, and download all missing files.
+ */
+
 
 class Downloadable_MultiFile : public Downloadable_Abstract {
     Q_OBJECT
 
 public:
+    /*! \brief Standard constructor
+     *
+     * @param parent The standard QObject parent pointer.
+     */
     explicit Downloadable_MultiFile(QObject *parent = nullptr);
 
 
@@ -71,17 +87,17 @@ public:
     // Methods
     //
 
-#warning
+    /*! \brief Add a Downloadable_SingleFile to this Downloadable_MultiFile */
     Q_INVOKABLE void add(DataManagement::Downloadable_SingleFile*);
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
-    Q_INVOKABLE void deleteFile() override;
+    Q_INVOKABLE void deleteFiles() override;
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
-    Q_INVOKABLE void startFileDownload() override;
+    Q_INVOKABLE void startDownload() override;
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
-    Q_INVOKABLE void stopFileDownload() override;
+    Q_INVOKABLE void stopDownload() override;
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void update() override;

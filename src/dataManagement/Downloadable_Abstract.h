@@ -25,9 +25,14 @@
 
 namespace DataManagement {
 
-/*! \brief Abstract base class for Downloadable_SingleFile and Downloadable_MultiFile
+/*! \brief Abstract base class for Downloadable_SingleFile and
+ *  Downloadable_MultiFile
  *
- *  This is an abstract base class for Downloadable_SingleFile and Downloadable_MultiFile, ensuring that the two classes share a common API.
+ *  This is an abstract base class for Downloadable_SingleFile and
+ *  Downloadable_MultiFile, ensuring that the two classes share a common API.
+ *
+ *  @note Subclasses need to set the protected member m_contentType in their
+ *  constructors.
  */
 
 class Downloadable_Abstract : public QObject {
@@ -62,8 +67,9 @@ public:
 
     /*! \brief Describe installed file(s)
      *
-     * This property contains a localized description of the locally installed file(s), localized and in HTML format.
-     * If no description is available, then the property contains an empty string.
+     * This property contains a localized description of the locally installed
+     * file(s), localized and in HTML format. If no description is available,
+     * then the property contains an empty string.
      */
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
 
@@ -96,8 +102,9 @@ public:
 
     /*! \brief Update size
      *
-     *  If local files exist and update(s) are available, this property
-     *  holds the size of the update. If no updates are available, this property holds 0.
+     *  If local files exist and update(s) are available, this property holds
+     *  the size of the update. If no updates are available, this property holds
+     *  0.
      */
     Q_PROPERTY(qint64 updateSize READ updateSize NOTIFY updateSizeChanged)
 
@@ -166,14 +173,14 @@ public:
     // Methods
     //
 
-    /*! \brief Deletes the local file(s) */
-    Q_INVOKABLE virtual void deleteFile() = 0;
+    /*! \brief Deletes all local file(s) */
+    Q_INVOKABLE virtual void deleteFiles() = 0;
 
     /*! \brief Initiate download(s) */
-    Q_INVOKABLE virtual void startFileDownload() = 0;
+    Q_INVOKABLE virtual void startDownload() = 0;
 
     /*! \brief Stops download process(es) */
-    Q_INVOKABLE virtual void stopFileDownload() = 0;
+    Q_INVOKABLE virtual void stopDownload() = 0;
 
     /*! \brief Starts download(s) if updatable */
     Q_INVOKABLE virtual void update() = 0;
@@ -187,9 +194,9 @@ signals:
 
     /*! \brief Download error
      *
-     * This signal is emitted if the download process fails for whatever
-     * reason. Once the signal is emitted, the download process is deleted and
-     * no further actions will take place. The local file will not be touched.
+     * This signal is emitted if the download process fails for whatever reason.
+     * Once the signal is emitted, the download process is deleted and no
+     * further actions will take place. The local file will not be touched.
      *
      * @param objectName Name of this QObject, as obtained by the method
      * objectName()

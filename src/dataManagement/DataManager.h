@@ -274,7 +274,7 @@ public slots:
      */
     void updateRemoteDataItemList()
     {
-        m_mapsJSON.startFileDownload();
+        m_mapsJSON.startDownload();
     }
 
     /*! \brief Updates all maps sets and data items */

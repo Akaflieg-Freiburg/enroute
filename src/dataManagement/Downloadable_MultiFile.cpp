@@ -144,32 +144,32 @@ auto DataManagement::Downloadable_MultiFile::updateSize() -> qsizetype
 }
 
 
-void DataManagement::Downloadable_MultiFile::deleteFile()
+void DataManagement::Downloadable_MultiFile::deleteFiles()
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
     {
-        map->deleteFile();
+        map->deleteFiles();
     }
 }
 
 
-void DataManagement::Downloadable_MultiFile::startFileDownload()
+void DataManagement::Downloadable_MultiFile::startDownload()
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
     {
-        map->startFileDownload();
+        map->startDownload();
     }
 }
 
 
-void DataManagement::Downloadable_MultiFile::stopFileDownload()
+void DataManagement::Downloadable_MultiFile::stopDownload()
 {
     m_maps.removeAll(nullptr);
     foreach(auto map, m_maps)
     {
-        map->stopFileDownload();
+        map->stopDownload();
     }
 }
 
@@ -186,7 +186,7 @@ void DataManagement::Downloadable_MultiFile::update()
     {
         if ((map->updateSize() != 0) || !map->hasFile())
         {
-            map->startFileDownload();
+            map->startDownload();
         }
     }
 }

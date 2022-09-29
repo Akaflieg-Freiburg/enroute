@@ -213,7 +213,7 @@ public:
      * aboutToChangeLocalFile() and localFileChanged() are emitted
      * appropriately, and a QLockFile is used at fileName()+".lock".
      */
-    Q_INVOKABLE void deleteFile() override;
+    Q_INVOKABLE void deleteFiles() override;
 
     /*! \brief Initiate a download
      *
@@ -246,7 +246,7 @@ public:
      * -# The signal fileChanged() is emitted to indicate that the file is
      *    again ready to be used.
      */
-    Q_INVOKABLE void startFileDownload() override;
+    Q_INVOKABLE void startDownload() override;
 
     /*! \brief Contacts the server and downloads information about the remote
      *  file
@@ -268,7 +268,7 @@ public:
      * deletes any partially downloaded data. No signal will be emitted.  If no
      * download is in progress, nothing will happen.
      */
-    Q_INVOKABLE void stopFileDownload() override;
+    Q_INVOKABLE void stopDownload() override;
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void update() override;

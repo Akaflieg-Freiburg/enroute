@@ -85,7 +85,7 @@ DataManagement::Downloadable_SingleFile::~Downloadable_SingleFile() {
 }
 
 
-void DataManagement::Downloadable_SingleFile::deleteFile() {
+void DataManagement::Downloadable_SingleFile::deleteFiles() {
     // If the local file does not exist, there is nothing to do
     if (!QFile::exists(_fileName)) {
         return;
@@ -173,7 +173,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileErrorReceiver(QNetwork
     }
 
     // Stop the download
-    stopFileDownload();
+    stopDownload();
 
     // Do not do anything about SSL errors; this has already been handled by the SSLErrorHandler
     if ((code == QNetworkReply::SslHandshakeFailedError) &&
@@ -346,11 +346,11 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished() {
     // Paranoid safety checks
     //  Q_ASSERT(!_networkReplyDownloadFile.isNull() && !_tmpFile.isNull());
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
-        stopFileDownload();
+        stopDownload();
         return;
     }
     if (_networkReplyDownloadFile->error() != QNetworkReply::NoError) {
-        stopFileDownload();
+        stopDownload();
         return;
     }
 
@@ -416,7 +416,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileProgressReceiver(qint6
 void DataManagement::Downloadable_SingleFile::downloadFilePartialDataReceiver() {
     // Paranoid safety checks
     if (_networkReplyDownloadFile.isNull() || _saveFile.isNull()) {
-        stopFileDownload();
+        stopDownload();
         return;
     }
     if (_networkReplyDownloadFile->error() != QNetworkReply::NoError) {
@@ -572,7 +572,7 @@ void DataManagement::Downloadable_SingleFile::startInfoDownload() {
 }
 
 
-void DataManagement::Downloadable_SingleFile::startFileDownload() {
+void DataManagement::Downloadable_SingleFile::startDownload() {
 
     // Do not begin a new download if one is already running
     if (downloading()) {
@@ -619,7 +619,7 @@ void DataManagement::Downloadable_SingleFile::startFileDownload() {
 }
 
 
-void DataManagement::Downloadable_SingleFile::stopFileDownload() {
+void DataManagement::Downloadable_SingleFile::stopDownload() {
 
     // Do stop a new download if none is already running
     if (!downloading()) {
@@ -667,6 +667,6 @@ void DataManagement::Downloadable_SingleFile::update()
 {
     if (updateSize() != 0)
     {
-        startFileDownload();
+        startDownload();
     }
 }

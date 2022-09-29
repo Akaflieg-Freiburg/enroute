@@ -93,21 +93,6 @@ auto DataManagement::DownloadableGroupWatcher::files() const -> QStringList
 }
 
 
-auto DataManagement::DownloadableGroupWatcher::updatable() const -> bool
-{
-    foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull()) {
-            continue;
-        }
-        if (_downloadable->updateSize() != 0) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
 void DataManagement::DownloadableGroupWatcher::cleanUp()
 {
     auto idx = _downloadables.indexOf(nullptr);
@@ -120,46 +105,40 @@ void DataManagement::DownloadableGroupWatcher::cleanUp()
 
 void DataManagement::DownloadableGroupWatcher::checkAndEmitSignals()
 {
-    bool                          newDownloading           = downloading();
+    auto newDownloading           = downloading();
     auto newDownloadablesWithFile = downloadablesWithFile();
-    QStringList                   newFiles                 = files();
-    bool                          newHasFile               = hasFile();
-    bool                          newUpdatable             = updatable();
-    qsizetype                     newUpdateSize            = updateSize();
+    auto newFiles                 = files();
+    auto newHasFile               = hasFile();
+    auto newUpdateSize            = updateSize();
 
-    if (newDownloadablesWithFile != _cachedDownloadablesWithFile) {
-        _cachedDownloadablesWithFile = newDownloadablesWithFile;
+    if (newDownloadablesWithFile != m_cachedDownloadablesWithFile) {
+        m_cachedDownloadablesWithFile = newDownloadablesWithFile;
         emit downloadablesWithFileChanged(newDownloadablesWithFile);
     }
 
-    if (newDownloading != _cachedDownloading) {
-        _cachedDownloading = newDownloading;
-        emit downloadingChanged(newDownloading);
+    if (newDownloading != m_cachedDownloading) {
+        m_cachedDownloading = newDownloading;
+        emit downloadingChanged();
     }
 
-    if (newDownloading != _cachedDownloading) {
-        _cachedDownloading = newDownloading;
-        emit downloadingChanged(newDownloading);
+    if (newDownloading != m_cachedDownloading) {
+        m_cachedDownloading = newDownloading;
+        emit downloadingChanged();
     }
 
-    if (newFiles != _cachedFiles) {
-        _cachedFiles = newFiles;
+    if (newFiles != m_cachedFiles) {
+        m_cachedFiles = newFiles;
         emit filesChanged(newFiles);
     }
 
-    if (newHasFile != _cachedHasFile) {
-        _cachedHasFile = newHasFile;
-        emit hasFileChanged(newHasFile);
+    if (newHasFile != m_cachedHasFile) {
+        m_cachedHasFile = newHasFile;
+        emit hasFileChanged();
     }
 
-    if (newUpdatable != _cachedUpdatable) {
-        _cachedUpdatable = newUpdatable;
-        emit updatableChanged(newUpdatable);
-    }
-
-    if (newUpdateSize != _cachedUpdateSize) {
-        _cachedUpdateSize = newUpdateSize;
-        emit updateSizeChanged(newUpdateSize);
+    if (newUpdateSize != m_cachedUpdateSize) {
+        m_cachedUpdateSize = newUpdateSize;
+        emit updateSizeChanged();
     }
 }
 

@@ -82,14 +82,8 @@ public:
     /*! \brief True iF one of the Downloadable objects has a local file */
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
-    /*! \brief Indicates that one of Downloadable objects is updatable
-     *
-     *  By definition, an empty group is not updatable
-     */
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
-
     /*! \brief Gives an estimate for the download size for all updates in this group */
-    Q_PROPERTY(qsizetype updateSize READ updateSize NOTIFY updateSizeChanged)
+    Q_PROPERTY(qint64 updateSize READ updateSize NOTIFY updateSizeChanged)
 
 
     //
@@ -134,15 +128,9 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property updatable
-     */
-    [[nodiscard]] auto updatable() const -> bool;
-
-    /*! \brief Getter function for the property with the same name
-     *
      *  @returns Property updateSize
      */
-    [[nodiscard]] auto updateSize() const -> qsizetype;
+    [[nodiscard]] auto updateSize() const -> qint64;
 
 
     //
@@ -176,19 +164,16 @@ signals:
     void downloadablesWithFileChanged(QVector<QPointer<DataManagement::Downloadable_SingleFile>>);
 
     /*! \brief Notifier signal for property downloading */
-    void downloadingChanged(bool);
+    void downloadingChanged();
 
     /*! \brief Notifier signal for the property localFiles */
     void filesChanged(QStringList);
 
     /*! \brief Notifier signal for the property localFiles */
-    void hasFileChanged(bool);
+    void hasFileChanged();
 
     /*! \brief Notifier signal for the property updatable */
-    void updatableChanged(bool);
-
-    /*! \brief Notifier signal for the property updatable */
-    void updateSizeChanged(qsizetype);
+    void updateSizeChanged();
 
     /*! \brief Emitted if the content of one of the local files changes.
      *
@@ -237,12 +222,11 @@ private:
 
     QTimer emitLocalFileContentChanged_delayedTimer;
 
-    bool _cachedDownloading {false};                                 // Cached value for the 'downloading' property
-    QVector<QPointer<Downloadable_SingleFile>> _cachedDownloadablesWithFile {}; // Cached value for the 'downloadablesWithFiles' property
-    QStringList _cachedFiles{};                                     // Cached value for the 'files' property
-    bool _cachedHasFile {false};                                     // Cached value for the 'hasLocalFile' property
-    bool _cachedUpdatable {false};                                   // Cached value for the 'updatable' property
-    qsizetype _cachedUpdateSize {};                                    // Cached value for the 'updateSize' property
+    bool m_cachedDownloading {false};                                 // Cached value for the 'downloading' property
+    QVector<QPointer<Downloadable_SingleFile>> m_cachedDownloadablesWithFile {}; // Cached value for the 'downloadablesWithFiles' property
+    QStringList m_cachedFiles{};                                     // Cached value for the 'files' property
+    bool m_cachedHasFile {false};                                     // Cached value for the 'hasLocalFile' property
+    qsizetype m_cachedUpdateSize {};                                    // Cached value for the 'updateSize' property
 };
 
 };

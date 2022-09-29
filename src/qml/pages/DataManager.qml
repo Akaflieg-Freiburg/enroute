@@ -75,7 +75,7 @@ Page {
                     dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
                     dialogLoader.active = true;
                 } else {
-                    model.modelData.startFileDownload();
+                    model.modelData.startDownload();
                 }
             }
 
@@ -118,7 +118,7 @@ Page {
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
+                        model.modelData.startDownload()
                     }
                 }
 
@@ -138,7 +138,7 @@ Page {
                     visible: model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        model.modelData.stopFileDownload()
+                        model.modelData.stopDownload()
                     }
                 }
 
@@ -174,7 +174,7 @@ Page {
 
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
-                                model.modelData.deleteFile()
+                                model.modelData.deleteFiles()
                             }
                         }
                     }
@@ -267,7 +267,7 @@ Page {
                 id: downloadUpdatesMenu
 
                 text: qsTr("Download all updates…")
-                enabled: global.dataManager().items.updatable
+                enabled: (global.dataManager().items.updateSize !== 0)
 
                 onTriggered: {
                     global.mobileAdaptor().vibrateBrief()

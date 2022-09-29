@@ -322,7 +322,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     QMap<QString, Downloadable_MultiFile*> mapSetsByName;
     foreach (auto itemX, m_items.downloadables())
     {
-#warning ugle
+#warning ugly
         auto item = qobject_cast<DataManagement::Downloadable_SingleFile*>(itemX);
         if (item == nullptr)
         {
@@ -363,7 +363,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     }
 }
 
-#warning
+
 auto DataManagement::DataManager::updatable() -> bool
 {
     m_mapSets.removeAll(nullptr);
@@ -374,8 +374,9 @@ auto DataManagement::DataManager::updatable() -> bool
             return true;
         }
     }
-    return m_items.updatable();
+    return (m_items.updateSize() != 0);
 }
+
 
 auto DataManagement::DataManager::updateSizeString() -> QString
 {
@@ -388,7 +389,4 @@ auto DataManagement::DataManager::updateSizeString() -> QString
     size += m_databases.updateSize();
 
     return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
-
-#warning not implemented
-    return QStringLiteral("Not implemented");
 }

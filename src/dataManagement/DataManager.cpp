@@ -323,7 +323,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     foreach (auto itemX, m_items.downloadables())
     {
 #warning ugly
-        auto item = qobject_cast<DataManagement::Downloadable_SingleFile*>(itemX);
+        auto* item = qobject_cast<DataManagement::Downloadable_SingleFile*>(itemX);
         if (item == nullptr)
         {
             continue;

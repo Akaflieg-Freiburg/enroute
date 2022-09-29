@@ -79,11 +79,12 @@ public:
      */
     Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
 
-    /*! \brief True iF one of the Downloadable objects has a local file */
+    /*! \brief True if one of the Downloadable objects has a local file */
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
     /*! \brief Gives an estimate for the download size for all updates in this group */
     Q_PROPERTY(qint64 updateSize READ updateSize NOTIFY updateSizeChanged)
+
 
 
     //
@@ -131,6 +132,7 @@ public:
      *  @returns Property updateSize
      */
     [[nodiscard]] auto updateSize() const -> qint64;
+
 
 
     //
@@ -224,7 +226,7 @@ private:
 
     bool m_cachedDownloading {false};                                 // Cached value for the 'downloading' property
     QVector<QPointer<Downloadable_SingleFile>> m_cachedDownloadablesWithFile {}; // Cached value for the 'downloadablesWithFiles' property
-    QStringList m_cachedFiles{};                                     // Cached value for the 'files' property
+    QStringList m_cachedFiles {};                                     // Cached value for the 'files' property
     bool m_cachedHasFile {false};                                     // Cached value for the 'hasLocalFile' property
     qsizetype m_cachedUpdateSize {};                                    // Cached value for the 'updateSize' property
 };

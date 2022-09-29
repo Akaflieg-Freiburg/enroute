@@ -87,8 +87,12 @@ public:
     // Methods
     //
 
-    /*! \brief Add a Downloadable_SingleFile to this Downloadable_MultiFile */
-    Q_INVOKABLE void add(DataManagement::Downloadable_SingleFile*);
+    /*! \brief Add a Downloadable_SingleFile to this Downloadable_MultiFile
+     *
+     *  This method copies the values of map->objectName and map->section into *this object.
+     *  As a result, these properties are always set to match those of the last map added.
+     */
+    Q_INVOKABLE void add(DataManagement::Downloadable_SingleFile* map);
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void deleteFiles() override;

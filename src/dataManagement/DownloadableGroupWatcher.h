@@ -62,7 +62,7 @@ public:
      *
      *  This property holds the list of Downloadable objects in the group that
      *  have local files. The Downloadable objects are sorted alphabetically in
-     *  ascending order, first by section() and then secondly by file name. The
+     *  ascending order, first by section() and then secondly by object. The
      *  nullptr is never contained in the list.
      */
     Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable_SingleFile>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
@@ -234,14 +234,15 @@ private:
 
     // Provisions to provide the signal localFileContentChanged_delayed
     void emitLocalFileContentChanged_delayed();
+
     QTimer emitLocalFileContentChanged_delayedTimer;
 
-    bool _cachedDownloading{false};                                 // Cached value for the 'downloading' property
-    QVector<QPointer<Downloadable_SingleFile>> _cachedDownloadablesWithFile{}; // Cached value for the 'downloadablesWithFiles' property
+    bool _cachedDownloading {false};                                 // Cached value for the 'downloading' property
+    QVector<QPointer<Downloadable_SingleFile>> _cachedDownloadablesWithFile {}; // Cached value for the 'downloadablesWithFiles' property
     QStringList _cachedFiles{};                                     // Cached value for the 'files' property
-    bool _cachedHasFile{false};                                     // Cached value for the 'hasLocalFile' property
-    bool _cachedUpdatable{false};                                   // Cached value for the 'updatable' property
-    qsizetype _cachedUpdateSize{};                                    // Cached value for the 'updateSize' property
+    bool _cachedHasFile {false};                                     // Cached value for the 'hasLocalFile' property
+    bool _cachedUpdatable {false};                                   // Cached value for the 'updatable' property
+    qsizetype _cachedUpdateSize {};                                    // Cached value for the 'updateSize' property
 };
 
 };

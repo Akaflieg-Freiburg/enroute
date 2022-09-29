@@ -36,7 +36,6 @@ namespace DataManagement {
  *  updatable members, and download all missing files.
  */
 
-
 class Downloadable_MultiFile : public Downloadable_Abstract {
     Q_OBJECT
 

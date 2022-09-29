@@ -27,7 +27,7 @@ DataManagement::DownloadableGroup::DownloadableGroup(QObject *parent)
 }
 
 
-void DataManagement::DownloadableGroup::addToGroup(Downloadable_Abstract* downloadable)
+void DataManagement::DownloadableGroup::add(Downloadable_Abstract* downloadable)
 {
     // Avoid double entries
     if (_downloadables.contains(downloadable))
@@ -62,7 +62,7 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable_Abstract* downlo
 }
 
 
-void DataManagement::DownloadableGroup::removeFromGroup(Downloadable_Abstract* downloadable)
+void DataManagement::DownloadableGroup::remove(Downloadable_Abstract* downloadable)
 {
     auto index = _downloadables.indexOf(downloadable);
 

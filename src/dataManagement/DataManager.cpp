@@ -156,7 +156,7 @@ void DataManagement::DataManager::onItemFileChanged()
     auto items = m_items.downloadables();
     foreach (auto geoMapPtrX, items)
     {
-        auto geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
+        auto* geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
         if (geoMapPtr == nullptr)
         {
             continue;
@@ -172,7 +172,7 @@ void DataManagement::DataManager::onItemFileChanged()
 
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
-        m_items.removeFromGroup(geoMapPtr);
+        m_items.remove(geoMapPtr);
         geoMapPtr->deleteLater();
         QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
@@ -186,7 +186,7 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
     foreach (auto mapPtrX, m_items.downloadables())
     {
 #warning ugly
-        auto mapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(mapPtrX);
+        auto* mapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(mapPtrX);
         if (mapPtr == nullptr)
         {
             continue;
@@ -215,28 +215,28 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
         }
     }
 
-    m_items.addToGroup(downloadable);
+    m_items.add(downloadable);
     if (localFileName.endsWith(QLatin1String("terrain")))
     {
-        m_terrainMaps.addToGroup(downloadable);
+        m_terrainMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("geojson")))
     {
-        m_aviationMaps.addToGroup(downloadable);
+        m_aviationMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("raster")))
     {
-        m_baseMaps.addToGroup(downloadable);
-        m_baseMapsRaster.addToGroup(downloadable);
+        m_baseMaps.add(downloadable);
+        m_baseMapsRaster.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("mbtiles")))
     {
-        m_baseMaps.addToGroup(downloadable);
-        m_baseMapsVector.addToGroup(downloadable);
+        m_baseMaps.add(downloadable);
+        m_baseMapsVector.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("txt")))
     {
-        m_databases.addToGroup(downloadable);
+        m_databases.add(downloadable);
     }
     return downloadable;
 }

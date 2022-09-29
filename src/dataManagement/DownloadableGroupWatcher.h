@@ -49,7 +49,7 @@ public:
      *  by section() and then secondly by file name. The nullptr is never
      *  contained in the list.
      */
-    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable_SingleFile>> downloadables READ downloadables NOTIFY downloadablesChanged)
+    Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable_Abstract>> downloadables READ downloadables NOTIFY downloadablesChanged)
 
     /*! \brief List of Downloadables in this group, as a list of QObjects
      *
@@ -100,7 +100,7 @@ public:
      *
      *   @returns Property downloadables
      */
-    [[nodiscard]] auto downloadables() const -> QVector<QPointer<DataManagement::Downloadable_SingleFile>>;
+    [[nodiscard]] auto downloadables() const -> QVector<QPointer<DataManagement::Downloadable_Abstract>>;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -227,7 +227,7 @@ protected:
     explicit DownloadableGroupWatcher(QObject *parent = nullptr);
 
     // List of QPointers to the Downloadable objects in this group
-    QList<QPointer<Downloadable_SingleFile>> _downloadables;
+    QList<QPointer<Downloadable_Abstract>> _downloadables;
 
 private:
     Q_DISABLE_COPY_MOVE(DownloadableGroupWatcher)

@@ -206,6 +206,7 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Si
 
     connect(map, &DataManagement::Downloadable_SingleFile::error, this, &DataManagement::Downloadable_MultiFile::error);
     connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
+    connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::fileContentChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::hasFileChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
     connect(map, &DataManagement::Downloadable_SingleFile::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);

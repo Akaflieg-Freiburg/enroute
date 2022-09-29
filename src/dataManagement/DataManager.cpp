@@ -154,8 +154,13 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
 void DataManagement::DataManager::onItemFileChanged()
 {
     auto items = m_items.downloadables();
-    foreach (auto geoMapPtr, items)
+    foreach (auto geoMapPtrX, items)
     {
+        auto geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
+        if (geoMapPtr == nullptr)
+        {
+            continue;
+        }
         if (geoMapPtr->url().isValid())
         {
             continue;
@@ -178,9 +183,11 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its
     // entry in oldMaps
-    foreach (auto mapPtr, m_items.downloadables())
+    foreach (auto mapPtrX, m_items.downloadables())
     {
-        if (mapPtr.isNull())
+#warning ugly
+        auto mapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(mapPtrX);
+        if (mapPtr == nullptr)
         {
             continue;
         }
@@ -313,9 +320,11 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     qDeleteAll(m_mapSets);
     m_mapSets.clear();
     QMap<QString, Downloadable_MultiFile*> mapSetsByName;
-    foreach (auto item, m_items.downloadables())
+    foreach (auto itemX, m_items.downloadables())
     {
-        if (item.isNull())
+#warning ugle
+        auto item = qobject_cast<DataManagement::Downloadable_SingleFile*>(itemX);
+        if (item == nullptr)
         {
             continue;
         }
@@ -379,8 +388,6 @@ auto DataManagement::DataManager::updateSizeString() -> QString
     size += m_databases.updateSize();
 
     return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
-
-
 
 #warning not implemented
     return QStringLiteral("Not implemented");

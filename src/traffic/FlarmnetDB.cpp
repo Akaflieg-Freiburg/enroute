@@ -51,8 +51,14 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     QPointer<DataManagement::Downloadable_SingleFile> newFlarmnetDBDownloadable;
     if (QCoreApplication::instance() != nullptr) {
         auto downloadables = GlobalObject::dataManager()->databases()->downloadables();
-        foreach(auto downloadable, downloadables) {
-            if (downloadable->fileName().contains(QLatin1String("Flarm"))) {
+        foreach(auto downloadableX, downloadables) {
+#warning ugly
+            auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+            if (downloadable == nullptr)
+            {
+                continue;
+            }
+            if (downloadable->objectName().contains(QLatin1String("Flarm"))) {
                 newFlarmnetDBDownloadable = downloadable;
                 break;
             }
@@ -65,12 +71,12 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     }
 
     if (flarmnetDBDownloadable != nullptr) {
-        disconnect(flarmnetDBDownloadable, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
+        disconnect(flarmnetDBDownloadable, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
     }
 
     flarmnetDBDownloadable = newFlarmnetDBDownloadable;
     if (flarmnetDBDownloadable != nullptr) {
-        connect(flarmnetDBDownloadable, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
+        connect(flarmnetDBDownloadable, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &Traffic::FlarmnetDB::clearCache);
 
         // Create an empty file, if no file exists. We set the FileModificationTime
         // to a point in the past, so that it will automatically be updated at the

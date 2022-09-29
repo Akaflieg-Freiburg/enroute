@@ -77,8 +77,10 @@ auto DataManagement::DownloadableGroupWatcher::files() const -> QStringList
 {
     QStringList result;
 
-    foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull()) {
+    foreach(auto _downloadableX, _downloadables) {
+#warning ugly
+        auto _downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(_downloadableX);
+        if (_downloadable == nullptr) {
             continue;
         }
         if (!_downloadable->hasFile()) {
@@ -119,7 +121,7 @@ void DataManagement::DownloadableGroupWatcher::cleanUp()
 void DataManagement::DownloadableGroupWatcher::checkAndEmitSignals()
 {
     bool                          newDownloading           = downloading();
-    QVector<QPointer<Downloadable_SingleFile>> newDownloadablesWithFile = downloadablesWithFile();
+    auto newDownloadablesWithFile = downloadablesWithFile();
     QStringList                   newFiles                 = files();
     bool                          newHasFile               = hasFile();
     bool                          newUpdatable             = updatable();
@@ -162,23 +164,23 @@ void DataManagement::DownloadableGroupWatcher::checkAndEmitSignals()
 }
 
 
-auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloadable_SingleFile>>
+auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<QPointer<Downloadable_Abstract>>
 {
-    QVector<QPointer<Downloadable_SingleFile>> result;
+    QVector<QPointer<Downloadable_Abstract>> result;
     foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull()) {
+        if (_downloadable == nullptr) {
             continue;
         }
         result += _downloadable;
     }
 
     // Sort Downloadables according to section name and file name
-    std::sort(result.begin(), result.end(), [](Downloadable_SingleFile* a, Downloadable_SingleFile* b)
+    std::sort(result.begin(), result.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
     {
         if (a->section() != b->section()) {
             return (a->section() < b->section());
         }
-        return (a->fileName() < b->fileName());
+        return (a->objectName() < b->objectName());
     }
     );
 
@@ -189,8 +191,11 @@ auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<
 auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> QVector<QPointer<Downloadable_SingleFile>>
 {
     QVector<QPointer<Downloadable_SingleFile>> result;
-    foreach(auto _downloadable, _downloadables) {
-        if (_downloadable.isNull()) {
+    foreach(auto _downloadableX, _downloadables) {
+#warning ugly
+        auto _downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(_downloadableX);
+
+        if (_downloadable == nullptr) {
             continue;
         }
         if (!_downloadable->hasFile()) {
@@ -241,10 +246,7 @@ auto DataManagement::DownloadableGroupWatcher::updateSize() const -> qsizetype
     qsizetype size = 0;
     foreach(auto downloadable, _downloadables)
     {
-        if (downloadable->updateSize() != 0)
-        {
-            size += downloadable->remoteFileSize();
-        }
+        size += downloadable->updateSize();
     }
     return size;
 }

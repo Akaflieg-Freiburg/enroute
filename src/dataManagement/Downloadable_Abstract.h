@@ -199,6 +199,9 @@ signals:
      */
     void error(QString objectName, QString message);
 
+    /*! \brief Indicates that the content of (a) local file(s) has changed */
+    void fileContentChanged();
+
     /*! \brief Notifier signal */
     void hasFileChanged();
 

@@ -297,13 +297,6 @@ signals:
      */
     void downloadProgressChanged(int percentage);
 
-    /*! \brief Notifier signal for the properties fileContent
-     *
-     * This signal is also emitted when the local file get deleted by the method
-     * Downloadable::deleteFile(), and when a file is first downloaded.
-     */
-    void fileContentChanged();
-
     /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
      *
      * This signal is emitted once one of the property remoteFileDate changes,

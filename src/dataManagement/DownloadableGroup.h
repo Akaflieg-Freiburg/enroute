@@ -53,7 +53,7 @@ public:
 
       @param downloadable Pointer to the Downloadable to be added.
     */
-    void addToGroup(DataManagement::Downloadable_SingleFile* downloadable);
+    void addToGroup(DataManagement::Downloadable_Abstract* downloadable);
 
     /*! \brief Remove a downloadable from the group
 
@@ -61,7 +61,7 @@ public:
 
       @param downloadable Pointer to the Downloadable to be removed.
      */
-    void removeFromGroup(DataManagement::Downloadable_SingleFile* downloadable);
+    void removeFromGroup(DataManagement::Downloadable_Abstract* downloadable);
 
 private:
     Q_DISABLE_COPY_MOVE(DownloadableGroup)

@@ -375,7 +375,13 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
     // Generate new GeoJSON array and new list of waypoints
     //
     QStringList JSONFileNames;
-    foreach(auto geoMapPtr, GlobalObject::dataManager()->aviationMaps()->downloadables()) {
+    foreach(auto geoMapPtrX, GlobalObject::dataManager()->aviationMaps()->downloadables()) {
+#warning ugly!
+        auto geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
+        if (geoMapPtr == nullptr)
+        {
+            continue;
+        }
         // Ignore everything but geojson files
         if (!geoMapPtr->fileName().endsWith(u".geojson", Qt::CaseInsensitive)) {
             continue;

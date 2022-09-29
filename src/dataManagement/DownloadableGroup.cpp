@@ -27,7 +27,7 @@ DataManagement::DownloadableGroup::DownloadableGroup(QObject *parent)
 }
 
 
-void DataManagement::DownloadableGroup::addToGroup(Downloadable_SingleFile* downloadable)
+void DataManagement::DownloadableGroup::addToGroup(Downloadable_Abstract* downloadable)
 {
     // Avoid double entries
     if (_downloadables.contains(downloadable))
@@ -37,20 +37,20 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable_SingleFile* down
 
     // Add element to group
     _downloadables.append(downloadable);
-    std::sort(_downloadables.begin(), _downloadables.end(), [](Downloadable_SingleFile* a, Downloadable_SingleFile* b)
+    std::sort(_downloadables.begin(), _downloadables.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
     {
         if (a->section() != b->section()) {
             return (a->section() < b->section());
         }
-        return (a->fileName() < b->fileName());
+        return (a->objectName() < b->objectName());
     }
     );
 
 
-    connect(downloadable, &Downloadable_SingleFile::downloadingChanged, this, &DownloadableGroup::checkAndEmitSignals);
-    connect(downloadable, &Downloadable_SingleFile::updateSizeChanged, this, &DownloadableGroup::checkAndEmitSignals);
-    connect(downloadable, &Downloadable_SingleFile::hasFileChanged, this, &DownloadableGroup::checkAndEmitSignals);
-    connect(downloadable, &Downloadable_SingleFile::fileContentChanged, this, &DownloadableGroup::localFileContentChanged);
+    connect(downloadable, &Downloadable_Abstract::downloadingChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable_Abstract::updateSizeChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable_Abstract::hasFileChanged, this, &DownloadableGroup::checkAndEmitSignals);
+    connect(downloadable, &Downloadable_Abstract::fileContentChanged, this, &DownloadableGroup::localFileContentChanged);
     connect(downloadable, &QObject::destroyed, this, &DownloadableGroup::cleanUp);
     checkAndEmitSignals();
 
@@ -62,7 +62,7 @@ void DataManagement::DownloadableGroup::addToGroup(Downloadable_SingleFile* down
 }
 
 
-void DataManagement::DownloadableGroup::removeFromGroup(Downloadable_SingleFile *downloadable)
+void DataManagement::DownloadableGroup::removeFromGroup(Downloadable_Abstract* downloadable)
 {
     auto index = _downloadables.indexOf(downloadable);
 

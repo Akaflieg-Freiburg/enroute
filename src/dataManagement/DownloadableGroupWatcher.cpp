@@ -159,6 +159,10 @@ auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<
         if (a->section() != b->section()) {
             return (a->section() < b->section());
         }
+        if (a->contentType() != b->contentType())
+        {
+            return (a->contentType() < b->contentType());
+        }
         return (a->objectName() < b->objectName());
     }
     );

@@ -91,7 +91,7 @@ Page {
                 anchors.leftMargin: 0
                 columns: 6
 
-                ItemDelegate {
+                WordWrappingItemDelegate {
                     text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
                     icon.source: {
                         if (model.modelData.updatable)

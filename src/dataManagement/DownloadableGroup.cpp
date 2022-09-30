@@ -30,14 +30,14 @@ DataManagement::DownloadableGroup::DownloadableGroup(QObject *parent)
 void DataManagement::DownloadableGroup::add(Downloadable_Abstract* downloadable)
 {
     // Avoid double entries
-    if (_downloadables.contains(downloadable))
+    if (m_downloadables.contains(downloadable))
     {
         return;
     }
 
     // Add element to group
-    _downloadables.append(downloadable);
-    std::sort(_downloadables.begin(), _downloadables.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
+    m_downloadables.append(downloadable);
+    std::sort(m_downloadables.begin(), m_downloadables.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
     {
         if (a->section() != b->section()) {
             return (a->section() < b->section());
@@ -64,14 +64,14 @@ void DataManagement::DownloadableGroup::add(Downloadable_Abstract* downloadable)
 
 void DataManagement::DownloadableGroup::remove(Downloadable_Abstract* downloadable)
 {
-    auto index = _downloadables.indexOf(downloadable);
+    auto index = m_downloadables.indexOf(downloadable);
 
     // Avoid double entries
     if (index < 0) {
         return;
     }
 
-    _downloadables.takeAt(index);
+    m_downloadables.takeAt(index);
     disconnect(downloadable, nullptr, this, nullptr);
     checkAndEmitSignals();
     emit downloadablesChanged();

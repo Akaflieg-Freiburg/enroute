@@ -33,11 +33,12 @@ namespace DataManagement
    *  Downloadable objects, and forwards summarized information.
    */
 
-class DownloadableGroupWatcher : public QObject
+class DownloadableGroupWatcher : public Downloadable_Abstract
 {
     Q_OBJECT
 
 public:
+
     //
     // PROPERTIES
     //
@@ -67,29 +68,22 @@ public:
      */
     Q_PROPERTY(QVector<QPointer<DataManagement::Downloadable_SingleFile>> downloadablesWithFile READ downloadablesWithFile NOTIFY downloadablesWithFileChanged)
 
-    /*! \brief Indicates whether a download process is currently running
-     *
-     *  This is true if there exists an object in the group that is currently
-     *  downloading.  By definition, an empty group is not downloading
-     */
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-
     /*! \brief Names of all files that have been downloaded by any of the
      *  Downloadble objects in this group
      */
     Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
-
-    /*! \brief True if one of the Downloadable objects has a local file */
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
-
-    /*! \brief Gives an estimate for the download size for all updates in this group */
-    Q_PROPERTY(qint64 updateSize READ updateSize NOTIFY updateSizeChanged)
 
 
 
     //
     // Getter Methods
     //
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     *  @returns Property description
+     */
+    [[nodiscard]] auto description() -> QString override;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -113,7 +107,7 @@ public:
      *
      *  @returns Property downloading
      */
-    [[nodiscard]] auto downloading() const -> bool;
+    [[nodiscard]] auto downloading() -> bool override;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -125,19 +119,31 @@ public:
      *
      *  @returns Property hasFile
      */
-    [[nodiscard]] auto hasFile() const -> bool;
+    [[nodiscard]] auto hasFile() -> bool override;
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     *  @returns Property infoText
+     */
+    [[nodiscard]] auto infoText() -> QString override;
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property updateSize
      */
-    [[nodiscard]] auto updateSize() const -> qint64;
+    [[nodiscard]] auto updateSize() -> qint64 override;
 
 
 
     //
     // Methods
     //
+
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract
+     *
+     * This method deletes the local files.
+     */
+    Q_INVOKABLE void deleteFiles() override;
 
     /*! \brief Kill pending emission of signal localFileContentChanged_delayed */
     void killLocalFileContentChanged_delayed()
@@ -152,30 +158,22 @@ public:
      */
     Q_INVOKABLE [[nodiscard]] int numberOfFilesTotal() const;
 
-    /*! \brief Deletes all local files
-     *
-     *  This method call deleteFile() on all Downloadable objects in this group.
-     */
-    Q_INVOKABLE void deleteAllFiles();
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void startDownload() override;
 
-    /*! Update all updatable downloadable objects */
-    void updateAll();
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void stopDownload() override ;
+
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void update() override;
+
 
 signals:
     /*! \brief Notifier signal for property downloading */
     void downloadablesWithFileChanged(QVector<QPointer<DataManagement::Downloadable_SingleFile>>);
 
-    /*! \brief Notifier signal for property downloading */
-    void downloadingChanged();
-
     /*! \brief Notifier signal for the property localFiles */
     void filesChanged(QStringList);
-
-    /*! \brief Notifier signal for the property localFiles */
-    void hasFileChanged();
-
-    /*! \brief Notifier signal for the property updatable */
-    void updateSizeChanged();
 
     /*! \brief Emitted if the content of one of the local files changes.
      *
@@ -214,7 +212,7 @@ protected:
     explicit DownloadableGroupWatcher(QObject *parent = nullptr);
 
     // List of QPointers to the Downloadable objects in this group
-    QList<QPointer<Downloadable_Abstract>> _downloadables;
+    QList<QPointer<Downloadable_Abstract>> m_downloadables;
 
 private:
     Q_DISABLE_COPY_MOVE(DownloadableGroupWatcher)

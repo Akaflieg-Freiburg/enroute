@@ -251,7 +251,7 @@ void DataManagement::DataManager::updateAllItems()
             mapSet->update();
         }
     }
-    m_items.updateAll();
+    m_items.update();
 }
 
 void DataManagement::DataManager::updateDataItemListAndWhatsNew()

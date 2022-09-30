@@ -193,6 +193,10 @@ auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> 
         if (a->section() != b->section()) {
             return (a->section() < b->section());
         }
+        if (a->contentType() != b->contentType())
+        {
+            return (a->contentType() < b->contentType());
+        }
         return (a->fileName() < b->fileName());
     }
     );
@@ -224,7 +228,7 @@ void DataManagement::DownloadableGroupWatcher::updateAll()
 }
 
 
-auto DataManagement::DownloadableGroupWatcher::updateSize() const -> qsizetype
+auto DataManagement::DownloadableGroupWatcher::updateSize() const -> qint64
 {
     qsizetype size = 0;
     foreach(auto downloadable, _downloadables)

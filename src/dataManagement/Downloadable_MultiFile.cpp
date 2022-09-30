@@ -132,7 +132,7 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
 }
 
 
-auto DataManagement::Downloadable_MultiFile::updateSize() -> qsizetype
+auto DataManagement::Downloadable_MultiFile::updateSize() -> qint64
 {
     if (!hasFile())
     {

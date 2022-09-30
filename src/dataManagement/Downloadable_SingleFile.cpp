@@ -195,7 +195,7 @@ auto DataManagement::Downloadable_SingleFile::infoText() -> QString {
 }
 
 
-auto DataManagement::Downloadable_SingleFile::updateSize() -> qsizetype
+auto DataManagement::Downloadable_SingleFile::updateSize() -> qint64
 {
     if (downloading())
     {

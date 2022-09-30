@@ -385,7 +385,7 @@ private:
 
     // Size of the remote file, set directly via a setter method or by calling
     // downloadRemoteFileInfo().
-    qsizetype m_remoteFileSize {-1};
+    qint64 m_remoteFileSize {-1};
 };
 
 };

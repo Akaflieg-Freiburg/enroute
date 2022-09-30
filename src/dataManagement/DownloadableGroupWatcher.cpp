@@ -159,11 +159,11 @@ auto DataManagement::DownloadableGroupWatcher::downloadables() const -> QVector<
         if (a->section() != b->section()) {
             return (a->section() < b->section());
         }
-        if (a->contentType() != b->contentType())
+        if (a->objectName() != b->objectName())
         {
-            return (a->contentType() < b->contentType());
+            return a->objectName() < b->objectName();
         }
-        return (a->objectName() < b->objectName());
+        return (a->contentType() < b->contentType());
     }
     );
 
@@ -176,7 +176,7 @@ auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> 
     QVector<QPointer<Downloadable_SingleFile>> result;
     foreach(auto _downloadableX, _downloadables) {
 #warning ugly
-        auto _downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(_downloadableX);
+        auto* _downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(_downloadableX);
 
         if (_downloadable == nullptr) {
             continue;
@@ -193,11 +193,11 @@ auto DataManagement::DownloadableGroupWatcher::downloadablesWithFile() const -> 
         if (a->section() != b->section()) {
             return (a->section() < b->section());
         }
-        if (a->contentType() != b->contentType())
+        if (a->objectName() != b->objectName())
         {
-            return (a->contentType() < b->contentType());
+            return a->objectName() < b->objectName();
         }
-        return (a->fileName() < b->fileName());
+        return (a->contentType() < b->contentType());
     }
     );
 

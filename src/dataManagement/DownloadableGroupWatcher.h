@@ -167,6 +167,8 @@ public:
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void update() override;
 
+#warning
+    void clear();
 
 signals:
     /*! \brief Notifier signal for property downloading */

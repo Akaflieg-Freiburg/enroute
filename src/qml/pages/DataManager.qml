@@ -317,7 +317,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.dataManager().mapSets
+                model: global.dataManager().mapSets.downloadablesAsObjectList
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 

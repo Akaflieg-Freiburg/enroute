@@ -243,14 +243,7 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
 
 void DataManagement::DataManager::updateAllItems()
 {
-    m_mapSets.removeAll(nullptr);
-    foreach(auto mapSet, m_mapSets)
-    {
-        if (mapSet->updateSize() != 0)
-        {
-            mapSet->update();
-        }
-    }
+    m_mapSets.update();
     m_items.update();
 }
 
@@ -317,7 +310,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 
 
     // Now the lists of downloadable items should be complete. Finally, we find and match up map sets.
-    qDeleteAll(m_mapSets);
     m_mapSets.clear();
     QMap<QString, Downloadable_MultiFile*> mapSetsByName;
     foreach (auto itemX, m_items.downloadables())
@@ -342,7 +334,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         else
         {
             mapSet = new Downloadable_MultiFile(this);
-            m_mapSets.append(mapSet);
+            m_mapSets.add(mapSet);
             mapSetsByName[key] = mapSet;
         }
 
@@ -352,7 +344,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
         mapSet->add(item);
     }
-    emit mapSetsChanged();
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();
@@ -366,13 +357,9 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 
 auto DataManagement::DataManager::updatable() -> bool
 {
-    m_mapSets.removeAll(nullptr);
-    foreach(auto mapSet, m_mapSets)
+    if (m_mapSets.updateSize() != 0)
     {
-        if (mapSet->updateSize() != 0)
-        {
-            return true;
-        }
+        return true;
     }
     return (m_items.updateSize() != 0);
 }
@@ -380,13 +367,7 @@ auto DataManagement::DataManager::updatable() -> bool
 
 auto DataManagement::DataManager::updateSizeString() -> QString
 {
-
-    qsizetype size = 0;
-    foreach(auto mapSet, m_mapSets)
-    {
-        size += mapSet->updateSize();
-    }
-    size += m_databases.updateSize();
+    qsizetype size = m_mapSets.updateSize() + m_databases.updateSize();
 
     return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
 }

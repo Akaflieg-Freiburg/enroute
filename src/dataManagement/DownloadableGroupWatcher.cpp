@@ -170,7 +170,7 @@ auto DataManagement::DownloadableGroupWatcher::files() const -> QStringList
 
     foreach(auto _downloadableX, m_downloadables) {
 #warning ugly
-        auto _downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(_downloadableX);
+        auto *_downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(_downloadableX);
         if (_downloadable == nullptr) {
             continue;
         }
@@ -313,6 +313,16 @@ void DataManagement::DownloadableGroupWatcher::update()
         }
     }
 }
+
+
+#warning
+void DataManagement::DownloadableGroupWatcher::clear()
+{
+    m_downloadables.removeAll(nullptr);
+    qDeleteAll(m_downloadables);
+    m_downloadables.clear();
+}
+
 
 
 //

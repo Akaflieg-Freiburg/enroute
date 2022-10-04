@@ -29,21 +29,26 @@
 
 #include "Downloadable_Abstract.h"
 
-
-namespace DataManagement {
+namespace DataManagement
+{
 
 /*! \brief Downloadable object
  *
- *  This class represents a downloadable item, such as an aviation map file.  The class is able to do the following.
+ *  This class represents a downloadable item, such as an aviation map file.
+ *  The class is able to do the following.
  *
  *  - Download the file asynchronously from the server.
  *
- *  - Check if a newer version of the file is available at the URL and update the file if desired.
+ *  - Check if a newer version of the file is available at the URL and update
+ *    the file if desired.
  *
- *  The URL and the name of the local file are given in the constructor and cannot be changed. See the description of the method startDownload() to see how downloads work.
+ *  The URL and the name of the local file are given in the constructor and
+ *  cannot be changed. See the description of the method startDownload() to see
+ *  how downloads work.
  */
 
-class Downloadable_SingleFile : public Downloadable_Abstract {
+class Downloadable_SingleFile : public Downloadable_Abstract
+{
     Q_OBJECT
 
 public:
@@ -159,6 +164,12 @@ public:
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
+     * @returns Property files
+     */
+    [[nodiscard]] auto files() -> QStringList override;
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
      * @returns Property hasFile
      */
     [[nodiscard]] auto hasFile() -> bool override { return QFile::exists(m_fileName); }
@@ -179,7 +190,7 @@ public:
      *
      * @returns Property remoteFileSize
      */
-    [[nodiscard]] auto remoteFileSize() const -> qint64 { return m_remoteFileSize; }
+    [[nodiscard]] auto remoteFileSize() -> qint64 override { return m_remoteFileSize; }
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
@@ -316,16 +327,6 @@ signals:
      */
     void remoteFileDateChanged();
 
-    /*! \brief Notifier signal for the properties remoteFileDate and
-     *  remoteFileSize
-     *
-     * This signal is emitted once one of the property remoteFileSize changes,
-     * either in response to a use of the setter methods, or because
-     * downloadRemoteFileData() has been called and data has been retrieved from
-     * the server.
-     */
-    void remoteFileSizeChanged();
-
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_SingleFile)
 
@@ -359,7 +360,7 @@ private:
     void downloadHeaderFinished();
 
     // This member holds the download progress.
-    int m_downloadProgress {0};
+    int m_downloadProgress{0};
 
     // NetworkReply for downloading of remote file data. Set to nullptr when no
     // download is in progress.
@@ -371,7 +372,7 @@ private:
 
     // Temporary file for storing partiall data when downloading the remote
     // file. Set to nullptr when no download is in progress.
-    QPointer<QSaveFile> m_saveFile {};
+    QPointer<QSaveFile> m_saveFile{};
 
     // URL of the remote file, as set in the constructor
     QUrl m_url;
@@ -385,7 +386,7 @@ private:
 
     // Size of the remote file, set directly via a setter method or by calling
     // downloadRemoteFileInfo().
-    qint64 m_remoteFileSize {-1};
+    qint64 m_remoteFileSize{-1};
 };
 
 };

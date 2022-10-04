@@ -21,13 +21,14 @@
 #include "Downloadable_MultiFile.h"
 
 
-DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(QObject* parent)
-    : Downloadable_Abstract(parent)
+DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject* parent)
+    : m_updatePolicy(updatePolicy), Downloadable_Abstract(parent)
 {
     m_contentType = MapSet;
 }
 
-
+#warning need to handle change signals
+#warning void updateSizeChanged();
 
 //
 // Getter methods
@@ -37,27 +38,27 @@ auto DataManagement::Downloadable_MultiFile::description() -> QString
 {
     QString result;
 
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
     {
         switch(map->contentType())
         {
-        case Downloadable_SingleFile::AviationMap:
+        case Downloadable_Abstract::AviationMap:
             result += "<h3>"+tr("Aviation Map")+"</h3>";
             break;
-        case Downloadable_SingleFile::BaseMapVector:
+        case Downloadable_Abstract::BaseMapVector:
             result += "<h3>"+tr("Base Map")+"</h3>";
             break;
-        case Downloadable_SingleFile::BaseMapRaster:
+        case Downloadable_Abstract::BaseMapRaster:
             result += "<h3>"+tr("Raster Map")+"</h3>";
             break;
-        case Downloadable_SingleFile::Data:
+        case Downloadable_Abstract::Data:
             result += "<h3>"+tr("Data")+"</h3>";
             break;
-        case Downloadable_SingleFile::TerrainMap:
+        case Downloadable_Abstract::TerrainMap:
             result += "<h3>"+tr("Terrain Map")+"</h3>";
             break;
-        case Downloadable_SingleFile::MapSet:
+        case Downloadable_Abstract::MapSet:
             result += "<h3>"+tr("Map Set")+"</h3>";
             break;
         }
@@ -67,40 +68,12 @@ auto DataManagement::Downloadable_MultiFile::description() -> QString
 }
 
 
-auto DataManagement::Downloadable_MultiFile::downloading() -> bool
-{
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
-    {
-        if (map->downloading())
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-auto DataManagement::Downloadable_MultiFile::hasFile() -> bool
-{
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
-    {
-        if (map->hasFile())
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-
 auto DataManagement::Downloadable_MultiFile::infoText() -> QString
 {
     QString result;
 
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
     {
         if (!result.isEmpty())
         {
@@ -108,22 +81,22 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
         }
         switch(map->contentType())
         {
-        case Downloadable_SingleFile::AviationMap:
+        case Downloadable_Abstract::AviationMap:
             result += QStringLiteral("%1: %2").arg(tr("Aviation Map"), map->infoText());
             break;
-        case Downloadable_SingleFile::BaseMapRaster:
+        case Downloadable_Abstract::BaseMapRaster:
             result += QStringLiteral("%1: %2").arg(tr("Raster Map"), map->infoText());
             break;
-        case Downloadable_SingleFile::BaseMapVector:
+        case Downloadable_Abstract::BaseMapVector:
             result += QStringLiteral("%1: %2").arg(tr("Base Map"), map->infoText());
             break;
-        case Downloadable_SingleFile::Data:
+        case Downloadable_Abstract::Data:
             result += QStringLiteral("%1: %2").arg(tr("Data"), map->infoText());
             break;
-        case Downloadable_SingleFile::MapSet:
+        case Downloadable_Abstract::MapSet:
             result += QStringLiteral("%1: %2").arg(tr("Map Set"), map->infoText());
             break;
-        case Downloadable_SingleFile::TerrainMap:
+        case Downloadable_Abstract::TerrainMap:
             result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
             break;
         }
@@ -134,14 +107,15 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
 
 auto DataManagement::Downloadable_MultiFile::updateSize() -> qint64
 {
+
     if (!hasFile())
     {
         return 0;
     }
 
-    m_maps.removeAll(nullptr);
+    m_downloadables.removeAll(nullptr);
     qsizetype result = 0;
-    foreach(auto map, m_maps)
+    foreach(auto map, m_downloadables)
     {
         if (map->hasFile())
         {
@@ -149,7 +123,10 @@ auto DataManagement::Downloadable_MultiFile::updateSize() -> qint64
         }
         else
         {
-            result += map->remoteFileSize();
+            if (m_updatePolicy == MultiUpdate)
+            {
+                result += map->remoteFileSize();
+            }
         }
     }
     return result;
@@ -161,20 +138,100 @@ auto DataManagement::Downloadable_MultiFile::updateSize() -> qint64
 // Methods
 //
 
+void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Abstract* map)
+{
+    if (map == nullptr)
+    {
+        return;
+    }
+
+    setObjectName(map->objectName());
+    setSection(map->section());
+
+    if (m_downloadables.contains(map))
+    {
+        return;
+    }
+
+    m_downloadables.append(map);
+
+    // Wire up
+    connect(map, &DataManagement::Downloadable_Abstract::descriptionChanged, this, &DataManagement::Downloadable_Abstract::descriptionChanged);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
+    connect(map, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::fileContentChanged);
+    connect(map, &DataManagement::Downloadable_Abstract::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
+
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::downloadablesChanged);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::updateMembers);
+    connect(map, &DataManagement::Downloadable_Abstract::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::updateMembers);
+
+
+    connect(map, &DataManagement::Downloadable_Abstract::error, this, &DataManagement::Downloadable_MultiFile::error);
+
+    emit downloadablesChanged();
+    updateMembers();
+}
+
+
+void DataManagement::Downloadable_MultiFile::clear()
+{
+    if (m_downloadables.isEmpty())
+    {
+        return;
+    }
+
+    foreach (auto map, m_downloadables) {
+        disconnect(map, nullptr, this, nullptr);
+    }
+    m_downloadables.clear();
+
+    emit downloadablesChanged();
+#warning need to emit change notifiers
+}
+
+
 void DataManagement::Downloadable_MultiFile::deleteFiles()
 {
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
     {
         map->deleteFiles();
     }
 }
 
 
+auto DataManagement::Downloadable_MultiFile::downloadables() -> QVector<DataManagement::Downloadable_Abstract*>
+{
+    QVector<DataManagement::Downloadable_Abstract*> result;
+    m_downloadables.removeAll(nullptr);
+    foreach(auto downloadable, m_downloadables)
+    {
+        result += downloadable;
+    }
+
+    // Sort Downloadables according to section name and object name
+    std::sort(result.begin(), result.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
+    {
+        if (a->section() != b->section()) {
+            return (a->section() < b->section());
+        }
+        if (a->objectName() != b->objectName())
+        {
+            return a->objectName() < b->objectName();
+        }
+        return (a->contentType() < b->contentType());
+    }
+    );
+
+    return result;
+}
+
+
 void DataManagement::Downloadable_MultiFile::startDownload()
 {
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
     {
         map->startDownload();
     }
@@ -183,8 +240,8 @@ void DataManagement::Downloadable_MultiFile::startDownload()
 
 void DataManagement::Downloadable_MultiFile::stopDownload()
 {
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
     {
         map->stopDownload();
     }
@@ -198,8 +255,8 @@ void DataManagement::Downloadable_MultiFile::update()
         return;
     }
 
-    m_maps.removeAll(nullptr);
-    foreach(auto map, m_maps)
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
     {
         if (map->hasFile())
         {
@@ -207,35 +264,99 @@ void DataManagement::Downloadable_MultiFile::update()
         }
         else
         {
-            map->startDownload();
+            if (m_updatePolicy == MultiUpdate)
+            {
+                map->startDownload();
+            }
         }
     }
 }
 
 
-void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_SingleFile* map)
+void DataManagement::Downloadable_MultiFile::remove(DataManagement::Downloadable_Abstract* map)
 {
-    if (map == nullptr)
+    disconnect(map, nullptr, this, nullptr);
+    m_downloadables.removeAll(map);
+    updateMembers();
+}
+
+
+//
+// Private
+//
+
+void DataManagement::Downloadable_MultiFile::updateMembers()
+{
+
+    m_downloadables.removeAll(nullptr);
+
+    // downloading
     {
-        return;
+        bool newDownloading = false;
+        foreach(auto map, m_downloadables)
+        {
+            if (map->downloading())
+            {
+                newDownloading = true;
+                break;
+            }
+        }
+        if (newDownloading != m_downloading)
+        {
+            m_downloading = newDownloading;
+            emit downloadingChanged();
+        }
     }
 
-    setObjectName(map->objectName());
-    setSection(map->section());
-
-    if (m_maps.contains(map))
+    // files
     {
-        return;
+        QStringList newFiles;
+        foreach(auto map, m_downloadables)
+        {
+            newFiles << map->files();
+        }
+        if (newFiles != m_files)
+        {
+            m_files = newFiles;
+            emit filesChanged();
+        }
     }
 
-    m_maps.append(map);
+    // hasFile
+    {
+        bool newHasFile = false;
+        foreach(auto map, m_downloadables)
+        {
+            if (map->hasFile())
+            {
+                newHasFile = true;
+                break;
+            }
+        }
+        if (newHasFile != m_hasFile)
+        {
+            m_hasFile = newHasFile;
+            emit hasFileChanged();
+        }
+    }
 
-    connect(map, &DataManagement::Downloadable_SingleFile::descriptionChanged, this, &DataManagement::Downloadable_Abstract::descriptionChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::downloadingChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::error, this, &DataManagement::Downloadable_MultiFile::error);
-    connect(map, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::fileContentChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::hasFileChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
-    connect(map, &DataManagement::Downloadable_SingleFile::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::updateSizeChanged);
+    // remoteFileSize
+    {
+        qint64 newRemoteFileSize = -1;
+        foreach(auto map, m_downloadables)
+        {
+            auto intermediate = map->remoteFileSize();
+            if (intermediate == -1)
+            {
+                newRemoteFileSize = -1;
+                break;
+            }
+            newRemoteFileSize += intermediate;
+        }
+        if (newRemoteFileSize != m_remoteFileSize)
+        {
+            m_remoteFileSize = newRemoteFileSize;
+            emit remoteFileSizeChanged();
+        }
+    }
 }

@@ -39,9 +39,10 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
 
 void GeoMaps::GeoMapProvider::deferredInitialization()
 {
-    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
-    connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::DownloadableGroup::localFileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+#warning want delayed here!
+    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
 
@@ -51,9 +52,12 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
 
     onAviationMapsChanged();
     onMBTILESChanged();
+#warning
+    /*
     GlobalObject::dataManager()->aviationMaps()->killLocalFileContentChanged_delayed();
     GlobalObject::dataManager()->baseMaps()->killLocalFileContentChanged_delayed();
     GlobalObject::dataManager()->terrainMaps()->killLocalFileContentChanged_delayed();
+    */
 }
 
 
@@ -70,8 +74,19 @@ auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
         result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br><a href='https://openflightmaps.org'>© open flightmaps</a>");
     }
 
-    foreach(auto baseMap, GlobalObject::dataManager()->baseMaps()->downloadablesWithFile())
+    foreach(auto baseMapX, GlobalObject::dataManager()->baseMaps()->downloadables())
     {
+        auto* baseMap = qobject_cast<DataManagement::Downloadable_SingleFile*>(baseMapX);
+        if (baseMap == nullptr)
+        {
+            continue;
+        }
+        if (!baseMap->hasFile())
+        {
+            continue;
+        }
+
+
         GeoMaps::MBTILES mbtiles(baseMap->fileName());
 
         auto name = baseMap->fileName().split(QStringLiteral("aviation_maps/")).last();
@@ -401,22 +416,52 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
 
     qDeleteAll(m_baseMapRasterTiles);
     m_baseMapRasterTiles.clear();
-    foreach(auto downloadable, GlobalObject::dataManager()->baseMapsRaster()->downloadablesWithFile())
+    foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsRaster()->downloadables())
     {
+        auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+        if (downloadable == nullptr)
+        {
+            continue;
+        }
+        if (!downloadable->hasFile())
+        {
+            continue;
+        }
+
         m_baseMapRasterTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
     }
     qDeleteAll(m_baseMapVectorTiles);
     m_baseMapVectorTiles.clear();
-    foreach(auto downloadable, GlobalObject::dataManager()->baseMapsVector()->downloadablesWithFile())
+    foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsVector()->downloadables())
     {
+        auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+        if (downloadable == nullptr)
+        {
+            continue;
+        }
+        if (!downloadable->hasFile())
+        {
+            continue;
+        }
+
         m_baseMapVectorTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
     }
     emit baseMapTilesChanged();
 
     qDeleteAll(m_terrainMapTiles);
     m_terrainMapTiles.clear();
-    foreach(auto downloadable, GlobalObject::dataManager()->terrainMaps()->downloadablesWithFile())
+    foreach(auto downloadableX, GlobalObject::dataManager()->terrainMaps()->downloadables())
     {
+        auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+        if (downloadable == nullptr)
+        {
+            continue;
+        }
+        if (!downloadable->hasFile())
+        {
+            continue;
+        }
+
         m_terrainMapTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
     }
     emit terrainMapTilesChanged();

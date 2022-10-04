@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QTimer>
 
 #include "GlobalObject.h"
 #include "dataManagement/DataManager.h"
@@ -39,7 +40,7 @@ void Traffic::FlarmnetDB::clearCache()
 
 void Traffic::FlarmnetDB::deferredInitialization()
 {
-    connect(GlobalObject::dataManager()->databases(), &DataManagement::DownloadableGroupWatcher::downloadablesChanged, this, &Traffic::FlarmnetDB::findFlarmnetDBDownloadable);
+    connect(GlobalObject::dataManager()->databases(), &DataManagement::Downloadable_MultiFile::downloadablesChanged, this, &Traffic::FlarmnetDB::findFlarmnetDBDownloadable);
     findFlarmnetDBDownloadable();
 }
 
@@ -52,7 +53,6 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
     if (QCoreApplication::instance() != nullptr) {
         auto downloadables = GlobalObject::dataManager()->databases()->downloadables();
         foreach(auto downloadableX, downloadables) {
-#warning ugly
             auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
             if (downloadable == nullptr)
             {

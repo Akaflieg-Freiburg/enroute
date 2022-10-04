@@ -23,8 +23,8 @@
 #include <QStandardPaths>
 
 #include "GlobalObject.h"
-#include "dataManagement/DownloadableGroup.h"
 #include "dataManagement/Downloadable_MultiFile.h"
+#include "dataManagement/Downloadable_SingleFile.h"
 
 
 namespace DataManagement {
@@ -88,65 +88,69 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief DownloadableGroupWatcher that holds all aviation maps
+    /*! \brief Downloadable_MultiFile that holds all aviation maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all aviation maps.
+     *  Pointer to a Downloadable_MultiFile that holds all aviation maps.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* aviationMaps READ aviationMaps CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* aviationMaps READ aviationMaps CONSTANT)
 
-    /*! \brief DownloadableGroupWatcher that holds all base maps in raster format
+    /*! \brief Downloadable_MultiFile that holds all base maps in raster format
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all base maps in raster format.
+     *  Pointer to a Downloadable_MultiFile that holds all base maps in raster format.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMapsRaster READ baseMapsRaster CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMapsRaster READ baseMapsRaster CONSTANT)
 
-    /*! \brief DownloadableGroupWatcher that holds all base maps in vector format
+    /*! \brief Downloadable_MultiFile that holds all base maps in vector format
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all base maps in vector format.
+     *  Pointer to a Downloadable_MultiFile that holds all base maps in vector format.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMapsVector READ baseMapsVector CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMapsVector READ baseMapsVector CONSTANT)
 
-    /*! \brief DownloadableGroupWatcher that holds all base maps
+    /*! \brief Downloadable_MultiFile that holds all base maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all base maps.
+     *  Pointer to a Downloadable_MultiFile that holds all base maps.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* baseMaps READ baseMaps CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMaps READ baseMaps CONSTANT)
 
-    /*! \brief DownloadableGroupWatcher that holds all data items
+    /*! \brief Downloadable_MultiFile that holds all data items
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all databases.
+     *  Pointer to a Downloadable_MultiFile that holds all databases.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* databases READ databases CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* databases READ databases CONSTANT)
 
     /*! \brief True while the list of remotely available items is retrieved */
     Q_PROPERTY(bool downloadingRemoteItemList READ downloadingRemoteItemList NOTIFY downloadingRemoteItemListChanged)
 
-    /*! \brief DownloadableGroupWatcher that holds all data items
+    /*! \brief Downloadable_MultiFile that holds all data items
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all data items.  This
+     *  Pointer to a Downloadable_MultiFile that holds all data items.  This
      *  includes aviation maps, base maps, and databases.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* items READ items CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* items READ items CONSTANT)
 
     /*! \brief True if list of remotely available items has been downloaded */
     Q_PROPERTY(bool hasRemoteItemList READ hasRemoteItemList NOTIFY hasRemoteItemListChanged)
 
-    /*! \brief List of all map sets
+    /*! \brief Downloadable_MultiFile that holds all data items
      *
-     *  QVector with all map sets.
+     *  Pointer to a Downloadable_MultiFile that holds all map sets.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* mapSets READ mapSets CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* mapSets READ mapSets CONSTANT)
 
-    /*! \brief DownloadableGroupWatcher that holds all terrain maps
+    /*! \brief Downloadable_MultiFile that holds all terrain maps
      *
-     *  Pointer to a DownloadableGroupWatcher that holds all terrain maps.
+     *  Pointer to a Downloadable_MultiFile that holds all terrain maps.
      */
-    Q_PROPERTY(DataManagement::DownloadableGroupWatcher* terrainMaps READ terrainMaps CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* terrainMaps READ terrainMaps CONSTANT)
 
-#warning docu
+    /*! \brief Indictates if updates for maps and data are available */
     Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
 
-#warning docu
+    /*! \brief Size of pending update
+     *
+     *  This property holds the size of the pending update, as a localized string ("37.5 MB")
+     *  suitable for use in the GUI.
+     */
     Q_PROPERTY(QString updateSizeString READ updateSizeString NOTIFY updateSizeStringChanged)
 
     /*! \brief Current "what's new" message */
@@ -164,31 +168,31 @@ public:
      *
      *  @returns Property aviationMaps
      */
-    [[nodiscard]] auto aviationMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_aviationMaps; }
+    [[nodiscard]] auto aviationMaps() -> DataManagement::Downloadable_MultiFile* { return &m_aviationMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property baseMaps
      */
-    [[nodiscard]] auto baseMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_baseMaps; }
+    [[nodiscard]] auto baseMaps() -> DataManagement::Downloadable_MultiFile* { return &m_baseMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property baseMapsRaster
      */
-    [[nodiscard]] auto baseMapsRaster() -> DataManagement::DownloadableGroupWatcher* { return &m_baseMapsRaster; }
+    [[nodiscard]] auto baseMapsRaster() -> DataManagement::Downloadable_MultiFile* { return &m_baseMapsRaster; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property baseMapsVector
      */
-    [[nodiscard]] auto baseMapsVector() -> DataManagement::DownloadableGroupWatcher* { return &m_baseMapsVector; }
+    [[nodiscard]] auto baseMapsVector() -> DataManagement::Downloadable_MultiFile* { return &m_baseMapsVector; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property databases
      */
-    [[nodiscard]] auto databases() -> DataManagement::DownloadableGroupWatcher* { return &m_databases; }
+    [[nodiscard]] auto databases() -> DataManagement::Downloadable_MultiFile* { return &m_databases; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -200,7 +204,7 @@ public:
      *
      *  @returns Property items
      */
-    [[nodiscard]] auto items() -> DataManagement::DownloadableGroupWatcher* { return &m_items; }
+    [[nodiscard]] auto items() -> DataManagement::Downloadable_MultiFile* { return &m_items; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -212,15 +216,24 @@ public:
      *
      *  @returns Property terrainMaps
      */
-    [[nodiscard]] auto terrainMaps() -> DataManagement::DownloadableGroupWatcher* { return &m_terrainMaps; }
+    [[nodiscard]] auto terrainMaps() -> DataManagement::Downloadable_MultiFile* { return &m_terrainMaps; }
 
-#warning
-    auto mapSets() -> DataManagement::DownloadableGroupWatcher* { return &m_mapSets; }
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property mapSets
+     */
+    auto mapSets() -> DataManagement::Downloadable_MultiFile* { return &m_mapSets; }
 
-#warning
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property updatable
+     */
     [[nodiscard]] auto updatable() -> bool;
 
-#warning
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property updatableSizeString
+     */
     [[nodiscard]] auto updateSizeString() -> QString;
 
     /*! \brief Getter function for the property with the same name
@@ -288,12 +301,13 @@ signals:
      */
     void error(const QString& message);
 
-#warning docu
-#warning Not emitted properly
+    /*! \brief Notifier signal */
     void updatableChanged();
+
+    /*! \brief Notifier signal */
     void updateSizeStringChanged();
 
-    /*! \brief Notification signal for the property with the same name */
+    /*! \brief Notifier signal */
     void whatsNewChanged();
 
 private:
@@ -338,16 +352,16 @@ private:
     DataManagement::Downloadable_SingleFile m_mapsJSON { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
-    DataManagement::DownloadableGroup m_aviationMaps;
-    DataManagement::DownloadableGroup m_baseMaps;
-    DataManagement::DownloadableGroup m_baseMapsRaster;
-    DataManagement::DownloadableGroup m_baseMapsVector;
-    DataManagement::DownloadableGroup m_databases;
-    DataManagement::DownloadableGroup m_items;
-    DataManagement::DownloadableGroup m_terrainMaps;
+    DataManagement::Downloadable_MultiFile m_aviationMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_baseMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_baseMapsRaster {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_baseMapsVector {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_databases {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_items {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_terrainMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
 
     // List of geographic map sets
-    DataManagement::DownloadableGroup m_mapSets;
+    DataManagement::Downloadable_MultiFile m_mapSets  {DataManagement::Downloadable_MultiFile::SingleUpdate};
 };
 
 };

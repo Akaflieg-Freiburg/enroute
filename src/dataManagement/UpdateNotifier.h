@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QTimer>
+
 #include "dataManagement/DataManager.h"
 
 

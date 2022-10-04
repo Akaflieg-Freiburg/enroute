@@ -34,10 +34,10 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
 
 void DataManagement::Downloadable_Abstract::setSection(const QString& sectionName)
 {
-    if (sectionName == _section) {
+    if (sectionName == m_section) {
         return;
     }
-    _section = sectionName;
+    m_section = sectionName;
     emit sectionChanged();
 }
 

@@ -76,8 +76,6 @@ set(SOURCES
     dataManagement/Downloadable_Abstract.h
     dataManagement/Downloadable_MultiFile.h
     dataManagement/Downloadable_SingleFile.h
-    dataManagement/DownloadableGroup.h
-    dataManagement/DownloadableGroupWatcher.h
     dataManagement/SSLErrorHandler.h
     dataManagement/UpdateNotifier.h
     DemoRunner.h
@@ -140,8 +138,6 @@ set(SOURCES
     dataManagement/Downloadable_Abstract.cpp
     dataManagement/Downloadable_MultiFile.cpp
     dataManagement/Downloadable_SingleFile.cpp
-    dataManagement/DownloadableGroup.cpp
-    dataManagement/DownloadableGroupWatcher.cpp
     dataManagement/SSLErrorHandler.cpp
     dataManagement/UpdateNotifier.cpp
     DemoRunner.cpp

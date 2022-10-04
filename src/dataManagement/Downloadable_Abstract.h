@@ -76,6 +76,11 @@ public:
     /*! \brief Indicates whether a download process is currently running */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
+    /*! \brief Names of all files that have been downloaded by any of the
+     *  Downloadble objects in this group (and their children)
+     */
+    Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
+
     /*! \brief Indicates if (at least one) local file exists */
     Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
@@ -90,6 +95,13 @@ public:
      * It might be translated to the local language.
      */
     Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
+
+    /*! \brief Size of the remote file
+     *
+     * This property holds the size of the remote files.  If the sizes are
+     * not known, the property holds the number -1.
+     */
+    Q_PROPERTY(qint64 remoteFileSize READ remoteFileSize NOTIFY remoteFileSizeChanged)
 
     /*! \brief Headline name for the Downloadable
      *
@@ -133,6 +145,12 @@ public:
 
     /*! \brief Getter method for the property with the same name
      *
+     * @returns Property files
+     */
+    [[nodiscard]] virtual auto files() -> QStringList = 0;
+
+    /*! \brief Getter method for the property with the same name
+     *
      * @returns Property hasFile
      */
     [[nodiscard]] virtual auto hasFile() -> bool = 0;
@@ -145,9 +163,15 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     * @returns Property remoteFileSize
+     */
+    [[nodiscard]] virtual auto remoteFileSize() -> qint64 = 0;
+
+    /*! \brief Getter function for the property with the same name
+     *
      * @returns Property section
      */
-    [[nodiscard]] auto section() const -> QString { return _section; }
+    [[nodiscard]] auto section() const -> QString { return m_section; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -185,6 +209,7 @@ public:
     /*! \brief Starts download(s) if updatable */
     Q_INVOKABLE virtual void update() = 0;
 
+
 signals:
     /*! \brief Notifier signal */
     void descriptionChanged();
@@ -206,14 +231,20 @@ signals:
      */
     void error(QString objectName, QString message);
 
-    /*! \brief Indicates that the content of (a) local file(s) has changed */
+    /*! \brief Indicates that the content of a local file (or several local files) has changed */
     void fileContentChanged();
+
+    /*! \brief Notifier signal */
+    void filesChanged();
 
     /*! \brief Notifier signal */
     void hasFileChanged();
 
     /*! \brief Notifier signal */
     void infoTextChanged();
+
+    /*! \brief Notifier signal */
+    void remoteFileSizeChanged();
 
     /*! \brief Notifier signal */
     void sectionChanged();
@@ -226,7 +257,7 @@ protected:
     ContentType m_contentType {Data};
 
     // Property section
-    QString _section;
+    QString m_section;
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 };

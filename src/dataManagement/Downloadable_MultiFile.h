@@ -20,31 +20,47 @@
 
 #pragma once
 
-#include "dataManagement/Downloadable_SingleFile.h"
+#include "dataManagement/Downloadable_Abstract.h"
 
 namespace DataManagement {
 
 
 /*! \brief Group of closely related downloadable items
  *
- *  This class implements a group of downloadable item, that is of
- *  Downloadable_SingleFile objects.
- *
- *  The members of the group are closely related: the Downloadable_MultiFile is
- *  considered updatable if one of its members are updatable, or if one (but not
- *  all) of its members has a local file. Calling update() will then update all
- *  updatable members, and download all missing files.
+ *  This class implements a group of Downloadable_Abstract objects.
  */
 
 class Downloadable_MultiFile : public Downloadable_Abstract {
     Q_OBJECT
 
 public:
+    /*! \brief Update Policy */
+    enum UpdatePolicy {
+        SingleUpdate, /*!< \brief Update children that are updatable */
+        MultiUpdate   /*!< \brief Update children that are updatable. If one local file exist, download all other files on update */
+    };
+    Q_ENUM(UpdatePolicy)
+
     /*! \brief Standard constructor
      *
-     * @param parent The standard QObject parent pointer.
+     *  @param updatePolicy Update policy of this instance
+     *
+     *  @param parent The standard QObject parent pointer.
      */
-    explicit Downloadable_MultiFile(QObject *parent = nullptr);
+    explicit Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject *parent = nullptr);
+
+
+
+    //
+    // PROPERTIES
+    //
+
+    /*! \brief List of Downloadables in this group
+     *
+     *  This property holds a list of direct children of the instance.  The list is sorted by section and object name, and never contains a zero pointer.
+     */
+    Q_PROPERTY(QVector<DataManagement::Downloadable_Abstract*> downloadables READ downloadables NOTIFY downloadablesChanged)
+
 
 
     //
@@ -57,23 +73,41 @@ public:
      */
     [[nodiscard]] auto description() -> QString override;
 
+    /*! \brief Getter function for the property with the same name
+     *
+     *   @returns Property downloadables
+     */
+    [[nodiscard]] auto downloadables() -> QVector<DataManagement::Downloadable_Abstract*>;
+
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
      * @returns Property downloading
      */
-    [[nodiscard]] auto downloading() -> bool override;
+    [[nodiscard]] auto downloading() -> bool override { return m_downloading; }
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property files
+     */
+    [[nodiscard]] auto files() -> QStringList override { return m_files; }
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
      * @returns Property hasFile
      */
-    [[nodiscard]] auto hasFile() -> bool override;
+    [[nodiscard]] auto hasFile() -> bool override { return m_hasFile; }
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
      * @returns Property infoText
      */
     [[nodiscard]] auto infoText() -> QString override;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property remoteFileSize
+     */
+    [[nodiscard]] auto remoteFileSize() -> qint64 override { return m_remoteFileSize; }
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
@@ -90,11 +124,20 @@ public:
      *
      *  This method copies the values of map->objectName and map->section into *this object.
      *  As a result, these properties are always set to match those of the last map added.
+     *  This instance does not take ownership of the map.
+     *
+     *  It is perfectly possible that a map is child of more than one Downloadable_MultiFile.
      */
-    Q_INVOKABLE void add(DataManagement::Downloadable_SingleFile* map);
+    Q_INVOKABLE void add(DataManagement::Downloadable_Abstract* map);
+
+    /*! \brief Removes all children */
+    Q_INVOKABLE void clear();
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void deleteFiles() override;
+
+    /*! \brief Remove a Downloadable_SingleFile from this Downloadable_MultiFile */
+    Q_INVOKABLE void remove(DataManagement::Downloadable_Abstract* map);
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void startDownload() override;
@@ -105,8 +148,20 @@ public:
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void update() override;
 
+signals:
+    /*! \brief Notifier signal */
+    void downloadablesChanged();
+
 private:
-    QVector<QPointer<DataManagement::Downloadable_SingleFile>> m_maps;
+    void updateMembers();
+
+    bool m_downloading {false};
+    QStringList m_files;
+    bool m_hasFile {false};
+    qint64 m_remoteFileSize {0};
+
+    QVector<QPointer<DataManagement::Downloadable_Abstract>> m_downloadables;
+    DataManagement::Downloadable_MultiFile::UpdatePolicy m_updatePolicy;
 };
 
 };

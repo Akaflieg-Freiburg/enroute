@@ -35,7 +35,7 @@ using namespace std::chrono_literals;
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 {
     // Delete funny files that might have made their way into our data directory
-    cleanDataDirectory();
+    cleanDataDirectory();   
 
     // Wire up the Dowloadable object "_maps_json"
     connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
@@ -47,7 +47,7 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     { emit error(std::move(message)); });
 
     // Wire up the DownloadableGroup _items
-    connect(&m_items, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::onItemFileChanged);
+    connect(&m_items, &DataManagement::Downloadable_MultiFile::filesChanged, this, &DataManager::onItemFileChanged);
 
     // If there is a downloaded maps.json file, we read it.
     updateDataItemListAndWhatsNew();
@@ -185,7 +185,6 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
     // entry in oldMaps
     foreach (auto mapPtrX, m_items.downloadables())
     {
-#warning ugly
         auto* mapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(mapPtrX);
         if (mapPtr == nullptr)
         {
@@ -314,13 +313,8 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     QMap<QString, Downloadable_MultiFile*> mapSetsByName;
     foreach (auto itemX, m_items.downloadables())
     {
-#warning ugly
         auto* item = qobject_cast<DataManagement::Downloadable_SingleFile*>(itemX);
-        if (item == nullptr)
-        {
-            continue;
-        }
-        if (item->contentType() == Downloadable_SingleFile::Data)
+        if ((item == nullptr) || (item->contentType() == Downloadable_SingleFile::Data))
         {
             continue;
         }
@@ -333,7 +327,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
         else
         {
-            mapSet = new Downloadable_MultiFile(this);
+            mapSet = new Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::MultiUpdate, this);
             m_mapSets.add(mapSet);
             mapSetsByName[key] = mapSet;
         }

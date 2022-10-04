@@ -119,7 +119,7 @@ Map {
     DynamicParameter {
         type: "paint"
         property string layer: "SUA"
-        property string lineColor: "lightgreen"
+        property string lineColor: "red"
         property real lineWidth: 2
         property var lineDasharray: [4.0, 3.0]
     }

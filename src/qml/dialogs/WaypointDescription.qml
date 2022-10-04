@@ -191,7 +191,7 @@ Dialog {
                             case "NRA":
                                 return "green";
                             case "SUA":
-                                return "lightgreen";
+                                return "red";
                             }
                             return "transparent"
                         }

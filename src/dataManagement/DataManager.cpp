@@ -132,7 +132,9 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
     case GeoMaps::MBTILES::Unknown:
         return tr("Unable to recognize map file format.");
     }
+
 #warning need to test import of vector maps
+#warning import of raster maps is not immediately reflected in the moving map
 
     if (!QDir().mkpath(path))
     {

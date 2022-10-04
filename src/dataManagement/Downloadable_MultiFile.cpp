@@ -27,8 +27,7 @@ DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::D
     m_contentType = MapSet;
 }
 
-#warning need to handle change signals
-#warning void updateSizeChanged();
+
 
 //
 // Getter methods
@@ -105,34 +104,6 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
 }
 
 
-auto DataManagement::Downloadable_MultiFile::updateSize() -> qint64
-{
-
-    if (!hasFile())
-    {
-        return 0;
-    }
-
-    m_downloadables.removeAll(nullptr);
-    qsizetype result = 0;
-    foreach(auto map, m_downloadables)
-    {
-        if (map->hasFile())
-        {
-            result += map->updateSize();
-        }
-        else
-        {
-            if (m_updatePolicy == MultiUpdate)
-            {
-                result += map->remoteFileSize();
-            }
-        }
-    }
-    return result;
-}
-
-
 
 //
 // Methods
@@ -186,8 +157,10 @@ void DataManagement::Downloadable_MultiFile::clear()
     }
     m_downloadables.clear();
 
+    emit descriptionChanged();
     emit downloadablesChanged();
-#warning need to emit change notifiers
+    emit infoTextChanged();
+    updateMembers();
 }
 
 
@@ -359,4 +332,33 @@ void DataManagement::Downloadable_MultiFile::updateMembers()
             emit remoteFileSizeChanged();
         }
     }
+
+    // updateSize
+    {
+        qint64 newUpdateSize = 0;
+        if (hasFile())
+        {
+            foreach(auto map, m_downloadables)
+            {
+                if (map->hasFile())
+                {
+                    newUpdateSize += map->updateSize();
+                }
+                else
+                {
+                    if (m_updatePolicy == MultiUpdate)
+                    {
+                        newUpdateSize += map->remoteFileSize();
+                    }
+                }
+            }
+        }
+        if (newUpdateSize != m_updateSize)
+        {
+            m_updateSize = newUpdateSize;
+            emit updateSizeChanged();
+        }
+
+    }
+
 }

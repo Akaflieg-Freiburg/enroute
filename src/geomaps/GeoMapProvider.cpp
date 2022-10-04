@@ -392,7 +392,7 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
     QStringList JSONFileNames;
     foreach(auto geoMapPtrX, GlobalObject::dataManager()->aviationMaps()->downloadables()) {
 #warning ugly!
-        auto geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
+        auto *geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
         if (geoMapPtr == nullptr)
         {
             continue;
@@ -418,7 +418,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     m_baseMapRasterTiles.clear();
     foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsRaster()->downloadables())
     {
-        auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+        auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
             continue;
@@ -434,7 +434,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     m_baseMapVectorTiles.clear();
     foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsVector()->downloadables())
     {
-        auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+        auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
             continue;
@@ -452,7 +452,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     m_terrainMapTiles.clear();
     foreach(auto downloadableX, GlobalObject::dataManager()->terrainMaps()->downloadables())
     {
-        auto downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+        auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
             continue;

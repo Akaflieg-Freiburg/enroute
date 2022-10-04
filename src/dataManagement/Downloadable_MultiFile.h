@@ -113,7 +113,7 @@ public:
      *
      * @returns Property updateSize
      */
-    [[nodiscard]] auto updateSize() -> qint64 override;
+    [[nodiscard]] auto updateSize() -> qint64 override { return m_updateSize; }
 
 
     //
@@ -158,7 +158,8 @@ private:
     bool m_downloading {false};
     QStringList m_files;
     bool m_hasFile {false};
-    qint64 m_remoteFileSize {0};
+    qint64 m_remoteFileSize {-1};
+    qint64 m_updateSize {0};
 
     QVector<QPointer<DataManagement::Downloadable_Abstract>> m_downloadables;
     DataManagement::Downloadable_MultiFile::UpdatePolicy m_updatePolicy;

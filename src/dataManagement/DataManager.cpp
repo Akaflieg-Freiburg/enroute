@@ -227,13 +227,13 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
     }
     if (localFileName.endsWith(QLatin1String("raster")))
     {
-        m_baseMaps.add(downloadable);
         m_baseMapsRaster.add(downloadable);
+        m_baseMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("mbtiles")))
     {
-        m_baseMaps.add(downloadable);
         m_baseMapsVector.add(downloadable);
+        m_baseMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("txt")))
     {

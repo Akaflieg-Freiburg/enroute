@@ -42,6 +42,7 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
 #warning want delayed here!
     connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);

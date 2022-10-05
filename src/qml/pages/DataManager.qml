@@ -54,24 +54,12 @@ Page {
             height: gridLayout.height
 
             function startFileDownload() {
-                // check how many files are already downloaded:
-                var nFilesTotal;
-                var mapTypeString;
-                if (sv.currentIndex == 0) {  // swipe view shows aviation maps
-                    nFilesTotal = global.dataManager().aviationMaps.numberOfFilesTotal();
-                    mapTypeString = qsTr("aviation maps")
-                } else {  // swipe view shows base maps
-                    nFilesTotal = global.dataManager().baseMaps.numberOfFilesTotal();
-                    mapTypeString = qsTr("base maps")
-                }
-
-                // if the user downloads more than 8 files, show them a dialog telling them that
+                // if the user downloads too many, show them a dialog telling them that
                 // the bandwidth is sponsored and they shouldn't over-consume.
-                if (nFilesTotal > 7) {
+                var nFilesTotal = global.dataManager().items.files.length
+                if (nFilesTotal > 15) {
                     dialogLoader.active = false;
-                    dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startFileDownload,
-                        nFilesTotal: nFilesTotal,
-                        mapTypeString: mapTypeString};
+                    dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startDownload};
                     dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
                     dialogLoader.active = true;
                 } else {
@@ -118,7 +106,7 @@ Page {
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startDownload()
+                        startFileDownload()
                     }
                 }
 

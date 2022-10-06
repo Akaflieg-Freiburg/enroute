@@ -255,13 +255,13 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
 <p>Thank you for using Enroute Flight Navigation, we appreciate your engagement very much.</p>
 
-<p>However, we'd like to ask you <strong>to limit yourself to 8 %1.</strong>
+<p>However, we'd like to ask you <strong>to download only the maps that you really need.</strong>
 
 <p>On the one hand, the bandwidth for map downloads is kindly sponsored by the University of Freiburg, under the assumption that <strong>the costs stays within reasonable limits.</strong></p>
 
 <p>On the other, the app will perform much better if it doesn't have to process many megabytes of map data.</p>
 
-<p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that. You already have <strong>%2 maps</strong>.</p>)html");
+<p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that.</p>)html");
     }
 
     if (name == QLatin1String(":text/weatherPermissions.html")) {

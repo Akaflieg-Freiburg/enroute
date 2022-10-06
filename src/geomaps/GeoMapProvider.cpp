@@ -39,7 +39,7 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
 
 void GeoMaps::GeoMapProvider::deferredInitialization()
 {
-#warning want delayed here!
+//#warning want delayed here!
     connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
@@ -53,7 +53,7 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
 
     onAviationMapsChanged();
     onMBTILESChanged();
-#warning
+//#warning
     /*
     GlobalObject::dataManager()->aviationMaps()->killLocalFileContentChanged_delayed();
     GlobalObject::dataManager()->baseMaps()->killLocalFileContentChanged_delayed();
@@ -392,7 +392,7 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
     //
     QStringList JSONFileNames;
     foreach(auto geoMapPtrX, GlobalObject::dataManager()->aviationMaps()->downloadables()) {
-#warning ugly!
+//#warning ugly!
         auto *geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
         if (geoMapPtr == nullptr)
         {

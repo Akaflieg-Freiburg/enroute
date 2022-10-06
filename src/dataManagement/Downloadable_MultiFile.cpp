@@ -18,11 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QPointer>
+
 #include "Downloadable_MultiFile.h"
 
 
 DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject* parent)
-    : m_updatePolicy(updatePolicy), Downloadable_Abstract(parent)
+    : Downloadable_Abstract(parent), m_updatePolicy(updatePolicy)
 {
     m_contentType = MapSet;
 }

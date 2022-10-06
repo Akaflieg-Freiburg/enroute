@@ -127,23 +127,47 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
     }
 
     m_downloadables.append(map);
-
-    // Wire up
-    connect(map, &DataManagement::Downloadable_Abstract::descriptionChanged, this, &DataManagement::Downloadable_Abstract::descriptionChanged);
-    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
-    connect(map, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::fileContentChanged);
-    connect(map, &DataManagement::Downloadable_Abstract::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
-    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
-
-    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::downloadablesChanged);
-    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::updateMembers);
-    connect(map, &DataManagement::Downloadable_Abstract::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::updateMembers);
-
-
-    connect(map, &DataManagement::Downloadable_Abstract::error, this, &DataManagement::Downloadable_MultiFile::error);
-
     emit downloadablesChanged();
-    updateMembers();
+
+    // Wire up: These properties will always change if they change in one of the members. We can therefore
+    // directly connect the notifier signals of our new member to the notifier signals of this instance
+    connect(map, &DataManagement::Downloadable_Abstract::descriptionChanged, this, &DataManagement::Downloadable_Abstract::descriptionChanged, Qt::QueuedConnection);
+    connect(map, &DataManagement::Downloadable_Abstract::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged, Qt::QueuedConnection);
+
+    // Wire up: These properties might or might not change if they change in one of the members. We therefore
+    // connect the notifier signals of our new member to the slot updateMembers(), which re-evaluates the
+    // properties and emits notifier signals when appropriate.
+    connect(map, &DataManagement::Downloadable_Abstract::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading, Qt::QueuedConnection);
+    evaluateDownloading();
+
+    connect(map, &DataManagement::Downloadable_Abstract::filesChanged, this, &DataManagement::Downloadable_MultiFile::evaluateFiles, Qt::QueuedConnection);
+    evaluateFiles();
+
+    connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateHasFile, Qt::QueuedConnection);
+    evaluateHasFile();
+
+    connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize, Qt::QueuedConnection);
+    evaluateRemoteFileSize();
+
+    connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+    connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+    connect(map, &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+    evaluateUpdateSize();
+
+    // Wire up: when the new member gets destroyed, we need to change all properties.
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::downloadablesChanged);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateFiles);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateHasFile);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize);
+    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize);
+
+    // Wire up: directly forward error messages and file content changed signals
+    connect(map, &DataManagement::Downloadable_Abstract::error, this, &DataManagement::Downloadable_MultiFile::error);
+    connect(map, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::fileContentChanged);
+
 }
 
 
@@ -162,7 +186,11 @@ void DataManagement::Downloadable_MultiFile::clear()
     emit descriptionChanged();
     emit downloadablesChanged();
     emit infoTextChanged();
-    updateMembers();
+    evaluateDownloading();
+    evaluateFiles();
+    evaluateHasFile();
+    evaluateRemoteFileSize();
+    evaluateUpdateSize();
 }
 
 
@@ -250,117 +278,133 @@ void DataManagement::Downloadable_MultiFile::update()
 
 void DataManagement::Downloadable_MultiFile::remove(DataManagement::Downloadable_Abstract* map)
 {
+    if (!m_downloadables.contains(map))
+    {
+        return;
+    }
+
     disconnect(map, nullptr, this, nullptr);
     m_downloadables.removeAll(map);
-    updateMembers();
+
+    emit descriptionChanged();
+    emit downloadablesChanged();
+    emit infoTextChanged();
+    evaluateDownloading();
+    evaluateFiles();
+    evaluateHasFile();
+    evaluateRemoteFileSize();
+    evaluateUpdateSize();
 }
+
 
 
 //
 // Private
 //
 
-void DataManagement::Downloadable_MultiFile::updateMembers()
+void DataManagement::Downloadable_MultiFile::evaluateDownloading()
 {
-
+    bool newDownloading = false;
     m_downloadables.removeAll(nullptr);
-
-    // downloading
+    foreach(auto map, m_downloadables)
     {
-        bool newDownloading = false;
-        foreach(auto map, m_downloadables)
+        if (map->downloading())
         {
-            if (map->downloading())
-            {
-                newDownloading = true;
-                break;
-            }
-        }
-        if (newDownloading != m_downloading)
-        {
-            m_downloading = newDownloading;
-            emit downloadingChanged();
+            newDownloading = true;
+            break;
         }
     }
-
-    // files
+    if (newDownloading != m_downloading)
     {
-        QStringList newFiles;
-        foreach(auto map, m_downloadables)
+        m_downloading = newDownloading;
+        emit downloadingChanged();
+    }
+}
+
+
+void DataManagement::Downloadable_MultiFile::evaluateFiles()
+{
+    QStringList newFiles;
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
+    {
+        newFiles << map->files();
+    }
+    if (newFiles != m_files)
+    {
+        m_files = newFiles;
+        emit filesChanged();
+    }
+}
+
+
+void DataManagement::Downloadable_MultiFile::evaluateHasFile()
+{
+    bool newHasFile = false;
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
+    {
+        if (map->hasFile())
         {
-            newFiles << map->files();
-        }
-        if (newFiles != m_files)
-        {
-            m_files = newFiles;
-            emit filesChanged();
+            newHasFile = true;
+            break;
         }
     }
-
-    // hasFile
+    if (newHasFile != m_hasFile)
     {
-        bool newHasFile = false;
+        m_hasFile = newHasFile;
+        emit hasFileChanged();
+    }
+}
+
+
+void DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize()
+{
+    qint64 newRemoteFileSize = -1;
+    m_downloadables.removeAll(nullptr);
+    foreach(auto map, m_downloadables)
+    {
+        auto intermediate = map->remoteFileSize();
+        if (intermediate == -1)
+        {
+            newRemoteFileSize = -1;
+            break;
+        }
+        newRemoteFileSize += intermediate;
+    }
+    if (newRemoteFileSize != m_remoteFileSize)
+    {
+        m_remoteFileSize = newRemoteFileSize;
+        emit remoteFileSizeChanged();
+    }
+}
+
+
+void DataManagement::Downloadable_MultiFile::evaluateUpdateSize()
+{
+    qint64 newUpdateSize = 0;
+    if (hasFile())
+    {
+        m_downloadables.removeAll(nullptr);
         foreach(auto map, m_downloadables)
         {
             if (map->hasFile())
             {
-                newHasFile = true;
-                break;
+                newUpdateSize += map->updateSize();
             }
-        }
-        if (newHasFile != m_hasFile)
-        {
-            m_hasFile = newHasFile;
-            emit hasFileChanged();
-        }
-    }
-
-    // remoteFileSize
-    {
-        qint64 newRemoteFileSize = -1;
-        foreach(auto map, m_downloadables)
-        {
-            auto intermediate = map->remoteFileSize();
-            if (intermediate == -1)
+            else
             {
-                newRemoteFileSize = -1;
-                break;
-            }
-            newRemoteFileSize += intermediate;
-        }
-        if (newRemoteFileSize != m_remoteFileSize)
-        {
-            m_remoteFileSize = newRemoteFileSize;
-            emit remoteFileSizeChanged();
-        }
-    }
-
-    // updateSize
-    {
-        qint64 newUpdateSize = 0;
-        if (hasFile())
-        {
-            foreach(auto map, m_downloadables)
-            {
-                if (map->hasFile())
+                if (m_updatePolicy == MultiUpdate)
                 {
-                    newUpdateSize += map->updateSize();
-                }
-                else
-                {
-                    if (m_updatePolicy == MultiUpdate)
-                    {
-                        newUpdateSize += map->remoteFileSize();
-                    }
+                    newUpdateSize += map->remoteFileSize();
                 }
             }
         }
-        if (newUpdateSize != m_updateSize)
-        {
-            m_updateSize = newUpdateSize;
-            emit updateSizeChanged();
-        }
-
+    }
+    if (newUpdateSize != m_updateSize)
+    {
+        m_updateSize = newUpdateSize;
+        emit updateSizeChanged();
     }
 
 }

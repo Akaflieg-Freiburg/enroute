@@ -350,7 +350,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     }
 }
 
-
 auto DataManagement::DataManager::updatable() -> bool
 {
     if (m_mapSets.updateSize() != 0)
@@ -359,7 +358,6 @@ auto DataManagement::DataManager::updatable() -> bool
     }
     return (m_items.updateSize() != 0);
 }
-
 
 auto DataManagement::DataManager::updateSizeString() -> QString
 {

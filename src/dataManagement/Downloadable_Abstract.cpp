@@ -19,10 +19,17 @@
  ***************************************************************************/
 
 #include "Downloadable_Abstract.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
+
 
 DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
     : QObject(parent)
 {
+    emitFileContentChanged_delayedTimer.setInterval(2s);
+    connect(this, &Downloadable_Abstract::fileContentChanged, &emitFileContentChanged_delayedTimer, qOverload<>(&QTimer::start));
+    connect(&emitFileContentChanged_delayedTimer, &QTimer::timeout, this, &Downloadable_Abstract::emitFileContentChanged_delayed);
 }
 
 
@@ -41,3 +48,18 @@ void DataManagement::Downloadable_Abstract::setSection(const QString& sectionNam
     emit sectionChanged();
 }
 
+
+
+//
+// Private methods
+//
+
+
+void DataManagement::Downloadable_Abstract::emitFileContentChanged_delayed()
+{
+    if (downloading()) {
+        return;
+    }
+    emitFileContentChanged_delayedTimer.stop();
+    emit fileContentChanged_delayed();
+}

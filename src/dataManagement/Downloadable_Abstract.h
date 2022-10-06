@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <QObject>
+#include <QTimer>
 
 
 namespace DataManagement {
@@ -200,6 +200,12 @@ public:
     /*! \brief Deletes all local file(s) */
     Q_INVOKABLE virtual void deleteFiles() = 0;
 
+    /*! \brief Kill pending emission of signal fileContentChanged_delayed */
+    Q_INVOKABLE void killFileContentChanged_delayed()
+    {
+        emitFileContentChanged_delayedTimer.stop();
+    }
+
     /*! \brief Initiate download(s) */
     Q_INVOKABLE virtual void startDownload() = 0;
 
@@ -208,7 +214,6 @@ public:
 
     /*! \brief Starts download(s) if updatable */
     Q_INVOKABLE virtual void update() = 0;
-
 
 signals:
     /*! \brief Notifier signal */
@@ -233,6 +238,14 @@ signals:
 
     /*! \brief Indicates that the content of a local file (or several local files) has changed */
     void fileContentChanged();
+
+    /*! \brief Emitted some time after the content of one of the local files changes.
+     *
+     *  This signal is in principle identical to fileContentChanged(), but
+     *  is emitted with a delay of two seconds. In addition it waits until
+     *  there are no running download processes anymore.
+     */
+    void fileContentChanged_delayed();
 
     /*! \brief Notifier signal */
     void filesChanged();
@@ -260,6 +273,10 @@ protected:
     QString m_section;
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
+
+    // Provisions to provide the signal localFileContentChanged_delayed
+    void emitFileContentChanged_delayed();
+    QTimer emitFileContentChanged_delayedTimer;
 };
 
 };

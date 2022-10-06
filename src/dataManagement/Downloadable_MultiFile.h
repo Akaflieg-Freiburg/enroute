@@ -153,7 +153,12 @@ signals:
     void downloadablesChanged();
 
 private:
-    void updateMembers();
+    // Re-evaluate members when the properties of a member changes
+    void evaluateDownloading();
+    void evaluateFiles();
+    void evaluateHasFile();
+    void evaluateRemoteFileSize();
+    void evaluateUpdateSize();
 
     bool m_downloading {false};
     QStringList m_files;

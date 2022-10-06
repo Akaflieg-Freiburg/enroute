@@ -39,11 +39,11 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
 
 void GeoMaps::GeoMapProvider::deferredInitialization()
 {
-//#warning want delayed here!
-    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::dataManager()->aviationMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+//#warning Do I want that?
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
-    connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
 
@@ -53,12 +53,10 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
 
     onAviationMapsChanged();
     onMBTILESChanged();
-//#warning
-    /*
-    GlobalObject::dataManager()->aviationMaps()->killLocalFileContentChanged_delayed();
-    GlobalObject::dataManager()->baseMaps()->killLocalFileContentChanged_delayed();
-    GlobalObject::dataManager()->terrainMaps()->killLocalFileContentChanged_delayed();
-    */
+
+    GlobalObject::dataManager()->aviationMaps()->killFileContentChanged_delayed();
+    GlobalObject::dataManager()->baseMaps()->killFileContentChanged_delayed();
+    GlobalObject::dataManager()->terrainMaps()->killFileContentChanged_delayed();
 }
 
 
@@ -392,7 +390,6 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
     //
     QStringList JSONFileNames;
     foreach(auto geoMapPtrX, GlobalObject::dataManager()->aviationMaps()->downloadables()) {
-//#warning ugly!
         auto *geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
         if (geoMapPtr == nullptr)
         {

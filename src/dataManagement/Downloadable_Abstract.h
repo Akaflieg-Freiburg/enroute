@@ -120,6 +120,9 @@ public:
      */
     Q_PROPERTY(qint64 updateSize READ updateSize NOTIFY updateSizeChanged)
 
+    /*! \brief Update size as a localized string */
+    Q_PROPERTY(QString updateSizeString READ updateSizeString NOTIFY updateSizeChanged)
+
 
     //
     // Getter Methods
@@ -178,6 +181,12 @@ public:
      * @returns Property updateSize
      */
     [[nodiscard]] virtual auto updateSize() -> qint64 = 0;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property updateSizeString
+     */
+    [[nodiscard]] virtual auto updateSizeString() -> QString;
 
 
 

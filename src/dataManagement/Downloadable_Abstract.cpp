@@ -20,6 +20,7 @@
 
 #include "Downloadable_Abstract.h"
 #include <chrono>
+#include <QLocale>
 
 using namespace std::chrono_literals;
 
@@ -30,6 +31,19 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
     emitFileContentChanged_delayedTimer.setInterval(2s);
     connect(this, &Downloadable_Abstract::fileContentChanged, &emitFileContentChanged_delayedTimer, qOverload<>(&QTimer::start));
     connect(&emitFileContentChanged_delayedTimer, &QTimer::timeout, this, &Downloadable_Abstract::emitFileContentChanged_delayed);
+}
+
+
+
+//
+// Getter methods
+//
+
+auto DataManagement::Downloadable_Abstract::updateSizeString() -> QString
+{
+    qsizetype size = qMax((qint64)0,updateSize());
+
+    return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
 }
 
 

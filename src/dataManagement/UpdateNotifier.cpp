@@ -34,7 +34,7 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
     QObject(parent)
 {
 
-    connect(GlobalObject::dataManager(), &DataManagement::DataManager::updatableChanged, this, &DataManagement::UpdateNotifier::updateNotification);
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::UpdateNotifier::updateNotification);
     connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotification);
 
     notificationTimer.setInterval(11min);
@@ -48,7 +48,7 @@ void DataManagement::UpdateNotifier::updateNotification()
 {
 
     // If there is no update, then we end here.
-    if (!GlobalObject::dataManager()->updatable()) {
+    if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
         return;
     }
@@ -73,7 +73,7 @@ void DataManagement::UpdateNotifier::updateNotification()
     }
 
     // Notify!
-    auto text = tr("The estimated download size is %1.").arg(GlobalObject::dataManager()->updateSizeString());
+    auto text = tr("The estimated download size is %1.").arg(GlobalObject::dataManager()->mapsAndData()->updateSizeString());
     GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);
     settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
 

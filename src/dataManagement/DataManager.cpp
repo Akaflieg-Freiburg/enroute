@@ -38,16 +38,17 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     cleanDataDirectory();   
 
     // Wire up the Dowloadable object "_maps_json"
-    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
-    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::hasFileChanged, this, &DataManager::hasRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, []()
+    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
+    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, []()
     { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
-    connect(&m_mapsJSON, &DataManagement::Downloadable_SingleFile::error, this, [this](const QString & /*unused*/, QString message)
+    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::error, this, [this](const QString & /*unused*/, QString message)
     { emit error(std::move(message)); });
 
     // Wire up the DownloadableGroup _items
     connect(&m_items, &DataManagement::Downloadable_MultiFile::filesChanged, this, &DataManager::onItemFileChanged);
+
+    m_mapsAndData.add(&m_mapSets);
+    m_mapsAndData.add(&m_databases);
 
     // If there is a downloaded maps.json file, we read it.
     updateDataItemListAndWhatsNew();
@@ -242,15 +243,9 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
     return downloadable;
 }
 
-void DataManagement::DataManager::updateAllItems()
-{
-    m_mapSets.update();
-    m_items.update();
-}
-
 void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 {
-    if (!m_mapsJSON.hasFile())
+    if (!m_mapList.hasFile())
     {
         return;
     }
@@ -271,7 +266,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     // maps were already present in the old list, we re-use them. Otherwise, we
     // create new Downloadable objects.
     QJsonParseError parseError{};
-    auto doc = QJsonDocument::fromJson(m_mapsJSON.fileContent(), &parseError);
+    auto doc = QJsonDocument::fromJson(m_mapList.fileContent(), &parseError);
     if (parseError.error != QJsonParseError::NoError)
     {
         return;
@@ -348,20 +343,4 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         m_whatsNew = newWhatsNew;
         emit whatsNewChanged();
     }
-}
-
-auto DataManagement::DataManager::updatable() -> bool
-{
-    if (m_mapSets.updateSize() != 0)
-    {
-        return true;
-    }
-    return (m_items.updateSize() != 0);
-}
-
-auto DataManagement::DataManager::updateSizeString() -> QString
-{
-    qsizetype size = m_mapSets.updateSize() + m_databases.updateSize();
-
-    return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
 }

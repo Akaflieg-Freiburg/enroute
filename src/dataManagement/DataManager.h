@@ -118,9 +118,6 @@ public:
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* databases READ databases CONSTANT)
 
-    /*! \brief True while the list of remotely available items is retrieved */
-    Q_PROPERTY(bool downloadingRemoteItemList READ downloadingRemoteItemList NOTIFY downloadingRemoteItemListChanged)
-
     /*! \brief Downloadable_MultiFile that holds all data items
      *
      *  Pointer to a Downloadable_MultiFile that holds all data items.  This
@@ -128,10 +125,13 @@ public:
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* items READ items CONSTANT)
 
-    /*! \brief True if list of remotely available items has been downloaded */
-    Q_PROPERTY(bool hasRemoteItemList READ hasRemoteItemList NOTIFY hasRemoteItemListChanged)
+    /*! \brief Downloadable_SingleFile that holds the list of all maps and databases */
+    Q_PROPERTY(DataManagement::Downloadable_SingleFile* mapList READ mapList CONSTANT)
 
-    /*! \brief Downloadable_MultiFile that holds all data items
+    /*! \brief Downloadable_MultiFile that holds all the map sets and databases */
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* mapsAndData READ mapsAndData CONSTANT)
+
+    /*! \brief Downloadable_MultiFile that holds all map sets
      *
      *  Pointer to a Downloadable_MultiFile that holds all map sets.
      */
@@ -142,16 +142,6 @@ public:
      *  Pointer to a Downloadable_MultiFile that holds all terrain maps.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* terrainMaps READ terrainMaps CONSTANT)
-
-    /*! \brief Indictates if updates for maps and data are available */
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
-
-    /*! \brief Size of pending update
-     *
-     *  This property holds the size of the pending update, as a localized string ("37.5 MB")
-     *  suitable for use in the GUI.
-     */
-    Q_PROPERTY(QString updateSizeString READ updateSizeString NOTIFY updateSizeStringChanged)
 
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
@@ -196,45 +186,33 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property downloadingRemoteItemList
-     */
-    [[nodiscard]] auto downloadingRemoteItemList() -> bool { return m_mapsJSON.downloading(); }
-
-    /*! \brief Getter function for the property with the same name
-     *
      *  @returns Property items
      */
     [[nodiscard]] auto items() -> DataManagement::Downloadable_MultiFile* { return &m_items; }
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns hasRemoteItemList
+     *  @returns Property mapsAndData
      */
-    [[nodiscard]] auto hasRemoteItemList() -> bool { return m_mapsJSON.hasFile(); }
+    [[nodiscard]] auto mapList() -> DataManagement::Downloadable_SingleFile* { return &m_mapList; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property mapsAndData
+     */
+    [[nodiscard]] auto mapsAndData() -> DataManagement::Downloadable_MultiFile* { return &m_mapsAndData; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property mapSets
+     */
+    [[nodiscard]] auto mapSets() -> DataManagement::Downloadable_MultiFile* { return &m_mapSets; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property terrainMaps
      */
     [[nodiscard]] auto terrainMaps() -> DataManagement::Downloadable_MultiFile* { return &m_terrainMaps; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property mapSets
-     */
-    auto mapSets() -> DataManagement::Downloadable_MultiFile* { return &m_mapSets; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property updatable
-     */
-    [[nodiscard]] auto updatable() -> bool;
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property updatableSizeString
-     */
-    [[nodiscard]] auto updateSizeString() -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -279,19 +257,10 @@ public slots:
      */
     void updateRemoteDataItemList()
     {
-        m_mapsJSON.startDownload();
+        m_mapList.startDownload();
     }
 
-    /*! \brief Updates all maps sets and data items */
-    void updateAllItems();
-
 signals:
-    /*! \brief Notification signal for the property with the same name */
-    void hasRemoteItemListChanged();
-
-    /*! \brief Notification signal for the property with the same name */
-    void downloadingRemoteItemListChanged();
-
     /*! \brief Error message for user
      *
      *  This signal is emitted if an error occurs and the GUI should display a
@@ -300,12 +269,6 @@ signals:
      *  @param message A brief, human-readable, translated error message.
      */
     void error(const QString& message);
-
-    /*! \brief Notifier signal */
-    void updatableChanged();
-
-    /*! \brief Notifier signal */
-    void updateSizeStringChanged();
 
     /*! \brief Notifier signal */
     void whatsNewChanged();
@@ -349,7 +312,7 @@ private:
     // This Downloadable object manages the central text file that describes the
     // remotely available aviation maps. It is set in the constructor to point
     // to the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
-    DataManagement::Downloadable_SingleFile m_mapsJSON { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
+    DataManagement::Downloadable_SingleFile m_mapList { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
     DataManagement::Downloadable_MultiFile m_aviationMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
@@ -358,6 +321,7 @@ private:
     DataManagement::Downloadable_MultiFile m_baseMapsVector {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_databases {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_items {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_mapsAndData {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_terrainMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
 
     // List of geographic map sets

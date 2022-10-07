@@ -358,7 +358,7 @@ Page {
         anchors.fill: parent
 
         background: Rectangle {color: "white"}
-        visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList
+        visible: !global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment : Text.AlignVCenter
@@ -374,7 +374,7 @@ Page {
         anchors.fill: parent
 
         color: "white"
-        visible: global.dataManager().downloadingRemoteItemList
+        visible: global.dataManager().mapList.downloading
 
         ColumnLayout {
             anchors.fill: parent
@@ -431,13 +431,13 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: (!global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList) || (!global.dataManager().items.downloading && global.dataManager().updatable)
+        visible: downloadMapListActionButton.visible || downloadUpdatesActionButton.visible
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
 
         ToolButton {
             id: downloadMapListActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList
+            visible: !global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile
 
             text: qsTr("Download list of maps…")
             icon.source: "/icons/material/ic_file_download.svg"
@@ -451,14 +451,14 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().items.downloading && global.dataManager().updatable
+            visible: (!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0)
 
             text: qsTr("Update")
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                global.dataManager().updateAllItems()
+                global.dataManager().mapsAndData.update()
             }
         }
     }

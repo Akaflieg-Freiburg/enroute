@@ -41,8 +41,8 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     connect(&m_mapList, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
     connect(&m_mapList, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, []()
     { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
-    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::error, this, [this](const QString & /*unused*/, QString message)
-    { emit error(std::move(message)); });
+    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::error, this, [this](const QString & /*unused*/, const QString& message)
+    { emit error(message); });
 
     // Wire up the DownloadableGroup _items
     connect(&m_items, &DataManagement::Downloadable_MultiFile::filesChanged, this, &DataManager::onItemFileChanged);
@@ -181,7 +181,7 @@ void DataManagement::DataManager::onItemFileChanged()
     }
 }
 
-DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName)
+auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName) -> DataManagement::Downloadable_SingleFile *
 {
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its
@@ -201,6 +201,7 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
 
     // Construct a new downloadable object and add to appropriate groups
     auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, this);
+    downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1).section(QStringLiteral("."), 0, -2));
     if (localFileName.endsWith(QLatin1String("geojson")) ||
             localFileName.endsWith(QLatin1String("mbtiles")) ||
             localFileName.endsWith(QLatin1String("raster")) ||
@@ -214,6 +215,28 @@ DataManagement::Downloadable_SingleFile *DataManagement::DataManager::createOrRe
         {
             // The noope tag "<a name>" guarantees that this section will come first alphabetically
             downloadable->setSection("<a name>"+tr("Manually Imported"));
+        }
+
+        bool hasMapSet = false;
+        foreach(auto mapSetX, m_mapSets.downloadables())
+        {
+            auto* mapSet = qobject_cast<DataManagement::Downloadable_MultiFile*>(mapSetX);
+            if (mapSet == nullptr)
+            {
+                continue;
+            }
+            if ((mapSet->objectName() == downloadable->objectName()) && (mapSet->section() == downloadable->section()))
+            {
+                mapSet->add(downloadable);
+                hasMapSet = true;
+                break;
+            }
+        }
+        if (!hasMapSet)
+        {
+            auto* newMapSet = new DataManagement::Downloadable_MultiFile(Downloadable_MultiFile::MultiUpdate, this);
+            newMapSet->add(downloadable);
+            m_mapSets.add(newMapSet);
         }
     }
 
@@ -290,7 +313,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         oldMaps.removeAll(downloadable);
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);
-        downloadable->setObjectName(mapName.section(QStringLiteral("/"), -1, -1));
 
         files.removeAll(localFileName);
     }
@@ -306,6 +328,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 
 
     // Now the lists of downloadable items should be complete. Finally, we find and match up map sets.
+    /*
     m_mapSets.clear();
     QMap<QString, Downloadable_MultiFile*> mapSetsByName;
     foreach (auto itemX, m_items.downloadables())
@@ -335,6 +358,27 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
         mapSet->add(item);
     }
+    */
+    // Delete empty map sets
+    QVector<DataManagement::Downloadable_MultiFile*> dump;
+    foreach (auto mapSetX, m_mapSets.downloadables())
+    {
+        auto* mapSet = qobject_cast<DataManagement::Downloadable_MultiFile*>(mapSetX);
+        if (mapSet == nullptr)
+        {
+            continue;
+        }
+        if (mapSet->downloadables().isEmpty())
+        {
+            dump << mapSet;
+        }
+
+    }
+    foreach(auto mapSet, dump)
+    {
+        m_mapSets.remove(mapSet);
+    }
+#warning need to delete empty map sets
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();

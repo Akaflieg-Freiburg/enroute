@@ -248,7 +248,7 @@ public:
      * @returns A human-readable HTML string on error, or an empty string on
      * success
      */
-    Q_INVOKABLE QString import(const QString& fileName, const QString& newName);
+    Q_INVOKABLE auto import(const QString& fileName, const QString& newName) -> QString;
 
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
